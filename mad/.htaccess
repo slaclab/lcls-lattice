@@ -1,0 +1,107 @@
+# Apache directory access controller file for LCLS MAD Optics output
+# web directory listings.
+#
+# ---------------------------------------------------------------------
+# Auth: Greg White, SLAC, Apr-2014
+# Mod:
+#   24-Apr-2019, Mark Woodley
+#     Initial full LCLS facility release (LCLS-I + LCLS-II)
+#   23-Mar-2015, Mark Woodley
+#     Modify descriptions; add LCLS1 files; add beamline area plots
+#   27-Aug-2014, Greg White
+#     Added SuppressIcon to IndexOptions to stop default icon usage
+# =====================================================================
+
+# Enable directory views on this directory
+#
+# Options +Indexes
+
+# Strong htaccess protection. Don't let anyone read this file
+#
+<Files ~ "^.*\.([Hh][Tt][Aa])">
+ order allow,deny
+ deny from all
+</Files>
+
+# Going to use Apache mod_autoindex, so test for its presence.
+<IfModule mod_autoindex.c>
+# SET INDEX OPTIONS
+IndexOptions IgnoreCase FancyIndexing FoldersFirst NameWidth=* DescriptionWidth=* SuppressHTMLPreamble SuppressIcon
+
+# The Directories and files found in the main output directory (SC=superconducting linac, Cu=copper linac)
+#
+AddDescription "MAD execution log file" .echo
+
+AddDescription "SC SXR beamline layout (BSY coordinates)" BSY-LCLS2scS.print
+AddDescription "SC HXR beamline layout (BSY coordinates)" BSY-LCLS2scH.print
+AddDescription "SC BSY dump beamline layout (BSY coordinates)" BSY-LCLS2scD.print
+AddDescription "SC SXR safety dump beamline layout (BSY coordinates)" BSY-SFTDMPS.print
+AddDescription "SC HXR safety dump beamline layout (BSY coordinates)" BSY-SFTDMPH.print
+AddDescription "SC SXR beamline layout (linac coordinates)" LCLS2scS.print
+AddDescription "SC HXR beamline layout (linac coordinates)" LCLS2scH.print
+AddDescription "SC BSY dump beamline layout (linac coordinates)" LCLS2scD.print
+AddDescription "SC DIAG0 beamline layout (linac coordinates)" DIAG0.print
+AddDescription "Cu HXR beamline layout (BSY coordinates)" BSY-LCLS2cuH.print
+AddDescription "Cu SXR beamline layout (BSY coordinates)" BSY-LCLS2cuS.print
+AddDescription "Cu A-line beamline layout (BSY coordinates)" BSY-LCLS2cuA.print
+AddDescription "Cu HXR beamline layout (linac coordinates)" LCLS2cuH.print
+AddDescription "Cu SXR beamline layout (linac coordinates)" LCLS2cuS.print
+AddDescription "Cu A-line beamline layout (linac coordinates)" LCLS2cuA.print
+
+AddDescription "SC SXR beamline survey (BSY coordinates)" BSY-LCLS2scS_survey.tape
+AddDescription "SC HXR beamline survey (BSY coordinates)" BSY-LCLS2scH_survey.tape
+AddDescription "SC BSY dump beamline survey (BSY coordinates)" BSY-LCLS2scD_survey.tape
+AddDescription "SC SXR safety dump beamline layout (BSY coordinates)" BSY-SFTDMPS_survey.tape
+AddDescription "SC HXR safety dump beamline layout (BSY coordinates)" BSY-SFTDMPH_survey.tape
+AddDescription "SC SXR beamline survey (linac coordinates)" LCLS2scS_survey.tape
+AddDescription "SC HXR beamline survey (linac coordinates)" LCLS2scH_survey.tape
+AddDescription "SC BSY dump beamline survey (linac coordinates)" LCLS2scD_survey.tape
+AddDescription "SC DIAG0 beamline survey (linac coordinates)" DIAG0_survey.tape
+AddDescription "Cu HXR beamline survey (BSY coordinates)" BSY-LCLS2cuH_survey.tape
+AddDescription "Cu SXR beamline survey (BSY coordinates)" BSY-LCLS2cuS_survey.tape
+AddDescription "Cu A-line beamline survey (BSY coordinates)" BSY-LCLS2cuA_survey.tape
+AddDescription "Cu HXR beamline survey (linac coordinates)" LCLS2cuH_survey.tape
+AddDescription "Cu SXR beamline survey (linac coordinates)" LCLS2cuS_survey.tape
+AddDescription "Cu A-line beamline survey (linac coordinates)" LCLS2cuA_survey.tape
+
+AddDescription "SC SXR beamline Twiss parameters" LCLS2scS_twiss.tape
+AddDescription "SC HXR beamline Twiss parameters" LCLS2scH_twiss.tape
+AddDescription "SC BSY dump beamline Twiss parameters" LCLS2scD_twiss.tape
+AddDescription "SC DIAG0 beamline Twiss parameters" DIAG0_twiss.tape
+AddDescription "Cu HXR beamline Twiss parameters" LCLS2cuH_twiss.tape
+AddDescription "Cu SXR beamline Twiss parameters" LCLS2cuS_twiss.tape
+AddDescription "Cu A-line beamline Twiss parameters" LCLS2cuS_twiss.tape
+
+AddDescription "SC SXR beamline Twiss plots (postscript)" LCLS2scS.ps
+AddDescription "SC HXR beamline Twiss plots (postscript)" LCLS2scH.ps
+AddDescription "SC BSY dump beamline Twiss plots (postscript)" LCLS2scD.ps
+AddDescription "SC DIAG0 beamline Twiss plots (postscript)" DIAG0.ps
+AddDescription "Cu HXR beamline Twiss plots (postscript)" LCLS2cuH.ps
+AddDescription "Cu SXR beamline Twiss plots (postscript)" LCLS2cuS.ps
+
+AddDescription "SC SXR beamline Twiss plots (pdf)" LCLS2scS.pdf
+AddDescription "SC HXR beamline Twiss plots (pdf)" LCLS2scH.pdf
+AddDescription "SC BSY dump beamline Twiss plots (pdf)" LCLS2scD.pdf
+AddDescription "SC DIAG0 beamline Twiss plots (pdf)" DIAG0.pdf
+AddDescription "Cu HXR beamline Twiss plots (pdf)" LCLS2cuH.pdf
+AddDescription "Cu SXR beamline Twiss plots (pdf)" LCLS2cuS.pdf
+AddDescription "LCLS SC Beamline Area plots (pdf)" LCLS2sc_areas.pdf
+AddDescription "LCLS Cu Beamline Area plots (pdf)" LCLS2cu_areas.pdf
+
+# The Descriptions of files found in the opt subdirectrory
+AddDescription "Beamline element topology in dot" .dot
+AddDescription "Beamline element topology browsable map" *_map.pdf
+AddDescription "Device map image icon" *_mapicon.gif
+AddDescription "Optics plot image icon" *_opticsicon.png
+
+AddDescription "Beamline maps, devices lists, web page images etc" opt
+AddDescription "MAD input files" src
+
+AddDescription "MAD definitions" *.xsif
+AddDescription "MAD commands" *.mad8
+
+AddDescription "Element to device name mapping" *devices.dat
+
+AddAlt "MAD" *.print *.tape
+</IfModule>
+

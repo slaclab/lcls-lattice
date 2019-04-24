@@ -1,0 +1,114 @@
+=======================================================================================
+README of LCLS optics files
+
+This README describes how to deal with the source file management of the LCLS facility
+MAD decks through CVS, how to release changes, and how to update the relevant wb pages.
+
+Auth: Greg White, 8-Apr-2014.
+Mod:  Mark Woodley, 24-Apr-2019: Initial LCLS facility release.
+=======================================================================================
+
+0. Prerequisites. 
+
+   mad8: You will need the mad version 8 executable. If on AFS you can use 
+   Mark's script which detects architecture etc, it's in 
+   /afs/slac.stanford.edu/u/ad/mdw/mad8.52/mad. "mad8" must be either a 
+   command on your system, or you must set the MAD8 macro when running make below. Eg
+
+   make MAD8=/afs/slac.stanford.edu/u/ad/mdw/mad8.52/mad all
+
+
+1. Acquire the LCLS lattice files by CVS
+
+   The LCLS lattice files are in SLAC's Code Management System (CVS) repository.
+   You can get the files from any internet connected computer (you don't have to be
+   in the SLAC network) using a CVS client. 
+
+   You must tell your CVS the location of the CVS repository (where our lattice files
+   are). You can do that in 2 ways. First, by using -d on every cvs command. Eg
+
+      cvs -d :ext:YOURUSERNAME@noric.slac.stanford.edu:/afs/slac/g/lcls/cvs co optics/etc
+
+   Alternatively, set the CVSROOT environment variable. For
+   instance if using a bourne shell variant like bash this would be:
+
+   Using bourne or bash shell:
+      $ export CVSROOT=":ext:<YOURUSERNAME>@noric.slac.stanford.edu:/afs/slac/g/lcls/cvs"   
+   Using csh or tcsh shell:
+      $ setenv CVSROOT ":ext:<YOURUSERNAME>@noric.slac.stanford.edu:/afs/slac/g/lcls/cvs"
+
+      where <YOURUSERNAME> is your login id on the remote computer.
+    
+   Then you can cvs checkout the lattice files, and the necessary scripts. e.g.:
+
+      $ cvs co optics/etc/lattice/lcls
+      $ cvs co optics/etc/script
+ 
+2. To compute optics using MAD8
+
+   Having acquired the lattice files, such as with CVS above, then
+   cd to the directory containing your mad8 input files. These are probably
+   named *.mad8 and *.xsif. Then execute the mad8 command on the mad8 file, e.g.:
+
+      $ cd optics/etc/lattice/lcls/mad
+      $ mad8 LCLS2sc_main.mad8
+
+3. Alternatively you can use "make" for running lattice. 
+ 
+      $ make                   - Run mad8 on the main mad deck
+
+   This produces all the print, tape and ps files as you'd expect.
+
+4. The makefile also knows how to create a number of associated files:
+       
+      $ make maps              - Make the device lists and map files, as below:
+
+        a. <beampath>.pdf        - PDF equivalent of the .ps optics plots
+	b. <beampath>_lines.dat  - list for each element the "display groups" 
+                                   of which that element is part. NOTE 1.
+        c. <beampath>.dot        - Description of the "hierarchy" of the beampath in
+                                   terms of elements and their arrangement in lines.
+        d. <beampath>_map.pdf    - A PDF rendering of the hierarchy of the beampath in
+                                   terms of elements and their arrangement in lines.
+        e. <beampath>_mapicon.gif  Just a little gif of the map file, used on the web site.
+ 
+        NOTE 1. If no elementdevice.dat file is in the directory, then no 
+       <beampath>_lines.dat file is produced. 
+
+5. To publish the new set of decks, plus the MAD outputs and associated files, 
+   to the web site http://www.slac.stanford.edu/grp/ad/model/output/lcls/mad/
+    
+   There are 3 forms of "makes install" one can use:
+
+       $ make install        - Copies the lattice files output from mad8, to a directory
+                               named after today's date; e.g. to 
+                                  /afs/slac/www/grp/ad/model/output/lcls/mad/<today>/ 
+       $ make INSTALLDIR=23JAN19 install
+                             - Copies the lattice files output from mad8, to the
+                               named directory inder INSTALLROOT (see defintion
+                               below; e.g. to :
+                                  /afs/slac/www/grp/ad/model/output/lcls/mad/23JAN19/ 
+       $ make installlatest  - Copies the lattice files output from mad8, 
+                               to /afs/slac/www/grp/ad/model/output/lcls/mad/latest/ 
+
+ 
+6. To put your changed files back in CVS.
+
+   The process of putting your edited files back in CVS, so they become the latest,
+   is called "cvs check in", or sometimes "cvs commit" after the command that does it.
+
+   First, change directory back up to the directory *containing* the optics/ directory.
+   Then issue the cvs commit command from there. E.g.:
+
+      cd ../../../..
+      cvs commit -m "comment" optics       
+
+   This will check in all the changed files. Of course, one can commit only single 
+   files at a time too.
+
+   You can keep working on your checked out directory, and re-checkin when you want to.
+   But in that case, use cvs update periodically to check no one has done a commit
+   on files while yours is in development. These workflow matters are best handled 
+   by the many guides to CVS on the web. A good one is:
+   http://www.cs.rit.edu/~csci142/Misc/cvscheat.pdf
+
