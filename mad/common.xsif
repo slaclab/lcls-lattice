@@ -1,0 +1,275 @@
+
+! *** OPTICS=AD_ACCEL-23JAN19 ***
+
+! LCLS2sc common parameters
+
+! ==============================================================================
+! Modification History
+! ------------------------------------------------------------------------------
+! 31-OCT-2018, Y. Nosochkov
+!  * adjust ABRDAS2, TBRDAS2 for DASEL optics with 25G kicker field
+! 19-SEP-2018, M. Woodley
+!  * add LPCTDKIK definition
+! 30-MAY-2018, M. Woodley
+!  * add self-seeding chicane ON/OFF switch definitions
+! 16-MAY-2018, M. Woodley
+!  * add narrow-frame SLTR QF1545 quadrupole type
+! ------------------------------------------------------------------------------
+! 24-JAN-2018, M. Woodley
+!  * change length of BCS protection collimators (PCs) in spreader from 30 cm
+!    to 5.08 cm (2")
+! 05-DEC-2017, M. Woodley
+!  * add BEGHXTES, ENDHXTES, BEGSXTES, ENDSXTES MARKers
+! 06-SEP-2017, Y. Nosochkov
+!  * update spreader kicker gap GBKSP to 20 mm (= 10 mm beam aperture +
+!    10 mm pipe walls) (T. Beukers)
+! 22-AUG-2017, M. Woodley
+!  * add low-energy dump line (area=SLTDX)
+!  * split SLTS and SLTD areas
+! ------------------------------------------------------------------------------
+! 28-NOV-2016, M. Woodley
+!  * replace BEGCOL2/ENDCOL2 with BEGEMIT2/ENDEMIT2
+! ------------------------------------------------------------------------------
+! 04-NOV-2016, M. Woodley
+!  * change "1.259Q3.5" to "1.26Q3.5"
+!  * change Everson-Tesla 2.362Q3.5 (r=30mm) to SigmaPhi 1.69Q3.4 (bore=43mm)
+! 02-NOV-2016, Y. Nosochkov
+!  * move definition of DRFB drift to LTU.xsif
+!  * remove no longer used definition of SPhOFF
+!  * add markers BEGSPD3, ENDSPD3
+!  * add kicker switches for DASEL
+! 30-SEP-2016, Y. Nosochkov
+!  * add some missing GLmax data (per J. Amann)
+! ------------------------------------------------------------------------------
+! 12-FEB-2016, M. Woodley
+!  * add FFTB sextupole definitions (for 2nd-order dispersion correction)
+! ------------------------------------------------------------------------------
+! 01-OCT-2015, M. Woodley
+!  * add SETDG0 ... switch beam between straight-ahead (DG0OFF) and DIAG0 line
+!    (DG0ON)
+! 25-SEP-2015, Y. Nosochkov
+!  * add deflector switches for CUSXR and A-line
+! 28-AUG-2015, M. Woodley
+!  * add GLmax comment for 2Q4 ("QM")
+!  * replace "Qs" definitions with  SLC positron inflector (LI01) quadrupole
+!    definitions
+! 24-AUG-2015, Y. Nosochkov
+!  * specify gap height and length of fast kickers and septa
+! ------------------------------------------------------------------------------
+! 19-JUN-2015, Y. Nosochkov
+!  * restore definition of 1.97Q20 quadrupole
+! ------------------------------------------------------------------------------
+! 16-APR-2015, M. Woodley
+!  * restore "LQL" parameter (used in SPRD.xsif)
+! 20-MAR-2015, M. Woodley
+!  * remove 1.97Q10 and 1.97Q20 quadrupole definitions (replaced with 2Q10s)
+!  * set length of tungsten jaw collimators (15*X0; X0(W)= 4 mm; Ljaw = 6 cm)
+!  * add SEQ20BEG, SEQ20END, BEGCuSXR, ENDCuSXR MARKERs (for LCLS1 to SXR line)
+!  * add SEQ21BEG, SEQ21END, BEGBSYA, ENDBSYA MARKERs (for BSY to A-line)
+! ------------------------------------------------------------------------------
+! 12-DEC-2014, M. Woodley
+!  * add PEPII "2Q10" quadrupole type
+!  * add area and SEQ BEG/END MARKers for safety dump lines
+! 09-DEC-2014, Y. Nosochkov
+!  * specify a preliminary length of protection collimators in the spreader
+! 19-NOV-2014, Y. Nosochkov
+!  * specify type of undulator quadrupole (per J. Amann)
+! ------------------------------------------------------------------------------
+! 28-OCT-2014, M. Woodley
+!  * add SEQ17BEG, SEQ17END, BSY1BEG, BSY1END MARKERs (for LCLS1 BSY)
+! ------------------------------------------------------------------------------
+! 15-OCT-2014, M. Woodley
+!  * add R56 compensation chicane parameters
+! ------------------------------------------------------------------------------
+
+! ==============================================================================
+! magnets
+! ------------------------------------------------------------------------------
+
+! LCLS2 quadrupoles
+
+! QK : 1.625Q27.3
+! QA : 1.26Q12 (NOTE: bore of captured BPM is 0.870")
+! Qu : undulator quadrupole (0.433Q3.1)
+
+  LQK := 0.7142  ; rQK := 1.625*IN2M/2 !GLmax=   ?   kG @   ? A
+  LQA := 0.32    ; rQA := 0.016        !GLmax= 112   kG @ 120 A
+  LQu := 0.084   ; rQu := 0.0055       !GLmax=  41.8 kG @   6 A
+
+! LCLS quadrupoles
+
+! Qx  : Everson-Tesla quadrupole (1.26Q3.5)
+! Qc  : SigmaPhi "tweaker" quadrupole (1.69Q3.4)
+! QsB : "Bertsche" skew quadrupole
+
+  LQx  := 0.108 ; rQx  := 0.016    !GLmax= 20.0 kG @ 12 A
+  LQc  := 0.108 ; rQc  := 0.043/2  !GLmax=  2.1 kG @ 12 A
+  LQsB := 0.16  ; rQsB := 0.06     !GLmax=  1.3 kG @ 12 A
+
+! PEP-II quadrupoles
+
+! QM : PEPII injection quadrupole (2Q4)
+! QP : PEPII LER quadrupole (3.94Q17)
+! QR : PEPII injection quadrupole (2Q10)
+! QN : PEPII injection "50Q" quadrupole (1.97Q20)
+
+  LQM := 0.1244 ; rQM := 0.0269 !GLmax= 6.75 kG @  45 A; GLmax= 27 kG for 2Q4W
+  LQP := 0.43   ; rQP := 0.05   !GLmax= 44.6 kG @ 178 A
+  LQR := 0.263  ; rQR := 0.0257 !GLmax= 50   kG @ 160 A
+  LQN := 0.542  ; rQN := 0.025  !GLmax= 78   kG @   ? A
+
+! FFTB quadrupoles
+
+! QF : FFTB "Russian" quad 0.91Q17.72
+! QD : FFTB dump quad (3.25Q20)
+
+  LQF  := 0.46092 ; rQF := 0.023/2   !GLmax= 386.8 kG @ 240 A
+  LQD  := 0.55    ; rQD := 0.08255/2 !GLmax=  74.7 kG @  35 A
+
+! SLC quadrupoles
+
+! QE : linac QE4 (1.085Q4.31)
+! Qs : LI01 positron inflector type
+! QW : "wraparound" type (4.63Q8.0; i.e. SLTR QWF1015)
+! Qz : special narrow quad (SLTR QF1545)
+
+  LQE := 0.1068  ; rQE := 1.085*IN2M/2 !GLmax= 106   kG @ 220 A
+ !LQs := 0.09181 ; rQs := 1.013*IN2M/2 !GLmax=  52   kG @ 207 A
+  LQs := 0.197   ; rQs := 1.510*IN2M/2 !GLmax=  31   kG @  90 A
+  LQW := 0.248   ; rQW := 4.625*IN2M/2 !GLmax=  16.5 kG @  50 A
+  LQz := 0.09181 ; rQz := 1.013*IN2M/2 !GLmax=  63.8 kG @ 160 A
+
+! R56 compensation chicanes (0.788D11.50):
+!   GBCC = bend magnet full gap height (m)
+!   ZBCC = bend magnet Z-length (m)
+!   FBCC = average measured bend magnet FINT value (m)
+!   ZDCC = Z-space between magnets (m)
+
+  GBCC := 0.032
+  ZBCC := 0.35
+  FBCC := 0.8436
+  ZDCC := 0.2
+
+! FFTB sextupoles
+
+! Sa : 2.13S3.00
+! Sb : 1.38S3.00
+
+  LSa := 0.1 ; rSa := 2.13*IN2M/2 !G'Lmax= 240 kG/m @ 8 A; Kmax=18 (4 GeV)
+  LSb := 0.1 ; rSb := 1.38*IN2M/2 !G'Lmax= 870 kG/m @ 8 A; Kmax=65 (4 GeV)
+
+! ==============================================================================
+! kickers and septa
+! ------------------------------------------------------------------------------
+
+  SETSPs  :=  1 !deflector switch for SXR
+  SETSPh  := -1 !deflector switch for HXR
+  SETSPd  :=  0 !deflector switch for dump
+  CUSON   :=  1 !deflector switch ON for pulsed Cu-linac to SXR
+  CUSONDC := -1 !deflector switch ON for DC Cu-linac to SXR
+  CUSOFF  :=  0 !deflector switch OFF for Cu-linac to HXR
+  ALON    :=  1 !deflector switch ON for Cu/SC-linac to A-line
+  ALOFF   :=  0 !deflector switch OFF for Cu/SC-linac to HXR
+  DAON    :=  1 !deflector switch ON for DASEL
+  DAOFF   :=  0 !deflector switch OFF for DASEL
+
+! ==============================================================================
+! self seeding chicanes
+! ------------------------------------------------------------------------------
+
+  SSON  :=  1 !self-seeding chicane ON
+  SSOFF :=  0 !self-seeding chicane OFF
+
+! ==============================================================================
+! miscellaneous
+! ------------------------------------------------------------------------------
+
+  SbandF := 2856.0   !S-band rf frequency (MHz)
+  XbandF := 4*SbandF !X-band rf frequency (MHz)
+
+  Ljaw     := 0.06   !standard jaw collimator length
+  Lcoll    := 0.08   !standard collimator length
+  LPCSP    := 0.0508 !length of BCS protection collimator in spreader (2")
+  LPCPM    := 0.076  !length of BCS protection collimator
+  LPCPMW   := 0.08   !length of BCS WHA protection collimator
+  GBKSP    := 0.02   !fast kicker gap height - round pipe, square bore aperture
+  LBKSP    := 1.0    !fast kicker straight length (m)
+  GBLSP    := 0.0159 !0.625SD38.98 septum gap height (m)
+  LBLSP    := 1.0    !0.625SD38.98 septum straight length (m)
+  GBSP     := 0.0254 !1.0D38.37 gap height (m)
+  LBSP     := 1.0    !1.0D38.37 straight length (m)
+  R56SPs   := 0.0    !R56 of the SXR spreader
+  R56SPh   := 0.0    !R56 of the HXR spreader
+  LQL      := 0.28   !length of no-longer-used 1.97Q10 quadrupole
+  LRFBub   := 0.05   !length of undulator RF BPM
+  LPCTDKIK := 0.8128 !length of muon protection collimators associated with
+                     ! TDKIK and TDKIKS (0.875" ID w/pipe)
+
+! wooden BSY door (separates LI30 from BSY)
+
+  WOODDOOR : MARK
+
+! Note: BRDAS2 is a merge DC-bend which is either turned ON to operate
+!       DASEL beam in A-line, or turned OFF to operate beam in A-line from
+!       BSY pulsed magnets
+
+  ABRDAS2 := -0.011874293037
+  TBRDAS2 :=  0.371701698805 !BRDAS2 roll angle (rad)
+
+! ------------------------------------------------------------------------------
+! beamline area delimiters (see PRD LCLSII-2.1-PR-0134)
+! ------------------------------------------------------------------------------
+
+! areas "owned" by SC linac
+
+  BEGGUNB  : MARK ; ENDGUNB  : MARK
+  BEGL0B   : MARK ; ENDL0B   : MARK
+  BEGHTR   : MARK ; ENDHTR   : MARK
+  BEGCOL0  : MARK ; ENDCOL0  : MARK
+  BEGL1B   : MARK ; ENDL1B   : MARK
+  BEGBC1B  : MARK ; ENDBC1B  : MARK
+  BEGCOL1  : MARK ; ENDCOL1  : MARK
+  BEGL2B   : MARK ; ENDL2B   : MARK
+  BEGBC2B  : MARK ; ENDBC2B  : MARK
+  BEGEMIT2 : MARK ; ENDEMIT2 : MARK
+  BEGL3B   : MARK ; ENDL3B   : MARK
+  BEGEXT   : MARK ; ENDEXT   : MARK
+  BEGDOG   : MARK ; ENDDOG   : MARK
+  BEGBYP   : MARK ; ENDBYP   : MARK
+  BEGSPH   : MARK ; ENDSPH   : MARK
+  BEGSLTH  : MARK ; ENDSLTH  : MARK
+  BEGSPD1  : MARK ; ENDSPD1  : MARK
+  BEGSPD2  : MARK ; ENDSPD2  : MARK
+  BEGSPD3  : MARK ; ENDSPD3  : MARK
+  BEGSLTD  : MARK ; ENDSLTD  : MARK
+  BEGSPS   : MARK ; ENDSPS   : MARK
+  BEGSLTS  : MARK ; ENDSLTS  : MARK
+  BEGBSYS  : MARK ; ENDBSYS  : MARK
+  BEGLTUS  : MARK ; ENDLTUS  : MARK
+  BEGSXX   : MARK ; ENDSXX   : MARK
+  BEGSXR   : MARK ; ENDSXR   : MARK
+  BEGUES   : MARK ; ENDUES   : MARK
+  BEGDMPS  : MARK ; ENDDMPS  : MARK
+  BEGSFTS  : MARK ; ENDSFTS  : MARK
+  BEGSXTES : MARK ; ENDSXTES : MARK
+  BEGDIAG0 : MARK ; ENDDIAG0 : MARK
+
+! areas "owned" by Cu linac
+
+  BEGCLTH0 : MARK ; ENDCLTH0 : MARK
+  BEGCLTH1 : MARK ; ENDCLTH1 : MARK
+  BEGCLTH2 : MARK ; ENDCLTH2 : MARK
+  BEGBSYH1 : MARK ; ENDBSYH1 : MARK
+  BEGBSYH2 : MARK ; ENDBSYH2 : MARK
+  BEGLTUH  : MARK ; ENDLTUH  : MARK
+  BEGHXR   : MARK ; ENDHXR   : MARK
+  BEGUEH   : MARK ; ENDUEH   : MARK
+  BEGDMPH  : MARK ; ENDDMPH  : MARK
+  BEGSFTH  : MARK ; ENDSFTH  : MARK
+  BEGHXTES : MARK ; ENDHXTES : MARK
+  BEGCLTS  : MARK ; ENDCLTS  : MARK
+  BEGBSYA  : MARK ; ENDBSYA  : MARK
+
+! ------------------------------------------------------------------------------
+
+  RETURN

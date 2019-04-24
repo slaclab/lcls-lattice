@@ -1,0 +1,252 @@
+
+! *** OPTICS=AD_ACCEL-23JAN19 ***
+
+! LCLS2sc safety dump lines
+
+! ==============================================================================
+! Modification History
+! ------------------------------------------------------------------------------
+! 08-OCT-2018, M. Woodley
+!  * locations of devices downstream of HXR XTES treaty flange per
+!    2017-11-21__REF__XTES_BG_HXR__mo37504899_update2017-12-19.xlsx
+!  * locations of devices downstream of SXR XTES treaty flange per
+!    2017-11-21__REF__XTES_BG_SXR__mo37504999_update2017-12-19.xlsx
+!  * some device locations per SD-375-048-01 (SFTH) and SD-375-049-01 (SFTS)
+! 20-JUN-2018, M. Woodley
+!  * redefine SFTDUMP1 and SFTDUMPB1 beamlines: end at entrance to PM bends
+! ------------------------------------------------------------------------------
+! 14-FEB-2018, M. Woodley
+!  * split SFTDUMP and SFTDUMPb lines to allow XTES output in linac coordinates
+! 06-DEC-2017, M. Woodley
+!  * add HXTES0 (treaty point flange for HXR XTES system)
+!  * add SXTES0 (treaty point flange for SXR XTES system)
+! ------------------------------------------------------------------------------
+! 24-FEB-2017, Y. Nosochkov
+!  * update some parameter names
+! ------------------------------------------------------------------------------
+! 24-JUN-2016, Y. Nosochkov
+!  * move XDCXRAY & YAGXRAY 0.75 m downstream (E. Johnson)
+! ------------------------------------------------------------------------------
+! 24-AUG-2015, Y. Nosochkov
+!  * remove PCPM3/BTM3, PCPM3B/BTM3B as they are not part of electron line
+! ------------------------------------------------------------------------------
+! 20-MAY-2015, Y. Nosochkov
+!  * add PCPM3, PCPM3B, remove BXPM3 (per Shanjie)
+!  * update aperture of PCPM1,2,3 and PCPM1B,2B,3B (per LCLSII-3.5-PR-0111-R1)
+!  * update positions of PCPM2, BXPM1, BXPM2 (per Shanjie)
+!  * move PCPM1, PCPM1B 0.135 m downstream (per A. Ibrahimov)
+! ------------------------------------------------------------------------------
+! 12-MAR-2015, Y. Nosochkov
+!  * add existing XDCXRAY screen in the XDC chamber in HXR
+! ------------------------------------------------------------------------------
+! 12-DEC-2014, M. Woodley
+!  * move area BEG/END MARKers to common.xsif
+!  * add SEQ BEG/END MARKers
+! 09-DEC-2014, Y. Nosochkov
+!  * safety dump lines based on LCLS-I design and PRD LCLSII-3.5-PR-0111
+! ------------------------------------------------------------------------------
+
+! ------------------------------------------------------------------------------
+! HXR safety dump
+! ------------------------------------------------------------------------------
+
+! note that axis of BXPM1H,2H bends is parallel to HXR undulator axis but
+! horizontally offset by +35 mm towards the North
+
+  LBXPM  := 0.944               !effective straight length of permanent magnet FFTB dump bends (m)
+  GBXPM0 := 0.0381              !original gap height in FFTB magnets in 2005 (m)
+  GBXPM  := 0.052               !modified (larger) gap height for LCLS safety dump
+  BBXPM0 := 4.3                 !original magnetic field (kG) at gap = 3.81 cm
+  BBXPM  := BBXPM0*GBXPM0/GBXPM !magnetic field (kG) at gap = 5.2 cm
+  RBXPM  := Brhof/BBXPM         !bending radius (m) in permanent magnets
+
+  ABXPM   := LBXPM/(2*RBXPM)
+  ABXPM1S := ASIN(1*ABXPM)               !bending angle of "short" half of BXPM1
+  ABXPM1L := ASIN(2*ABXPM)-ASIN(1*ABXPM) !bending angle of "long"  half of BXPM1
+  ABXPM2S := ASIN(3*ABXPM)-ASIN(2*ABXPM) !bending angle of "short" half of BXPM2
+  ABXPM2L := ASIN(4*ABXPM)-ASIN(3*ABXPM) !bending angle of "long"  half of BXPM2
+
+  ABXPM1  := ABXPM1S+ABXPM1L
+  ABXPM2  := ABXPM2S+ABXPM2L
+
+  LBXPM1S := RBXPM*ABXPM1S !path length in "short" half of BXPM1
+  LBXPM1L := RBXPM*ABXPM1L !path length in "long"  half of BXPM1
+  LBXPM2S := RBXPM*ABXPM2S !path length in "short" half of BXPM2
+  LBXPM2L := RBXPM*ABXPM2L !path length in "long"  half of BXPM2
+
+  BXPM1a : SBEN, TYPE="4D36-C", L=LBXPM1S, ANGLE=ABXPM1S, HGAP=GBXPM/2, &
+                 FINT=0.5, FINTX=0.0, E2=0, E1=0
+  BXPM1b : SBEN, TYPE="4D36-C", L=LBXPM1L, ANGLE=ABXPM1L, HGAP=GBXPM/2, &
+                 FINT=0.0, FINTX=0.5, E1=0, E2=ABXPM1
+
+  BXPM2a : SBEN, TYPE="4D36-C", L=LBXPM2S, ANGLE=ABXPM2S, HGAP=GBXPM/2, &
+                 FINT=0.5, FINTX=0.0, E2=0, E1=-ABXPM1
+  BXPM2b : SBEN, TYPE="4D36-C", L=LBXPM2L, ANGLE=ABXPM2L, HGAP=GBXPM/2, &
+                 FINT=0.0, FINTX=0.5, E1=0, E2=ABXPM1+ABXPM2
+
+  DYDS  : DRIFT, L=LBYDS*COS(ABYDS/2)
+  DYD1  : DRIFT, L=LBDM *COS(ABYDS+  ABDM/2)
+  DYD2  : DRIFT, L=LBDM *COS(ABYDS+3*ABDM/2)
+  DYD3  : DRIFT, L=LBDM *COS(ABYDS+5*ABDM/2)
+
+  LDSCa := 0.479300 !0.479298938157
+  LDSCb := 0.094517171073
+
+  DS1S  : DRIFT, L=LDS1 *COS(ABYDS)
+  DSSA  : DRIFT, L=LDS  *COS(ABYDS+  ABDM)
+  DSSB  : DRIFT, L=LDS  *COS(ABYDS+2*ABDM)
+  DSCSa : DRIFT, L=LDSCa*COS(ABYDS+3*ABDM)
+  DSCSb : DRIFT, L=LDSCb*COS(ABYDS+3*ABDM)
+
+  LDPM3   := 8.784
+  LDPM31  := 8.2704483799
+  LDPM32  := LDPM3-LDPM31
+  ZSFTDMP := 0.0762 !safety dump Z-length
+
+  DPCBTM1 : DRIFT, L=0.15-0.135
+  DPCBTM2 : DRIFT, L=0.15
+  DPM1    : DRIFT, L=0.5350338 !0.298
+  DPM2    : DRIFT, L=0.30   /COS(ABXPM1)
+  DPM3    : DRIFT, L=LDPM3  /COS(ABXPM1+ABXPM2)
+  DPM31   : DRIFT, L=LDPM31 /COS(ABXPM1+ABXPM2)
+  DPM32   : DRIFT, L=LDPM32 /COS(ABXPM1+ABXPM2)
+  DPCBTM3 : DRIFT, L=0 !BTM3 is attached to d/s face of PCPM3
+  DPM4    : DRIFT, L=2.42   /COS(ABXPM1+ABXPM2)
+  DSFTDMP : DRIFT, L=ZSFTDMP/COS(ABXPM1+ABXPM2)
+
+  DXDCU  : DRIFT, L=1.092223 +0.75
+  DXDCU1 : DRIFT, L=0.8783
+  DXDCU2 : DRIFT, L=DXDCU[L]-DXDCU1[L]
+  XDCa   : DRIFT, L=0.312777 !XDC chamber
+  XDCb   : DRIFT, L=0.693    !XDC chamber
+  XDCc   : DRIFT, L=0.542    !XDC chamber
+  XDCd   : DRIFT, L=0.255376 !XDC chamber
+  DXDCD  : DRIFT, L=7.1789662-DXDCu[L]-XDCa[L]-XDCb[L]-XDCc[L]-XDCd[L] !7.266
+  DXDCD1 : DRIFT, L=2.661321
+  DXDCD2 : DRIFT, L=0.512986
+  DXDCD3 : DRIFT, L=DXDCD[L]-DXDCD1[L]-DXDCD2[L]
+
+  PCPM1  : ECOL, L=LPCPM, XSIZE=0.0080, YSIZE=0.0080 !per LCLSII-3.5-PR-0111-R1
+  PCPM2  : ECOL, L=LPCPM, XSIZE=0.0127, YSIZE=0.0127
+ !PCPM3  : ECOL, L=LPCPMW/COS(ABXPM1+ABXPM2), XSIZE=0.0080, YSIZE=0.0080
+  DPCPM3 : DRIF, L=LPCPMW/COS(ABXPM1+ABXPM2) !placeholder for PCPM3
+
+  BTM1   : INST !Burn-Through-Monitor behind PCPM1
+  BTM2   : INST !Burn-Through-Monitor behind PCPM2
+ !BTM3   : INST !Burn-Through-Monitor behind PCPM3
+  MBTM3  : MARK !placeholder for BTM3
+  BTMSFT : INST !Burn-Through-Monitor behind HXR safety dump
+
+  XDCXRAY : PROF             !existing safety dump line X-ray screen
+  YAGXRAY : PROF, TYPE="YAG" !existing safety dump line X-ray screen
+
+  HXTES0 : INST, TYPE="treaty flange" !treaty point for HXR XTES system
+  IM1H   : INST, TYPE="imager"
+  SFTDMP : INST !front face of HXR safety dump (Z'=712-715 m per PRD)
+
+  VV38  : MARK !vac. valve in HXR safety dump line
+  VV1H  : MARK !vac. valve in HXR XTES line
+  VV2H  : MARK !vac. valve in HXR XTES line
+  MVV10 : MARK !placeholder for vac. valve in HXR XTES line
+
+  SFTDUMP1: LINE=(&
+    BEGSFTH,DYDS,DS1S,DYD1,DSSA,DYD2,DSSB,DYD3,&
+    DSCSa,VV38,DSCSb,PCPM1,DPCBTM1,BTM1,DXDCU1,HXTES0,DXDCU2,&
+    XDCa,XDCXRAY,XDCb,XDCc,YAGXRAY,XDCd,DXDCD1,VV2H,DXDCD2,IM1H,DXDCD3,&
+    BTM2,PCPM2,DPM1)
+
+  SFTDUMP2: LINE=(&
+    BXPM1A,BXPM1B,DPM2,&
+    BXPM2A,BXPM2B,DPM31,MVV10,DPM32,DPCPM3,DPCBTM3,MBTM3,DPM4,&
+    SFTDMP,DSFTDMP,BTMSFT,ENDSFTH)
+
+  SFTDUMP: LINE=(SFTDUMP1,SFTDUMP2)
+
+! ------------------------------------------------------------------------------
+! SXR safety dump
+! ------------------------------------------------------------------------------
+
+! note that BXPM1b bend axis is aligned with the SXR undulator axis without
+! any offset
+
+  RBXPMB   := Brhof/BBXPM !bending radius (m) in a permanent magnet
+
+  ABXPMB   := LBXPM/(2*RBXPMB)
+  ABXPM1BS := ASIN(ABXPMB)                !bending angle of "short" half of BXPM1B
+  ABXPM1BL := ASIN(2*ABXPMB)-ASIN(ABXPMB) !bending angle of "long"  half of BXPM1B
+
+  LBXPM1BS := RBXPMB*ABXPM1BS !path length in "short" half of BXPM1B
+  LBXPM1BL := RBXPMB*ABXPM1BL !path length in "long"  half of BXPM1B
+
+  BXPM1Ba : SBEN, TYPE="4D36-C", L=LBXPM1BS, ANGLE=ABXPM1BS, HGAP=GBXPM/2, &
+                  FINT=0.5, FINTX=0.0, E2=0, E1=0
+  BXPM1Bb : SBEN, TYPE="4D36-C", L=LBXPM1BL, ANGLE=ABXPM1BL, HGAP=GBXPM/2, &
+                  FINT=0.0, FINTX=0.5, E1=0, E2=ABXPM1BS+ABXPM1BL
+
+  DSCSB1 : DRIFT, L=0.478198407804 !DSCSa[L]
+  DSCSB2 : DRIFT, L=0.0943         !DSCSa[L]
+
+  DXDCUB  : DRIFT, L=1.842223  !1.092223
+  DXDCUB1 : DRIFT, L=0.8407994 !0.878299738776
+  DXDCUB2 : DRIFT, L=0.0375006
+  DXDCUB3 : DRIFT, L=DXDCUB[L]-DXDCUB1[L]-DXDCUB2[L]
+  XDCBa   : DRIFT, L=0.312777 !XDC chamber
+  XDCBb   : DRIFT, L=0.693    !XDC chamber
+  XDCBc   : DRIFT, L=0.542    !XDC chamber
+  XDCBd   : DRIFT, L=0.255376 !XDC chamber
+  DXDCDB  : DRIFT, L=7.266-DXDCUB[L]-XDCBa[L]-XDCBb[L]-XDCBc[L]-XDCBd[L]
+  DXDCDB1 : DRIF, L=0.262395
+  DXDCDB2 : DRIF, L=0.363747
+  DXDCDB3 : DRIF, L=0.966253
+  DXDCDB4 : DRIF, L=1.492023
+  DXDCDB5 : DRIF, L=DXDCDB[L]-DXDCDB1[L]-DXDCDB2[L]-DXDCDB3[L]-DXDCDB4[L]
+
+  DPM1B    : DRIFT, L=0.448
+  DPM2B    : DRIFT, L=3.8732111/COS(ABXPM1BS+ABXPM1BL) !10.03
+  DPM2Ba   : DRIFT, L=3.8732111/COS(ABXPM1BS+ABXPM1BL)
+  DPM2Bb   : DRIFT, L=DPM2B[L]-DPM2Ba[L]
+  DPCBTM3B : DRIFT, L=0 !BTM3B is attached to d/s face of PCPM3B
+  DPM3B    : DRIFT, L=8.5747889/COS(ABXPM1BS+ABXPM1BL) !2.272
+  DPM3Ba   : DRIFT, L=0.6560246/COS(ABXPM1BS+ABXPM1BL)
+  DPM3Bb   : DRIFT, L=DPM3B[L]-DPM3Ba[L]
+  DSFTDMPB : DRIFT, L=ZSFTDMP  /COS(ABXPM1BS+ABXPM1BL)
+
+  PCPM1B  : ECOL, L=LPCPM, XSIZE=0.0100, YSIZE=0.0100 !per LCLSII-3.5-PR-0111-R1
+  PCPM2B  : ECOL, L=LPCPM, XSIZE=0.0127, YSIZE=0.0127
+ !PCPM3B  : ECOL, L=LPCPM/COS(ABXPM1BS+ABXPM1BL), XSIZE=0.0100, YSIZE=0.0100
+  DPCPM3B : DRIF, L=LPCPMW/COS(ABXPM1BS+ABXPM1BL) !placeholder for PCPM3B
+
+  BTM1B   : INST !Burn-Through-Monitor behind PCPM1B
+  BTM2B   : INST !Burn-Through-Monitor behind PCPM2B
+ !BTM3B   : INST !Burn-Through-Monitor behind PCPM3B
+  MBTM3B  : MARK !placeholder for BTM3B
+  BTMSFTB : INST !Burn-Through-Monitor behind SXR safety dump
+
+  YAGXRAYB : PROF, TYPE="YAG" !safety dump line X-ray screen
+
+  SXTES0  : INST, TYPE="treaty flange" !treaty point for SXR XTES system
+  PC1S    : INST, TYPE="photon coll"
+  GMD1S   : INST, TYPE="gas monitor"
+  IM1S    : INST, TYPE="imager"
+  MSL1S   : MARK, TYPE="adj aperture"
+  SFTDMPB : INST !front face of SXR safety dump (Z'=712-715 m per PRD)
+
+  VV38B : MARK !vac. valve in SXR safety dump line
+  VV1S  : MARK !vac. valve in SXR safety dump line
+  VV2S  : MARK !vac. valve in SXR safety dump line
+  MVV3S : MARK !placeholder for vac. valve in SXR XTES line
+
+  SFTDUMPB1: LINE=(&
+    BEGSFTS,DYDS,DS1S,DYD1,DSSA,DYD2,DSSB,DYD3,&
+    DSCSB1,VV38B,DSCSB2,PCPM1B,DPCBTM1,BTM1B,DXDCUB1,VV1S,DXDCUB2,&
+    SXTES0,DXDCUB3,XDCBa,XDCBb,XDCBc,YAGXRAYB,XDCBd,DXDCDB1,&
+    PC1S,DXDCDB2,VV2S,DXDCDB3,GMD1S,DXDCDB4,IM1S,DXDCDB5,&
+    BTM2B,PCPM2B,DPM1B)
+
+  SFTDUMPB2: LINE=(&
+    BXPM1Ba,BXPM1Bb,DPM2Ba,DPCPM3B,DPCBTM3B,MBTM3B,DPM2Bb,MSL1S,DPM3Ba,&
+    MVV3S,DPM3Bb,SFTDMPB,DSFTDMPB,BTMSFTB,ENDSFTS)
+
+  SFTDUMPB: LINE=(SFTDUMPB1,SFTDUMPB2)
+
+  RETURN

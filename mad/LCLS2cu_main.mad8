@@ -1,0 +1,649 @@
+  TITLE, "AD_ACCEL (January 23, 2019)" !copper linac
+
+! *** OPTICS=AD_ACCEL-23JAN19 ***
+
+  OPTION, -ECHO, INFO, WARN, VERIFY
+  ASSIGN, ECHO="LCLS2cu.echo"
+  ASSIGN, PRINT="LCLS2cu.print"
+
+! ==============================================================================
+! Modification History
+! ------------------------------------------------------------------------------
+! 30-OCT-2018, M. Woodley
+!  * set IntgSX= 20 kG (was 30 kG) for 4 GeV beam (cuS and scS optics identical
+!    downstream of QDL11)
+! ------------------------------------------------------------------------------
+! 19-JUL-2017, M. Woodley
+!  * structural changes in deck to accomodate MAD-to-BMAD
+! ------------------------------------------------------------------------------
+! 01-MAR-2017, M. Woodley
+!  * WS24 is actually installed (per LCLS)
+! ------------------------------------------------------------------------------
+! 25-SEP-2015, Y. Nosochkov
+!  * rename LCLS1AL to LCLS2cuAL
+!  * load ALINE.xsif before LTU.xsif
+!  * load SPRD.xsif
+! 24-AUG-2015, Y. Nosochkov
+!  * see list of changes in .xsif files
+! ------------------------------------------------------------------------------
+! 19-JUN-2015, Y. Nosochkov
+!  * see list of changes in .xsif files and in file MADdeckChanges.pdf
+! ------------------------------------------------------------------------------
+! 12-MAR-2015, Y. Nosochkov
+!  * remove PCTDKIK1-4 collimators in BSY1 (per S. Mao)
+!  * use kicker/septum or pulsed magnets to connect BSY with the A-line
+!  * add CUSXR beamline for transport from Cu-linac to SXR
+! ------------------------------------------------------------------------------
+! 09-DEC-2014, Y. Nosochkov
+!  * update initial Twiss and survey coordinates at BSYBEG (BEGBSY1)
+! ------------------------------------------------------------------------------
+! 28-OCT-2014, M. Woodley
+!  * redefine DBMARK29 to be LI30 IV30-9 (Z=3042.005)
+! ------------------------------------------------------------------------------
+! 15-SEP-2014, Y. Nosochkov
+!  * designate BSY1 line connecting the end of LCLS1 L3 with the beginning of
+!    LCLS2 HXR merge bend BXSP1h
+! 02-MAY-2014, Y. Nosochkov
+!  * rematch HXR undulator for 13.64 GeV and 40 kG quad integral field
+! 18-APR-2014, Y. Nosochkov
+!  * combine upstream LCLS1 lattice with downstream LCLS2scH lattice
+! ==============================================================================
+
+! ==============================================================================
+! Beamline area names
+! ------------------------------------------------------------------------------
+! GUN   : cathode to VV01
+! GTL   : VV01 to L0
+! L0    : L0A and L0B
+! DL1   : laser heater, diagnostics, matching, injection into main linac
+! L1    : L1 linac
+! BC1   : L1X and BC1 chicane
+! LI21  : linac sector 21 d/s of BC1
+! LI22  : linac sector 22
+! LI23  : linac sector 23
+! LI24  : linac sector 24 u/s of BC2
+! BC2   : BC2 chicane
+! LI25  : linac sector 25
+! LI26  : linac sector 26
+! LI27  : linac sector 27
+! LI28  : linac sector 28
+! LI29  : linac sector 29
+! LI30  : linac sector 30 (to end of acceleration)
+! CLTH0 : end of linac sector 30 to start of BSY
+! CLTH1 : start of BSY to CUSXR kickers
+! CLTH2 : CUSXR kickers to Cu/SC linac merge (HXR line)
+! BSYH1 : Cu/SC linac merge to A-line kickers
+! BSYH2 : A-line kickers to end of BSY
+! LTUH  : HXR LTU (from end of BSY)
+! HXR   : HXR undulator
+! UEH   : HXR undulator end to dump line
+! DMPH  : HXR dump line
+! SFTH  : HXR safety dump line
+! CUSXR : CUSXR kickers to Cu/SC linac merge (SXR line)
+! BSYA  : A-line kickers to A-line
+! ==============================================================================
+
+! ------------------------------------------------------------------------------
+! deflector switch definitions
+! ------------------------------------------------------------------------------
+
+  SETSP     := 0 !deflector switch for HXR/SXR/BSYD spreader
+  SETCUS    := 0 !deflector switch for HXR/CUSXR
+  SETAL     := 0 !deflector switch for HXR/Aline
+  SETDA     := 0 !deflector switch for BSYD/DASEL
+  SETXLEAP2 := 0 !selector switch for XLEAP-II components
+
+  SETHXRSS := 0 !ON/OFF switch for HXR self-seeding chicane
+  SETSXRSS := 0 !ON/OFF switch for SXR self-seeding chicane
+
+! ------------------------------------------------------------------------------
+! integrated gradients for undulator quadrupoles
+! ------------------------------------------------------------------------------
+
+  IntgSX := 20.0 !kG (30.0)
+  IntgHX := 40.0 !kG
+
+  EfCu := 13.64 !nominal final beam energy from copper (Cu) linac (GeV)
+  EuCu := 13.64 !beam energy in undulator (GeV)
+
+! ------------------------------------------------------------------------------
+! element and line definitions
+! ------------------------------------------------------------------------------
+
+  CALL, FILENAME="LCLS2cu_master.xsif"
+
+! ------------------------------------------------------------------------------
+! input beam definitions
+! ------------------------------------------------------------------------------
+
+  SIG0  : SIGMA0, SIGX=SQRT(SIG11), SIGPX=SQRT(SIG22), R21=C21, &
+                  SIGY=SQRT(SIG33), SIGPY=SQRT(SIG44), R43=C43, &
+                  SIGT=BLENG,       SIGPT=ESPRD
+
+  SIGC  : SIGMA0, SIGX=SQRT(SIG11C), SIGPX=SQRT(SIG22C), R21=C21C, &
+                  SIGY=SQRT(SIG33C), SIGPY=SQRT(SIG44C), R43=C43C, &
+                  SIGT=BLENG,        SIGPT=ESPRD
+
+  BEAM, PARTICLE=ELECTRON, ENERGY=E00, EX=EMITX, EY=EMITY, &
+        SIGT=BLENG, SIGE=ESPRD
+
+! ------------------------------------------------------------------------------
+! BETA0 block definitions
+! ------------------------------------------------------------------------------
+
+! twiss parameters at L0a-exit:
+
+  TWSS0 : BETA0, ENERGY=E0i, BETX=TBETX, ALFX=TALFX, BETY=TBETY, ALFY=TALFY
+
+! Dummy, fitted twiss parameters at cathode which yield the above twiss parameters at
+! L0a-exit (for plotting purposes only - assumes only drift between cathode and L0a-exit)
+
+  TWSSC : BETA0, ENERGY=E00, BETX=CBETX, ALFX=CALFX, BETY=CBETY, ALFY=CALFY
+
+! initial Twiss for SXR dogleg cells for Cu-linac beam (at DBMARK34B)
+
+  TWSSmcus : BETA0, ENERGY=Ef, BETX=MBETXcus, ALFX=MALFXcus, &
+                               BETY=MBETYcus, ALFY=MALFYcus
+
+! periodic Twiss in HXR dogleg cells (copy from LCLS2sc_main.mad8)
+
+  TWSSmh : BETA0, ENERGY=Ef, BETX=MBETXh, ALFX=MALFXh, BETY=MBETYh, ALFY=MALFYh
+
+! Twiss at the beginning of L3 linac
+
+  TWBEGL3 : BETA0, BETX=BXBEGL3, ALFX=AXBEGL3, &
+                   BETY=BYBEGL3, ALFY=AYBEGL3, ENERGY=ENBEGL3
+
+! Twiss at the end of L3 linac
+
+  TWENDL3 : BETA0, BETX=BXENDL3, ALFX=AXENDL3, &
+                   BETY=BYENDL3, ALFY=AYENDL3, ENERGY=ENENDL3
+
+! Twiss at the entrance of CUSXR kicker (BEGCLTS)
+
+  TWSCUS1 : BETA0, BETX=TBXCUS1, BETY=TBYCUS1, ALFX=TAXCUS1, ALFY=TAYCUS1
+
+! ==============================================================================
+! SUBROUTINEs
+! ------------------------------------------------------------------------------
+
+! special redefinitions for 4 GeV Cu-linac beam (BC2 @ 3 GeV)
+
+  SETcu4GeV : SUBROUTINE
+    SET, KQM22,   -0.589570998224
+    SET, KQ24901,  1.082580150374
+    SET, KQ25201,  0.688761727353
+    SET, KQ25301, -0.476435254001
+    SET, KQ25401,  0.428715988011
+    SET, KQ25501, -0.39999856091
+  ENDSUBROUTINE
+
+! special redefinitions for Cu-linac (high energy) beam passing through lattice
+! defined for SC-linac (low energy) beam
+
+  SETK2cuH : SUBROUTINE !for LCLS2cuH
+
+  ! set BSY quad strengths for Cu-linac beam optics
+  ! fine-tune HXR quad strengths for a better match
+
+    SET, KQ50Q3,  0.385752335743
+    SET, KQ4,    -0.220385532634
+    SET, KQ5,     0.172839699359
+    SET, KQ6,    -0.115520035877
+    SET, KQA0,    0.115396472684
+    SET, KQVM1,  -0.337436663026
+    SET, KQVM2,   0.236576383993
+    SET, KQVM3,   0.71515053765
+    SET, KQVM4,  -0.681649920856
+    SET, KQUM1,   0.265384062224 ! 0.265843852443
+    SET, KQUM2,  -0.236197967124 !-0.23723331482
+    SET, KQUM3,   0.165786910657 ! 0.165420280362
+    SET, KQUM4,  -0.176289890719 !-0.174981185812
+    SET, kQDHXm, -0.456644089634 !-0.462007123826
+    SET, KQUE1,  -0.092119193855 !-0.094048953252
+    SET, KQUE2,   0.157955482519 ! 0.160549634478
+    SET, KQDMP,  -0.155219342716 !-0.155211312125
+  ENDSUBROUTINE
+
+  SETK2cuS : SUBROUTINE !for LCLS2cuS
+
+  ! fine-tune SXR quad strengths for a better match
+
+    SET, KQBP33, -0.644563496901 !-0.644797555731
+    SET, KQBP34,  0.595165383865 ! 0.593738252918
+    SET, KQDBL1, -1.066849469579 !-1.055130827555
+    SET, KQDBL2,  0.618084331747 ! 0.599839474166
+    SET, KQDL11,  0.358720317054 ! 0.358486452767
+    SET, KQSX16,  0.58425577059  ! 0.619304582328
+    SET, KQSX19, -0.916613463141 !-0.710128917867
+    SET, KQSX21,  1.112461107836 ! 0.634767514115
+    SET, KQSX24, -1.11933302972  !-0.554593873983
+  ENDSUBROUTINE
+
+  SETK2cuA : SUBROUTINE !for LCLS2cuA
+
+  ! set BSY and A-line quad strengths for Cu-linac beam optics
+
+    SET, KQ50Q3,  0.385752335743
+    SET, KQ4,    -0.220385532634
+    SET, KQ10,    0.041961707092
+    SET, KQ11,   -0.03648177506
+    SET, KQ19,    0.02837620076
+    SET, KQ20,    0.01338101228
+    SET, KQ27,   -0.054612770505
+    SET, KQ28,    0.157593407299E-2
+    SET, KQ30,   -0.030459807124
+    SET, KQ38,    0.035234930357
+  ENDSUBROUTINE
+
+  SETK2cuXL2 : SUBROUTINE !for XLEAP-II (copy of LCLS2sc_main.mad8:SETK2scXL2)
+    SET, SETXLEAP2, 1 !switch ON xleap components
+    ! UMXL1-4 undulator K=50
+    ! self-seeding chicane R56=0.56 mm
+    ! wiggler K=34
+    SET, KQEM1B,  1.782105086906
+    SET, KQEM2B, -1.893427941353
+    SET, KQEM3B,  1.4778561902
+    SET, KQEM4B, -1.008420259435
+    SET, KQE31B,  0.263097822804
+    SET, KQE32B, -0.465049032014
+    SET, KQE33B,  0.708498263073
+    SET, KQE34B, -0.702975844569
+    SET, KQE35B,  0.725508067973
+    SET, KQE36B, -0.272464322584
+    SET, KQUM1B,  1.045304716298
+    SET, KQUM2B, -1.127266321918
+    SET, KQUM3B,  0.091990859369
+    SET, KQUM4B,  0.168743458401
+    SET, KQSX16,  1.179776342196
+    SET, KQSX19, -1.555528787668
+    SET, KQSX21,  1.660683967379
+    SET, KQSX24, -1.983210390097
+    SET, KQDSXM, -0.406434161462
+    SET, KQUE1B, -0.297915551865
+    SET, KQUE2B,  0.390984021273
+    SET, KQDMPB, -0.154946553294
+  ENDSUBROUTINE
+
+! ==============================================================================
+! COMMANDs
+! ------------------------------------------------------------------------------
+
+  SETPLOT, XSIZE=25.4, YSIZE=20.32
+  SETPLOT, LWIDTH=5, LSCALE=1.5, SSCALE=1.5, RSCALE=1.5
+  OPTION, ECHO
+
+! ------------------------------------------------------------------------------
+
+ !CALL, FILENAME="LCLS2cu_match.mad8" !upstream of BSY routines not checked
+ !CALL, FILENAME="RDB/LCLS2cu_makeSymbols.mad8"
+ !CALL, FILENAME="elegant/LCLS2cu_makeElegant.mad8" !use LCLS_L*e.xsif
+  
+ !STOP
+
+! ------------------------------------------------------------------------------
+
+! complete machine to HXR (linac coordinates)
+
+ !COMMENT
+    ASSIGN, PRINT="LCLS2cuH.print"
+    BEAM, ENERGY=E00
+    SET, SETCUS, CUSOFF ; SET, SETAL, ALOFF
+    SETK2cuH
+    USE, CU_HXR
+   !SAVELINE, NAME="CU_HXR", FILENAME="LCLS2cuH.saveline"
+    PRINT, FULL
+    SURVEY, THETA0=ADL1, X0=Xi, Z0=Zi, TAPE="LCLS2cuH_survey.tape"
+    TWISS, BETA0=TWSSC, SAVE, TAPE="LCLS2cuH_twiss.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
+      STYLE=100, SPLINE, FILE="LCLS2cuH", RANGE=DL1beg/DUMPFACE
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, FILE="LCLS2cuH", RANGE=DL1beg/DUMPFACE
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      STYLE=100, SPLINE, FILE="LCLS2cuH", RANGE=DL1beg/DUMPFACE
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! complete machine to HXR safety dump (linac coordinates)
+
+  COMMENT
+    ASSIGN, PRINT="LCLS2cuHS.print"
+    BEAM, ENERGY=E00
+    SET, SETCUS, CUSOFF ; SET, SETAL, ALOFF
+    SETK2cuH
+    USE, CU_SFTH
+   !SAVELINE, NAME="CU_SFTH", FILENAME="LCLS2cuHS.saveline"
+    PRINT, FULL
+    SURVEY, THETA0=ADL1, X0=Xi, Z0=Zi, TAPE="LCLS2cuHS_survey.tape"
+    TWISS, BETA0=TWSSC, SAVE, TAPE="LCLS2cuHS_twiss.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
+      STYLE=100, SPLINE, FILE="LCLS2cuHS", RANGE=DL1beg/#E
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, FILE="LCLS2cuHS", RANGE=DL1beg/#E
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      STYLE=100, SPLINE, FILE="LCLS2cuHS", RANGE=DL1beg/#E
+  ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! complete machine to SXR (linac coordinates)
+
+ !COMMENT
+    ASSIGN, PRINT="LCLS2cuS.print"
+    BEAM, ENERGY=E00
+    SET, SETCUS, CUSON   !pulsed
+   !SET, SETCUS, CUSONDC !DC
+   !VALUE, PULSED,DCMODE
+    SET, EBC2, 3.0 ; SET, Ef, 4.0 ; SET, Eu, 4.0
+    SETcu4GeV
+    SETK2cuS
+   !SETK2cuXL2 !turns on XLEAP2 components and optics
+    USE, CU_SXR
+   !SAVELINE, NAME="CU_SXR", FILENAME="LCLS2cuS.saveline"
+    PRINT, FULL
+    SURVEY, THETA0=ADL1, X0=Xi, Z0=Zi, TAPE="LCLS2cuS_survey.tape"
+    TWISS, BETA0=TWSSC, SAVE, TAPE="LCLS2cuS_twiss.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
+      STYLE=100, SPLINE, FILE="LCLS2cuS", RANGE=DL1beg/DUMPFACEb
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, FILE="LCLS2cuS", RANGE=DL1beg/DUMPFACEb
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      STYLE=100, SPLINE, FILE="LCLS2cuS", RANGE=DL1beg/DUMPFACEb
+    VALUE, ABRCUS
+    SET, EBC2, 4.300 ; Ef, EfCu ; SET, Eu, EuCu
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! complete machine to A-line (linac coordinates)
+
+ !COMMENT
+    ASSIGN, PRINT="LCLS2cuA.print"
+    BEAM, ENERGY=E00
+    SET, SETCUS, CUSOFF ; SET, SETAL, ALON
+    SETK2cuA
+    USE, CU_ALINE
+   !SAVELINE, NAME="CU_ALINE", FILENAME="LCLS2cuA.saveline"
+    PRINT, FULL
+    SURVEY, THETA0=ADL1, X0=Xi, Z0=Zi, TAPE="LCLS2cuA_survey.tape"
+    TWISS, BETA0=TWSSC, SAVE, TAPE="LCLS2cuA_twiss.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, STYLE=100, SPLINE, &
+      FILE="LCLS2cuA", RANGE=DL1beg/ALWALL, TITLE="Cathode to A-line"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=rBETX,rBETY, STYLE=100, SPLINE, &
+      FILE="LCLS2cuA", RANGE=DL1beg/ALWALL, TITLE="Cathode to A-line"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, STYLE=100, SPLINE, &
+      FILE="LCLS2cuA", RANGE=DL1beg/ALWALL, TITLE="Cathode to A-line"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! gun spectrometer: cathode to 6 MeV spectrometer dump (linac coordinates)
+
+  COMMENT
+    ASSIGN, PRINT="LCLS2cuGSPEC.print"
+    BEAM, ENERGY=E00
+    USE, CU_GSPEC
+   !SAVELINE, NAME="CU_GSPEC", FILENAME="LCLS2cuGSPEC.saveline"
+    PRINT, FULL
+    SURVEY, THETA0=ADL1, X0=Xi, Z0=Zi, TAPE="LCLS2cuGSPEC_survey.tape"
+    TWISS, BETA0=TWSSC, SAVE, TAPE="LCLS2cuGSPEC_twiss.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX, &
+      STYLE=100, SPLINE=.T., FILE="LCLS2cuGSPEC", &
+      RANGE=#S/#E, TITLE="Cathode through 6-MeV Gun Spectrometer"
+  ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! 135 MeV spectrometer: cathode to spectrometer dump (linac coordinates)
+
+  COMMENT
+    ASSIGN, PRINT="LCLS2cuSPEC.print"
+    BEAM, ENERGY=E00
+    USE, CU_SPEC
+   !SAVELINE, NAME="CU_SPEC", FILENAME="LCLS2cuSPEC.saveline"
+    PRINT, FULL
+    SURVEY, THETA0=ADL1, X0=Xi, Z0=Zi, TAPE="LCLS2cuSPEC_survey.tape"
+    TWISS, BETA0=TWSSC, SAVE, TAPE="LCLS2cuSPEC_twiss.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX, &
+      STYLE=100, SPLINE=.T., FILE="LCLS2cuSPEC", &
+      RANGE=#S/#E, TITLE="Cathode through 135-MeV Spectrometer"
+  ENDCOMMENT
+
+! ==============================================================================
+
+! BSY to HXR dump (BSY coordinates)
+
+ !COMMENT
+    ASSIGN, PRINT="BSY-LCLS2cuH.print"
+    BEAM, ENERGY=Ef
+    SET, SETCUS, CUSOFF ; SET, SETAL, ALOFF
+    SETK2cuH
+    USE, BSYLTUH
+    PRINT, FULL
+    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
+      TAPE="BSY-LCLS2cuH_survey.tape"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! BSY to HXR safety dump (BSY coordinates)
+
+  !COMMENT
+    ASSIGN, PRINT="BSY-LCLS2cuHS.print"
+    BEAM, ENERGY=Ef
+    SET, SETCUS, CUSOFF ; SET, SETAL, ALOFF
+    SETK2cuH
+    USE, BSYLTUHS
+    PRINT, FULL
+    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
+      TAPE="BSY-LCLS2cuHS_survey.tape"
+  !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! BSY to HXR XTES (BSY coordinates)
+
+ !COMMENT
+    ASSIGN, PRINT="BSY-LCLS2cuHXTES.print"
+    BEAM, ENERGY=Ef
+    SET, SETCUS, CUSOFF ; SET, SETAL, ALOFF
+    USE, BSYLTUHXTES
+    PRINT, FULL
+    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
+      TAPE="BSY-LCLS2cuHXTES_survey.tape"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! BSY to SXR dump (BSY coordinates)
+
+ !COMMENT
+    ASSIGN, PRINT="BSY-LCLS2cuS.print"
+    SET, Ef, 4.0 ; SET, Eu, 4.0
+    BEAM, ENERGY=Ef
+    SET, SETCUS, CUSON   !pulsed
+   !SET, SETCUS, CUSONDC !DC
+   !VALUE, PULSED,DCMODE
+    SETK2cuS
+   !SETK2cuXL2 !turns on XLEAP2 components and optics
+    USE, BSYLTUS
+    PRINT, FULL
+    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
+      TAPE="BSY-LCLS2cuS_survey.tape"
+    SET, Ef, EfCu ; SET, Eu, EuCu
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! BSY to A-line (BSY coordinates)
+
+ !COMMENT
+    ASSIGN, PRINT="BSY-LCLS2cuA.print"
+    BEAM, ENERGY=Ef
+    SET, SETCUS, CUSOFF ; SET, SETAL, ALON
+    SETK2cuA
+    USE, BSYALINE
+    PRINT, FULL
+    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
+      TAPE="BSY-LCLS2cuA_survey.tape"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! S100 to A-line ("A-line BSY" coordinates from Transport deck)
+! Note: the "A-line BSY" coordinates differ from the LCLS BSY coordinates
+
+  COMMENT
+    ASSIGN, PRINT="BSYA-LCLS1cuA.print"
+    BEAM, ENERGY=Ef
+    SET, SETCUS, CUSOFF ; SET, SETAL, ALON
+    SETK2cuA
+    USE, S100ALINE
+    PRINT, FULL
+    SURVEY, Y0=77.643643677513, PHI0=-0.00475999999158308164
+  ENDCOMMENT
+
+! ==============================================================================
+
+! Twiss plots
+
+ !COMMENT
+    ASSIGN, PRINT="LCLS2cu.print"
+
+  ! Cathode to HXR Main Dump
+
+    BEAM, ENERGY=E00
+    SET, SETCUS, CUSOFF ; SET, SETAL, ALOFF
+    SETK2cuH
+    USE, (GUNL0a,L0b,LCLS2cuH)
+    PRINT, FULL
+    TWISS, BETA0=TWSSC, SAVE !, RTAPE="LCLS2cuH_rmat.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
+      COLOUR=100, SPLINE=.F., FILE="LCLS2cu_color", &
+      RANGE=DL1beg/#E, TITLE="Cathode to HXR Main Dump"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      COLOUR=100, SPLINE=.T., FILE="LCLS2cu_color", &
+      RANGE=DL1beg/#E, TITLE="Cathode to HXR Main Dump"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      COLOUR=100, SPLINE=.T., FILE="LCLS2cu_color", &
+      RANGE=DL1beg/#E, TITLE="Cathode to HXR Main Dump"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      COLOUR=100, SPLINE=.F., FILE="LCLS2cu_color", &
+      RANGE=CATHODE/DL1beg, TITLE="L0-to-DL1 dog-leg"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX, &
+      COLOUR=100, SPLINE=.T., FILE="LCLS2cu_color", &
+      RANGE=LHbeg/LHend, TITLE="Laser-Heater"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX, &
+      COLOUR=100, SPLINE=.T., FILE="LCLS2cu_color", &
+      RANGE=L0bBEG/DL1end, TITLE="L0-to-DL1 dog-leg"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      COLOUR=100, SPLINE=.T., FILE="LCLS2cu_color", &
+      RANGE=L1beg/L1end, TITLE="L1-linac"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX, &
+      COLOUR=100, SPLINE=.T., FILE="LCLS2cu_color", &
+      RANGE=BC1mrk/BC1fin, TITLE="BC1-chicane"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      COLOUR=100, SPLINE=.T., FILE="LCLS2cu_color", &
+      RANGE=L2beg/L2end, TITLE="L2-linac"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX, &
+      COLOUR=100, SPLINE=.T., FILE="LCLS2cu_color", &
+      RANGE=BPM24301/BPM25501, TITLE="BC2-chicane"
+     !RANGE=BC2mrk/BC2fin, TITLE="BC2-chicane"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      COLOUR=100, SPLINE=.T., FILE="LCLS2cu_color", &
+      RANGE=L3beg/L3end, TITLE="L3-linac"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      COLOUR=100, SPLINE=.T., FILE="LCLS2cu_color", &
+      RANGE=BSYbeg/BSYend, TITLE="BSY"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      RANGE=BSYend/BEGHXR, TITLE="LTU to HXR Undulator", &
+      COLOUR=100, SPLINE, FILE="LCLS2cu_color"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      RANGE=BEGHXR/#E, TITLE="HXR Undulator to Dump", &
+      COLOUR=100, SPLINE, FILE="LCLS2cu_color"
+
+  ! Cathode to HXR Safety Dump
+
+    BEAM, ENERGY=E00
+    USE, (GUNL0a,L0b,LCLS2cuHS)
+    TWISS, BETA0=TWSSC, SAVE
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      RANGE=BEGSFTH/SFTDUMP, TITLE="HXR Safety Dump", &
+      COLOUR=100, SPLINE, FILE="LCLS2cu_color"
+
+  ! Cathode to SXR Main Dump (reduce plotting range ... too many points!)
+
+    BEAM, ENERGY=E00
+    SET, SETCUS, CUSON   !pulsed
+   !SET, SETCUS, CUSONDC !DC
+   !VALUE, PULSED,DCMODE
+    SET, EBC2, 3.0 ; SET, Ef, 4.0 ; SET, Eu, 4.0
+    SETcu4GeV
+    SETK2cuS
+   !SETK2cuXL2 !turns on XLEAP2 components and optics
+    USE, CU_SXR
+   !SAVELINE, NAME="CU_SXR", FILENAME="LCLS2cuS.saveline"
+    PRINT, FULL
+    TWISS, BETA0=TWSSC, SAVE !, RTAPE="LCLS2cuS_rmat.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      COLOUR=100, SPLINE=.T., FILE="LCLS2cu_color", &
+      RANGE=L1BEG/#E, TITLE="Cathode to SXR Main Dump"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      COLOUR=100, SPLINE=.T., FILE="LCLS2cu_color", &
+      RANGE=L1BEG/#E, TITLE="Cathode to SXR Main Dump"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      COLOUR=100, SPLINE=.T., FILE="LCLS2cu_color", &
+      RANGE=BEGCLTH0/BSYENDB, TITLE="BSY to SXR muon wall"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      COLOUR=100, SPLINE=.T., FILE="LCLS2cu_color", &
+      RANGE=BSYENDB/BEGSXR, TITLE="Muon wall to SXR undulator"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      RANGE=BEGSXR/#E, TITLE="SXR Undulator to Dump", &
+      COLOUR=100, SPLINE, FILE="LCLS2cu_color"
+    SET, EBC2, 14.300 ; SET, Ef, EfCu ; SET, Eu, EuCu
+
+  ! Cathode to A-line
+
+    BEAM, ENERGY=E00
+    SET, SETCUS, CUSOFF ; SET, SETAL, ALON
+    SETK2cuA
+    USE, (GUNL0a,L0b,LCLS2cuA)
+    TWISS, BETA0=TWSSC, SAVE
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=rBETX,rBETY, VAXIS2=DX,DY, &
+      RANGE=BSYbeg/ALWALL, TITLE="BSY to A-line", &
+      COLOUR=100, SPLINE, FILE="LCLS2cu_color"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+ !CALL, FILENAME="LCLS2cu_area_plots.mad8"
+
+! ------------------------------------------------------------------------------
+
+  STOP
+
+! ------------------------------------------------------------------------------
+! working stuff
+! ------------------------------------------------------------------------------
+
+  comment !match HXRSS chicane to R56= 15.0 um
+    BEAM, ENERGY=Ef
+    VALUE, Ef,Eu
+    SET, SETHXRSS, 1
+    USE, HCHICANE
+    VALUE, AB4,BLB4
+    MATCH, BETX=1, BETY=1
+      VARY, AB4, STEP=1.E-6, LOWER=0
+      RMATRIX, #S/#E, RM(5,6)=15.0E-6, WEIGHT(5,6)=1
+      LMDIF, TOL=1.E-20
+      MIGRAD, TOL=1.E-20
+    ENDMATCH
+    VALUE, AB4,BLB4
+    PRINT, FULL
+    SURVEY
+  endcomment
+
+! ------------------------------------------------------------------------------
+
+  STOP

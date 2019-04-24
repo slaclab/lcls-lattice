@@ -1,0 +1,236 @@
+
+! *** OPTICS=AD_ACCEL-23JAN19 ***
+
+! ==============================================================================
+! 23-FEB-2017, M. Woodley
+!    Fix longstanding error in XCOR and YCOR names
+! ------------------------------------------------------------------------------
+! 11-SEP-2007, P. Emma
+!    Replace WS21,22,23 with MARKer points DWS21-23 (no longer in baseline), and
+!    add back 25-3d, 4d, and 5d sections (now 110 10-ft P25% sections & 1 P50%).
+! 15-DEC-2006, P. Emma
+!    Move WS21,22,23 upbeam by 4 feet each to reduce possible quad-reflected dark charge.
+! 15-OCT-2006, P. Emma
+!    Move WS21,22,23 for Jose Chan (DAQ6 becomes DAQ6A).
+! 20-MAR-2006, P. Emma
+!    Remove YCM15 from this file as should have been done back in Nov. 9, 2005.
+! 29-NOV-2005, P. Emma
+!    Add types for HKIC's, and VKIC's.
+! 09-NOV-2005, P. Emma
+!    Move YCM15 back into the main LCLS file.
+! 02-JUN-2005, P. Emma
+!    Add comments adjacent to fast-feedback correctors.
+! 18-JAN-2005, P. Emma
+!    Added the two 1%-calibrated correctors.
+! 01-DEC-2004, P. Emma
+!    Move YCM15 into this file from the main LCLS file (moved dnstr. by ~0.4 m
+!    and jumped over QM15) - see LCLS_L2.xsif file for real details
+! ==============================================================================
+! LCAVs
+! ------------------------------------------------------------------------------
+! the L2 linac consists of: 104 10   ft S-band sections @ 25% power (L2_10_25)
+!                             1 10   ft S-band sections @ 50% power (L2_10_50)
+! ------------------------------------------------------------------------------
+
+! LCAV classes
+
+  L2_10_25 : LCAV, TYPE="L2_10_25", FREQ=SbandF, L=DLWL10, &
+                   DELTAE=P25*gradL2*DLWL10, PHI0=PhiL2
+  L2_10_50 : LCAV, TYPE="L2_10_50", FREQ=SbandF, L=DLWL10, &
+                   DELTAE=P50*gradL2*DLWL10, PHI0=PhiL2
+
+! L2 sections
+
+                      K21_3b : L2_10_50 ; K21_3c : L2_10_25 ; K21_3d : L2_10_25
+  K21_4a : L2_10_25 ; K21_4b : L2_10_25 ; K21_4c : L2_10_25 ; K21_4d : L2_10_25
+  K21_5a : L2_10_25 ; K21_5b : L2_10_25 ; K21_5c : L2_10_25 ; K21_5d : L2_10_25
+  K21_6a : L2_10_25 ; K21_6b : L2_10_25 ; K21_6c : L2_10_25 ; K21_6d : L2_10_25
+  K21_7a : L2_10_25 ; K21_7b : L2_10_25 ; K21_7c : L2_10_25 ; K21_7d : L2_10_25
+  K21_8a : L2_10_25 ; K21_8b : L2_10_25 ; K21_8c : L2_10_25 ; K21_8d : L2_10_25
+
+  K22_1a : L2_10_25 ; K22_1b : L2_10_25 ; K22_1c : L2_10_25 ; K22_1d : L2_10_25
+  K22_2a : L2_10_25 ; K22_2b : L2_10_25 ; K22_2c : L2_10_25 ; K22_2d : L2_10_25
+  K22_3a : L2_10_25 ; K22_3b : L2_10_25 ; K22_3c : L2_10_25 ; K22_3d : L2_10_25
+  K22_4a : L2_10_25 ; K22_4b : L2_10_25 ; K22_4c : L2_10_25 ; K22_4d : L2_10_25
+  K22_5a : L2_10_25 ; K22_5b : L2_10_25 ; K22_5c : L2_10_25 ; K22_5d : L2_10_25
+  K22_6a : L2_10_25 ; K22_6b : L2_10_25 ; K22_6c : L2_10_25 ; K22_6d : L2_10_25
+  K22_7a : L2_10_25 ; K22_7b : L2_10_25 ; K22_7c : L2_10_25 ; K22_7d : L2_10_25
+  K22_8a : L2_10_25 ; K22_8b : L2_10_25 ; K22_8c : L2_10_25 ; K22_8d : L2_10_25
+
+  K23_1a : L2_10_25 ; K23_1b : L2_10_25 ; K23_1c : L2_10_25 ; K23_1d : L2_10_25
+  K23_2a : L2_10_25 ; K23_2b : L2_10_25 ; K23_2c : L2_10_25 ; K23_2d : L2_10_25
+  K23_3a : L2_10_25 ; K23_3b : L2_10_25 ; K23_3c : L2_10_25 ; K23_3d : L2_10_25
+  K23_4a : L2_10_25 ; K23_4b : L2_10_25 ; K23_4c : L2_10_25 ; K23_4d : L2_10_25
+  K23_5a : L2_10_25 ; K23_5b : L2_10_25 ; K23_5c : L2_10_25 ; K23_5d : L2_10_25
+  K23_6a : L2_10_25 ; K23_6b : L2_10_25 ; K23_6c : L2_10_25 ; K23_6d : L2_10_25
+  K23_7a : L2_10_25 ; K23_7b : L2_10_25 ; K23_7c : L2_10_25 ; K23_7d : L2_10_25
+  K23_8a : L2_10_25 ; K23_8b : L2_10_25 ; K23_8c : L2_10_25 ; K23_8d : L2_10_25
+
+  K24_1a : L2_10_25 ; K24_1b : L2_10_25 ; K24_1c : L2_10_25 ; K24_1d : L2_10_25
+  K24_2a : L2_10_25 ; K24_2b : L2_10_25 ; K24_2c : L2_10_25 ; K24_2d : L2_10_25
+  K24_3a : L2_10_25 ; K24_3b : L2_10_25 ; K24_3c : L2_10_25 ; K24_3d : L2_10_25
+  K24_4a : L2_10_25 ; K24_4b : L2_10_25 ; K24_4c : L2_10_25 ; K24_4d : L2_10_25
+  K24_5a : L2_10_25 ; K24_5b : L2_10_25 ; K24_5c : L2_10_25 ; K24_5d : L2_10_25
+  K24_6a : L2_10_25 ; K24_6b : L2_10_25 ; K24_6c : L2_10_25 ; K24_6d : L2_10_25
+
+! ==============================================================================
+! XCORs
+! ------------------------------------------------------------------------------
+
+  XC21402 : HKIC, TYPE="type-4al" !fast-feedback (loop-2)
+  XC21502 : HKIC, TYPE="type-4al"
+  XC21602 : HKIC, TYPE="type-4al"
+  XC21702 : HKIC, TYPE="type-4al"
+  XC21802 : HKIC, TYPE="type-4al" !fast-feedback (loop-2)
+  XC21900 : HKIC, TYPE="type-4al"
+
+  XC22202 : HKIC, TYPE="type-4"
+  XC22302 : HKIC, TYPE="type-4"
+  XC22402 : HKIC, TYPE="type-4"
+  XC22502 : HKIC, TYPE="type-4"
+  XC22602 : HKIC, TYPE="type-4"
+  XC22702 : HKIC, TYPE="type-4"
+  XC22802 : HKIC, TYPE="type-4"
+  XC22900 : HKIC, TYPE="type-4"
+
+  XC23202 : HKIC, TYPE="type-4"
+  XC23302 : HKIC, TYPE="type-4"
+  XC23402 : HKIC, TYPE="type-4"
+  XC23502 : HKIC, TYPE="type-4"
+  XC23602 : HKIC, TYPE="type-4"
+  XC23702 : HKIC, TYPE="type-4"
+  XC23802 : HKIC, TYPE="type-4"
+  XC23900 : HKIC, TYPE="type-4"
+
+  XC24202 : HKIC, TYPE="type-4"
+  XC24302 : HKIC, TYPE="type-4"
+  XC24402 : HKIC, TYPE="type-4"
+  XC24502 : HKIC, TYPE="type-4"
+  XC24602 : HKIC, TYPE="type-4"
+  XC24702 : HKIC, TYPE="type-4c" !calibrated to <1%
+
+! ==============================================================================
+! YCORs
+! ------------------------------------------------------------------------------
+
+  YC21403 : VKIC, TYPE="type-4al"
+  YC21503 : VKIC, TYPE="type-4al" !fast-feedback (loop-2)
+  YC21603 : VKIC, TYPE="type-4al"
+  YC21703 : VKIC, TYPE="type-4al"
+  YC21803 : VKIC, TYPE="type-4al"
+  YC21900 : VKIC, TYPE="type-4al" !fast-feedback (loop-2)
+
+  YC22203 : VKIC, TYPE="type-4"
+  YC22303 : VKIC, TYPE="type-4"
+  YC22403 : VKIC, TYPE="type-4"
+  YC22503 : VKIC, TYPE="type-4"
+  YC22603 : VKIC, TYPE="type-4"
+  YC22703 : VKIC, TYPE="type-4"
+  YC22803 : VKIC, TYPE="type-4"
+  YC22900 : VKIC, TYPE="type-4"
+
+  YC23203 : VKIC, TYPE="type-4"
+  YC23303 : VKIC, TYPE="type-4"
+  YC23403 : VKIC, TYPE="type-4"
+  YC23503 : VKIC, TYPE="type-4"
+  YC23603 : VKIC, TYPE="type-4"
+  YC23703 : VKIC, TYPE="type-4"
+  YC23803 : VKIC, TYPE="type-4"
+  YC23900 : VKIC, TYPE="type-4"
+
+  YC24203 : VKIC, TYPE="type-4"
+  YC24303 : VKIC, TYPE="type-4"
+  YC24403 : VKIC, TYPE="type-4"
+  YC24503 : VKIC, TYPE="type-4"
+  YC24603 : VKIC, TYPE="type-4"
+  YC24703 : VKIC, TYPE="type-4c" !calibrated to <1%
+
+! ==============================================================================
+! BEAMLINEs
+! ------------------------------------------------------------------------------
+
+  K21_3 : LINE=(       K21_3b,K21_3c,K21_3d)
+  K21_4 : LINE=(K21_4a,K21_4b,K21_4c,K21_4d)
+  K21_5 : LINE=(K21_5a,K21_5b,K21_5c,K21_5d)
+  K21_6 : LINE=(K21_6a,K21_6b,K21_6c,K21_6d)
+  K21_7 : LINE=(K21_7a,K21_7b,K21_7c,K21_7d)
+  K21_8 : LINE=(K21_8a,K21_8b,K21_8c,K21_8d)
+
+  LI21  : LINE=(LI21beg,ZLIN04,&
+                K21_3,DAQ1,Q21401,BPM21401,Q21401,DAQ2,XC21402,YC21403,&
+                K21_4,DAQ1,Q21501,BPM21501,Q21501,DAQ2,XC21502,YC21503,&
+                K21_5,DAQ1,Q21601,BPM21601,Q21601,DAQ2,XC21602,YC21603,&
+                K21_6,DAQ1,Q21701,BPM21701,Q21701,DAQ2,XC21702,YC21703,&
+                K21_7,DAQ1,Q21801,BPM21801,Q21801,DAQ2,XC21802,YC21803,&
+                K21_8,DAQ3,Q21901,BPM21901,Q21901,DAQ4,XC21900,YC21900,&
+                LI21end)
+
+! ------------------------------------------------------------------------------
+
+  K22_1 : LINE=(K22_1a,K22_1b,K22_1c,K22_1d)
+  K22_2 : LINE=(K22_2a,K22_2b,K22_2c,K22_2d)
+  K22_3 : LINE=(K22_3a,K22_3b,K22_3c,K22_3d)
+  K22_4 : LINE=(K22_4a,K22_4b,K22_4c,K22_4d)
+  K22_5 : LINE=(K22_5a,K22_5b,K22_5c,K22_5d)
+  K22_6 : LINE=(K22_6a,K22_6b,K22_6c,K22_6d)
+  K22_7 : LINE=(K22_7a,K22_7b,K22_7c,K22_7d)
+  K22_8 : LINE=(K22_8a,K22_8b,K22_8c,K22_8d)
+
+  LI22  : LINE=(LI22beg,ZLIN05,&
+                K22_1,DAQ1,Q22201,BPM22201,Q22201,DAQ2,XC22202,YC22203,&
+                K22_2,DAQ1,Q22301,BPM22301,Q22301,DAQ2,XC22302,YC22303,&
+                K22_3,DAQ1,Q22401,BPM22401,Q22401,DAQ2,XC22402,YC22403,&
+                K22_4,DAQ1,Q22501,BPM22501,Q22501,DAQ2,XC22502,YC22503,&
+                K22_5,DAQ1,Q22601,BPM22601,Q22601,DAQ2,XC22602,YC22603,&
+                K22_6,DAQ1,Q22701,BPM22701,Q22701,DAQ2,XC22702,YC22703,&
+                K22_7,DAQ1,Q22801,BPM22801,Q22801,DAQ2,XC22802,YC22803,&
+                K22_8,DAQ3,Q22901,BPM22901,Q22901,DAQ4,XC22900,YC22900,&
+                LI22end)
+! ------------------------------------------------------------------------------
+
+  K23_1 : LINE=(K23_1a,K23_1b,K23_1c,K23_1d)
+  K23_2 : LINE=(K23_2a,K23_2b,K23_2c,K23_2d)
+  K23_3 : LINE=(K23_3a,K23_3b,K23_3c,K23_3d)
+  K23_4 : LINE=(K23_4a,K23_4b,K23_4c,K23_4d)
+  K23_5 : LINE=(K23_5a,K23_5b,K23_5c,K23_5d)
+  K23_6 : LINE=(K23_6a,K23_6b,K23_6c,K23_6d)
+  K23_7 : LINE=(K23_7a,K23_7b,K23_7c,K23_7d)
+  K23_8 : LINE=(K23_8a,K23_8b,K23_8c,K23_8d)
+
+  LI23  : LINE=(LI23beg,ZLIN06,&
+                K23_1,DAQ1,Q23201,BPM23201,Q23201,DAQ2,XC23202,YC23203,&
+                K23_2,DAQ1,Q23301,BPM23301,Q23301,DAQ2,XC23302,YC23303,&
+                K23_3,DAQ1,Q23401,BPM23401,Q23401,DAQ2,XC23402,YC23403,&
+                K23_4,DAQ1,Q23501,BPM23501,Q23501,DAQ2,XC23502,YC23503,&
+                K23_5,DAQ1,Q23601,BPM23601,Q23601,DAQ2,XC23602,YC23603,&
+                K23_6,DAQ1,Q23701,BPM23701,Q23701,DAQ2,XC23702,YC23703,&
+                K23_7,DAQ1,Q23801,BPM23801,Q23801,DAQ2,XC23802,YC23803,&
+                K23_8,DAQ3,Q23901,BPM23901,Q23901,DAQ4,XC23900,YC23900,&
+                LI23end)
+
+! ------------------------------------------------------------------------------
+
+  K24_1 : LINE=(K24_1a,K24_1b,K24_1c,K24_1d)
+  K24_2 : LINE=(K24_2a,K24_2b,K24_2c,K24_2d)
+  K24_3 : LINE=(K24_3a,K24_3b,K24_3c,K24_3d)
+  K24_4 : LINE=(K24_4a,K24_4b,K24_4c,K24_4d)
+  K24_5 : LINE=(K24_5a,K24_5b,K24_5c,K24_5d)
+  K24_6 : LINE=(K24_6a,K24_6b,K24_6c,K24_6d)
+
+! ------------------------------------------------------------------------------
+
+  LI24:LINE=(LI24beg,ZLIN07,&
+             K24_1,DAQ1,Q24201,BPM24201,Q24201,DAQ2,XC24202,YC24203,&
+             K24_2,DAQ1,Q24301,BPM24301,Q24301,DAQ2,XC24302,YC24303,&
+!             K24_3,DAQ5,DWS21,DAQ6A,Q24401,BPM24401,Q24401,DAQ2,XC24402,YC24403,&   ! WS21 descoped in 2007
+!             K24_4,DAQ5,DWS22,DAQ6A,Q24501,BPM24501,Q24501,DAQ2,XC24502,YC24503,&   ! WS22 descoped in 2007
+!             K24_5,DAQ5,DWS23,DAQ6A,Q24601,BPM24601,Q24601,DAQ2,XC24602,YC24603,&   ! WS23 descoped in 2007
+             K24_3,DAQ1,Q24401,BPM24401,Q24401,DAQ2,XC24402,YC24403,&   ! WS21 descoped in 2007
+             K24_4,DAQ1,Q24501,BPM24501,Q24501,DAQ2,XC24502,YC24503,&   ! WS22 descoped in 2007
+             K24_5,DAQ1,Q24601,BPM24601,Q24601,DAQ2,XC24602,YC24603,&   ! WS23 descoped in 2007
+             K24_6,XC24702,YC24703,&
+             LI24end)
+
+! ==============================================================================
+
+  RETURN

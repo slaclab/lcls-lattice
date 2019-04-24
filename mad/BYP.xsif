@@ -1,0 +1,569 @@
+
+! *** OPTICS=AD_ACCEL-23JAN19 ***
+
+! LCLS2sc bypass line, plus match to LTU
+
+! ==============================================================================
+! Modification History
+! ------------------------------------------------------------------------------
+! 07-JAN-2019, M. Woodley
+!  * remove BTMSP1s, BTMSP2s, BTMSP3s, and BTMSP4s per RP-RPG-181130-MEM-01
+! ------------------------------------------------------------------------------
+! 17-OCT-2018, M. Woodley (per A. Ibrahimov)
+!  * add CBP33 (PPS "collimator" plate w/o BTM)
+! 31-MAY-2018, M. Woodley (per A. Ibrahimov)
+!  * remove STBP34A (D2-type)
+!  * STBP34B and STBP34C (ST60-type) move into STBP34A and STBP34B locations
+!  * undefer STBP34A,B ... LCLS will pay for them
+! ------------------------------------------------------------------------------
+! 25-JAN-2018, M. Woodley
+!  * set length of PCSP1S-4S to 2" per A. Ibrahimov
+!  * remove PC90B per A. Ibrahimov
+! 20-DEC-2017, M. Woodley
+!  * remove BCS ACM IMBP28 per C. Clarke
+! 02-NOV-2017, M. Woodley
+!  * add sector boundary MARKERs
+! ------------------------------------------------------------------------------
+! 06-SEP-2017, Y. Nosochkov
+!  * update positions of BCS collimators PCSP1S,2S,3S,4S and the corresponding
+!    BTMs BTMSP1S,2S,3S,4S per RP-RPG-170802-MEM-01 (M. Santana)
+!  * add deferred BCS collimator PC90B (M. Santana)
+!  * defer stoppers STBP34a,b,c, and the corresponding BTMs BTMBP34a,b,c
+!    to level 4 as they are not required for baseline (J. Welch, P. Emma)
+! ------------------------------------------------------------------------------
+! 24-FEB-2017, Y. Nosochkov
+!  * move BPMBP32 0.060376 m downstream (M. Kosovsky)
+! 16-FEB-2016, M. Woodley
+!  * move Dogleg/Bypass boundary to Z= 1202.631303 m per G. DeContreras
+!  * move RFBWSBP4 and WSBP4 to DLBM.xsif ... rename WSBPs
+! ------------------------------------------------------------------------------
+! 02-NOV-2016, Y. Nosochkov
+!  * move BPMBP36 1.2 cm downstream (Alev)
+!  * add a note that BTM behind stopper is part of the stopper design
+!  * move BPMBP32 to upstream side of QBP32 (M. Kosovsky)
+!  * move to baseline: BPMBP24, BPMBP35, IMBP28, PCSP3s, BTMSP3s, XCBP33,
+!    YCBP33, PCSP4S, BTMSP4S, BTMBP34A, BTMBP34B, BTMBP34C
+! ------------------------------------------------------------------------------
+! 29-JUN-2016, M. Woodley
+!  * adjust location of WOODDOOR (Z=3050.512)
+! 24-JUN-2016, Y. Nosochkov
+!  * change engineering type of the following correctors from "Bypass"
+!    to "class-4": XCBP30 through XCBP34 and YCBP30 through YCBP34 (P. Emma)
+!  * add deferred BTMBP34a, BTMBP34b, BTMBP34c behind the corresponding
+!    PPS stoppers (S. Mao)
+!  * move IMSP1s to just downstream of the BXSP2s (S. Mao)
+!  * update engineering type designations of current monitors (J. Welch)
+! ------------------------------------------------------------------------------
+! 26-FEB-2016, M. Woodley
+!  * add wood door at LI30/BSY boundary (WOODDOOR)
+!  * remove SEQnn MARKers
+! 26-FEB-2016, Y. Nosochkov
+!  * move RFBWSBP4, WSBP4 to linac sector 12 and rename to RFBWSBP1, WSBP1
+!    (see DLBM.xsif) (Tor)
+!  * rename the remaining three sets of RFBWSBP/WSBP in this file with
+!    numbers 2,3,4
+!  * move BPMBP32, XCBP32, YCBP32 24" downstream (C.Iverson)
+!  * remove IMSP2s (per S. Mao)
+!  * move QBP28 0.3 m upstream to provide space for a longer spreader kicker
+!  * move CYBP20, CYBP24 two sectors downstream to avoid interference with
+!    FACET-II and change their names to CYBP22, CYBP26
+! ------------------------------------------------------------------------------
+! 01-OCT-2015, M. Woodley
+!  * move CYBP20, CXBP21, CYBP24, and CXBP25 0.381 m downstream per T. O'Heron
+!  * set collimator gaps per P. Emma
+! 25-SEP-2015, Y. Nosochkov
+!  * make the CUSXR merge bend to appear in LCLS2scS line
+! 24-AUG-2015, Y. Nosochkov
+!  * add stripline BPMBP24, BPMBP35 (deferred @0) next to deferred
+!    RFBBP24, RFBBP35 to improve orbit correction (per P. Emma)
+!  * restore correctors XCBP33, YCBP33 (deferred at level @0)
+!  * move CXBP34 1 m upstream of QBP34 for a higher beta-x
+!  * adjust length of FODOLb, BYPM sections to accommodate the shifted
+!    downstream SXR chicane
+!  * adjust positions of QBP35, QBP36, QBP30, QBP31, QBP32, QBP33 and
+!    corresponding devices
+!  * adjust position of CXBP30 for optimal phase and beta function
+! ------------------------------------------------------------------------------
+! 19-JUN-2015, Y. Nosochkov
+!  * add deferred BTMSP3s and BTMSP4s behind PCSP3s and PCSP4s (per S. Mao)
+!  * move IMSP1s, IMSP2s, PCSP3s just d/s of BXSP3S (per S. Mao)
+!  * remove QBP37, QBP38 and the corresponding BPMs/corrs
+!  * rename STBP33a,STBP33b,STBP33c -> STBP34a,STBP34b,STBP34c and move them
+!    close to the muon wall (per S. Mao)
+!  * move CXBP34, PCSP4S ~6 m upstream
+!  * update gaps of the halo collimators (per P. Emma)
+!  * reduce length of halo collimators (CX.., CY..) from 8 cm to 6 cm (P. Emma)
+!  * move CXBP30 ~30 m downstream for 100 m beta function (per P. Emma)
+!  * adjust position of BPMBP36 (per T. O'Heron)
+! ------------------------------------------------------------------------------
+! 20-MAR-2015, M. Woodley
+!  * assign TYPEs to BCS devices ... defer at level 0
+! 12-MAR-2015, Y. Nosochkov
+!  * modify drifts downstream of QBP32 to include the CUSXR merge point
+!  * add QBP37, QBP38 (with BPM & corrs) for optics match with CUSXR beamline
+!  * adjust positions of QBP33, QBP34 for a better match with CUSXR
+! ------------------------------------------------------------------------------
+! 12-DEC-2014, M. Woodley
+!  * assign BPM TYPE attributes per PRD LCLSII-2.4-PR-0136
+! 09-DEC-2014, Y. Nosochkov
+!  * move STBP32 stopper to inside of the SXR spreader chicane and rename it
+!    to STSP5s
+!  * move D10 dump inside the muon wall in the BSY
+!  * add BCS current monitor IMBP28 upstream of the spreader (S. Mao)
+!  * add BCS current monitors IMSP1s, IMSP2s upstream of muon wall
+!    in SXR (S. Mao)
+!  * add BCS collimators PCSP3s, PCSP4s in SPS
+! ------------------------------------------------------------------------------
+! 28-OCT-2014, M. Woodley
+!  * rematch downstream end bypass line (matching subroutine MBYPSP)
+!  * set TYPE="fast" for all wire scanners
+! ------------------------------------------------------------------------------
+! 15-OCT-2014, M. Woodley
+!  * rematch downstream end bypass line (matching subroutine MBYPSP)
+! 13-OCT-2014, Y. Nosochkov
+!  * remove XCBP37, YCBP37 and XCBP33, YCBP33 correctors as redundant
+! 10-OCT-2014, Y. Nosochkov
+!  * update the TYPE of (4) RFBPMs to indicate the non-baseline level "0"
+! 07-AUG-2014, M. Woodley
+!  * change "Q2MRK" to "MQBP23" to obey naming convention
+!  * restore existing stripline BPMs BPMBP14, BPMPB16, BPMBP18, and BPMBP20;
+!    add cavity BPMs near wire scanners
+!  * decorate device TYPE attributes to indicate non-baseline status
+! 30-JUL-2014, Y. Nosochkov
+!  * adjust positions of QBP31, QBP32, QBP35, QBP36 to minimize beta functions
+!  * remove quad QBP37
+! 22-JUL-2014, Y. Nosochkov
+!  * move 4 bypass betatron collimators further downstream
+! 02-MAY-2014, M. Woodley
+!  * add RWWAKEss MARKER at end of bypass line (for resistive wall wakefield)
+! 01-MAY-2014, Y. Nosochkov
+!  * replace BPMBP30, BPMBP33 with cavity BPMs RFBBP30, RFBBP33 (per J. Frisch)
+! 23-APR-2014, Y. Nosochkov
+!  * replace stripline BPMs BPMBP14, BPMBP16, BPMBP18, BPMBP20, BPMBP24,
+!    BPMBP35 with cavity BPMs RFBBP14, RFBBP16, RFBBP18, RFBBP20, RFBBP24,
+!    RFBBP35 (per J. Frisch)
+! 15-APR-2014, Y. Nosochkov
+!  * update collimator jaw aperture per LCLSII-2.4-PR-0095
+! 09-APR-2014, Y. Nosochkov
+!  * add SXR betatron collimators CXBP30, CXBP34
+! 07-APR-2014, M. Woodley
+!  * reorder some drift length parameter definitions and drift length
+!    definitions to avoid using parameters/attributes before they are defined
+! 04-APR-2014, Y. Nosochkov
+!  * add BCS stopper STBP32 upstream of 3 PPS stoppers in SXR
+! ------------------------------------------------------------------------------
+! 31-MAR-2014, M. Woodley
+!  * element names changed to conform to nomenclature PRD
+! 25-MAR-2014, Y. Nosochkov
+!  * add marker D10Js for location of D10 dump face in SXR line
+!  * remove BYKIKb, SPOILERb, TDKIKb, SPOILD2b
+!  * change names: D2b -> STBP33a, ST60b -> STBP33b, ST61b -> STBP33c
+! 06-MAR-2014, Y. Nosochkov
+!  * minor matching update
+! 26-FEB-2014, Y. Nosochkov
+!  * rematch to the updated spreader
+! 17-JAN-2014, Y. Nosochkov
+!  * add QBP36, rematch to the updated spreader
+! 18-DEC-2013, Y. Nosochkov
+!  * update match to the spreader
+! 16-DEC-2013, Y. Nosochkov
+!  * match to the updated 3-way spreader with low R56
+! 03-DEC-2013, Y. Nosochkov
+!  * match to the updated spreader
+! 21-NOV-2013, Y. Nosochkov
+!  * rematch bypass quads for the 3-way spreader system
+! 17-OCT-2013, M. Woodley
+!  * merge Yuri's LTU.xsif into BYP.xsif ... this file now defines QBP13
+!   (center) to MUWALL
+! ------------------------------------------------------------------------------
+
+! ==============================================================================
+! dipoles
+! ------------------------------------------------------------------------------
+
+! single beam dumper vertical kicker (removed)
+
+  LKIKY := 1.0601 !kicker coil length per magnet (m) [41.737"; SA-380-330-02]
+
+! ==============================================================================
+! quadrupoles
+! ------------------------------------------------------------------------------
+
+  KQY :=  0.060580505638 !45 degree bypass FODO
+
+  QFY : QUAD, L=LQM/2, TYPE="PEPII", K1= KQY, APER=rQM !dummy magnet
+  QDY : QUAD, L=LQM/2, TYPE="PEPII", K1=-KQY, APER=rQM !dummy magnet
+
+  KQBP25 :=  0.070273904791
+  KQBP26 := -0.10552161126
+  KQBP27 :=  0.11147451141
+  KQBP35 := -0.291127425586
+  KQBP28 :=  0.323836147473
+
+! note: the below K-values are for SC beam; the settings for Cu beam are
+! in the "LCLS2cu_main.mad8" file
+
+  KQBP36 :=  0.581697629762
+  KQBP30 := -0.590302308366
+  KQBP31 :=  0.613494534195
+  KQBP32 := -0.4894624779
+  KQBP33 := -0.372466028535 !-0.372465866026
+  KQBP34 :=  0.548440043187 ! 0.548440309982
+
+  QBP13 : QUAD, TYPE="2Q4",  L=LQM/2, K1= KQY,    APER=rQM
+  QBP14 : QUAD, TYPE="2Q4",  L=LQM/2, K1=-KQY,    APER=rQM
+  QBP15 : QUAD, TYPE="2Q4",  L=LQM/2, K1= KQY,    APER=rQM
+  QBP16 : QUAD, TYPE="2Q4",  L=LQM/2, K1=-KQY,    APER=rQM
+  QBP17 : QUAD, TYPE="2Q4",  L=LQM/2, K1= KQY,    APER=rQM
+  QBP18 : QUAD, TYPE="2Q4",  L=LQM/2, K1=-KQY,    APER=rQM
+  QBP19 : QUAD, TYPE="2Q4",  L=LQM/2, K1= KQY,    APER=rQM
+  QBP20 : QUAD, TYPE="2Q4",  L=LQM/2, K1=-KQY,    APER=rQM
+  QBP21 : QUAD, TYPE="2Q4",  L=LQM/2, K1= KQY,    APER=rQM
+  QBP22 : QUAD, TYPE="2Q4",  L=LQM/2, K1=-KQY,    APER=rQM
+  QBP23 : QUAD, TYPE="2Q4",  L=LQM/2, K1= KQY,    APER=rQM
+  QBP24 : QUAD, TYPE="2Q4",  L=LQM/2, K1=-KQY,    APER=rQM
+  QBP25 : QUAD, TYPE="2Q4",  L=LQM/2, K1= KQBP25, APER=rQM
+  QBP26 : QUAD, TYPE="2Q4",  L=LQM/2, K1= KQBP26, APER=rQM
+  QBP27 : QUAD, TYPE="2Q4",  L=LQM/2, K1= KQBP27, APER=rQM
+  QBP35 : QUAD, TYPE="2Q4W", L=LQM/2, K1= KQBP35, APER=rQM
+  QBP28 : QUAD, TYPE="2Q4W", L=LQM/2, K1= KQBP28, APER=rQM
+  QBP36 : QUAD, TYPE="2Q4W", L=LQM/2, K1= KQBP36, APER=rQM
+  QBP30 : QUAD, TYPE="2Q4W", L=LQM/2, K1= KQBP30, APER=rQM
+  QBP31 : QUAD, TYPE="2Q4W", L=LQM/2, K1= KQBP31, APER=rQM
+  QBP32 : QUAD, TYPE="2Q4W", L=LQM/2, K1= KQBP32, APER=rQM
+  QBP33 : QUAD, TYPE="2Q4W", L=LQM/2, K1= KQBP33, APER=rQM
+  QBP34 : QUAD, TYPE="2Q4W", L=LQM/2, K1= KQBP34, APER=rQM
+
+! ==============================================================================
+! drifts
+! ------------------------------------------------------------------------------
+
+! bypass drifts which locate BPMs, XCORs, YCORs, WSs, and collimators w.r.t.
+! bypass line "2Q4" QUADs
+
+  LCM2a  := 31.2135115 !places upstream face of muon wall at proper z-location
+
+  zQBP35  := 28.5 !adjust position of QBP35
+  zQBP36  :=  0.0 !adjust position of QBP36
+  zQBP30  :=  0.0 !adjust position of QBP30
+  zQBP31  :=  0.0 !adjust position of QBP31
+  zQBP32  :=  0.0 !adjust position of QPB32
+  zQBP33  :=  0.0 !adjust position of QBP33
+  zQBP34  :=  0.0 !adjust position of QBP34
+  zMRGCUS :=  0.0 !adjust position of MRGCUSXR
+
+! DCY : 1/2 dist. between bypass quads - from PEP-II deck
+
+  DCY   : DRIF, L=(101.6-LQM)/2
+  DCYsa : DRIF, L=15.468697 !to sector boundary
+  DCYsb : DRIF, L=DCY[L]-DCYsa[L]
+  DCYc  : DRIF, L=15.28728 -zQBP30
+
+! D2Q4a : QUAD to BPM
+! D2Q4b : BPM to XCOR
+! D2Q4c : XCOR to YCOR
+! D2Q4d : a+b+c+d=DCY
+! DQ24e : YCOR to COLL
+
+  D2Q4a  : DRIF, L=0.4598
+  D2Q4b  : DRIF, L=0.7433
+ !D2Q4aa : DRIF, L=D2Q4a[L] -0.012
+ !D2Q4ba : DRIF, L=D2Q4b[L] +0.012
+  D2Q4ab : DRIF, L=D2Q4a[L]+0.6096
+  D2Q4c  : DRIF, L=0.2794
+  D2Q4d  : DRIF, L=DCY[L]-(D2Q4a[L]+D2Q4b[L]+D2Q4c[L])
+
+ dDCYd   := 0.0 !adjust Z at BSYEND
+  DCYd   : DRIF, L=35.977199997076 +dDCYd +zQBP31
+  DCYdb  : DRIF, L=1.0
+  DCYda  : DRIF, L=DCYd[L]-DCYdb[L]-Ljaw
+  DCYfa  : DRIF, L=1.0
+  DCYfb  : DRIF, L=0.5 
+  DCYfc  : DRIF, L=1.0
+  DCYfd  : DRIF, L=5.952523028144 +0.3
+  DCYfe  : DRIF, L=12.43034602883-DCYfa[L]-DCYfb[L]-DCYfc[L]-DCYfd[L] +zQBP36
+  DCYfea : DRIF, L=2.512 !3.0
+  DCYfeb : DRIF, L=DCYfe[L]-DCYfea[L]
+  DCYg   : DRIF, L=3.9034 -zQBP36+zQBP30
+
+  DBP1b : DRIF, L=19.48139075
+  DBP2b : DRIF, L=0.0
+  DBP3b : DRIF, L=1.0
+  DBP3a : DRIF, L=10.02938-LQM-(D2Q4a[L]+D2Q4b[L]+D2Q4c[L])-DBP3b[L]-Ljaw &
+                  -zQBP33+zQBP34
+  DBP3aa : DRIF, L=4.854935+0.2492
+  DBP3ab : DRIF, L=DBP3a[L]-DBP3aa[L]-LPCSP
+
+  LDCWL := 7.0
+  LST60 := 1.2192 !length of ST60-type stopper
+  
+  DCWLa : DRIF, L=0.8904
+  DCWLb : DRIF, L=0.7808
+  DCWLc : DRIF, L=0.681175
+  DCWLd : DRIF, L=LDCWL-DCWLa[L]-LST60-DCWLb[L]-LST60-DCWLc[L]-LPCSP
+
+  D2Q4e  : DRIF, L=1.651 !1.27
+  D2Q4f  : DRIF, L=D2Q4d[L]-(D2Q4e[L]+Ljaw)
+  D2Q4h  : DRIF, L=2.4
+  D2Q4g  : DRIF, L=D2Q4f[L]-D2Q4h[L]
+  D2Q4g2 : DRIF, L=0.1
+  D2Q4g1 : DRIF, L=D2Q4g[L]-D2Q4g2[L]
+  D2Q4j  : DRIF, L=1.0
+  D2Q4i  : DRIF, L=D2Q4d[L]-D2Q4j[L]
+  D2Q4i2 : DRIF, L=0.1
+  D2Q4i1 : DRIF, L=D2Q4i[L]-D2Q4i2[L]
+  D2Q4k  : DRIF, L=2.0
+  D2Q4l  : DRIF, L=4.47139075-(D2Q4a[L]+D2Q4b[L]+D2Q4c[L])-zQBP31+zQBP32
+  D2Q4lb : DRIF, L=0.52015 -0.060376
+  D2Q4la : DRIF, L=D2Q4l[L]-D2Q4lb[L]
+  D2Q4laa : DRIF, L=1.282797
+  D2Q4lab : DRIF, L=D2Q4la[L]-D2Q4laa[L]-LPCSP
+  D2Q4m  : DRIF, L=72.3206715-0.6096-(D2Q4a[L]+D2Q4b[L]+D2Q4c[L])-LQM/2 &
+                  -zQBP32+zQBP33
+  D2Q4ma : DRIF, L=61.387806499999-LBRCUS-0.6096 -zQBP32+zMRGCUS
+  D2Q4ma1 : DRIF, L=6.128206+0.2492
+  D2Q4ma2 : DRIF, L=D2Q4ma[L]-D2Q4ma1[L]-LPCSP
+  D2Q4mb : DRIF, L=D2Q4m[L]-D2Q4ma[L]-LBRCUS
+  D2Q4mba : DRIF, L=2.35 !49999518034
+  D2Q4mbb : DRIF, L=D2Q4mb[L]-D2Q4mba[L]
+  D2Q4o  : DRIF, L=8.58398-LDCWL -zQBP34
+  D2Q4q  : DRIF, L=0.5
+  D2Q4s  : DRIF, L=D2Q4d[L]-LQM/2 +zQBP35
+  D2Q4sa : DRIF, L=64.723997
+  D2Q4sb : DRIF, L=D2Q4s[L]-D2Q4sa[L]
+  D2Q4t  : DRIF, L=D2Q4d[L]-LQM/2 -zQBP35 -0.3
+
+! ==============================================================================
+! collimators
+! ------------------------------------------------------------------------------
+
+  CXBP21 : RCOL, TYPE="HCOLL", L=Ljaw, XSIZE=3.6E-3, YSIZE=20.E-3
+  CYBP22 : RCOL, TYPE="VCOLL", L=Ljaw, YSIZE=3.6E-3, XSIZE=20.E-3
+  CXBP25 : RCOL, TYPE="HCOLL", L=Ljaw, XSIZE=3.5E-3, YSIZE=20.E-3
+  CYBP26 : RCOL, TYPE="VCOLL", L=Ljaw, YSIZE=3.8E-3, XSIZE=20.E-3
+  CXBP30 : RCOL, TYPE="HCOLL", L=Ljaw, XSIZE=2.2E-3, YSIZE=20.E-3
+  CXBP34 : RCOL, TYPE="HCOLL", L=Ljaw, XSIZE=2.2E-3, YSIZE=20.E-3
+
+! ==============================================================================
+! BPMs
+! ------------------------------------------------------------------------------
+
+  BPMBP13 : MONI, TYPE="Stripline-5"
+  BPMBP14 : MONI, TYPE="Stripline-5"
+  BPMBP15 : MONI, TYPE="Stripline-5"
+  BPMBP16 : MONI, TYPE="Stripline-5"
+  BPMBP17 : MONI, TYPE="Stripline-5"
+  BPMBP18 : MONI, TYPE="Stripline-5"
+  BPMBP19 : MONI, TYPE="Stripline-5"
+  BPMBP20 : MONI, TYPE="Stripline-5"
+  BPMBP21 : MONI, TYPE="Stripline-5"
+  BPMBP22 : MONI, TYPE="Stripline-5"
+  BPMBP23 : MONI, TYPE="Stripline-5" !2/22/11
+  BPMBP24 : MONI, TYPE="Stripline-5" !to be replaced by RF BPM later
+  BPMBP25 : MONI, TYPE="Stripline-5" !2/22/11
+  BPMBP26 : MONI, TYPE="Stripline-5" !2/22/11
+  BPMBP27 : MONI, TYPE="Stripline-5" !2/22/11
+  BPMBP28 : MONI, TYPE="Stripline-5" !2/22/11
+  BPMBP35 : MONI, TYPE="Stripline-5" !to be replaced by RF BPM later
+  BPMBP36 : MONI, TYPE="Stripline-5"
+  BPMBP31 : MONI, TYPE="Stripline-5"
+  BPMBP32 : MONI, TYPE="Stripline-5"
+  BPMBP34 : MONI, TYPE="Stripline-5"
+
+  RFBWSBP2 : MONI, TYPE="@2,CavityS-1"
+  RFBWSBP3 : MONI, TYPE="@2,CavityS-1"
+  RFBWSBP4 : MONI, TYPE="@2,CavityS-1"
+  RFBBP24  : MONI, TYPE="@2,CavityS-1" !4/23/14
+  RFBBP35  : MONI, TYPE="@2,CavityS-1" !4/23/14
+  RFBBP30  : MONI, TYPE="@2,CavityS-1"
+  RFBBP33  : MONI, TYPE="@2,CavityS-1"
+
+! ==============================================================================
+! XCORs
+! ------------------------------------------------------------------------------
+
+  XCBP13 : HKIC, TYPE="Bypass"
+  XCBP14 : HKIC, TYPE="Bypass"
+  XCBP15 : HKIC, TYPE="Bypass"
+  XCBP16 : HKIC, TYPE="Bypass"
+  XCBP17 : HKIC, TYPE="Bypass"
+  XCBP18 : HKIC, TYPE="Bypass"
+  XCBP19 : HKIC, TYPE="Bypass"
+  XCBP20 : HKIC, TYPE="Bypass"
+  XCBP21 : HKIC, TYPE="Bypass"
+  XCBP22 : HKIC, TYPE="Bypass"
+  XCBP23 : HKIC, TYPE="type-4" !2/22/11
+  XCBP24 : HKIC, TYPE="Bypass#2" !4/18/13
+  XCBP25 : HKIC, TYPE="Bypass#2" !4/18/13
+  XCBP26 : HKIC, TYPE="Bypass#2" !4/18/13
+  XCBP27 : HKIC, TYPE="Bypass#2" !4/18/13
+  XCBP35 : HKIC, TYPE="Bypass#2" !10/1/13
+  XCBP28 : HKIC, TYPE="Bypass#2" !4/18/13
+ !XCBP36 : HKIC, TYPE="class-4"  !remove
+  XCBP30 : HKIC, TYPE="class-4"
+  XCBP31 : HKIC, TYPE="class-4"
+  XCBP32 : HKIC, TYPE="class-4"
+  XCBP33 : HKIC, TYPE="class-4" !restore
+  XCBP34 : HKIC, TYPE="class-4"
+
+! ==============================================================================
+! YCORs
+! ------------------------------------------------------------------------------
+
+  YCBP13 : VKIC, TYPE="Bypass"
+  YCBP14 : VKIC, TYPE="Bypass"
+  YCBP15 : VKIC, TYPE="Bypass"
+  YCBP16 : VKIC, TYPE="Bypass"
+  YCBP17 : VKIC, TYPE="Bypass"
+  YCBP18 : VKIC, TYPE="Bypass"
+  YCBP19 : VKIC, TYPE="Bypass"
+  YCBP20 : VKIC, TYPE="Bypass"
+  YCBP21 : VKIC, TYPE="Bypass"
+  YCBP22 : VKIC, TYPE="Bypass"
+  YCBP23 : VKIC, TYPE="type-4" !2/22/11
+  YCBP24 : VKIC, TYPE="Bypass#2" !4/18/13
+  YCBP25 : VKIC, TYPE="Bypass#2" !4/18/13
+  YCBP26 : VKIC, TYPE="Bypass#2" !4/18/13
+  YCBP27 : VKIC, TYPE="Bypass#2" !4/18/13
+  YCBP35 : VKIC, TYPE="Bypass#2" !10/1/13
+  YCBP28 : VKIC, TYPE="Bypass#2" !4/18/13
+ !YCBP36 : VKIC, TYPE="class-4"  !remove
+  YCBP30 : VKIC, TYPE="class-4"
+  YCBP31 : VKIC, TYPE="class-4"
+  YCBP32 : VKIC, TYPE="class-4"
+  YCBP33 : VKIC, TYPE="class-4" !restore
+  YCBP34 : VKIC, TYPE="class-4"
+
+! ==============================================================================
+! diagnostics, etc.
+! ------------------------------------------------------------------------------
+
+  WSBP2 : WIRE, TYPE="fast"
+  WSBP3 : WIRE, TYPE="fast"
+  WSBP4 : WIRE, TYPE="fast"
+
+  STBP34a : INST, L=LST60, TYPE="PPS STOPPER" !ST60-type stopper
+  STBP34b : INST, L=LST60, TYPE="PPS STOPPER" !ST60-type stopper
+
+  PCSP1s : ECOL, L=LPCSP, TYPE="BCS PC", XSIZE=10.2E-3, YSIZE=10.2E-3 !BCS protection collimator
+  PCSP2s : ECOL, L=LPCSP, TYPE="BCS PC", XSIZE=10.2E-3, YSIZE=10.2E-3 !BCS protection collimator
+  PCSP3s : ECOL, L=LPCSP, TYPE="BCS PC", XSIZE=10.2E-3, YSIZE=10.2E-3 !BCS protection collimator
+  PCSP4s : ECOL, L=LPCSP, TYPE="BCS PC", XSIZE=10.2E-3, YSIZE=10.2E-3 !BCS protection collimator
+
+! Note: BTMBP34a and BTMBP34b are part of stopper design
+
+  CBP33    : INST, TYPE="PPS COLL" !collimator plate (no BTM)
+  BTMBP34a : INST, TYPE="PPS BTM"  !Burn-Through-Monitor behind STBP34a
+  BTMBP34b : INST, TYPE="PPS BTM"  !Burn-Through-Monitor behind STBP34b
+
+! ==============================================================================
+! MARKER points
+! ------------------------------------------------------------------------------
+
+! MQBP23 : QBP23 (Q285330T) quad center (Z=2270.531303)
+! S100B  : Station-100B is same Z as Station-100, but off axis in X & Y
+
+  MQBP13   : MARK !QBP13 FODO quad center ... Z=1254.531303 (a.k.a. "QB01")
+  MQBP23   : MARK
+  S100B    : MARK
+  RWWAKE4  : MARK, TYPE="WAKE" !bypass line beampipe wake applied here
+  LTUSPLIT : MARK !SXR/HXR/Dump split point
+  MRGCUSXR : MARK !merge point (with CUSXR)
+
+! sector boundaries (ZBEG=101.6*(n-1); ZEND=101.6*n)
+
+                    BPN12END : MARK
+  BPN13BEG : MARK ; BPN13END : MARK
+  BPN14BEG : MARK ; BPN14END : MARK
+  BPN15BEG : MARK ; BPN15END : MARK
+  BPN16BEG : MARK ; BPN16END : MARK
+  BPN17BEG : MARK ; BPN17END : MARK
+  BPN18BEG : MARK ; BPN18END : MARK
+  BPN19BEG : MARK ; BPN19END : MARK
+  BPN20BEG : MARK ; BPN20END : MARK
+  BPN21BEG : MARK ; BPN21END : MARK
+  BPN22BEG : MARK ; BPN22END : MARK
+  BPN23BEG : MARK ; BPN23END : MARK
+  BPN24BEG : MARK ; BPN24END : MARK
+  BPN25BEG : MARK ; BPN25END : MARK
+  BPN26BEG : MARK ; BPN26END : MARK
+  BPN27BEG : MARK ; BPN27END : MARK
+
+! ==============================================================================
+! BEAMLINEs
+! ------------------------------------------------------------------------------
+
+  FODO : LINE=(QFY,DCY,DCY,QDY,QDY,DCY,DCY,QFY)
+
+  BYPi : LINE=(BEGBYP,RFBWSBP2,D2Q4i2,WSBP2,D2Q4j,&
+      DCYsa,BPN12END,BPN13BEG,DCYsb,&
+    QBP13,MQBP13)
+
+  FODOLa : LINE=(&
+          QBP13,D2Q4a,BPMBP13,D2Q4b,XCBP13,D2Q4c,YCBP13,D2Q4d,&
+      DCYsa,BPN13END,BPN14BEG,DCYsb,&
+    QBP14,QBP14,D2Q4a,BPMBP14,D2Q4b,XCBP14,D2Q4c,YCBP14,D2Q4i1,&
+      RFBWSBP3,D2Q4i2,WSBP3,D2Q4j,&
+      DCYsa,BPN14END,BPN15BEG,DCYsb,&
+    QBP15,QBP15,D2Q4a,BPMBP15,D2Q4b,XCBP15,D2Q4c,YCBP15,D2Q4d,&
+      DCYsa,BPN15END,BPN16BEG,DCYsb,&
+    QBP16,QBP16,D2Q4a,BPMBP16,D2Q4b,XCBP16,D2Q4c,YCBP16,D2Q4i1,&
+      RFBWSBP4,D2Q4i2,WSBP4,D2Q4j,&
+      DCYsa,BPN16END,BPN17BEG,DCYsb,&
+    QBP17,QBP17,D2Q4a,BPMBP17,D2Q4b,XCBP17,D2Q4c,YCBP17,D2Q4d,&
+      DCYsa,BPN17END,BPN18BEG,DCYsb,&
+    QBP18,QBP18,D2Q4a,BPMBP18,D2Q4b,XCBP18,D2Q4c,YCBP18,D2Q4d,&
+      DCYsa,BPN18END,BPN19BEG,DCYsb,&
+    QBP19,QBP19,D2Q4a,BPMBP19,D2Q4b,XCBP19,D2Q4c,YCBP19,D2Q4d,&
+      DCYsa,BPN19END,BPN20BEG,DCYsb,&
+    QBP20,QBP20,D2Q4a,BPMBP20,D2Q4b,XCBP20,D2Q4c,YCBP20,D2Q4d,&
+      DCYsa,BPN20END,BPN21BEG,DCYsb,&
+    QBP21,QBP21,D2Q4a,BPMBP21,D2Q4b,XCBP21,D2Q4c,YCBP21,D2Q4e,&
+      CXBP21,D2Q4f,&
+      DCYsa,BPN21END,BPN22BEG,DCYsb,&
+    QBP22,QBP22,D2Q4a,BPMBP22,D2Q4b,XCBP22,D2Q4c,YCBP22,D2Q4e,&
+      CYBP22,D2Q4f,&
+      DCYsa,BPN22END,BPN23BEG,DCYsb,&
+    QBP23,MQBP23,QBP23,D2Q4a,BPMBP23,D2Q4b,XCBP23,D2Q4c,YCBP23,D2Q4d,&
+      DCYsa,BPN23END,BPN24BEG,DCYsb,&
+    QBP24,QBP24,D2Q4a,BPMBP24,RFBBP24,D2Q4b,XCBP24,D2Q4c,YCBP24,D2Q4d,&
+      DCYsa,BPN24END,BPN25BEG,DCYsb,&
+    QBP25,QBP25,D2Q4a,BPMBP25,D2Q4b,XCBP25,D2Q4c,YCBP25,D2Q4e,&
+      CXBP25,D2Q4f,&
+      DCYsa,BPN25END,BPN26BEG,DCYsb,&
+    QBP26,QBP26,D2Q4a,BPMBP26,D2Q4b,XCBP26,D2Q4c,YCBP26,D2Q4e,&
+      CYBP26,D2Q4f,&
+      DCYsa,BPN26END,BPN27BEG,DCYsb,&
+    QBP27,QBP27,D2Q4a,BPMBP27,D2Q4b,XCBP27,D2Q4c,YCBP27,&
+      D2Q4sa,BPN27END,D2Q4sb,&
+    QBP35,QBP35,D2Q4a,BPMBP35,RFBBP35,D2Q4b,XCBP35,D2Q4c,YCBP35,D2Q4t,&
+    QBP28,QBP28,D2Q4a,BPMBP28,D2Q4b,XCBP28,D2Q4c,YCBP28,D2Q4q,&
+    RWWAKE4,LTUSPLIT,ENDBYP)
+
+  FODOLb : LINE=(DCYfa,DCYfb,DCYfc,DCYfd,S100B,DCYfea,WOODDOOR)
+
+  FODOLc : LINE=(DCYfeb,&
+    QBP36,QBP36,D2Q4a,BPMBP36,D2Q4b,D2Q4c ,DCYg ,&
+    QBP30,QBP30,D2Q4a,RFBBP30,D2Q4b,XCBP30,D2Q4c,YCBP30,DCYc)
+
+  FODOL : LINE=(FODOLa,SPRDs,FODOLb,FODOLc)
+
+  BYPM1 : LINE=(DCYda ,CXBP30 ,DCYdb,&
+    QBP31,QBP31,D2Q4a ,BPMBP31,D2Q4b,XCBP31,D2Q4c,YCBP31,D2Q4laa,&
+    PCSP1s,D2Q4lab,BPMBP32,D2Q4lb,&
+    QBP32,QBP32,D2Q4ab,D2Q4b,XCBP32,D2Q4c,YCBP32,D2Q4ma1,&
+    PCSP2s,D2Q4ma2)
+
+  BYPM2 : LINE=(D2Q4mba,CBP33,D2Q4mbb,DBP2b,&
+    QBP33,QBP33,D2Q4a,RFBBP33,D2Q4b,XCBP33,D2Q4c,YCBP33,DBP3aa,&
+    PCSP3s,DBP3ab,CXBP34,DBP3b,&
+    QBP34,QBP34,D2Q4a,BPMBP34,D2Q4b,XCBP34,D2Q4c,YCBP34,D2Q4o,&
+    DCWLa,STBP34a,BTMBP34a,DCWLb,STBP34b,BTMBP34b,DCWLc,PCSP4s,DCWLd)
+
+  BYPM : LINE=(BYPM1,BRCUS1a,BRCUS1b,MRGCUSXR,BYPM2)
+
+  BYPASS : LINE=(BYPi,FODOL,BYPM)
+
+! ------------------------------------------------------------------------------
+
+  RETURN

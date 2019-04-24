@@ -1,0 +1,622 @@
+
+! *** OPTICS=AD_ACCEL-23JAN19 ***
+
+! LCLS2sc sector 7 dogleg plus match to bypass line
+
+! ==============================================================================
+! Modification History
+! ------------------------------------------------------------------------------
+! 07-JAN-2019, M. Woodley
+!  * add sector 10 shielding wall
+! ------------------------------------------------------------------------------
+! 11-OCT-2018, M. Woodley
+!  * use average measured FINT for 0.788D11.50's
+! ------------------------------------------------------------------------------
+! 20-DEC-2017, M. Woodley
+!  * remove BCS ACM IMBCSDOG per C. Clarke
+! 02-NOV-2017, M. Woodley
+!  * add sector boundary MARKERs
+! ------------------------------------------------------------------------------
+! 05-MAY-2017, M. Woodley
+!  * move EXT/DOG boundary so that CCDLU is in DOG (per K. Fant)
+!  * remove IPEXTDOG (per K. Fant)
+! ------------------------------------------------------------------------------
+! 16-FEB-2016, M. Woodley
+!  * move Dogleg/Bypass boundary to Z= 1202.631303 m per G. DeContreras
+!  * move RFBWSBP4 and WSBP4 from 1 FODO cell downstream of WSBP3 to 1 FODO
+!    cell upstream of WSBP1 ... rename
+!  * adjust locations of QL1P-QL4P for more robust matching
+! ------------------------------------------------------------------------------
+! 28-NOV-2016, M. Woodley
+!  * merge LCLS-II' version 28NOV16 with LCLS2sc version 04NOV16
+!  * include extended NIT line
+! ------------------------------------------------------------------------------
+! 04-NOV-2016, M. Woodley
+!  * undefer IMBCSDOG (add-back list item)
+! ------------------------------------------------------------------------------
+! 06-JUN-2016, M. Woodley
+!  * set TYPE="0.788D11.50" for R56-compensation chicane bends
+!  * reposition SDOG1, SDOG2, and WSDOG according to M. Gaynor & N. Stewart
+!  * set IMBCSDOG TYPE="BCS cavity"
+! ------------------------------------------------------------------------------
+! 28-FEB-2016, Y. Nosochkov
+!  * place RFBWSBP1, WSBP1 u/s of QBP13 two sectors u/s of RFBWSBP2, WSBP2 (Tor)
+! 08-FEB-2016, M. Woodley
+!  * add sextupoles to correct 2nd-order dispersion per P. Emma
+! ------------------------------------------------------------------------------
+! 01-OCT-2015, M. Woodley
+!  * undefer OTRDOG
+!  * change keyword of WSDOG to WIRE
+!  * undefer R56-compensation chicane
+!  * scale bend angles of R56-compensation chicane up by 15%
+! ------------------------------------------------------------------------------
+! 03-AUG-2015, M. Woodley
+!  * change TYPE of OTRs and YAGs per Henrik's PRD
+! ------------------------------------------------------------------------------
+! 19-JUN-2015, M. Woodley
+!  * set CEDOG collimator length to 6 cm
+!  * undefer BPMDOG2 and BPMDOG6
+!  * add OTRDOG; move WSDOG; move YCDOG6
+!  * collimator gaps per P. Emma
+! ------------------------------------------------------------------------------
+! 20-MAR-2014, M. Woodley
+!  * dogleg BPMs TYPE="Stripline-5"
+!  * new dogleg and bypass match BPM and corrector locations per T. O'Heron
+!  * replace QL1P (1.97Q20) and QL2P (1.97Q10) with 2Q10s
+!  * add BCS ACM downstream of BRB2
+! ------------------------------------------------------------------------------
+! 12-DEC-2014, M. Woodley
+!  * replace dogleg quadrupoles (1.625Q27.3) with 2Q10 quadrupoles
+!  * move dogleg collimator and wire scanner (and associated RFBs) to high
+!    vertical dispersion points
+!  * change RFBs (defer=2) to BPMs (defer=0)
+! ------------------------------------------------------------------------------
+! 28-OCT-2014, M. Woodley
+!  * move stripline BPMs from quadrupole centers to ~0.543 m u/s of quadrupole
+!    center per D. Hanquist and J. Amann
+!  * add resistive-wall wakefield MARKer (for ELEGANT) per P. Emma
+! ------------------------------------------------------------------------------
+! 15-OCT-2014, M. Woodley
+!  * add R56 compensation chicane
+!  * adjust deferment/deprecation levels
+! ------------------------------------------------------------------------------
+! 07-AUG-2014, M. Woodley
+!  * diagnostics complement per "Electron Beam Diagnostics Systems" PRD
+!    (LCLSII-2.7-PR-0170)
+!  * replace some dogleg stripline BPMs with cavity BPMs
+!  * remove BC3
+!  * decorate device TYPE attributes to indicate non-baseline status
+! 17-APR-2014, M. Woodley
+!  * add "CNT" MARKERs after dispersive areas (ELEGANT CENTERing)
+! ------------------------------------------------------------------------------
+! 26-MAR-2014, M. Woodley
+!  * element names changed to conform to nomenclature PRD
+! ------------------------------------------------------------------------------
+! 01-MAR-2014, M. Woodley
+!  * change BC3 dipole type from 1.0D38.37 to 1D19.7 (BC2 dipole)
+! 14-JAN-2014, M. Woodley
+!  * add BC3
+! ------------------------------------------------------------------------------
+
+  dZdog := 77.99997504 !Z-extent of dogleg (BRB1 entrance to BRB2 exit)
+
+! ==============================================================================
+! SBEN
+! ------------------------------------------------------------------------------
+
+! upstream R56 compensation chicane:
+!   ABCX..  = chicane bend angle (rad)
+!   BBCX..  = chicane bend field (kG)
+!   LBCX..  = chicane bend path length (m)
+!   ABCX..S = "short" half chicane bend angle (rad)
+!   ABCX..L = "long" half chicane bend angle (rad)
+!   LBCX..S = "short" half chicane bend path length (m)
+!   LBCX..L = "long" half chicane bend path length (m)
+
+  ABCXDLU0    := 0.010734075009 !R56=9.99E-5
+  ABCXDLU     := 1.15*ABCXDLU0  !R56=1.32E-4
+  BBCXDLU     := Brhof*SIN(ABCXDLU)/ZBCC
+  ABCXDLU_2   := ABCXDLU*ABCXDLU
+  ABCXDLU_4   := ABCXDLU_2*ABCXDLU_2
+  ABCXDLU_6   := ABCXDLU_4*ABCXDLU_2
+  SINCBCXDLU  := 1-ABCXDLU_2/6+ABCXDLU_4/120-ABCXDLU_6/5040
+  LBCXDLU     := ZBCC/SINCBCXDLU
+  ABCXDLUS    := ASIN(SIN(ABCXDLU)/2)
+  ABCXDLUS_2  := ABCXDLUS*ABCXDLUS
+  ABCXDLUS_4  := ABCXDLUS_2*ABCXDLUS_2
+  ABCXDLUS_6  := ABCXDLUS_4*ABCXDLUS_2
+  SINCBCXDLUS := 1-ABCXDLUS_2/6+ABCXDLUS_4/120-ABCXDLUS_6/5040
+  LBCXDLUS    := ZBCC/(2*SINCBCXDLUS)
+  ABCXDLUL    := ABCXDLU-ABCXDLUS
+  LBCXDLUL    := LBCXDLU-LBCXDLUS
+
+  BCXDLU1a : SBEN, TYPE="0.788D11.50", HGAP=GBCC/2, L=LBCXDLUS, &
+                   ANGLE=+ABCXDLUS, E1=0, FINT=FBCC, FINTX=0
+  BCXDLU1b : SBEN, TYPE="0.788D11.50", HGAP=GBCC/2, L=LBCXDLUL, &
+                   ANGLE=+ABCXDLUL, E2=+ABCXDLU, FINT=0, FINTX=FBCC
+  BCXDLU2a : SBEN, TYPE="0.788D11.50", HGAP=GBCC/2, L=LBCXDLUL, &
+                   ANGLE=-ABCXDLUL, E1=-ABCXDLU, FINT=FBCC, FINTX=0
+  BCXDLU2b : SBEN, TYPE="0.788D11.50", HGAP=GBCC/2, L=LBCXDLUS, &
+                   ANGLE=-ABCXDLUS, E2=0, FINT=0, FINTX=FBCC
+  BCXDLU3a : SBEN, TYPE="0.788D11.50", HGAP=GBCC/2, L=LBCXDLUS, &
+                   ANGLE=-ABCXDLUS, E1=0, FINT=FBCC, FINTX=0
+  BCXDLU3b : SBEN, TYPE="0.788D11.50", HGAP=GBCC/2, L=LBCXDLUL, &
+                   ANGLE=-ABCXDLUL, E2=-ABCXDLU, FINT=0, FINTX=FBCC
+  BCXDLU4a : SBEN, TYPE="0.788D11.50", HGAP=GBCC/2, L=LBCXDLUL, &
+                   ANGLE=+ABCXDLUL, E1=+ABCXDLU, FINT=FBCC, FINTX=0
+  BCXDLU4b : SBEN, TYPE="0.788D11.50", HGAP=GBCC/2, L=LBCXDLUS, &
+                   ANGLE=+ABCXDLUS, E2=0, FINT=0, FINTX=FBCC
+
+! dogleg
+
+! XOFF  : x-offset of bypass line (old PEP-II 9-GeV) w.r.t. old linac axis
+!         (<0 is south)
+! YOFF  : y-offset of bypass line (old PEP-II 9-GeV) w.r.t. old linac axis
+!         (>0 is up)
+! ROLLA : roll angle of sec-10 bends to get XOFF and YOFF bypass offsets
+
+  GBR   := 0.0254          !1.0D38.37 gap height (m)
+  LBR   := 1.0             !1.0D38.37 gap height (m)
+  ANGA  := 0.024477314713  !dogleg bend angle (rad)
+  XOFF  := -25.610*IN2M
+  YOFF  := 25.570*IN2M
+  ROLLA := -1.054575132367
+
+  BRB1a : SBEN, TYPE="1.0D38.37", HGAP=GBR/2, L=LBR/2, ANGLE= ANGA/2, &
+                E1= ANGA/2, E2=0, FINT=0.5, FINTX=0, TILT=ROLLA
+  BRB1b : SBEN, TYPE="1.0D38.37", HGAP=GBR/2, L=LBR/2, ANGLE= ANGA/2, &
+                E1=0, E2= ANGA/2, FINT=0, FINTX=0.5, TILT=ROLLA
+  BRB2a : SBEN, TYPE="1.0D38.37", HGAP=GBR/2, L=LBR/2, ANGLE=-ANGA/2, &
+                E1=-ANGA/2, E2=0, FINT=0.5, FINTX=0, TILT=ROLLA
+  BRB2b : SBEN, TYPE="1.0D38.37", HGAP=GBR/2, L=LBR/2, ANGLE=-ANGA/2, &
+                E1=0, E2=-ANGA/2, FINT=0, FINTX=0.5, TILT=ROLLA
+
+
+! downstream R56 compensation chicane:
+!   ABCX..  = chicane bend angle (rad)
+!   BBCX..  = chicane bend field (kG)
+!   LBCX..  = chicane bend path length (m)
+!   ABCX..S = "short" half chicane bend angle (rad)
+!   ABCX..L = "long" half chicane bend angle (rad)
+!   LBCX..S = "short" half chicane bend path length (m)
+!   LBCX..L = "long" half chicane bend path length (m)
+
+  ABCXDLD0    := 0.010734075009 !R56=9.99E-5
+  ABCXDLD     := 1.15*ABCXDLD0  !R56=1.32E-4
+  BBCXDLD     := Brhof*SIN(ABCXDLD)/ZBCC
+  ABCXDLD_2   := ABCXDLD*ABCXDLD
+  ABCXDLD_4   := ABCXDLD_2*ABCXDLD_2
+  ABCXDLD_6   := ABCXDLD_4*ABCXDLD_2
+  SINCBCXDLD  := 1-ABCXDLD_2/6+ABCXDLD_4/120-ABCXDLD_6/5040
+  LBCXDLD     := ZBCC/SINCBCXDLD
+  ABCXDLDS    := ASIN(SIN(ABCXDLD)/2)
+  ABCXDLDS_2  := ABCXDLDS*ABCXDLDS
+  ABCXDLDS_4  := ABCXDLDS_2*ABCXDLDS_2
+  ABCXDLDS_6  := ABCXDLDS_4*ABCXDLDS_2
+  SINCBCXDLDS := 1-ABCXDLDS_2/6+ABCXDLDS_4/120-ABCXDLDS_6/5040
+  LBCXDLDS    := ZBCC/(2*SINCBCXDLDS)
+  ABCXDLDL    := ABCXDLD-ABCXDLDS
+  LBCXDLDL    := LBCXDLD-LBCXDLDS
+
+  BCXDLD1a : SBEN, TYPE="0.788D11.50", HGAP=GBCC/2, L=LBCXDLDS, &
+                   ANGLE=+ABCXDLDS, E1=0, FINT=FBCC, FINTX=0
+  BCXDLD1b : SBEN, TYPE="0.788D11.50", HGAP=GBCC/2, L=LBCXDLDL, &
+                   ANGLE=+ABCXDLDL, E2=+ABCXDLD, FINT=0, FINTX=FBCC
+  BCXDLD2a : SBEN, TYPE="0.788D11.50", HGAP=GBCC/2, L=LBCXDLDL, &
+                   ANGLE=-ABCXDLDL, E1=-ABCXDLD, FINT=FBCC, FINTX=0
+  BCXDLD2b : SBEN, TYPE="0.788D11.50", HGAP=GBCC/2, L=LBCXDLDS, &
+                   ANGLE=-ABCXDLDS, E2=0, FINT=0, FINTX=FBCC
+  BCXDLD3a : SBEN, TYPE="0.788D11.50", HGAP=GBCC/2, L=LBCXDLDS, &
+                   ANGLE=-ABCXDLDS, E1=0, FINT=FBCC, FINTX=0
+  BCXDLD3b : SBEN, TYPE="0.788D11.50", HGAP=GBCC/2, L=LBCXDLDL, &
+                   ANGLE=-ABCXDLDL, E2=-ABCXDLD, FINT=0, FINTX=FBCC
+  BCXDLD4a : SBEN, TYPE="0.788D11.50", HGAP=GBCC/2, L=LBCXDLDL, &
+                   ANGLE=+ABCXDLDL, E1=+ABCXDLD, FINT=FBCC, FINTX=0
+  BCXDLD4b : SBEN, TYPE="0.788D11.50", HGAP=GBCC/2, L=LBCXDLDS, &
+                   ANGLE=+ABCXDLDS, E2=0, FINT=0, FINTX=FBCC
+
+! ==============================================================================
+! QUAD
+! ------------------------------------------------------------------------------
+
+! dogleg
+
+  KQDOG := 0.563669043771
+
+  QDOG1 : QUAD, TYPE="2Q10", L=LQR/2, APER=rQR, K1= KQDOG
+  QDOG2 : QUAD, TYPE="2Q10", L=LQR/2, APER=rQR, K1=-KQDOG
+  QDOG3 : QUAD, TYPE="2Q10", L=LQR/2, APER=rQR, K1= KQDOG
+  QDOG4 : QUAD, TYPE="2Q10", L=LQR/2, APER=rQR, K1=-KQDOG
+  QDOG5 : QUAD, TYPE="2Q10", L=LQR/2, APER=rQR, K1= KQDOG
+  QDOG6 : QUAD, TYPE="2Q10", L=LQR/2, APER=rQR, K1=-KQDOG
+  QDOG7 : QUAD, TYPE="2Q10", L=LQR/2, APER=rQR, K1= KQDOG
+  QDOG8 : QUAD, TYPE="2Q10", L=LQR/2, APER=rQR, K1=-KQDOG
+
+! match to bypass line
+
+  KQL1P :=  0.322623375938 ! 0.322672990497
+  KQL2P := -0.155036210469 !-0.155098581061
+  KQL3P :=  0.22320301915  ! 0.223223791378
+  KQL4P := -0.284565948145 !-0.284547516494
+  KQL5P :=  0.151439029009 ! 0.151439029009
+
+  QL1P : QUAD, TYPE="2Q10", L=LQR/2, APER=rQR, K1=KQL1P
+  QL2P : QUAD, TYPE="2Q10", L=LQR/2, APER=rQR, K1=KQL2P
+  QL3P : QUAD, TYPE="2Q4W", L=LQM/2, APER=rQM, K1=KQL3P
+  QL4P : QUAD, TYPE="2Q4W", L=LQM/2, APER=rQM, K1=KQL4P
+  QL5P : QUAD, TYPE="2Q4W", L=LQM/2, APER=rQM, K1=KQL5P
+
+! bypass line FODO
+
+  KQBYP :=  0.060580505638 !45 degree per cell
+
+  QBPF : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1= KQBYP
+  QBPD : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=-KQBYP
+
+  QBP10 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=-KQBYP
+  QBP11 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1= KQBYP
+  QBP12 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=-KQBYP
+
+! integrated strengths
+
+  COMMENT !nominal energy
+    VALUE, (Cb*Ef)*KQDOG*LQR
+    VALUE, (Cb*Ef)*KQL1P*LQR
+    VALUE, (Cb*Ef)*KQL2P*LQR
+    VALUE, (Cb*Ef)*KQL3P*LQM
+    VALUE, (Cb*Ef)*KQL4P*LQM
+    VALUE, (Cb*Ef)*KQL5P*LQM
+    VALUE, (Cb*Ef)*KQBYP*LQM
+  ENDCOMMENT
+
+  COMMENT !maximum energy (10 GeV)
+    VALUE, (Cb*Emax)*KQDOG*LQR
+    VALUE, (Cb*Emax)*KQL1P*LQR
+    VALUE, (Cb*Emax)*KQL2P*LQR
+    VALUE, (Cb*Emax)*KQL3P*LQM
+    VALUE, (Cb*Emax)*KQL4P*LQM
+    VALUE, (Cb*Emax)*KQL5P*LQM
+    VALUE, (Cb*Emax)*KQBYP*LQM
+  ENDCOMMENT
+
+! ==============================================================================
+! SEXT
+! ------------------------------------------------------------------------------
+
+  KSDOG1 := -9.188528778159 !-9.801 
+  KSDOG2 := 22.656285408238 !-20.61 
+
+  TSDOG1 := -13.252537412167 !-0.2331*DEGRAD
+  TSDOG2 :=  16.730337124203 ! 0.3342*DEGRAD
+
+  SDOG1 : SEXT, TYPE="@1,1.38S3.00", L=LSb/2, APER=rSb, K2=KSDOG1, &
+                TILT=RADDEG*TSDOG1
+  SDOG2 : SEXT, TYPE="@1,1.38S3.00", L=LSb/2, APER=rSb, K2=KSDOG2, &
+                TILT=RADDEG*TSDOG2
+
+  COMMENT
+    VALUE, (Cb*Ef)*KSDOG1*LSb,(Cb*10)*KSDOG1*LSb
+    VALUE, (Cb*Ef)*KSDOG2*LSb,(Cb*10)*KSDOG2*LSb
+  ENDCOMMENT
+
+! ==============================================================================
+! ROLL
+! ------------------------------------------------------------------------------
+
+  AROBRB1 := -0.12862097586E-3
+  AROBRB2 := -AROBRB1
+
+  ROBRB1 : SROT, ANGLE=AROBRB1
+  ROBRB2 : SROT, ANGLE=AROBRB2
+
+! ==============================================================================
+! DRIF
+! ------------------------------------------------------------------------------
+
+! R56 compensation chicane
+
+  DCCDLUo : DRIF, L=ZDCC/COS(ABCXDLU), TYPE="CSR"
+  DCCDLUi : DRIF, L=ZDCC/2,            TYPE="CSR"
+
+! dogleg
+
+  NQBD  := 8                    !number of dogleg quads
+  LTOTA := 76.02294776001       !path length from BRB1-exit to BRB2-entrance
+  LDBD  := (LTOTA+LBR)/(NQBD/2) !FODO cell half length
+  dLDBD := -0.124816874499E-4   !adjustment for dispersion correction
+  LDBDh := LDBD/2+dLDBD         !FODO cell half length
+
+  DBDm1 : DRIF, L=0.5 !drift between CCDLU and BRB1
+  DBD   : DRIF, L=LTOTA
+  DBD0  : DRIF, L=(LDBDh-LBR-LQR)/2-4*dLDBD
+  DBD1  : DRIF, L=LDBDh-LQR
+  DBD2  : DRIF, L=LDBDh-LQR
+  DBD3  : DRIF, L=LDBDh-LQR
+  DBD4  : DRIF, L=LDBDh-LQR
+  DBD5  : DRIF, L=LDBDh-LQR
+  DBD6  : DRIF, L=LDBDh-LQR
+  DBD7  : DRIF, L=LDBDh-LQR
+  DBD8  : DRIF, L=(LDBDh-LQR-LBR)/2-4*dLDBD
+
+  COMMENT
+    VALUE, LTOTA,(NQBD/2)*LDBD-LBR
+    VALUE, DBD0[L]+DBD1[L]+DBD2[L]+DBD3[L]+DBD4[L]+&
+           DBD5[L]+DBD6[L]+DBD7[L]+DBD8[L]+NQBD*LQR
+  ENDCOMMENT
+
+  DBD1Sb : DRIF, L=0.2016
+  DBD1Sa : DRIF, L=DBD1[L]-LSb-DBD1Sb[L]
+  DBD6Sb : DRIF, L=0.203095
+  DBD6Sa : DRIF, L=DBD6[L]-LSb-DBD6Sb[L]
+
+  DBD0a : DRIF, L=1.0
+  DBD0c : DRIF, L=0.5185-LQR/2
+  DBD0b : DRIF, L=DBD0[L]-DBD0a[L]-DBD0c[L]
+  DBD1a : DRIF, L=0.5786-LQR/2
+  DBD1d : DRIF, L=0.2016
+  DBD1c : DRIF, L=0.536-LSb-DBD1d[L]
+  DBD1b : DRIF, L=DBD1[L]-DBD1a[L]-Ljaw-DBD1c[L]-LSb-DBD1d[L]
+  DBD2a : DRIF, L=0.5786-LQR/2
+  DBD2b : DRIF, L=0.6368
+  DBD2d : DRIF, L=0.5185-LQR/2
+  DBD2c : DRIF, L=DBD2[L]-DBD2a[L]-DBD2b[L]-DBD2d[L]
+  DBD3a : DRIF, L=0.5786-LQR/2
+  DBD3c : DRIF, L=0.5185-LQR/2
+  DBD3b : DRIF, L=DBD3[L]-DBD3a[L]-DBD3c[L]
+  DBD4a : DRIF, L=0.5786-LQR/2
+  DBD4c : DRIF, L=0.5185-LQR/2
+  DBD4b : DRIF, L=DBD4[L]-DBD4a[L]-DBD4c[L]
+  DBD4h : DRIF, L=DBD4[L]/2
+  DBD5a : DRIF, L=0.5786-LQR/2
+  DBD5c : DRIF, L=0.5
+  DBD5d : DRIF, L=0.536
+  DBD5b : DRIF, L=DBD5[L]-DBD5a[L]-DBD5c[L]-DBD5d[L]
+  DBD6a : DRIF, L=0.5786-LQR/2
+  DBD6b : DRIF, L=0.527
+  DBD6e : DRIF, L=0.203095
+  DBD6d : DRIF, L=0.772576-LQR/2-LSb-DBD6e[L]
+  DBD6c : DRIF, L=DBD6[L]-DBD6a[L]-DBD6b[L]-DBD6d[L]-LSb-DBD6e[L]
+  DBD7a : DRIF, L=0.5786-LQR/2
+  DBD7c : DRIF, L=0.5185-LQR/2
+  DBD7b : DRIF, L=DBD7[L]-DBD7a[L]-DBD7c[L]
+  DBD8a : DRIF, L=0.5786-LQR/2
+  DBD8b : DRIF, L=DBD8[L]-DBD8a[L]
+
+! R56 compensation chicane
+
+  DCCDLDo : DRIF, L=ZDCC/COS(ABCXDLD), TYPE="CSR"
+  DCCDLDi : DRIF, L=ZDCC/2,            TYPE="CSR"
+
+! bypass line FODO
+
+  DBP   : DRIF, L=(101.6-LQM)/2
+  DBPsa : DRIF, L=15.468697 !to sector boundary
+  DBPsb : DRIF, L=DBP[L]-DBPsa[L]
+
+! match to bypass line
+
+  LLtot := 99.751028066308
+
+  LL0 :=  5.0
+  LL1 := 18.0
+  LL2 := 34.5
+  LL3 := 11.0
+  LL4 := LLtot-LL0-LL1-LL2-LL3
+
+  DLCCP : DRIF, L=0.5
+  DL0P  : DRIF, L=LL0
+  DL1P  : DRIF, L=LL1
+  DL2P  : DRIF, L=LL2
+  DL3P  : DRIF, L=LL3
+  DL4P  : DRIF, L=LL4
+
+  DL0Pa : DRIF, L=0.3
+  DL0Pb : DRIF, L=LL0-DL0Pa[L]
+  DL1Pa : DRIF, L=0.4471
+  DL1Pb : DRIF, L=0.6368
+  DL1Pc : DRIF, L=LL1-DL1Pa[L]-DL1Pb[L]
+  DL2Pa : DRIF, L=0.4471
+  DL2Pb : DRIF, L=0.6368
+  DL2Pc : DRIF, L=LL2-DL2Pa[L]-DL2Pb[L]
+  DL3Pa : DRIF, L=0.4598
+  DL3Pb : DRIF, L=0.7433
+  DL3Pc : DRIF, L=5.9032251
+  DL3Pd : DRIF, L=LL3-DL3Pa[L]-DL3Pb[L]-DL3Pc[L]
+  DL4Pa : DRIF, L=0.4598
+  DL4Pb : DRIF, L=0.7433
+  DL4Pc : DRIF, L=LL4-DL4Pa[L]-DL4Pb[L]
+  DBPa  : DRIF, L=0.4598
+  DBPb  : DRIF, L=0.7433
+  DBPc  : DRIF, L=DBP[L]-DBPa[L]-DBPb[L]
+  DBPe  : DRIF, L=0.1
+  DBPf  : DRIF, L=1.0
+  DBPd  : DRIF, L=DBP[L]-DBPa[L]-DBPb[L]-DBPe[L]-DBPf[L]
+
+  DBPd1   : DRIF, L=21.403397
+  S10WALL : DRIF, L=1.83
+  DBPd2   : DRIF, L=DBPd[L]-DBPd1[L]-S10WALL[L]
+
+! ==============================================================================
+! BPMs
+! ------------------------------------------------------------------------------
+
+  BPMDOG1 : MONI, TYPE="Stripline-5"
+  BPMDOG2 : MONI, TYPE="Stripline-5" !RFBDOG2 : MONI, TYPE="@2,CavityL-1"
+  BPMDOG3 : MONI, TYPE="Stripline-5"
+  BPMDOG4 : MONI, TYPE="Stripline-5"
+  BPMDOG5 : MONI, TYPE="Stripline-5"
+  BPMDOG6 : MONI, TYPE="Stripline-5" !RFBDOG6 : MONI, TYPE="@2,CavityL-1"
+  BPMDOG7 : MONI, TYPE="Stripline-5"
+  BPMDOG8 : MONI, TYPE="Stripline-5"
+  BPML1P  : MONI, TYPE="Stripline-5"
+  BPML2P  : MONI, TYPE="Stripline-5"
+  BPML3P  : MONI, TYPE="Stripline-5"
+  BPML4P  : MONI, TYPE="Stripline-5"
+  BPML5P  : MONI, TYPE="Stripline-5"
+  BPMBP10 : MONI, TYPE="Stripline-5"
+  BPMBP11 : MONI, TYPE="Stripline-5"
+  BPMBP12 : MONI, TYPE="Stripline-5"
+
+  RFBWSBP1 : MONI, TYPE="@2,CavityS-1"
+
+! ==============================================================================
+! XCORs
+! ------------------------------------------------------------------------------
+
+  XCDOG1 : HKIC, TYPE="type-4"
+  XCDOG3 : HKIC, TYPE="type-4"
+  XCDOG5 : HKIC, TYPE="type-4"
+  XCDOG7 : HKIC, TYPE="type-4"
+  XCL1P  : HKIC, TYPE="type-4"
+  XCL3P  : HKIC, TYPE="type-4"
+  XCL5P  : HKIC, TYPE="type-4"
+  XCBP11 : HKIC, TYPE="type-4"
+
+! ==============================================================================
+! YCORs
+! ------------------------------------------------------------------------------
+
+  YCDOG0 : VKIC, TYPE="type-4"
+  YCDOG2 : VKIC, TYPE="type-4"
+  YCDOG4 : VKIC, TYPE="type-4"
+  YCDOG6 : VKIC, TYPE="type-4"
+  YCDOG8 : VKIC, TYPE="type-4"
+  YCL2P  : VKIC, TYPE="type-4"
+  YCL4P  : VKIC, TYPE="type-4"
+  YCBP10 : VKIC, TYPE="type-4"
+  YCBP12 : VKIC, TYPE="type-4"
+
+! ==============================================================================
+! marker points, etc.
+! ------------------------------------------------------------------------------
+
+! collimator
+
+! CEDOG : energy coll in bypass dog-leg (YSIZE is half-gap)
+
+  CEDOG : RCOL, L=Ljaw, YSIZE=8.6E-3, TYPE="VCOLL"
+
+! beam profile measurement
+
+  OTRDOG : PROF, TYPE="OTR"
+  WSDOG  : WIRE, TYPE="@3,fast"
+  OTR31  : PROF, TYPE="@3,YAG/OTR PSI" !CSR-induced coupling from dogleg
+  WSBP1  : WIRE, TYPE="fast"
+
+! markers
+
+  CCDLUBEG : MARK
+  CCDLUMID : MARK
+  CNTDLU   : MARK, TYPE="CENTER"
+  CCDLUEND : MARK
+  BEGBD    : MARK
+  clBRB1   : MARK !BRB1 centerline
+  MIDBD    : MARK
+  clBRB2   : MARK !BRB2 centerline
+  CNTDOG   : MARK, TYPE="CENTER"
+  ENDBD    : MARK
+  CCDLDBEG : MARK
+  CCDLDMID : MARK
+  CNTDLD   : MARK, TYPE="CENTER"
+  CCDLDEND : MARK
+  RWWAKE2  : MARK, TYPE="WAKE" !dogleg beampipe wake applied here
+
+! sector boundaries (ZBEG=101.6*(n-1); ZEND=101.6*n)
+
+  BPN09BEG : MARK ; BPN09END : MARK
+  BPN10BEG : MARK ; BPN10END : MARK
+  BPN11BEG : MARK ; BPN11END : MARK
+  BPN12BEG : MARK
+
+! ==============================================================================
+! BEAMLINE
+! ------------------------------------------------------------------------------
+
+  CCDLU : LINE=(CCDLUBEG,&
+    BCXDLU1a,BCXDLU1b,DCCDLUo,&
+    BCXDLU2a,BCXDLU2b,DCCDLUi,CCDLUMID,DCCDLUi,&
+    BCXDLU3a,BCXDLU3b,DCCDLUo,&
+    BCXDLU4a,BCXDLU4b,CNTDLU,CCDLUEND)
+
+  CCDLD : LINE=(CCDLDBEG,&
+    BCXDLD1a,BCXDLD1b,DCCDLDo,&
+    BCXDLD2a,BCXDLD2b,DCCDLDi,CCDLDMID,DCCDLDi,&
+    BCXDLD3a,BCXDLD3b,DCCDLDo,&
+    BCXDLD4a,BCXDLD4b,CNTDLD,CCDLDEND)
+
+  DLBP0 : LINE=(&
+    BRB1a,clBRB1,BRB1b,ROBRB1,DBD0,&
+    QDOG1,QDOG1,DBD1,&
+    QDOG2,QDOG2,DBD2,&
+    QDOG3,QDOG3,DBD3,&
+    QDOG4,QDOG4,DBD4h,MIDBD,DBD4h,&
+    QDOG5,QDOG5,DBD5,&
+    QDOG6,QDOG6,DBD6,&
+    QDOG7,QDOG7,DBD7,&
+    QDOG8,QDOG8,DBD8,&
+    ROBRB2,BRB2a,clBRB2,BRB2b)
+
+  DLBP0S : LINE=(&
+    BRB1a,clBRB1,BRB1b,ROBRB1,DBD0,&
+    QDOG1,QDOG1,DBD1Sa,SDOG1,SDOG1,DBD1Sb,&
+    QDOG2,QDOG2,DBD2,&
+    QDOG3,QDOG3,DBD3,&
+    QDOG4,QDOG4,DBD4h,MIDBD,DBD4h,&
+    QDOG5,QDOG5,DBD5,&
+    QDOG6,QDOG6,DBD6Sa,SDOG2,SDOG2,DBD6Sb,&
+    QDOG7,QDOG7,DBD7,&
+    QDOG8,QDOG8,DBD8,&
+    ROBRB2,BRB2a,clBRB2,BRB2b)
+
+  DLBP : LINE=(BEGBD,&
+    BRB1a,clBRB1,BRB1b,ROBRB1,DBD0a,YCDOG0,DBD0b,XCDOG1,DBD0c,&
+    QDOG1,QDOG1,DBD1a,BPMDOG1,DBD1b,CEDOG,DBD1c,&
+    SDOG1,SDOG1,DBD1d,&
+    QDOG2,QDOG2,DBD2a,BPMDOG2,DBD2b,YCDOG2,DBD2c,XCDOG3,DBD2d,&
+    QDOG3,QDOG3,DBD3a,BPMDOG3,DBD3b,YCDOG4,DBD3c,&
+    QDOG4,QDOG4,DBD4a,BPMDOG4,DBD4b,XCDOG5,DBD4c,&
+    QDOG5,QDOG5,DBD5a,BPMDOG5,DBD5b,YCDOG6,DBD5c,OTRDOG,DBD5d,&
+    QDOG6,QDOG6,DBD6a,BPMDOG6,DBD6b,WSDOG,DBD6c,XCDOG7,DBD6d,&
+    SDOG2,SDOG2,DBD6e,&
+    QDOG7,QDOG7,DBD7a,BPMDOG7,DBD7b,YCDOG8,DBD7c,&
+    QDOG8,QDOG8,DBD8a,BPMDOG8,DBD8b,ROBRB2,&
+    BRB2a,clBRB2,BRB2b,CNTDOG,&
+    ENDBD)
+
+  comment
+  MTCH1 : LINE=(DLCCP,&
+    CCDLD,DL0P,&
+    QL1P,QL1P,DL1P,&
+    QL2P,QL2P,DL2P,&
+    QL3P,QL3P,DL3P,&
+    QL4P,QL4P,DL4P,&
+    QL5P,QL5P,DBP,DBP,&
+    QBP10,QBP10,DBPa,DBPb,DBPd,DBPe,WSBP0,DBPf,DBP,&
+    QBP11,QBP11,DBP,DBP,&
+    QBP12,QBP12,DBPa,DBPb,DBPd)
+  endcomment
+
+ !comment
+  MTCH1 : LINE=(DLCCP,&
+    CCDLD,DL0Pa,OTR31,DL0Pb,&
+    QL1P,QL1P,DL1Pa,BPML1P,DL1Pb,XCL1P,DL1Pc,&
+    QL2P,QL2P,DL2Pa,BPML2P,DL2Pb,YCL2P,DL2Pc,&
+    QL3P,QL3P,DL3Pa,BPML3P,DL3Pb,XCL3P,DL3Pc,BPN09BEG,DL3Pd,&
+    QL4P,QL4P,DL4Pa,BPML4P,DL4Pb,YCL4P,DL4Pc,&
+    QL5P,QL5P,DBPa,BPML5P,DBPb,XCL5P,DBPc,&
+      DBPsa,BPN09END,BPN10BEG,DBPsb,&
+    QBP10,QBP10,DBPa,BPMBP10,DBPb,YCBP10,DBPd1,S10WALL,DBPd2,&
+      RFBWSBP1,DBPe,WSBP1,DBPf,&
+      DBPsa,BPN10END,BPN11BEG,DBPsb,&
+    QBP11,QBP11,DBPa,BPMBP11,DBPb,XCBP11,DBPc,&
+      DBPsa,BPN11END,BPN12BEG,DBPsb,&
+    QBP12,QBP12,DBPa,BPMBP12,DBPb,YCBP12,DBPd)
+ !endcomment
+
+  DLBM : LINE=(BEGDOG,CCDLU,DBDm1,DLBP,RWWAKE2,MTCH1,ENDDOG)
+
+  Bfodo : LINE=(QBPF,DBP,DBP,QBPD,QBPD,DBP,DBP,QBPF)
+
+! ------------------------------------------------------------------------------
+
+  RETURN

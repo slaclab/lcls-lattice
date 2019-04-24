@@ -1,0 +1,1353 @@
+
+! *** OPTICS=AD_ACCEL-23JAN19 ***
+
+! LCLS2cu various parts upstream of BSY
+
+! ==============================================================================
+! Modification History
+! ------------------------------------------------------------------------------
+! 07-JAN-2019, M. Woodley
+!  * rename some LI21 correctors to avoid name conflicts with LCLS-II
+!    per T. Maxwell
+!  * define BC1 and BC2 bend angles (rather than B-fields) to allow constant
+!    R56 when energy changes
+!  * remove "52-line stuff"
+! ------------------------------------------------------------------------------
+! 08-MAY-2017, M. Woodley
+!  * add 0.000001 m to DM19 to force Z=2059.732900 m at ZLIN04 and to line up
+!    sector boundaries; reduce DAQ17 by the same amount to compensate
+! 01-MAR-2017, M. Woodley
+!  * WS24 is actually installed (per LCLS)
+! ------------------------------------------------------------------------------
+! 23-NOV-2016, Y. Nosochkov
+!  * update KQ30801 value
+! ------------------------------------------------------------------------------
+! 04-NOV-2016, M. Woodley
+!  * change "1.259Q3.5" to "1.26Q3.5"
+!  * change Everson-Tesla 2.362Q3.5 (r=30mm) to SigmaPhi 1.69Q3.4 (bore=43mm)
+!  * remove definition of DRIFT "DAQ6A"
+! ------------------------------------------------------------------------------
+! 28-OCT-2014, M. Woodley
+!  * redefine drift DAQ17 to end at LI30 IV30-9 (Z=3042.005)
+! ==============================================================================
+
+  LSOL1 := 0.200 !needed for DL01a definition
+
+! ==============================================================================
+! Longitudinal misalignments observed after installation and difficult to fix:
+! Added to MAD file (but not drawings) so that optics comes out right (1/11/07).
+! ------------------------------------------------------------------------------
+
+  dz_QA11   := 3.42E-3    !quad is too far downstream when dz>0
+  dz_Q21201 :=-2.39E-3    !quad is too far downstream when dz>0
+  dz_Q21301 := 5.73E-3    !quad is too far downstream when dz>0
+  dz_QM14   := 2.17E-3    !quad is too far downstream when dz>0
+  dz_QM15   := 2.48E-3    !quad is too far downstream when dz>0
+
+! ==============================================================================
+! LCAVs
+! ------------------------------------------------------------------------------
+
+! global LCAV parameters
+
+  DLWLX  := 0.5948  !X-band structure length from input-coupler center to output-coupler center, each with tooling balls (m)
+  DLWL10 := 3.0441  !"10  ft" (29 Sband wavelengths; 87 DLWG cavities)
+  DLWL9  := 2.8692  !"9.41 ft" (27 1/3 Sband wavelengths; 82 DLWG cavities)
+  DLWL7  := 2.1694  !"7   ft" (20 2/3 Sband wavelengths; 62 DLWG cavities)
+  P25    := 1       !25% power factor
+  P50    := SQRT(2) !50% power factor
+
+! L0 energy profile (model the one 3-m L0b section only)
+
+  L0phase := -1.1              !L0b S-band rf phase (deg)
+  dEL0a   := GeV2MeV*(E0i-E00) !total L0a energy gain (MeV)
+  dEL0b   := GeV2MeV*(Ei-E0i)  !total L0b energy gain (MeV)
+  PhiL0   := L0phase/360       !radians/2pi
+ !gfac0   := 3.130139          !flange-to-flange length of dual-feed L0-a and L0-b RF structures [m]
+  gfac0   := 3.095244          !flange-to-flange length (121.86" Oct. 18, '05) of dual-feed L0-a and L0-b RF structures [m]
+  gradL0a := dEL0a/(gfac0*COS(PhiL0*TWOPI))
+  gradL0b := dEL0b/(gfac0*COS(PhiL0*TWOPI))
+
+! L1 energy profile
+
+  L1phase  := -25.1             !L1 S-band rf phase (deg)
+  L1Xphase :=-160.0             !L1 X-band rf phase (deg)
+  dEL1     := GeV2MeV*(EBC1-Ei) !total L1 energy gain (MeV)
+  dEL1X    := 19.0              !L1 X-band amplitude (MeV)
+  PhiL1    := L1phase/360       !radians/2pi
+  PhiL1X   := L1Xphase/360      !radians/2pi
+  gfac1    := P50*DLWL9+P25*DLWL9+P25*DLWL10
+  gradL1   := (dEL1-dEL1X*COS(PhiL1X*TWOPI))/(gfac1*COS(PhiL1*TWOPI))
+ !VALUE, gradL1
+
+! L2 energy profile
+
+  L2phase := -41.4               !L2 rf phase (deg)
+  dEL2    := GeV2MeV*(EBC2-EBC1) !total L2 energy gain (MeV)
+  PhiL2   := L2phase/360         !radians/2pi
+  gfac2   := 110*P25*DLWL10+1*P50*DLWL10
+  gradL2  := dEL2/(gfac2*COS(PhiL2*TWOPI))
+ !VALUE, gradL2
+
+! L3 energy profile
+
+  L3phase := 0.0               !L3 rf phase (deg)
+  dEL3    := GeV2MeV*(Ef-EBC2) !total L3 energy gain (MeV)
+  PhiL3   := L3phase/360       !radians/2pi
+  gfac3   := 161*P25*DLWL10 + 12*P50*DLWL10 + 3*P25*DLWL9 + 4*P25*DLWL7
+  gradL3  := dEL3/(gfac3*COS(PhiL3*TWOPI))
+ !VALUE, gradL3
+
+  L1X___1 : LCAV, TYPE="X1_Xband", FREQ=XbandF, L=DLWLX/2,  &
+                  DELTAE=dEL1X/2 , PHI0=PhiL1X
+  L1X___2 : LCAV, TYPE="X1_Xband", FREQ=XbandF, L=DLWLX/2,  &
+                  DELTAE=dEL1X/2 , PHI0=PhiL1X
+
+! L0 sections
+
+  L0a___1 : LCAV, TYPE="DUALFEED",  FREQ=SbandF, L=0.0586460,  &
+                   DELTAE=gradL0a*0.0586460,  PHI0=PhiL0
+  L0a___2 : LCAV, TYPE="DUALFEED",  FREQ=SbandF, L=0.1993540,  &
+                   DELTAE=gradL0a*0.1993540,  PHI0=PhiL0
+  L0a___3 : LCAV, TYPE="DUALFEED",  FREQ=SbandF, L=0.6493198,  &
+                   DELTAE=gradL0a*0.6493198,  PHI0=PhiL0
+  L0a___4 : LCAV, TYPE="DUALFEED",  FREQ=SbandF, L=0.6403022,  &
+                   DELTAE=gradL0a*0.6403022,  PHI0=PhiL0
+  L0a___5 : LCAV, TYPE="DUALFEED",  FREQ=SbandF, L=1.1518464,  &
+                   DELTAE=gradL0a*1.1518464,  PHI0=PhiL0
+  L0a___6 : LCAV, TYPE="DUALFEED",  FREQ=SbandF, L=0.3348566,  &
+                   DELTAE=gradL0a*0.3348566,  PHI0=PhiL0
+  L0a___7 : LCAV, TYPE="DUALFEED",  FREQ=SbandF, L=0.0609190,  &
+                   DELTAE=gradL0a*0.0609190,  PHI0=PhiL0
+
+  L0b___1 : LCAV, TYPE="DUALFEED",  FREQ=SbandF, L=0.0586460,  &
+                   DELTAE=gradL0b*0.0586460,  PHI0=PhiL0
+  L0b___2 : LCAV, TYPE="DUALFEED",  FREQ=SbandF, L=0.3371281,  &
+                   DELTAE=gradL0b*0.3371281,  PHI0=PhiL0
+  L0b___3 : LCAV, TYPE="DUALFEED",  FREQ=SbandF, L=1.1518479,  &
+                   DELTAE=gradL0b*1.1518479,  PHI0=PhiL0
+  L0b___4 : LCAV, TYPE="DUALFEED",  FREQ=SbandF, L=1.1515630,  &
+                   DELTAE=gradL0b*1.1515630,  PHI0=PhiL0
+  L0b___5 : LCAV, TYPE="DUALFEED",  FREQ=SbandF, L=0.3351400,  &
+                   DELTAE=gradL0b*0.3351400,  PHI0=PhiL0
+  L0b___6 : LCAV, TYPE="DUALFEED",  FREQ=SbandF, L=0.0609190,  &
+                   DELTAE=gradL0b*0.0609190,  PHI0=PhiL0
+
+  FLNGa1 : MARK !upstream   face of L0a entrance flange
+  FLNGa2 : MARK !downstream face of L0a exit flange
+  FLNGb1 : MARK !upstream   face of L0b entrance flange
+  FLNGb2 : MARK !downstream face of L0b exit flange
+
+! transverse deflecting cavities
+
+ !TCAV0 : DRIF, L=0.6680236/2  !flange-to-flange (then split in two)
+ !TCAV3 : DRIF, L=2.438/2
+  TCAV0 : LCAV, TYPE="TRANS_DEFL", L=0.6680236/2 !flange-to-flange (then split in two)
+  TCAV3 : LCAV, TYPE="TRANS_DEFL", L=2.438/2
+
+ !LKIK   := 1.0601              ! kicker coil length per magnet (m) [41.737 in from SA-380-330-02, rev. 0]
+  BXKIKA : SBEN, TYPE="XPULSED", L=LKIK/2, ANGLE=1E-12, HGAP=25.4E-3, &
+                 E1=0  , FINT=0.5, FINTX=0
+  BXKIKB : SBEN, TYPE="XPULSED", L=LKIK/2, ANGLE=1E-12, HGAP=25.4E-3, &
+                 FINT=0, E2=2E-12, FINTX=0.5
+
+! ==============================================================================
+! BENDs
+! ------------------------------------------------------------------------------
+
+! global BEND parameters
+
+  dLBh := 0.0144     !increase to lengthen BXH1-4 eff. length (m)
+  LBh  := 0.110+dLBh !5D3.9 "Z" length (m)   laser-heater chicane bends approx. effective length (R. Carr, 01-AUG-05 -PE)
+  GBh  := 30E-3      !5D3.9 gap height (m)
+  LB0  := 0.2032     !5D7.1 "Z" length (m)
+  GB0  := 30E-3      !5D7.1 gap height (m)
+  LB1  := 0.2032     !5D7.1 "Z" length (m)
+  GB1  := 43.28E-3   !5D7.1 gap height (m)
+  LB2  := 0.5490     !1D19.7 "Z" length (m)      !changed from 0.540 m to 0.549 on Sep. 28, '07 based on magnetic measurements - PE
+  GB2  := 33.35E-3   !1D19.7 gap height (m)
+ !LB3  := 2.623      !4D102.36T effective length (m)
+ !GB3  := 0.023      !4D102.36T gap height (m)
+ !LVB  := 1.025      !3D39 vertical bend effective length (m)
+ !GVB  := 0.034925   !vertical bend gap width (m)
+
+! GTL
+! ===
+
+  RBXG := 0.1963       !BXG bend radius (measured) [m]
+  ABXG := 85.0*RADDEG  !bend angle of BXG dipole [deg*RADDEG = rad]
+  EBXG := 24.25*RADDEG !BXG pole-face rot. edge angle of BXG dipole [deg*RADDEG = rad]
+  GBXG := 0.043        !BXG magnet full gap height (m)
+  LBXG := RBXG*ABXG    !path length of BXG dipole when ON (= R*theta) [m]
+
+ !VALUE, LBXG
+
+  BXGA    : SBEN, L=LBXG/2, ANGLE=ABXG/2, &
+                  HGAP=GBXG/2, E1=EBXG, E2=0   , &
+                  FINT=0.492, FINTX=0              ! 1st-half of gun spectrometer bend (set to ~zero length and strength, with longitudinal position as the actual bend's center)
+  BXGB    : SBEN, L=LBXG/2, ANGLE=ABXG/2, &
+                  HGAP=GBXG/2, E1=0   , E2=EBXG, &
+                  FINT=0.0 , FINTX=0.492           ! 1st-half of gun spectrometer bend (set to ~zero length and strength, with longitudinal position as the actual bend's center)
+  
+  DXG0    : DRIF, L=RBXG*SIN(ABXG/2)               ! drift, w/BXG off, from BXG entrance face to its z-projected center
+  DXGA    : SBEN, L=1E-9/2, ANGLE=0/2              ! 1st-half of gun-spec bend (set to ~zero length and strength, with longitudinal position as bend's center)
+  DXGB    : SBEN, L=1E-9/2, ANGLE=0/2              ! 2nd-half of gun-spec bend (set to ~zero length and strength, with longitudinal position as bend's center)
+
+  DBXG : DRIF, L=0.132618358755 !replaces DXG0/DXGA/DXGB
+
+  DGS1    : DRIF, L=0.1900-LQGx/2-20E-6-0.0155757
+  DGS2    : DRIF, L=(0.2300-LQGx)/2+20E-6
+  DGS3    : DRIF, L=(0.2300-LQGx)/2-20E-6
+  DGS4    : DRIF, L= 0.1680-LQGx/2-0.00283
+  DGS5    : DRIF, L= 0.0300-0.02271
+  DGS6    : DRIF, L= 0.0240-0.00402
+  DGS7    : DRIF, L= 0.05
+
+  rQGx   := 0.020                  ! QG quadrupole pole-tip radius [m]
+  LQGx   := 0.076                  ! QG quadrupole effective length [m]
+  CQ01    : QUAD,L=1E-9/2,K1=0,TYPE="QSOL"                   !correction quad in 1st solenoid at gun (nominally set to 0) (set to ~zero length, with longitudinal position as the actual quad's center)
+  SQ01    : QUAD,L=1E-9/2,K1=0,TILT,TYPE="QSOL"              !correction skew-quad in 1st solenoid at gun (nominally set to 0) (set to ~zero length, with longitudinal position as the actual quad's center)
+  QG02    : QUAD,L=LQGx/2,K1=-35.48540,APER=rQGx,TYPE="QG"
+  QG03    : QUAD,L=LQGx/2,K1= 80.16051,APER=rQGx,TYPE="QG"
+
+  XCG1    : HKIC,TYPE="class-G"
+  XCG2    : HKIC,TYPE="class-G"
+  YCG1    : VKIC,TYPE="class-G"
+  YCG2    : VKIC,TYPE="class-G"
+  SCG1    : LINE=(XCG1,YCG1)
+  SCG2    : LINE=(XCG2,YCG2)
+
+  BPMG1   : MONI, TYPE="25_um_res"
+  CRG1    : INST                  ! Cerenkov radiator bunch length monitor
+  YAGG1   : PROF, TYPE="YAG"      ! 6-MeV spectrometer screen
+  FCG1    : INST                  ! gun-spec. Faraday cup w/screen
+  GSPECBEG: MARK
+
+  GSPEC   : LINE=(GSPECBEG,BXGA,BXGB,DGS1,QG02,SCG1,QG02, &
+                  DGS2,BPMG1,DGS3,QG03,SCG2,QG03,&
+                  DGS4,YAGG1,DGS5,CRG1,DGS6,FCG1,DGS7,DBMARK97) ! gun spectrometer from BXG to Farraday cup and dump
+
+! 135-MeV Spectrometer
+! ====================
+  KQS01 :=  9.682244191676
+  KQS02 := -5.648980372134
+
+  QS01    : QUAD, TYPE="ETA", L=LQx/2, K1=KQS01, APER=rQx
+  QS02    : QUAD, TYPE="ETA", L=LQx/2, K1=KQS02, APER=rQx
+  DX01A   : SBEN, L=LB0/2, ANGLE=1E-9     ! 1st half of BX01 magnet switched off here
+  DX01B   : SBEN, L=LB0/2, ANGLE=1E-9     ! 2nd half of BX01 magnet switched off here
+
+  DBX01a : DRIF, L=0.1016 !replaces DX01A
+  DBX01b : DRIF, L=0.1016 !replaces DX01B
+  
+  DS0     : DRIF, L=0.5583996
+  DS0a    : DRIF, L=0.1691504
+  DS0b    : DRIF, L=0.4615/2
+  DS1a    : DRIF, L=0.0890085
+  DS1b    : DRIF, L=0.1451215
+  DS1c    : DRIF, L=0.171796
+  DS1d    : DRIF, L=0.251824
+
+  DS2     : DRIF, L=0.478250
+  DS3a    : DRIF, L=0.199626
+  DS3b    : DRIF, L=0.200374
+  DS4     : DRIF, L=0.287275
+  DS6a    : DRIF, L=0.2575952
+  DS6b    : DRIF, L=0.2273298-0.008205
+  DS7     : DRIF, L=0.3801874+0.008205-0.02
+  DS8     : DRIF, L=0.1976126+0.02
+  DS9     : DRIF, L=0.3378194
+  SPECBEG : MARK
+  BPMS1   : MONI, TYPE="20_um_res"
+  BPMS2   : MONI, TYPE="20_um_res"
+  BPMS3   : MONI, TYPE="20_um_res"
+  VVS1    : MARK                  !135-MeV spectrometer vacuum valve
+  YAGS1   : PROF, TYPE="YAG"      !1st 135-MeV spectrometer YAG-screen - center of device in MAD is defined as center of YAG crystal, not mirror
+  YAGS2   : PROF, TYPE="YAG"      !2nd 135-MeV spectrometer YAG-screen - center of device in MAD is defined as center of YAG crystal, not mirror
+  OTRS1   : PROF, TYPE="OTR"      !135-MeV spectrometer OTR-screen
+  SDMP    : INST                  ! gun-spec. dump (exact location? - 11/09/05)
+  XCS1    : HKIC,TYPE="class-1a"
+  YCS1    : VKIC,TYPE="class-1a"
+  XCS2    : HKIC,TYPE="class-1a"
+  YCS2    : VKIC,TYPE="class-1a"
+  SCS1    : LINE=(XCS1,YCS1)
+  SCS2    : LINE=(XCS2,YCS2)
+  LBS     := 0.5435        !measured effective length along curved trajectory (m)
+  GBS     := 34E-3         !gap height (m)
+  ABS     := injdeg*RADDEG !injection line angle (rad)
+  BXSEj   := -7.29*RADDEG
+  BXSA    : SBEN, L=LBS/2 , HGAP=GBS/2, ANGLE=ABS/2, &
+                  E1=BXSEj, E2=0      , FINT=0.391  , FINTX=0
+  BXSB    : SBEN, L=LBS/2 , HGAP=GBS/2, ANGLE=ABS/2, &
+                  E1=0    , E2=BXSEj  , FINT=0     , FINTX=0.391
+
+ !SPECBL  : LINE=(SPECBEG,DX01A,DX01B,DS0,SCS1,DS0a,DS0b,DS1a,&
+ !                VVS1,DS1b,YAGS1,DS1c,BPMS1,DS1d,BXSA,BXSB,DS2,&
+ !                QS01,BPMS2,QS01,DS3a,SCS2,DS3b,QS02,QS02,DS4,&
+ !                IMS1,DS6a,BPMS3,DS6b,YAGS2,DS7,OTRS1,DS8,&
+ !                DS9,SDMP,DBMARK98)
+
+  SPECBL  : LINE=(SPECBEG,DBX01a,DBX01b,DS0,SCS1,DS0a,DS0b,DS1a,&
+                  VVS1,DS1b,YAGS1,DS1c,BPMS1,DS1d,BXSA,BXSB,DS2,&
+                  QS01,BPMS2,QS01,DS3a,SCS2,DS3b,QS02,QS02,DS4,&
+                  IMS1,DS6a,BPMS3,DS6b,YAGS2,DS7,OTRS1,DS8,&
+                  DS9,SDMP,DBMARK98)
+
+! DL1
+! ===
+
+  DL1_ON := 1                      !=1: nominal LCLS with BX01/02 bend magnet DL1 power-supply is ON, =0: 135-MeV spectrometer-mode with DL1 OFF
+
+  ADL1 := injdeg*RADDEG            !injection line angle (rad)
+
+  AB0    := ADL1/2                 !full bend angle (rad)
+  LeffB0 := LB0*AB0/(2*SIN(AB0/2)) !full bend path length (m)
+  AEB0   := AB0/2                  !edge angles
+
+  BX01A : SBEN, TYPE="5D7.1", L=LeffB0/2, HGAP=GB0/2, ANGLE=AB0/2, &
+                E1=AEB0, FINT=0.45, FINTX=0
+  BX01B : SBEN, TYPE="5D7.1", L=LeffB0/2, HGAP=GB0/2, ANGLE=AB0/2, &
+                E2=AEB0, FINT=0, FINTX=0.45
+  BX02A : SBEN, TYPE="5D7.1", L=LeffB0/2, HGAP=GB0/2, ANGLE=AB0/2, &
+                E1=AEB0, FINT=0.45, FINTX=0
+  BX02B : SBEN, TYPE="5D7.1", L=LeffB0/2, HGAP=GB0/2, ANGLE=AB0/2, &
+                E2=AEB0, FINT=0, FINTX=0.45
+
+! BC1
+! ===
+
+  Brho1 := Cb*EBC1            !beam rigidity at BC1 (kG-m)
+  AB11  := -0.086753564890323 !full chicane bend angle (rad)
+  RB11  := LB1/SIN(AB11)      !bend radius (m)
+  BB11  := Brho1/RB11         !bend field (kG) [-3.555805785115 kG @ 0.250 GeV]
+  AB11S := ASIN((LB1/2)/RB11) !"short" half chicane bend angle (rad)
+  LB11S := RB11*AB11S         !"short" half chicane bend path length (m)
+  AB11L := AB11-AB11S         !"long" half chicane bend angle (rad)
+  LB11L := RB11*AB11L         !"long" half chicane bend path length (m)
+  FB11  := 0.387              !fringe field integral
+
+! BX11 gets an offset of 2.2 mm (theta*L/8) towards the wall
+! BX12 gets an offset of 2.2 mm (theta*L/8) towards the aisle
+! BX13 gets an offset of 2.2 mm (theta*L/8) towards the aisle
+! BX14 gets an offset of 2.2 mm (theta*L/8) towards the wall
+
+  BX11A : SBEN, TYPE="5D7.1", L=LB11S, ANGLE=+AB11S, HGAP=GB1/2, &
+                E1=0, FINT=FB11, FINTX=0
+  BX11B : SBEN, TYPE="5D7.1", L=LB11L, ANGLE=+AB11L, HGAP=GB1/2, &
+                FINT=0, E2=+AB11, FINTX=FB11
+  BX12A : SBEN, TYPE="5D7.1", L=LB11L, ANGLE=-AB11L, HGAP=GB1/2, &
+                E1=-AB11, FINT=FB11, FINTX=0
+  BX12B : SBEN, TYPE="5D7.1", L=LB11S, ANGLE=-AB11S, HGAP=GB1/2, &
+                FINT=0, E2=0, FINTX=FB11
+  BX13A : SBEN, TYPE="5D7.1", L=LB11S, ANGLE=-AB11S, HGAP=GB1/2, &
+                E1=0, FINT=FB11, FINTX=0
+  BX13B : SBEN, TYPE="5D7.1", L=LB11L, ANGLE=-AB11L, HGAP=GB1/2, &
+                FINT=0, E2=-AB11, FINTX=FB11
+  BX14A : SBEN, TYPE="5D7.1", L=LB11L, ANGLE=+AB11L, HGAP=GB1/2, &
+                E1=+AB11, FINT=FB11, FINTX=0
+  BX14B : SBEN, TYPE="5D7.1", L=LB11S, ANGLE=+AB11S, HGAP=GB1/2, &
+                FINT=0, E2=0, FINTX=FB11
+
+! magnet-to-magnet path lengths
+  LD11   := 2.434900                  !outer bend-to-bend "Z" distance (m)
+  LD11o  := LD11/COS(AB11)            !outer bend-to-bend path length (m) (minus ~0.15 m 9/21/04)
+  LD11a  := 0.261301                  !"Z" distance upstream of SQ13 (m)
+  LD11b  := LD11-LD11a-0.16*COS(AB11) !"Z" distance downstream of SQ13 (m)
+  LD11oa := LD11a/COS(AB11)           !path length upstream of SQ13
+  LD11ob := LD11b/COS(AB11)           !path length downstream of SQ13
+
+! BC2
+! ===
+
+  Brho2 := Cb*EBC2            !beam rigidity at BC2 (kG-m)
+  AB21  := -0.034727452562382 !full chicane bend angle (rad)
+  RB21  := LB2/SIN(AB21)      !bend radius (m)
+  BB21  := Brho2/RB21         !bend field (kG) [-9.071122639275 kG @ 4.300 GeV]
+  AB21S := ASIN((LB2/2)/RB21) !"short" half chicane bend angle (rad)
+  LB21S := RB21*AB21S         !"short" half chicane bend path length (m)
+  AB21L := AB21-AB21S         !"long" half chicane bend angle (rad)
+  LB21L := RB21*AB21L         !"long" half chicane bend path length (m)
+  FB21  := 0.633              !fringe field integral
+
+! BX21 gets an offset of ~2.3 mm (theta*L/8) towards the wall
+! BX22 gets an offset of ~2.3 mm (theta*L/8) towards the aisle
+! BX23 gets an offset of ~2.3 mm (theta*L/8) towards the aisle
+! BX24 gets an offset of ~2.3 mm (theta*L/8) towards the wall
+
+  BX21A : SBEN, TYPE="1D19.7", L=LB21S, ANGLE=+AB21S, HGAP=GB2/2, &
+                E1=0, FINT=FB21, FINTX=0
+  BX21B : SBEN, TYPE="1D19.7", L=LB21L, ANGLE=+AB21L, HGAP=GB2/2, &
+                FINT=0, E2=+AB21, FINTX=FB21
+  BX22A : SBEN, TYPE="1D19.7", L=LB21L, ANGLE=-AB21L, HGAP=GB2/2, &
+                E1=-AB21, FINT=FB21, FINTX=0
+  BX22B : SBEN, TYPE="1D19.7", L=LB21S, ANGLE=-AB21S, HGAP=GB2/2, &
+                FINT=0, E2=0, FINTX=FB21
+  BX23A : SBEN, TYPE="1D19.7", L=LB21S, ANGLE=-AB21S, HGAP=GB2/2, &
+                E1=0, FINT=FB21, FINTX=0
+  BX23B : SBEN, TYPE="1D19.7", L=LB21L, ANGLE=-AB21L, HGAP=GB2/2, &
+                FINT=0, E2=-AB21, FINTX=FB21
+  BX24A : SBEN, TYPE="1D19.7", L=LB21L, ANGLE=+AB21L, HGAP=GB2/2, &
+                E1=+AB21, FINT=FB21, FINTX=0
+  BX24B : SBEN, TYPE="1D19.7", L=LB21S, ANGLE=+AB21S, HGAP=GB2/2, &
+                FINT=0, E2=0, FINTX=FB21
+
+! magnet-to-magnet path lengths
+
+  LD21i := 1.0 - 2*0.1       !inner bend-to-bend "Z" distance (m)
+
+  LD1  := 2.00-0.04-0.0045   !outer bend-to-bend "Z" distance (m)
+  LD2  := 8.00-0.04-0.0508-0.0045   !outer bend-to-bend "Z" distance (m)
+  LD3  := 8.00-0.04-0.0508-0.0045   !outer bend-to-bend "Z" distance (m)
+  LD4  := 2.00-0.04-0.0045   !outer bend-to-bend "Z" distance (m)
+  LDo1 := LD1/COS(AB21)      !outer bend-to-bend path length (m)
+  LDo2 := LD2/COS(AB21)-LQc  !outer bend-to-bend path length (m)
+  LDo3 := LD3/COS(AB21)-LQc  !outer bend-to-bend path length (m)
+  LDo4 := LD4/COS(AB21)      !outer bend-to-bend path length (m)
+
+! DL1
+!  KQA01 :=  -7.474220813631            ! OLD - no lsr-htr (for commissioning in Dec. '06 through July '07) & on-measured TWSS0
+!  KQA02 :=   8.137641193725
+!  KQE01 :=  -2.215639104385
+!  KQE02 :=  -0.241173314721
+!  KQE03 :=   7.613440306134
+!  KQE04 :=  -6.985386854286
+
+!  KQA01 := -12.492179751016            ! OLD - with 5.4-cm lamu lsr-htr and "MATRIX" focusing, but non-measured TWSS0
+!  KQA02 :=  11.022504569397
+!  KQE01 :=  -3.089332618348
+!  KQE02 :=   0.090132722014
+!  KQE03 :=   6.822078966488
+!  KQE04 :=  -5.731166555613
+
+!  KQA01 := -6.1200                     ! post Aug. 11, 2008 matching based on real measurements with heater/chicane not yet installed (64 & 135 MeV)
+!  KQA02 := 12.6808
+!  KQE01 := -1.4046
+!  KQE02 := -2.4546
+!  KQE03 :=  9.6624
+!  KQE04 := -7.4610
+
+  KQA01 := -12.317411498864            ! new design with laser-heater ON (chicane and und, w/Betx=Bety=12 m), based on measured (back-tracked) TWSS0
+  KQA02 :=  13.706906173749
+  KQE01 :=  -6.538179321052
+  KQE02 :=   5.354060093454
+  KQE03 :=   6.054674881291
+  KQE04 :=  -5.235476556481
+
+  KQM01 :=  15.072053882204
+  KQM02 := -11.974604636345
+  KQM03 :=  -8.255421303054
+  KQM04 :=  13.306105246908
+
+  KQB   :=  22.169715923059 !22.169701529353
+
+  QA01 : QUAD, TYPE="ETA", L=LQx/2, K1=KQA01, APER=rQx
+  QA02 : QUAD, TYPE="ETA", L=LQx/2, K1=KQA02, APER=rQx
+  QE01 : QUAD, TYPE="ETA", L=LQx/2, K1=KQE01, APER=rQx
+  QE02 : QUAD, TYPE="ETA", L=LQx/2, K1=KQE02, APER=rQx
+  QE03 : QUAD, TYPE="ETA", L=LQx/2, K1=KQE03, APER=rQx
+  QE04 : QUAD, TYPE="ETA", L=LQx/2, K1=KQE04, APER=rQx
+  QM01 : QUAD, TYPE="ETA", L=LQx/2, K1=KQM01, APER=rQx
+  QM02 : QUAD, TYPE="ETA", L=LQx/2, K1=KQM02, APER=rQx
+  QB   : QUAD, TYPE="QE", L=LQE/2, K1=KQB  , APER=rQE
+  QM03 : QUAD, TYPE="ETA", L=LQx/2, K1=KQM03, APER=rQx
+  QM04 : QUAD, TYPE="ETA", L=LQx/2, K1=KQM04, APER=rQx
+
+! L1
+
+  KQL1 := 3.789198342593
+
+  QFL1 : QUAD, TYPE="QE", L=LQE/2, K1=+KQL1, APER=rQE
+  QDL1 : QUAD, TYPE="QE", L=LQE/2, K1=-KQL1, APER=rQE
+
+  KQA11 := -KQL1
+  KQA12 :=  1.863910872552
+  QA11 : QUAD, TYPE="ETA", L=LQx/2, K1=KQA11, APER=rQx
+  QA12 : QUAD, TYPE="ETA", L=LQx/2, K1=KQA12, APER=rQx
+
+! BC1
+
+  KQ21201 :=  -9.357677119503
+  KQM11   :=   7.960339117021
+  KQM12   :=  -8.366726970987
+  KQM13   :=   9.860390676906
+  KCQ11   :=   1E-12
+  KSQ13   :=   1E-12
+  KCQ12   :=   1E-12
+  KQ21301 :=  -0.1347              ! turn this quad OFF for LCLS operations (this is meas'd remnant field of Gdl = 0.12 kG)
+  KQM14   :=   7.079239169293
+  KQM15   :=  -6.765038435385
+
+  Q21201 : QUAD, TYPE="QE",  L=LQE/2, K1=KQ21201,APER=rQE   ! (QE-072 after Aug 2006) gets moved downstream of pre-LCLS location by 1.101312 m (measured parallel to main linac axis)
+  QM11   : QUAD, TYPE="ETA", L=LQx/2, K1=KQM11,  APER=rQx
+  CQ11   : QUAD, TYPE="ETB", L=LQc/2, K1=KCQ11,  APER=rQc   ! now ETB tweaker quad
+  SQ13   : QUAD,             L=0.16/2,K1=KSQ13,  APER=0.06, TILT  ! per Kirk Bertsche
+  CQ12   : QUAD, TYPE="ETB", L=LQc/2, K1=KCQ12,  APER=rQc   ! now ETB tweaker quad
+  QM12   : QUAD, TYPE="ETA", L=LQx/2, K1=KQM12,  APER=rQx
+  QM13   : QUAD, TYPE="ETA", L=LQx/2, K1=KQM13,  APER=rQx
+  Q21301 : QUAD, TYPE="QE",  L=LQE/2, K1=KQ21301,APER=rQE   ! (QE-004 after Aug 2006) gets moved downstream of pre-LCLS location by 1.247066 m (measured parallel to main linac axis), and turned off for LCLS
+  QM14   : QUAD, TYPE="ETA", L=LQx/2, K1=KQM14,  APER=rQx
+  QM15   : QUAD, TYPE="ETA", L=LQx/2, K1=KQM15,  APER=rQx
+
+! L2
+
+  KQL2 := 0.708388522907
+
+  QFL2 : QUAD, TYPE="QE", L=LQE/2, K1=+KQL2, APER=rQE
+  QDL2 : QUAD, TYPE="QE", L=LQE/2, K1=-KQL2, APER=rQE
+
+  KQ21401 :=  1.044881943081  ! (QE-002 after Aug 2006)
+  KQ21501 := -0.833170329125 ! (use pre-Aug-2006 Q21201 magnet)
+  KQ21601 :=  KQL2           ! (use pre-Aug-2006 Q21301 magnet)
+  KQ21701 := -KQL2
+  KQ21801 :=  0.721703961622
+  KQ21901 := -0.721930035688
+
+  KQ22201 :=  0.711368406706
+  KQ22301 := -0.764179973154
+  KQ22401 :=  KQL2
+  KQ22501 := -KQL2
+  KQ22601 :=  KQL2
+  KQ22701 := -KQL2
+  KQ22801 :=  0.748596129657
+  KQ22901 := -0.709657173604
+
+  KQ23201 :=  0.721241098608
+  KQ23301 := -0.741011348313
+  KQ23401 :=  KQL2
+  KQ23501 := -KQL2
+  KQ23601 :=  KQL2
+  KQ23701 := -KQL2
+  KQ23801 :=  0.770675623153
+  KQ23901 := -0.726878264576
+
+  KQ24201 :=  0.779404953697
+  KQ24301 := -0.856812505218
+  KQ24401 :=  1.025618689057
+  KQ24501 := -0.931675081162
+  KQ24601 :=  0.603160584173
+
+  Q21401 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ21401, APER=rQE
+  Q21501 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ21501, APER=rQE
+  Q21601 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ21601, APER=rQE
+  Q21701 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ21701, APER=rQE
+  Q21801 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ21801, APER=rQE
+  Q21901 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ21901, APER=rQE
+
+  Q22201 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ22201, APER=rQE
+  Q22301 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ22301, APER=rQE
+  Q22401 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ22401, APER=rQE
+  Q22501 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ22501, APER=rQE
+  Q22601 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ22601, APER=rQE
+  Q22701 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ22701, APER=rQE
+  Q22801 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ22801, APER=rQE
+  Q22901 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ22901, APER=rQE
+
+  Q23201 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ23201, APER=rQE
+  Q23301 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ23301, APER=rQE
+  Q23401 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ23401, APER=rQE
+  Q23501 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ23501, APER=rQE
+  Q23601 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ23601, APER=rQE
+  Q23701 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ23701, APER=rQE
+  Q23801 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ23801, APER=rQE
+  Q23901 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ23901, APER=rQE
+
+  Q24201 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ24201, APER=rQE
+  Q24301 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ24301, APER=rQE
+  Q24401 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ24401, APER=rQE
+  Q24501 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ24501, APER=rQE
+  Q24601 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ24601, APER=rQE
+
+! BC2
+
+  KQ24701 := -1.286030138047
+  KQM21   :=  0.508115309359
+  KCQ21   :=  1E-12
+  KCQ22   :=  1E-12
+  KQM22   := -0.590418980634
+  KQ24901 :=  1.082042245094
+
+  Q24701A: QUAD, TYPE="QE"        , L=LQE/2, K1=KQ24701, APER=rQE  ! in same location as pre-LCLS (with its BPM)
+  Q24701B: QUAD, TYPE="QE"        , L=LQE/2, K1=KQ24701, APER=rQE  ! 10 cm between Q24701A & B
+  QM21   : QUAD, TYPE="0.91Q17.72", L=LQF/2, K1=KQM21,   APER=rQF
+  CQ21   : QUAD, TYPE="ETB"       , L=LQc/2, K1=KCQ21,   APER=rQc
+  CQ22   : QUAD, TYPE="ETB"       , L=LQc/2, K1=KCQ22,   APER=rQc
+  QM22   : QUAD, TYPE="0.91Q17.72", L=LQF/2, K1=KQM22,   APER=rQF
+  Q24901A: QUAD, TYPE="QE"        , L=LQE/2, K1=KQ24901, APER=rQE  ! moved 2.397400 m downstream of original Q24901 position
+  Q24901B: QUAD, TYPE="QE"        , L=LQE/2, K1=KQ24901, APER=rQE  ! 10 cm between Q24901A & B (BPM in this 2nd quad)
+
+! L3
+
+!  KQFL3 :=  0.446670469684 ! was used for 12*2*pi MUX from BX24 to BX31
+!  KQDL3 := -0.424793498653 ! was used for 12*2*pi MUX from BX24 to BX31
+  KQFL3 :=  0.395798933782  ! gives psix = 50.76 deg, 44.64 deg, 45.00 deg between four LI28 wires
+  KQDL3 := -0.395649286346  ! gives TCAV3 -> OTR30 right + WS28 psiy: 48.96 deg, 45.72 deg, 43.92 deg
+  QFL3 : QUAD, TYPE="QE", L=LQE/2, K1=KQFL3, APER=rQE
+  QDL3 : QUAD, TYPE="QE", L=LQE/2, K1=KQDL3, APER=rQE
+
+  KQ25201 :=  0.697993592575
+  KQ25301 := -0.478388226374
+  KQ25401 :=  0.42896785871
+  KQ25501 := -0.399864956514
+  KQ25601 :=  KQFL3
+  KQ25701 :=  KQDL3
+  KQ25801 :=  0.407168436855
+  KQ25901 := -0.388171234952
+
+  KQ26201 :=  0.388578933647
+  KQ26301 := -0.405404843557
+  KQ26401 :=  KQFL3
+  KQ26501 :=  KQDL3
+  KQ26601 :=  KQFL3
+  KQ26701 :=  KQDL3
+  KQ26801 :=  0.406308742855
+  KQ26901 := -0.388549789828
+
+  KQ27201 :=  0.390161854669
+  KQ27301 := -0.406474370795
+  KQ27401 :=  KQFL3
+  KQ27501 :=  KQDL3
+  KQ27601 :=  KQFL3
+  KQ27701 :=  KQDL3
+  KQ27801 :=  0.406495928662
+  KQ27901 := -0.388870517181
+
+  KQ28201 :=  0.390352348197
+  KQ28301 := -0.406461529502
+  KQ28401 :=  KQFL3
+  KQ28501 :=  KQDL3
+  KQ28601 :=  KQFL3
+  KQ28701 :=  KQDL3
+  KQ28801 :=  0.406649614831
+  KQ28901 := -0.389077444001
+
+  KQ29201 :=  0.390429567548
+  KQ29301 := -0.406416613477
+  KQ29401 :=  KQFL3
+  KQ29501 :=  KQDL3
+  KQ29601 :=  KQFL3
+  KQ29701 :=  KQDL3
+  KQ29801 :=  0.406588653506
+  KQ29901 := -0.389037213556
+
+  KQ30201 :=  0.39027307525
+  KQ30301 := -0.406178588622
+  KQ30401 :=  KQFL3
+  KQ30501 := -0.395648794699 !KQDL3
+  KQ30601 :=  0.395797744026 !KQFL3
+  KQ30701 := -0.395649272846 !KQDL3
+ !KQ30801 :=  0.418744300937 !0.418743774352
+ !KQ30801 :=  0.484416787325 !copy from LCLS2sc LTU.xsif
+
+  Q25201 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ25201, APER=rQE
+  Q25301 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ25301, APER=rQE
+  Q25401 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ25401, APER=rQE
+  Q25501 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ25501, APER=rQE
+  Q25601 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ25601, APER=rQE
+  Q25701 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ25701, APER=rQE
+  Q25801 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ25801, APER=rQE
+  Q25901 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ25901, APER=rQE
+
+  Q26201 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ26201, APER=rQE
+  Q26301 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ26301, APER=rQE
+  Q26401 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ26401, APER=rQE
+  Q26501 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ26501, APER=rQE
+  Q26601 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ26601, APER=rQE
+  Q26701 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ26701, APER=rQE
+  Q26801 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ26801, APER=rQE
+  Q26901 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ26901, APER=rQE
+
+  Q27201 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ27201, APER=rQE
+  Q27301 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ27301, APER=rQE
+  Q27401 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ27401, APER=rQE
+  Q27501 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ27501, APER=rQE
+  Q27601 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ27601, APER=rQE
+  Q27701 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ27701, APER=rQE
+  Q27801 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ27801, APER=rQE
+  Q27901 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ27901, APER=rQE
+
+  Q28201 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ28201, APER=rQE
+  Q28301 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ28301, APER=rQE
+  Q28401 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ28401, APER=rQE
+  Q28501 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ28501, APER=rQE
+  Q28601 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ28601, APER=rQE
+  Q28701 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ28701, APER=rQE
+  Q28801 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ28801, APER=rQE
+  Q28901 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ28901, APER=rQE
+
+  Q29201 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ29201, APER=rQE
+  Q29301 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ29301, APER=rQE
+  Q29401 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ29401, APER=rQE
+  Q29501 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ29501, APER=rQE
+  Q29601 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ29601, APER=rQE
+  Q29701 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ29701, APER=rQE
+  Q29801 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ29801, APER=rQE
+  Q29901 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ29901, APER=rQE
+
+  Q30201 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ30201, APER=rQE
+  Q30301 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ30301, APER=rQE
+  Q30401 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ30401, APER=rQE
+  Q30501 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ30501, APER=rQE
+  Q30601 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ30601, APER=rQE
+  Q30615A: MARK, TYPE="QW" !power supply decommissioned
+  Q30615B: MARK, TYPE="QW" !power supply decommissioned
+  Q30615C: MARK, TYPE="QW" !power supply decommissioned
+  Q30701 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ30701, APER=rQE
+  Q30715A: MARK, TYPE="QW" !power supply decommissioned
+  Q30715B: MARK, TYPE="QW" !power supply decommissioned
+  Q30715C: MARK, TYPE="QW" !power supply decommissioned
+  Q30801 : QUAD, TYPE="QE", L=LQE/2,  K1=KQ30801, APER=rQE
+
+! ==============================================================================
+! DRIFTs
+! ------------------------------------------------------------------------------
+
+! L1/2/3 FODO cells
+
+  D9   : DRIF, L=DLWL9
+  D10  : DRIF, L=DLWL10
+  DAQ1 : DRIF, L=0.0342
+  DAQ2 : DRIF, L=0.027
+
+! injector geometry
+
+  LGGUN   := 7.51*0.3048
+  LGL0    := 2*3.0441+1.0
+  LGBEND  := 0.95 + 2*0.3048     ! add 12" to either side of QB for more room (22JAN04 - PE)
+  LGEMIT  := 9.000328707307
+  LGMATCH := 1.5134597681
+
+  DGGUN   : DRIF, L=LGGUN
+  DGL0    : DRIF, L=LGL0
+
+! L0
+
+  LOADLOCK : DRIF, L=LGGUN-1.42
+  DL00     : DRIF, L=-LOADLOCK[L] !from cathode back to u/s end of loadlock
+  DL01a    : DRIF, L=0.19601-LSOL1/2
+  DL01a1   : DRIF, L=0.07851
+  DL01a2   : DRIF, L=0.11609
+  DL01a3   : DRIF, L=0.10461
+  DL01a4   : DRIF, L=0.0170+0.0014
+  DL01a5   : DRIF, L=0.0132-0.00223
+  DL01b    : DRIF, L=0.0825
+  DL01c    : DRIF, L=0.1340-0.00353-0.003175
+  DL01d    : DRIF, L=0.1008464-0.0155757
+  DL01h    : DRIF, L=0.0581886
+  DL01e    : DRIF, L=0.2286-DXG0[L]-0.00536+0.0155757
+  DL01f    : DRIF, L=0.1353+0.00708
+  DL01f2   : DRIF, L=0.0277+0.00167
+  DL01g    : DRIF, L=0.0740-0.00341
+  DL02a1   : DRIF, L=0.066356+0.0021436-0.008205
+  DL02a2   : DRIF, L=0.104580+0.008205
+  DL02a3   : DRIF, L=0.098776-LQx/2+0.028834
+  DL02b1   : DRIF, L=0.169672-LQx/2-0.028834+0.007646
+  DL02b2   : DRIF, L=0.185928-LQx/2-0.007646+0.001610
+  DL02c    : DRIF, L=0.121498-LQx/2-0.001610
+
+! Heater-Chicane:
+
+! LSRHTR_ON := 1E-12          !set to 1E-12 for laser heater bends & undulator OFF and 1.0 for ON (nominal)
+  LSRHTR_ON := 1              !set to 1E-12 for laser heater bends & undulator OFF and 1.0 for ON (nominal)
+  Brhoh := Cb*Ei              !beam rigidity at heater (kG-m)
+  BBh1  := -4.751481741801*LSRHTR_ON    !heater-chicane bend field for 35-mm etaX_pk (kG)
+  RBh1  := Brhoh/BBh1         !heater-chicane bend radius (m)
+  ABh1  := ASIN(LBh/RBh1)     !heater-chicane bend angle (rad)
+  ABh1S := ASIN((LBh/2)/RBh1) !"short" half heater-chicane bend angle (rad)
+  LBh1S := RBh1*ABh1S         !"short" half heater-chicane bend path length (m)
+  ABh1L := ABh1-ABh1S         !"long" half heater-chicane bend angle (rad)
+  LBh1L := RBh1*ABh1L         !"long" half heater-chicane bend path length (m)
+
+  Dh00   : DRIF, L=0.13453045-dLBh/2
+  Dh01   : DRIF, L=(0.155-dLBh)/COS(ABh1), TYPE="CSR"
+  Dh02a  : DRIF, L=0.06717020-dLBh/2, TYPE="CSR"
+  Dh03a  : DRIF, L=0.09290825, TYPE="CSR"
+  Dh03b  : DRIF, L=0.08401830, TYPE="CSR"
+  Dh02b  : DRIF, L=0.09503020-dLBh/2, TYPE="CSR"
+  Dh06   : DRIF, L=0.13010070-dLBh/2, TYPE="CSR"
+  HTRUND : INST
+
+  BXh1A : SBEN, TYPE="5D3.9", L=LBh1S, ANGLE=+ABh1S, HGAP=GBh/2, &
+                E1=0, FINT=0.400, FINTX=0
+  BXh1B : SBEN, TYPE="5D3.9", L=LBh1L, ANGLE=+ABh1L, HGAP=GBh/2, &
+                FINT=0, E2=+ABh1, FINTX=0.400
+  BXh2A : SBEN, TYPE="5D3.9", L=LBh1L, ANGLE=-ABh1L, HGAP=GBh/2, &
+                E1=-ABh1, FINT=0.400, FINTX=0
+  BXh2B : SBEN, TYPE="5D3.9", L=LBh1S, ANGLE=-ABh1S, HGAP=GBh/2, &
+                FINT=0, E2=0, FINTX=0.400
+  BXh3A : SBEN, TYPE="5D3.9", L=LBh1S, ANGLE=-ABh1S, HGAP=GBh/2, &
+                E1=0, FINT=0.400, FINTX=0
+  BXh3B : SBEN, TYPE="5D3.9", L=LBh1L, ANGLE=-ABh1L, HGAP=GBh/2, &
+                FINT=0, E2=-ABh1, FINTX=0.400
+  BXh4A : SBEN, TYPE="5D3.9", L=LBh1L, ANGLE=+ABh1L, HGAP=GBh/2, &
+                E1=+ABh1, FINT=0.400, FINTX=0
+  BXh4B : SBEN, TYPE="5D3.9", L=LBh1S, ANGLE=+ABh1S, HGAP=GBh/2, &
+                FINT=0, E2=0, FINTX=0.400
+
+! Laser-Heater Undulator Model:
+
+  lam   := 0.054                            ! laser-heater undulator period [m]
+  lamr  := 758E-9                           ! heater laser wavelength [m]
+  gami  := Ei/mc2                           ! Lorentz energy factor in laser-heater undulator [ ]
+  K_und := LSRHTR_ON*sqrt(2*(lamr*2*gami^2/lam - 1))  ! undulator K for laser heater und.
+  Lhun  := 0.506263                         ! length of laser-heater undulator
+  kqlh  := (K_und*2*pi/lam/sqrt(2)/gami)^2  ! natural undulator focusing "k" in y-plane [m^-2]
+ !VALUE,gami,kqlh,K_und
+
+  LHBEG  : MARK
+  LHEND  : MARK
+
+! laser-heater undulator modeled as R-matrix to include vertical natural focusing:
+
+  LH_UND : MATRIX, L=Lhun/2,                    &
+  RM(1,1) = 1.0,                                &
+  RM(1,2) = Lhun/2,                             &
+  RM(2,1) = 0.0,                                &
+  RM(2,2) = 1.0,                                &
+  RM(3,3) =  cos(Lhun/2*sqrt(kqlh)),            &
+  RM(3,4) =  sin(Lhun/2*sqrt(kqlh))/sqrt(kqlh), &
+  RM(4,3) = -sin(Lhun/2*sqrt(kqlh))*sqrt(kqlh), &
+  RM(4,4) =  cos(Lhun/2*sqrt(kqlh))
+! RM(5,6) =  Lhun/2/(gami^2)*(1+(K_und^2)/2)
+
+ !VALUE, LH_UND[RM(1,2)],Lhun/2
+ !VALUE, LH_UND[RM(3,3)],cos(Lhun/2*sqrt(kqlh))
+ !VALUE, LH_UND[RM(3,4)],sin(Lhun/2*sqrt(kqlh))/sqrt(kqlh)
+ !VALUE, LH_UND[RM(4,3)],-sin(Lhun/2*sqrt(kqlh))*sqrt(kqlh)
+ !VALUE, LH_UND[RM(4,4)],cos(Lhun/2*sqrt(kqlh))
+ !VALUE, LH_UND[RM(5,6)],Lhun/2/(gami^2)*(1+(K_und^2)/2)
+
+! DL1
+
+  LWS01_03 :=  3.827458            ! distance from WS01 to WS03 wire centers [m] (changed 06MAY05 -PE)
+  BMIN0 := LWS01_03/SQRT(3)/2      ! betaX=betaY at WS02 where waist is located (12NOV03 -PE)
+ !VALUE, BMIN0
+  MRK0 : MARK
+  DE00 : DRIF, L=0.024994
+  DE00a: DRIF, L=0.070613-LQx/2
+  DE01a: DRIF, L=0.130373-LQx/2
+  DE01b: DRIF, L=0.176359-LQx/2
+  DE01c: DRIF, L=0.094781
+  DE02 : DRIF, L=0.0897395-LQx/2
+  DE03a: DRIF, L=0.16832-LQx/2
+  DE03b: DRIF, L=0.047581
+  DE03c: DRIF, L=0.190499-LQx/2
+  DE04 : DRIF, L=0.197688-LQx/2
+  DE05 : DRIF, L=0.151968
+  DE05a: DRIF, L=DE05[L]/2
+  DE05c: DRIF, L=0.104470
+  DE06b: DRIF, L=0.2478024
+  DE06a: DRIF, L=LWS01_03/2-DE05[L]-DE05c[L]-DE06b[L]
+  DE06d: DRIF, L=0.1638307
+  DE06e: DRIF, L=LWS01_03/2-DE05[L]-DE06d[L]
+  DE07 : DRIF, L=0.2045007-LQx/2+0.305E-3
+  DE08 : DRIF, L=0.2318721-LQx/2-0.03
+  DE08a: DRIF, L=0.153330+0.03
+  DE08b: DRIF, L=0.170620-LQx/2
+  DE09 : DRIF, L=0.27745-LQx/2
+
+  dLDB00 := -0.54842233769E-6
+
+  DB00a: DRIF, L=0.3997+dLDB00, TYPE="CSR"
+  DB00b: DRIF, L=0.161, TYPE="CSR"
+  DB00c: DRIF, L=0.2191-LQE/2, TYPE="CSR"
+  DB00d: DRIF, L=0.342-LQE/2, TYPE="CSR"
+  DB00e: DRIF, L=0.4378+dLDB00, TYPE="CSR"
+
+  dLDM00 := 2*ABS(dLDB00)*COS(ADL1/2)
+
+  DM00 : DRIF, L=0.203400-ZOFFINJ+0.03+dLDM00, TYPE="CSR" ! move entire injector ~12 mm dntr. (Nov. 17, 2004 - PE)
+  DM00a: DRIF, L=0.224683-LQx/2-0.03, TYPE="CSR"
+  DM01 : DRIF, L=0.142367-LQx/2, TYPE="CSR"
+  DM01a: DRIF, L=0.262800-LQx/2, TYPE="CSR"
+  DM02 : DRIF, L=0.194200-LQx/2
+  DM02a: DRIF, L=0.157448
+
+! L1
+
+  DAQA1 : DRIF, L=0.033450+dz_QA11
+  DAQA2 : DRIF, L=0.033450-dz_QA11
+  DAQA3 : DRIF, L=0.033450
+  DAQA4 : DRIF, L=0.033450
+
+! BC1
+
+  LWW1  := 1.656196                                     ! WS11-12 drift length and therefore ~ beam size
+  BMIN1 := LWW1/SQRT(3)                                 ! betaX,Y at WS12
+
+  DL1Xa : DRIF, L=0.093369
+  DL1Xb : DRIF, L=0.2
+  DM10a : DRIF, L=0.227400-0.022322
+  DM10c : DRIF, L=0.122322+dz_Q21201
+  DM10x : DRIF, L=0.083617-dz_Q21201
+  DM11  : DRIF, L=0.272500+0.006383
+  DM12  : DRIF, L=0.127801
+  DBQ1  : DRIF, L=(0.400381-LB1/2-LQc/2)/COS(AB11), TYPE="CSR"
+  D11o  : DRIF, L=LD11o-(DBQ1[L]+LQc)-2E-7, TYPE="CSR"
+  D11oa : DRIF, L=LD11oa, TYPE="CSR"
+  D11ob : DRIF, L=LD11ob-(DBQ1[L]+LQc)-2E-7, TYPE="CSR"
+  DDG0  : DRIF, L=0.1698-0.084915+0.0508-0.0045, TYPE="CSR"    ! additional drift in BC2 center prior to diag. package
+  DDGA  : DRIF, L=0.084915+0.0508-0.0045, TYPE="CSR"           ! additional drift in BC2 center prior to diag. package
+  DDG1  : DRIF, L=0.2891-0.04046, TYPE="CSR"            ! BC1 and BC2 diag. package drifts (BX*2B to BPM)
+  DDG2  : DRIF, L=0.1240+0.04046, TYPE="CSR"            ! BC1 and BC2 diag. package drifts (BPM to CE)
+  DDG3  : DRIF, L=0.1460+0.036606, TYPE="CSR"           ! BC1 and BC2 diag. package drifts (CE to OTR)
+  DDG4  : DRIF, L=0.2711-0.036606, TYPE="CSR"           ! BC1 and BC2 diag. package drifts (OTR to BX*3A)
+  DM13a : DRIF, L=0.323450/2, TYPE="CSR"
+  DM13b : DRIF, L=0.323450/2, TYPE="CSR"
+  DM14a : DRIF, L=0.25-0.07615, TYPE="CSR"
+  DM14b : DRIF, L=0.15638875-0.0254+0.07615, TYPE="CSR"
+  DM14c : DRIF, L=0.15638875+0.0254, TYPE="CSR"
+  DM15a : DRIF, L=0.252872-0.1524, TYPE="CSR"
+  DM15b : DRIF, L=0.2836740-0.0826, TYPE="CSR"
+  DM15c : DRIF, L=0.1524+0.0826, TYPE="CSR"
+  DWW1a : DRIF, L=LWW1
+  DWW1b : DRIF, L=0.295
+  DWW1c1: DRIF, L=0.812030-0.295-0.1017
+  DWW1c2: DRIF, L=LWW1-1.427096+0.1017-0.0142-0.014199
+  DWW1d : DRIF, L=0.346099
+  DWW1e : DRIF, L=0.297366
+  DM16  : DRIF, L=0.25+dz_Q21301
+  DM17a : DRIF, L=0.2658341-dz_Q21301
+  DM16a : DRIF, L=0.0
+  DM16b : DRIF, L=0.0
+  DM17b : DRIF, L=0.4008829
+  DM17c : DRIF, L=0.385417+dz_QM14
+  DM18a : DRIF, L=0.228300-dz_QM14
+  DM18b : DRIF, L=0.228200+dz_QM15
+  DM19  : DRIF, L=0.099400-dz_QM15+0.000001 !force Z=2059.732900 m at ZLIN04
+
+! L2 and L3
+
+  DAQ3  : DRIF, L=0.3533
+  DAQ4  : DRIF, L=2.5527
+  DAQ5  : DRIF, L=2.841-0.3048-1.2192
+  DAQ6  : DRIF, L=0.2373
+  DAQ7  : DRIF, L=0.2748
+  DAQ8  : DRIF, L=2.6312
+  DAQ8A : DRIF, L=0.5+0.003200
+  DAQ8B : DRIF, L=2.1312-0.003200
+  DAQ12 : DRIF, L=0.2286
+  DAQ13 : DRIF, L=0.0231
+  DAQ14 : DRIF, L=0.2130
+  DAQ15 : DRIF, L=0.0087
+  DAQ16 : DRIF, L=0.2274
+  DAQ17 : DRIF, L=0.061900 !30-8c exit to IV30-9
+  D255a : DRIF, L=0.06621-0.001510
+  D255b : DRIF, L=0.11184+0.001510
+  D255c : DRIF, L=0.17805-0.275500+0.25
+  D255d : DRIF, L=0.03420+0.275500
+  D256a : DRIF, L=2.350-1.1919-0.559100
+  D256b : DRIF, L=0.559100
+  D256c : DRIF, L=0.61475 !0.540500-0.40505
+  D256d : DRIF, L=0.21115
+
+! BC2
+
+  DM21Z : DRIF, L=0.0828006-0.027
+  DM21A : DRIF, L=0.3199994
+  DM21H : DRIF, L=0.193
+  DM21B : DRIF, L=0.6340002
+  DM21C : DRIF, L=0.3202404
+  DM21D : DRIF, L=0.139536
+  DM21E : DRIF, L=0.1996034-0.0045
+  DM20  : DRIF, L=0.034200
+  DBQ2a : DRIF, L=LDo1, TYPE="CSR"
+  D21oa : DRIF, L=LDo2, TYPE="CSR"
+  D21i  : DRIF, L=LD21i/2, TYPE="CSR"
+  D21ob : DRIF, L=LDo3, TYPE="CSR"
+  DBQ2b : DRIF, L=LDo4, TYPE="CSR"
+  D21w  : DRIF, L=0.311000-0.0045, TYPE="CSR"
+  D21x  : DRIF, L=0.208700, TYPE="CSR"
+  D21y  : DRIF, L=0.114235, TYPE="CSR"
+  DM23B : DRIF, L=0.050405, TYPE="CSR"
+  DM24A : DRIF, L=0.129440, TYPE="CSR"
+  DM24B : DRIF, L=0.178000, TYPE="CSR"
+  DM24D : DRIF, L=0.070700, TYPE="CSR"
+  DM24C : DRIF, L=0.106300, TYPE="CSR"
+  DM25  : DRIF, L=0.160400
+
+! ==============================================================================
+! MARKERs
+! ------------------------------------------------------------------------------
+
+! wire scanners
+
+  WS01 : WIRE, TYPE="slow" !DL1- emittance
+  WS02 : WIRE, TYPE="fast" !DL1- emittance
+  WS03 : WIRE, TYPE="fast" !DL1- emittance
+  WS04 : WIRE, TYPE="slow" !DL1- energy spread
+  WS11 : WIRE, TYPE="slow" !BC1+ emittance
+  WS12 : WIRE, TYPE="slow" !BC1+ emittance
+  WS13 : WIRE, TYPE="slow" !BC1+ emittance
+!  WS21 : WIRE, TYPE="slow" !LI24 emittance
+!  WS22 : WIRE, TYPE="slow" !LI24 emittance
+!  WS23 : WIRE, TYPE="slow" !LI24 emittance
+  WS24 : WIRE, TYPE="slow" !BC2- emittance
+  DWS21 : MARK !someday will be a wire-scanner again?
+  DWS22 : MARK !someday will be a wire-scanner again?
+  DWS23 : MARK !someday will be a wire-scanner again?
+!  DWS24 : MARK !someday will be a wire-scanner again?
+  WS27644: WIRE, TYPE="slow" !LI27 emittance (existing; moved)
+  WS28144: WIRE, TYPE="slow" !LI28 emittance
+  WS28444: WIRE, TYPE="slow" !LI28 emittance
+  WS28744: WIRE, TYPE="slow" !LI28 emittance (existing; moved)
+
+! profile monitors
+
+  YAG01    : PROF, TYPE="YAG"      !gun (15.5 in from cathode, per J. Schmerge, June 17, 2003; -PE)
+  YAG02    : PROF, TYPE="YAG"      !gun (need proper positions still - June 10, 2003)
+  YAG03    : PROF, TYPE="YAG"      !after L0-a (~ 60 MeV) - center of device in MAD is defined as center of YAG crystal, not mirror
+  YAG04    : PROF, TYPE="YAG"      !temporarily (Dec. '06 - July '07) placed in laser-heater region (135 MeV) - center of device in MAD is defined as center of YAG crystal, not mirror
+
+  PH01     : INST                  !phase measurement RF cavity between L0-a and L0-b
+  PH02     : INST                  !phase measurement RF cavity after BC1
+  PH03     : INST                  !phase measurement RF cavity after BC2
+  VV01     : MARK                  !vacuum valve near gun
+  VV02     : MARK                  !vacuum valve in injector
+  VV03     : MARK                  !vacuum valve in injector
+  VV04     : MARK                  !vacuum valve in injector
+  VVX1     : MARK, TYPE="MANUAL"   !vacuum valve before X-band structure
+  VVX2     : MARK, TYPE="MANUAL"   !vacuum valve after X-band structure
+  VV21     : MARK                  !vacuum valve in front of BC2
+  VV22     : MARK                  !vacuum valve after BC2
+  RST1     : INST                  !radiation stopper near WS02 in injector
+
+  OTRH1    : PROF, TYPE="OTR"      !Laser-heater OTR screen just upbeam of heater-undulator (12NOV03 - PE)
+  OTRH2    : PROF, TYPE="OTR"      !Laser-heater OTR screen just dnbeam of heater-undulator (12NOV03 - PE)
+!  DOTRH1   : MARK                  !Laser-heater OTR screen PLACE-HOLDER just upbeam of heater-undulator (not installed until summer 2008)
+!  DOTRH2   : MARK                  !Laser-heater OTR screen PLACE-HOLDER just dnbeam of heater-undulator (not installed until summer 2008)
+  OTR1     : PROF, TYPE="OTR"      !DL1-emit
+  OTR2     : PROF, TYPE="OTR"      !DL1-emit
+  OTR3     : PROF, TYPE="OTR"      !DL1-emit
+  OTR4     : PROF, TYPE="OTR"      !DL1 slice and proj. energy spread
+  OTR11    : PROF, TYPE="OTR"      !BC1 energy spread
+  OTR12    : PROF, TYPE="OTR"      !BC1 emittance
+  OTR21    : PROF, TYPE="OTR"      !BC2 energy spread
+ !OTR22    : PROF, TYPE="OTR"      !moved to XLEAP (February 2017)
+  OTR_TCAV : PROF, TYPE="OTR"      !LI25 longitudinal diagnostics
+
+! bunch length monitors
+
+  BL11  : BLMO !BC1+ (CSR-based relative bunch length monitor)
+  BL12  : BLMO !BC1+ (ceramic gap-based relative bunch length monitor)
+  BL21  : BLMO !BC2+ (CSR-based relative bunch length monitor)
+  BL22  : BLMO !BC2+ (ceramic gap-based relative bunch length monitor)
+
+! bunch charge monitors (toroids)
+  IM01   : IMON !L0
+  IM02   : IMON !L0
+  IMS1   : IMON !135-MeV spectrometer
+  IM03   : IMON !DL1-
+  IMBC1I : IMON !BC1 input toriod (comparator with IMBC1O)
+  IMBC1O : IMON !BC1 output toroid (comparator with IMBC1I)
+  IMBC2I : IMON !BC2 input toroid (comparator with IMBC2O)
+  IMBC2O : IMON !BC2 output toroid (comparator with IMBC2I)
+
+! other diagnostics
+
+  FC01  : INST !L0 Faraday cup w/screen
+  AM00  : INST !gun laser normal incidence mirror
+  AM01  : INST !alignment mirror
+  CR01  : INST !Cerenkov radiator bunch length monitor
+
+! collimators
+
+  CE11  : RCOL, TYPE="HCOLL" !adjustable energy (x) collimator in middle of BC1 chicane
+  CE21  : RCOL, TYPE="HCOLL" !adjustable energy (x) collimator in middle of BC2 chicane
+
+! dumps
+
+  TD11 : INST !BC1+ insertable block
+
+! miscellany
+  L0beg    : MARK
+  SOL1BK   : SOLENOID,L=1E-9,KS=0       !gun-bucking-solenoid (set to ~zero length and strength, with longitudinal unknown for now)
+  CATHODE  : INST
+  SOL1     : SOLENOID,L=LSOL1/2,KS=1E-9 !gun-solenoid (set to zero strength)
+  SOL2     : SOLENOID,L=1E-9,KS=1E-9    !2nd-solenoid (set to ~zero length and strength, with longitudinal position as the actual solenoid's center)
+  L0end    : MARK
+  L0aWAKE  : MARK
+  EMAT     : MARK ! for Elegant only to remove energy error in DL1 bends
+  DL1beg   : MARK
+  DLFDa    : MARK ! dual-feed input coupler location at start of L0-a RF structure
+  L0aMID   : MARK
+  OUTCPa   : MARK ! output coupler location at end of L0-a RF structure
+  L0bBEG   : MARK
+  DLFDb    : MARK ! dual-feed input coupler location at start of L0-b RF structure
+  L0bMID   : MARK
+  OUTCPb   : MARK ! output coupler location at end of L0-b RF structure
+  CNT0     : MARK
+  DL1end   : MARK
+  L1beg    : MARK
+  L1end    : MARK
+  BC1mrk   : MARK
+  XBEG     : MARK !before X-band RF, but after L1
+  XEND     : MARK !after X-band RF, but before BC1
+  BC1beg   : MARK
+  CNT1     : MARK !ELEGANT will correct the orbit here for CSR-steering
+  BC1end   : MARK
+  BC1fin   : MARK
+  L2beg    : MARK
+  LI21beg  : MARK
+  LI21end  : MARK
+  LI22beg  : MARK
+  LI22end  : MARK
+  LI23beg  : MARK
+  LI23end  : MARK
+  LI24beg  : MARK
+  LI24end  : MARK
+  L2end    : MARK
+  BC2mrk   : MARK
+  BC2beg   : MARK
+  CNT2     : MARK !ELEGANT will correct the orbit here for CSR-steering
+  BC2end   : MARK
+  BC2fin   : MARK
+  L3beg    : MARK
+  LI25beg  : MARK
+  LI25end  : MARK
+  LI26beg  : MARK
+  LI26end  : MARK
+  LI27beg  : MARK
+  LI27end  : MARK
+  LI28beg  : MARK
+  LI28end  : MARK
+  LI29beg  : MARK
+  LI29end  : MARK
+  LI30beg  : MARK
+  RWWAKEss : MARK !will be resistive wall wake of stainless steel in ELEGANT
+  LI30end  : MARK
+  L3end    : MARK
+
+! Permanent reference points in the linac (and LTU: Z') Z-coordinate system (in meters)
+! (NOTE: Z' is measured parallel to the undulator axis which is at an angle of
+! 2*AVB [=4.668514 mrad on May 4, 2004] w.r.t. the linac axis):
+! (Note Q20-901 is at 2029.4060 m in drawing ID-380-802-00 pg. 2 - this does not agree
+!  with Woodley/Seeman database at 2029.3939 m.  We assume drawing is right -PE, June 11, 2004)
+! ============================================================================================
+  ZLIN00   : MARK  ! face of L0-a entrance flange : Z=2019.106625 (= 1.459000 m from cathode parallel to injector line, X = 9.612087)
+! DBMARK98 : MARK  ! (135SPECT)135-MeV spect. dump: Z=2036.774471
+  ZLIN01   : MARK  ! entrance to 21-1b            : Z=2035.035130 (= 20*101.600 m + 3.0441 m - 0.00897 m: 8/1/05)
+  ZLIN02   : MARK  ! center of QUAD LI21 201      : (not used anymore since Q21201 is a few mm off) [was Z=2045.436400 pre 1/11/07]
+  ZLIN03   : MARK  ! center of QUAD LI21 301      : (not used anymore since Q21301 is a few mm off) [was Z=2057.855466 pre 1/11/07]
+  ZLIN04   : MARK  ! entrance to 21-3b            : Z=2059.732900
+  ZLIN05   : MARK  ! start of LI22                : Z=2133.600000
+  ZLIN06   : MARK  ! start of LI23                : Z=2235.200000
+  ZLIN07   : MARK  ! start of LI24                : Z=2336.800000
+  ZLIN08   : MARK  ! center of QUAD LI24 701 (A)  : Z=2410.786000 (not moved)
+  ZLIN09   : MARK  ! start of LI25                : Z=2438.400000
+  ZLIN10   : MARK  ! start of LI26                : Z=2540.000000
+  ZLIN11   : MARK  ! start of LI27                : Z=2641.600000
+  ZLIN12   : MARK  ! start of LI28                : Z=2743.200000
+  ZLIN13   : MARK  ! start of LI29                : Z=2844.800000
+  ZLIN14   : MARK  ! start of LI30                : Z=2946.400000
+! DBMARK29 : MARK  ! end of linac                 : Z=3042.005000
+! WOODDOOR : MARK  ! start of BSY                 : Z=3050.512000
+! S100     : MARK  ! Station 100                  : Z=3048.000000
+
+! ==============================================================================
+! existing XCORs
+! ------------------------------------------------------------------------------
+
+!  XC460009T : HKIC
+!  XC460026T : HKIC
+!  XC460034T : HKIC !do not use to steer ... bad results in Elegant
+!  XC460036T : HKIC !do not use to steer ... bad results in Elegant
+!  XC920020T : HKIC
+!  XC921010T : HKIC !do not use to steer ... bad results in Elegant
+!  XCBSY09   : HKIC ! names changed from above to these (Sep. 2008)
+!  XCBSY26   : HKIC
+!  XCBSY36   : HKIC !do not use to steer ... bad results in Elegant
+! XCBSYQ2 : HKIC, TYPE="class-4" !was XCBSY09 (Mar. 2016)
+  XCBSY34 : HKIC !do not use to steer ... bad results in Elegant
+! XCBSYQ3 : HKIC, TYPE="class-4" !was XCBSY09 (Mar. 2016)
+  XCBSY60 : HKIC
+  XCBSY81 : HKIC !do not use to steer ... bad results in Elegant
+
+! ==============================================================================
+! new XCORs
+! ------------------------------------------------------------------------------
+
+  XC00 : HKIC,TYPE="class-S"
+  XC01 : HKIC,TYPE="class-G"
+  XC02 : HKIC,TYPE="c-1s-L0a"
+  XC03 : HKIC,TYPE="class-1s"
+  XC04 : HKIC,TYPE="class-1s" ! fast-feedback (loop-1)
+  XC05 : HKIC,TYPE="class-1s" ! calibrated to <1%
+  XC06 : HKIC,TYPE="class-1t"
+  XC07 : HKIC,TYPE="class-1a" ! fast-feedback (loop-1)
+  XC08 : HKIC,TYPE="class-1a"
+  XC09 : HKIC,TYPE="class-1a"
+  XC10 : HKIC,TYPE="class-1a"
+
+  XC21101 : HKIC,TYPE="class-1s"
+  XC21135 : HKIC,TYPE="class-1s"
+  XC21165 : HKIC,TYPE="class-1s" ! calibrated to <1%
+  XC21175 : HKIC,TYPE="type-4"   ! pulled off structure and replaced on beamline?
+  XC21302 : HKIC,TYPE="type-4"   ! pulled off structure and replaced on beamline?
+  XC21191 : HKIC,TYPE="class-1x"
+  XC21275 : HKIC,TYPE="class-1a"
+  XC21325 : HKIC,TYPE="class-1a"
+
+! ==============================================================================
+! existing YCORs
+! ------------------------------------------------------------------------------
+
+! YC460010T : VKIC
+! YC460027T : VKIC !do not use to steer ... bad results in Elegant
+! YC460035T : VKIC !do not use to steer ... bad results in Elegant
+! YC460037T : VKIC
+! YC920020T : VKIC
+! YC921010T : VKIC !do not use to steer ... bad results in Elegant
+! YCBSY10   : VKIC ! names changed from above to these (Sep. 2008)
+! YCBSYQ1   : VKIC, TYPE="class-4" !was YCBSY10 (Mar. 2016)
+  YCBSY27   : VKIC !do not use to steer ... bad results in Elegant
+! YCBSY35   : VKIC !do not use to steer ... bad results in Elegant
+  YCBSY37   : VKIC
+! YCBSY62   : VKIC
+  YCBSY82   : VKIC !do not use to steer ... bad results in Elegant
+
+! ==============================================================================
+! new YCORs
+! ------------------------------------------------------------------------------
+
+  YC00 : VKIC,TYPE="class-S"
+  YC01 : VKIC,TYPE="class-G"
+  YC02 : VKIC,TYPE="c-1s-L0a"
+  YC03 : VKIC,TYPE="class-1s"
+  YC04 : VKIC,TYPE="class-1s" ! fast-feedback (loop-1)
+  YC05 : VKIC,TYPE="class-1s" ! calibrated to <1%
+  YC06 : VKIC,TYPE="class-1t"
+  YC07 : VKIC,TYPE="class-1a" ! fast-feedback (loop-1)
+  YC08 : VKIC,TYPE="class-1a"
+  YC09 : VKIC,TYPE="class-1a"
+  YC10 : VKIC,TYPE="class-1a"
+
+  YC21102 : VKIC,TYPE="class-1s"
+  YC21136 : VKIC,TYPE="class-1s" ! calibrated to <1%
+  YC21166 : VKIC,TYPE="class-1s"
+  YC21174 : VKIC,TYPE="type-4"
+  YC21303 : VKIC,TYPE="type-4"   ! pulled off structure and replaced on beamline?
+  YC21192 : VKIC,TYPE="class-1x"
+  YC21276 : VKIC,TYPE="class-1a"
+  YC21325 : VKIC,TYPE="class-1a"
+
+  YC5 : VKIC,TYPE="class-4"
+
+! ==============================================================================
+! existing BPMs
+! ------------------------------------------------------------------------------
+
+  BPM21201 : MONI, TYPE="20_um_res"
+  BPM21301 : MONI, TYPE="20_um_res"
+  BPM21401 : MONI, TYPE="10_um_res"
+  BPM21501 : MONI, TYPE="10_um_res"
+  BPM21601 : MONI, TYPE="10_um_res"
+  BPM21701 : MONI, TYPE="10_um_res"
+  BPM21801 : MONI, TYPE="10_um_res"
+  BPM21901 : MONI, TYPE="10_um_res"
+  BPM22201 : MONI, TYPE="10_um_res"
+  BPM22301 : MONI, TYPE="10_um_res"
+  BPM22401 : MONI, TYPE="10_um_res"
+  BPM22501 : MONI, TYPE="10_um_res"
+  BPM22601 : MONI, TYPE="10_um_res"
+  BPM22701 : MONI, TYPE="10_um_res"
+  BPM22801 : MONI, TYPE="10_um_res"
+  BPM22901 : MONI, TYPE="10_um_res"
+  BPM23201 : MONI, TYPE="10_um_res"
+  BPM23301 : MONI, TYPE="10_um_res"
+  BPM23401 : MONI, TYPE="10_um_res"
+  BPM23501 : MONI, TYPE="10_um_res"
+  BPM23601 : MONI, TYPE="10_um_res"
+  BPM23701 : MONI, TYPE="10_um_res"
+  BPM23801 : MONI, TYPE="10_um_res"
+  BPM23901 : MONI, TYPE="10_um_res"
+  BPM24201 : MONI, TYPE="10_um_res"
+  BPM24301 : MONI, TYPE="10_um_res"
+  BPM24401 : MONI, TYPE="10_um_res"
+  BPM24501 : MONI, TYPE="10_um_res"
+  BPM24601 : MONI, TYPE="10_um_res"
+  BPM24701 : MONI, TYPE="10_um_res"
+
+  BPM24901 : MONI, TYPE="10_um_res"
+  BPM25201 : MONI, TYPE="10_um_res"
+  BPM25301 : MONI, TYPE="10_um_res"
+  BPM25401 : MONI, TYPE="10_um_res"
+  BPM25501 : MONI, TYPE="10_um_res"
+  BPM25601 : MONI, TYPE="10_um_res"
+  BPM25701 : MONI, TYPE="10_um_res"
+  BPM25801 : MONI, TYPE="10_um_res"
+  BPM25901 : MONI, TYPE="10_um_res"
+  BPM26201 : MONI, TYPE="10_um_res"
+  BPM26301 : MONI, TYPE="10_um_res"
+  BPM26401 : MONI, TYPE="10_um_res"
+  BPM26501 : MONI, TYPE="10_um_res"
+  BPM26601 : MONI, TYPE="10_um_res"
+  BPM26701 : MONI, TYPE="10_um_res"
+  BPM26801 : MONI, TYPE="10_um_res"
+  BPM26901 : MONI, TYPE="10_um_res"
+  BPM27201 : MONI, TYPE="10_um_res"
+  BPM27301 : MONI, TYPE="10_um_res"
+  BPM27401 : MONI, TYPE="10_um_res"
+  BPM27501 : MONI, TYPE="10_um_res"
+  BPM27601 : MONI, TYPE="10_um_res"
+  BPM27701 : MONI, TYPE="10_um_res"
+  BPM27801 : MONI, TYPE="10_um_res"
+  BPM27901 : MONI, TYPE="10_um_res"
+  BPM28201 : MONI, TYPE="10_um_res"
+  BPM28301 : MONI, TYPE="10_um_res"
+  BPM28401 : MONI, TYPE="10_um_res"
+  BPM28501 : MONI, TYPE="10_um_res"
+  BPM28601 : MONI, TYPE="10_um_res"
+  BPM28701 : MONI, TYPE="10_um_res"
+  BPM28801 : MONI, TYPE="10_um_res"
+  BPM28901 : MONI, TYPE="10_um_res"
+  BPM29201 : MONI, TYPE="10_um_res"
+  BPM29301 : MONI, TYPE="10_um_res"
+  BPM29401 : MONI, TYPE="10_um_res"
+  BPM29501 : MONI, TYPE="10_um_res"
+  BPM29601 : MONI, TYPE="10_um_res"
+  BPM29701 : MONI, TYPE="10_um_res"
+  BPM29801 : MONI, TYPE="10_um_res"
+  BPM29901 : MONI, TYPE="10_um_res"
+  BPM30201 : MONI, TYPE="10_um_res"
+  BPM30301 : MONI, TYPE="10_um_res"
+  BPM30401 : MONI, TYPE="10_um_res"
+  BPM30501 : MONI, TYPE="10_um_res"
+  BPM30601 : MONI, TYPE="10_um_res"
+  BPM30701 : MONI, TYPE="10_um_res"
+  BPM30801 : MONI, TYPE="10_um_res"
+
+! ==============================================================================
+! new BPMs
+! ------------------------------------------------------------------------------
+
+  BPM2    : MONI, TYPE="25_um_res"
+  BPM3    : MONI, TYPE="25_um_res"
+  BPM5    : MONI, TYPE="25_um_res"
+  BPM6    : MONI, TYPE="10_um_res"
+  BPM8    : MONI, TYPE="10_um_res"
+  BPM9    : MONI, TYPE="25_um_res"
+  BPM10   : MONI, TYPE="25_um_res"
+  BPM11   : MONI, TYPE="25_um_res"
+  BPM12   : MONI, TYPE="25_um_res"
+  BPM13   : MONI, TYPE="25_um_res"
+  BPM14   : MONI, TYPE="25_um_res"
+  BPM15   : MONI, TYPE="25_um_res"
+
+  BPMA11  : MONI, TYPE="20_um_res"
+  BPMA12  : MONI, TYPE="20_um_res"
+
+  BPMS11  : MONI, TYPE="20_um_res"
+  BPMM12  : MONI, TYPE="20_um_res"
+  BPMM14  : MONI, TYPE="20_um_res"
+
+  BPMS21  : MONI, TYPE="40_um_res"
+
+! ==============================================================================
+! miscellaneous
+! ------------------------------------------------------------------------------
+
+  D10cma : DRIF, L=0.127
+
+! ------------------------------------------------------------------------------
+
+  RETURN

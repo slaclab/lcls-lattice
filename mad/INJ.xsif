@@ -1,0 +1,807 @@
+
+! *** OPTICS=AD_ACCEL-23JAN19 ***
+
+! LCLS2sc injector: gun to start of L1 linac
+
+! ==============================================================================
+! Modification History
+! ------------------------------------------------------------------------------
+! 14-MAY-2018, M. Woodley
+!  * use LCLS-II Phase 1 laser heater undulator per PRD (LCLSII-2.2-PR-0086-R1)
+! 12-MAR-2018, M. Woodley
+!  * update GUNB device locations to LBNL__Low_E_Beamline__030418.pdf
+!  * move GUNB correctors to G. Gassner's measured locations
+! ------------------------------------------------------------------------------
+! 14-FEB-2018, M. Woodley
+!  * remove STC0 per G. DeContreras
+! 31-JAN-2018, M. Woodley
+!  * use measured FINT (0.3887) for BCXH1-4
+!  * add special beamline for Early Injector Commissioning (include Faraday cup)
+! 20-DEC-2017, M. Woodley
+!  * remove BCS ACM IMBCSC0 per C. Clarke
+!  * add IMBCSi1-3 (BCS ACM triplet) per C. Clarke and H. Alvarez
+! 06-DEC-2017, M. Woodley
+!  * convert vacuum valves VV01B and VV02B from MARKers to INSTs per F. Zhou
+! ------------------------------------------------------------------------------
+! 05-SEP-2017, M. Woodley
+!  * move YCHD03-RFBHD04 5" upstream per H. Alvarez
+! ------------------------------------------------------------------------------
+! 04-MAY-2017, M. Woodley
+!  * change element names to equivalent LCLS names with appended "B"
+!  * move IMBCSC0 u/s 0.009525 m (Z=55.425365) per C. Iverson
+! ------------------------------------------------------------------------------
+! 24-FEB-2017, M. Woodley
+!  * undefer YCC005, XCC006, YCC009, and XCC010 per P. Emma
+! ------------------------------------------------------------------------------
+! 04-NOV-2016, M. Woodley
+!  * rearrange diagnostic devices around WS0H04 per H. Alvarez
+!  * undefer PC0H00, BPMH1, BPMH2, and IMBCSC0 (add-back list items)
+!  * add L0 u/s beamline flange
+! ------------------------------------------------------------------------------
+! 09-JUN-2016, M. Woodley
+!  * adjust D0H00 and D0H00a lengths ... longer L0 d/s MSC; move PC0H00 1.5" u/s
+!  * set BPMH1 and BPMH2 deferment level to 0
+!  * move BPMDG000 to center between BKRDG0 and BLRDG0
+!  * set IMBCSC0 TYPE="BCS cavity"
+!  * move IMBCSC0 upstream of STC0
+! ------------------------------------------------------------------------------
+! 25-FEB-2016, M. Woodley
+!  * use non-relativistic calculation of Brho in the GUNB region
+!  * set BSOL01 = BSOL02 = 0
+! 24-FEB-2016, M. Woodley
+!  * new GUNB layout per M. Johnson (LBNL) and H. Alvarez
+! 01-FEB-2016, M. Woodley
+!  * new 100 pC input beams from J. Qiang/C. Mitchell
+! 01-NOV-2015, M. Woodley
+!  * new 100 pC input beam from F. Zhou (Twiss from P. Emma)
+! ------------------------------------------------------------------------------
+! 01-OCT-2015, M. Woodley
+!  * add MARKers for vacuum components upstream of Q0H01
+!  * add fixed 60 mm long, 12 mm bore tungsten PC upstream of Q0H01 (deferred)
+!  * change Q0H01-08 and QHD01-04 type to "2Q4"
+!  * change class-1a correctors between L0 and DIAG0 to class-6 (separate X, Y)
+!  * change "Stripline-1" BPMs between L0 and DIAG0 to "Stripline-12"
+!  * switch locations of ST0 and IMBCSC0 per S. Mao
+!  * change TYPE of OTRs and YAGs per Henrik's PRD
+!  * define zero-angle SBENs at position of DIAG0 kicker and septum
+!  * adjust locations of devices per H. Alvarez
+! ------------------------------------------------------------------------------
+! 19-JUN-2015, M. Woodley
+!  * add quad/skew quad MARKers at each end of each solenoid
+!  * add 5th x/y corrector pair u/s of buncher ... renumber correctors
+!  * undefer BUN01 (buncher) and UMHTR (laser heater undulator)
+!  * adjust final drift length before L0 per H. Alvarez
+!  * undefer WS0H04 and BZ0H04
+!  * move laser heater BPMs to outer bend-to-bend drifts; new stripline type
+!  * undefer YAGH1 and YAGH2
+!  * positions of devices at laser heater chicane center per G. Bouchard
+!  * undefer BPMC002, BPMC007, and BPMC008
+!  * undefer YCC003
+!  * move IMBCSC0/STC0 upstream per G. DeContreras
+!  * move OTRC011 and WSC011 upstream, out of "particle free" zone; change
+!    their names to OTRC006 and WSC006
+!  * collimator gaps per P. Emma
+! ------------------------------------------------------------------------------
+! 20-MAR-2015, M. Woodley
+!  * location of components u/s of L0 per S. Virostek
+!  * add BCS ACM downstream of COL0 collimators
+!  * fix interferences per H. Alvarez
+!  * set collimator lengths (tungsten) and gaps per LCLSII-2.4-PR-0095-R0
+! ------------------------------------------------------------------------------
+! 12-DEC-2014, M. Woodley
+!  * interference resolution mods per H. Alvarez:
+!    - move SCC000 (XCC000/YCC000) 4.0 cm (1.5 inches) upstream
+! ------------------------------------------------------------------------------
+! 28-OCT-2014, M. Woodley
+!  * generate matched optics between laser heater chicane and DIAG0 extraction
+!    point for LHUND off and LH chicane off
+!  * adjust length of matching section between LH and COL0 to put gun at
+!    Z= -10.0 m exactly
+!  * move COL0 collimators 7 inches closer to their associated quadrupoles
+! ------------------------------------------------------------------------------
+! 15-OCT-2014, M. Woodley
+!  * new LBNL buncher cavity length per H. Alvarez
+!  * add 4 LBNL design X/Y corrector pairs per H. Alvarez
+!  * move differential pumping drift into L0 (u/s of Q0H01)
+!  * reverse direction of laser heater chicane (into aisle) per H. Alvarez
+!  * shorten COL0 FODO cell to 8.0 m
+!  * replace narrow "Collins" quadrupole (1.0Q3.1) with standard 1.26Q3.5
+!  * adjust deferment/deprecation levels
+! ------------------------------------------------------------------------------
+! 07-AUG-2014, M. Woodley
+!  * diagnostics complement per "Electron Beam Diagnostics Systems" PRD
+!    (LCLSII-2.7-PR-0170)
+!  * update L0 d/s end cap and mechanical stay clear dimensions
+!  * space for L0 differential vacuum pumping between Q0H02 and Q0H03
+!  * add emittance measurement in L0-to-laser-heater matching section
+!  * laser heater chicane lengthened to reduce R56 to 3.5 mm
+!  * CEHTR collimator moved u/s of undulator
+!  * COL0 collimation system now consists of four 45 degree FODO cells with 3
+!    pairs of collimators separated by 45 degrees (22 m betas at collimators);
+!    FODO cell length is 12 m
+!  * add a wire scanner at the end of COL0 for "tomographic" emittance
+!    measurement
+!  * decorate device TYPE attributes to indicate non-baseline status
+! ------------------------------------------------------------------------------
+! 17-APR-2014, M. Woodley
+!  * add "CNT" MARKERs after dispersive areas (ELEGANT CENTERing)
+!  * explicitly define R55=R66=1 in MATRs (for translation to BMAD)
+! ------------------------------------------------------------------------------
+! 19-MAR-2014, M. Woodley
+!  * matching around extraction to DIAG0 changed
+!  * element names changed to conform to nomenclature PRD
+! ------------------------------------------------------------------------------
+! 13-JAN-2014, M. Woodley
+!  * parameters of buncher and solenoids per C. Papadopoulos
+!    (Parameters_GUN2013_10_08v3.docx) ...
+! ------------------------------------------------------------------------------
+! 07-JAN-2014, M. Woodley
+!  * devices between CATHODE and CM01 per H. Alvarez
+! ------------------------------------------------------------------------------
+
+! ==============================================================================
+! LCAV
+! ------------------------------------------------------------------------------
+
+! buncher cavity
+! (no gradient/phase values available)
+
+  Lbun := 0.21876 !m
+  Abun := 0.0517  !m
+  Gbun := 0       !MV/m
+  Pbun := 0       !deg
+
+  BUN1B : LCAV, TYPE="LBNL", FREQ=1300, L=Lbun, APER=Abun/2, &
+                DELTAE=Gbun*Lbun, PHI0=Pbun/360
+
+  COMMENT !for checking Z at buncher center
+    BUN1Bh : LCAV, TYPE="LBNL", FREQ=1300, L=Lbun/2, APER=Abun/2, &
+                   DELTAE=Gbun*Lbun/2, PHI0=Pbun/360
+    BUN1B : LINE=(2*BUN1Bh)
+  ENDCOMMENT
+
+! ==============================================================================
+! SBEN
+! ------------------------------------------------------------------------------
+
+! laser heater chicane
+! - approximate on-axis effective length per R. Carr (01-AUG-05 PE)
+! - use series approximation for sinc(x)=sin(x)/x to allow BCXH=0
+
+! Brhoh : beam rigidity at chicane (kG-m)
+! GBh   : 5D3.9 gap height (m)
+! ZBh   : 5D3.9 "Z" length (m)
+! FBh   : measured chicane bend FINT/FINTX
+! ABh   : chicane bend angle (rad)
+! BBh   : heater-chicane bend field (kG)
+! LBh   : chicane bend path length (m)
+! ABhS  : "short" half chicane bend angle (rad)
+! LBhS  : "short" half chicane bend path length (m)
+! ABhL  : "long" half chicane bend angle (rad)
+! LBhL  : "long" half chicane bend path length (m)
+
+  Brhoh    := Cb*Ei
+  GBh      := 0.03
+  ZBh      := 0.1244
+  FBh      := 0.3887
+  ABh      := 0.022113826596 !R56=0.0035
+  BBh      := Brhoh*SIN(ABh)/ZBh
+  ABh_2    := ABh*ABh
+  ABh_4    := ABh_2*ABh_2
+  ABh_6    := ABh_4*ABh_2
+  SINCABh  := 1-ABh_2/6+ABh_4/120-ABh_6/5040 !~sinc(ABh)=sin(ABh)/ABh
+  LBh      := ZBh/SINCABh
+  ABhS     := ASIN(SIN(ABh)/2)
+  ABhS_2   := ABhS*ABhS
+  ABhS_4   := ABhS_2*ABhS_2
+  ABhS_6   := ABhS_4*ABhS_2
+  SINCABhS := 1-ABhS_2/6+ABhS_4/120-ABhS_6/5040 !~sinc(ABhS)=sin(ABhS)/ABhS
+  LBhS     := ZBh/(2*SINCABhS)
+  ABhL     := ABh-ABhS
+  LBhL     := LBh-LBhS
+
+  BCXH1A : SBEN, TYPE="5D3.9", L=LBhS, ANGLE=+ABhS, HGAP=GBh/2, &
+                 E1=0, FINT=FBh, FINTX=0
+  BCXH1B : SBEN, TYPE="5D3.9", L=LBhL, ANGLE=+ABhL, HGAP=GBh/2, &
+                 FINT=0, E2=+ABh, FINTX=FBh
+  BCXH2A : SBEN, TYPE="5D3.9", L=LBhL, ANGLE=-ABhL, HGAP=GBh/2, &
+                 E1=-ABh, FINT=FBh, FINTX=0
+  BCXH2B : SBEN, TYPE="5D3.9", L=LBhS, ANGLE=-ABhS, HGAP=GBh/2, &
+                 FINT=0, E2=0, FINTX=FBh
+  BCXH3A : SBEN, TYPE="5D3.9", L=LBhS, ANGLE=-ABhS, HGAP=GBh/2, &
+                 E1=0, FINT=FBh, FINTX=0
+  BCXH3B : SBEN, TYPE="5D3.9", L=LBhL, ANGLE=-ABhL, HGAP=GBh/2, &
+                 FINT=0, E2=-ABh, FINTX=FBh
+  BCXH4A : SBEN, TYPE="5D3.9", L=LBhL, ANGLE=+ABhL, HGAP=GBh/2, &
+                 E1=+ABh, FINT=FBh, FINTX=0
+  BCXH4B : SBEN, TYPE="5D3.9", L=LBhS, ANGLE=+ABhS, HGAP=GBh/2, &
+                 FINT=0, E2=0, FINTX=FBh
+
+! ==============================================================================
+! QUAD
+! ------------------------------------------------------------------------------
+
+! correction coils co-wound on GUNB solenoids
+
+  CQ01B : QUAD, TYPE="solenoid trim", L=0, APER=0.0475/2, K1=0
+  SQ01B : QUAD, TYPE="solenoid trim", L=0, APER=0.0475/2, K1=0
+  CQ02B : QUAD, TYPE="solenoid trim", L=0, APER=0.0475/2, K1=0
+  SQ02B : QUAD, TYPE="solenoid trim", L=0, APER=0.0475/2, K1=0
+
+! L0 to WS/OTR (Q0H01-4 match to waists at WS0H04)
+
+  KQ0H01 := -6.391217650404
+  KQ0H02 :=  5.905989161645
+  KQ0H03 :=  2.403934435238
+  KQ0H04 := -6.042774733767
+
+  Q0H01 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0H01
+  Q0H02 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0H02
+  Q0H03 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0H03
+  Q0H04 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0H04
+
+! WS/OTR to laser heater (Q0H05-8 match to 10x10 m beta waists LHMID)
+
+!               heater ON         heater OFF        chicane OFF      
+!           ----------------   ----------------   ----------------   
+  KQ0H05 :=  -6.486739294274 !  -7.451314362911 !  -7.50807265705  ! 
+  KQ0H06 :=   0.966024601548 !   1.835321162849 !   1.870908387703 ! 
+  KQ0H07 :=   7.974521691066 !   7.794364054297 !   7.804907479843 ! 
+  KQ0H08 :=  -8.324215790715 !  -8.272683698332 !  -8.306722243052 ! 
+
+  Q0H05 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0H05
+  Q0H06 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0H06
+  Q0H07 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0H07
+  Q0H08 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0H08
+
+! laser heater to diagnostic line
+
+!               heater ON         heater OFF        chicane OFF      
+!           ----------------   ----------------   ----------------   
+  KQHD01 :=  -9.165493466042 !  -8.743988180274 !  -8.746794738551 ! 
+  KQHD02 :=   6.5393744713   !   6.400024201736 !   6.401620200766 ! 
+  KQHD03 :=  -8.445995045319 !  -8.612136472635 !  -8.622952974047 ! 
+  KQHD04 :=   6.743451959252 !   6.860670404609 !   6.864937307631 ! 
+
+  QHD01 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQHD01
+  QHD02 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQHD02
+  QHD03 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQHD03
+  QHD04 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQHD04
+
+! collimation FODO
+
+  KQColl0   := 1.787850470726  !45 degree FODO
+! BminColl0 := 6.996145818354
+! BmaxColl0 := 15.616293369747
+
+  QFColl0 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1= KQColl0
+  QDColl0 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=-KQColl0
+
+! COL0 collimation section
+
+  KQC001 :=  5.055115116458
+  KQC002 :=  0.157983740943
+  KQC003 := -5.345027237214
+  KQC004 :=  2.756594856384
+  KQC005 := -KQColl0
+  KQC006 :=  KQColl0
+  KQC007 := -KQColl0
+  KQC008 :=  KQColl0
+  KQC009 := -KQColl0
+  KQC010 :=  1.029493895725
+  KQC011 := -1.580615430886
+  KQC012 :=  1.296911536424
+
+  QC001 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQC001
+  QC002 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQC002
+  QC003 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQC003
+  QC004 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQC004
+  QC005 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQC005
+  QC006 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQC006
+  QC007 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQC007
+  QC008 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQC008
+  QC009 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQC009
+  QC010 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQC010
+  QC011 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQC011
+  QC012 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQC012
+
+! ==============================================================================
+! SOLE
+! ------------------------------------------------------------------------------
+
+! solenoids between gun and L0
+
+  Rsol  := 0.0475/2
+  Lsol  := 0.17412             !m
+  BSOL1 := 0                   !0.0570 T
+  BSOL2 := 0                   !0.0322 T
+  Brho  := Cb*SQRT(E0^2-mc2^2) !kG-m (non-relativistic)
+  KSOL1 := (10*BSOL1)/Brho     !1/m
+  KSOL2 := (10*BSOL2)/Brho     !1/m
+
+  SOL1BKB : SOLE, TYPE="Bucking Coil", L=0, KS=0
+  SOL1B   : SOLE, TYPE="LBNL", L=Lsol/2, APER=Rsol, KS=KSOL1
+  SOL2B   : SOLE, TYPE="LBNL", L=Lsol/2, APER=Rsol, KS=KSOL2
+
+! ==============================================================================
+! MATR
+! ------------------------------------------------------------------------------
+
+! laser heater undulator
+! - modeled as R-matrix to include vertical natural focusing
+! - parameters from LCLS-II Phase 1 undulator
+
+! lam   : laser-heater undulator period [m]
+! lamr  : heater laser wavelength [m]
+! gami  : Lorentz energy factor in laser-heater undulator [1]
+! K_und : undulator K for laser heater undulator
+! Lhun  : length of laser-heater undulator (10 periods) [m]
+! kqlh  : natural undulator focusing "k" in y-plane [1/m2]
+
+  lam   := 0.054 !0.0471204
+  lamr  := 1030E-9
+  gami  := Ei/EMASS
+  K_und := sqrt(2*(lamr*2*gami^2/lam-1))
+  Lhun  := 0.506263 !10*lam
+  kqlh  := (K_und*2*pi/lam/sqrt(2)/gami)^2
+
+ !COMMENT
+    UMHTR : MATRIX, TYPE="LHund", L=Lhun/2,       &
+      RM(1,1)=1.0,                                &
+      RM(1,2)=Lhun/2,                             &
+      RM(2,1)=0.0,                                &
+      RM(2,2)=1.0,                                &
+      RM(3,3)=cos(Lhun/2*sqrt(kqlh)),             &
+      RM(3,4)=sin(Lhun/2*sqrt(kqlh))/sqrt(kqlh),  &
+      RM(4,3)=-sin(Lhun/2*sqrt(kqlh))*sqrt(kqlh), &
+      RM(4,4)=cos(Lhun/2*sqrt(kqlh)),             &
+      RM(5,5)=1,                                  &
+      RM(6,6)=1 !,
+     !RM(5,6)=Lhun/2/(gami^2)*(1+(K_und^2)/2)
+ !ENDCOMMENT
+
+ !UMHTR : DRIF, TYPE="LHund", L=Lhun/2
+
+! ==============================================================================
+! DRIF
+! ------------------------------------------------------------------------------
+
+! gun to L0
+
+  Lgun := 0.04 !APEX gun
+
+  DGBCa : DRIF, L=-0.071705
+  DGBCb : DRIF, L=0.071705
+  DGUN  : DRIF, L=Lgun
+  DG001 : DRIF, L=0.255994-Lgun-Lsol/2
+  DG002 : DRIF, L=0.131486-Lsol/2
+  DG003 : DRIF, L=0.098324
+  DG004 : DRIF, L=0.003605
+  DG005 : DRIF, L=0.105283
+  DG006 : DRIF, L=0.079052
+  DG007 : DRIF, L=0.136136-Lbun/2
+  DG008 : DRIF, L=0.155291-Lbun/2
+  DG009 : DRIF, L=0.182651
+  DG010 : DRIF, L=0.220987
+  DG011 : DRIF, L=0.123312
+  DG012 : DRIF, L=0.159167-Lsol/2
+  DG013 : DRIF, L=0.131492-Lsol/2
+  DG014 : DRIF, L=0.101358
+  DG015 : DRIF, L=0.004619
+  DG016 : DRIF, L=0.163820
+
+  DG016b : DRIF, L=0.082968
+  DG016a : DRIF, L=DG016[L]-DG016b[L]
+
+  DGEIC : DRIF, L=3.0-2.052577
+
+! L0 to laser heater
+
+  D0H00  : DRIF, L=0.407975
+  D0H01  : DRIF, L=0.427898
+  D0H02  : DRIF, L=4.179215
+  D0H03  : DRIF, L=0.409812
+  D0H04  : DRIF, L=1.0979
+  D0H05  : DRIF, L=0.409812
+  D0H06  : DRIF, L=1.366076
+  D0H07  : DRIF, L=0.409812
+  D0H08  : DRIF, L=0.3687
+
+  D0H00b : DRIF, L=0.291975
+  D0H00a : DRIF, L=D0H00[L]-Ljaw-D0H00b[L]
+  D0H01a : DRIF, L=0.213949
+  D0H01b : DRIF, L=D0H01[L]-D0H01a[L]
+  D0H02a : DRIF, L=0.204906
+  D0H02b : DRIF, L=0.443171
+  D0H02c : DRIF, L=0.64135
+  D0H02d : DRIF, L=0.64135
+  D0H02f : DRIF, L=0.204906
+  D0H02e : DRIF, L=D0H02[L]-D0H02a[L]-D0H02b[L]-D0H02c[L]-D0H02d[L]-D0H02f[L]
+  D0H03a : DRIF, L=0.204906
+  D0H03b : DRIF, L=D0H03[L]-D0H03a[L]
+  D0H04a : DRIF, L=0.2148
+  D0H04b : DRIF, L=0.0333
+  D0H04c : DRIF, L=0.2437
+  D0H04d : DRIF, L=0.2492
+  D0H04e : DRIF, L=D0H04[L]-D0H04a[L]-D0H04b[L]-D0H04c[L]-D0H04d[L]
+  D0H05a : DRIF, L=0.204906
+  D0H05b : DRIF, L=D0H05[L]-D0H05a[L]
+  D0H06a : DRIF, L=0.204906
+  D0H06c : DRIF, L=0.204906
+  D0H06b : DRIF, L=D0H06[L]-D0H06a[L]-D0H06c[L]
+  D0H07a : DRIF, L=0.204906
+  D0H07b : DRIF, L=D0H07[L]-D0H07a[L]
+  D0H08a : DRIF, L=0.1934
+  D0H08b : DRIF, L=D0H08[L]-D0H08a[L]
+
+! laser heater
+
+  ZhBBo  := 3.264933791099
+  ZhBBi  := 2.009304
+  ZhBMo  := 1.53742329
+  ZhBMIu := 0.37561671
+  ZhBMId := 1.389994208901
+
+  Dh01   : DRIF, L=ZhBBo/COS(ABh), TYPE="CSR"
+  Dh01a  : DRIF, L=ZhBMo/COS(ABh), TYPE="CSR"
+  Dh01b  : DRIF, L=ZhBMIu/COS(ABh), TYPE="CSR"
+  Dh01c  : DRIF, L=Dh01[L]-Dh01a[L]-Dh01b[L], TYPE="CSR"
+  Dh02   : DRIF, L=ZhBBi, TYPE="CSR"
+  Dh02a  : DRIF, L=0.192614-Ljaw/2, TYPE="CSR"
+  Dh02b  : DRIF, L=0.298450-Ljaw/2, TYPE="CSR"
+  Dh02c  : DRIF, L=0.2795065, TYPE="CSR" !0.297036
+  Dh02d  : DRIF, L=0.2724707, TYPE="CSR" !0.2900002
+  Dh02e  : DRIF, L=0.4599998, TYPE="CSR"
+  Dh03   : DRIF, L=ZhBBo/COS(ABh), TYPE="CSR"
+  Dh03a  : DRIF, L=ZhBMId/COS(ABh), TYPE="CSR"
+  Dh03c  : DRIF, L=ZhBMo/COS(ABh), TYPE="CSR"
+  Dh03b  : DRIF, L=Dh03[L]-Dh03a[L]-Dh03c[L], TYPE="CSR"
+
+! laser heater to diagnostic line
+
+  DHD00 : DRIF, L=0.381398817802
+  DHD01 : DRIF, L=0.6566
+  DHD02 : DRIF, L=2.580388
+  DHD03 : DRIF, L=0.459812
+  DHD04 : DRIF, L=0.3687996
+
+  DHD00b  : DRIF, L=0.1
+  DHD00a  : DRIF, L=DHD00[L]-DHD00b[L]
+  DHD01a  : DRIF, L=0.204906
+  DHD01c  : DRIF, L=0.204906
+  DHD01b  : DRIF, L=DHD01[L]-DHD01a[L]-DHD01c[L]
+  DHD02b  : DRIF, L=0.204906
+  DHD02a  : DRIF, L=DHD02[L]-DHD02b[L]
+  DHD02a2 : DRIF, L=0.305410
+  DHD02a3 : DRIF, L=0.334815
+  DHD02a4 : DRIF, L=0.442479
+  DHD02a1 : DRIF, L=DHD02a[L]-DHD02a2[L]-DHD02a3[L]-DHD02a4[L]
+  DHD03b  : DRIF, L=0.204906
+  DHD03a  : DRIF, L=DHD03[L]-DHD03b[L]
+  DHD04a  : DRIF, L=0.1208998
+  DHD04b  : DRIF, L=DHD04[L]-DHD04a[L]
+
+  COMMENT
+    VALUE, DHD00[L],DHD00a[L]+DHD00b[L]
+    VALUE, DHD01[L],DHD01a[L]+DHD01b[L]+DHD01c[L]
+    VALUE, DHD02[L],DHD02a[L]+DHD02b[L]
+    VALUE, DHD03[L],DHD03a[L]+DHD03b[L]
+    VALUE, DHD04[L],DHD04a[L]+DHD04b[L]
+  ENDCOMMENT
+
+! collimation FODO
+
+  DColl0   : DRIF, L=4.0-LQx
+  DColl0a  : DRIF, L=0.2508
+  DColl0c  : DRIF, L=0.325-Ljaw/2
+  DColl0b  : DRIF, L=DColl0[L]-DColl0a[L]-Ljaw-DColl0c[L]
+  DColl0b2 : DRIF, L=0.3
+  DColl0b3 : DRIF, L=0.3151
+  DColl0b4 : DRIF, L=0.25-Ljaw/2
+  DColl0b1 : DRIF, L=DColl0b[L]-DColl0b2[L]-DColl0b3[L]-DColl0b4[L]
+  DColl0b5 : DRIF, L=3.2862
+
+! DIAG0 extraction magnets
+
+  DBKRDG0a : DRIF, L=0.5
+  DBKRDG0b : DRIF, L=0.5
+  DBLRDG0a : DRIF, L=0.2
+  DBLRDG0b : DRIF, L=0.2
+
+! COL0 collimation section
+
+  DC000 : DRIF, L=5.4832+4e-7
+  DC001 : DRIF, L=0.673
+  DC002 : DRIF, L=0.8238
+  DC003 : DRIF, L=1.533669597623
+  DC004 : DRIF, L=5.2128
+  DC010 : DRIF, L=DColl0[L]
+  DC011 : DRIF, L=2.8252
+
+  DC000a : DRIF, L=ZKSD0
+  DC000c : DRIF, L=0.19
+  DC000b : DRIF, L=DC000[L]-ZK0-DC000a[L]-ZS0-DC000c[L] !2.5932004
+  DC003a : DRIF, L=0.2508
+  DC003b : DRIF, L=DC003[L]-DC003a[L]
+  DC004a : DRIF, L=0.2508
+  DC004c : DRIF, L=0.325-Ljaw/2
+  DC004b : DRIF, L=DC004[L]-DC004a[L]-Ljaw-DC004c[L]
+  DC010a : DRIF, L=DColl0a[L]
+  DC010c : DRIF, L=0.3
+  DC010b : DRIF, L=DC010[L]-DC010a[L]-DC010c[L]
+  DC011a : DRIF, L=0.2508
+  DC011c : DRIF, L=0.327
+  DC011b : DRIF, L=DC011[L]-DC011a[L]-DC011c[L]
+
+  DC000aa : DRIF, L=ZKSD0a
+  DC000ab : DRIF, L=ZKSD0b
+
+! ==============================================================================
+! BPMs
+! ------------------------------------------------------------------------------
+
+  BPM1B   : MONI, TYPE="Stripline-4"
+  BPM2B   : MONI, TYPE="Stripline-4"
+
+  BPM0H01 : MONI, TYPE="Stripline-12"
+  BPM0H04 : MONI, TYPE="Stripline-12"
+  BPM0H05 : MONI, TYPE="Stripline-12"
+  BPM0H08 : MONI, TYPE="Stripline-12"
+  BPMH1   : MONI, TYPE="Stripline-8"
+  BPMH2   : MONI, TYPE="Stripline-8"
+  BPMHD01 : MONI, TYPE="Stripline-12"
+  BPMHD02 : MONI, TYPE="Stripline-12"
+  BPMHD03 : MONI, TYPE="Stripline-12"
+  BPMHD04 : MONI, TYPE="Stripline-12"
+  BPMC001 : MONI, TYPE="Stripline-1"
+  BPMC002 : MONI, TYPE="Stripline-1"
+  BPMC003 : MONI, TYPE="Stripline-1"
+  BPMC004 : MONI, TYPE="Stripline-1"
+  BPMC005 : MONI, TYPE="Stripline-1"
+  BPMC006 : MONI, TYPE="Stripline-1"
+  BPMC007 : MONI, TYPE="Stripline-1"
+  BPMC008 : MONI, TYPE="Stripline-1"
+  BPMC009 : MONI, TYPE="Stripline-1"
+  BPMC010 : MONI, TYPE="Stripline-1"
+  BPMC011 : MONI, TYPE="Stripline-1"
+  BPMC012 : MONI, TYPE="Stripline-1"
+
+  RFB0H00 : MONI, TYPE="@2,CavityS-1"
+  RFB0H04 : MONI, TYPE="@2,CavityS-1"
+  RFB0H08 : MONI, TYPE="@2,CavityS-1"
+  RFBHD00 : MONI, TYPE="@2,CavityS-1"
+  RFBHD04 : MONI, TYPE="@2,CavityS-1"
+  RFBC006 : MONI, TYPE="@2,CavityS-1"
+  RFBC011 : MONI, TYPE="@4,CavityS-1"
+
+! ==============================================================================
+! XCORs
+! ------------------------------------------------------------------------------
+
+  XC01B : HKIC, TYPE="LBNL-xy"
+  XC02B : HKIC, TYPE="LBNL-xy"
+  XC03B : HKIC, TYPE="LBNL-xy"
+  XC04B : HKIC, TYPE="LBNL-xy"
+  XC05B : HKIC, TYPE="LBNL-xy"
+
+  XC0H01 : HKIC, TYPE="class-6"
+  XC0H03 : HKIC, TYPE="class-6"
+  XC0H05 : HKIC, TYPE="class-6"
+  XC0H07 : HKIC, TYPE="class-6"
+  XCHD01 : HKIC, TYPE="class-6"
+  XCHD03 : HKIC, TYPE="class-6"
+  XCC000 : HKIC, TYPE="class-1a"
+  XCC004 : HKIC, TYPE="class-6"
+  XCC006 : HKIC, TYPE="class-6"
+  XCC008 : HKIC, TYPE="class-6"
+  XCC010 : HKIC, TYPE="class-6"
+  XCC012 : HKIC, TYPE="class-6"
+
+! ==============================================================================
+! YCORs
+! ------------------------------------------------------------------------------
+
+  YC01B : VKIC, TYPE="LBNL-xy"
+  YC02B : VKIC, TYPE="LBNL-xy"
+  YC03B : VKIC, TYPE="LBNL-xy"
+  YC04B : VKIC, TYPE="LBNL-xy"
+  YC05B : VKIC, TYPE="LBNL-xy"
+
+  YC0H01 : VKIC, TYPE="class-6"
+  YC0H03 : VKIC, TYPE="class-6"
+  YC0H05 : VKIC, TYPE="class-6"
+  YC0H07 : VKIC, TYPE="class-6"
+  YCHD01 : VKIC, TYPE="class-6"
+  YCHD03 : VKIC, TYPE="class-6"
+  YCC000 : VKIC, TYPE="class-1a"
+  YCC003 : VKIC, TYPE="class-6"
+  YCC005 : VKIC, TYPE="class-6"
+  YCC007 : VKIC, TYPE="class-6"
+  YCC009 : VKIC, TYPE="class-6"
+  YCC011 : VKIC, TYPE="class-6"
+
+! ==============================================================================
+! diagnostics, etc.
+! ------------------------------------------------------------------------------
+
+! halo/dark current collimator
+
+  PC0H00 : ECOL, L=Ljaw, XSIZE=6.0e-3, YSIZE=6.0e-3, TYPE="tungsten"
+
+! collimators
+! (betatron X/Y half-gaps are 24/16 sigma for 1 um normalized emittance)
+
+  CEHTR : RCOL, L=Ljaw, XSIZE=3.0e-3, TYPE="HCOLL"    !X momentum collimator
+  CYC01 : RCOL, L=Ljaw, YSIZE=4.4e-3, TYPE="VCOLL"    !Y betatron collimator
+  CXC01 : RCOL, L=Ljaw, XSIZE=4.4e-3, TYPE="HCOLL"    !X betatron collimator
+  CYC02 : RCOL, L=Ljaw, YSIZE=4.4e-3, TYPE="@4,VCOLL" !Y betatron collimator
+  CXC02 : RCOL, L=Ljaw, XSIZE=4.4e-3, TYPE="@4,HCOLL" !X betatron collimator
+  CYC03 : RCOL, L=Ljaw, YSIZE=4.4e-3, TYPE="VCOLL"    !Y betatron collimator
+  CXC03 : RCOL, L=Ljaw, XSIZE=4.4e-3, TYPE="HCOLL"    !X betatron collimator
+
+! instruments
+
+  CATHODEB : INST
+  VV01B    : INST
+  IM01B    : IMON, TYPE="ICT"
+  YAG01B   : PROF, TYPE="YAG INJ"
+  VV02B    : INST
+  WS0H04   : WIRE, TYPE="fast"
+  OTR0H04  : PROF, TYPE="@2,YAG/OTR PSI"
+  BZ0H04   : BLMO, TYPE="gap/diode"
+  YAGH1    : PROF, TYPE="YAG INJ"
+  YAGH2    : PROF, TYPE="YAG INJ"
+  IMBCSi1  : IMON, TYPE="@0,BCS ACM"
+  IMBCSi2  : IMON, TYPE="@0,BCS ACM"
+  IMBCSi3  : IMON, TYPE="@0,BCS ACM"
+  OTRC006  : PROF, TYPE="@4,YAG/OTR PSI"
+  WSC006   : WIRE, TYPE="@4,fast"
+
+  FC00EIC  : INST, TYPE="Faraday cup"
+
+! marker points
+
+  AM00B   : MARK !gun laser injection mirror (MIR01)
+  BLFU    : MARK !beamline flange
+  DP0H01  : MARK
+  DP0H02  : MARK
+  DP0H03  : MARK
+  LHBEGB  : MARK
+  MIRLHu  : MARK, TYPE="laser inj/ext"
+  HTRUNDB : MARK, TYPE="SCATTER"
+  MIRLHd  : MARK, TYPE="laser inj/ext"
+  CNTHTR  : MARK, TYPE="CENTER"
+  LHENDB  : MARK
+
+  BEGEIC : MARK
+  ECUEIC : MARK !u/s flange face
+  ENDEIC : MARK
+
+! ==============================================================================
+! BEAMLINE
+! ------------------------------------------------------------------------------
+
+  SOL1BL : LINE=(SOL1B,2*CQ01B,2*SQ01B,SOL1B)
+  SOL2BL : LINE=(SOL2B,2*CQ02B,2*SQ02B,SOL2B)
+
+  SC1B   : LINE=(XC01B,YC01B)
+  SC2B   : LINE=(XC02B,YC02B)
+  SC3B   : LINE=(XC03B,YC03B)
+  SC4B   : LINE=(XC04B,YC04B)
+  SC5B   : LINE=(XC05B,YC05B)
+  SCC000 : LINE=(XCC000,YCC000)
+
+  GUN : LINE=(&
+    BEGGUNB,&
+    DGBCa,SOL1BKB,DGBCb,&
+    CATHODEB,DGUN,DG001,&
+    SOL1BL,DG002,VV01B,DG003,SC1B,DG004,BPM1B,DG005,IM01B,DG006,SC2B,DG007,&
+    BUN1B,DG008,SC3B,DG009,AM00B,DG010,SC4B,DG011,YAG01B,DG012,&
+    SOL2BL,DG013,VV02B,DG014,BPM2B,DG015,SC5B,DG016a,BLFU,DG016b,&
+    ENDGUNB)
+
+  EIC : LINE=(&
+    BEGEIC,&
+    DGBCa,SOL1BKB,DGBCb,&
+    CATHODEB,DGUN,DG001,&
+    SOL1BL,DG002,VV01B,DG003,SC1B,DG004,BPM1B,DG005,IM01B,DG006,SC2B,DG007,&
+    BUN1B,DG008,SC3B,DG009,AM00B,DG010,SC4B,DG011,YAG01B,DG012,&
+    SOL2BL,DG013,VV02B,DG014,BPM2B,DG015,SC5B,DG016a,BLFU,DG016b,&
+    ECUEIC,DGEIC,FC00EIC,&
+    ENDEIC)
+
+  LSRHTR : LINE=(LHBEGB,&
+    BCXH1A,BCXH1B,Dh01a,BPMH1,Dh01b,MIRLHu,Dh01c,&
+    BCXH2A,BCXH2B,Dh02a,CEHTR,Dh02b,YAGH1,Dh02c,&
+      UMHTR,HTRUNDB,UMHTR,Dh02d,YAGH2,Dh02e,&
+    BCXH3A,BCXH3B,Dh03a,MIRLHd,Dh03b,BPMH2,Dh03c,&
+    BCXH4A,BCXH4B,CNTHTR,&
+    LHENDB)
+
+  COMMENT !simplified
+    HTR : LINE=(&
+      BEGHTR,D0H00,&
+      Q0H01,Q0H01,D0H01,&
+      Q0H02,Q0H02,D0H02,&
+      Q0H03,Q0H03,D0H03,&
+      Q0H04,Q0H04,D0H04,&
+      Q0H05,Q0H05,D0H05,&
+      Q0H06,Q0H06,D0H06,&
+      Q0H07,Q0H07,D0H07,&
+      Q0H08,Q0H08,D0H08,&
+      LSRHTR,DHD00,&
+      QHD01,QHD01,DHD01,&
+      QHD02,QHD02,DHD02,&
+      QHD03,QHD03,DHD03,&
+      QHD04,QHD04,DHD04,&
+      ENDHTR)
+  ENDCOMMENT
+
+ !COMMENT !complete
+    HTR : LINE=(&
+      BEGHTR,RFB0H00,&
+      D0H00a,PC0H00,D0H00b,&
+      Q0H01,BPM0H01,Q0H01,D0H01a,YC0H01,D0H01b,&
+      Q0H02,Q0H02,D0H02a,XC0H01,D0H02b,DP0H01,D0H02c,DP0H02,D0H02d,DP0H03,&
+        D0H02e,XC0H03,D0H02f,&
+      Q0H03,Q0H03,D0H03a,YC0H03,D0H03b,&
+      Q0H04,BPM0H04,Q0H04,D0H04a,RFB0H04,D0H04b,OTR0H04,D0H04c,WS0H04,D0H04d,&
+        BZ0H04,D0H04e,&
+      Q0H05,BPM0H05,Q0H05,D0H05a,YC0H05,D0H05b,&
+      Q0H06,Q0H06,D0H06a,XC0H05,D0H06b,XC0H07,D0H06c,&
+      Q0H07,Q0H07,D0H07a,YC0H07,D0H07b,&
+      Q0H08,BPM0H08,Q0H08,D0H08a,RFB0H08,D0H08b,&
+      LSRHTR,DHD00a,RFBHD00,DHD00b,&
+      QHD01,BPMHD01,QHD01,DHD01a,YCHD01,DHD01b,XCHD01,DHD01c,&
+      QHD02,BPMHD02,QHD02,DHD02a1,IMBCSi1,DHD02a2,IMBCSi2,DHD02a3,IMBCSi3,&
+        DHD02a4,YCHD03,DHD02b,&
+      QHD03,BPMHD03,QHD03,DHD03a,XCHD03,DHD03b,&
+      QHD04,BPMHD04,QHD04,DHD04a,RFBHD04,DHD04b,&
+      ENDHTR)
+ !ENDCOMMENT
+
+  COMMENT !simplified
+    COL0 : LINE=(&
+      BEGCOL0,&
+      DC000,&
+      QC001,QC001,DC001,&
+      QC002,QC002,DC002,&
+      QC003,QC003,DC003,&
+      QC004,QC004,DC004,&
+      QC005,QC005,DColl0,&
+      QC006,QC006,DColl0,&
+      QC007,QC007,DColl0,&
+      QC008,QC008,DColl0,&
+      QC009,QC009,DColl0,&
+      QC010,QC010,DColl0,&
+      QC011,QC011,DC011,&
+      QC012,QC012,&
+      ENDCOL0)
+  ENDCOMMENT
+
+ !COMMENT !complete
+    COL0 : LINE=(&
+      BEGCOL0,&
+      DBKRDG0a,DBKRDG0b,DC000aa,BPMDG000,DC000ab,DBLRDG0a,DBLRDG0b,&
+        DC000b,SCC000,DC000c,&
+      QC001,BPMC001,QC001,DC001,&
+      QC002,BPMC002,QC002,DC002,&
+      QC003,BPMC003,QC003,DC003a,YCC003,DC003b,&
+      QC004,BPMC004,QC004,DC004a,XCC004,DC004b,CYC01,DC004c,&
+      QC005,BPMC005,QC005,DColl0a,YCC005,DColl0b,CXC01,DColl0c,&
+      QC006,BPMC006,QC006,DColl0a,XCC006,DColl0b1,OTRC006,DColl0b2,&
+        WSC006,DColl0b3,RFBC006,DColl0b4,CYC02,DColl0c,&
+      QC007,BPMC007,QC007,DColl0a,YCC007,DColl0b5,CXC02,DColl0c,&
+      QC008,BPMC008,QC008,DColl0a,XCC008,DColl0b,CYC03,DColl0c,&
+      QC009,BPMC009,QC009,DColl0a,YCC009,DColl0b,CXC03,DColl0c,&
+      QC010,BPMC010,QC010,DC010a,XCC010,DC010b,RFBC011,DC010c,&
+      QC011,BPMC011,QC011,DC011a,YCC011,DC011b,XCC012,DC011c,&
+      QC012,BPMC012,QC012,&
+      ENDCOL0)
+ !ENDCOMMENT
+
+  C0fodo : LINE=(QFColl0,DColl0,QDColl0,QDColl0,DColl0,QFColl0)
+
+! ------------------------------------------------------------------------------
+
+  RETURN

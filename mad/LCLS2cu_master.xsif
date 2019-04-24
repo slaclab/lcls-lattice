@@ -1,0 +1,367 @@
+
+! *** OPTICS=AD_ACCEL-23JAN19 ***
+
+! ------------------------------------------------------------------------------
+! constants and global parameters
+! ------------------------------------------------------------------------------
+
+! constants
+
+  Cb      : CONSTANT=1.0E10/CLIGHT !energy to magnetic rigidity
+  GeV2MeV : CONSTANT=1000.0        !GeV to MeV
+  in2m    : CONSTANT=0.0254        !inches to meters
+  mc2     : CONSTANT=510.99906E-6  !e- rest mass [GeV]
+
+! initial conditions (exit of L0)
+
+  injdeg := -35.0    !injector bend angle w.r.t. linac [degrees]
+  E00    := 0.006    !beam energy after gun (GeV)
+  E0i    := 0.064    !beam energy between L0a and L0b sections (GeV)
+  Ei     := 0.135    !initial beam energy (GeV) (150->135 MeV on July 9, 2003)
+  EBC1   := 0.250    !BC1 energy (GeV)
+  EBC2   := 4.300    !BC2 energy (GeV)
+  Ef     := EfCu     !final beam energy (GeV)
+  Eu     := EuCu     !energy in undulator (GeV)
+  EMITXN := 1.00E-06 !normalized horizontal emittance (m)
+  EMITYN := 1.00E-06 !normalized vertical emittance (m)
+  BLENG  := 0.83E-03 !bunch length (m)
+  ESPRD  := 2.00E-05 !slice rms energy spread at 135 MeV (1)
+  ZOFFINJ:= 0.012100 !moves entire injector in main-linac z-direction by this amount (+12.100 mm Nov. 17, 2004)
+
+  XOFF := -25.610*IN2M !x-offset of bypass line (old PEP-II 9-GeV) w.r.t. old linac axis (<0 is south)
+  YOFF :=  25.570*IN2M !y-offset of bypass line (old PEP-II 9-GeV) w.r.t. old linac axis(>0 is up)
+
+! miscellaneous parameters
+
+  Brhof := Cb*Ef
+
+! ------------------------------------------------------------------------------
+! twiss parameter definitions
+! ------------------------------------------------------------------------------
+
+! twiss parameters at L0a-exit:
+
+  TBETX :=  1.410  !twiss beta x (m)  ! back-tracked from measured/matched OTR2 through post Aug. 11, 2008 QA01-QE04 real BDES settings
+  TALFX := -2.613  !twiss alpha x
+  TBETY :=  6.706  !twiss beta y (m)
+  TALFY :=  0.506  !twiss alpha y
+
+! Dummy, fitted twiss parameters at cathode which yield the above twiss parameters at
+! L0a-exit (for plotting purposes only - assumes only drift between cathode and L0a-exit)
+
+  CBETX :=  15.574222013212  ! consistent with back-tracked from matched OTR2 through post Aug. 11, 2008 QA01-QE04 real BDES
+  CALFX :=  -3.081460532254
+  CBETY :=  0.390930039559
+  CALFY :=  0.551432669489E-2
+
+! initial Twiss for SXR dogleg cells for Cu-linac beam (at DBMARK34B)
+
+  MBETXCUS := 14.230935994022 !14.265662820746
+  MALFXCUS := -0.492407537024 !-0.492521160533
+  MBETYCUS := 41.635541126271 !41.585692319056
+  MALFYCUS :=  2.277864883454 ! 2.277903990577
+
+! periodic Twiss in HXR dogleg cells (copy from LCLS2sc_main.mad8)
+
+  MBETXH := 48.881918788199
+  MALFXH :=  3.139871668464
+  MBETYH := 96.323786537904
+  MALFYH :=  3.616905252587
+
+! Twiss at the beginning of L3 linac
+
+  ENBEGL3 :=  4.3
+  BXBEGL3 :=  1.106003893E+01
+  AXBEGL3 := -9.490138298E-01
+  BYBEGL3 :=  7.102804796E+01
+  AYBEGL3 :=  2.204492752E+00
+
+! Twiss at the end of L3 linac (L3END)
+
+  ENENDL3 := 13.64
+  BXENDL3 := 33.136631364328
+  AXENDL3 :=  1.179540229644
+  BYENDL3 := 62.298526576063
+  AYENDL3 := -1.660316777995
+
+! for matching ...
+
+  BET11 := 10.090395936353
+  BET12 := 2.470673595371
+  BET21 := 43.876719659503
+  BET22 := 16.019619746515
+ !BET31 := 53.481287866029
+ !BET32 := 35.468087644847
+ !BET33 := 29.55797372867
+ !BET34 := 63.601589300188
+  BET31 := 61.868125327071
+  BET32 := 36.40742728964
+  BET33 := 36.353377790534
+  BET34 := 61.956709274457
+ !BET31 := 69.818359882868  ! for WS28 45 deg/wire
+ !BET32 := 37.0062095289
+ !BET33 := 42.5680425597
+ !BET34 := 60.952049693321
+
+! linac phase advances
+
+  MU_L1  := 75/360
+  MU_L2  := 55.500/360
+  MUX_L3 := 30.175/360 !July 13, 2008 - set for best WS28 45-deg mux phase advances
+  MUY_L3 := 30.130/360 !July 13, 2005 - set for 3*90 deg TCAV3[1] to OTR30 (TCAV3 -> 25-2d)
+
+! ------------------------------------------------------------------------------
+! beam definitions
+! ------------------------------------------------------------------------------
+
+! input beam definition (at L0a-exit)
+
+  EMITX :=  EMITXN/(E0i/EMASS)
+  EMITY :=  EMITYN/(E0i/EMASS)
+  TGAMX :=  (1+TALFX*TALFX)/TBETX
+  TGAMY :=  (1+TALFY*TALFY)/TBETY
+  SIG11 :=  EMITX*TBETX
+  SIG21 := -EMITX*TALFX
+  SIG22 :=  EMITX*TGAMX
+  SIG33 :=  EMITY*TBETY
+  SIG43 := -EMITY*TALFY
+  SIG44 :=  EMITY*TGAMY
+  C21   :=  SIG21/SQRT(SIG11*SIG22)
+  C43   :=  SIG43/SQRT(SIG33*SIG44)
+
+! input beam definition (at cathode)
+
+  CGAMX  :=  (1+CALFX*CALFX)/CBETX
+  CGAMY  :=  (1+CALFY*CALFY)/CBETY
+  SIG11C :=  EMITX*CBETX
+  SIG21C := -EMITX*CALFX
+  SIG22C :=  EMITX*CGAMX
+  SIG33C :=  EMITY*CBETY
+  SIG43C := -EMITY*CALFY
+  SIG44C :=  EMITY*CGAMY
+  C21C   :=  SIG21C/SQRT(SIG11C*SIG22C)
+  C43C   :=  SIG43C/SQRT(SIG33C*SIG44C)
+
+! ------------------------------------------------------------------------------
+! Database MARKer point definitions
+! ------------------------------------------------------------------------------
+
+  DBMARK80 : MARK !(LCLS GUN) RF gun cathode
+  DBMARK81 : MARK !(BXG_entr) entrance of BXG
+  DBMARK97 : MARK !(GUNSPECT) 6 MeV gun spectrometer dump
+  DBMARK82 : MARK !(BX01entr) entrance of BX01
+  DBMARK98 : MARK !(135SPECT) 135-MeV spect. dump
+  DBMARK83 : MARK !(BX02exit) exit of BX02 ... LCLS injection point
+  DBMARK28 : MARK !(QM15exit) exit of QM15 ... just after TD11
+  DBMARK29 : MARK !(IV30-9  ) LI30 isolation valve ... start of BSY
+
+! ------------------------------------------------------------------------------
+! load lattice definitions
+! ------------------------------------------------------------------------------
+
+! LCLS2scH and LCLS1 optics
+
+  CALL, FILENAME="common.xsif"
+  CALL, FILENAME="SPRD.xsif"
+  CALL, FILENAME="CUSXR.xsif"
+  CALL, FILENAME="ALINE.xsif"
+  CALL, FILENAME="BYP.xsif"
+  CALL, FILENAME="LTU.xsif"
+  CALL, FILENAME="UND.xsif"
+  CALL, FILENAME="SFT.xsif"
+  CALL, FILENAME="LCLS2cu.xsif"
+
+! design L1, L2, and L3 lattices ...
+
+  CALL, FILENAME="LCLS_L1.xsif"
+  CALL, FILENAME="LCLS_L2.xsif"
+  CALL, FILENAME="LCLS_L3.xsif"
+
+! ... or simplified L1, L2, and L3 lattices (for ELEGANT)
+
+ !CALL, FILENAME="LCLS_L1e.xsif"
+ !CALL, FILENAME="LCLS_L2e.xsif"
+ !CALL, FILENAME="LCLS_L3e.xsif"
+
+! new BSY area definitions
+
+  CALL, FILENAME="BSYcu.xsif"
+  CALL, FILENAME="HXTES.xsif"
+
+! beam paths
+
+ !CU_HXR   : copper linac to e- HXR dump
+ !CU_SFTH  : copper linac to e- HXR safety dump
+ !CU_HXTES : copper linac to HXR XTES system
+ !CU_SXR   : copper linac to e- SXR dump
+ !CU_ALINE : copper linac to End Station A
+ !CU_GSPEC : copper linac to gun spectrometer
+ !CU_SPEC  : copper linac to 135 MeV spectrometer
+
+  CU_HXR   : LINE=(GUNL0a,L0b,LCLS2cuH)
+  CU_SFTH  : LINE=(GUNL0a,L0b,LCLS2cuHS)
+  CU_HXTES : LINE=(GUNL0a,L0b,LCLS2cuHXTES)
+  CU_SXR   : LINE=(GUNL0a,L0b,LCLS2cuS)
+  CU_ALINE : LINE=(GUNL0a,L0b,LCLS2cuA)
+  CU_GSPEC : LINE=(GUNBXG,GSPEC)
+  CU_SPEC  : LINE=(GUNL0a,L0b,DL1A,SPECBL)
+
+! ------------------------------------------------------------------------------
+! LINE definitions
+! ------------------------------------------------------------------------------
+
+  L1c   : LINE=(D9,DAQ1,QFL1,QFL1,DAQ1,&
+                D9,DAQ1,QDL1,QDL1,DAQ1)
+  L2c   : LINE=(4*D10,DAQ1,QFL2,QFL2,DAQ2,&
+                4*D10,DAQ1,QDL2,QDL2,DAQ2)
+  L3c   : LINE=(4*D10,DAQ1,QFL3,QFL3,DAQ2,&
+                4*D10,DAQ1,QDL3,QDL3,DAQ2)
+
+  SC0   : LINE=(XC00,YC00)
+  SC1   : LINE=(XC01,YC01)
+  SC2   : LINE=(XC02,YC02)
+  SC3   : LINE=(XC03,YC03)
+  SC4   : LINE=(XC04,YC04)
+  SC5   : LINE=(XC05,YC05)
+  SC6   : LINE=(XC06,YC06)
+  SC7   : LINE=(XC07,YC07)
+  SC8   : LINE=(XC08,YC08)
+  SC9   : LINE=(XC09,YC09)
+  SC10  : LINE=(XC10,YC10)
+  SC11  : LINE=(XC21101,YC21102)
+  SCA11 : LINE=(XC21135,YC21136)
+  SCA12 : LINE=(XC21165,YC21166)
+  SCM11 : LINE=(XC21191,YC21192)
+  SCM13 : LINE=(XC21275,YC21276)
+  SCM15 : LINE=(XC21325,YC21325)
+
+  GUNBXG: LINE=(DL00,LOADLOCK,L0beg,SOL1BK,DBMARK80,CATHODE,DL01a,&
+                SOL1,CQ01,CQ01,SC0,SQ01,SQ01,SOL1,&
+                DL01a1,VV01,DL01a2,AM00,DL01a3,AM01,DL01a4,&
+                YAG01,DL01a5,FC01,DL01b,IM01,DL01c,&
+                SC1,DL01h,BPM2,DL01d,DBMARK81)
+
+ !BXGL0a: LINE=(DXG0,DXGA,DXGB,DL01e,BPM3,&
+ !              DL01f,CR01,DL01f2,YAG02,DL01g,ZLIN00,FLNGa1,L0a___1,DLFDa,&
+ !              L0a___2,SOL2,L0a___3,SC2,L0a___4,L0aMID,L0a___5,SC3,L0a___6,&
+ !              OUTCPa,L0a___7,FLNGa2,L0aWAKE)
+
+  BXGL0a: LINE=(DBXG,DL01e,BPM3,&
+                DL01f,CR01,DL01f2,YAG02,DL01g,ZLIN00,FLNGa1,L0a___1,DLFDa,&
+                L0a___2,SOL2,L0a___3,SC2,L0a___4,L0aMID,L0a___5,SC3,L0a___6,&
+                OUTCPa,L0a___7,FLNGa2,L0aWAKE)
+
+  GUNL0a: LINE=(GUNBXG,BXGL0a)
+
+  L0b   : LINE=(L0bBEG,DL02a1,YAG03,DL02a2,DL02a3,QA01,QA01,DL02b1,&
+                PH01,DL02b2,QA02,BPM5,QA02,DL02c,FLNGb1,L0b___1,DLFDb,&
+                L0b___2,SC4,L0b___3,L0bMID,L0b___4,SC5,L0b___5,OUTCPb,&
+                L0b___6,FLNGb2,L0end)
+
+  LSRHTR: LINE=(LHBEG,BXh1A,BXh1B,Dh01,BXh2A,BXh2B,Dh02a,OTRH1,Dh03a,LH_UND,&
+                HTRUND,LH_UND,Dh03b,OTRH2,Dh02b,BXh3A,BXh3B,Dh01,&
+                BXh4A,BXh4B,LHEND)
+
+  DL1A  : LINE=(EMAT,DL1beg,DE00,DE00a,&
+                QE01,BPM6,QE01,DE01a,IM02,DE01b,VV02,DE01c,QE02,QE02,&
+                Dh00,LSRHTR,Dh06,TCAV0,SC6,TCAV0,&
+                DE02,QE03,BPM8,QE03,DE03a,DE03b,SC7,DE03c,&
+                QE04,BPM9,QE04,DE04,&
+                WS01,DE05,OTR1,DE05c,VV03,DE06a,RST1,DE06b,WS02,&
+                DE05a,MRK0,DE05a,OTR2,DE06d,BPM10,DE06e,WS03,DE05,OTR3,DE07,&
+                QM01,BPM11,QM01,DE08,SC8,DE08a,VV04,DE08b,&
+                QM02,BPM12,QM02,DE09,DBMARK82)
+
+  DL1B  : LINE=(BX01A,BX01B,DB00a,OTR4,DB00b,SC9,DB00c,&
+                QB,BPM13,QB,DB00d,WS04,DB00e,BX02A,BX02B,CNT0,DBMARK83,&
+                DM00,SC10,DM00a,QM03,BPM14,QM03,DM01,DM01a,&
+                QM04,BPM15,QM04,DM02,IM03,DM02a,DL1end)
+
+  DL1   : LINE=(DL1A,DL1B) !nominal LCLS DL1 layout with BX01/BX02 bends on
+
+  DIAG1 : LINE=(DDG1,BPMS11,DDG2,CE11,DDG3,OTR11,DDG4)
+  BC1c  : LINE=(BC1BEG,BX11A,BX11B,DBQ1,&
+                CQ11,CQ11,D11o,&
+                BX12A,BX12B,DIAG1,&
+                BX13A,BX13B,D11oa,SQ13,SQ13,D11ob,&
+                CQ12,CQ12,DBQ1,&
+                BX14A,BX14B,CNT1,BC1END)
+  BC1i  : LINE=(DL1Xa,VVX1,DL1Xb,XBEG,L1X___1,SCM11,L1X___2,XEND,DM10a,VVX2,&
+                DM10c,Q21201,BPM21201,ZLIN02,Q21201,DM10x,IMBC1I,&
+                DM11,QM11,QM11,DM12)
+  BC1e  : LINE=(DM13a,BL11,DM13b,&
+                QM12,QM12,DM14a,DM14b,IMBC1O,DM14c,&
+                QM13,BPMM12,QM13,DM15a,BL12,DM15b,SCM13,DM15c,&
+                WS11,DWW1a,WS12,DWW1b,OTR12,DWW1c1,PH02,DWW1c2,XC21302,&
+                DWW1d,YC21303,DWW1e,WS13,DM16,Q21301,BPM21301,ZLIN03,&
+                Q21301,DM17a,DM17b,TD11,DM17c,QM14,BPMM14,QM14,&
+                DM18a,SCM15,DM18b,QM15,QM15,DBMARK28,DM19)
+  BC1   : LINE=(BC1mrk,&
+                BC1i,BC1c,BC1e,&
+                BC1fin)
+  L2    : LINE=(L2beg,&
+                LI21,LI22,LI23,LI24,&
+                L2end)
+  DIAG2 : LINE=(DDG1,BPMS21,DDG2,CE21,DDG3,OTR21,DDG4)
+  BC2C1 : LINE=(BC2BEG,BX21A,BX21B,DBQ2a,&
+                CQ21,CQ21,D21oa,&
+                BX22A,BX22B,DDG0,DIAG2,DDGA,&
+                BX23A,BX23B,D21ob,&
+                CQ22,CQ22,DBQ2b,&
+                BX24A,BX24B,CNT2,BC2END)
+  BC2   : LINE=(BC2mrk,&
+                DM20,Q24701A,ZLIN08,Q24701A,D10cma,Q24701B,BPM24701,Q24701B,&
+                DM21Z,DM21A,WS24,DM21H,IMBC2I,DM21B,VV21,DM21C,&
+                QM21,QM21,DM21D,DM21E,BC2C1,D21w,D21x,BL21,D21y,DM23B,&
+                QM22,QM22,DM24A,VV22,DM24B,DM24D,Q24901A,BPM24901,Q24901A,&
+                DM24C,Q24901B,Q24901B,DM25,BC2fin)
+  L3    : LINE=(L3beg,&
+                LI25,LI26,LI27,LI28,LI29,LI30,&
+                L3end,RWWAKEss,DBMARK29)
+
+  B52LIN: LINE=(B50B1A    ,B50B1B    ,DRI14001  ,PR45      ,DRI14002  ,&
+                BPM52     ,DRI14003  ,B52AGFA   ,B52AGFB   ,DRI14004  ,&
+                B52WIG1A  ,B52WIG1B  ,DRI14005  ,B52WIG2A  ,YC54T     ,&
+                B52WIG2B  ,DRI14005  ,B52WIG3A  ,B52WIG3B  ,DRI14006  ,&
+                PR55      ,DRI14007  ,BPM56     ,DRI14008  ,Q52Q2     ,&
+                Q52Q2     ,DRI14009  ,PR60      ,DRI14010  ,IM61      ,&
+                DRI14011  ,WS62      ,DRI14012  ,YC59      ,DRI14013  ,&
+                SL1X      ,BPM64     ,DRI14014  ,SL1Y      ,DRI14015  ,&
+                BPM68     ,DRI14016  ,XC69      ,DRI14017  ,SL2       ,&
+                DBMARK99)
+
+  ECELL    : LINE=(QE31,DQEC,DQEC,QE32,QE32,DQEC,DQEC,QE31)
+
+! ------------------------------------------------------------------------------
+! initial SURVEY coordinates
+! ------------------------------------------------------------------------------
+
+! set initial linac survey coordinates
+! (NOTE: pitch is not included here for simplicity - for linac coordinates,
+!        read in pitched plane of linac)
+
+  XLL := 10.9474                   !X at loadlock start [m]
+  ZLL := 2032.0-14.8125+ZOFFINJ    !Z at loadlock start (move injector ~12 mm dnstr. - Nov. 17, 2004, -PE) [m]
+  Xi  := XLL+LOADLOCK[L]*SIN(ADL1) !subtract from upbeam side of loadlock to get to cathode [m]
+  Zi  := ZLL+LOADLOCK[L]*COS(ADL1) !subtract from upbeam side of loadlock to get to cathode [m]
+
+ !VALUE, ADL1,Xi,Zi
+
+! initial BSY survey coordinates at BSYbeg
+
+  Xf     :=  0           !hor. position is on linac axis, which is zero here [m]
+  Yf     :=  0.027987637 !at BSYbeg (~6 m upbeam S100) in undulator coordinates (for LTU engineers)
+  Zf     := -5.99493367  !at BSYbeg (~6 m upbeam S100) in undulator coordinates (for LTU engineers)
+  THETAf :=  0           !no yaw at S100
+  PSIf   :=  0           !no roll at S100
+  PHIf   := 2*AVB        !S100 pitch in undulator coordinates (for LTU engineers)
+
+! linac survey coordinates at BSYbeg (BEGBSY1)
+
+  XBSY1  := -3.309620550E-07
+  ZBSY1  :=  3042.005
+  THBSY1 := -2.000049721E-12
+
+! ------------------------------------------------------------------------------
+
+  RETURN

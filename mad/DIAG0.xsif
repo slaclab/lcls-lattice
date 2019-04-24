@@ -1,0 +1,475 @@
+
+! *** OPTICS=AD_ACCEL-23JAN19 ***
+
+! LCLS2sc post laser heater diagnostic beamline
+
+! ==============================================================================
+! Modification History
+! ------------------------------------------------------------------------------
+! 17-JAN-2018, M. Woodley
+!  * move BPMDG000 back to Z=33.832875 m per H. Alvarez (dY = +9.425 mm)
+! ------------------------------------------------------------------------------
+! 05-SEP-2017, M. Woodley
+!  * move BPMDG000 u/s 0.540504 m (Z=33.293466) per P. Emma (dY = +5.000 mm)
+! ------------------------------------------------------------------------------
+! 04-MAY-2017, M. Woodley
+!  * move BPMDG0RF u/s 0.02286 m (Z=42.668655) per C. Iverson
+! ------------------------------------------------------------------------------
+! 04-NOV-2016, M. Woodley
+!  * set BKRDG0 kicker gap to 35 mm (OD of ceramic chamber)
+!  * assign TYPE="1.378K35.4" to BKRDG0
+!  * undefer BPMDG001 (add-back list items)
+! ------------------------------------------------------------------------------
+! 06-JUN-2016, M. Woodley
+!  * assign TYPE="0.984K35.4" to BKRDG0
+!  * set BKRDG0 kicker gap to 25 mm
+!  * center BPMDG000 between BKRDG0 and BLRDG0
+! ------------------------------------------------------------------------------
+! 01-OCT-2015, M. Woodley
+!  * remove YCDG000 (between kicker and septum)
+!  * move BPMDG000 to upstream face of septum
+!  * change TYPE of QDG001-03 to "QI" type (1.51Q7.00)
+!  * change TYPE of XCDG001-02 and YCORDG001-02 to "class-6" and locate per
+!    H. Alvarez
+!  * move SCDG003 between QDG004 and QDG005
+!  * change TYPE of OTRs and YAGs per Henrik's PRD
+!  * move entire line into the aisle (X: Xgun+0.5 -> Xgun-0.5)
+!  * use SETDG0 to turn kicker & septum ON/OFF
+! ------------------------------------------------------------------------------
+! 19-JUN-2015, M. Woodley
+!  * take yaw out of Lambertson septum
+!  * replace 30 deg "0.98VD18.7" dipole with rolled 35 deg "BXS" dipole
+!  * remove QDG012, XCDG012, and YCDG012
+!  * undefer BPMDG012
+!  * shorten the line by 1.556 m
+! ------------------------------------------------------------------------------
+! 20-MAR-2015, M. Woodley
+!  * roll kicker into bend plane of septum
+!  * fix interferences per H. Alvarez
+!  * replace QDG002 (1.26Q3.5) with 1.0Q3.1
+!  * change BPMDG002 and BPMDG003 to "Stripline-9"
+!  * define additional magnet TYPEs
+! ------------------------------------------------------------------------------
+! 12-DEC-2014, M. Woodley
+!  * interference resolution per H. Alvarez:
+!    - move BPMDG00 38.1 cm (15 inches) upstream
+!    - replace QDG001 and QDG003 (1.26Q3.5) with 1.0Q3.1
+!    - move SCDG002 (XCDG002/YCDG002) 4.0 cm (1.5 inches) upstream
+!    - move SCDG003 (XCDG003/YCDG003) 30.5 cm (12 inches) upstream
+!    - move QDG004/BPMDG004 5.1 cm (2 inches) downstream
+!    - move RFBDG003 20.4 cm (8 inches) downstream
+!    - move RFBDG004 14.0 cm (5.5 inches) upstream
+!  * replace RFBDG004 (defer=2) with BPMDG004 (defer=0)
+! ------------------------------------------------------------------------------
+! 28-OCT-2014, M. Woodley
+!  * move BYDG0/SCDG012 21 inches d/s to avoid interference with COL0 devices;
+!    add an additional 20 cm between SCDG012 and OTRDG04 to match spectrometer
+!    optics
+! ------------------------------------------------------------------------------
+! 13-OCT-2014, M. Woodley
+!  * parameters of extraction magnets (BKYDG0, BLRDG0, and BXDG0) per "Post-LH
+!    Diagnostic Beamline Requirements" PRD (LCLSII-2.4-PR-0068-R1)
+!  * adjust deferment/deprecation levels
+! ------------------------------------------------------------------------------
+! 07-AUG-2014, M. Woodley
+!  * diagnostics complement per "Electron Beam Diagnostics Systems" PRD
+!    (LCLSII-2.7-PR-0170)
+!  * decorate device TYPE attributes to indicate non-baseline status
+! 17-APR-2014, M. Woodley
+!  * add "CNT" MARKERs after dispersive areas (ELEGANT CENTERing)
+! ------------------------------------------------------------------------------
+! 31-MAR-2014, M. Woodley
+!  * reduce horizontal beamline offset from 70 cm to 50 cm per H. Alvarez
+!  * add WSDG01
+!  * element names changed to conform to nomenclature PRD
+! 27-FEB-2014, M. Woodley
+!  * created (based on a previous deck from Paul Emma)
+! ------------------------------------------------------------------------------
+
+! geometry and horizontal dispersion matching parameters
+
+! YANG0   : vertical kick angle (rad)
+! XANG0   : septum bend angle (rad)
+! SROL0   : kicker/septum roll angle (suppress vertical dispersion)
+! AROLL0K : removes tiny coordinate roll from rolled kicker
+! AROLL0L : removes tiny coordinate roll from rolled HLAM
+! YK01    : simulates vertical kick due to misaligned QDG001
+! YK02    : simulates vertical kick due to misaligned QDG003
+! ZHH0    : z-distance from BLRDG0 center to BXDG0 center (m)
+! ZTWK0a  : z-distance adjust (moves QDG001 and QDG003 w.r.t. QDG002)
+! ZTWK0b  : z-distance adjust (moves QDG001/QDG002/QDG003 together)
+! KQBF0   : strength of QDG001/QDG003
+! KQBD0   : strength of QDG002
+
+  YANG0   := -0.833318062396E-2 ! -0.83334163902E-2 
+  XANG0   :=  0.104888536538    !  0.104907047642    
+  SROL0   :=  0.176699440628    ! -0.178475547902   
+  AROLL0K := -0.60084338373E-5  !  0.606659261643E-5 
+  AROLL0L :=  0.105498270761E-3 ! -0.115355538592E-3
+  YK01    := -0.964722799243E-2 ! -0.977848685269E-2
+  YK02    := -0.597746163395E-3 ! -0.655172413757E-3
+  ZHH0    :=  4.73074234504     !  4.754790293502    
+  ZTWK0a  := -0.325585867843    ! -0.284357486501   
+  ZTWK0b  := -0.014570470464    ! -0.014622274147   
+  KQBF0   :=  9.807425871432    ! 19.917546719613   
+  KQBD0   := -7.825140556488    !-13.410702917581  
+
+! ==============================================================================
+! LCAV
+! ------------------------------------------------------------------------------
+
+! transverse deflecting cavities
+! (NOTE: TCYDG0 might be installed as an uprgade at a later time)
+
+  TCYDG0 : LCAV, TYPE="@4,TRANS_YDEF", FREQ=2856, L=0.8/2 !Y-deflector (split)
+  TCXDG0 : LCAV, TYPE="@1,TRANS_XDEF", FREQ=2856, L=0.8/2 !X-deflector (split)
+
+! ==============================================================================
+! SBEN
+! ------------------------------------------------------------------------------
+
+  YKOFF0 :=  15E-3      !vertical offset at septum face (m)
+  ZKS0   :=  2.0        !z-distance from BKRDG0 center to BLRDG0 center (m)
+  DX0    := -0.5        !x-distance from linac axis to diagnostic line axis (m)
+  XANG02 :=  6.0*RADDEG !BXDG0 bend angle (rad)
+
+! kicker
+
+  GK0      := 0.035
+  ZK0      := LBKSP
+  AK0      := YANG0
+  AK0_2    := AK0*AK0
+  AK0_4    := AK0_2*AK0_2
+  AK0_6    := AK0_4*AK0_2
+  SINCAK0  := 1-AK0_2/6+AK0_4/120-AK0_6/5040 !~sinc(AK0)=sin(AK0)/AK0
+  LK0      := ZK0/SINCAK0
+  AK0S     := ASIN(SIN(AK0)/2)
+  AK0S_2   := AK0S*AK0S
+  AK0S_4   := AK0S_2*AK0S_2
+  AK0S_6   := AK0S_4*AK0S_2
+  SINCAK0S := 1-AK0S_2/6+AK0S_4/120-AK0S_6/5040 !~sinc(AK0S)=sin(AK0S)/AK0S
+  LK0S     := ZK0/(2*SINCAK0S)
+  AK0L     := AK0-AK0S
+  LK0L     := LK0-LK0S
+
+  BKRDG0a : SBEN, TYPE="1.378K35.4", HGAP=GK0/2, L=LK0S, ANGLE=AK0S, &
+                  E1=0, FINT=0.5, FINTX=0, TILT=90*RADDEG+SROL0
+  BKRDG0b : SBEN, TYPE="1.378K35.4", HGAP=GK0/2, L=LK0L, ANGLE=AK0L, &
+                  E2=AK0, FINT=0, FINTX=0.5, TILT=90*RADDEG+SROL0
+
+! septum
+
+  GS0      := 0.02
+  ZS0      := 0.4
+  AS0      := XANG0
+  AS0_2    := AS0*AS0
+  AS0_4    := AS0_2*AS0_2
+  AS0_6    := AS0_4*AS0_2
+  SINCAS0  := 1-AS0_2/6+AS0_4/120-AS0_6/5040 !~sinc(AS0)=sin(AS0)/AS0
+  LS0      := (ZS0/COS(AK0))/SINCAS0
+  AS0S     := ASIN(SIN(AS0)/2)
+  AS0S_2   := AS0S*AS0S
+  AS0S_4   := AS0S_2*AS0S_2
+  AS0S_6   := AS0S_4*AS0S_2
+  SINCAS0S := 1-AS0S_2/6+AS0S_4/120-AS0S_6/5040 !~sinc(AS0S)=sin(AS0S)/AS0S
+  LS0S     := (ZS0/COS(AK0))/(2*SINCAS0S)
+  AS0L     := AS0-AS0S
+  LS0L     := LS0-LS0S
+
+  BLRDG0a : SBEN, TYPE="0.79SD14.96", HGAP=GS0/2, L=LS0S, &
+                  ANGLE=AS0S, E1=0, FINT=0.5, FINTX=0, TILT=SROL0
+  BLRDG0b : SBEN, TYPE="0.79SD14.96", HGAP=GS0/2, L=LS0L, &
+                  ANGLE=AS0L, E2=AS0, FINT=0, FINTX=0.5, TILT=SROL0
+
+! horizontal bend
+
+  GH0      := 0.02
+  ZH0      := 0.4
+  AH0h     := XANG02/2 !half-angle
+  AH0h_2   := AH0h*AH0h
+  AH0h_4   := AH0h_2*AH0h_2
+  AH0h_6   := AH0h_4*AH0h_2
+  SINCAH0h := 1-AH0h_2/6+AH0h_4/120-AH0h_6/5040 !~sinc(AH0h)=sin(AH0h)/AH0h
+  LH0      := ZH0/SINCAH0h
+
+  BXDG0a  : SBEN, TYPE="0.79D14.96", HGAP=GH0/2, L=LH0/2, &
+                  ANGLE=-AH0h, E1=-AH0h, FINT=0.5, FINTX=0
+  BXDG0b  : SBEN, TYPE="0.79D14.96", HGAP=GH0/2, L=LH0/2, &
+                  ANGLE=-AH0h, E2=-AH0h, FINT=0, FINTX=0.5
+
+! spectrometer (dump) bend
+
+  LBDMP0 := 0.5435       !measured
+  GBDMP0 := 0.034
+  ABDMP0 := -35*RADDEG
+  EBDMP0 := -7.29*RADDEG !measured
+  FBDMP0 := 0.391        !measured
+
+  BYDG0a : SBEN, TYPE="BXS", HGAP=GBDMP0/2, L=LBDMP0/2, &
+                 ANGLE=ABDMP0/2, E1=EBDMP0, FINT=FBDMP0, FINTX=0, &
+                 TILT=90*RADDEG
+  BYDG0b : SBEN, TYPE="BXS", HGAP=GBDMP0/2, L=LBDMP0/2, &
+                 ANGLE=ABDMP0/2, E2=EBDMP0, FINT=0, FINTX=FBDMP0, &
+                 TILT=90*RADDEG
+
+! ==============================================================================
+! QUAD
+! ------------------------------------------------------------------------------
+
+  KQDG004 :=   8.65061788321 
+  KQDG005 := -12.05998268496
+  KQDG006 :=   6.896965013903  
+  KQDG007 := -4.414274650315
+  KQDG008 :=  11.243156019147
+  KQDG009 := -11.689200167842
+  KQDG010 :=  13.020676786885 
+  KQDG011 := -10.983650981441
+
+  QDG001 : QUAD, TYPE="1.51Q7.00", L=LQs/2, APER=rQs, K1=KQBF0
+  QDG002 : QUAD, TYPE="1.51Q7.00", L=LQs/2, APER=rQs, K1=KQBD0
+  QDG003 : QUAD, TYPE="1.51Q7.00", L=LQs/2, APER=rQs, K1=KQBF0
+  QDG004 : QUAD, TYPE="1.26Q3.5",  L=LQx/2, APER=rQx, K1=KQDG004
+  QDG005 : QUAD, TYPE="1.26Q3.5",  L=LQx/2, APER=rQx, K1=KQDG005
+  QDG006 : QUAD, TYPE="1.26Q3.5",  L=LQx/2, APER=rQx, K1=KQDG006
+  QDG007 : QUAD, TYPE="1.26Q3.5",  L=LQx/2, APER=rQx, K1=KQDG007
+  QDG008 : QUAD, TYPE="1.26Q3.5",  L=LQx/2, APER=rQx, K1=KQDG008
+  QDG009 : QUAD, TYPE="1.26Q3.5",  L=LQx/2, APER=rQx, K1=KQDG009
+  QDG010 : QUAD, TYPE="1.26Q3.5",  L=LQx/2, APER=rQx, K1=KQDG010
+  QDG011 : QUAD, TYPE="1.26Q3.5",  L=LQx/2, APER=rQx, K1=KQDG011
+
+! ==============================================================================
+! MULT
+! ------------------------------------------------------------------------------
+
+! model misaligned quadrupoles
+
+  DYQDG001 : MULTIPOLE, K0L=YK01, T0=90*RADDEG
+  DYQDG003 : MULTIPOLE, K0L=YK02, T0=90*RADDEG
+
+ !VALUE, 1.E3*YK01/(KQBF0*LQs),1.E3*YK02/(KQBF0*LQs) !vertical offsets (mm)
+
+! ==============================================================================
+! SROT
+! ------------------------------------------------------------------------------
+
+! removes creeping roll introduced by rolled Lambertson
+
+  RODG0K : SROT, ANGLE=AROLL0K
+  RODG0L : SROT, ANGLE=AROLL0L
+
+! ==============================================================================
+! DRIF
+! ------------------------------------------------------------------------------
+
+! dogleg
+
+! ZKSD0  : dz between kicker exit and BLRDG0 entrance (m)
+! ZHH1D0 : dz between BLRDG0 and 1st QDG001
+! ZHH2D0 : dz between QDG001 and QDG002
+! ZHH3D0 : dz between QDG002 and QDG003
+! ZHH4D0 : dz between QDG003 and BXDG0
+
+  ZQs    := LQs*COS(XANG02)
+
+  ZKSD0  := ZKS0-ZK0/2-ZS0/2
+  ZKSD0a := 0.648904972995
+  ZKSD0b := ZKSD0-ZKSD0a
+  ZHH1D0 := ZHH0/4-ZQs/2-ZS0/2
+  ZHH2D0 := ZHH0/4-ZQs
+  ZHH3D0 := ZHH0/4-ZQs
+  ZHH4D0 := ZHH0/4-ZQs/2-ZH0/2
+
+  DKV0   : DRIF, L=ZKSD0/COS(AK0)
+  DQB01  : DRIF, L=(ZHH1D0-ZTWK0a+ZTWK0b)/COS(XANG02)
+  DQB02  : DRIF, L=(ZHH2D0+ZTWK0a       )/COS(XANG02)
+  DQB03  : DRIF, L=(ZHH3D0+ZTWK0a       )/COS(XANG02)
+  DQB04  : DRIF, L=(ZHH4D0-ZTWK0a-ZTWK0b)/COS(XANG02)
+
+  COMMENT
+    VALUE, ZHH0,ZHH1D0,ZHH2D0,ZHH3D0,ZHH4D0
+    VALUE, ZS0/2+DQB01[L]*COS(XANG02)+ZQs/2+ZTWK0a-ZTWK0b
+    VALUE, ZQs/2+DQB02[L]*COS(XANG02)+ZQs/2-ZTWK0a
+    VALUE, ZQs/2+DQB03[L]*COS(XANG02)+ZQs/2-ZTWK0a
+    VALUE, ZQs/2+DQB04[L]*COS(XANG02)+ZH0/2+ZTWK0a+ZTWK0b
+  ENDCOMMENT
+
+  DKV0a   : DRIF, L=ZKSD0a/COS(AK0)
+  DKV0b   : DRIF, L=ZKSD0b/COS(AK0)
+  DQB01a  : DRIF, L=0.15
+  DQB01c  : DRIF, L=0.25
+  DQB01b  : DRIF, L=DQB01[L]-DQB01a[L]-DQB01c[L]
+  DQB02b  : DRIF, L=0.25
+  DQB02a  : DRIF, L=DQB02[L]-DQB02b[L]
+  DQB03b  : DRIF, L=0.25
+  DQB03a  : DRIF, L=DQB03[L]-DQB03b[L]
+  DQB04b  : DRIF, L=0.4532
+  DQB04a  : DRIF, L=DQB04[L]-DQB04b[L]
+
+! diagnostic line
+
+  DDG003 : DRIF, L=0.374418820858 !0.375213145904
+  DDG004 : DRIF, L=0.541
+  DDG005 : DRIF, L=0.592
+  DDG006 : DRIF, L=2.492
+  DDG007 : DRIF, L=0.592
+  DDG008 : DRIF, L=0.592
+  DDG009 : DRIF, L=2.962
+  DDG010 : DRIF, L=0.592
+  DDG011 : DRIF, L=1.4048
+  DDG012 : DRIF, L=0.935296300379
+
+  DDG004a : DRIF, L=DDG004[L]/2
+  DDG004b : DRIF, L=DDG004[L]-DDG004a[L]
+  DDG005a : DRIF, L=DDG005[L]/2
+  DDG005b : DRIF, L=DDG005[L]-DDG005a[L]
+  DDG006a : DRIF, L=0.296
+  DDG006b : DRIF, L=0.12714
+  DDG006c : DRIF, L=0.17286
+  DDG006d : DRIF, L=DDG006[L]-DDG006a[L]-2*TCYDG0[L]-DDG006b[L]-DDG006c[L] &
+                    -2*TCXDG0[L]
+  DDG008a : DRIF, L=0.296
+  DDG008b : DRIF, L=DDG008[L]-DDG008a[L]
+  DDG009a : DRIF, L=0.296
+  DDG009b : DRIF, L=0.7
+  DDG009c : DRIF, L=0.3
+  DDG009d : DRIF, L=0.3
+  DDG009e : DRIF, L=0.7
+  DDG009f : DRIF, L=DDG009[L]-DDG009a[L]-DDG009b[L]-DDG009c[L]-DDG009d[L] &
+                    -DDG009e[L]
+  DDG010a : DRIF, L=0.296
+  DDG010b : DRIF, L=DDG010[L]-DDG010a[L]
+  DDG011a : DRIF, L=0.3
+  DDG011b : DRIF, L=DDG011[L]-DDG011a[L]
+  DDG012a : DRIF, L=0.395296300379
+  DDG012b : DRIF, L=0.24
+  DDG012c : DRIF, L=DDG012[L]-(DDG012a[L]+DDG012b[L])
+
+  BMINDG0 := (DDG009b[L]+DDG009c[L])/SQRT(3) !waist (120 deg between OTRs)
+
+! ==============================================================================
+! BPMs
+! ------------------------------------------------------------------------------
+
+  BPMDG000 : MONI, TYPE="Stripline-4"
+  BPMDG001 : MONI, TYPE="Stripline-9"
+  BPMDG002 : MONI, TYPE="Stripline-9"
+  BPMDG003 : MONI, TYPE="Stripline-9"
+  BPMDG004 : MONI, TYPE="Stripline-1"
+  BPMDG005 : MONI, TYPE="Stripline-1"
+  BPMDG0RF : MONI, TYPE="Stripline-1"
+  BPMDG008 : MONI, TYPE="Stripline-1"
+  BPMDG009 : MONI, TYPE="Stripline-1"
+  BPMDG011 : MONI, TYPE="Stripline-1"
+
+  RFBDG001 : MONI, TYPE="@2,CavityL-1"
+  RFBDG002 : MONI, TYPE="@2,CavityS-1"
+  RFBDG003 : MONI, TYPE="@2,CavityS-1"
+  BPMDG012 : MONI, TYPE="Stripline-11" !RFBDG004 : MONI, TYPE="@2,CavityL-1"
+
+! ==============================================================================
+! XCORs
+! ------------------------------------------------------------------------------
+
+  XCDG001 : HKIC, TYPE="class-6"
+  XCDG002 : HKIC, TYPE="class-6"
+  XCDG003 : HKIC, TYPE="class-1a"
+  XCDG005 : HKIC, TYPE="class-1a"
+  XCDG008 : HKIC, TYPE="class-1a"
+  XCDG010 : HKIC, TYPE="class-1a"
+
+! ==============================================================================
+! YCORs
+! ------------------------------------------------------------------------------
+
+  YCDG001 : VKIC, TYPE="class-6"
+  YCDG002 : VKIC, TYPE="class-6"
+  YCDG003 : VKIC, TYPE="class-1a"
+  YCDG005 : VKIC, TYPE="class-1a"
+  YCDG008 : VKIC, TYPE="class-1a"
+  YCDG010 : VKIC, TYPE="class-1a"
+
+! ==============================================================================
+! diagnostics, etc.
+! ------------------------------------------------------------------------------
+
+! profile monitors
+
+  OTRDG01 : PROF, TYPE="@3,YAG/OTR PSI"
+  OTRDG02 : PROF, TYPE="OTR INJ"
+  OTRDG03 : PROF, TYPE="@3,YAG/OTR PSI"
+  OTRDG04 : PROF, TYPE="OTR INJ"
+
+! wire scanners
+
+  WSDG01 : WIRE, TYPE="slow"
+
+! charge monitors
+
+  FCDG0DU : IMON, TYPE="Faraday cup"
+
+! ==============================================================================
+! marker points
+! ------------------------------------------------------------------------------
+
+  M1DG0   : MARK
+  CNTDG0  : MARK, TYPE="CENTER"
+  M2DG0   : MARK
+  MTCYDG0 : MARK
+  MTCXDG0 : MARK
+
+! ==============================================================================
+! BEAMLINE
+! ------------------------------------------------------------------------------
+
+  COMMENT
+    DIAG0 : LINE=(&
+      BEGDIAG0,&
+      BKRDG0a,BKRDG0b,RODG0K,DKV0,M1DG0,&
+      BLRDG0a,BLRDG0b,RODG0L,DQB01,&
+      QDG001,DYQDG001,QDG001,DQB02,&
+      QDG002,QDG002,DQB03,&
+      QDG003,DYQDG003,QDG003,DQB04,&
+      BXDG0a,BXDG0b,CNTDG0,M2DG0,DDG003,&
+      QDG004,QDG004,DDG004,&
+      QDG005,QDG005,DDG005,&
+      QDG006,QDG006,DDG006,&
+      QDG007,QDG007,DDG007,&
+      QDG008,QDG008,DDG008,&
+      QDG009,QDG009,DDG009,&
+      QDG010,QDG010,DDG010,&
+      QDG011,QDG011,DDG011,&
+      BYDG0a,BYDG0b,DDG012,&
+      ENDDIAG0)
+  ENDCOMMENT
+
+  SCDG003 : LINE=(XCDG003,YCDG003)
+  SCDG005 : LINE=(XCDG005,YCDG005)
+  SCDG008 : LINE=(XCDG008,YCDG008)
+  SCDG010 : LINE=(XCDG010,YCDG010)
+
+ !COMMENT
+    DIAG0 : LINE=(&
+      BEGDIAG0,&
+      BKRDG0a,BKRDG0b,RODG0K,DKV0a,BPMDG000,DKV0b,M1DG0,&
+      BLRDG0a,BLRDG0b,RODG0L,DQB01a,RFBDG001,DQB01b,XCDG001,DQB01c,&
+      QDG001,BPMDG001,DYQDG001,QDG001,DQB02a,YCDG001,DQB02b,&
+      QDG002,BPMDG002,QDG002,DQB03a,XCDG002,DQB03b,&
+      QDG003,BPMDG003,DYQDG003,QDG003,DQB04a,YCDG002,DQB04b,&
+      BXDG0a,BXDG0b,CNTDG0,M2DG0,DDG003,&
+      QDG004,BPMDG004,QDG004,DDG004a,SCDG003,DDG004b,&
+      QDG005,BPMDG005,QDG005,DDG005a,SCDG005,DDG005b,&
+      QDG006,QDG006,DDG006a,TCYDG0,MTCYDG0,TCYDG0,DDG006b,BPMDG0RF,&
+        DDG006c,TCXDG0,MTCXDG0,TCXDG0,DDG006d,&
+      QDG007,QDG007,DDG007,&
+      QDG008,BPMDG008,QDG008,DDG008a,SCDG008,DDG008b,&
+      QDG009,BPMDG009,QDG009,DDG009a,OTRDG01,DDG009b,RFBDG002,DDG009c, &
+        OTRDG02,DDG009d,WSDG01,DDG009e,OTRDG03,DDG009f,&
+      QDG010,QDG010,DDG010a,SCDG010,DDG010b,&
+      QDG011,BPMDG011,QDG011,DDG011a,RFBDG003,DDG011b,&
+      BYDG0a,BYDG0b,DDG012a,BPMDG012,DDG012b,OTRDG04,DDG012c,FCDG0DU,&
+      ENDDIAG0)
+ !ENDCOMMENT
+  
+! ------------------------------------------------------------------------------
+
+  RETURN

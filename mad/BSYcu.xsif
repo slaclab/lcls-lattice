@@ -1,0 +1,98 @@
+
+! *** OPTICS=AD_ACCEL-23JAN19 ***
+
+! ==============================================================================
+! Modification History
+! ------------------------------------------------------------------------------
+! 04-OCT-2018, M. Woodley
+!  * include alternative DC extraction into CUSXR:
+!    - define new drifts DBRCUSdc1A,B and DBRCUSdc2A,B (3D8.8MK3's)
+!    - change definition of beamline CLTH2 (gets 0.40745 m longer)
+! ------------------------------------------------------------------------------
+! 21-FEB-2018, M. Woodley
+!  * add BSYLTUHXTES and LCLS2cuHXTES line definitions
+! 25-JAN-2018, M. Woodley
+!  * remove PCBSY2/BTMBSY2 per A. Ibrahimov
+! ------------------------------------------------------------------------------
+! 05-MAY-2017, M. Woodley
+!  * pulsed correctors XCAPM2/YCAPM2 will be timed to affect the straight-ahead
+!    LTUH beam, but not the A-line beam
+! ------------------------------------------------------------------------------
+! 24-FEB-2017, Y. Nosochkov
+!  * update some drift names
+! ------------------------------------------------------------------------------
+! 02-NOV-2016, Y. Nosochkov
+!  * update BSYH2 definition for use with A-line pulsed magnets
+! ------------------------------------------------------------------------------
+! 24-JUN-2016, Y. Nosochkov
+!  * update beamline definitions to avoid duplication with other files
+! ------------------------------------------------------------------------------
+
+! ------------------------------------------------------------------------------
+! from copper linac
+! ------------------------------------------------------------------------------
+
+  CLTH0 : LINE=(BEGCLTH0,BSYBEG,BSYS100,S100SXRA,ENDCLTH0)
+
+  CLTH1 : LINE=(BEGCLTH1,S100SXRB,ENDCLTH1)
+
+  DBRCUSdc1A : DRIF, L=ZBRCUSdc/2 ; DBRCUSdc1B : DRIF, L=ZBRCUSdc/2
+  DBKRCUSA   : DRIF, L=BKRCUSA[L] ; DBKRCUSB   : DRIF, L=BKRCUSB[L]
+  DBRCUSdc2A : DRIF, L=ZBRCUSdc/2 ; DBRCUSdc2B : DRIF, L=ZBRCUSdc/2
+  DBLRCUSA   : DRIF, L=BLRCUSA[L] ; DBLRCUSB   : DRIF, L=BLRCUSB[L]
+  DBXSP1HA   : DRIF, L=BXSP1HA[L] ; DBXSP1HB   : DRIF, L=BXSP1HB[L]
+
+  CLTH2 : LINE=(&
+    BEGCLTH2,&
+    DBRCUSdc1A,DBRCUSdc1B,DCKdc1,&
+    DBKRCUSA,DBKRCUSB,DCKdc2,&
+    DBRCUSdc2A,DBRCUSdc2B,DCUSBLRA,BPMCUS,DCUSBLRB,&
+    DBLRCUSA,DBLRCUSB,DBSY52C,&
+    DBXSP1HA,DBXSP1HB,ENDBSY1,&
+    ENDCLTH2)
+
+  BSYH1 : LINE=(BEGBSYH1,SPHAL,ENDBSYH1)
+
+  BSYH2 : LINE=(&
+    BEGBSYH2,&
+    DBKRAPM1a,DBKRAPM1b,DZAPM1,PCAPM1,DZAPM1,&
+    DBKRAPM2a,DBKRAPM2b,DZAPM2a,SCAPM2,DZAPM2b,PCAPM2,DZAPM2,&
+    DBKRAPM3a,DBKRAPM3b,DZAPM3,PCAPM3,DZAPM3,&
+    DBKRAPM4a,DBKRAPM4b,DZAPM4,PCAPM4,DZA01,DZA02,&
+    SPHBSYB,&
+    ENDBSYH2)
+
+! ------------------------------------------------------------------------------
+
+  CLTS : LINE=(BEGCLTS,KCUSXR,DLCUSXR,ENDCLTS)
+
+  BSYS : LINE=(&
+    BEGBSYS,BYPM2,MUWALLB,DWALLA,DUMPBSYS,DWALLB,BSYENDB,ENDBSYS)
+
+! ------------------------------------------------------------------------------
+ 
+  BSYA : LINE=(ALINEA,ALINEB,ALINEC)
+
+! ------------------------------------------------------------------------------
+
+  LTUS : LINE=(DBLDL21,LTUSC,RWWAKE5S,ENDLTUS)
+  LTUH : LINE=(LTU)
+
+  BSYLTUH     : LINE=(CLTH0,CLTH1,CLTH2,BSYH1,BSYH2,LTUH,HXRUND,DUMPLINE)
+  BSYLTUHS    : LINE=(CLTH0,CLTH1,CLTH2,BSYH1,BSYH2,LTUH,HXRUND,SFTDUMP)
+  BSYLTUS     : LINE=(CLTH0,CLTH1,CLTS,BSYS,LTUS,SXRUND,DUMPLINEb)
+  BSYLTUSS    : LINE=(CLTH0,CLTH1,CLTS,BSYS,LTUS,SXRUND,SFTDUMPb)
+  BSYALINE    : LINE=(CLTH0,CLTH1,CLTH2,BSYH1,BSYA)
+  BSYLTUHXTES : LINE=(CLTH0,CLTH1,CLTH2,BSYH1,BSYH2,LTUH,HXRUND,SFTDUMP1,HXTES)
+
+  LCLS2cuC     : LINE=(DL1,L1,BC1,L2,BC2,L3) !common
+  LCLS2cuH     : LINE=(LCLS2cuC,BSYLTUH)     !to HXR
+  LCLS2cuHS    : LINE=(LCLS2cuC,BSYLTUHS)    !to HXR safety dump
+  LCLS2cuS     : LINE=(LCLS2cuC,BSYLTUS)     !to SXR
+  LCLS2cuSS    : LINE=(LCLS2cuC,BSYLTUSS)    !to SXR safety dump
+  LCLS2cuA     : LINE=(LCLS2cuC,BSYALINE)    !to A-line
+  LCLS2cuHXTES : LINE=(LCLS2cuC,BSYLTUHXTES) !to HXR XTES system
+
+! ------------------------------------------------------------------------------
+
+  RETURN

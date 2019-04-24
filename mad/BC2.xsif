@@ -1,0 +1,323 @@
+
+! *** OPTICS=AD_ACCEL-23JAN19 ***
+
+! LCLS2sc bunch compressor chicane #2
+
+! ==============================================================================
+! Modification History
+! ------------------------------------------------------------------------------
+! 05-SEP-2017, M. Woodley
+!  * rename: BPM21->BPM21B, CEBC2->CE21B, WS21->WS21B
+!  * move BZ21B 0.076976 m upstream per F. Carillo
+!  * move QE201/BPME201 0.050338 m downstream per F. Carillo
+! 16-AUG-2017, M. Woodley
+!  * set FINT for BC2 bends to 0.6287 per Magnetic Measurements data
+! ------------------------------------------------------------------------------
+! 28-FEB-2017, M. Woodley
+!  * relocate YC2C00, YCE201, XCE202, YCE203, and XCE204 per F. Carillo
+! ------------------------------------------------------------------------------
+! 28-NOV-2016, M. Woodley
+!  * merge LCLS-II' version 28NOV16 with LCLS2sc version 04NOV16
+! ------------------------------------------------------------------------------
+! 26-AUG-2016, M. Woodley
+!  * add two 1.259Q3.5 quadrupoles to EMIT2
+!  * create double-waist in EMIT2 for emittance measurement
+! 01-JUL-2016, M. Woodley
+!  * LCLS-II-HE
+!  * remove COL2 and replace with direct match into L3
+! ------------------------------------------------------------------------------
+! 03-JUN-2016, M. Woodley
+!  * change deferment level to 0 for XCC204, YCC207, and XCC208
+!  * move XCC210 to d/s side of QC210 ... shorten L3 u/s PSC drift
+! ------------------------------------------------------------------------------
+! 23-FEB-2016, M. Woodley
+!  * push extra drift from L2 d/s PSC into D2C00 (DPSC2d[L]+D2C00[L]=constant)
+!  * per F. Carillo: move XC2C00 u/s 11 cm, BZ21B d/s 18 cm, XCC210 u/s 14 cm
+! ------------------------------------------------------------------------------
+! 01-OCT-2015, M. Woodley
+!  * fix negative D2C00a drift length error by shortening DPSC2D drift; set
+!    D2C00a length to zero
+!  * undefer CEBC2
+!  * change TYPE of OTRs and YAGs per Henrik's PRD
+! ------------------------------------------------------------------------------
+! 19-JUN-2015, M. Woodley
+!  * device locations per F. Carrillo
+!  * undefer BPM21 and OTR21B
+!  * defer collimators CYC21, CXC21, CYC23, and CXC23
+!  * undefer WSC202, WSC204, WSC206, and WSC208
+!  * collimator gaps per P. Emma
+! ------------------------------------------------------------------------------
+! 20-MAR-2015, M. Woodley
+!  * device locations per F. Carillo
+!  * set WS21 deferment to level 3; set OTR21B deferment to level 0
+!  * set collimator lengths (tungsten) and gaps per LCLSII-2.4-PR-0095-R0
+! ------------------------------------------------------------------------------
+! 12-DEC-2014, M. Woodley
+!  * change RFB21 (defer=2) to BPM21 (defer=0)
+! ------------------------------------------------------------------------------
+! 28-OCT-2014, M. Woodley
+!  * move COL2 collimators 7 inches closer to their associated quadrupoles
+! ------------------------------------------------------------------------------
+! 15-OCT-2014, M. Woodley
+!  * increase central drift of BC1 chicane from 1.0926 m to 1.75 m; add OTR21B
+!  * remove 0.6574 m (1.75 m - 1.0926 m) from COL2 to keep L1-L2 separation
+!    constant
+!  * add 6 stripline BPMs to COL2 ... omitted when we switched to 45 degree
+!    FODO cells
+!  * adjust deferment/deprecation levels
+! ------------------------------------------------------------------------------
+! 07-AUG-2014, M. Woodley
+!  * diagnostics complement per "Electron Beam Diagnostics Systems" PRD
+!    (LCLSII-2.7-PR-0170)
+!  * change bending direction in BC2 chicane ... toward the aisle
+!  * OTR in BC2 chicane replaced with wire scanner; BPM replaced with RF BPM
+!  * COL2 collimation system now consists of four 45 degree FODO cells with 3
+!    pairs of collimators separated by 45 degrees (22 m betas at collimators);
+!    FODO cell length is 12 m
+!  * TCAV(Y) added d/s of BC2
+!  * in-line emittance measurement system incorporated into COL2
+!  * decorate device TYPE attributes to indicate non-baseline status
+! 17-APR-2014, M. Woodley
+!  * add "CNT" MARKERs after dispersive areas (ELEGANT CENTERing)
+! ------------------------------------------------------------------------------
+! 28-MAR-2014, M. Woodley
+!  * remove elements associated with now-defunct DIAG2 diagnostic line
+!  * element names changed to conform to nomenclature PRD
+! ------------------------------------------------------------------------------
+! 14-JAN-2014, M. Woodley
+!  * change BC2 dipole names from "BX2*" to "BXC2*"
+! ------------------------------------------------------------------------------
+
+! ==============================================================================
+! SBEN
+! ------------------------------------------------------------------------------
+
+! BC2 chicane
+! - approximate on-axis effective length per R. Carr (01-AUG-05 PE)
+! - use series approximation for sinc(x)=sin(x)/x to allow BXh=0
+
+! GB2   : 1D19.7 gap height (m)
+! ZB2   : 1D19.7 "Z" length (m)
+! FB2   : measured fringe field
+! AB2   : chicane bend angle (rad)
+! BB2   : chicane bend field (kG)
+! LB2   : chicane bend path length (m)
+! AB2S  : "short" half chicane bend angle (rad)
+! LB2S  : "short" half chicane bend path length (m)
+! AB2L  : "long" half chicane bend angle (rad)
+! LB2L  : "long" half chicane bend path length (m)
+
+  GB2      := 0.03335
+  ZB2      := 0.549
+  FB2      := 0.6287
+  AB2      := 0.0424879168 !R56=0.037
+  BB2      := Brho2*SIN(AB2)/ZB2
+  AB2_2    := AB2*AB2
+  AB2_4    := AB2_2*AB2_2
+  AB2_6    := AB2_4*AB2_2
+  SINCAB2  := 1-AB2_2/6+AB2_4/120-AB2_6/5040 !~sinc(AB2)=sin(AB2)/AB2
+  LB2      := ZB2/SINCAB2
+  AB2S     := ASIN(SIN(AB2)/2)
+  AB2S_2   := AB2S*AB2S
+  AB2S_4   := AB2S_2*AB2S_2
+  AB2S_6   := AB2S_4*AB2S_2
+  SINCAB2S := 1-AB2S_2/6+AB2S_4/120-AB2S_6/5040 !~sinc(AB2S)=sin(AB2S)/AB2S
+  LB2S     := ZB2/(2*SINCAB2S)
+  AB2L     := AB2-AB2S
+  LB2L     := LB2-LB2S
+
+  BCX21A : SBEN, TYPE="1D19.7", L=LB2S, ANGLE=+AB2S, HGAP=GB2/2, &
+                 E1=0, FINT=FB2, FINTX=0
+  BCX21B : SBEN, TYPE="1D19.7", L=LB2L, ANGLE=+AB2L, HGAP=GB2/2, &
+                 FINT=0, E2=+AB2, FINTX=FB2
+  BCX22A : SBEN, TYPE="1D19.7", L=LB2L, ANGLE=-AB2L, HGAP=GB2/2, &
+                 E1=-AB2, FINT=FB2, FINTX=0
+  BCX22B : SBEN, TYPE="1D19.7", L=LB2S, ANGLE=-AB2S, HGAP=GB2/2, &
+                 FINT=0, E2=0, FINTX=FB2
+  BCX23A : SBEN, TYPE="1D19.7", L=LB2S, ANGLE=-AB2S, HGAP=GB2/2, &
+                 E1=0, FINT=FB2, FINTX=0
+  BCX23B : SBEN, TYPE="1D19.7", L=LB2L, ANGLE=-AB2L, HGAP=GB2/2, &
+                 FINT=0, E2=-AB2, FINTX=FB2
+  BCX24A : SBEN, TYPE="1D19.7", L=LB2L, ANGLE=+AB2L, HGAP=GB2/2, &
+                 E1=+AB2, FINT=FB2, FINTX=0
+  BCX24B : SBEN, TYPE="1D19.7", L=LB2S, ANGLE=+AB2S, HGAP=GB2/2, &
+                 FINT=0, E2=0, FINTX=FB2
+
+! ==============================================================================
+! QUAD
+! ------------------------------------------------------------------------------
+
+! L2 to BC2 chicane
+
+  KQ2C01 := 0.50920540285
+
+  Q2C01 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQ2C01
+
+! BC2 chicane
+
+  KCQ21 := 0
+  KCQ22 := 0
+
+  CQ21B : QUAD, TYPE="1.69Q3.4", L=LQc/2, APER=rQc, K1=KCQ21
+  CQ22B : QUAD, TYPE="1.69Q3.4", L=LQc/2, APER=rQc, K1=KCQ22
+
+! match into L3
+
+  KQE201 := -1.315553716994
+  KQE202 :=  1.992839578601
+  KQE203 := -1.823196901024
+  KQE204 :=  1.65279531646
+
+  QE201 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1= KQE201
+  QE202 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1= KQE202
+  QE203 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1= KQE203
+  QE204 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1= KQE204
+
+! ==============================================================================
+! DRIF
+! ------------------------------------------------------------------------------
+ 
+! L2 to BC2 chicane
+
+  D2C00 : DRIF, L=1.150310011609
+  D2C01 : DRIF, L=0.5
+
+  D2C00b : DRIF, L=0.338951
+  D2C00c : DRIF, L=0.321049
+  D2C00a : DRIF, L=D2C00[L]-D2C00b[L]-D2C00c[L]
+  D2C01a : DRIF, L=0.133
+  D2C01b : DRIF, L=D2C01[L]-D2C01a[L]
+
+! BC2 chicane
+
+  ZDC2o := 10.4092-ZB2 !BXC21 exit to BCX22 entrance
+  ZDC2i := 2.299-ZB2   !BXC22 exit to BCX23 entrance
+
+  DC2o : DRIF, L=ZDC2o/COS(AB2), TYPE="CSR"
+  DC2i : DRIF, L=ZDC2i, TYPE="CSR"
+
+  ZDC2oa := 2.009462     !BXC21 exit to CQ21B center
+  ZDC2ob := ZDC2o-ZDC2oa !CQ21B center to BCX22 entrance
+  ZDC2od := 2.009462     !CQ22B center to BXC24 entrance
+  ZDC2oc := ZDC2o-ZDC2od !BXC23 exit to CQ22B center
+
+  DC2oa : DRIF, L=ZDC2oa/COS(AB2)-LQc/2, TYPE="CSR"
+  DC2ob : DRIF, L=ZDC2ob/COS(AB2)-LQc/2, TYPE="CSR"
+  DC2ia : DRIF, L=0.3795, TYPE="CSR"       !0.35
+  DC2ib : DRIF, L=0.165-Ljaw/2, TYPE="CSR" !0.35
+  DC2ic : DRIF, L=0.183-Ljaw/2, TYPE="CSR" !0.35
+  DC2id : DRIF, L=0.598, TYPE="CSR"        !0.35
+  DC2ie : DRIF, L=0.4245, TYPE="CSR"       !0.35
+  DC2oc : DRIF, L=ZDC2oc/COS(AB2)-LQc/2, TYPE="CSR"
+  DC2od : DRIF, L=ZDC2od/COS(AB2)-LQc/2, TYPE="CSR"
+
+! match into L3
+
+  LEMIT2 := 28.859648
+
+  DE200  : DRIF, L= 1.050338
+  DE201  : DRIF, L= 4.906343360384
+  DE202a : DRIF, L=10.974020455558
+  DE203  : DRIF, L= 3.0
+  DE204  : DRIF, L= 0.670516558157
+  DE202b : DRIF, L=LEMIT2-4*LQx-DE200[L]-DE201[L]-DE202a[L]-DE203[L]-DE204[L]
+  DE202  : DRIF, L=DE202a[L]+DE202b[L]
+
+  DE200a  : DRIF, L=0.687372
+  DE200b  : DRIF, L=DE200[L]-DE200a[L]
+  DE201a  : DRIF, L=0.321044
+  DE201b  : DRIF, L=0.328618
+  DE201c  : DRIF, L=DE201[L]-DE201a[L]-DE201b[L]
+  DE202a1 : DRIF, L=0.321864
+  DE202a2 : DRIF, L=DE202a[L]-DE202a1[L]
+  DE203a  : DRIF, L=0.321044
+  DE203b  : DRIF, L=DE203[L]-DE203a[L]
+  DE204a  : DRIF, L=0.321864
+  DE204b  : DRIF, L=DE204[L]-DE204a[L]
+
+! ==============================================================================
+! BPMs
+! ------------------------------------------------------------------------------
+
+  BPM2C01 : MONI, TYPE="Stripline-1"
+  BPME201 : MONI, TYPE="Stripline-1"
+  BPME202 : MONI, TYPE="Stripline-1"
+  BPME203 : MONI, TYPE="Stripline-1"
+  BPME204 : MONI, TYPE="Stripline-1"
+
+  RFB2C01 : MONI, TYPE="@2,CavityS-1"
+  BPM21B  : MONI, TYPE="Stripline-8"  !RFB21 : MONI, TYPE="@2,CavityL-1"
+
+! ==============================================================================
+! XCORs
+! ------------------------------------------------------------------------------
+
+  XC2C00 : HKIC, TYPE="class-4"
+  XCE202 : HKIC, TYPE="class-4"
+  XCE204 : HKIC, TYPE="class-4"
+
+! ==============================================================================
+! YCORs
+! ------------------------------------------------------------------------------
+
+  YC2C00 : VKIC, TYPE="class-4"
+  YCE201 : VKIC, TYPE="class-4"
+  YCE203 : VKIC, TYPE="class-4"
+
+! ==============================================================================
+! marker points, etc.
+! ------------------------------------------------------------------------------
+
+! collimator
+
+  CE21B : RCOL, L=Ljaw, XSIZE=13.3e-3, TYPE="HCOLL"    !X momentum collimator
+
+! instruments
+
+  OTR21B  : PROF, TYPE="OTR BC"  !BC2 energy spread
+  WS21B   : WIRE, TYPE="@3,fast" !BC2 energy spread
+  BZ21B   : BLMO, TYPE="CSR"     !CSR-based relative bunch length monitor
+  IM21B   : IMON, TYPE="ICT"     !Beam Current Monitor
+  WSEMIT2 : WIRE, TYPE="fast"    !post-BC2 emittance
+
+! markers
+
+  BC2cBEG : MARK
+  CNTBC2  : MARK, TYPE="CENTER"
+  BC2cEND : MARK
+
+! ==============================================================================
+! BEAMLINE
+! ------------------------------------------------------------------------------
+
+  BC2i0 : LINE=(D2C00,Q2C01,Q2C01,D2C01)
+
+  BC2i : LINE=(&
+    D2C00a,XC2C00,D2C00b,YC2C00,D2C00c,&
+    Q2C01,BPM2C01,Q2C01,D2C01a,RFB2C01,D2C01b)
+
+  BC2c0 : LINE=(BC2cBEG,&
+    BCX21A,BCX21B,DC2o,&
+    BCX22A,BCX22B,DC2i,&
+    BCX23A,BCX23B,DC2o,&
+    BCX24A,BCX24B,BC2cEND)
+
+  BC2c : LINE=(BC2cBEG,&
+    BCX21A,BCX21B,DC2oa,CQ21B,CQ21B,DC2ob,&
+    BCX22A,BCX22B,DC2ia,BPM21B,DC2ib,CE21B,DC2ic,OTR21B,DC2id,WS21B,DC2ie,&
+    BCX23A,BCX23B,DC2oc,CQ22B,CQ22B,DC2od,&
+    BCX24A,BCX24B,CNTBC2,BC2cEND)
+
+  BC2 : LINE=(BEGBC2B,BC2i,BC2c,ENDBC2B)
+
+  EMIT2 : LINE=(BEGEMIT2,&
+    DE200a,BZ21B,DE200b,&
+    QE201,BPME201,QE201,DE201a,YCE201,DE201b,IM21B,DE201c,&
+    QE202,BPME202,QE202,DE202a1,XCE202,DE202a2,WSEMIT2,DE202b,&
+    QE203,BPME203,QE203,DE203a,YCE203,DE203b,&
+    QE204,BPME204,QE204,DE204a,XCE204,DE204b,&
+    ENDEMIT2)
+
+! ------------------------------------------------------------------------------
+
+  RETURN

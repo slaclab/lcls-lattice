@@ -1,0 +1,168 @@
+
+! *** OPTICS=AD_ACCEL-23JAN19 ***
+
+! ==============================================================================
+! Modification History
+! ------------------------------------------------------------------------------
+! 30-MAY-2018, M. Woodley
+!  * add backup DC spreader lines (commented out)
+! 21-FEB-2018, M. Woodley
+!  * add BSYLTUSXTES and LCLS2scSXTES line definitions
+! 25-JAN-2018, M. Woodley
+!  * remove PCBSY2/BTMBSY2 per A. Ibrahimov
+! ------------------------------------------------------------------------------
+! 06-SEP-2017, Y. Nosochkov
+!  * update definition of SPD1, SPD2 to include placeholders
+!    for large aperture LCLS-II-HE kickers
+! ------------------------------------------------------------------------------
+! 05-MAY-2017, M. Woodley
+!  * pulsed correctors XCAPM2/YCAPM2 will be timed to affect the straight-ahead
+!    LTUH beam, but not the A-line beam
+! ------------------------------------------------------------------------------
+! 24-FEB-2017, Y. Nosochkov
+!  * update some drift names
+! ------------------------------------------------------------------------------
+! 23-NOV-2016, Y. Nosochkov
+!  * update definition of SPD3 line for 6 DASEL kickers
+! ------------------------------------------------------------------------------
+! 04-NOV-2016, M. Woodley
+!  * redefine SPD3 line (DASEL kicker/septum system (off) + SPRDdb line)
+! 02-NOV-2016, Y. Nosochkov
+!  * split SPD2 into shorter SPD2 and SPD3 for DASEL
+!  * add beamlines BSYLCLS2scDA and LCLS2scDA for DASEL
+!  * update BSYH2 definition for use with A-line pulsed magnets
+! ------------------------------------------------------------------------------
+! 24-JUN-2016, Y. Nosochkov
+!  * update beamline definitions to avoid duplication with other files
+! ------------------------------------------------------------------------------
+
+! ------------------------------------------------------------------------------
+! from superconducting linac
+! ------------------------------------------------------------------------------
+
+  DBKYSP0HA : DRIF, L=BKYSP0HA[L] ; DBKYSP0HB : DRIF, L=BKYSP0HB[L]
+  DBKYSP1HA : DRIF, L=BKYSP1HA[L] ; DBKYSP1HB : DRIF, L=BKYSP1HB[L]
+  DBKYSP2HA : DRIF, L=BKYSP2HA[L] ; DBKYSP2HB : DRIF, L=BKYSP2HB[L]
+  DBKYSP3HA : DRIF, L=BKYSP3HA[L] ; DBKYSP3HB : DRIF, L=BKYSP3HB[L]
+  DBKYSP4HA : DRIF, L=BKYSP4HA[L] ; DBKYSP4HB : DRIF, L=BKYSP4HB[L]
+  DBKYSP5HA : DRIF, L=BKYSP5HA[L] ; DBKYSP5HB : DRIF, L=BKYSP5HB[L]
+  DBLXSPHA  : DRIF, L=BLXSPHA[L]  ; DBLXSPHB  : DRIF, L=BLXSPHB[L] 
+
+  SPD1 : LINE=(&
+    BEGSPD1,&
+    DBKYSP0HA,DBKYSP0HB,DSPBK0H,& 
+    DBKYSP1HA,DBKYSP1HB,DSPBK1H,&
+    DBKYSP2HA,DBKYSP2HB,DSPBK2H,&
+    DBKYSP3HA,DBKYSP3HB,DSPBK3H,&
+    DBKYSP4HA,DBKYSP4HB,DSPBK4H,&
+    DBKYSP5HA,DBKYSP5HB,DSPBK5HA,BPMSPH,DSPBK5HB,&
+    DBLXSPHA ,DBLXSPHB ,&
+    SPRDKSA  ,&
+    ENDSPD1)
+
+  DBKYSP0SA : DRIF, L=BKYSP0SA[L] ; DBKYSP0SB : DRIF, L=BKYSP0SB[L]
+  DBKYSP1SA : DRIF, L=BKYSP1SA[L] ; DBKYSP1SB : DRIF, L=BKYSP1SB[L]
+  DBKYSP2SA : DRIF, L=BKYSP2SA[L] ; DBKYSP2SB : DRIF, L=BKYSP2SB[L]
+  DBKYSP3SA : DRIF, L=BKYSP3SA[L] ; DBKYSP3SB : DRIF, L=BKYSP3SB[L]
+  DBKYSP4SA : DRIF, L=BKYSP4SA[L] ; DBKYSP4SB : DRIF, L=BKYSP4SB[L]
+  DBKYSP5SA : DRIF, L=BKYSP5SA[L] ; DBKYSP5SB : DRIF, L=BKYSP5SB[L]
+  DBLXSPSA  : DRIF, L=BLXSPSA[L]  ; DBLXSPSB  : DRIF, L=BLXSPSB[L] 
+
+  SPD2 : LINE=(&
+    BEGSPD2,&
+    DBKYSP0SA,DBKYSP0SB,DSPBK0S,&
+    DBKYSP1SA,DBKYSP1SB,DSPBK1S,&
+    DBKYSP2SA,DBKYSP2SB,DSPBK2S,&
+    DBKYSP3SA,DBKYSP3SB,DSPBK3S,&
+    DBKYSP4SA,DBKYSP4SB,DSPBK4S,&
+    DBKYSP5SA,DBKYSP5SB,DSPBK5SA,BPMSPS,DSPBK5SB,&
+    DBLXSPSA ,DBLXSPSB ,&
+    SPRDDA,&
+    ENDSPD2)
+
+  DBKRDAS1A : DRIF, L=BKRDAS1A[L] ; DBKRDAS1B : DRIF, L=BKRDAS1B[L]
+  DBKRDAS2A : DRIF, L=BKRDAS2A[L] ; DBKRDAS2B : DRIF, L=BKRDAS2B[L]
+  DBKRDAS3A : DRIF, L=BKRDAS3A[L] ; DBKRDAS3B : DRIF, L=BKRDAS3B[L]
+  DBKRDAS4A : DRIF, L=BKRDAS4A[L] ; DBKRDAS4B : DRIF, L=BKRDAS4B[L]
+  DBKRDAS5A : DRIF, L=BKRDAS5A[L] ; DBKRDAS5B : DRIF, L=BKRDAS5B[L]
+  DBKRDAS6A : DRIF, L=BKRDAS6A[L] ; DBKRDAS6B : DRIF, L=BKRDAS6B[L]
+  DBLRDASA  : DRIF, L=BLRDASA[L]  ; DBLRDASB  : DRIF, L=BLRDASB[L]
+
+  SPD3 : LINE=(&
+    BEGSPD3,&
+    DBKRDAS1A,DBKRDAS1B,DDASBK1,&
+    DBKRDAS2A,DBKRDAS2B,DDASBK2,&
+    DBKRDAS3A,DBKRDAS3B,DDASBK3,&
+    DBKRDAS4A,DBKRDAS4B,DDASBK4,&
+    DBKRDAS5A,DBKRDAS5B,DDASBK5,&
+    DBKRDAS6A,DBKRDAS6B,DDASBLXA,BPMDAS,DDASBLXB,&
+    DBLRDASA,DBLRDASB,&
+    SPRDDC,&
+    ENDSPD3)
+
+  SLTD : LINE=(BEGSLTD,SPRDDD,ENDSLTD)
+
+! ------------------------------------------------------------------------------			
+
+  SPS : LINE=(BEGSPS,SPRDksb  ,SPRDsb,FODOLb,ENDSPS)
+ !SPS : LINE=(BEGSPS,SPRDksbDC,SPRDsb,FODOLb,ENDSPS) !DC SXR spreader
+
+  DBRCUS1A : DRIF, L=BRCUS1A[L] ; DBRCUS1B : DRIF, L=BRCUS1B[L]
+
+  SLTS : LINE=(BEGSLTS,FODOLc,BYPM1,DBRCUS1A,DBRCUS1B,MRGCUSXR,ENDSLTS)
+
+  BSYS : LINE=(&
+    BEGBSYS,BYPM2,MUWALLB,DWALLA,DUMPBSYS,DWALLB,BSYENDB,ENDBSYS)
+
+! ------------------------------------------------------------------------------
+
+  SPH : LINE=(BEGSPH,SPRDkh  ,SPRDha,ENDSPH)
+ !SPH : LINE=(BEGSPH,SPRDkhDC,SPRDha,ENDSPH) !DC HXR spreader
+
+  SLTH : LINE=(BEGSLTH,SPRDHB,ENDSLTH)
+
+  BSYH1 : LINE=(BEGBSYH1,SPHAL,ENDBSYH1)
+
+  BSYH2 : LINE=(&
+    BEGBSYH2,&
+    DBKRAPM1a,DBKRAPM1b,DZAPM1,PCAPM1,DZAPM1,&
+    DBKRAPM2a,DBKRAPM2b,DZAPM2a,SCAPM2,DZAPM2b,PCAPM2,DZAPM2,&
+    DBKRAPM3a,DBKRAPM3b,DZAPM3,PCAPM3,DZAPM3,&
+    DBKRAPM4a,DBKRAPM4b,DZAPM4,PCAPM4,DZA01,DZA02,&
+    SPHBSYB,&
+    ENDBSYH2)
+
+! ------------------------------------------------------------------------------
+
+  BSYA : LINE=(BEGBSYA,ALINEA,ALINEB,ALINEC)
+
+! ------------------------------------------------------------------------------
+
+  LTUS : LINE=(DBLDL21,LTUSC,RWWAKE5S,ENDLTUS)
+  LTUH : LINE=(LTU)
+
+! from SC linac (start at spreader)
+
+  BSYLCLS2scS     : LINE=(SPD1,SPS,SLTS,BSYS,LTUS,SXRUND,DUMPLINEb)
+  BSYLCLS2scSS    : LINE=(SPD1,SPS,SLTS,BSYS,LTUS,SXRUND,SFTDUMPb)
+  BSYLCLS2scH     : LINE=(SPH,SLTH,BSYH1,BSYH2,LTUH,HXRUND,DUMPLINE)
+  BSYLCLS2scHS    : LINE=(SPH,SLTH,BSYH1,BSYH2,LTUH,HXRUND,SFTDUMP)
+  BSYLCLS2scD     : LINE=(SPD1,SPD2,SPD3,SLTD)
+  BSYLCLS2scA     : LINE=(SPH,SLTH,BSYH1,BSYA)
+  BSYLCLS2scDA    : LINE=(SPD1,SPD2,DASELA)
+  BSYLCLS2scSXTES : LINE=(SPD1,SPS,SLTS,BSYS,LTUS,SXRUND,SFTDUMPb1,SXTES)
+
+! from SC linac (start at end of dogleg)
+
+  LCLS2scS     : LINE=(BYPi,FODOLa,BSYLCLS2scS)
+  LCLS2scSS    : LINE=(BYPi,FODOLa,BSYLCLS2scSS)
+  LCLS2scH     : LINE=(BYPi,FODOLa,BSYLCLS2scH)
+  LCLS2scHS    : LINE=(BYPi,FODOLa,BSYLCLS2scHS)
+  LCLS2scD     : LINE=(BYPi,FODOLa,BSYLCLS2scD)
+  LCLS2scA     : LINE=(BYPi,FODOLa,BSYLCLS2scA)
+  LCLS2scDA    : LINE=(BYPi,FODOLa,BSYLCLS2scDA)
+  LCLS2scSXTES : LINE=(BYPi,FODOLa,BSYLCLS2scSXTES)
+
+! ------------------------------------------------------------------------------
+
+  RETURN

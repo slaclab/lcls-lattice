@@ -1,0 +1,447 @@
+
+! *** OPTICS=AD_ACCEL-23JAN19 ***
+
+! LCLS2sc bunch compressor chicane #1
+
+! ==============================================================================
+! Modification History
+! ------------------------------------------------------------------------------
+! 05-SEP-2017, M. Woodley
+!  * rename: BPM11->BPM11B, CEBC1->CE11B, WS11->WS11B
+!  * move BZ11B 0.12 m downstream per K. Fox
+! ------------------------------------------------------------------------------
+! 05-MAY-2017, M. Woodley
+!  * use measured FINT=0.3893 for BC1 bends
+! ------------------------------------------------------------------------------
+! 04-NOV-2016, M. Woodley
+!  * remove deferred items: TCAV "TCYC2", kicker "BKYC1", and septum "BLXC1"
+!  * undefer XCC106, YCC109, and XCC110 (add-back list items)
+!  * relocate COL1 correctors per K. Fox
+! ------------------------------------------------------------------------------
+! 07-JUN-2016, M. Woodley
+!  * implement Kay Fox component moves (email 5/19)
+!  * change deferment level to 0 for XCC106, YCC109, and XCC110
+!  * move XCC112 to d/s side of QC112 ... shorten L2 u/s PSC drift
+! ------------------------------------------------------------------------------
+! 01-OCT-2015, M. Woodley
+!  * undefer IM11B
+!  * change TYPE of OTRs and YAGs per Henrik's PRD
+! ------------------------------------------------------------------------------
+! 19-JUN-2015, M. Woodley
+!  * arrangement of devices at center of BC1 chicane copied from BC2
+!  * undefer BPM11, OTR11B, BZ11B, and IM11B (change to ICT)
+!  * undefer collimators CYC11, CXC11, CYC13, and CXC13
+!  * collimator gaps per P. Emma
+! ------------------------------------------------------------------------------
+! 20-MAR-2015, M. Woodley
+!  * rematch after changes in COL0
+!  * set collimator lengths (tungsten) and gaps per LCLSII-2.4-PR-0095-R0
+!  * set WS11 deferment to level 3; set OTR11B deferment to level 0
+! ------------------------------------------------------------------------------
+! 12-DEC-2014, M. Woodley
+!  * increase space between Q1C01 and BCX11, and between BCX14 and QC101, per
+!    N. Stewart; adjust inter-quad spacing between chicane and COL1 to keep
+!    everything d/s of QC104 where it was
+!  * change RFB11 (defer=2) to BPM11 (defer=0)
+! ------------------------------------------------------------------------------
+! 28-OCT-2014, M. Woodley
+!  * move COL1 collimators 7 inches closer to their associated quadrupoles
+! ------------------------------------------------------------------------------
+! 15-OCT-2014, M. Woodley
+!  * increase central drift of BC1 chicane from 0.8302 m to 1.75 m; add OTR11B
+!  * shorten COL1 FODO cell to 8.0 m
+!  * add 2 matching quadrupoles (each with a stripline BPM) to COL1
+!  * add 6 stripline BPMs to COL1 ... omitted when we switched to 45 degree
+!    FODO cells
+!  * adjust deferment/deprecation levels
+! ------------------------------------------------------------------------------
+! 07-AUG-2014, M. Woodley
+!  * diagnostics complement per "Electron Beam Diagnostics Systems" PRD
+!    (LCLSII-2.7-PR-0170)
+!  * OTR in BC1 chicane replaced with wire scanner; BPM replaced with RF BPM
+!  * COL1 collimation system now consists of four 45 degree FODO cells with 3
+!    pairs of collimators separated by 45 degrees (22 m betas at collimators);
+!    FODO cell length is 12 m
+!  * TCAV(Y), vertical kicker, and lambertson septum added d/s of BC1
+!  * in-line emittance measurement system incorporated into COL1
+!  * decorate device TYPE attributes to indicate non-baseline status
+! 17-APR-2014, M. Woodley
+!  * add "CNT" MARKERs after dispersive areas (ELEGANT CENTERing)
+! ------------------------------------------------------------------------------
+! 31-MAR-2014, M. Woodley
+!  * replace chromatic BC1/DIAG1/COL1 match with BC1/COL1 non-chromatic match
+!  * element names changed to conform to nomenclature PRD
+! ------------------------------------------------------------------------------
+! 14-JAN-2014, M. Woodley
+!  * change BC1 dipole names from "BX1*" to "BXC1*"
+! ------------------------------------------------------------------------------
+! 16-OCT-2013, M. Woodley
+!  * change BC1 dipole TYPE from "5D7.1" to "1.69D6.28T" ... no change in
+!    physical parameters
+! ------------------------------------------------------------------------------
+
+! ==============================================================================
+! SBEN
+! ------------------------------------------------------------------------------
+
+! BC1 chicane
+! - approximate on-axis effective length per R. Carr (01-AUG-05 PE)
+! - use series approximation for sinc(x)=sin(x)/x to allow BXh=0
+
+! GB1   : 1.69D6.28T gap height (m)
+! ZB1   : 1.69D6.28T "Z" length (m)
+! FB1   : measured chicane bend FINT/FINTX
+! BB1   : chicane bend field (kG) for R56= 0.055 m @ 250 MeV
+! AB1   : chicane bend angle (rad)
+! LB1   : chicane bend path length (m)
+! AB1S  : "short" half chicane bend angle (rad)
+! LB1S  : "short" half chicane bend path length (m)
+! AB1L  : "long" half chicane bend angle (rad)
+! LB1L  : "long" half chicane bend path length (m)
+
+  GB1      := 0.04328
+  ZB1      := 0.2032
+  FB1      := 0.3893
+  AB1      := -0.102786245824 !R56=0.055
+  BB1      := Brho1*SIN(AB1)/ZB1
+  AB1_2    := AB1*AB1
+  AB1_4    := AB1_2*AB1_2
+  AB1_6    := AB1_4*AB1_2
+  SINCAB1  := 1-AB1_2/6+AB1_4/120-AB1_6/5040 !~sinc(AB1)=sin(AB1)/AB1
+  LB1      := ZB1/SINCAB1
+  AB1S     := ASIN(SIN(AB1)/2)
+  AB1S_2   := AB1S*AB1S
+  AB1S_4   := AB1S_2*AB1S_2
+  AB1S_6   := AB1S_4*AB1S_2
+  SINCAB1S := 1-AB1S_2/6+AB1S_4/120-AB1S_6/5040 !~sinc(AB1S)=sin(AB1S)/AB1S
+  LB1S     := ZB1/(2*SINCAB1S)
+  AB1L     := AB1-AB1S
+  LB1L     := LB1-LB1S
+
+  BCX11A : SBEN, TYPE="1.69D6.28T", L=LB1S, ANGLE=+AB1S, HGAP=GB1/2, &
+                 E1=0, FINT=FB1, FINTX=0
+  BCX11B : SBEN, TYPE="1.69D6.28T", L=LB1L, ANGLE=+AB1L, HGAP=GB1/2, &
+                 FINT=0, E2=+AB1, FINTX=FB1
+  BCX12A : SBEN, TYPE="1.69D6.28T", L=LB1L, ANGLE=-AB1L, HGAP=GB1/2, &
+                 E1=-AB1, FINT=FB1, FINTX=0
+  BCX12B : SBEN, TYPE="1.69D6.28T", L=LB1S, ANGLE=-AB1S, HGAP=GB1/2, &
+                 FINT=0, E2=0, FINTX=FB1
+  BCX13A : SBEN, TYPE="1.69D6.28T", L=LB1S, ANGLE=-AB1S, HGAP=GB1/2, &
+                 E1=0, FINT=FB1, FINTX=0
+  BCX13B : SBEN, TYPE="1.69D6.28T", L=LB1L, ANGLE=-AB1L, HGAP=GB1/2, &
+                 FINT=0, E2=-AB1, FINTX=FB1
+  BCX14A : SBEN, TYPE="1.69D6.28T", L=LB1L, ANGLE=+AB1L, HGAP=GB1/2, &
+                 E1=+AB1, FINT=FB1, FINTX=0
+  BCX14B : SBEN, TYPE="1.69D6.28T", L=LB1S, ANGLE=+AB1S, HGAP=GB1/2, &
+                 FINT=0, E2=0, FINTX=FB1
+
+ !F := (ZB1/GB1)*(COS(AB1)/(SINCAB1*(1+SIN(AB1)*SIN(AB1))))
+ !VALUE, AB1,F
+ !VALUE, F*GB1*(AB1/LB1)*(1+SIN(AB1)*SIN(AB1))/COS(AB1)
+
+! ==============================================================================
+! QUAD
+! ------------------------------------------------------------------------------
+
+! L1 to BC1 chicane
+
+  KQ1C01 := 0.997232505629
+
+  Q1C01 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQ1C01
+
+! BC1 chicane
+
+  KCQ11 := 0
+  KSQ13 := 0
+  KCQ12 := 0
+
+  CQ11B : QUAD, TYPE="1.69Q3.4",    L=LQc/2,  APER=rQc,  K1=KCQ11
+  SQ13B : QUAD, TYPE="@4,Bertsche", L=LQsB/2, APER=rQsB, K1=KSQ13, TILT
+  CQ12B : QUAD, TYPE="1.69Q3.4",    L=LQc/2,  APER=rQc,  K1=KCQ12
+
+! collimation FODO
+
+  KQColl1   := 1.787850470726  !45 degree FODO
+! BminColl1 := 6.996145818354
+! BmaxColl1 := 15.616293369747
+
+  QFColl1 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1= KQColl1
+  QDColl1 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=-KQColl1
+
+! COL1 collimation section
+
+  KQC101 := -0.330815066091
+  KQC102 :=  2.092280702381
+  KQC103 :=  0.0
+  KQC104 := -0.989821879445
+  KQC105 := -1.659478212876
+  KQC106 :=  KQColl1
+  KQC107 := -KQColl1
+  KQC108 :=  KQColl1
+  KQC109 := -KQColl1
+  KQC110 :=  1.418293776343 ! KQColl1
+  KQC111 := -1.796131659282
+  KQC112 :=  1.292282997623
+
+  QC101 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQC101
+  QC102 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQC102
+  QC103 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQC103
+  QC104 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQC104
+  QC105 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQC105
+  QC106 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQC106
+  QC107 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQC107
+  QC108 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQC108
+  QC109 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQC109
+  QC110 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQC110
+  QC111 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQC111
+  QC112 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQC112
+
+! ==============================================================================
+! DRIF
+! ------------------------------------------------------------------------------
+
+! L1 to BC1 chicane
+
+  D1C00 : DRIF, L=0.144
+  D1C01 : DRIF, L=0.478
+
+  D1C01a : DRIF, L=0.15
+  D1C01b : DRIF, L=D1C01[L]-D1C01a[L]
+
+! BC1 chicane
+
+  ZDC1o  := 2.6381-ZB1                   !BCX11 exit to BCX12 entrance
+  ZDC1oa := 0.298542                     !BCX11 exit to CQ11B center
+  ZDC1ob := 0.610858                     !CQ11B center to YCM12B center
+  ZDC1oc := ZDC1o-(ZDC1oa+ZDC1ob)        !YCM12B center to BCX12 entrance
+  ZDC1od := 0.340947                     !BCX13 exit to SQ13B center
+  ZDC1oe := 1.184953                     !SQ13B center to XCM12B center
+  ZDC1of := 0.610458                     !XCM12B center to CQ12B center
+  ZDC1og := ZDC1o-(ZDC1od+ZDC1oe+ZDC1of) !CQ12B center to BCX14 entrance
+
+  DC1o  : DRIF, L=ZDC1o/COS(AB1), TYPE="CSR"
+  DC1oa : DRIF, L=ZDC1oa/COS(AB1)-LQc/2, TYPE="CSR"
+  DC1ob : DRIF, L=ZDC1ob/COS(AB1)-LQc/2, TYPE="CSR"
+  DC1oc : DRIF, L=ZDC1oc/COS(AB1), TYPE="CSR"
+  DC1i  : DRIF, L=1.75, TYPE="CSR"
+  DC1ih : DRIF, L=DC1i[L]/2, TYPE="CSR"
+  DC1ia : DRIF, L=0.24867, TYPE="CSR"
+  DC1ib : DRIF, L=0.16446-Ljaw/2, TYPE="CSR"
+  DC1ic : DRIF, L=0.1826-Ljaw/2, TYPE="CSR"
+  DC1id : DRIF, L=0.415, TYPE="CSR"
+  DC1ie : DRIF, L=DC1i[L]-DC1ia[L]-DC1ib[L]-Ljaw-DC1ic[L]-DC1id[L], TYPE="CSR"
+
+  DC1od : DRIF, L=ZDC1od/COS(AB1)-LQsB/2, TYPE="CSR"
+  DC1oe : DRIF, L=ZDC1oe/COS(AB1)-LQsB/2, TYPE="CSR"
+  DC1of : DRIF, L=ZDC1of/COS(AB1)-LQc/2, TYPE="CSR"
+  DC1og : DRIF, L=ZDC1og/COS(AB1)-LQc/2, TYPE="CSR"
+
+! collimation FODO
+
+  DColl1 : DRIF, L=4.0-LQx
+
+! COL1 collimation section
+
+  DC100 : DRIF, L=0.637
+  DC101 : DRIF, L=7.95
+  DC102 : DRIF, L=0.8
+  DC103 : DRIF, L=2.75
+  DC104 : DRIF, L=4.316831888391
+
+  DC100a : DRIF, L=0.3
+  DC100b : DRIF, L=0.1
+  DC100c : DRIF, L=DC100[L]-DC100a[L]-DC100b[L]
+  DC101a : DRIF, L=0.214288
+  DC101b : DRIF, L=0.169862
+  DC101c : DRIF, L=0.25
+  DC101d : DRIF, L=DC101[L]-DC101a[L]-DC101b[L]-DC101c[L]
+  DC104a : DRIF, L=0.38415
+  DC104c : DRIF, L=0.1
+  DC104e : DRIF, L=0.613
+  DC104d : DRIF, L=DColl1[L]/2-Ljaw-DC104e[L]
+  DC104b : DRIF, L=DC104[L]-DC104a[L]-DC104c[L]-DC104d[L]-Ljaw-DC104e[L]
+  DC105a : DRIF, L=0.38415
+  DC105c : DRIF, L=0.613
+  DC105b : DRIF, L=DColl1[L]-Ljaw-DC105a[L]-DC105c[L]
+  DC106a : DRIF, L=0.38415
+  DC106c : DRIF, L=0.1
+  DC106b : DRIF, L=DColl1[L]/2-DC106a[L]-DC106c[L]
+  DC106e : DRIF, L=0.613
+  DC106d : DRIF, L=DColl1[L]/2-Ljaw-DC106e[L]
+  DC107a : DRIF, L=0.38415
+  DC107c : DRIF, L=0.613
+  DC107b : DRIF, L=DColl1[L]-Ljaw-DC107a[L]-DC107c[L]
+  DC108a : DRIF, L=0.38415
+  DC108c : DRIF, L=0.1
+  DC108b : DRIF, L=DColl1[L]/2-DC108a[L]-DC108c[L]
+  DC108e : DRIF, L=0.613
+  DC108d : DRIF, L=DColl1[L]/2-Ljaw-DC108e[L]
+  DC109a : DRIF, L=0.38415
+  DC109c : DRIF, L=0.613
+  DC109b : DRIF, L=DColl1[L]-Ljaw-DC109a[L]-DC109c[L]
+  DC110a : DRIF, L=0.38415
+  DC110c : DRIF, L=0.1
+  DC110b : DRIF, L=DColl1[L]/2-DC110a[L]-DC110c[L]
+  DC110d : DRIF, L=DColl1[L]/2
+  DC111a : DRIF, L=0.38415
+  DC111b : DRIF, L=DColl1[L]-DC111a[L]
+  DC112a : DRIF, L=0.38415
+
+! ==============================================================================
+! BPMs
+! ------------------------------------------------------------------------------
+
+  BPM1C01 : MONI, TYPE="Stripline-1"
+  BPMC101 : MONI, TYPE="Stripline-1"
+  BPMC102 : MONI, TYPE="Stripline-1"
+  BPMC103 : MONI, TYPE="Stripline-1"
+  BPMC104 : MONI, TYPE="Stripline-1"
+  BPMC105 : MONI, TYPE="Stripline-1"
+  BPMC106 : MONI, TYPE="Stripline-1"
+  BPMC107 : MONI, TYPE="Stripline-1"
+  BPMC108 : MONI, TYPE="Stripline-1"
+  BPMC109 : MONI, TYPE="Stripline-1"
+  BPMC110 : MONI, TYPE="Stripline-1"
+  BPMC111 : MONI, TYPE="Stripline-1"
+  BPMC112 : MONI, TYPE="Stripline-1"
+
+  RFB1C01 : MONI, TYPE="@2,CavityS-1"
+  BPM11B  : MONI, TYPE="Stripline-8"  !RFB11 : MONI, TYPE="@2,CavityL-1"
+  RFBC104 : MONI, TYPE="@2,CavityS-1"
+  RFBC106 : MONI, TYPE="@2,CavityS-1"
+  RFBC108 : MONI, TYPE="@2,CavityS-1"
+  RFBC110 : MONI, TYPE="@2,CavityS-1"
+
+! ==============================================================================
+! XCORs
+! ------------------------------------------------------------------------------
+
+  XC1C00 : HKIC, TYPE="class-1a"
+  XCM12B : HKIC, TYPE="class-6"
+  XCC101 : HKIC, TYPE="class-6"
+  XCC104 : HKIC, TYPE="class-6"
+  XCC106 : HKIC, TYPE="class-6"
+  XCC108 : HKIC, TYPE="class-6"
+  XCC110 : HKIC, TYPE="class-6"
+  XCC112 : HKIC, TYPE="class-6"
+
+! ==============================================================================
+! YCORs
+! ------------------------------------------------------------------------------
+
+  YC1C00 : VKIC, TYPE="class-1a"
+  YCM12B : VKIC, TYPE="class-6"
+  YCC101 : VKIC, TYPE="class-6"
+  YCC105 : VKIC, TYPE="class-6"
+  YCC107 : VKIC, TYPE="class-6"
+  YCC109 : VKIC, TYPE="class-6"
+  YCC111 : VKIC, TYPE="class-6"
+
+! ==============================================================================
+! marker points, etc.
+! ------------------------------------------------------------------------------
+
+! collimators
+! (betatron X/Y half-gaps are 27/18 sigma for 1 um normalized emittance)
+
+  CE11B : RCOL, L=Ljaw, XSIZE=19.2e-3, TYPE="HCOLL"    !X momentum collimator
+  CYC11 : RCOL, L=Ljaw, YSIZE=2.7e-3,  TYPE="VCOLL"    !Y betatron collimator
+  CXC11 : RCOL, L=Ljaw, XSIZE=2.7e-3,  TYPE="HCOLL"    !X betatron collimator
+  CYC12 : RCOL, L=Ljaw, YSIZE=2.7e-3,  TYPE="@4,VCOLL" !Y betatron collimator
+  CXC12 : RCOL, L=Ljaw, XSIZE=2.7e-3,  TYPE="@4,HCOLL" !X betatron collimator
+  CYC13 : RCOL, L=Ljaw, YSIZE=2.7e-3,  TYPE="VCOLL"    !Y betatron collimator
+  CXC13 : RCOL, L=Ljaw, XSIZE=2.7e-3,  TYPE="HCOLL"    !X betatron collimator
+
+! instruments
+
+  OTR11B : PROF, TYPE="OTR BC"       !BC1 energy spread
+  WS11B  : WIRE, TYPE="@3,fast"      !BC1 energy spread
+  BZ11B  : BLMO, TYPE="CSR"          !CSR-based relative bunch length monitor
+  BZC1   : BLMO, TYPE="@2,gap/diode" !relative bunch length monitor
+  IM11B  : IMON, TYPE="ICT"          !Beam Current Monitor
+  WSC104 : WIRE, TYPE="fast"         !post-BC1 emittance
+  WSC106 : WIRE, TYPE="fast"         !post-BC1 emittance
+  WSC108 : WIRE, TYPE="fast"         !post-BC1 emittance
+  WSC110 : WIRE, TYPE="fast"         !post-BC1 emittance
+
+! markers
+
+  BC1cBEG : MARK
+  BC1MID  : MARK
+  CNTBC1  : MARK, TYPE="CENTER"
+  BC1cEND : MARK
+
+! ==============================================================================
+! BEAMLINE
+! ------------------------------------------------------------------------------
+
+  SC1C00 : LINE=(XC1C00,YC1C00)
+
+  BKYC1 : LINE=(BKYC1A,BKYC1B)
+  BLXC1 : LINE=(BLXC1A,BLXC1B)
+  TCYC1 : LINE=(TCYC1h,TCYC1h)
+
+  BC1i : LINE=(&
+    SC1C00,D1C00,&
+    Q1C01,BPM1C01,Q1C01,D1C01a,RFB1C01,D1C01b)
+
+  BC1c0 : LINE=(BC1cBEG,&
+    BCX11A,BCX11B,DC1o,&
+    BCX12A,BCX12B,DC1ih,BC1MID,DC1ih,&
+    BCX13A,BCX13B,DC1o,&
+    BCX14A,BCX14B,BC1cEND)
+
+  BC1c : LINE=(BC1cBEG,&
+    BCX11A,BCX11B,DC1oa,CQ11B,CQ11B,DC1ob,YCM12B,DC1oc,&
+    BCX12A,BCX12B,DC1ia,BPM11B,DC1ib,CE11B,DC1ic,OTR11B,DC1id,WS11B,DC1ie,&
+    BCX13A,BCX13B,DC1od,SQ13B,SQ13B,DC1oe,XCM12B,DC1of,CQ12B,CQ12B,DC1og,&
+    BCX14A,BCX14B,CNTBC1,BC1cEND)
+
+  BC1 : LINE=(BEGBC1B,BC1i,BC1c,ENDBC1B)
+
+  COMMENT
+    COL1 : LINE=(BEGCOL1,&
+      DC100,&
+      QC101,QC101,DC101,&
+      QC102,QC102,DC102,&
+      QC103,QC103,DC103,&
+      QC104,QC104,DC104,&
+      QC105,QC105,DColl1,&
+      QC106,QC106,DColl1,&
+      QC107,QC107,DColl1,&
+      QC108,QC108,DColl1,&
+      QC109,QC109,DColl1,&
+      QC110,QC110,DColl1,&
+      QC111,QC111,DColl1,&
+      QC112,QC112,&
+      ENDCOL1)
+  ENDCOMMENT
+
+ !COMMENT
+    COL1 : LINE=(&
+      BEGCOL1,&
+      DC100a,BZ11B,DC100b,BZC1,DC100c,&
+      QC101,BPMC101,QC101,DC101a,IM11B,DC101b,XCC101,DC101c,YCC101,DC101d,&
+      QC102,BPMC102,QC102,DC102,&
+      QC103,BPMC103,QC103,DC103,&
+      QC104,BPMC104,QC104,DC104a,XCC104,DC104b,RFBC104,DC104c,WSC104,&
+        DC104d,CYC11,DC104e,&
+      QC105,BPMC105,QC105,DC105a,YCC105,DC105b,CXC11,DC105c,&
+      QC106,BPMC106,QC106,DC106a,XCC106,DC106b,RFBC106,DC106c,WSC106,&
+        DC106d,CYC12,DC106e,&
+      QC107,BPMC107,QC107,DC107a,YCC107,DC107b,CXC12,DC107c,&
+      QC108,BPMC108,QC108,DC108a,XCC108,DC108b,RFBC108,DC108c,WSC108,&
+        DC108d,CYC13,DC108e,&
+      QC109,BPMC109,QC109,DC109a,YCC109,DC109b,CXC13,DC109c,&
+      QC110,BPMC110,QC110,DC110a,XCC110,DC110b,RFBC110,DC110c,WSC110,&
+        DC110d,&
+      QC111,BPMC111,QC111,DC111a,YCC111,DC111b,&
+      QC112,BPMC112,QC112,DC112a,XCC112,&
+      ENDCOL1)
+ !ENDCOMMENT
+
+  C1fodo : LINE=(QFColl1,DColl1,QDColl1,QDColl1,DColl1,QFColl1)
+
+! ------------------------------------------------------------------------------
+
+  RETURN

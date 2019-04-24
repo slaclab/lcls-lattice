@@ -1,0 +1,253 @@
+
+! *** OPTICS=AD_ACCEL-23JAN19 ***
+
+! ------------------------------------------------------------------------------
+! constants and global parameters
+! ------------------------------------------------------------------------------
+
+! constants
+
+  IN2M  : CONSTANT=0.0254          !m/inch
+  Cb    : CONSTANT=1.0E10/CLIGHT   !kG-m/GeV
+  mc2   : CONSTANT=510.99906E-6    !GeV
+  QELEC : CONSTANT=1.602176462E-19 !C
+
+! energy profile
+
+  E0   := MC2+0.75E-3 !NGLS/APEX gun
+  Ei   := 0.1
+  E1   := 0.25
+  E2   := 1.6
+  Ef   := EfSC !final beam energy (GeV)
+  Eu   := EuSC !energy in undulator (GeV)
+  Emax := 10.0
+
+  Brho0 := Cb*E0
+  Brhoi := Cb*Ei
+  Brho1 := Cb*E1
+  Brho2 := Cb*E2
+  Brhof := Cb*Ef
+
+! compression
+
+  R56HTR := 0.0035 !DXmax = 75 cm
+  R56BC1 := 0.055
+  R56BC2 := 0.037
+
+  R56CCDLU := 9.99E-5
+  R56CCDLD := 9.99E-5
+
+! ------------------------------------------------------------------------------
+! input beam definition: F. Zhou (100 pC)
+! ------------------------------------------------------------------------------
+
+! Twiss at gun
+
+  BX0 := 54.70910663424
+  AX0 := 24.927276694193
+  BY0 := 54.64124177612
+  AY0 := 24.896728669354
+
+! Twiss at S= 15.0 m (ASTRA MARKER)
+
+  BXa := 13.325594260685
+  AXa := -2.125811087318
+  BYa := 13.315541277702
+  AYa := -2.123153832086
+
+! Twiss at BEAM0 MARKER (specified)
+
+  BXi :=  9.3480
+  AXi := -1.6946
+  BYi :=  9.3429
+  AYi := -1.6925
+
+! max beta u/s of WS0H04
+
+  Bmax := 50
+
+! beta at WS0H04 waist
+
+  B0H04w := 5.0
+
+! beam parameters
+
+  QBNCH  := 100.0E-12  !C
+  EMITXn := 0.2953E-06 !m
+  EMITYn := 0.2954E-06 !m
+  sig_z  := 0.9987E-03 !m
+  sig_dp := 0.0379E-02 !1
+
+! ------------------------------------------------------------------------------
+! input beam definition (at BEAM0)
+! ------------------------------------------------------------------------------
+
+  EMITX := EMITXn/(Ei/EMASS)
+  EMITY := EMITYn/(Ei/EMASS)
+
+  GXi   := (1+AXi*AXi)/BXi
+  SIG11 := EMITX*BXi
+  SIG21 := -EMITX*AXi
+  SIG22 := EMITX*GXi
+  C21   := SIG21/SQRT(SIG11*SIG22)
+  GYi   := (1+AYi*AYi)/BYi
+  SIG33 := EMITY*BYi
+  SIG43 := -EMITY*AYi
+  SIG44 := EMITY*GYi
+  C43   := SIG43/SQRT(SIG33*SIG44)
+
+ !SIGX = SQRT(SIG11)
+ !SIGPX= SQRT(SIG22)
+ !R21  = C21
+ !SIGY = SQRT(SIG33)
+ !SIGPY= SQRT(SIG44)
+ !R43  = C43
+ !SIGT = sig_z
+ !SIGPT= sig_dp
+
+! ------------------------------------------------------------------------------
+! survey (Z values are w.r.t. start of LI01 where Z=0)
+! ------------------------------------------------------------------------------
+
+  Xgun  :=    0.28     !beam axis (w.r.t. original linac axis)
+  Ygun  :=   -0.99     !beam axis (w.r.t. original linac axis)
+  Zgun  :=  -10.044667 !10.0 m d/s of location of CID gun
+  Z0beg :=   -7.992090 !start of L0 (12.0 m d/s of location of CID gun)
+  Zi    :=    3.914190 !BEAM0 point (~3.9 m into LI01)
+  Za    :=   Zgun+15.0 !ASTRA treaty point (~4.8 m into LI01)
+  Z0end :=    8.130200 !end of L0 (~8.0 m into LI01)
+  Zhtr  :=   18.202600 !start of laser heater chicane (~18.2 m into LI01)
+  Zdg0  :=   32.183970 !start of DIAG0 (~32.2 m into LI01)
+  Z1beg :=   73.383640 !start of L1 (~73.4 m into LI01)
+  Z1loc :=  104.194330 !center of CAVC011 (sholud be 104.0 m)
+  Z1end :=  121.344620 !end of L1 (~19.7 m into LI02)
+  Z2beg :=  174.885202 !start of L2 (~73.3 m into LI02)
+  Z2end :=  331.562942 !end of L2 (~26.8 m into LI04)
+  Z3beg :=  385.847300 !start of L3 (~81.0 m into LI04)
+  Z3end :=  643.543300 !end of L3 (~33.9 m into LI07)
+  Zdog  :=  667.043300 !entrance first dogleg bend (~57.4 m into LI07)
+  Xbyp  :=   -0.650494 !QBP13 X is |Xbyp| to the south of linac axis
+  Ybyp  :=    0.649478 !QBP13 Y is Ybyp above linac axis
+  Zbyp  := 1254.531303 !QBP13 centerline (~35.3 m into LI13)
+
+! ------------------------------------------------------------------------------
+! twiss parameter definitions (for matching, etc.)
+! ------------------------------------------------------------------------------
+
+! "treaty" Twiss at center of laser heater undulator
+
+  BXlh := 10.0
+  AXlh := 0
+  BYlh := 10.0
+  AYlh := 0
+
+! matched Twiss for coasting linac FODOs
+
+  BXCMfodo1 := 47.734300019352 !L1: 45 degrees per cell
+  BYCMfodo1 := 21.362810104773 !L1: 45 degrees per cell
+  BXCMfodo2 := 61.483042301615 !L2: 30 degrees per cell
+  BYCMfodo2 := 36.259471142003 !L2: 30 degrees per cell
+  BXCMfodo3 := 61.483042301615 !L3: 30 degrees per cell
+  BYCMfodo3 := 36.259471142003 !L3: 30 degrees per cell
+
+! match into bypass dogleg
+
+  BXDLm := 13.103980147754
+  AXDLm := -1.328117574824
+  BYDLm := 15.962709228317
+  AYDLm :=  1.529776835343
+
+! match into SXR LTU emittance diagnostic section
+
+  BX1 := 46.225914318019
+  AX1 := -1.084608326468
+  BY1 := 46.225914318019
+  AY1 :=  1.084608326468
+
+! match into HXR LTU emittance diagnostic section
+
+  BXEDh := 46.347592421655
+  AXEDh := -1.088004889273
+  BYEDh := 46.098656017174
+  AYEDh :=  1.08081945287
+
+! initial Twiss for SXR dogleg
+
+  MBETXS :=  6.841330859726
+  MALFXS := -0.28404741292
+  MBETYS := 47.066411333286
+  MALFYS :=  2.555439813894
+
+! periodic Twiss in HXR dogleg cells
+
+  MBETXH := 48.881918788199
+  MALFXH :=  3.139871668464
+  MBETYH := 96.323786537904
+  MALFYH :=  3.616905252587
+
+! ------------------------------------------------------------------------------
+! load lattice definitions
+! ------------------------------------------------------------------------------
+
+  CALL, FILENAME="common.xsif"
+  CALL, FILENAME="CM.xsif"
+  CALL, FILENAME="DIAG0.xsif"
+  CALL, FILENAME="INJ.xsif"
+  CALL, FILENAME="BC1.xsif"
+  CALL, FILENAME="BC2.xsif"
+  CALL, FILENAME="EXT.xsif"
+  CALL, FILENAME="DLBM.xsif"
+  CALL, FILENAME="SPRD.xsif"
+  CALL, FILENAME="CUSXR.xsif"
+  CALL, FILENAME="ALINE.xsif"
+  CALL, FILENAME="BYP.xsif"
+  CALL, FILENAME="LTU.xsif"
+  CALL, FILENAME="UND.xsif"
+  CALL, FILENAME="SFT.xsif"
+  CALL, FILENAME="DASEL.xsif"
+
+  LCLS2scI : LINE=(BEAM0,DCM4b,QCM01,XCM01,YCM01,QCM01,DCM5,CM01END,&
+    DCMCM1,HOMCM,DCAP0da,ASTRA,DCAP0db,FC1,&
+    DMSC0da,BLF1,DMSC0db,VG0H00,DMSC0dc,VP0H00,DMSC0dd,VV0H00,DMSC0de,MSC0d,&
+    ENDL0B)
+  LCLS2scC : LINE=(HTR,COL0,L1,BC1,COL1,L2,BC2,EMIT2,L3,EXT,DLBM)
+
+! new BSY area definitions
+
+  CALL, FILENAME="BSYsc.xsif"
+  CALL, FILENAME="SXTES.xsif"
+
+! beam path definitions
+
+ !SC_SXR   : superconducting linac to e- SXR dump
+ !SC_SFTS  : superconducting linac to e- SXR safety dump
+ !SC_SXTES : superconducting linac to SXR XTES system
+ !SC_HXR   : superconducting linac to e- HXR dump
+ !SC_BSYD  : superconducting linac to BSY dump
+ !SC_DIAG0 : superconducting linac to DIAG0
+ !SC_ALINE : superconducting linac to End Station A
+ !SC_DASEL : superconducting linac to End Station A (DASEL)
+
+  SC_SXR   : LINE=(GUN,L0,LCLS2scC,LCLS2scS)
+  SC_SFTS  : LINE=(GUN,L0,LCLS2scC,LCLS2scSS)
+  SC_SXTES : LINE=(GUN,L0,LCLS2scC,LCLS2scSXTES)
+  SC_HXR   : LINE=(GUN,L0,LCLS2scC,LCLS2scH)
+  SC_BSYD  : LINE=(GUN,L0,LCLS2scC,LCLS2scD)
+  SC_DIAG0 : LINE=(GUN,L0,HTR,DIAG0)
+  SC_DASEL : LINE=(GUN,L0,LCLS2scC,LCLS2scDA)
+  SC_EIC   : LINE=(EIC)
+
+! ------------------------------------------------------------------------------
+! initial BSY coordinates at BEGSP (LTUSPLIT)
+! ------------------------------------------------------------------------------
+
+  Xf     :=  XOFF
+  Yf     :=  1.899339708719 !1.897939159495 -0.3*SIN(2*AVB)
+  Zf     := -267.7180471432 !-267.4180504124 -0.3*COS(2*AVB)
+  THETAf :=  0
+  PHIf   :=  2*AVB
+  PSIf   :=  0
+
+! ------------------------------------------------------------------------------
+
+  RETURN

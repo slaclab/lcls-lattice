@@ -1,0 +1,908 @@
+  TITLE, "AD_ACCEL (January 23, 2019)" !superconducting linac
+
+! *** OPTICS=AD_ACCEL-23JAN19 ***
+
+  OPTION, -ECHO, INFO, WARN, VERIFY, DOUBLE
+  ASSIGN, ECHO="LCLS2sc.echo"
+  ASSIGN, PRINT="LCLS2sc.print"
+
+! ==============================================================================
+! Modification History
+! ------------------------------------------------------------------------------
+! 19-JUL-2017, M. Woodley
+!  * structural changes in deck to accomodate MAD-to-BMAD
+! ------------------------------------------------------------------------------
+! 28-NOV-2016, M. Woodley
+!  * merge LCLS-II' version 28NOV16 with LCLS2sc version 04NOV16
+! ------------------------------------------------------------------------------
+! **************************** NEW LCLS2sc BASELINE ****************************
+! ------------------------------------------------------------------------------
+! 26-FEB-2016, M. Woodley / Y. Nosochkov
+!  * replace the HXR undulator with HGVPU undulator
+! 01-FEB-2016, M. Woodley
+!  * new 100 pC input beams from J. Qiang/C. Mitchell
+! 01-NOV-2015, M. Woodley
+!  * new 100 pC input beam from F. Zhou (Twiss from P. Emma)
+! ------------------------------------------------------------------------------
+! 01-OCT-2015, M. Woodley / Y. Nosochkov
+!  * update boundary Z-locations (Z0end, Z2end)
+!  * see list of changes in .xsif files and in file MADdeckChanges.pdf
+!  * add BKR (rolled kicker) to the list of defined element name prefixes
+!  * update initial Twiss in LTU dogleg with stronger R56 chicanes
+!  * load ALINE.xsif before LTU.xsif
+! ------------------------------------------------------------------------------
+! 20-MAR-2015, M. Woodley
+!  * list of changes ...
+! 12-MAR-2015, Y. Nosochkov
+!  * update quad/BPM/corrector positions in the spreader (per T. O'Heron)
+!  * add dogleg connection from CuRF to SXR
+!  * add kicker/septum in BSY to connect with the existing A-line
+!  * update existing LCLS-I devices in the HXR (per updated LCLS-I lattice)
+!  * change quad type "1.97Q10" to "2Q10"
+! ------------------------------------------------------------------------------
+! 12-DEC-2014, M. Woodley
+!  * change name prefix for cryomodule BPMs from "BPMCM" to "CMB"
+!  * assign BPM TYPE attributes per PRD LCLSII-2.4-PR-0136
+!  * change deferral level for some diagnostic devices per T. Taubenheimer
+!  * change some RFBs (defer>0) to BPMs (defer=0)
+! 09-DEC-2014, Y. Nosochkov
+!  * add safety dump lines based on LCLS1 design and PRD LCLSII-3.5-PR-0111
+!  * update types of various magnets
+!  * add radiation physics collimators and ACMs
+!  * move D10 dump inside the muon wall
+! ------------------------------------------------------------------------------
+! 28-OCT-2014, M. Woodley
+!  * new 1.3 GHz cryomodule layout from FNAL
+!  * move GUN-L3 upstream 30 m to align 3.9 GHz CMs with NLTR tunnel (tweak
+!    matching section between LH and COL0 to put gun at Z= -10.0 m exactly)
+!  * lengthen EXT FODO cells by 12 m (57 m to 69 m)
+!  * rematch EXT (layout and optics)
+! ------------------------------------------------------------------------------
+! 15-OCT-2014, M. Woodley
+!  * shortened inter-linac warm sections ... gun moved 30 m d/s (to Z=20m ...
+!    there is now 40 m from present location of CID gun to location of LCLS-II
+!    gun)
+!  * various cost-cutting changes ... see individual xsif-files
+! ------------------------------------------------------------------------------
+! 07-AUG-2014, M. Woodley
+!  * add emittance measurement in L0-to-laser-heater matching section
+!  * laser heater chicane lengthened to reduce R56 to 3.5 mm
+!  * collimation systems (COL0, COL1, and COL2) now consist of four 45 degree
+!    FODO cells with 3 pairs of collimators separated by 45 degrees (22 m betas
+!    at collimators); FODO cell length is 12 m
+!  * added a wire scanner at the end of COL0 for "tomographic" emittance
+!    measurement
+!  * L1 phase advance per cell lowered to 45 degrees
+!  * DIAG1 beamline (post-BC1 off-axis diagnostics line) removed
+!  * in-line emittance measurement systems incorporated into COL1 and COL2
+!  * TCAV(Y), vertical kicker, and lambertson septum added d/s of BC1
+!  * change bending direction in BC2 chicane ... toward the aisle
+!  * TCAV(Y) added d/s of BC2
+!  * EXT FODO cell length doubled, phase advance per cell lowered to 60 degrees
+!  * 1.259Q12 quadrupoles replaced by QWs or QEs
+!  * BC3 removed
+!  * diagnostics complement per "Electron Beam Diagnostics Systems" PRD
+!    (LCLSII-2.7-PR-0170)
+!  * TYPE attribute of "deprecated" devices is now "decorated" ... see below
+! 31-JUL-2014, Y. Nosochkov
+!  * implement magnetic kicker with two 2-hole septa in the spreader
+!  * remove QBP37 and adjust positions of QBP31, QBP32, QBP35, QBP36
+!  * remove unnecessary diagnostics (per J. Frisch)
+!  * move TDUNDb 2.8 m d/s, QUM1b 2.0 m d/s, QDL11-QDL19 2.5 m d/s
+!    (per J. Stieber)
+!  * move markers ENDSXR, BEGDMPS and ENDHXR, BEGDMPH to include
+!    RFBSX51 and RFBHX51 into the SXR and HXR areas (per D. Hanquist)
+! ------------------------------------------------------------------------------
+! 02-MAY-2014, M. Woodley
+!  * update 1.3 GHz cryomodule layout (including end caps) per H. Alvarez
+!  * update baseline compression setup per P. Emma
+!  * remove DIAG1 beamline ... prepare COL1 for inline emittance diagnostics
+!  * add "CNT" to list of defined element name prefixes (MARKER element)
+!  * add "HOMCM" to list of defined element name prefixes (MARKER element)
+! ------------------------------------------------------------------------------
+! 31-MAR-2014, M. Woodley
+!  * add list of beamline area names (per document LCLSII-2.1-PR-0134)
+!  * add list of element name prefixes (per document LCLSII-1.1-TS-0159)
+!  * add beamline area boundary MARKer points
+! 26-MAR-2014, Y. Nosochkov
+!  * put phase shifter and RFBPM positions back to 03/14 version
+!  * remove PCTDKIK1,2,3,4 from HXR LTU
+! 25-MAR-2014, Y. Nosochkov
+!  * add insertable beam stoppers STSP6ha, STSP6hb, STSP6hc in HXR spreader
+!  * remove existing BYKIK, TDKIK and SPOILER from HXR LTU
+!  * add missing ST60, ST61 stoppers in the BSY
+!  * add marker D10Js for location of D10 dump face in SXR line
+!  * remove BYKIKb, SPOILERb, TDKIKb, SPOILD2b from SXR
+!  * change names: D2b -> STBP33a, ST60b -> STBP33b, ST61b -> STBP33c
+! 21-MAR-2014, Y. Nosochkov
+!  * update positions of phase shifters and RFBPMs in undulator cells
+!  * add Y-corrector to each undulator
+!  * update phase shifter parameters (per H-D. Nuhn)
+! 14-MAR-2014, Y. Nosochkov
+!  * add/update names for area boundary markers
+! 07-MAR-2014, Y. Nosochkov
+!  * increase main dump length to 1.5 m (to be confirmed)
+!  * remove transverse deflecting cavities from SXR dumpline
+! 06-MAR-2014, Y. Nosochkov
+!  * add a soft bend upstream of the dump bends
+!  * roll the dumpline starting from the soft bend by 10 deg
+!    to reduce HXR to SXR x-separation at the dumps to ~1.88 m and
+!    adjust the vertical position at the dumps
+! ------------------------------------------------------------------------------
+! 01-MAR-2014, M. Woodley
+!  * move cathode 10 m downstream ... now at Z= -10 m
+!  * updated cryomodule layout
+!    - 11 lambda CM-to-CM spacing
+!    - add special short end cap at upstream end of L0
+!      > SOL02 -> CAV011 center-to-center = 1.606 m
+!    - include L0/L1/L2 feed boxes, L3 vacuum break box, and L3 end box
+!      > use XFEL feed and end box lengths (~3.5 m)
+!      > use XFEL "string connection box" length (23 lambda) for L3 break box
+!  * add DIAG0 diagnostic line and X/Y collimation section after laser heater
+!  * add BC3 chicane after dogleg to bypass line
+!  * complete XCOR/YCOR/BPM additions in injector and linac areas
+! 28-FEB-2014, Y. Nosochkov
+!  * update undulators for reduced cell length of 4.4 m, rematch
+! 26-FEB-2014, Y. Nosochkov
+!  * update magnet types in the spreader, rematch
+! 14-FEB-2014, Y. Nosochkov
+!  * add a dumpline from the spreader to D10 dump including optics
+!    for energy diagnostic
+! 17-JAN-2014, Y. Nosochkov
+!  * modify HXR spreader from 1-step to 2-step dogleg for tunable R56
+!    and better magnet separation
+! 18-DEC-2013, Y. Nosochkov
+!  * adjust magnet positions in the spreader for less magnet interference
+! 18-DEC-2013, M. Woodley
+!  * name change: CE11B -> C1XE, CE21B -> C2XE
+! 16-DEC-2013, Y. Nosochkov
+!  * 3-way spreader design with low R56
+! 03-DEC-2013, Y. Nosochkov
+!  * make HXR BSY compatible with the existing divergent and biconcave chambers
+!  * modify the spreader to reduce R56 and match to the updated BSY
+! 21-NOV-2013, Y. Nosochkov
+!  * replace the 2-way spreader (TLINE) with a 3-way spreader in BSY
+! ------------------------------------------------------------------------------
+! 04-NOV-2013, M. Woodley
+!  * assign X or Y correctors to cryomodules
+!  * redefine linac axis in LI00-LI10 ... modify bypass dogleg geometry
+!  * update quadrupole type 1.26Q12 in HXR
+!  * laser heater undulator parameters per M. Venturini
+!  * latest compression setup per P. Emma
+! 26-OCT-2013, Y. Nosochkov
+!  * update quadrupole type 1.26Q12 in SXR
+!  * update SXR and HXR undulator design, rematch optics
+!  * update LTU match
+! 21-OCT-2013, M. Woodley
+!  * LCLS2sc v1.1
+!  * input Twiss from C. Papadopoulos (Parameters_GUN2013_10_08v3.docx) ...
+!    use "avg. beta" and "avg. alpha" parameters
+!  * everything downstream of QBP13 from Yuri's LCLS2sc_2013_10_16 files
+! 15-OCT-2013, M. Woodley
+!  * LCLS2sc v1.0
+!  * input Twiss from C. Papadopoulos (Parameters_GUN2013_10_08v3.docx)
+! 07-OCT-2013, M. Woodley
+!  * LCLS2sc v0.1
+!  * initial beam parameters from C. Papadopoulos
+!  * change 4-quad match to 6-quad match between L0 and laser heater
+!  * increase laser heater chicane dispersion to 7.5 cm ... matching requires
+!    inner/outer bend separation to increase
+!  * increase laser heater chicane inner bend separation by 1.0 m and add an
+!    energy collimator
+! 06-OCT-2013, M. Woodley
+!  * initial bare-bones lattice ... LCLS2sc v0
+! 30-SEP-2013, M. Woodley
+!  * from XFEL and NGLS designs
+! ------------------------------------------------------------------------------
+
+! ==============================================================================
+! Deferred devices
+! ------------------------------------------------------------------------------
+! see: https://slacspace.slac.stanford.edu/sites/lcls/lcls-2/ap/InjSim/
+!      150129%20Deferment%20Levels.xlsx
+! ------------------------------------------------------------------------------
+! Device TYPE attributes have been prefixed by a 2-character deferment
+! indicator. If the first character of a device's TYPE attribute is not "@" (or
+! if a device has no defined TYPE attribute), the device is baseline. If the
+! first character of a device's TYPE attribute is "@", the device is deferred.
+! The level of deferral is indicated by the second character of the TYPE
+! attribute:
+!
+! TYPE="@0..." : level 0 (required for CD4-Threshold with >100 pC/bunch and
+!                         50 kHz operation)
+! TYPE="@1..." : level 1 (required to approach CD4-Objective, but limited to
+!                         ~100 pC/bunch)
+! TYPE="@2..." : level 2 (required to meet science objectives across parameter
+!                         range)
+! TYPE="@3..." : level 3 (component to improve tuning time)
+! TYPE="@4..." : level 4 (space for future components that may be needed)
+! TYPE="@5..." : level 5 (probably not needed ... leave space in beamline for
+!                         future installation)
+! TYPE="@9..." : level 9 (previously baseline (costed) ... removed but might
+!                         return)
+!
+! The remaining characters of TYPE define the device's engineering type.
+! ------------------------------------------------------------------------------
+
+! ==============================================================================
+! Beamline area names
+! ------------------------------------------------------------------------------
+! see: https://docs.slac.stanford.edu/sites/pub/Publications/
+!      Beamline%20Boundaries.pdf (LCLSII-2.1-PR-0134)
+! ------------------------------------------------------------------------------
+! GUNB  : cathode to L0
+! L0B   : L0 (end cap, CM01, end cap, mechanical stay-clear)
+! HTR   : laser heater (emittance measurement, chicane, extraction to DIAG0)
+! COL0  : collimation 0
+! L1B   : L1 (differential pumping, mechanical stay-clear, end cap, CM02-03,
+!         HCM01-02, end cap, mechanical stay-clear, differential pumping)
+! BC1B  : BC1 chicane
+! COL1  : collimation 1 (includes in-line emittance measurement)
+! L2B   : L2 (differential pumping, mechanical stay-clear, end cap, CM04-15,
+!         end cap, mechanical stay-clear, differential pumping)
+! BC2B  : BC2 chicane
+! EMIT2 : match BC2 to L3 (includes quad-scan emittance measurement station)
+! L3B   : L3 (differential pumping, mechanical stay-clear, end cap, CM16-25,
+!         vacuum break, CM26-23, end cap, mechanical stay-clear, differential
+!         pumping)
+! EXT   : L3 extension
+! DOG   : dogleg to bypass line
+! BYP   : bypass line
+! SPD   : spreader to start of BSY (BSY dump line)
+! SLTD  : BSY to BSY dump (BSY dump line)
+! SPS   : spreader to start of BSY (SXR line, from SC linac)
+! SLTS  : BSY to Cu/SC linac merge (SXR line, from SC linac)
+! BSYS  : Cu/SC merge to end of BSY (SXR line, from either linac)
+! LTUS  : SXR LTU (from end of BSY)
+! SXX   : SXR extension
+! SXR   : SXR undulator
+! UES   : SXR undulator end to dump line
+! DMPS  : SXR dump line
+! SFTS  : SXR safety dump line
+! SXTES : SXR XTES system (BSY coordinate SURVEY only)
+! SPH   : spreader to start of BSY (HXR line, from SC linac)
+! SLTH  : BSY to Cu/SC linac merge (HXR line, from SC linac)
+! CLTH  : end of LI30 to Cu/SC linac merge (HXR line, from Cu linac)
+! BSYH  : Cu/SC merge to end of BSY (HXR line, from either linac)
+! LTUH  : HXR LTU (from end of BSY)
+! HXR   : HXR undulator
+! UEH   : HXR undulator end to dump line
+! DMPH  : HXR dump line
+! SFTH  : HXR safety dump line
+! HXTES : HXR XTES system (BSY coordinate SURVEY only)
+! CLTS  : BSY to Cu/SC linac merge (SXR line, from Cu linac) 
+! BSYA  : BSY to A-line (from either linac)
+! DIAG0 : post laser heater diagnostics line
+
+! ==============================================================================
+! Element naming conventions with the first few characters meaning:
+! ------------------------------------------------------------------------------
+! CAVL.... = 1.3 GHz RF cavity (superconducting)
+! CAVC.... = 3.9 GHz RF cavity (superconducting)
+! CAVS.... = 2.856 GHz RF structure (warm copper)
+! CSP..... = cryomodule support post
+! BUN..... = RF buncher (warm)
+! TCX..... = transverse deflecting structure (horizontal deflection)
+! TCY..... = transverse deflecting structure (vertical deflection)
+! BX...... = horizontal bend (split in two (suffixes "a" and "b"))
+! BY...... = vertical bend (split in two (suffixes "a" and "b"))
+! BR...... = rolled bend (split in two (suffixes "a" and "b"))
+! BCX..... = horizontal chicane bend (split in two (suffixes "a" and "b"))
+! BLX..... = horizontal Lambertson septum (split in two (suffixes "a" and "b"))
+! BLY..... = vertical Lambertson septum (split in two (suffixes "a" and "b"))
+! BLR..... = rolled Lambertson septum (split in two (suffixes "a" and "b"))
+! BKX..... = horizontal kicker ((split in two (suffixes "a" and "b"))
+! BKY..... = vertical kicker (split in two (suffixes "a" and "b"))
+! BKR..... = rolled kicker (split in two (suffixes "a" and "b"))
+! Q....... = quadrupole (normal quad, split in half)
+! QCM..... = standard cryomodule quadrupole (normal quad, split in half)
+! QSX..... = undulator quadrupole (normal quad, split in half ... SXR)
+! QHX..... = undulator quadrupole (normal quad, split in half ... HXR)
+! CQ...... = correction quadrupole (normal quad, split in half)
+! SQ...... = skew quadrupole (skew quad, split in half)
+! SOL..... = solenoid (split in half)
+! UM...... = undulator magnet (full undulator segment)
+! PS...... = phase shifter undulator
+! CX...... = horizontal collimator (vertical jaws, adjustable)
+! CY...... = vertical collimator (horizontal jaws, adjustable)
+! CE...... = momentum collimator (adjustable)
+! PC...... = protection collimator (fixed aperture)
+! RO...... = coordinate rotation (non-physical element)
+! XC...... = horizontal steering dipole
+! XCM..... = standard cryomodule horizontal steering dipole
+! YC...... = vertical steering dipole
+! YCM..... = standard cryomodule vertical steering dipole
+! SC...... = steering coil package (horizontal and vertical dipole correctors)
+! BPM..... = beam position monitor (stripline, various resolutions)
+! RFB..... = RF beam position monitor (<1 micron rms resolution)
+! CMB..... = standard cryomodule button beam position monitor
+! WS...... = wire scanner
+! YAG..... = YAG screen profile monitor
+! OTR..... = optical transition radiation profile monitor
+! IM...... = bunch charge monitor (ICT, DCCT, ACM, etc.)
+! FC...... = Faraday cup
+! BZ...... = bunch length monitor (various types)
+! BTM..... = burn-through monitor (PPS device)
+! PH...... = beam phase detector
+! TD...... = tune-up dump (insertable copper block)
+! SP...... = beam spoiler
+! ST...... = beam stopper
+! TR...... = transition radiator
+! DUMP.... = beam dump
+! BOD..... = beam overlap monitor
+! VV...... = vacuum valve (not all valves are in the MAD deck)
+! MIR..... = laser insertion mirror
+! BLM..... = beam loss monitor (undulator areas)
+! CNT..... = ELEGANT centering element
+! HOMCM... = standard cryomodule HOM absorber
+! S....... = sextupole (normal or rolled sextupole, split in half)
+! ==============================================================================
+
+! ------------------------------------------------------------------------------
+! deflector switch definitions
+! ------------------------------------------------------------------------------
+
+  SETSP     := 0 !deflector switch for HXR/SXR/BSYD spreader
+  SETCUS    := 0 !deflector switch for HXR/CUSXR
+  SETAL     := 0 !deflector switch for HXR/Aline
+  SETDA     := 0 !deflector switch for BSYD/DASEL
+  SETXLEAP2 := 0 !selector switch for XLEAP-II components
+
+  SETHXRSS := 0 !ON/OFF switch for HXR self-seeding chicane
+  SETSXRSS := 0 !ON/OFF switch for SXR self-seeding chicane
+
+! ------------------------------------------------------------------------------
+! integrated gradients for undulator quadrupoles
+! ------------------------------------------------------------------------------
+
+  IntgSX := 20.0 !kG
+  IntgHX := 12.0 !kG
+
+  EfSC := 4.0 !nominal final beam energy from superconducting (SC) linac (GeV)
+  EuSC := 4.0 !beam energy in undulator (GeV)
+
+! ------------------------------------------------------------------------------
+! element and line definitions
+! ------------------------------------------------------------------------------
+
+  CALL, FILENAME="LCLS2sc_master.xsif"
+
+! ------------------------------------------------------------------------------
+! input beam definitions (at BEAM0)
+! ------------------------------------------------------------------------------
+
+  BEAM, PARTICLE=ELECTRON, NPART=QBNCH/QELEC, &
+        EX=EMITX, EY=EMITY, SIGT=sig_z, SIGE=sig_dp
+
+  SIG0i : SIGMA0, SIGX=SQRT(SIG11), SIGPX=SQRT(SIG22), R21=C21, &
+                  SIGY=SQRT(SIG33), SIGPY=SQRT(SIG44), R43=C43, &
+                  SIGT=sig_z      , SIGPT=sig_dp
+
+! ------------------------------------------------------------------------------
+! BETA0 block definitions
+! ------------------------------------------------------------------------------
+
+  TWSS0  : BETA0, ENERGY=E0, BETX=BX0, ALFX=AX0, BETY=BY0, ALFY=AY0
+  TWSSa  : BETA0, ENERGY=Ei, BETX=BXa, ALFX=AXa, BETY=BYa, ALFY=AYa
+  TWSSi  : BETA0, ENERGY=Ei, BETX=BXi, ALFX=AXi, BETY=BYi, ALFY=AYi
+  TWSSms : BETA0, ENERGY=Ef, BETX=MBETXs, ALFX=MALFXs, BETY=MBETYs, ALFY=MALFYs
+  TWSSmh : BETA0, ENERGY=Ef, BETX=MBETXh, ALFX=MALFXh, BETY=MBETYh, ALFY=MALFYh
+  TWSSP  : BETA0, BETX=TBXSP, BETY=TBYSP, ALFX=TAXSP, ALFY=TAYSP
+
+! temporary
+
+  TWSSm : BETA0
+
+! ==============================================================================
+! SUBROUTINEs
+! ------------------------------------------------------------------------------
+
+! quad settings in A-line
+
+  SETK2scA : SUBROUTINE !for LCLS2scA
+    SET, KQ10,  0.040732418682 ! 0.040693762343
+    SET, KQ11, -0.035470391686 !-0.034911857604
+    SET, KQ19,  0.028832646424 ! 0.028757782261
+    SET, KQ20,  0.011866327361 ! 0.012103871688
+    SET, KQ27, -0.068187477866 !-0.066254695301
+    SET, KQ28,  0.029868541394 ! 0.030361940715
+    SET, KQ30, -0.029618830812 !-0.029784752775
+    SET, KQ38,  0.034798028844 ! 0.034797296483
+  ENDSUBROUTINE
+
+! quad settings in DASEL
+
+  SETK2scDA : SUBROUTINE !for LCLS2scDA
+    SET, KQ10,  0.040388112814
+    SET, KQ11, -0.038712955409
+    SET, KQ19,  0.03054367869
+    SET, KQ20, -0.125186988934E-2
+    SET, KQ27, -0.074602195497
+    SET, KQ28,  0.041232949479
+    SET, KQ30, -0.029290738963
+    SET, KQ38,  0.034019960625
+  ENDSUBROUTINE
+
+  SETK2scXL2 : SUBROUTINE !for XLEAP-II
+    SET, SETXLEAP2, 1 !switch ON xleap components
+    ! UMXL1-4 undulator K=50
+    ! self-seeding chicane R56=0.56 mm
+    ! wiggler K=34
+    SET, KQEM1B,  1.782105086906
+    SET, KQEM2B, -1.893427941353
+    SET, KQEM3B,  1.4778561902
+    SET, KQEM4B, -1.008420259435
+    SET, KQE31B,  0.263097822804
+    SET, KQE32B, -0.465049032014
+    SET, KQE33B,  0.708498263073
+    SET, KQE34B, -0.702975844569
+    SET, KQE35B,  0.725508067973
+    SET, KQE36B, -0.272464322584
+    SET, KQUM1B,  1.045304716298
+    SET, KQUM2B, -1.127266321918
+    SET, KQUM3B,  0.091990859369
+    SET, KQUM4B,  0.168743458401
+    SET, KQSX16,  1.179776342196
+    SET, KQSX19, -1.555528787668
+    SET, KQSX21,  1.660683967379
+    SET, KQSX24, -1.983210390097
+    SET, KQDSXM, -0.406434161462
+    SET, KQUE1B, -0.297915551865
+    SET, KQUE2B,  0.390984021273
+    SET, KQDMPB, -0.154946553294
+  ENDSUBROUTINE
+
+! ==============================================================================
+! COMMANDs
+! ------------------------------------------------------------------------------
+
+  SETPLOT, XSIZE=25.4, YSIZE=20.32
+  SETPLOT, LWIDTH=5, LSCALE=1.5, SSCALE=1.5, RSCALE=1.5
+  OPTION, ECHO
+
+! ------------------------------------------------------------------------------
+
+ !CALL, FILENAME="LCLS2sc_beams.mad8" !alternate beams & configurations
+ !CALL, FILENAME="LCLS2sc_match.mad8"
+ !CALL, FILENAME="RDB/LCLS2sc_makeSymbols.mad8"
+ !CALL, FILENAME="elegant/LCLS2sc_makeElegant.mad8"
+
+ !STOP
+
+! ------------------------------------------------------------------------------
+! SURVEY in linac coordinates
+! ------------------------------------------------------------------------------
+
+! EIC (Early Injector Commissioning) line
+
+  COMMENT
+    ASSIGN, PRINT="EIC.print"
+    BEAM, ENERGY=E0
+    USE, SC_EIC
+   !SAVELINE, NAME="SC_EIC", FILENAME="EIC.saveline"
+    PRINT, FULL
+    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="EIC_survey.tape"
+    BEAM, ENERGY=E0
+    USE, SC_EIC
+    PRINT, FULL
+    TWISS, COUPLE, BETA0=TWSS0, SAVE, TAPE="EIC_twiss.tape" !, &
+   !  RTAPE="EIC_rmat.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
+      STYLE=100, SPLINE, FILE="EIC", VMIN=0, VMAX=0.0012
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, FILE="EIC"
+  ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! SXR line
+
+ !COMMENT
+    ASSIGN, PRINT="LCLS2scS.print"
+    BEAM, ENERGY=E0
+    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
+    USE, SC_SXR
+   !SAVELINE, NAME="SC_SXR", FILENAME="LCLS2scS.saveline"
+    PRINT, FULL
+    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scS_survey.tape"
+    BEAM, ENERGY=Ei
+   !SETK2scXL2 !turns on XLEAP2 components and optics
+    USE, (LCLS2scI,LCLS2scC,LCLS2scS)
+    PRINT, FULL
+    TWISS, BETA0=TWSSi, SAVE, TAPE="LCLS2scS_twiss.tape" !, &
+   !  RTAPE="LCLS2scS_rmat.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
+      STYLE=100, SPLINE, FILE="LCLS2scS", VMIN=0, VMAX=5
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, FILE="LCLS2scS"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      STYLE=100, SPLINE, FILE="LCLS2scS"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! SXR line to safety dump
+
+  COMMENT
+    ASSIGN, PRINT="LCLS2scSS.print"
+    BEAM, ENERGY=E0
+    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
+    USE, SC_SFTS
+   !SAVELINE, NAME="SC_SFTS", FILENAME="LCLS2scSS.saveline"
+    PRINT, FULL
+    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scSS_survey.tape"
+    BEAM, ENERGY=Ei
+    USE, (LCLS2scI,LCLS2scC,LCLS2scSS)
+    PRINT, FULL
+    TWISS, BETA0=TWSSi, SAVE, TAPE="LCLS2scSS_twiss.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
+      STYLE=100, SPLINE, FILE="LCLS2scSS", VMIN=0, VMAX=5
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, FILE="LCLS2scSS"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      STYLE=100, SPLINE, FILE="LCLS2scSS"
+  ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! HXR line
+
+ !COMMENT
+    ASSIGN, PRINT="LCLS2scH.print"
+    BEAM, ENERGY=E0
+    SET, SETSP, SETSPh ; SET, SETAL, ALOFF
+    USE, SC_HXR
+   !SAVELINE, NAME="SC_HXR", FILENAME="LCLS2scH.saveline"
+    PRINT, FULL
+    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scH_survey.tape"
+    BEAM, ENERGY=Ei
+    USE, (LCLS2scI,LCLS2scC,LCLS2scH)
+    PRINT, FULL
+    TWISS, BETA0=TWSSi, SAVE, TAPE="LCLS2scH_twiss.tape" !, &
+   !  RTAPE="LCLS2scH_rmat.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
+      STYLE=100, SPLINE, FILE="LCLS2scH", VMIN=0, VMAX=5
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, FILE="LCLS2scH"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      STYLE=100, SPLINE, FILE="LCLS2scH"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! BSY dump line
+
+ !COMMENT
+    ASSIGN, PRINT="LCLS2scD.print"
+    BEAM, ENERGY=E0
+    SET, SETSP, SETSPd ; SET, SETDA, DAOFF
+    USE, SC_BSYD
+   !SAVELINE, NAME="SC_BSYD", FILENAME="LCLS2scD.saveline"
+    PRINT, FULL
+    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scD_survey.tape"
+    BEAM, ENERGY=Ei
+    USE, (LCLS2scI,LCLS2scC,LCLS2scD)
+    PRINT, FULL
+    TWISS, BETA0=TWSSi, SAVE, TAPE="LCLS2scD_twiss.tape" !, &
+   !  RTAPE="LCLS2scD_rmat.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
+      STYLE=100, SPLINE, FILE="LCLS2scD", VMIN=0, VMAX=5
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, FILE="LCLS2scD"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      STYLE=100, SPLINE, FILE="LCLS2scD"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! DIAG0 diagnostic line
+
+ !COMMENT
+    ASSIGN, PRINT="DIAG0.print"
+    BEAM, ENERGY=E0
+    USE, SC_DIAG0
+   !SAVELINE, NAME="SC_DIAG0", FILENAME="DIAG0.saveline"
+    PRINT, FULL
+    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="DIAG0_survey.tape"
+    BEAM, ENERGY=Ei
+    USE, (LCLS2scI,HTR,DIAG0)
+    PRINT, FULL
+    TWISS, BETA0=TWSSi, SAVE, TAPE="DIAG0_twiss.tape" !, &
+   !  RTAPE="DIAG0_rmat.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, FILE="DIAG0"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      STYLE=100, SPLINE, FILE="DIAG0"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! A-line
+
+  COMMENT
+    ASSIGN, PRINT="LCLS2scA.print"
+    BEAM, ENERGY=E0
+    SET, SETSP, SETSPh ; SET, SETAL, ALON
+    SETK2scA
+    USE, SC_ALINE
+   !SAVELINE, NAME="SC_ALINE", FILENAME="LCLS2scA.saveline"
+    PRINT, FULL
+    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scA_survey.tape"
+    BEAM, ENERGY=Ei
+    USE, (LCLS2scI,LCLS2scC,LCLS2scA)
+    PRINT, FULL
+    TWISS, BETA0=TWSSi, SAVE, TAPE="LCLS2scA_twiss.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
+      STYLE=100, SPLINE, FILE="LCLS2scA", VMIN=0, VMAX=5
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=RBETX,RBETY, &
+      STYLE=100, SPLINE, FILE="LCLS2scA"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, FILE="LCLS2scA"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      STYLE=100, SPLINE, FILE="LCLS2scA"
+  ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! DASEL
+
+ !COMMENT
+    ASSIGN, PRINT="LCLS2scDA.print"
+    BEAM, ENERGY=E0
+    SET, SETSP, SETSPd ; SET, SETDA, DAON ; SET, ROLLRC, +1
+    SETK2scDA
+    USE, SC_DASEL
+   !SAVELINE, NAME="SC_DASEL", FILENAME="LCLS2scDA.saveline"
+    PRINT, FULL
+    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scDA_survey.tape"
+    BEAM, ENERGY=Ei
+    SET, ROLLRC, 0
+    USE, (LCLS2scI,LCLS2scC,LCLS2scDA)
+    PRINT, FULL
+    TWISS, BETA0=TWSSi, SAVE, TAPE="LCLS2scDA_twiss.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, STYLE=100, SPLINE, &
+      FILE="LCLS2scDA", TITLE="Injector to DASEL", &
+      VMIN=0, VMAX=5, RANGE=#S/ALWALL
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=rBETX,rBETY, STYLE=100, SPLINE, &
+      FILE="LCLS2scDA", TITLE="Injector to DASEL", RANGE=#S/ALWALL
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, STYLE=100, SPLINE, &
+      FILE="LCLS2scDA", TITLE="Injector to DASEL", RANGE=#S/ALWALL
+    SET, ROLLRC, +1
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+! SURVEY in BSY coordinates
+! ------------------------------------------------------------------------------
+
+! SXR from start of spreader
+
+ !COMMENT
+    ASSIGN, PRINT="BSY-LCLS2scS.print"
+    BEAM, ENERGY=Ef
+    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
+    USE, BSYLCLS2scS
+    PRINT, FULL
+    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
+      TAPE="BSY-LCLS2scS_survey.tape"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! SXR safety dump line from start of spreader
+
+ !COMMENT
+    ASSIGN, PRINT="BSY-LCLS2scSS.print"
+    BEAM, ENERGY=Ef
+    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
+    USE, BSYLCLS2scSS
+    PRINT, FULL
+    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
+      TAPE="BSY-LCLS2scSS_survey.tape"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! SXR XTES line from start of spreader
+
+ !COMMENT
+    ASSIGN, PRINT="BSY-LCLS2scSXTES.print"
+    BEAM, ENERGY=Ef
+    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
+    USE, BSYLCLS2scSXTES
+    PRINT, FULL
+    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
+      TAPE="BSY-LCLS2scSXTES_survey.tape"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! HXR from start of spreader
+
+ !COMMENT
+    ASSIGN, PRINT="BSY-LCLS2scH.print"
+    BEAM, ENERGY=Ef
+    SET, SETSP, SETSPh ; SET, SETAL, ALOFF
+    USE, BSYLCLS2scH
+    PRINT, FULL
+    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
+      TAPE="BSY-LCLS2scH_survey.tape"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! BSY dump line from start of spreader
+
+ !COMMENT
+    ASSIGN, PRINT="BSY-LCLS2scD.print"
+    BEAM, ENERGY=Ef
+    SET, SETSP, SETSPd ; SET, SETDA, DAOFF
+    USE, BSYLCLS2scD
+    PRINT, FULL
+    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
+      TAPE="BSY-LCLS2scD_survey.tape"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! DASEL from start of spreader
+
+ !COMMENT
+    ASSIGN, PRINT="BSY-LCLS2scDA.print"
+    BEAM, ENERGY=Ef
+    SET, SETSP, SETSPd ; SET, SETDA, DAON ; SET, ROLLRC, +1
+    SETK2scDA
+    USE, BSYLCLS2scDA
+    PRINT, FULL
+    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
+      TAPE="BSY-LCLS2scDA_survey.tape"
+ !ENDCOMMENT
+
+! ==============================================================================
+
+! Twiss plots
+
+ !COMMENT
+    ASSIGN, PRINT="LCLS2sc.print"
+
+  ! Cathode to BEAM0
+
+    BEAM, ENERGY=E0
+    USE, (GUN,L0)
+    PRINT, FULL
+    TWISS, COUPLE, BETA0=TWSS0, SAVE
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, VMAX=0.12, &
+      COLOUR=100, SPLINE=.F., TITLE="Gun + L0", FILE="LCLS2sc_color"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, VMIN=0, VMAX=20, &
+      COLOUR=100, SPLINE=.F., TITLE="Gun + L0", FILE="LCLS2sc_color"
+
+  ! BEAM0 to SXR Main Dump
+
+    BEAM, ENERGY=Ei
+    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
+    USE, (LCLS2scI,LCLS2scC,LCLS2scS)
+    TWISS, BETA0=TWSSi, SAVE
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
+      RANGE=#S/ENDL1B, TITLE="Laser Heater + Coll0 + L1",&
+      COLOUR=100, SPLINE, FILE="LCLS2sc_color"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      RANGE=#S/ENDL1B, TITLE="Laser Heater + Coll0 + L1",&
+      COLOUR=100, SPLINE, FILE="LCLS2sc_color"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      RANGE=ENDL1B/BEGL2B, TITLE="BC1 + Coll1",&
+      COLOUR=100, SPLINE, FILE="LCLS2sc_color"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
+      RANGE=BEGL2B/ENDL2B, TITLE="L2",&
+      COLOUR=100, SPLINE, FILE="LCLS2sc_color"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      RANGE=BEGL2B/ENDL2B, TITLE="L2",&
+      COLOUR=100, SPLINE, FILE="LCLS2sc_color"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      RANGE=ENDL2B/BEGL3B, TITLE="BC2 + Emit2",&
+      COLOUR=100, SPLINE, FILE="LCLS2sc_color"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
+      RANGE=BEGL3B/ENDEXT, TITLE="L3 + Extension",&
+      COLOUR=100, SPLINE, FILE="LCLS2sc_color", VMIN=0, VMAX=5
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      RANGE=BEGL3B/ENDEXT, TITLE="L3 + Extension",&
+      COLOUR=100, SPLINE, FILE="LCLS2sc_color"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      RANGE=ENDEXT/MQBP13, TITLE="Dogleg + Match to Bypass + NIT Extension",&
+      COLOUR=100, SPLINE, FILE="LCLS2sc_color"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      RANGE=MQBP13/LTUSPLIT, TITLE="Bypass Line to SPREADER",&
+      COLOUR=100, SPLINE, FILE="LCLS2sc_color"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      RANGE=LTUSPLIT/ENDSXX, TITLE="SPREADER to SXR Undulator",&
+      COLOUR=100, SPLINE, FILE="LCLS2sc_color"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      RANGE=ENDSXX/#E, TITLE="SXR Undulator to Dump",&
+      COLOUR=100, SPLINE, FILE="LCLS2sc_color"
+
+  ! BEAM0 to SXR Safety Dump
+
+    BEAM, ENERGY=Ei
+    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
+    USE, (LCLS2scI,LCLS2scC,LCLS2scSS)
+    TWISS, BETA0=TWSSi, SAVE
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      RANGE=BEGSFTS/#E, TITLE="SXR Safety Dump",&
+      COLOUR=100, SPLINE, FILE="LCLS2sc_color"
+
+  ! BEAM0 to HXR Main Dump
+
+    BEAM, ENERGY=Ei
+    SET, SETSP, SETSPh ; SET, SETAL, ALOFF
+    USE, (LCLS2scI,LCLS2scC,LCLS2scH)
+    TWISS, BETA0=TWSSi, SAVE
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      RANGE=LTUSPLIT/BEGHXR, TITLE="SPREADER to HXR Undulator",&
+      COLOUR=100, SPLINE, FILE="LCLS2sc_color"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      RANGE=BEGHXR/#E, TITLE="HXR Undulator to Dump",&
+      COLOUR=100, SPLINE, FILE="LCLS2sc_color"
+
+  ! BEAM0 to BSY Dump
+
+    BEAM, ENERGY=Ei
+    SET, SETSP, SETSPd ; SET, SETDA, DAOFF
+    USE, (LCLS2scI,LCLS2scC,LCLS2scD)
+    TWISS, BETA0=TWSSi, SAVE
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      RANGE=LTUSPLIT/#E, TITLE="SPREADER to BSY Dump",&
+      COLOUR=100, SPLINE, FILE="LCLS2sc_color"
+
+  ! BEAM0 to DIAG0
+
+    BEAM, ENERGY=Ei
+    USE, (LCLS2scI,HTR,DIAG0)
+    TWISS, BETA0=TWSSi, SAVE
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      RANGE=BEGDIAG0/#E, TITLE="DIAG0",&
+      COLOUR=100, SPLINE, FILE="LCLS2sc_color"
+
+  ! BEAM0 to DASEL
+
+    BEAM, ENERGY=Ei
+    SET, SETSP, SETSPd ; SET, SETDA, DAON ; SET, ROLLRC, 0
+    SETK2scDA
+    USE, (LCLS2scI,LCLS2scC,LCLS2scDA)
+    TWISS, BETA0=TWSSi, SAVE
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=rBETX,rBETY, VAXIS2=DX,DY, &
+      RANGE=DASEL/ALWALL, TITLE="DASEL to A-line", &
+      COLOUR=100, SPLINE, FILE="LCLS2sc_color"
+    SET, ROLLRC, +1
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+ !CALL "LCLS2sc_area_plots.mad8"
+
+! ------------------------------------------------------------------------------
+
+  STOP
+
+! ------------------------------------------------------------------------------
+! working stuff
+! ------------------------------------------------------------------------------
+
+  comment !match SXRSS chicane to dX= 17.0 mm
+    BEAM, ENERGY=Ef
+    VALUE, Ef,Eu
+    SET, SETSXRSS, 1
+    USE, SCHICANE
+    VALUE, AB5,BLB5
+    MATCH, BETX=1, BETY=1, SURVEY
+      VARY, AB5, STEP=1.E-6, UPPER=0
+      WEIGHT, XS=1
+      CONSTR, CNTRS, XS=+17.0E-3
+      LMDIF, TOL=1.E-20
+      MIGRAD, TOL=1.E-20
+    ENDMATCH
+    VALUE, AB5,BLB5
+    PRINT, FULL
+    SURVEY
+  endcomment
+
+! ------------------------------------------------------------------------------
+
+  STOP

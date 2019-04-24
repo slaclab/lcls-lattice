@@ -1,0 +1,410 @@
+
+! *** OPTICS=AD_ACCEL-23JAN19 ***
+
+! ==============================================================================
+! 05-MAY-2017, M. Woodley
+!    Remove OTR22
+! ------------------------------------------------------------------------------
+! 23-FEB-2017, M. Woodley
+!    Fix longstanding error in XCOR and YCOR names
+! ------------------------------------------------------------------------------
+! 05-JUL-2016, M. Woodley
+!    Fix drift lengths around LI27/LI28 wire scanners
+! ------------------------------------------------------------------------------
+! 18-SEP-2008, M. Woodley
+!    Fixed structure counts in header comments; redefine TCAV3
+! 17-AUG-2008, P. Emma
+!    K25_1d was changed back to LCAVITY (from D25_1d) and uses P50 (should since Jan. 2008)
+!    K25_3c LCAVITY was changed to use P50 (should since Jan. 2008)
+!    K28_5c LCAVITY was changed to use P50 (should since Jan. 2008)
+! 28-JUL-2008, P. Emma
+!    Comment out "K25_3,DAQ1,Q25401,..." line which was mistakenly left in on
+!    10-DEC-2006.
+! 02-JAN-2008, P. Emma
+!    Rename sec-28 wires (WS044 -> WS27644, WS144 -> WS28144,
+!    WS444 -> WS28444, WS544 -> WS28744).
+! 04-OCT-2007, P. Emma
+!    Remove D25cm from upbeam of TCAV3 and replace with 25-cm longer D255c, which
+!    was negative!
+! 11-SEP-2007, P. Emma
+!    Move BL22 from near BX24 to just upbeam of OTR22 & remove 25_1c, 1d, and
+!    28-5d (these no longer re-installed into linac due to money limits).
+! 10-DEC-2006, P. Emma
+!    Move BXKIK to 25-3d where it will fit after removing the 25-3d RF acc.
+!    structure.  Also add OTR22 near BXKIK.
+! 03-DEC-2006, P. Emma
+!    Move IMBC2O toroid to upbeam of BXKIK (from QM22 area).
+! 29-NOV-2005, P. Emma
+!    Add types for HKIC's, and VKIC's.
+! 13-JUL-2005, P. Emma
+!    Move TCAV3 to 25-2d for better sigZ resolution (was 25-5a).  Restored 25-5a
+!    and removed 25-2d.
+! 06-JUL-2005, P. Emma
+!    Rename TCAVH to TCAV3.
+! 02-JUN-2005, P. Emma
+!    Add comments adjacent to fast-feedback correctors.
+! ==============================================================================
+! LCAVs
+! ------------------------------------------------------------------------------
+! the L3 linac consists of: 161 10   ft S-band sections @ 25% power (L3_10_25)
+!                            12 10   ft S-band sections @ 50% power (L3_10_50)
+!                             3  9.4 ft S-band sections @ 25% power (L3_9_25)
+!                             4  7   ft S-band sections @ 25% power (L3_7_25)
+! ------------------------------------------------------------------------------
+
+! LCAV classes
+
+  L3_10_25 : LCAV, TYPE="L3_10_25", FREQ=SbandF, L=DLWL10, &
+                   DELTAE=P25*gradL3*DLWL10, PHI0=PhiL3
+  L3_10_50 : LCAV, TYPE="L3_10_50", FREQ=SbandF, L=DLWL10, &
+                   DELTAE=P50*gradL3*DLWL10, PHI0=PhiL3
+  L3_9_25  : LCAV, TYPE="L3_9_25",  FREQ=SbandF, L=DLWL9,  &
+                   DELTAE=P25*gradL3*DLWL9,  PHI0=PhiL3
+  L3_7_25  : LCAV, TYPE="L3_7_25",  FREQ=SbandF, L=DLWL7,  &
+                   DELTAE=P25*gradL3*DLWL7,  PHI0=PhiL3
+
+! L3 sections
+
+  K25_1a : L3_10_25 ; K25_1b : L3_10_25 ; K25_1d : L3_10_50 ;
+  K25_2a : L3_10_25 ; K25_2b : L3_10_25 ; K25_2c : L3_10_50 ;
+  K25_3a : L3_10_25 ; K25_3b : L3_10_25 ; K25_3c : L3_10_50 ;
+  K25_4a : L3_10_25 ; K25_4b : L3_10_25 ; K25_4c : L3_10_25 ; K25_4d : L3_10_25
+  K25_5a : L3_10_25 ; K25_5b : L3_10_25 ; K25_5c : L3_10_25 ; K25_5d : L3_10_25
+  K25_6a : L3_10_25 ; K25_6b : L3_10_25 ; K25_6c : L3_10_25 ; K25_6d : L3_10_25
+  K25_7a : L3_10_25 ; K25_7b : L3_10_25 ; K25_7c : L3_10_25 ; K25_7d : L3_10_25
+  K25_8a : L3_10_25 ; K25_8b : L3_10_25 ; K25_8c : L3_10_25 ; K25_8d : L3_10_25
+
+  K26_1a : L3_10_25 ; K26_1b : L3_10_25 ; K26_1c : L3_10_25 ; K26_1d : L3_10_25
+  K26_2a : L3_10_25 ; K26_2b : L3_10_25 ; K26_2c : L3_10_25 ; K26_2d : L3_10_25
+  K26_3a : L3_10_25 ; K26_3b : L3_10_25 ; K26_3c : L3_10_25 ; K26_3d : L3_10_25
+  K26_4a : L3_10_25 ; K26_4b : L3_10_25 ; K26_4c : L3_10_25 ; K26_4d : L3_10_25
+  K26_5a : L3_10_25 ; K26_5b : L3_10_25 ; K26_5c : L3_10_25 ; K26_5d : L3_10_25
+  K26_6a : L3_10_25 ; K26_6b : L3_10_25 ; K26_6c : L3_10_25 ; K26_6d : L3_10_25
+  K26_7a : L3_10_25 ; K26_7b : L3_10_25 ; K26_7c : L3_10_25 ; K26_7d : L3_10_25
+  K26_8a : L3_10_25 ; K26_8b : L3_10_25 ; K26_8c : L3_10_25 ; K26_8d : L3_10_25
+
+  K27_1a : L3_10_25 ; K27_1b : L3_10_25 ; K27_1c : L3_10_25 ; K27_1d : L3_10_25
+  K27_2a : L3_10_25 ; K27_2b : L3_10_25 ; K27_2c : L3_10_25 ; K27_2d : L3_10_25
+  K27_3a : L3_10_25 ; K27_3b : L3_10_25 ; K27_3c : L3_10_25 ; K27_3d : L3_10_25
+  K27_4a : L3_10_25 ; K27_4b : L3_10_25 ; K27_4c : L3_10_25 ; K27_4d : L3_10_25
+  K27_5a : L3_10_25 ; K27_5b : L3_10_25 ; K27_5c : L3_10_25 ; K27_5d : L3_10_25
+  K27_6a : L3_10_25 ; K27_6b : L3_10_25 ; K27_6c : L3_10_50
+  K27_7a : L3_10_25 ; K27_7b : L3_10_25 ; K27_7c : L3_10_25 ; K27_7d : L3_10_25
+  K27_8a : L3_10_25 ; K27_8b : L3_10_25 ; K27_8c : L3_10_25 ; K27_8d : L3_10_25
+
+  K28_1a : L3_10_25 ; K28_1b : L3_10_25 ; K28_1c : L3_10_50
+  K28_2a : L3_10_25 ; K28_2b : L3_10_25 ; K28_2c : L3_10_25 ; K28_2d : L3_10_25
+  K28_3a : L3_10_25 ; K28_3b : L3_10_25 ; K28_3c : L3_10_25 ; K28_3d : L3_10_25
+  K28_4a : L3_10_25 ; K28_4b : L3_10_25 ; K28_4c : L3_10_50
+  K28_5a : L3_10_25 ; K28_5b : L3_10_25 ; K28_5c : L3_10_50 ;
+  K28_6a : L3_10_25 ; K28_6b : L3_10_25 ; K28_6c : L3_10_25 ; K28_6d : L3_10_25
+  K28_7a : L3_10_25 ; K28_7b : L3_10_25 ; K28_7c : L3_10_50
+  K28_8a : L3_10_25 ; K28_8b : L3_10_25 ; K28_8c : L3_10_25 ; K28_8d : L3_10_25
+
+  K29_1a : L3_10_25 ; K29_1b : L3_10_25 ; K29_1c : L3_10_50
+  K29_2a : L3_10_25 ; K29_2b : L3_10_25 ; K29_2c : L3_10_25 ; K29_2d : L3_10_25
+  K29_3a : L3_10_25 ; K29_3b : L3_10_25 ; K29_3c : L3_10_25 ; K29_3d : L3_10_25
+  K29_4a : L3_10_25 ; K29_4b : L3_10_25 ; K29_4c : L3_10_50
+  K29_5a : L3_10_25 ; K29_5b : L3_10_25 ; K29_5c : L3_10_50
+  K29_6a : L3_10_25 ; K29_6b : L3_10_25 ; K29_6c : L3_10_25 ; K29_6d : L3_10_25
+  K29_7a : L3_10_25 ; K29_7b : L3_10_25 ; K29_7c : L3_10_25 ; K29_7d : L3_9_25
+  K29_8a : L3_10_25 ; K29_8b : L3_10_25 ; K29_8c : L3_10_25 ; K29_8d : L3_10_25
+
+  K30_1a : L3_10_25 ; K30_1b : L3_10_25 ; K30_1c : L3_10_25 ; K30_1d : L3_7_25
+  K30_2a : L3_10_25 ; K30_2b : L3_10_25 ; K30_2c : L3_10_25 ; K30_2d : L3_10_25
+  K30_3a : L3_10_25 ; K30_3b : L3_10_25 ; K30_3c : L3_10_25 ; K30_3d : L3_7_25
+  K30_4a : L3_10_25 ; K30_4b : L3_10_25 ; K30_4c : L3_10_25 ; K30_4d : L3_7_25
+  K30_5a : L3_10_25 ; K30_5b : L3_10_25 ; K30_5c : L3_10_25 ; K30_5d : L3_7_25
+  K30_6a : L3_10_25 ; K30_6b : L3_10_25 ; K30_6c : L3_10_25 ; K30_6d : L3_9_25
+  K30_7a : L3_10_25 ; K30_7b : L3_10_25 ; K30_7c : L3_10_25 ; K30_7d : L3_9_25
+  K30_8a : L3_10_25 ; K30_8b : L3_10_25 ; K30_8c : L3_10_50
+
+! ==============================================================================
+! DRIFs
+! ------------------------------------------------------------------------------
+
+  DAQ5A  : DRIF, L=2.3435
+  DAQ6A  : DRIF, L=0.7348
+  DAQ5B  : DRIF, L=2.841
+  DAQ6B  : DRIF, L=0.2373
+  DAQ5C  : DRIF, L=2.841
+  DAQ6C  : DRIF, L=0.2373
+  DAQ5D  : DRIF, L=2.344
+  DAQ6D  : DRIF, L=0.7343
+
+  DAQ9   : DRIF, L=0.2091
+  DAQ10  : DRIF, L=0.9089
+  DAQ11  : DRIF, L=0.7073
+  D25_1c : DRIF, L=3.0441
+ !D25_1d : DRIF, L=3.0441
+  D28_5d : DRIF, L=3.0441
+
+! ==============================================================================
+! XCORs
+! ------------------------------------------------------------------------------
+
+  XC24900 : HKIC, TYPE="type-4"
+
+  XC25202 : HKIC, TYPE="type-4f" !fast-feedback (loop-3)
+  XC25302 : HKIC, TYPE="type-4"
+  XC25402 : HKIC, TYPE="type-4"
+  XC25502 : HKIC, TYPE="type-4"
+  XC25602 : HKIC, TYPE="type-4f" !fast-feedback (loop-3)
+  XC25702 : HKIC, TYPE="type-4"
+  XC25802 : HKIC, TYPE="type-4"
+  XC25900 : HKIC, TYPE="type-4"
+
+  XC26202 : HKIC, TYPE="type-4"
+  XC26302 : HKIC, TYPE="type-4"
+  XC26402 : HKIC, TYPE="type-4"
+  XC26502 : HKIC, TYPE="type-4"
+  XC26602 : HKIC, TYPE="type-4"
+  XC26702 : HKIC, TYPE="type-4"
+  XC26802 : HKIC, TYPE="type-4"
+  XC26900 : HKIC, TYPE="type-5"
+
+  XC27202 : HKIC, TYPE="type-5"
+  XC27302 : HKIC, TYPE="type-4"
+  XC27402 : HKIC, TYPE="type-4"
+  XC27502 : HKIC, TYPE="type-5"
+  XC27602 : HKIC, TYPE="type-5"
+  XC27702 : HKIC, TYPE="type-4"
+  XC27802 : HKIC, TYPE="type-4"
+  XC27900 : HKIC, TYPE="type-4"
+
+  XC29092 : MARK, TYPE="type-4"
+  XC28202 : HKIC, TYPE="type-4"
+  XC28302 : HKIC, TYPE="type-4"
+  XC28402 : HKIC, TYPE="type-4"
+  XC29095 : MARK, TYPE="type-4"
+  XC28502 : HKIC, TYPE="type-4"
+  XC28602 : HKIC, TYPE="type-4"
+  XC28702 : HKIC, TYPE="type-4"
+  XC28802 : HKIC, TYPE="type-4"
+  XC28900 : HKIC, TYPE="type-4"
+
+  XC29202 : HKIC, TYPE="type-4"
+  XC29302 : HKIC, TYPE="type-4"
+  XC29402 : HKIC, TYPE="type-4"
+  XC29502 : HKIC, TYPE="type-4"
+  XC29602 : HKIC, TYPE="type-5"
+  XC29702 : HKIC, TYPE="type-5"
+  XC29802 : HKIC, TYPE="type-4"
+  XC29900 : HKIC, TYPE="type-4"
+
+  XC30202 : HKIC, TYPE="type-5"
+  XC30302 : HKIC, TYPE="type-5"
+  XC30402 : HKIC, TYPE="type-4"
+  XC30502 : HKIC, TYPE="type-4"
+  XC30602 : HKIC, TYPE="type-5"
+  XC30702 : HKIC, TYPE="type-5"
+  XC30802 : HKIC, TYPE="type-5"
+  XC30900 : HKIC, TYPE="type-5"
+                              
+! ==============================================================================
+! YCORs                       
+! ------------------------------------------------------------------------------
+                              
+  YC24900 : VKIC, TYPE="type-4f" !fast-feedback (loop-3)
+
+  YC25203 : VKIC, TYPE="type-4"
+  YC25303 : VKIC, TYPE="type-4"
+  YC25403 : VKIC, TYPE="type-4"
+  YC25503 : VKIC, TYPE="type-4f" !fast-feedback (loop-3)
+  YC25603 : VKIC, TYPE="type-4"
+  YC25703 : VKIC, TYPE="type-4"
+  YC25803 : VKIC, TYPE="type-4"
+  YC25900 : VKIC, TYPE="type-4"
+
+  YC26203 : VKIC, TYPE="type-4"
+  YC26303 : VKIC, TYPE="type-4"
+  YC26403 : VKIC, TYPE="type-4"
+  YC26503 : VKIC, TYPE="type-4"
+  YC26603 : VKIC, TYPE="type-4"
+  YC26703 : VKIC, TYPE="type-4"
+  YC26803 : VKIC, TYPE="type-4"
+  YC26900 : VKIC, TYPE="type-5"
+
+  YC27203 : VKIC, TYPE="type-5"
+  YC27303 : VKIC, TYPE="type-4"
+  YC27403 : VKIC, TYPE="type-4"
+  YC27503 : VKIC, TYPE="type-5"
+  YC27603 : VKIC, TYPE="type-5"
+  YC27703 : VKIC, TYPE="type-4"
+  YC27803 : VKIC, TYPE="type-4"
+  YC27900 : VKIC, TYPE="type-4"
+
+  YC29092 : MARK, TYPE="type-4"
+  YC28203 : VKIC, TYPE="type-4"
+  YC28303 : VKIC, TYPE="type-4"
+  YC28403 : VKIC, TYPE="type-4"
+  YC29095 : MARK, TYPE="type-4"
+  YC28503 : VKIC, TYPE="type-4"
+  YC28603 : VKIC, TYPE="type-4"
+  YC28703 : VKIC, TYPE="type-4"
+  YC28803 : VKIC, TYPE="type-4"
+  YC28900 : VKIC, TYPE="type-4"
+
+  YC29203 : VKIC, TYPE="type-4"
+  YC29303 : VKIC, TYPE="type-4"
+  YC29403 : VKIC, TYPE="type-4"
+  YC29503 : VKIC, TYPE="type-4"
+  YC29603 : VKIC, TYPE="type-5"
+  YC29703 : VKIC, TYPE="type-5"
+  YC29803 : VKIC, TYPE="type-4"
+  YC29900 : VKIC, TYPE="type-4"
+
+  YC30203 : VKIC, TYPE="type-5"
+  YC30303 : VKIC, TYPE="type-5"
+  YC30403 : VKIC, TYPE="type-4"
+  YC30503 : VKIC, TYPE="type-4"
+  YC30603 : VKIC, TYPE="type-5"
+  YC30703 : VKIC, TYPE="type-5"
+  YC30803 : VKIC, TYPE="type-5"
+  YC30900 : VKIC, TYPE="type-5"
+
+! ==============================================================================
+! BEAMLINEs
+! ------------------------------------------------------------------------------
+
+  K25_1 : LINE=(K25_1a,K25_1b,D25_1c,K25_1d)
+  K25_2 : LINE=(K25_2a,K25_2b,K25_2c)
+  K25_3 : LINE=(K25_3a,K25_3b,K25_3c)
+  K25_4 : LINE=(K25_4a,K25_4b,K25_4c,K25_4d)
+  K25_5 : LINE=(K25_5a,K25_5b,K25_5c,K25_5d)
+  K25_6 : LINE=(K25_6a,K25_6b,K25_6c,K25_6d)
+  K25_7 : LINE=(K25_7a,K25_7b,K25_7c,K25_7d)
+  K25_8 : LINE=(K25_8a,K25_8b,K25_8c,K25_8d)
+
+  LI25  : LINE=(LI25beg,ZLIN09,XC24900,YC24900,&
+                K25_1,DAQ1,Q25201,BPM25201,Q25201,DAQ2,XC25202,YC25203,&
+                K25_2,D255a,IMBC2O,D255b,D255c,TCAV3,TCAV3,&
+                  D255d,Q25301,BPM25301,Q25301,DAQ2,XC25302,YC25303,&
+                K25_3,D256a,PH03,D256b,BL22,D256c,&
+                  BXKIKA,BXKIKB,D256d,DAQ1,Q25401,BPM25401,Q25401,DAQ2,&
+                  XC25402,YC25403,&
+                K25_4,DAQ1,Q25501,BPM25501,Q25501,DAQ2,XC25502,YC25503,&
+                K25_5,DAQ1,Q25601,BPM25601,Q25601,DAQ2,XC25602,YC25603,&
+                K25_6,DAQ1,Q25701,BPM25701,Q25701,DAQ2,XC25702,YC25703,&
+                K25_7,DAQ1,Q25801,BPM25801,Q25801,DAQ2,XC25802,YC25803,&
+                K25_8,DAQ7,Q25901,BPM25901,Q25901,DAQ8A,OTR_TCAV,DAQ8B,&
+                  XC25900,YC25900,&
+                LI25end)
+
+! ------------------------------------------------------------------------------
+
+  K26_1 : LINE=(K26_1a,K26_1b,K26_1c,K26_1d)
+  K26_2 : LINE=(K26_2a,K26_2b,K26_2c,K26_2d)
+  K26_3 : LINE=(K26_3a,K26_3b,K26_3c,K26_3d)
+  K26_4 : LINE=(K26_4a,K26_4b,K26_4c,K26_4d)
+  K26_5 : LINE=(K26_5a,K26_5b,K26_5c,K26_5d)
+  K26_6 : LINE=(K26_6a,K26_6b,K26_6c,K26_6d)
+  K26_7 : LINE=(K26_7a,K26_7b,K26_7c,K26_7d)
+  K26_8 : LINE=(K26_8a,K26_8b,K26_8c,K26_8d)
+
+  LI26  : LINE=(LI26beg,ZLIN10,&
+                K26_1,DAQ1,Q26201,BPM26201,Q26201,DAQ2,XC26202,YC26203,&
+                K26_2,DAQ1,Q26301,BPM26301,Q26301,DAQ2,XC26302,YC26303,&
+                K26_3,DAQ1,Q26401,BPM26401,Q26401,DAQ2,XC26402,YC26403,&
+                K26_4,DAQ1,Q26501,BPM26501,Q26501,DAQ2,XC26502,YC26503,&
+                K26_5,DAQ1,Q26601,BPM26601,Q26601,DAQ2,XC26602,YC26603,&
+                K26_6,DAQ1,Q26701,BPM26701,Q26701,DAQ2,XC26702,YC26703,&
+                K26_7,DAQ1,Q26801,BPM26801,Q26801,DAQ2,XC26802,YC26803,&
+                K26_8,DAQ7,Q26901,BPM26901,Q26901,DAQ8,XC26900,YC26900,&
+                LI26end)
+
+! ------------------------------------------------------------------------------
+
+  K27_1 : LINE=(K27_1a,K27_1b,K27_1c,K27_1d)
+  K27_2 : LINE=(K27_2a,K27_2b,K27_2c,K27_2d)
+  K27_3 : LINE=(K27_3a,K27_3b,K27_3c,K27_3d)
+  K27_4 : LINE=(K27_4a,K27_4b,K27_4c,K27_4d)
+  K27_5 : LINE=(K27_5a,K27_5b,K27_5c,K27_5d)
+  K27_6 : LINE=(K27_6a,K27_6b,K27_6c       )
+  K27_7 : LINE=(K27_7a,K27_7b,K27_7c,K27_7d)
+  K27_8 : LINE=(K27_8a,K27_8b,K27_8c,K27_8d)
+
+  LI27  : LINE=(LI27beg,ZLIN11,&
+                K27_1,DAQ1,Q27201,BPM27201,Q27201,DAQ2,XC27202,YC27203,&
+                K27_2,DAQ1,Q27301,BPM27301,Q27301,DAQ2,XC27302,YC27303,&
+                K27_3,DAQ1,Q27401,BPM27401,Q27401,DAQ2,XC27402,YC27403,&
+                K27_4,DAQ1,Q27501,BPM27501,Q27501,DAQ2,XC27502,YC27503,&
+                K27_5,DAQ1,Q27601,BPM27601,Q27601,DAQ2,XC27602,YC27603,&
+                K27_6,DAQ5A,WS27644,DAQ6A,Q27701,BPM27701,Q27701,DAQ2,&
+                  XC27702,YC27703,&
+                K27_7,DAQ1,Q27801,BPM27801,Q27801,DAQ2,XC27802,YC27803,&
+                K27_8,DAQ7,Q27901,BPM27901,Q27901,DAQ8,XC27900,YC27900,&
+                LI27end)
+
+! ------------------------------------------------------------------------------
+
+  K28_1 : LINE=(K28_1a,K28_1b,K28_1c       )
+  K28_2 : LINE=(K28_2a,K28_2b,K28_2c,K28_2d)
+  K28_3 : LINE=(K28_3a,K28_3b,K28_3c,K28_3d)
+  K28_4 : LINE=(K28_4a,K28_4b,K28_4c       )
+  K28_5 : LINE=(K28_5a,K28_5b,K28_5c,D28_5d)
+  K28_6 : LINE=(K28_6a,K28_6b,K28_6c,K28_6d)
+  K28_7 : LINE=(K28_7a,K28_7b,K28_7c       )
+  K28_8 : LINE=(K28_8a,K28_8b,K28_8c,K28_8d)
+
+  LI28  : LINE=(LI28beg,ZLIN12,&
+                K28_1,DAQ5B,WS28144,DAQ6B,Q28201,BPM28201,Q28201,DAQ2,&
+                  XC28202,YC28203,&
+                K28_2,DAQ1,Q28301,BPM28301,Q28301,DAQ2,XC28302,YC28303,&
+                K28_3,DAQ1,Q28401,BPM28401,Q28401,DAQ2,XC28402,YC28403,&
+                K28_4,DAQ5C,WS28444,DAQ6C,Q28501,BPM28501,Q28501,DAQ2,&
+                  XC28502,YC28503,&
+                K28_5,DAQ1,Q28601,BPM28601,Q28601,DAQ2,XC28602,YC28603,&
+                K28_6,DAQ1,Q28701,BPM28701,Q28701,DAQ2,XC28702,YC28703,&
+                K28_7,DAQ5D,WS28744,DAQ6D,Q28801,BPM28801,Q28801,DAQ2,&
+                  XC28802,YC28803,&
+                K28_8,DAQ7,Q28901,BPM28901,Q28901,DAQ8,XC28900,YC28900,&
+                LI28end)
+
+! ------------------------------------------------------------------------------
+
+  K29_1 : LINE=(K29_1a,K29_1b,K29_1c       )
+  K29_2 : LINE=(K29_2a,K29_2b,K29_2c,K29_2d)
+  K29_3 : LINE=(K29_3a,K29_3b,K29_3c,K29_3d)
+  K29_4 : LINE=(K29_4a,K29_4b,K29_4c       )
+  K29_5 : LINE=(K29_5a,K29_5b,K29_5c       )
+  K29_6 : LINE=(K29_6a,K29_6b,K29_6c,K29_6d)
+  K29_7 : LINE=(K29_7a,K29_7b,K29_7c,K29_7d)
+  K29_8 : LINE=(K29_8a,K29_8b,K29_8c,K29_8d)
+
+  LI29  : LINE=(LI29beg,ZLIN13,&
+                K29_1,D10,DAQ1,Q29201,BPM29201,Q29201,DAQ2,XC29202,YC29203,&
+                K29_2,DAQ1,Q29301,BPM29301,Q29301,DAQ2,XC29302,YC29303,&
+                K29_3,DAQ1,Q29401,BPM29401,Q29401,DAQ2,XC29402,YC29403,&
+                K29_4,D10,DAQ1,Q29501,BPM29501,Q29501,DAQ2,XC29502,YC29503,&
+                K29_5,D10,DAQ1,Q29601,BPM29601,Q29601,DAQ2,XC29602,YC29603,&
+                K29_6,DAQ1,Q29701,BPM29701,Q29701,DAQ2,XC29702,YC29703,&
+                K29_7,DAQ9,Q29801,BPM29801,Q29801,DAQ2,XC29802,YC29803,&
+                K29_8,DAQ3,Q29901,BPM29901,Q29901,DAQ4,XC29900,YC29900,&
+                LI29end)
+
+! ------------------------------------------------------------------------------
+
+  K30_1 : LINE=(K30_1a,K30_1b,K30_1c,K30_1d)
+  K30_2 : LINE=(K30_2a,K30_2b,K30_2c,K30_2d)
+  K30_3 : LINE=(K30_3a,K30_3b,K30_3c,K30_3d)
+  K30_4 : LINE=(K30_4a,K30_4b,K30_4c,K30_4d)
+  K30_5 : LINE=(K30_5a,K30_5b,K30_5c,K30_5d)
+  K30_6 : LINE=(K30_6a,K30_6b,K30_6c,K30_6d)
+  K30_7 : LINE=(K30_7a,K30_7b,K30_7c,K30_7d)
+  K30_8 : LINE=(K30_8a,K30_8b,K30_8c       )
+
+  LI30  : LINE=(LI30beg,ZLIN14,&
+                K30_1,DAQ10,Q30201,BPM30201,Q30201,DAQ2,XC30202,YC30203,&
+                K30_2,DAQ1 ,Q30301,BPM30301,Q30301,DAQ2,XC30302,YC30303,&
+                K30_3,DAQ10,Q30401,BPM30401,Q30401,DAQ2,XC30402,YC30403,&
+                K30_4,DAQ10,Q30501,BPM30501,Q30501,DAQ2,XC30502,YC30503,&
+                K30_5,DAQ11,Q30601,BPM30601,Q30601,DAQ12,XC30602,YC30603,&
+                K30_6,DAQ13,Q30701,BPM30701,Q30701,DAQ14,XC30702,YC30703,&
+                K30_7,DAQ15,Q30801,BPM30801,Q30801,DAQ16,XC30802,YC30803,&
+                K30_8,YC30900,XC30900,DAQ17,&
+                LI30end)
+
+! ==============================================================================
+
+  RETURN
