@@ -162,7 +162,7 @@ sc_misc  : LCLS2sc_color.ps LCLS2sc.print
 #   CU_SXR   = GUN - copper linac - LTUS - SXR
 #   CU_ALINE = GUN - copper linac - Aline
 #
-cu       : cuh cus cua cu_misc
+cu       : CU_HXR CU_SXR CU_ALINE cu_misc
 CU_HXR   : LCLS2cuH.ps LCLS2cuH.print LCLS2cuH_twiss.tape LCLS2cuH_survey.tape
 CU_SXR   : LCLS2cuS.ps LCLS2cuS.print LCLS2cuS_twiss.tape LCLS2cuS_survey.tape
 CU_ALINE : LCLS2cuA.ps  LCLS2cuA.print LCLS2cuA_twiss.tape LCLS2cuA_survey.tape
