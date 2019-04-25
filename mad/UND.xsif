@@ -321,6 +321,7 @@
   RFBSX25 : MONI, L=LRFBub, TYPE="CavityX-1"
 
   SXXSTART : MARK !start of soft X-ray extension system
+  SXXTERM  : MARK !end of soft X-ray extension system
   SXRSTART : MARK !start of undulator system
   SXRTERM  : MARK !~end of undulator system
   MUQS     : MARK
@@ -377,11 +378,11 @@
   SXCEL24  : LINE=(DU1s,       DU2s,DUSEGS24,SXBRK24) !Q+RFBPM
   SXCEL25  : LINE=(DU1s,       DU2s,DUSEGS25,SXBRK25) !RFBPM
 
-  SXRXX : LINE=(BEGSXX,SXXSTART,&
+  SXRXX : LINE=(BEGUNDS,SXXSTART,&
                 DU0s,QSXBLK16,DU6s,RFBSX16,DU7s,&
                 SXCEL17,SXCEL18,SXCEL19,SXCEL20,&
                 SXCEL21,SXCEL22,SXCEL23,SXCEL24,SXCEL25,&
-                ENDSXX)
+                SXXTERM)
 
 ! ------------------------------------------------------------------------------
 ! SXR undulator
@@ -899,7 +900,7 @@
     SXCEL41,SXCEL42,SXCEL43,SXCEL44,SXCEL45,&
     SXCEL46,SXCEL47,SXCEL48,SXCEL49,SXCEL50)
 
-  SXR : LINE=(BEGSXR,SXRSTART,SXRCL,SXRTERM,DUE1ab,RFBSX51,DUE1e,ENDSXR)
+  SXR : LINE=(SXRSTART,SXRCL,SXRTERM,DUE1ab,RFBSX51,DUE1e,ENDUNDS)
 
 ! ------------------------------------------------------------------------------
 ! SXR undulator exit section
@@ -996,7 +997,7 @@
   DLSTARTb : MARK
   MDLWALLb : MARK !front face of dumpline thermal barrier wall
 
-  UNDEXITb : LINE=(BEGUES,&
+  UNDEXITb : LINE=(BEGDMPS_1,&
       UEbegb,DUE1d,VV36b,DUE1b,MIMUNDOB,DUE1ca,PH33B,DUE1cb,PH34B,DUE1cc,&
       DUE2a,YCUE1B,DUE2b,PH31B,DUE2d,PH32B,DUE2e,XCUE2B,DUE2cb,&
     QUE1B,QUE1B,DUE3ab,BPMUE1B,DUE3bb,TRUE1B,DUE3c,DBKXDMPS,DUE3c,PCTCXB,&
@@ -1006,7 +1007,7 @@
     QUE2B,QUE2B,DUE5ab,BPMUE2B,DUE5bb,BTMQUEB,DUE5cb,PCPM0B,DUE5f,BTM0B,&
       DUE5d,DUE5eB,MDLWALLb,DDLWALLB,UEendb,DLstartb,DSB0a,YCD3B,DSB0b,&
       XCD3B,DSB0c,VV37b,DSB0d,DSB0e,&
-    ENDUES)
+    ENDDMPS_1)
 
   SXRUND : LINE=(SXRXX,SXR,UNDEXITb)
 
@@ -1767,9 +1768,9 @@
     HXCEL37,HXCEL38,HXCEL39,HXCEL40,HXCEL41,HXCEL42,HXCEL43,HXCEL44,&
     HXCEL45,HXCEL46,HXCEL47,HXCEL48,HXCEL49,HXCEL50)
 
-  HXR : LINE=(BEGHXR,&
+  HXR : LINE=(BEGUNDH,&
               DU0h,DU8h,HXRSTART,HXRCL,HXRTERM,DUE1a,RFBHX51,DUE1e,&
-              ENDHXR)
+              ENDUNDH)
 
 ! ------------------------------------------------------------------------------
 ! HXR undulator exit section
@@ -1836,7 +1837,7 @@
   DLSTART : MARK !start of dumpline
   MDLWALL : MARK !front face of dumpline thermal barrier wall
 
-  UNDEXIT : LINE=(BEGUEH,&
+  UNDEXIT : LINE=(BEGDMPH_1,&
       UEbeg,DUE1d,VV36,DUE1b,MIMUNDO,DUE1ca,PH33,DUE1cb,PH34,DUE1cc,&
       DUE2a,YCUE1,DUE2b,PH31,DUE2d,PH32,DUE2e,XCUE2,DUE2c,&
     QUE1,QUE1,DUE3a,BPMUE1,DUE3b,TRUE1,DUE3c,DBKXDMPH,DUE3c,PCTCX,&
@@ -1846,7 +1847,7 @@
     QUE2,QUE2,DUE5a,BPMUE2,DUE5b,BTMQUE,DUE5c,PCPM0,DUE5f,BTM0,&
       DUE5d,MIMBCS3,DUE5e,MDLWALL,DDLWALL,UEend,DLstart,DSB0a,YCD3,DSB0b,&
       XCD3,DSB0c,VV37,DSB0d,DSB0e,&
-    ENDUEH)
+    ENDDMPH_1)
 
   HXRUND : LINE=(HXR,UNDEXIT)
 

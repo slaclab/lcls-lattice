@@ -6,6 +6,11 @@
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
+! 30-JAN-2019, M. Woodley
+!  * move area BEG/END MARKERs to common.xsif
+!  * DL1 becomes two areas (DL1A and DL1B)
+!  * rename MRK/FIN MARKERs at BC1 and BC2 to proper area boundary names
+! ------------------------------------------------------------------------------
 ! 07-JAN-2019, M. Woodley
 !  * rename some LI21 correctors to avoid name conflicts with LCLS-II
 !    per T. Maxwell
@@ -221,11 +226,11 @@
   CRG1    : INST                  ! Cerenkov radiator bunch length monitor
   YAGG1   : PROF, TYPE="YAG"      ! 6-MeV spectrometer screen
   FCG1    : INST                  ! gun-spec. Faraday cup w/screen
-  GSPECBEG: MARK
 
-  GSPEC   : LINE=(GSPECBEG,BXGA,BXGB,DGS1,QG02,SCG1,QG02, &
+  GSPEC   : LINE=(BEGGSPEC,BXGA,BXGB,DGS1,QG02,SCG1,QG02,&
                   DGS2,BPMG1,DGS3,QG03,SCG2,QG03,&
-                  DGS4,YAGG1,DGS5,CRG1,DGS6,FCG1,DGS7,DBMARK97) ! gun spectrometer from BXG to Farraday cup and dump
+                  DGS4,YAGG1,DGS5,CRG1,DGS6,FCG1,DGS7,DBMARK97,&
+                  ENDGSPEC) ! gun spectrometer from BXG to Farraday cup and dump
 
 ! 135-MeV Spectrometer
 ! ====================
@@ -257,7 +262,6 @@
   DS7     : DRIF, L=0.3801874+0.008205-0.02
   DS8     : DRIF, L=0.1976126+0.02
   DS9     : DRIF, L=0.3378194
-  SPECBEG : MARK
   BPMS1   : MONI, TYPE="20_um_res"
   BPMS2   : MONI, TYPE="20_um_res"
   BPMS3   : MONI, TYPE="20_um_res"
@@ -281,17 +285,11 @@
   BXSB    : SBEN, L=LBS/2 , HGAP=GBS/2, ANGLE=ABS/2, &
                   E1=0    , E2=BXSEj  , FINT=0     , FINTX=0.391
 
- !SPECBL  : LINE=(SPECBEG,DX01A,DX01B,DS0,SCS1,DS0a,DS0b,DS1a,&
- !                VVS1,DS1b,YAGS1,DS1c,BPMS1,DS1d,BXSA,BXSB,DS2,&
- !                QS01,BPMS2,QS01,DS3a,SCS2,DS3b,QS02,QS02,DS4,&
- !                IMS1,DS6a,BPMS3,DS6b,YAGS2,DS7,OTRS1,DS8,&
- !                DS9,SDMP,DBMARK98)
-
-  SPECBL  : LINE=(SPECBEG,DBX01a,DBX01b,DS0,SCS1,DS0a,DS0b,DS1a,&
+  SPECBL  : LINE=(BEGSPEC,DBX01a,DBX01b,DS0,SCS1,DS0a,DS0b,DS1a,&
                   VVS1,DS1b,YAGS1,DS1c,BPMS1,DS1d,BXSA,BXSB,DS2,&
                   QS01,BPMS2,QS01,DS3a,SCS2,DS3b,QS02,QS02,DS4,&
                   IMS1,DS6a,BPMS3,DS6b,YAGS2,DS7,OTRS1,DS8,&
-                  DS9,SDMP,DBMARK98)
+                  DS9,SDMP,DBMARK98,ENDSPEC)
 
 ! DL1
 ! ===
@@ -1059,15 +1057,12 @@
   TD11 : INST !BC1+ insertable block
 
 ! miscellany
-  L0beg    : MARK
   SOL1BK   : SOLENOID,L=1E-9,KS=0       !gun-bucking-solenoid (set to ~zero length and strength, with longitudinal unknown for now)
   CATHODE  : INST
   SOL1     : SOLENOID,L=LSOL1/2,KS=1E-9 !gun-solenoid (set to zero strength)
   SOL2     : SOLENOID,L=1E-9,KS=1E-9    !2nd-solenoid (set to ~zero length and strength, with longitudinal position as the actual solenoid's center)
-  L0end    : MARK
   L0aWAKE  : MARK
   EMAT     : MARK ! for Elegant only to remove energy error in DL1 bends
-  DL1beg   : MARK
   DLFDa    : MARK ! dual-feed input coupler location at start of L0-a RF structure
   L0aMID   : MARK
   OUTCPa   : MARK ! output coupler location at end of L0-a RF structure
@@ -1076,17 +1071,11 @@
   L0bMID   : MARK
   OUTCPb   : MARK ! output coupler location at end of L0-b RF structure
   CNT0     : MARK
-  DL1end   : MARK
-  L1beg    : MARK
-  L1end    : MARK
-  BC1mrk   : MARK
   XBEG     : MARK !before X-band RF, but after L1
   XEND     : MARK !after X-band RF, but before BC1
-  BC1beg   : MARK
+  BC1Cbeg  : MARK !start of BC1 chicane
   CNT1     : MARK !ELEGANT will correct the orbit here for CSR-steering
-  BC1end   : MARK
-  BC1fin   : MARK
-  L2beg    : MARK
+  BC1Cend  : MARK !end of BC1 chicane
   LI21beg  : MARK
   LI21end  : MARK
   LI22beg  : MARK
@@ -1095,13 +1084,9 @@
   LI23end  : MARK
   LI24beg  : MARK
   LI24end  : MARK
-  L2end    : MARK
-  BC2mrk   : MARK
-  BC2beg   : MARK
+  BC2Cbeg  : MARK !start of BC2 chicane
   CNT2     : MARK !ELEGANT will correct the orbit here for CSR-steering
-  BC2end   : MARK
-  BC2fin   : MARK
-  L3beg    : MARK
+  BC2Cend  : MARK !end of BC2 chicane
   LI25beg  : MARK
   LI25end  : MARK
   LI26beg  : MARK
@@ -1113,9 +1098,8 @@
   LI29beg  : MARK
   LI29end  : MARK
   LI30beg  : MARK
-  RWWAKEss : MARK !will be resistive wall wake of stainless steel in ELEGANT
   LI30end  : MARK
-  L3end    : MARK
+  RWWAKEss : MARK !will be resistive wall wake of stainless steel in ELEGANT
 
 ! Permanent reference points in the linac (and LTU: Z') Z-coordinate system (in meters)
 ! (NOTE: Z' is measured parallel to the undulator axis which is at an angle of

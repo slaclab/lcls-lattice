@@ -11,6 +11,9 @@
 ! 09-OCT-2018, M. Woodley
 !  * add YCBSYA per D. McCormick
 ! ------------------------------------------------------------------------------
+! 25-MAY-2018, M. Woodley
+!  * change name of E158 bends in ESA to avoid redefinitions
+! ------------------------------------------------------------------------------
 ! 07-FEB-2018, M. Woodley
 !  * add TYPE designations for A-line magnets
 ! 05-FEB-2018, Y. Nosochkov
@@ -640,7 +643,7 @@
 
 ! shared line with BSY
 
-  ALINEa : LINE=(BEGBSYA,&
+  ALINEa : LINE=(BEGBSYA_1,&
     BKRAPM1a,BKRAPM1b,DAPM1,PCAPM1,DAPM1,&
     BKRAPM2a,BKRAPM2b,DAPM2a,DSCAPM2,DAPM2b,PCAPM2,DAPM2,&
     BKRAPM3a,BKRAPM3b,DAPM3,PCAPM3,DAPM3,&
@@ -649,9 +652,9 @@
 ! separate line from BSY
 
   ALINEb : LINE=(PCBSYA,DA03a,YCBSYA,DA03b,YAGAPM,DA04a,&
-    DBRDAS2a,DBRDAS2b,DA04b,DRCDAS19)
+    DBRDAS2a,DBRDAS2b,DA04b,DRCDAS19,ENDBSYA_1)
 
-  ALINEc : LINE=(&
+  ALINEc : LINE=(BEGBSYA_2,&
     DA04c,PRBRAM1,DA05,TGTBRAM1,DA06,&
     BRAM1A,BRAM1B,ROLL2,DAMQ10,&
     Q10,Q10,LD105,&
@@ -677,11 +680,12 @@
     Q28,Q28,LD123,&
     Q30,Q30,LD124,&
     Q38,Q38,D125,ALWALL,DPR2,&
-    ENDBSYA)
+    ENDBSYA_2)
 
-  ESAs : LINE=(&
-    D201,D1S,D1S,D202,D2S,D2S,D203,D3S,D3S,D204,Q1S,Q1S,D205,Q2S,Q2S,D206,&
-    Q3S,Q3S,D207,Q4S,Q4S,D208,ESAE,D209,BMDE)
+  ESAs : LINE=(D201,&
+    BXD1S,BXD1S,D202,BXD2S,BXD2S,D203,BXD3S,BXD3S,D204,&
+    Q1S,Q1S,D205,Q2S,Q2S,D206,Q3S,Q3S,D207,Q4S,Q4S,D208,&
+    ESAE,D209,BMDE)
 
   ALINE : LINE=(ALINEa,ALINEb,ALINEc,ESAs)
 

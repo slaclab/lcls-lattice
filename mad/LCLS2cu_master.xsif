@@ -19,7 +19,7 @@
   E0i    := 0.064    !beam energy between L0a and L0b sections (GeV)
   Ei     := 0.135    !initial beam energy (GeV) (150->135 MeV on July 9, 2003)
   EBC1   := 0.250    !BC1 energy (GeV)
-  EBC2   := 4.300    !BC2 energy (GeV)
+  EBC2   := EBC2Cu   !BC2 energy (GeV)
   Ef     := EfCu     !final beam energy (GeV)
   Eu     := EuCu     !energy in undulator (GeV)
   EMITXN := 1.00E-06 !normalized horizontal emittance (m)
@@ -204,7 +204,7 @@
   CU_SXR   : LINE=(GUNL0a,L0b,LCLS2cuS)
   CU_ALINE : LINE=(GUNL0a,L0b,LCLS2cuA)
   CU_GSPEC : LINE=(GUNBXG,GSPEC)
-  CU_SPEC  : LINE=(GUNL0a,L0b,DL1A,SPECBL)
+  CU_SPEC  : LINE=(GUNL0a,L0b,DL1_1,SPECBL)
 
 ! ------------------------------------------------------------------------------
 ! LINE definitions
@@ -235,18 +235,13 @@
   SCM13 : LINE=(XC21275,YC21276)
   SCM15 : LINE=(XC21325,YC21325)
 
-  GUNBXG: LINE=(DL00,LOADLOCK,L0beg,SOL1BK,DBMARK80,CATHODE,DL01a,&
+  GUNBXG: LINE=(DL00,LOADLOCK,BEGGUN,SOL1BK,DBMARK80,CATHODE,DL01a,&
                 SOL1,CQ01,CQ01,SC0,SQ01,SQ01,SOL1,&
                 DL01a1,VV01,DL01a2,AM00,DL01a3,AM01,DL01a4,&
                 YAG01,DL01a5,FC01,DL01b,IM01,DL01c,&
-                SC1,DL01h,BPM2,DL01d,DBMARK81)
+                SC1,DL01h,BPM2,DL01d,DBMARK81,ENDGUN)
 
- !BXGL0a: LINE=(DXG0,DXGA,DXGB,DL01e,BPM3,&
- !              DL01f,CR01,DL01f2,YAG02,DL01g,ZLIN00,FLNGa1,L0a___1,DLFDa,&
- !              L0a___2,SOL2,L0a___3,SC2,L0a___4,L0aMID,L0a___5,SC3,L0a___6,&
- !              OUTCPa,L0a___7,FLNGa2,L0aWAKE)
-
-  BXGL0a: LINE=(DBXG,DL01e,BPM3,&
+  BXGL0a: LINE=(BEGL0,DBXG,DL01e,BPM3,&
                 DL01f,CR01,DL01f2,YAG02,DL01g,ZLIN00,FLNGa1,L0a___1,DLFDa,&
                 L0a___2,SOL2,L0a___3,SC2,L0a___4,L0aMID,L0a___5,SC3,L0a___6,&
                 OUTCPa,L0a___7,FLNGa2,L0aWAKE)
@@ -256,13 +251,13 @@
   L0b   : LINE=(L0bBEG,DL02a1,YAG03,DL02a2,DL02a3,QA01,QA01,DL02b1,&
                 PH01,DL02b2,QA02,BPM5,QA02,DL02c,FLNGb1,L0b___1,DLFDb,&
                 L0b___2,SC4,L0b___3,L0bMID,L0b___4,SC5,L0b___5,OUTCPb,&
-                L0b___6,FLNGb2,L0end)
+                L0b___6,FLNGb2,ENDL0)
 
   LSRHTR: LINE=(LHBEG,BXh1A,BXh1B,Dh01,BXh2A,BXh2B,Dh02a,OTRH1,Dh03a,LH_UND,&
                 HTRUND,LH_UND,Dh03b,OTRH2,Dh02b,BXh3A,BXh3B,Dh01,&
                 BXh4A,BXh4B,LHEND)
 
-  DL1A  : LINE=(EMAT,DL1beg,DE00,DE00a,&
+  DL1_1 : LINE=(BEGDL1_1,EMAT,DE00,DE00a,&
                 QE01,BPM6,QE01,DE01a,IM02,DE01b,VV02,DE01c,QE02,QE02,&
                 Dh00,LSRHTR,Dh06,TCAV0,SC6,TCAV0,&
                 DE02,QE03,BPM8,QE03,DE03a,DE03b,SC7,DE03c,&
@@ -270,22 +265,22 @@
                 WS01,DE05,OTR1,DE05c,VV03,DE06a,RST1,DE06b,WS02,&
                 DE05a,MRK0,DE05a,OTR2,DE06d,BPM10,DE06e,WS03,DE05,OTR3,DE07,&
                 QM01,BPM11,QM01,DE08,SC8,DE08a,VV04,DE08b,&
-                QM02,BPM12,QM02,DE09,DBMARK82)
+                QM02,BPM12,QM02,DE09,DBMARK82,ENDDL1_1)
 
-  DL1B  : LINE=(BX01A,BX01B,DB00a,OTR4,DB00b,SC9,DB00c,&
+  DL1_2 : LINE=(BEGDL1_2,BX01A,BX01B,DB00a,OTR4,DB00b,SC9,DB00c,&
                 QB,BPM13,QB,DB00d,WS04,DB00e,BX02A,BX02B,CNT0,DBMARK83,&
                 DM00,SC10,DM00a,QM03,BPM14,QM03,DM01,DM01a,&
-                QM04,BPM15,QM04,DM02,IM03,DM02a,DL1end)
+                QM04,BPM15,QM04,DM02,IM03,DM02a,ENDDL1_2)
 
-  DL1   : LINE=(DL1A,DL1B) !nominal LCLS DL1 layout with BX01/BX02 bends on
+  DL1   : LINE=(DL1_1,DL1_2) !nominal LCLS DL1 layout with BX01/BX02 bends on
 
   DIAG1 : LINE=(DDG1,BPMS11,DDG2,CE11,DDG3,OTR11,DDG4)
-  BC1c  : LINE=(BC1BEG,BX11A,BX11B,DBQ1,&
+  BC1c  : LINE=(BC1Cbeg,BX11A,BX11B,DBQ1,&
                 CQ11,CQ11,D11o,&
                 BX12A,BX12B,DIAG1,&
                 BX13A,BX13B,D11oa,SQ13,SQ13,D11ob,&
                 CQ12,CQ12,DBQ1,&
-                BX14A,BX14B,CNT1,BC1END)
+                BX14A,BX14B,CNT1,BC1Cend)
   BC1i  : LINE=(DL1Xa,VVX1,DL1Xb,XBEG,L1X___1,SCM11,L1X___2,XEND,DM10a,VVX2,&
                 DM10c,Q21201,BPM21201,ZLIN02,Q21201,DM10x,IMBC1I,&
                 DM11,QM11,QM11,DM12)
@@ -296,39 +291,28 @@
                 DWW1d,YC21303,DWW1e,WS13,DM16,Q21301,BPM21301,ZLIN03,&
                 Q21301,DM17a,DM17b,TD11,DM17c,QM14,BPMM14,QM14,&
                 DM18a,SCM15,DM18b,QM15,QM15,DBMARK28,DM19)
-  BC1   : LINE=(BC1mrk,&
+  BC1   : LINE=(BEGBC1,&
                 BC1i,BC1c,BC1e,&
-                BC1fin)
-  L2    : LINE=(L2beg,&
+                ENDBC1)
+  L2    : LINE=(BEGL2,&
                 LI21,LI22,LI23,LI24,&
-                L2end)
+                ENDL2)
   DIAG2 : LINE=(DDG1,BPMS21,DDG2,CE21,DDG3,OTR21,DDG4)
-  BC2C1 : LINE=(BC2BEG,BX21A,BX21B,DBQ2a,&
+  BC2C1 : LINE=(BC2Cbeg,BX21A,BX21B,DBQ2a,&
                 CQ21,CQ21,D21oa,&
                 BX22A,BX22B,DDG0,DIAG2,DDGA,&
                 BX23A,BX23B,D21ob,&
                 CQ22,CQ22,DBQ2b,&
-                BX24A,BX24B,CNT2,BC2END)
-  BC2   : LINE=(BC2mrk,&
+                BX24A,BX24B,CNT2,BC2Cend)
+  BC2   : LINE=(BEGBC2,&
                 DM20,Q24701A,ZLIN08,Q24701A,D10cma,Q24701B,BPM24701,Q24701B,&
                 DM21Z,DM21A,WS24,DM21H,IMBC2I,DM21B,VV21,DM21C,&
                 QM21,QM21,DM21D,DM21E,BC2C1,D21w,D21x,BL21,D21y,DM23B,&
                 QM22,QM22,DM24A,VV22,DM24B,DM24D,Q24901A,BPM24901,Q24901A,&
-                DM24C,Q24901B,Q24901B,DM25,BC2fin)
-  L3    : LINE=(L3beg,&
+                DM24C,Q24901B,Q24901B,DM25,ENDBC2)
+  L3    : LINE=(BEGL3,&
                 LI25,LI26,LI27,LI28,LI29,LI30,&
-                L3end,RWWAKEss,DBMARK29)
-
-  B52LIN: LINE=(B50B1A    ,B50B1B    ,DRI14001  ,PR45      ,DRI14002  ,&
-                BPM52     ,DRI14003  ,B52AGFA   ,B52AGFB   ,DRI14004  ,&
-                B52WIG1A  ,B52WIG1B  ,DRI14005  ,B52WIG2A  ,YC54T     ,&
-                B52WIG2B  ,DRI14005  ,B52WIG3A  ,B52WIG3B  ,DRI14006  ,&
-                PR55      ,DRI14007  ,BPM56     ,DRI14008  ,Q52Q2     ,&
-                Q52Q2     ,DRI14009  ,PR60      ,DRI14010  ,IM61      ,&
-                DRI14011  ,WS62      ,DRI14012  ,YC59      ,DRI14013  ,&
-                SL1X      ,BPM64     ,DRI14014  ,SL1Y      ,DRI14015  ,&
-                BPM68     ,DRI14016  ,XC69      ,DRI14017  ,SL2       ,&
-                DBMARK99)
+                RWWAKEss,DBMARK29,ENDL3)
 
   ECELL    : LINE=(QE31,DQEC,DQEC,QE32,QE32,DQEC,DQEC,QE31)
 
