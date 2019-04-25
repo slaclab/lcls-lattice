@@ -1,0 +1,44 @@
+
+! *** OPTICS=AD_ACCEL-23JAN19 ***
+
+! CU_SXR path configurations
+
+  SETSP     := 0
+  SETCUS    := 1
+  SETAL     := 0
+  SETDA     := 0
+  SETHXRSS  := 0 !set to 1 to turn ON HXR self-seeding chicane
+  SETSXRSS  := 0 !set to 1 to turn ON SXR self-seeding chicane
+  SETXLEAP2 := 0 !set to 1 to turn ON XLEAP-II components
+
+  IntgSX := 20.0 !kG (30.0)
+  IntgHX := 40.0 !kG
+  EfCu   :=  4.0 !GeV
+  EuCu   :=  4.0 !GeV
+
+  CALL, FILENAME="LCLS2cu_master.xsif" !calls other xsif files
+
+  QBP33,  K1=-0.644563496901 !-0.644797555731
+  QBP34,  K1= 0.595165383865 ! 0.593738252918
+  QDBL1,  K1=-1.066849469579 !-1.055130827555
+  QDBL2,  K1= 0.618084331747 ! 0.599839474166
+  QDL11,  K1= 0.358720317054 ! 0.358486452767
+  QSXh16, K1= 0.58425577059  ! 0.619304582328
+  QSXh19, K1=-0.916613463141 !-0.710128917867
+  QSXh21, K1= 1.112461107836 ! 0.634767514115
+  QSXh24, K1=-1.11933302972  !-0.554593873983
+
+  COMMENT !to generate SURVEY
+    USE, BSYLTUS !start at end of Cu linac
+    ! initial energy: Ef
+    ! initial SURVEY: X0=0, Y0=0, Z0=3042.005, THETA0=0, PHI0=0, PSI0=0 (S0=1027.334826)
+  ENDCOMMENT
+
+ !COMMENT !to generate TWISS
+    USE, BSYLTUS !start at end of Cu linac
+    ! initial energy: Ef
+    ! initial Twiss : BETX=33.143246909501, ALFX=1.179705442619,  DX=0, DPX=0
+    !                 BETY=62.291824222352, ALFY=-1.660032861416, DY=0, DPY=0
+ !ENDCOMMENT
+
+  RETURN
