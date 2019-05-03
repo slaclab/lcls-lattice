@@ -1,0 +1,159 @@
+
+! *** OPTICS=AD_ACCEL-23JAN19 ***
+
+! ==============================================================================
+! Modification History
+! ------------------------------------------------------------------------------
+! 30-MAY-2018, M. Woodley
+!  * add backup DC spreader lines (commented out)
+! 21-FEB-2018, M. Woodley
+!  * add BSYLTUSXTES and LCLS2scSXTES line definitions
+! 25-JAN-2018, M. Woodley
+!  * remove PCBSY2/BTMBSY2 per A. Ibrahimov
+! ------------------------------------------------------------------------------
+! 06-SEP-2017, Y. Nosochkov
+!  * update definition of SPD1, SPD2 to include placeholders
+!    for large aperture LCLS-II-HE kickers
+! ------------------------------------------------------------------------------
+! 05-MAY-2017, M. Woodley
+!  * pulsed correctors XCAPM2/YCAPM2 will be timed to affect the straight-ahead
+!    LTUH beam, but not the A-line beam
+! ------------------------------------------------------------------------------
+! 24-FEB-2017, Y. Nosochkov
+!  * update some drift names
+! ------------------------------------------------------------------------------
+! 23-NOV-2016, Y. Nosochkov
+!  * update definition of SPD3 line for 6 DASEL kickers
+! ------------------------------------------------------------------------------
+! 04-NOV-2016, M. Woodley
+!  * redefine SPD3 line (DASEL kicker/septum system (off) + SPRDdb line)
+! 02-NOV-2016, Y. Nosochkov
+!  * split SPD2 into shorter SPD2 and SPD3 for DASEL
+!  * add beamlines BSYLCLS2scDA and LCLS2scDA for DASEL
+!  * update BSYH2 definition for use with A-line pulsed magnets
+! ------------------------------------------------------------------------------
+! 24-JUN-2016, Y. Nosochkov
+!  * update beamline definitions to avoid duplication with other files
+! ------------------------------------------------------------------------------
+
+! ------------------------------------------------------------------------------
+! from superconducting linac
+! ------------------------------------------------------------------------------
+
+dbkysp0ha: drift, l = bkysp0ha[l]
+dbkysp0hb: drift, l = bkysp0hb[l]
+dbkysp1ha: drift, l = bkysp1ha[l]
+dbkysp1hb: drift, l = bkysp1hb[l]
+dbkysp2ha: drift, l = bkysp2ha[l]
+dbkysp2hb: drift, l = bkysp2hb[l]
+dbkysp3ha: drift, l = bkysp3ha[l]
+dbkysp3hb: drift, l = bkysp3hb[l]
+dbkysp4ha: drift, l = bkysp4ha[l]
+dbkysp4hb: drift, l = bkysp4hb[l]
+dbkysp5ha: drift, l = bkysp5ha[l]
+dbkysp5hb: drift, l = bkysp5hb[l]
+dblxspha: drift, l = blxspha[l]
+dblxsphb: drift, l = blxsphb[l]
+
+spd_1: line = (begspd_1, dbkysp0ha, dbkysp0hb, dspbk0h, dbkysp1ha, dbkysp1hb, dspbk1h, dbkysp2ha &
+        , dbkysp2hb, dspbk2h, dbkysp3ha, dbkysp3hb, dspbk3h, dbkysp4ha, dbkysp4hb, dspbk4h,  &
+        dbkysp5ha, dbkysp5hb, dspbk5ha, bpmsph, dspbk5hb, dblxspha, dblxsphb, sprdksa, endspd_1)
+
+dbkysp0sa: drift, l = bkysp0sa[l]
+dbkysp0sb: drift, l = bkysp0sb[l]
+dbkysp1sa: drift, l = bkysp1sa[l]
+dbkysp1sb: drift, l = bkysp1sb[l]
+dbkysp2sa: drift, l = bkysp2sa[l]
+dbkysp2sb: drift, l = bkysp2sb[l]
+dbkysp3sa: drift, l = bkysp3sa[l]
+dbkysp3sb: drift, l = bkysp3sb[l]
+dbkysp4sa: drift, l = bkysp4sa[l]
+dbkysp4sb: drift, l = bkysp4sb[l]
+dbkysp5sa: drift, l = bkysp5sa[l]
+dbkysp5sb: drift, l = bkysp5sb[l]
+dblxspsa: drift, l = blxspsa[l]
+dblxspsb: drift, l = blxspsb[l]
+
+spd_2: line = (begspd_2, dbkysp0sa, dbkysp0sb, dspbk0s, dbkysp1sa, dbkysp1sb, dspbk1s, dbkysp2sa &
+        , dbkysp2sb, dspbk2s, dbkysp3sa, dbkysp3sb, dspbk3s, dbkysp4sa, dbkysp4sb, dspbk4s,  &
+        dbkysp5sa, dbkysp5sb, dspbk5sa, bpmsps, dspbk5sb, dblxspsa, dblxspsb, sprdda, endspd_2)
+
+dbkrdas1a: drift, l = bkrdas1a[l]
+dbkrdas1b: drift, l = bkrdas1b[l]
+dbkrdas2a: drift, l = bkrdas2a[l]
+dbkrdas2b: drift, l = bkrdas2b[l]
+dbkrdas3a: drift, l = bkrdas3a[l]
+dbkrdas3b: drift, l = bkrdas3b[l]
+dbkrdas4a: drift, l = bkrdas4a[l]
+dbkrdas4b: drift, l = bkrdas4b[l]
+dbkrdas5a: drift, l = bkrdas5a[l]
+dbkrdas5b: drift, l = bkrdas5b[l]
+dbkrdas6a: drift, l = bkrdas6a[l]
+dbkrdas6b: drift, l = bkrdas6b[l]
+dblrdasa: drift, l = blrdasa[l]
+dblrdasb: drift, l = blrdasb[l]
+
+spd_3: line = (begspd_3, dbkrdas1a, dbkrdas1b, ddasbk1, dbkrdas2a, dbkrdas2b, ddasbk2, dbkrdas3a &
+        , dbkrdas3b, ddasbk3, dbkrdas4a, dbkrdas4b, ddasbk4, dbkrdas5a, dbkrdas5b, ddasbk5,  &
+        dbkrdas6a, dbkrdas6b, ddasblxa, bpmdas, ddasblxb, dblrdasa, dblrdasb, sprddc, endspd_3)
+
+sltd: line = (begsltd, sprddd, endsltd)
+
+! ------------------------------------------------------------------------------
+
+sps: line = (begsps, sprdksb, sprdsb, fodolb, endsps)
+ !SPS : LINE=(BEGSPS,SPRDksbDC,SPRDsb,FODOLb,ENDSPS) !DC SXR spreader
+
+dbrcus1a: drift, l = brcus1a[l]
+dbrcus1b: drift, l = brcus1b[l]
+
+slts: line = (begslts, fodolc, bypm1, dbrcus1a, dbrcus1b, mrgcusxr, endslts)
+
+bsys: line = (begbsys, bypm2, muwallb, dwalla, dumpbsys, dwallb, bsyendb, endbsys)
+
+! ------------------------------------------------------------------------------
+
+sph: line = (begsph, sprdkh, sprdha, endsph)
+ !SPH : LINE=(BEGSPH,SPRDkhDC,SPRDha,ENDSPH) !DC HXR spreader
+
+slth: line = (begslth, sprdhb, endslth)
+
+bsyh_1: line = (begbsyh_1, sphal, endbsyh_1)
+
+bsyh_2: line = (begbsyh_2, dbkrapm1a, dbkrapm1b, dzapm1, pcapm1, dzapm1, dbkrapm2a, dbkrapm2b,  &
+        dzapm2a, scapm2, dzapm2b, pcapm2, dzapm2, dbkrapm3a, dbkrapm3b, dzapm3, pcapm3, dzapm3,  &
+        dbkrapm4a, dbkrapm4b, dzapm4, pcapm4, dza01, dza02, sphbsyb, endbsyh_2)
+
+! ------------------------------------------------------------------------------
+
+bsya: line = (alinea, alineb, alinec)
+
+! ------------------------------------------------------------------------------
+
+ltus: line = (dbldl21, ltusc, rwwake5s, endltus)
+ltuh: line = (ltu)
+
+! from SC linac (start at spreader)
+
+bsylcls2scs: line = (spd_1, sps, slts, bsys, ltus, sxrund, dumplineb)
+bsylcls2scss: line = (spd_1, sps, slts, bsys, ltus, sxrund, sftdumpb)
+bsylcls2sch: line = (sph, slth, bsyh_1, bsyh_2, ltuh, hxrund, dumpline)
+bsylcls2schs: line = (sph, slth, bsyh_1, bsyh_2, ltuh, hxrund, sftdump)
+bsylcls2scd: line = (spd_1, spd_2, spd_3, sltd)
+bsylcls2sca: line = (sph, slth, bsyh_1, bsya)
+bsylcls2scda: line = (spd_1, spd_2, dasela)
+bsylcls2scsxtes: line = (spd_1, sps, slts, bsys, ltus, sxrund, sftdumpb1, sxtes)
+
+! from SC linac (start at end of dogleg)
+
+lcls2scs: line = (bypi, fodola, bsylcls2scs)
+lcls2scss: line = (bypi, fodola, bsylcls2scss)
+lcls2sch: line = (bypi, fodola, bsylcls2sch)
+lcls2schs: line = (bypi, fodola, bsylcls2schs)
+lcls2scd: line = (bypi, fodola, bsylcls2scd)
+lcls2sca: line = (bypi, fodola, bsylcls2sca)
+lcls2scda: line = (bypi, fodola, bsylcls2scda)
+lcls2scsxtes: line = (bypi, fodola, bsylcls2scsxtes)
+
+! ------------------------------------------------------------------------------
+

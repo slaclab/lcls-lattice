@@ -1,0 +1,47 @@
+
+! *** OPTICS=AD_ACCEL-23JAN19 ***
+
+! SC_DASEL path configurations
+
+setsp = 0
+setcus = 0
+setal = 0
+setda = 1
+sethxrss = 0 !set to 1 to turn ON HXR self-seeding chicane
+setsxrss = 0 !set to 1 to turn ON SXR self-seeding chicane
+setxleap2 = 0 !set to 1 to turn ON XLEAP-II components
+
+intgsx = 20.0 !kG
+intghx = 12.0 !kG
+efsc = 4.0 !GeV
+eusc = 4.0 !GeV
+
+ CALL, FILENAME="LCLS2sc_master.bmad" !calls other xsif files
+
+!SC_DASELi : LINE=(LCLS2scI,LCLS2scC,LCLS2scDA)
+
+Q10[K1]= 0.040388112814
+Q11[K1]=-0.038712955409
+Q19[K1]= 0.03054367869
+Q20[K1]=-0.125186988934E-2
+Q27[K1]=-0.074602195497
+Q28[K1]= 0.041232949479
+Q30[K1]=-0.029290738963
+Q38[K1]= 0.034019960625
+!
+!  COMMENT !to generate SURVEY
+!    USE, SC_DASEL !start at gun
+!    ! initial energy: E0
+!    ! initial SURVEY: Xgun, Ygun, Zgun, 0, 0, 0
+!  ENDCOMMENT
+!
+! !COMMENT !to generate TWISS
+!    RODAS11P, ANGLE=0
+!    RODAS19P, ANGLE=0
+USE, SC_DASELi !start at BEAM0
+!    ! initial energy: Ei
+!    ! initial Twiss : BXi, AXi, BYi, AYi
+! !ENDCOMMENT
+!
+!  RETURN
+!
