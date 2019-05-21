@@ -1,0 +1,72 @@
+! LCLS BC2 overlays
+
+
+!
+! Max horizontal offset: 520 mm
+! Min horizontal offset: -10 mm
+!  
+
+
+bc2_theta_default = -0.0347274525623816
+bc2_Lp_default = 0.549
+bc2_Lp_drift_default = 9.8602
+
+
+! Overlay for split rectangular bend
+! Split at the rectangular center
+! Lp : total projected length of the bend
+! theta: total angle in radian
+!
+
+O_BX21: overlay = {
+  BX21A[g]:sin(theta)/Lp, 
+  BX21B[g]:sin(theta)/Lp, 
+  BX21A[L]:Lp/sin(theta)*asin(sin(theta)/2),
+  BX21B[L]:Lp/sin(theta) * (theta - asin(sin(theta)/2)),
+  BX21B[e2]:theta}, 
+  var = {Lp, theta},
+  theta = bc2_theta_default,
+  Lp = bc2_Lp_default
+
+O_BX22: overlay = {
+  BX22A[g]:sin(theta)/Lp, 
+  BX22B[g]:sin(theta)/Lp, 
+  BX22B[L]:Lp/sin(theta)*asin(sin(theta)/2),
+  BX22A[L]:Lp/sin(theta) * (theta - asin(sin(theta)/2)),
+  BX22A[e1]:theta}, 
+  var = {Lp, theta},
+  theta = -bc2_theta_default,
+  Lp = bc2_Lp_default
+
+O_BX23: overlay = {
+  BX23A[g]:sin(theta)/Lp, 
+  BX23B[g]:sin(theta)/Lp, 
+  BX23A[L]:Lp/sin(theta)*asin(sin(theta)/2),
+  BX23B[L]:Lp/sin(theta) * (theta - asin(sin(theta)/2)),
+  BX23B[e2]:theta}, 
+  var = {Lp, theta},
+  theta = -bc2_theta_default,
+  Lp = bc2_Lp_default
+
+O_BX24: overlay = {
+  BX24A[g]:sin(theta)/Lp, 
+  BX24B[g]:sin(theta)/Lp, 
+  BX24B[L]:Lp/sin(theta)*asin(sin(theta)/2),
+  BX24A[L]:Lp/sin(theta) * (theta - asin(sin(theta)/2)),
+  BX24A[e1]:theta}, 
+  var = {Lp, theta},
+  theta = bc2_theta_default,
+  Lp = bc2_Lp_default
+
+! Overall BC2 angle
+! Lp_drift is the total projected length of the drift between the first and second bends
+O_BC2: overlay={
+  O_BX21[theta]:angle_deg*pi/180, 
+  O_BX22[theta]:-angle_deg*pi/180, 
+  O_BX23[theta]:-angle_deg*pi/180, 
+  O_BX24[theta]:angle_deg*pi/180,
+  D21oA[L]:D21oA[L] + Lp_drift*(1/cos(angle_deg*pi/180)-1/cos(bc2_theta_default)),
+  D21oB[L]:D21oB[L] + Lp_drift*(1/cos(angle_deg*pi/180)-1/cos(bc2_theta_default))},
+  var = {angle_deg, Lp_drift}, 
+  angle_deg = bc2_theta_default*180/pi,
+  Lp_drift=bc2_Lp_drift_default

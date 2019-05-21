@@ -1,0 +1,75 @@
+! LCLS BC1 overlays
+
+!
+! Max horizontal offset: 300 mm
+! Min horizontal offset: -10 mm
+!  
+
+
+
+
+bc1_theta_default = -0.08675356489032279
+bc1_Lp_default = 0.2032
+bc1_Lp_drift_default = 2.4349 
+ 
+
+ 
+ 
+! Overlay for split rectangular bend
+! Split at the rectangular center
+! Lp : total projected length of the bend
+! theta: total angle in radian
+!
+
+O_BX11: overlay = {
+  BX11A[g]:sin(theta)/Lp, 
+  BX11B[g]:sin(theta)/Lp, 
+  BX11A[L]:Lp/sin(theta)*asin(sin(theta)/2),
+  BX11B[L]:Lp/sin(theta) * (theta - asin(sin(theta)/2)),
+  BX11B[e2]:theta}, 
+  var = {Lp, theta},
+  theta = bc1_theta_default,
+  Lp = bc1_Lp_default
+
+O_BX12: overlay = {
+  BX12A[g]:sin(theta)/Lp, 
+  BX12B[g]:sin(theta)/Lp, 
+  BX12B[L]:Lp/sin(theta)*asin(sin(theta)/2),
+  BX12A[L]:Lp/sin(theta) * (theta - asin(sin(theta)/2)),
+  BX12A[e1]:theta}, 
+  var = {Lp, theta},
+  theta = -bc1_theta_default,
+  Lp = bc1_Lp_default
+
+O_BX13: overlay = {
+  BX13A[g]:sin(theta)/Lp, 
+  BX13B[g]:sin(theta)/Lp, 
+  BX13A[L]:Lp/sin(theta)*asin(sin(theta)/2),
+  BX13B[L]:Lp/sin(theta) * (theta - asin(sin(theta)/2)),
+  BX13B[e2]:theta}, 
+  var = {Lp, theta},
+  theta = -bc1_theta_default,
+  Lp = bc1_Lp_default
+
+O_BX14: overlay = {
+  BX14A[g]:sin(theta)/Lp, 
+  BX14B[g]:sin(theta)/Lp, 
+  BX14B[L]:Lp/sin(theta)*asin(sin(theta)/2),
+  BX14A[L]:Lp/sin(theta) * (theta - asin(sin(theta)/2)),
+  BX14A[e1]:theta}, 
+  var = {Lp, theta},
+  theta = bc1_theta_default,
+  Lp = bc1_Lp_default
+
+! Overall BC2 angle
+! Lp_drift is the total projected length of the drift between the first and second bends
+O_BC1: overlay={
+  O_BX11[theta]:angle_deg*pi/180, 
+  O_BX12[theta]:-angle_deg*pi/180, 
+  O_BX13[theta]:-angle_deg*pi/180, 
+  O_BX14[theta]:angle_deg*pi/180,
+  D11o[L]:D11o[L] + Lp_drift*(1/cos(angle_deg*pi/180)-1/cos(bc1_theta_default)),
+  D11oA[L]:D11oA[L] + Lp_drift*(1/cos(angle_deg*pi/180)-1/cos(bc1_theta_default))},
+  var = {angle_deg, Lp_drift}, 
+  angle_deg = bc1_theta_default*180/pi,
+  Lp_drift=bc1_Lp_drift_default

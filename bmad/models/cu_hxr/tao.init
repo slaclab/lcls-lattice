@@ -1,0 +1,289 @@
+&tao_start
+  n_universes = 1
+  plot_file   ='$LCLS2_LATTICE/bmad/tao/tao_plot.init '
+  startup_file='$LCLS2_LATTICE/bmad/tao/tao.startup'
+/
+
+
+
+
+!--------------------------------------------------------
+&tao_design_lattice
+  !unique_name_suffix="*::_##?"
+  design_lattice(1)%file= 'cu_hxr.lat.bmad'
+!  combine_consecutive_elements_of_like_name = T
+/
+
+!------------------------------------------------------------------------
+&tao_params
+  !global%plot_on = T
+  global%track_type = 'single'
+  global%beam_timer_on = T
+  global%random_engine = 'pseudo' ! or: 'quasi'
+  global%de_lm_step_ratio = 1500
+  global%optimizer = 'lmdif'
+  global%n_opti_cycles = 100
+  !---Bmad---
+  bmad_com%radiation_damping_on = F
+  bmad_com%radiation_fluctuations_on = T
+/
+
+
+&tao_beam_init
+
+!beam_init%use_lattice_center = T
+beam_init%random_engine = 'quasi'
+ix_universe = 1
+beam_saved_at =  "MARKER::*"
+track_start = 'OTR2'
+beam_init%file_name = '$LCLS2_LATTICE/bmad/beams/OTR2_250pC_rescaleto540um_solGTF1M_flat_scattered_20keV_100k.beam0'
+beam_init%center(1) = 0.0
+beam_init%center(2) = 0.0
+beam_init%center(3) = 0.0
+beam_init%center(4) = 0.0
+beam_init%center(5) = 0.0
+beam_init%center(6) = 0.0
+
+/
+
+
+
+
+
+&tao_d2_data
+        d2_data%name = 'floor'
+        universe = 1
+        n_d1_data = 1
+/
+
+&tao_d1_data
+        ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'end'
+        datum( 1) =  'floor.x'     '' '' 'OTR2'   'target' 0     1e1 
+        datum( 2) =  'floor.y'     '' '' 'OTR2'   'target' 0     1e1 
+        datum( 3) =  'floor.z'     '' '' 'OTR2'   'target' 0     1e1 
+        datum( 4) =  'floor.theta'     '' '' 'OTR2'   'target' 0     1e1 
+        datum( 5) =  's_position'  '' '' 'OTR2'   'target' 0     1e1 
+/
+
+
+
+&tao_d2_data
+        d2_data%name = 'L0BBEG'
+        universe = 1
+        n_d1_data = 1
+/
+
+&tao_d1_data
+        ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'begtwiss'
+        datum( 1) =  'beta.a'     '' '' 'L0BBEG'   'target' 1.70256645E+01      1e1   ! Taken from lcls_end_L0a_nominal.beam0
+        datum( 2) =  'alpha.a'    '' '' 'L0BBEG'   'target'  -3.24553454E+00     1e2
+        datum( 3) =  'beta.b'     '' '' 'L0BBEG'   'target' 1.68626004E+01      1e1
+        datum( 4) =  'alpha.b'    '' '' 'L0BBEG'   'target' -3.20070233E+00      1e2
+        datum( 5) =  'eta.x'      '' '' 'L0BBEG'   'target' 0      1e1
+        datum( 6) =  'etap.x'     '' '' 'L0BBEG'   'target' 0      1e2
+/  
+
+
+
+&tao_d2_data
+        d2_data%name = 'OTR2'
+        universe = 1
+        n_d1_data = 1
+/
+
+&tao_d1_data
+        ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'begtwiss'
+        datum( 1) =  'beta.a'     '' '' 'OTR2'   'target'  1.11311451   1e1
+        datum( 2) =  'alpha.a'    '' '' 'OTR2'   'target'  -0.06893842814 1e2
+        datum( 3) =  'beta.b'     '' '' 'OTR2'   'target'  1.113049813     1e1
+        datum( 4) =  'alpha.b'    '' '' 'OTR2'   'target'  -0.07029173589  1e2
+        datum( 5) =  'eta.x'      '' '' 'OTR2'   'target'   0  1e1
+        datum( 6) =  'etap.x'     '' '' 'OTR2'   'target'   0   1e2
+/ 
+
+&tao_d2_data
+        d2_data%name = 'LI22'
+        universe = 1
+        n_d1_data = 1
+/
+&tao_d1_data
+        ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'begtwiss'
+        datum( 1) =  'beta.a'     '' '' 'LI22BEG'   'target' 1.721438409E+01   1e1
+        datum( 2) =  'alpha.a'    '' '' 'LI22BEG'   'target' -6.973054777E-01  1e2
+        datum( 3) =  'beta.b'     '' '' 'LI22BEG'   'target' 3.514977530E+01      1e1
+        datum( 4) =  'alpha.b'    '' '' 'LI22BEG'   'target'  1.459698115E+00  1e2
+        datum( 5) =  'eta.x'      '' '' 'LI22BEG'   'target'   0  1e1
+        datum( 6) =  'etap.x'     '' '' 'LI22BEG'   'target'   0   1e2
+/        
+
+
+
+&tao_d2_data
+        d2_data%name = 'BC1'
+        universe = 1
+        n_d1_data = 4
+/
+&tao_d1_data
+        ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'begtwiss'
+        datum( 1) =  'beta.a'     '' '' 'BC1BEG'   'target'  2.464682280E+01   1e1
+        datum( 2) =  'alpha.a'    '' '' 'BC1BEG'   'target' 3.641936311E+00 1e2
+        datum( 3) =  'beta.b'     '' '' 'BC1BEG'   'target' 3.426118191E+00      1e1
+        datum( 4) =  'alpha.b'    '' '' 'BC1BEG'   'target' 1.465118239E+00  1e2
+        datum( 5) =  'eta.x'      '' '' 'BC1BEG'   'target'   0  1e1
+        datum( 6) =  'etap.x'     '' '' 'BC1BEG'   'target'   0   1e2
+/
+&tao_d1_data
+        ix_d1_data = 2
+        default_weight = 1
+        d1_data%name = 'energy'
+        datum( 1) =  'e_tot_ref'           '' '' 'BC1BEG'   'target'  0   
+        datum( 2) =  'e_tot_ref'           '' '' 'BC1END'   'target'  0   
+        datum( 3) =  'orbit.e_tot'     '' '' 'BC1BEG'   'target'  0   
+        datum( 4) =  'orbit.e_tot'     '' '' 'BC1END'   'target'  0   
+ / 
+ &tao_d1_data
+        ix_d1_data = 3
+        default_weight = 1
+        d1_data%name = 'offset'
+        datum( 1) =  'rel_floor.x'     'BC1BEG' '' 'BX12B'   'target' 0     1e1
+   
+ / 
+ &tao_d1_data
+        ix_d1_data = 4
+        default_weight = 1
+        d1_data%name = 'r56'
+        datum( 1) =  'momentum_compaction'        'BC1BEG'  '' 'BC1END'   'target'  0   
+/ 
+
+ 
+
+&tao_d2_data
+        d2_data%name = 'BC2'
+        universe = 1
+        n_d1_data = 3
+/
+&tao_d1_data
+        ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'begtwiss'
+        datum( 1) =  'beta.a'     '' '' 'BC2BEG'   'target' 999   1e1
+        datum( 2) =  'alpha.a'    '' '' 'BC2BEG'   'target' 999 1e2
+        datum( 3) =  'beta.b'     '' '' 'BC2BEG'   'target' 999     1e1
+        datum( 4) =  'alpha.b'    '' '' 'BC2BEG'   'target' 999  1e2
+        datum( 5) =  'eta.x'      '' '' 'BC2BEG'   'target'   0  1e1
+        datum( 6) =  'etap.x'     '' '' 'BC2BEG'   'target'   0   1e2
+/
+&tao_d1_data
+        ix_d1_data = 2
+        default_weight = 1
+        d1_data%name = 'energy'
+        datum( 1) =  'e_tot_ref'           '' '' 'BC2BEG'   'target'  0   
+        datum( 2) =  'e_tot_ref'           '' '' 'BC2END'   'target'  0   
+        datum( 3) =  'orbit.e_tot'     '' '' 'BC2BEG'   'target'  0   
+        datum( 4) =  'orbit.e_tot'     '' '' 'BC2END'   'target'  0   
+ / 
+ &tao_d1_data
+        ix_d1_data = 3
+        default_weight = 1
+        d1_data%name = 'offset'
+        datum( 1) =  'rel_floor.x'     'BC2BEG' '' 'BX22B'   'target' 0     1e1
+   
+ / 
+
+
+&tao_d2_data
+        d2_data%name = 'L3'
+        universe = 1
+        n_d1_data = 1
+/
+&tao_d1_data
+        ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'energy'
+        datum( 1) =  'e_tot_ref'           '' '' 'L3BEG'   'target'  0   
+        datum( 2) =  'e_tot_ref'           '' '' 'L3END'   'target'  0   
+        datum( 3) =  'orbit.e_tot'     '' '' 'L3BEG'   'target'  0   
+        datum( 4) =  'orbit.e_tot'     '' '' 'L3END'   'target'  0   
+ / 
+
+  
+
+!&tao_d2_data
+        d2_data%name = 'r56'
+        universe = 1
+        n_d1_data = 1
+/    
+!&tao_d1_data
+        ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'endtwiss'
+        datum( 1) =  'r56_compaction'     'LHBEG' '' 'LHEND' 
+        datum( 2) =  'r56_compaction'     'BC1BEG' '' 'BC1END' 
+        datum( 3) =  'r56_compaction'     'BC2BEG' '' 'BC2END'    
+/
+
+
+!----------------------------------------
+!----------------------------------------
+
+&tao_var
+	v1_var%name = 'begtwiss'
+	default_step = 1e-4
+	default_universe = '1'
+	ix_min_var = 1
+	ix_max_var = 6
+	var(1:6)%ele_name  = 'beginning', 'beginning', 'beginning', 'beginning', 'beginning', 'beginning'
+    var(1:6)%attribute = 'beta_a', 'alpha_a', 'beta_b', 'alpha_b', 'eta_x', 'etap_x'
+    var(1)%low_lim = 0.01
+    var(3)%low_lim = 0.01
+/
+
+&tao_var
+    v1_var%name = 'q.OTR2'
+	default_step = 1e-4
+	default_attribute = 'K1'
+	var(1:)%ele_name = 'QA01','QA02', 'QE01', 'QE02', 'QE03', 'QE04'
+/
+
+&tao_var
+    v1_var%name = 'q.LI22'
+	default_step = 1e-4
+	default_attribute = 'K1'
+	var(1:)%ele_name = 'Q21601','Q21701', 'Q21801', 'Q21901'
+/
+
+
+&tao_var
+    v1_var%name = 'q.BC1'
+	default_step = 1e-4
+	default_attribute = 'K1'
+	var(1:)%ele_name =  'QA11', 'QA12', 'Q21201', 'QM11'
+/
+
+&tao_var
+    v1_var%name = 'BC_angle'
+	default_step = 1e-2
+	default_attribute = 'angle_deg'
+	var(1:)%ele_name =  'O_BC1', 'O_BC2'
+/
+
+
+&tao_var
+    v1_var%name = 'linac_fudge'
+	default_step = 1e-4
+	default_attribute = 'f'
+	var(1:)%ele_name =  'O_L1_fudge', 'O_L2_fudge', 'O_L3_fudge'
+/
+
+
+

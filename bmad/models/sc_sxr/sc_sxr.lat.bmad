@@ -1,0 +1,56 @@
+beginning[beta_a] = 10
+beginning[beta_b] = 10
+
+beginning[e_tot] = 100e6
+
+parameter[geometry] = open
+parameter[particle] = electron
+
+call, file = $LCLS2_LATTICE/bmad/master/SC_SXR.bmad
+
+
+! L1
+QC010[K1] =   8.70186500948778E-01
+QC011[K1] =  -1.62780201249847E+00
+QC012[K1] =   1.30921240694765E+00
+QCM02[K1] =  -3.20725177429710E-01
+QCM03[K1] =   1.90838644837975E-01
+
+! L2
+QCM04[K1] =  -3.27490084499777E-01
+QCM08[K1] =  -1.65131830788415E-01
+QCM11[K1] =   1.83596345789152E-01
+QCM15[K1] =   6.74449378680999E-02
+
+! L3
+QCM16[K1] =  -3.20613260446368E-01
+QCM22[K1] =  -1.90642661129443E-01
+QCM29[K1] =   1.83124266243920E-01
+QCM35[K1] =  -1.64080128441526E-03
+
+
+
+lcavity::*[ds_step] = .01
+sbend::*[fringe_type] = full
+
+
+!call, file = beginning/beginning_BEGHTR.bmad
+!use, lcls2scc
+
+!lat: line = (lcls2scc, LCLS2scS)
+!use, lat
+
+
+
+call, file = beginning_BEAM0.bmad
+call, file = floor_BEAM0.bmad
+
+
+
+lat2: line = (LCLS2scI, lcls2scc)
+lat3: line = (LCLS2scI, lcls2scc, LCLS2scS)
+!use, lat3
+
+
+!use, SC_SXR
+use, SC_SXRi
