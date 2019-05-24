@@ -1,0 +1,13 @@
+#!/bin/bash -l
+
+#SBATCH -q regular
+#SBATCH -N 1
+#SBATCH -t 6:00:00
+#SBATCH -A m669
+#SBATCH -C knl
+#SBATCH --tasks-per-node=64
+
+cd $SLURM_SUBMIT_DIR
+
+srun -n 64 -c4 --cpu_bind=cores ./IMPACTknl
+
