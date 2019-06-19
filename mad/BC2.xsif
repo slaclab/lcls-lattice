@@ -1,11 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-23JAN19 ***
+! *** OPTICS=AD_ACCEL-13JUN19 ***
 
 ! LCLS2sc bunch compressor chicane #2
 
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
+! 23-MAY-2019, M. Woodley
+!  * move ENDBC2B to u/s face of QE201 per T. Maxwell
 ! 12-APR-2019, M. Woodley
 !  * rename some MARKERs (to avoid conflicts with LCLS)
 ! ------------------------------------------------------------------------------
@@ -206,6 +208,7 @@
 
   DC2oa : DRIF, L=ZDC2oa/COS(AB2)-LQc/2, TYPE="CSR"
   DC2ob : DRIF, L=ZDC2ob/COS(AB2)-LQc/2, TYPE="CSR"
+  DC2ih : DRIF, L=DC2i[L]/2, TYPE="CSR"
   DC2ia : DRIF, L=0.3795, TYPE="CSR"       !0.35
   DC2ib : DRIF, L=0.165-Ljaw/2, TYPE="CSR" !0.35
   DC2ic : DRIF, L=0.183-Ljaw/2, TYPE="CSR" !0.35
@@ -286,6 +289,7 @@
 ! markers
 
   BC2BcBEG : MARK
+  BC2BcMID : MARK
   CNTBC2   : MARK, TYPE="CENTER"
   BC2BcEND : MARK
 
@@ -301,7 +305,7 @@
 
   BC2c0 : LINE=(BC2BcBEG,&
     BCX21A,BCX21B,DC2o,&
-    BCX22A,BCX22B,DC2i,&
+    BCX22A,BCX22B,DC2ih,BC2BcMID,DC2ih,&
     BCX23A,BCX23B,DC2o,&
     BCX24A,BCX24B,BC2BcEND)
 
@@ -311,10 +315,10 @@
     BCX23A,BCX23B,DC2oc,CQ22B,CQ22B,DC2od,&
     BCX24A,BCX24B,CNTBC2,BC2BcEND)
 
-  BC2 : LINE=(BEGBC2B,BC2i,BC2c,ENDBC2B)
+  BC2 : LINE=(BEGBC2B,BC2i,BC2c)
 
-  EMIT2 : LINE=(BEGEMIT2,&
-    DE200a,BZ21B,DE200b,&
+  EMIT2 : LINE=(&
+    DE200a,BZ21B,DE200b,ENDBC2B,BEGEMIT2,&
     QE201,BPME201,QE201,DE201a,YCE201,DE201b,IM21B,DE201c,&
     QE202,BPME202,QE202,DE202a1,XCE202,DE202a2,WSEMIT2,DE202b,&
     QE203,BPME203,QE203,DE203a,YCE203,DE203b,&

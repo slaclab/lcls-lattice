@@ -1,10 +1,16 @@
 
-! *** OPTICS=AD_ACCEL-23JAN19 ***
+! *** OPTICS=AD_ACCEL-13JUN19 ***
 
 ! LCLS2sc bypass line, plus match to LTU
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 11-JUN-2019, M. Woodley
+!  * change STBP34A/STBP34B from ST60-type to LCLS EBD-type per A. Ibrahimov
+!  * move STBP34A/BTMBP34A and STBP34B/BTMBP34B u/s ~17 m per L. Borzenets
+! 20-FEB-2019, M. Woodley
+!  * move CBP33 ~20 cm u/s per A. Ibrahimov
 ! ------------------------------------------------------------------------------
 ! 07-JAN-2019, M. Woodley
 !  * remove BTMSP1s, BTMSP2s, BTMSP3s, and BTMSP4s per RP-RPG-181130-MEM-01
@@ -295,13 +301,9 @@
   DBP3ab : DRIF, L=DBP3a[L]-DBP3aa[L]-LPCSP
 
   LDCWL := 7.0
-  LST60 := 1.2192 !length of ST60-type stopper
+  DCWLb : DRIF, L=2.158425
+  DCWLa : DRIF, L=LDCWL-LPCSP-DCWLb[L]
   
-  DCWLa : DRIF, L=0.8904
-  DCWLb : DRIF, L=0.7808
-  DCWLc : DRIF, L=0.681175
-  DCWLd : DRIF, L=LDCWL-DCWLa[L]-LST60-DCWLb[L]-LST60-DCWLc[L]-LPCSP
-
   D2Q4e  : DRIF, L=1.651 !1.27
   D2Q4f  : DRIF, L=D2Q4d[L]-(D2Q4e[L]+Ljaw)
   D2Q4h  : DRIF, L=2.4
@@ -323,9 +325,14 @@
   D2Q4ma : DRIF, L=61.387806499999-LBRCUS-0.6096 -zQBP32+zMRGCUS
   D2Q4ma1 : DRIF, L=6.128206+0.2492
   D2Q4ma2 : DRIF, L=D2Q4ma[L]-D2Q4ma1[L]-LPCSP
-  D2Q4mb : DRIF, L=D2Q4m[L]-D2Q4ma[L]-LBRCUS
-  D2Q4mba : DRIF, L=2.35 !49999518034
-  D2Q4mbb : DRIF, L=D2Q4mb[L]-D2Q4mba[L]
+
+  LSTEBD  := 2*(3.125*in2m) !length of EBD-type stopper
+  D2Q4mb  : DRIF, L=D2Q4m[L]-D2Q4ma[L]-LBRCUS
+  D2Q4mba : DRIF, L=2.15244 !2.35
+  D2Q4mbb : DRIF, L=5.09756-LSTEBD/2
+  D2Q4mbc : DRIF, L=1.648-LSTEBD
+  D2Q4mbd : DRIF, L=D2Q4mb[L]-D2Q4mba[L]-D2Q4mbb[L]-LSTEBD-D2Q4mbc[L]-LSTEBD
+
   D2Q4o  : DRIF, L=8.58398-LDCWL -zQBP34
   D2Q4q  : DRIF, L=0.5
   D2Q4s  : DRIF, L=D2Q4d[L]-LQM/2 +zQBP35
@@ -442,8 +449,8 @@
   WSBP3 : WIRE, TYPE="fast"
   WSBP4 : WIRE, TYPE="fast"
 
-  STBP34a : INST, L=LST60, TYPE="PPS STOPPER" !ST60-type stopper
-  STBP34b : INST, L=LST60, TYPE="PPS STOPPER" !ST60-type stopper
+  STBP34A : INST, L=LSTEBD, TYPE="PPS STOPPER" !LCLS EBD-type stopper
+  STBP34B : INST, L=LSTEBD, TYPE="PPS STOPPER" !LCLS EBD-type stopper
 
   PCSP1s : ECOL, L=LPCSP, TYPE="BCS PC", XSIZE=10.2E-3, YSIZE=10.2E-3 !BCS protection collimator
   PCSP2s : ECOL, L=LPCSP, TYPE="BCS PC", XSIZE=10.2E-3, YSIZE=10.2E-3 !BCS protection collimator
@@ -453,8 +460,8 @@
 ! Note: BTMBP34a and BTMBP34b are part of stopper design
 
   CBP33    : INST, TYPE="PPS COLL" !collimator plate (no BTM)
-  BTMBP34a : INST, TYPE="PPS BTM"  !Burn-Through-Monitor behind STBP34a
-  BTMBP34b : INST, TYPE="PPS BTM"  !Burn-Through-Monitor behind STBP34b
+  BTMBP34A : INST, TYPE="PPS BTM"  !Burn-Through-Monitor behind STBP34A
+  BTMBP34B : INST, TYPE="PPS BTM"  !Burn-Through-Monitor behind STBP34B
 
 ! ==============================================================================
 ! MARKER points
@@ -547,18 +554,19 @@
     QBP30,QBP30,D2Q4a,RFBBP30,D2Q4b,XCBP30,D2Q4c,YCBP30,DCYc)
 
   FODOL : LINE=(FODOLa,SPRDs,FODOLb,FODOLc)
-
+ 
   BYPM1 : LINE=(DCYda ,CXBP30 ,DCYdb,&
     QBP31,QBP31,D2Q4a ,BPMBP31,D2Q4b,XCBP31,D2Q4c,YCBP31,D2Q4laa,&
     PCSP1s,D2Q4lab,BPMBP32,D2Q4lb,&
     QBP32,QBP32,D2Q4ab,D2Q4b,XCBP32,D2Q4c,YCBP32,D2Q4ma1,&
     PCSP2s,D2Q4ma2)
 
-  BYPM2 : LINE=(D2Q4mba,CBP33,D2Q4mbb,DBP2b,&
+  BYPM2 : LINE=(D2Q4mba,CBP33,D2Q4mbb,STBP34A,BTMBP34A,D2Q4mbc,&
+    STBP34B,BTMBP34B,D2Q4mbd,DBP2b,&
     QBP33,QBP33,D2Q4a,RFBBP33,D2Q4b,XCBP33,D2Q4c,YCBP33,DBP3aa,&
     PCSP3s,DBP3ab,CXBP34,DBP3b,&
     QBP34,QBP34,D2Q4a,BPMBP34,D2Q4b,XCBP34,D2Q4c,YCBP34,D2Q4o,&
-    DCWLa,STBP34a,BTMBP34a,DCWLb,STBP34b,BTMBP34b,DCWLc,PCSP4s,DCWLd)
+    DCWLa,PCSP4s,DCWLb)
 
   BYPM : LINE=(BYPM1,BRCUS1a,BRCUS1b,MRGCUSXR,BYPM2)
 

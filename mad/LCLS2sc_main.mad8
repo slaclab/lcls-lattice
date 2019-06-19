@@ -1,6 +1,6 @@
-  TITLE, "AD_ACCEL (January 23, 2019)" !superconducting linac
+  TITLE, "AD_ACCEL (June 13, 2019)" !superconducting linac
 
-! *** OPTICS=AD_ACCEL-23JAN19 ***
+! *** OPTICS=AD_ACCEL-13JUN19 ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY, DOUBLE
   ASSIGN, ECHO="LCLS2sc.echo"
@@ -8,6 +8,10 @@
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 28-MAY-2019, M. Woodley
+!  * rematch through SXR undulator (self-seeding chicane moved from cell 33
+!    to cell 35)
 ! ------------------------------------------------------------------------------
 ! 19-JUL-2017, M. Woodley
 !  * structural changes in deck to accomodate MAD-to-BMAD
@@ -256,8 +260,8 @@
 ! SLTS   : start of BSY to Cu/SC linac merge
 ! BSYS   : Cu/SC merge to end of BSY
 ! LTUS   : SXR LTU (from d/s end of muon wall)
-! UNDS   : SXR extension+ undulator
-! DMPS_1 : SXR undulator end to dump line
+! UNDS   : SXR extension + SXR undulator
+! DMPS_1 : SXR post-undulator line
 ! DMPS_2 : SXR dump line
 ! SFTS_1 : BYDSS u/s face to BXPM1B u/s face
 ! SFTS_2 : BXPM1B u/s face to SXR safety dump
@@ -271,7 +275,7 @@
 ! BSYH_2 : A-line kickers to end of BSY
 ! LTUH   : HXR LTU (from d/s end of muon wall)
 ! UNDH   : HXR undulator
-! DMPH_1 : HXR undulator end to dump line
+! DMPH_1 : HXR post-undulator line
 ! DMPH_2 : HXR dump line
 ! SFTH_1 : BYDSH u/s face to BXPM1 u/s face
 ! SFTH_2 : BXPM1 u/s face to HXR safety dump
@@ -454,18 +458,18 @@
     SET, KQE34B, -0.702975844569
     SET, KQE35B,  0.725508067973
     SET, KQE36B, -0.272464322584
-    SET, KQUM1B,  1.045304716298
-    SET, KQUM2B, -1.127266321918
-    SET, KQUM3B,  0.091990859369
-    SET, KQUM4B,  0.168743458401
-    SET, KQSX16,  1.179776342196
-    SET, KQSX19, -1.555528787668
-    SET, KQSX21,  1.660683967379
-    SET, KQSX24, -1.983210390097
-    SET, KQDSXM, -0.406434161462
-    SET, KQUE1B, -0.297915551865
-    SET, KQUE2B,  0.390984021273
-    SET, KQDMPB, -0.154946553294
+    SET, KQUM1B,  1.043940116043 ! 1.045304716298
+    SET, KQUM2B, -1.131319760136 !-1.127266321918
+    SET, KQUM3B,  0.091635243224 ! 0.091990859369
+    SET, KQUM4B,  0.164719091719 ! 0.168743458401
+    SET, KQSX16,  1.149746713176 ! 1.179776342196
+    SET, KQSX19, -1.551005594041 !-1.555528787668
+    SET, KQSX21,  1.654950860956 ! 1.660683967379
+    SET, KQSX24, -1.927727127613 !-1.983210390097
+    SET, KQDSXM, -0.257825061187 !-0.406434161462
+    SET, KQUE1B, -0.30534765361  !-0.297915551865
+    SET, KQUE2B,  0.393680974176 ! 0.390984021273
+    SET, KQDMPB, -0.155219672598 !-0.154946553294
   ENDSUBROUTINE
 
 ! ==============================================================================
@@ -495,20 +499,9 @@
     ASSIGN, PRINT="EIC.print"
     BEAM, ENERGY=E0
     USE, SC_EIC
-   !SAVELINE, NAME="SC_EIC", FILENAME="EIC.saveline"
     PRINT, FULL
-    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="EIC_survey.tape"
-    BEAM, ENERGY=E0
-    USE, SC_EIC
-    PRINT, FULL
-    TWISS, COUPLE, BETA0=TWSS0, SAVE, TAPE="EIC_twiss.tape" !, &
-   !  RTAPE="EIC_rmat.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, VMAX=0.0012, &
-      STYLE=100, SPLINE, FILE="EIC", &
-      TITLE="SC-linac: Early Injector Commissioning"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, FILE="EIC", &
-      TITLE="SC-linac: Early Injector Commissioning"
+    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun
+    TWISS, COUPLE, BETA0=TWSS0, TAPE="EIC_twiss.tape", RTAPE="EIC_rmat.tape"
   ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
@@ -527,16 +520,16 @@
    !SETK2scXL2 !turns on XLEAP2 components and optics
     USE, SC_SXRi
     PRINT, FULL
-    TWISS, BETA0=TWSSi, SAVE, TAPE="LCLS2scS_twiss.tape" !, &
+    TWISS, SAVE, BETA0=TWSSi, TAPE="LCLS2scS_twiss.tape" !, &
    !  RTAPE="LCLS2scS_rmat.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, VMAX=5, &
-      STYLE=100, SPLINE, RANGE=BEAM0/DUMPFACEb, FILE="LCLS2scS", &
+      STYLE=100, SPLINE, RANGE=BEAM0/DUMPFACEB, FILE="LCLS2scS", &
       TITLE="SC-linac to SXR dump"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=BEAM0/DUMPFACEb, FILE="LCLS2scS", &
+      STYLE=100, SPLINE, RANGE=BEAM0/DUMPFACEB, FILE="LCLS2scS", &
       TITLE="SC-linac to SXR dump"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE, RANGE=BEAM0/DUMPFACEb, FILE="LCLS2scS", &
+      STYLE=100, SPLINE, RANGE=BEAM0/DUMPFACEB, FILE="LCLS2scS", &
       TITLE="SC-linac to SXR dump"
  !ENDCOMMENT
 
@@ -553,24 +546,25 @@
     PRINT, FULL
     SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scSS_survey.tape"
     BEAM, ENERGY=Ei
+   !SETK2scXL2 !turns on XLEAP2 components and optics
     USE, SC_SFTSi
     PRINT, FULL
-    TWISS, BETA0=TWSSi, SAVE, TAPE="LCLS2scSS_twiss.tape" !, &
+    TWISS, SAVE, BETA0=TWSSi, TAPE="LCLS2scSS_twiss.tape" !, &
    !  RTAPE="LCLS2scSS_rmat.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, VMAX=5, &
-      STYLE=100, SPLINE, RANGE=BEAM0/SFTDMPb, FILE="LCLS2scSS", &
+      STYLE=100, SPLINE, RANGE=BEAM0/SFTDMPB, FILE="LCLS2scSS", &
       TITLE="SC-linac to SXR safety dump"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=BEAM0/SFTDMPb, FILE="LCLS2scSS", &
+      STYLE=100, SPLINE, RANGE=BEAM0/SFTDMPB, FILE="LCLS2scSS", &
       TITLE="SC-linac to SXR safety dump"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE, RANGE=BEAM0/SFTDMPb, FILE="LCLS2scSS", &
+      STYLE=100, SPLINE, RANGE=BEAM0/SFTDMPB, FILE="LCLS2scSS", &
       TITLE="SC-linac to SXR safety dump"
   ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
 
-! SXR XTES
+! SXR XTES (SURVEY only)
 
   COMMENT
     ASSIGN, PRINT="LCLS2scSXTES.print"
@@ -595,16 +589,19 @@
     PRINT, FULL
     SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scH_survey.tape"
     BEAM, ENERGY=Ei
-    USE, (LCLS2scI,LCLS2scC,LCLS2scH)
+    USE, SC_HXRi
     PRINT, FULL
-    TWISS, BETA0=TWSSi, SAVE, TAPE="LCLS2scH_twiss.tape" !, &
+    TWISS, SAVE, BETA0=TWSSi, TAPE="LCLS2scH_twiss.tape" !, &
    !  RTAPE="LCLS2scH_rmat.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, VMAX=5, &
-      STYLE=100, SPLINE, FILE="LCLS2scH"
+      STYLE=100, SPLINE, RANGE=BEAM0/DUMPFACE, FILE="LCLS2scH", &
+      TITLE="SC-linac to HXR dump"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, FILE="LCLS2scH"
+      STYLE=100, SPLINE, RANGE=BEAM0/DUMPFACE, FILE="LCLS2scH", &
+      TITLE="SC-linac to HXR dump"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE, FILE="LCLS2scH"
+      STYLE=100, SPLINE, RANGE=BEAM0/DUMPFACE, FILE="LCLS2scH", &
+      TITLE="SC-linac to HXR dump"
  !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
@@ -620,16 +617,19 @@
     PRINT, FULL
     SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scD_survey.tape"
     BEAM, ENERGY=Ei
-    USE, (LCLS2scI,LCLS2scC,LCLS2scD)
+    USE, SC_BSYDi
     PRINT, FULL
-    TWISS, BETA0=TWSSi, SAVE, TAPE="LCLS2scD_twiss.tape" !, &
+    TWISS, SAVE, BETA0=TWSSi, TAPE="LCLS2scD_twiss.tape" !, &
    !  RTAPE="LCLS2scD_rmat.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, VMAX=5, &
-      STYLE=100, SPLINE, FILE="LCLS2scD"
+      STYLE=100, SPLINE, RANGE=BEAM0/DUMPBSY, FILE="LCLS2scD", &
+      TITLE="SC-linac to BSY dump"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, FILE="LCLS2scD"
+      STYLE=100, SPLINE, RANGE=BEAM0/DUMPBSY, FILE="LCLS2scD", &
+      TITLE="SC-linac to BSY dump"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE, FILE="LCLS2scD"
+      STYLE=100, SPLINE, RANGE=BEAM0/DUMPBSY, FILE="LCLS2scD", &
+      TITLE="SC-linac to BSY dump"
  !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
@@ -644,19 +644,21 @@
     PRINT, FULL
     SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="DIAG0_survey.tape"
     BEAM, ENERGY=Ei
-    USE, (LCLS2scI,HTR,DIAG0)
+    USE, SC_DIAG0i
     PRINT, FULL
-    TWISS, BETA0=TWSSi, SAVE, TAPE="DIAG0_twiss.tape" !, &
+    TWISS, SAVE, BETA0=TWSSi, TAPE="DIAG0_twiss.tape" !, &
    !  RTAPE="DIAG0_rmat.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, FILE="DIAG0"
+      STYLE=100, SPLINE, RANGE=BEAM0/ENDDIAG0, FILE="DIAG0", &
+      TITLE="SC-linac to DIAG0"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE, FILE="DIAG0"
+      STYLE=100, SPLINE, RANGE=BEAM0/ENDDIAG0, FILE="DIAG0", &
+      TITLE="SC-linac to DIAG0"
  !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
 
-! DASEL
+! DASEL (deferred)
 
  !COMMENT
     ASSIGN, PRINT="LCLS2scDA.print"
@@ -669,19 +671,19 @@
     SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scDA_survey.tape"
     BEAM, ENERGY=Ei
     SET, ROLLRC, 0
-    USE, (LCLS2scI,LCLS2scC,LCLS2scDA)
+    USE, SC_DASELi
     PRINT, FULL
-    TWISS, BETA0=TWSSi, SAVE, TAPE="LCLS2scDA_twiss.tape" !, &
+    TWISS, SAVE, BETA0=TWSSi, TAPE="LCLS2scDA_twiss.tape" !, &
    !  RTAPE="LCLS2scDA_rmat.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, VMAX=5, &
-      STYLE=100, SPLINE, RANGE=#S/ALWALL, FILE="LCLS2scDA", &
-      TITLE="Injector to DASEL"
+      STYLE=100, SPLINE, RANGE=BEAM0/ENDBSYA_2, FILE="LCLS2scDA", &
+      TITLE="SC-linac to DASEL"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=rBETX,rBETY, &
-      STYLE=100, SPLINE, RANGE=#S/ALWALL, FILE="LCLS2scDA", &
-      TITLE="Injector to DASEL"
+      STYLE=100, SPLINE, RANGE=BEAM0/ENDBSYA_2, FILE="LCLS2scDA", &
+      TITLE="SC-linac to DASEL"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE, RANGE=#S/ALWALL, FILE="LCLS2scDA", &
-      TITLE="Injector to DASEL"
+      STYLE=100, SPLINE, RANGE=BEAM0/ENDBSYA_2, FILE="LCLS2scDA", &
+      TITLE="SC-linac to DASEL"
     SET, ROLLRC, +1
  !ENDCOMMENT
 
@@ -759,7 +761,7 @@
 
 ! ------------------------------------------------------------------------------
 
-! DASEL
+! DASEL (deferred)
 
  !COMMENT
     ASSIGN, PRINT="BSY-LCLS2scDA.print"
@@ -784,108 +786,108 @@
     BEAM, ENERGY=E0
     USE, (GUN,L0)
     PRINT, FULL
-    TWISS, COUPLE, BETA0=TWSS0, SAVE
+    TWISS, SAVE, COUPLE, BETA0=TWSS0
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, VMAX=0.12, &
-      COLOUR=100, FILE="LCLS2sc_color", &
-      TITLE="Gun + L0"
+      COLOUR=100, -SPLINE, RANGE=CATHODEB/ENDL0B, FILE="LCLS2sc_color", &
+      TITLE="GUNB + L0B"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, VMIN=0, VMAX=20, &
-      COLOUR=100, FILE="LCLS2sc_color", &
-      TITLE="Gun + L0", 
+      COLOUR=100, -SPLINE, RANGE=CATHODEB/ENDL0B, FILE="LCLS2sc_color", &
+      TITLE="GUNB + L0B"
 
   ! BEAM0 to SXR Main Dump
 
     BEAM, ENERGY=Ei
     SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
-    USE, (LCLS2scI,LCLS2scC,LCLS2scS)
-    TWISS, BETA0=TWSSi, SAVE
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
-      COLOUR=100, SPLINE, RANGE=#S/ENDL1B, FILE="LCLS2sc_color", &
-      TITLE="Laser Heater + Coll0 + L1"
+    USE, SC_SXRi
+    TWISS, SAVE, BETA0=TWSSi
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, &
+      COLOUR=100, SPLINE, RANGE=BEAM0/ENDL1B, FILE="LCLS2sc_color", &
+      TITLE="Laser Heater + Coll0 + L1B"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=#S/ENDL1B, FILE="LCLS2sc_color", &
-      TITLE="Laser Heater + Coll0 + L1"
+      COLOUR=100, SPLINE, RANGE=BEAM0/ENDL1B, FILE="LCLS2sc_color", &
+      TITLE="Laser Heater + Coll0 + L1B"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=ENDL1B/BEGL2B, FILE="LCLS2sc_color", &
-      TITLE="BC1 + Coll1"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
+      COLOUR=100, SPLINE, RANGE=BEGBC1B/ENDCOL1, FILE="LCLS2sc_color", &
+      TITLE="BC1B + Coll1"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, &
       COLOUR=100, SPLINE, RANGE=BEGL2B/ENDL2B, FILE="LCLS2sc_color", &
-      TITLE="L2"
+      TITLE="L2B"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
       COLOUR=100, SPLINE, RANGE=BEGL2B/ENDL2B, FILE="LCLS2sc_color", &
-      TITLE="L2"
+      TITLE="L2B"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=ENDL2B/BEGL3B, FILE="LCLS2sc_color", &
-      TITLE="BC2 + Emit2"
+      COLOUR=100, SPLINE, RANGE=BEGBC2B/ENDEMIT2, FILE="LCLS2sc_color", &
+      TITLE="BC2B + Emit2"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, VMAX=5, &
       COLOUR=100, SPLINE, RANGE=BEGL3B/ENDEXT, FILE="LCLS2sc_color", &
-      TITLE="L3 + Extension"
+      TITLE="L3B + Extension"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
       COLOUR=100, SPLINE, RANGE=BEGL3B/ENDEXT, FILE="LCLS2sc_color", &
-      TITLE="L3 + Extension"
+      TITLE="L3B + Extension"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=ENDEXT/MQBP13, FILE="LCLS2sc_color", &
+      COLOUR=100, SPLINE, RANGE=BEGDOG/MQBP13, FILE="LCLS2sc_color", &
       TITLE="Dogleg + Match to Bypass + NIT Extension"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      COLOUR=100, SPLINE, RANGE=MQBP13/LTUSPLIT, FILE="LCLS2sc_color", &
-      TITLE="Bypass Line to SPREADER"
+      COLOUR=100, SPLINE, RANGE=MQBP13/ENDSPD_1, FILE="LCLS2sc_color", &
+      TITLE="Bypass Line to Spreader"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=LTUSPLIT/SXXTERM, FILE="LCLS2sc_color", &
-      TITLE="SPREADER to SXR Undulator"
+      COLOUR=100, SPLINE, RANGE=BEGSPS/ENDLTUS, FILE="LCLS2sc_color", &
+      TITLE="Spreader + LTUS"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=SXXTERM/#E, FILE="LCLS2sc_color", &
+      COLOUR=100, SPLINE, RANGE=BEGUNDS/DUMPFACEB, FILE="LCLS2sc_color", &
       TITLE="SXR Undulator to Dump"
 
-  ! BEAM0 to SXR Safety Dump
+  ! SXR Safety Dump
 
     BEAM, ENERGY=Ei
     SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
-    USE, (LCLS2scI,LCLS2scC,LCLS2scSS)
-    TWISS, BETA0=TWSSi, SAVE
+    USE, SC_SFTSi
+    TWISS, SAVE, BETA0=TWSSi
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGSFTS_1/#E, FILE="LCLS2sc_color", &
+      COLOUR=100, SPLINE, RANGE=BEGSFTS_1/SFTDMPB, FILE="LCLS2sc_color", &
       TITLE="SXR Safety Dump"
 
-  ! BEAM0 to HXR Main Dump
+  ! Spreader to HXR Main Dump
 
     BEAM, ENERGY=Ei
     SET, SETSP, SETSPh ; SET, SETAL, ALOFF
-    USE, (LCLS2scI,LCLS2scC,LCLS2scH)
-    TWISS, BETA0=TWSSi, SAVE
+    USE, SC_HXRi
+    TWISS, SAVE, BETA0=TWSSi
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=LTUSPLIT/BEGUNDH, FILE="LCLS2sc_color", &
-      TITLE="SPREADER to HXR Undulator"
+      COLOUR=100, SPLINE, RANGE=BEGSPH/ENDLTUH, FILE="LCLS2sc_color", &
+      TITLE="Spreader + LTUH"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGUNDH/#E, FILE="LCLS2sc_color", &
+      COLOUR=100, SPLINE, RANGE=BEGUNDH/DUMPFACE, FILE="LCLS2sc_color", &
       TITLE="HXR Undulator to Dump"
 
-  ! BEAM0 to BSY Dump
+  ! Spreader to BSY Dump
 
     BEAM, ENERGY=Ei
     SET, SETSP, SETSPd ; SET, SETDA, DAOFF
-    USE, (LCLS2scI,LCLS2scC,LCLS2scD)
-    TWISS, BETA0=TWSSi, SAVE
+    USE, SC_BSYDi
+    TWISS, SAVE, BETA0=TWSSi
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=LTUSPLIT/#E, FILE="LCLS2sc_color", &
-      TITLE="SPREADER to BSY Dump"
+      COLOUR=100, SPLINE, RANGE=BEGSPD_1/DUMPBSY, FILE="LCLS2sc_color", &
+      TITLE="Spreader to BSY Dump"
 
-  ! BEAM0 to DIAG0
+  ! DIAG0
 
     BEAM, ENERGY=Ei
-    USE, (LCLS2scI,HTR,DIAG0)
-    TWISS, BETA0=TWSSi, SAVE
+    USE, SC_DIAG0i
+    TWISS, SAVE, BETA0=TWSSi
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGDIAG0/#E, FILE="LCLS2sc_color", &
+      COLOUR=100, SPLINE, RANGE=BEGDIAG0/ENDDIAG0, FILE="LCLS2sc_color", &
       TITLE="DIAG0"
 
-  ! BEAM0 to DASEL
+  ! DASEL (deferred)
 
     BEAM, ENERGY=Ei
     SET, SETSP, SETSPd ; SET, SETDA, DAON ; SET, ROLLRC, 0
     SETK2scDA
-    USE, (LCLS2scI,LCLS2scC,LCLS2scDA)
-    TWISS, BETA0=TWSSi, SAVE
+    USE, SC_DASELi
+    TWISS, SAVE, BETA0=TWSSi
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=rBETX,rBETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=DASEL/ALWALL, FILE="LCLS2sc_color", &
+      COLOUR=100, SPLINE, RANGE=BEGDASEL/ENDBSYA_2, FILE="LCLS2sc_color", &
       TITLE="DASEL to A-line"
     SET, ROLLRC, +1
  !ENDCOMMENT
@@ -921,5 +923,27 @@
   endcomment
 
 ! ------------------------------------------------------------------------------
+
+  STOP
+
+! ------------------------------------------------------------------------------
+
+  SET, AB5, 0 !SXRSS off
+  BEAM, ENERGY=4.0
+  USE, SXCEL35
+  PRINT, FULL
+  SURVEY, TAPE="LCLS2scS_survey4.tape"
+
+  SET, AB5, -1.279114e-02 !bend angle (rad) for BL= 2.56 kG-m (9 A) @ 6 GeV
+  BEAM, ENERGY=6.0
+  USE, SXCEL35
+  PRINT, FULL
+  SURVEY, TAPE="LCLS2scS_survey6.tape"
+
+  SET, AB5, -8.527430e-03 !bend angle (rad) for BL= 2.56 kG-m (9 A) @ 9 GeV
+  BEAM, ENERGY=9.0
+  USE, SXCEL35
+  PRINT, FULL
+  SURVEY, TAPE="LCLS2scS_survey9.tape"
 
   STOP

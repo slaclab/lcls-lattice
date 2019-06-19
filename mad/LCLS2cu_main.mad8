@@ -1,6 +1,6 @@
-  TITLE, "AD_ACCEL (January 23, 2019)" !copper linac
+  TITLE, "AD_ACCEL (June 13, 2019)" !copper linac
 
-! *** OPTICS=AD_ACCEL-23JAN19 ***
+! *** OPTICS=AD_ACCEL-13JUN19 ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY
   ASSIGN, ECHO="LCLS2cu.echo"
@@ -80,7 +80,7 @@
 ! BSYH_2 : A-line kickers to end of BSY
 ! LTUH   : HXR LTU (from end of BSY)
 ! UNDH   : HXR undulator
-! DMPH_1 : HXR undulator end to dump line
+! DMPH_1 : HXR post-undulator line
 ! DMPH_2 : HXR dump line
 ! SFTH_1 : BYDSH u/s face to BXPM1 u/s face
 ! SFTH_2 : BXPM1 u/s face to HXR safety dump
@@ -91,8 +91,8 @@
 ! CUSXR  : CUSXR kicker to Cu/SC linac merge
 ! BSYS   : Cu/SC merge to end of BSY
 ! LTUS   : SXR LTU (from end of BSY)
-! UNDS   : SXR extension+ undulator
-! DMPS_1 : SXR undulator end to dump line
+! UNDS   : SXR extension + SXR undulator
+! DMPS_1 : SXR post-undulator line
 ! DMPS_2 : SXR dump line
 ! SFTS_1 : BYDSS u/s face to BXPM1B u/s face
 ! SFTS_2 : BXPM1B u/s face to SXR safety dump
@@ -275,18 +275,18 @@
     SET, KQE34B, -0.702975844569
     SET, KQE35B,  0.725508067973
     SET, KQE36B, -0.272464322584
-    SET, KQUM1B,  1.045304716298
-    SET, KQUM2B, -1.127266321918
-    SET, KQUM3B,  0.091990859369
-    SET, KQUM4B,  0.168743458401
-    SET, KQSX16,  1.179776342196
-    SET, KQSX19, -1.555528787668
-    SET, KQSX21,  1.660683967379
-    SET, KQSX24, -1.983210390097
-    SET, KQDSXM, -0.406434161462
-    SET, KQUE1B, -0.297915551865
-    SET, KQUE2B,  0.390984021273
-    SET, KQDMPB, -0.154946553294
+    SET, KQUM1B,  1.043940116043 ! 1.045304716298
+    SET, KQUM2B, -1.131319760136 !-1.127266321918
+    SET, KQUM3B,  0.091635243224 ! 0.091990859369
+    SET, KQUM4B,  0.164719091719 ! 0.168743458401
+    SET, KQSX16,  1.149746713176 ! 1.179776342196
+    SET, KQSX19, -1.551005594041 !-1.555528787668
+    SET, KQSX21,  1.654950860956 ! 1.660683967379
+    SET, KQSX24, -1.927727127613 !-1.983210390097
+    SET, KQDSXM, -0.257825061187 !-0.406434161462
+    SET, KQUE1B, -0.30534765361  !-0.297915551865
+    SET, KQUE2B,  0.393680974176 ! 0.390984021273
+    SET, KQDMPB, -0.155219672598 !-0.154946553294
   ENDSUBROUTINE
 
 ! ==============================================================================
@@ -320,7 +320,7 @@
    !SAVELINE, NAME="CU_HXR", FILENAME="LCLS2cuH.saveline"
     PRINT, FULL
     SURVEY, THETA0=ADL1, X0=Xi, Z0=Zi, TAPE="LCLS2cuH_survey.tape"
-    TWISS, BETA0=TWSSC, SAVE, TAPE="LCLS2cuH_twiss.tape" !, &
+    TWISS, SAVE, BETA0=TWSSC, TAPE="LCLS2cuH_twiss.tape" !, &
    !  RTAPE="LCLS2cuH_rmat.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
       STYLE=100, SPLINE, RANGE=BEGDL1_1/DUMPFACE, FILE="LCLS2cuH", &
@@ -346,7 +346,7 @@
    !SAVELINE, NAME="CU_SFTH", FILENAME="LCLS2cuHS.saveline"
     PRINT, FULL
     SURVEY, THETA0=ADL1, X0=Xi, Z0=Zi, TAPE="LCLS2cuHS_survey.tape"
-    TWISS, BETA0=TWSSC, SAVE, TAPE="LCLS2cuHS_twiss.tape" !, &
+    TWISS, SAVE, BETA0=TWSSC, TAPE="LCLS2cuHS_twiss.tape" !, &
    !  RTAPE="LCLS2cuHS_rmat.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
       STYLE=100, SPLINE, RANGE=BEGDL1_1/SFTDMP, FILE="LCLS2cuHS", &
@@ -361,7 +361,7 @@
 
 ! ------------------------------------------------------------------------------
 
-! HXR XTES
+! HXR XTES (SURVEY only)
 
   COMMENT
     ASSIGN, PRINT="LCLS2cuHXTES.print"
@@ -392,16 +392,16 @@
    !SAVELINE, NAME="CU_SXR", FILENAME="LCLS2cuS.saveline"
     PRINT, FULL
     SURVEY, THETA0=ADL1, X0=Xi, Z0=Zi, TAPE="LCLS2cuS_survey.tape"
-    TWISS, BETA0=TWSSC, SAVE, TAPE="LCLS2cuS_twiss.tape" !, &
+    TWISS, SAVE, BETA0=TWSSC, TAPE="LCLS2cuS_twiss.tape" !, &
    !  RTAPE="LCLS2cuS_rmat.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
-      STYLE=100, SPLINE, RANGE=BEGDL1_1/DUMPFACEb, FILE="LCLS2cuS", &
+      STYLE=100, SPLINE, RANGE=BEGDL1_1/DUMPFACEB, FILE="LCLS2cuS", &
       TITLE="Cu-linac to SXR dump"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=BEGDL1_1/DUMPFACEb, FILE="LCLS2cuS", &
+      STYLE=100, SPLINE, RANGE=BEGDL1_1/DUMPFACEB, FILE="LCLS2cuS", &
       TITLE="Cu-linac to SXR dump"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE, RANGE=BEGDL1_1/DUMPFACEb, FILE="LCLS2cuS", &
+      STYLE=100, SPLINE, RANGE=BEGDL1_1/DUMPFACEB, FILE="LCLS2cuS", &
       TITLE="Cu-linac to SXR dump"
     SET, EBC2, EBC2Cu ; SET, Ef, EfCu ; SET, Eu, EuCu
  !ENDCOMMENT
@@ -419,22 +419,22 @@
    !SAVELINE, NAME="CU_ALINE", FILENAME="LCLS2cuA.saveline"
     PRINT, FULL
     SURVEY, THETA0=ADL1, X0=Xi, Z0=Zi, TAPE="LCLS2cuA_survey.tape"
-    TWISS, BETA0=TWSSC, SAVE, TAPE="LCLS2cuA_twiss.tape" !, &
+    TWISS, SAVE, BETA0=TWSSC, TAPE="LCLS2cuA_twiss.tape" !, &
    !  RTAPE="LCLS2cuA_rmat.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
-      STYLE=100, SPLINE, RANGE=BEGDL1_1/ALWALL, FILE="LCLS2cuA", &
+      STYLE=100, SPLINE, RANGE=BEGDL1_1/ENDBSYA_2, FILE="LCLS2cuA", &
       TITLE="Cu-linac to A-line"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=rBETX,rBETY, &
-      STYLE=100, SPLINE, RANGE=BEGDL1_1/ALWALL, FILE="LCLS2cuA", &
+      STYLE=100, SPLINE, RANGE=BEGDL1_1/ENDBSYA_2, FILE="LCLS2cuA", &
       TITLE="Cu-linac to A-line"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE, RANGE=BEGDL1_1/ALWALL, FILE="LCLS2cuA", &
+      STYLE=100, SPLINE, RANGE=BEGDL1_1/ENDBSYA_2, FILE="LCLS2cuA", &
       TITLE="Cu-linac to A-line"
  !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
 
-! gun spectrometer
+! 6 MeV gun spectrometer
 
   COMMENT
     ASSIGN, PRINT="LCLS2cuGSPEC.print"
@@ -443,7 +443,7 @@
    !SAVELINE, NAME="CU_GSPEC", FILENAME="LCLS2cuGSPEC.saveline"
     PRINT, FULL
     SURVEY, THETA0=ADL1, X0=Xi, Z0=Zi, TAPE="LCLS2cuGSPEC_survey.tape"
-    TWISS, BETA0=TWSSC, SAVE, TAPE="LCLS2cuGSPEC_twiss.tape" !, &
+    TWISS, SAVE, BETA0=TWSSC, TAPE="LCLS2cuGSPEC_twiss.tape" !, &
    !  RTAPE="LCLS2cuGSPEC_rmat.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX, &
       STYLE=100, SPLINE, RANGE=BEGGUN/ENDGSPEC, FILE="LCLS2cuGSPEC", &
@@ -461,7 +461,7 @@
    !SAVELINE, NAME="CU_SPEC", FILENAME="LCLS2cuSPEC.saveline"
     PRINT, FULL
     SURVEY, THETA0=ADL1, X0=Xi, Z0=Zi, TAPE="LCLS2cuSPEC_survey.tape"
-    TWISS, BETA0=TWSSC, SAVE, TAPE="LCLS2cuSPEC_twiss.tape" !, &
+    TWISS, SAVE, BETA0=TWSSC, TAPE="LCLS2cuSPEC_twiss.tape" !, &
    !  RTAPE="LCLS2cuSPEC_rmat.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX, &
       STYLE=100, SPLINE, RANGE=BEGGUN/ENDSPEC, FILE="LCLS2cuSPEC", &
@@ -469,7 +469,7 @@
   ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
-! SURVEY in BSY coordinates (from start of spreader)
+! SURVEY in BSY coordinates (from end of L3)
 ! ------------------------------------------------------------------------------
 
 ! HXR
@@ -578,7 +578,7 @@
     SETK2cuH
     USE, CU_HXR
     PRINT, FULL
-    TWISS, BETA0=TWSSC, SAVE !, RTAPE="LCLS2cuH_rmat.tape"
+    TWISS, SAVE, BETA0=TWSSC
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
       COLOUR=100, RANGE=BEGDL1_1/DUMPFACE, FILE="LCLS2cu_color", &
       TITLE="Cu_linac: DL1 to HXR dump"
@@ -609,7 +609,6 @@
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX, &
       COLOUR=100, SPLINE, RANGE=BEGBC2/ENDBC2, FILE="LCLS2cu_color", &
       TITLE="Cu_linac: BC2 chicane"
-     !RANGE=BPM24301/BPM25501 !wider range
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
       COLOUR=100, SPLINE, RANGE=BEGL3/ENDL3, FILE="LCLS2cu_color", &
       TITLE="Cu_linac: L3 linac"
@@ -617,17 +616,20 @@
       COLOUR=100, SPLINE, RANGE=BEGCLTH_0/ENDBSYH_2, FILE="LCLS2cu_color", &
       TITLE="Cu_linac: BSY to LTUH"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGBSYH_1/ENDLTUH, FILE="LCLS2cu_color", &
+      COLOUR=100, SPLINE, RANGE=BEGLTUH/ENDLTUH, FILE="LCLS2cu_color", &
       TITLE="Cu_linac: LTUH"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      COLOUR=100, SPLINE, RANGE=BEGUNDH/ENDUNDH, FILE="LCLS2cu_color", &
+      TITLE="Cu_linac: HXR Undulator"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGUNDH/DUMPFACE, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: HXR Undulator to dump"
+      COLOUR=100, SPLINE, RANGE=BEGDMPH_1/DUMPFACE, FILE="LCLS2cu_color", &
+      TITLE="Cu_linac: HXR Post-undulator to dump"
 
   ! Cathode to HXR Safety Dump
 
     BEAM, ENERGY=E00
     USE, CU_SFTH
-    TWISS, BETA0=TWSSC, SAVE
+    TWISS, SAVE, BETA0=TWSSC
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
       COLOUR=100, SPLINE, RANGE=BEGSFTH_1/SFTDUMP, FILE="LCLS2cu_color", &
       TITLE="Cu_linac: HXR safety dump"
@@ -645,25 +647,28 @@
     USE, CU_SXR
    !SAVELINE, NAME="CU_SXR", FILENAME="LCLS2cuS.saveline"
     PRINT, FULL
-    TWISS, BETA0=TWSSC, SAVE !, RTAPE="LCLS2cuS_rmat.tape"
+    TWISS, SAVE, BETA0=TWSSC
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
-      COLOUR=100, SPLINE, RANGE=BEGDL1_1/DUMPFACEb, FILE="LCLS2cu_color", &
+      COLOUR=100, SPLINE, RANGE=BEGDL1_1/DUMPFACEB, FILE="LCLS2cu_color", &
       TITLE="Cu_linac: DL1 to SXR dump"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      COLOUR=100, SPLINE, RANGE=BEGDL1_1/DUMPFACEb, FILE="LCLS2cu_color", &
+      COLOUR=100, SPLINE, RANGE=BEGDL1_1/DUMPFACEB, FILE="LCLS2cu_color", &
       TITLE="Cu_linac: DL1 to SXR dump"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGDL1_1/DUMPFACEb, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: DL1 to SXR Main Dump"
+      COLOUR=100, SPLINE, RANGE=BEGDL1_1/DUMPFACEB, FILE="LCLS2cu_color", &
+      TITLE="Cu_linac: DL1 to SXR dump"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
       COLOUR=100, SPLINE, RANGE=BEGCLTH_0/ENDBSYS, FILE="LCLS2cu_color", &
       TITLE="Cu_linac: BSY to LTUS"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BSYENDB/BEGUNDS, FILE="LCLS2cu_color", &
+      COLOUR=100, SPLINE, RANGE=BEGLTUS/ENDLTUS, FILE="LCLS2cu_color", &
       TITLE="Cu_linac: LTUS"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      COLOUR=100, SPLINE, RANGE=BEGUNDS/ENDUNDS, FILE="LCLS2cu_color", &
+      TITLE="Cu_linac: SXR Undulator"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGUNDS/DUMPFACEb, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: SXR Undulator to dump"
+      COLOUR=100, SPLINE, RANGE=BEGDMPS_1/DUMPFACEb, FILE="LCLS2cu_color", &
+      TITLE="Cu_linac: SXR Post-indulator to dump"
     SET, EBC2, EBC2Cu ; SET, Ef, EfCu ; SET, Eu, EuCu
 
   ! Cathode to A-line
@@ -672,7 +677,7 @@
     SET, SETCUS, CUSOFF ; SET, SETAL, ALON
     SETK2cuA
     USE, CU_ALINE
-    TWISS, BETA0=TWSSC, SAVE
+    TWISS, SAVE, BETA0=TWSSC
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=rBETX,rBETY, VAXIS2=DX,DY, &
       COLOUR=100, SPLINE, RANGE=BEGCLTH_0/ENDBSYA_2, FILE="LCLS2cu_color", &
       TITLE="Cu_linac: BSY to A-line"

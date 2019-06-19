@@ -1,10 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-23JAN19 ***
+! *** OPTICS=AD_ACCEL-13JUN19 ***
 
 ! LCLS2sc sector 7 dogleg plus match to bypass line
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 30-APR-2019, M. Woodley
+!  * use measured FINT=0.4875 for 1.0D38.37 @ 262A
 ! ------------------------------------------------------------------------------
 ! 07-JAN-2019, M. Woodley
 !  * add sector 10 shielding wall
@@ -157,19 +160,20 @@
 
   GBR   := 0.0254          !1.0D38.37 gap height (m)
   LBR   := 1.0             !1.0D38.37 gap height (m)
+  FBR   := 0.4875          !1.0D38.37 FINT @ 262 A
   ANGA  := 0.024477314713  !dogleg bend angle (rad)
-  XOFF  := -25.610*IN2M
-  YOFF  := 25.570*IN2M
+  XOFF  := -25.610*in2m
+  YOFF  := 25.570*in2m
   ROLLA := -1.054575132367
 
   BRB1a : SBEN, TYPE="1.0D38.37", HGAP=GBR/2, L=LBR/2, ANGLE= ANGA/2, &
-                E1= ANGA/2, E2=0, FINT=0.5, FINTX=0, TILT=ROLLA
+                E1= ANGA/2, E2=0, FINT=FBR, FINTX=0, TILT=ROLLA
   BRB1b : SBEN, TYPE="1.0D38.37", HGAP=GBR/2, L=LBR/2, ANGLE= ANGA/2, &
-                E1=0, E2= ANGA/2, FINT=0, FINTX=0.5, TILT=ROLLA
+                E1=0, E2= ANGA/2, FINT=0, FINTX=FBR, TILT=ROLLA
   BRB2a : SBEN, TYPE="1.0D38.37", HGAP=GBR/2, L=LBR/2, ANGLE=-ANGA/2, &
-                E1=-ANGA/2, E2=0, FINT=0.5, FINTX=0, TILT=ROLLA
+                E1=-ANGA/2, E2=0, FINT=FBR, FINTX=0, TILT=ROLLA
   BRB2b : SBEN, TYPE="1.0D38.37", HGAP=GBR/2, L=LBR/2, ANGLE=-ANGA/2, &
-                E1=0, E2=-ANGA/2, FINT=0, FINTX=0.5, TILT=ROLLA
+                E1=0, E2=-ANGA/2, FINT=0, FINTX=FBR, TILT=ROLLA
 
 
 ! downstream R56 compensation chicane:
@@ -234,10 +238,10 @@
 
 ! match to bypass line
 
-  KQL1P :=  0.322623375938 ! 0.322672990497
-  KQL2P := -0.155036210469 !-0.155098581061
-  KQL3P :=  0.22320301915  ! 0.223223791378
-  KQL4P := -0.284565948145 !-0.284547516494
+  KQL1P :=  0.322623395351 ! 0.322623375938
+  KQL2P := -0.155036336329 !-0.155036210469
+  KQL3P :=  0.223203385311 ! 0.22320301915 
+  KQL4P := -0.284566066038 !-0.284565948145
   KQL5P :=  0.151439029009 ! 0.151439029009
 
   QL1P : QUAD, TYPE="2Q10", L=LQR/2, APER=rQR, K1=KQL1P

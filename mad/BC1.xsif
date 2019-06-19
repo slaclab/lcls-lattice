@@ -1,11 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-23JAN19 ***
+! *** OPTICS=AD_ACCEL-13JUN19 ***
 
 ! LCLS2sc bunch compressor chicane #1
 
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
+! 23-MAY-2019, M. Woodley
+!  * move ENDBC1B to u/s face of QC101 per T. Maxwell
 ! 12-APR-2019, M. Woodley
 !  * rename some MARKERs (to avoid conflicts with LCLS)
 ! ------------------------------------------------------------------------------
@@ -17,7 +19,7 @@
 !  * use measured FINT=0.3893 for BC1 bends
 ! ------------------------------------------------------------------------------
 ! 04-NOV-2016, M. Woodley
-!  * remove deferred items: TCAV "TCYC2", kicker "BKYC1", and septum "BLXC1"
+!  * remove deferred items: kicker "BKYC1", septum "BLXC1", and TCAV "TCYC1"
 !  * undefer XCC106, YCC109, and XCC110 (add-back list items)
 !  * relocate COL1 correctors per K. Fox
 ! ------------------------------------------------------------------------------
@@ -380,9 +382,7 @@
 
   SC1C00 : LINE=(XC1C00,YC1C00)
 
-  BKYC1 : LINE=(BKYC1A,BKYC1B)
-  BLXC1 : LINE=(BLXC1A,BLXC1B)
-  TCYC1 : LINE=(TCYC1h,TCYC1h)
+  BC1i0 : LINE=(D1C00,Q1C01,Q1C01,D1C01a,D1C01b)
 
   BC1i : LINE=(&
     SC1C00,D1C00,&
@@ -400,11 +400,11 @@
     BCX13A,BCX13B,DC1od,SQ13B,SQ13B,DC1oe,XCM12B,DC1of,CQ12B,CQ12B,DC1og,&
     BCX14A,BCX14B,CNTBC1,BC1BcEND)
 
-  BC1 : LINE=(BEGBC1B,BC1i,BC1c,ENDBC1B)
+  BC1 : LINE=(BEGBC1B,BC1i,BC1c)
 
-  COMMENT
-    COL1 : LINE=(BEGCOL1,&
-      DC100,&
+  COMMENT !simplified
+    COL1 : LINE=(&
+      DC100,ENDBC1B,BEGCOL1,&
       QC101,QC101,DC101,&
       QC102,QC102,DC102,&
       QC103,QC103,DC103,&
@@ -416,14 +416,13 @@
       QC109,QC109,DColl1,&
       QC110,QC110,DColl1,&
       QC111,QC111,DColl1,&
-      QC112,QC112,&
+      QC112,QC112,DC112a,&
       ENDCOL1)
   ENDCOMMENT
 
- !COMMENT
+ !COMMENT !complete
     COL1 : LINE=(&
-      BEGCOL1,&
-      DC100a,BZ11B,DC100b,BZC1,DC100c,&
+      DC100a,BZ11B,DC100b,BZC1,DC100c,ENDBC1B,BEGCOL1,&
       QC101,BPMC101,QC101,DC101a,IM11B,DC101b,XCC101,DC101c,YCC101,DC101d,&
       QC102,BPMC102,QC102,DC102,&
       QC103,BPMC103,QC103,DC103,&

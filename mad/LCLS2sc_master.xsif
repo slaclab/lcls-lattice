@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-23JAN19 ***
+! *** OPTICS=AD_ACCEL-13JUN19 ***
 
 ! ------------------------------------------------------------------------------
 ! constants and global parameters
@@ -7,20 +7,20 @@
 
 ! constants
 
-  IN2M  : CONSTANT=0.0254          !m/inch
   Cb    : CONSTANT=1.0E10/CLIGHT   !kG-m/GeV
-  mc2   : CONSTANT=510.99906E-6    !GeV
+  in2m  : CONSTANT=0.0254          !m/inch
+  mc2   : CONSTANT=0.51099906E-3   !GeV
   QELEC : CONSTANT=1.602176462E-19 !C
 
 ! energy profile
 
-  E0   := MC2+0.75E-3 !NGLS/APEX gun
-  Ei   := 0.1
-  E1   := 0.25
-  E2   := 1.6
-  Ef   := EfSC !final beam energy (GeV)
-  Eu   := EuSC !energy in undulator (GeV)
-  Emax := 10.0
+  E0   := MC2+0.750E-3 !NGLS/APEX gun energy (GeV) ... 750 kV gun
+  Ei   := 0.1          !energy at end of L0B (GeV)
+  E1   := 0.25         !BC1 energy (GeV)
+  E2   := 1.6          !BC2 energy (GeV)
+  Ef   := EfSC         !final beam energy (GeV)
+  Eu   := EuSC         !energy in undulator (GeV)
+  Emax := 10.0         !maximum beam energy
 
   Brho0 := Cb*E0
   Brhoi := Cb*Ei
@@ -50,7 +50,7 @@
 
 ! Twiss at S= 15.0 m (ASTRA MARKER)
 
-  BXa := 13.325594260685
+  BXa := 13.325594260686
   AXa := -2.125811087318
   BYa := 13.315541277702
   AYa := -2.123153832086
@@ -152,10 +152,10 @@
 
 ! match into bypass dogleg
 
-  BXDLm := 13.103980147754
-  AXDLm := -1.328117574824
-  BYDLm := 15.962709228317
-  AYDLm :=  1.529776835343
+  BXDLm := 13.103975994751 !13.103980147754
+  AXDLm := -1.328121315281 !-1.328117574824
+  BYDLm := 15.962707890225 !15.962709228317
+  AYDLm :=  1.529775364969 ! 1.529776835343
 
 ! match into SXR LTU emittance diagnostic section
 
@@ -191,7 +191,7 @@
 
   CALL, FILENAME="common.xsif"
   CALL, FILENAME="CM.xsif"
-  CALL, FILENAME="DIAG0.xsif"
+  CALL, FILENAME="DIAG0.xsif" !must come before INJ.xsif
   CALL, FILENAME="INJ.xsif"
   CALL, FILENAME="BC1.xsif"
   CALL, FILENAME="BC2.xsif"
@@ -204,6 +204,7 @@
   CALL, FILENAME="LTU.xsif"
   CALL, FILENAME="UND.xsif"
   CALL, FILENAME="SFT.xsif"
+  CALL, FILENAME="SXTES.xsif"
   CALL, FILENAME="DASEL.xsif"
 
   LCLS2scI : LINE=(BEAM0,DCM4b,QCM01,XCM01,YCM01,QCM01,DCM5,CM01END,&
@@ -215,7 +216,6 @@
 ! new BSY area definitions
 
   CALL, FILENAME="BSYsc.xsif"
-  CALL, FILENAME="SXTES.xsif"
 
 ! beam path definitions
 

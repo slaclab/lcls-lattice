@@ -1,10 +1,14 @@
 
-! *** OPTICS=AD_ACCEL-23JAN19 ***
+! *** OPTICS=AD_ACCEL-13JUN19 ***
 
 ! LCLS2sc safety dump lines
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 26-MAR-2019, M. Woodley
+!  * split SFTH and SFTS areas into two subareas each: SFTH_1/SFTH_2
+!    and SFTS_1/SFTS_2
 ! ------------------------------------------------------------------------------
 ! 08-OCT-2018, M. Woodley
 !  * locations of devices downstream of HXR XTES treaty flange per
@@ -60,7 +64,7 @@
   BBXPM  := BBXPM0*GBXPM0/GBXPM !magnetic field (kG) at gap = 5.2 cm
   RBXPM  := Brhof/BBXPM         !bending radius (m) in permanent magnets
 
-  ABXPM   := LBXPM/(2*RBXPM)
+  ABXPM   := (LBXPM/RBXPM)/2             !PM bend half-angle
   ABXPM1S := ASIN(1*ABXPM)               !bending angle of "short" half of BXPM1
   ABXPM1L := ASIN(2*ABXPM)-ASIN(1*ABXPM) !bending angle of "long"  half of BXPM1
   ABXPM2S := ASIN(3*ABXPM)-ASIN(2*ABXPM) !bending angle of "short" half of BXPM2
@@ -149,14 +153,14 @@
   VV2H  : MARK !vac. valve in HXR XTES line
   MVV10 : MARK !placeholder for vac. valve in HXR XTES line
 
-  SFTDUMP1: LINE=(&
-    BEGSFTH_1,DYDS,DS1S,DYD1,DSSA,DYD2,DSSB,DYD3,&
+  SFTDUMP1: LINE=(BEGSFTH_1,&
+    DYDS,DS1S,DYD1,DSSA,DYD2,DSSB,DYD3,&
     DSCSa,VV38,DSCSb,PCPM1,DPCBTM1,BTM1,DXDCU1,HXTES0,DXDCU2,&
     XDCa,XDCXRAY,XDCb,XDCc,YAGXRAY,XDCd,DXDCD1,VV2H,DXDCD2,IM1H,DXDCD3,&
     BTM2,PCPM2,DPM1,ENDSFTH_1)
 
-  SFTDUMP2: LINE=(&
-    BEGSFTH_2,BXPM1A,BXPM1B,DPM2,&
+  SFTDUMP2: LINE=(BEGSFTH_2,&
+    BXPM1A,BXPM1B,DPM2,&
     BXPM2A,BXPM2B,DPM31,MVV10,DPM32,DPCPM3,DPCBTM3,MBTM3,DPM4,&
     SFTDMP,DSFTDMP,BTMSFT,ENDSFTH_2)
 
@@ -169,9 +173,9 @@
 ! note that BXPM1b bend axis is aligned with the SXR undulator axis without
 ! any offset
 
-  RBXPMB   := Brhof/BBXPM !bending radius (m) in a permanent magnet
+  RBXPMB   := Brhof/BBXPM !bending radius (m) in permanent magnet
 
-  ABXPMB   := LBXPM/(2*RBXPMB)
+  ABXPMB   := (LBXPM/RBXPMB)/2            !PM bend half-angle
   ABXPM1BS := ASIN(ABXPMB)                !bending angle of "short" half of BXPM1B
   ABXPM1BL := ASIN(2*ABXPMB)-ASIN(ABXPMB) !bending angle of "long"  half of BXPM1B
 
@@ -236,15 +240,15 @@
   VV2S  : MARK !vac. valve in SXR safety dump line
   MVV3S : MARK !placeholder for vac. valve in SXR XTES line
 
-  SFTDUMPB1: LINE=(&
-    BEGSFTS_1,DYDS,DS1S,DYD1,DSSA,DYD2,DSSB,DYD3,&
+  SFTDUMPB1: LINE=(BEGSFTS_1,&
+    DYDS,DS1S,DYD1,DSSA,DYD2,DSSB,DYD3,&
     DSCSB1,VV38B,DSCSB2,PCPM1B,DPCBTM1,BTM1B,DXDCUB1,VV1S,DXDCUB2,&
     SXTES0,DXDCUB3,XDCBa,XDCBb,XDCBc,YAGXRAYB,XDCBd,DXDCDB1,&
     PC1S,DXDCDB2,VV2S,DXDCDB3,GMD1S,DXDCDB4,IM1S,DXDCDB5,&
     BTM2B,PCPM2B,DPM1B,ENDSFTS_1)
 
-  SFTDUMPB2: LINE=(&
-    BEGSFTS_2,BXPM1Ba,BXPM1Bb,DPM2Ba,DPCPM3B,DPCBTM3B,MBTM3B,DPM2Bb,&
+  SFTDUMPB2: LINE=(BEGSFTS_2,&
+    BXPM1Ba,BXPM1Bb,DPM2Ba,DPCPM3B,DPCBTM3B,MBTM3B,DPM2Bb,&
     MSL1S,DPM3Ba,MVV3S,DPM3Bb,SFTDMPB,DSFTDMPB,BTMSFTB,ENDSFTS_2)
 
   SFTDUMPB: LINE=(SFTDUMPB1,SFTDUMPB2)

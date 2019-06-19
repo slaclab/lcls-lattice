@@ -1,10 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-23JAN19 ***
+! *** OPTICS=AD_ACCEL-13JUN19 ***
 
 ! LCLS2sc injector: gun to start of L1 linac
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 30-APR-2019, M. Woodley
+!  * Update locations of GUNB devices per F. Zhou and G. Gassner
 ! ------------------------------------------------------------------------------
 ! 14-MAY-2018, M. Woodley
 !  * use LCLS-II Phase 1 laser heater undulator per PRD (LCLSII-2.2-PR-0086-R1)
@@ -223,10 +226,10 @@
 
 ! correction coils co-wound on GUNB solenoids
 
-  CQ01B : QUAD, TYPE="solenoid trim", L=0, APER=0.0475/2, K1=0
-  SQ01B : QUAD, TYPE="solenoid trim", L=0, APER=0.0475/2, K1=0
-  CQ02B : QUAD, TYPE="solenoid trim", L=0, APER=0.0475/2, K1=0
-  SQ02B : QUAD, TYPE="solenoid trim", L=0, APER=0.0475/2, K1=0
+  CQ01B : MULT, TYPE="solenoid trim", APER=0.0475/2, K1L=0
+  SQ01B : MULT, TYPE="solenoid trim", APER=0.0475/2, K1L=0, T1
+  CQ02B : MULT, TYPE="solenoid trim", APER=0.0475/2, K1L=0
+  SQ02B : MULT, TYPE="solenoid trim", APER=0.0475/2, K1L=0, T1
 
 ! L0 to WS/OTR (Q0H01-4 match to waists at WS0H04)
 
@@ -242,12 +245,12 @@
 
 ! WS/OTR to laser heater (Q0H05-8 match to 10x10 m beta waists LHMID)
 
-!               heater ON         heater OFF        chicane OFF      
-!           ----------------   ----------------   ----------------   
-  KQ0H05 :=  -6.486739294274 !  -7.451314362911 !  -7.50807265705  ! 
-  KQ0H06 :=   0.966024601548 !   1.835321162849 !   1.870908387703 ! 
-  KQ0H07 :=   7.974521691066 !   7.794364054297 !   7.804907479843 ! 
-  KQ0H08 :=  -8.324215790715 !  -8.272683698332 !  -8.306722243052 ! 
+!              heater ON        heater OFF        chicane OFF      
+!           ---------------   ---------------   ---------------   
+  KQ0H05 := -6.486739294274 ! -7.451314362911 ! -7.50807265705  ! 
+  KQ0H06 :=  0.966024601548 !  1.835321162849 !  1.870908387703 ! 
+  KQ0H07 :=  7.974521691066 !  7.794364054297 !  7.804907479843 ! 
+  KQ0H08 := -8.324215790715 ! -8.272683698332 ! -8.306722243052 ! 
 
   Q0H05 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0H05
   Q0H06 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0H06
@@ -256,12 +259,12 @@
 
 ! laser heater to diagnostic line
 
-!               heater ON         heater OFF        chicane OFF      
-!           ----------------   ----------------   ----------------   
-  KQHD01 :=  -9.165493466042 !  -8.743988180274 !  -8.746794738551 ! 
-  KQHD02 :=   6.5393744713   !   6.400024201736 !   6.401620200766 ! 
-  KQHD03 :=  -8.445995045319 !  -8.612136472635 !  -8.622952974047 ! 
-  KQHD04 :=   6.743451959252 !   6.860670404609 !   6.864937307631 ! 
+!              heater ON        heater OFF        chicane OFF      
+!           ---------------   ---------------   ---------------   
+  KQHD01 := -9.165493466042 ! -8.743988180274 ! -8.746794738551 ! 
+  KQHD02 :=  6.5393744713   !  6.400024201736 !  6.401620200766 ! 
+  KQHD03 := -8.445995045319 ! -8.612136472635 ! -8.622952974047 ! 
+  KQHD04 :=  6.743451959252 !  6.860670404609 !  6.864937307631 ! 
 
   QHD01 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQHD01
   QHD02 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQHD02
@@ -336,6 +339,7 @@
 ! gami  : Lorentz energy factor in laser-heater undulator [1]
 ! K_und : undulator K for laser heater undulator
 ! Lhun  : length of laser-heater undulator (10 periods) [m]
+! Lhunh : half-length of laser-heater undulator [m]
 ! kqlh  : natural undulator focusing "k" in y-plane [1/m2]
 
   lam   := 0.054 !0.0471204
@@ -343,24 +347,32 @@
   gami  := Ei/EMASS
   K_und := sqrt(2*(lamr*2*gami^2/lam-1))
   Lhun  := 0.506263 !10*lam
+  Lhunh := Lhun/2
   kqlh  := (K_und*2*pi/lam/sqrt(2)/gami)^2
 
- !COMMENT
-    UMHTR : MATRIX, TYPE="LHund", L=Lhun/2,       &
-      RM(1,1)=1.0,                                &
-      RM(1,2)=Lhun/2,                             &
-      RM(2,1)=0.0,                                &
-      RM(2,2)=1.0,                                &
-      RM(3,3)=cos(Lhun/2*sqrt(kqlh)),             &
-      RM(3,4)=sin(Lhun/2*sqrt(kqlh))/sqrt(kqlh),  &
-      RM(4,3)=-sin(Lhun/2*sqrt(kqlh))*sqrt(kqlh), &
-      RM(4,4)=cos(Lhun/2*sqrt(kqlh)),             &
-      RM(5,5)=1,                                  &
-      RM(6,6)=1 !,
-     !RM(5,6)=Lhun/2/(gami^2)*(1+(K_und^2)/2)
- !ENDCOMMENT
+! handle K_und->0 by expressing R34 as an approximate SINC function
 
- !UMHTR : DRIF, TYPE="LHund", L=Lhun/2
+  ARGh     := Lhunh*sqrt(kqlh)
+  ARGh2    := ARGh*ARGh
+  ARGh4    := ARGh2*ARGh2
+  ARGh6    := ARGh4*ARGh2
+  SINCARGh := 1-ARGh2/6+ARGh4/120-ARGh6/5040 !~sinc(ARGh)=sin(ARGh)/ARGh
+  R34h     := Lhunh*SINCARGh
+
+! undulator segment modeled as R-matrix to include vertical natural focusing
+
+  UMHTR : MATRIX, TYPE="LHund", L=Lhunh,       &
+    RM(1,1)=1.0,                               &
+    RM(1,2)=Lhunh,                             &
+    RM(2,1)=0.0,                               &
+    RM(2,2)=1.0,                               &
+    RM(3,3)=cos(Lhunh*sqrt(kqlh)),             &
+    RM(3,4)=R34h,                              &
+    RM(4,3)=-sin(Lhunh*sqrt(kqlh))*sqrt(kqlh), &
+    RM(4,4)=cos(Lhunh*sqrt(kqlh)),             &
+    RM(5,5)=1,                                 &
+    RM(6,6)=1 !,                               &
+   !RM(5,6)=Lhunh/(gami^2)*(1+(K_und^2)/2)
 
 ! ==============================================================================
 ! DRIF
@@ -373,22 +385,22 @@
   DGBCa : DRIF, L=-0.071705
   DGBCb : DRIF, L=0.071705
   DGUN  : DRIF, L=Lgun
-  DG001 : DRIF, L=0.255994-Lgun-Lsol/2
-  DG002 : DRIF, L=0.131486-Lsol/2
-  DG003 : DRIF, L=0.098324
-  DG004 : DRIF, L=0.003605
-  DG005 : DRIF, L=0.105283
-  DG006 : DRIF, L=0.079052
-  DG007 : DRIF, L=0.136136-Lbun/2
-  DG008 : DRIF, L=0.155291-Lbun/2
-  DG009 : DRIF, L=0.182651
-  DG010 : DRIF, L=0.220987
-  DG011 : DRIF, L=0.123312
-  DG012 : DRIF, L=0.159167-Lsol/2
-  DG013 : DRIF, L=0.131492-Lsol/2
-  DG014 : DRIF, L=0.101358
-  DG015 : DRIF, L=0.004619
-  DG016 : DRIF, L=0.163820
+  DG001 : DRIF, L=0.246530-Lgun-Lsol/2
+  DG002 : DRIF, L=0.140950-Lsol/2
+  DG003 : DRIF, L=0.097020
+  DG004 : DRIF, L=0.005150
+  DG005 : DRIF, L=0.105042
+  DG006 : DRIF, L=0.075408
+  DG007 : DRIF, L=0.139016-Lbun/2
+  DG008 : DRIF, L=0.155084-Lbun/2
+  DG009 : DRIF, L=0.181801
+  DG010 : DRIF, L=0.222999
+  DG011 : DRIF, L=0.121314
+  DG012 : DRIF, L=0.155496-Lsol/2
+  DG013 : DRIF, L=0.136970-Lsol/2
+  DG014 : DRIF, L=0.101444
+  DG015 : DRIF, L=0.004540
+  DG016 : DRIF, L=0.163813
 
   DG016b : DRIF, L=0.082968
   DG016a : DRIF, L=DG016[L]-DG016b[L]
@@ -681,8 +693,8 @@
 ! BEAMLINE
 ! ------------------------------------------------------------------------------
 
-  SOL1BL : LINE=(SOL1B,2*CQ01B,2*SQ01B,SOL1B)
-  SOL2BL : LINE=(SOL2B,2*CQ02B,2*SQ02B,SOL2B)
+  SOL1BL : LINE=(SOL1B,CQ01B,SQ01B,SOL1B)
+  SOL2BL : LINE=(SOL2B,CQ02B,SQ02B,SOL2B)
 
   SC1B   : LINE=(XC01B,YC01B)
   SC2B   : LINE=(XC02B,YC02B)
@@ -710,13 +722,24 @@
     ECUEIC,DGEIC,FC00EIC,&
     ENDEIC)
 
-  LSRHTR : LINE=(LHBEGB,&
-    BCXH1A,BCXH1B,Dh01a,BPMH1,Dh01b,MIRLHu,Dh01c,&
-    BCXH2A,BCXH2B,Dh02a,CEHTR,Dh02b,YAGH1,Dh02c,&
-      UMHTR,HTRUNDB,UMHTR,Dh02d,YAGH2,Dh02e,&
-    BCXH3A,BCXH3B,Dh03a,MIRLHd,Dh03b,BPMH2,Dh03c,&
-    BCXH4A,BCXH4B,CNTHTR,&
-    LHENDB)
+  COMMENT !simplified
+    LSRHTR : LINE=(LHBEGB,&
+      BCXH1A,BCXH1B,Dh01a,Dh01b,Dh01c,&
+      BCXH2A,BCXH2B,Dh02a,CEHTR,Dh02b,Dh02c,2*UMHTR,Dh02d,Dh02e,&
+      BCXH3A,BCXH3B,Dh03a,Dh03b,Dh03c,&
+      BCXH4A,BCXH4B,&
+      LHENDB)
+  ENDCOMMENT
+
+ !COMMENT !complete
+    LSRHTR : LINE=(LHBEGB,&
+      BCXH1A,BCXH1B,Dh01a,BPMH1,Dh01b,MIRLHu,Dh01c,&
+      BCXH2A,BCXH2B,Dh02a,CEHTR,Dh02b,YAGH1,Dh02c,&
+        UMHTR,HTRUNDB,UMHTR,Dh02d,YAGH2,Dh02e,&
+      BCXH3A,BCXH3B,Dh03a,MIRLHd,Dh03b,BPMH2,Dh03c,&
+      BCXH4A,BCXH4B,CNTHTR,&
+      LHENDB)
+ !ENDCOMMENT
 
   COMMENT !simplified
     HTR : LINE=(&

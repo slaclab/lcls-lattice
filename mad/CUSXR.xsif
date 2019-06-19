@@ -1,10 +1,17 @@
 
-! *** OPTICS=AD_ACCEL-23JAN19 ***
+! *** OPTICS=AD_ACCEL-13JUN19 ***
 
 ! LCLS2sc transport from Cu-linac to SXR
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 28-MAY-2019, M. Woodley
+!  * relocate XCCUS1, YCCUS2, and BPMCUS3 per L. Borzenets
+! 13-MAY-2019, M. Woodley
+!  * change length of STCLTS to 30" and move 5.1 cm d/s per A. Ibrahimov
+! 30-APR-2019, M. Woodley
+!  * use measured FINT=0.4861 for 1.0D38.37 @ 200A
 ! ------------------------------------------------------------------------------
 ! 04-OCT-2018, M. Woodley
 !  * include alternative DC extraction into CUSXR
@@ -70,8 +77,8 @@
 
 ! XYZ (linac system) at exit of the last bend (ENDCUSXR)
 
-  XCUS2  := -25.610*IN2M
-  YCUS2  :=  25.570*IN2M
+  XCUS2  := -25.610*in2m
+  YCUS2  :=  25.570*in2m
   ZCUS2  :=  3177.65
   THCUS2 :=  0.0
   PHCUS2 :=  0.0
@@ -144,7 +151,7 @@
 ! DC alternative to kicker comprised of two 3D8.8MK3 correctors, one at each end of BKRCUS
 ! - both correctors are aligned along the linac z-axis
 
-  GBRCUSdc := 2.031*IN2M !full gap (m)
+  GBRCUSdc := 2.031*in2m !full gap (m)
   ZBRCUSdc := 0.2691     !on-axis effective length (m) (measured)
   FBRCUSdc := 0.3041     !FINT (measured)
   TBRCUSdc := TCUSXR     !roll angle (+pi/2)
@@ -180,7 +187,7 @@
   BRCUSdc2b : SBEN, TYPE="3D8.8MK3", L=LBRCUSdc2b, ANGLE=ABRCUSdc2b, &
     TILT=PI/2+TBRCUSdc, HGAP=GBRCUSdc/2, FINT=0, E2=ABRCUSdc, FINTX=FBRCUSdc
 
-  LDCK     := 40.03*IN2M                !center-to-center Z-distance between corrector and kicker
+  LDCK     := 40.03*in2m                !center-to-center Z-distance between corrector and kicker
   ZCKdc    := LDCK-(ZBRCUSdc+ZBKRCUS)/2 !Z-distance between corrector and kicker
   ZCUSBLR  := 16.1469-ZCKdc-ZBRCUSdc    !Z-distance between kicker and septum
   ZCUSBLRa := 5.1956-(ZCKdc+ZBRCUSdc)   !Z-distance between corrector and BPM
@@ -230,6 +237,7 @@
   TBRCUS := -0.769423721099 !roll angle of DC bend (rad)
   GBRCUS := GBSP !bend gap height (m)
   ZBRCUS := LBSP !bend straight length (1.0D38.37) (m)
+  FBRCUS := 0.4861 !measured FINT
 
   dABRCUS   := -0.417540592574E-4
   ABRCUS    := (-ABLRCUS0+dABRCUS)*ABS(SETCUS)
@@ -239,9 +247,9 @@
   LBRCUS    := ZBRCUS/(1-ABRCUSh_2/6 +ABRCUSh_4/120) !bend path length (m)
 
   BRCUS1a : SBEN, TYPE="1.0D38.37", L=LBRCUS/2, ANGLE=ABRCUS/2, &
-            E1=ABRCUS/2, E2=0, FINT=0.5, FINTX=0, HGAP=GBRCUS/2, TILT=TBRCUS
+            E1=ABRCUS/2, E2=0, FINT=FBRCUS, FINTX=0, HGAP=GBRCUS/2, TILT=TBRCUS
   BRCUS1b : SBEN, TYPE="1.0D38.37", L=LBRCUS/2, ANGLE=ABRCUS/2, &
-            E2=ABRCUS/2, E1=0, FINT=0, FINTX=0.5, HGAP=GBRCUS/2, TILT=TBRCUS
+            E2=ABRCUS/2, E1=0, FINT=0, FINTX=FBRCUS, HGAP=GBRCUS/2, TILT=TBRCUS
 
 ! inner vertical bends for R56 cancellation
 ! NOTE: 1.0D22.265 dipoles replaced with 3D8.8MK3 correctors
@@ -298,11 +306,11 @@
   LDCUS1c  := 0.5
   LDCUS1a  := LDCUS1-LDCUS1b-LDCUS1c-LBRCCUS-LBRCCUS -dLDCUS13
   LDCUS2a  := 0.464083 !0.4471
-  LDCUS2b  := 0.619817 !0.6368
+  LDCUS2b  := 0.747032 !0.619817
   LDCUS2c  := LDCUS2-LDCUS2a-LDCUS2b
   LDCUS3a  := 0.463634 !0.4471
-  LDCUS3b  := 0.843035 !0.6368
-  LDCUS3d  := 0.593909 !0.4781
+  LDCUS3b  := 0.747031 !0.843035
+  LDCUS3d  := 0.389900 !0.593909
   LDCUS3c  := LDCUS3-LDCUS3a-LDCUS3b-LDCUS3d
   LDCUS4a  := 0.4285
   LDCUS4c  := 0.1924
@@ -363,7 +371,7 @@
 ! markers
 
   BEGCUSXR : MARK
-  CENCUSXR : MARK !center of CUSXR
+  MIDCUSXR : MARK !center of CUSXR
   CNTCUS1  : MARK, TYPE="CENTER"
   CNTCUS2  : MARK, TYPE="CENTER"
   CNTCUS3  : MARK, TYPE="CENTER"
@@ -399,8 +407,8 @@
 
 ! insertable stopper / tuneup dump
 
-  STCLTS   : INST, L=12*in2m, TYPE="PPS STOPPER" !from PEP-II injection line
-  DCUS11b1 : DRIF, L=2.0609115
+  STCLTS   : INST, L=30*in2m, TYPE="PPS STOPPER" !from PEP-II injection line
+  DCUS11b1 : DRIF, L=1.883313 !2.0609115
   DCUS11b2 : DRIF, L=DCUS11b[L]-DCUS11b1[L]-STCLTS[L]
 
 ! SROT to remove rotation angle
@@ -439,14 +447,14 @@
                 QCUS4  ,BPMCUS4,QCUS4  ,DCUS5a ,XCCUS4 ,DCUS5b ,&
                 BYCUS1a,BYCUS1b,CNTCUS3,ROCUS3 ,DCUS6a ,&
                                         DCUS6b ,&
-                QCUS5  ,BPMCUS5,QCUS5  ,DCUS7  ,CENCUSXR,DCUS7 ,&
+                QCUS5  ,BPMCUS5,QCUS5  ,DCUS7  ,MIDCUSXR,DCUS7 ,&
                 QCUS6  ,QCUS6  ,DCUS8a ,YCCUS6 ,DCUS8b ,ROCUS4 ,&
                 BYCUS2a,BYCUS2b,CNTCUS4,        DCUS9a ,&
                                         DCUS9b ,&
                 QCUS7  ,BPMCUS7,QCUS7  ,DCUS10a,XCCUS7 ,DCUS10b,&
                                         BPMCUS8,DCUS10c,&
                 QCUS8  ,QCUS8  ,DCUS11a,YCCUS8 ,DCUS11b1,&
-                                STCLTS,DCUS11b2,BPMCUS9,DCUS11c,&
+                                 STCLTS,DCUS11b2,BPMCUS9,DCUS11c,&
                 QCUS9  ,QCUS9  ,DCUS12a,YCCUS9 ,DCUS12b,&
                                         XCCUS10,DCUS12c,BPMCUS10,DCUS12d,&
                 QCUS10 ,QCUS10 ,DCUS13 ,ROCUS2 ,&

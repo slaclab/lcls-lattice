@@ -1,10 +1,15 @@
 
-! *** OPTICS=AD_ACCEL-23JAN19 ***
+! *** OPTICS=AD_ACCEL-13JUN19 ***
 
 ! LCLS2sc 3-way spreader system
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 06-JUN-2019, M. Woodley
+!  * adjust location of BSY dump face per A. Ibrahimov
+! 30-APR-2019, M. Woodley
+!  * use measured FINT=0.4861 for 1.0D38.37 @ 200A
 ! ------------------------------------------------------------------------------
 ! 31-OCT-2018, Y. Nosochkov
 !  * drift adjustment for DASEL with 25G kickers
@@ -254,17 +259,17 @@
 
 ! HXR quads
 
-  KQSP1H  :=  0.492284061187
-  KQSP2H  := -1.000975933726
-  KQSP3H  :=  0.304631069714
-  KQSP4H  := -0.301467337182
-  KQSP5H  :=  0.179797501925
-  KQSP6H  := -0.221916295184
-  KQSP7H  :=  0.447153906987
-  KQSP10H := -0.301520272128
-  KQSP11H :=  0.304797809076
-  KQSP12H := -0.991897597733
-  KQSP13H :=  0.49135154631
+  KQSP1H  :=  0.492283667698 ! 0.492284061187
+  KQSP2H  := -1.000975451311 !-1.000975933726
+  KQSP3H  :=  0.304631037813 ! 0.304631069714
+  KQSP4H  := -0.301467336919 !-0.301467337182
+  KQSP5H  :=  0.179797525903 ! 0.179797501925
+  KQSP6H  := -0.221916299351 !-0.221916295184
+  KQSP7H  :=  0.447153951126 ! 0.447153906987
+  KQSP10H := -0.301520274195 !-0.301520272128
+  KQSP11H :=  0.304797784837 ! 0.304797809076
+  KQSP12H := -0.991899431333 !-0.991897597733
+  KQSP13H :=  0.491351727496 ! 0.49135154631
   KQSP8h  :=  KQSP6h
   KQSP9h  :=  KQSP5h
 
@@ -284,11 +289,11 @@
 
 ! HXR sextupoles
 
-  KSSP1H := -20.980854539502
-  KSSP2H :=  22.597505265891
+  KSSP1H := -20.980886636913 !-20.980854539502
+  KSSP2H :=  22.597513710817 ! 22.597505265891
 
-  TSSP1H := 15.249361095235
-  TSSP2H := 17.803035424509
+  TSSP1H :=  15.249352738505 ! 15.249361095235
+  TSSP2H :=  17.803041269766 ! 17.803035424509
 
   SSP1h : SEXT, TYPE="@1,1.38S3.00", L=LSb/2, APER=rSb, K2=KSSP1h, &
                 TILT=RADDEG*TSSP1h
@@ -310,13 +315,13 @@
 
 ! SXR quads
 
-  KQSP1S :=  0.633675409102
-  KQSP2S := -0.558846970939
-  KQSP3S :=  0.652027344684
-  KQSP4S := -0.497671571574
-  KQSP5S :=  0.184431117493
-  KQSP8S := -0.559079941433
-  KQSP9S :=  0.633806671882
+  KQSP1S :=  0.633675228645 ! 0.633675409102
+  KQSP2S := -0.558846778994 !-0.558846970939
+  KQSP3S :=  0.652027259917 ! 0.652027344684
+  KQSP4S := -0.497671456472 !-0.497671571574
+  KQSP5S :=  0.184431144204 ! 0.184431117493
+  KQSP8S := -0.559080484823 !-0.559079941433
+  KQSP9S :=  0.633806872701 ! 0.633806671882
   KQSP6s :=  KQSP4s
   KQSP7s :=  KQSP3s
 
@@ -330,18 +335,10 @@
   QSP8s : QUAD, TYPE="1.26Q12", L=LQA/2, K1=KQSP8s, APER=rQA
   QSP9s : QUAD, TYPE="1.26Q12", L=LQA/2, K1=KQSP9s, APER=rQA
 
-! BSY dumpline quads
-
-  KQSP1D := -0.258027172416
-  KQSP2D :=  0.232777714022
-
-  QSP1d : QUAD, TYPE="2Q10", L=LQR/2, K1=KQSP1d, APER=rQR
-  QSP2d : QUAD, TYPE="2Q10", L=LQR/2, K1=KQSP2d, APER=rQR
-
 ! SXR sextupoles
 
-  KSSP1S := 12.701341641754
-  KSSP2S := 12.699235330279
+  KSSP1S :=  12.701345963181 ! 12.701341641754
+  KSSP2S :=  12.699237045946 ! 12.699235330279
 
   SSP1s : SEXT, TYPE="@1,1.38S3.00", L=LSb/2, APER=rSb, K2=KSSP1s
   SSP2s : SEXT, TYPE="@1,1.38S3.00", L=LSb/2, APER=rSb, K2=KSSP2s
@@ -350,6 +347,14 @@
     VALUE, (Cb*Ef)*KSSP1s*LSb,(Cb*10)*KSSP1s*LSb
     VALUE, (Cb*Ef)*KSSP2s*LSb,(Cb*10)*KSSP2s*LSb
   ENDCOMMENT
+
+! BSY dumpline quads
+
+  KQSP1D := -0.258027172416
+  KQSP2D :=  0.232777714022
+
+  QSP1d : QUAD, TYPE="2Q10", L=LQR/2, K1=KQSP1d, APER=rQR
+  QSP2d : QUAD, TYPE="2Q10", L=LQR/2, K1=KQSP2d, APER=rQR
 
 ! HXR vertical magnetic kickers
 ! All kickers aligned along the same z-axis (per T. Beukers)
@@ -511,21 +516,25 @@
   BLXSPsb : SBEN, TYPE="0.625SD38.98", L=LBLXSPsb, ANGLE=ABLXSPsb, &
                   E1=0, E2=ABLXSPs, FINT=0, FINTX=0.5, HGAP=GBLXSP/2
 
+! measured FINT for 1.0D38.37 @ 200A
+
+  FBSP := 0.4861
+
 ! HXR rolled bends
 
-  ABRSPH := 0.650488048269E-2
+  ABRSPh := 0.650488048269E-2
   LBRSPh := LBSP*ABRSPh/(2*SIN(ABRSPh/2)) !BRSPh path length (m)
   TBRSPh := 0.555232529864                !BRSPh roll angle (rad)
 
   BRSP1ha : SBEN, TYPE="1.0D38.37", L=LBRSPh/2, ANGLE=ABRSPh/2, &
-            E1=ABRSPh/2, E2=0, FINT=0.5, FINTX=0, HGAP=GBSP/2, TILT=TBRSPh
+            E1=ABRSPh/2, E2=0, FINT=FBSP, FINTX=0, HGAP=GBSP/2, TILT=TBRSPh
   BRSP1hb : SBEN, TYPE="1.0D38.37", L=LBRSPh/2, ANGLE=ABRSPh/2, &
-            E1=0, E2=ABRSPh/2, FINT=0, FINTX=0.5, HGAP=GBSP/2, TILT=TBRSPh
+            E1=0, E2=ABRSPh/2, FINT=0, FINTX=FBSP, HGAP=GBSP/2, TILT=TBRSPh
 
   BRSP2ha : SBEN, TYPE="1.0D38.37", L=LBRSPh/2, ANGLE=-ABRSPh/2, &
-            E1=-ABRSPh/2, E2=0, FINT=0.5, FINTX=0, HGAP=GBSP/2, TILT=TBRSPh
+            E1=-ABRSPh/2, E2=0, FINT=FBSP, FINTX=0, HGAP=GBSP/2, TILT=TBRSPh
   BRSP2hb : SBEN, TYPE="1.0D38.37", L=LBRSPh/2, ANGLE=-ABRSPh/2, &
-            E1=0, E2=-ABRSPh/2, FINT=0, FINTX=0.5, HGAP=GBSP/2, TILT=TBRSPh
+            E1=0, E2=-ABRSPh/2, FINT=0, FINTX=FBSP, HGAP=GBSP/2, TILT=TBRSPh
 
 ! HXR horizontal bend
 ! Note: BXSP1h is a merge DC-bend which is either turned ON to operate
@@ -539,9 +548,9 @@
   LBXSPh    := LBSP/(1-ABXSPhh_2/6 +ABXSPhh_4/120) !BXSP1h path length (m)
 
   BXSP1ha : SBEN, TYPE="1.0D38.37", L=LBXSPh/2, ANGLE=ABXSPh/2, &
-                  E1=ABXSPh/2, E2=0, FINT=0.5, FINTX=0, HGAP=GBSP/2
+                  E1=ABXSPh/2, E2=0, FINT=FBSP, FINTX=0, HGAP=GBSP/2
   BXSP1hb : SBEN, TYPE="1.0D38.37", L=LBXSPh/2, ANGLE=ABXSPh/2, &
-                  E1=0, E2=ABXSPh/2, FINT=0, FINTX=0.5, HGAP=GBSP/2
+                  E1=0, E2=ABXSPh/2, FINT=0, FINTX=FBSP, HGAP=GBSP/2
 
 ! SXR horizontal bends
 
@@ -550,19 +559,19 @@
   LBXSPs  := LBSP*ABXSPs/(2*SIN(ABXSPs/2)) !BXSPs path length (m)
 
   BXSP1sa : SBEN, TYPE="1.0D38.37", L=LBXSPs/2, ANGLE=-ABXSPs/2, &
-                  E1=-ABXSPs/2, E2=0, FINT=0.5, FINTX=0, HGAP=GBSP/2
+                  E1=-ABXSPs/2, E2=0, FINT=FBSP, FINTX=0, HGAP=GBSP/2
   BXSP1sb : SBEN, TYPE="1.0D38.37", L=LBXSPs/2, ANGLE=-ABXSPs/2, &
-                  E1=0, E2=-ABXSPs/2, FINT=0, FINTX=0.5, HGAP=GBSP/2
+                  E1=0, E2=-ABXSPs/2, FINT=0, FINTX=FBSP, HGAP=GBSP/2
 
   BXSP2sa : SBEN, TYPE="1.0D38.37", L=LBXSPs/2, ANGLE=-ABXSPs/2, &
-                  E1=-ABXSPs/2, E2=0, FINT=0.5, FINTX=0, HGAP=GBSP/2
+                  E1=-ABXSPs/2, E2=0, FINT=FBSP, FINTX=0, HGAP=GBSP/2
   BXSP2sb : SBEN, TYPE="1.0D38.37", L=LBXSPs/2, ANGLE=-ABXSPs/2, &
-                  E1=0, E2=-ABXSPs/2, FINT=0, FINTX=0.5, HGAP=GBSP/2
+                  E1=0, E2=-ABXSPs/2, FINT=0, FINTX=FBSP, HGAP=GBSP/2
 
   BXSP3sa : SBEN, TYPE="1.0D38.37", L=LBXSPs/2, ANGLE=ABXSPs/2, &
-                  E1=ABXSPs/2, E2=0, FINT=0.5, FINTX=0, HGAP=GBSP/2
+                  E1=ABXSPs/2, E2=0, FINT=FBSP, FINTX=0, HGAP=GBSP/2
   BXSP3sb : SBEN, TYPE="1.0D38.37", L=LBXSPs/2, ANGLE=ABXSPs/2, &
-                  E1=0, E2=ABXSPs/2, FINT=0, FINTX=0.5, HGAP=GBSP/2
+                  E1=0, E2=ABXSPs/2, FINT=0, FINTX=FBSP, HGAP=GBSP/2
 
 ! BSY dumpline vertical bends
 
@@ -570,14 +579,14 @@
   LBYSPd := LBSP*ABYSPd/(2*SIN(ABYSPd/2)) !BYSPd path length (m)
 
   BYSP1da : SBEN, TYPE="1.0D38.37", L=LBYSPd/2, ANGLE=ABYSPd/2, TILT, &
-                  E1=ABYSPd/2, E2=0, FINT=0.5, FINTX=0, HGAP=GBSP/2
+                  E1=ABYSPd/2, E2=0, FINT=FBSP, FINTX=0, HGAP=GBSP/2
   BYSP1db : SBEN, TYPE="1.0D38.37", L=LBYSPd/2, ANGLE=ABYSPd/2, TILT, &
-                  E1=0, E2=ABYSPd/2, FINT=0, FINTX=0.5, HGAP=GBSP/2
+                  E1=0, E2=ABYSPd/2, FINT=0, FINTX=FBSP, HGAP=GBSP/2
 
   BYSP2da : SBEN, TYPE="1.0D38.37", L=LBYSPd/2, ANGLE=-ABYSPd/2, TILT, &
-                  E1=-ABYSPd/2, E2=0, FINT=0.5, FINTX=0, HGAP=GBSP/2
+                  E1=-ABYSPd/2, E2=0, FINT=FBSP, FINTX=0, HGAP=GBSP/2
   BYSP2db : SBEN, TYPE="1.0D38.37", L=LBYSPd/2, ANGLE=-ABYSPd/2, TILT, &
-                  E1=0, E2=-ABYSPd/2, FINT=0, FINTX=0.5, HGAP=GBSP/2
+                  E1=0, E2=-ABYSPd/2, FINT=0, FINTX=FBSP, HGAP=GBSP/2
 
 ! HXR DC bend correctors to compensate kicker orbit and dispersion
 
@@ -1023,8 +1032,8 @@
   DSP7daa : DRIF, L=LDSP7daa
   DSP7dab : DRIF, L=LDSP7dab
   DSP7db  : DRIF, L=LDSP7db
-  DWALLad : DRIF, L=1.83        !distance from face of muon wall to BSY dump
-  DDUMPBSY: DRIF, L=61.120*IN2M !length of BSY dump (per A. Ibrahimov)
+  DWALLad : DRIF, L=1.840975    !distance from face of muon wall to BSY dump
+  DDUMPBSY: DRIF, L=61.120*in2m !length of BSY dump (per A. Ibrahimov)
 
 ! markers
 

@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-23JAN19 ***
+! *** OPTICS=AD_ACCEL-13JUN19 ***
 
 ! LCLS2cu various parts upstream of BSY
 
@@ -8,7 +8,7 @@
 ! ------------------------------------------------------------------------------
 ! 30-JAN-2019, M. Woodley
 !  * move area BEG/END MARKERs to common.xsif
-!  * DL1 becomes two areas (DL1A and DL1B)
+!  * DL1 becomes two areas (DL1_1 and DL1_2)
 !  * rename MRK/FIN MARKERs at BC1 and BC2 to proper area boundary names
 ! ------------------------------------------------------------------------------
 ! 07-JAN-2019, M. Woodley
@@ -200,8 +200,13 @@
 
   DBXG : DRIF, L=0.132618358755 !replaces DXG0/DXGA/DXGB
 
-  rQGx   := 0.020                  ! QG quadrupole pole-tip radius [m]
-  LQGx   := 0.076                  ! QG quadrupole effective length [m]
+  rQGx := 0.020 ! QG quadrupole pole-tip radius [m]
+  LQGx := 0.076 ! QG quadrupole effective length [m]
+
+  CQ01    : QUAD,L=1E-9/2,K1=0,TYPE="QSOL"                   !correction quad in 1st solenoid at gun (nominally set to 0) (set to ~zero length, with longitudinal position as the actual quad's center)
+  SQ01    : QUAD,L=1E-9/2,K1=0,TILT,TYPE="QSOL"              !correction skew-quad in 1st solenoid at gun (nominally set to 0) (set to ~zero length, with longitudinal position as the actual quad's center)
+  QG02    : QUAD,L=LQGx/2,K1=-35.48540,APER=rQGx,TYPE="QG"
+  QG03    : QUAD,L=LQGx/2,K1= 80.16051,APER=rQGx,TYPE="QG"
 
   DGS1    : DRIF, L=0.1900-LQGx/2-20E-6-0.0155757
   DGS2    : DRIF, L=(0.2300-LQGx)/2+20E-6
@@ -210,12 +215,6 @@
   DGS5    : DRIF, L= 0.0300-0.02271
   DGS6    : DRIF, L= 0.0240-0.00402
   DGS7    : DRIF, L= 0.05
-
-
-  CQ01    : QUAD,L=1E-9/2,K1=0,TYPE="QSOL"                   !correction quad in 1st solenoid at gun (nominally set to 0) (set to ~zero length, with longitudinal position as the actual quad's center)
-  SQ01    : QUAD,L=1E-9/2,K1=0,TILT,TYPE="QSOL"              !correction skew-quad in 1st solenoid at gun (nominally set to 0) (set to ~zero length, with longitudinal position as the actual quad's center)
-  QG02    : QUAD,L=LQGx/2,K1=-35.48540,APER=rQGx,TYPE="QG"
-  QG03    : QUAD,L=LQGx/2,K1= 80.16051,APER=rQGx,TYPE="QG"
 
   XCG1    : HKIC,TYPE="class-G"
   XCG2    : HKIC,TYPE="class-G"
@@ -232,7 +231,7 @@
   GSPEC   : LINE=(BEGGSPEC,BXGA,BXGB,DGS1,QG02,SCG1,QG02,&
                   DGS2,BPMG1,DGS3,QG03,SCG2,QG03,&
                   DGS4,YAGG1,DGS5,CRG1,DGS6,FCG1,DGS7,DBMARK97,&
-                  ENDGSPEC) ! gun spectrometer from BXG to Farraday cup and dump
+                  ENDGSPEC) ! gun spectrometer from BXG to Faraday cup and dump
 
 ! 135-MeV Spectrometer
 ! ====================
@@ -269,6 +268,7 @@
   BPMS3   : MONI, TYPE="20_um_res"
   VVS1    : MARK                  !135-MeV spectrometer vacuum valve
   YAGS1   : PROF, TYPE="YAG"      !1st 135-MeV spectrometer YAG-screen - center of device in MAD is defined as center of YAG crystal, not mirror
+  IMS1    : IMON                  !135-MeV spectrometer toroid
   YAGS2   : PROF, TYPE="YAG"      !2nd 135-MeV spectrometer YAG-screen - center of device in MAD is defined as center of YAG crystal, not mirror
   OTRS1   : PROF, TYPE="OTR"      !135-MeV spectrometer OTR-screen
   SDMP    : INST                  ! gun-spec. dump (exact location? - 11/09/05)
@@ -295,8 +295,6 @@
 
 ! DL1
 ! ===
-
-  DL1_ON := 1                      !=1: nominal LCLS with BX01/02 bend magnet DL1 power-supply is ON, =0: 135-MeV spectrometer-mode with DL1 OFF
 
   ADL1 := injdeg*RADDEG            !injection line angle (rad)
 
@@ -1035,7 +1033,6 @@
 ! bunch charge monitors (toroids)
   IM01   : IMON !L0
   IM02   : IMON !L0
-  IMS1   : IMON !135-MeV spectrometer
   IM03   : IMON !DL1-
   IMBC1I : IMON !BC1 input toriod (comparator with IMBC1O)
   IMBC1O : IMON !BC1 output toroid (comparator with IMBC1I)
@@ -1333,6 +1330,110 @@
 ! ------------------------------------------------------------------------------
 
   D10cma : DRIF, L=0.127
+
+! ==============================================================================
+! LINE definitions
+! ------------------------------------------------------------------------------
+
+  L1c : LINE=(D9,DAQ1,QFL1,QFL1,DAQ1,&
+              D9,DAQ1,QDL1,QDL1,DAQ1)
+  L2c : LINE=(4*D10,DAQ1,QFL2,QFL2,DAQ2,&
+              4*D10,DAQ1,QDL2,QDL2,DAQ2)
+  L3c : LINE=(4*D10,DAQ1,QFL3,QFL3,DAQ2,&
+              4*D10,DAQ1,QDL3,QDL3,DAQ2)
+
+  SC0   : LINE=(XC00,YC00)
+  SC1   : LINE=(XC01,YC01)
+  SC2   : LINE=(XC02,YC02)
+  SC3   : LINE=(XC03,YC03)
+  SC4   : LINE=(XC04,YC04)
+  SC5   : LINE=(XC05,YC05)
+  SC6   : LINE=(XC06,YC06)
+  SC7   : LINE=(XC07,YC07)
+  SC8   : LINE=(XC08,YC08)
+  SC9   : LINE=(XC09,YC09)
+  SC10  : LINE=(XC10,YC10)
+  SC11  : LINE=(XC21101,YC21102)
+  SCA11 : LINE=(XC21135,YC21136)
+  SCA12 : LINE=(XC21165,YC21166)
+  SCM11 : LINE=(XC21191,YC21192)
+  SCM13 : LINE=(XC21275,YC21276)
+  SCM15 : LINE=(XC21325,YC21325)
+
+  GUNBXG : LINE=(DL00,LOADLOCK,BEGGUN,SOL1BK,DBMARK80,CATHODE,DL01a,&
+                 SOL1,CQ01,CQ01,SC0,SQ01,SQ01,SOL1,&
+                 DL01a1,VV01,DL01a2,AM00,DL01a3,AM01,DL01a4,&
+                 YAG01,DL01a5,FC01,DL01b,IM01,DL01c,&
+                 SC1,DL01h,BPM2,DL01d,DBMARK81,ENDGUN)
+
+  BXGL0a : LINE=(BEGL0,DBXG,DL01e,BPM3,&
+                 DL01f,CR01,DL01f2,YAG02,DL01g,ZLIN00,FLNGa1,L0a___1,DLFDa,&
+                 L0a___2,SOL2,L0a___3,SC2,L0a___4,L0aMID,L0a___5,SC3,L0a___6,&
+                 OUTCPa,L0a___7,FLNGa2,L0aWAKE)
+
+  GUNL0a : LINE=(GUNBXG,BXGL0a)
+
+  L0b : LINE=(L0bBEG,DL02a1,YAG03,DL02a2,DL02a3,QA01,QA01,DL02b1,&
+              PH01,DL02b2,QA02,BPM5,QA02,DL02c,FLNGb1,L0b___1,DLFDb,&
+              L0b___2,SC4,L0b___3,L0bMID,L0b___4,SC5,L0b___5,OUTCPb,&
+              L0b___6,FLNGb2,ENDL0)
+
+  LSRHTR : LINE=(LHBEG,BXh1A,BXh1B,Dh01,BXh2A,BXh2B,Dh02a,OTRH1,Dh03a,LH_UND,&
+                 HTRUND,LH_UND,Dh03b,OTRH2,Dh02b,BXh3A,BXh3B,Dh01,&
+                 BXh4A,BXh4B,LHEND)
+
+  DL1_1 : LINE=(BEGDL1_1,EMAT,DE00,DE00a,&
+                QE01,BPM6,QE01,DE01a,IM02,DE01b,VV02,DE01c,QE02,QE02,&
+                Dh00,LSRHTR,Dh06,TCAV0,SC6,TCAV0,&
+                DE02,QE03,BPM8,QE03,DE03a,DE03b,SC7,DE03c,&
+                QE04,BPM9,QE04,DE04,&
+                WS01,DE05,OTR1,DE05c,VV03,DE06a,RST1,DE06b,WS02,&
+                DE05a,MRK0,DE05a,OTR2,DE06d,BPM10,DE06e,WS03,DE05,OTR3,DE07,&
+                QM01,BPM11,QM01,DE08,SC8,DE08a,VV04,DE08b,&
+                QM02,BPM12,QM02,DE09,DBMARK82,ENDDL1_1)
+
+  DL1_2 : LINE=(BEGDL1_2,BX01A,BX01B,DB00a,OTR4,DB00b,SC9,DB00c,&
+                QB,BPM13,QB,DB00d,WS04,DB00e,BX02A,BX02B,CNT0,DBMARK83,&
+                DM00,SC10,DM00a,QM03,BPM14,QM03,DM01,DM01a,&
+                QM04,BPM15,QM04,DM02,IM03,DM02a,ENDDL1_2)
+
+  DL1 : LINE=(DL1_1,DL1_2) !nominal LCLS DL1 layout with BX01/BX02 bends on
+
+  DIAG1 : LINE=(DDG1,BPMS11,DDG2,CE11,DDG3,OTR11,DDG4)
+  BC1c : LINE=(BC1Cbeg,BX11A,BX11B,DBQ1,&
+               CQ11,CQ11,D11o,&
+               BX12A,BX12B,DIAG1,&
+               BX13A,BX13B,D11oa,SQ13,SQ13,D11ob,&
+               CQ12,CQ12,DBQ1,&
+               BX14A,BX14B,CNT1,BC1Cend)
+  BC1i : LINE=(DL1Xa,VVX1,DL1Xb,XBEG,L1X___1,SCM11,L1X___2,XEND,DM10a,VVX2,&
+               DM10c,Q21201,BPM21201,ZLIN02,Q21201,DM10x,IMBC1I,&
+               DM11,QM11,QM11,DM12)
+  BC1e : LINE=(DM13a,BL11,DM13b,&
+               QM12,QM12,DM14a,DM14b,IMBC1O,DM14c,&
+               QM13,BPMM12,QM13,DM15a,BL12,DM15b,SCM13,DM15c,&
+               WS11,DWW1a,WS12,DWW1b,OTR12,DWW1c1,PH02,DWW1c2,XC21302,&
+               DWW1d,YC21303,DWW1e,WS13,DM16,Q21301,BPM21301,ZLIN03,&
+               Q21301,DM17a,DM17b,TD11,DM17c,QM14,BPMM14,QM14,&
+               DM18a,SCM15,DM18b,QM15,QM15,DBMARK28,DM19)
+  BC1 : LINE=(BEGBC1,&
+              BC1i,BC1c,BC1e,&
+              ENDBC1)
+  DIAG2 : LINE=(DDG1,BPMS21,DDG2,CE21,DDG3,OTR21,DDG4)
+  BC2C1 : LINE=(BC2Cbeg,BX21A,BX21B,DBQ2a,&
+                CQ21,CQ21,D21oa,&
+                BX22A,BX22B,DDG0,DIAG2,DDGA,&
+                BX23A,BX23B,D21ob,&
+                CQ22,CQ22,DBQ2b,&
+                BX24A,BX24B,CNT2,BC2Cend)
+  BC2 : LINE=(BEGBC2,&
+              DM20,Q24701A,ZLIN08,Q24701A,D10cma,Q24701B,BPM24701,Q24701B,&
+              DM21Z,DM21A,WS24,DM21H,IMBC2I,DM21B,VV21,DM21C,&
+              QM21,QM21,DM21D,DM21E,BC2C1,D21w,D21x,BL21,D21y,DM23B,&
+              QM22,QM22,DM24A,VV22,DM24B,DM24D,Q24901A,BPM24901,Q24901A,&
+              DM24C,Q24901B,Q24901B,DM25,ENDBC2)
+
+  ECELL : LINE=(QE31,DQEC,DQEC,QE32,QE32,DQEC,DQEC,QE31)
 
 ! ------------------------------------------------------------------------------
 
