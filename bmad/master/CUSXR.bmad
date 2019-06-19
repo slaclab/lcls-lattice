@@ -1,10 +1,17 @@
 
-! *** OPTICS=AD_ACCEL-23JAN19 ***
+! *** OPTICS=AD_ACCEL-13JUN19 ***
 
 ! LCLS2sc transport from Cu-linac to SXR
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 28-MAY-2019, M. Woodley
+!  * relocate XCCUS1, YCCUS2, and BPMCUS3 per L. Borzenets
+! 13-MAY-2019, M. Woodley
+!  * change length of STCLTS to 30" and move 5.1 cm d/s per A. Ibrahimov
+! 30-APR-2019, M. Woodley
+!  * use measured FINT=0.4861 for 1.0D38.37 @ 200A
 ! ------------------------------------------------------------------------------
 ! 04-OCT-2018, M. Woodley
 !  * include alternative DC extraction into CUSXR
@@ -232,6 +239,7 @@ blrcusb: sbend, e1 = 0, e2 = ablrcus, fint = 0, fintx = 0.5, hgap = gblrcus/2, t
 tbrcus = -0.769423721099 !roll angle of DC bend (rad)
 gbrcus = gbsp !bend gap height (m)
 zbrcus = lbsp !bend straight length (1.0D38.37) (m)
+fbrcus = 0.4861 !measured FINT
 
 dabrcus = -0.417540592574e-4
 abrcus = (-ablrcus0+dabrcus)*abs(setcus)
@@ -240,10 +248,10 @@ abrcush_2 = abrcush*abrcush
 abrcush_4 = abrcush_2*abrcush_2
 lbrcus = zbrcus/(1-abrcush_2/6+abrcush_4/120) !bend path length (m)
 
-brcus1a: sbend, e1 = abrcus/2, e2 = 0, fint = 0.5, fintx = 0, hgap = gbrcus/2, type = "1.0D38.37" &
-        , ref_tilt = tbrcus, l = lbrcus/2, angle = lbrcus/2 * abrcus/2/(lbrcus/2)
-brcus1b: sbend, e2 = abrcus/2, e1 = 0, fint = 0, fintx = 0.5, hgap = gbrcus/2, type = "1.0D38.37" &
-        , ref_tilt = tbrcus, l = lbrcus/2, angle = lbrcus/2 * abrcus/2/(lbrcus/2)
+brcus1a: sbend, e1 = abrcus/2, e2 = 0, fint = fbrcus, fintx = 0, hgap = gbrcus/2, type =  &
+        "1.0D38.37", ref_tilt = tbrcus, l = lbrcus/2, angle = lbrcus/2 * abrcus/2/(lbrcus/2)
+brcus1b: sbend, e2 = abrcus/2, e1 = 0, fint = 0, fintx = fbrcus, hgap = gbrcus/2, type =  &
+        "1.0D38.37", ref_tilt = tbrcus, l = lbrcus/2, angle = lbrcus/2 * abrcus/2/(lbrcus/2)
 
 ! inner vertical bends for R56 cancellation
 ! NOTE: 1.0D22.265 dipoles replaced with 3D8.8MK3 correctors
@@ -300,11 +308,11 @@ ldcus1b = 7.0
 ldcus1c = 0.5
 ldcus1a = ldcus1-ldcus1b-ldcus1c-lbrccus-lbrccus-dldcus13
 ldcus2a = 0.464083 !0.4471
-ldcus2b = 0.619817 !0.6368
+ldcus2b = 0.747032 !0.619817
 ldcus2c = ldcus2-ldcus2a-ldcus2b
 ldcus3a = 0.463634 !0.4471
-ldcus3b = 0.843035 !0.6368
-ldcus3d = 0.593909 !0.4781
+ldcus3b = 0.747031 !0.843035
+ldcus3d = 0.389900 !0.593909
 ldcus3c = ldcus3-ldcus3a-ldcus3b-ldcus3d
 ldcus4a = 0.4285
 ldcus4c = 0.1924
@@ -365,7 +373,7 @@ dcus13: drift, l = ldcus13
 ! markers
 
 begcusxr: marker
-cencusxr: marker !center of CUSXR
+midcusxr: marker !center of CUSXR
 cntcus1: marker, type = "CENTER"
 cntcus2: marker, type = "CENTER"
 cntcus3: marker, type = "CENTER"
@@ -401,8 +409,8 @@ yccus9: kicker, type = "class-4" !type TBD
 
 ! insertable stopper / tuneup dump
 
-stclts: instrument, l = 12*in2m, type = "PPS STOPPER" !from PEP-II injection line
-dcus11b1: drift, l = 2.0609115
+stclts: instrument, l = 30*in2m, type = "PPS STOPPER" !from PEP-II injection line
+dcus11b1: drift, l = 1.883313 !2.0609115
 dcus11b2: drift, l = dcus11b[l]-dcus11b1[l]-stclts[l]
 
 ! SROT to remove rotation angle
@@ -430,7 +438,7 @@ kcusxr: line = (kcusxra, kcusxrb)
 dlcusxr: line = (dcus1c, qcus1, qcus1, dcus2a, bpmcus1, dcus2b, xccus1, dcus2c, qcus2, qcus2,  &
         dcus3a, bpmcus2, dcus3b, yccus2, dcus3c, bpmcus3, dcus3d, qcus3, qcus3, dcus4a, yccus3,  &
         dcus4b, dcus4c, qcus4, bpmcus4, qcus4, dcus5a, xccus4, dcus5b, bycus1a, bycus1b, cntcus3 &
-        , rocus3, dcus6a, dcus6b, qcus5, bpmcus5, qcus5, dcus7, cencusxr, dcus7, qcus6, qcus6,  &
+        , rocus3, dcus6a, dcus6b, qcus5, bpmcus5, qcus5, dcus7, midcusxr, dcus7, qcus6, qcus6,  &
         dcus8a, yccus6, dcus8b, rocus4, bycus2a, bycus2b, cntcus4, dcus9a, dcus9b, qcus7, bpmcus7 &
         , qcus7, dcus10a, xccus7, dcus10b, bpmcus8, dcus10c, qcus8, qcus8, dcus11a, yccus8,  &
         dcus11b1, stclts, dcus11b2, bpmcus9, dcus11c, qcus9, qcus9, dcus12a, yccus9, dcus12b,  &

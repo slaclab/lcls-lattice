@@ -1,10 +1,20 @@
 
-! *** OPTICS=AD_ACCEL-23JAN19 ***
+! *** OPTICS=AD_ACCEL-13JUN19 ***
 
 ! LCLS2sc undulator and undulator extension
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 10-MAY-2019, M. Woodley
+!  * move BLM's in HXR cells from before undulator to after per H.-D. Nuhn
+! 30-APR-2019, M. Woodley
+!  * remove M1, M2, and YAGBRAG from HXRSS self-seeding chicane per H.-D. Nuhn
+! 19-FEB-2019, M. Woodley
+!  * move SXRSS self-seeding chicane from undulator cell 33 to cell 35 per
+!    G. Marcus (DCR_2018-012)
+!  * move undulator 35 and associated devices to cell 33 (replace "35" with
+!    "33" in device names)
 ! ------------------------------------------------------------------------------
 ! 08-JAN-2019, M. Woodley
 !  * define HXRSS and SXRSS chicane bend angles (rather than integrated
@@ -271,10 +281,10 @@ due1e: drift, l = 0.057
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-kqsx16 = 0.584170476419
-kqsx19 = -0.916029555737
-kqsx21 = 1.112214118849
-kqsx24 = -1.119664961437
+kqsx16 = 0.589502458599 ! 0.584170476419
+kqsx19 = -0.91531741252  !-0.916029555737
+kqsx21 = 1.109876931688 ! 1.112214118849
+kqsx24 = -1.085714742294 !-1.119664961437
 
 qsxh16: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqsx16
 qsxh19: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqsx19
@@ -404,7 +414,7 @@ gqfsx = intgsx/lqu/10*1.0           !T/m
 gqdsx = -intgsx/lqu/10*1.0           !T/m
 kqfsx = 1.e-9*gqfsx*c_light/gamu/mc2 !m^-2
 kqdsx = 1.e-9*gqdsx*c_light/gamu/mc2 !m^-2
-kqdsxm = -0.406434161462
+kqdsxm = -0.266792876891 !-0.406434161462
 
 qsxh26: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfsx
 qsxh27: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdsx
@@ -450,8 +460,8 @@ umasxh29: umasxh
 umasxh30: umasxh
 umasxh31: umasxh
 umasxh32: umasxh
+umasxh33: umasxh
 umasxh34: umasxh
-umasxh35: umasxh
 umasxh36: umasxh
 umasxh37: umasxh
 umasxh38: umasxh
@@ -530,8 +540,8 @@ xcsu29: kicker, type = "type-V"
 xcsu30: kicker, type = "type-V"
 xcsu31: kicker, type = "type-V"
 xcsu32: kicker, type = "type-V"
+xcsu33: kicker, type = "type-V"
 xcsu34: kicker, type = "type-V"
-xcsu35: kicker, type = "type-V"
 xcsu36: kicker, type = "type-V"
 xcsu37: kicker, type = "type-V"
 xcsu38: kicker, type = "type-V"
@@ -556,8 +566,8 @@ ycsu29: kicker, type = "type-V"
 ycsu30: kicker, type = "type-V"
 ycsu31: kicker, type = "type-V"
 ycsu32: kicker, type = "type-V"
+ycsu33: kicker, type = "type-V"
 ycsu34: kicker, type = "type-V"
-ycsu35: kicker, type = "type-V"
 ycsu36: kicker, type = "type-V"
 ycsu37: kicker, type = "type-V"
 ycsu38: kicker, type = "type-V"
@@ -619,9 +629,9 @@ phssx29: line = (pssxh, mphs, pssxh)
 phssx30: line = (pssxh, mphs, pssxh)
 phssx31: line = (pssxh, mphs, pssxh)
 phssx32: line = (pssxh, mphs, pssxh)
-dphss33: drift, l = lpssx
+phssx33: line = (pssxh, mphs, pssxh)
 phssx34: line = (pssxh, mphs, pssxh)
-phssx35: line = (pssxh, mphs, pssxh)
+dphss35: drift, l = lpssx
 phssx36: line = (pssxh, mphs, pssxh)
 phssx37: line = (pssxh, mphs, pssxh)
 phssx38: line = (pssxh, mphs, pssxh)
@@ -659,8 +669,8 @@ blms29: instrument
 blms30: instrument
 blms31: instrument
 blms32: instrument
+blms33: instrument
 blms34: instrument
-blms35: instrument
 blms36: instrument
 blms37: instrument
 blms38: instrument
@@ -685,10 +695,11 @@ blms47: instrument
 ! - in LCLS: BXSS1-4
 ! - nominal beam energy range is 3.35-4.74 GeV
 ! - minimum energy is 2.6 GeV; maximum energy is 5.2 GeV
-! - Bmax = 2.6 kG-m @ 8 A (20 mm maximum beam offset)
+! - Bmax = 2.56 kG-m @ 9 A (20 mm maximum beam offset)
 ! - use series approximation for sinc(x)=sin(x)/x to allow AB5=0
 ! - deflects toward +X (to the left/north/wall)
 ! - bends toward coil side
+! - Dieter Walz designation: 1.575D14-C (pole-width rather than gap height)
 
 ! BCXSS1 gets an X-offset of +1.0 mm (toward the wall)
 ! BCXSS2 gets an X-offset of +9.7 mm (toward the wall)
@@ -779,9 +790,9 @@ usegsx29: line = (dtsxu, umasxh29, xcsu29, ycsu29, umasxh29, dtsxu)
 usegsx30: line = (dtsxu, umasxh30, xcsu30, ycsu30, umasxh30, dtsxu)
 usegsx31: line = (dtsxu, umasxh31, xcsu31, ycsu31, umasxh31, dtsxu)
 usegsx32: line = (dtsxu, umasxh32, xcsu32, ycsu32, umasxh32, dtsxu)
-dusegs33: line = (schicane) !DRIF, L=LDUSEGS
+usegsx33: line = (dtsxu, umasxh33, xcsu33, ycsu33, umasxh33, dtsxu)
 usegsx34: line = (dtsxu, umasxh34, xcsu34, ycsu34, umasxh34, dtsxu)
-usegsx35: line = (dtsxu, umasxh35, xcsu35, ycsu35, umasxh35, dtsxu)
+dusegs35: line = (schicane) !DRIF, L=LDUSEGS
 usegsx36: line = (dtsxu, umasxh36, xcsu36, ycsu36, umasxh36, dtsxu)
 usegsx37: line = (dtsxu, umasxh37, xcsu37, ycsu37, umasxh37, dtsxu)
 usegsx38: line = (dtsxu, umasxh38, xcsu38, ycsu38, umasxh38, dtsxu)
@@ -831,9 +842,9 @@ sxbrk29: line = (du3s, phssx29, du4s, du5s, qsxblk29, du6s, rfbsx29, du7s)
 sxbrk30: line = (du3s, phssx30, du4s, du5s, qsxblk30, du6s, rfbsx30, du7s)
 sxbrk31: line = (du3s, phssx31, du4s, du5s, qsxblk31, du6s, rfbsx31, du7s)
 sxbrk32: line = (du3s, phssx32, du4s, vvsxu32, du5s, qsxblk32, du6s, rfbsx32, du7s)
-sxbrk33: line = (du3s, dphss33, du4s, du5s, qsxblk33, du6s, rfbsx33, du7s)
+sxbrk33: line = (du3s, phssx33, du4s, du5s, qsxblk33, du6s, rfbsx33, du7s)
 sxbrk34: line = (du3s, phssx34, du4s, du5s, qsxblk34, du6s, rfbsx34, du7s)
-sxbrk35: line = (du3s, phssx35, du4s, du5s, qsxblk35, du6s, rfbsx35, du7s)
+sxbrk35: line = (du3s, dphss35, du4s, du5s, qsxblk35, du6s, rfbsx35, du7s)
 sxbrk36: line = (du3s, phssx36, du4s, du5s, qsxblk36, du6s, rfbsx36, du7s)
 sxbrk37: line = (du3s, phssx37, du4s, du5s, qsxblk37, du6s, rfbsx37, du7s)
 sxbrk38: line = (du3s, phssx38, du4s, vvsxu38, du5s, qsxblk38, du6s, rfbsx38, du7s)
@@ -857,9 +868,9 @@ sxcel29: line = (du1s, blms29, du2s, usegsx29, sxbrk29)
 sxcel30: line = (du1s, blms30, du2s, usegsx30, sxbrk30)
 sxcel31: line = (du1s, blms31, du2s, usegsx31, sxbrk31)
 sxcel32: line = (du1s, blms32, du2s, usegsx32, sxbrk32)
-sxcel33: line = (du1s, du2s, dusegs33, sxbrk33) !empty with Q+RFBPM
+sxcel33: line = (du1s, blms33, du2s, usegsx33, sxbrk33)
 sxcel34: line = (du1s, blms34, du2s, usegsx34, sxbrk34)
-sxcel35: line = (du1s, blms35, du2s, usegsx35, sxbrk35)
+sxcel35: line = (du1s, du2s, dusegs35, sxbrk35) !empty with Q+RFBPM
 sxcel36: line = (du1s, blms36, du2s, usegsx36, sxbrk36)
 sxcel37: line = (du1s, blms37, du2s, usegsx37, sxbrk37)
 sxcel38: line = (du1s, blms38, du2s, usegsx38, sxbrk38)
@@ -889,8 +900,8 @@ sxr: line = (sxrstart, sxrcl, sxrterm, due1ab, rfbsx51, due1e, endunds)
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-kque1b = -0.297915551865
-kque2b = 0.390984021273
+kque1b = -0.306247962224 !-0.297915551865
+kque2b = 0.394195575969 ! 0.390984021273
 
 que1b: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kque1b
 que2b: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kque2b
@@ -1043,7 +1054,7 @@ pshxh: taylor, type = "PSHXh", l = lpshxh, {1: 1.0, 1 0 0 0 0 0}, {1: lpshxh, 0 
 ldusegh = 3.372032
 ldu1h = 0.040984
 ldu2h = 0.0
-ldu3h = 1.83-ldusegh/2-lqu/2
+ldu3h = (1.83-ldusegh/2-lqu/2)/2
 ldu4h = 0.13-lqu/2-lrfbub/2
 ldu5h = 0.1275-lpshxh-lrfbub/2
 ldu6h = 0.109243-lpshxh
@@ -1554,13 +1565,10 @@ dmono: drift, l = (ldusegh-2*lhssb2bo-lhssb2bi-zb4)/2
 
 hxrssbeg: marker
 diamond: instrument
-yagbrag: instrument
-m1: marker
-m2: marker
 hxrssend: marker
 
-hchicane: line = (hxrssbeg, dmono, m1, bcxhs1a, bcxhs1b, d1, bcxhs2a, bcxhs2b, dch, diamond,  &
-        yagbrag, dch, bcxhs3a, bcxhs3b, d1, bcxhs4a, bcxhs4b, m2, dmono, hxrssend)
+hchicane: line = (hxrssbeg, dmono, bcxhs1a, bcxhs1b, d1, bcxhs2a, bcxhs2b, dch, diamond, dch,  &
+        bcxhs3a, bcxhs3b, d1, bcxhs4a, bcxhs4b, dmono, hxrssend)
 
 ! ------------------------------------------------------------------------------
 ! HXR undulator cells
@@ -1644,79 +1652,79 @@ dqhxbl48: drift, l = lqu
 dqhxbl49: drift, l = lqu
 dqhxbl50: drift, l = lqu
 
-hxbrk13: line = (du3h, qhxblk13, du4h, rfbhx13, du5h, phshx13, du6h, vvhxu13, du7h)
-hxbrk14: line = (du3h, qhxblk14, du4h, rfbhx14, du5h, phshx14, du6h, vvhxu14, du7h)
-hxbrk15: line = (du3h, qhxblk15, du4h, rfbhx15, du5h, phshx15, du6h, vvhxu15, du7h)
-hxbrk16: line = (du3h, qhxblk16, du4h, rfbhx16, du5h, phshx16, du6h, vvhxu16, du7h)
-hxbrk17: line = (du3h, qhxblk17, du4h, rfbhx17, du5h, phshx17, du6h, vvhxu17, du7h)
-hxbrk18: line = (du3h, qhxblk18, du4h, rfbhx18, du5h, phshx18, du6h, vvhxu18, du7h)
-hxbrk19: line = (du3h, qhxblk19, du4h, rfbhx19, du5h, phshx19, du6h, vvhxu19, du7h)
-hxbrk20: line = (du3h, qhxblk20, du4h, rfbhx20, du5h, dphsh20, du6h, du7h)
-hxbrk21: line = (du3h, qhxblk21, du4h, rfbhx21, du5h, phshx21, du6h, vvhxu21, du7h)
-hxbrk22: line = (du3h, qhxblk22, du4h, rfbhx22, du5h, phshx22, du6h, vvhxu22, du7h)
-hxbrk23: line = (du3h, qhxblk23, du4h, rfbhx23, du5h, phshx23, du6h, vvhxu23, du7h)
-hxbrk24: line = (du3h, qhxblk24, du4h, rfbhx24, du5h, phshx24, du6h, vvhxu24, du7h)
-hxbrk25: line = (du3h, qhxblk25, du4h, rfbhx25, du5h, phshx25, du6h, vvhxu25, du7h)
-hxbrk26: line = (du3h, qhxblk26, du4h, rfbhx26, du5h, phshx26, du6h, vvhxu26, du7h)
-hxbrk27: line = (du3h, qhxblk27, du4h, rfbhx27, du5h, phshx27, du6h, vvhxu27, du7h)
-hxbrk28: line = (du3h, qhxblk28, du4h, rfbhx28, du5h, dphsh28, du6h, du7h)
-hxbrk29: line = (du3h, qhxblk29, du4h, rfbhx29, du5h, phshx29, du6h, vvhxu29, du7h)
-hxbrk30: line = (du3h, qhxblk30, du4h, rfbhx30, du5h, phshx30, du6h, vvhxu30, du7h)
-hxbrk31: line = (du3h, qhxblk31, du4h, rfbhx31, du5h, phshx31, du6h, vvhxu31, du7h)
-hxbrk32: line = (du3h, qhxblk32, du4h, rfbhx32, du5h, phshx32, du6h, vvhxu32, du7h)
-hxbrk33: line = (du3h, qhxblk33, du4h, rfbhx33, du5h, phshx33, du6h, vvhxu33, du7h)
-hxbrk34: line = (du3h, qhxblk34, du4h, rfbhx34, du5h, phshx34, du6h, vvhxu34, du7h)
-hxbrk35: line = (du3h, qhxblk35, du4h, rfbhx35, du5h, phshx35, du6h, vvhxu35, du7h)
-hxbrk36: line = (du3h, qhxblk36, du4h, rfbhx36, du5h, phshx36, du6h, vvhxu36, du7h)
-hxbrk37: line = (du3h, qhxblk37, du4h, rfbhx37, du5h, phshx37, du6h, vvhxu37, du7h)
-hxbrk38: line = (du3h, qhxblk38, du4h, rfbhx38, du5h, phshx38, du6h, vvhxu38, du7h)
-hxbrk39: line = (du3h, qhxblk39, du4h, rfbhx39, du5h, phshx39, du6h, vvhxu39, du7h)
-hxbrk40: line = (du3h, qhxblk40, du4h, rfbhx40, du5h, phshx40, du6h, vvhxu40, du7h)
-hxbrk41: line = (du3h, qhxblk41, du4h, rfbhx41, du5h, phshx41, du6h, vvhxu41, du7h)
-hxbrk42: line = (du3h, qhxblk42, du4h, rfbhx42, du5h, phshx42, du6h, vvhxu42, du7h)
-hxbrk43: line = (du3h, qhxblk43, du4h, rfbhx43, du5h, phshx43, du6h, vvhxu43, du7h)
-hxbrk44: line = (du3h, qhxblk44, du4h, rfbhx44, du5h, phshx44, du6h, vvhxu44, du7h)
-hxbrk45: line = (du3h, qhxblk45, du4h, rfbhx45, du5h, phshx45, du6h, vvhxu45, du7h)
-hxbrk46: line = (du3h, qhxblk46, du4h, rfbhx46, du5h, dphsh46, du6h, vvhxu46, du7h)
-hxbrk47: line = (du3h, dqhxbl47, du4h, drfbh47, du5h, dphsh47, du6h, du7h)
-hxbrk48: line = (du3h, dqhxbl48, du4h, drfbh48, du5h, dphsh48, du6h, du7h)
-hxbrk49: line = (du3h, dqhxbl49, du4h, drfbh49, du5h, dphsh49, du6h, du7h)
-hxbrk50: line = (du3h, dqhxbl50, du4h, drfbh50, du5h, dphsh50, du6h, du7h)
+hxbrk13: line = (du3h, blmh13, du3h, qhxblk13, du4h, rfbhx13, du5h, phshx13, du6h, vvhxu13, du7h)
+hxbrk14: line = (du3h, blmh14, du3h, qhxblk14, du4h, rfbhx14, du5h, phshx14, du6h, vvhxu14, du7h)
+hxbrk15: line = (du3h, blmh15, du3h, qhxblk15, du4h, rfbhx15, du5h, phshx15, du6h, vvhxu15, du7h)
+hxbrk16: line = (du3h, blmh16, du3h, qhxblk16, du4h, rfbhx16, du5h, phshx16, du6h, vvhxu16, du7h)
+hxbrk17: line = (du3h, blmh17, du3h, qhxblk17, du4h, rfbhx17, du5h, phshx17, du6h, vvhxu17, du7h)
+hxbrk18: line = (du3h, blmh18, du3h, qhxblk18, du4h, rfbhx18, du5h, phshx18, du6h, vvhxu18, du7h)
+hxbrk19: line = (du3h, blmh19, du3h, qhxblk19, du4h, rfbhx19, du5h, phshx19, du6h, vvhxu19, du7h)
+hxbrk20: line = (du3h, du3h, qhxblk20, du4h, rfbhx20, du5h, dphsh20, du6h, du7h)
+hxbrk21: line = (du3h, blmh21, du3h, qhxblk21, du4h, rfbhx21, du5h, phshx21, du6h, vvhxu21, du7h)
+hxbrk22: line = (du3h, blmh22, du3h, qhxblk22, du4h, rfbhx22, du5h, phshx22, du6h, vvhxu22, du7h)
+hxbrk23: line = (du3h, blmh23, du3h, qhxblk23, du4h, rfbhx23, du5h, phshx23, du6h, vvhxu23, du7h)
+hxbrk24: line = (du3h, blmh24, du3h, qhxblk24, du4h, rfbhx24, du5h, phshx24, du6h, vvhxu24, du7h)
+hxbrk25: line = (du3h, blmh25, du3h, qhxblk25, du4h, rfbhx25, du5h, phshx25, du6h, vvhxu25, du7h)
+hxbrk26: line = (du3h, blmh26, du3h, qhxblk26, du4h, rfbhx26, du5h, phshx26, du6h, vvhxu26, du7h)
+hxbrk27: line = (du3h, blmh27, du3h, qhxblk27, du4h, rfbhx27, du5h, phshx27, du6h, vvhxu27, du7h)
+hxbrk28: line = (du3h, du3h, qhxblk28, du4h, rfbhx28, du5h, dphsh28, du6h, du7h)
+hxbrk29: line = (du3h, blmh29, du3h, qhxblk29, du4h, rfbhx29, du5h, phshx29, du6h, vvhxu29, du7h)
+hxbrk30: line = (du3h, blmh30, du3h, qhxblk30, du4h, rfbhx30, du5h, phshx30, du6h, vvhxu30, du7h)
+hxbrk31: line = (du3h, blmh31, du3h, qhxblk31, du4h, rfbhx31, du5h, phshx31, du6h, vvhxu31, du7h)
+hxbrk32: line = (du3h, blmh32, du3h, qhxblk32, du4h, rfbhx32, du5h, phshx32, du6h, vvhxu32, du7h)
+hxbrk33: line = (du3h, blmh33, du3h, qhxblk33, du4h, rfbhx33, du5h, phshx33, du6h, vvhxu33, du7h)
+hxbrk34: line = (du3h, blmh34, du3h, qhxblk34, du4h, rfbhx34, du5h, phshx34, du6h, vvhxu34, du7h)
+hxbrk35: line = (du3h, blmh35, du3h, qhxblk35, du4h, rfbhx35, du5h, phshx35, du6h, vvhxu35, du7h)
+hxbrk36: line = (du3h, blmh36, du3h, qhxblk36, du4h, rfbhx36, du5h, phshx36, du6h, vvhxu36, du7h)
+hxbrk37: line = (du3h, blmh37, du3h, qhxblk37, du4h, rfbhx37, du5h, phshx37, du6h, vvhxu37, du7h)
+hxbrk38: line = (du3h, blmh38, du3h, qhxblk38, du4h, rfbhx38, du5h, phshx38, du6h, vvhxu38, du7h)
+hxbrk39: line = (du3h, blmh39, du3h, qhxblk39, du4h, rfbhx39, du5h, phshx39, du6h, vvhxu39, du7h)
+hxbrk40: line = (du3h, blmh40, du3h, qhxblk40, du4h, rfbhx40, du5h, phshx40, du6h, vvhxu40, du7h)
+hxbrk41: line = (du3h, blmh41, du3h, qhxblk41, du4h, rfbhx41, du5h, phshx41, du6h, vvhxu41, du7h)
+hxbrk42: line = (du3h, blmh42, du3h, qhxblk42, du4h, rfbhx42, du5h, phshx42, du6h, vvhxu42, du7h)
+hxbrk43: line = (du3h, blmh43, du3h, qhxblk43, du4h, rfbhx43, du5h, phshx43, du6h, vvhxu43, du7h)
+hxbrk44: line = (du3h, blmh44, du3h, qhxblk44, du4h, rfbhx44, du5h, phshx44, du6h, vvhxu44, du7h)
+hxbrk45: line = (du3h, blmh45, du3h, qhxblk45, du4h, rfbhx45, du5h, phshx45, du6h, vvhxu45, du7h)
+hxbrk46: line = (du3h, blmh46, du3h, qhxblk46, du4h, rfbhx46, du5h, dphsh46, du6h, vvhxu46, du7h)
+hxbrk47: line = (du3h, du3h, dqhxbl47, du4h, drfbh47, du5h, dphsh47, du6h, du7h)
+hxbrk48: line = (du3h, du3h, dqhxbl48, du4h, drfbh48, du5h, dphsh48, du6h, du7h)
+hxbrk49: line = (du3h, du3h, dqhxbl49, du4h, drfbh49, du5h, dphsh49, du6h, du7h)
+hxbrk50: line = (du3h, du3h, dqhxbl50, du4h, drfbh50, du5h, dphsh50, du6h, du7h)
 
-hxcel13: line = (du1h, blmh13, du2h, useghx13, hxbrk13)
-hxcel14: line = (du1h, blmh14, du2h, useghx14, hxbrk14)
-hxcel15: line = (du1h, blmh15, du2h, useghx15, hxbrk15)
-hxcel16: line = (du1h, blmh16, du2h, useghx16, hxbrk16)
-hxcel17: line = (du1h, blmh17, du2h, useghx17, hxbrk17)
-hxcel18: line = (du1h, blmh18, du2h, useghx18, hxbrk18)
-hxcel19: line = (du1h, blmh19, du2h, useghx19, hxbrk19)
+hxcel13: line = (du1h, du2h, useghx13, hxbrk13)
+hxcel14: line = (du1h, du2h, useghx14, hxbrk14)
+hxcel15: line = (du1h, du2h, useghx15, hxbrk15)
+hxcel16: line = (du1h, du2h, useghx16, hxbrk16)
+hxcel17: line = (du1h, du2h, useghx17, hxbrk17)
+hxcel18: line = (du1h, du2h, useghx18, hxbrk18)
+hxcel19: line = (du1h, du2h, useghx19, hxbrk19)
 hxcel20: line = (du1h, du2h, dusegh20, hxbrk20) !empty with Q+RFBPM
-hxcel21: line = (du1h, blmh21, du2h, useghx21, hxbrk21)
-hxcel22: line = (du1h, blmh22, du2h, useghx22, hxbrk22)
-hxcel23: line = (du1h, blmh23, du2h, useghx23, hxbrk23)
-hxcel24: line = (du1h, blmh24, du2h, useghx24, hxbrk24)
-hxcel25: line = (du1h, blmh25, du2h, useghx25, hxbrk25)
-hxcel26: line = (du1h, blmh26, du2h, useghx26, hxbrk26)
-hxcel27: line = (du1h, blmh27, du2h, useghx27, hxbrk27)
+hxcel21: line = (du1h, du2h, useghx21, hxbrk21)
+hxcel22: line = (du1h, du2h, useghx22, hxbrk22)
+hxcel23: line = (du1h, du2h, useghx23, hxbrk23)
+hxcel24: line = (du1h, du2h, useghx24, hxbrk24)
+hxcel25: line = (du1h, du2h, useghx25, hxbrk25)
+hxcel26: line = (du1h, du2h, useghx26, hxbrk26)
+hxcel27: line = (du1h, du2h, useghx27, hxbrk27)
 hxcel28: line = (du1h, du2h, dusegh28, hxbrk28) !empty with Q+RFBPM
-hxcel29: line = (du1h, blmh29, du2h, useghx29, hxbrk29)
-hxcel30: line = (du1h, blmh30, du2h, useghx30, hxbrk30)
-hxcel31: line = (du1h, blmh31, du2h, useghx31, hxbrk31)
-hxcel32: line = (du1h, blmh32, du2h, useghx32, hxbrk32)
-hxcel33: line = (du1h, blmh33, du2h, useghx33, hxbrk33)
-hxcel34: line = (du1h, blmh34, du2h, useghx34, hxbrk34)
-hxcel35: line = (du1h, blmh35, du2h, useghx35, hxbrk35)
-hxcel36: line = (du1h, blmh36, du2h, useghx36, hxbrk36)
-hxcel37: line = (du1h, blmh37, du2h, useghx37, hxbrk37)
-hxcel38: line = (du1h, blmh38, du2h, useghx38, hxbrk38)
-hxcel39: line = (du1h, blmh39, du2h, useghx39, hxbrk39)
-hxcel40: line = (du1h, blmh40, du2h, useghx40, hxbrk40)
-hxcel41: line = (du1h, blmh41, du2h, useghx41, hxbrk41)
-hxcel42: line = (du1h, blmh42, du2h, useghx42, hxbrk42)
-hxcel43: line = (du1h, blmh43, du2h, useghx43, hxbrk43)
-hxcel44: line = (du1h, blmh44, du2h, useghx44, hxbrk44)
-hxcel45: line = (du1h, blmh45, du2h, useghx45, hxbrk45)
-hxcel46: line = (du1h, blmh46, du2h, useghx46, hxbrk46) !no phase shifter
+hxcel29: line = (du1h, du2h, useghx29, hxbrk29)
+hxcel30: line = (du1h, du2h, useghx30, hxbrk30)
+hxcel31: line = (du1h, du2h, useghx31, hxbrk31)
+hxcel32: line = (du1h, du2h, useghx32, hxbrk32)
+hxcel33: line = (du1h, du2h, useghx33, hxbrk33)
+hxcel34: line = (du1h, du2h, useghx34, hxbrk34)
+hxcel35: line = (du1h, du2h, useghx35, hxbrk35)
+hxcel36: line = (du1h, du2h, useghx36, hxbrk36)
+hxcel37: line = (du1h, du2h, useghx37, hxbrk37)
+hxcel38: line = (du1h, du2h, useghx38, hxbrk38)
+hxcel39: line = (du1h, du2h, useghx39, hxbrk39)
+hxcel40: line = (du1h, du2h, useghx40, hxbrk40)
+hxcel41: line = (du1h, du2h, useghx41, hxbrk41)
+hxcel42: line = (du1h, du2h, useghx42, hxbrk42)
+hxcel43: line = (du1h, du2h, useghx43, hxbrk43)
+hxcel44: line = (du1h, du2h, useghx44, hxbrk44)
+hxcel45: line = (du1h, du2h, useghx45, hxbrk45)
+hxcel46: line = (du1h, du2h, useghx46, hxbrk46) !no phase shifter
 hxcel47: line = (du1h, du2h, dusegh47, hxbrk47) !empty
 hxcel48: line = (du1h, du2h, dusegh48, hxbrk48) !empty
 hxcel49: line = (du1h, du2h, dusegh49, hxbrk49) !empty with RFBPM

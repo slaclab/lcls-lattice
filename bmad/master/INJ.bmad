@@ -1,10 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-23JAN19 ***
+! *** OPTICS=AD_ACCEL-13JUN19 ***
 
 ! LCLS2sc injector: gun to start of L1 linac
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 30-APR-2019, M. Woodley
+!  * Update locations of GUNB devices per F. Zhou and G. Gassner
 ! ------------------------------------------------------------------------------
 ! 14-MAY-2018, M. Woodley
 !  * use LCLS-II Phase 1 laser heater undulator per PRD (LCLSII-2.2-PR-0086-R1)
@@ -223,10 +226,10 @@ bcxh4b: sbend, hgap = gbh/2, fint = 0, e2 = 0, fintx = fbh, type = "5D3.9", l = 
 
 ! correction coils co-wound on GUNB solenoids
 
-cq01b: quadrupole, type = "solenoid trim", l = 0, aperture = 0.0475/2
-sq01b: quadrupole, type = "solenoid trim", l = 0, aperture = 0.0475/2
-cq02b: quadrupole, type = "solenoid trim", l = 0, aperture = 0.0475/2
-sq02b: quadrupole, type = "solenoid trim", l = 0, aperture = 0.0475/2
+cq01b: multipole, type = "solenoid trim", aperture = 0.0475/2
+sq01b: multipole, type = "solenoid trim", aperture = 0.0475/2, t1 = pi / 4
+cq02b: multipole, type = "solenoid trim", aperture = 0.0475/2
+sq02b: multipole, type = "solenoid trim", aperture = 0.0475/2, t1 = pi / 4
 
 ! L0 to WS/OTR (Q0H01-4 match to waists at WS0H04)
 
@@ -242,12 +245,12 @@ q0h04: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h04
 
 ! WS/OTR to laser heater (Q0H05-8 match to 10x10 m beta waists LHMID)
 
-!               heater ON         heater OFF        chicane OFF
-!           ----------------   ----------------   ----------------
-kq0h05 = -6.486739294274 !  -7.451314362911 !  -7.50807265705  !
-kq0h06 = 0.966024601548 !   1.835321162849 !   1.870908387703 !
-kq0h07 = 7.974521691066 !   7.794364054297 !   7.804907479843 !
-kq0h08 = -8.324215790715 !  -8.272683698332 !  -8.306722243052 !
+!              heater ON        heater OFF        chicane OFF
+!           ---------------   ---------------   ---------------
+kq0h05 = -6.486739294274 ! -7.451314362911 ! -7.50807265705  !
+kq0h06 = 0.966024601548 !  1.835321162849 !  1.870908387703 !
+kq0h07 = 7.974521691066 !  7.794364054297 !  7.804907479843 !
+kq0h08 = -8.324215790715 ! -8.272683698332 ! -8.306722243052 !
 
 q0h05: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h05
 q0h06: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h06
@@ -256,12 +259,12 @@ q0h08: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h08
 
 ! laser heater to diagnostic line
 
-!               heater ON         heater OFF        chicane OFF
-!           ----------------   ----------------   ----------------
-kqhd01 = -9.165493466042 !  -8.743988180274 !  -8.746794738551 !
-kqhd02 = 6.5393744713   !   6.400024201736 !   6.401620200766 !
-kqhd03 = -8.445995045319 !  -8.612136472635 !  -8.622952974047 !
-kqhd04 = 6.743451959252 !   6.860670404609 !   6.864937307631 !
+!              heater ON        heater OFF        chicane OFF
+!           ---------------   ---------------   ---------------
+kqhd01 = -9.165493466042 ! -8.743988180274 ! -8.746794738551 !
+kqhd02 = 6.5393744713   !  6.400024201736 !  6.401620200766 !
+kqhd03 = -8.445995045319 ! -8.612136472635 ! -8.622952974047 !
+kqhd04 = 6.743451959252 !  6.860670404609 !  6.864937307631 !
 
 qhd01: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kqhd01
 qhd02: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kqhd02
@@ -336,6 +339,7 @@ sol2b: solenoid, ks = ksol2, type = "LBNL", l = lsol/2, aperture = rsol
 ! gami  : Lorentz energy factor in laser-heater undulator [1]
 ! K_und : undulator K for laser heater undulator
 ! Lhun  : length of laser-heater undulator (10 periods) [m]
+! Lhunh : half-length of laser-heater undulator [m]
 ! kqlh  : natural undulator focusing "k" in y-plane [1/m2]
 
 lam = 0.054 !0.0471204
@@ -343,18 +347,25 @@ lamr = 1030e-9
 gami = ei/(m_electron * 1e-9)
 k_und = sqrt(2*(lamr*2*gami^2/lam-1))
 lhun = 0.506263 !10*lam
+lhunh = lhun/2
 kqlh = (k_und*2*pi/lam/sqrt(2)/gami)^2
 
- !COMMENT
-umhtr: taylor, type = "LHund", l = lhun/2, {1: 1.0, 1 0 0 0 0 0}, {1: lhun/2, 0 1 0 0 0 0}, {2:  & !,
-        0.0, 1 0 0 0 0 0}, {2: 1.0, 0 1 0 0 0 0}, {3: cos(lhun/2*sqrt(kqlh)), 0 0 1 0 0 0}, {3:  &
-        sin(lhun/2*sqrt(kqlh))/sqrt(kqlh), 0 0 0 1 0 0}, {4: -sin(lhun/2*sqrt(kqlh))*sqrt(kqlh),  &
-        0 0 1 0 0 0}, {4: cos(lhun/2*sqrt(kqlh)), 0 0 0 1 0 0}, {5: 1, 0 0 0 0 1 0}, {6: 1,  &
-        0 0 0 0 0 1}
-     !R56=Lhun/2/(gami^2)*(1+(K_und^2)/2)
- !ENDCOMMENT
+! handle K_und->0 by expressing R34 as an approximate SINC function
 
- !UMHTR : DRIF, TYPE="LHund", L=Lhun/2
+argh = lhunh*sqrt(kqlh)
+argh2 = argh*argh
+argh4 = argh2*argh2
+argh6 = argh4*argh2
+sincargh = 1-argh2/6+argh4/120-argh6/5040 !~sinc(ARGh)=sin(ARGh)/ARGh
+r34h = lhunh*sincargh
+
+! undulator segment modeled as R-matrix to include vertical natural focusing
+
+umhtr: taylor, type = "LHund", l = lhunh, {1: 1.0, 1 0 0 0 0 0}, {1: lhunh, 0 1 0 0 0 0}, {2: 0.0 & !,                               &
+        , 1 0 0 0 0 0}, {2: 1.0, 0 1 0 0 0 0}, {3: cos(lhunh*sqrt(kqlh)), 0 0 1 0 0 0}, {3: r34h &
+        , 0 0 0 1 0 0}, {4: -sin(lhunh*sqrt(kqlh))*sqrt(kqlh), 0 0 1 0 0 0}, {4:  &
+        cos(lhunh*sqrt(kqlh)), 0 0 0 1 0 0}, {5: 1, 0 0 0 0 1 0}, {6: 1, 0 0 0 0 0 1}
+   !R56=Lhunh/(gami^2)*(1+(K_und^2)/2)
 
 ! ==============================================================================
 ! DRIF
@@ -367,22 +378,22 @@ lgun = 0.04 !APEX gun
 dgbca: drift, l = -0.071705
 dgbcb: drift, l = 0.071705
 dgun: drift, l = lgun
-dg001: drift, l = 0.255994-lgun-lsol/2
-dg002: drift, l = 0.131486-lsol/2
-dg003: drift, l = 0.098324
-dg004: drift, l = 0.003605
-dg005: drift, l = 0.105283
-dg006: drift, l = 0.079052
-dg007: drift, l = 0.136136-lbun/2
-dg008: drift, l = 0.155291-lbun/2
-dg009: drift, l = 0.182651
-dg010: drift, l = 0.220987
-dg011: drift, l = 0.123312
-dg012: drift, l = 0.159167-lsol/2
-dg013: drift, l = 0.131492-lsol/2
-dg014: drift, l = 0.101358
-dg015: drift, l = 0.004619
-dg016: drift, l = 0.163820
+dg001: drift, l = 0.246530-lgun-lsol/2
+dg002: drift, l = 0.140950-lsol/2
+dg003: drift, l = 0.097020
+dg004: drift, l = 0.005150
+dg005: drift, l = 0.105042
+dg006: drift, l = 0.075408
+dg007: drift, l = 0.139016-lbun/2
+dg008: drift, l = 0.155084-lbun/2
+dg009: drift, l = 0.181801
+dg010: drift, l = 0.222999
+dg011: drift, l = 0.121314
+dg012: drift, l = 0.155496-lsol/2
+dg013: drift, l = 0.136970-lsol/2
+dg014: drift, l = 0.101444
+dg015: drift, l = 0.004540
+dg016: drift, l = 0.163813
 
 dg016b: drift, l = 0.082968
 dg016a: drift, l = dg016[l]-dg016b[l]
@@ -675,8 +686,8 @@ endeic: marker
 ! BEAMLINE
 ! ------------------------------------------------------------------------------
 
-sol1bl: line = (sol1b, 2*cq01b, 2*sq01b, sol1b)
-sol2bl: line = (sol2b, 2*cq02b, 2*sq02b, sol2b)
+sol1bl: line = (sol1b, cq01b, sq01b, sol1b)
+sol2bl: line = (sol2b, cq02b, sq02b, sol2b)
 
 sc1b: line = (xc01b, yc01b)
 sc2b: line = (xc02b, yc02b)
@@ -695,9 +706,20 @@ eic: line = (begeic, dgbca, sol1bkb, dgbcb, cathodeb, dgun, dg001, sol1bl, dg002
         dg010, sc4b, dg011, yag01b, dg012, sol2bl, dg013, vv02b, dg014, bpm2b, dg015, sc5b,  &
         dg016a, blfu, dg016b, ecueic, dgeic, fc00eic, endeic)
 
+!-!  COMMENT !simplified
+!-!    LSRHTR : LINE=(LHBEGB,&
+!-!      BCXH1A,BCXH1B,Dh01a,Dh01b,Dh01c,&
+!-!      BCXH2A,BCXH2B,Dh02a,CEHTR,Dh02b,Dh02c,2*UMHTR,Dh02d,Dh02e,&
+!-!      BCXH3A,BCXH3B,Dh03a,Dh03b,Dh03c,&
+!-!      BCXH4A,BCXH4B,&
+!-!      LHENDB)
+!-!  ENDCOMMENT
+
+ !COMMENT !complete
 lsrhtr: line = (lhbegb, bcxh1a, bcxh1b, dh01a, bpmh1, dh01b, mirlhu, dh01c, bcxh2a, bcxh2b, dh02a &
         , cehtr, dh02b, yagh1, dh02c, umhtr, htrundb, umhtr, dh02d, yagh2, dh02e, bcxh3a, bcxh3b &
         , dh03a, mirlhd, dh03b, bpmh2, dh03c, bcxh4a, bcxh4b, cnthtr, lhendb)
+ !ENDCOMMENT
 
 !-!  COMMENT !simplified
 !-!    HTR : LINE=(&

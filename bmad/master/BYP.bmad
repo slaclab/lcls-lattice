@@ -1,10 +1,16 @@
 
-! *** OPTICS=AD_ACCEL-23JAN19 ***
+! *** OPTICS=AD_ACCEL-13JUN19 ***
 
 ! LCLS2sc bypass line, plus match to LTU
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 11-JUN-2019, M. Woodley
+!  * change STBP34A/STBP34B from ST60-type to LCLS EBD-type per A. Ibrahimov
+!  * move STBP34A/BTMBP34A and STBP34B/BTMBP34B u/s ~17 m per L. Borzenets
+! 20-FEB-2019, M. Woodley
+!  * move CBP33 ~20 cm u/s per A. Ibrahimov
 ! ------------------------------------------------------------------------------
 ! 07-JAN-2019, M. Woodley
 !  * remove BTMSP1s, BTMSP2s, BTMSP3s, and BTMSP4s per RP-RPG-181130-MEM-01
@@ -294,12 +300,8 @@ dbp3aa: drift, l = 4.854935+0.2492
 dbp3ab: drift, l = dbp3a[l]-dbp3aa[l]-lpcsp
 
 ldcwl = 7.0
-lst60 = 1.2192 !length of ST60-type stopper
-
-dcwla: drift, l = 0.8904
-dcwlb: drift, l = 0.7808
-dcwlc: drift, l = 0.681175
-dcwld: drift, l = ldcwl-dcwla[l]-lst60-dcwlb[l]-lst60-dcwlc[l]-lpcsp
+dcwlb: drift, l = 2.158425
+dcwla: drift, l = ldcwl-lpcsp-dcwlb[l]
 
 d2q4e: drift, l = 1.651 !1.27
 d2q4f: drift, l = d2q4d[l]-(d2q4e[l]+ljaw)
@@ -321,9 +323,14 @@ d2q4m: drift, l = 72.3206715-0.6096-(d2q4a[l]+d2q4b[l]+d2q4c[l])-lqm/2-zqbp32+zq
 d2q4ma: drift, l = 61.387806499999-lbrcus-0.6096-zqbp32+zmrgcus
 d2q4ma1: drift, l = 6.128206+0.2492
 d2q4ma2: drift, l = d2q4ma[l]-d2q4ma1[l]-lpcsp
+
+lstebd = 2*(3.125*in2m) !length of EBD-type stopper
 d2q4mb: drift, l = d2q4m[l]-d2q4ma[l]-lbrcus
-d2q4mba: drift, l = 2.35 !49999518034
-d2q4mbb: drift, l = d2q4mb[l]-d2q4mba[l]
+d2q4mba: drift, l = 2.15244 !2.35
+d2q4mbb: drift, l = 5.09756-lstebd/2
+d2q4mbc: drift, l = 1.648-lstebd
+d2q4mbd: drift, l = d2q4mb[l]-d2q4mba[l]-d2q4mbb[l]-lstebd-d2q4mbc[l]-lstebd
+
 d2q4o: drift, l = 8.58398-ldcwl-zqbp34
 d2q4q: drift, l = 0.5
 d2q4s: drift, l = d2q4d[l]-lqm/2+zqbp35
@@ -440,8 +447,8 @@ wsbp2: marker, type = "fast"
 wsbp3: marker, type = "fast"
 wsbp4: marker, type = "fast"
 
-stbp34a: instrument, l = lst60, type = "PPS STOPPER" !ST60-type stopper
-stbp34b: instrument, l = lst60, type = "PPS STOPPER" !ST60-type stopper
+stbp34a: instrument, l = lstebd, type = "PPS STOPPER" !LCLS EBD-type stopper
+stbp34b: instrument, l = lstebd, type = "PPS STOPPER" !LCLS EBD-type stopper
 
 pcsp1s: ecollimator, x_limit = 10.2e-3, y_limit = 10.2e-3, l = lpcsp, type = "BCS PC" !BCS protection collimator
 pcsp2s: ecollimator, x_limit = 10.2e-3, y_limit = 10.2e-3, l = lpcsp, type = "BCS PC" !BCS protection collimator
@@ -451,8 +458,8 @@ pcsp4s: ecollimator, x_limit = 10.2e-3, y_limit = 10.2e-3, l = lpcsp, type = "BC
 ! Note: BTMBP34a and BTMBP34b are part of stopper design
 
 cbp33: instrument, type = "PPS COLL" !collimator plate (no BTM)
-btmbp34a: instrument, type = "PPS BTM"  !Burn-Through-Monitor behind STBP34a
-btmbp34b: instrument, type = "PPS BTM"  !Burn-Through-Monitor behind STBP34b
+btmbp34a: instrument, type = "PPS BTM"  !Burn-Through-Monitor behind STBP34A
+btmbp34b: instrument, type = "PPS BTM"  !Burn-Through-Monitor behind STBP34B
 
 ! ==============================================================================
 ! MARKER points
@@ -545,10 +552,10 @@ bypm1: line = (dcyda, cxbp30, dcydb, qbp31, qbp31, d2q4a, bpmbp31, d2q4b, xcbp31
         d2q4laa, pcsp1s, d2q4lab, bpmbp32, d2q4lb, qbp32, qbp32, d2q4ab, d2q4b, xcbp32, d2q4c,  &
         ycbp32, d2q4ma1, pcsp2s, d2q4ma2)
 
-bypm2: line = (d2q4mba, cbp33, d2q4mbb, dbp2b, qbp33, qbp33, d2q4a, rfbbp33, d2q4b, xcbp33, d2q4c &
-        , ycbp33, dbp3aa, pcsp3s, dbp3ab, cxbp34, dbp3b, qbp34, qbp34, d2q4a, bpmbp34, d2q4b,  &
-        xcbp34, d2q4c, ycbp34, d2q4o, dcwla, stbp34a, btmbp34a, dcwlb, stbp34b, btmbp34b, dcwlc,  &
-        pcsp4s, dcwld)
+bypm2: line = (d2q4mba, cbp33, d2q4mbb, stbp34a, btmbp34a, d2q4mbc, stbp34b, btmbp34b, d2q4mbd,  &
+        dbp2b, qbp33, qbp33, d2q4a, rfbbp33, d2q4b, xcbp33, d2q4c, ycbp33, dbp3aa, pcsp3s, dbp3ab &
+        , cxbp34, dbp3b, qbp34, qbp34, d2q4a, bpmbp34, d2q4b, xcbp34, d2q4c, ycbp34, d2q4o, dcwla &
+        , pcsp4s, dcwlb)
 
 bypm: line = (bypm1, brcus1a, brcus1b, mrgcusxr, bypm2)
 

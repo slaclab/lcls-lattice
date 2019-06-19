@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-23JAN19 ***
+! *** OPTICS=AD_ACCEL-13JUN19 ***
 
 ! ------------------------------------------------------------------------------
 ! constants and global parameters
@@ -7,20 +7,20 @@
 
 ! constants
 
-in2m = 0.0254          !m/inch
 cb = 1.0e10/c_light   !kG-m/GeV
-mc2 = 510.99906e-6    !GeV
+in2m = 0.0254          !m/inch
+mc2 = 0.51099906e-3   !GeV
 qelec = 1.602176462e-19 !C
 
 ! energy profile
 
-e0 = mc2+0.75e-3 !NGLS/APEX gun
-ei = 0.1
-e1 = 0.25
-e2 = 1.6
-ef = efsc !final beam energy (GeV)
-eu = eusc !energy in undulator (GeV)
-emax = 10.0
+e0 = mc2+0.750e-3 !NGLS/APEX gun energy (GeV) ... 750 kV gun
+ei = 0.1          !energy at end of L0B (GeV)
+e1 = 0.25         !BC1 energy (GeV)
+e2 = 1.6          !BC2 energy (GeV)
+ef = efsc         !final beam energy (GeV)
+eu = eusc         !energy in undulator (GeV)
+emax = 10.0         !maximum beam energy
 
 brho0 = cb*e0
 brhoi = cb*ei
@@ -50,7 +50,7 @@ ay0 = 24.896728669354
 
 ! Twiss at S= 15.0 m (ASTRA MARKER)
 
-bxa = 13.325594260685
+bxa = 13.325594260686
 axa = -2.125811087318
 bya = 13.315541277702
 aya = -2.123153832086
@@ -152,10 +152,10 @@ bycmfodo3 = 36.259471142003 !L3: 30 degrees per cell
 
 ! match into bypass dogleg
 
-bxdlm = 13.103980147754
-axdlm = -1.328117574824
-bydlm = 15.962709228317
-aydlm = 1.529776835343
+bxdlm = 13.103975994751 !13.103980147754
+axdlm = -1.328121315281 !-1.328117574824
+bydlm = 15.962707890225 !15.962709228317
+aydlm = 1.529775364969 ! 1.529776835343
 
 ! match into SXR LTU emittance diagnostic section
 
@@ -191,7 +191,7 @@ malfyh = 3.616905252587
 
 call, filename = "common.bmad"
 call, filename = "CM.bmad"
-call, filename = "DIAG0.bmad"
+call, filename = "DIAG0.bmad" !must come before INJ.xsif
 call, filename = "INJ.bmad"
 call, filename = "BC1.bmad"
 call, filename = "BC2.bmad"
@@ -204,6 +204,7 @@ call, filename = "BYP.bmad"
 call, filename = "LTU.bmad"
 call, filename = "UND.bmad"
 call, filename = "SFT.bmad"
+call, filename = "SXTES.bmad"
 call, filename = "DASEL.bmad"
 
 lcls2sci: line = (beam0, dcm4b, qcm01, xcm01, ycm01, qcm01, dcm5, cm01end, dcmcm1, homcm, dcap0da &
@@ -214,7 +215,6 @@ lcls2scc: line = (htr, col0, l1, bc1, col1, l2, bc2, emit2, l3, ext, dlbm)
 ! new BSY area definitions
 
 call, filename = "BSYsc.bmad"
-call, filename = "SXTES.bmad"
 
 ! beam path definitions
 

@@ -1,10 +1,14 @@
 
-! *** OPTICS=AD_ACCEL-23JAN19 ***
+! *** OPTICS=AD_ACCEL-13JUN19 ***
 
 ! LCLS2sc safety dump lines
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 26-MAR-2019, M. Woodley
+!  * split SFTH and SFTS areas into two subareas each: SFTH_1/SFTH_2
+!    and SFTS_1/SFTS_2
 ! ------------------------------------------------------------------------------
 ! 08-OCT-2018, M. Woodley
 !  * locations of devices downstream of HXR XTES treaty flange per
@@ -60,7 +64,7 @@ bbxpm0 = 4.3                 !original magnetic field (kG) at gap = 3.81 cm
 bbxpm = bbxpm0*gbxpm0/gbxpm !magnetic field (kG) at gap = 5.2 cm
 rbxpm = brhof/bbxpm         !bending radius (m) in permanent magnets
 
-abxpm = lbxpm/(2*rbxpm)
+abxpm = (lbxpm/rbxpm)/2             !PM bend half-angle
 abxpm1s = asin(1*abxpm)               !bending angle of "short" half of BXPM1
 abxpm1l = asin(2*abxpm)-asin(1*abxpm) !bending angle of "long"  half of BXPM1
 abxpm2s = asin(3*abxpm)-asin(2*abxpm) !bending angle of "short" half of BXPM2
@@ -165,9 +169,9 @@ sftdump: line = (sftdump1, sftdump2)
 ! note that BXPM1b bend axis is aligned with the SXR undulator axis without
 ! any offset
 
-rbxpmb = brhof/bbxpm !bending radius (m) in a permanent magnet
+rbxpmb = brhof/bbxpm !bending radius (m) in permanent magnet
 
-abxpmb = lbxpm/(2*rbxpmb)
+abxpmb = (lbxpm/rbxpmb)/2            !PM bend half-angle
 abxpm1bs = asin(abxpmb)                !bending angle of "short" half of BXPM1B
 abxpm1bl = asin(2*abxpmb)-asin(abxpmb) !bending angle of "long"  half of BXPM1B
 

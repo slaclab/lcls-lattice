@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-23JAN19 ***
+! *** OPTICS=AD_ACCEL-13JUN19 ***
 
 ! SC_DASEL path configurations
 
@@ -16,32 +16,28 @@ intghx = 12.0 !kG
 efsc = 4.0 !GeV
 eusc = 4.0 !GeV
 
- CALL, FILENAME="LCLS2sc_master.bmad" !calls other xsif files
+call, filename = "LCLS2sc_master.bmad" !calls other xsif files
 
-!SC_DASELi : LINE=(LCLS2scI,LCLS2scC,LCLS2scDA)
+q10[k1] = 0.040388112814
+q11[k1] = -0.038712955409
+q19[k1] = 0.03054367869
+q20[k1] = -0.125186988934e-2
+q27[k1] = -0.074602195497
+q28[k1] = 0.041232949479
+q30[k1] = -0.029290738963
+q38[k1] = 0.034019960625
 
-Q10[K1]= 0.040388112814
-Q11[K1]=-0.038712955409
-Q19[K1]= 0.03054367869
-Q20[K1]=-0.125186988934E-2
-Q27[K1]=-0.074602195497
-Q28[K1]= 0.041232949479
-Q30[K1]=-0.029290738963
-Q38[K1]= 0.034019960625
-!
-!  COMMENT !to generate SURVEY
-!    USE, SC_DASEL !start at gun
-!    ! initial energy: E0
-!    ! initial SURVEY: Xgun, Ygun, Zgun, 0, 0, 0
-!  ENDCOMMENT
-!
-! !COMMENT !to generate TWISS
-!    RODAS11P, ANGLE=0
-!    RODAS19P, ANGLE=0
-USE, SC_DASELi !start at BEAM0
-!    ! initial energy: Ei
-!    ! initial Twiss : BXi, AXi, BYi, AYi
-! !ENDCOMMENT
-!
-!  RETURN
-!
+!-!  COMMENT !to generate SURVEY
+!-!    USE, SC_DASEL !start at gun
+!-!    ! initial energy: E0
+!-!    ! initial SURVEY: Xgun, Ygun, Zgun, 0, 0, 0
+!-!  ENDCOMMENT
+
+ !COMMENT !to generate TWISS
+rodas11p[tilt] = 0
+rodas19p[tilt] = 0
+    ! initial energy: Ei
+    ! initial Twiss : BXi, AXi, BYi, AYi
+ !ENDCOMMENT
+
+use, sc_daseli !start at BEAM0

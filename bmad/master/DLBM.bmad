@@ -1,10 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-23JAN19 ***
+! *** OPTICS=AD_ACCEL-13JUN19 ***
 
 ! LCLS2sc sector 7 dogleg plus match to bypass line
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 30-APR-2019, M. Woodley
+!  * use measured FINT=0.4875 for 1.0D38.37 @ 262A
 ! ------------------------------------------------------------------------------
 ! 07-JAN-2019, M. Woodley
 !  * add sector 10 shielding wall
@@ -157,18 +160,19 @@ bcxdlu4b: sbend, hgap = gbcc/2, e2 = 0, fint = 0, fintx = fbcc, type = "0.788D11
 
 gbr = 0.0254          !1.0D38.37 gap height (m)
 lbr = 1.0             !1.0D38.37 gap height (m)
+fbr = 0.4875          !1.0D38.37 FINT @ 262 A
 anga = 0.024477314713  !dogleg bend angle (rad)
 xoff = -25.610*in2m
 yoff = 25.570*in2m
 rolla = -1.054575132367
 
-brb1a: sbend, hgap = gbr/2, e1 = anga/2, e2 = 0, fint = 0.5, fintx = 0, type = "1.0D38.37",  &
+brb1a: sbend, hgap = gbr/2, e1 = anga/2, e2 = 0, fint = fbr, fintx = 0, type = "1.0D38.37",  &
         ref_tilt = rolla, l = lbr/2, angle = lbr/2 * anga/2/(lbr/2)
-brb1b: sbend, hgap = gbr/2, e1 = 0, e2 = anga/2, fint = 0, fintx = 0.5, type = "1.0D38.37",  &
+brb1b: sbend, hgap = gbr/2, e1 = 0, e2 = anga/2, fint = 0, fintx = fbr, type = "1.0D38.37",  &
         ref_tilt = rolla, l = lbr/2, angle = lbr/2 * anga/2/(lbr/2)
-brb2a: sbend, hgap = gbr/2, e1 = -anga/2, e2 = 0, fint = 0.5, fintx = 0, type = "1.0D38.37",  &
+brb2a: sbend, hgap = gbr/2, e1 = -anga/2, e2 = 0, fint = fbr, fintx = 0, type = "1.0D38.37",  &
         ref_tilt = rolla, l = lbr/2, angle = lbr/2 * (-anga/2)/(lbr/2)
-brb2b: sbend, hgap = gbr/2, e1 = 0, e2 = -anga/2, fint = 0, fintx = 0.5, type = "1.0D38.37",  &
+brb2b: sbend, hgap = gbr/2, e1 = 0, e2 = -anga/2, fint = 0, fintx = fbr, type = "1.0D38.37",  &
         ref_tilt = rolla, l = lbr/2, angle = lbr/2 * (-anga/2)/(lbr/2)
 
 
@@ -234,10 +238,10 @@ qdog8: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = -kqdog
 
 ! match to bypass line
 
-kql1p = 0.322623375938 ! 0.322672990497
-kql2p = -0.155036210469 !-0.155098581061
-kql3p = 0.22320301915  ! 0.223223791378
-kql4p = -0.284565948145 !-0.284547516494
+kql1p = 0.322623395351 ! 0.322623375938
+kql2p = -0.155036336329 !-0.155036210469
+kql3p = 0.223203385311 ! 0.22320301915
+kql4p = -0.284566066038 !-0.284565948145
 kql5p = 0.151439029009 ! 0.151439029009
 
 ql1p: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kql1p

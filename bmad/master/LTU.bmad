@@ -1,10 +1,26 @@
 
-! *** OPTICS=AD_ACCEL-23JAN19 ***
+! *** OPTICS=AD_ACCEL-13JUN19 ***
 
 ! LCLS2sc LTU and dump
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 06-JUN-2019, M. Woodley
+!  * adjust location of BSY dump face per A. Ibrahimov
+! 28-MAY-2019, M. Woodley
+!  * remove LTUS BFWXL1, BFWXL2, BFWXL3, BFWXL4 per G. Kraft
+!  * remove LTUH OTR30 per G. Kraft
+!  * add XCXL1/YCXL1 u/s of UMXL1, amd XCXL2/YCXL2 u/s of UMXL3 per T. O'Heron
+!  * flip RFBXL1-4 per T. O'Heron ... each moves 0.61" d/s
+! 23-MAY-2019, M. Woodley
+!  * move TDKIKS and PCTDKIK1-4 u/s 0.020651 m per T. O'Heron
+!  * adjust BYKIK1S/BYKIK2S separation per T. O'Heron
+! 24-APR-2019, M. Woodley
+!  * fix edge angle definitions for XLEAP-II self-seeding chicane per Yuri
+! 20-FEB-2019, M. Woodley
+!  * remove CY32, CX35, and CY36 per D. Hanquist (reconfigured as CYBX32,
+!    CXQT22, and CYBX36 respectively)
 ! ------------------------------------------------------------------------------
 ! 07-JAN-2019, M. Woodley
 !  * remove BTMBSY3, BTMBSY4, and BTMBSY5 per RP-RPG-181130-MEM-01
@@ -659,7 +675,7 @@ sdl2: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdl2
 !-!  ENDCOMMENT
 
 lb3b = 2.656      !1.14D103.3T effective length (m)
-gb3b = 0.0254     !1.14D103.3T gap height (m) ... should be 1.14*IN2M
+gb3b = 0.0254     !1.14D103.3T gap height (m) ... should be 1.14*in2m
 ab3pb = 0.018633330237
 ab3mb = -ab3pb
 leffb3b = lb3b*ab3pb/(2*sin(ab3pb/2)) !full bend eff. path length (m)
@@ -676,7 +692,7 @@ bx32bb: sbend, hgap = gb3b/2, e1 = 0, e2 = ab3pb/2, fint = 0.0, fintx = 0.4297, 
 ! SXR single beam dumper vertical kicker, BPM, spoiler and in-line dump
 
 lkiks = 1.0601 !kicker coil length per magnet (m) [41.737 in from SA-380-330-02, rev. 0]
-abykiks = 1e-20  !=0.887365668945E-3 when BYKIKS1,2 are turned on
+abykiks = 1e-20  !=0.889371410732E-3 when BYKIKS1,2 are turned on
 
 bykik1sa: sbend, e1 = abykiks/4, e2 = 0, fint = 0.5, fintx = 0, hgap = 25.4e-3, type =  &
         "1.92K41.2", ref_tilt = pi/2, l = lkiks/2, angle = lkiks/2 * abykiks/4/(lkiks/2)
@@ -695,7 +711,7 @@ tdkiks: instrument, l = 0.6096 !vertical off-axis in-line dump
 ldbldl = 3.0 ! length of LTU doublet including drifts
 
 wall: drift, l = 16.764 !length of muon wall
-dwalla: drift, l = 1.83 !distance from face of muon wall to face of BSY dump
+dwalla: drift, l = 1.840975 !distance from face of muon wall to face of BSY dump
 dwallb: drift, l = wall[l]-dwalla[l]
 ddbldlb: drift, l = 0.5+(lqa-lqe)/2
 ddbldlc: drift, l = 0.4
@@ -808,21 +824,21 @@ ddl20b: drift, l = ldl20b
 
 ldbyks = ldlcel/2-lqr !DL cell drift length
 
-dbyks01: drift, l = ddl10ba[l]       !QDL16 to CYDL16
-dbyks02: drift, l = ddl10bb[l]       !CYDL16 to BPMDL16
-dbyks03: drift, l = ddl11ba[l]+0.25  !BPMDL16 to BTM04B
-dbyks05: drift, l = 0.609226-lkiks/2 !(BYKIK1S to BYKIK2S)/2
-dbyks06: drift, l = 4.340223         !BYKIK2S to XCDL17
-dbyks07: drift, l = 0.634128         !XCDL17 to BPMDL17
-dbyks08: drift, l = 0.415873         !BPMDL17 to QDL17
-dbyks04: drift, l =  &        !BTM04B to BYKIK1S
+dbyks01: drift, l = ddl10ba[l]      !QDL16 to CYDL16
+dbyks02: drift, l = ddl10bb[l]      !CYDL16 to BPMDL16
+dbyks03: drift, l = ddl11ba[l]+0.25 !BPMDL16 to BTM04B
+dbyks05: drift, l = 0.5893-lkiks/2  !(BYKIK1S to BYKIK2S)/2 (0.609226)
+dbyks06: drift, l = 4.360149        !BYKIK2S to XCDL17      (4.340223)
+dbyks07: drift, l = 0.634128        !XCDL17 to BPMDL17
+dbyks08: drift, l = 0.415873        !BPMDL17 to QDL17
+dbyks04: drift, l =  &       !BTM04B to BYKIK1S
         ldbyks-dbyks01[l]-ljaw-dbyks02[l]-dbyks03[l]-2*(lkiks+dbyks05[l])-dbyks06[l]-dbyks07[l]-dbyks08[l]
 
 dbyks11: drift, l = 0.51      !QDL17 to CEDL17
 dbyks12: drift, l = 0.735832  !CEDL17 to BTM05B
 dbyks13: drift, l = 0.687668  !BTM05B to SPOILERS
-dbyks14: drift, l = 3.220859  !SPOILERS to TDKIKS
-dbyks15: drift, l = 0.257426  !TDKIKS to PCTDKIKS1
+dbyks14: drift, l = 3.200208  !SPOILERS to TDKIKS (3.220859)
+dbyks15: drift, l = 0.257457  !TDKIKS to PCTDKIKS1 (0.257426)
 dbyks16: drift, l = 0.266697  !PCTDKIKS to PCTDKIKS
 dbyks18: drift, l = 0.4       !OTRDL18 to YCDL18
 dbyks19: drift, l = 0.4       !YCDL18 to QDL18
@@ -905,13 +921,20 @@ dl2sc: line = (dbmark34b, ddl20b, xcdl11, ddl6b, qdl11, qdl11, ddl15ba, bpmdl11,
         ddl6b, qdl22, bpmdl22, qdl22, ddl5b)
 
 !-!  COMMENT !test line to find ABYKIKS angle for -14.2 mm offset at front face of TDKIKS
-!-!ABYKIKS=0.887365668945E-3
+!-!ABYKIKS=0.889371410732E-3
 !-!    KYKIK1S : VKIC, L=LKIKS/2, KICK=-ABYKIKS/4
 !-!    KYKIK2S : VKIC, L=LKIKS/2, KICK=-ABYKIKS/4
 !-!    TESTBYKIKS : LINE=(KYKIK1S,KYKIK1S,DBYKS05,DBYKS05,KYKIK2S,KYKIK2S,&
 !-!      DBYKS06,XCDL17,DBYKS07,BPMDL17,DBYKS08,QDL17,QDL17,DBYKS11,CEDL17,&
 !-!      DBYKS12,BTM05B,DBYKS13,SPOILERS,DBYKS14)
 !-!    USE, TESTBYKIKS
+!-!    MATCH, BETX=10, BETY=10, ORBIT
+!-!      VARY, ABYKIKS, STEP=1.E-6
+!-!      CONSTR, #E, Y=-14.2E-3
+!-!     !LMDIF, TOL=1.E-20
+!-!     !MIGRAD, TOL=1.E-20
+!-!    ENDMATCH
+!-!    VALUE, ABYKIKS
 !-!    SELECT, OPTICS, FULL
 !-!    OPTICS, BETX=10, BETY=10, COLUMNS=NAME,S,L,Y,PY
 !-!    STOP
@@ -1141,8 +1164,19 @@ dbmark36b: marker !center of WS31B
 ! ==============================================================================
 
 ! ------------------------------------------------------------------------------
+! recycled XLEAP type-4 correctors
+! ------------------------------------------------------------------------------
+
+ycxl1: kicker, type = "class-4"
+xcxl1: kicker, type = "class-4"
+ycxl2: kicker, type = "class-4"
+xcxl2: kicker, type = "class-4"
+
+! ------------------------------------------------------------------------------
 ! recycled LCLS undulators
 ! ------------------------------------------------------------------------------
+
+! definition of Eu is in LCLS2sc_master.xsif and LCLS2cu_master.xsif
 
 gamxl = eu/mc2       !Lorentz energy factor [ ]
 kund = 50           !undulator parameter (rms) [ ]
@@ -1199,17 +1233,18 @@ rfbxl2: instrument, l = lrfbu, type = "01_um_res" !undulator BPM
 rfbxl3: instrument, l = lrfbu, type = "01_um_res" !undulator BPM
 rfbxl4: instrument, l = lrfbu, type = "01_um_res" !undulator BPM
 
-bfwxl1: instrument !Beam Finder Wire
-bfwxl2: instrument !Beam Finder Wire
-bfwxl3: instrument !Beam Finder Wire
-bfwxl4: instrument !Beam Finder Wire
+! flip RF BPMs
 
-xl2und1: line = (rfbxl1, dbrs, bfwxl1, dbwm, db4, dt, umxl1h, umxl1h, dt)
-xl2und2: line = (rfbxl2, dbrs, bfwxl2, dbwm, db4, dt, umxl2h, umxl2h, dt)
-xl2und3: line = (rfbxl3, dbrs, bfwxl3, dbwm, db4, dt, umxl3h, umxl3h, dt)
-xl2und4: line = (rfbxl4, dbrs, bfwxl4, dbwm, db4, dt, umxl4h, umxl4h, dt)
+drfbf = 0.61*in2m
+duuf: drift, l = duu[l]+drfbf
+dbrsf: drift, l = dbrs[l]-drfbf
 
-lxl2und = 2*(rfbxl1[l]+dbrs[l]+bfwxl1[l]+dbwm[l]+db4[l]+dt[l]+umxl1h[l]+umxl1h[l]+dt[l])+2*duu[l]
+xl2und1: line = (rfbxl1, dbrsf, dbwm, db4, dt, umxl1h, umxl1h, dt)
+xl2und2: line = (rfbxl2, dbrsf, dbwm, db4, dt, umxl2h, umxl2h, dt)
+xl2und3: line = (rfbxl3, dbrsf, dbwm, db4, dt, umxl3h, umxl3h, dt)
+xl2und4: line = (rfbxl4, dbrsf, dbwm, db4, dt, umxl4h, umxl4h, dt)
+
+lxl2und = 2*(rfbxl1[l]+dbrs[l]+dbwm[l]+db4[l]+dt[l]+umxl1h[l]+umxl1h[l]+dt[l])+2*duu[l]
 
 ! drifts around undulator pair
 
@@ -1217,6 +1252,11 @@ lxl3132 = dqebx[l]+dcx31b[l]+dqebx2[l]+de3aba[l]
 dxlua: drift, l = (lxl3132-lxl2und)/2
 dxlub: drift, l = lxl3132-lxl2und-dxlua[l]
  !VALUE, DXLUa[L],DXLUb[L]
+
+dxlua1: drift, l = 0.404978
+dxlua2: drift, l = 0.395986
+dxlua3: drift, l = dxlua[l]-dxlua1[l]-dxlua2[l]
+dxlua3f: drift, l = dxlua3[l]+drfbf !flip RF BPM
 
 ! ------------------------------------------------------------------------------
 ! original XLEAP self-seeding chicane (normally OFF)
@@ -1264,17 +1304,17 @@ lbxll = lbxl-lbxls
 
 bcxxl1a: sbend, hgap = gbxl/2, e1 = 0, fint = fbxl, fintx = 0, type = "0.3D14", l = lbxls, angle &
          = lbxls * (+abxls)/lbxls
-bcxxl1b: sbend, hgap = gbxl/2, fint = 0, e2 = +abxll, fintx = fbxl, type = "0.3D14", l = lbxll,  &
+bcxxl1b: sbend, hgap = gbxl/2, fint = 0, e2 = +abxl, fintx = fbxl, type = "0.3D14", l = lbxll,  &
         angle = lbxll * (+abxll)/lbxll
-bcxxl2a: sbend, hgap = gbxl/2, e1 = -abxll, fint = fbxl, fintx = 0, type = "0.3D14", l = lbxll,  &
+bcxxl2a: sbend, hgap = gbxl/2, e1 = -abxl, fint = fbxl, fintx = 0, type = "0.3D14", l = lbxll,  &
         angle = lbxll * (-abxll)/lbxll
 bcxxl2b: sbend, hgap = gbxl/2, fint = 0, e2 = 0, fintx = fbxl, type = "0.3D14", l = lbxls, angle &
          = lbxls * (-abxls)/lbxls
 bcxxl3a: sbend, hgap = gbxl/2, e1 = 0, fint = fbxl, fintx = 0, type = "0.3D14", l = lbxls, angle &
          = lbxls * (-abxls)/lbxls
-bcxxl3b: sbend, hgap = gbxl/2, fint = 0, e2 = -abxll, fintx = fbxl, type = "0.3D14", l = lbxll,  &
+bcxxl3b: sbend, hgap = gbxl/2, fint = 0, e2 = -abxl, fintx = fbxl, type = "0.3D14", l = lbxll,  &
         angle = lbxll * (-abxll)/lbxll
-bcxxl4a: sbend, hgap = gbxl/2, e1 = +abxll, fint = fbxl, fintx = 0, type = "0.3D14", l = lbxll,  &
+bcxxl4a: sbend, hgap = gbxl/2, e1 = +abxl, fint = fbxl, fintx = 0, type = "0.3D14", l = lbxll,  &
         angle = lbxll * (+abxll)/lbxll
 bcxxl4b: sbend, hgap = gbxl/2, fint = 0, e2 = 0, fintx = fbxl, type = "0.3D14", l = lbxls, angle &
          = lbxls * (+abxls)/lbxls
@@ -1308,6 +1348,11 @@ dxluc: drift, l = 3.5
 dxlud: drift, l = 1.0
 dxlue: drift, l = lxl3536-dxluc[l]-lbcxl-dxlud[l]-lxl2und
  !VALUE, DXLUc[L],DXLUd[L],DXLUe[L]
+
+dxlud1: drift, l = 0.323714
+dxlud2: drift, l = 0.393700
+dxlud3: drift, l = dxlud[l]-dxlud1[l]-dxlud2[l]
+dxlud3f: drift, l = dxlud3[l]+drfbf !flip RF BPM
 
 ! ------------------------------------------------------------------------------
 ! original XLEAP wiggler
@@ -1348,10 +1393,11 @@ edmchb: line = (d25cmb, d25cmc, dmm1m90cmba, btm10b, dmm1m90cmbb, xcem1b, dem1a,
         , dem4a, qem4b, bpmem4b, qem4b, drfb, rfbem4b, dmm5ab, dmm5bb)
 
  !XLEAP2a : LINE=(DQEBx,DCX31B,DQEBx2,DE3aBa)
-xleap2a: line = (dxlua, xl2und1, duu, duu, xl2und2, dxlub)
+xleap2a: line = (dxlua1, ycxl1, dxlua2, xcxl1, dxlua3f, xl2und1, duu, duuf, xl2und2, dxlub)
 
  !XLEAP2b : LINE=(DQEBx,DCX35B,DQEBx2,DE3)
-xleap2b: line = (dxluc, bcxlss, dxlud, xl2und3, duu, duu, xl2und4, dxlue)
+xleap2b: line = (dxluc, bcxlss, dxlud1, ycxl2, dxlud2, xcxl2, dxlud3f, xl2und3, duu, duuf,  &
+        xl2und4, dxlue)
 
 edsysb: line = (dbmark36b, ws31b, d40cm, de3mab, de3mbb, xce31b, dqea, qe31b, bpme31b, qe31b,  &
         xleap2a, btm12b, de3abb, yce32b, dqeaa, qe32b, bpme32b, qe32b, drfb, rfbe32b, dqeby1,  &
@@ -1370,10 +1416,10 @@ ecellb: line = (qe31b, dqec, dqec, qe32b, qe32b, dqec, dqec, qe31b)
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-kqum1b = 0.347147476566
-kqum2b = -0.13
-kqum3b = 0.385625357669
-kqum4b = -0.628348037766
+kqum1b = 0.348825519173 ! 0.347147476566
+kqum2b = -0.13           !-0.13
+kqum3b = 0.383666483043 ! 0.385625357669
+kqum4b = -0.629809901233 !-0.628348037766
 
 qum1b: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqum1b
 qum2b: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqum2b
@@ -1470,7 +1516,7 @@ bsyltusc: line = (muwallb, dwalla, dumpbsys, dwallb, bsyendb, endsps, dbldl21, l
 ! SXR dumpline
 ! ------------------------------------------------------------------------------
 
-kqdmpb = -0.154946553294
+kqdmpb = -0.15522011426 !-0.154946553294
 
 qdmp1b: quadrupole, type = "3.94Q17", l = lqp/2, aperture = rqp, k1 = kqdmpb
 qdmp2b: quadrupole, type = "3.94Q17", l = lqp/2, aperture = rqp, k1 = kqdmpb
@@ -2211,7 +2257,7 @@ d37ba: drift, l = 0.157367 !0.304687
 d37bb: drift, l = d37b[l]-d37ba[l]
 d37c: drift, l = 2.804723       !1.36541
 d37d: drift, l = 6.218668237037 !7.657981237037
-wsdl4: marker, type = "slow" !Yuantao says this device is not used
+wsdl4: marker, type = "slow" !Patrick K. says this device is used only with the dechirper
 d37e: drift, l = 1.097522857741
 dchirpv: instrument, l = lchirp/2 !split in half
 mdchirpv: marker             !center of dechirper
@@ -2266,14 +2312,15 @@ tdkik: instrument, l = 0.6096 !vertical off-axis in-line dump
 
 wsdl31: marker, type = "fast"
 
-otr30: instrument, type = "OTR" !LTU slice energy spread (90 deg from TCAV3)
+ !OTR30  : MONITOR, TYPE="OTR" !LTU slice energy spread (90 deg from TCAV3)
+motr30: marker             !OTR30 abandoned in place
 
 cedl1: rcollimator, x_limit = 2.3e-3, y_limit = 20.e-3, type = "HCOLL", l = 0.08 !existing LCLS
 cedl3: rcollimator, x_limit = 2.3e-3, y_limit = 20.e-3, type = "HCOLL", l = 0.08 !existing LCLS
 
-cybx32: rcollimator, y_limit = 1.5e-3, x_limit = 20.e-3, type = "VCOLL", l = ljaw
-cxqt22: rcollimator, x_limit = 1.6e-3, y_limit = 20.e-3, type = "HCOLL", l = ljaw
-cybx36: rcollimator, y_limit = 1.5e-3, x_limit = 20.e-3, type = "VCOLL", l = ljaw
+cybx32: rcollimator, y_limit = 1.5e-3, x_limit = 20.e-3, type = "VCOLL", l = ljaw !reconfigured LCLS CY32
+cxqt22: rcollimator, x_limit = 1.6e-3, y_limit = 20.e-3, type = "HCOLL", l = ljaw !reconfigured LCLS CX35
+cybx36: rcollimator, y_limit = 1.5e-3, x_limit = 20.e-3, type = "VCOLL", l = ljaw !reconfigured LCLS CY36
 
 ! muon collimators after SBD TDKIK in-line dump
 pctdkik1: ecollimator, x_limit = 11.1125e-3, y_limit = 11.1125e-3, type = "BCS PC", l = lpctdkik
@@ -2356,7 +2403,7 @@ dl22: line = (dx33a, cc32, dx33b, btm03, ddl1ab, bykik1a, bykik1b, ddl1d, ddl1d,
         dspontub, ddl1dm30cm, dx34a, cc35, dx34b)
 
 dl23: line = (dl23beg, bx35a, bx35b, dcq31aa, btm04, dcq31ab, btm42, dcq31ac, cq31, cq31, dcq31b &
-        , otr30, d29cma, xcdl3, d33a, qdl33, bpmdl3, qdl33, d33b, ycdl3, d32cmd, cedl3, dcq32a,  &
+        , motr30, d29cma, xcdl3, d33a, qdl33, bpmdl3, qdl33, d33b, ycdl3, d32cmd, cedl3, dcq32a,  &
         cq32, cq32, dcq32b, cybx36, dcb36, bx36a, bx36b, cntlt3h)
 
 dchirpvl: line = (dchirpv, mdchirpv, dchirpv)
@@ -2480,14 +2527,14 @@ btm11: instrument, type = "BCS BTM" !BCS BTM
 btm12: instrument, type = "BCS BTM" !BCS BTM
 
  !DCX31 : DRIF, L=0.08
- !DCX35 : DRIF, L=0.08
- !DCY32 : DRIF, L=0.08
- !DCY36 : DRIF, L=0.08
+dcx35: drift, l = 0.08
+dcy32: drift, l = 0.08
+dcy36: drift, l = 0.08
 
 cx31: rcollimator, x_limit = 0.02, y_limit = 0.02, l = 0.08 !fully open existing LCLS collimator
-cx35: rcollimator, x_limit = 0.02, y_limit = 0.02, l = 0.08 !fully open existing LCLS collimator
-cy32: rcollimator, x_limit = 0.02, y_limit = 0.02, l = 0.08 !fully open existing LCLS collimator
-cy36: rcollimator, x_limit = 0.02, y_limit = 0.02, l = 0.08 !fully open existing LCLS collimator
+ !CX35 : RCOL, L=0.08 !reconfigured as CXQT22
+ !CY32 : RCOL, L=0.08 !reconfigured as CYBX32
+ !CY36 : RCOL, L=0.08 !reconfigured as CYBX36
 
 dbmark36: marker !center of WS31
 
@@ -2498,11 +2545,11 @@ edmch: line = (d25cmb, im36, d25cmc, dmm1m90cm, ycem1, dem1a, qem1, bpmem1, qem1
 
 edsys: line = (dbmark36, ws31, d40cm, de3ma, btm09, de3mb, xce31, dqea, qe31, bpme31, qe31, dqebx &
         , cx31, dqebx2, de3aa, btm10, de3ab, yce32, dqeaa, qe32, bpme32, qe32, drfb, rfbe32,  &
-        dqeby1, cy32, dqeby2, ws32, d40cm, de3m80cmb, xce33, dqeab, qe33, bpme33, qe33, dqecaa,  &
+        dqeby1, dcy32, dqeby2, ws32, d40cm, de3m80cmb, xce33, dqeab, qe33, bpme33, qe33, dqecaa,  &
         btm11, dqecab, yagpsi, dqecb, otr33, de3m40cm, yce34, dqea, qe34, bpme34, qe34, drfb,  &
         rfbe34, dqec1, ws33, d40cm, de3m80cmc, btm12, de3m80cmd, xce35, dqeac, qe35, bpme35, qe35 &
-        , dqebx, cx35, dqebx2, de3, yce36, dqea, qe36, bpme36, qe36, drfb, rfbe36, dqeby1, cy36,  &
-        dqeby2, ws34, d40cmg, dws35, d40cmh)
+        , dqebx, dcx35, dqebx2, de3, yce36, dqea, qe36, bpme36, qe36, drfb, rfbe36, dqeby1, dcy36 &
+        , dqeby2, ws34, d40cmg, dws35, d40cmh)
 
 ! ------------------------------------------------------------------------------
 ! HXR undulator match

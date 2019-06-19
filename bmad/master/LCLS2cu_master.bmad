@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-23JAN19 ***
+! *** OPTICS=AD_ACCEL-13JUN19 ***
 
 ! ------------------------------------------------------------------------------
 ! constants and global parameters
@@ -169,6 +169,7 @@ call, filename = "BYP.bmad"
 call, filename = "LTU.bmad"
 call, filename = "UND.bmad"
 call, filename = "SFT.bmad"
+call, filename = "HXTES.bmad"
 call, filename = "LCLS2cu.bmad"
 
 ! design L1, L2, and L3 lattices ...
@@ -186,7 +187,6 @@ call, filename = "LCLS_L3.bmad"
 ! new BSY area definitions
 
 call, filename = "BSYcu.bmad"
-call, filename = "HXTES.bmad"
 
 ! beam paths
 
@@ -205,83 +205,6 @@ cu_sxr: line = (gunl0a, l0b, lcls2cus)
 cu_aline: line = (gunl0a, l0b, lcls2cua)
 cu_gspec: line = (gunbxg, gspec)
 cu_spec: line = (gunl0a, l0b, dl1_1, specbl)
-
-! ------------------------------------------------------------------------------
-! LINE definitions
-! ------------------------------------------------------------------------------
-
-l1c: line = (d9, daq1, qfl1, qfl1, daq1, d9, daq1, qdl1, qdl1, daq1)
-l2c: line = (4*d10, daq1, qfl2, qfl2, daq2, 4*d10, daq1, qdl2, qdl2, daq2)
-l3c: line = (4*d10, daq1, qfl3, qfl3, daq2, 4*d10, daq1, qdl3, qdl3, daq2)
-
-sc0: line = (xc00, yc00)
-sc1: line = (xc01, yc01)
-sc2: line = (xc02, yc02)
-sc3: line = (xc03, yc03)
-sc4: line = (xc04, yc04)
-sc5: line = (xc05, yc05)
-sc6: line = (xc06, yc06)
-sc7: line = (xc07, yc07)
-sc8: line = (xc08, yc08)
-sc9: line = (xc09, yc09)
-sc10: line = (xc10, yc10)
-sc11: line = (xc21101, yc21102)
-sca11: line = (xc21135, yc21136)
-sca12: line = (xc21165, yc21166)
-scm11: line = (xc21191, yc21192)
-scm13: line = (xc21275, yc21276)
-scm15: line = (xc21325, yc21325)
-
-gunbxg: line = (dl00, loadlock, beggun, sol1bk, dbmark80, cathode, dl01a, sol1, cq01, cq01, sc0,  &
-        sq01, sq01, sol1, dl01a1, vv01, dl01a2, am00, dl01a3, am01, dl01a4, yag01, dl01a5, fc01,  &
-        dl01b, im01, dl01c, sc1, dl01h, bpm2, dl01d, dbmark81, endgun)
-
-bxgl0a: line = (begl0, dbxg, dl01e, bpm3, dl01f, cr01, dl01f2, yag02, dl01g, zlin00, flnga1,  &
-        l0a___1, dlfda, l0a___2, sol2, l0a___3, sc2, l0a___4, l0amid, l0a___5, sc3, l0a___6,  &
-        outcpa, l0a___7, flnga2, l0awake)
-
-gunl0a: line = (gunbxg, bxgl0a)
-
-l0b: line = (l0bbeg, dl02a1, yag03, dl02a2, dl02a3, qa01, qa01, dl02b1, ph01, dl02b2, qa02, bpm5 &
-        , qa02, dl02c, flngb1, l0b___1, dlfdb, l0b___2, sc4, l0b___3, l0bmid, l0b___4, sc5,  &
-        l0b___5, outcpb, l0b___6, flngb2, endl0)
-
-lsrhtr: line = (lhbeg, bxh1a, bxh1b, dh01, bxh2a, bxh2b, dh02a, otrh1, dh03a, lh_und, htrund,  &
-        lh_und, dh03b, otrh2, dh02b, bxh3a, bxh3b, dh01, bxh4a, bxh4b, lhend)
-
-dl1_1: line = (begdl1_1, emat, de00, de00a, qe01, bpm6, qe01, de01a, im02, de01b, vv02, de01c,  &
-        qe02, qe02, dh00, lsrhtr, dh06, tcav0, sc6, tcav0, de02, qe03, bpm8, qe03, de03a, de03b,  &
-        sc7, de03c, qe04, bpm9, qe04, de04, ws01, de05, otr1, de05c, vv03, de06a, rst1, de06b,  &
-        ws02, de05a, mrk0, de05a, otr2, de06d, bpm10, de06e, ws03, de05, otr3, de07, qm01, bpm11 &
-        , qm01, de08, sc8, de08a, vv04, de08b, qm02, bpm12, qm02, de09, dbmark82, enddl1_1)
-
-dl1_2: line = (begdl1_2, bx01a, bx01b, db00a, otr4, db00b, sc9, db00c, qb, bpm13, qb, db00d, ws04 &
-        , db00e, bx02a, bx02b, cnt0, dbmark83, dm00, sc10, dm00a, qm03, bpm14, qm03, dm01, dm01a &
-        , qm04, bpm15, qm04, dm02, im03, dm02a, enddl1_2)
-
-dl1: line = (dl1_1, dl1_2) !nominal LCLS DL1 layout with BX01/BX02 bends on
-
-diag1: line = (ddg1, bpms11, ddg2, ce11, ddg3, otr11, ddg4)
-bc1c: line = (bc1cbeg, bx11a, bx11b, dbq1, cq11, cq11, d11o, bx12a, bx12b, diag1, bx13a, bx13b,  &
-        d11oa, sq13, sq13, d11ob, cq12, cq12, dbq1, bx14a, bx14b, cnt1, bc1cend)
-bc1i: line = (dl1xa, vvx1, dl1xb, xbeg, l1x___1, scm11, l1x___2, xend, dm10a, vvx2, dm10c, q21201 &
-        , bpm21201, zlin02, q21201, dm10x, imbc1i, dm11, qm11, qm11, dm12)
-bc1e: line = (dm13a, bl11, dm13b, qm12, qm12, dm14a, dm14b, imbc1o, dm14c, qm13, bpmm12, qm13,  &
-        dm15a, bl12, dm15b, scm13, dm15c, ws11, dww1a, ws12, dww1b, otr12, dww1c1, ph02, dww1c2,  &
-        xc21302, dww1d, yc21303, dww1e, ws13, dm16, q21301, bpm21301, zlin03, q21301, dm17a,  &
-        dm17b, td11, dm17c, qm14, bpmm14, qm14, dm18a, scm15, dm18b, qm15, qm15, dbmark28, dm19)
-bc1: line = (begbc1, bc1i, bc1c, bc1e, endbc1)
-l2: line = (begl2, li21, li22, li23, li24, endl2)
-diag2: line = (ddg1, bpms21, ddg2, ce21, ddg3, otr21, ddg4)
-bc2c1: line = (bc2cbeg, bx21a, bx21b, dbq2a, cq21, cq21, d21oa, bx22a, bx22b, ddg0, diag2, ddga,  &
-        bx23a, bx23b, d21ob, cq22, cq22, dbq2b, bx24a, bx24b, cnt2, bc2cend)
-bc2: line = (begbc2, dm20, q24701a, zlin08, q24701a, d10cma, q24701b, bpm24701, q24701b, dm21z,  &
-        dm21a, ws24, dm21h, imbc2i, dm21b, vv21, dm21c, qm21, qm21, dm21d, dm21e, bc2c1, d21w,  &
-        d21x, bl21, d21y, dm23b, qm22, qm22, dm24a, vv22, dm24b, dm24d, q24901a, bpm24901,  &
-        q24901a, dm24c, q24901b, q24901b, dm25, endbc2)
-l3: line = (begl3, li25, li26, li27, li28, li29, li30, rwwakess, dbmark29, endl3)
-
-ecell: line = (qe31, dqec, dqec, qe32, qe32, dqec, dqec, qe31)
 
 ! ------------------------------------------------------------------------------
 ! initial SURVEY coordinates
@@ -306,6 +229,8 @@ zf = -5.99493367  !at BSYbeg (~6 m upbeam S100) in undulator coordinates (for LT
 thetaf = 0           !no yaw at S100
 psif = 0           !no roll at S100
 phif = 2*avb        !S100 pitch in undulator coordinates (for LTU engineers)
+
+ !VALUE, Xf,Yf,Zf,THETAf,PHIf,PSIf,AVB
 
 ! linac survey coordinates at BSYbeg (BEGBSY1)
 

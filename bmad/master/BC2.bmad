@@ -1,11 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-23JAN19 ***
+! *** OPTICS=AD_ACCEL-13JUN19 ***
 
 ! LCLS2sc bunch compressor chicane #2
 
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
+! 23-MAY-2019, M. Woodley
+!  * move ENDBC2B to u/s face of QE201 per T. Maxwell
 ! 12-APR-2019, M. Woodley
 !  * rename some MARKERs (to avoid conflicts with LCLS)
 ! ------------------------------------------------------------------------------
@@ -206,6 +208,7 @@ zdc2oc = zdc2o-zdc2od !BXC23 exit to CQ22B center
 
 dc2oa: drift, l = zdc2oa/cos(ab2)-lqc/2, type = "CSR"
 dc2ob: drift, l = zdc2ob/cos(ab2)-lqc/2, type = "CSR"
+dc2ih: drift, l = dc2i[l]/2, type = "CSR"
 dc2ia: drift, l = 0.3795, type = "CSR"       !0.35
 dc2ib: drift, l = 0.165-ljaw/2, type = "CSR" !0.35
 dc2ic: drift, l = 0.183-ljaw/2, type = "CSR" !0.35
@@ -286,6 +289,7 @@ wsemit2: marker, type = "fast"    !post-BC2 emittance
 ! markers
 
 bc2bcbeg: marker
+bc2bcmid: marker
 cntbc2: marker, type = "CENTER"
 bc2bcend: marker
 
@@ -298,19 +302,19 @@ bc2i0: line = (d2c00, q2c01, q2c01, d2c01)
 bc2i: line = (d2c00a, xc2c00, d2c00b, yc2c00, d2c00c, q2c01, bpm2c01, q2c01, d2c01a, rfb2c01,  &
         d2c01b)
 
-bc2c0: line = (bc2bcbeg, bcx21a, bcx21b, dc2o, bcx22a, bcx22b, dc2i, bcx23a, bcx23b, dc2o, bcx24a &
-        , bcx24b, bc2bcend)
+bc2c0: line = (bc2bcbeg, bcx21a, bcx21b, dc2o, bcx22a, bcx22b, dc2ih, bc2bcmid, dc2ih, bcx23a,  &
+        bcx23b, dc2o, bcx24a, bcx24b, bc2bcend)
 
 bc2c: line = (bc2bcbeg, bcx21a, bcx21b, dc2oa, cq21b, cq21b, dc2ob, bcx22a, bcx22b, dc2ia, bpm21b &
         , dc2ib, ce21b, dc2ic, otr21b, dc2id, ws21b, dc2ie, bcx23a, bcx23b, dc2oc, cq22b, cq22b,  &
         dc2od, bcx24a, bcx24b, cntbc2, bc2bcend)
 
-bc2: line = (begbc2b, bc2i, bc2c, endbc2b)
+bc2: line = (begbc2b, bc2i, bc2c)
 
-emit2: line = (begemit2, de200a, bz21b, de200b, qe201, bpme201, qe201, de201a, yce201, de201b,  &
-        im21b, de201c, qe202, bpme202, qe202, de202a1, xce202, de202a2, wsemit2, de202b, qe203,  &
-        bpme203, qe203, de203a, yce203, de203b, qe204, bpme204, qe204, de204a, xce204, de204b,  &
-        endemit2)
+emit2: line = (de200a, bz21b, de200b, endbc2b, begemit2, qe201, bpme201, qe201, de201a, yce201,  &
+        de201b, im21b, de201c, qe202, bpme202, qe202, de202a1, xce202, de202a2, wsemit2, de202b,  &
+        qe203, bpme203, qe203, de203a, yce203, de203b, qe204, bpme204, qe204, de204a, xce204,  &
+        de204b, endemit2)
 
 ! ------------------------------------------------------------------------------
 
