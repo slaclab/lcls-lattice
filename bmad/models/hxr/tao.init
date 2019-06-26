@@ -10,7 +10,7 @@
 !--------------------------------------------------------
 &tao_design_lattice
   !unique_name_suffix="*::_##?"
-  design_lattice(1)%file= 'cu_hxr.lat.bmad'
+  design_lattice(1)%file= 'hxr.lat.bmad'
 !  combine_consecutive_elements_of_like_name = T
 /
 
@@ -29,7 +29,7 @@
 /
 
 
-&tao_beam_init
+!&tao_beam_init
 beam_init%random_engine = 'quasi'
 ix_universe = 1
 beam_saved_at =  "MARKER::*"
@@ -247,41 +247,51 @@ beam_init%center(6) = 0.0
 /
 
 &tao_var
-    v1_var%name = 'q.OTR2'
+    v1_var%name = 'qf'
 	default_step = 1e-4
-	default_attribute = 'K1'
-	var(1:)%ele_name = 'QA01','QA02', 'QE01', 'QE02', 'QE03', 'QE04'
+	default_attribute = 'b1_gradient'
+
+    var(1)%ele_name = "QHX13"
+    var(2)%ele_name = "QHX15"
+    var(3)%ele_name = "QHX17"
+    var(4)%ele_name = "QHX19"
+    var(5)%ele_name = "QHX21"
+    var(6)%ele_name = "QHX23"
+    var(7)%ele_name = "QHX25"
+    var(8)%ele_name = "QHX27"
+    var(9)%ele_name = "QHX29"
+    var(10)%ele_name = "QHX31"
+    var(11)%ele_name = "QHX33"
+    var(12)%ele_name = "QHX35"
+    var(13)%ele_name = "QHX37"
+    var(14)%ele_name = "QHX39"
+    var(15)%ele_name = "QHX41"
+    var(16)%ele_name = "QHX43"
+    var(17)%ele_name = "QHX45"
 /
 
 &tao_var
-    v1_var%name = 'q.LI22'
+    v1_var%name = 'qd'
 	default_step = 1e-4
-	default_attribute = 'K1'
-	var(1:)%ele_name = 'Q21601','Q21701', 'Q21801', 'Q21901'
+	default_attribute = 'b1_gradient'
+ var(1)%ele_name = "QHX14"
+    var(2)%ele_name = "QHX16"
+    var(3)%ele_name = "QHX18"
+    var(4)%ele_name = "QHX20"
+    var(5)%ele_name = "QHX22"
+    var(6)%ele_name = "QHX24"
+    var(7)%ele_name = "QHX26"
+    var(8)%ele_name = "QHX28"
+    var(9)%ele_name = "QHX30"
+    var(10)%ele_name = "QHX32"
+    var(11)%ele_name = "QHX34"
+    var(12)%ele_name = "QHX36"
+    var(13)%ele_name = "QHX38"
+    var(14)%ele_name = "QHX40"
+    var(15)%ele_name = "QHX42"
+    var(16)%ele_name = "QHX44"
 /
 
-
-&tao_var
-    v1_var%name = 'q.BC1'
-	default_step = 1e-4
-	default_attribute = 'K1'
-	var(1:)%ele_name =  'QA11', 'QA12', 'Q21201', 'QM11'
-/
-
-&tao_var
-    v1_var%name = 'BC_angle'
-	default_step = 1e-2
-	default_attribute = 'angle_deg'
-	var(1:)%ele_name =  'O_BC1', 'O_BC2'
-/
-
-
-&tao_var
-    v1_var%name = 'linac_fudge'
-	default_step = 1e-4
-	default_attribute = 'f'
-	var(1:)%ele_name =  'O_L1_fudge', 'O_L2_fudge', 'O_L3_fudge'
-/
 
 
 

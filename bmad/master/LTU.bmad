@@ -2563,10 +2563,12 @@ kqum2 = -0.257070322217
 kqum3 = 0.249191553356
 kqum4 = -0.21849398386
 
-qum1: quadrupole, type = "1.26Q12", l = lqa/2, aperture = rqa, k1 = kqum1
-qum2: quadrupole, type = "1.26Q12", l = lqa/2, aperture = rqa, k1 = kqum2
-qum3: quadrupole, type = "1.26Q12", l = lqa/2, aperture = rqa, k1 = kqum3
-qum4: quadrupole, type = "1.26Q12", l = lqa/2, aperture = rqa, k1 = kqum4
+
+!!! Full length quads
+qum1: quadrupole, type = "1.26Q12", l = lqa, aperture = rqa, k1 = kqum1
+qum2: quadrupole, type = "1.26Q12", l = lqa, aperture = rqa, k1 = kqum2
+qum3: quadrupole, type = "1.26Q12", l = lqa, aperture = rqa, k1 = kqum3
+qum4: quadrupole, type = "1.26Q12", l = lqa, aperture = rqa, k1 = kqum4
 
 du1m80cma: drift, l = 0.16515
 du1m80cmb: drift, l = 0.219024
@@ -2575,10 +2577,12 @@ d32cmc: drift, l = 0.30046
 du2m120cm: drift, l = 4.730
 dw2tdund: drift, l = 0.201537 !drift from BTH/UH wall-2 to TDUNDB u/s flange
 
-bpmum1: instrument, type = "Stripline-10"
-bpmum2: instrument, type = "Stripline-10"
-bpmum3: instrument, type = "Stripline-10"
-bpmum4: instrument, type = "Stripline-10"
+
+!!! Use superimpose
+bpmum1: instrument, type = "Stripline-10", superimpose, ref = qum1
+bpmum2: instrument, type = "Stripline-10", superimpose, ref = qum2
+bpmum3: instrument, type = "Stripline-10", superimpose, ref = qum3
+bpmum4: instrument, type = "Stripline-10", superimpose, ref = qum4
 
 rfb07: instrument, type = "CavityX-1" !existing LCLS device
 rfb08: instrument, type = "CavityX-1" !existing LCLS device
@@ -2612,9 +2616,9 @@ dbmark37: marker !end of undulator match
 rwwake5h: marker, type = "WAKE" !LTU beampipe wake applied here
 
 unmch: line = (du1m80cma, dws36, du1m80cmb, btm13, du1m80cmc, dcx37, d32cmc, xcum1, dum1a, qum1,  &
-        bpmum1, qum1, dum1b, d32cm, du2m120cm, dcy38, d32cma, ycum2, dum2a, qum2, bpmum2, qum2,  &
-        dum2b, du3m80cm, xcum3, dum3a, qum3, bpmum3, qum3, dum3b, d40cma, eoblm, du4m120cm, ycum4 &
-        , dum4a, qum4, bpmum4, qum4, dum4b, rfb07, du5m80cm, imundi, d40cmw, muhwall1, duhwall1,  &
+         dum1b, d32cm, du2m120cm, dcy38, d32cma, ycum2, dum2a, qum2,  &
+        dum2b, du3m80cm, xcum3, dum3a, qum3, dum3b, d40cma, eoblm, du4m120cm, ycum4 &
+        , dum4a, qum4, dum4b, rfb07, du5m80cm, imundi, d40cmw, muhwall1, duhwall1,  &
         duhvesta, rfb08, duhvestb, muhwall2, duhwall2, dw2tdund, dtdund1, tdund, dtdund2, dpcmuon &
         , pcmuon, dmuon1, vv999, dmuon3, rfbhx12, dmuon4, mm3, pfilt1, dbmark37)
 
