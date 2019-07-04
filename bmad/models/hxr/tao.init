@@ -10,7 +10,8 @@
 !--------------------------------------------------------
 &tao_design_lattice
   !unique_name_suffix="*::_##?"
-  design_lattice(1)%file= 'hxr.lat.bmad'
+ design_lattice(1)%file= 'hxr.lat.bmad'
+! design_lattice(1)%file= 'hxr_2cells.lat.bmad'
 !  combine_consecutive_elements_of_like_name = T
 /
 
@@ -44,6 +45,95 @@ beam_init%center(6) = 0.0
 
 /
 
+
+&tao_d2_data
+        d2_data%name = 'umatch'
+        universe = 1
+        n_d1_data = 3
+/
+
+&tao_d1_data
+        ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'begtwiss'
+        datum( 1) =  'beta.a'     '' '' 'Mar.MATCH'   'target' 13.186701148311 1e1   ! Taken from lcls_end_L0a_nominal.beam0
+        datum( 2) =  'alpha.a'    '' '' 'Mar.MATCH'   'target'  0.0016579122608167     1e2
+        datum( 3) =  'beta.b'     '' '' 'L0BBEG'   'target' 3.3803893850006    1e1
+        datum( 4) =  'alpha.b'    '' '' 'Mar.MATCH'   'target'  -7.4311987406928e-06      1e2
+        datum( 5) =  'eta.x'      '' '' 'Mar.MATCH'   'target' 0      1e1
+        datum( 6) =  'etap.x'     '' '' 'Mar.MATCH'   'target' 0      1e2
+/  
+&tao_d1_data
+        ix_d1_data = 2
+        default_weight = 1
+        d1_data%name = 'maxs'
+        datum( 1) =  'beta.a'     '' 'QHX13' 'QHX45'   'max' 20 1e1   
+        datum( 2) =  'beta.b'     '' 'QHX14' 'QHX46'   'max' 20 1e1   
+/
+&tao_d1_data
+        ix_d1_data = 3
+        default_weight = 1e5
+        d1_data%name = 'average'
+        !datum( 1)%data_type = 'expression: ele::QHX*[beta_a]'  
+        !datum( 1)%meas = 0
+        !datum( 1)%merit_type = 'average'
+        datum( 1) =  'beta.a'     '' 'QHX13' 'QHX45'   'average' 20 1e1   
+        datum( 2) =  'beta.b'     '' 'QHX13' 'QHX45'   'average' 20 1e1   
+
+/
+
+
+
+
+&tao_d2_data
+        d2_data%name = 'phases'
+        universe = 1
+        n_d1_data = 2
+/
+
+&tao_d1_data
+        ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'a'
+        datum( 1) =  'phase.a'     'QHX13' '' 'QHX15'   'target' 0.366519
+        datum( 2) =  'phase.a'     'QHX15' '' 'QHX17'   'target' 0.366519
+        datum( 3) =  'phase.a'     'QHX17' '' 'QHX19'   'target' 0.366519
+        datum( 4) =  'phase.a'     'QHX19' '' 'QHX21'   'target' 0.366519
+        datum( 5) =  'phase.a'     'QHX21' '' 'QHX23'   'target' 0.366519
+        datum( 6) =  'phase.a'     'QHX23' '' 'QHX25'   'target' 0.366519
+        datum( 7) =  'phase.a'     'QHX25' '' 'QHX27'   'target' 0.366519
+        datum( 8) =  'phase.a'     'QHX27' '' 'QHX29'   'target' 0.366519
+        datum( 9) =  'phase.a'     'QHX29' '' 'QHX31'   'target' 0.366519
+        datum(10) =  'phase.a'     'QHX31' '' 'QHX33'   'target' 0.366519        
+        datum(11) =  'phase.a'     'QHX33' '' 'QHX35'   'target' 0.366519
+        datum(12) =  'phase.a'     'QHX35' '' 'QHX37'   'target' 0.366519
+        datum(13) =  'phase.a'     'QHX37' '' 'QHX39'   'target' 0.366519
+        datum(14) =  'phase.a'     'QHX39' '' 'QHX41'   'target' 0.366519    
+        datum(15) =  'phase.a'     'QHX41' '' 'QHX43'   'target' 0.366519        
+        datum(16) =  'phase.a'     'QHX43' '' 'QHX45'   'target' 0.366519               
+        
+/
+&tao_d1_data
+        ix_d1_data = 2
+        default_weight = 1
+        d1_data%name = 'b'
+        datum( 1) =  'phase.b'     'QHX13' '' 'QHX15'   'target' 0.366519
+        datum( 2) =  'phase.b'     'QHX15' '' 'QHX17'   'target' 0.366519
+        datum( 3) =  'phase.b'     'QHX17' '' 'QHX19'   'target' 0.366519
+        datum( 4) =  'phase.b'     'QHX19' '' 'QHX21'   'target' 0.366519
+        datum( 5) =  'phase.b'     'QHX21' '' 'QHX23'   'target' 0.366519
+        datum( 6) =  'phase.b'     'QHX23' '' 'QHX25'   'target' 0.366519
+        datum( 7) =  'phase.b'     'QHX25' '' 'QHX27'   'target' 0.366519
+        datum( 8) =  'phase.b'     'QHX27' '' 'QHX29'   'target' 0.366519
+        datum( 9) =  'phase.b'     'QHX29' '' 'QHX31'   'target' 0.366519
+        datum(10) =  'phase.b'     'QHX31' '' 'QHX33'   'target' 0.366519        
+        datum(11) =  'phase.b'     'QHX33' '' 'QHX35'   'target' 0.366519
+        datum(12) =  'phase.b'     'QHX35' '' 'QHX37'   'target' 0.366519
+        datum(13) =  'phase.b'     'QHX37' '' 'QHX39'   'target' 0.366519
+        datum(14) =  'phase.b'     'QHX39' '' 'QHX41'   'target' 0.366519    
+        datum(15) =  'phase.b'     'QHX41' '' 'QHX43'   'target' 0.366519        
+        datum(16) =  'phase.b'     'QHX43' '' 'QHX45'   'target' 0.366519  
+/
 
 
 
@@ -244,6 +334,16 @@ beam_init%center(6) = 0.0
     var(1:6)%attribute = 'beta_a', 'alpha_a', 'beta_b', 'alpha_b', 'eta_x', 'etap_x'
     var(1)%low_lim = 0.01
     var(3)%low_lim = 0.01
+/
+
+
+&tao_var
+    v1_var%name = 'qmatch'
+	default_step = 1e-4
+	default_attribute = 'k1'
+	default_key_bound = T
+	default_key_delta = 0.1
+    var(1:)%ele_name = "QUM1", "QUM2", "QUM3", "QUM4"
 /
 
 &tao_var
