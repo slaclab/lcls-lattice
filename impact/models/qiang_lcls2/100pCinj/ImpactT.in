@@ -1,0 +1,190 @@
+!Welcome to IMPACT-T input file.
+!All comment lines start with "!" as the first character of the line.
+! processor layout
+! col row
+!32 64 
+!8 8
+!1 1
+32 32
+!
+! information needed by the integrator:
+! step-size, number of steps, and number of bunches/bins (??)
+!
+!   dt    Ntstep  Nbunch
+4.0e-12 2000000 1
+!
+! more information needed by the integrator:
+! phase-space dimension, number of particles, a series of flags
+! that set the type of integrator, error study, diagnostics, and
+! image charge, and the cutoff distance for the image charge
+!
+! PSdim  Nptcl   integF  errF  diagF  imchgF  imgCutOff (m)
+!6 2048000 1 0 2 1 0.02
+!6 1000000512 1 0 2 1 0.02
+!6 1875001344 1 0 2 1 0.02
+!6 1600000 1 0 1 0 0.02
+!6 96000 1 0 2 1 0.02
+!6 1000000 1 0 2 1 0.01
+6 625000448 1 0 2 1 0.02
+!6 160000 1 0 2 1 0.02
+!
+!
+! information about mesh: number of points in x, y, and z, type
+! of boundary conditions, transverse aperture size (m),
+! and longitudinal domain size (m), which should be larger than the total
+! beamline element length
+!
+!  Nx  Ny  Nz  bcF   Rx    Ry    Lz
+!64 64  64 1 0.15 0.15 1.0e5
+!64 64 1024 1 0.15 0.15 1.0e5
+!64 64 4096 1 0.15 0.15 1.0e5
+64 64 2048 1 0.15 0.15 1.0e5
+!32 32 32 1 0.15 0.15 1.0e5
+!
+!
+! distribution type number, restart flag, space-charge substep
+! flag, number of emission steps, and max emission time
+!
+! distType  restartF  substepF  Nemission  Temission
+!18 0 0 1000 50.E-12
+!3 0 0 60 60.E-12
+212 0 0 900 45.E-12
+!
+! the distribution type codes have the following correspondence
+!   #  dist type    nparam  parameters (1..21)
+!   1  Uniform        21    sigx, sigpx, muxpx, xscale, pxscale, xmu1, xmu2,
+!                           sigy, sigpy, muypy, yscale, pyscale, xmu3, xmu4,
+!                           sigz, sigpz, muzpz, zscale, pzscale, xmu5, xmu6
+!   2  Gauss3         21    as in Uniform
+!   3  Waterbag       21    as in Uniform
+!   4  Semigauss      21    as in Uniform
+!   5  KV3d           21    as in Uniform
+!  15  GaussDouble    21    as in Uniform
+!  16  read           21    none
+!  17  Cylcold        21    as in Uniform
+!  18  CylGaussTest   21
+!  19  CylDbGauss     21
+!  20  UniformChain   21
+!
+! following three lines contain a total of 21 parameters (seven
+! per degree of freedom) particular to the particle distribution
+!
+! in most cases, the columns are given by
+!  sig*   sigp*  mu*p*  *scale  p*scale  xmu*      xmu*
+!
+0.3666953649E-03 0.001 0.0 1. 1. 0.0 0.
+0.3666953649E-03 0.001 0.0 1. 1. 0.0 0.
+0.1437978253E-04 0.0014 0.0 1.18618914506146E-06 1.0 0.0 0.002
+!0.0 0.0 0.0  1. 1. 0.0 0.
+!0.0 0.0 0.0  1. 1. 0.0 0.
+!0.0 0.0 0.0  1. 1. -1.09450365693449e-05 0.00197835743844223
+!
+!
+! information about the beam: current, kinetic energy, particle
+! rest energy, particle charge, scale frequency, and initial
+! cavity phase
+!
+! I/A   Ek/eV     Mc2/eV      Q/e  freq/Hz  phs/rad
+0.13 1.0 0.511005e+06  -1.0 1.3e9 0
+!0 1.0 0.511005e+06  -1.0 1.3e9 0
+!
+!
+! ======= machine description starts here =======
+! the following lines, which must each be terminated with a '/',
+! describe one beam-line element per line; the basic structure is
+! element length, ???, ???, element type, and then a sequence of
+! at most 24 numbers describing the element properties
+!
+! the numeric type codes have the following correspondence
+!  #    element    nparams  parameters (v0..v23)
+! < 0  bpm           8
+!   0  drift tube    2      zedge radius
+!   1  quadrupole    9      zedge, quad grad, fileID,
+!                             radius, alignment error x, y
+!                             rotation error x, y, z
+!   2  constFocus    5      zedge, foc grads kx0^2, ky0^2, kz0^2, radius
+!   3  solenoid      9      zedge, Bz0, fileID
+!                             radius, alignment error x, y
+!                             rotation error x, y, z
+!   4  dipole       10      zedge, field strength x, y, fileID,
+!                             radius, alignment error x, y
+!                             rotation error x, y, z
+!   5  multipole    10      zedge, typeID (2=sex,3=oct,4=dec),
+!                             field strength, fileID,
+!                             radius, alignment error x, y
+!                             rotation error x, y, z
+! 101  DTL          15      zedge, ...
+! 102  CCDTL        11      zedge, ...
+! 103  CCL          11      zedge, ...
+! 104  SC cavity    11      zedge, scale, RF frequency, theta0, fileID,
+!                             radius, alignment error x, y
+!                             rotation error x, y, z
+! 105  SolRF        12      zedge, scale, RF frequency, theta0, fileID,
+!                             radius, alignment error x, y
+!                             rotation error x, y, z,
+!                             Bz0
+! 110  EMfld        13      zedge, scale, RF frequency, theta0, fileID,
+!                             radius, alignment error x, y
+!                             rotation error x, y, z,
+!                             field flag (=discrete,=analytic),
+!                             coordinate system flag (=cart,=cyl)
+! 111  EMfld cart   11      zedge, scale, RF frequency, theta0, fileID,
+!                             radius, alignment error x, y
+!                             rotation error x, y, z
+! 112  EMfld cyl    11      zedge, scale, RF frequency, theta0, fileID,
+!                             radius, alignment error x, y
+!                             rotation error x, y, z
+! 113  EMfld anal   11      zedge, scale, RF frequency, theta0, fileID,
+!                             radius, alignment error x, y
+!                             rotation error x, y, z
+!
+! L/m  N/A N/A  type  location of starting edge     v1          ∞∞∞        v23 /
+!start 3D SC
+0.0 1 20 -5 -2.0 -2.0 -2.0 /
+!bucking coil,rfdta4
+!0.5 105 20 105 -0.312 0.0 0.0 0.0 4.0 0.1 0.0 0.0 0.0 0.0 0.0 0 /
+!187MHz VHF gun, rfdata30 !-6.5959 degree w.s.p peak phase
+0.199 105 20 105 0.0 -20.04E6 0.187E9 0.3508321505E+03 30.0 0.1 0.0 0.0 0.0 0.0 0.0 0.0 /
+!focusing coil1, rfdata5
+0.48 105 20 105 0.016 0.0 0.0 0.0 5.0 0.1 0.0 0.0 0.0 0.0 0.0 0.5753523572E-01 /
+!post-solenoid particle output
+0.0 2000 71 -2 0.60 0.60 0.60 /
+0.0 1024 81 -9 0.60 0.60 0.6 /
+!1.3GHz buncher, -80.2745 degree w.r.p peak
+0.358133 105 20 105 0.6302335 -0.1855026666E+07 1.3E9 0.4116934091E+02 2.0 0.1 0.0 0.0 0.0 0.0 0.0 0.0 /
+!focusing coil2, rfdata5
+0.48 105 20 105 1.411 0.0 0.0 0.0 5.0 0.1 0.0 0.0 0.0 0.0 0.0 0.2986963376E-01 /
+!add 0.1keV uncorrelated energy spread from IBS
+!0.0 1 1 -16 2.02 0.0002 /
+!pre-booster module: 1300 MHz 9 cell cavities. 0.0 w.r.p peak
+0.0 0 212 -6 2.68 2.68 2.683 4.002 -1.0 1.0 /
+1.318798 10 20 105 2.683401 -0.1682893048E+08 1.3E9 0.8928609875E+02 3.0 0.1 0.0 0.0 0.0 0.0 0.0 0.0 /
+0.0 1 20 -4 4.00 4.00 4.00 8E-12 /
+!1300 MHz 9 cell cavities. 0 ampl. 0 w.r.p peak
+0.0 0 212 -6 4.067 4.067 4.067 5.386 -1.0 1.0 /
+1.318798 10 20 105 4.067001 0.0E6 1.3E9 0.0 3.0 0.1 0.0 0.0 0.0 0.0 0.0 0.0 /
+!1300 MHz 9 cell cavities. 0 ampl. 0 w.r.p peak
+0.0 0 212 -6 5.4506 5.4506 5.4506 6.7696 -1.0 1.0 /
+1.318798 10 20 105 5.450601 0.0E6 1.3E9 0.0 3.0 0.1 0.0 0.0 0.0 0.0 0.0 0.0 /
+!1300 MHz 9 cell cavities. 0 w.r.p peak
+0.0 0 212 -6 6.834 6.834 6.834 8.153 -1.0 1.0 /
+1.318798 10 20 105 6.834201 -0.2672656884E+08 1.3E9 0.8156207958E+02 3.0 0.1 0.0 0.0 0.0 0.0 0.0 0.0 /
+!1300 MHz 9 cell cavities. 0 w.r.p peak
+0.0 0 212 -6 8.2178 8.2178 8.2178 9.5368 -1.0 1.0 /
+1.318798 10 20 105 8.217801 -32.0E6 1.3E9 -0.264155E+03 3.0 0.1 0.0 0.0 0.0 0.0 0.0 0.0 /
+!1300 MHz 9 cell cavities. 0 w.r.p peak
+0.0 0 212 -6 9.6014 9.6014 9.6014 10.9204 -1.0 1.0 /
+1.318798 10 20 105 9.601401 -32.0E6 1.3E9 -0.264065E+03 3.0 0.1 0.0 0.0 0.0 0.0 0.0 0.0 /
+!1300 MHz 9 cell cavities. 1.25 w.r.p peak
+0.0 0 212 -6 10.985 10.985 10.985 12.304 -1.0 1.0 /
+1.318798 10 20 105 10.985001 -32.0E6 1.3E9 -0.263975E+03 3.0 0.1 0.0 0.0 0.0 0.0 0.0 0.0 /
+!1300 MHz 9 cell cavities. 6 w.r.p peak
+0.0 0 212 -6 12.3686 12.3686 12.3686 13.6876 -1.0 1.0 /
+1.318798 10 20 105 12.368601 -32.0E6 1.3E9 -0.252429E+03 3.0 0.1 0.0 0.0 0.0 0.0 0.0 0.0 /
+!add 1keV uncorrelated energy spread from IBS
+0.0 1 1 -16 13.71 0.002 /
+0.0 2000 79 -2 13.72 13.72 13.72 /
+0.0 1024 89 -9 13.72 13.72 13.72 /
+!stop at 13.9588m
+0.206599 1 1 0 13.752201 0.12 0.12 /
+
