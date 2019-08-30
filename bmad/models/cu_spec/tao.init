@@ -10,7 +10,7 @@
 !--------------------------------------------------------
 &tao_design_lattice
   !unique_name_suffix="*::_##?"
-  design_lattice(1)%file= 'cu_hxr.lat.bmad'
+  design_lattice(1)%file= 'cu_spec.lat.bmad'
 !  combine_consecutive_elements_of_like_name = T
 /
 
@@ -29,13 +29,13 @@
 /
 
 
-&tao_beam_init
+!&tao_beam_init
 beam_init%random_engine = 'quasi'
 ix_universe = 1
 beam_saved_at =  "MARKER::*"
 track_start = 'OTR2'
 !track_end = 'DBMARK82'
-!track_end = 'BC1CEND'
+track_end = 'BC1CEND'
 beam_init%position_file = '$LCLS2_LATTICE/bmad/beams/OTR2_250pC_rescaleto540um_solGTF1M_flat_scattered_20keV_100k.beam0'
 !beam_init%position_file = 'beam_1.hdf5'
 beam_init%center(1) = 0.0
@@ -136,34 +136,34 @@ beam_init%center(6) = 0.0
         ix_d1_data = 1
         default_weight = 1
         d1_data%name = 'begtwiss'
-        datum( 1) =  'beta.a'     '' '' 'BC1CBEG'   'target'  2.464682280E+01   1e1
-        datum( 2) =  'alpha.a'    '' '' 'BC1CBEG'   'target' 3.641936311E+00 1e2
-        datum( 3) =  'beta.b'     '' '' 'BC1CBEG'   'target' 3.426118191E+00      1e1
-        datum( 4) =  'alpha.b'    '' '' 'BC1CBEG'   'target' 1.465118239E+00  1e2
-        datum( 5) =  'eta.x'      '' '' 'BC1CBEG'   'target'   0  1e1
-        datum( 6) =  'etap.x'     '' '' 'BC1CBEG'   'target'   0   1e2
+        datum( 1) =  'beta.a'     '' '' 'BC1BEG'   'target'  2.464682280E+01   1e1
+        datum( 2) =  'alpha.a'    '' '' 'BC1BEG'   'target' 3.641936311E+00 1e2
+        datum( 3) =  'beta.b'     '' '' 'BC1BEG'   'target' 3.426118191E+00      1e1
+        datum( 4) =  'alpha.b'    '' '' 'BC1BEG'   'target' 1.465118239E+00  1e2
+        datum( 5) =  'eta.x'      '' '' 'BC1BEG'   'target'   0  1e1
+        datum( 6) =  'etap.x'     '' '' 'BC1BEG'   'target'   0   1e2
 /
 &tao_d1_data
         ix_d1_data = 2
         default_weight = 1
         d1_data%name = 'energy'
-        datum( 1) =  'e_tot_ref'           '' '' 'BC1CBEG'   'target'  0   
-        datum( 2) =  'e_tot_ref'           '' '' 'BC1CEND'   'target'  0   
-        datum( 3) =  'orbit.e_tot'     '' '' 'BC1CBEG'   'target'  0   
-        datum( 4) =  'orbit.e_tot'     '' '' 'BC1CEND'   'target'  0   
+        datum( 1) =  'e_tot_ref'           '' '' 'BC1BEG'   'target'  0   
+        datum( 2) =  'e_tot_ref'           '' '' 'BC1END'   'target'  0   
+        datum( 3) =  'orbit.e_tot'     '' '' 'BC1BEG'   'target'  0   
+        datum( 4) =  'orbit.e_tot'     '' '' 'BC1END'   'target'  0   
  / 
  &tao_d1_data
         ix_d1_data = 3
         default_weight = 1
         d1_data%name = 'offset'
-        datum( 1) =  'rel_floor.x'     'BC1CBEG' '' 'BX12B'   'target' 0     1e1
+        datum( 1) =  'rel_floor.x'     'BC1BEG' '' 'BX12B'   'target' 0     1e1
    
  / 
  &tao_d1_data
         ix_d1_data = 4
         default_weight = 1
         d1_data%name = 'r56'
-        datum( 1) =  'momentum_compaction'        'BC1CBEG'  '' 'BC1CEND'   'target'  0   
+        datum( 1) =  'momentum_compaction'        'BC1BEG'  '' 'BC1END'   'target'  0   
 / 
 
  
@@ -177,27 +177,27 @@ beam_init%center(6) = 0.0
         ix_d1_data = 1
         default_weight = 1
         d1_data%name = 'begtwiss'
-        datum( 1) =  'beta.a'     '' '' 'BEGBC2'   'target' 999   1e1
-        datum( 2) =  'alpha.a'    '' '' 'BEGBC2'   'target' 999 1e2
-        datum( 3) =  'beta.b'     '' '' 'BEGBC2'   'target' 999     1e1
-        datum( 4) =  'alpha.b'    '' '' 'BEGBC2'   'target' 999  1e2
-        datum( 5) =  'eta.x'      '' '' 'BEGBC2'   'target'   0  1e1
-        datum( 6) =  'etap.x'     '' '' 'BEGBC2'   'target'   0   1e2
+        datum( 1) =  'beta.a'     '' '' 'BC2BEG'   'target' 999   1e1
+        datum( 2) =  'alpha.a'    '' '' 'BC2BEG'   'target' 999 1e2
+        datum( 3) =  'beta.b'     '' '' 'BC2BEG'   'target' 999     1e1
+        datum( 4) =  'alpha.b'    '' '' 'BC2BEG'   'target' 999  1e2
+        datum( 5) =  'eta.x'      '' '' 'BC2BEG'   'target'   0  1e1
+        datum( 6) =  'etap.x'     '' '' 'BC2BEG'   'target'   0   1e2
 /
 &tao_d1_data
         ix_d1_data = 2
         default_weight = 1
         d1_data%name = 'energy'
-        datum( 1) =  'e_tot_ref'           '' '' 'BEGBC2'   'target'  0   
-        datum( 2) =  'e_tot_ref'           '' '' 'ENDBC2'   'target'  0   
-        datum( 3) =  'orbit.e_tot'     '' '' 'BEGBC2'   'target'  0   
-        datum( 4) =  'orbit.e_tot'     '' '' 'ENDBC2'   'target'  0   
+        datum( 1) =  'e_tot_ref'           '' '' 'BC2BEG'   'target'  0   
+        datum( 2) =  'e_tot_ref'           '' '' 'BC2END'   'target'  0   
+        datum( 3) =  'orbit.e_tot'     '' '' 'BC2BEG'   'target'  0   
+        datum( 4) =  'orbit.e_tot'     '' '' 'BC2END'   'target'  0   
  / 
  &tao_d1_data
         ix_d1_data = 3
         default_weight = 1
         d1_data%name = 'offset'
-        datum( 1) =  'rel_floor.x'     'BEGBC2' '' 'BX22B'   'target' 0     1e1
+        datum( 1) =  'rel_floor.x'     'BC2BEG' '' 'BX22B'   'target' 0     1e1
    
  / 
 
@@ -211,10 +211,10 @@ beam_init%center(6) = 0.0
         ix_d1_data = 1
         default_weight = 1
         d1_data%name = 'energy'
-        datum( 1) =  'e_tot_ref'           '' '' 'BEGL3'   'target'  0   
-        datum( 2) =  'e_tot_ref'           '' '' 'ENDL3'   'target'  0   
-        datum( 3) =  'orbit.e_tot'     '' '' 'BEGL3'   'target'  0   
-        datum( 4) =  'orbit.e_tot'     '' '' 'ENDL3'   'target'  0   
+        datum( 1) =  'e_tot_ref'           '' '' 'L3BEG'   'target'  0   
+        datum( 2) =  'e_tot_ref'           '' '' 'L3END'   'target'  0   
+        datum( 3) =  'orbit.e_tot'     '' '' 'L3BEG'   'target'  0   
+        datum( 4) =  'orbit.e_tot'     '' '' 'L3END'   'target'  0   
  / 
 
   
@@ -229,8 +229,8 @@ beam_init%center(6) = 0.0
         default_weight = 1
         d1_data%name = 'endtwiss'
         datum( 1) =  'r56_compaction'     'LHBEG' '' 'LHEND' 
-        datum( 2) =  'r56_compaction'     'BC1CBEG' '' 'BC1CEND' 
-        datum( 3) =  'r56_compaction'     'BEGBC2' '' 'ENDBC2'    
+        datum( 2) =  'r56_compaction'     'BC1BEG' '' 'BC1END' 
+        datum( 3) =  'r56_compaction'     'BC2BEG' '' 'BC2END'    
 /
 
 

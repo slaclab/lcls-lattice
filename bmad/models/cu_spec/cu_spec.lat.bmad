@@ -6,7 +6,7 @@ BEGINNING[BETA_B] =   1.53986428507105E+00
 BEGINNING[ALPHA_B] =  -1.63793752798038E-01
 
 
-beginning[e_tot] = 6e6
+beginning[e_tot] = 10e6
 parameter[geometry] = open
 parameter[particle] = electron
 
@@ -19,47 +19,11 @@ beginning[x_position] = 10.44893
 
 call, file = $LCLS2_LATTICE/bmad/master/CU_HXR.bmad
 
-! Bunch Compressor overlays
-call, file = $LCLS2_LATTICE/bmad/overlays/cu/bc1_overlays.bmad
-call, file = $LCLS2_LATTICE/bmad/overlays/cu/bc2_overlays.bmad
-
-! Tune OTR2
-QA01[K1] =  -1.61059918778049E+01
-QA02[K1] =   1.56969321521354E+01
-QE01[K1] =  -7.69427514279695E+00
-QE02[K1] =   7.86092461982991E+00
-QE03[K1] =   8.18015592092636E+00
-QE04[K1] =  -6.84258063076854E+00
-
-! Tune BC1BEG
-QA11[K1] =  -3.77921958657545E+00
-QA12[K1] =   1.88516458705882E+00
-Q21201[K1] =  -9.35592493760127E+00
-QM11[K1] =   7.95837257273832E+00
-
-! Tune LI22BEG
-Q21601[K1] =   7.08309690615378E-01
-Q21701[K1] =  -7.07641448107817E-01
-Q21801[K1] =   7.22424620636741E-01
-Q21901[K1] =  -7.21523060217672E-01
-
-
 ! Cavity wakefields, traveling wave, full sbend
 lcavity::K*[sr_wake_file]   = '$LCLS2_LATTICE/bmad/wakefields/longitudinal_wakes_sband.bmad'
 lcavity::L1X*[sr_wake_file] = '$LCLS2_LATTICE/bmad/wakefields/longitudinal_wakes_xband.bmad'
 lcavity::*[cavity_type] = traveling_wave
 sbend::*[fringe_type] = full
-
-
-! Resistive wall, instantaneous
-RWWAKESS[sr_wake_file] = '$LCLS2_LATTICE/bmad/wakefields/wakefield_SS_24.5mmR.bmad'
-RWWAKESS[sr_wake_scale_with_length] = F
-RWWAKESS[wake_amp_scale] = 182
-
-! This seems to be in the wrong place:
-!RWWAKE5H[sr_wake_file] = '$LCLS2_LATTICE/bmad/wakefields/wakefield_SS_24.5mmR.bmad'
-!RWWAKE5H[sr_wake_scale_with_length] = F
-!RWWAKE5H[wake_amp_scale] = 130
 
 ! 
 call, file =  $LCLS2_LATTICE/bmad/overlays/cu/klystrons.bmad
@@ -72,9 +36,7 @@ call, file =  $LCLS2_LATTICE/bmad/overlays/cu/linac_phase_defaults.bmad
 call, file =  $LCLS2_LATTICE/bmad/overlays/cu/linac_fudge_overlays.bmad
 
 
-!expand_lattice
-!quad::*[field_master] = T
 
-
+use, cu_spec !start at gun
 
 
