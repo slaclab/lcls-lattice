@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-13JUN19 ***
+! *** OPTICS=AD_ACCEL-2019next ***
 
 ! ------------------------------------------------------------------------------
 ! constants and global parameters
@@ -12,28 +12,37 @@ gev2mev = 1000.0        !GeV to MeV
 in2m = 0.0254        !inches to meters
 mc2 = 510.99906e-6  !e- rest mass [GeV]
 
+! SURVEY stuff
+
+injdeg = -35.0        !injector bend angle w.r.t. linac [degrees]
+zoffinj = 0.012100   !moves entire injector in main-linac z-direction by this amount (+12.100 mm Nov. 17, 2004)
+xoff = -25.610*in2m !x-offset of bypass line (old PEP-II 9-GeV) w.r.t. old linac axis (<0 is south)
+yoff = 25.570*in2m !y-offset of bypass line (old PEP-II 9-GeV) w.r.t. old linac axis(>0 is up)
+
 ! initial conditions (exit of L0)
 
-injdeg = -35.0    !injector bend angle w.r.t. linac [degrees]
-e00 = 0.006    !beam energy after gun (GeV)
-e0i = 0.064    !beam energy between L0a and L0b sections (GeV)
-ei = 0.135    !initial beam energy (GeV) (150->135 MeV on July 9, 2003)
-ebc1 = 0.250    !BC1 energy (GeV)
-ebc2 = ebc2cu   !BC2 energy (GeV)
-ef = efcu     !final beam energy (GeV)
-eu = eucu     !energy in undulator (GeV)
 emitxn = 1.00e-06 !normalized horizontal emittance (m)
 emityn = 1.00e-06 !normalized vertical emittance (m)
 bleng = 0.83e-03 !bunch length (m)
 esprd = 2.00e-05 !slice rms energy spread at 135 MeV (1)
-zoffinj = 0.012100 !moves entire injector in main-linac z-direction by this amount (+12.100 mm Nov. 17, 2004)
 
-xoff = -25.610*in2m !x-offset of bypass line (old PEP-II 9-GeV) w.r.t. old linac axis (<0 is south)
-yoff = 25.570*in2m !y-offset of bypass line (old PEP-II 9-GeV) w.r.t. old linac axis(>0 is up)
+! energy profile
 
-! miscellaneous parameters
+e00 = 0.006  !beam energy after gun (GeV)
+e0i = 0.064  !beam energy between L0a and L0b sections (GeV)
+ei = 0.135  !initial beam energy (GeV) (150->135 MeV on July 9, 2003)
+ebc1 = 0.250  !BC1 energy (GeV)
+ebc2 = ebc2cu !BC2 energy (GeV)
+ef = efcu   !final beam energy (GeV)
+eu = eucu   !energy in undulator (GeV)
 
 brhof = cb*ef
+
+! compression
+
+r56htr = 0.0079 !dX= 0.035000 m
+r56bc1 = 0.0455 !dX= 0.247383 m
+r56bc2 = 0.028  !dX= 0.385010 m
 
 ! ------------------------------------------------------------------------------
 ! twiss parameter definitions
@@ -79,10 +88,22 @@ aybegl3 = 2.204492752e+00
 ! Twiss at the end of L3 linac (L3END)
 
 enendl3 = 13.64
-bxendl3 = 33.136631364328
-axendl3 = 1.179540229644
-byendl3 = 62.298526576063
-ayendl3 = -1.660316777995
+ !BXENDL3 := 33.136631364328
+ !AXENDL3 :=  1.179540229644
+ !BYENDL3 := 62.298526576063
+ !AYENDL3 := -1.660316777995
+
+ !uncoupled
+ !BXENDL3 := 33.136631364327
+ !AXENDL3 :=  1.179540229644
+ !BYENDL3 := 62.298526576057
+ !AYENDL3 := -1.660316777995
+
+ !coupled
+bxendl3 = 33.141247960385
+axendl3 = 1.182309496676
+byendl3 = 62.400972351791
+ayendl3 = -1.660808264783
 
 ! for matching ...
 

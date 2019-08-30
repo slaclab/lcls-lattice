@@ -1,10 +1,20 @@
 
-! *** OPTICS=AD_ACCEL-13JUN19 ***
+! *** OPTICS=AD_ACCEL-2019next ***
 
 ! LCLS2sc LTU and dump
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 19-AUG-2019, M. Woodley
+!  * remove RFBPM's associated with XLEAP-II undulators per G. Kraft
+! 24-JUL-2019, M. Woodley
+!  * new LTUH/LTUS BTM complement and locations per RP-RPG-170714-MEM-01-R5 ...
+!    installation locations per E. Johnson
+!  * relocate TDUNDB and PCMUONB per T. O'Heron
+! 17-JUL-2019, M. Woodley
+!  * reinstall OTR30 per P. Krejcik
+!  * relocate TDUNDB and PCMUONB per T. O'Heron
 ! ------------------------------------------------------------------------------
 ! 06-JUN-2019, M. Woodley
 !  * adjust location of BSY dump face per A. Ibrahimov
@@ -520,14 +530,30 @@ bcx31b4a: sbend, e1 = +abx31b, hgap = gbcc/2, fint = fbcc, fintx = 0, type = "0.
 bcx31b4b: sbend, e2 = 0, hgap = gbcc/2, fint = 0, fintx = fbcc, type = "0.788D11.50", l = lbx31bs &
         , angle = lbx31bs * (+abx31bs)/lbx31bs
 
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bcx31b1: sbend, hgap = gbcc/2, e1 = 0, fint = fbcc, e2 = +abx31b, type = "0.788D11.50", l =  &
+        lbx31b, angle = lbx31b * (+abx31b)/lbx31b
+bcx31b2: sbend, hgap = gbcc/2, e1 = -abx31b, fint = fbcc, e2 = 0, type = "0.788D11.50", l =  &
+        lbx31b, angle = lbx31b * (-abx31b)/lbx31b
+bcx31b3: sbend, hgap = gbcc/2, e1 = 0, fint = fbcc, e2 = -abx31b, type = "0.788D11.50", l =  &
+        lbx31b, angle = lbx31b * (-abx31b)/lbx31b
+bcx31b4: sbend, hgap = gbcc/2, e1 = +abx31b, fint = fbcc, e2 = 0, type = "0.788D11.50", l =  &
+        lbx31b, angle = lbx31b * (+abx31b)/lbx31b
+
 dcc31bo: drift, l = zdcc/cos(abx31b), type = "CSR"
 dcc31bi: drift, l = zdcc, type = "CSR"
 
 cc31bbeg: marker
 cc31bend: marker
 
-cc31b: line = (cc31bbeg, bcx31b1a, bcx31b1b, dcc31bo, bcx31b2a, bcx31b2b, dcc31bi, bcx31b3a,  &
-        bcx31b3b, dcc31bo, bcx31b4a, bcx31b4b, cc31bend)
+bcx31b1_full: line = (bcx31b1a, bcx31b1b)
+bcx31b2_full: line = (bcx31b2a, bcx31b2b)
+bcx31b3_full: line = (bcx31b3a, bcx31b3b)
+bcx31b4_full: line = (bcx31b4a, bcx31b4b)
+
+cc31b: line = (cc31bbeg, bcx31b1_full, dcc31bo, bcx31b2_full, dcc31bi, bcx31b3_full, dcc31bo,  &
+        bcx31b4_full, cc31bend)
 
 bbx32b = 5.0450*ef/4.0*1.15
 arg32b = zbcc*bbx32b/brhof
@@ -563,14 +589,30 @@ bcx32b4a: sbend, e1 = +abx32b, hgap = gbcc/2, fint = fbcc, fintx = 0, type = "0.
 bcx32b4b: sbend, e2 = 0, hgap = gbcc/2, fint = 0, fintx = fbcc, type = "0.788D11.50", l = lbx32bs &
         , angle = lbx32bs * (+abx32bs)/lbx32bs
 
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bcx32b1: sbend, hgap = gbcc/2, e1 = 0, fint = fbcc, e2 = +abx32b, type = "0.788D11.50", l =  &
+        lbx32b, angle = lbx32b * (+abx32b)/lbx32b
+bcx32b2: sbend, hgap = gbcc/2, e1 = -abx32b, fint = fbcc, e2 = 0, type = "0.788D11.50", l =  &
+        lbx32b, angle = lbx32b * (-abx32b)/lbx32b
+bcx32b3: sbend, hgap = gbcc/2, e1 = 0, fint = fbcc, e2 = -abx32b, type = "0.788D11.50", l =  &
+        lbx32b, angle = lbx32b * (-abx32b)/lbx32b
+bcx32b4: sbend, hgap = gbcc/2, e1 = +abx32b, fint = fbcc, e2 = 0, type = "0.788D11.50", l =  &
+        lbx32b, angle = lbx32b * (+abx32b)/lbx32b
+
 dcc32bo: drift, l = zdcc/cos(abx32b), type = "CSR"
 dcc32bi: drift, l = zdcc, type = "CSR"
 
 cc32bbeg: marker
 cc32bend: marker
 
-cc32b: line = (cc32bbeg, bcx32b1a, bcx32b1b, dcc32bo, bcx32b2a, bcx32b2b, dcc32bi, bcx32b3a,  &
-        bcx32b3b, dcc32bo, bcx32b4a, bcx32b4b, cc32bend)
+bcx32b1_full: line = (bcx32b1a, bcx32b1b)
+bcx32b2_full: line = (bcx32b2a, bcx32b2b)
+bcx32b3_full: line = (bcx32b3a, bcx32b3b)
+bcx32b4_full: line = (bcx32b4a, bcx32b4b)
+
+cc32b: line = (cc32bbeg, bcx32b1_full, dcc32bo, bcx32b2_full, dcc32bi, bcx32b3_full, dcc32bo,  &
+        bcx32b4_full, cc32bend)
 
 ! ------------------------------------------------------------------------------
 ! wiggler for sync. light energy diagnostic (described in SLAC-PUB-3945)
@@ -614,11 +656,18 @@ wig3sa: sbend, hgap = gwig/2, e1 = awgs, e2 = 0, fint = 0.5, fintx = 0, type = "
 wig3sb: sbend, hgap = gwig/2, e1 = 0, e2 = 0, fint = 0, fintx = 0.5, type = "@3,SLC wiggler",  &
         ref_tilt = pi/2, l = lwg1s, angle = lwg1s * awg1s/lwg1s
 
+! define unsplit SBENs for BMAD ... not used by MAD
+
+wig1s: sbend, hgap = gwig/2, e1 = 0, fint = 0.5, e2 = +awgs, type = "@3,SLC wiggler", ref_tilt =  &
+        pi/2, l = lwgs, angle = lwgs * (+awgs)/lwgs
+wig2s: sbend, hgap = gwig/2, e1 = -awgs, fint = 0.5, e2 = -awgs, type = "@3,SLC wiggler",  &
+        ref_tilt = pi/2, l = 2*lwgs, angle = 2*lwgs * (-2*awgs)/(2*lwgs)
+wig3s: sbend, hgap = gwig/2, e1 = +awgs, fint = 0.5, e2 = 0, type = "@3,SLC wiggler", ref_tilt =  &
+        pi/2, l = lwgs, angle = lwgs * (+awgs)/lwgs
+
 ldwgs = zdwg/cos(awgs)
 
 dwgs: drift, l = ldwgs
-dwgsa: drift, l = 0.090883
-dwgsb: drift, l = dwgs[l]-dwgsa[l]
 
 ycwigs: kicker, type = "@3,wiggler trim"
 
@@ -626,8 +675,11 @@ btm03b: instrument, type = "BCS BTM"
 
 cntwigs: marker, type = "CENTER" !ELEGANT will correct the orbit here for CSR-steering
 
-ewigs: line = (wig1sa, wig1sb, dwgs, wig2sa, ycwigs, wig2sb, dwgsa, btm03b, dwgsb, wig3sa, wig3sb &
-        , cntwigs)
+wig1s_full: line = (wig1sa, wig1sb)
+wig2s_full: line = (wig2sa, ycwigs, wig2sb)
+wig3s_full: line = (wig3sa, wig3sb)
+
+ewigs: line = (wig1s_full, dwgs, wig2s_full, dwgs, wig3s_full, cntwigs)
 
 ! ------------------------------------------------------------------------------
 ! SXR dogleg
@@ -669,10 +721,11 @@ ksdl2 = -24.395452957412
 sdl1: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdl1
 sdl2: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdl2
 
-!-!  COMMENT
-!-!    VALUE, (Cb*Ef)*KSDL1*LSb,(Cb*10)*KSDL1*LSb
-!-!    VALUE, (Cb*Ef)*KSDL2*LSb,(Cb*10)*KSDL2*LSb
-!-!  ENDCOMMENT
+!=!  COMMENT
+!=!  COMMENT
+!=!    VALUE, (Cb*Ef)*KSDL1*LSb,(Cb*10)*KSDL1*LSb
+!=!    VALUE, (Cb*Ef)*KSDL2*LSb,(Cb*10)*KSDL2*LSb
+!=!  ENDCOMMENT
 
 lb3b = 2.656      !1.14D103.3T effective length (m)
 gb3b = 0.0254     !1.14D103.3T gap height (m) ... should be 1.14*in2m
@@ -680,14 +733,21 @@ ab3pb = 0.018633330237
 ab3mb = -ab3pb
 leffb3b = lb3b*ab3pb/(2*sin(ab3pb/2)) !full bend eff. path length (m)
 
-bx31ba: sbend, hgap = gb3b/2, e1 = ab3mb/2, e2 = 0, fint = 0.4297, fintx = 0.0, type =  &
+bx31b1: sbend, hgap = gb3b/2, e1 = ab3mb/2, e2 = 0, fint = 0.4297, fintx = 0.0, type =  &
         "1.14D103.3T", l = leffb3b/2, angle = leffb3b/2 * ab3mb/2/(leffb3b/2)
-bx31bb: sbend, hgap = gb3b/2, e1 = 0, e2 = ab3mb/2, fint = 0.0, fintx = 0.4297, type =  &
+bx31b2: sbend, hgap = gb3b/2, e1 = 0, e2 = ab3mb/2, fint = 0.0, fintx = 0.4297, type =  &
         "1.14D103.3T", l = leffb3b/2, angle = leffb3b/2 * ab3mb/2/(leffb3b/2)
-bx32ba: sbend, hgap = gb3b/2, e1 = ab3pb/2, e2 = 0, fint = 0.4297, fintx = 0.0, type =  &
+bx32b1: sbend, hgap = gb3b/2, e1 = ab3pb/2, e2 = 0, fint = 0.4297, fintx = 0.0, type =  &
         "1.14D103.3T", l = leffb3b/2, angle = leffb3b/2 * ab3pb/2/(leffb3b/2)
-bx32bb: sbend, hgap = gb3b/2, e1 = 0, e2 = ab3pb/2, fint = 0.0, fintx = 0.4297, type =  &
+bx32b2: sbend, hgap = gb3b/2, e1 = 0, e2 = ab3pb/2, fint = 0.0, fintx = 0.4297, type =  &
         "1.14D103.3T", l = leffb3b/2, angle = leffb3b/2 * ab3pb/2/(leffb3b/2)
+
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bx31b: sbend, hgap = gb3b/2, e1 = ab3mb/2, fint = 0.4297, e2 = ab3mb/2, type = "1.14D103.3T", l &
+         = leffb3b, angle = leffb3b * ab3mb/leffb3b
+bx32b: sbend, hgap = gb3b/2, e1 = ab3pb/2, fint = 0.4297, e2 = ab3pb/2, type = "1.14D103.3T", l &
+         = leffb3b, angle = leffb3b * ab3pb/leffb3b
 
 ! SXR single beam dumper vertical kicker, BPM, spoiler and in-line dump
 
@@ -703,6 +763,13 @@ bykik2sa: sbend, e1 = abykiks/4, e2 = 0, fint = 0.5, fintx = 0, hgap = 25.4e-3, 
         "1.92K41.2", ref_tilt = pi/2, l = lkiks/2, angle = lkiks/2 * abykiks/4/(lkiks/2)
 bykik2sb: sbend, e1 = 0, e2 = abykiks/4, fint = 0, fintx = 0.5, hgap = 25.4e-3, type =  &
         "1.92K41.2", ref_tilt = pi/2, l = lkiks/2, angle = lkiks/2 * abykiks/4/(lkiks/2)
+
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bykik1s: sbend, hgap = 25.4e-3, e1 = abykiks/4, fint = 0.5, e2 = abykiks/4, type = "1.92K41.2",  &
+        ref_tilt = pi/2, l = lkiks, angle = lkiks * abykiks/2/lkiks
+bykik2s: sbend, hgap = 25.4e-3, e1 = abykiks/4, fint = 0.5, e2 = abykiks/4, type = "1.92K41.2",  &
+        ref_tilt = pi/2, l = lkiks, angle = lkiks * abykiks/2/lkiks
 
 bpmbyks: instrument, type = "Stripline-5"
 spoilers: instrument           !TDKIKS dump spoiler (1 mm Ti)
@@ -726,7 +793,7 @@ ldl0ba = 0.1953
 ldl0bb = 3.213005+(lqa-lqr)/2-ldl0ba
 ldl0bc = ldl0b-ldl0ba-ldl0bb
 ldl1b = 2.9815+(lqa-lqr)/2
-ldl1ba = 1.317304
+ldl1ba = 1.316489 !265212 !1.317304
 ldl1bc = 0.1953
 ldl1bb = ldl1b-ldl1ba-ldl1bc
 ldl2b = ldl0b+ldl6b-ldl1b-lb3b+(leffb3b-lb3b)*3
@@ -741,6 +808,8 @@ ldl8c = 1.0
 ldl8ca = 0.1953
 ldl8cb = ldl8c-ldl8ca
 ldl8d = ldl0b-ldl8c-zwig
+ldl8da = 0.019865 !251052
+ldl8db = ldl8d-ldl8da
 ldl9b = ldl0b-ldl6b
 ldl9ba = 6.045762 !5.076366+(LQA-LQR)/2 +2.7012019
 ldl9bb = ldl9b-ldl9ba
@@ -761,10 +830,10 @@ ldl15bb = 1.224657+(lqa-lqr)/2-ldl15ba
 ldl15bc = ldl15b-ldl15ba-ldl15bb
 ldl17b = 0.5
 ldl18b = ldl3b-ldl17b-2.0
-ldl18ba = 1.139421
+ldl18ba = 1.139755 !02384 !1.139421
 ldl18bb = ldl18b-ldl18ba
 ldl19ba = 0.1953
-ldl19bb = 6.213736 !1.409836+0.51+0.08+(LQA-LQR)/2-LDL19ba
+ldl19bb = 6.201146 !178597 !6.213736
 ldl19bc = ldl0b-ldl19ba-ldl19bb
 ldl20b = ldl0b+1.002-(lqa-lqr)/2
 
@@ -794,9 +863,9 @@ ddl8c: drift, l = ldl8c
 ddl8ca: drift, l = ldl8ca
 ddl8cb: drift, l = ldl8cb
 ddl8d: drift, l = ldl8d
+ddl8da: drift, l = ldl8da
+ddl8db: drift, l = ldl8db
 ddl9b: drift, l = ldl9b
-ddl9ba: drift, l = ldl9ba
-ddl9bb: drift, l = ldl9bb
 ddl10b: drift, l = ldl10b
 ddl10ba: drift, l = ldl10ba
 ddl10bb: drift, l = ldl10bb
@@ -826,7 +895,7 @@ ldbyks = ldlcel/2-lqr !DL cell drift length
 
 dbyks01: drift, l = ddl10ba[l]      !QDL16 to CYDL16
 dbyks02: drift, l = ddl10bb[l]      !CYDL16 to BPMDL16
-dbyks03: drift, l = ddl11ba[l]+0.25 !BPMDL16 to BTM04B
+dbyks03: drift, l = ddl11ba[l]+0.299779 !BPMDL16 to BTM04B (DDL11BA[L]+0.25)
 dbyks05: drift, l = 0.5893-lkiks/2  !(BYKIK1S to BYKIK2S)/2 (0.609226)
 dbyks06: drift, l = 4.360149        !BYKIK2S to XCDL17      (4.340223)
 dbyks07: drift, l = 0.634128        !XCDL17 to BPMDL17
@@ -835,8 +904,8 @@ dbyks04: drift, l =  &       !BTM04B to BYKIK1S
         ldbyks-dbyks01[l]-ljaw-dbyks02[l]-dbyks03[l]-2*(lkiks+dbyks05[l])-dbyks06[l]-dbyks07[l]-dbyks08[l]
 
 dbyks11: drift, l = 0.51      !QDL17 to CEDL17
-dbyks12: drift, l = 0.735832  !CEDL17 to BTM05B
-dbyks13: drift, l = 0.687668  !BTM05B to SPOILERS
+dbyks12: drift, l = 0.735832  !CEDL17 to (removed) BTM05B
+dbyks13: drift, l = 0.687668  !(removed) BTM05B to SPOILERS
 dbyks14: drift, l = 3.200208  !SPOILERS to TDKIKS (3.220859)
 dbyks15: drift, l = 0.257457  !TDKIKS to PCTDKIKS1 (0.257426)
 dbyks16: drift, l = 0.266697  !PCTDKIKS to PCTDKIKS
@@ -893,52 +962,166 @@ pctdkik4s: ecollimator, x_limit = 11.1125e-3, y_limit = 11.1125e-3, type = "@5,B
 otrdl18: instrument, type = "@3,OTR"
 
 btm01b: instrument, type = "BCS BTM"
-btm02b: instrument, type = "BCS BTM"
 btm04b: instrument, type = "BCS BTM"
-btm05b: instrument, type = "BCS BTM"
 btm06b: instrument, type = "BCS BTM"
 btm07b: instrument, type = "BCS BTM"
 
 dbmark34b: marker !entrance of BX31
 cntlt1s: marker, type = "CENTER"
 
-dbldl21: line = (begltus, ddbldlb, qdbl1, bpmdbl1, qdbl1, ddbldlc, ycdbl1, ddbldla, cybdl,  &
-        ddbldla, xcdbl2, ddbldlc, qdbl2, bpmdbl2, qdbl2, ddbldld)
+bx31b_full: line = (bx31b1, bx31b2)
+bykik1s_full: line = (bykik1sa, bykik1sb)
+bykik2s_full: line = (bykik2sa, bykik2sb)
+bx32b_full: line = (bx32b1, bx32b2)
 
-dl2sc: line = (dbmark34b, ddl20b, xcdl11, ddl6b, qdl11, qdl11, ddl15ba, bpmdl11, ddl15bb, ddl15bc &
-        , cc31b, ddl16b, bx31ba, bx31bb, ddl1ba, btm01b, ddl1bb, bpmdl12, ddl1bc, qdl12, qdl12,  &
-        ddl6b, ycdl12, ddl9ba, btm02b, ddl9bb, xcdl13, ddl6ba, sdl1, sdl1, ddl6bb, qdl13, qdl13,  &
-        ddl7ba, cedl13, ddl7bb, bpmdl13, ddl8b, ycdl14, ddl6b, qdl14, qdl14, ddl8ca, bpmdl14,  &
-        ddl8cb, ewigs, ddl8d, xcdl15, ddl6ba, sdl2, sdl2, ddl6bb, qdl15, qdl15, ddl0ba, bpmdl15,  &
-        ddl0bb, ddl0bc, ycdl16, ddl6b, qdl16, qdl16, dbyks01, cydl16, dbyks02, bpmdl16, dbyks03,  &
-        btm04b, dbyks04, bykik1sa, bykik1sb, dbyks05, dbyks05, bykik2sa, bykik2sb, dbyks06,  &
-        xcdl17, dbyks07, bpmdl17, dbyks08, qdl17, qdl17, dbyks11, cedl17, dbyks12, btm05b,  &
-        dbyks13, spoilers, dbyks14, tdkiks, dbyks15, pctdkik1s, dbyks16, pctdkik2s, dbyks16,  &
-        pctdkik3s, dbyks16, pctdkik4s, dbyks17, otrdl18, dbyks18, ycdl18, dbyks19, qdl18, qdl18,  &
-        ddl19ba, bpmdl18, ddl19bb, btm06b, ddl19bc, xcdl19, ddl6b, qdl19, qdl19, ddl2ba, bpmdl19 &
-        , ddl2bb, bx32ba, bx32bb, cntlt1s, ddl14b, qdl20, bpmdl20, qdl20, ddl6b, ycdl20, ddl17b,  &
-        cc32b, ddl18ba, btm07b, ddl18bb, ycdl21, ddl6b, qdl21, bpmdl21, qdl21, ddl4b, xcdl22,  &
-        ddl6b, qdl22, bpmdl22, qdl22, ddl5b)
 
-!-!  COMMENT !test line to find ABYKIKS angle for -14.2 mm offset at front face of TDKIKS
-!-!ABYKIKS=0.889371410732E-3
-!-!    KYKIK1S : VKIC, L=LKIKS/2, KICK=-ABYKIKS/4
-!-!    KYKIK2S : VKIC, L=LKIKS/2, KICK=-ABYKIKS/4
-!-!    TESTBYKIKS : LINE=(KYKIK1S,KYKIK1S,DBYKS05,DBYKS05,KYKIK2S,KYKIK2S,&
-!-!      DBYKS06,XCDL17,DBYKS07,BPMDL17,DBYKS08,QDL17,QDL17,DBYKS11,CEDL17,&
-!-!      DBYKS12,BTM05B,DBYKS13,SPOILERS,DBYKS14)
-!-!    USE, TESTBYKIKS
-!-!    MATCH, BETX=10, BETY=10, ORBIT
-!-!      VARY, ABYKIKS, STEP=1.E-6
-!-!      CONSTR, #E, Y=-14.2E-3
-!-!     !LMDIF, TOL=1.E-20
-!-!     !MIGRAD, TOL=1.E-20
-!-!    ENDMATCH
-!-!    VALUE, ABYKIKS
-!-!    SELECT, OPTICS, FULL
-!-!    OPTICS, BETX=10, BETY=10, COLUMNS=NAME,S,L,Y,PY
-!-!    STOP
-!-!  ENDCOMMENT
+
+!Old split line: line = (qdbl1, bpmdbl1, qdbl1)
+
+qdbl1_full: line = (qdbl1)
+qdbl1[L] = 2*qdbl1[L]
+bpmdbl1[superimpose] = T
+bpmdbl1[ref] = qdbl1
+
+
+!Old split line: line = (qdbl2, bpmdbl2, qdbl2)
+
+qdbl2_full: line = (qdbl2)
+qdbl2[L] = 2*qdbl2[L]
+bpmdbl2[superimpose] = T
+bpmdbl2[ref] = qdbl2
+
+
+!Old split line: line = (qdl11, qdl11)
+
+qdl11_full: line = (qdl11)
+qdl11[L] = 2*qdl11[L]
+
+
+!Old split line: line = (qdl12, qdl12)
+
+qdl12_full: line = (qdl12)
+qdl12[L] = 2*qdl12[L]
+
+
+!Old split line: line = (qdl13, qdl13)
+
+qdl13_full: line = (qdl13)
+qdl13[L] = 2*qdl13[L]
+
+
+!Old split line: line = (qdl14, qdl14)
+
+qdl14_full: line = (qdl14)
+qdl14[L] = 2*qdl14[L]
+
+
+!Old split line: line = (qdl15, qdl15)
+
+qdl15_full: line = (qdl15)
+qdl15[L] = 2*qdl15[L]
+
+
+!Old split line: line = (qdl16, qdl16)
+
+qdl16_full: line = (qdl16)
+qdl16[L] = 2*qdl16[L]
+
+
+!Old split line: line = (qdl17, qdl17)
+
+qdl17_full: line = (qdl17)
+qdl17[L] = 2*qdl17[L]
+
+
+!Old split line: line = (qdl18, qdl18)
+
+qdl18_full: line = (qdl18)
+qdl18[L] = 2*qdl18[L]
+
+
+!Old split line: line = (qdl19, qdl19)
+
+qdl19_full: line = (qdl19)
+qdl19[L] = 2*qdl19[L]
+
+
+!Old split line: line = (qdl20, bpmdl20, qdl20)
+
+qdl20_full: line = (qdl20)
+qdl20[L] = 2*qdl20[L]
+bpmdl20[superimpose] = T
+bpmdl20[ref] = qdl20
+
+
+!Old split line: line = (qdl21, bpmdl21, qdl21)
+
+qdl21_full: line = (qdl21)
+qdl21[L] = 2*qdl21[L]
+bpmdl21[superimpose] = T
+bpmdl21[ref] = qdl21
+
+
+!Old split line: line = (qdl22, bpmdl22, qdl22)
+
+qdl22_full: line = (qdl22)
+qdl22[L] = 2*qdl22[L]
+bpmdl22[superimpose] = T
+bpmdl22[ref] = qdl22
+
+
+
+!Old split line: line = (sdl1, sdl1)
+
+sdl1_full: line = (sdl1)
+sdl1[L] = 2*sdl1[L]
+
+
+!Old split line: line = (sdl2, sdl2)
+
+sdl2_full: line = (sdl2)
+sdl2[L] = 2*sdl2[L]
+
+dbldl21: line = (begltus, ddbldlb, qdbl1_full, ddbldlc, ycdbl1, ddbldla, cybdl, ddbldla, xcdbl2,  &
+        ddbldlc, qdbl2_full, ddbldld)
+
+dl2sc: line = (dbmark34b, ddl20b, xcdl11, ddl6b, qdl11_full, ddl15ba, bpmdl11, ddl15bb, ddl15bc,  &
+        cc31b, ddl16b, bx31b_full, ddl1ba, btm01b, ddl1bb, bpmdl12, ddl1bc, qdl12_full, ddl6b,  &
+        ycdl12, ddl9b, xcdl13, ddl6ba, sdl1_full, ddl6bb, qdl13_full, ddl7ba, cedl13, ddl7bb,  &
+        bpmdl13, ddl8b, ycdl14, ddl6b, qdl14_full, ddl8ca, bpmdl14, ddl8cb, ewigs, ddl8da, btm03b &
+        , ddl8db, xcdl15, ddl6ba, sdl2_full, ddl6bb, qdl15_full, ddl0ba, bpmdl15, ddl0bb, ddl0bc &
+        , ycdl16, ddl6b, qdl16_full, dbyks01, cydl16, dbyks02, bpmdl16, dbyks03, btm04b, dbyks04 &
+        , bykik1s_full, dbyks05, dbyks05, bykik2s_full, dbyks06, xcdl17, dbyks07, bpmdl17,  &
+        dbyks08, qdl17_full, dbyks11, cedl17, dbyks12, dbyks13, spoilers, dbyks14, tdkiks,  &
+        dbyks15, pctdkik1s, dbyks16, pctdkik2s, dbyks16, pctdkik3s, dbyks16, pctdkik4s, dbyks17,  &
+        otrdl18, dbyks18, ycdl18, dbyks19, qdl18_full, ddl19ba, bpmdl18, ddl19bb, btm06b, ddl19bc &
+        , xcdl19, ddl6b, qdl19_full, ddl2ba, bpmdl19, ddl2bb, bx32b_full, cntlt1s, ddl14b,  &
+        qdl20_full, ddl6b, ycdl20, ddl17b, cc32b, ddl18ba, btm07b, ddl18bb, ycdl21, ddl6b,  &
+        qdl21_full, ddl4b, xcdl22, ddl6b, qdl22_full, ddl5b)
+
+!=!  COMMENT !test line to find ABYKIKS angle for -14.2 mm offset at front face of TDKIKS
+!=!  COMMENT !test line to find ABYKIKS angle for -14.2 mm offset at front face of TDKIKS
+!=!ABYKIKS = 0.889371410732E-3
+!=!    KYKIK1S : VKIC, L=LKIKS/2, KICK=-ABYKIKS/4
+!=!    KYKIK2S : VKIC, L=LKIKS/2, KICK=-ABYKIKS/4
+!=!    KYKIK1S_full : LINE=(KYKIK1S,KYKIK1S)
+!=!    KYKIK2S_full : LINE=(KYKIK2S,KYKIK2S)
+!=!    TESTBYKIKS : LINE=(&
+!=!      KYKIK1S_full,DBYKS05,DBYKS05,&
+!=!      KYKIK2S_full,DBYKS06,XCDL17,DBYKS07,BPMDL17,DBYKS08,&
+!=!      QDL17_full,DBYKS11,CEDL17,DBYKS12,BTM05B,DBYKS13,SPOILERS,DBYKS14)
+!=!    USE, TESTBYKIKS
+!=!    MATCH, BETX=10, BETY=10, ORBIT
+!=!      VARY, ABYKIKS, STEP=1.E-6
+!=!      CONSTR, #E, Y=-14.2E-3
+!=!     !LMDIF, TOL=1.E-20
+!=!     !MIGRAD, TOL=1.E-20
+!=!    ENDMATCH
+!=!    VALUE, ABYKIKS
+!=!    SELECT, OPTICS, FULL
+!=!    OPTICS, BETX=10, BETY=10, COLUMNS=NAME,S,L,Y,PY
+!=!    STOP
+!=!  ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
 ! SXR VBEND
@@ -963,14 +1146,21 @@ lvb = 1.025      !3D39 vertical bend effective length (m)
 gvb = 0.034925   !gap width (m)
 avb = (s100_pitch+asin(z_s100_undh/(r_earth+s100_height)))/2 !bend up twice this angle so e- is level in cnt. of und.
 
-by1ba: sbend, hgap = gvb/2, e1 = avb/2, fint = 0.5, fintx = 0, type = "3D39", ref_tilt = pi/2, l &
+by1b1: sbend, hgap = gvb/2, e1 = avb/2, fint = 0.5, fintx = 0, type = "3D39", ref_tilt = pi/2, l &
          = lvb/2, angle = lvb/2 * avb/2/(lvb/2)
-by1bb: sbend, hgap = gvb/2, e2 = avb/2, fint = 0, fintx = 0.5, type = "3D39", ref_tilt = pi/2, l &
+by1b2: sbend, hgap = gvb/2, e2 = avb/2, fint = 0, fintx = 0.5, type = "3D39", ref_tilt = pi/2, l &
          = lvb/2, angle = lvb/2 * avb/2/(lvb/2)
-by2ba: sbend, hgap = gvb/2, e1 = avb/2, fint = 0.5, fintx = 0, type = "3D39", ref_tilt = pi/2, l &
+by2b1: sbend, hgap = gvb/2, e1 = avb/2, fint = 0.5, fintx = 0, type = "3D39", ref_tilt = pi/2, l &
          = lvb/2, angle = lvb/2 * avb/2/(lvb/2)
-by2bb: sbend, hgap = gvb/2, e2 = avb/2, fint = 0, fintx = 0.5, type = "3D39", ref_tilt = pi/2, l &
+by2b2: sbend, hgap = gvb/2, e2 = avb/2, fint = 0, fintx = 0.5, type = "3D39", ref_tilt = pi/2, l &
          = lvb/2, angle = lvb/2 * avb/2/(lvb/2)
+
+! define unsplit SBENs for BMAD ... not used by MAD
+
+by1b: sbend, hgap = gvb/2, e1 = avb/2, fint = 0.5, e2 = avb/2, type = "3D39", ref_tilt = pi/2, l &
+         = lvb, angle = lvb * avb/lvb
+by2b: sbend, hgap = gvb/2, e1 = avb/2, fint = 0.5, e2 = avb/2, type = "3D39", ref_tilt = pi/2, l &
+         = lvb, angle = lvb * avb/lvb
 
 ddvb = 4.114978912453 !adjust Y in undulator
 
@@ -978,16 +1168,16 @@ dvb1b: drift, l = 7.44546-ddvb*0.5+(lqa-lqe)/2, type = "CSR"
 dvb2b: drift, l = 4.14092-ddvb*0.5+(lqa-lqe), type = "CSR"
 dvb2m80cmb: drift, l = 3.34092-ddvb*0.5+(lqa-lqe), type = "CSR"
 dvb1m40cmb: drift, l = 7.04546-ddvb*0.5+(lqa-lqe)/2, type = "CSR"
-dvb1m40cmba: drift, l = 3.189788, type = "CSR"
+dvb1m40cmba: drift, l = 2.990270 !413976, TYPE="CSR" !3.189788
 dvb1m40cmbb: drift, l = dvb1m40cmb[l]-dvb1m40cmba[l], type = "CSR"
 d40cmc: drift, l = 0.40, type = "CSR"
 dycvm1: drift, l = 0.40
 dqvm1: drift, l = 0.34
 dqvm2: drift, l = 0.5
-dqvm2ba: drift, l = 0.483901
-dqvm2bb: drift, l = dqvm2[l]-dqvm2ba[l]
 drqvm1: drift, l = lqf/2
 drqvm2: drift, l = lqf/2
+drqvm2ba: drift, l = 0.384366 !5754184
+drqvm2bb: drift, l = 2*drqvm2[l]-drqvm2ba[l]
 dxcvm2: drift, l = 0.25
 dvb25cm: drift, l = 0.25
 dvb25cmcb: drift, l = 1.32046
@@ -1017,13 +1207,57 @@ vbinb: marker !start of vert. bend system
 vboutb: marker !end of vert. bend system
 cntlt2s: marker, type = "CENTER" !ELEGANT will correct the orbit here for CSR-steering
 
-vbendb: line = (vbinb, by1ba, by1bb, dvb1b, qvb1b, bpmvb1b, qvb1b, d40cmc, ycvb1b, dvb2m80cmb,  &
-        xcvb2b, d40cmc, qvb2b, bpmvb2b, qvb2b, dvb2b, qvb3b, bpmvb3b, qvb3b, d40cmc, ycvb3b,  &
-        dvb1m40cmba, btm09b, dvb1m40cmbb, by2ba, by2bb, cntlt2s, vboutb)
+by1b_full: line = (by1b1, by1b2)
+by2b_full: line = (by2b1, by2b2)
 
-vbsysb: line = (dycvm1, dqvm1, drqvm1, drqvm1, dqvm2ba, btm08b, dqvm2bb, drqvm2, drqvm2, dxcvm2,  &
-        dvb25cm, vbendb, dvb25cmcb, xcvm3b, d25cm, qvm3b, bpmvm3b, qvm3b, dvbem25cmb, ycvm4b,  &
-        d25cm, qvm4b, bpmvm4b, qvm4b, dvbem15cmb, d10cmb, d25cma)
+
+
+!Old split line: line = (qvb1b, bpmvb1b, qvb1b)
+
+qvb1b_full: line = (qvb1b)
+qvb1b[L] = 2*qvb1b[L]
+bpmvb1b[superimpose] = T
+bpmvb1b[ref] = qvb1b
+
+
+!Old split line: line = (qvb2b, bpmvb2b, qvb2b)
+
+qvb2b_full: line = (qvb2b)
+qvb2b[L] = 2*qvb2b[L]
+bpmvb2b[superimpose] = T
+bpmvb2b[ref] = qvb2b
+
+
+!Old split line: line = (qvb3b, bpmvb3b, qvb3b)
+
+qvb3b_full: line = (qvb3b)
+qvb3b[L] = 2*qvb3b[L]
+bpmvb3b[superimpose] = T
+bpmvb3b[ref] = qvb3b
+
+
+!Old split line: line = (qvm3b, bpmvm3b, qvm3b)
+
+qvm3b_full: line = (qvm3b)
+qvm3b[L] = 2*qvm3b[L]
+bpmvm3b[superimpose] = T
+bpmvm3b[ref] = qvm3b
+
+
+!Old split line: line = (qvm4b, bpmvm4b, qvm4b)
+
+qvm4b_full: line = (qvm4b)
+qvm4b[L] = 2*qvm4b[L]
+bpmvm4b[superimpose] = T
+bpmvm4b[ref] = qvm4b
+
+vbendb: line = (vbinb, by1b_full, dvb1b, qvb1b_full, d40cmc, ycvb1b, dvb2m80cmb, xcvb2b, d40cmc,  &
+        qvb2b_full, dvb2b, qvb3b_full, d40cmc, ycvb3b, dvb1m40cmba, btm09b, dvb1m40cmbb,  &
+        by2b_full, cntlt2s, vboutb)
+
+vbsysb: line = (dycvm1, dqvm1, drqvm1, drqvm1, dqvm2, drqvm2ba, btm08b, drqvm2bb, dxcvm2, dvb25cm &
+        , vbendb, dvb25cmcb, xcvm3b, d25cm, qvm3b_full, dvbem25cmb, ycvm4b, d25cm, qvm4b_full,  &
+        dvbem15cmb, d10cmb, d25cma)
 
 ! ------------------------------------------------------------------------------
 ! SXR emittance diagnostic
@@ -1064,7 +1298,7 @@ drfb: drift, l = 0.2 !separation between (warm) quadrupole and RF BPM
 d25cmb: drift, l = 0.2627
 d25cmc: drift, l = 0.2373
 dmm1m90cmb: drift, l = ddvb*2-0.79954+ddmm+(lqa-lqe)/2
-dmm1m90cmba: drift, l = 3.548482
+dmm1m90cmba: drift, l = 3.548865 !3.548482
 dmm1m90cmbb: drift, l = dmm1m90cmb[l]-dmm1m90cmba[l]
 dem1a: drift, l = 0.37
 dem1b: drift, l = 4.14092
@@ -1080,10 +1314,12 @@ dem3b: drift, l = 0.773299
 dem3bb: drift, l = dem3b[l]+(lqa-lqe)/2
 dmm4m90cm: drift, l = 2.759621
 dmm4m90cmb: drift, l = dmm4m90cm[l]+(lqa-lqe)/2
-dmm4m90cmba: drift, l = 0.223554
+dmm4m90cmba: drift, l = 0.523691 !0.223554
 dmm4m90cmbb: drift, l = dmm4m90cmb[l]-dmm4m90cmba[l]
 dem4a: drift, l = 0.50
 dmm5: drift, l = 2.07046-drfb[l]
+dmm5a: drift, l = 0.754070 !69734554
+dmm5b: drift, l = dmm5[l]-dmm5a[l]
 dmm5ab: drift, l = 0.90407+(lqa-lqe)/2
 dmm5bb: drift, l = dmm5[l]-dmm5ab[l]+(lqa-lqe)/2
 d40cm: drift, l = 0.40
@@ -1097,6 +1333,8 @@ dqebx2: drift, l = 4.6-0.4-0.4+dz_adjust/12-0.33655+0.0768665-0.04
 de3a: drift, l = 4.6+dz_adjust/12+0.14046
 de3aba: drift, l = 1.341982
 de3abb: drift, l = de3a[l]-de3aba[l]
+dxl2btm: drift, l = 0.299875 !166717
+dbtm2yc: drift, l = de3abb[l]-dxl2btm[l]
 dqeaa: drift, l = 0.40+(lqf-lqx)/2-0.14046
 dqeby: drift, l = 0.32+(lqf-lqx)/2+0.33655-0.0768665+0.04
 dqeby1: drift, l = dqeby[l]-drfb[l]
@@ -1104,13 +1342,9 @@ dqeby2: drift, l = 4.6-0.4+dz_adjust/12-0.33655+0.0768665-0.04
 de3m80cmb: drift, l = 4.6-0.4-0.4+dz_adjust/12+0.12046
 dqeab: drift, l = 0.40+(lqf-lqx)/2-0.12046
 dqec: drift, l = 4.6+dz_adjust/12+(lqf-lqx)/2
-dqecba: drift, l = 1.440646
-dqecbb: drift, l = dqec[l]-dqecba[l]
 dqec1: drift, l = dqec[l]-drfb[l]
 de3m40cm: drift, l = 4.6-0.4+dz_adjust/12+0.15046
 de3m80cm: drift, l = 4.6-0.4-0.4+dz_adjust/12-0.02954
-de3m80cmba: drift, l = 2.647321
-de3m80cmbb: drift, l = de3m80cm[l]-de3m80cmba[l]
 dqeac: drift, l = 0.40+(lqf-lqx)/2+0.02954
 de3: drift, l = 4.6+dz_adjust/12+0.15046
 
@@ -1149,8 +1383,6 @@ ws34b: marker, type = "fast" !LTU emittance
 btm10b: instrument, type = "BCS BTM"
 btm11b: instrument, type = "BCS BTM"
 btm12b: instrument, type = "BCS BTM"
-btm13b: instrument, type = "BCS BTM"
-btm14b: instrument, type = "BCS BTM"
 
 dcx31b: drift, l = 0.08
 dcy32b: drift, l = 0.08
@@ -1203,14 +1435,14 @@ r34u = lundh*sincargu
 ! undulator segment modeled as R-matrix to include vertical natural focusing
 ! over all but its edge terminations:
 
-umxlh: taylor, type = "LCLS-I", l = lundh, {1: 1.0, 1 0 0 0 0 0}, {1: lundh, 0 1 0 0 0 0}, {2:  &
-        0.0, 1 0 0 0 0 0}, {2: 1.0, 0 1 0 0 0 0}, {3: cos(argu), 0 0 1 0 0 0}, {3: r34u,  &
-        0 0 0 1 0 0}, {4: -sin(argu)*sqrt(kqund), 0 0 1 0 0 0}, {4: cos(argu), 0 0 0 1 0 0}
+umxl: taylor, type = "LCLS-I", l = lundh, {1: 1.0, 1 0 0 0 0 0}, {1: lundh, 0 1 0 0 0 0}, {2: 0.0 &
+        , 1 0 0 0 0 0}, {2: 1.0, 0 1 0 0 0 0}, {3: cos(argu), 0 0 1 0 0 0}, {3: r34u, 0 0 0 1 0 0 &
+        }, {4: -sin(argu)*sqrt(kqund), 0 0 1 0 0 0}, {4: cos(argu), 0 0 0 1 0 0}
 
-umxl1h: umxlh
-umxl2h: umxlh
-umxl3h: umxlh
-umxl4h: umxlh
+umxl1: umxl
+umxl2: umxl
+umxl3: umxl
+umxl4: umxl
 
 shrt = 0.470                                 !standard short break length [m]
 lrfbu = 0                                     !undulator RF-BPM only implemented as zero length monitor
@@ -1228,10 +1460,7 @@ db4: drift, l = lbr4        !radiation monitor to segment drift
 dt: drift, l = lue         !undulator segment small terminations modeled as drift
 duu: drift, l = 0.238/2     !undulator pair half-drift
 
-rfbxl1: instrument, l = lrfbu, type = "01_um_res" !undulator BPM
-rfbxl2: instrument, l = lrfbu, type = "01_um_res" !undulator BPM
-rfbxl3: instrument, l = lrfbu, type = "01_um_res" !undulator BPM
-rfbxl4: instrument, l = lrfbu, type = "01_um_res" !undulator BPM
+drfbxl: drift, l = lrfbu !RFBPMs associated with XLEAP-II undulators removed
 
 ! flip RF BPMs
 
@@ -1239,12 +1468,37 @@ drfbf = 0.61*in2m
 duuf: drift, l = duu[l]+drfbf
 dbrsf: drift, l = dbrs[l]-drfbf
 
-xl2und1: line = (rfbxl1, dbrsf, dbwm, db4, dt, umxl1h, umxl1h, dt)
-xl2und2: line = (rfbxl2, dbrsf, dbwm, db4, dt, umxl2h, umxl2h, dt)
-xl2und3: line = (rfbxl3, dbrsf, dbwm, db4, dt, umxl3h, umxl3h, dt)
-xl2und4: line = (rfbxl4, dbrsf, dbwm, db4, dt, umxl4h, umxl4h, dt)
 
-lxl2und = 2*(rfbxl1[l]+dbrs[l]+dbwm[l]+db4[l]+dt[l]+umxl1h[l]+umxl1h[l]+dt[l])+2*duu[l]
+
+!Old split line: line = (umxl1, umxl1)
+
+umxl1_full: line = (umxl1)
+umxl1[L] = 2*umxl1[L]
+
+
+!Old split line: line = (umxl2, umxl2)
+
+umxl2_full: line = (umxl2)
+umxl2[L] = 2*umxl2[L]
+
+
+!Old split line: line = (umxl3, umxl3)
+
+umxl3_full: line = (umxl3)
+umxl3[L] = 2*umxl3[L]
+
+
+!Old split line: line = (umxl4, umxl4)
+
+umxl4_full: line = (umxl4)
+umxl4[L] = 2*umxl4[L]
+
+xl2und1: line = (drfbxl, dbrsf, dbwm, db4, dt, umxl1_full, dt)
+xl2und2: line = (drfbxl, dbrsf, dbwm, db4, dt, umxl2_full, dt)
+xl2und3: line = (drfbxl, dbrsf, dbwm, db4, dt, umxl3_full, dt)
+xl2und4: line = (drfbxl, dbrsf, dbwm, db4, dt, umxl4_full, dt)
+
+lxl2und = 2*(drfbxl[l]+dbrs[l]+dbwm[l]+db4[l]+dt[l]+umxl1[l]+umxl1[l]+dt[l])+2*duu[l]
 
 ! drifts around undulator pair
 
@@ -1319,6 +1573,17 @@ bcxxl4a: sbend, hgap = gbxl/2, e1 = +abxl, fint = fbxl, fintx = 0, type = "0.3D1
 bcxxl4b: sbend, hgap = gbxl/2, fint = 0, e2 = 0, fintx = fbxl, type = "0.3D14", l = lbxls, angle &
          = lbxls * (+abxls)/lbxls
 
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bcxxl1: sbend, hgap = gbxl/2, e1 = 0, fint = fbxl, e2 = +abxl, type = "0.3D14", l = lbxl, angle &
+         = lbxl * (+abxl)/lbxl
+bcxxl2: sbend, hgap = gbxl/2, e1 = -abxl, fint = fbxl, e2 = 0, type = "0.3D14", l = lbxl, angle &
+         = lbxl * (-abxl)/lbxl
+bcxxl3: sbend, hgap = gbxl/2, e1 = 0, fint = fbxl, e2 = -abxl, type = "0.3D14", l = lbxl, angle &
+         = lbxl * (-abxl)/lbxl
+bcxxl4: sbend, hgap = gbxl/2, e1 = +abxl, fint = fbxl, e2 = 0, type = "0.3D14", l = lbxl, angle &
+         = lbxl * (+abxl)/lbxl
+
 ! magnet-to-magnet path lengths
 
 zdxlo = 1.046-zbxl !outer bend-to-bend Z distance (m)
@@ -1337,8 +1602,13 @@ bcxlssend: marker
 
 ! beamline
 
-bcxlss: line = (bcxlssbeg, bcxxl1a, bcxxl1b, dxlo, bcxxl2a, bcxxl2b, dxli, bcxlssmid, dxli,  &
-        bcxxl3a, bcxxl3b, dxlo, bcxxl4a, bcxxl4b, bcxlssend)
+bcxxl1_full: line = (bcxxl1a, bcxxl1b)
+bcxxl2_full: line = (bcxxl2a, bcxxl2b)
+bcxxl3_full: line = (bcxxl3a, bcxxl3b)
+bcxxl4_full: line = (bcxxl4a, bcxxl4b)
+
+bcxlss: line = (bcxlssbeg, bcxxl1_full, dxlo, bcxxl2_full, dxli, bcxlssmid, dxli, bcxxl3_full,  &
+        dxlo, bcxxl4_full, bcxlssend)
 
 ! drifts around chicane and undulator pair
 
@@ -1376,21 +1646,108 @@ argw6 = argw4*argw2
 sincargw = 1-argw2/6+argw4/120-argw6/5040 !~sinc(ARGw)=sin(ARGw)/ARGw
 r34w = lwigh*sincargw
 
-wigxlh: taylor, type = "variable gap", l = lwigh, {1: 1.0, 1 0 0 0 0 0}, {1: lwigh, 0 1 0 0 0 0} &
+wigxl: taylor, type = "variable gap", l = lwigh, {1: 1.0, 1 0 0 0 0 0}, {1: lwigh, 0 1 0 0 0 0} &
         , {2: 0.0, 1 0 0 0 0 0}, {2: 1.0, 0 1 0 0 0 0}, {3: cos(argw), 0 0 1 0 0 0}, {3: r34w,  &
         0 0 0 1 0 0}, {4: -sin(argw)*sqrt(kqwig), 0 0 1 0 0 0}, {4: cos(argw), 0 0 0 1 0 0}
 
- !VALUE, WIGXLh[R11],WIGXLh[R12],WIGXLh[R21],WIGXLh[R22]
- !VALUE, WIGXLh[R33],WIGXLh[R34],WIGXLh[R43],WIGXLh[R44]
+ !VALUE, WIGXL[R11],WIGXL[R12],WIGXL[R21],WIGXL[R22]
+ !VALUE, WIGXL[R33],WIGXL[R34],WIGXL[R43],WIGXL[R44]
 
 ! ------------------------------------------------------------------------------
 ! SXR emittance diagnostic beamline
 ! ------------------------------------------------------------------------------
 
-edmchb: line = (d25cmb, d25cmc, dmm1m90cmba, btm10b, dmm1m90cmbb, xcem1b, dem1a, qem1b, bpmem1b,  &
-        qem1b, dem1bab, dem1bbb, qem2b, bpmem2b, qem2b, dem2b, ycem2b, dmm3m80cmx, xcem3b, dem3a &
-        , qem3b, bpmem3b, qem3b, dem3bb, qem3vb, qem3vb, dmm4m90cmba, btm11b, dmm4m90cmbb, ycem4b &
-        , dem4a, qem4b, bpmem4b, qem4b, drfb, rfbem4b, dmm5ab, dmm5bb)
+
+
+!Old split line: line = (qem1b, bpmem1b, qem1b)
+
+qem1b_full: line = (qem1b)
+qem1b[L] = 2*qem1b[L]
+bpmem1b[superimpose] = T
+bpmem1b[ref] = qem1b
+
+
+!Old split line: line = (qem2b, bpmem2b, qem2b)
+
+qem2b_full: line = (qem2b)
+qem2b[L] = 2*qem2b[L]
+bpmem2b[superimpose] = T
+bpmem2b[ref] = qem2b
+
+
+!Old split line: line = (qem3b, bpmem3b, qem3b)
+
+qem3b_full: line = (qem3b)
+qem3b[L] = 2*qem3b[L]
+bpmem3b[superimpose] = T
+bpmem3b[ref] = qem3b
+
+
+!Old split line: line = (qem3vb, qem3vb)
+
+qem3vb_full: line = (qem3vb)
+qem3vb[L] = 2*qem3vb[L]
+
+
+!Old split line: line = (qem4b, bpmem4b, qem4b)
+
+qem4b_full: line = (qem4b)
+qem4b[L] = 2*qem4b[L]
+bpmem4b[superimpose] = T
+bpmem4b[ref] = qem4b
+
+
+!Old split line: line = (qe31b, bpme31b, qe31b)
+
+qe31b_full: line = (qe31b)
+qe31b[L] = 2*qe31b[L]
+bpme31b[superimpose] = T
+bpme31b[ref] = qe31b
+
+
+!Old split line: line = (qe32b, bpme32b, qe32b)
+
+qe32b_full: line = (qe32b)
+qe32b[L] = 2*qe32b[L]
+bpme32b[superimpose] = T
+bpme32b[ref] = qe32b
+
+
+!Old split line: line = (qe33b, bpme33b, qe33b)
+
+qe33b_full: line = (qe33b)
+qe33b[L] = 2*qe33b[L]
+bpme33b[superimpose] = T
+bpme33b[ref] = qe33b
+
+
+!Old split line: line = (qe34b, bpme34b, qe34b)
+
+qe34b_full: line = (qe34b)
+qe34b[L] = 2*qe34b[L]
+bpme34b[superimpose] = T
+bpme34b[ref] = qe34b
+
+
+!Old split line: line = (qe35b, bpme35b, qe35b)
+
+qe35b_full: line = (qe35b)
+qe35b[L] = 2*qe35b[L]
+bpme35b[superimpose] = T
+bpme35b[ref] = qe35b
+
+
+!Old split line: line = (qe36b, bpme36b, qe36b)
+
+qe36b_full: line = (qe36b)
+qe36b[L] = 2*qe36b[L]
+bpme36b[superimpose] = T
+bpme36b[ref] = qe36b
+
+edmchb: line = (d25cmb, d25cmc, dmm1m90cmba, btm10b, dmm1m90cmbb, xcem1b, dem1a, qem1b_full,  &
+        dem1bab, dem1bbb, qem2b_full, dem2b, ycem2b, dmm3m80cmx, xcem3b, dem3a, qem3b_full,  &
+        dem3bb, qem3vb_full, dmm4m90cmba, btm11b, dmm4m90cmbb, ycem4b, dem4a, qem4b_full, drfb,  &
+        rfbem4b, dmm5ab, dmm5bb)
 
  !XLEAP2a : LINE=(DQEBx,DCX31B,DQEBx2,DE3aBa)
 xleap2a: line = (dxlua1, ycxl1, dxlua2, xcxl1, dxlua3f, xl2und1, duu, duuf, xl2und2, dxlub)
@@ -1399,13 +1756,11 @@ xleap2a: line = (dxlua1, ycxl1, dxlua2, xcxl1, dxlua3f, xl2und1, duu, duuf, xl2u
 xleap2b: line = (dxluc, bcxlss, dxlud1, ycxl2, dxlud2, xcxl2, dxlud3f, xl2und3, duu, duuf,  &
         xl2und4, dxlue)
 
-edsysb: line = (dbmark36b, ws31b, d40cm, de3mab, de3mbb, xce31b, dqea, qe31b, bpme31b, qe31b,  &
-        xleap2a, btm12b, de3abb, yce32b, dqeaa, qe32b, bpme32b, qe32b, drfb, rfbe32b, dqeby1,  &
-        dcy32b, dqeby2, ws32b, d40cm, de3m80cmb, xce33b, dqeab, qe33b, bpme33b, qe33b, dqecba,  &
-        btm13b, dqecbb, de3m40cm, yce34b, dqea, qe34b, bpme34b, qe34b, drfb, rfbe34b, dqec1,  &
-        ws33b, d40cm, de3m80cmba, btm14b, de3m80cmbb, xce35b, dqeac, qe35b, bpme35b, qe35b,  &
-        xleap2b, yce36b, dqea, qe36b, bpme36b, qe36b, drfb, rfbe36b, dqeby1, dcy36b, dqeby2,  &
-        ws34b, d40cm)
+edsysb: line = (dbmark36b, ws31b, d40cm, de3mab, de3mbb, xce31b, dqea, qe31b_full, xleap2a,  &
+        dxl2btm, btm12b, dbtm2yc, yce32b, dqeaa, qe32b_full, drfb, rfbe32b, dqeby1, dcy32b,  &
+        dqeby2, ws32b, d40cm, de3m80cmb, xce33b, dqeab, qe33b_full, dqec, de3m40cm, yce34b, dqea &
+        , qe34b_full, drfb, rfbe34b, dqec1, ws33b, d40cm, de3m80cm, xce35b, dqeac, qe35b_full,  &
+        xleap2b, yce36b, dqea, qe36b_full, drfb, rfbe36b, dqeby1, dcy36b, dqeby2, ws34b, d40cm)
 
 ecellb: line = (qe31b, dqec, dqec, qe32b, qe32b, dqec, dqec, qe31b)
 
@@ -1427,8 +1782,6 @@ qum3b: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqum3b
 qum4b: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqum4b
 
 du1m80cm: drift, l = 4.550
-du1m80cmba: drift, l = 0.384174
-du1m80cmbb: drift, l = du1m80cm[l]-du1m80cmba[l]
 dcx37: drift, l = 0.08
 dcy38: drift, l = 0.08
 d32cmcb: drift, l = 1.30046+(lqa-lqe)/2+0.5
@@ -1455,17 +1808,18 @@ duhvest: drift, l = 2.009175 !length of BTH/UH vestibule
 duhvesta: drift, l = 1.605684
 duhvestb: drift, l = duhvest[l]-duhvesta[l]
 duhwall2: drift, l = 0.250825 !length of BTH/UH wall-2
-dw2tdundb: drift, l = 3.001537 !drift from BTH/UH wall-2 to TDUNDB u/s flange
+dw2tdundb: drift, l = 3.001537+0.060429 !drift from BTH/UH wall-2 to TDUNDB u/s flange
 dtdund1: drift, l = 0.855853 !from u/s TDUND flange to TDUND center
 dtdund2: drift, l = 0.347853 !from TDUND center to d/s TDUND flange
 dpcmuon: drift, l = 0.031498
 dmuon1: drift, l = 0.154859+0.05
+dmuon1b: drift, l = 0.154859+0.05-0.060429
 dmuon3b: drift, l = 0.310592-0.05
 
-dw2tdb1: drift, l = 61.51*in2m-wigxlh[l]
-dw2tdb2: drift, l = dw2tdundb[l]-dw2tdb1[l]-2*wigxlh[l]
+dw2tdb1: drift, l = 61.51*in2m-wigxl[l]
+dw2tdb2: drift, l = dw2tdundb[l]-dw2tdb1[l]-2*wigxl[l]
  !VALUE, DW2TDb1[L],DW2TDb2[L]
- !VALUE, DW2TDb1[L]+2*WIGXLh[L]+DW2TDb2[L],DW2TDUNDb[L]
+ !VALUE, DW2TDb1[L]+2*WIGXL[L]+DW2TDb2[L],DW2TDUNDb[L]
 
 bpmum1b: instrument, type = "Stripline-2"
 bpmum2b: instrument, type = "Stripline-2"
@@ -1478,7 +1832,6 @@ xcum3b: kicker, type = "class-4f" !fast-feedback (loop-5)
 ycum2b: kicker, type = "class-4f" !fast-feedback (loop-5)
 ycum4b: kicker, type = "class-4f" !fast-feedback (loop-5)
 
-btm15b: instrument, type = "BCS BTM"
 tdundb: instrument !LTU insertable block at und. extension entrance (w/ screen)
 
 ! Note: PCMUONb Y-aperture violates standard BSC -- approved by P. Emma
@@ -1493,24 +1846,63 @@ mm3b: marker
 muwallb: marker !front face of muon wall for SXR beam
 dumpbsys: marker !front face of BSY dump for SXR beam
 bsyendb: marker !FFTB side of muon plug wall
+rwwake3s: marker, type = "WAKE" !SPRDS/BSY beampipe wake applied here
 muhwall1b: marker !upstream end of BTH/UH wall-1
 muhwall2b: marker !upstream end of BTH/UH wall-2
 dbmark37b: marker !end of undulator match
-rwwake5s: marker, type = "WAKE" !LTU beampipe wake applied here
+rwwake4s: marker, type = "WAKE" !LTUS beampipe wake applied here
 
- !LW2TDb : LINE=(DW2TDUNDb)
-lw2tdb: line = (dw2tdb1, 2*wigxlh, dw2tdb2)
 
-unmchb: line = (du1m80cmba, btm15b, du1m80cmbb, dcx37, d32cmcb, dum1a, qum1b, bpmum1b, qum1b,  &
-        dum1b, xcum1b, d32cm, du2m120cmb, dcy38, d32cma, ycum2b, dum2a, qum2b, bpmum2b, qum2b,  &
-        dum2b, du3m80cmb, xcum3b, dum3a, qum3b, bpmum3b, qum3b, dum3b, d40cma, du4m120cmb, ycum4b &
-        , dum4a, qum4b, bpmum4b, qum4b, dum4b, du5m80cmb, d40cmw, muhwall1b, duhwall1, duhvest,  &
-        muhwall2b, duhwall2, lw2tdb, dtdund1, tdundb, dtdund2, dpcmuon, pcmuonb, dmuon1, vv999b,  &
-        dmuon3b, mm3b, pfilt1b, dbmark37b)
+
+!Old split line: line = (wigxl, wigxl)
+
+wigxl_full: line = (wigxl)
+wigxl[L] = 2*wigxl[L]
+ !LW2TDb     : LINE=(DW2TDUNDb)
+lw2tdb: line = (dw2tdb1, wigxl_full, dw2tdb2)
+
+
+
+!Old split line: line = (qum1b, bpmum1b, qum1b)
+
+qum1b_full: line = (qum1b)
+qum1b[L] = 2*qum1b[L]
+bpmum1b[superimpose] = T
+bpmum1b[ref] = qum1b
+
+
+!Old split line: line = (qum2b, bpmum2b, qum2b)
+
+qum2b_full: line = (qum2b)
+qum2b[L] = 2*qum2b[L]
+bpmum2b[superimpose] = T
+bpmum2b[ref] = qum2b
+
+
+!Old split line: line = (qum3b, bpmum3b, qum3b)
+
+qum3b_full: line = (qum3b)
+qum3b[L] = 2*qum3b[L]
+bpmum3b[superimpose] = T
+bpmum3b[ref] = qum3b
+
+
+!Old split line: line = (qum4b, bpmum4b, qum4b)
+
+qum4b_full: line = (qum4b)
+qum4b[L] = 2*qum4b[L]
+bpmum4b[superimpose] = T
+bpmum4b[ref] = qum4b
+
+unmchb: line = (du1m80cm, dcx37, d32cmcb, dum1a, qum1b_full, dum1b, xcum1b, d32cm, du2m120cmb,  &
+        dcy38, d32cma, ycum2b, dum2a, qum2b_full, dum2b, du3m80cmb, xcum3b, dum3a, qum3b_full,  &
+        dum3b, d40cma, du4m120cmb, ycum4b, dum4a, qum4b_full, dum4b, du5m80cmb, d40cmw, muhwall1b &
+        , duhwall1, duhvest, muhwall2b, duhwall2, lw2tdb, dtdund1, tdundb, dtdund2, dpcmuon,  &
+        pcmuonb, dmuon1b, vv999b, dmuon3b, mm3b, pfilt1b, dbmark37b)
 
 ltusc: line = (mm1b, dl2sc, vbsysb, mm2b, edmchb, edsysb, unmchb)
 
-bsyltusc: line = (muwallb, dwalla, dumpbsys, dwallb, bsyendb, endsps, dbldl21, ltusc, rwwake5s)
+bsyltusc: line = (muwallb, dwalla, dumpbsys, dwallb, bsyendb, endsps, dbldl21, ltusc)
 
 ! ------------------------------------------------------------------------------
 ! SXR dumpline
@@ -1531,26 +1923,40 @@ bydssa: sbend, hgap = gbyds/2, e1 = abyds/2, e2 = 0, fint = 0.5, fintx = 0.0, ty
 bydssb: sbend, hgap = gbyds/2, e1 = 0, e2 = abyds/2, fint = 0.0, fintx = 0.5, type = "1.26D18.43" &
         , ref_tilt = pi/2, l = leffbyds/2, angle = leffbyds/2 * abyds/2/(leffbyds/2)
 
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bydss: sbend, hgap = gbyds/2, e1 = abyds/2, fint = 0.5, e2 = abyds/2, type = "1.26D18.43",  &
+        ref_tilt = pi/2, l = leffbyds, angle = leffbyds * abyds/leffbyds
+
 lbdm = 1.452  !effective straight bend length of main dump bends - from J. Tanabe (m)
 gbdm = 0.043  !full gap (m) of main dump bends (SA-380-328-03 shows magnet half-gap = 0.866")
 fbdm = 0.5513 !measured FINT
 abdm = 0.02240073511             !angle per main dump bend (rad)
 leffbdm = lbdm*abdm/(2*sin(abdm/2)) !bend path length (m)
 
-byd1ba: sbend, hgap = gbdm/2, e1 = abdm/2, e2 = 0, fint = fbdm, fintx = 0.00, type = "1.69VD55.1" &
+byd1b1: sbend, hgap = gbdm/2, e1 = abdm/2, e2 = 0, fint = fbdm, fintx = 0.0, type = "1.69VD55.1" &
         , ref_tilt = pi/2, l = leffbdm/2, angle = leffbdm/2 * abdm/2/(leffbdm/2)
-byd1bb: sbend, hgap = gbdm/2, e1 = 0, e2 = abdm/2, fint = 0.00, fintx = fbdm, type = "1.69VD55.1" &
-        , ref_tilt = pi/2, l = leffbdm/2, angle = leffbdm/2 * abdm/2/(leffbdm/2)
-
-byd2ba: sbend, hgap = gbdm/2, e1 = abdm/2, e2 = 0, fint = fbdm, fintx = 0.00, type = "1.69VD55.1" &
-        , ref_tilt = pi/2, l = leffbdm/2, angle = leffbdm/2 * abdm/2/(leffbdm/2)
-byd2bb: sbend, hgap = gbdm/2, e1 = 0, e2 = abdm/2, fint = 0.00, fintx = fbdm, type = "1.69VD55.1" &
+byd1b2: sbend, hgap = gbdm/2, e1 = 0, e2 = abdm/2, fint = 0.00, fintx = fbdm, type = "1.69VD55.1" &
         , ref_tilt = pi/2, l = leffbdm/2, angle = leffbdm/2 * abdm/2/(leffbdm/2)
 
-byd3ba: sbend, hgap = gbdm/2, e1 = abdm/2, e2 = 0, fint = fbdm, fintx = 0.00, type = "1.69VD55.1" &
+byd2b1: sbend, hgap = gbdm/2, e1 = abdm/2, e2 = 0, fint = fbdm, fintx = 0.0, type = "1.69VD55.1" &
         , ref_tilt = pi/2, l = leffbdm/2, angle = leffbdm/2 * abdm/2/(leffbdm/2)
-byd3bb: sbend, hgap = gbdm/2, e1 = 0, e2 = abdm/2, fint = 0.00, fintx = fbdm, type = "1.69VD55.1" &
+byd2b2: sbend, hgap = gbdm/2, e1 = 0, e2 = abdm/2, fint = 0.00, fintx = fbdm, type = "1.69VD55.1" &
         , ref_tilt = pi/2, l = leffbdm/2, angle = leffbdm/2 * abdm/2/(leffbdm/2)
+
+byd3b1: sbend, hgap = gbdm/2, e1 = abdm/2, e2 = 0, fint = fbdm, fintx = 0.0, type = "1.69VD55.1" &
+        , ref_tilt = pi/2, l = leffbdm/2, angle = leffbdm/2 * abdm/2/(leffbdm/2)
+byd3b2: sbend, hgap = gbdm/2, e1 = 0, e2 = abdm/2, fint = 0.00, fintx = fbdm, type = "1.69VD55.1" &
+        , ref_tilt = pi/2, l = leffbdm/2, angle = leffbdm/2 * abdm/2/(leffbdm/2)
+
+! define unsplit SBENs for BMAD ... not used by MAD
+
+byd1b: sbend, hgap = gbdm/2, e1 = abdm/2, fint = fbdm, e2 = abdm/2, type = "1.69VD55.1", ref_tilt &
+         = pi/2, l = leffbdm, angle = leffbdm * abdm/leffbdm
+byd2b: sbend, hgap = gbdm/2, e1 = abdm/2, fint = fbdm, e2 = abdm/2, type = "1.69VD55.1", ref_tilt &
+         = pi/2, l = leffbdm, angle = leffbdm * abdm/leffbdm
+byd3b: sbend, hgap = gbdm/2, e1 = abdm/2, fint = fbdm, e2 = abdm/2, type = "1.69VD55.1", ref_tilt &
+         = pi/2, l = leffbdm, angle = leffbdm * abdm/leffbdm
 
 pcpm1lb: ecollimator, x_limit = 14.2875e-3, y_limit = 14.2875e-3, l = lpcpm
 pcpm2lb: ecollimator, x_limit = 38.1e-3, y_limit = 38.1e-3, l = lpcpm
@@ -1611,11 +2017,29 @@ arodmp2s = 0.174913455104
 rodmp1s: patch, tilt = arodmp1s
 rodmp2s: patch, tilt = arodmp2s
 
-dumplineb: line = (begdmps_2, rodmp1s, bydssa, bydssb, ds1, byd1ba, byd1bb, ds, byd2ba, byd2bb,  &
-        ds, byd3ba, byd3bb, dd1ba, pcpm1lb, btm1lb, dd1bb, dd1bc, mimbcs4b, dd1bd, ycddb, dd1be,  &
-        pcpm2lb, btm2lb, dd1bf, qdmp1b, qdmp1b, dd12a, bpmqdb, dd12b, mqdmpb, dd12c, qdmp2b,  &
-        qdmp2b, dd2a, xcddb, dd2b, dd2c, dd3a, bpmddb, dd3b, otrdmpb, dwsdumpa, rfbddb, dwsdumpb &
-        , wsdumpb, dwsdumpc, rodmp2s, dumpfaceb, ddump, dmpendb, btmdumpb, dbmark38b, enddmps_2)
+bydss_full: line = (bydssa, bydssb)
+byd1b_full: line = (byd1b1, byd1b2)
+byd2b_full: line = (byd2b1, byd2b2)
+byd3b_full: line = (byd3b1, byd3b2)
+
+
+
+!Old split line: line = (qdmp1b, qdmp1b)
+
+qdmp1b_full: line = (qdmp1b)
+qdmp1b[L] = 2*qdmp1b[L]
+
+
+!Old split line: line = (qdmp2b, qdmp2b)
+
+qdmp2b_full: line = (qdmp2b)
+qdmp2b[L] = 2*qdmp2b[L]
+
+dumplineb: line = (begdmps_2, rodmp1s, bydss_full, ds1, byd1b_full, ds, byd2b_full, ds,  &
+        byd3b_full, dd1ba, pcpm1lb, btm1lb, dd1bb, dd1bc, mimbcs4b, dd1bd, ycddb, dd1be, pcpm2lb &
+        , btm2lb, dd1bf, qdmp1b_full, dd12a, bpmqdb, dd12b, mqdmpb, dd12c, qdmp2b_full, dd2a,  &
+        xcddb, dd2b, dd2c, dd3a, bpmddb, dd3b, otrdmpb, dwsdumpa, rfbddb, dwsdumpb, wsdumpb,  &
+        dwsdumpc, rodmp2s, dumpfaceb, ddump, dmpendb, btmdumpb, dbmark38b, enddmps_2)
 
 ! ==============================================================================
 ! HXR LTU and dump
@@ -1672,14 +2096,30 @@ bcx314a: sbend, e1 = +abx31, hgap = gbcc/2, fint = fbcc, fintx = 0, type = "@2,0
 bcx314b: sbend, e2 = 0, hgap = gbcc/2, fint = 0, fintx = fbcc, type = "@2,0.788D11.50", l =  &
         lbx31s, angle = lbx31s * (+abx31s)/lbx31s
 
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bcx311: sbend, hgap = gbcc/2, e1 = 0, fint = fbcc, e2 = +abx31, type = "@2,0.788D11.50", l =  &
+        lbx31, angle = lbx31 * (+abx31)/lbx31
+bcx312: sbend, hgap = gbcc/2, e1 = -abx31, fint = fbcc, e2 = 0, type = "@2,0.788D11.50", l =  &
+        lbx31, angle = lbx31 * (-abx31)/lbx31
+bcx313: sbend, hgap = gbcc/2, e1 = 0, fint = fbcc, e2 = -abx31, type = "@2,0.788D11.50", l =  &
+        lbx31, angle = lbx31 * (-abx31)/lbx31
+bcx314: sbend, hgap = gbcc/2, e1 = +abx31, fint = fbcc, e2 = 0, type = "@2,0.788D11.50", l =  &
+        lbx31, angle = lbx31 * (+abx31)/lbx31
+
 dcc31o: drift, l = zdcc/cos(abx31), type = "CSR"
 dcc31i: drift, l = zdcc, type = "CSR"
 
 cc31beg: marker
 cc31end: marker
 
-cc31: line = (cc31beg, bcx311a, bcx311b, dcc31o, bcx312a, bcx312b, dcc31i, bcx313a, bcx313b,  &
-        dcc31o, bcx314a, bcx314b, cc31end)
+bcx311_full: line = (bcx311a, bcx311b)
+bcx312_full: line = (bcx312a, bcx312b)
+bcx313_full: line = (bcx313a, bcx313b)
+bcx314_full: line = (bcx314a, bcx314b)
+
+cc31: line = (cc31beg, bcx311_full, dcc31o, bcx312_full, dcc31i, bcx313_full, dcc31o, bcx314_full &
+        , cc31end)
 
 bbx32 = 2.3628*sqrt(2.0)*ef/4.0*1.15
 arg32 = zbcc*bbx32/brhof
@@ -1715,14 +2155,30 @@ bcx324a: sbend, e1 = +abx32, hgap = gbcc/2, fint = fbcc, fintx = 0, type = "0.78
 bcx324b: sbend, e2 = 0, hgap = gbcc/2, fint = 0, fintx = fbcc, type = "0.788D11.50", l = lbx32s,  &
         angle = lbx32s * (+abx32s)/lbx32s
 
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bcx321: sbend, hgap = gbcc/2, e1 = 0, fint = fbcc, e2 = +abx32, type = "0.788D11.50", l = lbx32,  &
+        angle = lbx32 * (+abx32)/lbx32
+bcx322: sbend, hgap = gbcc/2, e1 = -abx32, fint = fbcc, e2 = 0, type = "0.788D11.50", l = lbx32,  &
+        angle = lbx32 * (-abx32)/lbx32
+bcx323: sbend, hgap = gbcc/2, e1 = 0, fint = fbcc, e2 = -abx32, type = "0.788D11.50", l = lbx32,  &
+        angle = lbx32 * (-abx32)/lbx32
+bcx324: sbend, hgap = gbcc/2, e1 = +abx32, fint = fbcc, e2 = 0, type = "0.788D11.50", l = lbx32,  &
+        angle = lbx32 * (+abx32)/lbx32
+
 dcc32o: drift, l = zdcc/cos(abx32), type = "CSR"
 dcc32i: drift, l = zdcc, type = "CSR"
 
 cc32beg: marker
 cc32end: marker
 
-cc32: line = (cc32beg, bcx321a, bcx321b, dcc32o, bcx322a, bcx322b, dcc32i, bcx323a, bcx323b,  &
-        dcc32o, bcx324a, bcx324b, cc32end)
+bcx321_full: line = (bcx321a, bcx321b)
+bcx322_full: line = (bcx322a, bcx322b)
+bcx323_full: line = (bcx323a, bcx323b)
+bcx324_full: line = (bcx324a, bcx324b)
+
+cc32: line = (cc32beg, bcx321_full, dcc32o, bcx322_full, dcc32i, bcx323_full, dcc32o, bcx324_full &
+        , cc32end)
 
 bbx35 = 2.3628*ef/4.0*1.15
 arg35 = zbcc*bbx35/brhof
@@ -1758,14 +2214,30 @@ bcx354a: sbend, e1 = +abx35, hgap = gbcc/2, fint = fbcc, fintx = 0, type = "0.78
 bcx354b: sbend, e2 = 0, hgap = gbcc/2, fint = 0, fintx = fbcc, type = "0.788D11.50", l = lbx35s,  &
         angle = lbx35s * (+abx35s)/lbx35s
 
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bcx351: sbend, hgap = gbcc/2, e1 = 0, fint = fbcc, e2 = +abx35, type = "0.788D11.50", l = lbx35,  &
+        angle = lbx35 * (+abx35)/lbx35
+bcx352: sbend, hgap = gbcc/2, e1 = -abx35, fint = fbcc, e2 = 0, type = "0.788D11.50", l = lbx35,  &
+        angle = lbx35 * (-abx35)/lbx35
+bcx353: sbend, hgap = gbcc/2, e1 = 0, fint = fbcc, e2 = -abx35, type = "0.788D11.50", l = lbx35,  &
+        angle = lbx35 * (-abx35)/lbx35
+bcx354: sbend, hgap = gbcc/2, e1 = +abx35, fint = fbcc, e2 = 0, type = "0.788D11.50", l = lbx35,  &
+        angle = lbx35 * (+abx35)/lbx35
+
 dcc35o: drift, l = zdcc/cos(abx35), type = "CSR"
 dcc35i: drift, l = zdcc, type = "CSR"
 
 cc35beg: marker
 cc35end: marker
 
-cc35: line = (cc35beg, bcx351a, bcx351b, dcc35o, bcx352a, bcx352b, dcc35i, bcx353a, bcx353b,  &
-        dcc35o, bcx354a, bcx354b, cc35end)
+bcx351_full: line = (bcx351a, bcx351b)
+bcx352_full: line = (bcx352a, bcx352b)
+bcx353_full: line = (bcx353a, bcx353b)
+bcx354_full: line = (bcx354a, bcx354b)
+
+cc35: line = (cc35beg, bcx351_full, dcc35o, bcx352_full, dcc35i, bcx353_full, dcc35o, bcx354_full &
+        , cc35end)
 
 bbx36 = 2.3628*ef/4.0*1.15
 arg36 = zbcc*bbx36/brhof
@@ -1801,14 +2273,30 @@ bcx364a: sbend, e1 = +abx36, hgap = gbcc/2, fint = fbcc, fintx = 0, type = "0.78
 bcx364b: sbend, e2 = 0, hgap = gbcc/2, fint = 0, fintx = fbcc, type = "0.788D11.50", l = lbx36s,  &
         angle = lbx36s * (+abx36s)/lbx36s
 
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bcx361: sbend, hgap = gbcc/2, e1 = 0, fint = fbcc, e2 = +abx36, type = "0.788D11.50", l = lbx36,  &
+        angle = lbx36 * (+abx36)/lbx36
+bcx362: sbend, hgap = gbcc/2, e1 = -abx36, fint = fbcc, e2 = 0, type = "0.788D11.50", l = lbx36,  &
+        angle = lbx36 * (-abx36)/lbx36
+bcx363: sbend, hgap = gbcc/2, e1 = 0, fint = fbcc, e2 = -abx36, type = "0.788D11.50", l = lbx36,  &
+        angle = lbx36 * (-abx36)/lbx36
+bcx364: sbend, hgap = gbcc/2, e1 = +abx36, fint = fbcc, e2 = 0, type = "0.788D11.50", l = lbx36,  &
+        angle = lbx36 * (+abx36)/lbx36
+
 dcc36o: drift, l = zdcc/cos(abx36), type = "CSR"
 dcc36i: drift, l = zdcc, type = "CSR"
 
 cc36beg: marker
 cc36end: marker
 
-cc36: line = (cc36beg, bcx361a, bcx361b, dcc36o, bcx362a, bcx362b, dcc36i, bcx363a, bcx363b,  &
-        dcc36o, bcx364a, bcx364b, cc36end)
+bcx361_full: line = (bcx361a, bcx361b)
+bcx362_full: line = (bcx362a, bcx362b)
+bcx363_full: line = (bcx363a, bcx363b)
+bcx364_full: line = (bcx364a, bcx364b)
+
+cc36: line = (cc36beg, bcx361_full, dcc36o, bcx362_full, dcc36i, bcx363_full, dcc36o, bcx364_full &
+        , cc36end)
 
 ! ------------------------------------------------------------------------------
 ! HXR BSY downstream of the merge bend
@@ -1908,17 +2396,57 @@ bsyend: marker !FFTB side of muon plug wall: Z=3224.022426 (Z'=176.020508 m, X'=
 dumpbsyh: marker !front face of BSY dump for HXR beam
 muwall: marker !front face of muon wall for HXR beam
 mrgaline: marker !merge point with A-line
+rwwake3h: marker, type = "WAKE" !BSY/SPRDH beampipe wake applied here
 
-sphal: line = (dbsy52d, q50q3, q50q3, dbsy53a, bpmbsyq3, rfbbsyq3, dbsy53b, dbsy53c, xcbsyq3,  &
-        dbsy53d, ycbsyq4, dbsy53f, q4, bpmbsyq4, q4, dbsy53ga, pcbsy3, dbsy53gb, mrgaline)
+
+
+!Old split line: line = (q50q3, q50q3)
+
+q50q3_full: line = (q50q3)
+q50q3[L] = 2*q50q3[L]
+
+
+!Old split line: line = (q4, bpmbsyq4, q4)
+
+q4_full: line = (q4)
+q4[L] = 2*q4[L]
+bpmbsyq4[superimpose] = T
+bpmbsyq4[ref] = q4
+
+
+!Old split line: line = (q5, bpmbsyq5, q5)
+
+q5_full: line = (q5)
+q5[L] = 2*q5[L]
+bpmbsyq5[superimpose] = T
+bpmbsyq5[ref] = q5
+
+
+!Old split line: line = (q6, bpmbsyq6, q6)
+
+q6_full: line = (q6)
+q6[L] = 2*q6[L]
+bpmbsyq6[superimpose] = T
+bpmbsyq6[ref] = q6
+
+
+!Old split line: line = (qa0, bpmbsyqa0, qa0)
+
+qa0_full: line = (qa0)
+qa0[L] = 2*qa0[L]
+bpmbsyqa0[superimpose] = T
+bpmbsyqa0[ref] = qa0
+
+sphal: line = (dbsy52d, q50q3_full, dbsy53a, bpmbsyq3, rfbbsyq3, dbsy53b, dbsy53c, xcbsyq3,  &
+        dbsy53d, ycbsyq4, dbsy53f, q4_full, dbsy53ga, pcbsy3, dbsy53gb, mrgaline)
 
 sphbsya: line = (sphal, alinea)
 
-sphbsyb: line = (pcbsyh, dbsy53h, q5, bpmbsyq5, q5, dbsy54a, xcbsyq5, dbsy54b, dbsy54c, q6,  &
-        bpmbsyq6, q6, drfb, rfbbsyq6, dbsy55a, ycbsyq6, dbsy55b, pc90, dbsy55c, pcbsy4, dbsy55d,  &
-        pc119, dbsy55e, d2, dm3, st60, dm4a, dm60, dm4b, cc31, dm4c, cxq6, dm4da, pcbsy5, dm4db,  &
-        xca0, dxca0, yca0, dyca0, st61, dm5, qa0, bpmbsyqa0, qa0, dm6, dmoni, dmoni, muwall,  &
-        dwalla, dumpbsyh, dwallb, bsyend)
+sphbsyb: line = (pcbsyh, dbsy53h, q5_full, dbsy54a, xcbsyq5, dbsy54b, dbsy54c, q6_full, drfb,  &
+        rfbbsyq6, dbsy55a, ycbsyq6, dbsy55b, pc90, dbsy55c, pcbsy4, dbsy55d, pc119, dbsy55e, d2,  &
+        dm3, st60, dm4a, dm60, dm4b, cc31, dm4c, cxq6, dm4da, pcbsy5, dm4db, xca0, dxca0, yca0,  &
+        dyca0, st61, dm5, qa0_full, dm6, dmoni, dmoni, muwall, dwalla, dumpbsyh, dwallb, bsyend,  &
+        rwwake3h)
 
 sphbsy: line = (sphbsya, sphbsyb, endsph)
 
@@ -1989,29 +2517,33 @@ zlin15: marker !station-100 (or "S100"): Z=3048.0 (Z'=X'=Y'=0.0 m)
 begbsy1: marker
 endbsy1: marker
 
- !BSYS100 : LINE=(&
- !  BEGBSY1,&
- !  DBSY03a,IMBSY1,DBSY03b,IMBSY2,DBSY03c,IMBSY3,DBSY03d,IMBSY34,DBSY03e,&
- !  BXTDBSYA,BXTDBSYB,DBSY02c,IMBSY1b,DBSY02d,IMBSY2b,DBSY02e,IMBSY3b,DBSY02a,&
- !  FFTBORGN,DBSY02b)
+
+
+!Old split line: line = (q50q1, q50q1)
+
+q50q1_full: line = (q50q1)
+q50q1[L] = 2*q50q1[L]
+
+
+!Old split line: line = (q50q2, q50q2)
+
+q50q2_full: line = (q50q2)
+q50q2[L] = 2*q50q2[L]
 
 bsys100: line = (begbsy1, dbsy01a, imbsy1, dbsy01b, imbsy2, dbsy01c, imbsy3, dbsy01d, imbsy34,  &
         dbsy01e, imbsy1b, dbsy01f, imbsy2b, dbsy01g, imbsy3b, dbsy01h, fftborgn, dbsy01i)
 
-s100sxra: line = (s100, zlin15, dbsy50a, ycbsyq1, dbsy50b, q50q1, q50q1, dbsy02a, wooddoor)
+s100sxra: line = (s100, zlin15, dbsy50a, ycbsyq1, dbsy50b, q50q1_full, dbsy02a, wooddoor)
 
-s100sxrb: line = (dbsy02b, bpmbsyq1, dbsy51a, xcbsyq2, dbsy51b, q50q2, q50q2, dbsy52a, bpmbsyq2,  &
+s100sxrb: line = (dbsy02b, bpmbsyq1, dbsy51a, xcbsyq2, dbsy51b, q50q2_full, dbsy52a, bpmbsyq2,  &
         dbsy52b)
 
 s100sxr: line = (s100sxra, s100sxrb)
 
  !BSYSXR : LINE=(BSYbeg,BSYS100,S100SXR)
-
-s100bsy1: line = (s100sxr, kcusxra, dbsy52c, bxsp1ha, bxsp1hb)
-
-bsy1: line = (bsys100, s100bsy1)
-
-bsy: line = (bsybeg, bsy1, endbsy1, sphbsy)
+ !S100BSY1 : LINE=(S100SXR,KCUSXRa,DBSY52c,BXSP1Ha,BXSP1Hb)
+ !BSY1 : LINE=(BSYS100,S100BSY1)
+ !BSY : LINE=(BSYbeg,BSY1,ENDBSY1,SPhBSY)
 
 ! ------------------------------------------------------------------------------
 ! HXR VBEND
@@ -2033,19 +2565,26 @@ qvb1: quadrupole, type = "0.91Q17.72", l = lqf/2, aperture = rqf, k1 = kqvb
 qvb2: quadrupole, type = "0.91Q17.72", l = lqf/2, aperture = rqf, k1 = -kqvb
 qvb3: quadrupole, type = "0.91Q17.72", l = lqf/2, aperture = rqf, k1 = kqvb
 
-by1a: sbend, hgap = gvb/2, e1 = avb/2, fint = 0.5, fintx = 0, type = "3D39", ref_tilt = pi/2, l &
+by11: sbend, hgap = gvb/2, e1 = avb/2, fint = 0.5, fintx = 0, type = "3D39", ref_tilt = pi/2, l &
          = lvb/2, angle = lvb/2 * avb/2/(lvb/2)
-by1b: sbend, hgap = gvb/2, fint = 0, e2 = avb/2, fintx = 0.5, type = "3D39", ref_tilt = pi/2, l &
+by12: sbend, hgap = gvb/2, fint = 0, e2 = avb/2, fintx = 0.5, type = "3D39", ref_tilt = pi/2, l &
          = lvb/2, angle = lvb/2 * avb/2/(lvb/2)
-by2a: sbend, hgap = gvb/2, e1 = avb/2, fint = 0.5, fintx = 0, type = "3D39", ref_tilt = pi/2, l &
+by21: sbend, hgap = gvb/2, e1 = avb/2, fint = 0.5, fintx = 0, type = "3D39", ref_tilt = pi/2, l &
          = lvb/2, angle = lvb/2 * avb/2/(lvb/2)
-by2b: sbend, hgap = gvb/2, fint = 0, e2 = avb/2, fintx = 0.5, type = "3D39", ref_tilt = pi/2, l &
+by22: sbend, hgap = gvb/2, fint = 0, e2 = avb/2, fintx = 0.5, type = "3D39", ref_tilt = pi/2, l &
          = lvb/2, angle = lvb/2 * avb/2/(lvb/2)
+
+! define unsplit SBENs for BMAD ... not used by MAD
+
+by1: sbend, hgap = gvb/2, e1 = avb/2, fint = 0.5, e2 = avb/2, type = "3D39", ref_tilt = pi/2, l &
+         = lvb, angle = lvb * avb/lvb
+by2: sbend, hgap = gvb/2, e1 = avb/2, fint = 0.5, e2 = avb/2, type = "3D39", ref_tilt = pi/2, l &
+         = lvb, angle = lvb * avb/lvb
 
 dvb1: drift, l = 8.0-2*0.3125, type = "CSR"
 dvb2m80cm: drift, l = 4.0-0.4-0.4, type = "CSR"
 dvb2: drift, l = 4.0, type = "CSR"
-dvb2ha: drift, l = 0.933932, type = "CSR" !0.995885
+dvb2ha: drift, l = 0.981620, type = "CSR" !0.933932
 dvb2hb: drift, l = dvb2[l]-dvb2ha[l], type = "CSR"
 dvb1m40cm: drift, l = 8.0-0.4-2*0.3125, type = "CSR"
 dvb25cmc: drift, l = 0.5-0.25
@@ -2085,13 +2624,73 @@ vbin: marker !start of vert. bend system: Z=3226.684265 (Z'=178.682318 m, X'=0.0
 vbout: marker !end of vert. bend system: Z=3252.866951 (Z'=204.865005 m, X'= 0.0 m, Y'=-0.895304 m)
 cntlt1h: marker, type = "CENTER" !ELEGANT will correct the orbit here for CSR-steering
 
-vbend: line = (vbin, by1a, by1b, dvb1, qvb1, bpmvb1, qvb1, d40cmc, ycvb1, dvb2m80cm, xcvb2,  &
-        d40cmc, qvb2, bpmvb2, qvb2, dvb2ha, btm01, dvb2hb, qvb3, bpmvb3, qvb3, d40cmc, ycvb3,  &
-        dvb1m40cm, by2a, by2b, cntlt1h, vbout)
+by1_full: line = (by11, by12)
+by2_full: line = (by21, by22)
 
-vbsys: line = (begltuh, dycvm1, ycvm1, dqvm1, qvm1, bpmvm1, qvm1, dqvm2a, xcvm2, dqvm2b, qvm2,  &
-        bpmvm2, qvm2, dwsvm2a, wsvm2, dwsvm2b, vbend, dvb25cmc, xcvm3, d25cm, qvm3, bpmvm3, qvm3 &
-        , dvbem25cm, ycvm4, d25cm, qvm4, bpmvm4, qvm4, dvbem15cm, im31, d10cmb, imbcs1, d25cma)
+
+
+!Old split line: line = (qvm1, bpmvm1, qvm1)
+
+qvm1_full: line = (qvm1)
+qvm1[L] = 2*qvm1[L]
+bpmvm1[superimpose] = T
+bpmvm1[ref] = qvm1
+
+
+!Old split line: line = (qvm2, bpmvm2, qvm2)
+
+qvm2_full: line = (qvm2)
+qvm2[L] = 2*qvm2[L]
+bpmvm2[superimpose] = T
+bpmvm2[ref] = qvm2
+
+
+!Old split line: line = (qvm3, bpmvm3, qvm3)
+
+qvm3_full: line = (qvm3)
+qvm3[L] = 2*qvm3[L]
+bpmvm3[superimpose] = T
+bpmvm3[ref] = qvm3
+
+
+!Old split line: line = (qvm4, bpmvm4, qvm4)
+
+qvm4_full: line = (qvm4)
+qvm4[L] = 2*qvm4[L]
+bpmvm4[superimpose] = T
+bpmvm4[ref] = qvm4
+
+
+!Old split line: line = (qvb1, bpmvb1, qvb1)
+
+qvb1_full: line = (qvb1)
+qvb1[L] = 2*qvb1[L]
+bpmvb1[superimpose] = T
+bpmvb1[ref] = qvb1
+
+
+!Old split line: line = (qvb2, bpmvb2, qvb2)
+
+qvb2_full: line = (qvb2)
+qvb2[L] = 2*qvb2[L]
+bpmvb2[superimpose] = T
+bpmvb2[ref] = qvb2
+
+
+!Old split line: line = (qvb3, bpmvb3, qvb3)
+
+qvb3_full: line = (qvb3)
+qvb3[L] = 2*qvb3[L]
+bpmvb3[superimpose] = T
+bpmvb3[ref] = qvb3
+
+vbend: line = (vbin, by1_full, dvb1, qvb1_full, d40cmc, ycvb1, dvb2m80cm, xcvb2, d40cmc,  &
+        qvb2_full, dvb2ha, btm01, dvb2hb, qvb3_full, d40cmc, ycvb3, dvb1m40cm, by2_full, cntlt1h &
+        , vbout)
+
+vbsys: line = (begltuh, dycvm1, ycvm1, dqvm1, qvm1_full, dqvm2a, xcvm2, dqvm2b, qvm2_full,  &
+        dwsvm2a, wsvm2, dwsvm2b, vbend, dvb25cmc, xcvm3, d25cm, qvm3_full, dvbem25cm, ycvm4,  &
+        d25cm, qvm4_full, dvbem15cm, im31, d10cmb, imbcs1, d25cma)
 
 ! ------------------------------------------------------------------------------
 ! HXR dogleg
@@ -2132,13 +2731,13 @@ ab3p = 0.499999821952*degrees
 ab3m = -ab3p
 leffb3 = lb3*ab3p/(2*sin(ab3p/2)) !full bend eff. path length (m)
 
-bx31a: sbend, hgap = gb3/2, e1 = ab3p/2, e2 = 0, fint = 0.5, fintx = 0.0, type = "4D102.36T", l &
+bx311: sbend, hgap = gb3/2, e1 = ab3p/2, e2 = 0, fint = 0.5, fintx = 0.0, type = "4D102.36T", l &
          = leffb3/2, angle = leffb3/2 * ab3p/2/(leffb3/2)
-bx31b: sbend, hgap = gb3/2, e1 = 0, e2 = ab3p/2, fint = 0.0, fintx = 0.5, type = "4D102.36T", l &
+bx312: sbend, hgap = gb3/2, e1 = 0, e2 = ab3p/2, fint = 0.0, fintx = 0.5, type = "4D102.36T", l &
          = leffb3/2, angle = leffb3/2 * ab3p/2/(leffb3/2)
-bx32a: sbend, hgap = gb3/2, e1 = ab3p/2, e2 = 0, fint = 0.5, fintx = 0.0, type = "4D102.36T", l &
+bx321: sbend, hgap = gb3/2, e1 = ab3p/2, e2 = 0, fint = 0.5, fintx = 0.0, type = "4D102.36T", l &
          = leffb3/2, angle = leffb3/2 * ab3p/2/(leffb3/2)
-bx32b: sbend, hgap = gb3/2, e1 = 0, e2 = ab3p/2, fint = 0.0, fintx = 0.5, type = "4D102.36T", l &
+bx322: sbend, hgap = gb3/2, e1 = 0, e2 = ab3p/2, fint = 0.0, fintx = 0.5, type = "4D102.36T", l &
          = leffb3/2, angle = leffb3/2 * ab3p/2/(leffb3/2)
 
 bx35a: sbend, hgap = gb3/2, e1 = ab3m/2, e2 = 0, fint = 0.5, fintx = 0.0, type = "4D102.36T", l &
@@ -2149,6 +2748,17 @@ bx36a: sbend, hgap = gb3/2, e1 = ab3m/2, e2 = 0, fint = 0.5, fintx = 0.0, type =
          = leffb3/2, angle = leffb3/2 * ab3m/2/(leffb3/2)
 bx36b: sbend, hgap = gb3/2, e1 = 0, e2 = ab3m/2, fint = 0.0, fintx = 0.5, type = "4D102.36T", l &
          = leffb3/2, angle = leffb3/2 * ab3m/2/(leffb3/2)
+
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bx31: sbend, hgap = gb3/2, e1 = ab3p/2, fint = 0.5, e2 = ab3p/2, type = "4D102.36T", l = leffb3,  &
+        angle = leffb3 * ab3p/leffb3
+bx32: sbend, hgap = gb3/2, e1 = ab3p/2, fint = 0.5, e2 = ab3p/2, type = "4D102.36T", l = leffb3,  &
+        angle = leffb3 * ab3p/leffb3
+bx35: sbend, hgap = gb3/2, e1 = ab3m/2, fint = 0.5, e2 = ab3m/2, type = "4D102.36T", l = leffb3,  &
+        angle = leffb3 * ab3m/leffb3
+bx36: sbend, hgap = gb3/2, e1 = ab3m/2, fint = 0.5, e2 = ab3m/2, type = "4D102.36T", l = leffb3,  &
+        angle = leffb3 * ab3m/leffb3
 
 ! single beam dumper vertical kicker (existing, restored)
 
@@ -2164,6 +2774,13 @@ bykik2a: sbend, hgap = 25.4e-3, e1 = abykik/4, e2 = 0, fint = 0.5, fintx = 0, ty
 bykik2b: sbend, hgap = 25.4e-3, e1 = 0, e2 = abykik/4, fint = 0, fintx = 0.5, type = "1.92K41.2" &
         , ref_tilt = pi/2, l = lkik/2, angle = lkik/2 * abykik/4/(lkik/2)
 
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bykik1: sbend, hgap = 25.4e-3, e1 = abykik/4, fint = 0.5, e2 = abykik/4, type = "1.92K41.2",  &
+        ref_tilt = pi/2, l = lkik, angle = lkik * abykik/2/lkik
+bykik2: sbend, hgap = 25.4e-3, e1 = abykik/4, fint = 0.5, e2 = abykik/4, type = "1.92K41.2",  &
+        ref_tilt = pi/2, l = lkik, angle = lkik * abykik/2/lkik
+
  !DBYKIK1 : DRIF, L=LKIK
  !DBYKIK2 : DRIF, L=LKIK
 
@@ -2171,7 +2788,7 @@ lspont = 1.5 !length of possible spontaneous undulator (<=5 m now that TDKIK is 
 
 dcb32: drift, l = 0.8+0.01, type = "CSR"
 ddl10w: drift, l = 11.99440265, type = "CSR"
-ddl10wa: drift, l = 1.028339, type = "CSR" !1.090222
+ddl10wa: drift, l = 1.050219, type = "CSR" !1.028339
 ddl10wb: drift, l = ddl10w[l]-ddl10wa[l], type = "CSR"
 dwsdl31a: drift, l = 0.096237
 dwsdl31b: drift, l = 0.153763
@@ -2181,10 +2798,10 @@ d31a: drift, l = 0.562465-0.002
 d31b: drift, l = 0.5624381-drfb[l]-0.002
 d31c: drift, l = 0.5, type = "CSR"
 ddl10em80cm: drift, l = 9.017887+0.01, type = "CSR"
-ddl10em80cma: drift, l = 3.744796, type = "CSR"
+ddl10em80cma: drift, l = 3.906475, type = "CSR" !3.744796
 ddl10em80cmb: drift, l = ddl10em80cm[l]-ddl10em80cma[l], type = "CSR"
 dx33a: drift, l = 1.4154 !LB3-DX33B[L]-2.0
-dx33b: drift, l = 0.427646 !0.5
+dx33b: drift, l = 0.449137 !0.427646
 dx34b: drift, l = 0.5
 dx34a: drift, l = lb3-dx34b[l]-2.0
 dx37b: drift, l = 0.5
@@ -2193,7 +2810,7 @@ dx38a: drift, l = lb3/2
 dx38b: drift, l = lb3/2
 ddl1a: drift, l = 5.820626-lkik/2
 ddl1aa: drift, l = 1.220046 !1.261541
-ddl1ab: drift, l = ddl1a[l]-ddl1aa[l]
+ddl1ab: drift, l = 4.049039 !DDL1a[L]-DDL1aa[L]
 ddl1d: drift, l = 0.609226-lkik/2
 ddl1e: drift, l = 5.421642-lkik/2
 d32a: drift, l = 0.47046
@@ -2213,8 +2830,8 @@ dspontua: drift, l = lspont/2
 dspontub: drift, l = lspont/2
 ddl1dm30cm: drift, l = 0.379160-0.262228 !allow possible new spontaneous undulator here
 dcq31a: drift, l = 6.037182, type = "CSR"
-dcq31aa: drift, l = 1.414467, type = "CSR" !1.475565
-dcq31ab: drift, l = 2.000098, type = "CSR" !3.199061
+dcq31aa: drift, l = 1.514938, type = "CSR" !1.414467
+dcq31ab: drift, l = 2.220702, type = "CSR" !2.000098
 dcq31ac: drift, l = dcq31a[l]-dcq31aa[l]-dcq31ab[l], type = "CSR"
 dcq31b: drift, l = 5.811658, type = "CSR"
 d29cma: drift, l = 0.29+0.023878+0.1000244+0.1704396
@@ -2253,10 +2870,10 @@ lchirp = 2.0
 
 d37a: drift, l = 0.27032  !0.123
 d37b: drift, l = 0.65268  !0.8
-d37ba: drift, l = 0.157367 !0.304687
+d37ba: drift, l = 0.328090 !0.157367
 d37bb: drift, l = d37b[l]-d37ba[l]
-d37c: drift, l = 2.804723       !1.36541
-d37d: drift, l = 6.218668237037 !7.657981237037
+d37c: drift, l = 0.725410 !2.804723
+d37d: drift, l = 8.297981237037 !6.218668237037
 wsdl4: marker, type = "slow" !Patrick K. says this device is used only with the dechirper
 d37e: drift, l = 1.097522857741
 dchirpv: instrument, l = lchirp/2 !split in half
@@ -2264,14 +2881,14 @@ mdchirpv: marker             !center of dechirper
  !D37f     : DRIF, L=DDL10mb[L]+D34A[L]-D37d[L]-D37e[L]-LCHIRP
 d37f: drift, l = ddl10mb[l]+d34a[l]-7.657981237037-d37e[l]-lchirp !D37d changed
 d38a: drift, l = 0.509870493892
-d38aa: drift, l = 0.293656
-d38ab: drift, l = d38a[l]-d38aa[l]
 dchirph: instrument, l = lchirp/2 !split in half
 mdchirph: marker             !center of dechirper
 d38b: drift, l = 0.609117535347
 d38c: drift, l = 0.540705892339
 d38d: drift, l =  &
         (d34b[l]+ddl10um25cm[l]+ddl10v[l]+dx38a[l]+dx38b[l])-(d38a[l]+lchirp+d38b[l]+d38c[l])
+d38da: drift, l = 7.214536 !5812976
+d38db: drift, l = d38d[l]-d38da[l]
 
 rfbdl1: instrument, type = "@2,CavityL-1"
 bpmdl2: instrument, type = "Stripline-10"
@@ -2312,8 +2929,8 @@ tdkik: instrument, l = 0.6096 !vertical off-axis in-line dump
 
 wsdl31: marker, type = "fast"
 
- !OTR30  : MONITOR, TYPE="OTR" !LTU slice energy spread (90 deg from TCAV3)
-motr30: marker             !OTR30 abandoned in place
+otr30: instrument, type = "OTR" !LTU slice energy spread (90 deg from TCAV3)
+ !MOTR30 : MARK             !OTR30 abandoned in place
 
 cedl1: rcollimator, x_limit = 2.3e-3, y_limit = 20.e-3, type = "HCOLL", l = 0.08 !existing LCLS
 cedl3: rcollimator, x_limit = 2.3e-3, y_limit = 20.e-3, type = "HCOLL", l = 0.08 !existing LCLS
@@ -2385,45 +3002,204 @@ wig3ha: sbend, hgap = gwig/2, e1 = awgh, e2 = 0, fint = 0.5, fintx = 0, type = "
 wig3hb: sbend, hgap = gwig/2, e1 = 0, e2 = 0, fint = 0, fintx = 0.5, type = "@3,SLC wiggler",  &
         ref_tilt = pi/2, l = lwg1h, angle = lwg1h * awg1h/lwg1h
 
+! define unsplit SBENs for BMAD ... not used by MAD
+
+wig1h: sbend, hgap = gwig/2, e1 = 0, fint = 0.5, e2 = +awgh, type = "@3,SLC wiggler", ref_tilt =  &
+        pi/2, l = lwgh, angle = lwgh * (+awgh)/lwgh
+wig2h: sbend, hgap = gwig/2, e1 = -awgh, fint = 0.5, e2 = -awgh, type = "@3,SLC wiggler",  &
+        ref_tilt = pi/2, l = 2*lwgh, angle = 2*lwgh * (-2*awgh)/(2*lwgh)
+wig3h: sbend, hgap = gwig/2, e1 = +awgh, fint = 0.5, e2 = 0, type = "@3,SLC wiggler", ref_tilt =  &
+        pi/2, l = lwgh, angle = lwgh * (+awgh)/lwgh
+
 ldwgh = zdwg/cos(awgh)
 
 dwgh: drift, l = ldwgh
 
 ycwigh: kicker, type = "@3,wiggler trim"
 
-ewigh: line = (wig1ha, wig1hb, dwgh, wig2ha, ycwigh, wig2hb, dwgh, wig3ha, wig3hb, cntwigh)
+wig1h_full: line = (wig1ha, wig1hb)
+wig2h_full: line = (wig2ha, ycwigh, wig2hb)
+wig3h_full: line = (wig3ha, wig3hb)
 
-dl21: line = (dbmark34, bx31a, bx31b, ddl10wa, btm02, ddl10wb, dwsdl31a, wsdl31, dwsdl31b, ddl10x &
-        , xcdl1, d31a, qdl31, bpmdl1, qdl31, drfb, rfbdl1, d31b, ycdl1, d32cmb, cedl1, d31c,  &
-        ewigh, ddl10em80cma, btm22, ddl10em80cmb, cybx32, dcb32, bx32a, bx32b, cntlt2h)
+ewigh: line = (wig1h_full, dwgh, wig2h_full, dwgh, wig3h_full, cntwigh)
 
-dl22: line = (dx33a, cc32, dx33b, btm03, ddl1ab, bykik1a, bykik1b, ddl1d, ddl1d, bykik2a, bykik2b &
-        , ddl1e, xcdl2, d32a, qdl32, bpmdl2, qdl32, d32b, ycdl2, dsplr, spoiler, ddl1cm40cm,  &
-        tdkik, d30cma, pctdkik1, dpc1, pctdkik2, dpc2, pctdkik3, dpc3, pctdkik4, dpc4, dspontua,  &
-        dspontub, ddl1dm30cm, dx34a, cc35, dx34b)
+bx31_full: line = (bx311, bx312)
+bx32_full: line = (bx321, bx322)
+bykik1_full: line = (bykik1a, bykik1b)
+bykik2_full: line = (bykik2a, bykik2b)
+bx35_full: line = (bx35a, bx35b)
+bx36_full: line = (bx36a, bx36b)
 
-dl23: line = (dl23beg, bx35a, bx35b, dcq31aa, btm04, dcq31ab, btm42, dcq31ac, cq31, cq31, dcq31b &
-        , motr30, d29cma, xcdl3, d33a, qdl33, bpmdl3, qdl33, d33b, ycdl3, d32cmd, cedl3, dcq32a,  &
-        cq32, cq32, dcq32b, cybx36, dcb36, bx36a, bx36b, cntlt3h)
 
-dchirpvl: line = (dchirpv, mdchirpv, dchirpv)
-dchirphl: line = (dchirph, mdchirph, dchirph)
 
-dl24: line = (d37a, cc36, d37ba, btm43, d37bb, imbcs2, d37c, btm05, d37d, wsdl4, d37e, dchirpvl,  &
-        d37f, qdl34, bpmdl4, qdl34, d38aa, btm06, d38ab, dchirphl, d38b, xcdl4, d38c, ycdl4, d38d &
-        )
+!Old split line: line = (qdl31, bpmdl1, qdl31)
 
-trip1: line = (ddl20e, qt11, qt11, ddl30em40cm, xcqt12, d40cmb, qt12, bpmt12, qt12, d40cmb,  &
-        ycqt12, ddl30em40cm, qt13, qt13, ddl20e)
+qdl31_full: line = (qdl31)
+qdl31[L] = 2*qdl31[L]
+bpmdl1[superimpose] = T
+bpmdl1[ref] = qdl31
 
-trip2: line = (ycqt21, ddl20, qt21, qt21, ddl30em40cm, xcqt22, d40cmb, qt22, bpmt22, qt22, d46cm &
-        , cxqt22, d46cm, qt23, qt23, ddl20)
 
-trip3: line = (ddl20e, qt31, qt31, ddl30em40cma, xcqt32, d40cmd, qt32, bpmt32, qt32, d40cme,  &
-        ycqt32, ddl30em40cmb, qt33, qt33, ddl20e)
+!Old split line: line = (qdl32, bpmdl2, qdl32)
 
-trip4: line = (ddl20, qt41, qt41, ddl30em40cmc, xcqt42, d40cmf, qt42, bpmt42, qt42, d40cmb,  &
-        ycqt42, ddl30em40cm, qt43, qt43, ddl20)
+qdl32_full: line = (qdl32)
+qdl32[L] = 2*qdl32[L]
+bpmdl2[superimpose] = T
+bpmdl2[ref] = qdl32
+
+
+!Old split line: line = (cq31, cq31)
+
+cq31_full: line = (cq31)
+cq31[L] = 2*cq31[L]
+
+
+!Old split line: line = (qdl33, bpmdl3, qdl33)
+
+qdl33_full: line = (qdl33)
+qdl33[L] = 2*qdl33[L]
+bpmdl3[superimpose] = T
+bpmdl3[ref] = qdl33
+
+
+!Old split line: line = (cq32, cq32)
+
+cq32_full: line = (cq32)
+cq32[L] = 2*cq32[L]
+
+
+!Old split line: line = (qdl34, bpmdl4, qdl34)
+
+qdl34_full: line = (qdl34)
+qdl34[L] = 2*qdl34[L]
+bpmdl4[superimpose] = T
+bpmdl4[ref] = qdl34
+
+
+!Old split line: line = (qt11, qt11)
+
+qt11_full: line = (qt11)
+qt11[L] = 2*qt11[L]
+
+
+!Old split line: line = (qt12, bpmt12, qt12)
+
+qt12_full: line = (qt12)
+qt12[L] = 2*qt12[L]
+bpmt12[superimpose] = T
+bpmt12[ref] = qt12
+
+
+!Old split line: line = (qt13, qt13)
+
+qt13_full: line = (qt13)
+qt13[L] = 2*qt13[L]
+
+
+!Old split line: line = (qt21, qt21)
+
+qt21_full: line = (qt21)
+qt21[L] = 2*qt21[L]
+
+
+!Old split line: line = (qt22, bpmt22, qt22)
+
+qt22_full: line = (qt22)
+qt22[L] = 2*qt22[L]
+bpmt22[superimpose] = T
+bpmt22[ref] = qt22
+
+
+!Old split line: line = (qt23, qt23)
+
+qt23_full: line = (qt23)
+qt23[L] = 2*qt23[L]
+
+
+!Old split line: line = (qt31, qt31)
+
+qt31_full: line = (qt31)
+qt31[L] = 2*qt31[L]
+
+
+!Old split line: line = (qt32, bpmt32, qt32)
+
+qt32_full: line = (qt32)
+qt32[L] = 2*qt32[L]
+bpmt32[superimpose] = T
+bpmt32[ref] = qt32
+
+
+!Old split line: line = (qt33, qt33)
+
+qt33_full: line = (qt33)
+qt33[L] = 2*qt33[L]
+
+
+!Old split line: line = (qt41, qt41)
+
+qt41_full: line = (qt41)
+qt41[L] = 2*qt41[L]
+
+
+!Old split line: line = (qt42, bpmt42, qt42)
+
+qt42_full: line = (qt42)
+qt42[L] = 2*qt42[L]
+bpmt42[superimpose] = T
+bpmt42[ref] = qt42
+
+
+!Old split line: line = (qt43, qt43)
+
+qt43_full: line = (qt43)
+qt43[L] = 2*qt43[L]
+
+
+
+!Old split line: line = (dchirpv, mdchirpv, dchirpv)
+
+dchirpv_full: line = (dchirpv)
+dchirpv[L] = 2*dchirpv[L]
+mdchirpv[superimpose] = T
+mdchirpv[ref] = dchirpv
+
+
+!Old split line: line = (dchirph, mdchirph, dchirph)
+
+dchirph_full: line = (dchirph)
+dchirph[L] = 2*dchirph[L]
+mdchirph[superimpose] = T
+mdchirph[ref] = dchirph
+
+dl21: line = (dbmark34, bx31_full, ddl10wa, btm02, ddl10wb, dwsdl31a, wsdl31, dwsdl31b, ddl10x,  &
+        xcdl1, d31a, qdl31_full, drfb, rfbdl1, d31b, ycdl1, d32cmb, cedl1, d31c, ewigh,  &
+        ddl10em80cma, btm22, ddl10em80cmb, cybx32, dcb32, bx32_full, cntlt2h)
+
+dl22: line = (dx33a, cc32, dx33b, btm03, ddl1ab, bykik1_full, ddl1d, ddl1d, bykik2_full, ddl1e,  &
+        xcdl2, d32a, qdl32_full, d32b, ycdl2, dsplr, spoiler, ddl1cm40cm, tdkik, d30cma, pctdkik1 &
+        , dpc1, pctdkik2, dpc2, pctdkik3, dpc3, pctdkik4, dpc4, dspontua, dspontub, ddl1dm30cm,  &
+        dx34a, cc35, dx34b)
+
+dl23: line = (dl23beg, bx35_full, dcq31aa, btm04, dcq31ab, btm42, dcq31ac, cq31_full, dcq31b,  &
+        otr30, d29cma, xcdl3, d33a, qdl33_full, d33b, ycdl3, d32cmd, cedl3, dcq32a, cq32_full,  &
+        dcq32b, cybx36, dcb36, bx36_full, cntlt3h)
+
+dl24: line = (d37a, cc36, d37ba, btm43, d37bb, imbcs2, d37c, btm05, d37d, wsdl4, d37e,  &
+        dchirpv_full, d37f, qdl34_full, d38a, dchirph_full, d38b, xcdl4, d38c, ycdl4, d38da,  &
+        btm06, d38db)
+
+trip1: line = (ddl20e, qt11_full, ddl30em40cm, xcqt12, d40cmb, qt12_full, d40cmb, ycqt12,  &
+        ddl30em40cm, qt13_full, ddl20e)
+
+trip2: line = (ycqt21, ddl20, qt21_full, ddl30em40cm, xcqt22, d40cmb, qt22_full, d46cm, cxqt22,  &
+        d46cm, qt23_full, ddl20)
+
+trip3: line = (ddl20e, qt31_full, ddl30em40cma, xcqt32, d40cmd, qt32_full, d40cme, ycqt32,  &
+        ddl30em40cmb, qt33_full, ddl20e)
+
+trip4: line = (ddl20, qt41_full, ddl30em40cmc, xcqt42, d40cmf, qt42_full, d40cmb, ycqt42,  &
+        ddl30em40cm, qt43_full, ddl20)
 
 doglg2a: line = (dl21, trip1, ss1, dl22, trip2)
 
@@ -2461,20 +3237,12 @@ qe35: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqe35
 qe36: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqe36
 
 dmm1m90cm: drift, l = 1.20046
-dem1ba: drift, l = 2.326522 !1.086830
-dem1bb: drift, l = dem1b[l]-dem1ba[l]
-dmm3ma: drift, l = 10.315743 !4.425910
+dmm3ma: drift, l = 4.425910 !10.315743
 dmm3mb: drift, l = dmm3m80cm[l]-dmm3ma[l]
-de3ma: drift, l = 1.173550 !5.333610
+de3ma: drift, l = 5.493610 !1.173550
 de3mb: drift, l = de3m80cma[l]-de3ma[l]
-de3aa: drift, l = 1.341982
-de3ab: drift, l = de3a[l]-de3aa[l]
 dqeca: drift, l = 7.950716+0.000011
-dqecaa: drift, l = 1.440646
-dqecab: drift, l = dqeca[l]-dqecaa[l]
 dqecb: drift, l = dqec[l]-dqeca[l]
-de3m80cmc: drift, l = 2.647321
-de3m80cmd: drift, l = de3m80cm[l]-de3m80cmc[l]
 d40cmh: drift, l = 0.0317
 d40cmg: drift, l = d40cm[l]-d40cmh[l]
 
@@ -2522,9 +3290,6 @@ otr33: instrument, type = "OTR" !LTU slice emittance (existing LCLS device)
 btm07: instrument, type = "BCS BTM"
 btm08: instrument, type = "BCS BTM"
 btm09: instrument, type = "BCS BTM"
-btm10: instrument, type = "BCS BTM" !BCS BTM
-btm11: instrument, type = "BCS BTM" !BCS BTM
-btm12: instrument, type = "BCS BTM" !BCS BTM
 
  !DCX31 : DRIF, L=0.08
 dcx35: drift, l = 0.08
@@ -2538,18 +3303,103 @@ cx31: rcollimator, x_limit = 0.02, y_limit = 0.02, l = 0.08 !fully open existing
 
 dbmark36: marker !center of WS31
 
-edmch: line = (d25cmb, im36, d25cmc, dmm1m90cm, ycem1, dem1a, qem1, bpmem1, qem1, dem1ba, btm07,  &
-        dem1bb, qem2, bpmem2, qem2, dem2b, xcem2, dmm3ma, btm08, dmm3mb, ycem3, dem3a, qem3,  &
-        bpmem3, qem3, dem3b, qem3v, qem3v, dmm4m90cm, xcem4, dem4a, qem4, bpmem4, qem4, drfb,  &
-        rfbem4, dmm5)
 
-edsys: line = (dbmark36, ws31, d40cm, de3ma, btm09, de3mb, xce31, dqea, qe31, bpme31, qe31, dqebx &
-        , cx31, dqebx2, de3aa, btm10, de3ab, yce32, dqeaa, qe32, bpme32, qe32, drfb, rfbe32,  &
-        dqeby1, dcy32, dqeby2, ws32, d40cm, de3m80cmb, xce33, dqeab, qe33, bpme33, qe33, dqecaa,  &
-        btm11, dqecab, yagpsi, dqecb, otr33, de3m40cm, yce34, dqea, qe34, bpme34, qe34, drfb,  &
-        rfbe34, dqec1, ws33, d40cm, de3m80cmc, btm12, de3m80cmd, xce35, dqeac, qe35, bpme35, qe35 &
-        , dqebx, dcx35, dqebx2, de3, yce36, dqea, qe36, bpme36, qe36, drfb, rfbe36, dqeby1, dcy36 &
-        , dqeby2, ws34, d40cmg, dws35, d40cmh)
+
+!Old split line: line = (qem1, bpmem1, qem1)
+
+qem1_full: line = (qem1)
+qem1[L] = 2*qem1[L]
+bpmem1[superimpose] = T
+bpmem1[ref] = qem1
+
+
+!Old split line: line = (qem2, bpmem2, qem2)
+
+qem2_full: line = (qem2)
+qem2[L] = 2*qem2[L]
+bpmem2[superimpose] = T
+bpmem2[ref] = qem2
+
+
+!Old split line: line = (qem3, bpmem3, qem3)
+
+qem3_full: line = (qem3)
+qem3[L] = 2*qem3[L]
+bpmem3[superimpose] = T
+bpmem3[ref] = qem3
+
+
+!Old split line: line = (qem3v, qem3v)
+
+qem3v_full: line = (qem3v)
+qem3v[L] = 2*qem3v[L]
+
+
+!Old split line: line = (qem4, bpmem4, qem4)
+
+qem4_full: line = (qem4)
+qem4[L] = 2*qem4[L]
+bpmem4[superimpose] = T
+bpmem4[ref] = qem4
+
+
+!Old split line: line = (qe31, bpme31, qe31)
+
+qe31_full: line = (qe31)
+qe31[L] = 2*qe31[L]
+bpme31[superimpose] = T
+bpme31[ref] = qe31
+
+
+!Old split line: line = (qe32, bpme32, qe32)
+
+qe32_full: line = (qe32)
+qe32[L] = 2*qe32[L]
+bpme32[superimpose] = T
+bpme32[ref] = qe32
+
+
+!Old split line: line = (qe33, bpme33, qe33)
+
+qe33_full: line = (qe33)
+qe33[L] = 2*qe33[L]
+bpme33[superimpose] = T
+bpme33[ref] = qe33
+
+
+!Old split line: line = (qe34, bpme34, qe34)
+
+qe34_full: line = (qe34)
+qe34[L] = 2*qe34[L]
+bpme34[superimpose] = T
+bpme34[ref] = qe34
+
+
+!Old split line: line = (qe35, bpme35, qe35)
+
+qe35_full: line = (qe35)
+qe35[L] = 2*qe35[L]
+bpme35[superimpose] = T
+bpme35[ref] = qe35
+
+
+!Old split line: line = (qe36, bpme36, qe36)
+
+qe36_full: line = (qe36)
+qe36[L] = 2*qe36[L]
+bpme36[superimpose] = T
+bpme36[ref] = qe36
+
+edmch: line = (d25cmb, im36, d25cmc, dmm1m90cm, ycem1, dem1a, qem1_full, dem1b, qem2_full, dem2b &
+        , xcem2, dmm3ma, btm07, dmm3mb, ycem3, dem3a, qem3_full, dem3b, qem3v_full, dmm4m90cm,  &
+        xcem4, dem4a, qem4_full, drfb, rfbem4, dmm5a, btm08, dmm5b)
+
+edsys: line = (dbmark36, ws31, d40cm, de3ma, btm09, de3mb, xce31, dqea, qe31_full, dqebx, cx31,  &
+        dqebx2, de3a, yce32, dqeaa, qe32_full, drfb, rfbe32, dqeby1, dcy32, dqeby2, ws32, d40cm,  &
+        de3m80cmb, xce33, dqeab, qe33_full, dqeca, yagpsi, dqecb, otr33, de3m40cm, yce34, dqea,  &
+        qe34_full, drfb, rfbe34, dqec1, ws33, d40cm, de3m80cm, xce35, dqeac, qe35_full, dqebx,  &
+        dcx35, dqebx2, de3, yce36, dqea, qe36_full, drfb, rfbe36, dqeby1, dcy36, dqeby2, ws34,  &
+        d40cmg, dws35, d40cmh)
 
 ! ------------------------------------------------------------------------------
 ! HXR undulator match
@@ -2563,26 +3413,21 @@ kqum2 = -0.257070322217
 kqum3 = 0.249191553356
 kqum4 = -0.21849398386
 
-
-!!! Full length quads
-qum1: quadrupole, type = "1.26Q12", l = lqa, aperture = rqa, k1 = kqum1
-qum2: quadrupole, type = "1.26Q12", l = lqa, aperture = rqa, k1 = kqum2
-qum3: quadrupole, type = "1.26Q12", l = lqa, aperture = rqa, k1 = kqum3
-qum4: quadrupole, type = "1.26Q12", l = lqa, aperture = rqa, k1 = kqum4
+qum1: quadrupole, type = "1.26Q12", l = lqa/2, aperture = rqa, k1 = kqum1
+qum2: quadrupole, type = "1.26Q12", l = lqa/2, aperture = rqa, k1 = kqum2
+qum3: quadrupole, type = "1.26Q12", l = lqa/2, aperture = rqa, k1 = kqum3
+qum4: quadrupole, type = "1.26Q12", l = lqa/2, aperture = rqa, k1 = kqum4
 
 du1m80cma: drift, l = 0.16515
-du1m80cmb: drift, l = 0.219024
-du1m80cmc: drift, l = du1m80cm[l]-du1m80cma[l]-du1m80cmb[l]
+du1m80cmb: drift, l = du1m80cm[l]-du1m80cma[l]
 d32cmc: drift, l = 0.30046
 du2m120cm: drift, l = 4.730
 dw2tdund: drift, l = 0.201537 !drift from BTH/UH wall-2 to TDUNDB u/s flange
 
-
-!!! Use superimpose
-bpmum1: instrument, type = "Stripline-10", superimpose, ref = qum1
-bpmum2: instrument, type = "Stripline-10", superimpose, ref = qum2
-bpmum3: instrument, type = "Stripline-10", superimpose, ref = qum3
-bpmum4: instrument, type = "Stripline-10", superimpose, ref = qum4
+bpmum1: instrument, type = "Stripline-10"
+bpmum2: instrument, type = "Stripline-10"
+bpmum3: instrument, type = "Stripline-10"
+bpmum4: instrument, type = "Stripline-10"
 
 rfb07: instrument, type = "CavityX-1" !existing LCLS device
 rfb08: instrument, type = "CavityX-1" !existing LCLS device
@@ -2601,7 +3446,6 @@ ycum4: kicker, type = "class-4f" !fast-feedback (loop-5)
  !PCMUON : ECOL,L=1.1684,XSIZE=8.64E-3/2,YSIZE=4.32E-3/2 !original muon scattering collimator after pre-undulator tune-up dump (ID from Rago: 7/18/08)
 pcmuon: ecollimator, x_limit = 4.32e-3/2, y_limit = 8.64e-3/2, l = 1.1684 !90 deg rolled muon scattering collimator
 
-btm13: instrument, type = "BCS BTM"
 tdund: instrument !LTU insertable block at und. extension entrance (w/ screen)
 
 mm1: marker
@@ -2613,16 +3457,49 @@ pfilt1: marker
 muhwall1: marker !upstream end of BTH/UH wall-1
 muhwall2: marker !upstream end of BTH/UH wall-2
 dbmark37: marker !end of undulator match
-rwwake5h: marker, type = "WAKE" !LTU beampipe wake applied here
+rwwake4h: marker, type = "WAKE" !LTUH beampipe wake applied here
 
-unmch: line = (du1m80cma, dws36, du1m80cmb, btm13, du1m80cmc, dcx37, d32cmc, xcum1, dum1a, qum1,  &
-         dum1b, d32cm, du2m120cm, dcy38, d32cma, ycum2, dum2a, qum2,  &
-        dum2b, du3m80cm, xcum3, dum3a, qum3, dum3b, d40cma, eoblm, du4m120cm, ycum4 &
-        , dum4a, qum4, dum4b, rfb07, du5m80cm, imundi, d40cmw, muhwall1, duhwall1,  &
-        duhvesta, rfb08, duhvestb, muhwall2, duhwall2, dw2tdund, dtdund1, tdund, dtdund2, dpcmuon &
-        , pcmuon, dmuon1, vv999, dmuon3, rfbhx12, dmuon4, mm3, pfilt1, dbmark37)
 
-ltu: line = (vbsys, mm1, doglg2a, doglg2b, mm2, edmch, edsys, unmch, rwwake5h, endltuh)
+
+!Old split line: line = (qum1, bpmum1, qum1)
+
+qum1_full: line = (qum1)
+qum1[L] = 2*qum1[L]
+bpmum1[superimpose] = T
+bpmum1[ref] = qum1
+
+
+!Old split line: line = (qum2, bpmum2, qum2)
+
+qum2_full: line = (qum2)
+qum2[L] = 2*qum2[L]
+bpmum2[superimpose] = T
+bpmum2[ref] = qum2
+
+
+!Old split line: line = (qum3, bpmum3, qum3)
+
+qum3_full: line = (qum3)
+qum3[L] = 2*qum3[L]
+bpmum3[superimpose] = T
+bpmum3[ref] = qum3
+
+
+!Old split line: line = (qum4, bpmum4, qum4)
+
+qum4_full: line = (qum4)
+qum4[L] = 2*qum4[L]
+bpmum4[superimpose] = T
+bpmum4[ref] = qum4
+
+unmch: line = (du1m80cma, dws36, du1m80cmb, dcx37, d32cmc, xcum1, dum1a, qum1_full, dum1b, d32cm &
+        , du2m120cm, dcy38, d32cma, ycum2, dum2a, qum2_full, dum2b, du3m80cm, xcum3, dum3a,  &
+        qum3_full, dum3b, d40cma, eoblm, du4m120cm, ycum4, dum4a, qum4_full, dum4b, rfb07,  &
+        du5m80cm, imundi, d40cmw, muhwall1, duhwall1, duhvesta, rfb08, duhvestb, muhwall2,  &
+        duhwall2, dw2tdund, dtdund1, tdund, dtdund2, dpcmuon, pcmuon, dmuon1, vv999, dmuon3,  &
+        rfbhx12, dmuon4, mm3, pfilt1, dbmark37)
+
+ltu: line = (vbsys, mm1, doglg2a, doglg2b, mm2, edmch, edsys, unmch, rwwake4h, endltuh)
 
 ! ------------------------------------------------------------------------------
 ! HXR dumpline
@@ -2638,20 +3515,34 @@ bydsha: sbend, hgap = gbyds/2, e1 = abyds/2, e2 = 0, fint = 0.5, fintx = 0.0, ty
 bydshb: sbend, hgap = gbyds/2, e1 = 0, e2 = abyds/2, fint = 0.0, fintx = 0.5, type = "1.26D18.43" &
         , ref_tilt = pi/2, l = leffbyds/2, angle = leffbyds/2 * abyds/2/(leffbyds/2)
 
-byd1a: sbend, hgap = gbdm/2, e1 = abdm/2, e2 = 0, fint = 0.57, fintx = 0.00, type = "1.69VD55.1" &
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bydsh: sbend, hgap = gbyds/2, e1 = abyds/2, fint = 0.5, e2 = abyds/2, type = "1.26D18.43",  &
+        ref_tilt = pi/2, l = leffbyds, angle = leffbyds * abyds/leffbyds
+
+byd11: sbend, hgap = gbdm/2, e1 = abdm/2, e2 = 0, fint = 0.57, fintx = 0.00, type = "1.69VD55.1" &
         , ref_tilt = pi/2, l = leffbdm/2, angle = leffbdm/2 * abdm/2/(leffbdm/2)
-byd1b: sbend, hgap = gbdm/2, e1 = 0, e2 = abdm/2, fint = 0.00, fintx = 0.57, type = "1.69VD55.1" &
+byd12: sbend, hgap = gbdm/2, e1 = 0, e2 = abdm/2, fint = 0.00, fintx = 0.57, type = "1.69VD55.1" &
         , ref_tilt = pi/2, l = leffbdm/2, angle = leffbdm/2 * abdm/2/(leffbdm/2)
 
-byd2a: sbend, hgap = gbdm/2, e1 = abdm/2, e2 = 0, fint = 0.57, fintx = 0.00, type = "1.69VD55.1" &
+byd21: sbend, hgap = gbdm/2, e1 = abdm/2, e2 = 0, fint = 0.57, fintx = 0.00, type = "1.69VD55.1" &
         , ref_tilt = pi/2, l = leffbdm/2, angle = leffbdm/2 * abdm/2/(leffbdm/2)
-byd2b: sbend, hgap = gbdm/2, e1 = 0, e2 = abdm/2, fint = 0.00, fintx = 0.57, type = "1.69VD55.1" &
+byd22: sbend, hgap = gbdm/2, e1 = 0, e2 = abdm/2, fint = 0.00, fintx = 0.57, type = "1.69VD55.1" &
         , ref_tilt = pi/2, l = leffbdm/2, angle = leffbdm/2 * abdm/2/(leffbdm/2)
 
-byd3a: sbend, hgap = gbdm/2, e1 = abdm/2, e2 = 0, fint = 0.57, fintx = 0.00, type = "1.69VD55.1" &
+byd31: sbend, hgap = gbdm/2, e1 = abdm/2, e2 = 0, fint = 0.57, fintx = 0.00, type = "1.69VD55.1" &
         , ref_tilt = pi/2, l = leffbdm/2, angle = leffbdm/2 * abdm/2/(leffbdm/2)
-byd3b: sbend, hgap = gbdm/2, e1 = 0, e2 = abdm/2, fint = 0.00, fintx = 0.57, type = "1.69VD55.1" &
+byd32: sbend, hgap = gbdm/2, e1 = 0, e2 = abdm/2, fint = 0.00, fintx = 0.57, type = "1.69VD55.1" &
         , ref_tilt = pi/2, l = leffbdm/2, angle = leffbdm/2 * abdm/2/(leffbdm/2)
+
+! define unsplit SBENs for BMAD ... not used by MAD
+
+byd1: sbend, hgap = gbdm/2, e1 = abdm/2, fint = 0.57, e2 = abdm/2, type = "1.69VD55.1", ref_tilt &
+         = pi/2, l = leffbdm, angle = leffbdm * abdm/leffbdm
+byd2: sbend, hgap = gbdm/2, e1 = abdm/2, fint = 0.57, e2 = abdm/2, type = "1.69VD55.1", ref_tilt &
+         = pi/2, l = leffbdm, angle = leffbdm * abdm/leffbdm
+byd3: sbend, hgap = gbdm/2, e1 = abdm/2, fint = 0.57, e2 = abdm/2, type = "1.69VD55.1", ref_tilt &
+         = pi/2, l = leffbdm, angle = leffbdm * abdm/leffbdm
 
 pcpm1l: ecollimator, x_limit = 14.2875e-3, y_limit = 14.2875e-3, l = lpcpm
 pcpm2l: ecollimator, x_limit = 38.1e-3, y_limit = 38.1e-3, l = lpcpm
@@ -2696,9 +3587,29 @@ arodmp2h = -arodmp2s
 rodmp1h: patch, tilt = arodmp1h
 rodmp2h: patch, tilt = arodmp2h
 
-dumpline: line = (begdmph_2, rodmp1h, bydsha, bydshb, ds1, byd1a, byd1b, ds, byd2a, byd2b, ds,  &
-        byd3a, byd3b, dd1a, pcpm1l, btm1l, dd1b, mimdump, dd1c, mimbcs4, dd1d, ycdd, dd1e, pcpm2l &
-        , btm2l, dd1f, qdmp1, qdmp1, dd12a, bpmqd, dd12b, mqdmp, dd12c, qdmp2, qdmp2, dd2a, xcdd &
-        , dd2b, dd2c, dd3a, bpmdd, dd3b, otrdmp, dwsdumpa, rfbdd, dwsdumpb, wsdump, dwsdumpc,  &
-        rodmp2h, dumpface, ddump, dmpend, btmdump, dbmark38, enddmph_2)
+bydsh_full: line = (bydsha, bydshb)
+byd1_full: line = (byd11, byd12)
+byd2_full: line = (byd21, byd22)
+byd3_full: line = (byd31, byd32)
+
+
+
+!Old split line: line = (qdmp1, qdmp1)
+
+qdmp1_full: line = (qdmp1)
+qdmp1[L] = 2*qdmp1[L]
+
+
+!Old split line: line = (qdmp2, qdmp2)
+
+qdmp2_full: line = (qdmp2)
+qdmp2[L] = 2*qdmp2[L]
+
+dumpline: line = (begdmph_2, rodmp1h, bydsh_full, ds1, byd1_full, ds, byd2_full, ds, byd3_full,  &
+        dd1a, pcpm1l, btm1l, dd1b, mimdump, dd1c, mimbcs4, dd1d, ycdd, dd1e, pcpm2l, btm2l, dd1f &
+        , qdmp1_full, dd12a, bpmqd, dd12b, mqdmp, dd12c, qdmp2_full, dd2a, xcdd, dd2b, dd2c, dd3a &
+        , bpmdd, dd3b, otrdmp, dwsdumpa, rfbdd, dwsdumpb, wsdump, dwsdumpc, rodmp2h, dumpface,  &
+        ddump, dmpend, btmdump, dbmark38, enddmph_2)
+
+! ------------------------------------------------------------------------------
 

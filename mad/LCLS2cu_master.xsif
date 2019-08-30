@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-13JUN19 ***
+! *** OPTICS=AD_ACCEL-2019next ***
 
 ! ------------------------------------------------------------------------------
 ! constants and global parameters
@@ -12,28 +12,37 @@
   in2m    : CONSTANT=0.0254        !inches to meters
   mc2     : CONSTANT=510.99906E-6  !e- rest mass [GeV]
 
+! SURVEY stuff
+
+  injdeg  := -35.0        !injector bend angle w.r.t. linac [degrees]
+  ZOFFINJ :=   0.012100   !moves entire injector in main-linac z-direction by this amount (+12.100 mm Nov. 17, 2004)
+  XOFF    := -25.610*in2m !x-offset of bypass line (old PEP-II 9-GeV) w.r.t. old linac axis (<0 is south)
+  YOFF    :=  25.570*in2m !y-offset of bypass line (old PEP-II 9-GeV) w.r.t. old linac axis(>0 is up)
+
 ! initial conditions (exit of L0)
 
-  injdeg := -35.0    !injector bend angle w.r.t. linac [degrees]
-  E00    := 0.006    !beam energy after gun (GeV)
-  E0i    := 0.064    !beam energy between L0a and L0b sections (GeV)
-  Ei     := 0.135    !initial beam energy (GeV) (150->135 MeV on July 9, 2003)
-  EBC1   := 0.250    !BC1 energy (GeV)
-  EBC2   := EBC2Cu   !BC2 energy (GeV)
-  Ef     := EfCu     !final beam energy (GeV)
-  Eu     := EuCu     !energy in undulator (GeV)
   EMITXN := 1.00E-06 !normalized horizontal emittance (m)
   EMITYN := 1.00E-06 !normalized vertical emittance (m)
   BLENG  := 0.83E-03 !bunch length (m)
   ESPRD  := 2.00E-05 !slice rms energy spread at 135 MeV (1)
-  ZOFFINJ:= 0.012100 !moves entire injector in main-linac z-direction by this amount (+12.100 mm Nov. 17, 2004)
 
-  XOFF := -25.610*in2m !x-offset of bypass line (old PEP-II 9-GeV) w.r.t. old linac axis (<0 is south)
-  YOFF :=  25.570*in2m !y-offset of bypass line (old PEP-II 9-GeV) w.r.t. old linac axis(>0 is up)
+! energy profile
 
-! miscellaneous parameters
+  E00  := 0.006  !beam energy after gun (GeV)
+  E0i  := 0.064  !beam energy between L0a and L0b sections (GeV)
+  Ei   := 0.135  !initial beam energy (GeV) (150->135 MeV on July 9, 2003)
+  EBC1 := 0.250  !BC1 energy (GeV)
+  EBC2 := EBC2Cu !BC2 energy (GeV)
+  Ef   := EfCu   !final beam energy (GeV)
+  Eu   := EuCu   !energy in undulator (GeV)
 
   Brhof := Cb*Ef
+
+! compression
+
+  R56HTR := 0.0079 !dX= 0.035000 m
+  R56BC1 := 0.0455 !dX= 0.247383 m
+  R56BC2 := 0.028  !dX= 0.385010 m
 
 ! ------------------------------------------------------------------------------
 ! twiss parameter definitions
@@ -79,10 +88,22 @@
 ! Twiss at the end of L3 linac (L3END)
 
   ENENDL3 := 13.64
-  BXENDL3 := 33.136631364328
-  AXENDL3 :=  1.179540229644
-  BYENDL3 := 62.298526576063
-  AYENDL3 := -1.660316777995
+ !BXENDL3 := 33.136631364328
+ !AXENDL3 :=  1.179540229644
+ !BYENDL3 := 62.298526576063
+ !AYENDL3 := -1.660316777995
+
+ !uncoupled
+ !BXENDL3 := 33.136631364327
+ !AXENDL3 :=  1.179540229644
+ !BYENDL3 := 62.298526576057
+ !AYENDL3 := -1.660316777995
+
+ !coupled
+  BXENDL3 := 33.141247960385
+  AXENDL3 :=  1.182309496676
+  BYENDL3 := 62.400972351791
+  AYENDL3 := -1.660808264783
 
 ! for matching ...
 

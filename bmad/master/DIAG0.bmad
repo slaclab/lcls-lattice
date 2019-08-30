@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-13JUN19 ***
+! *** OPTICS=AD_ACCEL-2019next ***
 
 ! LCLS2sc post laser heater diagnostic beamline
 
@@ -283,13 +283,14 @@ dqb02: drift, l = (zhh2d0+ztwk0a)/cos(xang02)
 dqb03: drift, l = (zhh3d0+ztwk0a)/cos(xang02)
 dqb04: drift, l = (zhh4d0-ztwk0a-ztwk0b)/cos(xang02)
 
-!-!  COMMENT
-!-!    VALUE, ZHH0,ZHH1D0,ZHH2D0,ZHH3D0,ZHH4D0
-!-!    VALUE, ZS0/2+DQB01[L]*COS(XANG02)+ZQs/2+ZTWK0a-ZTWK0b
-!-!    VALUE, ZQs/2+DQB02[L]*COS(XANG02)+ZQs/2-ZTWK0a
-!-!    VALUE, ZQs/2+DQB03[L]*COS(XANG02)+ZQs/2-ZTWK0a
-!-!    VALUE, ZQs/2+DQB04[L]*COS(XANG02)+ZH0/2+ZTWK0a+ZTWK0b
-!-!  ENDCOMMENT
+!=!  COMMENT
+!=!  COMMENT
+!=!    VALUE, ZHH0,ZHH1D0,ZHH2D0,ZHH3D0,ZHH4D0
+!=!    VALUE, ZS0/2+DQB01[L]*COS(XANG02)+ZQs/2+ZTWK0a-ZTWK0b
+!=!    VALUE, ZQs/2+DQB02[L]*COS(XANG02)+ZQs/2-ZTWK0a
+!=!    VALUE, ZQs/2+DQB03[L]*COS(XANG02)+ZQs/2-ZTWK0a
+!=!    VALUE, ZQs/2+DQB04[L]*COS(XANG02)+ZH0/2+ZTWK0a+ZTWK0b
+!=!  ENDCOMMENT
 
 dkv0a: drift, l = zksd0a/cos(ak0)
 dkv0b: drift, l = zksd0b/cos(ak0)
@@ -417,44 +418,151 @@ mtcxdg0: marker
 ! BEAMLINE
 ! ------------------------------------------------------------------------------
 
-!-!  COMMENT
-!-!    DIAG0 : LINE=(&
-!-!      BEGDIAG0,&
-!-!      BKRDG0a,BKRDG0b,RODG0K,DKV0,M1DG0,&
-!-!      BLRDG0a,BLRDG0b,RODG0L,DQB01,&
-!-!      QDG001,DYQDG001,QDG001,DQB02,&
-!-!      QDG002,QDG002,DQB03,&
-!-!      QDG003,DYQDG003,QDG003,DQB04,&
-!-!      BXDG0a,BXDG0b,CNTDG0,M2DG0,DDG003,&
-!-!      QDG004,QDG004,DDG004,&
-!-!      QDG005,QDG005,DDG005,&
-!-!      QDG006,QDG006,DDG006,&
-!-!      QDG007,QDG007,DDG007,&
-!-!      QDG008,QDG008,DDG008,&
-!-!      QDG009,QDG009,DDG009,&
-!-!      QDG010,QDG010,DDG010,&
-!-!      QDG011,QDG011,DDG011,&
-!-!      BYDG0a,BYDG0b,DDG012,&
-!-!      ENDDIAG0)
-!-!  ENDCOMMENT
+
+
+!Old split line: line = (tcydg0, mtcydg0, tcydg0)
+
+tcydg0_full: line = (tcydg0)
+tcydg0[L] = 2*tcydg0[L]
+mtcydg0[superimpose] = T
+mtcydg0[ref] = tcydg0
+
+
+!Old split line: line = (tcxdg0, mtcxdg0, tcxdg0)
+
+tcxdg0_full: line = (tcxdg0)
+tcxdg0[L] = 2*tcxdg0[L]
+mtcxdg0[superimpose] = T
+mtcxdg0[ref] = tcxdg0
+
+bkrdg0_full: line = (bkrdg0a, bkrdg0b)
+blrdg0_full: line = (blrdg0a, blrdg0b)
+bxdg0_full: line = (bxdg0a, bxdg0b)
+bydg0_full: line = (bydg0a, bydg0b)
+
+
+
+!Old split line: line = (qdg001, bpmdg001, dyqdg001, qdg001)
+
+qdg001_full: line = (qdg001)
+qdg001[L] = 2*qdg001[L]
+bpmdg001[superimpose] = T
+bpmdg001[ref] = qdg001
+dyqdg001[superimpose] = T
+dyqdg001[ref] = qdg001
+
+
+!Old split line: line = (qdg002, bpmdg002, qdg002)
+
+qdg002_full: line = (qdg002)
+qdg002[L] = 2*qdg002[L]
+bpmdg002[superimpose] = T
+bpmdg002[ref] = qdg002
+
+
+!Old split line: line = (qdg003, bpmdg003, dyqdg003, qdg003)
+
+qdg003_full: line = (qdg003)
+qdg003[L] = 2*qdg003[L]
+bpmdg003[superimpose] = T
+bpmdg003[ref] = qdg003
+dyqdg003[superimpose] = T
+dyqdg003[ref] = qdg003
+
+
+!Old split line: line = (qdg004, bpmdg004, qdg004)
+
+qdg004_full: line = (qdg004)
+qdg004[L] = 2*qdg004[L]
+bpmdg004[superimpose] = T
+bpmdg004[ref] = qdg004
+
+
+!Old split line: line = (qdg005, bpmdg005, qdg005)
+
+qdg005_full: line = (qdg005)
+qdg005[L] = 2*qdg005[L]
+bpmdg005[superimpose] = T
+bpmdg005[ref] = qdg005
+
+
+!Old split line: line = (qdg006, qdg006)
+
+qdg006_full: line = (qdg006)
+qdg006[L] = 2*qdg006[L]
+
+
+!Old split line: line = (qdg007, qdg007)
+
+qdg007_full: line = (qdg007)
+qdg007[L] = 2*qdg007[L]
+
+
+!Old split line: line = (qdg008, bpmdg008, qdg008)
+
+qdg008_full: line = (qdg008)
+qdg008[L] = 2*qdg008[L]
+bpmdg008[superimpose] = T
+bpmdg008[ref] = qdg008
+
+
+!Old split line: line = (qdg009, bpmdg009, qdg009)
+
+qdg009_full: line = (qdg009)
+qdg009[L] = 2*qdg009[L]
+bpmdg009[superimpose] = T
+bpmdg009[ref] = qdg009
+
+
+!Old split line: line = (qdg010, qdg010)
+
+qdg010_full: line = (qdg010)
+qdg010[L] = 2*qdg010[L]
+
+
+!Old split line: line = (qdg011, bpmdg011, qdg011)
+
+qdg011_full: line = (qdg011)
+qdg011[L] = 2*qdg011[L]
+bpmdg011[superimpose] = T
+bpmdg011[ref] = qdg011
 
 scdg003: line = (xcdg003, ycdg003)
 scdg005: line = (xcdg005, ycdg005)
 scdg008: line = (xcdg008, ycdg008)
 scdg010: line = (xcdg010, ycdg010)
 
- !COMMENT
-diag0: line = (begdiag0, bkrdg0a, bkrdg0b, rodg0k, dkv0a, bpmdg000, dkv0b, m1dg0, blrdg0a,  &
-        blrdg0b, rodg0l, dqb01a, rfbdg001, dqb01b, xcdg001, dqb01c, qdg001, bpmdg001, dyqdg001,  &
-        qdg001, dqb02a, ycdg001, dqb02b, qdg002, bpmdg002, qdg002, dqb03a, xcdg002, dqb03b,  &
-        qdg003, bpmdg003, dyqdg003, qdg003, dqb04a, ycdg002, dqb04b, bxdg0a, bxdg0b, cntdg0,  &
-        m2dg0, ddg003, qdg004, bpmdg004, qdg004, ddg004a, scdg003, ddg004b, qdg005, bpmdg005,  &
-        qdg005, ddg005a, scdg005, ddg005b, qdg006, qdg006, ddg006a, tcydg0, mtcydg0, tcydg0,  &
-        ddg006b, bpmdg0rf, ddg006c, tcxdg0, mtcxdg0, tcxdg0, ddg006d, qdg007, qdg007, ddg007,  &
-        qdg008, bpmdg008, qdg008, ddg008a, scdg008, ddg008b, qdg009, bpmdg009, qdg009, ddg009a,  &
-        otrdg01, ddg009b, rfbdg002, ddg009c, otrdg02, ddg009d, wsdg01, ddg009e, otrdg03, ddg009f &
-        , qdg010, qdg010, ddg010a, scdg010, ddg010b, qdg011, bpmdg011, qdg011, ddg011a, rfbdg003 &
-        , ddg011b, bydg0a, bydg0b, ddg012a, bpmdg012, ddg012b, otrdg04, ddg012c, fcdg0du,  &
+!=!  COMMENT !simplified
+!=!  COMMENT !simplified
+!=!    DIAG0 : LINE=(BEGDIAG0,&
+!=!      BKRDG0a,BKRDG0b,RODG0K,DKV0,M1DG0,&
+!=!      BLRDG0a,BLRDG0b,RODG0L,DQB01,&
+!=!      QDG001,DYQDG001,QDG001,DQB02,&
+!=!      QDG002,QDG002,DQB03,&
+!=!      QDG003,DYQDG003,QDG003,DQB04,&
+!=!      BXDG0a,BXDG0b,CNTDG0,M2DG0,DDG003,&
+!=!      QDG004,QDG004,DDG004,&
+!=!      QDG005,QDG005,DDG005,&
+!=!      QDG006,QDG006,DDG006,&
+!=!      QDG007,QDG007,DDG007,&
+!=!      QDG008,QDG008,DDG008,&
+!=!      QDG009,QDG009,DDG009,&
+!=!      QDG010,QDG010,DDG010,&
+!=!      QDG011,QDG011,DDG011,&
+!=!      BYDG0a,BYDG0b,DDG012,&
+!=!      ENDDIAG0)
+!=!  ENDCOMMENT
+
+ !COMMENT !complete
+diag0: line = (begdiag0, bkrdg0_full, rodg0k, dkv0a, bpmdg000, dkv0b, m1dg0, blrdg0_full, rodg0l &
+        , dqb01a, rfbdg001, dqb01b, xcdg001, dqb01c, qdg001_full, dqb02a, ycdg001, dqb02b,  &
+        qdg002_full, dqb03a, xcdg002, dqb03b, qdg003_full, dqb04a, ycdg002, dqb04b, bxdg0_full,  &
+        cntdg0, m2dg0, ddg003, qdg004_full, ddg004a, scdg003, ddg004b, qdg005_full, ddg005a,  &
+        scdg005, ddg005b, qdg006_full, ddg006a, tcydg0_full, ddg006b, bpmdg0rf, ddg006c,  &
+        tcxdg0_full, ddg006d, qdg007_full, ddg007, qdg008_full, ddg008a, scdg008, ddg008b,  &
+        qdg009_full, ddg009a, otrdg01, ddg009b, rfbdg002, ddg009c, otrdg02, ddg009d, wsdg01,  &
+        ddg009e, otrdg03, ddg009f, qdg010_full, ddg010a, scdg010, ddg010b, qdg011_full, ddg011a,  &
+        rfbdg003, ddg011b, bydg0_full, ddg012a, bpmdg012, ddg012b, otrdg04, ddg012c, fcdg0du,  &
         enddiag0)
  !ENDCOMMENT
 

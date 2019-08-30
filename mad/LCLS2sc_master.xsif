@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-13JUN19 ***
+! *** OPTICS=AD_ACCEL-2019next ***
 
 ! ------------------------------------------------------------------------------
 ! constants and global parameters
@@ -126,9 +126,9 @@
   Z3beg :=  385.847300 !start of L3 (~81.0 m into LI04)
   Z3end :=  643.543300 !end of L3 (~33.9 m into LI07)
   Zdog  :=  667.043300 !entrance first dogleg bend (~57.4 m into LI07)
-  Xbyp  :=   -0.650494 !QBP13 X is |Xbyp| to the south of linac axis
-  Ybyp  :=    0.649478 !QBP13 Y is Ybyp above linac axis
-  Zbyp  := 1254.531303 !QBP13 centerline (~35.3 m into LI13)
+  Xbyp  :=   -0.650494 !BEGBYP X is |Xbyp| to the south of linac axis
+  Ybyp  :=    0.649478 !BEGBYP Y is Ybyp above linac axis
+  Zbyp  := 1202.631303 !BEGBYP Z (~85.0 m into LI12)
 
 ! ------------------------------------------------------------------------------
 ! twiss parameter definitions (for matching, etc.)
@@ -159,10 +159,10 @@
 
 ! match into SXR LTU emittance diagnostic section
 
-  BX1 := 46.225914318019
-  AX1 := -1.084608326468
-  BY1 := 46.225914318019
-  AY1 :=  1.084608326468
+  BXEDs := 46.225914318019
+  AXEDs := -1.084608326468
+  BYEDs := 46.225914318019
+  AYEDs :=  1.084608326468
 
 ! match into HXR LTU emittance diagnostic section
 
@@ -207,7 +207,8 @@
   CALL, FILENAME="SXTES.xsif"
   CALL, FILENAME="DASEL.xsif"
 
-  LCLS2scI : LINE=(BEAM0,DCM4b,QCM01,XCM01,YCM01,QCM01,DCM5,CM01END,&
+  !LCLS2scI : LINE=(BEAM0,DCM4b,QCM01,XCM01,YCM01,QCM01,DCM5,CM01END,&
+  LCLS2scI : LINE=(BEAM0,DCM4b,QCM01_full,DCM5,CM01END,&
     DCMCM1,HOMCM,DCAP0da,ASTRA,DCAP0db,FC1,&
     DMSC0da,BLF1,DMSC0db,VG0H00,DMSC0dc,VP0H00,DMSC0dd,VV0H00,DMSC0de,MSC0d,&
     ENDL0B)

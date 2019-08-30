@@ -1,10 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-13JUN19 ***
+! *** OPTICS=AD_ACCEL-2019next ***
 
 ! LCLS2sc injector: gun to start of L1 linac
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 03-JUL-2019, M. Woodley
+!  * Use measured Leff for gun solenoids (SOL1B=0.1342 m, SOL2B=0.1350 m)
 ! ------------------------------------------------------------------------------
 ! 30-APR-2019, M. Woodley
 !  * Update locations of GUNB devices per F. Zhou and G. Gassner
@@ -154,14 +157,8 @@ abun = 0.0517  !m
 gbun = 0       !MV/m
 pbun = 0       !deg
 
-bun1b: lcavity, rf_frequency = 1300 * 1e6, gradient = gbun*lbun * 1e6 / lbun, phi0 = pbun/360,  &
-        type = "LBNL", l = lbun, aperture = abun/2
-
-!-!  COMMENT !for checking Z at buncher center
-!-!    BUN1Bh : lcavity, TYPE="LBNL", FREQ=1300, L=Lbun/2, aperture=Abun/2, &
-!-!                   DELTAE=Gbun*Lbun/2, PHI0=Pbun/360
-!-!    BUN1B : LINE=(2*BUN1Bh)
-!-!  ENDCOMMENT
+bun1b: lcavity, rf_frequency = 1300 * 1e6, gradient = gbun*lbun/2 * 1e6 / (lbun/2), phi0 =  &
+        pbun/360, type = "LBNL", l = lbun/2, aperture = abun/2
 
 ! ==============================================================================
 ! SBEN
@@ -315,7 +312,8 @@ qc012: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc012
 ! solenoids between gun and L0
 
 rsol = 0.0475/2
-lsol = 0.17412             !m
+lsol1 = 0.1342              !m (measured)
+lsol2 = 0.1350              !m (measured)
 bsol1 = 0                   !0.0570 T
 bsol2 = 0                   !0.0322 T
 brho = cb*sqrt(e0^2-mc2^2) !kG-m (non-relativistic)
@@ -323,8 +321,8 @@ ksol1 = (10*bsol1)/brho     !1/m
 ksol2 = (10*bsol2)/brho     !1/m
 
 sol1bkb: solenoid, ks = 0, type = "Bucking Coil", l = 0
-sol1b: solenoid, ks = ksol1, type = "LBNL", l = lsol/2, aperture = rsol
-sol2b: solenoid, ks = ksol2, type = "LBNL", l = lsol/2, aperture = rsol
+sol1b: solenoid, ks = ksol1, type = "LBNL", l = lsol1/2, aperture = rsol
+sol2b: solenoid, ks = ksol2, type = "LBNL", l = lsol2/2, aperture = rsol
 
 ! ==============================================================================
 ! MATR
@@ -361,10 +359,24 @@ r34h = lhunh*sincargh
 
 ! undulator segment modeled as R-matrix to include vertical natural focusing
 
-umhtr: taylor, type = "LHund", l = lhunh, {1: 1.0, 1 0 0 0 0 0}, {1: lhunh, 0 1 0 0 0 0}, {2: 0.0 & !,                               &
-        , 1 0 0 0 0 0}, {2: 1.0, 0 1 0 0 0 0}, {3: cos(lhunh*sqrt(kqlh)), 0 0 1 0 0 0}, {3: r34h &
-        , 0 0 0 1 0 0}, {4: -sin(lhunh*sqrt(kqlh))*sqrt(kqlh), 0 0 1 0 0 0}, {4:  &
-        cos(lhunh*sqrt(kqlh)), 0 0 0 1 0 0}, {5: 1, 0 0 0 0 1 0}, {6: 1, 0 0 0 0 0 1}
+
+!------- Laser Heater Undulator for SC Linac -------
+my_umhtr_k = 0.960143
+
+umhtr: wiggler, 
+        type = "laser_heater_undulator",
+        L_period = 0.054, 
+        n_period = 10, 
+        b_max = my_umhtr_k * 2*pi*m_electron / (c_light * 0.054), 
+        L = 10*0.054 ! Was: 0.506263, 
+        ds_step = 0.054
+        
+umhtr[L] = umhtr[L]/2 ! Will be doubled in desplitting process. 
+!--------------------------------- !,                               &
+!old: umhtr: taylor, type = "LHund", l = lhunh, {1: 1.0, 1 0 0 0 0 0}, {1: lhunh, 0 1 0 0 0 0}, {2: 0.0 &
+!old         , 1 0 0 0 0 0}, {2: 1.0, 0 1 0 0 0 0}, {3: cos(lhunh*sqrt(kqlh)), 0 0 1 0 0 0}, {3: r34h &
+!old         , 0 0 0 1 0 0}, {4: -sin(lhunh*sqrt(kqlh))*sqrt(kqlh), 0 0 1 0 0 0}, {4:  &
+!old         cos(lhunh*sqrt(kqlh)), 0 0 0 1 0 0}, {5: 1, 0 0 0 0 1 0}, {6: 1, 0 0 0 0 0 1}
    !R56=Lhunh/(gami^2)*(1+(K_und^2)/2)
 
 ! ==============================================================================
@@ -378,8 +390,8 @@ lgun = 0.04 !APEX gun
 dgbca: drift, l = -0.071705
 dgbcb: drift, l = 0.071705
 dgun: drift, l = lgun
-dg001: drift, l = 0.246530-lgun-lsol/2
-dg002: drift, l = 0.140950-lsol/2
+dg001: drift, l = 0.246530-lgun-lsol1/2
+dg002: drift, l = 0.140950-lsol1/2
 dg003: drift, l = 0.097020
 dg004: drift, l = 0.005150
 dg005: drift, l = 0.105042
@@ -389,8 +401,8 @@ dg008: drift, l = 0.155084-lbun/2
 dg009: drift, l = 0.181801
 dg010: drift, l = 0.222999
 dg011: drift, l = 0.121314
-dg012: drift, l = 0.155496-lsol/2
-dg013: drift, l = 0.136970-lsol/2
+dg012: drift, l = 0.155496-lsol2/2
+dg013: drift, l = 0.136970-lsol2/2
 dg014: drift, l = 0.101444
 dg015: drift, l = 0.004540
 dg016: drift, l = 0.163813
@@ -454,8 +466,14 @@ dh01c: drift, l = dh01[l]-dh01a[l]-dh01b[l], type = "CSR"
 dh02: drift, l = zhbbi, type = "CSR"
 dh02a: drift, l = 0.192614-ljaw/2, type = "CSR"
 dh02b: drift, l = 0.298450-ljaw/2, type = "CSR"
-dh02c: drift, l = 0.2795065, type = "CSR" !0.297036
-dh02d: drift, l = 0.2724707, type = "CSR" !0.2900002
+
+! Shorten so that umhtr has an integer number of poles
+dh02c: drift, l = 0.2795065 - ( 10*0.054 - 0.506263 ) /2 , type = "CSR" !0.297036 !0.297036
+!old: dh02c: drift, l = 0.2795065, type = "CSR"
+
+! Shorten so that umhtr has an integer number of poles
+dh02d: drift, l = 0.2724707 - ( 10*0.054 - 0.506263 ) /2, type = "CSR" !0.2900002 !0.2900002
+!old: dh02d: drift, l = 0.2724707, type = "CSR"
 dh02e: drift, l = 0.4599998, type = "CSR"
 dh03: drift, l = zhbbo/cos(abh), type = "CSR"
 dh03a: drift, l = zhbmid/cos(abh), type = "CSR"
@@ -486,13 +504,14 @@ dhd03a: drift, l = dhd03[l]-dhd03b[l]
 dhd04a: drift, l = 0.1208998
 dhd04b: drift, l = dhd04[l]-dhd04a[l]
 
-!-!  COMMENT
-!-!    VALUE, DHD00[L],DHD00a[L]+DHD00b[L]
-!-!    VALUE, DHD01[L],DHD01a[L]+DHD01b[L]+DHD01c[L]
-!-!    VALUE, DHD02[L],DHD02a[L]+DHD02b[L]
-!-!    VALUE, DHD03[L],DHD03a[L]+DHD03b[L]
-!-!    VALUE, DHD04[L],DHD04a[L]+DHD04b[L]
-!-!  ENDCOMMENT
+!=!  COMMENT
+!=!  COMMENT
+!=!    VALUE, DHD00[L],DHD00a[L]+DHD00b[L]
+!=!    VALUE, DHD01[L],DHD01a[L]+DHD01b[L]+DHD01c[L]
+!=!    VALUE, DHD02[L],DHD02a[L]+DHD02b[L]
+!=!    VALUE, DHD03[L],DHD03a[L]+DHD03b[L]
+!=!    VALUE, DHD04[L],DHD04a[L]+DHD04b[L]
+!=!  ENDCOMMENT
 
 ! collimation FODO
 
@@ -686,8 +705,232 @@ endeic: marker
 ! BEAMLINE
 ! ------------------------------------------------------------------------------
 
-sol1bl: line = (sol1b, cq01b, sq01b, sol1b)
-sol2bl: line = (sol2b, cq02b, sq02b, sol2b)
+
+
+!Old split line: line = (bun1b, bun1b)
+
+bun1b_full: line = (bun1b)
+bun1b[L] = 2*bun1b[L]
+
+bcxh1_full: line = (bcxh1a, bcxh1b)
+bcxh2_full: line = (bcxh2a, bcxh2b)
+bcxh3_full: line = (bcxh3a, bcxh3b)
+bcxh4_full: line = (bcxh4a, bcxh4b)
+
+
+
+!Old split line: line = (q0h01, bpm0h01, q0h01)
+
+q0h01_full: line = (q0h01)
+q0h01[L] = 2*q0h01[L]
+bpm0h01[superimpose] = T
+bpm0h01[ref] = q0h01
+
+
+!Old split line: line = (q0h02, q0h02)
+
+q0h02_full: line = (q0h02)
+q0h02[L] = 2*q0h02[L]
+
+
+!Old split line: line = (q0h03, q0h03)
+
+q0h03_full: line = (q0h03)
+q0h03[L] = 2*q0h03[L]
+
+
+!Old split line: line = (q0h04, bpm0h04, q0h04)
+
+q0h04_full: line = (q0h04)
+q0h04[L] = 2*q0h04[L]
+bpm0h04[superimpose] = T
+bpm0h04[ref] = q0h04
+
+
+!Old split line: line = (q0h05, bpm0h05, q0h05)
+
+q0h05_full: line = (q0h05)
+q0h05[L] = 2*q0h05[L]
+bpm0h05[superimpose] = T
+bpm0h05[ref] = q0h05
+
+
+!Old split line: line = (q0h06, q0h06)
+
+q0h06_full: line = (q0h06)
+q0h06[L] = 2*q0h06[L]
+
+
+!Old split line: line = (q0h07, q0h07)
+
+q0h07_full: line = (q0h07)
+q0h07[L] = 2*q0h07[L]
+
+
+!Old split line: line = (q0h08, bpm0h08, q0h08)
+
+q0h08_full: line = (q0h08)
+q0h08[L] = 2*q0h08[L]
+bpm0h08[superimpose] = T
+bpm0h08[ref] = q0h08
+
+
+!Old split line: line = (qhd01, bpmhd01, qhd01)
+
+qhd01_full: line = (qhd01)
+qhd01[L] = 2*qhd01[L]
+bpmhd01[superimpose] = T
+bpmhd01[ref] = qhd01
+
+
+!Old split line: line = (qhd02, bpmhd02, qhd02)
+
+qhd02_full: line = (qhd02)
+qhd02[L] = 2*qhd02[L]
+bpmhd02[superimpose] = T
+bpmhd02[ref] = qhd02
+
+
+!Old split line: line = (qhd03, bpmhd03, qhd03)
+
+qhd03_full: line = (qhd03)
+qhd03[L] = 2*qhd03[L]
+bpmhd03[superimpose] = T
+bpmhd03[ref] = qhd03
+
+
+!Old split line: line = (qhd04, bpmhd04, qhd04)
+
+qhd04_full: line = (qhd04)
+qhd04[L] = 2*qhd04[L]
+bpmhd04[superimpose] = T
+bpmhd04[ref] = qhd04
+
+
+!Old split line: line = (qc001, bpmc001, qc001)
+
+qc001_full: line = (qc001)
+qc001[L] = 2*qc001[L]
+bpmc001[superimpose] = T
+bpmc001[ref] = qc001
+
+
+!Old split line: line = (qc002, bpmc002, qc002)
+
+qc002_full: line = (qc002)
+qc002[L] = 2*qc002[L]
+bpmc002[superimpose] = T
+bpmc002[ref] = qc002
+
+
+!Old split line: line = (qc003, bpmc003, qc003)
+
+qc003_full: line = (qc003)
+qc003[L] = 2*qc003[L]
+bpmc003[superimpose] = T
+bpmc003[ref] = qc003
+
+
+!Old split line: line = (qc004, bpmc004, qc004)
+
+qc004_full: line = (qc004)
+qc004[L] = 2*qc004[L]
+bpmc004[superimpose] = T
+bpmc004[ref] = qc004
+
+
+!Old split line: line = (qc005, bpmc005, qc005)
+
+qc005_full: line = (qc005)
+qc005[L] = 2*qc005[L]
+bpmc005[superimpose] = T
+bpmc005[ref] = qc005
+
+
+!Old split line: line = (qc006, bpmc006, qc006)
+
+qc006_full: line = (qc006)
+qc006[L] = 2*qc006[L]
+bpmc006[superimpose] = T
+bpmc006[ref] = qc006
+
+
+!Old split line: line = (qc007, bpmc007, qc007)
+
+qc007_full: line = (qc007)
+qc007[L] = 2*qc007[L]
+bpmc007[superimpose] = T
+bpmc007[ref] = qc007
+
+
+!Old split line: line = (qc008, bpmc008, qc008)
+
+qc008_full: line = (qc008)
+qc008[L] = 2*qc008[L]
+bpmc008[superimpose] = T
+bpmc008[ref] = qc008
+
+
+!Old split line: line = (qc009, bpmc009, qc009)
+
+qc009_full: line = (qc009)
+qc009[L] = 2*qc009[L]
+bpmc009[superimpose] = T
+bpmc009[ref] = qc009
+
+
+!Old split line: line = (qc010, bpmc010, qc010)
+
+qc010_full: line = (qc010)
+qc010[L] = 2*qc010[L]
+bpmc010[superimpose] = T
+bpmc010[ref] = qc010
+
+
+!Old split line: line = (qc011, bpmc011, qc011)
+
+qc011_full: line = (qc011)
+qc011[L] = 2*qc011[L]
+bpmc011[superimpose] = T
+bpmc011[ref] = qc011
+
+
+!Old split line: line = (qc012, bpmc012, qc012)
+
+qc012_full: line = (qc012)
+qc012[L] = 2*qc012[L]
+bpmc012[superimpose] = T
+bpmc012[ref] = qc012
+
+
+
+!Old split line: line = (sol1b, cq01b, sq01b, sol1b)
+
+sol1b_full: line = (sol1b)
+sol1b[L] = 2*sol1b[L]
+cq01b[superimpose] = T
+cq01b[ref] = sol1b
+sq01b[superimpose] = T
+sq01b[ref] = sol1b
+
+
+!Old split line: line = (sol2b, cq02b, sq02b, sol2b)
+
+sol2b_full: line = (sol2b)
+sol2b[L] = 2*sol2b[L]
+cq02b[superimpose] = T
+cq02b[ref] = sol2b
+sq02b[superimpose] = T
+sq02b[ref] = sol2b
+
+
+
+!Old split line: line = (umhtr, htrundb, umhtr)
+
+umhtr_full: line = (umhtr)
+umhtr[L] = 2*umhtr[L]
+htrundb[superimpose] = T
+htrundb[ref] = umhtr
 
 sc1b: line = (xc01b, yc01b)
 sc2b: line = (xc02b, yc02b)
@@ -696,93 +939,93 @@ sc4b: line = (xc04b, yc04b)
 sc5b: line = (xc05b, yc05b)
 scc000: line = (xcc000, ycc000)
 
-gun: line = (beggunb, dgbca, sol1bkb, dgbcb, cathodeb, dgun, dg001, sol1bl, dg002, vv01b, dg003,  &
-        sc1b, dg004, bpm1b, dg005, im01b, dg006, sc2b, dg007, bun1b, dg008, sc3b, dg009, am00b,  &
-        dg010, sc4b, dg011, yag01b, dg012, sol2bl, dg013, vv02b, dg014, bpm2b, dg015, sc5b,  &
-        dg016a, blfu, dg016b, endgunb)
+gun: line = (beggunb, dgbca, sol1bkb, dgbcb, cathodeb, dgun, dg001, sol1b_full, dg002, vv01b,  &
+        dg003, sc1b, dg004, bpm1b, dg005, im01b, dg006, sc2b, dg007, bun1b_full, dg008, sc3b,  &
+        dg009, am00b, dg010, sc4b, dg011, yag01b, dg012, sol2b_full, dg013, vv02b, dg014, bpm2b,  &
+        dg015, sc5b, dg016a, blfu, dg016b, endgunb)
 
-eic: line = (begeic, dgbca, sol1bkb, dgbcb, cathodeb, dgun, dg001, sol1bl, dg002, vv01b, dg003,  &
-        sc1b, dg004, bpm1b, dg005, im01b, dg006, sc2b, dg007, bun1b, dg008, sc3b, dg009, am00b,  &
-        dg010, sc4b, dg011, yag01b, dg012, sol2bl, dg013, vv02b, dg014, bpm2b, dg015, sc5b,  &
-        dg016a, blfu, dg016b, ecueic, dgeic, fc00eic, endeic)
+eic: line = (begeic, dgbca, sol1bkb, dgbcb, cathodeb, dgun, dg001, sol1b_full, dg002, vv01b,  &
+        dg003, sc1b, dg004, bpm1b, dg005, im01b, dg006, sc2b, dg007, bun1b_full, dg008, sc3b,  &
+        dg009, am00b, dg010, sc4b, dg011, yag01b, dg012, sol2b_full, dg013, vv02b, dg014, bpm2b,  &
+        dg015, sc5b, dg016a, blfu, dg016b, ecueic, dgeic, fc00eic, endeic)
 
-!-!  COMMENT !simplified
-!-!    LSRHTR : LINE=(LHBEGB,&
-!-!      BCXH1A,BCXH1B,Dh01a,Dh01b,Dh01c,&
-!-!      BCXH2A,BCXH2B,Dh02a,CEHTR,Dh02b,Dh02c,2*UMHTR,Dh02d,Dh02e,&
-!-!      BCXH3A,BCXH3B,Dh03a,Dh03b,Dh03c,&
-!-!      BCXH4A,BCXH4B,&
-!-!      LHENDB)
-!-!  ENDCOMMENT
-
- !COMMENT !complete
-lsrhtr: line = (lhbegb, bcxh1a, bcxh1b, dh01a, bpmh1, dh01b, mirlhu, dh01c, bcxh2a, bcxh2b, dh02a &
-        , cehtr, dh02b, yagh1, dh02c, umhtr, htrundb, umhtr, dh02d, yagh2, dh02e, bcxh3a, bcxh3b &
-        , dh03a, mirlhd, dh03b, bpmh2, dh03c, bcxh4a, bcxh4b, cnthtr, lhendb)
- !ENDCOMMENT
-
-!-!  COMMENT !simplified
-!-!    HTR : LINE=(&
-!-!      BEGHTR,D0H00,&
-!-!      Q0H01,Q0H01,D0H01,&
-!-!      Q0H02,Q0H02,D0H02,&
-!-!      Q0H03,Q0H03,D0H03,&
-!-!      Q0H04,Q0H04,D0H04,&
-!-!      Q0H05,Q0H05,D0H05,&
-!-!      Q0H06,Q0H06,D0H06,&
-!-!      Q0H07,Q0H07,D0H07,&
-!-!      Q0H08,Q0H08,D0H08,&
-!-!      LSRHTR,DHD00,&
-!-!      QHD01,QHD01,DHD01,&
-!-!      QHD02,QHD02,DHD02,&
-!-!      QHD03,QHD03,DHD03,&
-!-!      QHD04,QHD04,DHD04,&
-!-!      ENDHTR)
-!-!  ENDCOMMENT
+!=!  COMMENT !simplified
+!=!  COMMENT !simplified
+!=!    LSRHTR : LINE=(LHBEGB,&
+!=!      BCXH1a,BCXH1b,Dh01a,Dh01b,Dh01c,&
+!=!      BCXH2a,BCXH2b,Dh02a,CEHTR,Dh02b,Dh02c,UMHTR,UMHTR,Dh02d,Dh02e,&
+!=!      BCXH3a,BCXH3b,Dh03a,Dh03b,Dh03c,&
+!=!      BCXH4a,BCXH4b,&
+!=!      LHENDB)
+!=!  ENDCOMMENT
 
  !COMMENT !complete
-htr: line = (beghtr, rfb0h00, d0h00a, pc0h00, d0h00b, q0h01, bpm0h01, q0h01, d0h01a, yc0h01,  &
-        d0h01b, q0h02, q0h02, d0h02a, xc0h01, d0h02b, dp0h01, d0h02c, dp0h02, d0h02d, dp0h03,  &
-        d0h02e, xc0h03, d0h02f, q0h03, q0h03, d0h03a, yc0h03, d0h03b, q0h04, bpm0h04, q0h04,  &
-        d0h04a, rfb0h04, d0h04b, otr0h04, d0h04c, ws0h04, d0h04d, bz0h04, d0h04e, q0h05, bpm0h05 &
-        , q0h05, d0h05a, yc0h05, d0h05b, q0h06, q0h06, d0h06a, xc0h05, d0h06b, xc0h07, d0h06c,  &
-        q0h07, q0h07, d0h07a, yc0h07, d0h07b, q0h08, bpm0h08, q0h08, d0h08a, rfb0h08, d0h08b,  &
-        lsrhtr, dhd00a, rfbhd00, dhd00b, qhd01, bpmhd01, qhd01, dhd01a, ychd01, dhd01b, xchd01,  &
-        dhd01c, qhd02, bpmhd02, qhd02, dhd02a1, imbcsi1, dhd02a2, imbcsi2, dhd02a3, imbcsi3,  &
-        dhd02a4, ychd03, dhd02b, qhd03, bpmhd03, qhd03, dhd03a, xchd03, dhd03b, qhd04, bpmhd04,  &
-        qhd04, dhd04a, rfbhd04, dhd04b, endhtr)
+lsrhtr: line = (lhbegb, bcxh1_full, dh01a, bpmh1, dh01b, mirlhu, dh01c, bcxh2_full, dh02a, cehtr &
+        , dh02b, yagh1, dh02c, umhtr_full, dh02d, yagh2, dh02e, bcxh3_full, dh03a, mirlhd, dh03b &
+        , bpmh2, dh03c, bcxh4_full, cnthtr, lhendb)
  !ENDCOMMENT
 
-!-!  COMMENT !simplified
-!-!    COL0 : LINE=(&
-!-!      BEGCOL0,&
-!-!      DC000,&
-!-!      QC001,QC001,DC001,&
-!-!      QC002,QC002,DC002,&
-!-!      QC003,QC003,DC003,&
-!-!      QC004,QC004,DC004,&
-!-!      QC005,QC005,DColl0,&
-!-!      QC006,QC006,DColl0,&
-!-!      QC007,QC007,DColl0,&
-!-!      QC008,QC008,DColl0,&
-!-!      QC009,QC009,DColl0,&
-!-!      QC010,QC010,DColl0,&
-!-!      QC011,QC011,DC011,&
-!-!      QC012,QC012,&
-!-!      ENDCOL0)
-!-!  ENDCOMMENT
+!=!  COMMENT !simplified
+!=!  COMMENT !simplified
+!=!    HTR : LINE=(&
+!=!      BEGHTR,D0H00,&
+!=!      Q0H01,Q0H01,D0H01,&
+!=!      Q0H02,Q0H02,D0H02,&
+!=!      Q0H03,Q0H03,D0H03,&
+!=!      Q0H04,Q0H04,D0H04,&
+!=!      Q0H05,Q0H05,D0H05,&
+!=!      Q0H06,Q0H06,D0H06,&
+!=!      Q0H07,Q0H07,D0H07,&
+!=!      Q0H08,Q0H08,D0H08,&
+!=!      LSRHTR,DHD00,&
+!=!      QHD01,QHD01,DHD01,&
+!=!      QHD02,QHD02,DHD02,&
+!=!      QHD03,QHD03,DHD03,&
+!=!      QHD04,QHD04,DHD04,&
+!=!      ENDHTR)
+!=!  ENDCOMMENT
+
+ !COMMENT !complete
+htr: line = (beghtr, rfb0h00, d0h00a, pc0h00, d0h00b, q0h01_full, d0h01a, yc0h01, d0h01b,  &
+        q0h02_full, d0h02a, xc0h01, d0h02b, dp0h01, d0h02c, dp0h02, d0h02d, dp0h03, d0h02e,  &
+        xc0h03, d0h02f, q0h03_full, d0h03a, yc0h03, d0h03b, q0h04_full, d0h04a, rfb0h04, d0h04b,  &
+        otr0h04, d0h04c, ws0h04, d0h04d, bz0h04, d0h04e, q0h05_full, d0h05a, yc0h05, d0h05b,  &
+        q0h06_full, d0h06a, xc0h05, d0h06b, xc0h07, d0h06c, q0h07_full, d0h07a, yc0h07, d0h07b,  &
+        q0h08_full, d0h08a, rfb0h08, d0h08b, lsrhtr, dhd00a, rfbhd00, dhd00b, qhd01_full, dhd01a &
+        , ychd01, dhd01b, xchd01, dhd01c, qhd02_full, dhd02a1, imbcsi1, dhd02a2, imbcsi2, dhd02a3 &
+        , imbcsi3, dhd02a4, ychd03, dhd02b, qhd03_full, dhd03a, xchd03, dhd03b, qhd04_full,  &
+        dhd04a, rfbhd04, dhd04b, endhtr)
+ !ENDCOMMENT
+
+!=!  COMMENT !simplified
+!=!  COMMENT !simplified
+!=!    COL0 : LINE=(&
+!=!      BEGCOL0,&
+!=!      DC000,&
+!=!      QC001,QC001,DC001,&
+!=!      QC002,QC002,DC002,&
+!=!      QC003,QC003,DC003,&
+!=!      QC004,QC004,DC004,&
+!=!      QC005,QC005,DColl0,&
+!=!      QC006,QC006,DColl0,&
+!=!      QC007,QC007,DColl0,&
+!=!      QC008,QC008,DColl0,&
+!=!      QC009,QC009,DColl0,&
+!=!      QC010,QC010,DColl0,&
+!=!      QC011,QC011,DC011,&
+!=!      QC012,QC012,&
+!=!      ENDCOL0)
+!=!  ENDCOMMENT
 
  !COMMENT !complete
 col0: line = (begcol0, dbkrdg0a, dbkrdg0b, dc000aa, bpmdg000, dc000ab, dblrdg0a, dblrdg0b, dc000b &
-        , scc000, dc000c, qc001, bpmc001, qc001, dc001, qc002, bpmc002, qc002, dc002, qc003,  &
-        bpmc003, qc003, dc003a, ycc003, dc003b, qc004, bpmc004, qc004, dc004a, xcc004, dc004b,  &
-        cyc01, dc004c, qc005, bpmc005, qc005, dcoll0a, ycc005, dcoll0b, cxc01, dcoll0c, qc006,  &
-        bpmc006, qc006, dcoll0a, xcc006, dcoll0b1, otrc006, dcoll0b2, wsc006, dcoll0b3, rfbc006,  &
-        dcoll0b4, cyc02, dcoll0c, qc007, bpmc007, qc007, dcoll0a, ycc007, dcoll0b5, cxc02,  &
-        dcoll0c, qc008, bpmc008, qc008, dcoll0a, xcc008, dcoll0b, cyc03, dcoll0c, qc009, bpmc009 &
-        , qc009, dcoll0a, ycc009, dcoll0b, cxc03, dcoll0c, qc010, bpmc010, qc010, dc010a, xcc010 &
-        , dc010b, rfbc011, dc010c, qc011, bpmc011, qc011, dc011a, ycc011, dc011b, xcc012, dc011c &
-        , qc012, bpmc012, qc012, endcol0)
+        , scc000, dc000c, qc001_full, dc001, qc002_full, dc002, qc003_full, dc003a, ycc003,  &
+        dc003b, qc004_full, dc004a, xcc004, dc004b, cyc01, dc004c, qc005_full, dcoll0a, ycc005,  &
+        dcoll0b, cxc01, dcoll0c, qc006_full, dcoll0a, xcc006, dcoll0b1, otrc006, dcoll0b2, wsc006 &
+        , dcoll0b3, rfbc006, dcoll0b4, cyc02, dcoll0c, qc007_full, dcoll0a, ycc007, dcoll0b5,  &
+        cxc02, dcoll0c, qc008_full, dcoll0a, xcc008, dcoll0b, cyc03, dcoll0c, qc009_full, dcoll0a &
+        , ycc009, dcoll0b, cxc03, dcoll0c, qc010_full, dc010a, xcc010, dc010b, rfbc011, dc010c,  &
+        qc011_full, dc011a, ycc011, dc011b, xcc012, dc011c, qc012_full, endcol0)
  !ENDCOMMENT
 
 c0fodo: line = (qfcoll0, dcoll0, qdcoll0, qdcoll0, dcoll0, qfcoll0)

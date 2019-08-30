@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-13JUN19 ***
+! *** OPTICS=AD_ACCEL-2019next ***
 
 ! ==============================================================================
 ! 07-JAN-2019, M. Woodley
@@ -55,9 +55,26 @@ k21_1d4: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl1*dld4 * 1e6 
 ! BEAMLINEs
 ! ------------------------------------------------------------------------------
 
-l1: line = (begl1, zlin01, k21_1b1, sc11, k21_1b2, daqa1, qa11, bpma11, qa11, daqa2, k21_1c1,  &
-        sca11, k21_1c2, daqa3, qa12, bpma12, qa12, daqa4, k21_1d1, sca12, k21_1d2, yc21174,  &
-        k21_1d3, xc21175, k21_1d4, endl1)
+
+
+!Old split line: line = (qa11, bpma11, qa11)
+
+qa11_full: line = (qa11)
+qa11[L] = 2*qa11[L]
+bpma11[superimpose] = T
+bpma11[ref] = qa11
+
+
+!Old split line: line = (qa12, bpma12, qa12)
+
+qa12_full: line = (qa12)
+qa12[L] = 2*qa12[L]
+bpma12[superimpose] = T
+bpma12[ref] = qa12
+
+l1: line = (begl1, zlin01, k21_1b1, sc11, k21_1b2, daqa1, qa11_full, daqa2, k21_1c1, sca11,  &
+        k21_1c2, daqa3, qa12_full, daqa4, k21_1d1, sca12, k21_1d2, yc21174, k21_1d3, xc21175,  &
+        k21_1d4, endl1)
 
 ! ==============================================================================
 

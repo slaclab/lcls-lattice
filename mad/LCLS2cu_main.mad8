@@ -1,6 +1,6 @@
-  TITLE, "AD_ACCEL (June 13, 2019)" !copper linac
+  TITLE, "AD_ACCEL (2019next)" !copper linac
 
-! *** OPTICS=AD_ACCEL-13JUN19 ***
+! *** OPTICS=AD_ACCEL-2019next ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY
   ASSIGN, ECHO="LCLS2cu.echo"
@@ -8,6 +8,10 @@
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 07-AUG-2019, M. Woodley
+!  * remove "h" from names of split elements
+!  * create "_full" sub-LINEs for split elements
 ! ------------------------------------------------------------------------------
 ! 22-JAN-2016, M. Woodley
 !  * start LCLS2cuS at CATHODE; EBC2=3.0, Ef=4.0 (Eu=4.0)
@@ -194,12 +198,20 @@
 ! special redefinitions for 4 GeV Cu-linac beam (BC2 @ 3 GeV)
 
   SETcu4GeV : SUBROUTINE
-    SET, KQM22,   -0.589570998224
-    SET, KQ24901,  1.082580150374
-    SET, KQ25201,  0.688761727353
-    SET, KQ25301, -0.476435254001
-    SET, KQ25401,  0.428715988011
-    SET, KQ25501, -0.39999856091
+    SET, KQ24501, -1.029980908916
+    SET, KQ24601,  0.616316598916
+    SET, KQ24701, -1.36878052582
+    SET, KQM21,    0.5225357815
+    SET, KQM22,   -0.594857067816
+    SET, KQ24901,  1.089353577161
+    SET, KQ25201,  0.698160660454
+    SET, KQ25301, -0.480298087986
+    SET, KQ25401,  0.430767851841
+    SET, KQ25501, -0.400748061047
+    SET, KQ30401,  0.397894163919
+    SET, KQ30501, -0.397685556058
+    SET, KQ30601,  0.395088626924
+    SET, KQ30701, -0.394221449278
   ENDSUBROUTINE
 
 ! special redefinitions for Cu-linac (high energy) beam passing through lattice
@@ -302,7 +314,7 @@
  !CALL, FILENAME="LCLS2cu_match.mad8" !upstream of BSY routines not checked
  !CALL, FILENAME="RDB/LCLS2cu_makeSymbols.mad8"
  !CALL, FILENAME="elegant/LCLS2cu_makeElegant.mad8" !use LCLS_L*e.xsif
-  
+
  !STOP
 
 ! ------------------------------------------------------------------------------
@@ -436,7 +448,7 @@
 
 ! 6 MeV gun spectrometer
 
-  COMMENT
+ !COMMENT
     ASSIGN, PRINT="LCLS2cuGSPEC.print"
     BEAM, ENERGY=E00
     USE, CU_GSPEC
@@ -448,13 +460,13 @@
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX, &
       STYLE=100, SPLINE, RANGE=BEGGUN/ENDGSPEC, FILE="LCLS2cuGSPEC", &
       TITLE="Cathode to 6-MeV Gun Spectrometer"
-  ENDCOMMENT
+ !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
 
 ! 135 MeV spectrometer
 
-  COMMENT
+ !COMMENT
     ASSIGN, PRINT="LCLS2cuSPEC.print"
     BEAM, ENERGY=E00
     USE, CU_SPEC
@@ -466,7 +478,7 @@
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX, &
       STYLE=100, SPLINE, RANGE=BEGGUN/ENDSPEC, FILE="LCLS2cuSPEC", &
       TITLE="Cathode to 135-MeV Spectrometer"
-  ENDCOMMENT
+ !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
 ! SURVEY in BSY coordinates (from end of L3)
@@ -568,7 +580,7 @@
 
 ! Twiss plots
 
- !COMMENT
+  COMMENT
     ASSIGN, PRINT="LCLS2cu.print"
 
   ! Cathode to HXR Main Dump
@@ -681,7 +693,7 @@
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=rBETX,rBETY, VAXIS2=DX,DY, &
       COLOUR=100, SPLINE, RANGE=BEGCLTH_0/ENDBSYA_2, FILE="LCLS2cu_color", &
       TITLE="Cu_linac: BSY to A-line"
- !ENDCOMMENT
+  ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
 

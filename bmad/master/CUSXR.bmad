@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-13JUN19 ***
+! *** OPTICS=AD_ACCEL-2019next ***
 
 ! LCLS2sc transport from Cu-linac to SXR
 
@@ -427,23 +427,97 @@ rocus4: patch, tilt = arocus4
 
 ! beamlines
 
-kcusxra: line = (brcusdc1a, brcusdc1b, dckdc1, bkrcusa, bkrcusb, dckdc2, brcusdc2a, brcusdc2b,  &
-        dcusblra, bpmcus, dcusblrb, blrcusa, blrcusb)
+brcusdc1_full: line = (brcusdc1a, brcusdc1b)
+bkrcus_full: line = (bkrcusa, bkrcusb)
+brcusdc2_full: line = (brcusdc2a, brcusdc2b)
+blrcus_full: line = (blrcusa, blrcusb)
+bycus1_full: line = (bycus1a, bycus1b)
+bycus2_full: line = (bycus2a, bycus2b)
+brcus1_full: line = (brcus1a, brcus1b)
+
+
+
+!Old split line: line = (qcus1, qcus1)
+
+qcus1_full: line = (qcus1)
+qcus1[L] = 2*qcus1[L]
+
+
+!Old split line: line = (qcus2, qcus2)
+
+qcus2_full: line = (qcus2)
+qcus2[L] = 2*qcus2[L]
+
+
+!Old split line: line = (qcus3, qcus3)
+
+qcus3_full: line = (qcus3)
+qcus3[L] = 2*qcus3[L]
+
+
+!Old split line: line = (qcus4, bpmcus4, qcus4)
+
+qcus4_full: line = (qcus4)
+qcus4[L] = 2*qcus4[L]
+bpmcus4[superimpose] = T
+bpmcus4[ref] = qcus4
+
+
+!Old split line: line = (qcus5, bpmcus5, qcus5)
+
+qcus5_full: line = (qcus5)
+qcus5[L] = 2*qcus5[L]
+bpmcus5[superimpose] = T
+bpmcus5[ref] = qcus5
+
+
+!Old split line: line = (qcus6, qcus6)
+
+qcus6_full: line = (qcus6)
+qcus6[L] = 2*qcus6[L]
+
+
+!Old split line: line = (qcus7, bpmcus7, qcus7)
+
+qcus7_full: line = (qcus7)
+qcus7[L] = 2*qcus7[L]
+bpmcus7[superimpose] = T
+bpmcus7[ref] = qcus7
+
+
+!Old split line: line = (qcus8, qcus8)
+
+qcus8_full: line = (qcus8)
+qcus8[L] = 2*qcus8[L]
+
+
+!Old split line: line = (qcus9, qcus9)
+
+qcus9_full: line = (qcus9)
+qcus9[L] = 2*qcus9[L]
+
+
+!Old split line: line = (qcus10, qcus10)
+
+qcus10_full: line = (qcus10)
+qcus10[L] = 2*qcus10[L]
+
+kcusxra: line = (brcusdc1_full, dckdc1, bkrcus_full, dckdc2, brcusdc2_full, dcusblra, bpmcus,  &
+        dcusblrb, blrcus_full)
 
 kcusxrb: line = (cntcus1, rocus1, dcus1a, dbrccus1, dbrccus1, dcus1b, dbrccus2, dbrccus2, cntcus5 &
         )
 
 kcusxr: line = (kcusxra, kcusxrb)
 
-dlcusxr: line = (dcus1c, qcus1, qcus1, dcus2a, bpmcus1, dcus2b, xccus1, dcus2c, qcus2, qcus2,  &
-        dcus3a, bpmcus2, dcus3b, yccus2, dcus3c, bpmcus3, dcus3d, qcus3, qcus3, dcus4a, yccus3,  &
-        dcus4b, dcus4c, qcus4, bpmcus4, qcus4, dcus5a, xccus4, dcus5b, bycus1a, bycus1b, cntcus3 &
-        , rocus3, dcus6a, dcus6b, qcus5, bpmcus5, qcus5, dcus7, midcusxr, dcus7, qcus6, qcus6,  &
-        dcus8a, yccus6, dcus8b, rocus4, bycus2a, bycus2b, cntcus4, dcus9a, dcus9b, qcus7, bpmcus7 &
-        , qcus7, dcus10a, xccus7, dcus10b, bpmcus8, dcus10c, qcus8, qcus8, dcus11a, yccus8,  &
-        dcus11b1, stclts, dcus11b2, bpmcus9, dcus11c, qcus9, qcus9, dcus12a, yccus9, dcus12b,  &
-        xccus10, dcus12c, bpmcus10, dcus12d, qcus10, qcus10, dcus13, rocus2, brcus1a, brcus1b,  &
-        cntcus2)
+dlcusxr: line = (dcus1c, qcus1_full, dcus2a, bpmcus1, dcus2b, xccus1, dcus2c, qcus2_full, dcus3a &
+        , bpmcus2, dcus3b, yccus2, dcus3c, bpmcus3, dcus3d, qcus3_full, dcus4a, yccus3, dcus4b,  &
+        dcus4c, qcus4_full, dcus5a, xccus4, dcus5b, bycus1_full, cntcus3, rocus3, dcus6a, dcus6b &
+        , qcus5_full, dcus7, midcusxr, dcus7, qcus6_full, dcus8a, yccus6, dcus8b, rocus4,  &
+        bycus2_full, cntcus4, dcus9a, dcus9b, qcus7_full, dcus10a, xccus7, dcus10b, bpmcus8,  &
+        dcus10c, qcus8_full, dcus11a, yccus8, dcus11b1, stclts, dcus11b2, bpmcus9, dcus11c,  &
+        qcus9_full, dcus12a, yccus9, dcus12b, xccus10, dcus12c, bpmcus10, dcus12d, qcus10_full,  &
+        dcus13, rocus2, brcus1_full, cntcus2)
 
 cusxr: line = (begcusxr, kcusxr, dlcusxr, endcusxr)
 

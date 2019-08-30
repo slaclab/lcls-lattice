@@ -1,10 +1,15 @@
 
-! *** OPTICS=AD_ACCEL-13JUN19 ***
+! *** OPTICS=AD_ACCEL-2019next ***
 
 ! LCLS2sc bypass line, plus match to LTU
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 07-AUG-2019, M. Woodley
+!  * combine BYPi and FODOLa BEAMLINEs (changes Zbyp)
+! 17-JUL-2019, M. Woodley
+!  * relocate STBP34B/BTMBP34B per L. Borzenets
 ! ------------------------------------------------------------------------------
 ! 11-JUN-2019, M. Woodley
 !  * change STBP34A/STBP34B from ST60-type to LCLS EBD-type per A. Ibrahimov
@@ -328,7 +333,7 @@ lstebd = 2*(3.125*in2m) !length of EBD-type stopper
 d2q4mb: drift, l = d2q4m[l]-d2q4ma[l]-lbrcus
 d2q4mba: drift, l = 2.15244 !2.35
 d2q4mbb: drift, l = 5.09756-lstebd/2
-d2q4mbc: drift, l = 1.648-lstebd
+d2q4mbc: drift, l = 1.565-lstebd
 d2q4mbd: drift, l = d2q4mb[l]-d2q4mba[l]-d2q4mbb[l]-lstebd-d2q4mbc[l]-lstebd
 
 d2q4o: drift, l = 8.58398-ldcwl-zqbp34
@@ -471,7 +476,7 @@ btmbp34b: instrument, type = "PPS BTM"  !Burn-Through-Monitor behind STBP34B
 mqbp13: marker !QBP13 FODO quad center ... Z=1254.531303 (a.k.a. "QB01")
 mqbp23: marker
 s100b: marker
-rwwake4: marker, type = "WAKE" !bypass line beampipe wake applied here
+rwwake2: marker, type = "WAKE" !bypass line beampipe wake applied here
 ltusplit: marker !SXR/HXR/Dump split point
 mrgcusxr: marker !merge point (with CUSXR)
 
@@ -513,53 +518,193 @@ bpn27end: marker
 ! BEAMLINEs
 ! ------------------------------------------------------------------------------
 
+
+
+!Old split line: line = (qbp13, mqbp13, qbp13)
+
+qbp13_full: line = (qbp13)
+qbp13[L] = 2*qbp13[L]
+mqbp13[superimpose] = T
+mqbp13[ref] = qbp13
+
+
+!Old split line: line = (qbp14, qbp14)
+
+qbp14_full: line = (qbp14)
+qbp14[L] = 2*qbp14[L]
+
+
+!Old split line: line = (qbp15, qbp15)
+
+qbp15_full: line = (qbp15)
+qbp15[L] = 2*qbp15[L]
+
+
+!Old split line: line = (qbp16, qbp16)
+
+qbp16_full: line = (qbp16)
+qbp16[L] = 2*qbp16[L]
+
+
+!Old split line: line = (qbp17, qbp17)
+
+qbp17_full: line = (qbp17)
+qbp17[L] = 2*qbp17[L]
+
+
+!Old split line: line = (qbp18, qbp18)
+
+qbp18_full: line = (qbp18)
+qbp18[L] = 2*qbp18[L]
+
+
+!Old split line: line = (qbp19, qbp19)
+
+qbp19_full: line = (qbp19)
+qbp19[L] = 2*qbp19[L]
+
+
+!Old split line: line = (qbp20, qbp20)
+
+qbp20_full: line = (qbp20)
+qbp20[L] = 2*qbp20[L]
+
+
+!Old split line: line = (qbp21, qbp21)
+
+qbp21_full: line = (qbp21)
+qbp21[L] = 2*qbp21[L]
+
+
+!Old split line: line = (qbp22, qbp22)
+
+qbp22_full: line = (qbp22)
+qbp22[L] = 2*qbp22[L]
+
+
+!Old split line: line = (qbp23, mqbp23, qbp23)
+
+qbp23_full: line = (qbp23)
+qbp23[L] = 2*qbp23[L]
+mqbp23[superimpose] = T
+mqbp23[ref] = qbp23
+
+
+!Old split line: line = (qbp24, qbp24)
+
+qbp24_full: line = (qbp24)
+qbp24[L] = 2*qbp24[L]
+
+
+!Old split line: line = (qbp25, qbp25)
+
+qbp25_full: line = (qbp25)
+qbp25[L] = 2*qbp25[L]
+
+
+!Old split line: line = (qbp26, qbp26)
+
+qbp26_full: line = (qbp26)
+qbp26[L] = 2*qbp26[L]
+
+
+!Old split line: line = (qbp27, qbp27)
+
+qbp27_full: line = (qbp27)
+qbp27[L] = 2*qbp27[L]
+
+
+!Old split line: line = (qbp35, qbp35)
+
+qbp35_full: line = (qbp35)
+qbp35[L] = 2*qbp35[L]
+
+
+!Old split line: line = (qbp28, qbp28)
+
+qbp28_full: line = (qbp28)
+qbp28[L] = 2*qbp28[L]
+
+
+!Old split line: line = (qbp36, qbp36)
+
+qbp36_full: line = (qbp36)
+qbp36[L] = 2*qbp36[L]
+
+
+!Old split line: line = (qbp30, qbp30)
+
+qbp30_full: line = (qbp30)
+qbp30[L] = 2*qbp30[L]
+
+
+!Old split line: line = (qbp31, qbp31)
+
+qbp31_full: line = (qbp31)
+qbp31[L] = 2*qbp31[L]
+
+
+!Old split line: line = (qbp32, qbp32)
+
+qbp32_full: line = (qbp32)
+qbp32[L] = 2*qbp32[L]
+
+
+!Old split line: line = (qbp33, qbp33)
+
+qbp33_full: line = (qbp33)
+qbp33[L] = 2*qbp33[L]
+
+
+!Old split line: line = (qbp34, qbp34)
+
+qbp34_full: line = (qbp34)
+qbp34[L] = 2*qbp34[L]
+
 fodo: line = (qfy, dcy, dcy, qdy, qdy, dcy, dcy, qfy)
 
-bypi: line = (begbyp, rfbwsbp2, d2q4i2, wsbp2, d2q4j, dcysa, bpn12end, bpn13beg, dcysb, qbp13,  &
-        mqbp13)
-
-fodola: line = (qbp13, d2q4a, bpmbp13, d2q4b, xcbp13, d2q4c, ycbp13, d2q4d, dcysa, bpn13end,  &
-        bpn14beg, dcysb, qbp14, qbp14, d2q4a, bpmbp14, d2q4b, xcbp14, d2q4c, ycbp14, d2q4i1,  &
-        rfbwsbp3, d2q4i2, wsbp3, d2q4j, dcysa, bpn14end, bpn15beg, dcysb, qbp15, qbp15, d2q4a,  &
-        bpmbp15, d2q4b, xcbp15, d2q4c, ycbp15, d2q4d, dcysa, bpn15end, bpn16beg, dcysb, qbp16,  &
-        qbp16, d2q4a, bpmbp16, d2q4b, xcbp16, d2q4c, ycbp16, d2q4i1, rfbwsbp4, d2q4i2, wsbp4,  &
-        d2q4j, dcysa, bpn16end, bpn17beg, dcysb, qbp17, qbp17, d2q4a, bpmbp17, d2q4b, xcbp17,  &
-        d2q4c, ycbp17, d2q4d, dcysa, bpn17end, bpn18beg, dcysb, qbp18, qbp18, d2q4a, bpmbp18,  &
-        d2q4b, xcbp18, d2q4c, ycbp18, d2q4d, dcysa, bpn18end, bpn19beg, dcysb, qbp19, qbp19,  &
-        d2q4a, bpmbp19, d2q4b, xcbp19, d2q4c, ycbp19, d2q4d, dcysa, bpn19end, bpn20beg, dcysb,  &
-        qbp20, qbp20, d2q4a, bpmbp20, d2q4b, xcbp20, d2q4c, ycbp20, d2q4d, dcysa, bpn20end,  &
-        bpn21beg, dcysb, qbp21, qbp21, d2q4a, bpmbp21, d2q4b, xcbp21, d2q4c, ycbp21, d2q4e,  &
-        cxbp21, d2q4f, dcysa, bpn21end, bpn22beg, dcysb, qbp22, qbp22, d2q4a, bpmbp22, d2q4b,  &
-        xcbp22, d2q4c, ycbp22, d2q4e, cybp22, d2q4f, dcysa, bpn22end, bpn23beg, dcysb, qbp23,  &
-        mqbp23, qbp23, d2q4a, bpmbp23, d2q4b, xcbp23, d2q4c, ycbp23, d2q4d, dcysa, bpn23end,  &
-        bpn24beg, dcysb, qbp24, qbp24, d2q4a, bpmbp24, rfbbp24, d2q4b, xcbp24, d2q4c, ycbp24,  &
-        d2q4d, dcysa, bpn24end, bpn25beg, dcysb, qbp25, qbp25, d2q4a, bpmbp25, d2q4b, xcbp25,  &
-        d2q4c, ycbp25, d2q4e, cxbp25, d2q4f, dcysa, bpn25end, bpn26beg, dcysb, qbp26, qbp26,  &
-        d2q4a, bpmbp26, d2q4b, xcbp26, d2q4c, ycbp26, d2q4e, cybp26, d2q4f, dcysa, bpn26end,  &
-        bpn27beg, dcysb, qbp27, qbp27, d2q4a, bpmbp27, d2q4b, xcbp27, d2q4c, ycbp27, d2q4sa,  &
-        bpn27end, d2q4sb, qbp35, qbp35, d2q4a, bpmbp35, rfbbp35, d2q4b, xcbp35, d2q4c, ycbp35,  &
-        d2q4t, qbp28, qbp28, d2q4a, bpmbp28, d2q4b, xcbp28, d2q4c, ycbp28, d2q4q, rwwake4,  &
-        ltusplit, endbyp)
+fodola: line = (begbyp, rfbwsbp2, d2q4i2, wsbp2, d2q4j, dcysa, bpn12end, bpn13beg, dcysb,  &
+        qbp13_full, d2q4a, bpmbp13, d2q4b, xcbp13, d2q4c, ycbp13, d2q4d, dcysa, bpn13end,  &
+        bpn14beg, dcysb, qbp14_full, d2q4a, bpmbp14, d2q4b, xcbp14, d2q4c, ycbp14, d2q4i1,  &
+        rfbwsbp3, d2q4i2, wsbp3, d2q4j, dcysa, bpn14end, bpn15beg, dcysb, qbp15_full, d2q4a,  &
+        bpmbp15, d2q4b, xcbp15, d2q4c, ycbp15, d2q4d, dcysa, bpn15end, bpn16beg, dcysb,  &
+        qbp16_full, d2q4a, bpmbp16, d2q4b, xcbp16, d2q4c, ycbp16, d2q4i1, rfbwsbp4, d2q4i2, wsbp4 &
+        , d2q4j, dcysa, bpn16end, bpn17beg, dcysb, qbp17_full, d2q4a, bpmbp17, d2q4b, xcbp17,  &
+        d2q4c, ycbp17, d2q4d, dcysa, bpn17end, bpn18beg, dcysb, qbp18_full, d2q4a, bpmbp18, d2q4b &
+        , xcbp18, d2q4c, ycbp18, d2q4d, dcysa, bpn18end, bpn19beg, dcysb, qbp19_full, d2q4a,  &
+        bpmbp19, d2q4b, xcbp19, d2q4c, ycbp19, d2q4d, dcysa, bpn19end, bpn20beg, dcysb,  &
+        qbp20_full, d2q4a, bpmbp20, d2q4b, xcbp20, d2q4c, ycbp20, d2q4d, dcysa, bpn20end,  &
+        bpn21beg, dcysb, qbp21_full, d2q4a, bpmbp21, d2q4b, xcbp21, d2q4c, ycbp21, d2q4e, cxbp21 &
+        , d2q4f, dcysa, bpn21end, bpn22beg, dcysb, qbp22_full, d2q4a, bpmbp22, d2q4b, xcbp22,  &
+        d2q4c, ycbp22, d2q4e, cybp22, d2q4f, dcysa, bpn22end, bpn23beg, dcysb, qbp23_full, d2q4a &
+        , bpmbp23, d2q4b, xcbp23, d2q4c, ycbp23, d2q4d, dcysa, bpn23end, bpn24beg, dcysb,  &
+        qbp24_full, d2q4a, bpmbp24, rfbbp24, d2q4b, xcbp24, d2q4c, ycbp24, d2q4d, dcysa, bpn24end &
+        , bpn25beg, dcysb, qbp25_full, d2q4a, bpmbp25, d2q4b, xcbp25, d2q4c, ycbp25, d2q4e,  &
+        cxbp25, d2q4f, dcysa, bpn25end, bpn26beg, dcysb, qbp26_full, d2q4a, bpmbp26, d2q4b,  &
+        xcbp26, d2q4c, ycbp26, d2q4e, cybp26, d2q4f, dcysa, bpn26end, bpn27beg, dcysb, qbp27_full &
+        , d2q4a, bpmbp27, d2q4b, xcbp27, d2q4c, ycbp27, d2q4sa, bpn27end, d2q4sb, qbp35_full,  &
+        d2q4a, bpmbp35, rfbbp35, d2q4b, xcbp35, d2q4c, ycbp35, d2q4t, qbp28_full, d2q4a, bpmbp28 &
+        , d2q4b, xcbp28, d2q4c, ycbp28, d2q4q, ltusplit, rwwake2, endbyp)
 
 fodolb: line = (dcyfa, dcyfb, dcyfc, dcyfd, s100b, dcyfea, wooddoor)
 
-fodolc: line = (dcyfeb, qbp36, qbp36, d2q4a, bpmbp36, d2q4b, d2q4c, dcyg, qbp30, qbp30, d2q4a,  &
+fodolc: line = (dcyfeb, qbp36_full, d2q4a, bpmbp36, d2q4b, d2q4c, dcyg, qbp30_full, d2q4a,  &
         rfbbp30, d2q4b, xcbp30, d2q4c, ycbp30, dcyc)
 
 fodol: line = (fodola, sprds, fodolb, fodolc)
 
-bypm1: line = (dcyda, cxbp30, dcydb, qbp31, qbp31, d2q4a, bpmbp31, d2q4b, xcbp31, d2q4c, ycbp31,  &
-        d2q4laa, pcsp1s, d2q4lab, bpmbp32, d2q4lb, qbp32, qbp32, d2q4ab, d2q4b, xcbp32, d2q4c,  &
+bypm1: line = (dcyda, cxbp30, dcydb, qbp31_full, d2q4a, bpmbp31, d2q4b, xcbp31, d2q4c, ycbp31,  &
+        d2q4laa, pcsp1s, d2q4lab, bpmbp32, d2q4lb, qbp32_full, d2q4ab, d2q4b, xcbp32, d2q4c,  &
         ycbp32, d2q4ma1, pcsp2s, d2q4ma2)
 
 bypm2: line = (d2q4mba, cbp33, d2q4mbb, stbp34a, btmbp34a, d2q4mbc, stbp34b, btmbp34b, d2q4mbd,  &
-        dbp2b, qbp33, qbp33, d2q4a, rfbbp33, d2q4b, xcbp33, d2q4c, ycbp33, dbp3aa, pcsp3s, dbp3ab &
-        , cxbp34, dbp3b, qbp34, qbp34, d2q4a, bpmbp34, d2q4b, xcbp34, d2q4c, ycbp34, d2q4o, dcwla &
-        , pcsp4s, dcwlb)
+        dbp2b, qbp33_full, d2q4a, rfbbp33, d2q4b, xcbp33, d2q4c, ycbp33, dbp3aa, pcsp3s, dbp3ab,  &
+        cxbp34, dbp3b, qbp34_full, d2q4a, bpmbp34, d2q4b, xcbp34, d2q4c, ycbp34, d2q4o, dcwla,  &
+        pcsp4s, dcwlb)
 
 bypm: line = (bypm1, brcus1a, brcus1b, mrgcusxr, bypm2)
 
-bypass: line = (bypi, fodol, bypm)
+bypass: line = (fodol, bypm)
 
 ! ------------------------------------------------------------------------------
 

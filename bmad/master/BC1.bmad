@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-13JUN19 ***
+! *** OPTICS=AD_ACCEL-2019next ***
 
 ! LCLS2sc bunch compressor chicane #1
 
@@ -380,51 +380,177 @@ bc1bcend: marker
 ! BEAMLINE
 ! ------------------------------------------------------------------------------
 
+bcx11_full: line = (bcx11a, bcx11b)
+bcx12_full: line = (bcx12a, bcx12b)
+bcx13_full: line = (bcx13a, bcx13b)
+bcx14_full: line = (bcx14a, bcx14b)
+
+
+
+!Old split line: line = (q1c01, bpm1c01, q1c01)
+
+q1c01_full: line = (q1c01)
+q1c01[L] = 2*q1c01[L]
+bpm1c01[superimpose] = T
+bpm1c01[ref] = q1c01
+
+
+!Old split line: line = (cq11b, cq11b)
+
+cq11b_full: line = (cq11b)
+cq11b[L] = 2*cq11b[L]
+
+
+!Old split line: line = (sq13b, sq13b)
+
+sq13b_full: line = (sq13b)
+sq13b[L] = 2*sq13b[L]
+
+
+!Old split line: line = (cq12b, cq12b)
+
+cq12b_full: line = (cq12b)
+cq12b[L] = 2*cq12b[L]
+
+
+!Old split line: line = (qc101, bpmc101, qc101)
+
+qc101_full: line = (qc101)
+qc101[L] = 2*qc101[L]
+bpmc101[superimpose] = T
+bpmc101[ref] = qc101
+
+
+!Old split line: line = (qc102, bpmc102, qc102)
+
+qc102_full: line = (qc102)
+qc102[L] = 2*qc102[L]
+bpmc102[superimpose] = T
+bpmc102[ref] = qc102
+
+
+!Old split line: line = (qc103, bpmc103, qc103)
+
+qc103_full: line = (qc103)
+qc103[L] = 2*qc103[L]
+bpmc103[superimpose] = T
+bpmc103[ref] = qc103
+
+
+!Old split line: line = (qc104, bpmc104, qc104)
+
+qc104_full: line = (qc104)
+qc104[L] = 2*qc104[L]
+bpmc104[superimpose] = T
+bpmc104[ref] = qc104
+
+
+!Old split line: line = (qc105, bpmc105, qc105)
+
+qc105_full: line = (qc105)
+qc105[L] = 2*qc105[L]
+bpmc105[superimpose] = T
+bpmc105[ref] = qc105
+
+
+!Old split line: line = (qc106, bpmc106, qc106)
+
+qc106_full: line = (qc106)
+qc106[L] = 2*qc106[L]
+bpmc106[superimpose] = T
+bpmc106[ref] = qc106
+
+
+!Old split line: line = (qc107, bpmc107, qc107)
+
+qc107_full: line = (qc107)
+qc107[L] = 2*qc107[L]
+bpmc107[superimpose] = T
+bpmc107[ref] = qc107
+
+
+!Old split line: line = (qc108, bpmc108, qc108)
+
+qc108_full: line = (qc108)
+qc108[L] = 2*qc108[L]
+bpmc108[superimpose] = T
+bpmc108[ref] = qc108
+
+
+!Old split line: line = (qc109, bpmc109, qc109)
+
+qc109_full: line = (qc109)
+qc109[L] = 2*qc109[L]
+bpmc109[superimpose] = T
+bpmc109[ref] = qc109
+
+
+!Old split line: line = (qc110, bpmc110, qc110)
+
+qc110_full: line = (qc110)
+qc110[L] = 2*qc110[L]
+bpmc110[superimpose] = T
+bpmc110[ref] = qc110
+
+
+!Old split line: line = (qc111, bpmc111, qc111)
+
+qc111_full: line = (qc111)
+qc111[L] = 2*qc111[L]
+bpmc111[superimpose] = T
+bpmc111[ref] = qc111
+
+
+!Old split line: line = (qc112, bpmc112, qc112)
+
+qc112_full: line = (qc112)
+qc112[L] = 2*qc112[L]
+bpmc112[superimpose] = T
+bpmc112[ref] = qc112
+
 sc1c00: line = (xc1c00, yc1c00)
 
 bc1i0: line = (d1c00, q1c01, q1c01, d1c01a, d1c01b)
 
-bc1i: line = (sc1c00, d1c00, q1c01, bpm1c01, q1c01, d1c01a, rfb1c01, d1c01b)
+bc1i: line = (sc1c00, d1c00, q1c01_full, d1c01a, rfb1c01, d1c01b)
 
 bc1c0: line = (bc1bcbeg, bcx11a, bcx11b, dc1o, bcx12a, bcx12b, dc1ih, bc1bcmid, dc1ih, bcx13a,  &
         bcx13b, dc1o, bcx14a, bcx14b, bc1bcend)
 
-bc1c: line = (bc1bcbeg, bcx11a, bcx11b, dc1oa, cq11b, cq11b, dc1ob, ycm12b, dc1oc, bcx12a, bcx12b &
-        , dc1ia, bpm11b, dc1ib, ce11b, dc1ic, otr11b, dc1id, ws11b, dc1ie, bcx13a, bcx13b, dc1od &
-        , sq13b, sq13b, dc1oe, xcm12b, dc1of, cq12b, cq12b, dc1og, bcx14a, bcx14b, cntbc1,  &
-        bc1bcend)
+bc1c: line = (bc1bcbeg, bcx11_full, dc1oa, cq11b_full, dc1ob, ycm12b, dc1oc, bcx12_full, dc1ia,  &
+        bpm11b, dc1ib, ce11b, dc1ic, otr11b, dc1id, ws11b, dc1ie, bcx13_full, dc1od, sq13b_full,  &
+        dc1oe, xcm12b, dc1of, cq12b_full, dc1og, bcx14_full, cntbc1, bc1bcend)
 
 bc1: line = (begbc1b, bc1i, bc1c)
 
-!-!  COMMENT !simplified
-!-!    COL1 : LINE=(&
-!-!      DC100,ENDBC1B,BEGCOL1,&
-!-!      QC101,QC101,DC101,&
-!-!      QC102,QC102,DC102,&
-!-!      QC103,QC103,DC103,&
-!-!      QC104,QC104,DC104,&
-!-!      QC105,QC105,DColl1,&
-!-!      QC106,QC106,DColl1,&
-!-!      QC107,QC107,DColl1,&
-!-!      QC108,QC108,DColl1,&
-!-!      QC109,QC109,DColl1,&
-!-!      QC110,QC110,DColl1,&
-!-!      QC111,QC111,DColl1,&
-!-!      QC112,QC112,DC112a,&
-!-!      ENDCOL1)
-!-!  ENDCOMMENT
+!=!  COMMENT !simplified
+!=!  COMMENT !simplified
+!=!    COL1 : LINE=(DC100,ENDBC1B,BEGCOL1,&
+!=!      QC101,QC101,DC101,&
+!=!      QC102,QC102,DC102,&
+!=!      QC103,QC103,DC103,&
+!=!      QC104,QC104,DC104,&
+!=!      QC105,QC105,DColl1,&
+!=!      QC106,QC106,DColl1,&
+!=!      QC107,QC107,DColl1,&
+!=!      QC108,QC108,DColl1,&
+!=!      QC109,QC109,DColl1,&
+!=!      QC110,QC110,DColl1,&
+!=!      QC111,QC111,DColl1,&
+!=!      QC112,QC112,DC112a,&
+!=!      ENDCOL1)
+!=!  ENDCOMMENT
 
  !COMMENT !complete
-col1: line = (dc100a, bz11b, dc100b, bzc1, dc100c, endbc1b, begcol1, qc101, bpmc101, qc101,  &
-        dc101a, im11b, dc101b, xcc101, dc101c, ycc101, dc101d, qc102, bpmc102, qc102, dc102,  &
-        qc103, bpmc103, qc103, dc103, qc104, bpmc104, qc104, dc104a, xcc104, dc104b, rfbc104,  &
-        dc104c, wsc104, dc104d, cyc11, dc104e, qc105, bpmc105, qc105, dc105a, ycc105, dc105b,  &
-        cxc11, dc105c, qc106, bpmc106, qc106, dc106a, xcc106, dc106b, rfbc106, dc106c, wsc106,  &
-        dc106d, cyc12, dc106e, qc107, bpmc107, qc107, dc107a, ycc107, dc107b, cxc12, dc107c,  &
-        qc108, bpmc108, qc108, dc108a, xcc108, dc108b, rfbc108, dc108c, wsc108, dc108d, cyc13,  &
-        dc108e, qc109, bpmc109, qc109, dc109a, ycc109, dc109b, cxc13, dc109c, qc110, bpmc110,  &
-        qc110, dc110a, xcc110, dc110b, rfbc110, dc110c, wsc110, dc110d, qc111, bpmc111, qc111,  &
-        dc111a, ycc111, dc111b, qc112, bpmc112, qc112, dc112a, xcc112, endcol1)
+col1: line = (dc100a, bz11b, dc100b, bzc1, dc100c, endbc1b, begcol1, qc101_full, dc101a, im11b,  &
+        dc101b, xcc101, dc101c, ycc101, dc101d, qc102_full, dc102, qc103_full, dc103, qc104_full &
+        , dc104a, xcc104, dc104b, rfbc104, dc104c, wsc104, dc104d, cyc11, dc104e, qc105_full,  &
+        dc105a, ycc105, dc105b, cxc11, dc105c, qc106_full, dc106a, xcc106, dc106b, rfbc106,  &
+        dc106c, wsc106, dc106d, cyc12, dc106e, qc107_full, dc107a, ycc107, dc107b, cxc12, dc107c &
+        , qc108_full, dc108a, xcc108, dc108b, rfbc108, dc108c, wsc108, dc108d, cyc13, dc108e,  &
+        qc109_full, dc109a, ycc109, dc109b, cxc13, dc109c, qc110_full, dc110a, xcc110, dc110b,  &
+        rfbc110, dc110c, wsc110, dc110d, qc111_full, dc111a, ycc111, dc111b, qc112_full, dc112a,  &
+        xcc112, endcol1)
  !ENDCOMMENT
 
 c1fodo: line = (qfcoll1, dcoll1, qdcoll1, qdcoll1, dcoll1, qfcoll1)

@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-13JUN19 ***
+! *** OPTICS=AD_ACCEL-2019next ***
 
 ! LCLS2cu matching routines
 
@@ -112,18 +112,26 @@
 
   MBChETA : SUBROUTINE
 
-  ! set Heater-chicane peak dispersion
+  ! set Heater-chicane X-offset
 
+    BEAM, ENERGY=Ei
     VALUE, BBh1,ABh1
-    USE, (DL1)
-    MATCH, ENERGY=Ei
-      VARY, BBh1, STEP=1.E-5, LOWER=-8, UPPER=8
-      CONSTR, HTRUND, DX=-0.035486*LSRHTR_ON    ! want 35 mm X-offset - need 35.486 mm of etaX to get it
-      !LMDIF
-      !MIGRAD
+    USE, LSRHTR
+    MATCH, SURVEY
+      VARY, BBh1, STEP=1.E-6, LOWER=-8, UPPER=8
+      WEIGHT, XS=1
+     !CONSTR, HTRUND, DX=-0.035486*LSRHTR_ON !want 35 mm X-offset - need 35.486 mm of etaX to get it
+      CONSTR, HTRUND, XS=0.035 !want 35 mm X-offset
+     !LMDIF, TOL=1.E-20
+     !MIGRAD, TOL=1.E-20
     ENDMATCH
-    VALUE, 1.088755E-20   ! =expected penalty function with fitting OFF
+    VALUE, 4.333342E-34 !expected penalty function with fitting OFF
     VALUE, BBh1,ABh1
+    MATCH, BETX=10, BETY=10
+      RMATRIX, #S/#E, RM(5,6)=0
+    ENDMATCH
+    PRINT, FULL
+    SURVEY
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
@@ -148,25 +156,30 @@
 
   MED0 : SUBROUTINE
 
-  ! match from exit of L0 into ED0
+  ! match from exit of L0a into ED0
 
+    BEAM, ENERGY=E0i
     VALUE, KQA01,KQA02,KQE01,KQE02,KQE03,KQE04
-    USE, (GUNL0a,L0b,DL1)
-    MATCH, BETA0=TWSSC
+    USE, (L0b,DL1_1)
+    MATCH, BETA0=TWSS0
       VARY, KQA01, STEP=1.E-5, LOWER=-39,  UPPER=+39
       VARY, KQA02, STEP=1.E-5, LOWER=-39,  UPPER=+39
       VARY, KQE01, STEP=1.E-5, LOWER=-39,  UPPER=+39
       VARY, KQE02, STEP=1.E-5, LOWER=-39,  UPPER=+39
       VARY, KQE03, STEP=1.E-5, LOWER=-39,  UPPER=+39
       VARY, KQE04, STEP=1.E-5, LOWER=-39,  UPPER=+39
+     !CONSTR, HTRUND, BETX<12,BETX>8,BETY<12,BETY>8
+      CONSTR, HTRUND, BETX=12,BETY=12
       CONSTR, MRK0, BETX=BMIN0,ALFX=0.,BETY=BMIN0,ALFY=0.
-      CONSTR, HTRUND, BETX<12,BETX>8,BETY<12,BETY>8
-      !LMDIF
-      !MIGRAD
-      !SIMPLEX
+     !LMDIF, TOL=1.E-20
+     !MIGRAD, TOL=1.E-20
     ENDMATCH
-    VALUE, 1.900871E-09   ! =expected penalty function with fitting OFF (htr fully ON)
+    VALUE, 7.202187E-23 !expected penalty function with fitting OFF (htr fully ON)
     VALUE, KQA01,KQA02,KQE01,KQE02,KQE03,KQE04
+    BEAM, ENERGY=E0i
+    USE, (L0b,DL1_1)
+    PRINT, FULL
+    TWISS, COUPLE, BETA0=TWSS0
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
@@ -226,16 +239,19 @@
 
   ! match BC1 R56
 
-    VALUE, BB11,AB11,AB11S,LB11S,AB11L,LB11L
+    BEAM, ENERGY=EBC1
+    VALUE, AB11,AB11S,LB11S,AB11L,LB11L,BB11
     USE, BC1c
-    MATCH, ENERGY=EBC1
-      VARY, BB11, STEP=1.E-5, LOWER=-16, UPPER=0
-      RMATRIX, #S/#E, RM(5,6)=0.03905
-      !LMDIF
-      !MIGRAD
+    MATCH, BETX=10, BETY=10
+      VARY, AB11, STEP=1.E-6, UPPER=0
+      RMATRIX, #S/#E, RM(5,6)=R56BC1 !0.03905
+     !LMDIF, TOL=1.E-20
+     !MIGRAD, TOL=1.E-20
     ENDMATCH
-    VALUE, 1.020712E-28   ! =expected penalty function with fitting OFF
-    VALUE, BB11,AB11,AB11S,LB11S,AB11L,LB11L
+    VALUE, 2.077281E-26 !expected penalty function with fitting OFF
+    VALUE, AB11,AB11S,LB11S,AB11L,LB11L,BB11
+    PRINT, FULL
+    SURVEY
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
@@ -244,21 +260,28 @@
 
   ! match through BC1 chicane into emittance measurement system
 
+    BEAM, ENERGY=E0i
     VALUE, KQA12,KQ21201,KQM11,KQM12,KQM13
     USE, (L0b,DL1,L1,BC1)
     MATCH, BETA0=TWSS0
-      VARY, KQA12,   STEP=1.E-5, LOWER=-100, UPPER=+100
-      VARY, KQ21201, STEP=1.E-5, LOWER=-100, UPPER=0
-      VARY, KQM11,   STEP=1.E-5, LOWER=-100, UPPER=+100
-      VARY, KQM12,   STEP=1.E-5, LOWER=-100, UPPER=+100
-      VARY, KQM13,   STEP=1.E-5, LOWER=-100, UPPER=+100
-      CONSTR, BX14B, BETX<4.0, ALFX<-0.0
+      VARY, KQA12,   STEP=1.E-6, LOWER=-100, UPPER=+100
+      VARY, KQ21201, STEP=1.E-6, LOWER=-100, UPPER=0
+      VARY, KQM11,   STEP=1.E-6, LOWER=-100, UPPER=+100
+      VARY, KQM12,   STEP=1.E-6, LOWER=-100, UPPER=+100
+      VARY, KQM13,   STEP=1.E-6, LOWER=-100, UPPER=+100
+      CONSTR, BX14B, BETX<4, ALFX<0
       CONSTR, WS12, BETX=BMIN1, ALFX=0, BETY=BMIN1, ALFY=0
-      !LMDIF
-      !MIGRAD
+     !LMDIF, TOL=1.E-20
+     !MIGRAD, TOL=1.E-20
     ENDMATCH
-    VALUE, 1.520512E-13  ! =expected penalty function with fitting OFF
+    VALUE, 1.675593E-22 !expected penalty function with fitting OFF
     VALUE, KQA12,KQ21201,KQM11,KQM12,KQM13
+    BEAM, ENERGY=E0i
+    USE, (L0b,DL1,L1,BC1)
+    PRINT, FULL
+    TWISS, COUPLE, BETA0=TWSS0, SAVE
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
@@ -267,6 +290,7 @@
 
   ! match BC1 to L2
 
+    BEAM, ENERGY=E0i
     VALUE, KQM14,KQM15,KQ21401,KQ21501
     USE, (L0b,DL1,L1,BC1,LI21)
     MATCH, BETA0=TWSS0
@@ -282,11 +306,17 @@
       CONSTR, Q21701[1], BETY=BET21, BETX=BET22
       CONSTR, Q21801[1], BETX=BET21, BETY=BET22
       CONSTR, Q21901[1], BETY=BET21 !, BETX=BET22
-      !LMDIF
-      !MIGRAD
+     !LMDIF, TOL=1.E-20
+     !MIGRAD, TOL=1.E-20
     ENDMATCH
-    VALUE, 9.653556E+00   ! =expected penalty function with fitting OFF
+    VALUE, 9.621057E+00 !expected penalty function with fitting OFF
     VALUE, KQM14,KQM15,KQ21401,KQ21501
+    BEAM, ENERGY=E0i
+    USE, (L0b,DL1,L1,BC1,LI21)
+    PRINT, FULL
+    TWISS, COUPLE, BETA0=TWSS0, SAVE
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
@@ -373,16 +403,20 @@
 
   ! match BC2 R56
 
-    VALUE, BB21,AB21
-    USE, BC2
-    MATCH, ENERGY=EBC2
-      VARY, BB21, STEP=1.E-6, LOWER=-18, UPPER=0
-      RMATRIX, #S/#E, RM(5,6)=0.0247
-      !LMDIF
-      !MIGRAD
+    BEAM, ENERGY=EBC2
+    VALUE, AB21,BB21
+    USE, BC2c1
+    MATCH, BETX=10, BETY=10
+     !VARY, BB21, STEP=1.E-6, LOWER=-18, UPPER=0
+      VARY, AB21, STEP=1.E-6, UPPER=0
+      RMATRIX, #S/#E, RM(5,6)=R56BC2 !0.0247
+     !LMDIF, TOL=1.E-20
+     !MIGRAD, TOL=1.E-20
     ENDMATCH
-    VALUE, 1.337643E-18   ! =expected penalty function with fitting OFF
-    VALUE, BB21,AB21
+    VALUE, 1.004735E-25 !expected penalty function with fitting OFF
+    VALUE, AB21,BB21
+    PRINT, FULL
+    SURVEY
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
@@ -391,24 +425,25 @@
 
   ! match into BC2
 
+    BEAM, ENERGY=E0i
     VALUE, KQ24501,KQ24601,KQ24701,KQM21
     USE, (L0b,DL1,L1,BC1,L2,BC2)
     MATCH, BETA0=TWSS0
-      VARY, KQ24501, STEP=1.E-5 !, LOWER=-100, UPPER=0
-      VARY, KQ24601, STEP=1.E-5 !, LOWER=0   , UPPER=100
-      VARY, KQ24701, STEP=1.E-5 !, LOWER=-100, UPPER=0
-      VARY, KQM21,   STEP=1.E-5 !, LOWER=0   , UPPER=100
+      VARY, KQ24501, STEP=1.E-6 !, LOWER=-100, UPPER=0
+      VARY, KQ24601, STEP=1.E-6 !, LOWER=0   , UPPER=100
+      VARY, KQ24701, STEP=1.E-6 !, LOWER=-100, UPPER=0
+      VARY, KQM21,   STEP=1.E-6 !, LOWER=0   , UPPER=100
       WEIGHT, BETX=10
       CONSTR, BX24B, BETX=5.0, ALFX=-0.5
-      WEIGHT, BETX=0.1  , BETY=0.1
+      WEIGHT, BETX=1.E-6, BETY=1.E-6
       CONSTR, Q24601[1] , BETY>10
       CONSTR, Q24701A[2], BETY<50
       CONSTR, Q24701A[2], BETX<50
       CONSTR, Q24901A[2], BETY<75
-      !LMDIF
-      !MIGRAD
+     !LMDIF, TOL=1.E-20
+     !MIGRAD, TOL=1.E-20
     ENDMATCH
-    VALUE,  6.532261E-03   ! =expected penalty function with fitting OFF
+    VALUE, 7.347058E-13 !expected penalty function with fitting OFF
     VALUE, KQ24501,KQ24601,KQ24701,KQM21
   ENDSUBROUTINE
 
@@ -418,15 +453,16 @@
 
   ! match BC2 to L3
 
+    BEAM, ENERGY=E0i
     VALUE, KQM22,KQ24901,KQ25201,KQ25301,KQ25401,KQ25501
     USE, (L0b,DL1,L1,BC1,L2,BC2,LI25)
     MATCH, BETA0=TWSS0
-      VARY, KQM22,   STEP=1.E-5  , LOWER=-0.65, UPPER=0
-      VARY, KQ24901, STEP=1.E-5 !, LOWER=-10 , UPPER=0
-      VARY, KQ25201, STEP=1.E-5 !, LOWER=0   , UPPER=10
-      VARY, KQ25301, STEP=1.E-5 !, LOWER=-10 , UPPER=0
-      VARY, KQ25401, STEP=1.E-5 !, LOWER=0   , UPPER=10
-      VARY, KQ25501, STEP=1.E-5 !, LOWER=-10 , UPPER=0
+      VARY, KQM22,   STEP=1.E-6  , LOWER=-0.65, UPPER=0
+      VARY, KQ24901, STEP=1.E-6 !, LOWER=-10 , UPPER=0
+      VARY, KQ25201, STEP=1.E-6 !, LOWER=0   , UPPER=10
+      VARY, KQ25301, STEP=1.E-6 !, LOWER=-10 , UPPER=0
+      VARY, KQ25401, STEP=1.E-6 !, LOWER=0   , UPPER=10
+      VARY, KQ25501, STEP=1.E-6 !, LOWER=-10 , UPPER=0
       CONSTR, Q25201[1], BETX<60
       CONSTR, Q25301[1], BETY<64
       CONSTR, Q25401[1], BETX=BET31, BETY=BET32
@@ -434,10 +470,10 @@
       CONSTR, Q25601[1], BETX=BET31, BETY=BET32
       CONSTR, Q25701[1], BETX=BET33, BETY=BET34
       CONSTR, Q25801[1], BETX=BET31, BETY=BET32
-      !LMDIF
-      !MIGRAD
+     !LMDIF, TOL=1.E-20
+     !MIGRAD, TOL=1.E-20
     ENDMATCH
-    VALUE, 1.442784E-02   ! =expected penalty function with fitting OFF
+    VALUE, 4.578278E-01 !expected penalty function with fitting OFF
     VALUE, KQM22,KQ24901,KQ25201,KQ25301,KQ25401,KQ25501
   ENDSUBROUTINE
 
@@ -549,26 +585,62 @@
 
   ML30 : SUBROUTINE
 
-  ! match LI30 betas
+  ! match "periodic" (FODO cell) LI30 betas
 
+    BEAM, ENERGY=E0i
+    SET, KQ30401, KQFL3
+    SET, KQ30501, KQDL3
+    SET, KQ30601, KQFL3
+    SET, KQ30701, KQDL3
+    SET, KQ30801, KQFL3
     VALUE, KQ29801,KQ29901,KQ30201,KQ30301
     USE, (L0b,DL1,L1,BC1,L2,BC2,L3)
     MATCH, BETA0=TWSS0
-      VARY, KQ29801, STEP=1.E-5 !, LOWER=0   , UPPER=100
-      VARY, KQ29901, STEP=1.E-5 !, LOWER=-100, UPPER=0
-      VARY, KQ30201, STEP=1.E-5 !, LOWER=0   , UPPER=100
-      VARY, KQ30301, STEP=1.E-5 !, LOWER=-100, UPPER=0
+      VARY, KQ29801, STEP=1.E-6, LOWER=0
+      VARY, KQ29901, STEP=1.E-6, UPPER=0
+      VARY, KQ30201, STEP=1.E-6, LOWER=0
+      VARY, KQ30301, STEP=1.E-6, UPPER=0
       CONSTR, Q30301[1], BETX=BET33, BETY=BET34
       CONSTR, Q30401[1], BETX=BET31, BETY=BET32
       CONSTR, Q30501[1], BETX=BET33, BETY=BET34
       CONSTR, Q30601[1], BETX=BET31, BETY=BET32
       CONSTR, Q30701[1], BETX=BET33, BETY=BET34
       CONSTR, Q30801[1], BETX=BET31, BETY=BET32
-      !LMDIF
-      !MIGRAD
+     !LMDIF, TOL=1.E-20
+     !MIGRAD, TOL=1.E-20
     ENDMATCH
     VALUE, 1.694700E-01   ! =expected penalty function with fitting OFF
     VALUE, KQ29801,KQ29901,KQ30201,KQ30301
+  ENDSUBROUTINE
+
+! ------------------------------------------------------------------------------
+
+  ML30tweak : SUBROUTINE
+
+  ! match LTUH betas after changes in upstream Cu linac systems
+
+    BEAM, ENERGY=E0i
+    SET, SETCUS, CUSOFF ; SET, SETAL, ALOFF
+    SETK2cuH
+    USE, (L0b,DL1,L1,BC1,L2,BC2,L3,CLTH0,CLTH1,CLTH2,BSYH1,BSYH2,LTUH)
+    VALUE, KQ30401,KQ30501,KQ30601,KQ30701
+    MATCH, BETA0=TWSS0
+      VARY, KQ30401, STEP=1.E-6, LOWER=0
+      VARY, KQ30501, STEP=1.E-6, UPPER=0
+      VARY, KQ30601, STEP=1.E-6, LOWER=0
+      VARY, KQ30701, STEP=1.E-6, UPPER=0
+      CONSTR, MM1, BETX=MBETXh, BETY=MBETYh, ALFX=MALFXh, ALFY=MALFYh
+     !LMDIF, TOL=1.E-20
+     !MIGRAD, TOL=1.E-20
+    ENDMATCH
+    VALUE, 2.435538E-19 !expected penalty function with fitting OFF
+    VALUE, KQ30401,KQ30501,KQ30601,KQ30701
+    BEAM, ENERGY=E0i
+    USE, (L0b,DL1,L1,BC1,L2,BC2,L3,CLTH0,CLTH1,CLTH2,BSYH1,BSYH2,LTUH)
+    PRINT, FULL
+    TWISS, BETA0=TWSS0, SAVE
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
@@ -1697,7 +1769,7 @@ ENDCOMMENT
     VALUE, BET31,BET32,BET33,BET34
   ENDCOMMENT
 
-  COMMENT !Cu linac matching routines
+ !COMMENT !Cu linac matching routines
    !MTWSSC
    !MGSPEC
    !MBChETA
@@ -1722,8 +1794,9 @@ ENDCOMMENT
    !ML28
    !ML29
    !ML30
+   !ML30tweak
    !!L3K1out
-  ENDCOMMENT
+ !ENDCOMMENT
 
   COMMENT !LCLS-II matching routines
    !MXYZALINE

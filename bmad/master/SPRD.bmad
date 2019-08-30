@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-13JUN19 ***
+! *** OPTICS=AD_ACCEL-2019next ***
 
 ! LCLS2sc 3-way spreader system
 
@@ -300,10 +300,11 @@ ssp1h: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = kssp1h,
 ssp2h: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = kssp2h, tilt =  &
         degrees*tssp2h
 
-!-!  COMMENT
-!-!    VALUE, (Cb*Ef)*KSSP1h*LSb,(Cb*10)*KSSP1h*LSb
-!-!    VALUE, (Cb*Ef)*KSSP2h*LSb,(Cb*10)*KSSP2h*LSb
-!-!  ENDCOMMENT
+!=!  COMMENT
+!=!  COMMENT
+!=!    VALUE, (Cb*Ef)*KSSP1h*LSb,(Cb*10)*KSSP1h*LSb
+!=!    VALUE, (Cb*Ef)*KSSP2h*LSb,(Cb*10)*KSSP2h*LSb
+!=!  ENDCOMMENT
 
 ! SXR & dumpline shared quads
 
@@ -343,10 +344,11 @@ kssp2s = 12.699237045946 ! 12.699235330279
 ssp1s: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = kssp1s
 ssp2s: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = kssp2s
 
-!-!  COMMENT
-!-!    VALUE, (Cb*Ef)*KSSP1s*LSb,(Cb*10)*KSSP1s*LSb
-!-!    VALUE, (Cb*Ef)*KSSP2s*LSb,(Cb*10)*KSSP2s*LSb
-!-!  ENDCOMMENT
+!=!  COMMENT
+!=!  COMMENT
+!=!    VALUE, (Cb*Ef)*KSSP1s*LSb,(Cb*10)*KSSP1s*LSb
+!=!    VALUE, (Cb*Ef)*KSSP2s*LSb,(Cb*10)*KSSP2s*LSb
+!=!  ENDCOMMENT
 
 ! BSY dumpline quads
 
@@ -1050,6 +1052,8 @@ cntsp2s: marker, type = "CENTER"
 cntsp1h: marker, type = "CENTER"
 cntsp2h: marker, type = "CENTER"
 cntsp3h: marker, type = "CENTER"
+cntsp1d: marker, type = "CENTER"
+rwwake3d: marker, type = "WAKE" !SPRDD/BSY beampipe wake applied here
 muwalld: marker !front face of muon wall for dump beam
 dumpbsy: instrument, type = "DUMPBSY" !front face of BSY dump
 
@@ -1177,49 +1181,257 @@ otrspdmp: instrument, type = "@0,OTR" !OTR screen before BSY dump
 
 ! beamlines
 
-sprdkh: line = (bkysp0ha, bkysp0hb, dspbk0h, bkysp1ha, bkysp1hb, dspbk1h, bkysp2ha, bkysp2hb,  &
-        dspbk2h, bkysp3ha, bkysp3hb, dspbk3h, bkysp4ha, bkysp4hb, dspbk4h, bkysp5ha, bkysp5hb,  &
-        dspbk5ha, bpmsph, dspbk5hb, blxspha, blxsphb)
+bkysp0h_full: line = (bkysp0ha, bkysp0hb)
+bkysp1h_full: line = (bkysp1ha, bkysp1hb)
+bkysp2h_full: line = (bkysp2ha, bkysp2hb)
+bkysp3h_full: line = (bkysp3ha, bkysp3hb)
+bkysp4h_full: line = (bkysp4ha, bkysp4hb)
+bkysp5h_full: line = (bkysp5ha, bkysp5hb)
+blxsph_full: line = (blxspha, blxsphb)
 
-sprdksa: line = (dspq1a, bpmsp1, dspq1b, dspq1c, qsp1, qsp1, dspq2a, xcsp1, dspq2b, bpmsp2,  &
-        dspq2c, qsp2, qsp2, dspq3a, ycsp2, dspq3b)
+sprdkh: line = (bkysp0h_full, dspbk0h, bkysp1h_full, dspbk1h, bkysp2h_full, dspbk2h, bkysp3h_full &
+        , dspbk3h, bkysp4h_full, dspbk4h, bkysp5h_full, dspbk5ha, bpmsph, dspbk5hb, blxsph_full)
 
-sprdksb: line = (bkysp0sa, bkysp0sb, dspbk0s, bkysp1sa, bkysp1sb, dspbk1s, bkysp2sa, bkysp2sb,  &
-        dspbk2s, bkysp3sa, bkysp3sb, dspbk3s, bkysp4sa, bkysp4sb, dspbk4s, bkysp5sa, bkysp5sb,  &
-        dspbk5sa, bpmsps, dspbk5sb, blxspsa, blxspsb)
+
+
+!Old split line: line = (qsp1, qsp1)
+
+qsp1_full: line = (qsp1)
+qsp1[L] = 2*qsp1[L]
+
+
+!Old split line: line = (qsp2, qsp2)
+
+qsp2_full: line = (qsp2)
+qsp2[L] = 2*qsp2[L]
+
+sprdksa: line = (dspq1a, bpmsp1, dspq1b, dspq1c, qsp1_full, dspq2a, xcsp1, dspq2b, bpmsp2, dspq2c &
+        , qsp2_full, dspq3a, ycsp2, dspq3b)
+
+bkysp0s_full: line = (bkysp0sa, bkysp0sb)
+bkysp1s_full: line = (bkysp1sa, bkysp1sb)
+bkysp2s_full: line = (bkysp2sa, bkysp2sb)
+bkysp3s_full: line = (bkysp3sa, bkysp3sb)
+bkysp4s_full: line = (bkysp4sa, bkysp4sb)
+bkysp5s_full: line = (bkysp5sa, bkysp5sb)
+blxsps_full: line = (blxspsa, blxspsb)
+
+sprdksb: line = (bkysp0s_full, dspbk0s, bkysp1s_full, dspbk1s, bkysp2s_full, dspbk2s,  &
+        bkysp3s_full, dspbk3s, bkysp4s_full, dspbk4s, bkysp5s_full, dspbk5sa, bpmsps, dspbk5sb,  &
+        blxsps_full)
 
 sprdks: line = (sprdksa, sprdksb)
 
-sprdha: line = (rosp1h, dsp2ha, bysp1ha, bysp1hb, dsp2hb, bysp2ha, bysp2hb, cntsp1h, dsp2hc,  &
-        qsp1h, qsp1h, dsp3haa, ssp1h, ssp1h, dsp3hab, bpmsp1h, dsp3hb, xcsp1h, dsp3hc, dsp3hd,  &
-        qsp2h, bpmsp2h, qsp2h, dsp4ha, ycsp2h, dsp4hb, imsp0h, dsp4hc, brsp1ha, brsp1hb, rosp2h,  &
-        dsp5ha, dsp5hb, xcsp3h, dsp5hca, ssp2h, ssp2h, dsp5hcb, qsp3h, qsp3h, dsp6ha, bpmsp3h,  &
-        dsp6hb, ycsp4h, dsp6hc, qsp4h, qsp4h, dsp7ha, bpmsp4h, dsp7hb, xcsp5h, dsp7hc, qsp5h,  &
-        qsp5h, dsp8ha, bpmsp5h, dsp8hb, ycsp6h, dsp8hc, qsp6h, qsp6h, dsp9ha, bpmsp6h, dsp9hb,  &
-        dsp9hc, dsp9hd, dsp9he, dsp9hf, dsp9hg, qsp7h, bpmsp7h, qsp7h, dsp10ha, xcsp7h, dsp10hb,  &
-        dsp10hc, ycsp8h, dsp10hd, qsp8h, qsp8h, dsp11ha, bpmsp8h, dsp11hb, dsp11hc, qsp9h, qsp9h &
-        , dsp12ha, bpmsp9h, dsp12hb, xcsp9h, dsp12hc1, imbcsh1, dsp12hc2, imbcsh2, dsp12hc3,  &
-        imbcsh3, dsp12hc4, bpmsp10h, dsp12hd, ycsp10h, dsp12he, qsp10h, qsp10h, dsp13ha, xcsp11h &
-        , dsp13hb, bpmsp11h, dsp13hc, qsp11h, qsp11h, dsp14ha, wooddoor)
+bysp1h_full: line = (bysp1ha, bysp1hb)
+bysp2h_full: line = (bysp2ha, bysp2hb)
+brsp1h_full: line = (brsp1ha, brsp1hb)
 
-sprdhb: line = (dsp14hb, rosp3h, brsp2ha, brsp2hb, cntsp2h, dsp15ha, dsp15hb, dsp15hc, dsp15hd,  &
-        qsp12h, bpmsp12h, qsp12h, dsp16ha, ycsp12h, dsp16hb, xcsp13h, dsp16hc, qsp13h, qsp13h,  &
-        dsp17ha, bpmsp13h, dsp17hb, bxsp1ha, bxsp1hb, cntsp3h)
+
+
+!Old split line: line = (qsp1h, qsp1h)
+
+qsp1h_full: line = (qsp1h)
+qsp1h[L] = 2*qsp1h[L]
+
+
+!Old split line: line = (qsp2h, bpmsp2h, qsp2h)
+
+qsp2h_full: line = (qsp2h)
+qsp2h[L] = 2*qsp2h[L]
+bpmsp2h[superimpose] = T
+bpmsp2h[ref] = qsp2h
+
+
+!Old split line: line = (qsp3h, qsp3h)
+
+qsp3h_full: line = (qsp3h)
+qsp3h[L] = 2*qsp3h[L]
+
+
+!Old split line: line = (qsp4h, qsp4h)
+
+qsp4h_full: line = (qsp4h)
+qsp4h[L] = 2*qsp4h[L]
+
+
+!Old split line: line = (qsp5h, qsp5h)
+
+qsp5h_full: line = (qsp5h)
+qsp5h[L] = 2*qsp5h[L]
+
+
+!Old split line: line = (qsp6h, qsp6h)
+
+qsp6h_full: line = (qsp6h)
+qsp6h[L] = 2*qsp6h[L]
+
+
+!Old split line: line = (qsp7h, bpmsp7h, qsp7h)
+
+qsp7h_full: line = (qsp7h)
+qsp7h[L] = 2*qsp7h[L]
+bpmsp7h[superimpose] = T
+bpmsp7h[ref] = qsp7h
+
+
+!Old split line: line = (qsp8h, qsp8h)
+
+qsp8h_full: line = (qsp8h)
+qsp8h[L] = 2*qsp8h[L]
+
+
+!Old split line: line = (qsp9h, qsp9h)
+
+qsp9h_full: line = (qsp9h)
+qsp9h[L] = 2*qsp9h[L]
+
+
+!Old split line: line = (qsp10h, qsp10h)
+
+qsp10h_full: line = (qsp10h)
+qsp10h[L] = 2*qsp10h[L]
+
+
+!Old split line: line = (qsp11h, qsp11h)
+
+qsp11h_full: line = (qsp11h)
+qsp11h[L] = 2*qsp11h[L]
+
+
+
+!Old split line: line = (ssp1h, ssp1h)
+
+ssp1h_full: line = (ssp1h)
+ssp1h[L] = 2*ssp1h[L]
+
+
+!Old split line: line = (ssp2h, ssp2h)
+
+ssp2h_full: line = (ssp2h)
+ssp2h[L] = 2*ssp2h[L]
+
+sprdha: line = (rosp1h, dsp2ha, bysp1h_full, dsp2hb, bysp2h_full, cntsp1h, dsp2hc, qsp1h_full,  &
+        dsp3haa, ssp1h_full, dsp3hab, bpmsp1h, dsp3hb, xcsp1h, dsp3hc, dsp3hd, qsp2h_full, dsp4ha &
+        , ycsp2h, dsp4hb, imsp0h, dsp4hc, brsp1h_full, rosp2h, dsp5ha, dsp5hb, xcsp3h, dsp5hca,  &
+        ssp2h_full, dsp5hcb, qsp3h_full, dsp6ha, bpmsp3h, dsp6hb, ycsp4h, dsp6hc, qsp4h_full,  &
+        dsp7ha, bpmsp4h, dsp7hb, xcsp5h, dsp7hc, qsp5h_full, dsp8ha, bpmsp5h, dsp8hb, ycsp6h,  &
+        dsp8hc, qsp6h_full, dsp9ha, bpmsp6h, dsp9hb, dsp9hc, dsp9hd, dsp9he, dsp9hf, dsp9hg,  &
+        qsp7h_full, qsp7h, dsp10ha, xcsp7h, dsp10hb, dsp10hc, ycsp8h, dsp10hd, qsp8h_full,  &
+        dsp11ha, bpmsp8h, dsp11hb, dsp11hc, qsp9h_full, dsp12ha, bpmsp9h, dsp12hb, xcsp9h,  &
+        dsp12hc1, imbcsh1, dsp12hc2, imbcsh2, dsp12hc3, imbcsh3, dsp12hc4, bpmsp10h, dsp12hd,  &
+        ycsp10h, dsp12he, qsp10h_full, dsp13ha, xcsp11h, dsp13hb, bpmsp11h, dsp13hc, qsp11h_full &
+        , dsp14ha, wooddoor)
+
+brsp2h_full: line = (brsp2ha, brsp2hb)
+bxsp1h_full: line = (bxsp1ha, bxsp1hb)
+
+
+
+!Old split line: line = (qsp12h, bpmsp12h, qsp12h)
+
+qsp12h_full: line = (qsp12h)
+qsp12h[L] = 2*qsp12h[L]
+bpmsp12h[superimpose] = T
+bpmsp12h[ref] = qsp12h
+
+
+!Old split line: line = (qsp13h, qsp13h)
+
+qsp13h_full: line = (qsp13h)
+qsp13h[L] = 2*qsp13h[L]
+
+sprdhb: line = (dsp14hb, rosp3h, brsp2h_full, cntsp2h, dsp15ha, dsp15hb, dsp15hc, dsp15hd,  &
+        qsp12h_full, dsp16ha, ycsp12h, dsp16hb, xcsp13h, dsp16hc, qsp13h_full, dsp17ha, bpmsp13h &
+        , dsp17hb, bxsp1h_full, cntsp3h)
 
 sprdh: line = (sprdkh, sprdha, sprdhb)
 
 sprdsa: line = (sprdkh, sprdks)
 
-sprdsb: line = (rosp1s, dsp2sa, bysp1sa, bysp1sb, dsp2sb, bysp2sa, bysp2sb, cntsp1s, dsp2sc,  &
-        qsp1s, qsp1s, dsp3saa, ssp1s, ssp1s, dsp3sab, bpmsp1s, dsp3sb, xcsp1s, dsp3sc, qsp2s,  &
-        qsp2s, dsp4sa, bpmsp2s, dsp4sb, ycsp2s, dsp4sc, imsp0s, dsp4sd, bxsp1sa, bxsp1sb, dsp5sa &
-        , xcsp3s, dsp5sb, qsp3s, qsp3s, dsp6sa, bpmsp3s, dsp6sb, ycsp4s, dsp6sc, qsp4s, qsp4s,  &
-        dsp7sa, bpmsp4s, dsp7sb, dsp7sc, xcsp5s, dsp7sd, qsp5s, qsp5s, dsp8sa, bpmsp5s, dsp8sb,  &
-        dsp8sc, dsp8sd, ycsp6s, dsp8se, qsp6s, qsp6s, dsp9sa, bpmsp6s, dsp9sb, xcsp7s, dsp9sc,  &
-        qsp7s, qsp7s, dsp10sa, bpmsp7s, dsp10sb, bxsp2sa, bxsp2sb, dsp11sa, dsp11sb, dsp11sc,  &
-        dsp11sd, ycsp8s, dsp11se, qsp8s, qsp8s, dsp12sa, bpmsp8s, dsp12sb, xcsp9s, dsp12sca,  &
-        ssp2s, ssp2s, dsp12scb, qsp9s, qsp9s, dsp13sa, bpmsp9s, dsp13sb1, imbcss1, dsp13sb2,  &
-        imbcss2, dsp13sb3, imbcss3, dsp13sb4, bxsp3sa, bxsp3sb, cntsp2s)
+bysp1s_full: line = (bysp1sa, bysp1sb)
+bysp2s_full: line = (bysp2sa, bysp2sb)
+bxsp1s_full: line = (bxsp1sa, bxsp1sb)
+bxsp2s_full: line = (bxsp2sa, bxsp2sb)
+bxsp3s_full: line = (bxsp3sa, bxsp3sb)
+
+
+
+!Old split line: line = (qsp1s, qsp1s)
+
+qsp1s_full: line = (qsp1s)
+qsp1s[L] = 2*qsp1s[L]
+
+
+!Old split line: line = (qsp2s, qsp2s)
+
+qsp2s_full: line = (qsp2s)
+qsp2s[L] = 2*qsp2s[L]
+
+
+!Old split line: line = (qsp3s, qsp3s)
+
+qsp3s_full: line = (qsp3s)
+qsp3s[L] = 2*qsp3s[L]
+
+
+!Old split line: line = (qsp4s, qsp4s)
+
+qsp4s_full: line = (qsp4s)
+qsp4s[L] = 2*qsp4s[L]
+
+
+!Old split line: line = (qsp5s, qsp5s)
+
+qsp5s_full: line = (qsp5s)
+qsp5s[L] = 2*qsp5s[L]
+
+
+!Old split line: line = (qsp6s, qsp6s)
+
+qsp6s_full: line = (qsp6s)
+qsp6s[L] = 2*qsp6s[L]
+
+
+!Old split line: line = (qsp7s, qsp7s)
+
+qsp7s_full: line = (qsp7s)
+qsp7s[L] = 2*qsp7s[L]
+
+
+!Old split line: line = (qsp8s, qsp8s)
+
+qsp8s_full: line = (qsp8s)
+qsp8s[L] = 2*qsp8s[L]
+
+
+!Old split line: line = (qsp9s, qsp9s)
+
+qsp9s_full: line = (qsp9s)
+qsp9s[L] = 2*qsp9s[L]
+
+
+
+!Old split line: line = (ssp1s, ssp1s)
+
+ssp1s_full: line = (ssp1s)
+ssp1s[L] = 2*ssp1s[L]
+
+
+!Old split line: line = (ssp2s, ssp2s)
+
+ssp2s_full: line = (ssp2s)
+ssp2s[L] = 2*ssp2s[L]
+
+sprdsb: line = (rosp1s, dsp2sa, bysp1s_full, dsp2sb, bysp2s_full, cntsp1s, dsp2sc, qsp1s_full,  &
+        dsp3saa, ssp1s_full, dsp3sab, bpmsp1s, dsp3sb, xcsp1s, dsp3sc, qsp2s_full, dsp4sa,  &
+        bpmsp2s, dsp4sb, ycsp2s, dsp4sc, imsp0s, dsp4sd, bxsp1s_full, dsp5sa, xcsp3s, dsp5sb,  &
+        qsp3s_full, dsp6sa, bpmsp3s, dsp6sb, ycsp4s, dsp6sc, qsp4s_full, dsp7sa, bpmsp4s, dsp7sb &
+        , dsp7sc, xcsp5s, dsp7sd, qsp5s_full, dsp8sa, bpmsp5s, dsp8sb, dsp8sc, dsp8sd, ycsp6s,  &
+        dsp8se, qsp6s_full, dsp9sa, bpmsp6s, dsp9sb, xcsp7s, dsp9sc, qsp7s_full, dsp10sa, bpmsp7s &
+        , dsp10sb, bxsp2s_full, dsp11sa, dsp11sb, dsp11sc, dsp11sd, ycsp8s, dsp11se, qsp8s_full,  &
+        dsp12sa, bpmsp8s, dsp12sb, xcsp9s, dsp12sca, ssp2s_full, dsp12scb, qsp9s_full, dsp13sa,  &
+        bpmsp9s, dsp13sb1, imbcss1, dsp13sb2, imbcss2, dsp13sb3, imbcss3, dsp13sb4, bxsp3s_full,  &
+        cntsp2s)
 
 sprds: line = (sprdsa, sprdsb)
 
@@ -1227,15 +1439,31 @@ sprdda: line = (dsp2da1, mrfbsp1d, dsp2da2, bpmsp1d, dsp2db)
 
 sprddb: line = (dsp2dc1)
 
-sprddc: line = (dsp2dc2, xcsp1d, dsp2dd, qsp1d, qsp1d, dsp3da, dsp3db, imsp0d, dsp3dc, mrfbsp2d,  &
-        bpmsp2d, dsp3dd, qsp2d, qsp2d, dsp4da, ycsp2d, dsp4db, bysp1da, bysp1db, dsp5da, dsp5db,  &
-        wssp1d, dsp5dc1, imbcsd1, dsp5dc2, imbcsd2, dsp5dc3, imbcsd3, dsp5dc4, bpmsp3d, dsp5dd,  &
-        bysp2da, bysp2db, dsp6da, xcsp3d, dsp6db, ycsp4d, dsp6dc, dsp6dd, dsp6de, dsp6dfa,  &
+bysp1d_full: line = (bysp1da, bysp1db)
+bysp2d_full: line = (bysp2da, bysp2db)
+
+
+
+!Old split line: line = (qsp1d, qsp1d)
+
+qsp1d_full: line = (qsp1d)
+qsp1d[L] = 2*qsp1d[L]
+
+
+!Old split line: line = (qsp2d, qsp2d)
+
+qsp2d_full: line = (qsp2d)
+qsp2d[L] = 2*qsp2d[L]
+
+sprddc: line = (dsp2dc2, xcsp1d, dsp2dd, qsp1d_full, dsp3da, dsp3db, imsp0d, dsp3dc, mrfbsp2d,  &
+        bpmsp2d, dsp3dd, qsp2d_full, dsp4da, ycsp2d, dsp4db, bysp1d_full, dsp5da, dsp5db, wssp1d &
+        , dsp5dc1, imbcsd1, dsp5dc2, imbcsd2, dsp5dc3, imbcsd3, dsp5dc4, bpmsp3d, dsp5dd,  &
+        bysp2d_full, cntsp1d, dsp6da, xcsp3d, dsp6db, ycsp4d, dsp6dc, dsp6dd, dsp6de, dsp6dfa,  &
         wooddoor)
 
-sprddd: line = (dsp6dfb, xcsp5d, dsp6dfc, ycsp6d, dsp6dfd, bpmsp4d, dsp6dg, dsp6dh, bkxrasd,  &
-        dsp6di, bkyrasd, dsp6dj, bpmsp5d, dsp7daa, otrspdmp, dsp7dab, pcsp3d, btmsp3d, dsp7db,  &
-        muwalld, dwallad, dumpbsy, ddumpbsy, btmspdmp)
+sprddd: line = (dsp6dfb, xcsp5d, dsp6dfc, ycsp6d, dsp6dfd, bpmsp4d, dsp6dg, dsp6dh, rwwake3d,  &
+        bkxrasd, dsp6di, bkyrasd, dsp6dj, bpmsp5d, dsp7daa, otrspdmp, dsp7dab, pcsp3d, btmsp3d,  &
+        dsp7db, muwalld, dwallad, dumpbsy, ddumpbsy, btmspdmp)
 
 sprdd: line = (sprdkh, sprdks, sprdda, sprddb, sprddc, sprddd)
 

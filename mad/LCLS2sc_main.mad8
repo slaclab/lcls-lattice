@@ -1,6 +1,6 @@
-  TITLE, "AD_ACCEL (June 13, 2019)" !superconducting linac
+  TITLE, "AD_ACCEL (2019next)" !superconducting linac
 
-! *** OPTICS=AD_ACCEL-13JUN19 ***
+! *** OPTICS=AD_ACCEL-2019next ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY, DOUBLE
   ASSIGN, ECHO="LCLS2sc.echo"
@@ -8,6 +8,10 @@
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 07-AUG-2019, M. Woodley
+!  * remove "h" from names of split elements
+!  * create "_full" sub-LINEs for split elements
 ! ------------------------------------------------------------------------------
 ! 28-MAY-2019, M. Woodley
 !  * rematch through SXR undulator (self-seeding chicane moved from cell 33
@@ -487,6 +491,59 @@
  !CALL, FILENAME="RDB/LCLS2sc_makeSymbols.mad8"
  !CALL, FILENAME="elegant/LCLS2sc_makeElegant.mad8"
 
+  comment
+    BEAM, ENERGY=Ef
+    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
+    USE, BSYLCLS2scS
+    VALUE, DXL2BTM[L]
+    MATCH, SURVEY, XS=Xf, YS=Yf, ZS=Zf, THETAS=THETAf, PHIS=PHIf, PSIS=PSIf
+      VARY, DXL2BTM[L], STEP=1.E-6
+      WEIGHT, ZS=1
+      CONSTR, BTM12B, ZS=395.24
+     !LMDIF, TOL=1.E-20
+     !MIGRAD, TOL=1.E-20
+    ENDMATCH
+    VALUE, DXL2BTM[L]
+    PRINT, FULL
+    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf
+  endcomment
+
+  comment
+    VALUE, ABh,ZhBBo
+    BEAM, ENERGY=Eu
+    USE, LSRHTR
+    MATCH, BETX=1, BETY=1
+      VARY, ABh, STEP=1.E-6, LOWER=0
+     !VARY, ZhBBo, STEP=1.E-6
+      CONSTR, HTRUND, DX=0.075
+     !RMATRIX, #S/#E, RM(5,6)=R56HTR, WEIGHT(5,6)=1
+     !LMDIF, TOL=1.E-20, CALLS=10000
+     !MIGRAD, TOL=1.E-20, CALLS=10000
+    ENDMATCH
+    VALUE, ABh,ZhBBo,ABh*DEGRAD
+   !PRINT, FULL
+    SURVEY
+    TWISS, BETX=1, BETY=1, SAVE
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      STYLE=100, SPLINE=.F., FILE="match"
+  endcomment
+
+  comment
+    VALUE, Zbyp
+    BEAM, ENERGY=Ef
+    USE, BYPi
+    MATCH, BETX=10, BETY=10, SURVEY, XS=Xbyp, YS=Ybyp, ZS=Zbyp
+      VARY, Zbyp, STEP=1.E-60
+      WEIGHT, ZS=1
+      CONSTR, BPN12END, ZS=12*101.6
+      LMDIF, TOL=1.E-20
+      MIGRAD, TOL=1.E-20
+    ENDMATCH
+    VALUE, Zbyp
+    PRINT, FULL
+    SURVEY, X0=Xbyp, Y0=Ybyp, Z0=Zbyp
+  endcomment
+
  !STOP
 
 ! ------------------------------------------------------------------------------
@@ -502,6 +559,7 @@
     PRINT, FULL
     SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun
     TWISS, COUPLE, BETA0=TWSS0, TAPE="EIC_twiss.tape", RTAPE="EIC_rmat.tape"
+    STOP
   ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
@@ -778,7 +836,7 @@
 
 ! Twiss plots
 
- !COMMENT
+  COMMENT
     ASSIGN, PRINT="LCLS2sc.print"
 
   ! Cathode to BEAM0
@@ -890,7 +948,7 @@
       COLOUR=100, SPLINE, RANGE=BEGDASEL/ENDBSYA_2, FILE="LCLS2sc_color", &
       TITLE="DASEL to A-line"
     SET, ROLLRC, +1
- !ENDCOMMENT
+  ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
 

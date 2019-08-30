@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-13JUN19 ***
+! *** OPTICS=AD_ACCEL-2019next ***
 
 ! ==============================================================================
 ! 05-MAY-2017, M. Woodley
@@ -845,6 +845,13 @@ c30546: rcollimator
 
 ! miscellany
 
+st28950: instrument, l = 8*in2m, type = "PPS STOPPER" !copper/BTM/tungsten
+st28960: instrument, l = 8*in2m, type = "PPS STOPPER" !copper/BTM/tungsten
+
+daq8d1: drift, l = 0.845-st28950[l]/2
+daq8d2: drift, l = 0.419-st28950[l]/2-st28960[l]/2
+daq8d3: drift, l = daq8d[l]-daq8d1[l]-st28950[l]-daq8d2[l]-st28960[l]
+
 pk297: marker
 pk299: marker
 pk303: marker
@@ -864,12 +871,85 @@ k25_7: line = (k25_7a1, xc25702, k25_7a2, yc25703, k25_7a3, k25_7b, k25_7c, k25_
 k25_8: line = (k25_8a1, xc25802, k25_8a2, yc25803, k25_8a3, k25_8b, k25_8c, k25_8d1, xc25900,  &
         k25_8d2, yc25900, k25_8d3)
 
-li25: line = (li25beg, zlin09, k25_1, daq1, q25201, bpm25201, q25201, daq2, k25_2, d255a, imbc2o &
-        , d255b, d255c, tcav3, tcav3, d255d, q25301, bpm25301, q25301, daq2, k25_3, d256a, ph03,  &
-        d256b, bl22, d256c, bxkika, bxkikb, d256d, daq1, q25401, bpm25401, q25401, daq2, k25_4,  &
-        daq1, q25501, bpm25501, q25501, daq2, k25_5, daq1, q25601, bpm25601, q25601, daq2, k25_6 &
-        , daq1, q25701, bpm25701, q25701, daq2, k25_7, daq1, q25801, bpm25801, q25801, daq2,  &
-        k25_8, daq7, q25901, bpm25901, q25901, daq8a, otr_tcav, daq8b, li25end)
+
+
+!Old split line: line = (tcav3, tcav3)
+
+tcav3_full: line = (tcav3)
+tcav3[L] = 2*tcav3[L]
+
+bxkik_full: line = (bxkika, bxkikb)
+
+
+
+!Old split line: line = (q25201, bpm25201, q25201)
+
+q25201_full: line = (q25201)
+q25201[L] = 2*q25201[L]
+bpm25201[superimpose] = T
+bpm25201[ref] = q25201
+
+
+!Old split line: line = (q25301, bpm25301, q25301)
+
+q25301_full: line = (q25301)
+q25301[L] = 2*q25301[L]
+bpm25301[superimpose] = T
+bpm25301[ref] = q25301
+
+
+!Old split line: line = (q25401, bpm25401, q25401)
+
+q25401_full: line = (q25401)
+q25401[L] = 2*q25401[L]
+bpm25401[superimpose] = T
+bpm25401[ref] = q25401
+
+
+!Old split line: line = (q25501, bpm25501, q25501)
+
+q25501_full: line = (q25501)
+q25501[L] = 2*q25501[L]
+bpm25501[superimpose] = T
+bpm25501[ref] = q25501
+
+
+!Old split line: line = (q25601, bpm25601, q25601)
+
+q25601_full: line = (q25601)
+q25601[L] = 2*q25601[L]
+bpm25601[superimpose] = T
+bpm25601[ref] = q25601
+
+
+!Old split line: line = (q25701, bpm25701, q25701)
+
+q25701_full: line = (q25701)
+q25701[L] = 2*q25701[L]
+bpm25701[superimpose] = T
+bpm25701[ref] = q25701
+
+
+!Old split line: line = (q25801, bpm25801, q25801)
+
+q25801_full: line = (q25801)
+q25801[L] = 2*q25801[L]
+bpm25801[superimpose] = T
+bpm25801[ref] = q25801
+
+
+!Old split line: line = (q25901, bpm25901, q25901)
+
+q25901_full: line = (q25901)
+q25901[L] = 2*q25901[L]
+bpm25901[superimpose] = T
+bpm25901[ref] = q25901
+
+li25: line = (li25beg, zlin09, k25_1, daq1, q25201_full, daq2, k25_2, d255a, imbc2o, d255b, d255c &
+        , tcav3_full, d255d, q25301_full, daq2, k25_3, d256a, ph03, d256b, bl22, d256c,  &
+        bxkik_full, d256d, daq1, q25401_full, daq2, k25_4, daq1, q25501_full, daq2, k25_5, daq1,  &
+        q25601_full, daq2, k25_6, daq1, q25701_full, daq2, k25_7, daq1, q25801_full, daq2, k25_8 &
+        , daq7, q25901_full, daq8a, otr_tcav, daq8b, li25end)
 
 ! ------------------------------------------------------------------------------
 
@@ -883,11 +963,75 @@ k26_7: line = (k26_7a1, xc26702, k26_7a2, yc26703, k26_7a3, k26_7b, k26_7c, k26_
 k26_8: line = (k26_8a1, xc26802, k26_8a2, yc26803, k26_8a3, k26_8b, k26_8c, k26_8d1, xc26900,  &
         k26_8d2, yc26900, k26_8d3)
 
-li26: line = (li26beg, zlin10, k26_1, daq1, q26201, bpm26201, q26201, daq2, k26_2, daq1, q26301,  &
-        bpm26301, q26301, daq2, k26_3, daq1, q26401, bpm26401, q26401, daq2, k26_4, daq1, q26501 &
-        , bpm26501, q26501, daq2, k26_5, daq1, q26601, bpm26601, q26601, daq2, k26_6, daq1,  &
-        q26701, bpm26701, q26701, daq2, k26_7, daq1, q26801, bpm26801, q26801, daq2, k26_8, daq7 &
-        , q26901, bpm26901, q26901, daq8, li26end)
+
+
+!Old split line: line = (q26201, bpm26201, q26201)
+
+q26201_full: line = (q26201)
+q26201[L] = 2*q26201[L]
+bpm26201[superimpose] = T
+bpm26201[ref] = q26201
+
+
+!Old split line: line = (q26301, bpm26301, q26301)
+
+q26301_full: line = (q26301)
+q26301[L] = 2*q26301[L]
+bpm26301[superimpose] = T
+bpm26301[ref] = q26301
+
+
+!Old split line: line = (q26401, bpm26401, q26401)
+
+q26401_full: line = (q26401)
+q26401[L] = 2*q26401[L]
+bpm26401[superimpose] = T
+bpm26401[ref] = q26401
+
+
+!Old split line: line = (q26501, bpm26501, q26501)
+
+q26501_full: line = (q26501)
+q26501[L] = 2*q26501[L]
+bpm26501[superimpose] = T
+bpm26501[ref] = q26501
+
+
+!Old split line: line = (q26601, bpm26601, q26601)
+
+q26601_full: line = (q26601)
+q26601[L] = 2*q26601[L]
+bpm26601[superimpose] = T
+bpm26601[ref] = q26601
+
+
+!Old split line: line = (q26701, bpm26701, q26701)
+
+q26701_full: line = (q26701)
+q26701[L] = 2*q26701[L]
+bpm26701[superimpose] = T
+bpm26701[ref] = q26701
+
+
+!Old split line: line = (q26801, bpm26801, q26801)
+
+q26801_full: line = (q26801)
+q26801[L] = 2*q26801[L]
+bpm26801[superimpose] = T
+bpm26801[ref] = q26801
+
+
+!Old split line: line = (q26901, bpm26901, q26901)
+
+q26901_full: line = (q26901)
+q26901[L] = 2*q26901[L]
+bpm26901[superimpose] = T
+bpm26901[ref] = q26901
+
+li26: line = (li26beg, zlin10, k26_1, daq1, q26201_full, daq2, k26_2, daq1, q26301_full, daq2,  &
+        k26_3, daq1, q26401_full, daq2, k26_4, daq1, q26501_full, daq2, k26_5, daq1, q26601_full &
+        , daq2, k26_6, daq1, q26701_full, daq2, k26_7, daq1, q26801_full, daq2, k26_8, daq7,  &
+        q26901_full, daq8, li26end)
 
 ! ------------------------------------------------------------------------------
 
@@ -901,11 +1045,75 @@ k27_7: line = (k27_7a1, xc27702, k27_7a2, yc27703, k27_7a3, k27_7b, k27_7c, k27_
 k27_8: line = (k27_8a1, xc27802, k27_8a2, yc27803, k27_8a3, k27_8b, k27_8c, k27_8d1, xc27900,  &
         k27_8d2, yc27900, k27_8d3)
 
-li27: line = (li27beg, zlin11, k27_1, daq1, q27201, bpm27201, q27201, daq2, k27_2, daq1, q27301,  &
-        bpm27301, q27301, daq2, k27_3, daq1, q27401, bpm27401, q27401, daq2, k27_4, daq1, q27501 &
-        , bpm27501, q27501, daq2, k27_5, daq1, q27601, bpm27601, q27601, daq2, k27_6, daq5a,  &
-        ws27644, daq6a, q27701, bpm27701, q27701, daq2, k27_7, daq1, q27801, bpm27801, q27801,  &
-        daq2, k27_8, daq7, q27901, bpm27901, q27901, daq8, li27end)
+
+
+!Old split line: line = (q27201, bpm27201, q27201)
+
+q27201_full: line = (q27201)
+q27201[L] = 2*q27201[L]
+bpm27201[superimpose] = T
+bpm27201[ref] = q27201
+
+
+!Old split line: line = (q27301, bpm27301, q27301)
+
+q27301_full: line = (q27301)
+q27301[L] = 2*q27301[L]
+bpm27301[superimpose] = T
+bpm27301[ref] = q27301
+
+
+!Old split line: line = (q27401, bpm27401, q27401)
+
+q27401_full: line = (q27401)
+q27401[L] = 2*q27401[L]
+bpm27401[superimpose] = T
+bpm27401[ref] = q27401
+
+
+!Old split line: line = (q27501, bpm27501, q27501)
+
+q27501_full: line = (q27501)
+q27501[L] = 2*q27501[L]
+bpm27501[superimpose] = T
+bpm27501[ref] = q27501
+
+
+!Old split line: line = (q27601, bpm27601, q27601)
+
+q27601_full: line = (q27601)
+q27601[L] = 2*q27601[L]
+bpm27601[superimpose] = T
+bpm27601[ref] = q27601
+
+
+!Old split line: line = (q27701, bpm27701, q27701)
+
+q27701_full: line = (q27701)
+q27701[L] = 2*q27701[L]
+bpm27701[superimpose] = T
+bpm27701[ref] = q27701
+
+
+!Old split line: line = (q27801, bpm27801, q27801)
+
+q27801_full: line = (q27801)
+q27801[L] = 2*q27801[L]
+bpm27801[superimpose] = T
+bpm27801[ref] = q27801
+
+
+!Old split line: line = (q27901, bpm27901, q27901)
+
+q27901_full: line = (q27901)
+q27901[L] = 2*q27901[L]
+bpm27901[superimpose] = T
+bpm27901[ref] = q27901
+
+li27: line = (li27beg, zlin11, k27_1, daq1, q27201_full, daq2, k27_2, daq1, q27301_full, daq2,  &
+        k27_3, daq1, q27401_full, daq2, k27_4, daq1, q27501_full, daq2, k27_5, daq1, q27601_full &
+        , daq2, k27_6, daq5a, ws27644, daq6a, q27701_full, daq2, k27_7, daq1, q27801_full, daq2,  &
+        k27_8, daq7, q27901_full, daq8, li27end)
 
 ! ------------------------------------------------------------------------------
 
@@ -919,13 +1127,77 @@ k28_7: line = (k28_7a1, xc28702, k28_7a2, yc28703, k28_7a3, k28_7b, k28_7c)
 k28_8: line = (k28_8a1, xc28802, k28_8a2, yc28803, k28_8a3, k28_8b, k28_8c, k28_8d1, xc28900,  &
         k28_8d2, yc28900, k28_8d3)
 
+
+
+!Old split line: line = (q28201, bpm28201, q28201)
+
+q28201_full: line = (q28201)
+q28201[L] = 2*q28201[L]
+bpm28201[superimpose] = T
+bpm28201[ref] = q28201
+
+
+!Old split line: line = (q28301, bpm28301, q28301)
+
+q28301_full: line = (q28301)
+q28301[L] = 2*q28301[L]
+bpm28301[superimpose] = T
+bpm28301[ref] = q28301
+
+
+!Old split line: line = (q28401, bpm28401, q28401)
+
+q28401_full: line = (q28401)
+q28401[L] = 2*q28401[L]
+bpm28401[superimpose] = T
+bpm28401[ref] = q28401
+
+
+!Old split line: line = (q28501, bpm28501, q28501)
+
+q28501_full: line = (q28501)
+q28501[L] = 2*q28501[L]
+bpm28501[superimpose] = T
+bpm28501[ref] = q28501
+
+
+!Old split line: line = (q28601, bpm28601, q28601)
+
+q28601_full: line = (q28601)
+q28601[L] = 2*q28601[L]
+bpm28601[superimpose] = T
+bpm28601[ref] = q28601
+
+
+!Old split line: line = (q28701, bpm28701, q28701)
+
+q28701_full: line = (q28701)
+q28701[L] = 2*q28701[L]
+bpm28701[superimpose] = T
+bpm28701[ref] = q28701
+
+
+!Old split line: line = (q28801, bpm28801, q28801)
+
+q28801_full: line = (q28801)
+q28801[L] = 2*q28801[L]
+bpm28801[superimpose] = T
+bpm28801[ref] = q28801
+
+
+!Old split line: line = (q28901, bpm28901, q28901)
+
+q28901_full: line = (q28901)
+q28901[L] = 2*q28901[L]
+bpm28901[superimpose] = T
+bpm28901[ref] = q28901
+
 li28: line = (li28beg, zlin12, k28_1, daq5b1, xc29092, daq5b2, yc29092, daq5b3, ws28144, daq6b,  &
-        q28201, bpm28201, q28201, daq2, k28_2, daq1, q28301, bpm28301, q28301, daq2, k28_3, daq1 &
-        , q28401, bpm28401, q28401, daq2, k28_4, daq5c1, xc29095, daq5c2, yc29095, daq5c3,  &
-        ws28444, daq6c, q28501, bpm28501, q28501, daq2, k28_5, daq1, q28601, bpm28601, q28601,  &
-        daq2, k28_6, daq1, q28701, bpm28701, q28701, daq2, k28_7, daq5d, ws28744, daq6d, q28801,  &
-        bpm28801, q28801, daq2, k28_8, daq7, q28901, bpm28901, q28901, daq8c, c29096, daq8d,  &
-        li28end)
+        q28201_full, daq2, k28_2, daq1, q28301_full, daq2, k28_3, daq1, q28401_full, daq2, k28_4 &
+        , daq5c1, xc29095, daq5c2, yc29095, daq5c3, ws28444, daq6c, q28501_full, daq2, k28_5,  &
+        daq1, q28601_full, daq2, k28_6, daq1, q28701_full, daq2, k28_7, daq5d, ws28744, daq6d,  &
+        q28801_full, daq2, k28_8, daq7, q28901_full, daq8c, c29096, daq8d1, st28950, daq8d2,  &
+        st28960, daq8d3, li28end)
 
 ! ------------------------------------------------------------------------------
 
@@ -939,13 +1211,76 @@ k29_7: line = (k29_7a1, xc29702, k29_7a2, yc29703, k29_7a3, k29_7b, k29_7c, k29_
 k29_8: line = (k29_8a1, xc29802, k29_8a2, yc29803, k29_8a3, k29_8b, k29_8c, k29_8d1, xc29900,  &
         k29_8d2, yc29900, k29_8d3)
 
-li29: line = (li29beg, zlin13, k29_1, d10ca, c29146, d10cb, daq1, q29201, bpm29201, q29201, daq2 &
-        , k29_2, daq1, q29301, bpm29301, q29301, daq2, k29_3, daq1, q29401, bpm29401, q29401,  &
-        daq2, k29_4, d10cc, c29446, d10cd, daq1, q29501, bpm29501, q29501, daq2, k29_5, d10ce,  &
-        c29546, d10cf, daq1, q29601, bpm29601, q29601, daq2, k29_6, daq1, q29701, bpm29701,  &
-        q29701, daq2, k29_7, daq9a, pk297, daq9b, q29801, bpm29801, q29801, daq2, k29_8, daq3,  &
-        q29901, bpm29901, q29901, daq4a, p30013, daq4b, p30014, daq4c, c29956, daq4d, pk299,  &
-        daq4e, li29end)
+
+
+!Old split line: line = (q29201, bpm29201, q29201)
+
+q29201_full: line = (q29201)
+q29201[L] = 2*q29201[L]
+bpm29201[superimpose] = T
+bpm29201[ref] = q29201
+
+
+!Old split line: line = (q29301, bpm29301, q29301)
+
+q29301_full: line = (q29301)
+q29301[L] = 2*q29301[L]
+bpm29301[superimpose] = T
+bpm29301[ref] = q29301
+
+
+!Old split line: line = (q29401, bpm29401, q29401)
+
+q29401_full: line = (q29401)
+q29401[L] = 2*q29401[L]
+bpm29401[superimpose] = T
+bpm29401[ref] = q29401
+
+
+!Old split line: line = (q29501, bpm29501, q29501)
+
+q29501_full: line = (q29501)
+q29501[L] = 2*q29501[L]
+bpm29501[superimpose] = T
+bpm29501[ref] = q29501
+
+
+!Old split line: line = (q29601, bpm29601, q29601)
+
+q29601_full: line = (q29601)
+q29601[L] = 2*q29601[L]
+bpm29601[superimpose] = T
+bpm29601[ref] = q29601
+
+
+!Old split line: line = (q29701, bpm29701, q29701)
+
+q29701_full: line = (q29701)
+q29701[L] = 2*q29701[L]
+bpm29701[superimpose] = T
+bpm29701[ref] = q29701
+
+
+!Old split line: line = (q29801, bpm29801, q29801)
+
+q29801_full: line = (q29801)
+q29801[L] = 2*q29801[L]
+bpm29801[superimpose] = T
+bpm29801[ref] = q29801
+
+
+!Old split line: line = (q29901, bpm29901, q29901)
+
+q29901_full: line = (q29901)
+q29901[L] = 2*q29901[L]
+bpm29901[superimpose] = T
+bpm29901[ref] = q29901
+
+li29: line = (li29beg, zlin13, k29_1, d10ca, c29146, d10cb, daq1, q29201_full, daq2, k29_2, daq1 &
+        , q29301_full, daq2, k29_3, daq1, q29401_full, daq2, k29_4, d10cc, c29446, d10cd, daq1,  &
+        q29501_full, daq2, k29_5, d10ce, c29546, d10cf, daq1, q29601_full, daq2, k29_6, daq1,  &
+        q29701_full, daq2, k29_7, daq9a, pk297, daq9b, q29801_full, daq2, k29_8, daq3,  &
+        q29901_full, daq4a, p30013, daq4b, p30014, daq4c, c29956, daq4d, pk299, daq4e, li29end)
 
 ! ------------------------------------------------------------------------------
 
@@ -961,17 +1296,73 @@ k30_7: line = (k30_7a1, xc30702, k30_7a2, q30715a, k30_7a3, yc30703, k30_7a4, q3
 k30_8: line = (k30_8a1, xc30802, k30_8a2, yc30803, k30_8a3, k30_8b, k30_8c1, yc30900, k30_8c2,  &
         xc30900, k30_8c3)
 
+
+
+!Old split line: line = (q30201, bpm30201, q30201)
+
+q30201_full: line = (q30201)
+q30201[L] = 2*q30201[L]
+bpm30201[superimpose] = T
+bpm30201[ref] = q30201
+
+
+!Old split line: line = (q30301, bpm30301, q30301)
+
+q30301_full: line = (q30301)
+q30301[L] = 2*q30301[L]
+bpm30301[superimpose] = T
+bpm30301[ref] = q30301
+
+
+!Old split line: line = (q30401, bpm30401, q30401)
+
+q30401_full: line = (q30401)
+q30401[L] = 2*q30401[L]
+bpm30401[superimpose] = T
+bpm30401[ref] = q30401
+
+
+!Old split line: line = (q30501, bpm30501, q30501)
+
+q30501_full: line = (q30501)
+q30501[L] = 2*q30501[L]
+bpm30501[superimpose] = T
+bpm30501[ref] = q30501
+
+
+!Old split line: line = (q30601, bpm30601, q30601)
+
+q30601_full: line = (q30601)
+q30601[L] = 2*q30601[L]
+bpm30601[superimpose] = T
+bpm30601[ref] = q30601
+
+
+!Old split line: line = (q30701, bpm30701, q30701)
+
+q30701_full: line = (q30701)
+q30701[L] = 2*q30701[L]
+bpm30701[superimpose] = T
+bpm30701[ref] = q30701
+
+
+!Old split line: line = (q30801, bpm30801, q30801)
+
+q30801_full: line = (q30801)
+q30801[L] = 2*q30801[L]
+bpm30801[superimpose] = T
+bpm30801[ref] = q30801
+
 li30: line = (li30beg, zlin14, k30_1, daq10a, p30143, daq10b, p30144, daq10c, c30146, daq10d,  &
-        q30201, bpm30201, q30201, daq2, k30_2, daq1, q30301, bpm30301, q30301, daq2, k30_3,  &
-        daq10e, pk303, daq10f, q30401, bpm30401, q30401, daq2, k30_4, daq10g, p30443, daq10h,  &
-        p30444, daq10i, c30446, daq10j, pk304, daq10k, q30501, bpm30501, q30501, daq2, k30_5,  &
-        daq11a, p30543, daq11b, p30544, daq11c, c30546, daq11d, q30601, bpm30601, q30601, daq12,  &
-        k30_6, daq13, q30701, bpm30701, q30701, daq14, k30_7, daq15, q30801, bpm30801, q30801,  &
-        daq16, k30_8, daq17, li30end)
+        q30201_full, daq2, k30_2, daq1, q30301_full, daq2, k30_3, daq10e, pk303, daq10f,  &
+        q30401_full, daq2, k30_4, daq10g, p30443, daq10h, p30444, daq10i, c30446, daq10j, pk304,  &
+        daq10k, q30501_full, daq2, k30_5, daq11a, p30543, daq11b, p30544, daq11c, c30546, daq11d &
+        , q30601_full, daq12, k30_6, daq13, q30701_full, daq14, k30_7, daq15, q30801_full, daq16 &
+        , k30_8, daq17, li30term)
 
 ! ------------------------------------------------------------------------------
 
-l3: line = (begl3, li25, li26, li27, li28, li29, li30, rwwakess, dbmark29, endl3)
+l3: line = (begl3, li25, li26, li27, li28, li29, li30, dbmark29, endl3)
 
 ! ==============================================================================
 

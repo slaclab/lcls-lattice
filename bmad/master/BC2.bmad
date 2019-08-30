@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-13JUN19 ***
+! *** OPTICS=AD_ACCEL-2019next ***
 
 ! LCLS2sc bunch compressor chicane #2
 
@@ -297,24 +297,80 @@ bc2bcend: marker
 ! BEAMLINE
 ! ------------------------------------------------------------------------------
 
+bcx21_full: line = (bcx21a, bcx21b)
+bcx22_full: line = (bcx22a, bcx22b)
+bcx23_full: line = (bcx23a, bcx23b)
+bcx24_full: line = (bcx24a, bcx24b)
+
+
+
+!Old split line: line = (q2c01, bpm2c01, q2c01)
+
+q2c01_full: line = (q2c01)
+q2c01[L] = 2*q2c01[L]
+bpm2c01[superimpose] = T
+bpm2c01[ref] = q2c01
+
+
+!Old split line: line = (cq21b, cq21b)
+
+cq21b_full: line = (cq21b)
+cq21b[L] = 2*cq21b[L]
+
+
+!Old split line: line = (cq22b, cq22b)
+
+cq22b_full: line = (cq22b)
+cq22b[L] = 2*cq22b[L]
+
+
+!Old split line: line = (qe201, bpme201, qe201)
+
+qe201_full: line = (qe201)
+qe201[L] = 2*qe201[L]
+bpme201[superimpose] = T
+bpme201[ref] = qe201
+
+
+!Old split line: line = (qe202, bpme202, qe202)
+
+qe202_full: line = (qe202)
+qe202[L] = 2*qe202[L]
+bpme202[superimpose] = T
+bpme202[ref] = qe202
+
+
+!Old split line: line = (qe203, bpme203, qe203)
+
+qe203_full: line = (qe203)
+qe203[L] = 2*qe203[L]
+bpme203[superimpose] = T
+bpme203[ref] = qe203
+
+
+!Old split line: line = (qe204, bpme204, qe204)
+
+qe204_full: line = (qe204)
+qe204[L] = 2*qe204[L]
+bpme204[superimpose] = T
+bpme204[ref] = qe204
+
 bc2i0: line = (d2c00, q2c01, q2c01, d2c01)
 
-bc2i: line = (d2c00a, xc2c00, d2c00b, yc2c00, d2c00c, q2c01, bpm2c01, q2c01, d2c01a, rfb2c01,  &
-        d2c01b)
+bc2i: line = (d2c00a, xc2c00, d2c00b, yc2c00, d2c00c, q2c01_full, d2c01a, rfb2c01, d2c01b)
 
 bc2c0: line = (bc2bcbeg, bcx21a, bcx21b, dc2o, bcx22a, bcx22b, dc2ih, bc2bcmid, dc2ih, bcx23a,  &
         bcx23b, dc2o, bcx24a, bcx24b, bc2bcend)
 
-bc2c: line = (bc2bcbeg, bcx21a, bcx21b, dc2oa, cq21b, cq21b, dc2ob, bcx22a, bcx22b, dc2ia, bpm21b &
-        , dc2ib, ce21b, dc2ic, otr21b, dc2id, ws21b, dc2ie, bcx23a, bcx23b, dc2oc, cq22b, cq22b,  &
-        dc2od, bcx24a, bcx24b, cntbc2, bc2bcend)
+bc2c: line = (bc2bcbeg, bcx21_full, dc2oa, cq21b_full, dc2ob, bcx22_full, dc2ia, bpm21b, dc2ib,  &
+        ce21b, dc2ic, otr21b, dc2id, ws21b, dc2ie, bcx23_full, dc2oc, cq22b_full, dc2od,  &
+        bcx24_full, cntbc2, bc2bcend)
 
 bc2: line = (begbc2b, bc2i, bc2c)
 
-emit2: line = (de200a, bz21b, de200b, endbc2b, begemit2, qe201, bpme201, qe201, de201a, yce201,  &
-        de201b, im21b, de201c, qe202, bpme202, qe202, de202a1, xce202, de202a2, wsemit2, de202b,  &
-        qe203, bpme203, qe203, de203a, yce203, de203b, qe204, bpme204, qe204, de204a, xce204,  &
-        de204b, endemit2)
+emit2: line = (de200a, bz21b, de200b, endbc2b, begemit2, qe201_full, de201a, yce201, de201b,  &
+        im21b, de201c, qe202_full, de202a1, xce202, de202a2, wsemit2, de202b, qe203_full, de203a &
+        , yce203, de203b, qe204_full, de204a, xce204, de204b, endemit2)
 
 ! ------------------------------------------------------------------------------
 

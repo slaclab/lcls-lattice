@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-13JUN19 ***
+! *** OPTICS=AD_ACCEL-2019next ***
 
 ! LCLS2sc transport from Cu-linac to SXR
 
@@ -425,40 +425,51 @@
 
 ! beamlines
 
-  KCUSXRa : LINE=(&
-                BRCUSdc1a,BRCUSdc1b,DCKdc1,&
-                BKRCUSa,BKRCUSb,DCKdc2,&
-                BRCUSdc2a,BRCUSdc2b,DCUSBLRa,BPMCUS,DCUSBLRb,&
-                BLRCUSa,BLRCUSb)
+  BRCUSdc1_full : LINE=(BRCUSdc1a,BRCUSdc1b)
+  BKRCUS_full   : LINE=(BKRCUSa,BKRCUSb)
+  BRCUSdc2_full : LINE=(BRCUSdc2a,BRCUSdc2b)
+  BLRCUS_full   : LINE=(BLRCUSa,BLRCUSb)
+  BYCUS1_full   : LINE=(BYCUS1a,BYCUS1b)
+  BYCUS2_full   : LINE=(BYCUS2a,BYCUS2b)
+  BRCUS1_full   : LINE=(BRCUS1a,BRCUS1b)
 
-  KCUSXRb : LINE=(&
-                CNTCUS1 ,ROCUS1  ,DCUS1a,&
-                DBRCCUS1,DBRCCUS1,DCUS1b,&
-                DBRCCUS2,DBRCCUS2,CNTCUS5)
+  QCUS1_full  : LINE=(QCUS1,QCUS1)
+  QCUS2_full  : LINE=(QCUS2,QCUS2)
+  QCUS3_full  : LINE=(QCUS3,QCUS3)
+  QCUS4_full  : LINE=(QCUS4,BPMCUS4,QCUS4)
+  QCUS5_full  : LINE=(QCUS5,BPMCUS5,QCUS5)
+  QCUS6_full  : LINE=(QCUS6,QCUS6)
+  QCUS7_full  : LINE=(QCUS7,BPMCUS7,QCUS7)
+  QCUS8_full  : LINE=(QCUS8,QCUS8)
+  QCUS9_full  : LINE=(QCUS9,QCUS9)
+  QCUS10_full : LINE=(QCUS10,QCUS10)
+
+  KCUSXRa : LINE=(&
+    BRCUSdc1_full,DCKdc1,&
+    BKRCUS_full,DCKdc2,&
+    BRCUSdc2_full,DCUSBLRa,BPMCUS,DCUSBLRb,&
+    BLRCUS_full)
+
+  KCUSXRb : LINE=(CNTCUS1,ROCUS1,DCUS1a,&
+    DBRCCUS1,DBRCCUS1,DCUS1b,&
+    DBRCCUS2,DBRCCUS2,CNTCUS5)
 
   KCUSXR : LINE=(KCUSXRa,KCUSXRb)
 
-  DLCUSXR : LINE=(              DCUS1c ,&
-                QCUS1  ,QCUS1  ,DCUS2a ,BPMCUS1,DCUS2b ,XCCUS1 ,DCUS2c,&
-                QCUS2  ,QCUS2  ,DCUS3a ,BPMCUS2,DCUS3b ,YCCUS2 ,DCUS3c,&
-                                        BPMCUS3,DCUS3d ,&
-                QCUS3  ,QCUS3  ,DCUS4a ,YCCUS3 ,DCUS4b ,&
-                                        DCUS4c ,&
-                QCUS4  ,BPMCUS4,QCUS4  ,DCUS5a ,XCCUS4 ,DCUS5b ,&
-                BYCUS1a,BYCUS1b,CNTCUS3,ROCUS3 ,DCUS6a ,&
-                                        DCUS6b ,&
-                QCUS5  ,BPMCUS5,QCUS5  ,DCUS7  ,MIDCUSXR,DCUS7 ,&
-                QCUS6  ,QCUS6  ,DCUS8a ,YCCUS6 ,DCUS8b ,ROCUS4 ,&
-                BYCUS2a,BYCUS2b,CNTCUS4,        DCUS9a ,&
-                                        DCUS9b ,&
-                QCUS7  ,BPMCUS7,QCUS7  ,DCUS10a,XCCUS7 ,DCUS10b,&
-                                        BPMCUS8,DCUS10c,&
-                QCUS8  ,QCUS8  ,DCUS11a,YCCUS8 ,DCUS11b1,&
-                                 STCLTS,DCUS11b2,BPMCUS9,DCUS11c,&
-                QCUS9  ,QCUS9  ,DCUS12a,YCCUS9 ,DCUS12b,&
-                                        XCCUS10,DCUS12c,BPMCUS10,DCUS12d,&
-                QCUS10 ,QCUS10 ,DCUS13 ,ROCUS2 ,&
-                BRCUS1a,BRCUS1b,CNTCUS2)
+  DLCUSXR : LINE=(DCUS1c,&
+    QCUS1_full,DCUS2a,BPMCUS1,DCUS2b,XCCUS1,DCUS2c,&
+    QCUS2_full,DCUS3a,BPMCUS2,DCUS3b,YCCUS2,DCUS3c,BPMCUS3,DCUS3d,&
+    QCUS3_full,DCUS4a,YCCUS3,DCUS4b,DCUS4c,&
+    QCUS4_full,DCUS5a,XCCUS4,DCUS5b,&
+    BYCUS1_full,CNTCUS3,ROCUS3,DCUS6a,DCUS6b,&
+    QCUS5_full,DCUS7,MIDCUSXR,DCUS7,&
+    QCUS6_full,DCUS8a,YCCUS6,DCUS8b,ROCUS4,&
+    BYCUS2_full,CNTCUS4,DCUS9a,DCUS9b,&
+    QCUS7_full,DCUS10a,XCCUS7,DCUS10b,BPMCUS8,DCUS10c,&
+    QCUS8_full,DCUS11a,YCCUS8,DCUS11b1,STCLTS,DCUS11b2,BPMCUS9,DCUS11c,&
+    QCUS9_full,DCUS12a,YCCUS9,DCUS12b,XCCUS10,DCUS12c,BPMCUS10,DCUS12d,&
+    QCUS10_full,DCUS13,ROCUS2,&
+    BRCUS1_full,CNTCUS2)
 
   CUSXR : LINE=(BEGCUSXR,KCUSXR,DLCUSXR,ENDCUSXR)
 

@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-13JUN19 ***
+! *** OPTICS=AD_ACCEL-2019next ***
 
 ! LCLS2sc 3-way spreader system
 
@@ -1037,13 +1037,15 @@
 
 ! markers
 
-  CNTSP1S : MARK, TYPE="CENTER"
-  CNTSP2S : MARK, TYPE="CENTER"
-  CNTSP1H : MARK, TYPE="CENTER"
-  CNTSP2H : MARK, TYPE="CENTER"
-  CNTSP3H : MARK, TYPE="CENTER"
-  MUWALLd : MARK !front face of muon wall for dump beam
-  DUMPBSY : INST, TYPE="DUMPBSY" !front face of BSY dump
+  CNTSP1S  : MARK, TYPE="CENTER"
+  CNTSP2S  : MARK, TYPE="CENTER"
+  CNTSP1H  : MARK, TYPE="CENTER"
+  CNTSP2H  : MARK, TYPE="CENTER"
+  CNTSP3H  : MARK, TYPE="CENTER"
+  CNTSP1D  : MARK, TYPE="CENTER"
+  RWWAKE3D : MARK, TYPE="WAKE" !SPRDD/BSY beampipe wake applied here
+  MUWALLd  : MARK !front face of muon wall for dump beam
+  DUMPBSY  : INST, TYPE="DUMPBSY" !front face of BSY dump
 
 ! monitors
 
@@ -1169,121 +1171,141 @@
 
 ! beamlines
 
-  SPRDkh : LINE=(&
-    BKYSP0ha,BKYSP0hb,DSPBK0h,&
-    BKYSP1ha,BKYSP1hb,DSPBK1h,&
-    BKYSP2ha,BKYSP2hb,DSPBK2h,&
-    BKYSP3ha,BKYSP3hb,DSPBK3h,&
-    BKYSP4ha,BKYSP4hb,DSPBK4h,&
-    BKYSP5ha,BKYSP5hb,DSPBK5ha,BPMSPh,DSPBK5hb,&
-    BLXSPha ,BLXSPhb )
+  BKYSP0h_full : LINE=(BKYSP0ha,BKYSP0hb)
+  BKYSP1h_full : LINE=(BKYSP1ha,BKYSP1hb)
+  BKYSP2h_full : LINE=(BKYSP2ha,BKYSP2hb)
+  BKYSP3h_full : LINE=(BKYSP3ha,BKYSP3hb)
+  BKYSP4h_full : LINE=(BKYSP4ha,BKYSP4hb)
+  BKYSP5h_full : LINE=(BKYSP5ha,BKYSP5hb)
+  BLXSPh_full  : LINE=(BLXSPha,BLXSPhb)
 
-  SPRDksa : LINE=(&
-                     DSPQ1a,BPMSP1,DSPQ1b,DSPQ1c,&
-    QSP1,QSP1,DSPQ2a,XCSP1 ,DSPQ2b,BPMSP2,DSPQ2c,&
-    QSP2,QSP2,DSPQ3a,YCSP2 ,DSPQ3b)
+  SPRDkh : LINE=(&
+    BKYSP0h_full,DSPBK0h,&
+    BKYSP1h_full,DSPBK1h,&
+    BKYSP2h_full,DSPBK2h,&
+    BKYSP3h_full,DSPBK3h,&
+    BKYSP4h_full,DSPBK4h,&
+    BKYSP5h_full,DSPBK5ha,BPMSPh,DSPBK5hb,&
+    BLXSPh_full)
+
+  QSP1_full : LINE=(QSP1,QSP1)
+  QSP2_full : LINE=(QSP2,QSP2)
+
+  SPRDksa : LINE=(DSPQ1a,BPMSP1,DSPQ1b,DSPQ1c,&
+    QSP1_full,DSPQ2a,XCSP1,DSPQ2b,BPMSP2,DSPQ2c,&
+    QSP2_full,DSPQ3a,YCSP2,DSPQ3b)
+
+  BKYSP0s_full : LINE=(BKYSP0sa,BKYSP0sb)
+  BKYSP1s_full : LINE=(BKYSP1sa,BKYSP1sb)
+  BKYSP2s_full : LINE=(BKYSP2sa,BKYSP2sb)
+  BKYSP3s_full : LINE=(BKYSP3sa,BKYSP3sb)
+  BKYSP4s_full : LINE=(BKYSP4sa,BKYSP4sb)
+  BKYSP5s_full : LINE=(BKYSP5sa,BKYSP5sb)
+  BLXSPs_full  : LINE=(BLXSPsa,BLXSPsb)
 
   SPRDksb : LINE=(&
-    BKYSP0sa,BKYSP0sb,DSPBK0s,&
-    BKYSP1sa,BKYSP1sb,DSPBK1s,&
-    BKYSP2sa,BKYSP2sb,DSPBK2s,&
-    BKYSP3sa,BKYSP3sb,DSPBK3s,&
-    BKYSP4sa,BKYSP4sb,DSPBK4s,&
-    BKYSP5sa,BKYSP5sb,DSPBK5sa,BPMSPs,DSPBK5sb,&
-    BLXSPsa ,BLXSPsb )
+    BKYSP0s_full,DSPBK0s,&
+    BKYSP1s_full,DSPBK1s,&
+    BKYSP2s_full,DSPBK2s,&
+    BKYSP3s_full,DSPBK3s,&
+    BKYSP4s_full,DSPBK4s,&
+    BKYSP5s_full,DSPBK5sa,BPMSPs,DSPBK5sb,&
+    BLXSPs_full)
 
   SPRDks : LINE=(SPRDksa,SPRDksb)
 
-  SPRDha : LINE=(&
-            ROSP1h  ,DSP2ha ,&
-    BYSP1ha,BYSP1hb ,DSP2hb ,&
-    BYSP2ha,BYSP2hb ,CNTSP1H,DSP2hc  ,&
-    QSP1h  ,QSP1h   ,DSP3haa,&
-    SSP1h  ,SSP1h   ,DSP3hab,BPMSP1h ,DSP3hb ,&
-                             XCSP1h  ,DSP3hc ,DSP3hd ,&
-    QSP2h  ,BPMSP2h ,QSP2h  ,DSP4ha  ,YCSP2h ,DSP4hb ,&
-                             IMSP0h  ,DSP4hc ,&
-    BRSP1ha,BRSP1hb ,ROSP2h ,DSP5ha  ,DSP5hb ,&
-                             XCSP3h  ,DSP5hca,&
-    SSP2h  ,SSP2h   ,DSP5hcb,&
-    QSP3h  ,QSP3h   ,DSP6ha ,BPMSP3h ,DSP6hb ,&
-                             YCSP4h  ,DSP6hc ,&
-    QSP4h  ,QSP4h   ,DSP7ha ,BPMSP4h ,DSP7hb ,&
-                             XCSP5h  ,DSP7hc ,&
-    QSP5h  ,QSP5h   ,DSP8ha ,BPMSP5h ,DSP8hb ,&
-                             YCSP6h  ,DSP8hc ,&
-    QSP6h  ,QSP6h   ,DSP9ha ,BPMSP6h ,DSP9hb ,&
-                                      DSP9hc ,&
-                                      DSP9hd ,&
-                                      DSP9he ,&
-                                      DSP9hf ,DSP9hg ,&
-    QSP7h  ,BPMSP7h ,QSP7h  ,DSP10ha ,XCSP7h ,DSP10hb,&
-                                      DSP10hc,&
-                             YCSP8h  ,DSP10hd,&
-    QSP8h  ,QSP8h   ,DSP11ha,BPMSP8h ,DSP11hb,DSP11hc,&
-    QSP9h  ,QSP9h   ,DSP12ha,BPMSP9h ,DSP12hb,&
-                             XCSP9h  ,DSP12hc1,&
-                                      IMBCSh1 ,&
-                                      DSP12hc2,&
-                                      IMBCSh2 ,&
-                                      DSP12hc3,&
-                                      IMBCSh3 ,&
-                                      DSP12hc4,&
-                             BPMSP10h,DSP12hd,&
-                             YCSP10h ,DSP12he,&
-    QSP10h ,QSP10h  ,DSP13ha,XCSP11h ,DSP13hb,&
-                             BPMSP11h,DSP13hc,&
-    QSP11h ,QSP11h  ,DSP14ha,WOODDOOR)
+  BYSP1h_full : LINE=(BYSP1ha,BYSP1hb)
+  BYSP2h_full : LINE=(BYSP2ha,BYSP2hb)
+  BRSP1h_full : LINE=(BRSP1ha,BRSP1hb)
 
-  SPRDhb : LINE=(&
-                             DSP14hb ,ROSP3h ,&
-    BRSP2ha,BRSP2hb ,CNTSP2H,DSP15ha ,DSP15hb,&
-                             DSP15hc ,DSP15hd,&
-    QSP12h ,BPMSP12h,QSP12h ,DSP16ha ,YCSP12h,DSP16hb,&
-                             XCSP13h ,DSP16hc,&
-    QSP13h ,QSP13h  ,DSP17ha,BPMSP13h,DSP17hb,&
-    BXSP1ha,BXSP1hb ,CNTSP3H)
+  QSP1h_full  : LINE=(QSP1h,QSP1h)
+  QSP2h_full  : LINE=(QSP2h,BPMSP2h,QSP2h)
+  QSP3h_full  : LINE=(QSP3h,QSP3h)
+  QSP4h_full  : LINE=(QSP4h,QSP4h)
+  QSP5h_full  : LINE=(QSP5h,QSP5h)
+  QSP6h_full  : LINE=(QSP6h,QSP6h)
+  QSP7h_full  : LINE=(QSP7h,BPMSP7h,QSP7h)
+  QSP8h_full  : LINE=(QSP8h,QSP8h)
+  QSP9h_full  : LINE=(QSP9h,QSP9h)
+  QSP10h_full : LINE=(QSP10h,QSP10h)
+  QSP11h_full : LINE=(QSP11h,QSP11h)
+
+  SSP1h_full : LINE=(SSP1h,SSP1h)
+  SSP2h_full : LINE=(SSP2h,SSP2h)
+
+  SPRDha : LINE=(ROSP1h,DSP2ha,&
+    BYSP1h_full,DSP2hb,&
+    BYSP2h_full,CNTSP1H,DSP2hc,&
+    QSP1h_full,DSP3haa,&
+    SSP1h_full,DSP3hab,BPMSP1h,DSP3hb,XCSP1h,DSP3hc,DSP3hd,&
+    QSP2h_full,DSP4ha,YCSP2h,DSP4hb,IMSP0h,DSP4hc,&
+    BRSP1h_full,ROSP2h,DSP5ha,DSP5hb,XCSP3h,DSP5hca,&
+    SSP2h_full,DSP5hcb,&
+    QSP3h_full,DSP6ha,BPMSP3h,DSP6hb,YCSP4h,DSP6hc,&
+    QSP4h_full,DSP7ha,BPMSP4h,DSP7hb,XCSP5h,DSP7hc,&
+    QSP5h_full,DSP8ha,BPMSP5h,DSP8hb,YCSP6h,DSP8hc,&
+    QSP6h_full,DSP9ha,BPMSP6h,DSP9hb,DSP9hc,DSP9hd,DSP9he,DSP9hf,DSP9hg,&
+    QSP7h_full,QSP7h,DSP10ha,XCSP7h,DSP10hb,DSP10hc,YCSP8h,DSP10hd,&
+    QSP8h_full,DSP11ha,BPMSP8h,DSP11hb,DSP11hc,&
+    QSP9h_full,DSP12ha,BPMSP9h,DSP12hb,XCSP9h,DSP12hc1,&
+      IMBCSh1,DSP12hc2,IMBCSh2,DSP12hc3,IMBCSh3,DSP12hc4,&
+      BPMSP10h,DSP12hd,YCSP10h,DSP12he,&
+    QSP10h_full,DSP13ha,XCSP11h,DSP13hb,BPMSP11h,DSP13hc,&
+    QSP11h_full,DSP14ha,WOODDOOR)
+
+  BRSP2h_full : LINE=(BRSP2ha,BRSP2hb)
+  BXSP1h_full : LINE=(BXSP1ha,BXSP1hb)
+
+  QSP12h_full : LINE=(QSP12h,BPMSP12h,QSP12h)
+  QSP13h_full : LINE=(QSP13h,QSP13h)
+
+  SPRDhb : LINE=(DSP14hb,ROSP3h,&
+    BRSP2h_full,CNTSP2H,DSP15ha,DSP15hb,DSP15hc,DSP15hd,&
+    QSP12h_full,DSP16ha,YCSP12h,DSP16hb,XCSP13h,DSP16hc,&
+    QSP13h_full,DSP17ha,BPMSP13h,DSP17hb,&
+    BXSP1h_full,CNTSP3H)
 
   SPRDh : LINE=(SPRDkh,SPRDha,SPRDhb)
 
   SPRDsa : LINE=(SPRDkh,SPRDks)
 
-  SPRDsb : LINE=(&
-            ROSP1s ,DSP2sa ,&
-    BYSP1sa,BYSP1sb,DSP2sb ,&
-    BYSP2sa,BYSP2sb,CNTSP1S,DSP2sc ,&
-    QSP1s  ,QSP1s  ,DSP3saa,&
-    SSP1s  ,SSP1s,  DSP3sab,BPMSP1s,DSP3sb ,&
-                            XCSP1s ,DSP3sc ,&
-    QSP2s  ,QSP2s  ,DSP4sa ,BPMSP2s,DSP4sb ,&
-                            YCSP2s ,DSP4sc ,&
-                            IMSP0s ,DSP4sd ,&
-    BXSP1sa,BXSP1sb,DSP5sa ,XCSP3s ,DSP5sb ,&
-    QSP3s  ,QSP3s  ,DSP6sa ,BPMSP3s,DSP6sb ,&
-                            YCSP4s ,DSP6sc ,&
-    QSP4s  ,QSP4s  ,DSP7sa ,BPMSP4s,DSP7sb ,DSP7sc,&
-                            XCSP5s ,DSP7sd ,&
-    QSP5s  ,QSP5s  ,DSP8sa ,BPMSP5s,DSP8sb ,&
-                                    DSP8sc ,&
-                                    DSP8sd ,&
-                            YCSP6s ,DSP8se ,&
-    QSP6s  ,QSP6s  ,DSP9sa ,BPMSP6s,DSP9sb ,&
-                            XCSP7s ,DSP9sc ,&
-    QSP7s  ,QSP7s  ,DSP10sa,BPMSP7s,DSP10sb,&
-    BXSP2sa,BXSP2sb,DSP11sa,DSP11sb,&
-                    DSP11sc,DSP11sd,&
-                            YCSP8s ,DSP11se,&
-    QSP8s  ,QSP8s  ,DSP12sa,BPMSP8s,DSP12sb,&
-                            XCSP9s ,DSP12sca,&
-    SSP2s  ,SSP2s  ,DSP12scb,&
-    QSP9s  ,QSP9s  ,DSP13sa,BPMSP9s,DSP13sb1,&
-                                    IMBCSs1 ,&
-                                    DSP13sb2,&
-                                    IMBCSs2 ,&
-                                    DSP13sb3,&
-                                    IMBCSs3 ,&
-                                    DSP13sb4,&
-    BXSP3sa,BXSP3sb,CNTSP2S)
+  BYSP1s_full : LINE=(BYSP1sa,BYSP1sb)
+  BYSP2s_full : LINE=(BYSP2sa,BYSP2sb)
+  BXSP1s_full : LINE=(BXSP1sa,BXSP1sb)
+  BXSP2s_full : LINE=(BXSP2sa,BXSP2sb)
+  BXSP3s_full : LINE=(BXSP3sa,BXSP3sb)
+
+  QSP1s_full : LINE=(QSP1s,QSP1s)
+  QSP2s_full : LINE=(QSP2s,QSP2s)
+  QSP3s_full : LINE=(QSP3s,QSP3s)
+  QSP4s_full : LINE=(QSP4s,QSP4s)
+  QSP5s_full : LINE=(QSP5s,QSP5s)
+  QSP6s_full : LINE=(QSP6s,QSP6s)
+  QSP7s_full : LINE=(QSP7s,QSP7s)
+  QSP8s_full : LINE=(QSP8s,QSP8s)
+  QSP9s_full : LINE=(QSP9s,QSP9s)
+
+  SSP1s_full : LINE=(SSP1s,SSP1s)
+  SSP2s_full : LINE=(SSP2s,SSP2s)
+
+  SPRDsb : LINE=(ROSP1s,DSP2sa,&
+    BYSP1s_full,DSP2sb,&
+    BYSP2s_full,CNTSP1S,DSP2sc,&
+    QSP1s_full,DSP3saa,&
+    SSP1s_full,DSP3sab,BPMSP1s,DSP3sb,XCSP1s,DSP3sc,&
+    QSP2s_full,DSP4sa,BPMSP2s,DSP4sb,YCSP2s,DSP4sc,IMSP0s,DSP4sd,&
+    BXSP1s_full,DSP5sa,XCSP3s,DSP5sb,&
+    QSP3s_full,DSP6sa,BPMSP3s,DSP6sb,YCSP4s,DSP6sc,&
+    QSP4s_full,DSP7sa,BPMSP4s,DSP7sb,DSP7sc,XCSP5s,DSP7sd,&
+    QSP5s_full,DSP8sa,BPMSP5s,DSP8sb,DSP8sc,DSP8sd,YCSP6s,DSP8se,&
+    QSP6s_full,DSP9sa,BPMSP6s,DSP9sb,XCSP7s,DSP9sc,&
+    QSP7s_full,DSP10sa,BPMSP7s,DSP10sb,&
+    BXSP2s_full,DSP11sa,DSP11sb,DSP11sc,DSP11sd,YCSP8s,DSP11se,&
+    QSP8s_full,DSP12sa,BPMSP8s,DSP12sb,XCSP9s,DSP12sca,&
+    SSP2s_full,DSP12scb,&
+    QSP9s_full,DSP13sa,BPMSP9s,DSP13sb1,&
+      IMBCSs1,DSP13sb2,IMBCSs2,DSP13sb3,IMBCSs3,DSP13sb4,&
+    BXSP3s_full,CNTSP2S)
 
   SPRDs : LINE=(SPRDsa,SPRDsb)
 
@@ -1291,40 +1313,25 @@
 
   SPRDdb : LINE=(DSP2dc1)
 
-  SPRDdc : LINE=(&
-                                     DSP2dc2,&
-                            XCSP1d  ,DSP2dd ,&
-    QSP1d  ,QSP1d  ,DSP3da          ,DSP3db ,&
-                            IMSP0d  ,DSP3dc ,MRFBSP2d,&
-                            BPMSP2d ,DSP3dd ,&
-    QSP2d  ,QSP2d  ,DSP4da ,YCSP2d  ,DSP4db ,&
-    BYSP1da,BYSP1db,DSP5da ,         DSP5db,&
-                            WSSP1d  ,DSP5dc1,&
-                                     IMBCSd1,&
-                                     DSP5dc2,&
-                                     IMBCSd2,&
-                                     DSP5dc3,&
-                                     IMBCSd3,&
-                                     DSP5dc4,&
-                            BPMSP3d ,DSP5dd ,&
-    BYSP2da,BYSP2db,DSP6da ,XCSP3d  ,DSP6db ,&
-                            YCSP4d  ,DSP6dc ,&
-                                     DSP6dd ,&
-                                     DSP6de ,&
-                                     DSP6dfa,&
-    WOODDOOR)
+  BYSP1d_full : LINE=(BYSP1da,BYSP1db)
+  BYSP2d_full : LINE=(BYSP2da,BYSP2db)
 
-  SPRDdd : LINE=(&
-             DSP6dfb,&
-    XCSP5d  ,DSP6dfc,&
-    YCSP6d  ,DSP6dfd,&
-    BPMSP4d ,DSP6dg ,DSP6dh ,&
-    BKXRASd ,DSP6di ,&
-    BKYRASd ,DSP6dj ,&
-    BPMSP5d ,DSP7daa,&
-    OTRSPDMP,DSP7dab,&
-    PCSP3d  ,BTMSP3d,DSP7db ,&
-    MUWALLd ,DWALLad,DUMPBSY,DDUMPBSY,BTMSPDMP)
+  QSP1d_full : LINE=(QSP1d,QSP1d)
+  QSP2d_full : LINE=(QSP2d,QSP2d)
+
+  SPRDdc : LINE=(DSP2dc2,XCSP1d,DSP2dd,&
+    QSP1d_full,DSP3da,DSP3db,IMSP0d,DSP3dc,MRFBSP2d,BPMSP2d,DSP3dd,&
+    QSP2d_full,DSP4da,YCSP2d,DSP4db,&
+    BYSP1d_full,DSP5da,DSP5db,WSSP1d,DSP5dc1,&
+      IMBCSd1,DSP5dc2,IMBCSd2,DSP5dc3,IMBCSd3,DSP5dc4,BPMSP3d,DSP5dd,&
+    BYSP2d_full,CNTSP1D,DSP6da,XCSP3d,DSP6db,YCSP4d,DSP6dc,DSP6dd,&
+      DSP6de,DSP6dfa,WOODDOOR)
+
+  SPRDdd : LINE=(DSP6dfb,XCSP5d,DSP6dfc,YCSP6d,DSP6dfd,BPMSP4d,DSP6dg,&
+      DSP6dh,RWWAKE3D,&
+    BKXRASd,DSP6di,&
+    BKYRASd,DSP6dj,BPMSP5d,DSP7daa,OTRSPDMP,DSP7dab,PCSP3d,BTMSP3d,&
+      DSP7db,MUWALLd,DWALLad,DUMPBSY,DDUMPBSY,BTMSPDMP)
 
   SPRDd : LINE=(SPRDkh,SPRDks,SPRDda,SPRDdb,SPRDdc,SPRDdd)
 
@@ -1366,8 +1373,11 @@
   DSPdc2b : DRIF, L=12.833/COS(ABSPdc)             !BPMSPH to BLXSPH
   DSPdc2a : DRIF, L=DSPdc2[L]-DSPdc2b[L]           !BYSPH to BPMSPH
 
-  SPRDkhDC : LINE=(DSPdc1,BYSPHa,BYSPHb,DSPdc2a,BPMSPH,DSPdc2b,&
-    BLXSPHa,BLXSPHb)
+  BYSPH_full : LINE=(BYSPHa,BYSPHb)
+
+  SPRDkhDC : LINE=(DSPdc1,&
+    BYSPH_full,DSPdc2a,BPMSPH,DSPdc2b,&
+    BLXSPH_full)
 
 ! DC spreader option (SXR): single type-5 corrector (SA-388-310-30)
 
@@ -1376,8 +1386,11 @@
   BYSPSb : SBEN, TYPE="class-5", L=LBSPdcS, ANGLE=ABSPdcS, TILT, &
                  HGAP=GBSPdc, E1=0, FINT=0, E2=ABSPdc, FINTX=FBSPdc
 
-  SPRDksbDC : LINE=(DSPdc1,BYSPSa,BYSPSb,DSPdc2a,BPMSPS,DSPdc2b,&
-    BLXSPSa,BLXSPSb)
+  BYSPS_full : LINE=(BYSPSa,BYSPSb)
+
+  SPRDksbDC : LINE=(DSPdc1,&
+    BYSPS_full,DSPdc2a,BPMSPS,DSPdc2b,&
+    BLXSPS_full)
 
 ! BDES and IDES
 

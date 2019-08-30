@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-13JUN19 ***
+! *** OPTICS=AD_ACCEL-2019next ***
 
 ! LCLS2sc undulator and undulator extension
 
@@ -7,9 +7,7 @@
 ! Modification History
 ! ------------------------------------------------------------------------------
 ! 17-JUL-2019, M. Woodley
-!  * remove "h" from names of split undulator elements per H.-D. Nuhn
 !  * add cell number to phase shifter names
-!  * create sub-LINEs for split undulator elements (MATRs and QUADs)
 ! ------------------------------------------------------------------------------
 ! 10-MAY-2019, M. Woodley
 !  * move BLM's in HXR cells from before undulator to after per H.-D. Nuhn
@@ -367,6 +365,7 @@ rfbsx25: instrument, l = lrfbub, type = "CavityX-1"
 sxxstart: marker !start of soft X-ray extension system
 sxxterm: marker !end of soft X-ray extension system
 sxrstart: marker !start of undulator system
+rwwake5s: marker, type = "WAKE" !SXR beampipe wake applied here
 sxrterm: marker !~end of undulator system
 muqs: marker
 mphs: marker
@@ -1004,9 +1003,14 @@ msxs2: instrument, type = "mirror"
 msxs3: instrument, type = "mirror"
 sxrssend: marker
 
-schicane: line = (sxrssbeg, dmonos, bcxss1a, bcxss1b, d1sa, gsxs1, d1sb, msxs1, d1sc, bcxss2a,  &
-        bcxss2b, dchs, cntrs, dchs, bcxss3a, bcxss3b, d1sd, slsxs1, d1se, msxs2, d1sf, msxs3,  &
-        d1sg, bcxss4a, bcxss4b, dmonos, sxrssend)
+bcxss1_full: line = (bcxss1a, bcxss1b)
+bcxss2_full: line = (bcxss2a, bcxss2b)
+bcxss3_full: line = (bcxss3a, bcxss3b)
+bcxss4_full: line = (bcxss4a, bcxss4b)
+
+schicane: line = (sxrssbeg, dmonos, bcxss1_full, d1sa, gsxs1, d1sb, msxs1, d1sc, bcxss2_full,  &
+        dchs, cntrs, dchs, bcxss3_full, d1sd, slsxs1, d1se, msxs2, d1sf, msxs3, d1sg, bcxss4_full &
+        , dmonos, sxrssend)
 
 ! ------------------------------------------------------------------------------
 ! SXR undulator cells
@@ -1573,7 +1577,7 @@ sxrcl: line = (sxcel26, sxcel27, sxcel28, sxcel29, sxcel30, sxcel31, sxcel32, sx
         sxcel35, sxcel36, sxcel37, sxcel38, sxcel39, sxcel40, sxcel41, sxcel42, sxcel43, sxcel44 &
         , sxcel45, sxcel46, sxcel47, sxcel48, sxcel49, sxcel50)
 
-sxr: line = (sxrstart, sxrcl, sxrterm, due1ab, rfbsx51, due1e, endunds)
+sxr: line = (sxrstart, sxrcl, rwwake5s, sxrterm, due1ab, rfbsx51, due1e, endunds)
 
 ! ------------------------------------------------------------------------------
 ! SXR undulator exit section
@@ -1824,81 +1828,40 @@ kqfhx = 1.e-9*gqfhx*c_light/gamu/mc2 !m^-2
 kqdhx = 1.e-9*gqdhx*c_light/gamu/mc2 !m^-2
 kqdhxm = -0.51857909178
 
-qhx13: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqfhx
-qhx14: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqdhx
-qhx15: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqfhx
-qhx16: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqdhx
-qhx17: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqfhx
-qhx18: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqdhx
-qhx19: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqfhx
-qhx20: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqdhx
-qhx21: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqfhx
-qhx22: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqdhx
-qhx23: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqfhx
-qhx24: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqdhx
-qhx25: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqfhx
-qhx26: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqdhx
-qhx27: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqfhx
-qhx28: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqdhx
-qhx29: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqfhx
-qhx30: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqdhx
-qhx31: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqfhx
-qhx32: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqdhx
-qhx33: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqfhx
-qhx34: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqdhx
-qhx35: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqfhx
-qhx36: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqdhx
-qhx37: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqfhx
-qhx38: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqdhx
-qhx39: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqfhx
-qhx40: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqdhx
-qhx41: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqfhx
-qhx42: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqdhx
-qhx43: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqfhx
-qhx44: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqdhx
-qhx45: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqfhx
-qhx46: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu!, k1 = kqdhxm
-
-
-!!! Old: 
-!!! qhx_gradient = 48.140
-!!! 3 T integrated:
-qhx_gradient = 3/(QHX13[L]*2)
-
-qhx13[b1_gradient] = -qhx_gradient
-qhx14[b1_gradient] = qhx_gradient
-qhx15[b1_gradient] = -qhx_gradient
-qhx16[b1_gradient] = qhx_gradient
-qhx17[b1_gradient] = -qhx_gradient
-qhx18[b1_gradient] = qhx_gradient
-qhx19[b1_gradient] = -qhx_gradient
-qhx20[b1_gradient] = qhx_gradient
-qhx21[b1_gradient] = -qhx_gradient
-qhx22[b1_gradient] = qhx_gradient
-qhx23[b1_gradient] = -qhx_gradient
-qhx24[b1_gradient] = qhx_gradient
-qhx25[b1_gradient] = -qhx_gradient
-qhx26[b1_gradient] = qhx_gradient
-qhx27[b1_gradient] = -qhx_gradient
-qhx28[b1_gradient] = qhx_gradient
-qhx29[b1_gradient] = -qhx_gradient
-qhx30[b1_gradient] = qhx_gradient
-qhx31[b1_gradient] = -qhx_gradient
-qhx32[b1_gradient] = qhx_gradient
-qhx33[b1_gradient] = -qhx_gradient
-qhx34[b1_gradient] = qhx_gradient
-qhx35[b1_gradient] = -qhx_gradient
-qhx36[b1_gradient] = qhx_gradient
-qhx37[b1_gradient] = -qhx_gradient
-qhx38[b1_gradient] = qhx_gradient
-qhx39[b1_gradient] = -qhx_gradient
-qhx40[b1_gradient] = qhx_gradient
-qhx41[b1_gradient] = -qhx_gradient
-qhx42[b1_gradient] = qhx_gradient
-qhx43[b1_gradient] = -qhx_gradient
-qhx44[b1_gradient] = qhx_gradient
-qhx45[b1_gradient] = -qhx_gradient
-qhx46[b1_gradient] = qhx_gradient/2
+qhx13: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhx14: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+qhx15: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhx16: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+qhx17: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhx18: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+qhx19: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhx20: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+qhx21: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhx22: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+qhx23: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhx24: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+qhx25: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhx26: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+qhx27: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhx28: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+qhx29: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhx30: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+qhx31: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhx32: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+qhx33: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhx34: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+qhx35: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhx36: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+qhx37: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhx38: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+qhx39: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhx40: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+qhx41: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhx42: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+qhx43: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhx44: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+qhx45: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhx46: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhxm
 
 luhxu = 0.026                            !m
 nphxu = 129
@@ -2168,6 +2131,7 @@ dthxu: drift, l = lhxue
 ! ------------------------------------------------------------------------------
 
 hxrstart: marker !start of undulator system
+rwwake5h: marker, type = "WAKE" !HXR beampipe wake applied here
 hxrterm: marker !end of undulator system
 muqh: marker
 mphh: marker
@@ -2570,8 +2534,13 @@ hxrssbeg: marker
 diamond: instrument
 hxrssend: marker
 
-hchicane: line = (hxrssbeg, dmono, bcxhs1a, bcxhs1b, d1, bcxhs2a, bcxhs2b, dch, diamond, dch,  &
-        bcxhs3a, bcxhs3b, d1, bcxhs4a, bcxhs4b, dmono, hxrssend)
+bcxhs1_full: line = (bcxhs1a, bcxhs1b)
+bcxhs2_full: line = (bcxhs2a, bcxhs2b)
+bcxhs3_full: line = (bcxhs3a, bcxhs3b)
+bcxhs4_full: line = (bcxhs4a, bcxhs4b)
+
+hchicane: line = (hxrssbeg, dmono, bcxhs1_full, d1, bcxhs2_full, dch, diamond, dch, bcxhs3_full,  &
+        d1, bcxhs4_full, dmono, hxrssend)
 
 ! ------------------------------------------------------------------------------
 ! HXR undulator cells
@@ -3465,7 +3434,8 @@ hxrcl: line = (hxcel13, hxcel14, hxcel15, hxcel16, hxcel17, hxcel18, hxcel19, hx
         , hxcel32, hxcel33, hxcel34, hxcel35, hxcel36, hxcel37, hxcel38, hxcel39, hxcel40,  &
         hxcel41, hxcel42, hxcel43, hxcel44, hxcel45, hxcel46, hxcel47, hxcel48, hxcel49, hxcel50)
 
-hxr: line = (begundh, du0h, du8h, hxrstart, hxrcl, hxrterm, due1a, rfbhx51, due1e, endundh)
+hxr: line = (begundh, du0h, du8h, hxrstart, hxrcl, rwwake5h, hxrterm, due1a, rfbhx51, due1e,  &
+        endundh)
 
 ! ------------------------------------------------------------------------------
 ! HXR undulator exit section

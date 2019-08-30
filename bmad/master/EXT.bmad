@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-13JUN19 ***
+! *** OPTICS=AD_ACCEL-2019next ***
 
 ! LCLS2sc linac extension: end of L3 to start of bypass dogleg
 
@@ -63,10 +63,11 @@ kqx02 = -1.076735559223 !-1.076613519021
 qx01: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqx01
 qx02: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqx02
 
-!-!  COMMENT !GL < 106 kG for QEs
-!-!    VALUE, Brhof*KQX01*LQE
-!-!    VALUE, Brhof*KQX02*LQE
-!-!  ENDCOMMENT
+!=!  COMMENT !GL < 106 kG for QEs
+!=!  COMMENT !GL < 106 kG for QEs
+!=!    VALUE, Brhof*KQX01*LQE
+!=!    VALUE, Brhof*KQX02*LQE
+!=!  ENDCOMMENT
 
 ! ==============================================================================
 ! DRIF
@@ -106,19 +107,30 @@ xcx01: kicker, type = "class-4"
 ycx02: kicker, type = "class-4"
 
 ! ==============================================================================
-! marker points, etc.
-! ------------------------------------------------------------------------------
-
-rwwake1: marker, type = "WAKE" !EXT beampipe wake applied here
-
-! ==============================================================================
 ! BEAMLINE
 ! ------------------------------------------------------------------------------
 
+
+
+!Old split line: line = (qx01, bpmx01, qx01)
+
+qx01_full: line = (qx01)
+qx01[L] = 2*qx01[L]
+bpmx01[superimpose] = T
+bpmx01[ref] = qx01
+
+
+!Old split line: line = (qx02, bpmx02, qx02)
+
+qx02_full: line = (qx02)
+qx02[L] = 2*qx02[L]
+bpmx02[superimpose] = T
+bpmx02[ref] = qx02
+
 ext0: line = (begext, dx00, qx01, qx01, dx01, qx02, qx02, dx02, endext)
 
-ext: line = (begext, dx00, qx01, bpmx01, qx01, dx01a, xcx01, dx01b, rfbx02, dx01c, qx02, bpmx02,  &
-        qx02, dx02a, ycx02, dx02b, rwwake1, endext)
+ext: line = (begext, dx00, qx01_full, dx01a, xcx01, dx01b, rfbx02, dx01c, qx02_full, dx02a, ycx02 &
+        , dx02b, endext)
 
 ! ------------------------------------------------------------------------------
 

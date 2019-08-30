@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-13JUN19 ***
+! *** OPTICS=AD_ACCEL-2019next ***
 
 ! LCLS2sc linac extension: end of L3 to start of bypass dogleg
 
@@ -106,14 +106,11 @@
   YCX02 : VKIC, TYPE="class-4"
 
 ! ==============================================================================
-! marker points, etc.
-! ------------------------------------------------------------------------------
-
-  RWWAKE1  : MARK, TYPE="WAKE" !EXT beampipe wake applied here
-
-! ==============================================================================
 ! BEAMLINE
 ! ------------------------------------------------------------------------------
+
+  QX01_full : LINE=(QX01,BPMX01,QX01)
+  QX02_full : LINE=(QX02,BPMX02,QX02)
 
   EXT0 : LINE=(BEGEXT,&
     DX00,&
@@ -124,8 +121,8 @@
   EXT : LINE=(&
     BEGEXT,&
     DX00,&
-    QX01,BPMX01,QX01,DX01a,XCX01,DX01b,RFBX02,DX01c,&
-    QX02,BPMX02,QX02,DX02a,YCX02,DX02b,RWWAKE1,&
+    QX01_full,DX01a,XCX01,DX01b,RFBX02,DX01c,&
+    QX02_full,DX02a,YCX02,DX02b,&
     ENDEXT)
 
 ! ------------------------------------------------------------------------------

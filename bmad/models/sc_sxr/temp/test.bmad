@@ -1,0 +1,23 @@
+
+
+
+beginning[beta_a] = 1
+beginning[beta_b] = 1
+beginning[e_tot] = 100e6
+
+
+qcm01: quadrupole, type = "cryo", l = 1/2, aperture = 1, k1 = 1
+xcm01: kicker, type = "cryo"
+ycm01: kicker, type = "cryo"
+
+
+qcm01_full: line = (qcm01)
+qcm01[L] = 2*qcm01[L]
+xcm01[superimpose] = T
+xcm01[ref] = qcm01
+ycm01[superimpose] = T
+ycm01[ref] = qcm01
+
+lat: line = (qcm01_full)
+
+use, lat

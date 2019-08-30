@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-13JUN19 ***
+! *** OPTICS=AD_ACCEL-2019next ***
 
 ! ==============================================================================
 ! 05-MAY-2017, M. Woodley
@@ -845,10 +845,17 @@
 
 ! miscellany
 
-  PK297  : MARK
-  PK299  : MARK
-  PK303  : MARK
-  PK304  : MARK
+  ST28950 : INST, L=8*in2m, TYPE="PPS STOPPER" !copper/BTM/tungsten
+  ST28960 : INST, L=8*in2m, TYPE="PPS STOPPER" !copper/BTM/tungsten
+
+  DAQ8D1 : DRIF, L=0.845-ST28950[L]/2
+  DAQ8D2 : DRIF, L=0.419-ST28950[L]/2-ST28960[L]/2
+  DAQ8D3 : DRIF, L=DAQ8D[L]-DAQ8D1[L]-ST28950[L]-DAQ8D2[L]-ST28960[L]
+
+  PK297 : MARK
+  PK299 : MARK
+  PK303 : MARK
+  PK304 : MARK
 
 ! ==============================================================================
 ! BEAMLINEs
@@ -864,17 +871,30 @@
   K25_8 : LINE=(K25_8a1,XC25802,K25_8a2,YC25803,K25_8a3,K25_8b,K25_8c,&
                 K25_8d1,XC25900,K25_8d2,YC25900,K25_8d3)
 
+  TCAV3_full : LINE=(TCAV3,TCAV3)
+
+  BXKIK_full : LINE=(BXKIKa,BXKIKb)
+
+  Q25201_full : LINE=(Q25201,BPM25201,Q25201)
+  Q25301_full : LINE=(Q25301,BPM25301,Q25301)
+  Q25401_full : LINE=(Q25401,BPM25401,Q25401)
+  Q25501_full : LINE=(Q25501,BPM25501,Q25501)
+  Q25601_full : LINE=(Q25601,BPM25601,Q25601)
+  Q25701_full : LINE=(Q25701,BPM25701,Q25701)
+  Q25801_full : LINE=(Q25801,BPM25801,Q25801)
+  Q25901_full : LINE=(Q25901,BPM25901,Q25901)
+
   LI25  : LINE=(LI25beg,ZLIN09,&
-                K25_1,DAQ1,Q25201,BPM25201,Q25201,DAQ2,&
-                K25_2,D255a,IMBC2O,D255b,D255c,TCAV3,TCAV3,&
-                  D255d,Q25301,BPM25301,Q25301,DAQ2,&
+                K25_1,DAQ1,Q25201_full,DAQ2,&
+                K25_2,D255a,IMBC2O,D255b,D255c,TCAV3_full,&
+                  D255d,Q25301_full,DAQ2,&
                 K25_3,D256a,PH03,D256b,BL22,D256c,&
-                  BXKIKA,BXKIKB,D256d,DAQ1,Q25401,BPM25401,Q25401,DAQ2,&
-                K25_4,DAQ1,Q25501,BPM25501,Q25501,DAQ2,&
-                K25_5,DAQ1,Q25601,BPM25601,Q25601,DAQ2,&
-                K25_6,DAQ1,Q25701,BPM25701,Q25701,DAQ2,&
-                K25_7,DAQ1,Q25801,BPM25801,Q25801,DAQ2,&
-                K25_8,DAQ7,Q25901,BPM25901,Q25901,DAQ8A,OTR_TCAV,DAQ8B,&
+                  BXKIK_full,D256d,DAQ1,Q25401_full,DAQ2,&
+                K25_4,DAQ1,Q25501_full,DAQ2,&
+                K25_5,DAQ1,Q25601_full,DAQ2,&
+                K25_6,DAQ1,Q25701_full,DAQ2,&
+                K25_7,DAQ1,Q25801_full,DAQ2,&
+                K25_8,DAQ7,Q25901_full,DAQ8A,OTR_TCAV,DAQ8B,&
                 LI25end)
 
 ! ------------------------------------------------------------------------------
@@ -889,15 +909,24 @@
   K26_8 : LINE=(K26_8a1,XC26802,K26_8a2,YC26803,K26_8a3,K26_8b,K26_8c,&
                 K26_8d1,XC26900,K26_8d2,YC26900,K26_8d3)
 
+  Q26201_full : LINE=(Q26201,BPM26201,Q26201)
+  Q26301_full : LINE=(Q26301,BPM26301,Q26301)
+  Q26401_full : LINE=(Q26401,BPM26401,Q26401)
+  Q26501_full : LINE=(Q26501,BPM26501,Q26501)
+  Q26601_full : LINE=(Q26601,BPM26601,Q26601)
+  Q26701_full : LINE=(Q26701,BPM26701,Q26701)
+  Q26801_full : LINE=(Q26801,BPM26801,Q26801)
+  Q26901_full : LINE=(Q26901,BPM26901,Q26901)
+
   LI26  : LINE=(LI26beg,ZLIN10,&
-                K26_1,DAQ1,Q26201,BPM26201,Q26201,DAQ2,&
-                K26_2,DAQ1,Q26301,BPM26301,Q26301,DAQ2,&
-                K26_3,DAQ1,Q26401,BPM26401,Q26401,DAQ2,&
-                K26_4,DAQ1,Q26501,BPM26501,Q26501,DAQ2,&
-                K26_5,DAQ1,Q26601,BPM26601,Q26601,DAQ2,&
-                K26_6,DAQ1,Q26701,BPM26701,Q26701,DAQ2,&
-                K26_7,DAQ1,Q26801,BPM26801,Q26801,DAQ2,&
-                K26_8,DAQ7,Q26901,BPM26901,Q26901,DAQ8,&
+                K26_1,DAQ1,Q26201_full,DAQ2,&
+                K26_2,DAQ1,Q26301_full,DAQ2,&
+                K26_3,DAQ1,Q26401_full,DAQ2,&
+                K26_4,DAQ1,Q26501_full,DAQ2,&
+                K26_5,DAQ1,Q26601_full,DAQ2,&
+                K26_6,DAQ1,Q26701_full,DAQ2,&
+                K26_7,DAQ1,Q26801_full,DAQ2,&
+                K26_8,DAQ7,Q26901_full,DAQ8,&
                 LI26end)
 
 ! ------------------------------------------------------------------------------
@@ -912,15 +941,24 @@
   K27_8 : LINE=(K27_8a1,XC27802,K27_8a2,YC27803,K27_8a3,K27_8b,K27_8c,&
                 K27_8d1,XC27900,K27_8d2,YC27900,K27_8d3)
 
+  Q27201_full : LINE=(Q27201,BPM27201,Q27201)
+  Q27301_full : LINE=(Q27301,BPM27301,Q27301)
+  Q27401_full : LINE=(Q27401,BPM27401,Q27401)
+  Q27501_full : LINE=(Q27501,BPM27501,Q27501)
+  Q27601_full : LINE=(Q27601,BPM27601,Q27601)
+  Q27701_full : LINE=(Q27701,BPM27701,Q27701)
+  Q27801_full : LINE=(Q27801,BPM27801,Q27801)
+  Q27901_full : LINE=(Q27901,BPM27901,Q27901)
+
   LI27  : LINE=(LI27beg,ZLIN11,&
-                K27_1,DAQ1,Q27201,BPM27201,Q27201,DAQ2,&
-                K27_2,DAQ1,Q27301,BPM27301,Q27301,DAQ2,&
-                K27_3,DAQ1,Q27401,BPM27401,Q27401,DAQ2,&
-                K27_4,DAQ1,Q27501,BPM27501,Q27501,DAQ2,&
-                K27_5,DAQ1,Q27601,BPM27601,Q27601,DAQ2,&
-                K27_6,DAQ5A,WS27644,DAQ6A,Q27701,BPM27701,Q27701,DAQ2,&
-                K27_7,DAQ1,Q27801,BPM27801,Q27801,DAQ2,&
-                K27_8,DAQ7,Q27901,BPM27901,Q27901,DAQ8,&
+                K27_1,DAQ1,Q27201_full,DAQ2,&
+                K27_2,DAQ1,Q27301_full,DAQ2,&
+                K27_3,DAQ1,Q27401_full,DAQ2,&
+                K27_4,DAQ1,Q27501_full,DAQ2,&
+                K27_5,DAQ1,Q27601_full,DAQ2,&
+                K27_6,DAQ5A,WS27644,DAQ6A,Q27701_full,DAQ2,&
+                K27_7,DAQ1,Q27801_full,DAQ2,&
+                K27_8,DAQ7,Q27901_full,DAQ8,&
                 LI27end)
 
 ! ------------------------------------------------------------------------------
@@ -935,17 +973,27 @@
   K28_8 : LINE=(K28_8a1,XC28802,K28_8a2,YC28803,K28_8a3,K28_8b,K28_8c,&
                 K28_8d1,XC28900,K28_8d2,YC28900,K28_8d3)
 
+  Q28201_full : LINE=(Q28201,BPM28201,Q28201)
+  Q28301_full : LINE=(Q28301,BPM28301,Q28301)
+  Q28401_full : LINE=(Q28401,BPM28401,Q28401)
+  Q28501_full : LINE=(Q28501,BPM28501,Q28501)
+  Q28601_full : LINE=(Q28601,BPM28601,Q28601)
+  Q28701_full : LINE=(Q28701,BPM28701,Q28701)
+  Q28801_full : LINE=(Q28801,BPM28801,Q28801)
+  Q28901_full : LINE=(Q28901,BPM28901,Q28901)
+
   LI28  : LINE=(LI28beg,ZLIN12,&
                 K28_1,DAQ5B1,XC29092,DAQ5B2,YC29092,DAQ5B3,WS28144,DAQ6B,&
-                  Q28201,BPM28201,Q28201,DAQ2,&
-                K28_2,DAQ1,Q28301,BPM28301,Q28301,DAQ2,&
-                K28_3,DAQ1,Q28401,BPM28401,Q28401,DAQ2,&
+                  Q28201_full,DAQ2,&
+                K28_2,DAQ1,Q28301_full,DAQ2,&
+                K28_3,DAQ1,Q28401_full,DAQ2,&
                 K28_4,DAQ5C1,XC29095,DAQ5C2,YC29095,DAQ5C3,WS28444,DAQ6C,&
-                  Q28501,BPM28501,Q28501,DAQ2,&
-                K28_5,DAQ1,Q28601,BPM28601,Q28601,DAQ2,&
-                K28_6,DAQ1,Q28701,BPM28701,Q28701,DAQ2,&
-                K28_7,DAQ5D,WS28744,DAQ6D,Q28801,BPM28801,Q28801,DAQ2,&
-                K28_8,DAQ7,Q28901,BPM28901,Q28901,DAQ8C,C29096,DAQ8D,&
+                  Q28501_full,DAQ2,&
+                K28_5,DAQ1,Q28601_full,DAQ2,&
+                K28_6,DAQ1,Q28701_full,DAQ2,&
+                K28_7,DAQ5D,WS28744,DAQ6D,Q28801_full,DAQ2,&
+                K28_8,DAQ7,Q28901_full,DAQ8C,C29096,DAQ8D1,&
+                  ST28950,DAQ8D2,ST28960,DAQ8D3,&
                 LI28end)
 
 ! ------------------------------------------------------------------------------
@@ -960,15 +1008,24 @@
   K29_8 : LINE=(K29_8a1,XC29802,K29_8a2,YC29803,K29_8a3,K29_8b,K29_8c,&
                 K29_8d1,XC29900,K29_8d2,YC29900,K29_8d3)
 
+  Q29201_full : LINE=(Q29201,BPM29201,Q29201)
+  Q29301_full : LINE=(Q29301,BPM29301,Q29301)
+  Q29401_full : LINE=(Q29401,BPM29401,Q29401)
+  Q29501_full : LINE=(Q29501,BPM29501,Q29501)
+  Q29601_full : LINE=(Q29601,BPM29601,Q29601)
+  Q29701_full : LINE=(Q29701,BPM29701,Q29701)
+  Q29801_full : LINE=(Q29801,BPM29801,Q29801)
+  Q29901_full : LINE=(Q29901,BPM29901,Q29901)
+
   LI29  : LINE=(LI29beg,ZLIN13,&
-                K29_1,D10CA,C29146,D10CB,DAQ1,Q29201,BPM29201,Q29201,DAQ2,&
-                K29_2,DAQ1,Q29301,BPM29301,Q29301,DAQ2,&
-                K29_3,DAQ1,Q29401,BPM29401,Q29401,DAQ2,&
-                K29_4,D10CC,C29446,D10CD,DAQ1,Q29501,BPM29501,Q29501,DAQ2,&
-                K29_5,D10CE,C29546,D10CF,DAQ1,Q29601,BPM29601,Q29601,DAQ2,&
-                K29_6,DAQ1,Q29701,BPM29701,Q29701,DAQ2,&
-                K29_7,DAQ9A,PK297,DAQ9B,Q29801,BPM29801,Q29801,DAQ2,&
-                K29_8,DAQ3,Q29901,BPM29901,Q29901,DAQ4A,P30013,DAQ4B,P30014,&
+                K29_1,D10CA,C29146,D10CB,DAQ1,Q29201_full,DAQ2,&
+                K29_2,DAQ1,Q29301_full,DAQ2,&
+                K29_3,DAQ1,Q29401_full,DAQ2,&
+                K29_4,D10CC,C29446,D10CD,DAQ1,Q29501_full,DAQ2,&
+                K29_5,D10CE,C29546,D10CF,DAQ1,Q29601_full,DAQ2,&
+                K29_6,DAQ1,Q29701_full,DAQ2,&
+                K29_7,DAQ9A,PK297,DAQ9B,Q29801_full,DAQ2,&
+                K29_8,DAQ3,Q29901_full,DAQ4A,P30013,DAQ4B,P30014,&
                   DAQ4C,C29956,DAQ4D,PK299,DAQ4E,&
                 LI29end)
 
@@ -986,25 +1043,33 @@
   K30_8 : LINE=(K30_8a1,XC30802,K30_8a2,YC30803,K30_8a3,K30_8b,K30_8c1,YC30900,&
                 K30_8c2,XC30900,K30_8c3)
 
+  Q30201_full : LINE=(Q30201,BPM30201,Q30201)
+  Q30301_full : LINE=(Q30301,BPM30301,Q30301)
+  Q30401_full : LINE=(Q30401,BPM30401,Q30401)
+  Q30501_full : LINE=(Q30501,BPM30501,Q30501)
+  Q30601_full : LINE=(Q30601,BPM30601,Q30601)
+  Q30701_full : LINE=(Q30701,BPM30701,Q30701)
+  Q30801_full : LINE=(Q30801,BPM30801,Q30801)
+
   LI30  : LINE=(LI30beg,ZLIN14,&
                 K30_1,DAQ10A,P30143,DAQ10B,P30144,DAQ10C,C30146,DAQ10D,&
-                  Q30201,BPM30201,Q30201,DAQ2,&
-                K30_2,DAQ1,Q30301,BPM30301,Q30301,DAQ2,&
-                K30_3,DAQ10E,PK303,DAQ10F,Q30401,BPM30401,Q30401,DAQ2,&
+                  Q30201_full,DAQ2,&
+                K30_2,DAQ1,Q30301_full,DAQ2,&
+                K30_3,DAQ10E,PK303,DAQ10F,Q30401_full,DAQ2,&
                 K30_4,DAQ10G,P30443,DAQ10H,P30444,DAQ10I,C30446,DAQ10J,&
-                  PK304,DAQ10K,Q30501,BPM30501,Q30501,DAQ2,&
+                  PK304,DAQ10K,Q30501_full,DAQ2,&
                 K30_5,DAQ11A,P30543,DAQ11B,P30544,DAQ11C,C30546,DAQ11D,&
-                  Q30601,BPM30601,Q30601,DAQ12,&
-                K30_6,DAQ13,Q30701,BPM30701,Q30701,DAQ14,&
-                K30_7,DAQ15,Q30801,BPM30801,Q30801,DAQ16,&
+                  Q30601_full,DAQ12,&
+                K30_6,DAQ13,Q30701_full,DAQ14,&
+                K30_7,DAQ15,Q30801_full,DAQ16,&
                 K30_8,DAQ17,&
-                LI30end)
+                LI30term)
 
 ! ------------------------------------------------------------------------------
 
   L3 : LINE=(BEGL3,&
              LI25,LI26,LI27,LI28,LI29,LI30,&
-             RWWAKEss,DBMARK29,ENDL3)
+             DBMARK29,ENDL3)
 
 ! ==============================================================================
 

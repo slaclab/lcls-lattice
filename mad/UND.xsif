@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-13JUN19 ***
+! *** OPTICS=AD_ACCEL-2019next ***
 
 ! LCLS2sc undulator and undulator extension
 
@@ -7,9 +7,7 @@
 ! Modification History
 ! ------------------------------------------------------------------------------
 ! 17-JUL-2019, M. Woodley
-!  * remove "h" from names of split undulator elements per H.-D. Nuhn
 !  * add cell number to phase shifter names
-!  * create sub-LINEs for split undulator elements (MATRs and QUADs)
 ! ------------------------------------------------------------------------------
 ! 10-MAY-2019, M. Woodley
 !  * move BLM's in HXR cells from before undulator to after per H.-D. Nuhn
@@ -359,6 +357,7 @@
   SXXSTART : MARK !start of soft X-ray extension system
   SXXTERM  : MARK !end of soft X-ray extension system
   SXRSTART : MARK !start of undulator system
+  RWWAKE5S : MARK, TYPE="WAKE" !SXR beampipe wake applied here
   SXRTERM  : MARK !~end of undulator system
   MUQS     : MARK
   MPHS     : MARK
@@ -816,11 +815,16 @@
   MSXS3    : INST, TYPE="mirror"
   SXRSSEND : MARK
 
+  BCXSS1_full : LINE=(BCXSS1a,BCXSS1b)
+  BCXSS2_full : LINE=(BCXSS2a,BCXSS2b)
+  BCXSS3_full : LINE=(BCXSS3a,BCXSS3b)
+  BCXSS4_full : LINE=(BCXSS4a,BCXSS4b)
+
   SCHICANE : LINE=(SXRSSBEG,DMONOS,&
-    BCXSS1A,BCXSS1B,D1Sa,GSXS1,D1Sb,MSXS1,D1Sc,&
-    BCXSS2A,BCXSS2B,DCHS,CNTRS,DCHS,&
-    BCXSS3A,BCXSS3B,D1Sd,SLSXS1,D1Se,MSXS2,D1Sf,MSXS3,D1Sg,&
-    BCXSS4A,BCXSS4B,DMONOS,SXRSSEND)
+    BCXSS1_full,D1Sa,GSXS1,D1Sb,MSXS1,D1Sc,&
+    BCXSS2_full,DCHS,CNTRS,DCHS,&
+    BCXSS3_full,D1Sd,SLSXS1,D1Se,MSXS2,D1Sf,MSXS3,D1Sg,&
+    BCXSS4_full,DMONOS,SXRSSEND)
 
 ! ------------------------------------------------------------------------------
 ! SXR undulator cells
@@ -984,7 +988,7 @@
     SXCEL41,SXCEL42,SXCEL43,SXCEL44,SXCEL45,&
     SXCEL46,SXCEL47,SXCEL48,SXCEL49,SXCEL50)
 
-  SXR : LINE=(SXRSTART,SXRCL,SXRTERM,DUE1ab,RFBSX51,DUE1e,ENDUNDS)
+  SXR : LINE=(SXRSTART,SXRCL,RWWAKE5S,SXRTERM,DUE1ab,RFBSX51,DUE1e,ENDUNDS)
 
 ! ------------------------------------------------------------------------------
 ! SXR undulator exit section
@@ -1516,6 +1520,7 @@
 ! ------------------------------------------------------------------------------
 
   HXRSTART : MARK !start of undulator system
+  RWWAKE5H : MARK, TYPE="WAKE" !HXR beampipe wake applied here
   HXRTERM  : MARK !end of undulator system
   MUQH     : MARK
   MPHH     : MARK
@@ -1701,11 +1706,16 @@
   DIAMOND  : INST
   HXRSSEND : MARK
 
+  BCXHS1_full : LINE=(BCXHS1a,BCXHS1b)
+  BCXHS2_full : LINE=(BCXHS2a,BCXHS2b)
+  BCXHS3_full : LINE=(BCXHS3a,BCXHS3b)
+  BCXHS4_full : LINE=(BCXHS4a,BCXHS4b)
+
   HCHICANE : LINE=(HXRSSBEG,DMONO,&
-    BCXHS1A,BCXHS1B,D1,&
-    BCXHS2A,BCXHS2B,DCH,DIAMOND,DCH,&
-    BCXHS3A,BCXHS3B,D1,&
-    BCXHS4A,BCXHS4B,DMONO,HXRSSEND)
+    BCXHS1_full,D1,&
+    BCXHS2_full,DCH,DIAMOND,DCH,&
+    BCXHS3_full,D1,&
+    BCXHS4_full,DMONO,HXRSSEND)
 
 ! ------------------------------------------------------------------------------
 ! HXR undulator cells
@@ -1946,7 +1956,7 @@
     HXCEL45,HXCEL46,HXCEL47,HXCEL48,HXCEL49,HXCEL50)
 
   HXR : LINE=(BEGUNDH,&
-              DU0h,DU8h,HXRSTART,HXRCL,HXRTERM,DUE1a,RFBHX51,DUE1e,&
+              DU0h,DU8h,HXRSTART,HXRCL,RWWAKE5H,HXRTERM,DUE1a,RFBHX51,DUE1e,&
               ENDUNDH)
 
 ! ------------------------------------------------------------------------------

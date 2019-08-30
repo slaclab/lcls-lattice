@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-13JUN19 ***
+! *** OPTICS=AD_ACCEL-2019next ***
 
 ! LCLS2sc sector 7 dogleg plus match to bypass line
 
@@ -263,25 +263,27 @@ qbp12: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = -kqbyp
 
 ! integrated strengths
 
-!-!  COMMENT !nominal energy
-!-!    VALUE, (Cb*Ef)*KQDOG*LQR
-!-!    VALUE, (Cb*Ef)*KQL1P*LQR
-!-!    VALUE, (Cb*Ef)*KQL2P*LQR
-!-!    VALUE, (Cb*Ef)*KQL3P*LQM
-!-!    VALUE, (Cb*Ef)*KQL4P*LQM
-!-!    VALUE, (Cb*Ef)*KQL5P*LQM
-!-!    VALUE, (Cb*Ef)*KQBYP*LQM
-!-!  ENDCOMMENT
+!=!  COMMENT !nominal energy
+!=!  COMMENT !nominal energy
+!=!    VALUE, (Cb*Ef)*KQDOG*LQR
+!=!    VALUE, (Cb*Ef)*KQL1P*LQR
+!=!    VALUE, (Cb*Ef)*KQL2P*LQR
+!=!    VALUE, (Cb*Ef)*KQL3P*LQM
+!=!    VALUE, (Cb*Ef)*KQL4P*LQM
+!=!    VALUE, (Cb*Ef)*KQL5P*LQM
+!=!    VALUE, (Cb*Ef)*KQBYP*LQM
+!=!  ENDCOMMENT
 
-!-!  COMMENT !maximum energy (10 GeV)
-!-!    VALUE, (Cb*Emax)*KQDOG*LQR
-!-!    VALUE, (Cb*Emax)*KQL1P*LQR
-!-!    VALUE, (Cb*Emax)*KQL2P*LQR
-!-!    VALUE, (Cb*Emax)*KQL3P*LQM
-!-!    VALUE, (Cb*Emax)*KQL4P*LQM
-!-!    VALUE, (Cb*Emax)*KQL5P*LQM
-!-!    VALUE, (Cb*Emax)*KQBYP*LQM
-!-!  ENDCOMMENT
+!=!  COMMENT !maximum energy (10 GeV)
+!=!  COMMENT !maximum energy (10 GeV)
+!=!    VALUE, (Cb*Emax)*KQDOG*LQR
+!=!    VALUE, (Cb*Emax)*KQL1P*LQR
+!=!    VALUE, (Cb*Emax)*KQL2P*LQR
+!=!    VALUE, (Cb*Emax)*KQL3P*LQM
+!=!    VALUE, (Cb*Emax)*KQL4P*LQM
+!=!    VALUE, (Cb*Emax)*KQL5P*LQM
+!=!    VALUE, (Cb*Emax)*KQBYP*LQM
+!=!  ENDCOMMENT
 
 ! ==============================================================================
 ! SEXT
@@ -298,10 +300,11 @@ sdog1: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdog1,
 sdog2: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdog2, tilt =  &
         degrees*tsdog2
 
-!-!  COMMENT
-!-!    VALUE, (Cb*Ef)*KSDOG1*LSb,(Cb*10)*KSDOG1*LSb
-!-!    VALUE, (Cb*Ef)*KSDOG2*LSb,(Cb*10)*KSDOG2*LSb
-!-!  ENDCOMMENT
+!=!  COMMENT
+!=!  COMMENT
+!=!    VALUE, (Cb*Ef)*KSDOG1*LSb,(Cb*10)*KSDOG1*LSb
+!=!    VALUE, (Cb*Ef)*KSDOG2*LSb,(Cb*10)*KSDOG2*LSb
+!=!  ENDCOMMENT
 
 ! ==============================================================================
 ! ROLL
@@ -342,11 +345,12 @@ dbd6: drift, l = ldbdh-lqr
 dbd7: drift, l = ldbdh-lqr
 dbd8: drift, l = (ldbdh-lqr-lbr)/2-4*dldbd
 
-!-!  COMMENT
-!-!    VALUE, LTOTA,(NQBD/2)*LDBD-LBR
-!-!    VALUE, DBD0[L]+DBD1[L]+DBD2[L]+DBD3[L]+DBD4[L]+&
-!-!           DBD5[L]+DBD6[L]+DBD7[L]+DBD8[L]+NQBD*LQR
-!-!  ENDCOMMENT
+!=!  COMMENT
+!=!  COMMENT
+!=!    VALUE, LTOTA,(NQBD/2)*LDBD-LBR
+!=!    VALUE, DBD0[L]+DBD1[L]+DBD2[L]+DBD3[L]+DBD4[L]+&
+!=!           DBD5[L]+DBD6[L]+DBD7[L]+DBD8[L]+NQBD*LQR
+!=!  ENDCOMMENT
 
 dbd1sb: drift, l = 0.2016
 dbd1sa: drift, l = dbd1[l]-lsb-dbd1sb[l]
@@ -523,7 +527,7 @@ ccdldbeg: marker
 ccdldmid: marker
 cntdld: marker, type = "CENTER"
 ccdldend: marker
-rwwake2: marker, type = "WAKE" !dogleg beampipe wake applied here
+rwwake1: marker, type = "WAKE" !EXT+BD beampipe wake applied here
 
 ! sector boundaries (ZBEG=101.6*(n-1); ZEND=101.6*n)
 
@@ -539,11 +543,132 @@ bpn12beg: marker
 ! BEAMLINE
 ! ------------------------------------------------------------------------------
 
-ccdlu: line = (ccdlubeg, bcxdlu1a, bcxdlu1b, dccdluo, bcxdlu2a, bcxdlu2b, dccdlui, ccdlumid,  &
-        dccdlui, bcxdlu3a, bcxdlu3b, dccdluo, bcxdlu4a, bcxdlu4b, cntdlu, ccdluend)
+bcxdlu1_full: line = (bcxdlu1a, bcxdlu1b)
+bcxdlu2_full: line = (bcxdlu2a, bcxdlu2b)
+bcxdlu3_full: line = (bcxdlu3a, bcxdlu3b)
+bcxdlu4_full: line = (bcxdlu4a, bcxdlu4b)
+brb1_full: line = (brb1a, clbrb1, brb1b)
+brb2_full: line = (brb2a, clbrb2, brb2b)
+bcxdld1_full: line = (bcxdld1a, bcxdld1b)
+bcxdld2_full: line = (bcxdld2a, bcxdld2b)
+bcxdld3_full: line = (bcxdld3a, bcxdld3b)
+bcxdld4_full: line = (bcxdld4a, bcxdld4b)
 
-ccdld: line = (ccdldbeg, bcxdld1a, bcxdld1b, dccdldo, bcxdld2a, bcxdld2b, dccdldi, ccdldmid,  &
-        dccdldi, bcxdld3a, bcxdld3b, dccdldo, bcxdld4a, bcxdld4b, cntdld, ccdldend)
+
+
+!Old split line: line = (qdog1, qdog1)
+
+qdog1_full: line = (qdog1)
+qdog1[L] = 2*qdog1[L]
+
+
+!Old split line: line = (qdog2, qdog2)
+
+qdog2_full: line = (qdog2)
+qdog2[L] = 2*qdog2[L]
+
+
+!Old split line: line = (qdog3, qdog3)
+
+qdog3_full: line = (qdog3)
+qdog3[L] = 2*qdog3[L]
+
+
+!Old split line: line = (qdog4, qdog4)
+
+qdog4_full: line = (qdog4)
+qdog4[L] = 2*qdog4[L]
+
+
+!Old split line: line = (qdog5, qdog5)
+
+qdog5_full: line = (qdog5)
+qdog5[L] = 2*qdog5[L]
+
+
+!Old split line: line = (qdog6, qdog6)
+
+qdog6_full: line = (qdog6)
+qdog6[L] = 2*qdog6[L]
+
+
+!Old split line: line = (qdog7, qdog7)
+
+qdog7_full: line = (qdog7)
+qdog7[L] = 2*qdog7[L]
+
+
+!Old split line: line = (qdog8, qdog8)
+
+qdog8_full: line = (qdog8)
+qdog8[L] = 2*qdog8[L]
+
+
+!Old split line: line = (ql1p, ql1p)
+
+ql1p_full: line = (ql1p)
+ql1p[L] = 2*ql1p[L]
+
+
+!Old split line: line = (ql2p, ql2p)
+
+ql2p_full: line = (ql2p)
+ql2p[L] = 2*ql2p[L]
+
+
+!Old split line: line = (ql3p, ql3p)
+
+ql3p_full: line = (ql3p)
+ql3p[L] = 2*ql3p[L]
+
+
+!Old split line: line = (ql4p, ql4p)
+
+ql4p_full: line = (ql4p)
+ql4p[L] = 2*ql4p[L]
+
+
+!Old split line: line = (ql5p, ql5p)
+
+ql5p_full: line = (ql5p)
+ql5p[L] = 2*ql5p[L]
+
+
+!Old split line: line = (qbp10, qbp10)
+
+qbp10_full: line = (qbp10)
+qbp10[L] = 2*qbp10[L]
+
+
+!Old split line: line = (qbp11, qbp11)
+
+qbp11_full: line = (qbp11)
+qbp11[L] = 2*qbp11[L]
+
+
+!Old split line: line = (qbp12, qbp12)
+
+qbp12_full: line = (qbp12)
+qbp12[L] = 2*qbp12[L]
+
+
+
+!Old split line: line = (sdog1, sdog1)
+
+sdog1_full: line = (sdog1)
+sdog1[L] = 2*sdog1[L]
+
+
+!Old split line: line = (sdog2, sdog2)
+
+sdog2_full: line = (sdog2)
+sdog2[L] = 2*sdog2[L]
+
+ccdlu: line = (ccdlubeg, bcxdlu1_full, dccdluo, bcxdlu2_full, dccdlui, ccdlumid, dccdlui,  &
+        bcxdlu3_full, dccdluo, bcxdlu4_full, cntdlu, ccdluend)
+
+ccdld: line = (ccdldbeg, bcxdld1_full, dccdldo, bcxdld2_full, dccdldi, ccdldmid, dccdldi,  &
+        bcxdld3_full, dccdldo, bcxdld4_full, cntdld, ccdldend)
 
 dlbp0: line = (brb1a, clbrb1, brb1b, robrb1, dbd0, qdog1, qdog1, dbd1, qdog2, qdog2, dbd2, qdog3 &
         , qdog3, dbd3, qdog4, qdog4, dbd4h, midbd, dbd4h, qdog5, qdog5, dbd5, qdog6, qdog6, dbd6 &
@@ -554,38 +679,39 @@ dlbp0s: line = (brb1a, clbrb1, brb1b, robrb1, dbd0, qdog1, qdog1, dbd1sa, sdog1,
         dbd5, qdog6, qdog6, dbd6sa, sdog2, sdog2, dbd6sb, qdog7, qdog7, dbd7, qdog8, qdog8, dbd8 &
         , robrb2, brb2a, clbrb2, brb2b)
 
-dlbp: line = (begbd, brb1a, clbrb1, brb1b, robrb1, dbd0a, ycdog0, dbd0b, xcdog1, dbd0c, qdog1,  &
-        qdog1, dbd1a, bpmdog1, dbd1b, cedog, dbd1c, sdog1, sdog1, dbd1d, qdog2, qdog2, dbd2a,  &
-        bpmdog2, dbd2b, ycdog2, dbd2c, xcdog3, dbd2d, qdog3, qdog3, dbd3a, bpmdog3, dbd3b, ycdog4 &
-        , dbd3c, qdog4, qdog4, dbd4a, bpmdog4, dbd4b, xcdog5, dbd4c, qdog5, qdog5, dbd5a, bpmdog5 &
-        , dbd5b, ycdog6, dbd5c, otrdog, dbd5d, qdog6, qdog6, dbd6a, bpmdog6, dbd6b, wsdog, dbd6c &
-        , xcdog7, dbd6d, sdog2, sdog2, dbd6e, qdog7, qdog7, dbd7a, bpmdog7, dbd7b, ycdog8, dbd7c &
-        , qdog8, qdog8, dbd8a, bpmdog8, dbd8b, robrb2, brb2a, clbrb2, brb2b, cntdog, endbd)
+dlbp: line = (begbd, brb1_full, robrb1, dbd0a, ycdog0, dbd0b, xcdog1, dbd0c, qdog1_full, dbd1a,  &
+        bpmdog1, dbd1b, cedog, dbd1c, sdog1_full, dbd1d, qdog2_full, dbd2a, bpmdog2, dbd2b,  &
+        ycdog2, dbd2c, xcdog3, dbd2d, qdog3_full, dbd3a, bpmdog3, dbd3b, ycdog4, dbd3c,  &
+        qdog4_full, dbd4a, bpmdog4, dbd4b, xcdog5, dbd4c, qdog5_full, dbd5a, bpmdog5, dbd5b,  &
+        ycdog6, dbd5c, otrdog, dbd5d, qdog6_full, dbd6a, bpmdog6, dbd6b, wsdog, dbd6c, xcdog7,  &
+        dbd6d, sdog2_full, dbd6e, qdog7_full, dbd7a, bpmdog7, dbd7b, ycdog8, dbd7c, qdog8_full,  &
+        dbd8a, bpmdog8, dbd8b, robrb2, brb2_full, cntdog, rwwake1, endbd)
 
-!-!  comment
-!-!  MTCH1 : LINE=(DLCCP,&
-!-!    CCDLD,DL0P,&
-!-!    QL1P,QL1P,DL1P,&
-!-!    QL2P,QL2P,DL2P,&
-!-!    QL3P,QL3P,DL3P,&
-!-!    QL4P,QL4P,DL4P,&
-!-!    QL5P,QL5P,DBP,DBP,&
-!-!    QBP10,QBP10,DBPa,DBPb,DBPd,DBPe,WSBP0,DBPf,DBP,&
-!-!    QBP11,QBP11,DBP,DBP,&
-!-!    QBP12,QBP12,DBPa,DBPb,DBPd)
-!-!  endcomment
+!=!  comment
+!=!  comment
+!=!  MTCH1 : LINE=(DLCCP,&
+!=!    CCDLD,DL0P,&
+!=!    QL1P,QL1P,DL1P,&
+!=!    QL2P,QL2P,DL2P,&
+!=!    QL3P,QL3P,DL3P,&
+!=!    QL4P,QL4P,DL4P,&
+!=!    QL5P,QL5P,DBP,DBP,&
+!=!    QBP10,QBP10,DBPa,DBPb,DBPd,DBPe,WSBP0,DBPf,DBP,&
+!=!    QBP11,QBP11,DBP,DBP,&
+!=!    QBP12,QBP12,DBPa,DBPb,DBPd)
+!=!  endcomment
 
  !comment
-mtch1: line = (dlccp, ccdld, dl0pa, otr31, dl0pb, ql1p, ql1p, dl1pa, bpml1p, dl1pb, xcl1p, dl1pc &
-        , ql2p, ql2p, dl2pa, bpml2p, dl2pb, ycl2p, dl2pc, ql3p, ql3p, dl3pa, bpml3p, dl3pb, xcl3p &
-        , dl3pc, bpn09beg, dl3pd, ql4p, ql4p, dl4pa, bpml4p, dl4pb, ycl4p, dl4pc, ql5p, ql5p,  &
-        dbpa, bpml5p, dbpb, xcl5p, dbpc, dbpsa, bpn09end, bpn10beg, dbpsb, qbp10, qbp10, dbpa,  &
-        bpmbp10, dbpb, ycbp10, dbpd1, s10wall, dbpd2, rfbwsbp1, dbpe, wsbp1, dbpf, dbpsa,  &
-        bpn10end, bpn11beg, dbpsb, qbp11, qbp11, dbpa, bpmbp11, dbpb, xcbp11, dbpc, dbpsa,  &
-        bpn11end, bpn12beg, dbpsb, qbp12, qbp12, dbpa, bpmbp12, dbpb, ycbp12, dbpd)
+mtch1: line = (dlccp, ccdld, dl0pa, otr31, dl0pb, ql1p_full, dl1pa, bpml1p, dl1pb, xcl1p, dl1pc,  &
+        ql2p_full, dl2pa, bpml2p, dl2pb, ycl2p, dl2pc, ql3p_full, dl3pa, bpml3p, dl3pb, xcl3p,  &
+        dl3pc, bpn09beg, dl3pd, ql4p_full, dl4pa, bpml4p, dl4pb, ycl4p, dl4pc, ql5p_full, dbpa,  &
+        bpml5p, dbpb, xcl5p, dbpc, dbpsa, bpn09end, bpn10beg, dbpsb, qbp10_full, dbpa, bpmbp10,  &
+        dbpb, ycbp10, dbpd1, s10wall, dbpd2, rfbwsbp1, dbpe, wsbp1, dbpf, dbpsa, bpn10end,  &
+        bpn11beg, dbpsb, qbp11_full, dbpa, bpmbp11, dbpb, xcbp11, dbpc, dbpsa, bpn11end, bpn12beg &
+        , dbpsb, qbp12_full, dbpa, bpmbp12, dbpb, ycbp12, dbpd)
  !endcomment
 
-dlbm: line = (begdog, ccdlu, dbdm1, dlbp, rwwake2, mtch1, enddog)
+dlbm: line = (begdog, ccdlu, dbdm1, dlbp, mtch1, enddog)
 
 bfodo: line = (qbpf, dbp, dbp, qbpd, qbpd, dbp, dbp, qbpf)
 

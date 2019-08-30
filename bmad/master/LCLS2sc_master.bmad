@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-13JUN19 ***
+! *** OPTICS=AD_ACCEL-2019next ***
 
 ! ------------------------------------------------------------------------------
 ! constants and global parameters
@@ -126,9 +126,9 @@ z2end = 331.562942 !end of L2 (~26.8 m into LI04)
 z3beg = 385.847300 !start of L3 (~81.0 m into LI04)
 z3end = 643.543300 !end of L3 (~33.9 m into LI07)
 zdog = 667.043300 !entrance first dogleg bend (~57.4 m into LI07)
-xbyp = -0.650494 !QBP13 X is |Xbyp| to the south of linac axis
-ybyp = 0.649478 !QBP13 Y is Ybyp above linac axis
-zbyp = 1254.531303 !QBP13 centerline (~35.3 m into LI13)
+xbyp = -0.650494 !BEGBYP X is |Xbyp| to the south of linac axis
+ybyp = 0.649478 !BEGBYP Y is Ybyp above linac axis
+zbyp = 1202.631303 !BEGBYP Z (~85.0 m into LI12)
 
 ! ------------------------------------------------------------------------------
 ! twiss parameter definitions (for matching, etc.)
@@ -159,10 +159,10 @@ aydlm = 1.529775364969 ! 1.529776835343
 
 ! match into SXR LTU emittance diagnostic section
 
-bx1 = 46.225914318019
-ax1 = -1.084608326468
-by1 = 46.225914318019
-ay1 = 1.084608326468
+bxeds = 46.225914318019
+axeds = -1.084608326468
+byeds = 46.225914318019
+ayeds = 1.084608326468
 
 ! match into HXR LTU emittance diagnostic section
 
@@ -207,9 +207,10 @@ call, filename = "SFT.bmad"
 call, filename = "SXTES.bmad"
 call, filename = "DASEL.bmad"
 
-lcls2sci: line = (beam0, dcm4b, qcm01, xcm01, ycm01, qcm01, dcm5, cm01end, dcmcm1, homcm, dcap0da &
-        , astra, dcap0db, fc1, dmsc0da, blf1, dmsc0db, vg0h00, dmsc0dc, vp0h00, dmsc0dd, vv0h00,  &
-        dmsc0de, msc0d, endl0b)
+  !LCLS2scI : LINE=(BEAM0,DCM4b,QCM01,XCM01,YCM01,QCM01,DCM5,CM01END,&
+lcls2sci: line = (beam0, dcm4b, qcm01_full, dcm5, cm01end, dcmcm1, homcm, dcap0da, astra, dcap0db &
+        , fc1, dmsc0da, blf1, dmsc0db, vg0h00, dmsc0dc, vp0h00, dmsc0dd, vv0h00, dmsc0de, msc0d,  &
+        endl0b)
 lcls2scc: line = (htr, col0, l1, bc1, col1, l2, bc2, emit2, l3, ext, dlbm)
 
 ! new BSY area definitions
