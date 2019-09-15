@@ -6,7 +6,7 @@ BEGINNING[BETA_B] =   1.53986428507105E+00
 BEGINNING[ALPHA_B] =  -1.63793752798038E-01
 
 
-beginning[e_tot] = 10e6
+beginning[e_tot] = 6e6
 parameter[geometry] = open
 parameter[particle] = electron
 
@@ -20,20 +20,23 @@ beginning[x_position] = 10.44893
 call, file = $LCLS2_LATTICE/bmad/master/CU_HXR.bmad
 
 ! Cavity wakefields, traveling wave, full sbend
-lcavity::K*[sr_wake_file]   = '$LCLS2_LATTICE/bmad/wakefields/longitudinal_wakes_sband.bmad'
-lcavity::L1X*[sr_wake_file] = '$LCLS2_LATTICE/bmad/wakefields/longitudinal_wakes_xband.bmad'
+
+
+lcavity::L0*[sr_wake_file]   = '$LCLS2_LATTICE/bmad/wakefields/longitudinal_wakes_sband.bmad'
+lcavity::L0*[sr_wake_file]   = 'longitudinal_wakes_sband.bmad'
+
 lcavity::*[cavity_type] = traveling_wave
 sbend::*[fringe_type] = full
 
 ! 
-call, file =  $LCLS2_LATTICE/bmad/overlays/cu/klystrons.bmad
-call, file =  $LCLS2_LATTICE/bmad/overlays/cu/klystron_design_settings.bmad
-call, file =  $LCLS2_LATTICE/bmad/overlays/cu/linac_phase_overlays.bmad 
-
-call, file =  $LCLS2_LATTICE/bmad/overlays/cu/linac_phase_defaults.bmad 
-
-!Overall fudge
-call, file =  $LCLS2_LATTICE/bmad/overlays/cu/linac_fudge_overlays.bmad
+!call, file =  $LCLS2_LATTICE/bmad/overlays/cu/klystrons.bmad
+!call, file =  $LCLS2_LATTICE/bmad/overlays/cu/klystron_design_settings.bmad
+!call, file =  $LCLS2_LATTICE/bmad/overlays/cu/linac_phase_overlays.bmad 
+!
+!call, file =  $LCLS2_LATTICE/bmad/overlays/cu/linac_phase_defaults.bmad 
+!
+!!Overall fudge
+!call, file =  $LCLS2_LATTICE/bmad/overlays/cu/linac_fudge_overlays.bmad
 
 
 

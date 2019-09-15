@@ -219,13 +219,20 @@ call, filename = "BSYcu.bmad"
  !CU_GSPEC : copper linac to gun spectrometer
  !CU_SPEC  : copper linac to 135 MeV spectrometer
 
-cu_hxr: line = (gunl0a, l0b, lcls2cuh)
-cu_sfth: line = (gunl0a, l0b, lcls2cuhs)
-cu_hxtes: line = (gunl0a, l0b, lcls2cuhxtes)
-cu_sxr: line = (gunl0a, l0b, lcls2cus)
-cu_aline: line = (gunl0a, l0b, lcls2cua)
+
+L0b_line : LINE=(L0bBEG,DL02a1,YAG03,DL02a2,DL02a3,&
+  QA01_full,DL02b1,PH01,DL02b2,&
+  QA02_full,DL02c,&
+  l0b_full,
+  ENDL0)
+
+cu_hxr: line = (gunl0a, l0b_line, lcls2cuh)
+cu_sfth: line = (gunl0a, l0b_line, lcls2cuhs)
+cu_hxtes: line = (gunl0a, l0b_line, lcls2cuhxtes)
+cu_sxr: line = (gunl0a, l0b_line, lcls2cus)
+cu_aline: line = (gunl0a, l0b_line, lcls2cua)
 cu_gspec: line = (gunbxg, gspec)
-cu_spec: line = (gunl0a, l0b, dl1_1, specbl)
+cu_spec: line = (gunl0a, l0b_line, dl1_1, specbl)
 
 ! ------------------------------------------------------------------------------
 ! initial SURVEY coordinates

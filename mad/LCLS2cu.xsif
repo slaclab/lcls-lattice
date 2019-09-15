@@ -159,6 +159,11 @@
   BXKIKb : SBEN, TYPE="XPULSED", L=LKIK/2, ANGLE=1E-12, HGAP=25.4E-3, &
                  FINT=0, E2=2E-12, FINTX=0.5
 
+! define unsplit SBENs for BMAD ... not used by MAD
+
+  BXKIK : SBEN, TYPE="XPULSED", HGAP=25.4E-3, L=LKIK, ANGLE=1E-12, &
+                E1=0, FINT=0.5, E2=2E-12, FINTX=0.5
+
 ! ==============================================================================
 ! BENDs
 ! ------------------------------------------------------------------------------
@@ -190,11 +195,16 @@
 
  !VALUE, LBXG
 
-  BXGa : SBEN, L=LBXG/2, HGAP=GBXG/2, ANGLE=ABXG/2, &
-               E1=EBXG, FINT=0.492, E2=0, FINTX=0     !1st-half of gun spectrometer bend
-  BXGb : SBEN, L=LBXG/2, HGAP=GBXG/2, ANGLE=ABXG/2, &
-               E1=0, FINT=0, E2=EBXG, FINTX=0.492     !2nd-half of gun spectrometer bend
-  
+  BXGa : SBEN, TYPE="BXG", L=LBXG/2, HGAP=GBXG/2, ANGLE=ABXG/2, &
+               E1=EBXG, FINT=0.492, E2=0, FINTX=0 !1st-half of gun spectrometer bend
+  BXGb : SBEN, TYPE="BXG", L=LBXG/2, HGAP=GBXG/2, ANGLE=ABXG/2, &
+               E1=0, FINT=0, E2=EBXG, FINTX=0.492 !2nd-half of gun spectrometer bend
+
+! define unsplit SBENs for BMAD ... not used by MAD
+
+  BXG : SBEN, TYPE="BXG", HGAP=GBXG/2, L=LBXG, ANGLE=ABXG, &
+              E1=EBXG, FINT=0.492, E2=EBXG, FINTX=0.492
+
   DXG0 : DRIF, L=RBXG*SIN(ABXG/2)  !drift, w/BXG off, from BXG entrance face to its z-projected center
   DXGA : SBEN, L=1E-9/2, ANGLE=0/2 !1st-half of gun-spec bend (set to ~zero length and strength, with longitudinal position as bend's center)
   DXGB : SBEN, L=1E-9/2, ANGLE=0/2 !2nd-half of gun-spec bend (set to ~zero length and strength, with longitudinal position as bend's center)
@@ -253,10 +263,15 @@
   ABS   := injdeg*RADDEG !injection line angle (rad)
   BXSEj := -7.29*RADDEG
 
-  BXSa  : SBEN, L=LBS/2, HGAP=GBS/2, ANGLE=ABS/2, &
+  BXSa  : SBEN, TYPE="BXS", L=LBS/2, HGAP=GBS/2, ANGLE=ABS/2, &
                 E1=BXSEj, FINT=0.391, E2=0, FINTX=0
-  BXSb  : SBEN, L=LBS/2, HGAP=GBS/2, ANGLE=ABS/2, &
+  BXSb  : SBEN, TYPE="BXS", L=LBS/2, HGAP=GBS/2, ANGLE=ABS/2, &
                 E1=0, FINT=0, E2=BXSEj, FINTX=0.391
+
+! define unsplit SBENs for BMAD ... not used by MAD
+
+  BXS  : SBEN, TYPE="BXS", HGAP=GBS/2, L=LBS, ANGLE=ABS, &
+               E1=BXSEj, FINT=0.391, E2=BXSEj, FINTX=0.391
 
   KQS01 :=  9.682244191676
   KQS02 := -5.648980372134
@@ -330,12 +345,20 @@
   BX02b : SBEN, TYPE="5D7.1", L=LeffB0/2, HGAP=GB0/2, ANGLE=AB0/2, &
                 E2=AEB0, FINT=0, FINTX=0.45
 
+! define unsplit SBENs for BMAD ... not used by MAD
+
+  BX01 : SBEN, TYPE="5D7.1", HGAP=GB0/2, L=LeffB0, ANGLE=AB0, &
+               E1=AEB0, FINT=0.45, E2=AEB0, FINTX=0.45
+  BX02 : SBEN, TYPE="5D7.1", HGAP=GB0/2, L=LeffB0, ANGLE=AB0, &
+               E1=AEB0, FINT=0.45, E2=AEB0, FINTX=0.45
+
 ! BC1
 ! ===
 
   Brho1 := Cb*EBC1            !beam rigidity at BC1 (kG-m)
   AB11  := -0.093583513589    !full chicane bend angle (rad) (-0.086753564890323)
   RB11  := LB1/SIN(AB11)      !bend radius (m)
+  LB11  := RB11*AB11          !full chicane bend path length (m)
   BB11  := Brho1/RB11         !bend field (kG) [-3.555805785115 kG @ 0.250 GeV]
   AB11S := ASIN((LB1/2)/RB11) !"short" half chicane bend angle (rad)
   LB11S := RB11*AB11S         !"short" half chicane bend path length (m)
@@ -365,6 +388,17 @@
   BX14b : SBEN, TYPE="5D7.1", L=LB11S, ANGLE=+AB11S, HGAP=GB1/2, &
                 FINT=0, E2=0, FINTX=FB11
 
+! define unsplit SBENs for BMAD ... not used by MAD
+
+  BX11 : SBEN, TYPE="5D7.1", HGAP=GB1/2, L=LB11, ANGLE=+AB11, &
+               E1=0, FINT=FB11, E2=+AB11, FINTX=FB11
+  BX12 : SBEN, TYPE="5D7.1", HGAP=GB1/2, L=LB11, ANGLE=-AB11, &
+               E1=-AB11, FINT=FB11, E2=0, FINTX=FB11
+  BX13 : SBEN, TYPE="5D7.1", HGAP=GB1/2, L=LB11, ANGLE=-AB11, &
+               E1=0, FINT=FB11, E2=-AB11, FINTX=FB11
+  BX14 : SBEN, TYPE="5D7.1", HGAP=GB1/2, L=LB11, ANGLE=+AB11, &
+               E1=+AB11, FINT=FB11, E2=0, FINTX=FB11
+
 ! magnet-to-magnet path lengths
 
   LD11   := 2.434900                  !outer bend-to-bend "Z" distance (m)
@@ -380,6 +414,7 @@
   Brho2 := Cb*EBC2            !beam rigidity at BC2 (kG-m)
   AB21  := -0.036971268085    !full chicane bend angle (rad) (-0.034727452562382)
   RB21  := LB2/SIN(AB21)      !bend radius (m)
+  LB21  := RB21*AB21          !full chicane bend path length (m)
   BB21  := Brho2/RB21         !bend field (kG) [-9.071122639275 kG @ 4.300 GeV]
   AB21S := ASIN((LB2/2)/RB21) !"short" half chicane bend angle (rad)
   LB21S := RB21*AB21S         !"short" half chicane bend path length (m)
@@ -408,6 +443,17 @@
                 E1=+AB21, FINT=FB21, FINTX=0
   BX24b : SBEN, TYPE="1D19.7", L=LB21S, ANGLE=+AB21S, HGAP=GB2/2, &
                 FINT=0, E2=0, FINTX=FB21
+
+! define unsplit SBENs for BMAD ... not used by MAD
+
+  BX21 : SBEN, TYPE="1D19.7", HGAP=GB2/2, L=LB21, ANGLE=+AB21, &
+               E1=0, FINT=FB21, E2=+AB21, FINTX=FB21
+  BX22 : SBEN, TYPE="1D19.7", HGAP=GB2/2, L=LB21, ANGLE=-AB21, &
+               E1=-AB21, FINT=FB21, E2=0, FINTX=FB21
+  BX23 : SBEN, TYPE="1D19.7", HGAP=GB2/2, L=LB21, ANGLE=-AB21, &
+               E1=0, FINT=FB21, E2=-AB21, FINTX=FB21
+  BX24 : SBEN, TYPE="1D19.7", HGAP=GB2/2, L=LB21, ANGLE=+AB21, &
+               E1=+AB21, FINT=FB21, E2=0, FINTX=FB21
 
 ! magnet-to-magnet path lengths
 
@@ -780,6 +826,7 @@
   BBh1  := -4.749307427186*LSRHTR_ON !heater-chicane bend field for 35-mm etaX_pk (kG) (-4.751481741801)
   RBh1  := Brhoh/BBh1         !heater-chicane bend radius (m)
   ABh1  := ASIN(LBh/RBh1)     !heater-chicane bend angle (rad)
+  LBh1  := RBh1*ABh1          !heater-chicane bend path length (m)
   ABh1S := ASIN((LBh/2)/RBh1) !"short" half heater-chicane bend angle (rad)
   LBh1S := RBh1*ABh1S         !"short" half heater-chicane bend path length (m)
   ABh1L := ABh1-ABh1S         !"long" half heater-chicane bend angle (rad)
@@ -811,6 +858,17 @@
                 E1=+ABh1, FINT=0.400, FINTX=0
   BXH4b : SBEN, TYPE="5D3.9", L=LBh1S, ANGLE=+ABh1S, HGAP=GBh/2, &
                 FINT=0, E2=0, FINTX=0.400
+
+! define unsplit SBENs for BMAD ... not used by MAD
+
+  BXH1 : SBEN, TYPE="5D3.9", HGAP=GBh/2, L=LBh1, ANGLE=+ABh1, &
+               E1=0, FINT=0.400, E2=+ABh1, FINTX=0.400
+  BXH2 : SBEN, TYPE="5D3.9", HGAP=GBh/2, L=LBh1, ANGLE=-ABh1, &
+               E1=-ABh1, FINT=0.400, E2=0, FINTX=0.400
+  BXH3 : SBEN, TYPE="5D3.9", HGAP=GBh/2, L=LBh1, ANGLE=-ABh1, &
+               E1=0, FINT=0.400, E2=-ABh1, FINTX=0.400
+  BXH4 : SBEN, TYPE="5D3.9", HGAP=GBh/2, L=LBh1, ANGLE=+ABh1, &
+               E1=+ABh1, FINT=0.400, E2=0, FINTX=0.400
 
 ! Laser-Heater Undulator Model:
 
@@ -1375,35 +1433,64 @@
   L3c : LINE=(4*D10,DAQ1,QFL3,QFL3,DAQ2,&
               4*D10,DAQ1,QDL3,QDL3,DAQ2)
 
-  SOL1_full    : LINE=(SOL1,CQ01,XC00,YC00,SQ01,SOL1)
+  SC1   : LINE=(XC01,YC01)
+ !SC2   : LINE=(XC02,YC02)
+ !SC3   : LINE=(XC03,YC03)
+ !SC4   : LINE=(XC04,YC04)
+ !SC5   : LINE=(XC05,YC05)
+  SC7   : LINE=(XC07,YC07)
+  SC8   : LINE=(XC08,YC08)
+  SC9   : LINE=(XC09,YC09)
+  SC10  : LINE=(XC10,YC10)
+ !SC11  : LINE=(XC21101,YC21102)
+ !SCA11 : LINE=(XC21135,YC21136)
+ !SCA12 : LINE=(XC21165,YC21166)
+ !SCM11 : LINE=(XC21191,YC21192)
+  SCM13 : LINE=(XC21275,YC21276)
+  SCM15 : LINE=(XC21325,YC21325)
+
+  L0a_full   : LINE=(FLNGa1,&
+    L0a___1,DLFDa,L0a___2,SOL2,L0a___3,XC02,YC02,L0a___4,L0aMID,&
+    L0a___5,XC03,YC03,L0a___6,OUTCPa,L0a___7,&
+    FLNGa2)
+  L0b_full   : LINE=(FLNGb1,&
+    L0b___1,DLFDb,L0b___2,XC04,YC04,L0b___3,L0bMID,&
+    L0b___4,XC05,YC05,L0b___5,OUTCPb,L0b___6,&
+    FLNGb2)
+  TCAV0_full : LINE=(TCAV0,XC06,YC06,TCAV0)
+  L1X_full   : LINE=(XBEG,L1X___1,XC21191,YC21192,L1X___2,XEND)
+
+  BXH1_full : LINE=(BXH1a,BXH1b)
+  BXH2_full : LINE=(BXH2a,BXH2b)
+  BXH3_full : LINE=(BXH3a,BXH3b)
+  BXH4_full : LINE=(BXH4a,BXH4b)
+  BX01_full : LINE=(BX01a,BX01b)
+  BX02_full : LINE=(BX02a,BX02b)
+  BX11_full : LINE=(BX11a,BX11b)
+  BX12_full : LINE=(BX12a,BX12b)
+  BX13_full : LINE=(BX13a,BX13b)
+  BX14_full : LINE=(BX14a,BX14b)
+  BX21_full : LINE=(BX21a,BX21b)
+  BX22_full : LINE=(BX22a,BX22b)
+  BX23_full : LINE=(BX23a,BX23b)
+  BX24_full : LINE=(BX24a,BX24b)
+
   QA01_full    : LINE=(QA01,QA01)
   QA02_full    : LINE=(QA02,BPM5,QA02)
   QE01_full    : LINE=(QE01,BPM6,QE01)
   QE02_full    : LINE=(QE02,QE02)
-  BXH1_full    : LINE=(BXH1a,BXH1b)
-  BXH2_full    : LINE=(BXH2a,BXH2b)
-  LH_UND_full  : LINE=(LH_UND,HTRUND,LH_UND)
-  BXH3_full    : LINE=(BXH3a,BXH3b)
-  BXH4_full    : LINE=(BXH4a,BXH4b)
-  TCAV0_full   : LINE=(TCAV0,XC06,YC06,TCAV0)
   QE03_full    : LINE=(QE03,BPM8,QE03)
   QE04_full    : LINE=(QE04,BPM9,QE04)
   QM01_full    : LINE=(QM01,BPM11,QM01)
   QM02_full    : LINE=(QM02,BPM12,QM02)
-  BX01_full    : LINE=(BX01a,BX01b)
   QB_full      : LINE=(QB,BPM13,QB)
-  BX02_full    : LINE=(BX02a,BX02b)
   QM03_full    : LINE=(QM03,BPM14,QM03)
   QM04_full    : LINE=(QM04,BPM15,QM04)
   Q21201_full  : LINE=(Q21201,BPM21201,ZLIN02,Q21201)
   QM11_full    : LINE=(QM11,QM11)
-  BX11_full    : LINE=(BX11a,BX11b)
   CQ11_full    : LINE=(CQ11,CQ11)
-  BX12_full    : LINE=(BX12a,BX12b)
-  BX13_full    : LINE=(BX13a,BX13b)
   SQ13_full    : LINE=(SQ13,SQ13)
   CQ12_full    : LINE=(CQ12,CQ12)
-  BX14_full    : LINE=(BX14a,BX14b)
   QM12_full    : LINE=(QM12,QM12)
   QM13_full    : LINE=(QM13,BPMM12,QM13)
   Q21301_full  : LINE=(Q21301,BPM21301,ZLIN03,Q21301)
@@ -1412,32 +1499,15 @@
   Q24701A_full : LINE=(Q24701A,ZLIN08,Q24701A)
   Q24701B_full : LINE=(Q24701B,BPM24701,Q24701B)
   QM21_full    : LINE=(QM21,QM21)
-  BX21_full    : LINE=(BX21a,BX21b)
   CQ21_full    : LINE=(CQ21,CQ21)
-  BX22_full    : LINE=(BX22a,BX22b)
-  BX23_full    : LINE=(BX23a,BX23b)
   CQ22_full    : LINE=(CQ22,CQ22)
-  BX24_full    : LINE=(BX24a,BX24b)
   QM22_full    : LINE=(QM22,QM22)
   Q24901A_full : LINE=(Q24901A,BPM24901,Q24901A)
   Q24901B_full : LINE=(Q24901B,Q24901B)
 
-  SC1   : LINE=(XC01,YC01)
-  SC2   : LINE=(XC02,YC02)
-  SC3   : LINE=(XC03,YC03)
-  SC4   : LINE=(XC04,YC04)
-  SC5   : LINE=(XC05,YC05)
-  SC6   : LINE=(XC06,YC06)
-  SC7   : LINE=(XC07,YC07)
-  SC8   : LINE=(XC08,YC08)
-  SC9   : LINE=(XC09,YC09)
-  SC10  : LINE=(XC10,YC10)
-  SC11  : LINE=(XC21101,YC21102)
-  SCA11 : LINE=(XC21135,YC21136)
-  SCA12 : LINE=(XC21165,YC21166)
-  SCM11 : LINE=(XC21191,YC21192)
-  SCM13 : LINE=(XC21275,YC21276)
-  SCM15 : LINE=(XC21325,YC21325)
+  SOL1_full : LINE=(SOL1,CQ01,XC00,YC00,SQ01,SOL1)
+
+  LH_UND_full : LINE=(LH_UND,HTRUND,LH_UND)
 
   GUNBXG : LINE=(DL00,LOADLOCK,BEGGUN,&
     SOL1BK,DBMARK80,CATHODE,DL01a,&
@@ -1447,16 +1517,14 @@
 
   BXGL0a : LINE=(BEGL0,&
     DBXG,DL01e,BPM3,DL01f,CR01,DL01f2,YAG02,DL01g,ZLIN00,&
-    FLNGa1,L0a___1,DLFDa,L0a___2,SOL2,L0a___3,SC2,L0a___4,&
-    L0aMID,L0a___5,SC3,L0a___6,OUTCPa,L0a___7,FLNGa2,L0aWAKE)
+    L0a_full,L0aWAKE)
 
   GUNL0a : LINE=(GUNBXG,BXGL0a)
 
-  L0b : LINE=(L0bBEG,DL02a1,YAG03,DL02a2,DL02a3,&
+  L0aL0b : LINE=(L0bBEG,DL02a1,YAG03,DL02a2,DL02a3,&
     QA01_full,DL02b1,PH01,DL02b2,&
     QA02_full,DL02c,&
-    FLNGb1,L0b___1,DLFDb,L0b___2,SC4,L0b___3,&
-    L0bMID,L0b___4,SC5,L0b___5,OUTCPb,L0b___6,FLNGb2,&
+    L0b_full,&
     ENDL0)
 
   LSRHTR : LINE=(LHBEG,&
@@ -1500,7 +1568,7 @@
     BX14_full,CNT1,&
     BC1Cend)
   BC1i : LINE=(DL1Xa,VVX1,DL1Xb,&
-    XBEG,L1X___1,SCM11,L1X___2,XEND,DM10a,VVX2,DM10c,&
+    L1X_full,DM10a,VVX2,DM10c,&
     Q21201_full,DM10x,IMBC1I,DM11,&
     QM11_full,DM12)
   BC1e : LINE=(DM13a,BL11,DM13b,&

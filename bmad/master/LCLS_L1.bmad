@@ -55,6 +55,10 @@ k21_1d4: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl1*dld4 * 1e6 
 ! BEAMLINEs
 ! ------------------------------------------------------------------------------
 
+k21_1b_full: line = (k21_1b1, xc21101, yc21102, k21_1b2)
+k21_1c_full: line = (k21_1c1, xc21135, yc21136, k21_1c2)
+k21_1d_full: line = (k21_1d1, xc21165, yc21166, k21_1d2, yc21174, k21_1d3, xc21175, k21_1d4)
+
 
 
 !Old split line: line = (qa11, bpma11, qa11)
@@ -72,9 +76,8 @@ qa12[L] = 2*qa12[L]
 bpma12[superimpose] = T
 bpma12[ref] = qa12
 
-l1: line = (begl1, zlin01, k21_1b1, sc11, k21_1b2, daqa1, qa11_full, daqa2, k21_1c1, sca11,  &
-        k21_1c2, daqa3, qa12_full, daqa4, k21_1d1, sca12, k21_1d2, yc21174, k21_1d3, xc21175,  &
-        k21_1d4, endl1)
+l1: line = (begl1, zlin01, k21_1b_full, daqa1, qa11_full, daqa2, k21_1c_full, daqa3, qa12_full,  &
+        daqa4, k21_1d_full, endl1)
 
 ! ==============================================================================
 
