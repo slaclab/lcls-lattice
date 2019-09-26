@@ -1,5 +1,5 @@
-# lcls2-lattice
+# lcls-lattice
 
-Lattice and input files for the LCLS accelerators
+Lattice and input files for the LCLS accelerators (including the LCLS-II project)
 
 
