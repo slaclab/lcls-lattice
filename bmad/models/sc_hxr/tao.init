@@ -1,0 +1,290 @@
+&tao_start
+  n_universes = 1
+  plot_file   ='$LCLS_LATTICE/bmad/tao/tao_plot.init '
+  startup_file='$LCLS_LATTICE/bmad/tao/tao.startup'
+/
+
+
+
+
+!--------------------------------------------------------
+&tao_design_lattice
+  !unique_name_suffix="*::_##?"
+  design_lattice(1)%file='sc_hxr.lat.bmad'
+/
+
+!------------------------------------------------------------------------
+&tao_params
+  !global%plot_on = T
+  global%track_type = 'single'
+  global%beam_timer_on = T
+  global%random_engine = 'pseudo' ! or: 'quasi'
+  global%de_lm_step_ratio = 1500
+  global%optimizer = 'lmdif'
+  global%n_opti_cycles = 100
+  !---Bmad---
+  bmad_com%radiation_damping_on = F
+  bmad_com%radiation_fluctuations_on = T
+/
+
+
+
+&tao_d2_data
+        d2_data%name = 'L0'
+        universe = 1
+        n_d1_data = 2
+/
+&tao_d1_data
+        ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'energy'
+        datum( 1) =  'orbit.e_tot'     '' '' 'ENDL0B'   'target'  100e6  1e1
+/
+&tao_d1_data
+    ix_d1_data = 2
+    d1_data%name = 'endtwiss'
+    datum( 1) =  'beta.a'     '' '' 'ENDL0B'   'target'   2.124671319E+01   1e1
+    datum( 2) =  'alpha.a'    '' '' 'ENDL0B'   'target'  -1.623900964E+00   1e1
+    datum( 3) =  'beta.b'     '' '' 'ENDL0B'   'target'   4.416143920E+01   1e1
+    datum( 4) =  'alpha.b'    '' '' 'ENDL0B'   'target'  -5.562722043E+00   1e1
+    datum( 5) =  'eta.x'      '' '' 'ENDL0B'   'target'   0.000000000E+00   1e1
+    datum( 6) =  'etap.x'     '' '' 'ENDL0B'   'target'   0.000000000E+00   1e1
+/  
+
+
+&tao_d2_data
+        d2_data%name = 'HTR'
+        universe = 1
+        n_d1_data = 1
+/
+&tao_d1_data
+        ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'begtwiss'
+        datum( 1) =  'beta.a'     '' '' 'BEGHTR'   'target'  2.124671319E+01   1e1
+        datum( 2) =  'alpha.a'    '' '' 'BEGHTR'   'target' -1.623900964E+00  1e2
+        datum( 3) =  'beta.b'     '' '' 'BEGHTR'   'target'  4.416143920E+01    1e1
+        datum( 4) =  'alpha.b'    '' '' 'BEGHTR'   'target'  -5.562722043E+0  1e2
+        datum( 5) =  'eta.x'      '' '' 'BEGHTR'   'target'   0  1e1
+        datum( 6) =  'etap.x'     '' '' 'BEGHTR'   'target'   0   1e2
+/   
+
+
+&tao_d2_data
+        d2_data%name = 'BC1'
+        universe = 1
+        n_d1_data = 1
+/
+&tao_d1_data
+        ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'begtwiss'
+        datum( 1) =  'beta.a'     '' '' 'BEGBC1B'   'target'  3.870395077E+01   1e1
+        datum( 2) =  'alpha.a'    '' '' 'BEGBC1B'   'target'  4.476022866E-01  1e2
+        datum( 3) =  'beta.b'     '' '' 'BEGBC1B'   'target'  3.109163641E+01     1e1
+        datum( 4) =  'alpha.b'    '' '' 'BEGBC1B'   'target'  -7.975687433E-01  1e2
+        datum( 5) =  'eta.x'      '' '' 'BEGBC1B'   'target'   0  1e1
+        datum( 6) =  'etap.x'     '' '' 'BEGBC1B'   'target'   0   1e2
+/   
+
+
+&tao_d2_data
+        d2_data%name = 'L1'
+        universe = 1
+        n_d1_data = 1
+/
+&tao_d1_data
+    ix_d1_data = 1
+    d1_data%name = 'endtwiss'
+    datum( 1) =  'beta.a'     '' '' 'ENDL1B'   'target'   3.870395077E+01   1e1
+    datum( 2) =  'alpha.a'    '' '' 'ENDL1B'   'target'   4.476022866E-01   1e1
+    datum( 3) =  'beta.b'     '' '' 'ENDL1B'   'target'   3.109163641E+01   1e1
+    datum( 4) =  'alpha.b'    '' '' 'ENDL1B'   'target'  -7.975687433E-01   1e1
+    datum( 5) =  'eta.x'      '' '' 'ENDL1B'   'target'  -4.447171945E-18   1e1
+    datum( 6) =  'etap.x'     '' '' 'ENDL1B'   'target'  -1.665944118E-18   1e1
+/
+
+
+&tao_d2_data
+        d2_data%name = 'L2'
+        universe = 1
+        n_d1_data = 1
+/
+&tao_d1_data
+    ix_d1_data = 1
+    d1_data%name = 'endtwiss'
+    datum( 1) =  'beta.a'     '' '' 'ENDL2B'   'target'   2.301739816E+02   1e1
+    datum( 2) =  'alpha.a'    '' '' 'ENDL2B'   'target'  -3.315233808E+00   1e1
+    datum( 3) =  'beta.b'     '' '' 'ENDL2B'   'target'   1.535195604E+01   1e1
+    datum( 4) =  'alpha.b'    '' '' 'ENDL2B'   'target'  -2.950181911E-01   1e1
+    datum( 5) =  'eta.x'      '' '' 'ENDL2B'   'target'  -1.435337641E-12   1e1
+    datum( 6) =  'etap.x'     '' '' 'ENDL2B'   'target'   2.967880755E-14   1e1
+/  
+
+
+&tao_d2_data
+        d2_data%name = 'L3'
+        universe = 1
+        n_d1_data = 1
+/
+&tao_d1_data
+    ix_d1_data = 1
+    d1_data%name = 'endtwiss'
+    datum( 1) =  'beta.a'     '' '' 'ENDL3B'   'target'   4.500235329E+01   1e1
+    datum( 2) =  'alpha.a'    '' '' 'ENDL3B'   'target'  -1.062939587E+00   1e1
+    datum( 3) =  'beta.b'     '' '' 'ENDL3B'   'target'   1.749823135E+01   1e1
+    datum( 4) =  'alpha.b'    '' '' 'ENDL3B'   'target'   5.236108174E-01   1e1
+    datum( 5) =  'eta.x'      '' '' 'ENDL3B'   'target'  -2.998937169E-12   1e1
+    datum( 6) =  'etap.x'     '' '' 'ENDL3B'   'target'  -1.001201770E-13   1e1
+/
+
+
+
+
+&tao_d2_data
+        d2_data%name = 'r56'
+        universe = 1
+        n_d1_data = 1
+/    
+&tao_d1_data
+        ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'endtwiss'
+        datum( 1) =  'r56_compaction'     'BEGHTR' '' 'ENDHTR' 
+        datum( 2) =  'r56_compaction'     'BEGBC1B' '' 'ENDBC1B' 
+        datum( 3) =  'r56_compaction'     'BEGBC2B' '' 'ENDBC2B'   
+/
+
+
+
+!-------- Orbit x, y------------
+&tao_d2_data
+  d2_data%name = 'orbit'
+    universe = '*'
+  n_d1_data = 2
+  default_merit_type = "target"
+/
+&tao_d1_data
+  ix_d1_data = 1
+  d1_data%name = 'x'
+  default_data_type = 'bpm_orbit.x'
+  default_weight = 1e10
+  search_for_lat_eles = "-no_lords *BPM*"
+/
+&tao_d1_data
+  ix_d1_data = 2
+  d1_data%name = 'y'
+  default_data_type = 'bpm_orbit.y'
+  default_weight = 1e10
+  search_for_lat_eles = "-no_lords *BPM*"
+/
+!&tao_d1_data
+  ix_d1_data = 3
+  d1_data%name = 'unstable'
+  ix_min_data=1
+  datum( 1) = "unstable_orbit", "", "",  "", "target", 0, 1e6,  F
+/
+
+
+!-------- Extra Orbit x, y------------
+&tao_d2_data
+  d2_data%name = 'extra_orbit'
+        universe = 1
+  n_d1_data = 3
+  default_merit_type = "target"
+/
+&tao_d1_data
+  ix_d1_data = 1
+  d1_data%name = 'x'
+  default_data_type = 'bpm_orbit.x'
+  default_weight = 1e10
+  ix_min_data = 1
+  datum(1:)%ele_name = "BEGSPS"
+/
+&tao_d1_data
+  ix_d1_data = 2
+  d1_data%name = 'y'
+  default_data_type = 'bpm_orbit.y'
+  default_weight = 1e10
+  use_same_lat_eles_as = 'extra_orbit.x'
+/
+&tao_d1_data
+  ix_d1_data = 3
+  d1_data%name = 'e_tot'
+  default_data_type = 'orbit.e_tot'
+  default_weight = 0
+  use_same_lat_eles_as = 'extra_orbit.x'
+/
+
+!-----------------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------
+
+&tao_var
+	v1_var%name = 'begtwiss'
+	default_step = 1e-4
+	default_universe = '1'
+	ix_min_var = 1
+	ix_max_var = 6
+	var(1:6)%ele_name  = 'beginning', 'beginning', 'beginning', 'beginning', 'beginning', 'beginning'
+    var(1:6)%attribute = 'beta_a', 'alpha_a', 'beta_b', 'alpha_b', 'eta_x', 'etap_x'
+    var(1)%low_lim = 0.01
+    var(3)%low_lim = 0.01
+/
+
+
+
+!&tao_var
+    v1_var%name = 'L0'
+	default_step = 1e-4
+	default_attribute = 'x'
+	var(1:)%ele_name = 'O_L0'
+/
+
+&tao_var
+    v1_var%name = 'q.L1'
+	default_step = 1e-4
+	default_attribute = 'K1'
+	var(1:)%ele_name = 'QC010', 'QC011','QC012', 'QCM02', 'QCM03'
+/
+
+
+&tao_var
+    v1_var%name = 'q.L2'
+	default_step = 1e-4
+	default_attribute = 'K1'
+	var(1:)%ele_name = 'QCM04', 'QCM08', 'QCM11', 'QCM15'
+/
+
+&tao_var
+    v1_var%name = 'q.L3'
+	default_step = 1e-4
+	default_attribute = 'K1'
+	var(1:)%ele_name = 'QCM16', 'QCM22', 'QCM29', 'QCM35'
+/
+
+
+!--- Correctors
+&tao_var
+    v1_var%name = "correctors.x"
+  default_universe = '1'
+  default_attribute = "HKICK"
+  default_weight = 1e9
+  default_low_lim  = -0.01
+  default_high_lim = 0.01
+  default_step = 1e-10
+  ix_min_var = 1
+  search_for_lat_eles = "kicker::X*"
+/
+&tao_var
+    v1_var%name = "correctors.y"
+  default_universe = '1'
+  default_attribute = "VKICK"
+  default_weight = 1e9
+  default_low_lim  = -0.01
+  default_high_lim = 0.01
+  default_step = 1e-10
+  ix_min_var = 1
+  search_for_lat_eles = "kicker::Y*"
+/
+
+

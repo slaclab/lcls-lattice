@@ -1,0 +1,37 @@
+place * none
+
+
+place r11 xphase
+place r12 zphase
+place r21 yphase
+place r22 zhist
+
+alias s1 set curve r11.x.c1 ele_ref_name = [[1]]
+alias s2 set curve r12.z.c1 ele_ref_name = [[1]]
+alias s3 set curve r21.y.c1 ele_ref_name = [[1]]
+alias s4 set curve r22.z.c1 ele_ref_name = [[1]]
+
+! Alias to set the reference element
+alias se s1 [[1]];s2 [[1]]; s3 [[1]]; s4 [[1]]
+
+alias se2 set curve r11.x.c1 ele_ref_name = [[1]];set curve r12.z.c1 ele_ref_name = [[1]]
+
+s1 HXRSTART
+s2 HXRSTART
+s3 HXRSTART
+s4 HXRSTART
+
+x-s r11 -.4 .4
+!!!x-s r21 -.4 .4
+x-s r12 -.06 -.03
+
+
+x-s r12 -.06 -.03
+x-s r22 -.06 -.03
+
+sc
+
+! Set number of bins
+alias sbins set curve r22.z.c1 hist%number = [[1]];
+
+

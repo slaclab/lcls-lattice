@@ -1,0 +1,36 @@
+
+
+set global plot_on = false
+
+! This is a hand tweaked simulation to produce a flatish z-pz phase space at UEBEG
+
+change ele O_L1 phase_deg @-28
+change ele O_L2 PHASE_DEG @-42
+! Lower L3 voltage to make a 6 GeV beam
+change ele O_L3_FUDGE F @ 1.66025992361918E-01
+
+
+change ele CE11 x1_limit @.002
+change ele CE11 x2_limit @.004
+
+! Track beam
+!snparticle 1000
+!beamon
+!write beam -at uebeg -hdf5 example_horn_cutting.h5
+
+
+snparticle 10000
+
+
+! Bmad bug, need to be fixed.
+call Activate_CSR.tao 
+
+
+
+! Should match beam through undulator
+change ele QUM1 K1 @     2.57570475851832E-01
+change ele QUM2 K1 @  -2.80497669971708E-01
+change ele QUM3 K1 @   3.78436493123763E-01
+change ele QUM4 K1 @  -3.27040237577305E-01
+
+set global plot_on = T
