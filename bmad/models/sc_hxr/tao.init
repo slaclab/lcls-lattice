@@ -157,63 +157,58 @@
 
 
 
-!-------- Orbit x, y------------
+!----------------------------------------
+! Orbit 
+
 &tao_d2_data
-  d2_data%name = 'orbit'
-    universe = '*'
-  n_d1_data = 2
-  default_merit_type = "target"
-/
-&tao_d1_data
-  ix_d1_data = 1
-  d1_data%name = 'x'
-  default_data_type = 'bpm_orbit.x'
-  default_weight = 1e10
-  search_for_lat_eles = "-no_lords *BPM*"
-/
-&tao_d1_data
-  ix_d1_data = 2
-  d1_data%name = 'y'
-  default_data_type = 'bpm_orbit.y'
-  default_weight = 1e10
-  search_for_lat_eles = "-no_lords *BPM*"
-/
-!&tao_d1_data
-  ix_d1_data = 3
-  d1_data%name = 'unstable'
-  ix_min_data=1
-  datum( 1) = "unstable_orbit", "", "",  "", "target", 0, 1e6,  F
+    d2_data%name = "orbit"
+    universe = 1
+    n_d1_data = 5
 /
 
+&tao_d1_data
+    ix_d1_data = 1
+    default_weight = 1
+    d1_data%name = 'x'
+    default_data_type = 'bpm_orbit.x'
+    default_data_source = 'lat'
+    search_for_lat_eles = "Instrument::BPM*,Instrument::RFB*"
+/
 
-!-------- Extra Orbit x, y------------
-&tao_d2_data
-  d2_data%name = 'extra_orbit'
-        universe = 1
-  n_d1_data = 3
-  default_merit_type = "target"
-/
 &tao_d1_data
-  ix_d1_data = 1
-  d1_data%name = 'x'
-  default_data_type = 'bpm_orbit.x'
-  default_weight = 1e10
-  ix_min_data = 1
-  datum(1:)%ele_name = "BEGSPS"
+    ix_d1_data = 2
+    default_weight = 1
+    d1_data%name = 'y'
+    default_data_type = 'bpm_orbit.y'
+    default_data_source = 'lat'
+    search_for_lat_eles = "Instrument::BPM*,Instrument::RFB*"
 /
+
 &tao_d1_data
-  ix_d1_data = 2
-  d1_data%name = 'y'
-  default_data_type = 'bpm_orbit.y'
-  default_weight = 1e10
-  use_same_lat_eles_as = 'extra_orbit.x'
+    ix_d1_data = 3
+    default_weight = 1
+    d1_data%name = 'profx'
+    default_data_type = 'orbit.x'
+    default_data_source = 'lat'
+    search_for_lat_eles = "Instrument::YAG*,Instrument::OTR*"
 /
+
 &tao_d1_data
-  ix_d1_data = 3
-  d1_data%name = 'e_tot'
-  default_data_type = 'orbit.e_tot'
-  default_weight = 0
-  use_same_lat_eles_as = 'extra_orbit.x'
+    ix_d1_data = 4
+    default_weight = 1
+    d1_data%name = 'profy'
+    default_data_type = 'orbit.y'
+    default_data_source = 'lat'
+    search_for_lat_eles = "Instrument::YAG*,Instrument::OTR*"
+/
+
+&tao_d1_data
+    ix_d1_data = 5
+    default_weight = 1
+    d1_data%name = 'e'
+    default_data_type = 'orbit.e_tot'
+    default_data_source = 'lat'
+    search_for_lat_eles = "Instrument::BPM*,Instrument::RFB*"
 /
 
 !-----------------------------------------------------------------------------------------
