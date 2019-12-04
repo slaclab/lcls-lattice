@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-2019next ***
+! *** OPTICS=AD_ACCEL-05DEC19 ***
 
 ! ------------------------------------------------------------------------------
 ! constants and global parameters
@@ -16,10 +16,10 @@
 
   E0   := MC2+0.750E-3 !NGLS/APEX gun energy (GeV) ... 750 kV gun
   Ei   := 0.1          !energy at end of L0B (GeV)
-  E1   := 0.25         !BC1 energy (GeV)
+  E1   := 0.23         !BC1 energy (GeV)
   E2   := 1.6          !BC2 energy (GeV)
-  Ef   := EfSC         !final beam energy (GeV)
-  Eu   := EuSC         !energy in undulator (GeV)
+  Ef   := 4.0          !final beam energy (GeV)
+  Eu   := 4.0          !energy in undulator (GeV)
   Emax := 10.0         !maximum beam energy
 
   Brho0 := Cb*E0
@@ -31,8 +31,8 @@
 ! compression
 
   R56HTR := 0.0035 !DXmax = 75 cm
-  R56BC1 := 0.055
-  R56BC2 := 0.037
+  R56BC1 := 0.05285
+  R56BC2 := 0.03955
 
   R56CCDLU := 9.99E-5
   R56CCDLD := 9.99E-5
@@ -50,7 +50,7 @@
 
 ! Twiss at S= 15.0 m (ASTRA MARKER)
 
-  BXa := 13.325594260686
+  BXa := 13.325594260685
   AXa := -2.125811087318
   BYa := 13.315541277702
   AYa := -2.123153832086
@@ -152,10 +152,10 @@
 
 ! match into bypass dogleg
 
-  BXDLm := 13.103975994751 !13.103980147754
-  AXDLm := -1.328121315281 !-1.328117574824
-  BYDLm := 15.962707890225 !15.962709228317
-  AYDLm :=  1.529775364969 ! 1.529776835343
+  BXDLm := 13.103975995473
+  AXDLm := -1.328121315284
+  BYDLm := 15.962707890972
+  AYDLm :=  1.529775364964
 
 ! match into SXR LTU emittance diagnostic section
 
@@ -175,15 +175,15 @@
 
   MBETXS :=  6.841330859726
   MALFXS := -0.28404741292
-  MBETYS := 47.066411333286
-  MALFYS :=  2.555439813894
+  MBETYS := 47.120432391261
+  MALFYS :=  2.555848494222
 
 ! periodic Twiss in HXR dogleg cells
 
-  MBETXH := 48.881918788199
-  MALFXH :=  3.139871668464
-  MBETYH := 96.323786537904
-  MALFYH :=  3.616905252587
+  MBETXH := 48.911502413792
+  MALFXH :=  3.141736059434
+  MBETYH := 92.803659415654
+  MALFYH :=  3.519158552438
 
 ! ------------------------------------------------------------------------------
 ! load lattice definitions
@@ -207,10 +207,9 @@
   CALL, FILENAME="SXTES.xsif"
   CALL, FILENAME="DASEL.xsif"
 
-  !LCLS2scI : LINE=(BEAM0,DCM4b,QCM01,XCM01,YCM01,QCM01,DCM5,CM01END,&
   LCLS2scI : LINE=(BEAM0,DCM4b,QCM01_full,DCM5,CM01END,&
-    DCMCM1,HOMCM,DCAP0da,ASTRA,DCAP0db,FC1,&
-    DMSC0da,BLF1,DMSC0db,VG0H00,DMSC0dc,VP0H00,DMSC0dd,VV0H00,DMSC0de,MSC0d,&
+    DCMCM1,HOMCM,DCAP0da,ASTRA,DCAP0db,FC1,DMSC0da,BLF1,DMSC0db,&
+    VG0H00,DMSC0dc,VP0H00,DMSC0dd,VV0H00,DMSC0de,MSC0d,&
     ENDL0B)
   LCLS2scC : LINE=(HTR,COL0,L1,BC1,COL1,L2,BC2,EMIT2,L3,EXT,DLBM)
 
@@ -227,6 +226,7 @@
  !SC_BSYD  : superconducting linac to BSY dump
  !SC_DIAG0 : superconducting linac to DIAG0
  !SC_DASEL : superconducting linac to End Station A (DASEL)
+ !SC_EIC   : superconducting linac Early Injector Commissioning
 
   SC_SXR   : LINE=(GUN,L0,LCLS2scC,LCLS2scS)
   SC_SFTS  : LINE=(GUN,L0,LCLS2scC,LCLS2scSS)

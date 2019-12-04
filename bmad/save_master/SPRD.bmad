@@ -1,0 +1,1469 @@
+
+! *** OPTICS=AD_ACCEL-2019next ***
+
+! LCLS2sc 3-way spreader system
+
+! ==============================================================================
+! Modification History
+! ------------------------------------------------------------------------------
+! 06-JUN-2019, M. Woodley
+!  * adjust location of BSY dump face per A. Ibrahimov
+! 30-APR-2019, M. Woodley
+!  * use measured FINT=0.4861 for 1.0D38.37 @ 200A
+! ------------------------------------------------------------------------------
+! 31-OCT-2018, Y. Nosochkov
+!  * drift adjustment for DASEL with 25G kickers
+!  * BSY dump face to BTM face = 61.120" (per Alev)
+! 11-OCT-2018, M. Woodley
+!  * use measured FINT for 1.0D22.265's
+! ------------------------------------------------------------------------------
+! 30-MAY-2018, M. Woodley
+!  * add backup DC spreader definitions per J. Chan
+! ------------------------------------------------------------------------------
+! 30-JAN-2018, M. Woodley
+!  * remove PCSP1H/BTMSP1H,PCSP1D/BTMSP1D,PCSP2D/BTMSP2D per D. Hanquist
+!  * remove PCSP2H/BTMSP2H,PCSP3D per A. Ibramimov
+!  * set length of PCSP3D to 2" per A. Ibrahimov
+! 22-DEC-2017, M. Woodley
+!  * remove BCS ACMs IMSP1s,IMSP2s,IMSP1h,IMSP2h,IMSP1d,IMSP2d per C. Clarke
+!  * add BCS ACM triplets IMBCSh1-3,IMBCSs1-3,IMBCSd1-3 per C. Clarke
+! ------------------------------------------------------------------------------
+! 06-SEP-2017, Y. Nosochkov
+!  * add placeholder zero-strength deferred large aperture kickers
+!    BKYSP5H, BKYSP5S for future LCLS-II-HE
+!  * remove baseline stoppers STSP6hb, STSP5s and the corresponding BTMs
+!    BTMSP6hb, BTMSP5s (J. Blaha, J. Welch)
+!  * remove deferred stoppers STSP6hc, STSP6hd as they will never be needed
+!    (P. Emma)
+!  * move BCS collimators PCSP1s,2s and the corresponding BTMs BTMSP1s,2s
+!    downstream, per RP-RPG-170802-MEM-01 (M. Santana)
+! 09-AUG-2017, M. Woodley
+!  * move TWSSP BETA0 definition to LCLS2sc_main.mad8 (for BMAD compatability)
+!  * move SETKIKs and SETKIKh definitions here from common.xsif
+! ------------------------------------------------------------------------------
+! 05-MAY-2017, Y. Nosochkov
+!  * move OTRSPDMP 0.5 m downstream of BPMSP5d (P. Emma, J. Welch)
+!  * replace 1.97Q20 type quads (QSP3H,11H and QSP1S,2S,3S,7S,8S,9S) with
+!    1.26Q12 type quads, keep BPMs unchanged (J. Amann, P. Emma)
+!  * add two type-5 deferred correctors XCSP5d, YCSP6d in BSY dumpline (P. Emma)
+! 24-FEB-2017, Y. Nosochkov
+!  * move BPMSP5D 0.761425 m upstream to Z=3203.327 m (M. Kosovsky)
+! 23-NOV-2016, Y. Nosochkov
+!  * redefine SPRDd line for updated DASEL kicker
+! 04-NOV-2016, M. Woodley
+!  * fix drift lengths around WOODDOOR in SPRDh line
+! 02-NOV-2016, Y. Nosochkov
+!  * move BPMSP1d 4.457 m upstream to provide space for DASEL kicker
+!  * add a note that BTM behind stopper is part of the stopper design
+!  * add a note that BXSP1h is a special merge DC-bend which is turned ON
+!    for SCRF beam to HXR or OFF for CURF beam to HXR
+!  * move to baseline: BPMSPH, BPMSP1, XCSP1, BPMSP2, YCSP2, BPMSPS, IMSP1H,
+!    BTMSP6HB, BTMSP5S, PCSP1D, PCSP1H, PCSP1S, BTMSP1D, BTMSP1H, BTMSP1S,
+!    IMSP1S, PCSP2S, BTMSP2S, XCSP3D, YCSP4D, IMSP1D, IMSP2D, PCSP2D, BTMSPDMP,
+!    BTMSP2D, PCSP2H, BTMSP2H, BKXRASD, BKYRASD, BPMSP5D, PCSP3D, BTMSP3D
+! 29-JUN-2016, M. Woodley
+!  * adjust location of WOODDOOR (Z=3050.512)
+! 24-JUN-2016, Y. Nosochkov
+!  * move BPMSPh, BPMSPs upstream to the positions where kicked orbit is 5 mm
+!    (P. Emma)
+!  * move BPMs inside the 1.085Q4.31 quads QSP2h, QSP7h, QSP12h
+!    (M. Gaynor, Alev)
+!  * add deferred XCSP3d, YCSP4d correctors just after BYSP2d (P. Emma)
+!  * add deferred BKXRASd, BKYRASd rastering kickers 60 m upstream of the
+!    BSY dump (J. Welch)
+!  * move the deferred OTRSPDMP upstream of the rastering kickers (P. Emma)
+!  * move BPMSP4d upstream of OTRSPDMP (J. Welch)
+!  * add deferred large aperture BPMSP5d (Stripline-14 with 5" ID)
+!    within 5 m of BSY dump (J. Welch)
+!  * move BPMSP2D 12" upstream and BPMSP3D 24" upstream (M. Gaynor)
+!  * remove deferred STSP6ha (S. Mao)
+!  * remove STSP6hc, STSP6hd stoppers from baseline and defer them at level 9
+!    (for cost tracking -- P. Emma)
+!  * designate all stoppers to be PPS stoppers (S. Mao)
+!  * add deferred BTMSP6hb behind PPS stopper STSP6hb (S. Mao)
+!  * add deferred BTMSP5s behind PPS stopper STSP5s (S. Mao)
+!  * move IMSP1h to just downstream of QSP6h (S. Mao)
+!  * move IMSP1s to just downstream of BXSP2s (S. Mao)
+!  * add deferred IMSP2h, IMSP2s BCS cavity current monitors (S. Mao, J. Welch)
+!  * update engineering type designations of current monitors (J. Welch)
+!  * update the engineering type of BKYSP0h,...,BKYSP4h and BKYSP0s,...,BKYSP4s
+!    kickers to "0.787K35.4" (J. Amann)
+! ------------------------------------------------------------------------------
+! 26-FEB-2016, Y. Nosochkov
+!  * adjust positions of QSP3h,4h,5h,9h,10h,11h and corresponding
+!    BPMs and correctors to resolve interferences (T. O'Heron)
+!  * move XCSP1 1.216 m downstream (T. O'Heron)
+!  * move WSSP1d 1.0 m downstream (T. O'Heron)
+!  * adjust positions of STSP6Ha,b,c,d to resolve interferences (T. O'Heron)
+!  * change engineering name of BSY dump from "D10" to "DUMPBSY"
+!  * move BYSP1s, BYSP2s 9" (0.2286 m) upstream (T. O'Heron)
+!  * align PCSP1h, PCSP1s, PCSP1d at the same Z (S. Mao)
+!  * move IMSP2d to just downstream of IMSP1d (S. Mao)
+!  * move IMSP1h to just dowstream of BRSP2H (S. Mao)
+!  * increase distance between 1-m kicker sections from 15 cm to 30 cm
+!    (T. Beukers)
+!  * add BPMSPh and BPMSPs between fast kickers and septa for calibration
+!    of the kick angle and kicker phase (per P. Emma) -- deferred @0
+!  * add BCS BTM (BTMSPDMP) behind BSY dump (per S. Mao) -- deferred @0
+!  * move BPMSP1 upstream to within 23 m of the HXR septum (for greater
+!    phase advance with BPMSP2)
+! 12-FEB-2016, M. Woodley
+!  * remove SETKIKh and SETKIKs; remove SEQnn MARKers
+!  * add sextupoles to correct 2nd-order dispersion per P. Emma
+!  * add wood door at LI30/BSY boundary (WOODDOOR)
+! ------------------------------------------------------------------------------
+! 25-SEP-2015, Y. Nosochkov
+!  * update definition of BXSP1h to allow zero angle
+! 24-AUG-2015, Y. Nosochkov
+!  * add placeholder kickers for future  expansion (2 HXR and 2 SXR sections)
+!    deferred at level @2
+!  * move BYSP1h 1.8 m downstream to increase separation with dump line
+!  * update the TYPE of septa from 0.39SD38.98 to 0.625SD38.98 (J. Amann)
+!  * add two quads QSP1, QSP2 (baseline) with BPMs/correctors (deferred
+!    at level @0)
+!  * separate the HXR/SXR spreader kickers by moving the SXR kicker, septum
+!    and chicane ~86 m downstream
+!  * use positive sign of vertical kick in both HXR/SXR kickers for the same
+!    style septa in HXR and SXR
+! ------------------------------------------------------------------------------
+! 19-JUN-2015, Y. Nosochkov
+!  * add OTRSPDMP ~12 m before the muon wall, deferred at @0 (per Paul)
+!  * move WSSP1D upstream to between vertical bends where Dy=0.4 m (per Paul)
+!  * add deferred BTMs behind BCS PCSP collimators (per S. Mao)
+!  * move IMSP1D upstream of PCSP2D (per S. Mao)
+!  * remove PCSP4D, move PCSP3D close to muon wall (per S. Mao)
+!  * move BPMSP1d upstream to within 23 m of the septum (per Tor and T. O'Heron)
+!  * change the type of BPMSP4D to "Stripline-5" (per C. Iverson)
+!  * change the status of IMSP0D, WSSP1D, STSP5S from deferred to baseline
+!  * move BPMSP2H,7H,12H outside of the quads (per T. O'Heron)
+!  * move QSP1S 5 cm downstream and QSP9S 5 cm upstream (per T. O'Heron)
+!  * change type of quads QSP1S,2S,3S,7S,8S,9S,3H,11H to 1.97Q20
+!  * adjust positions of correctors and BPMs at 1.97Q20 quads (per T. O'Heron)
+!  * remove BXSP1D assuming new BSY dump will be installed (per A. Ibrahimov)
+!  * adjust positions of BPMSP3D, IMSP0D, IMSP0H, IMSP0S (per T. O'Heron)
+!  * change BPMSP3D to "Stripline-8" (per M. Gaynor)
+!  * change type of BPMs at 2Q10 quads to "Stripline-5" (per M. Gaynor)
+! ------------------------------------------------------------------------------
+! 16-APR-2015, M. Woodley
+!  * restore "LQL" parameter and its dependencies
+! 20-MAR-2015, M. Woodley
+!  * remove dependences on (now undefined) parameter "LQL"
+!  * assign TYPEs to BCS devices ... defer at level 0
+! 12-MAR-2015, Y. Nosochkov
+!  * move QSP3H u/s and QSP11H d/s by 15 inches (per T. O'Heron)
+!  * move BPMs outside of 2Q10 quads and adjust positions of corresponding
+!    correctors (per T. O'Heron)
+!  * move STSP6HB 32 inches downstream (per T. O'Heron)
+! 28-FEB-2015, Y. Nosochkov
+!  * minor update to definiton of the spreader kickers and septa
+!  * change type of QSP1S-QSP9S, QSP1H, QSP3H-QSP6H, QSP8H-QSP11H, QSP13H,
+!    QSP1D, QSP2D from "1.97Q10" to "2Q10"
+! ------------------------------------------------------------------------------
+! 12-DEC-2014, M. Woodley
+!  * assign BPM TYPE attributes per PRD LCLSII-2.4-PR-0136
+! 09-DEC-2014, Y. Nosochkov
+!  * move STBP32 stopper to inside of the SXR spreader chicane and rename it
+!    to STSP5s
+!  * move D10 dump inside the muon wall in the BSY
+!  * change engineering TYPE of QSP1d, QSP2d to "1.97Q10"
+!  * rename BXSPd to BXSP1d and change its engineering TYPE to "9D28.5"
+!  * rename ROSPs to ROSP1s
+!  * rename IMSPs -> IMSP0s, IMSPh -> IMSP0h, IMSPd -> IMSP0d
+!  * add BSC current monitors IMSP1d, IMSP2d in SPD (S. Mao)
+!  * add BCS collimators PCSP1s, PCSP2s in SPS (S. Mao)
+!  * add BCS collimators PCSP1h, PCSP2h in SPH (S. Mao)
+!  * add BCS collimators PCSP1d, PCSP2d, PCSP3d, PCSP4d in SPD (S. Mao)
+!  * change TYPE of septum magnets from "HLAM" to "0.39SD38.98" (J. Amann)
+!  * add BPMSP3d, BPMSP4d at the last two bends in SPD
+!  * add fast wire WSSP1d to measure beam size upstream of D10 dump (J. Frisch)
+!  * change to type "QE" the following quadrupoles: QSP2h, QSP7h, QSP12h
+!  * change to type "1.97Q10" the quads: QSP1h, QSP3h,...,QSP6h,
+!    QSP8h,...,QSP11h, QSP13h, QSP1s,...,QSP9s
+!    note: field of QSP1s,3s,7s,9s reaches the limit at 7.8 GeV
+! ------------------------------------------------------------------------------
+! 10-OCT-2014, Y. Nosochkov
+!  * update the TYPE of STSP6ha (BCS stopper) and IMSPd (toroid) to indicate
+!    the non-baseline level "0"
+! 28-JUL-2014, Y. Nosochkov
+!  * replace a 3-hole spreader septum with two separate 2-hole septa for SXR
+!    and HXR
+!  * replace a 1-m deflector in the spreader with six 1-m magnetic kickers
+!    (per T. Beukers)
+!  * replace dipole corrector type "1.0D18.69" with "1.0D22.625" (per J. Amann)
+! 15-JUL-2014, Y. Nosochkov
+!  * replace RFBSP1d, RFBSP2d with stripline BPMSP1d, BPMSP2d (per J. Frisch)
+! 02-MAY-2014, M. Woodley
+!  * add "CNT" MARKERs after dispersive areas (ELEGANT CENTERing)
+! 01-MAY-2014, Y. Nosochkov
+!  * replace BPMSP1d, BPMSP2d with cavity BPMs RFBSP1d, RFBSP2d (per J. Frisch)
+! 30-APR-2014, Y. Nosochkov
+!  * add average current monitors IMSPs, IMSPh, IMSPd (per J. Frisch)
+! 28-APR-2014, Y. Nosochkov
+!  * remove QSP3D, QSP4D and their BPMs and correctors in BSY dumpline
+!    assuming OTR and beta waist are not needed (per J. Frisch)
+! 23-APR-2014, Y. Nosochkov
+!  * remove OTRDMPd in SPD near D10 (per J. Frisch)
+! 07-APR-2014, M. Woodley
+!  * reorder and/or modify some drift length parameter definitions to avoid
+!    using parameters before they are defined
+! 04-APR-2014, Y. Nosochkov
+! *  add BCS stopper upstream of 3 PPS stoppers in HXR,
+!    name the BCS stopper STSP6ha, and PPS stoppers STSP6hb, STSP6hc, STSP6hd
+! ------------------------------------------------------------------------------
+! 31-MAR-2014, M. Woodley
+!  * element names changed to conform to nomenclature PRD
+! 25-MAR-2014, Y. Nosochkov
+!  * add insertable beam stoppers STSP6ha, STSP6hb, STSP6hc in HXR
+! 07-MAR-2014, Y. Nosochkov
+!  * move corrector YCSP8h upstream of quad QSP8h for better separation with
+!    nearby LCLS-1 quad
+! 26-FEB-2014, Y. Nosochkov
+!  * change from L=2.623 m dipoles (type 1.26D102.0T) to L=1.0 m dipoles
+!    (type 1.0D38.37)
+!  * reduce septum length from 2.0 to 1.0 m
+!  * change type of BCSP1, BCSP2 dipoles from 1.26D18.43 to 1.0D18.69
+! 14-FEB-2014, Y. Nosochkov
+!  * add a dumpline from the spreader to D10 dump including optics
+!    for energy diagnostic
+! 17-JAN-2014, Y. Nosochkov
+!  * modify HXR spreader from 1-step to 2-step dogleg for tunable R56
+!    and better magnet separation
+! 18-DEC-2013, Y. Nosochkov
+!  * adjust magnet positions in the spreader for less magnet interference
+! 16-DEC-2013, Y. Nosochkov
+!  * 3-way spreader design with low R56
+! ------------------------------------------------------------------------------
+
+! XYZ (linac system) and optimized Twiss at the beginning of spreader (BEGSPH)
+
+xsp = xoff
+ysp = yoff
+zsp = 2780.276003
+thsp = 0.0
+phsp = 0.0
+pssp = 0.0
+
+tbxsp = 1.112796938491e2
+tbysp = 60.000000012297
+taxsp = 2.930243793946
+taysp = 0.853023050724
+
+! XYZ (linac system) at the end of HXR merge bend BXSP1h
+
+xsph = 0.0
+ysph = 0.0
+zsph = 3110.961492
+thsph = 0.0
+phsph = 0.0
+pssph = 0.0
+
+! HXR quads
+
+kqsp1h = 0.492283667698 ! 0.492284061187
+kqsp2h = -1.000975451311 !-1.000975933726
+kqsp3h = 0.304631037813 ! 0.304631069714
+kqsp4h = -0.301467336919 !-0.301467337182
+kqsp5h = 0.179797525903 ! 0.179797501925
+kqsp6h = -0.221916299351 !-0.221916295184
+kqsp7h = 0.447153951126 ! 0.447153906987
+kqsp10h = -0.301520274195 !-0.301520272128
+kqsp11h = 0.304797784837 ! 0.304797809076
+kqsp12h = -0.991899431333 !-0.991897597733
+kqsp13h = 0.491351727496 ! 0.49135154631
+kqsp8h = kqsp6h
+kqsp9h = kqsp5h
+
+qsp1h: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kqsp1h
+qsp2h: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqsp2h
+qsp3h: quadrupole, type = "1.26Q12", l = lqa/2, aperture = rqa, k1 = kqsp3h
+qsp4h: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kqsp4h
+qsp5h: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kqsp5h
+qsp6h: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kqsp6h
+qsp7h: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqsp7h
+qsp8h: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kqsp8h
+qsp9h: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kqsp9h
+qsp10h: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kqsp10h
+qsp11h: quadrupole, type = "1.26Q12", l = lqa/2, aperture = rqa, k1 = kqsp11h
+qsp12h: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqsp12h
+qsp13h: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kqsp13h
+
+! HXR sextupoles
+
+kssp1h = -20.980886636913 !-20.980854539502
+kssp2h = 22.597513710817 ! 22.597505265891
+
+tssp1h = 15.249352738505 ! 15.249361095235
+tssp2h = 17.803041269766 ! 17.803035424509
+
+ssp1h: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = kssp1h, tilt =  &
+        degrees*tssp1h
+ssp2h: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = kssp2h, tilt =  &
+        degrees*tssp2h
+
+!=!  COMMENT
+!=!  COMMENT
+!=!    VALUE, (Cb*Ef)*KSSP1h*LSb,(Cb*10)*KSSP1h*LSb
+!=!    VALUE, (Cb*Ef)*KSSP2h*LSb,(Cb*10)*KSSP2h*LSb
+!=!  ENDCOMMENT
+
+! SXR & dumpline shared quads
+
+kqsp1 = 0.52687626083
+kqsp2 = -0.521500809125
+
+qsp1: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kqsp1
+qsp2: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kqsp2
+
+! SXR quads
+
+kqsp1s = 0.633675228645 ! 0.633675409102
+kqsp2s = -0.558846778994 !-0.558846970939
+kqsp3s = 0.652027259917 ! 0.652027344684
+kqsp4s = -0.497671456472 !-0.497671571574
+kqsp5s = 0.184431144204 ! 0.184431117493
+kqsp8s = -0.559080484823 !-0.559079941433
+kqsp9s = 0.633806872701 ! 0.633806671882
+kqsp6s = kqsp4s
+kqsp7s = kqsp3s
+
+qsp1s: quadrupole, type = "1.26Q12", l = lqa/2, aperture = rqa, k1 = kqsp1s
+qsp2s: quadrupole, type = "1.26Q12", l = lqa/2, aperture = rqa, k1 = kqsp2s
+qsp3s: quadrupole, type = "1.26Q12", l = lqa/2, aperture = rqa, k1 = kqsp3s
+qsp4s: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kqsp4s
+qsp5s: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kqsp5s
+qsp6s: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kqsp6s
+qsp7s: quadrupole, type = "1.26Q12", l = lqa/2, aperture = rqa, k1 = kqsp7s
+qsp8s: quadrupole, type = "1.26Q12", l = lqa/2, aperture = rqa, k1 = kqsp8s
+qsp9s: quadrupole, type = "1.26Q12", l = lqa/2, aperture = rqa, k1 = kqsp9s
+
+! SXR sextupoles
+
+kssp1s = 12.701345963181 ! 12.701341641754
+kssp2s = 12.699237045946 ! 12.699235330279
+
+ssp1s: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = kssp1s
+ssp2s: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = kssp2s
+
+!=!  COMMENT
+!=!  COMMENT
+!=!    VALUE, (Cb*Ef)*KSSP1s*LSb,(Cb*10)*KSSP1s*LSb
+!=!    VALUE, (Cb*Ef)*KSSP2s*LSb,(Cb*10)*KSSP2s*LSb
+!=!  ENDCOMMENT
+
+! BSY dumpline quads
+
+kqsp1d = -0.258027172416
+kqsp2d = 0.232777714022
+
+qsp1d: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kqsp1d
+qsp2d: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kqsp2d
+
+! HXR vertical magnetic kickers
+! All kickers aligned along the same z-axis (per T. Beukers)
+! Assume the same z-length per kicker and same field (in SXR or HXR)
+
+gbkysp = gbksp !kicker gap (m) - round pipe, square bore aperture
+lbkysp = lbksp !kicker straight length (m)
+
+setkikh = 0.5*setsp*(setsp-1)    !scale for HXR spreader kicker & septum
+abkysph0 = -0.75e-3
+abkysph = abkysph0*setkikh      !total HXR kicker y-angle (rad)
+abkysp1h = asin(sin(abkysph)/3) !1st HXR kicker y-angle (rad)
+abkysp12h = asin(2*sin(abkysph)/3) !1st+2nd HXR kicker y-angle (rad)
+abkysp2h = abkysp12h-abkysp1h     !2nd HXR kicker y-angle (rad)
+abkysp3h = abkysph-abkysp12h    !3rd HXR kicker y-angle (rad)
+
+lbkysp1h = lbkysp/(1-abkysp1h*abkysp1h/6)
+lbkysp12h = 2*lbkysp/(1-abkysp12h*abkysp12h/6)
+lbkysp13h = 3*lbkysp/(1-abkysph*abkysph/6)
+lbkysp2h = lbkysp12h-lbkysp1h
+lbkysp3h = lbkysp13h-lbkysp12h
+
+bkysp1ha: sbend, hgap = gbkysp/2, fint = 0.5, fintx = 0, e2 = 0, e1 = 0, type = "0.787K35.4",  &
+        ref_tilt = pi/2, l = lbkysp1h/2, angle = lbkysp1h/2 * abkysp1h/2/(lbkysp1h/2)
+bkysp1hb: sbend, hgap = gbkysp/2, fint = 0, fintx = 0.5, e1 = 0, e2 = abkysp1h, type =  &
+        "0.787K35.4", ref_tilt = pi/2, l = lbkysp1h/2, angle =  &
+        lbkysp1h/2 * abkysp1h/2/(lbkysp1h/2)
+
+bkysp2ha: sbend, hgap = gbkysp/2, fint = 0.5, fintx = 0, e2 = 0, e1 = -abkysp1h, type =  &
+        "0.787K35.4", ref_tilt = pi/2, l = lbkysp2h/2, angle =  &
+        lbkysp2h/2 * abkysp2h/2/(lbkysp2h/2)
+bkysp2hb: sbend, hgap = gbkysp/2, fint = 0, fintx = 0.5, e1 = 0, e2 = abkysp12h, type =  &
+        "0.787K35.4", ref_tilt = pi/2, l = lbkysp2h/2, angle =  &
+        lbkysp2h/2 * abkysp2h/2/(lbkysp2h/2)
+
+bkysp3ha: sbend, hgap = gbkysp/2, fint = 0.5, fintx = 0, e2 = 0, e1 = -abkysp12h, type =  &
+        "0.787K35.4", ref_tilt = pi/2, l = lbkysp3h/2, angle =  &
+        lbkysp3h/2 * abkysp3h/2/(lbkysp3h/2)
+bkysp3hb: sbend, hgap = gbkysp/2, fint = 0, fintx = 0.5, e1 = 0, e2 = abkysph, type =  &
+        "0.787K35.4", ref_tilt = pi/2, l = lbkysp3h/2, angle =  &
+        lbkysp3h/2 * abkysp3h/2/(lbkysp3h/2)
+
+! placeholder zero-strength magnets for future LCLS-II-HE HXR kickers
+
+lbkysp0h = lbkysp
+lbkysp4h = lbkysp/cos(abkysph)
+
+bkysp0ha: sbend, hgap = gbkysp/2, fint = 0.5, fintx = 0, e2 = 0, e1 = 0, type = "@2,0.787K35.4",  &
+        ref_tilt = pi/2, l = lbkysp0h/2
+bkysp0hb: sbend, hgap = gbkysp/2, fint = 0, fintx = 0.5, e1 = 0, e2 = 0, type = "@2,0.787K35.4",  &
+        ref_tilt = pi/2, l = lbkysp0h/2
+
+bkysp4ha: sbend, hgap = gbkysp/2, fint = 0.5, fintx = 0, e2 = 0, e1 = -abkysph, type =  &
+        "@2,0.787K35.4", ref_tilt = pi/2, l = lbkysp4h/2
+bkysp4hb: sbend, hgap = gbkysp/2, fint = 0, fintx = 0.5, e1 = 0, e2 = abkysph, type =  &
+        "@2,0.787K35.4", ref_tilt = pi/2, l = lbkysp4h/2
+
+gbkysp5h = 0.035
+zbkysp5h = 1.0
+lbkysp5h = zbkysp5h/cos(abkysph)
+
+bkysp5ha: sbend, hgap = gbkysp5h/2, fint = 0.5, fintx = 0, e2 = 0, e1 = -abkysph, type =  &
+        "@2,1.378K35.4", ref_tilt = pi/2, l = lbkysp5h/2
+bkysp5hb: sbend, hgap = gbkysp5h/2, fint = 0, fintx = 0.5, e1 = 0, e2 = abkysph, type =  &
+        "@2,1.378K35.4", ref_tilt = pi/2, l = lbkysp5h/2
+
+! SXR vertical magnetic kickers
+! All kickers aligned along the same z-axis (per T. Beukers)
+! Assume the same z-length per kicker and same field (in SXR or HXR)
+
+setkiks = 0.5*setsp*(setsp+1)    !scale for SXR spreader kicker & septum
+abkysps0 = -0.75e-3
+abkysps = abkysps0*setkiks      !total SXR kicker y-angle (rad)
+abkysp1s = asin(sin(abkysps)/3) !1st SXR kicker y-angle (rad)
+abkysp12s = asin(2*sin(abkysps)/3) !1st+2nd SXR kicker y-angle (rad)
+abkysp2s = abkysp12s-abkysp1s     !2nd SXR kicker y-angle (rad)
+abkysp3s = abkysps-abkysp12s    !3rd SXR kicker y-angle (rad)
+
+lbkysp1s = lbkysp/(1-abkysp1s*abkysp1s/6)
+lbkysp12s = 2*lbkysp/(1-abkysp12s*abkysp12s/6)
+lbkysp13s = 3*lbkysp/(1-abkysps*abkysps/6)
+lbkysp2s = lbkysp12s-lbkysp1s
+lbkysp3s = lbkysp13s-lbkysp12s
+
+bkysp1sa: sbend, hgap = gbkysp/2, fint = 0.5, fintx = 0, e2 = 0, e1 = 0, type = "0.787K35.4",  &
+        ref_tilt = pi/2, l = lbkysp1s/2, angle = lbkysp1s/2 * abkysp1s/2/(lbkysp1s/2)
+bkysp1sb: sbend, hgap = gbkysp/2, fint = 0, fintx = 0.5, e1 = 0, e2 = abkysp1s, type =  &
+        "0.787K35.4", ref_tilt = pi/2, l = lbkysp1s/2, angle =  &
+        lbkysp1s/2 * abkysp1s/2/(lbkysp1s/2)
+
+bkysp2sa: sbend, hgap = gbkysp/2, fint = 0.5, fintx = 0, e2 = 0, e1 = -abkysp1s, type =  &
+        "0.787K35.4", ref_tilt = pi/2, l = lbkysp2s/2, angle =  &
+        lbkysp2s/2 * abkysp2s/2/(lbkysp2s/2)
+bkysp2sb: sbend, hgap = gbkysp/2, fint = 0, fintx = 0.5, e1 = 0, e2 = abkysp12s, type =  &
+        "0.787K35.4", ref_tilt = pi/2, l = lbkysp2s/2, angle =  &
+        lbkysp2s/2 * abkysp2s/2/(lbkysp2s/2)
+
+bkysp3sa: sbend, hgap = gbkysp/2, fint = 0.5, fintx = 0, e2 = 0, e1 = -abkysp12s, type =  &
+        "0.787K35.4", ref_tilt = pi/2, l = lbkysp3s/2, angle =  &
+        lbkysp3s/2 * abkysp3s/2/(lbkysp3s/2)
+bkysp3sb: sbend, hgap = gbkysp/2, fint = 0, fintx = 0.5, e1 = 0, e2 = abkysps, type =  &
+        "0.787K35.4", ref_tilt = pi/2, l = lbkysp3s/2, angle =  &
+        lbkysp3s/2 * abkysp3s/2/(lbkysp3s/2)
+
+! placeholder zero-strength magnets for future LCLS-II-HE SXR kickers
+
+lbkysp0s = lbkysp
+lbkysp4s = lbkysp/cos(abkysps)
+
+bkysp0sa: sbend, hgap = gbkysp/2, fint = 0.5, fintx = 0, e2 = 0, e1 = 0, type = "@2,0.787K35.4",  &
+        ref_tilt = pi/2, l = lbkysp0s/2
+bkysp0sb: sbend, hgap = gbkysp/2, fint = 0, fintx = 0.5, e1 = 0, e2 = 0, type = "@2,0.787K35.4",  &
+        ref_tilt = pi/2, l = lbkysp0s/2
+
+bkysp4sa: sbend, hgap = gbkysp/2, fint = 0.5, fintx = 0, e2 = 0, e1 = -abkysps, type =  &
+        "@2,0.787K35.4", ref_tilt = pi/2, l = lbkysp4s/2
+bkysp4sb: sbend, hgap = gbkysp/2, fint = 0, fintx = 0.5, e1 = 0, e2 = abkysps, type =  &
+        "@2,0.787K35.4", ref_tilt = pi/2, l = lbkysp4s/2
+
+gbkysp5s = 0.035
+zbkysp5s = 1.0
+lbkysp5s = zbkysp5s/cos(abkysps)
+
+bkysp5sa: sbend, hgap = gbkysp5s/2, fint = 0.5, fintx = 0, e2 = 0, e1 = -abkysps, type =  &
+        "@2,1.378K35.4", ref_tilt = pi/2, l = lbkysp5s/2
+bkysp5sb: sbend, hgap = gbkysp5s/2, fint = 0, fintx = 0.5, e1 = 0, e2 = abkysps, type =  &
+        "@2,1.378K35.4", ref_tilt = pi/2, l = lbkysp5s/2
+
+! 2-hole HXR horizontal septum aligned along the bypass axis
+
+gblxsp = gblsp !septum gap height (m)
+lblxsp = lblsp !septum straight length (m)
+
+ablxsph0 = -0.0055277237035
+ablxsph = ablxsph0*setkikh
+ablxspha = asin(sin(ablxsph)/2)
+ablxsphb = ablxsph-ablxspha
+ablxsph_2 = ablxsph*ablxsph
+ablxsph_4 = ablxsph_2*ablxsph_2
+ablxspha_2 = ablxspha*ablxspha
+ablxspha_4 = ablxspha_2*ablxspha_2
+
+lblxsph = lblxsp/(1-ablxsph_2/6+ablxsph_4/120)/cos(abkysph)
+lblxspha = lblxsp/2/(1-ablxspha_2/6+ablxspha_4/120)/cos(abkysph)
+lblxsphb = lblxsph-lblxspha
+
+blxspha: sbend, e1 = 0, e2 = 0, fint = 0.5, fintx = 0, hgap = gblxsp/2, type = "0.625SD38.98", l &
+         = lblxspha, angle = lblxspha * ablxspha/lblxspha
+blxsphb: sbend, e1 = 0, e2 = ablxsph, fint = 0, fintx = 0.5, hgap = gblxsp/2, type =  &
+        "0.625SD38.98", l = lblxsphb, angle = lblxsphb * ablxsphb/lblxsphb
+
+! 2-hole SXR horizontal septum aligned along the bypass axis
+
+ablxsps0 = 0.011055447407
+ablxsps = ablxsps0*setkiks
+ablxspsa = asin(sin(ablxsps)/2)
+ablxspsb = ablxsps-ablxspsa
+ablxsps_2 = ablxsps*ablxsps
+ablxsps_4 = ablxsps_2*ablxsps_2
+ablxspsa_2 = ablxspsa*ablxspsa
+ablxspsa_4 = ablxspsa_2*ablxspsa_2
+
+lblxsps = lblxsp/(1-ablxsps_2/6+ablxsps_4/120)/cos(abkysps)
+lblxspsa = lblxsp/2/(1-ablxspsa_2/6+ablxspsa_4/120)/cos(abkysps)
+lblxspsb = lblxsps-lblxspsa
+
+blxspsa: sbend, e1 = 0, e2 = 0, fint = 0.5, fintx = 0, hgap = gblxsp/2, type = "0.625SD38.98", l &
+         = lblxspsa, angle = lblxspsa * ablxspsa/lblxspsa
+blxspsb: sbend, e1 = 0, e2 = ablxsps, fint = 0, fintx = 0.5, hgap = gblxsp/2, type =  &
+        "0.625SD38.98", l = lblxspsb, angle = lblxspsb * ablxspsb/lblxspsb
+
+! measured FINT for 1.0D38.37 @ 200A
+
+fbsp = 0.4861
+
+! HXR rolled bends
+
+abrsph = 0.650488048269e-2
+lbrsph = lbsp*abrsph/(2*sin(abrsph/2)) !BRSPh path length (m)
+tbrsph = 0.555232529864                !BRSPh roll angle (rad)
+
+brsp1ha: sbend, e1 = abrsph/2, e2 = 0, fint = fbsp, fintx = 0, hgap = gbsp/2, type = "1.0D38.37" &
+        , ref_tilt = tbrsph, l = lbrsph/2, angle = lbrsph/2 * abrsph/2/(lbrsph/2)
+brsp1hb: sbend, e1 = 0, e2 = abrsph/2, fint = 0, fintx = fbsp, hgap = gbsp/2, type = "1.0D38.37" &
+        , ref_tilt = tbrsph, l = lbrsph/2, angle = lbrsph/2 * abrsph/2/(lbrsph/2)
+
+brsp2ha: sbend, e1 = -abrsph/2, e2 = 0, fint = fbsp, fintx = 0, hgap = gbsp/2, type = "1.0D38.37" &
+        , ref_tilt = tbrsph, l = lbrsph/2, angle = lbrsph/2 * (-abrsph/2)/(lbrsph/2)
+brsp2hb: sbend, e1 = 0, e2 = -abrsph/2, fint = 0, fintx = fbsp, hgap = gbsp/2, type = "1.0D38.37" &
+        , ref_tilt = tbrsph, l = lbrsph/2, angle = lbrsph/2 * (-abrsph/2)/(lbrsph/2)
+
+! HXR horizontal bend
+! Note: BXSP1h is a merge DC-bend which is either turned ON to operate
+!       SCRF beam in HXR, or turned OFF to operate CURF beam in HXR
+
+dabxsph = 0.155464098791e-8
+abxsph = (-ablxsph0+dabxsph)*setkikh
+abxsphh = abxsph/2
+abxsphh_2 = abxsphh*abxsphh
+abxsphh_4 = abxsphh_2*abxsphh_2
+lbxsph = lbsp/(1-abxsphh_2/6+abxsphh_4/120) !BXSP1h path length (m)
+
+bxsp1ha: sbend, e1 = abxsph/2, e2 = 0, fint = fbsp, fintx = 0, hgap = gbsp/2, type = "1.0D38.37" &
+        , l = lbxsph/2, angle = lbxsph/2 * abxsph/2/(lbxsph/2)
+bxsp1hb: sbend, e1 = 0, e2 = abxsph/2, fint = 0, fintx = fbsp, hgap = gbsp/2, type = "1.0D38.37" &
+        , l = lbxsph/2, angle = lbxsph/2 * abxsph/2/(lbxsph/2)
+
+! SXR horizontal bends
+
+dabxsps = 0.310901777441e-8
+abxsps = ablxsps0+dabxsps
+lbxsps = lbsp*abxsps/(2*sin(abxsps/2)) !BXSPs path length (m)
+
+bxsp1sa: sbend, e1 = -abxsps/2, e2 = 0, fint = fbsp, fintx = 0, hgap = gbsp/2, type = "1.0D38.37" &
+        , l = lbxsps/2, angle = lbxsps/2 * (-abxsps/2)/(lbxsps/2)
+bxsp1sb: sbend, e1 = 0, e2 = -abxsps/2, fint = 0, fintx = fbsp, hgap = gbsp/2, type = "1.0D38.37" &
+        , l = lbxsps/2, angle = lbxsps/2 * (-abxsps/2)/(lbxsps/2)
+
+bxsp2sa: sbend, e1 = -abxsps/2, e2 = 0, fint = fbsp, fintx = 0, hgap = gbsp/2, type = "1.0D38.37" &
+        , l = lbxsps/2, angle = lbxsps/2 * (-abxsps/2)/(lbxsps/2)
+bxsp2sb: sbend, e1 = 0, e2 = -abxsps/2, fint = 0, fintx = fbsp, hgap = gbsp/2, type = "1.0D38.37" &
+        , l = lbxsps/2, angle = lbxsps/2 * (-abxsps/2)/(lbxsps/2)
+
+bxsp3sa: sbend, e1 = abxsps/2, e2 = 0, fint = fbsp, fintx = 0, hgap = gbsp/2, type = "1.0D38.37" &
+        , l = lbxsps/2, angle = lbxsps/2 * abxsps/2/(lbxsps/2)
+bxsp3sb: sbend, e1 = 0, e2 = abxsps/2, fint = 0, fintx = fbsp, hgap = gbsp/2, type = "1.0D38.37" &
+        , l = lbxsps/2, angle = lbxsps/2 * abxsps/2/(lbxsps/2)
+
+! BSY dumpline vertical bends
+
+abyspd = 0.877684127155e-2
+lbyspd = lbsp*abyspd/(2*sin(abyspd/2)) !BYSPd path length (m)
+
+bysp1da: sbend, e1 = abyspd/2, e2 = 0, fint = fbsp, fintx = 0, hgap = gbsp/2, type = "1.0D38.37" &
+        , ref_tilt = pi/2, l = lbyspd/2, angle = lbyspd/2 * abyspd/2/(lbyspd/2)
+bysp1db: sbend, e1 = 0, e2 = abyspd/2, fint = 0, fintx = fbsp, hgap = gbsp/2, type = "1.0D38.37" &
+        , ref_tilt = pi/2, l = lbyspd/2, angle = lbyspd/2 * abyspd/2/(lbyspd/2)
+
+bysp2da: sbend, e1 = -abyspd/2, e2 = 0, fint = fbsp, fintx = 0, hgap = gbsp/2, type = "1.0D38.37" &
+        , ref_tilt = pi/2, l = lbyspd/2, angle = lbyspd/2 * (-abyspd/2)/(lbyspd/2)
+bysp2db: sbend, e1 = 0, e2 = -abyspd/2, fint = 0, fintx = fbsp, hgap = gbsp/2, type = "1.0D38.37" &
+        , ref_tilt = pi/2, l = lbyspd/2, angle = lbyspd/2 * (-abyspd/2)/(lbyspd/2)
+
+! HXR DC bend correctors to compensate kicker orbit and dispersion
+
+lbcsp = 0.6    !DC corrector length
+gbcsp = 0.0254 !DC corrector gap
+fbcsp = 0.4725 !measured DC corrector FINT value
+
+abcsp1h = 0.445436076072e-2
+abcsp2h = -0.370437221909e-2
+lbcsp1h = lbcsp*abcsp1h/(2*sin(abcsp1h/2)) !BYSP1h path length (m)
+lbcsp2h = lbcsp*abcsp2h/(2*sin(abcsp2h/2)) !BYSP2h path length (m)
+
+bysp1ha: sbend, e1 = abcsp1h/2, e2 = 0, fint = fbcsp, fintx = 0, hgap = gbcsp/2, type =  &
+        "1.0D22.625", ref_tilt = pi/2, l = lbcsp1h/2, angle = lbcsp1h/2 * abcsp1h/2/(lbcsp1h/2)
+bysp1hb: sbend, e2 = abcsp1h/2, e1 = 0, fintx = fbcsp, fint = 0, hgap = gbcsp/2, type =  &
+        "1.0D22.625", ref_tilt = pi/2, l = lbcsp1h/2, angle = lbcsp1h/2 * abcsp1h/2/(lbcsp1h/2)
+
+bysp2ha: sbend, e1 = abcsp2h/2, e2 = 0, fint = fbcsp, fintx = 0, hgap = gbcsp/2, type =  &
+        "1.0D22.625", ref_tilt = pi/2, l = lbcsp2h/2, angle = lbcsp2h/2 * abcsp2h/2/(lbcsp2h/2)
+bysp2hb: sbend, e2 = abcsp2h/2, e1 = 0, fintx = fbcsp, fint = 0, hgap = gbcsp/2, type =  &
+        "1.0D22.625", ref_tilt = pi/2, l = lbcsp2h/2, angle = lbcsp2h/2 * abcsp2h/2/(lbcsp2h/2)
+
+! SXR DC bend correctors to compensate kicker orbit and dispersion
+
+abcsp1s = 0.315465742092e-2
+abcsp2s = -0.240470325405e-2
+lbcsp1s = lbcsp*abcsp1s/(2*sin(abcsp1s/2)) !BYSP1s path length (m)
+lbcsp2s = lbcsp*abcsp2s/(2*sin(abcsp2s/2)) !BYSP2s path length (m)
+
+bysp1sa: sbend, e1 = abcsp1s/2, e2 = 0, fint = fbcsp, fintx = 0, hgap = gbcsp/2, type =  &
+        "1.0D22.625", ref_tilt = pi/2, l = lbcsp1s/2, angle = lbcsp1s/2 * abcsp1s/2/(lbcsp1s/2)
+bysp1sb: sbend, e2 = abcsp1s/2, e1 = 0, fintx = fbcsp, fint = 0, hgap = gbcsp/2, type =  &
+        "1.0D22.625", ref_tilt = pi/2, l = lbcsp1s/2, angle = lbcsp1s/2 * abcsp1s/2/(lbcsp1s/2)
+
+bysp2sa: sbend, e1 = abcsp2s/2, e2 = 0, fint = fbcsp, fintx = 0, hgap = gbcsp/2, type =  &
+        "1.0D22.625", ref_tilt = pi/2, l = lbcsp2s/2, angle = lbcsp2s/2 * abcsp2s/2/(lbcsp2s/2)
+bysp2sb: sbend, e2 = abcsp2s/2, e1 = 0, fintx = fbcsp, fint = 0, hgap = gbcsp/2, type =  &
+        "1.0D22.625", ref_tilt = pi/2, l = lbcsp2s/2, angle = lbcsp2s/2 * abcsp2s/2/(lbcsp2s/2)
+
+! drifts
+
+ldspcor1 = 0.3617
+ldspcor2 = 0.5263
+ldspbpm1 = 0.4471
+ldspbpm2 = 0.5342
+ldspbk = 0.3
+
+ldspbk0h = ldspbk
+ldspbk1h = ldspbk/cos(abkysp1h)
+ldspbk2h = ldspbk/cos(abkysp12h)
+ldspbk3h = ldspbk/cos(abkysph)
+ldspbk4h = ldspbk/cos(abkysph)
+ldspbk5h = 15.1/cos(abkysph)
+ldspbk5ha = 2.267/cos(abkysph)
+ldspbk5hb = ldspbk5h-ldspbk5ha
+
+dspbk0h: drift, l = ldspbk0h
+dspbk1h: drift, l = ldspbk1h
+dspbk2h: drift, l = ldspbk2h
+dspbk3h: drift, l = ldspbk3h
+dspbk4h: drift, l = ldspbk4h
+dspbk5ha: drift, l = ldspbk5ha
+dspbk5hb: drift, l = ldspbk5hb
+
+dldsp2h = 0.0
+ldsp2h = 43.284+dldsp2h
+ldsp2hb = 10.0
+ldsp2hc = 0.5285
+ldsp2ha = ldsp2h-ldsp2hb-ldsp2hc-lbcsp1h-lbcsp2h
+dldsp3h = 0.0
+ldsp3h = 4.6611+dldsp3h
+ldsp3ha = ldspbpm1
+ldsp3haa = 0.1
+ldsp3hab = ldsp3ha-ldsp3haa-lsb
+ldsp3hb = 0.6368
+ldsp3hd = 0.1924
+ldsp3hc = ldsp3h-ldsp3ha-ldsp3hb-ldsp3hd
+dldsp4h = 0.012085492416
+ldsp4h = 9.5126-dldsp2h-dldsp3h+dldsp4h
+ldsp4ha = 0.4
+ldsp4hc = 0.3459992
+ldsp4hb = ldsp4h-ldsp4ha-ldsp4hc
+dldsp5h = 0.0 !adjust position of QSP3h,QSP11h
+ldsp5h = 14.474+(lqn-lqa)/2+dldsp5h
+ldsp5ha = 1.424131
+ldsp5hc = ldspcor2+(lqn-lqa)/2
+ldsp5hcb = 0.1+(lqn-lqa)/2
+ldsp5hca = ldsp5hc-ldsp5hcb-lsb
+ldsp5hb = ldsp5h-ldsp5ha-ldsp5hc
+dldsp6h = 0.0 !adjust position of QSP4h,QSP10h
+ldsp6h = 8.6805+(lqn-lqa)/2-dldsp5h+dldsp6h
+ldsp6ha = ldspbpm2+(lqn-lqa)/2
+ldsp6hc = ldspcor1
+ldsp6hb = ldsp6h-ldsp6ha-ldsp6hc
+dldsp7h = 0.0 !adjust position of QSP5h,QSP9h
+ldsp7h = 21.795894248291-dldsp6h+dldsp7h
+ldsp7ha = ldspbpm1
+ldsp7hc = ldspcor1
+ldsp7hb = ldsp7h-ldsp7ha-ldsp7hc
+ldsp8h = 23.795894248291-dldsp7h
+ldsp8ha = ldspbpm1
+ldsp8hc = ldspcor1
+ldsp8hb = ldsp8h-ldsp8ha-ldsp8hc
+dldsp9h = 0.0 !adjust length of dogleg
+ldsp9h = 188.409365489746/2-3*lqr-lqa-lqe/2-ldsp5h-ldsp6h-ldsp7h-ldsp8h+dldsp9h
+ldsp9ha = ldspbpm1
+ldsp9hb = 0.5
+ldsp9hc = 5.7942
+ldsp9hd = 10.6452
+ldsp9he = 1.616
+ldsp9hg = 0.1924
+ldsp9hf = ldsp9h-ldsp9ha-ldsp9hb-ldsp9hc-ldsp9hd-ldsp9he-ldsp9hg
+ldsp10h = ldsp9h
+ldsp10ha = 0.4
+ldsp10hb = 17.6279586
+ldsp10hd = ldspcor1
+ldsp10hc = ldsp10h-ldsp10ha-ldsp10hb-ldsp10hd
+ldsp11h = ldsp8h
+ldsp11ha = ldspbpm1
+ldsp11hc = 0.4781
+ldsp11hb = ldsp11h-ldsp11ha-ldsp11hc
+ldsp12h = ldsp7h
+ldsp12ha = 0.4475
+ldsp12hb = 0.644
+ldsp12hd = 0.759
+ldsp12he = 0.3315
+ldsp12hc = ldsp12h-ldsp12ha-ldsp12hb-ldsp12hd-ldsp12he
+ldsp13h = ldsp6h
+ldsp13hb = 0.778
+ldsp13hc = 0.749+(lqn-lqa)/2
+ldsp13ha = ldsp13h-ldsp13hb-ldsp13hc
+ldsp14h = ldsp5h
+ldsp14ha = 13.863119+(lqn-lqa)/2
+ldsp14hb = ldsp14h-ldsp14ha
+ldsp15h = ldsp4h
+ldsp15ha = 0.5
+ldsp15hb = 0.5
+ldsp15hd = 0.1924
+ldsp15hc = ldsp15h-ldsp15ha-ldsp15hb-ldsp15hd
+ldsp16h = ldsp3h
+ldsp16ha = 0.4
+ldsp16hc = ldspcor1
+ldsp16hb = ldsp16h-ldsp16ha-ldsp16hc
+dldsp17h = -0.801500183647e-4
+ldsp17h = ldsp2h+dldsp17h+lblxsph/2-lbxsph/2
+ldsp17ha = ldspbpm1
+ldsp17hb = ldsp17h-ldsp17ha
+
+dsp2ha: drift, l = ldsp2ha
+dsp2hb: drift, l = ldsp2hb
+dsp2hc: drift, l = ldsp2hc
+dsp3ha: drift, l = ldsp3ha
+dsp3haa: drift, l = ldsp3haa
+dsp3hab: drift, l = ldsp3hab
+dsp3hb: drift, l = ldsp3hb
+dsp3hc: drift, l = ldsp3hc
+dsp3hd: drift, l = ldsp3hd
+dsp4ha: drift, l = ldsp4ha
+dsp4hb: drift, l = ldsp4hb
+dsp4hc: drift, l = ldsp4hc
+dsp5h: drift, l = ldsp5h
+dsp5ha: drift, l = ldsp5ha
+dsp5hb: drift, l = ldsp5hb
+dsp5hc: drift, l = ldsp5hc
+dsp5hca: drift, l = ldsp5hca
+dsp5hcb: drift, l = ldsp5hcb
+dsp6ha: drift, l = ldsp6ha
+dsp6hb: drift, l = ldsp6hb
+dsp6hc: drift, l = ldsp6hc
+dsp7ha: drift, l = ldsp7ha
+dsp7hb: drift, l = ldsp7hb
+dsp7hc: drift, l = ldsp7hc
+dsp8ha: drift, l = ldsp8ha
+dsp8hb: drift, l = ldsp8hb
+dsp8hc: drift, l = ldsp8hc
+dsp9ha: drift, l = ldsp9ha
+dsp9hb: drift, l = ldsp9hb
+dsp9hc: drift, l = ldsp9hc
+dsp9hd: drift, l = ldsp9hd
+dsp9he: drift, l = ldsp9he
+dsp9hf: drift, l = ldsp9hf
+dsp9hg: drift, l = ldsp9hg
+dsp10ha: drift, l = ldsp10ha
+dsp10hb: drift, l = ldsp10hb
+dsp10hc: drift, l = ldsp10hc
+dsp10hd: drift, l = ldsp10hd
+dsp11ha: drift, l = ldsp11ha
+dsp11hb: drift, l = ldsp11hb
+dsp11hc: drift, l = ldsp11hc
+dsp12ha: drift, l = ldsp12ha
+dsp12hb: drift, l = ldsp12hb
+dsp12hc: drift, l = ldsp12hc
+dsp12hc1: drift, l = 9.035399208502
+dsp12hc2: drift, l = 0.30541
+dsp12hc3: drift, l = 0.30541
+dsp12hc4: drift, l = dsp12hc[l]-dsp12hc1[l]-dsp12hc2[l]-dsp12hc3[l]
+dsp12hd: drift, l = ldsp12hd
+dsp12he: drift, l = ldsp12he
+dsp13ha: drift, l = ldsp13ha
+dsp13hb: drift, l = ldsp13hb
+dsp13hc: drift, l = ldsp13hc
+dsp14ha: drift, l = ldsp14ha
+dsp14hb: drift, l = ldsp14hb
+dsp15h: drift, l = ldsp15h
+dsp15ha: drift, l = ldsp15ha
+dsp15hb: drift, l = ldsp15hb
+dsp15hc: drift, l = ldsp15hc
+dsp15hd: drift, l = ldsp15hd
+dsp16ha: drift, l = ldsp16ha
+dsp16hb: drift, l = ldsp16hb
+dsp16hc: drift, l = ldsp16hc
+dsp17ha: drift, l = ldsp17ha
+dsp17hb: drift, l = ldsp17hb
+
+ldspq1 = 45.126
+ldspq1a = 23.0
+ldspq1c = ldspcor1
+ldspq1b = ldspq1-ldspq1a-ldspq1c
+dldspq2 = 0.0
+ldspq2 = 1.8+dldspq2
+ldspq2a = 0.5913
+ldspq2c = 0.4781
+ldspq2b = ldspq2-ldspq2a-ldspq2c
+ldspq3 = 16.124-dldspq2
+ldspq3a = 0.4285
+ldspq3b = ldspq3-ldspq3a
+
+dspq1a: drift, l = ldspq1a
+dspq1b: drift, l = ldspq1b
+dspq1c: drift, l = ldspq1c
+dspq2a: drift, l = ldspq2a
+dspq2b: drift, l = ldspq2b
+dspq2c: drift, l = ldspq2c
+dspq3a: drift, l = ldspq3a
+dspq3b: drift, l = ldspq3b
+
+ldspbk0s = ldspbk
+ldspbk1s = ldspbk/cos(abkysp1s)
+ldspbk2s = ldspbk/cos(abkysp12s)
+ldspbk3s = ldspbk/cos(abkysps)
+ldspbk4s = ldspbk/cos(abkysps)
+ldspbk5s = 15.1/cos(abkysps)
+ldspbk5sa = 2.267/cos(abkysps)
+ldspbk5sb = ldspbk5s-ldspbk5sa
+
+dspbk0s: drift, l = ldspbk0s
+dspbk1s: drift, l = ldspbk1s
+dspbk2s: drift, l = ldspbk2s
+dspbk3s: drift, l = ldspbk3s
+dspbk4s: drift, l = ldspbk4s
+dspbk5sa: drift, l = ldspbk5sa
+dspbk5sb: drift, l = ldspbk5sb
+
+dldsp2s = 0.0
+dldsp2sa = -0.781886051378e-6
+ldsp2s = 32.6265+(lqn-lqa)/2+dldsp2s+dldsp2sa
+ldsp2sb = 11.8
+ldsp2sc = 0.6676+(lqn-lqa)/2
+ldsp2sa = ldsp2s-ldsp2sb-ldsp2sc-lbcsp1s-lbcsp2s
+dldsp3s = 0.0
+ldsp3s = 1.828+(lqn-lqa)+dldsp3s
+ldsp3sa = ldspbpm2+(lqn-lqa)/2
+ldsp3saa = 0.1+(lqn-lqa)/2
+ldsp3sab = ldsp3sa-ldsp3saa-lsb
+ldsp3sb = 0.6445
+ldsp3sc = ldsp3s-ldsp3sa-ldsp3sb
+ldsp4s = 8.689+(lqn-lqa)/2-dldsp2s-dldsp3s
+ldsp4sa = ldspbpm2+(lqn-lqa)/2
+ldsp4sb = 0.6445
+ldsp4sd = 0.3442954
+ldsp4sc = ldsp4s-ldsp4sa-ldsp4sb-ldsp4sd
+dldsp5s = 0.0
+ldsp5s = 6.512+(lqn-lqa)/2+dldsp5s
+ldsp5sb = ldspcor2+(lqn-lqa)/2
+ldsp5sa = ldsp5s-ldsp5sb
+dldsp6s = 0.0
+ldsp6s = 2.5925+(lqn-lqa)/2+dldsp6s
+ldsp6sa = ldspbpm2+(lqn-lqa)/2
+ldsp6sc = ldspcor1
+ldsp6sb = ldsp6s-ldsp6sa-ldsp6sc
+ldsp7s = 56.746/2-lqa-1.5*lqr-ldsp5s-ldsp6s
+ldsp7sa = ldspbpm1
+ldsp7sb = 1.2814
+ldsp7sd = ldspcor1
+ldsp7sc = ldsp7s-ldsp7sa-ldsp7sb-ldsp7sd
+ldsp8s = ldsp7s
+ldsp8sa = ldspbpm1
+ldsp8sb = 1.9614
+ldsp8sc = 7.810257
+ldsp8se = ldspcor1
+ldsp8sd = ldsp8s-ldsp8sa-ldsp8sb-ldsp8sc-ldsp8se
+ldsp9s = ldsp6s
+ldsp9sa = ldspbpm1
+ldsp9sc = ldspcor2+(lqn-lqa)/2
+ldsp9sb = ldsp9s-ldsp9sa-ldsp9sc
+ldsp10s = ldsp5s
+ldsp10sa = ldspbpm2+(lqn-lqa)/2
+ldsp10sb = ldsp10s-ldsp10sa
+ldsp11s = ldsp4s
+ldsp11sa = 0.5
+ldsp11sb = 0.5
+ldsp11sc = 0.5
+ldsp11se = ldspcor2+(lqn-lqa)/2
+ldsp11sd = ldsp11s-ldsp11sa-ldsp11sb-ldsp11sc-ldsp11se
+ldsp12s = ldsp3s
+ldsp12sa = ldspbpm2+(lqn-lqa)/2
+ldsp12sc = ldspcor2+(lqn-lqa)/2
+ldsp12scb = 0.1+(lqn-lqa)/2
+ldsp12sca = ldsp12sc-ldsp12scb-lsb
+ldsp12sb = ldsp12s-ldsp12sa-ldsp12sc
+dldsp13s = -0.406195675138e-4
+ldsp13s = ldsp2s+dldsp13s+lblxsps/2-lbxsps/2
+ldsp13sa = ldspbpm2+(lqn-lqa)/2
+ldsp13sb = ldsp13s-ldsp13sa
+
+dsp2sa: drift, l = ldsp2sa
+dsp2sb: drift, l = ldsp2sb
+dsp2sc: drift, l = ldsp2sc
+dsp3sa: drift, l = ldsp3sa
+dsp3saa: drift, l = ldsp3saa
+dsp3sab: drift, l = ldsp3sab
+dsp3sb: drift, l = ldsp3sb
+dsp3sc: drift, l = ldsp3sc
+dsp4sa: drift, l = ldsp4sa
+dsp4sb: drift, l = ldsp4sb
+dsp4sc: drift, l = ldsp4sc
+dsp4sd: drift, l = ldsp4sd
+dsp5sa: drift, l = ldsp5sa
+dsp5sb: drift, l = ldsp5sb
+dsp6sa: drift, l = ldsp6sa
+dsp6sb: drift, l = ldsp6sb
+dsp6sc: drift, l = ldsp6sc
+dsp7sa: drift, l = ldsp7sa
+dsp7sb: drift, l = ldsp7sb
+dsp7sc: drift, l = ldsp7sc
+dsp7sd: drift, l = ldsp7sd
+dsp8sa: drift, l = ldsp8sa
+dsp8sb: drift, l = ldsp8sb
+dsp8sc: drift, l = ldsp8sc
+dsp8sd: drift, l = ldsp8sd
+dsp8se: drift, l = ldsp8se
+dsp9sa: drift, l = ldsp9sa
+dsp9sb: drift, l = ldsp9sb
+dsp9sc: drift, l = ldsp9sc
+dsp10sa: drift, l = ldsp10sa
+dsp10sb: drift, l = ldsp10sb
+dsp11sa: drift, l = ldsp11sa
+dsp11sb: drift, l = ldsp11sb
+dsp11sc: drift, l = ldsp11sc
+dsp11sd: drift, l = ldsp11sd
+dsp11se: drift, l = ldsp11se
+dsp12sa: drift, l = ldsp12sa
+dsp12sb: drift, l = ldsp12sb
+dsp12sc: drift, l = ldsp12sc
+dsp12sca: drift, l = ldsp12sca
+dsp12scb: drift, l = ldsp12scb
+dsp13sa: drift, l = ldsp13sa
+dsp13sb: drift, l = ldsp13sb
+dsp13sb1: drift, l = 9.337992506693
+dsp13sb2: drift, l = 0.30541
+dsp13sb3: drift, l = 0.30541
+dsp13sb4: drift, l = dsp13sb[l]-dsp13sb1[l]-dsp13sb2[l]-dsp13sb3[l]
+
+ldsp2da2 = 2.0
+ldsp2da1 = 23.0-4.457-ldsp2da2 !adjusted for DASEL
+ldsp2db = 1.657
+ldsp2dc1 = 27.25+3.685 !adjustment for DASEL with 25G kickers
+ldsp2dd = ldspcor1
+dldsp3d = 0.0
+ldsp3d = 3.317+dldsp3d
+ldsp3da = ldspbpm1
+ldsp3db = 0.6234
+ldsp3dd = 0.4781+0.3048 !=0.7829
+ldsp3dc = ldsp3d-ldsp3da-ldsp3db-ldsp3dd
+ldsp4d = 4.5085-dldsp3d
+ldsp4da = 0.4285
+ldsp4db = ldsp4d-ldsp4da
+ldsp2dc2 = 76.149-ldsp2da1-ldsp2da2-ldsp2db-ldsp2dc1-ldsp2dd-ldsp3d-ldsp4d
+ldsp5d = 73.0 !distance between two bends
+ldsp5da = 6.2732486
+ldsp5db = 45.575+1.0-ldsp5da-lbyspd/2
+ldsp5dd = 0.2298134+0.609623481 !=0.839436881
+ldsp5dc = ldsp5d-ldsp5da-ldsp5db-ldsp5dd
+dldsp6d = 0.0 !adjust Z at muon wall
+ldsp6d = 143.648999999997-0.4+18.115253-0.761425+dldsp6d
+ldsp6da = 0.5
+ldsp6db = 0.5
+ldsp6dc = 1.0
+ldsp6dd = 0.3048
+ldsp6de = 1.1952
+ldsp6dg = 0.5
+ldsp6dh = 0.5
+ldsp6di = 0.5
+ldsp6dj = 37.0+18.0-0.761425
+ldsp6df = ldsp6d-ldsp6da-ldsp6db-ldsp6dc-ldsp6dd-ldsp6de-ldsp6dg-ldsp6dh-ldsp6di-ldsp6dj
+ldsp6dfa = 4.287828
+ldsp6dfc = 0.5
+ldsp6dfd = 1.0
+ldsp6dfb = ldsp6df-ldsp6dfa-ldsp6dfc-ldsp6dfd
+
+ldsp7d = 20.0818610101+0.4+0.803391932471-18.115253+0.761425
+ldsp7db = 1.5
+ldsp7da = ldsp7d-ldsp7db-lpcsp
+ldsp7daa = 0.5
+ldsp7dab = ldsp7da-ldsp7daa
+
+dsp2da1: drift, l = ldsp2da1
+dsp2da2: drift, l = ldsp2da2
+dsp2db: drift, l = ldsp2db
+dsp2dc1: drift, l = ldsp2dc1
+dsp2dc2: drift, l = ldsp2dc2
+dsp2dd: drift, l = ldsp2dd
+dsp3da: drift, l = ldsp3da
+dsp3db: drift, l = ldsp3db
+dsp3dc: drift, l = ldsp3dc
+dsp3dd: drift, l = ldsp3dd
+dsp4da: drift, l = ldsp4da
+dsp4db: drift, l = ldsp4db
+dsp5da: drift, l = ldsp5da
+dsp5db: drift, l = ldsp5db
+dsp5dc: drift, l = ldsp5dc
+dsp5dc1: drift, l = 0.694411378263
+dsp5dc2: drift, l = 0.30541
+dsp5dc3: drift, l = 0.30541
+dsp5dc4: drift, l = dsp5dc[l]-dsp5dc1[l]-dsp5dc2[l]-dsp5dc3[l]
+dsp5dd: drift, l = ldsp5dd
+dsp6da: drift, l = ldsp6da
+dsp6db: drift, l = ldsp6db
+dsp6dc: drift, l = ldsp6dc
+dsp6dd: drift, l = ldsp6dd
+dsp6de: drift, l = ldsp6de
+dsp6df: drift, l = ldsp6df
+dsp6dfa: drift, l = ldsp6dfa
+dsp6dfb: drift, l = ldsp6dfb
+dsp6dfc: drift, l = ldsp6dfc
+dsp6dfd: drift, l = ldsp6dfd
+dsp6dg: drift, l = ldsp6dg
+dsp6dh: drift, l = ldsp6dh
+dsp6di: drift, l = ldsp6di
+dsp6dj: drift, l = ldsp6dj
+dsp7daa: drift, l = ldsp7daa
+dsp7dab: drift, l = ldsp7dab
+dsp7db: drift, l = ldsp7db
+dwallad: drift, l = 1.840975    !distance from face of muon wall to BSY dump
+ddumpbsy: drift, l = 61.120*in2m !length of BSY dump (per A. Ibrahimov)
+
+! markers
+
+cntsp1s: marker, type = "CENTER"
+cntsp2s: marker, type = "CENTER"
+cntsp1h: marker, type = "CENTER"
+cntsp2h: marker, type = "CENTER"
+cntsp3h: marker, type = "CENTER"
+cntsp1d: marker, type = "CENTER"
+rwwake3d: marker, type = "WAKE" !SPRDD/BSY beampipe wake applied here
+muwalld: marker !front face of muon wall for dump beam
+dumpbsy: instrument, type = "DUMPBSY" !front face of BSY dump
+
+! monitors
+
+bpmsph: instrument, type = "Stripline-5"
+bpmsps: instrument, type = "Stripline-5"
+
+bpmsp1: instrument, type = "Stripline-5"
+bpmsp2: instrument, type = "Stripline-5"
+
+bpmsp1h: instrument, type = "Stripline-5"
+bpmsp2h: instrument, type = "Stripline-2"
+bpmsp3h: instrument, type = "Stripline-5"
+bpmsp4h: instrument, type = "Stripline-5"
+bpmsp5h: instrument, type = "Stripline-5"
+bpmsp6h: instrument, type = "Stripline-5"
+bpmsp7h: instrument, type = "Stripline-2"
+bpmsp8h: instrument, type = "Stripline-5"
+bpmsp9h: instrument, type = "Stripline-5"
+bpmsp10h: instrument, type = "Stripline-5"
+bpmsp11h: instrument, type = "Stripline-5"
+bpmsp12h: instrument, type = "Stripline-2"
+bpmsp13h: instrument, type = "Stripline-5"
+
+bpmsp1s: instrument, type = "Stripline-5"
+bpmsp2s: instrument, type = "Stripline-5"
+bpmsp3s: instrument, type = "Stripline-5"
+bpmsp4s: instrument, type = "Stripline-5"
+bpmsp5s: instrument, type = "Stripline-5"
+bpmsp6s: instrument, type = "Stripline-5"
+bpmsp7s: instrument, type = "Stripline-5"
+bpmsp8s: instrument, type = "Stripline-5"
+bpmsp9s: instrument, type = "Stripline-5"
+
+bpmsp1d: instrument, type = "Stripline-5"
+bpmsp2d: instrument, type = "Stripline-5"
+bpmsp3d: instrument, type = "Stripline-8" !has been already ordered
+bpmsp4d: instrument, type = "Stripline-5"
+bpmsp5d: instrument, type = "Stripline-14" !large aperture BPM for raster
+
+mrfbsp1d: marker !MONI, TYPE="CavityS-1" !make RF-bpm if spreader is RF
+mrfbsp2d: marker !MONI, TYPE="CavityS-1" !make RF-bpm if spreader is RF
+
+! steering correctors
+
+xcsp1h: kicker, type = "class-4"
+xcsp3h: kicker, type = "class-4"
+xcsp5h: kicker, type = "class-4"
+xcsp7h: kicker, type = "class-4"
+xcsp9h: kicker, type = "class-4"
+xcsp11h: kicker, type = "class-4"
+xcsp13h: kicker, type = "class-4"
+
+ycsp2h: kicker, type = "class-4"
+ycsp4h: kicker, type = "class-4"
+ycsp6h: kicker, type = "class-4"
+ycsp8h: kicker, type = "class-4"
+ycsp10h: kicker, type = "class-4"
+ycsp12h: kicker, type = "class-4"
+
+xcsp1: kicker, type = "class-4"
+ycsp2: kicker, type = "class-4"
+
+xcsp1s: kicker, type = "class-4"
+xcsp3s: kicker, type = "class-4"
+xcsp5s: kicker, type = "class-4"
+xcsp7s: kicker, type = "class-4"
+xcsp9s: kicker, type = "class-4"
+
+ycsp2s: kicker, type = "class-4"
+ycsp4s: kicker, type = "class-4"
+ycsp6s: kicker, type = "class-4"
+ycsp8s: kicker, type = "class-4"
+
+xcsp1d: kicker, type = "class-4"
+xcsp3d: kicker, type = "class-4"
+xcsp5d: kicker, type = "@0,class-5"
+
+ycsp2d: kicker, type = "class-4"
+ycsp4d: kicker, type = "class-4"
+ycsp6d: kicker, type = "@0,class-5"
+
+! rastering kickers operating at ~60 Hz with 90 deg phase between each other
+
+bkxrasd: kicker, type = "class-5"
+bkyrasd: kicker, type = "class-5"
+
+! SROT to remove rotation angle
+
+arosp1h = 0.414577244197e-5
+arosp2h = 0.947723870567e-5
+arosp3h = -arosp2h
+arosp1s = -0.829141820709e-5
+
+rosp1h: patch, tilt = arosp1h
+rosp2h: patch, tilt = arosp2h
+rosp3h: patch, tilt = arosp3h
+rosp1s: patch, tilt = arosp1s
+
+! other diagnostic
+
+imsp0h: marker, type = "ICT" !diagnostic ACM in SPH
+imsp0s: marker, type = "ICT" !diagnostic ACM in SPS
+imsp0d: marker, type = "ICT" !diagnostic ACM in SPD
+
+imbcsh1: marker, type = "@0,BCS ACM" !BCS ACM triplet in SPH
+imbcsh2: marker, type = "@0,BCS ACM" !BCS ACM triplet in SPH
+imbcsh3: marker, type = "@0,BCS ACM" !BCS ACM triplet in SPH
+imbcss1: marker, type = "@0,BCS ACM" !BCS ACM triplet in SPS
+imbcss2: marker, type = "@0,BCS ACM" !BCS ACM triplet in SPS
+imbcss3: marker, type = "@0,BCS ACM" !BCS ACM triplet in SPS
+imbcsd1: marker, type = "@0,BCS ACM" !BCS ACM triplet in SPD
+imbcsd2: marker, type = "@0,BCS ACM" !BCS ACM triplet in SPD
+imbcsd3: marker, type = "@0,BCS ACM" !BCS ACM triplet in SPD
+
+pcsp3d: ecollimator, l = lpcsp, type = "BCS PC" !BCS protection collimator
+
+btmsp3d: instrument, type = "BCS BTM" !Burn-Through-Monitor behind PCSP3d
+btmspdmp: instrument, type = "BCS BTM" !Burn-Through-Monitor behind BSY dump
+
+wssp1d: marker, type = "fast" !to measure beam size and energy before BSY dump
+
+otrspdmp: instrument, type = "@0,OTR" !OTR screen before BSY dump
+
+! beamlines
+
+bkysp0h_full: line = (bkysp0ha, bkysp0hb)
+bkysp1h_full: line = (bkysp1ha, bkysp1hb)
+bkysp2h_full: line = (bkysp2ha, bkysp2hb)
+bkysp3h_full: line = (bkysp3ha, bkysp3hb)
+bkysp4h_full: line = (bkysp4ha, bkysp4hb)
+bkysp5h_full: line = (bkysp5ha, bkysp5hb)
+blxsph_full: line = (blxspha, blxsphb)
+
+sprdkh: line = (bkysp0h_full, dspbk0h, bkysp1h_full, dspbk1h, bkysp2h_full, dspbk2h, bkysp3h_full &
+        , dspbk3h, bkysp4h_full, dspbk4h, bkysp5h_full, dspbk5ha, bpmsph, dspbk5hb, blxsph_full)
+
+
+
+!Old split line: line = (qsp1, qsp1)
+
+qsp1_full: line = (qsp1)
+qsp1[L] = 2*qsp1[L]
+
+
+!Old split line: line = (qsp2, qsp2)
+
+qsp2_full: line = (qsp2)
+qsp2[L] = 2*qsp2[L]
+
+sprdksa: line = (dspq1a, bpmsp1, dspq1b, dspq1c, qsp1_full, dspq2a, xcsp1, dspq2b, bpmsp2, dspq2c &
+        , qsp2_full, dspq3a, ycsp2, dspq3b)
+
+bkysp0s_full: line = (bkysp0sa, bkysp0sb)
+bkysp1s_full: line = (bkysp1sa, bkysp1sb)
+bkysp2s_full: line = (bkysp2sa, bkysp2sb)
+bkysp3s_full: line = (bkysp3sa, bkysp3sb)
+bkysp4s_full: line = (bkysp4sa, bkysp4sb)
+bkysp5s_full: line = (bkysp5sa, bkysp5sb)
+blxsps_full: line = (blxspsa, blxspsb)
+
+sprdksb: line = (bkysp0s_full, dspbk0s, bkysp1s_full, dspbk1s, bkysp2s_full, dspbk2s,  &
+        bkysp3s_full, dspbk3s, bkysp4s_full, dspbk4s, bkysp5s_full, dspbk5sa, bpmsps, dspbk5sb,  &
+        blxsps_full)
+
+sprdks: line = (sprdksa, sprdksb)
+
+bysp1h_full: line = (bysp1ha, bysp1hb)
+bysp2h_full: line = (bysp2ha, bysp2hb)
+brsp1h_full: line = (brsp1ha, brsp1hb)
+
+
+
+!Old split line: line = (qsp1h, qsp1h)
+
+qsp1h_full: line = (qsp1h)
+qsp1h[L] = 2*qsp1h[L]
+
+
+!Old split line: line = (qsp2h, bpmsp2h, qsp2h)
+
+qsp2h_full: line = (qsp2h)
+qsp2h[L] = 2*qsp2h[L]
+bpmsp2h[superimpose] = T
+bpmsp2h[ref] = qsp2h
+
+
+!Old split line: line = (qsp3h, qsp3h)
+
+qsp3h_full: line = (qsp3h)
+qsp3h[L] = 2*qsp3h[L]
+
+
+!Old split line: line = (qsp4h, qsp4h)
+
+qsp4h_full: line = (qsp4h)
+qsp4h[L] = 2*qsp4h[L]
+
+
+!Old split line: line = (qsp5h, qsp5h)
+
+qsp5h_full: line = (qsp5h)
+qsp5h[L] = 2*qsp5h[L]
+
+
+!Old split line: line = (qsp6h, qsp6h)
+
+qsp6h_full: line = (qsp6h)
+qsp6h[L] = 2*qsp6h[L]
+
+
+!Old split line: line = (qsp7h, bpmsp7h, qsp7h)
+
+qsp7h_full: line = (qsp7h)
+qsp7h[L] = 2*qsp7h[L]
+bpmsp7h[superimpose] = T
+bpmsp7h[ref] = qsp7h
+
+
+!Old split line: line = (qsp8h, qsp8h)
+
+qsp8h_full: line = (qsp8h)
+qsp8h[L] = 2*qsp8h[L]
+
+
+!Old split line: line = (qsp9h, qsp9h)
+
+qsp9h_full: line = (qsp9h)
+qsp9h[L] = 2*qsp9h[L]
+
+
+!Old split line: line = (qsp10h, qsp10h)
+
+qsp10h_full: line = (qsp10h)
+qsp10h[L] = 2*qsp10h[L]
+
+
+!Old split line: line = (qsp11h, qsp11h)
+
+qsp11h_full: line = (qsp11h)
+qsp11h[L] = 2*qsp11h[L]
+
+
+
+!Old split line: line = (ssp1h, ssp1h)
+
+ssp1h_full: line = (ssp1h)
+ssp1h[L] = 2*ssp1h[L]
+
+
+!Old split line: line = (ssp2h, ssp2h)
+
+ssp2h_full: line = (ssp2h)
+ssp2h[L] = 2*ssp2h[L]
+
+sprdha: line = (rosp1h, dsp2ha, bysp1h_full, dsp2hb, bysp2h_full, cntsp1h, dsp2hc, qsp1h_full,  &
+        dsp3haa, ssp1h_full, dsp3hab, bpmsp1h, dsp3hb, xcsp1h, dsp3hc, dsp3hd, qsp2h_full, dsp4ha &
+        , ycsp2h, dsp4hb, imsp0h, dsp4hc, brsp1h_full, rosp2h, dsp5ha, dsp5hb, xcsp3h, dsp5hca,  &
+        ssp2h_full, dsp5hcb, qsp3h_full, dsp6ha, bpmsp3h, dsp6hb, ycsp4h, dsp6hc, qsp4h_full,  &
+        dsp7ha, bpmsp4h, dsp7hb, xcsp5h, dsp7hc, qsp5h_full, dsp8ha, bpmsp5h, dsp8hb, ycsp6h,  &
+        dsp8hc, qsp6h_full, dsp9ha, bpmsp6h, dsp9hb, dsp9hc, dsp9hd, dsp9he, dsp9hf, dsp9hg,  &
+        qsp7h_full, qsp7h, dsp10ha, xcsp7h, dsp10hb, dsp10hc, ycsp8h, dsp10hd, qsp8h_full,  &
+        dsp11ha, bpmsp8h, dsp11hb, dsp11hc, qsp9h_full, dsp12ha, bpmsp9h, dsp12hb, xcsp9h,  &
+        dsp12hc1, imbcsh1, dsp12hc2, imbcsh2, dsp12hc3, imbcsh3, dsp12hc4, bpmsp10h, dsp12hd,  &
+        ycsp10h, dsp12he, qsp10h_full, dsp13ha, xcsp11h, dsp13hb, bpmsp11h, dsp13hc, qsp11h_full &
+        , dsp14ha, wooddoor)
+
+brsp2h_full: line = (brsp2ha, brsp2hb)
+bxsp1h_full: line = (bxsp1ha, bxsp1hb)
+
+
+
+!Old split line: line = (qsp12h, bpmsp12h, qsp12h)
+
+qsp12h_full: line = (qsp12h)
+qsp12h[L] = 2*qsp12h[L]
+bpmsp12h[superimpose] = T
+bpmsp12h[ref] = qsp12h
+
+
+!Old split line: line = (qsp13h, qsp13h)
+
+qsp13h_full: line = (qsp13h)
+qsp13h[L] = 2*qsp13h[L]
+
+sprdhb: line = (dsp14hb, rosp3h, brsp2h_full, cntsp2h, dsp15ha, dsp15hb, dsp15hc, dsp15hd,  &
+        qsp12h_full, dsp16ha, ycsp12h, dsp16hb, xcsp13h, dsp16hc, qsp13h_full, dsp17ha, bpmsp13h &
+        , dsp17hb, bxsp1h_full, cntsp3h)
+
+sprdh: line = (sprdkh, sprdha, sprdhb)
+
+sprdsa: line = (sprdkh, sprdks)
+
+bysp1s_full: line = (bysp1sa, bysp1sb)
+bysp2s_full: line = (bysp2sa, bysp2sb)
+bxsp1s_full: line = (bxsp1sa, bxsp1sb)
+bxsp2s_full: line = (bxsp2sa, bxsp2sb)
+bxsp3s_full: line = (bxsp3sa, bxsp3sb)
+
+
+
+!Old split line: line = (qsp1s, qsp1s)
+
+qsp1s_full: line = (qsp1s)
+qsp1s[L] = 2*qsp1s[L]
+
+
+!Old split line: line = (qsp2s, qsp2s)
+
+qsp2s_full: line = (qsp2s)
+qsp2s[L] = 2*qsp2s[L]
+
+
+!Old split line: line = (qsp3s, qsp3s)
+
+qsp3s_full: line = (qsp3s)
+qsp3s[L] = 2*qsp3s[L]
+
+
+!Old split line: line = (qsp4s, qsp4s)
+
+qsp4s_full: line = (qsp4s)
+qsp4s[L] = 2*qsp4s[L]
+
+
+!Old split line: line = (qsp5s, qsp5s)
+
+qsp5s_full: line = (qsp5s)
+qsp5s[L] = 2*qsp5s[L]
+
+
+!Old split line: line = (qsp6s, qsp6s)
+
+qsp6s_full: line = (qsp6s)
+qsp6s[L] = 2*qsp6s[L]
+
+
+!Old split line: line = (qsp7s, qsp7s)
+
+qsp7s_full: line = (qsp7s)
+qsp7s[L] = 2*qsp7s[L]
+
+
+!Old split line: line = (qsp8s, qsp8s)
+
+qsp8s_full: line = (qsp8s)
+qsp8s[L] = 2*qsp8s[L]
+
+
+!Old split line: line = (qsp9s, qsp9s)
+
+qsp9s_full: line = (qsp9s)
+qsp9s[L] = 2*qsp9s[L]
+
+
+
+!Old split line: line = (ssp1s, ssp1s)
+
+ssp1s_full: line = (ssp1s)
+ssp1s[L] = 2*ssp1s[L]
+
+
+!Old split line: line = (ssp2s, ssp2s)
+
+ssp2s_full: line = (ssp2s)
+ssp2s[L] = 2*ssp2s[L]
+
+sprdsb: line = (rosp1s, dsp2sa, bysp1s_full, dsp2sb, bysp2s_full, cntsp1s, dsp2sc, qsp1s_full,  &
+        dsp3saa, ssp1s_full, dsp3sab, bpmsp1s, dsp3sb, xcsp1s, dsp3sc, qsp2s_full, dsp4sa,  &
+        bpmsp2s, dsp4sb, ycsp2s, dsp4sc, imsp0s, dsp4sd, bxsp1s_full, dsp5sa, xcsp3s, dsp5sb,  &
+        qsp3s_full, dsp6sa, bpmsp3s, dsp6sb, ycsp4s, dsp6sc, qsp4s_full, dsp7sa, bpmsp4s, dsp7sb &
+        , dsp7sc, xcsp5s, dsp7sd, qsp5s_full, dsp8sa, bpmsp5s, dsp8sb, dsp8sc, dsp8sd, ycsp6s,  &
+        dsp8se, qsp6s_full, dsp9sa, bpmsp6s, dsp9sb, xcsp7s, dsp9sc, qsp7s_full, dsp10sa, bpmsp7s &
+        , dsp10sb, bxsp2s_full, dsp11sa, dsp11sb, dsp11sc, dsp11sd, ycsp8s, dsp11se, qsp8s_full,  &
+        dsp12sa, bpmsp8s, dsp12sb, xcsp9s, dsp12sca, ssp2s_full, dsp12scb, qsp9s_full, dsp13sa,  &
+        bpmsp9s, dsp13sb1, imbcss1, dsp13sb2, imbcss2, dsp13sb3, imbcss3, dsp13sb4, bxsp3s_full,  &
+        cntsp2s)
+
+sprds: line = (sprdsa, sprdsb)
+
+sprdda: line = (dsp2da1, mrfbsp1d, dsp2da2, bpmsp1d, dsp2db)
+
+sprddb: line = (dsp2dc1)
+
+bysp1d_full: line = (bysp1da, bysp1db)
+bysp2d_full: line = (bysp2da, bysp2db)
+
+
+
+!Old split line: line = (qsp1d, qsp1d)
+
+qsp1d_full: line = (qsp1d)
+qsp1d[L] = 2*qsp1d[L]
+
+
+!Old split line: line = (qsp2d, qsp2d)
+
+qsp2d_full: line = (qsp2d)
+qsp2d[L] = 2*qsp2d[L]
+
+sprddc: line = (dsp2dc2, xcsp1d, dsp2dd, qsp1d_full, dsp3da, dsp3db, imsp0d, dsp3dc, mrfbsp2d,  &
+        bpmsp2d, dsp3dd, qsp2d_full, dsp4da, ycsp2d, dsp4db, bysp1d_full, dsp5da, dsp5db, wssp1d &
+        , dsp5dc1, imbcsd1, dsp5dc2, imbcsd2, dsp5dc3, imbcsd3, dsp5dc4, bpmsp3d, dsp5dd,  &
+        bysp2d_full, cntsp1d, dsp6da, xcsp3d, dsp6db, ycsp4d, dsp6dc, dsp6dd, dsp6de, dsp6dfa,  &
+        wooddoor)
+
+sprddd: line = (dsp6dfb, xcsp5d, dsp6dfc, ycsp6d, dsp6dfd, bpmsp4d, dsp6dg, dsp6dh, rwwake3d,  &
+        bkxrasd, dsp6di, bkyrasd, dsp6dj, bpmsp5d, dsp7daa, otrspdmp, dsp7dab, pcsp3d, btmsp3d,  &
+        dsp7db, muwalld, dwallad, dumpbsy, ddumpbsy, btmspdmp)
+
+sprdd: line = (sprdkh, sprdks, sprdda, sprddb, sprddc, sprddd)
+

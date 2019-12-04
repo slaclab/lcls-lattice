@@ -1,0 +1,491 @@
+
+! *** OPTICS=AD_ACCEL-2019next ***
+
+! LCLS2sc DASEL
+
+! ==============================================================================
+! Modification History
+! ------------------------------------------------------------------------------
+! 31-OCT-2018, Y. Nosochkov
+!  * move DASEL septum 3.685 m d/s to reduce each kicker BL to 25 Gm @ 8 GeV
+!  * move BRDAS1 12.8 m u/s and increase septum angle to avoid interferences
+!  * adjust other magnet positions, rematch geometry and optics
+! ------------------------------------------------------------------------------
+! 05-FEB-2018, Y. Nosochkov
+!  * minor optics rematch
+! 06-SEP-2017, Y. Nosochkov
+!  * move BRDAS1 0.8 m downstream (K. Grouev), adjust positions of quads,
+!    rematch optics
+!  * update bore aperture of fast kickers to 20 mm (10 mm beam space +
+!    10 mm pipe width)
+! 22-AUG-2017, M. Woodley
+!  * add WOODDOOR MARKer
+! 19-JUL-2017, M. Woodley
+!  * set ROLLRC = +1 by default (for MAD-to-BMAD); set to zero for Twiss in
+!    MAD driver file
+! ------------------------------------------------------------------------------
+! 24-FEB-2017, Y. Nosochkov
+!  * rename rolled BKYDAS1-6 to BKRDAS1-6 (per naming convention)
+!  * move definitions of DDASA1, DDASA2 drifts to ALINE.xsif and rename
+!  * add three quads QDAS1b, QDAS2b, QDAS18b for compatibility with 8 GeV
+! 23-NOV-2016, Y. Nosochkov
+!  * reduce number of kickers from 7 to 6 (T. Beukers)
+!  * correct minor error in kicker length formulas
+!  * move PRDAS14 to center of the drift between quads QDAS14 and QDAS15
+!  * move PRDAS17 to upstream side of QDAS17 to avoid interference with BXSP1H
+! 02-NOV-2016, Y. Nosochkov
+!  * match DASEL to new trajectory between BSY pulsed magnets and BXAM1
+!  * increase x-offset of DASEL line between DC-bends from 35 to 40 cm
+!  * add a note that BRDAS2 is a merge DC-bend which is turned ON for
+!    DASEL beam to A-line or OFF for beam to A-line from BSY pulsed magnets
+! 21-SEP-2016, Y. Nosochkov
+!  * add Y-corrector YCDAS1 (to compensate for missing trims on BYDAS1,2)
+!  * move YCDAS15 downstream and rename to YCDAS17 (for better phase)
+! 16-SEP-2016, Y. Nosochkov
+!  * remove weak vertical bends BYDAS1, BYDAS2
+!  * roll kicker/septum to compensate kicker vertical angle
+!  * rematch geometry & optics to compensate kicker orbit & dispersion
+! 26-AUG-2016, Y. Nosochkov
+!  * change quad type from 2Q10 to 2Q4W
+!  * rename QDAS1 -> QDAS1a, QDAS2 -> QDAS2a
+! 17-AUG-2016, Y. Nosochkov
+!  * add 3 BPMs (2 for MPS), 5 dipole correctors, 3 profile monitors
+! 05-AUG-2016, Y. Nosochkov
+!  * resolve interferences:
+!    move QDAS1&2 and BYDAS2 0.815 m downstream
+!    move QDAS19 0.6 m upstream --> this will move QDAS17 0.45 m upstream
+!  * increase the number of kickers to 7 and move them 3 m upstream,
+!    note: this will also require moving dumpline BPMSP1D 3 m upstream
+! 30-APR-2016, Y. Nosochkov
+!  * initial lattice
+! ------------------------------------------------------------------------------
+
+! NOTE: ABRDAS2 and TBRDAS2 are defined in common.xsif
+
+! ------------------------------------------------------------------------------
+! DASEL
+! ------------------------------------------------------------------------------
+
+! Six rolled vertical kickers aligned along the BSY dumpline axis
+
+gbkrdas = 0.02            !kicker bore gap (m)
+zbkrdas = 1.0             !kicker straight length (m)
+tbkrdas = -0.030150284271 !kicker tilt angle relative to y-axis (rad)
+
+abkrdas0 = -0.56211349418e-3
+abkrdas = abkrdas0*setda        !total kicker angle (rad)
+abkrdas1 = asin(1*sin(abkrdas)/6) !1st kicker angle (rad)
+abkrdas12 = asin(2*sin(abkrdas)/6) !1st+2nd kicker angle (rad)
+abkrdas13 = asin(3*sin(abkrdas)/6) !1+2+3 kicker angle (rad)
+abkrdas14 = asin(4*sin(abkrdas)/6) !1+2+3+4 kicker angle (rad)
+abkrdas15 = asin(5*sin(abkrdas)/6) !1+2+3+4+5 kicker angle (rad)
+abkrdas2 = abkrdas12-abkrdas1     !2nd kicker angle (rad)
+abkrdas3 = abkrdas13-abkrdas12    !3rd kicker angle (rad)
+abkrdas4 = abkrdas14-abkrdas13    !4th kicker angle (rad)
+abkrdas5 = abkrdas15-abkrdas14    !5th kicker angle (rad)
+abkrdas6 = abkrdas-abkrdas15    !6th kicker angle (rad)
+
+lbkrdas1 = 1*zbkrdas/(1-abkrdas1*abkrdas1/6)
+lbkrdas12 = 2*zbkrdas/(1-abkrdas12*abkrdas12/6)
+lbkrdas13 = 3*zbkrdas/(1-abkrdas13*abkrdas13/6)
+lbkrdas14 = 4*zbkrdas/(1-abkrdas14*abkrdas14/6)
+lbkrdas15 = 5*zbkrdas/(1-abkrdas15*abkrdas15/6)
+lbkrdas = 6*zbkrdas/(1-abkrdas*abkrdas/6)
+lbkrdas2 = lbkrdas12-lbkrdas1
+lbkrdas3 = lbkrdas13-lbkrdas12
+lbkrdas4 = lbkrdas14-lbkrdas13
+lbkrdas5 = lbkrdas15-lbkrdas14
+lbkrdas6 = lbkrdas-lbkrdas15
+
+bkrdas1a: sbend, e1 = 0, e2 = 0, fint = 0.5, fintx = 0, hgap = gbkrdas/2, type = "@3,0.787K35.4" &
+        , ref_tilt = pi/2+tbkrdas, l = lbkrdas1/2, angle = lbkrdas1/2 * abkrdas1/2/(lbkrdas1/2)
+bkrdas1b: sbend, e2 = abkrdas1, e1 = 0, fint = 0, fintx = 0.5, hgap = gbkrdas/2, type =  &
+        "@3,0.787K35.4", ref_tilt = pi/2+tbkrdas, l = lbkrdas1/2, angle =  &
+        lbkrdas1/2 * abkrdas1/2/(lbkrdas1/2)
+
+bkrdas2a: sbend, e1 = -abkrdas1, e2 = 0, fint = 0.5, fintx = 0, hgap = gbkrdas/2, type =  &
+        "@3,0.787K35.4", ref_tilt = pi/2+tbkrdas, l = lbkrdas2/2, angle =  &
+        lbkrdas2/2 * abkrdas2/2/(lbkrdas2/2)
+bkrdas2b: sbend, e2 = abkrdas12, e1 = 0, fint = 0, fintx = 0.5, hgap = gbkrdas/2, type =  &
+        "@3,0.787K35.4", ref_tilt = pi/2+tbkrdas, l = lbkrdas2/2, angle =  &
+        lbkrdas2/2 * abkrdas2/2/(lbkrdas2/2)
+
+bkrdas3a: sbend, e1 = -abkrdas12, e2 = 0, fint = 0.5, fintx = 0, hgap = gbkrdas/2, type =  &
+        "@3,0.787K35.4", ref_tilt = pi/2+tbkrdas, l = lbkrdas3/2, angle =  &
+        lbkrdas3/2 * abkrdas3/2/(lbkrdas3/2)
+bkrdas3b: sbend, e2 = abkrdas13, e1 = 0, fint = 0, fintx = 0.5, hgap = gbkrdas/2, type =  &
+        "@3,0.787K35.4", ref_tilt = pi/2+tbkrdas, l = lbkrdas3/2, angle =  &
+        lbkrdas3/2 * abkrdas3/2/(lbkrdas3/2)
+
+bkrdas4a: sbend, e1 = -abkrdas13, e2 = 0, fint = 0.5, fintx = 0, hgap = gbkrdas/2, type =  &
+        "@3,0.787K35.4", ref_tilt = pi/2+tbkrdas, l = lbkrdas4/2, angle =  &
+        lbkrdas4/2 * abkrdas4/2/(lbkrdas4/2)
+bkrdas4b: sbend, e2 = abkrdas14, e1 = 0, fint = 0, fintx = 0.5, hgap = gbkrdas/2, type =  &
+        "@3,0.787K35.4", ref_tilt = pi/2+tbkrdas, l = lbkrdas4/2, angle =  &
+        lbkrdas4/2 * abkrdas4/2/(lbkrdas4/2)
+
+bkrdas5a: sbend, e1 = -abkrdas14, e2 = 0, fint = 0.5, fintx = 0, hgap = gbkrdas/2, type =  &
+        "@3,0.787K35.4", ref_tilt = pi/2+tbkrdas, l = lbkrdas5/2, angle =  &
+        lbkrdas5/2 * abkrdas5/2/(lbkrdas5/2)
+bkrdas5b: sbend, e2 = abkrdas15, e1 = 0, fint = 0, fintx = 0.5, hgap = gbkrdas/2, type =  &
+        "@3,0.787K35.4", ref_tilt = pi/2+tbkrdas, l = lbkrdas5/2, angle =  &
+        lbkrdas5/2 * abkrdas5/2/(lbkrdas5/2)
+
+bkrdas6a: sbend, e1 = -abkrdas15, e2 = 0, fint = 0.5, fintx = 0, hgap = gbkrdas/2, type =  &
+        "@3,0.787K35.4", ref_tilt = pi/2+tbkrdas, l = lbkrdas6/2, angle =  &
+        lbkrdas6/2 * abkrdas6/2/(lbkrdas6/2)
+bkrdas6b: sbend, e2 = abkrdas, e1 = 0, fint = 0, fintx = 0.5, hgap = gbkrdas/2, type =  &
+        "@3,0.787K35.4", ref_tilt = pi/2+tbkrdas, l = lbkrdas6/2, angle =  &
+        lbkrdas6/2 * abkrdas6/2/(lbkrdas6/2)
+
+! 2-hole rolled horizontal septum aligned along the BSY dumpline axis
+
+gblrdas = gblsp !septum gap height (m)
+zblrdas = lblsp !septum straight length (m)
+
+ablrdas0 = -0.018635912887
+ablrdas = ablrdas0*setda      !septum bending angle (rad)
+ablrdasa = asin(sin(ablrdas)/2) !angle per 1st half of the septum
+ablrdasb = ablrdas-ablrdasa     !angle per 2nd half of the septum
+ablrdas_2 = ablrdas*ablrdas
+ablrdas_4 = ablrdas_2*ablrdas_2
+ablrdasa_2 = ablrdasa*ablrdasa
+ablrdasa_4 = ablrdasa_2*ablrdasa_2
+
+lblrdas = zblrdas/(1-ablrdas_2/6+ablrdas_4/120)/cos(abkrdas)
+lblrdasa = zblrdas/2/(1-ablrdasa_2/6+ablrdasa_4/120)/cos(abkrdas)
+lblrdasb = lblrdas-lblrdasa
+
+blrdasa: sbend, e1 = 0, e2 = 0, fint = 0.5, fintx = 0, hgap = gblrdas/2, type = "@3,0.625SD38.98" &
+        , ref_tilt = tbkrdas, l = lblrdasa, angle = lblrdasa * ablrdasa/lblrdasa
+blrdasb: sbend, e1 = 0, e2 = ablrdas, fint = 0, fintx = 0.5, hgap = gblrdas/2, type =  &
+        "@3,0.625SD38.98", ref_tilt = tbkrdas, l = lblrdasb, angle = lblrdasb * ablrdasb/lblrdasb
+
+! rolled DC-bends (BLmax of 1.0D38.37 = 7.35 kGm per J. Amann)
+
+abrdas1 = 0.019101579697
+lbrdas1 = lbsp*abrdas1/(2*sin(abrdas1/2)) !BRDAS1 path length (m)
+tbrdas1 = 0.219255742276                  !BRDAS1 roll angle (rad)
+
+brdas1a: sbend, e1 = abrdas1/2, e2 = 0, fint = 0.5, fintx = 0, hgap = gbsp/2, type =  &
+        "@3,1.0D38.37", ref_tilt = tbrdas1, l = lbrdas1/2, angle =  &
+        lbrdas1/2 * abrdas1/2/(lbrdas1/2)
+brdas1b: sbend, e1 = 0, e2 = abrdas1/2, fint = 0, fintx = 0.5, hgap = gbsp/2, type =  &
+        "@3,1.0D38.37", ref_tilt = tbrdas1, l = lbrdas1/2, angle =  &
+        lbrdas1/2 * abrdas1/2/(lbrdas1/2)
+
+! Note: BRDAS2 is a merge DC-bend which is either turned ON to operate
+!       DASEL beam in A-line, or turned OFF to operate beam in A-line from
+!       BSY pulsed magnets
+
+lbrdas2 = lbsp*abrdas2/(2*sin(abrdas2/2)) !BRDAS2 path length (m)
+
+brdas2a: sbend, e1 = abrdas2/2, e2 = 0, fint = 0.5, fintx = 0, hgap = gbsp/2, type =  &
+        "@3,1.0D38.37", ref_tilt = tbrdas2, l = lbrdas2/2, angle =  &
+        lbrdas2/2 * abrdas2/2/(lbrdas2/2)
+brdas2b: sbend, e1 = 0, e2 = abrdas2/2, fint = 0, fintx = 0.5, hgap = gbsp/2, type =  &
+        "@3,1.0D38.37", ref_tilt = tbrdas2, l = lbrdas2/2, angle =  &
+        lbrdas2/2 * abrdas2/2/(lbrdas2/2)
+
+! quads
+
+kqdas1 = -0.453031633402
+kqdas2 = 0.455967216654
+kqdas11 = -0.317841181102
+kqdas12 = 0.334321976205
+kqdas13 = -0.698280972694
+kqdas14 = 0.514501878557
+kqdas17 = -0.572591390282
+kqdas18 = 0.542929070684
+kqdas19 = -0.301611352669
+kqdas15 = -kqdas14
+kqdas16 = kqdas14
+
+qdas1a: quadrupole, type = "@3,2Q4W", l = lqm/2, aperture = rqm, k1 = kqdas1
+qdas1b: quadrupole, type = "@3,2Q4W", l = lqm/2, aperture = rqm, k1 = kqdas1
+qdas2a: quadrupole, type = "@3,2Q4W", l = lqm/2, aperture = rqm, k1 = kqdas2
+qdas2b: quadrupole, type = "@3,2Q4W", l = lqm/2, aperture = rqm, k1 = kqdas2
+qdas11: quadrupole, type = "@3,2Q4W", l = lqm/2, aperture = rqm, k1 = kqdas11
+qdas12: quadrupole, type = "@3,2Q4W", l = lqm/2, aperture = rqm, k1 = kqdas12
+qdas13: quadrupole, type = "@3,2Q4W", l = lqm/2, aperture = rqm, k1 = kqdas13
+qdas14: quadrupole, type = "@3,2Q4W", l = lqm/2, aperture = rqm, k1 = kqdas14
+qdas15: quadrupole, type = "@3,2Q4W", l = lqm/2, aperture = rqm, k1 = kqdas15
+qdas16: quadrupole, type = "@3,2Q4W", l = lqm/2, aperture = rqm, k1 = kqdas16
+qdas17: quadrupole, type = "@3,2Q4W", l = lqm/2, aperture = rqm, k1 = kqdas17
+qdas18a: quadrupole, type = "@3,2Q4W", l = lqm/2, aperture = rqm, k1 = kqdas18
+qdas18b: quadrupole, type = "@3,2Q4W", l = lqm/2, aperture = rqm, k1 = kqdas18
+qdas19: quadrupole, type = "@3,2Q4W", l = lqm/2, aperture = rqm, k1 = kqdas19
+
+! drifts
+
+zddasbk = 0.3      !Z-space between consecutive kickers
+zddasblx = 18.75+3.685  !Z-space between the last kicker and the septum
+zddasblxa = 5.145    !set for y=5mm at BPM
+zddasblxb = zddasblx-zddasblxa
+
+lddasbk1 = zddasbk/cos(abkrdas1)
+lddasbk2 = zddasbk/cos(abkrdas12)
+lddasbk3 = zddasbk/cos(abkrdas13)
+lddasbk4 = zddasbk/cos(abkrdas14)
+lddasbk5 = zddasbk/cos(abkrdas15)
+lddasblxa = zddasblxa/cos(abkrdas)
+lddasblxb = zddasblxb/cos(abkrdas)
+
+ddasbk1: drift, l = lddasbk1
+ddasbk2: drift, l = lddasbk2
+ddasbk3: drift, l = lddasbk3
+ddasbk4: drift, l = lddasbk4
+ddasbk5: drift, l = lddasbk5
+ddasblxa: drift, l = lddasblxa
+ddasblxb: drift, l = lddasblxb
+
+lddasqq = 0.1357
+lddas1 = 26.8935-3.685
+lddas2a = 0.5
+lddas2b = 0.5
+lddas3 = 0.5
+dlddas4 = 0.0
+lddas4 = 1.9+dlddas4
+dlddas5 = 0.765561526879e-2
+lddas5 =  &
+        72.0+0.8-(lblsp+lbsp)/2-4*lqm-2*lddasqq-lddas1-lddas2a-lddas2b-lddas3-lddas4+dlddas5-3.685-12.8
+
+dlddas11 = 0.0
+lddas11 = 5.6-0.5+0.4-(lbsp+lqm)/2+dlddas11
+lddas11a = 0.5
+lddas11b = lddas11-lddas11a
+dlddas12 = 0.0
+lddas12 = 14.1+dlddas12
+lddas18 = 15.440177251451+0.1
+dlddas19 = 0.0
+lddas19 = 9.44017725092-0.2-lddasqq-lqm+dlddas19
+dlddas20 = 0.0
+lddas20 = 22.45+0.1-(lbsp+lqm)/2+dlddas20
+lddas20a = 0.5
+lddas20b = lddas20-lddas20a
+dlddas = -0.223640211404e-4
+lddas =  &
+        (146.56661801108-0.8-10*lqm-lbsp-lddasqq-lddas11-lddas18-lddas19-lddas20-lddas12)/5+dlddas+12.8/5
+lddas13 = lddas
+lddas13a = 2.97
+lddas13b = lddas13-lddas13a
+lddas14 = lddas
+lddas14b = 0.5
+lddas14a = lddas14-lddas14b
+lddas15 = lddas
+lddas15a = lddas/2
+lddas15b = lddas15-lddas15a
+lddas16 = lddas
+lddas17 = lddas
+lddas17b = 0.5
+lddas17c = 0.5
+lddas17a = lddas17-lddas17b-lddas17c
+
+ddasqq: drift, l = lddasqq
+ddas1: drift, l = lddas1
+ddas2a: drift, l = lddas2a
+ddas2b: drift, l = lddas2b
+ddas3: drift, l = lddas3
+ddas4: drift, l = lddas4
+ddas5: drift, l = lddas5
+ddas11a: drift, l = lddas11a
+ddas11b: drift, l = lddas11b
+ddas12: drift, l = lddas12
+ddas13a: drift, l = lddas13a
+ddas13b: drift, l = lddas13b
+ddas14a: drift, l = lddas14a
+ddas14aa: drift, l = 14.473260664942  !set Z=3050.512000 m at WOODDOOR
+ddas14ab: drift, l = ddas14a[l]-ddas14aa[l]
+ddas14b: drift, l = lddas14b
+ddas15a: drift, l = lddas15a
+ddas15b: drift, l = lddas15b
+ddas16: drift, l = lddas16
+ddas17a: drift, l = lddas17a
+ddas17b: drift, l = lddas17b
+ddas17c: drift, l = lddas17c
+ddas18: drift, l = lddas18
+ddas19: drift, l = lddas19
+ddas20a: drift, l = lddas20a
+ddas20b: drift, l = lddas20b
+
+! roll angles
+
+arodas1 = 0.523790078614e-5
+arodas2 = 0.387294376318e-4
+arodas3 = -0.229813948141e-4
+
+rodas1: patch, tilt = arodas1
+rodas2: patch, tilt = arodas2
+rodas3: patch, tilt = arodas3
+
+! monitors
+
+bpmdas: instrument, type = "@3,Stripline-5" !not rolled
+bpmdas1: instrument, type = "@3,Stripline-5" !MPS BPM
+bpmdas19: instrument, type = "@3,Stripline-5" !MPS BPM
+
+! steering correctors
+! Notes: trims on all bends are used as correctors as well,
+!        rolled correctors are rolled 90 deg relative to rolled bends
+
+xcdas1: kicker, type = "@3,class-4"
+xcdas14: kicker, type = "@3,class-4"
+
+ycdas1: kicker, type = "@3,class-4"
+ycdas17: kicker, type = "@3,class-4"
+
+rcdas11: kicker, type = "@3,class-4"
+rcdas19: kicker, type = "@3,class-4"
+
+rollrc = +1 !+1 for survey to show RC roll angle, but zero for twiss
+
+rodas11p: patch, tilt = (tbrdas1-pi/2)*rollrc
+rodas11m: patch, tilt = -rodas11p[tilt]
+
+rodas19p: patch, tilt = (tbrdas2-pi/2)*rollrc
+rodas19m: patch, tilt = -rodas19p[tilt]
+
+! profile monitors
+
+prdas12: instrument, type = "@3,PHOSPHOR"
+prdas14: instrument, type = "@3,PHOSPHOR"
+prdas17: instrument, type = "@3,PHOSPHOR"
+
+! markers
+
+begdasel: marker
+enddasel: marker
+
+! ------------------------------------------------------------------------------
+! A-line adjustments
+! ------------------------------------------------------------------------------
+
+! quad strengths (also duplicate in SETK2scDA subroutine)
+
+!=!  COMMENT !causes redefinitions when using SETK2scDA
+!=!  COMMENT !causes redefinitions when using SETK2scDA
+!=!    KQ10 :=  0.040388112814
+!=!    KQ11 := -0.038712955409
+!=!    KQ19 :=  0.03054367869
+!=!    KQ20 := -0.125186988934E-2
+!=!    KQ27 := -0.074602195497
+!=!    KQ28 :=  0.041232949479
+!=!    KQ30 := -0.029290738963
+!=!    KQ38 :=  0.034019960625
+!=!  ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! beamlines
+
+bkrdas1_full: line = (bkrdas1a, bkrdas1b)
+bkrdas2_full: line = (bkrdas2a, bkrdas2b)
+bkrdas3_full: line = (bkrdas3a, bkrdas3b)
+bkrdas4_full: line = (bkrdas4a, bkrdas4b)
+bkrdas5_full: line = (bkrdas5a, bkrdas5b)
+bkrdas6_full: line = (bkrdas6a, bkrdas6b)
+blrdas_full: line = (blrdasa, blrdasb)
+brdas1_full: line = (brdas1a, brdas1b)
+brdas2_full: line = (brdas2a, brdas2b)
+
+
+
+!Old split line: line = (qdas1b, qdas1b)
+
+qdas1b_full: line = (qdas1b)
+qdas1b[L] = 2*qdas1b[L]
+
+
+!Old split line: line = (qdas1a, qdas1a)
+
+qdas1a_full: line = (qdas1a)
+qdas1a[L] = 2*qdas1a[L]
+
+
+!Old split line: line = (qdas2a, qdas2a)
+
+qdas2a_full: line = (qdas2a)
+qdas2a[L] = 2*qdas2a[L]
+
+
+!Old split line: line = (qdas2b, qdas2b)
+
+qdas2b_full: line = (qdas2b)
+qdas2b[L] = 2*qdas2b[L]
+
+
+!Old split line: line = (qdas11, qdas11)
+
+qdas11_full: line = (qdas11)
+qdas11[L] = 2*qdas11[L]
+
+
+!Old split line: line = (qdas12, qdas12)
+
+qdas12_full: line = (qdas12)
+qdas12[L] = 2*qdas12[L]
+
+
+!Old split line: line = (qdas13, qdas13)
+
+qdas13_full: line = (qdas13)
+qdas13[L] = 2*qdas13[L]
+
+
+!Old split line: line = (qdas14, qdas14)
+
+qdas14_full: line = (qdas14)
+qdas14[L] = 2*qdas14[L]
+
+
+!Old split line: line = (qdas15, qdas15)
+
+qdas15_full: line = (qdas15)
+qdas15[L] = 2*qdas15[L]
+
+
+!Old split line: line = (qdas16, qdas16)
+
+qdas16_full: line = (qdas16)
+qdas16[L] = 2*qdas16[L]
+
+
+!Old split line: line = (qdas17, qdas17)
+
+qdas17_full: line = (qdas17)
+qdas17[L] = 2*qdas17[L]
+
+
+!Old split line: line = (qdas18a, qdas18a)
+
+qdas18a_full: line = (qdas18a)
+qdas18a[L] = 2*qdas18a[L]
+
+
+!Old split line: line = (qdas18b, qdas18b)
+
+qdas18b_full: line = (qdas18b)
+qdas18b[L] = 2*qdas18b[L]
+
+
+!Old split line: line = (qdas19, qdas19)
+
+qdas19_full: line = (qdas19)
+qdas19[L] = 2*qdas19[L]
+
+dasel: line = (bkrdas1_full, ddasbk1, bkrdas2_full, ddasbk2, bkrdas3_full, ddasbk3, bkrdas4_full &
+        , ddasbk4, bkrdas5_full, ddasbk5, bkrdas6_full, ddasblxa, bpmdas, ddasblxb, blrdas_full,  &
+        rodas1, ddas1, xcdas1, ddas2a, ycdas1, ddas2b, bpmdas1, ddas3, qdas1b_full, ddasqq,  &
+        qdas1a_full, ddas4, qdas2a_full, ddasqq, qdas2b_full, ddas5, brdas1_full, rodas2, ddas11a &
+        , rodas11p, rcdas11, rodas11m, ddas11b, qdas11_full, ddas12, qdas12_full, ddas13a,  &
+        prdas12, ddas13b, qdas13_full, ddas14aa, wooddoor, ddas14ab, xcdas14, ddas14b,  &
+        qdas14_full, ddas15a, prdas14, ddas15b, qdas15_full, ddas16, qdas16_full, ddas17a,  &
+        prdas17, ddas17b, ycdas17, ddas17c, qdas17_full, ddas18, qdas18a_full, ddasqq,  &
+        qdas18b_full, ddas19, qdas19_full, ddas20a, bpmdas19, ddas20b, rodas3, brdas2_full)
+
+dasela: line = (begdasel, dasel, da04b, rodas19p, rcdas19, rodas19m, enddasel, alinec)
+
+spdasela: line = (sprdkh, sprdks, sprdda, dasela)
+
+! ------------------------------------------------------------------------------
+

@@ -1,0 +1,34 @@
+
+! *** OPTICS=AD_ACCEL-13JUN19 ***
+
+! CU_GSPEC path configurations
+
+  SETSP     := 0
+  SETCUS    := 0
+  SETAL     := 0
+  SETDA     := 0
+  SETHXRSS  := 0 !set to 1 to turn ON HXR self-seeding chicane
+  SETSXRSS  := 0 !set to 1 to turn ON SXR self-seeding chicane
+  SETXLEAP2 := 0 !set to 1 to turn ON XLEAP-II components
+
+  IntgSX := 20.0   !kG (30.0)
+  IntgHX := 40.0   !kG
+  EBC2Cu :=  4.300 !GeV
+  EfCu   := 13.640 !GeV
+  EuCu   := 13.640 !GeV
+
+  CALL, FILENAME="LCLS2cu_master.xsif" !calls other xsif files
+
+  COMMENT !to generate SURVEY
+    USE, CU_GSPEC !start at gun
+    ! initial energy: E00
+    ! initial SURVEY: Xi, 0, Zi, ADLi, 0, 0
+  ENDCOMMENT
+
+ !COMMENT !to generate TWISS
+    USE, CU_GSPEC !start at gun
+    ! initial energy: E00
+    ! initial Twiss : CBETX, CALFX, CBETY, CALFY
+ !ENDCOMMENT
+
+  RETURN

@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-2019next ***
+! *** OPTICS=AD_ACCEL-05DEC19 ***
 
 ! LCLS2sc bunch compressor chicane #1
 
@@ -107,7 +107,7 @@
   GB1      := 0.04328
   ZB1      := 0.2032
   FB1      := 0.3893
-  AB1      := -0.102786245824 !R56=0.055
+  AB1      := -0.100774150058 !R56=0.05285
   BB1      := Brho1*SIN(AB1)/ZB1
   AB1_2    := AB1*AB1
   AB1_4    := AB1_2*AB1_2
@@ -144,13 +144,24 @@
  !VALUE, AB1,F
  !VALUE, F*GB1*(AB1/LB1)*(1+SIN(AB1)*SIN(AB1))/COS(AB1)
 
+! define unsplit SBENs for BMAD ... not used by MAD
+
+  BCX11 : SBEN, TYPE="1.69D6.28T", HGAP=GB1/2, L=LB1, ANGLE=+AB1, &
+                E1=0, FINT=FB1, E2=+AB1, FINTX=FB1
+  BCX12 : SBEN, TYPE="1.69D6.28T", HGAP=GB1/2, L=LB1, ANGLE=-AB1, &
+                E1=-AB1, FINT=FB1, E2=0, FINTX=FB1
+  BCX13 : SBEN, TYPE="1.69D6.28T", HGAP=GB1/2, L=LB1, ANGLE=-AB1, &
+                E1=0, FINT=FB1, E2=-AB1, FINTX=FB1
+  BCX14 : SBEN, TYPE="1.69D6.28T", HGAP=GB1/2, L=LB1, ANGLE=+AB1, &
+                E1=+AB1, FINT=FB1, E2=0, FINTX=FB1
+
 ! ==============================================================================
 ! QUAD
 ! ------------------------------------------------------------------------------
 
 ! L1 to BC1 chicane
 
-  KQ1C01 := 0.997232505629
+  KQ1C01 := 0.974221026306
 
   Q1C01 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQ1C01
 
@@ -175,18 +186,18 @@
 
 ! COL1 collimation section
 
-  KQC101 := -0.330815066091
-  KQC102 :=  2.092280702381
+  KQC101 := -0.346554514277
+  KQC102 :=  2.068585209648
   KQC103 :=  0.0
-  KQC104 := -0.989821879445
-  KQC105 := -1.659478212876
+  KQC104 := -0.905335782198
+  KQC105 := -1.722699148158
   KQC106 :=  KQColl1
   KQC107 := -KQColl1
   KQC108 :=  KQColl1
   KQC109 := -KQColl1
-  KQC110 :=  1.418293776343 ! KQColl1
-  KQC111 := -1.796131659282
-  KQC112 :=  1.292282997623
+  KQC110 :=  1.409424568767 ! KQColl1
+  KQC111 := -1.791720274198
+  KQC112 :=  1.289917325561
 
   QC101 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQC101
   QC102 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQC102

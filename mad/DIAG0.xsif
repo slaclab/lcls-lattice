@@ -1,10 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-2019next ***
+! *** OPTICS=AD_ACCEL-05DEC19 ***
 
 ! LCLS2sc post laser heater diagnostic beamline
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 26-NOV-2019, M. Woodley
+!  * undefer TCXDG0 per D. Yeremian
 ! ------------------------------------------------------------------------------
 ! 17-JAN-2018, M. Woodley
 !  * move BPMDG000 back to Z=33.832875 m per H. Alvarez (dY = +9.425 mm)
@@ -122,7 +125,7 @@
 ! (NOTE: TCYDG0 might be installed as an uprgade at a later time)
 
   TCYDG0 : LCAV, TYPE="@4,TRANS_YDEF", FREQ=2856, L=0.8/2 !Y-deflector (split)
-  TCXDG0 : LCAV, TYPE="@1,TRANS_XDEF", FREQ=2856, L=0.8/2 !X-deflector (split)
+  TCXDG0 : LCAV, TYPE="TRANS_XDEF", FREQ=2856, L=0.8/2 !X-deflector (split)
 
 ! ==============================================================================
 ! SBEN
@@ -185,7 +188,8 @@
 
   GH0      := 0.02
   ZH0      := 0.4
-  AH0h     := XANG02/2 !half-angle
+  AH0      := XANG02
+  AH0h     := AH0/2 !half-angle
   AH0h_2   := AH0h*AH0h
   AH0h_4   := AH0h_2*AH0h_2
   AH0h_6   := AH0h_4*AH0h_2
@@ -212,18 +216,30 @@
                  ANGLE=ABDMP0/2, E2=EBDMP0, FINT=0, FINTX=FBDMP0, &
                  TILT=90*RADDEG
 
+! define unsplit SBENs for BMAD ... not used by MAD
+
+  BKRDG0 : SBEN, TYPE="1.378K35.4", HGAP=GK0/2, L=LK0, ANGLE=AK0, &
+                 E1=0, FINT=0.5, E2=AK0, FINTX=0.5, TILT=90*RADDEG+SROL0
+  BLRDG0 : SBEN, TYPE="0.79SD14.96", HGAP=GS0/2, L=LS0, ANGLE=AS0, &
+                 E1=0, FINT=0.5, E2=AS0, FINTX=0.5, TILT=SROL0
+  BXDG0  : SBEN, TYPE="0.79D14.96", HGAP=GH0/2, L=LH0, ANGLE=-AH0, &
+                 E1=-AH0h, FINT=0.5, E2=-AH0h, FINTX=0.5
+  BYDG0  : SBEN, TYPE="BXS", HGAP=GBDMP0/2, L=LBDMP0, ANGLE=ABDMP0, &
+                 E1=EBDMP0, FINT=FBDMP0, E2=EBDMP0, FINTX=FBDMP0, &
+                 TILT=90*RADDEG
+
 ! ==============================================================================
 ! QUAD
 ! ------------------------------------------------------------------------------
 
-  KQDG004 :=   8.65061788321 
+  KQDG004 :=   8.650617883208
   KQDG005 := -12.05998268496
   KQDG006 :=   6.896965013903  
-  KQDG007 := -4.414274650315
+  KQDG007 :=  -4.414274650315
   KQDG008 :=  11.243156019147
-  KQDG009 := -11.689200167842
-  KQDG010 :=  13.020676786885 
-  KQDG011 := -10.983650981441
+  KQDG009 := -11.689200167844
+  KQDG010 :=  13.02067678689 
+  KQDG011 := -10.983650981418
 
   QDG001 : QUAD, TYPE="1.51Q7.00", L=LQs/2, APER=rQs, K1=KQBF0
   QDG002 : QUAD, TYPE="1.51Q7.00", L=LQs/2, APER=rQs, K1=KQBD0

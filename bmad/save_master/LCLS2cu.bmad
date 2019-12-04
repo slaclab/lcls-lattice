@@ -1,0 +1,1811 @@
+
+! *** OPTICS=AD_ACCEL-2019next ***
+
+! LCLS2cu various parts upstream of BSY
+
+! ==============================================================================
+! Modification History
+! ------------------------------------------------------------------------------
+! 26-JAL-2019, M. Woodley
+!  * set L1 and L2 phases, and L1 X-band amplitude, per Y. Ding
+! ------------------------------------------------------------------------------
+! 30-JAN-2019, M. Woodley
+!  * move area BEG/END MARKERs to common.xsif
+!  * DL1 becomes two areas (DL1_1 and DL1_2)
+!  * rename MRK/FIN MARKERs at BC1 and BC2 to proper area boundary names
+! ------------------------------------------------------------------------------
+! 07-JAN-2019, M. Woodley
+!  * rename some LI21 correctors to avoid name conflicts with LCLS-II
+!    per T. Maxwell
+!  * define BC1 and BC2 bend angles (rather than B-fields) to allow constant
+!    R56 when energy changes
+!  * remove "52-line stuff"
+! ------------------------------------------------------------------------------
+! 08-MAY-2017, M. Woodley
+!  * add 0.000001 m to DM19 to force Z=2059.732900 m at ZLIN04 and to line up
+!    sector boundaries; reduce DAQ17 by the same amount to compensate
+! 01-MAR-2017, M. Woodley
+!  * WS24 is actually installed (per LCLS)
+! ------------------------------------------------------------------------------
+! 23-NOV-2016, Y. Nosochkov
+!  * update KQ30801 value
+! ------------------------------------------------------------------------------
+! 04-NOV-2016, M. Woodley
+!  * change "1.259Q3.5" to "1.26Q3.5"
+!  * change Everson-Tesla 2.362Q3.5 (r=30mm) to SigmaPhi 1.69Q3.4 (bore=43mm)
+!  * remove definition of DRIFT "DAQ6A"
+! ------------------------------------------------------------------------------
+! 28-OCT-2014, M. Woodley
+!  * redefine drift DAQ17 to end at LI30 IV30-9 (Z=3042.005)
+! ==============================================================================
+
+lsol1 = 0.200 !needed for DL01a definition
+
+! ==============================================================================
+! Longitudinal misalignments observed after installation and difficult to fix:
+! Added to MAD file (but not drawings) so that optics comes out right (1/11/07).
+! ------------------------------------------------------------------------------
+
+dz_qa11 = 3.42e-3 !quad is too far downstream when dz>0
+dz_q21201 = -2.39e-3 !quad is too far downstream when dz>0
+dz_q21301 = 5.73e-3 !quad is too far downstream when dz>0
+dz_qm14 = 2.17e-3 !quad is too far downstream when dz>0
+dz_qm15 = 2.48e-3 !quad is too far downstream when dz>0
+
+! ==============================================================================
+! lcavitys
+! ------------------------------------------------------------------------------
+
+! global lcavity parameters
+
+dlwlx = 0.5948  !X-band structure length from input-coupler center to output-coupler center, each with tooling balls (m)
+dlwl10 = 3.0441  !"10  ft" (29 Sband wavelengths; 87 DLWG cavities)
+dlwl9 = 2.8692  !"9.41 ft" (27 1/3 Sband wavelengths; 82 DLWG cavities)
+dlwl7 = 2.1694  !"7   ft" (20 2/3 Sband wavelengths; 62 DLWG cavities)
+p25 = 1       !25% power factor
+p50 = sqrt(2) !50% power factor
+
+! L0 energy profile (model the one 3-m L0b section only)
+
+l0phase = -1.1              !L0b S-band rf phase (deg)
+del0a = gev2mev*(e0i-e00) !total L0a energy gain (MeV)
+del0b = gev2mev*(ei-e0i)  !total L0b energy gain (MeV)
+phil0 = l0phase/360       !radians/2pi
+ !gfac0   := 3.130139          !flange-to-flange length of dual-feed L0-a and L0-b RF structures [m]
+gfac0 = 3.095244          !flange-to-flange length (121.86" Oct. 18, '05) of dual-feed L0-a and L0-b RF structures [m]
+gradl0a = del0a/(gfac0*cos(phil0*twopi))
+gradl0b = del0b/(gfac0*cos(phil0*twopi))
+
+! L1 energy profile
+
+l1phase = -21.5             !L1 S-band rf phase (deg)
+l1xphase = -160.0             !L1 X-band rf phase (deg)
+del1 = gev2mev*(ebc1-ei) !total L1 energy gain (MeV)
+del1x = 20.0              !L1 X-band amplitude (MeV)
+phil1 = l1phase/360       !radians/2pi
+phil1x = l1xphase/360      !radians/2pi
+gfac1 = p50*dlwl9+p25*dlwl9+p25*dlwl10
+gradl1 = (del1-del1x*cos(phil1x*twopi))/(gfac1*cos(phil1*twopi))
+ !VALUE, gradL1
+
+! L2 energy profile
+
+l2phase = -33.5               !L2 rf phase (deg)
+del2 = gev2mev*(ebc2-ebc1) !total L2 energy gain (MeV)
+phil2 = l2phase/360         !radians/2pi
+gfac2 = 110*p25*dlwl10+1*p50*dlwl10
+gradl2 = del2/(gfac2*cos(phil2*twopi))
+ !VALUE, gradL2
+
+! L3 energy profile
+
+l3phase = 0.0               !L3 rf phase (deg)
+del3 = gev2mev*(ef-ebc2) !total L3 energy gain (MeV)
+phil3 = l3phase/360       !radians/2pi
+gfac3 = 161*p25*dlwl10+12*p50*dlwl10+3*p25*dlwl9+4*p25*dlwl7
+gradl3 = del3/(gfac3*cos(phil3*twopi))
+ !VALUE, gradL3
+
+l1x___1: lcavity, rf_frequency = xbandf * 1e6, gradient = del1x/2 * 1e6 / (dlwlx/2), phi0 =  &
+        phil1x, type = "X1_Xband", l = dlwlx/2
+l1x___2: lcavity, rf_frequency = xbandf * 1e6, gradient = del1x/2 * 1e6 / (dlwlx/2), phi0 =  &
+        phil1x, type = "X1_Xband", l = dlwlx/2
+
+! L0 sections
+
+l0a___1: lcavity, rf_frequency = sbandf * 1e6, gradient = gradl0a*0.0586460 * 1e6 / 0.0586460,  &
+        phi0 = phil0, type = "DUALFEED", l = 0.0586460
+l0a___2: lcavity, rf_frequency = sbandf * 1e6, gradient = gradl0a*0.1993540 * 1e6 / 0.1993540,  &
+        phi0 = phil0, type = "DUALFEED", l = 0.1993540
+l0a___3: lcavity, rf_frequency = sbandf * 1e6, gradient = gradl0a*0.6493198 * 1e6 / 0.6493198,  &
+        phi0 = phil0, type = "DUALFEED", l = 0.6493198
+l0a___4: lcavity, rf_frequency = sbandf * 1e6, gradient = gradl0a*0.6403022 * 1e6 / 0.6403022,  &
+        phi0 = phil0, type = "DUALFEED", l = 0.6403022
+l0a___5: lcavity, rf_frequency = sbandf * 1e6, gradient = gradl0a*1.1518464 * 1e6 / 1.1518464,  &
+        phi0 = phil0, type = "DUALFEED", l = 1.1518464
+l0a___6: lcavity, rf_frequency = sbandf * 1e6, gradient = gradl0a*0.3348566 * 1e6 / 0.3348566,  &
+        phi0 = phil0, type = "DUALFEED", l = 0.3348566
+l0a___7: lcavity, rf_frequency = sbandf * 1e6, gradient = gradl0a*0.0609190 * 1e6 / 0.0609190,  &
+        phi0 = phil0, type = "DUALFEED", l = 0.0609190
+
+l0b___1: lcavity, rf_frequency = sbandf * 1e6, gradient = gradl0b*0.0586460 * 1e6 / 0.0586460,  &
+        phi0 = phil0, type = "DUALFEED", l = 0.0586460
+l0b___2: lcavity, rf_frequency = sbandf * 1e6, gradient = gradl0b*0.3371281 * 1e6 / 0.3371281,  &
+        phi0 = phil0, type = "DUALFEED", l = 0.3371281
+l0b___3: lcavity, rf_frequency = sbandf * 1e6, gradient = gradl0b*1.1518479 * 1e6 / 1.1518479,  &
+        phi0 = phil0, type = "DUALFEED", l = 1.1518479
+l0b___4: lcavity, rf_frequency = sbandf * 1e6, gradient = gradl0b*1.1515630 * 1e6 / 1.1515630,  &
+        phi0 = phil0, type = "DUALFEED", l = 1.1515630
+l0b___5: lcavity, rf_frequency = sbandf * 1e6, gradient = gradl0b*0.3351400 * 1e6 / 0.3351400,  &
+        phi0 = phil0, type = "DUALFEED", l = 0.3351400
+l0b___6: lcavity, rf_frequency = sbandf * 1e6, gradient = gradl0b*0.0609190 * 1e6 / 0.0609190,  &
+        phi0 = phil0, type = "DUALFEED", l = 0.0609190
+
+flnga1: marker !upstream   face of L0a entrance flange
+flnga2: marker !downstream face of L0a exit flange
+flngb1: marker !upstream   face of L0b entrance flange
+flngb2: marker !downstream face of L0b exit flange
+
+! transverse deflecting cavities
+
+ !TCAV0 : DRIF, L=0.6680236/2  !flange-to-flange (then split in two)
+ !TCAV3 : DRIF, L=2.438/2
+tcav0: lcavity, type = "TRANS_DEFL", l = 0.6680236/2 !flange-to-flange (then split in two)
+tcav3: lcavity, type = "TRANS_DEFL", l = 2.438/2
+
+ !LKIK   := 1.0601              ! kicker coil length per magnet (m) [41.737 in from SA-380-330-02, rev. 0]
+bxkika: sbend, hgap = 25.4e-3, e1 = 0, fint = 0.5, fintx = 0, type = "XPULSED", l = lkik/2, angle &
+         = lkik/2 * (1e-12)/(lkik/2)
+bxkikb: sbend, hgap = 25.4e-3, fint = 0, e2 = 2e-12, fintx = 0.5, type = "XPULSED", l = lkik/2,  &
+        angle = lkik/2 * (1e-12)/(lkik/2)
+
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bxkik: sbend, hgap = 25.4e-3, e1 = 0, fint = 0.5, e2 = 2e-12, type = "XPULSED", l = lkik, angle &
+         = lkik * (1e-12)/lkik
+
+! ==============================================================================
+! BENDs
+! ------------------------------------------------------------------------------
+
+! global BEND parameters
+
+dlbh = 0.0144     !increase to lengthen BXH1-4 eff. length (m)
+lbh = 0.110+dlbh !5D3.9 "Z" length (m)   laser-heater chicane bends approx. effective length (R. Carr, 01-AUG-05 -PE)
+gbh = 30e-3      !5D3.9 gap height (m)
+lb0 = 0.2032     !5D7.1 "Z" length (m)
+gb0 = 30e-3      !5D7.1 gap height (m)
+lb1 = 0.2032     !5D7.1 "Z" length (m)
+gb1 = 43.28e-3   !5D7.1 gap height (m)
+lb2 = 0.5490     !1D19.7 "Z" length (m)      !changed from 0.540 m to 0.549 on Sep. 28, '07 based on magnetic measurements - PE
+gb2 = 33.35e-3   !1D19.7 gap height (m)
+ !LB3  := 2.623      !4D102.36T effective length (m)
+ !GB3  := 0.023      !4D102.36T gap height (m)
+ !LVB  := 1.025      !3D39 vertical bend effective length (m)
+ !GVB  := 0.034925   !vertical bend gap width (m)
+
+! GTL !gun spectrometer from BXG to Faraday cup and dump
+! ===
+
+rbxg = 0.1963       !BXG bend radius (measured) [m]
+abxg = 85.0*degrees  !bend angle of BXG dipole [deg*RADDEG = rad]
+ebxg = 24.25*degrees !BXG pole-face rot. edge angle of BXG dipole [deg*RADDEG = rad]
+gbxg = 0.043        !BXG magnet full gap height (m)
+lbxg = rbxg*abxg    !path length of BXG dipole when ON (= R*theta) [m]
+
+ !VALUE, LBXG
+
+bxga: sbend, hgap = gbxg/2, e1 = ebxg, fint = 0.492, e2 = 0, fintx = 0, type = "BXG", l = lbxg/2 & !1st-half of gun spectrometer bend
+        , angle = lbxg/2 * abxg/2/(lbxg/2)
+bxgb: sbend, hgap = gbxg/2, e1 = 0, fint = 0, e2 = ebxg, fintx = 0.492, type = "BXG", l = lbxg/2 & !2nd-half of gun spectrometer bend
+        , angle = lbxg/2 * abxg/2/(lbxg/2)
+
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bxg: sbend, hgap = gbxg/2, e1 = ebxg, fint = 0.492, e2 = ebxg, type = "BXG", l = lbxg, angle =  &
+        lbxg * abxg/lbxg
+
+dxg0: drift, l = rbxg*sin(abxg/2)  !drift, w/BXG off, from BXG entrance face to its z-projected center
+dxga: sbend, l = 1e-9/2 !1st-half of gun-spec bend (set to ~zero length and strength, with longitudinal position as bend's center)
+dxgb: sbend, l = 1e-9/2 !2nd-half of gun-spec bend (set to ~zero length and strength, with longitudinal position as bend's center)
+
+dbxg: drift, l = 0.132618358755-1e-9 !replaces DXG0/DXGA/DXGB
+
+rqgx = 0.020 !QG quadrupole pole-tip radius [m]
+lqgx = 0.076 !QG quadrupole effective length [m]
+
+cq01: multipole, type = "QSOL"     !correction quad in 1st solenoid at gun (nominally set to 0)
+sq01: multipole, type = "QSOL", t1 = pi / 4 !correction skew-quad in 1st solenoid at gun (nominally set to 0)
+
+qg02: quadrupole, type = "QG", l = lqgx/2, aperture = rqgx, k1 = -35.48540
+qg03: quadrupole, type = "QG", l = lqgx/2, aperture = rqgx, k1 = 80.16051
+
+dgs1: drift, l = 0.1900-lqgx/2-20e-6-0.0155757
+dgs2: drift, l = (0.2300-lqgx)/2+20e-6
+dgs3: drift, l = (0.2300-lqgx)/2-20e-6
+dgs4: drift, l = 0.1680-lqgx/2-0.00283
+dgs5: drift, l = 0.0300-0.02271
+dgs6: drift, l = 0.0240-0.00402
+dgs7: drift, l = 0.05
+
+xcg1: kicker, type = "class-G"
+xcg2: kicker, type = "class-G"
+ycg1: kicker, type = "class-G"
+ycg2: kicker, type = "class-G"
+
+bpmg1: instrument, type = "25_um_res"
+crg1: instrument                   !Cerenkov radiator bunch length monitor
+yagg1: instrument, type = "YAG"       !6-MeV spectrometer screen
+fcg1: instrument                   !gun-spec. Faraday cup w/screen
+
+bxg_full: line = (bxga, bxgb)
+
+
+
+!Old split line: line = (qg02, xcg1, ycg1, qg02)
+
+qg02_full: line = (qg02)
+qg02[L] = 2*qg02[L]
+xcg1[superimpose] = T
+xcg1[ref] = qg02
+ycg1[superimpose] = T
+ycg1[ref] = qg02
+
+
+!Old split line: line = (qg03, xcg2, ycg2, qg03)
+
+qg03_full: line = (qg03)
+qg03[L] = 2*qg03[L]
+xcg2[superimpose] = T
+xcg2[ref] = qg03
+ycg2[superimpose] = T
+ycg2[ref] = qg03
+
+gspec: line = (beggspec, bxg_full, dgs1, qg02_full, dgs2, bpmg1, dgs3, qg03_full, dgs4, yagg1,  &
+        dgs5, crg1, dgs6, fcg1, dgs7, dbmark97, endgspec)
+
+! 135-MeV Spectrometer
+! ====================
+
+dx01a: sbend, l = lb0/2, angle = lb0/2 * (1e-9)/(lb0/2) !1st half of BX01 magnet switched off here
+dx01b: sbend, l = lb0/2, angle = lb0/2 * (1e-9)/(lb0/2) !2nd half of BX01 magnet switched off here
+
+dbx01a: drift, l = 0.1016 !replaces DX01A
+dbx01b: drift, l = 0.1016 !replaces DX01B
+
+lbs = 0.5435        !measured effective length along curved trajectory (m)
+gbs = 34e-3         !gap height (m)
+abs = injdeg*degrees !injection line angle (rad)
+bxsej = -7.29*degrees
+
+bxsa: sbend, hgap = gbs/2, e1 = bxsej, fint = 0.391, e2 = 0, fintx = 0, type = "BXS", l = lbs/2,  &
+        angle = lbs/2 * abs/2/(lbs/2)
+bxsb: sbend, hgap = gbs/2, e1 = 0, fint = 0, e2 = bxsej, fintx = 0.391, type = "BXS", l = lbs/2,  &
+        angle = lbs/2 * abs/2/(lbs/2)
+
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bxs: sbend, hgap = gbs/2, e1 = bxsej, fint = 0.391, e2 = bxsej, type = "BXS", l = lbs, angle =  &
+        lbs * abs/lbs
+
+kqs01 = 9.682244191676
+kqs02 = -5.648980372134
+
+qs01: quadrupole, type = "ETA", l = lqx/2, aperture = rqx, k1 = kqs01
+qs02: quadrupole, type = "ETA", l = lqx/2, aperture = rqx, k1 = kqs02
+
+ds0: drift, l = 0.5583996
+ds0a: drift, l = 0.1691504
+ds0b: drift, l = 0.4615/2
+ds1a: drift, l = 0.0890085
+ds1b: drift, l = 0.1451215
+ds1c: drift, l = 0.171796
+ds1d: drift, l = 0.251824
+ds2: drift, l = 0.478250
+ds3a: drift, l = 0.199626
+ds3b: drift, l = 0.200374
+ds4: drift, l = 0.287275
+ds6a: drift, l = 0.2575952
+ds6b: drift, l = 0.2273298-0.008205
+ds7: drift, l = 0.3801874+0.008205-0.02
+ds8: drift, l = 0.1976126+0.02
+ds9: drift, l = 0.3378194
+
+bpms1: instrument, type = "20_um_res"
+bpms2: instrument, type = "20_um_res"
+bpms3: instrument, type = "20_um_res"
+
+vvs1: marker                  !135-MeV spectrometer vacuum valve
+yags1: instrument, type = "YAG"      !1st 135-MeV spectrometer YAG-screen - center of device in MAD is defined as center of YAG crystal, not mirror
+ims1: marker                  !135-MeV spectrometer toroid
+yags2: instrument, type = "YAG"      !2nd 135-MeV spectrometer YAG-screen - center of device in MAD is defined as center of YAG crystal, not mirror
+otrs1: instrument, type = "OTR"      !135-MeV spectrometer OTR-screen
+sdmp: instrument                  ! gun-spec. dump (exact location? - 11/09/05)
+
+xcs1: kicker, type = "class-1a"
+ycs1: kicker, type = "class-1a"
+xcs2: kicker, type = "class-1a"
+ycs2: kicker, type = "class-1a"
+
+bxs_full: line = (bxsa, bxsb)
+
+
+
+!Old split line: line = (qs01, bpms2, qs01)
+
+qs01_full: line = (qs01)
+qs01[L] = 2*qs01[L]
+bpms2[superimpose] = T
+bpms2[ref] = qs01
+
+
+!Old split line: line = (qs02, qs02)
+
+qs02_full: line = (qs02)
+qs02[L] = 2*qs02[L]
+
+scs1: line = (xcs1, ycs1)
+scs2: line = (xcs2, ycs2)
+
+specbl: line = (begspec, dbx01a, dbx01b, ds0, scs1, ds0a, ds0b, ds1a, vvs1, ds1b, yags1, ds1c,  &
+        bpms1, ds1d, bxs_full, ds2, qs01_full, ds3a, scs2, ds3b, qs02_full, ds4, ims1, ds6a,  &
+        bpms3, ds6b, yags2, ds7, otrs1, ds8, ds9, sdmp, dbmark98, endspec)
+
+! DL1
+! ===
+
+adl1 = injdeg*degrees            !injection line angle (rad)
+
+ab0 = adl1/2                 !full bend angle (rad)
+leffb0 = lb0*ab0/(2*sin(ab0/2)) !full bend path length (m)
+aeb0 = ab0/2                  !edge angles
+
+bx01a: sbend, hgap = gb0/2, e1 = aeb0, fint = 0.45, fintx = 0, type = "5D7.1", l = leffb0/2,  &
+        angle = leffb0/2 * ab0/2/(leffb0/2)
+bx01b: sbend, hgap = gb0/2, e2 = aeb0, fint = 0, fintx = 0.45, type = "5D7.1", l = leffb0/2,  &
+        angle = leffb0/2 * ab0/2/(leffb0/2)
+bx02a: sbend, hgap = gb0/2, e1 = aeb0, fint = 0.45, fintx = 0, type = "5D7.1", l = leffb0/2,  &
+        angle = leffb0/2 * ab0/2/(leffb0/2)
+bx02b: sbend, hgap = gb0/2, e2 = aeb0, fint = 0, fintx = 0.45, type = "5D7.1", l = leffb0/2,  &
+        angle = leffb0/2 * ab0/2/(leffb0/2)
+
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bx01: sbend, hgap = gb0/2, e1 = aeb0, fint = 0.45, e2 = aeb0, type = "5D7.1", l = leffb0, angle &
+         = leffb0 * ab0/leffb0
+bx02: sbend, hgap = gb0/2, e1 = aeb0, fint = 0.45, e2 = aeb0, type = "5D7.1", l = leffb0, angle &
+         = leffb0 * ab0/leffb0
+
+! BC1
+! ===
+
+brho1 = cb*ebc1            !beam rigidity at BC1 (kG-m)
+ab11 = -0.093583513589    !full chicane bend angle (rad) (-0.086753564890323)
+rb11 = lb1/sin(ab11)      !bend radius (m)
+lb11 = rb11*ab11          !full chicane bend path length (m)
+bb11 = brho1/rb11         !bend field (kG) [-3.555805785115 kG @ 0.250 GeV]
+ab11s = asin((lb1/2)/rb11) !"short" half chicane bend angle (rad)
+lb11s = rb11*ab11s         !"short" half chicane bend path length (m)
+ab11l = ab11-ab11s         !"long" half chicane bend angle (rad)
+lb11l = rb11*ab11l         !"long" half chicane bend path length (m)
+fb11 = 0.387              !fringe field integral
+
+! BX11 gets an offset of 2.2 mm (theta*L/8) towards the wall
+! BX12 gets an offset of 2.2 mm (theta*L/8) towards the aisle
+! BX13 gets an offset of 2.2 mm (theta*L/8) towards the aisle
+! BX14 gets an offset of 2.2 mm (theta*L/8) towards the wall
+
+bx11a: sbend, hgap = gb1/2, e1 = 0, fint = fb11, fintx = 0, type = "5D7.1", l = lb11s, angle =  &
+        lb11s * (+ab11s)/lb11s
+bx11b: sbend, hgap = gb1/2, fint = 0, e2 = +ab11, fintx = fb11, type = "5D7.1", l = lb11l, angle &
+         = lb11l * (+ab11l)/lb11l
+bx12a: sbend, hgap = gb1/2, e1 = -ab11, fint = fb11, fintx = 0, type = "5D7.1", l = lb11l, angle &
+         = lb11l * (-ab11l)/lb11l
+bx12b: sbend, hgap = gb1/2, fint = 0, e2 = 0, fintx = fb11, type = "5D7.1", l = lb11s, angle =  &
+        lb11s * (-ab11s)/lb11s
+bx13a: sbend, hgap = gb1/2, e1 = 0, fint = fb11, fintx = 0, type = "5D7.1", l = lb11s, angle =  &
+        lb11s * (-ab11s)/lb11s
+bx13b: sbend, hgap = gb1/2, fint = 0, e2 = -ab11, fintx = fb11, type = "5D7.1", l = lb11l, angle &
+         = lb11l * (-ab11l)/lb11l
+bx14a: sbend, hgap = gb1/2, e1 = +ab11, fint = fb11, fintx = 0, type = "5D7.1", l = lb11l, angle &
+         = lb11l * (+ab11l)/lb11l
+bx14b: sbend, hgap = gb1/2, fint = 0, e2 = 0, fintx = fb11, type = "5D7.1", l = lb11s, angle =  &
+        lb11s * (+ab11s)/lb11s
+
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bx11: sbend, hgap = gb1/2, e1 = 0, fint = fb11, e2 = +ab11, type = "5D7.1", l = lb11, angle =  &
+        lb11 * (+ab11)/lb11
+bx12: sbend, hgap = gb1/2, e1 = -ab11, fint = fb11, e2 = 0, type = "5D7.1", l = lb11, angle =  &
+        lb11 * (-ab11)/lb11
+bx13: sbend, hgap = gb1/2, e1 = 0, fint = fb11, e2 = -ab11, type = "5D7.1", l = lb11, angle =  &
+        lb11 * (-ab11)/lb11
+bx14: sbend, hgap = gb1/2, e1 = +ab11, fint = fb11, e2 = 0, type = "5D7.1", l = lb11, angle =  &
+        lb11 * (+ab11)/lb11
+
+! magnet-to-magnet path lengths
+
+ld11 = 2.434900                  !outer bend-to-bend "Z" distance (m)
+ld11o = ld11/cos(ab11)            !outer bend-to-bend path length (m) (minus ~0.15 m 9/21/04)
+ld11a = 0.261301                  !"Z" distance upstream of SQ13 (m)
+ld11b = ld11-ld11a-0.16*cos(ab11) !"Z" distance downstream of SQ13 (m)
+ld11oa = ld11a/cos(ab11)           !path length upstream of SQ13
+ld11ob = ld11b/cos(ab11)           !path length downstream of SQ13
+
+! BC2
+! ===
+
+brho2 = cb*ebc2            !beam rigidity at BC2 (kG-m)
+ab21 = -0.036971268085    !full chicane bend angle (rad) (-0.034727452562382)
+rb21 = lb2/sin(ab21)      !bend radius (m)
+lb21 = rb21*ab21          !full chicane bend path length (m)
+bb21 = brho2/rb21         !bend field (kG) [-9.071122639275 kG @ 4.300 GeV]
+ab21s = asin((lb2/2)/rb21) !"short" half chicane bend angle (rad)
+lb21s = rb21*ab21s         !"short" half chicane bend path length (m)
+ab21l = ab21-ab21s         !"long" half chicane bend angle (rad)
+lb21l = rb21*ab21l         !"long" half chicane bend path length (m)
+fb21 = 0.633              !fringe field integral
+
+! BX21 gets an offset of ~2.3 mm (theta*L/8) towards the wall
+! BX22 gets an offset of ~2.3 mm (theta*L/8) towards the aisle
+! BX23 gets an offset of ~2.3 mm (theta*L/8) towards the aisle
+! BX24 gets an offset of ~2.3 mm (theta*L/8) towards the wall
+
+bx21a: sbend, hgap = gb2/2, e1 = 0, fint = fb21, fintx = 0, type = "1D19.7", l = lb21s, angle =  &
+        lb21s * (+ab21s)/lb21s
+bx21b: sbend, hgap = gb2/2, fint = 0, e2 = +ab21, fintx = fb21, type = "1D19.7", l = lb21l, angle &
+         = lb21l * (+ab21l)/lb21l
+bx22a: sbend, hgap = gb2/2, e1 = -ab21, fint = fb21, fintx = 0, type = "1D19.7", l = lb21l, angle &
+         = lb21l * (-ab21l)/lb21l
+bx22b: sbend, hgap = gb2/2, fint = 0, e2 = 0, fintx = fb21, type = "1D19.7", l = lb21s, angle =  &
+        lb21s * (-ab21s)/lb21s
+bx23a: sbend, hgap = gb2/2, e1 = 0, fint = fb21, fintx = 0, type = "1D19.7", l = lb21s, angle =  &
+        lb21s * (-ab21s)/lb21s
+bx23b: sbend, hgap = gb2/2, fint = 0, e2 = -ab21, fintx = fb21, type = "1D19.7", l = lb21l, angle &
+         = lb21l * (-ab21l)/lb21l
+bx24a: sbend, hgap = gb2/2, e1 = +ab21, fint = fb21, fintx = 0, type = "1D19.7", l = lb21l, angle &
+         = lb21l * (+ab21l)/lb21l
+bx24b: sbend, hgap = gb2/2, fint = 0, e2 = 0, fintx = fb21, type = "1D19.7", l = lb21s, angle =  &
+        lb21s * (+ab21s)/lb21s
+
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bx21: sbend, hgap = gb2/2, e1 = 0, fint = fb21, e2 = +ab21, type = "1D19.7", l = lb21, angle =  &
+        lb21 * (+ab21)/lb21
+bx22: sbend, hgap = gb2/2, e1 = -ab21, fint = fb21, e2 = 0, type = "1D19.7", l = lb21, angle =  &
+        lb21 * (-ab21)/lb21
+bx23: sbend, hgap = gb2/2, e1 = 0, fint = fb21, e2 = -ab21, type = "1D19.7", l = lb21, angle =  &
+        lb21 * (-ab21)/lb21
+bx24: sbend, hgap = gb2/2, e1 = +ab21, fint = fb21, e2 = 0, type = "1D19.7", l = lb21, angle =  &
+        lb21 * (+ab21)/lb21
+
+! magnet-to-magnet path lengths
+
+ld21i = 1.0-2*0.1               !inner bend-to-bend "Z" distance (m)
+ld1 = 2.00-0.04-0.0045        !outer bend-to-bend "Z" distance (m)
+ld2 = 8.00-0.04-0.0508-0.0045 !outer bend-to-bend "Z" distance (m)
+ld3 = 8.00-0.04-0.0508-0.0045 !outer bend-to-bend "Z" distance (m)
+ld4 = 2.00-0.04-0.0045        !outer bend-to-bend "Z" distance (m)
+ldo1 = ld1/cos(ab21)           !outer bend-to-bend path length (m)
+ldo2 = ld2/cos(ab21)-lqc       !outer bend-to-bend path length (m)
+ldo3 = ld3/cos(ab21)-lqc       !outer bend-to-bend path length (m)
+ldo4 = ld4/cos(ab21)           !outer bend-to-bend path length (m)
+
+! DL1
+!  KQA01 :=  -7.474220813631 !OLD - no lsr-htr (for commissioning in Dec. '06 through July '07) & on-measured TWSS0
+!  KQA02 :=   8.137641193725
+!  KQE01 :=  -2.215639104385
+!  KQE02 :=  -0.241173314721
+!  KQE03 :=   7.613440306134
+!  KQE04 :=  -6.985386854286
+
+!  KQA01 := -12.492179751016 !OLD - with 5.4-cm lamu lsr-htr and "MATRIX" focusing, but non-measured TWSS0
+!  KQA02 :=  11.022504569397
+!  KQE01 :=  -3.089332618348
+!  KQE02 :=   0.090132722014
+!  KQE03 :=   6.822078966488
+!  KQE04 :=  -5.731166555613
+
+!  KQA01 := -6.1200 !post Aug. 11, 2008 matching based on real measurements with heater/chicane not yet installed (64 & 135 MeV)
+!  KQA02 := 12.6808
+!  KQE01 := -1.4046
+!  KQE02 := -2.4546
+!  KQE03 :=  9.6624
+!  KQE04 := -7.4610
+
+!  KQA01 := -12.317411498864 !new design with laser-heater ON (chicane and und, w/Betx=Bety=12 m), based on measured (back-tracked) TWSS0
+!  KQA02 :=  13.706906173749
+!  KQE01 :=  -6.538179321052
+!  KQE02 :=   5.354060093454
+!  KQE03 :=   6.054674881291
+!  KQE04 :=  -5.235476556481
+
+! rematched with laser-heater ON (chicane dX= 35 mm)
+
+kqa01 = -12.319457174182
+kqa02 = 13.70811489073
+kqe01 = -6.542797185475
+kqe02 = 5.356375572941
+kqe03 = 6.056002602406
+kqe04 = -5.237184490825
+
+kqm01 = 15.072053882204
+kqm02 = -11.974604636345
+kqm03 = -8.255421303054
+kqm04 = 13.306105246908
+
+kqb = 22.169715923059 !22.169701529353
+
+qa01: quadrupole, type = "ETA", l = lqx/2, aperture = rqx, k1 = kqa01
+qa02: quadrupole, type = "ETA", l = lqx/2, aperture = rqx, k1 = kqa02
+qe01: quadrupole, type = "ETA", l = lqx/2, aperture = rqx, k1 = kqe01
+qe02: quadrupole, type = "ETA", l = lqx/2, aperture = rqx, k1 = kqe02
+qe03: quadrupole, type = "ETA", l = lqx/2, aperture = rqx, k1 = kqe03
+qe04: quadrupole, type = "ETA", l = lqx/2, aperture = rqx, k1 = kqe04
+qm01: quadrupole, type = "ETA", l = lqx/2, aperture = rqx, k1 = kqm01
+qm02: quadrupole, type = "ETA", l = lqx/2, aperture = rqx, k1 = kqm02
+qb: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kqb
+qm03: quadrupole, type = "ETA", l = lqx/2, aperture = rqx, k1 = kqm03
+qm04: quadrupole, type = "ETA", l = lqx/2, aperture = rqx, k1 = kqm04
+
+! L1
+
+kql1 = 3.789198342593
+
+qfl1: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = +kql1
+qdl1: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = -kql1
+
+kqa11 = -kql1
+kqa12 = 1.832347728582 !1.863910872552
+
+qa11: quadrupole, type = "ETA", l = lqx/2, aperture = rqx, k1 = kqa11
+qa12: quadrupole, type = "ETA", l = lqx/2, aperture = rqx, k1 = kqa12
+
+! BC1
+
+kq21201 = -9.4016016478   !-9.357677119503
+kqm11 = 8.001404772165 ! 7.960339117021
+kqm12 = -8.322577884808 !-8.366726970987
+kqm13 = 9.921822879541 ! 9.860390676906
+kcq11 = 0
+ksq13 = 0
+kcq12 = 0
+kq21301 = -0.1347         !turn this quad OFF for LCLS operations (this is meas'd remnant field of Gdl = 0.12 kG)
+kqm14 = 7.08022322559  ! 7.079239169293
+kqm15 = -6.766778626493 !-6.765038435385
+
+q21201: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq21201     !QE-072 after Aug 2006; gets moved downstream of pre-LCLS location by 1.101312 m (measured parallel to main linac axis)
+qm11: quadrupole, type = "ETA", l = lqx/2, aperture = rqx, k1 = kqm11
+cq11: quadrupole, type = "ETB", l = lqc/2, aperture = rqc, k1 = kcq11       !now ETB tweaker quad
+sq13: quadrupole, l = 0.16/2, aperture = 0.06, k1 = ksq13, tilt = pi/4 !per Kirk Bertsche
+cq12: quadrupole, type = "ETB", l = lqc/2, aperture = rqc, k1 = kcq12       !now ETB tweaker quad
+qm12: quadrupole, type = "ETA", l = lqx/2, aperture = rqx, k1 = kqm12
+qm13: quadrupole, type = "ETA", l = lqx/2, aperture = rqx, k1 = kqm13
+q21301: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq21301     !QE-004 after Aug 2006; gets moved downstream of pre-LCLS location by 1.247066 m (measured parallel to main linac axis), and turned off for LCLS
+qm14: quadrupole, type = "ETA", l = lqx/2, aperture = rqx, k1 = kqm14
+qm15: quadrupole, type = "ETA", l = lqx/2, aperture = rqx, k1 = kqm15
+
+! L2
+
+kql2 = 0.708388522907
+
+qfl2: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = +kql2
+qdl2: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = -kql2
+
+kq21401 = 1.045575989542 ! 1.044881943081 !QE-002 after Aug 2006
+kq21501 = -0.833682306526 !-0.833170329125 !use pre-Aug-2006 Q21201 magnet
+kq21601 = kql2                            !use pre-Aug-2006 Q21301 magnet
+kq21701 = -kql2
+kq21801 = 0.721703961622
+kq21901 = -0.721930035688
+
+kq22201 = 0.711368406706
+kq22301 = -0.764179973154
+kq22401 = kql2
+kq22501 = -kql2
+kq22601 = kql2
+kq22701 = -kql2
+kq22801 = 0.748596129657
+kq22901 = -0.709657173604
+
+kq23201 = 0.721241098608
+kq23301 = -0.741011348313
+kq23401 = kql2
+kq23501 = -kql2
+kq23601 = kql2
+kq23701 = -kql2
+kq23801 = 0.770675623153
+kq23901 = -0.726878264576
+
+kq24201 = 0.779404953697
+kq24301 = -0.856812505218
+kq24401 = 1.025618689057
+kq24501 = -0.932809842702 !-0.931675081162
+kq24601 = 0.603859930448 ! 0.603160584173
+
+q21401: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq21401
+q21501: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq21501
+q21601: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq21601
+q21701: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq21701
+q21801: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq21801
+q21901: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq21901
+
+q22201: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq22201
+q22301: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq22301
+q22401: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq22401
+q22501: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq22501
+q22601: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq22601
+q22701: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq22701
+q22801: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq22801
+q22901: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq22901
+
+q23201: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq23201
+q23301: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq23301
+q23401: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq23401
+q23501: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq23501
+q23601: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq23601
+q23701: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq23701
+q23801: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq23801
+q23901: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq23901
+
+q24201: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq24201
+q24301: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq24301
+q24401: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq24401
+q24501: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq24501
+q24601: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq24601
+
+! BC2
+
+kq24701 = -1.286376116895 !-1.286030138047
+kqm21 = 0.508141288763 ! 0.508115309359
+kcq21 = 1e-12
+kcq22 = 1e-12
+kqm22 = -0.589507456153 !-0.590418980634
+kq24901 = 1.081544590668 ! 1.082042245094
+
+q24701a: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq24701  !in same location as pre-LCLS (with its BPM)
+q24701b: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq24701  !10 cm between Q24701A & B
+qm21: quadrupole, type = "0.91Q17.72", l = lqf/2, aperture = rqf, k1 = kqm21
+cq21: quadrupole, type = "ETB", l = lqc/2, aperture = rqc, k1 = kcq21
+cq22: quadrupole, type = "ETB", l = lqc/2, aperture = rqc, k1 = kcq22
+qm22: quadrupole, type = "0.91Q17.72", l = lqf/2, aperture = rqf, k1 = kqm22
+q24901a: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq24901  !moved 2.397400 m downstream of original Q24901 position
+q24901b: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq24901  !10 cm between Q24901A & B (BPM in this 2nd quad)
+
+! L3
+
+!  KQFL3 :=  0.446670469684 !was used for 12*2*pi MUX from BX24 to BX31
+!  KQDL3 := -0.424793498653 !was used for 12*2*pi MUX from BX24 to BX31
+kqfl3 = 0.395798933782  !gives psix = 50.76 deg, 44.64 deg, 45.00 deg between four LI28 wires
+kqdl3 = -0.395649286346  !gives TCAV3 -> OTR30 right + WS28 psiy: 48.96 deg, 45.72 deg, 43.92 deg
+
+qfl3: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kqfl3
+qdl3: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kqdl3
+
+kq25201 = 0.698137203983 ! 0.697993592575
+kq25301 = -0.479540264892 !-0.478388226374
+kq25401 = 0.429369312884 ! 0.42896785871
+kq25501 = -0.399966474543 !-0.399864956514
+kq25601 = kqfl3
+kq25701 = kqdl3
+kq25801 = 0.407168436855
+kq25901 = -0.388171234952
+
+kq26201 = 0.388578933647
+kq26301 = -0.405404843557
+kq26401 = kqfl3
+kq26501 = kqdl3
+kq26601 = kqfl3
+kq26701 = kqdl3
+kq26801 = 0.406308742855
+kq26901 = -0.388549789828
+
+kq27201 = 0.390161854669
+kq27301 = -0.406474370795
+kq27401 = kqfl3
+kq27501 = kqdl3
+kq27601 = kqfl3
+kq27701 = kqdl3
+kq27801 = 0.406495928662
+kq27901 = -0.388870517181
+
+kq28201 = 0.390352348197
+kq28301 = -0.406461529502
+kq28401 = kqfl3
+kq28501 = kqdl3
+kq28601 = kqfl3
+kq28701 = kqdl3
+kq28801 = 0.406649614831
+kq28901 = -0.389077444001
+
+kq29201 = 0.390429567548
+kq29301 = -0.406416613477
+kq29401 = kqfl3
+kq29501 = kqdl3
+kq29601 = kqfl3
+kq29701 = kqdl3
+kq29801 = 0.406588653506
+kq29901 = -0.389037213556
+
+kq30201 = 0.39027307525
+kq30301 = -0.406178588622
+kq30401 = 0.396480907847 ! KQFL3
+kq30501 = -0.396467538155 !-0.395648794699 !KQDL3
+kq30601 = 0.395722103341 ! 0.395797744026 !KQFL3
+kq30701 = -0.395269902676 !-0.395649272846 !KQDL3
+ !KQ30801 :=  0.418744300937 ! 0.418743774352
+ !KQ30801 :=  0.484416787325 !copy from LCLS2sc LTU.xsif
+
+q25201: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq25201
+q25301: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq25301
+q25401: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq25401
+q25501: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq25501
+q25601: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq25601
+q25701: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq25701
+q25801: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq25801
+q25901: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq25901
+
+q26201: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq26201
+q26301: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq26301
+q26401: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq26401
+q26501: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq26501
+q26601: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq26601
+q26701: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq26701
+q26801: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq26801
+q26901: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq26901
+
+q27201: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq27201
+q27301: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq27301
+q27401: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq27401
+q27501: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq27501
+q27601: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq27601
+q27701: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq27701
+q27801: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq27801
+q27901: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq27901
+
+q28201: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq28201
+q28301: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq28301
+q28401: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq28401
+q28501: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq28501
+q28601: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq28601
+q28701: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq28701
+q28801: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq28801
+q28901: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq28901
+
+q29201: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq29201
+q29301: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq29301
+q29401: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq29401
+q29501: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq29501
+q29601: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq29601
+q29701: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq29701
+q29801: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq29801
+q29901: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq29901
+
+q30201: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq30201
+q30301: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq30301
+q30401: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq30401
+q30501: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq30501
+q30601: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq30601
+q30615a: marker, type = "QW" !power supply decommissioned
+q30615b: marker, type = "QW" !power supply decommissioned
+q30615c: marker, type = "QW" !power supply decommissioned
+q30701: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq30701
+q30715a: marker, type = "QW" !power supply decommissioned
+q30715b: marker, type = "QW" !power supply decommissioned
+q30715c: marker, type = "QW" !power supply decommissioned
+q30801: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq30801
+
+! ==============================================================================
+! DRIFTs
+! ------------------------------------------------------------------------------
+
+! L1/2/3 FODO cells
+
+d9: drift, l = dlwl9
+d10: drift, l = dlwl10
+daq1: drift, l = 0.0342
+daq2: drift, l = 0.027
+
+! injector geometry
+
+lggun = 7.51*0.3048
+lgl0 = 2*3.0441+1.0
+lgbend = 0.95+2*0.3048     ! add 12" to either side of QB for more room (22JAN04 - PE)
+lgemit = 9.000328707307
+lgmatch = 1.5134597681
+
+dggun: drift, l = lggun
+dgl0: drift, l = lgl0
+
+! L0
+
+loadlock: drift, l = lggun-1.42
+dl00: drift, l = -loadlock[l] !from cathode back to u/s end of loadlock
+dl01a: drift, l = 0.19601-lsol1/2
+dl01a1: drift, l = 0.07851
+dl01a2: drift, l = 0.11609
+dl01a3: drift, l = 0.10461
+dl01a4: drift, l = 0.0170+0.0014
+dl01a5: drift, l = 0.0132-0.00223
+dl01b: drift, l = 0.0825
+dl01c: drift, l = 0.1340-0.00353-0.003175
+dl01d: drift, l = 0.1008464-0.0155757
+dl01h: drift, l = 0.0581886
+dl01e: drift, l = 0.2286-dxg0[l]-0.00536+0.0155757
+dl01f: drift, l = 0.1353+0.00708
+dl01f2: drift, l = 0.0277+0.00167
+dl01g: drift, l = 0.0740-0.00341
+dl02a1: drift, l = 0.060294605 !0.066356+0.0021436-0.008205
+dl02a2: drift, l = 0.104580+0.008205
+dl02a3: drift, l = 0.098776-lqx/2+0.028834
+dl02b1: drift, l = 0.169672-lqx/2-0.028834+0.007646
+dl02b2: drift, l = 0.185928-lqx/2-0.007646+0.001610
+dl02c: drift, l = 0.121498-lqx/2-0.001610
+
+! Heater-Chicane:
+
+! LSRHTR_ON := 1E-12          !set to 1E-12 for laser heater bends & undulator OFF and 1.0 for ON (nominal)
+lsrhtr_on = 1              !set to 1E-12 for laser heater bends & undulator OFF and 1.0 for ON (nominal)
+brhoh = cb*ei              !beam rigidity at heater (kG-m)
+bbh1 = -4.749307427186*lsrhtr_on !heater-chicane bend field for 35-mm etaX_pk (kG) (-4.751481741801)
+rbh1 = brhoh/bbh1         !heater-chicane bend radius (m)
+abh1 = asin(lbh/rbh1)     !heater-chicane bend angle (rad)
+lbh1 = rbh1*abh1          !heater-chicane bend path length (m)
+abh1s = asin((lbh/2)/rbh1) !"short" half heater-chicane bend angle (rad)
+lbh1s = rbh1*abh1s         !"short" half heater-chicane bend path length (m)
+abh1l = abh1-abh1s         !"long" half heater-chicane bend angle (rad)
+lbh1l = rbh1*abh1l         !"long" half heater-chicane bend path length (m)
+
+dh00: drift, l = 0.13453045-dlbh/2
+dh01: drift, l = (0.155-dlbh)/cos(abh1), type = "CSR"
+dh02a: drift, l = 0.06717020-dlbh/2, type = "CSR"
+dh03a: drift, l = 0.09290825, type = "CSR"
+dh03b: drift, l = 0.08401830, type = "CSR"
+dh02b: drift, l = 0.09503020-dlbh/2, type = "CSR"
+dh06: drift, l = 0.13010070-dlbh/2, type = "CSR"
+
+htrund: instrument
+
+bxh1a: sbend, hgap = gbh/2, e1 = 0, fint = 0.400, fintx = 0, type = "5D3.9", l = lbh1s, angle =  &
+        lbh1s * (+abh1s)/lbh1s
+bxh1b: sbend, hgap = gbh/2, fint = 0, e2 = +abh1, fintx = 0.400, type = "5D3.9", l = lbh1l, angle &
+         = lbh1l * (+abh1l)/lbh1l
+bxh2a: sbend, hgap = gbh/2, e1 = -abh1, fint = 0.400, fintx = 0, type = "5D3.9", l = lbh1l, angle &
+         = lbh1l * (-abh1l)/lbh1l
+bxh2b: sbend, hgap = gbh/2, fint = 0, e2 = 0, fintx = 0.400, type = "5D3.9", l = lbh1s, angle =  &
+        lbh1s * (-abh1s)/lbh1s
+bxh3a: sbend, hgap = gbh/2, e1 = 0, fint = 0.400, fintx = 0, type = "5D3.9", l = lbh1s, angle =  &
+        lbh1s * (-abh1s)/lbh1s
+bxh3b: sbend, hgap = gbh/2, fint = 0, e2 = -abh1, fintx = 0.400, type = "5D3.9", l = lbh1l, angle &
+         = lbh1l * (-abh1l)/lbh1l
+bxh4a: sbend, hgap = gbh/2, e1 = +abh1, fint = 0.400, fintx = 0, type = "5D3.9", l = lbh1l, angle &
+         = lbh1l * (+abh1l)/lbh1l
+bxh4b: sbend, hgap = gbh/2, fint = 0, e2 = 0, fintx = 0.400, type = "5D3.9", l = lbh1s, angle =  &
+        lbh1s * (+abh1s)/lbh1s
+
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bxh1: sbend, hgap = gbh/2, e1 = 0, fint = 0.400, e2 = +abh1, type = "5D3.9", l = lbh1, angle =  &
+        lbh1 * (+abh1)/lbh1
+bxh2: sbend, hgap = gbh/2, e1 = -abh1, fint = 0.400, e2 = 0, type = "5D3.9", l = lbh1, angle =  &
+        lbh1 * (-abh1)/lbh1
+bxh3: sbend, hgap = gbh/2, e1 = 0, fint = 0.400, e2 = -abh1, type = "5D3.9", l = lbh1, angle =  &
+        lbh1 * (-abh1)/lbh1
+bxh4: sbend, hgap = gbh/2, e1 = +abh1, fint = 0.400, e2 = 0, type = "5D3.9", l = lbh1, angle =  &
+        lbh1 * (+abh1)/lbh1
+
+! Laser-Heater Undulator Model:
+
+lam = 0.054                            !laser-heater undulator period [m]
+lamr = 758e-9                           !heater laser wavelength [m]
+gami = ei/mc2                           !Lorentz energy factor in laser-heater undulator [ ]
+k_und = lsrhtr_on*sqrt(2*(lamr*2*gami^2/lam-1)) !undulator K for laser heater und.
+lhun = 0.506263                         !length of laser-heater undulator
+kqlh = (k_und*2*pi/lam/sqrt(2)/gami)^2  !natural undulator focusing "k" in y-plane [m^-2]
+
+ !VALUE,gami,kqlh,K_und
+
+lhbeg: marker
+lhend: marker
+
+! laser-heater undulator modeled as R-matrix to include vertical natural focusing:
+
+
+!------- Laser Heater Undulator for Copper Linac -------
+my_lh_und_k = 1.38523
+lh_und: wiggler, 
+        type = "laser_heater_undulator",
+        L_period = 0.054, 
+        n_period = 9, 
+        b_max = my_lh_und_k * 2*pi*m_electron / (c_light * 0.054), 
+        L = 0.506263, 
+        ds_step = 0.054
+        
+lh_und[L] = lh_und[L]/2 ! Will be doubled in desplitting process. 
+!---------------------------------
+!old: lh_und: taylor, l = lhun/2, {1: 1.0, 1 0 0 0 0 0}, {1: lhun/2, 0 1 0 0 0 0}, {2: 0.0, 1 0 0 0 0 0 &
+!old         }, {2: 1.0, 0 1 0 0 0 0}, {3: cos(lhun/2*sqrt(kqlh)), 0 0 1 0 0 0}, {3:  &
+!old         sin(lhun/2*sqrt(kqlh))/sqrt(kqlh), 0 0 0 1 0 0}, {4: -sin(lhun/2*sqrt(kqlh))*sqrt(kqlh),  &
+!old         0 0 1 0 0 0}, {4: cos(lhun/2*sqrt(kqlh)), 0 0 0 1 0 0}
+! R56 =  Lhun/2/(gami^2)*(1+(K_und^2)/2)
+
+ !VALUE, LH_UND[R12],Lhun/2
+ !VALUE, LH_UND[R33],cos(Lhun/2*sqrt(kqlh))
+ !VALUE, LH_UND[R34],sin(Lhun/2*sqrt(kqlh))/sqrt(kqlh)
+ !VALUE, LH_UND[R43],-sin(Lhun/2*sqrt(kqlh))*sqrt(kqlh)
+ !VALUE, LH_UND[R44],cos(Lhun/2*sqrt(kqlh))
+ !VALUE, LH_UND[R56],Lhun/2/(gami^2)*(1+(K_und^2)/2)
+
+! DL1
+
+lws01_03 = 3.827458          !distance from WS01 to WS03 wire centers [m] (changed 06MAY05 -PE)
+bmin0 = lws01_03/sqrt(3)/2 !betaX=betaY at WS02 where waist is located (12NOV03 -PE)
+ !VALUE, BMIN0
+
+mrk0: marker
+de00: drift, l = 0.024994
+de00a: drift, l = 0.070613-lqx/2
+de01a: drift, l = 0.130373-lqx/2
+de01b: drift, l = 0.176359-lqx/2
+de01c: drift, l = 0.094781
+de02: drift, l = 0.0897395-lqx/2
+de03a: drift, l = 0.16832-lqx/2
+de03b: drift, l = 0.047581
+de03c: drift, l = 0.190499-lqx/2
+de04: drift, l = 0.197688-lqx/2
+de05: drift, l = 0.151968
+de05a: drift, l = de05[l]/2
+de05c: drift, l = 0.104470
+de06b: drift, l = 0.2478024
+de06a: drift, l = lws01_03/2-de05[l]-de05c[l]-de06b[l]
+de06d: drift, l = 0.1638307
+de06e: drift, l = lws01_03/2-de05[l]-de06d[l]
+de07: drift, l = 0.2045007-lqx/2+0.305e-3
+de08: drift, l = 0.2318721-lqx/2-0.03
+de08a: drift, l = 0.153330+0.03
+de08b: drift, l = 0.170620-lqx/2
+de09: drift, l = 0.27745-lqx/2
+
+dldb00 = -0.54842233769e-6
+
+db00a: drift, l = 0.3997+dldb00, type = "CSR"
+db00b: drift, l = 0.161, type = "CSR"
+db00c: drift, l = 0.2191-lqe/2, type = "CSR"
+db00d: drift, l = 0.342-lqe/2, type = "CSR"
+db00e: drift, l = 0.4378+dldb00, type = "CSR"
+
+dldm00 = 2*abs(dldb00)*cos(adl1/2)
+
+dm00: drift, l = 0.203400-zoffinj+0.03+dldm00, type = "CSR" ! move entire injector ~12 mm dntr. (Nov. 17, 2004 - PE)
+dm00a: drift, l = 0.224683-lqx/2-0.03, type = "CSR"
+dm01: drift, l = 0.142367-lqx/2, type = "CSR"
+dm01a: drift, l = 0.262800-lqx/2, type = "CSR"
+dm02: drift, l = 0.194200-lqx/2
+dm02a: drift, l = 0.157448
+
+! L1
+
+daqa1: drift, l = 0.033450+dz_qa11
+daqa2: drift, l = 0.033450-dz_qa11
+daqa3: drift, l = 0.033450
+daqa4: drift, l = 0.033450
+
+! BC1
+
+lww1 = 1.656196     ! WS11-12 drift length and therefore ~ beam size
+bmin1 = lww1/sqrt(3) ! betaX,Y at WS12
+
+dl1xa: drift, l = 0.093369
+dl1xb: drift, l = 0.2
+dm10a: drift, l = 0.227400-0.022322
+dm10c: drift, l = 0.122322+dz_q21201
+dm10x: drift, l = 0.083617-dz_q21201
+dm11: drift, l = 0.272500+0.006383
+dm12: drift, l = 0.127801
+dbq1: drift, l = (0.400381-lb1/2-lqc/2)/cos(ab11), type = "CSR"
+d11o: drift, l = ld11o-(dbq1[l]+lqc)-2e-7, type = "CSR"
+d11oa: drift, l = ld11oa, type = "CSR"
+d11ob: drift, l = ld11ob-(dbq1[l]+lqc)-2e-7, type = "CSR"
+ddg0: drift, l = 0.1698-0.084915+0.0508-0.0045, type = "CSR"    !additional drift in BC2 center prior to diag. package
+ddga: drift, l = 0.084915+0.0508-0.0045, type = "CSR"           !additional drift in BC2 center prior to diag. package
+ddg1: drift, l = 0.2891-0.04046, type = "CSR"                   !BC1 and BC2 diag. package drifts (BX*2B to BPM)
+ddg2: drift, l = 0.1240+0.04046, type = "CSR"                   !BC1 and BC2 diag. package drifts (BPM to CE)
+ddg3: drift, l = 0.1460+0.036606, type = "CSR"                  !BC1 and BC2 diag. package drifts (CE to OTR)
+ddg4: drift, l = 0.2711-0.036606, type = "CSR"                  !BC1 and BC2 diag. package drifts (OTR to BX*3A)
+dm13a: drift, l = 0.323450/2, type = "CSR"
+dm13b: drift, l = 0.323450/2, type = "CSR"
+dm14a: drift, l = 0.25-0.07615, type = "CSR"
+dm14b: drift, l = 0.15638875-0.0254+0.07615, type = "CSR"
+dm14c: drift, l = 0.15638875+0.0254, type = "CSR"
+dm15a: drift, l = 0.252872-0.1524, type = "CSR"
+dm15b: drift, l = 0.2836740-0.0826, type = "CSR"
+dm15c: drift, l = 0.1524+0.0826, type = "CSR"
+dww1a: drift, l = lww1
+dww1b: drift, l = 0.295
+dww1c1: drift, l = 0.812030-0.295-0.1017
+dww1c2: drift, l = lww1-1.427096+0.1017-0.0142-0.014199
+dww1d: drift, l = 0.346099
+dww1e: drift, l = 0.297366
+dm16: drift, l = 0.25+dz_q21301
+dm17a: drift, l = 0.2658341-dz_q21301
+dm16a: drift, l = 0.0
+dm16b: drift, l = 0.0
+dm17b: drift, l = 0.4008829
+dm17c: drift, l = 0.385417+dz_qm14
+dm18a: drift, l = 0.228300-dz_qm14
+dm18b: drift, l = 0.228200+dz_qm15
+dm19: drift, l = 0.099400-dz_qm15+0.000001 !force Z=2059.732900 m at ZLIN04
+
+! L2 and L3
+
+daq3: drift, l = 0.3533
+daq4: drift, l = 2.5527
+daq5: drift, l = 2.841-0.3048-1.2192
+daq6: drift, l = 0.2373
+daq7: drift, l = 0.2748
+daq8: drift, l = 2.6312
+daq8a: drift, l = 0.5+0.003200
+daq8b: drift, l = 2.1312-0.003200
+daq12: drift, l = 0.2286
+daq13: drift, l = 0.0231
+daq14: drift, l = 0.2130
+daq15: drift, l = 0.0087
+daq16: drift, l = 0.2274
+daq17: drift, l = 0.061900 !30-8c exit to IV30-9
+d255a: drift, l = 0.06621-0.001510
+d255b: drift, l = 0.11184+0.001510
+d255c: drift, l = 0.17805-0.275500+0.25
+d255d: drift, l = 0.03420+0.275500
+d256a: drift, l = 2.350-1.1919-0.559100
+d256b: drift, l = 0.559100
+d256c: drift, l = 0.61475 !0.540500-0.40505
+d256d: drift, l = 0.21115
+
+! BC2
+
+dm21z: drift, l = 0.0828006-0.027
+dm21a: drift, l = 0.3199994
+dm21h: drift, l = 0.193
+dm21b: drift, l = 0.6340002
+dm21c: drift, l = 0.3202404
+dm21d: drift, l = 0.139536
+dm21e: drift, l = 0.1996034-0.0045
+dm20: drift, l = 0.034200
+dbq2a: drift, l = ldo1, type = "CSR"
+d21oa: drift, l = ldo2, type = "CSR"
+d21i: drift, l = ld21i/2, type = "CSR"
+d21ob: drift, l = ldo3, type = "CSR"
+dbq2b: drift, l = ldo4, type = "CSR"
+d21w: drift, l = 0.311000-0.0045, type = "CSR"
+d21x: drift, l = 0.208700, type = "CSR"
+d21y: drift, l = 0.114235, type = "CSR"
+dm23b: drift, l = 0.050405, type = "CSR"
+dm24a: drift, l = 0.129440, type = "CSR"
+dm24b: drift, l = 0.178000, type = "CSR"
+dm24d: drift, l = 0.070700, type = "CSR"
+dm24c: drift, l = 0.106300, type = "CSR"
+dm25: drift, l = 0.160400
+
+! ==============================================================================
+! MARKERs
+! ------------------------------------------------------------------------------
+
+! wire scanners
+
+ws01: marker, type = "slow" !DL1- emittance
+ws02: marker, type = "fast" !DL1- emittance
+ws03: marker, type = "fast" !DL1- emittance
+ws04: marker, type = "slow" !DL1- energy spread
+ws11: marker, type = "slow" !BC1+ emittance
+ws12: marker, type = "slow" !BC1+ emittance
+ws13: marker, type = "slow" !BC1+ emittance
+ !WS21    : MARKER, TYPE="slow" !LI24 emittance
+ !WS22    : MARKER, TYPE="slow" !LI24 emittance
+ !WS23    : MARKER, TYPE="slow" !LI24 emittance
+ws24: marker, type = "slow" !BC2- emittance
+dws21: marker              !someday will be a wire-scanner again?
+dws22: marker              !someday will be a wire-scanner again?
+dws23: marker              !someday will be a wire-scanner again?
+ !DWS24   : MARK              !someday will be a wire-scanner again?
+ws27644: marker, type = "slow" !LI27 emittance (existing; moved)
+ws28144: marker, type = "slow" !LI28 emittance
+ws28444: marker, type = "slow" !LI28 emittance
+ws28744: marker, type = "slow" !LI28 emittance (existing; moved)
+
+! profile monitors
+
+yag01: instrument, type = "YAG" !gun (15.5 in from cathode, per J. Schmerge, June 17, 2003; -PE)
+yag02: instrument, type = "YAG" !gun (need proper positions still - June 10, 2003)
+yag03: instrument, type = "YAG" !after L0-a (~ 60 MeV) - center of device in MAD is defined as center of YAG crystal, not mirror
+yag04: instrument, type = "YAG" !temporarily (Dec. '06 - July '07) placed in laser-heater region (135 MeV) - center of device in MAD is defined as center of YAG crystal, not mirror
+
+ph01: instrument                !phase measurement RF cavity between L0-a and L0-b
+ph02: instrument                !phase measurement RF cavity after BC1
+ph03: instrument                !phase measurement RF cavity after BC2
+vv01: marker                !vacuum valve near gun
+vv02: marker                !vacuum valve in injector
+vv03: marker                !vacuum valve in injector
+vv04: marker                !vacuum valve in injector
+vvx1: marker, type = "MANUAL" !vacuum valve before X-band structure
+vvx2: marker, type = "MANUAL" !vacuum valve after X-band structure
+vv21: marker                !vacuum valve in front of BC2
+vv22: marker                !vacuum valve after BC2
+rst1: instrument                !radiation stopper near WS02 in injector
+
+otrh1: instrument, type = "OTR" !Laser-heater OTR screen just upbeam of heater-undulator (12NOV03 - PE)
+otrh2: instrument, type = "OTR" !Laser-heater OTR screen just dnbeam of heater-undulator (12NOV03 - PE)
+ !DOTRH1   : MARK             !Laser-heater OTR screen PLACE-HOLDER just upbeam of heater-undulator (not installed until summer 2008)
+ !DOTRH2   : MARK             !Laser-heater OTR screen PLACE-HOLDER just dnbeam of heater-undulator (not installed until summer 2008)
+otr1: instrument, type = "OTR" !DL1-emit
+otr2: instrument, type = "OTR" !DL1-emit
+otr3: instrument, type = "OTR" !DL1-emit
+otr4: instrument, type = "OTR" !DL1 slice and proj. energy spread
+otr11: instrument, type = "OTR" !BC1 energy spread
+otr12: instrument, type = "OTR" !BC1 emittance
+otr21: instrument, type = "OTR" !BC2 energy spread
+ !OTR22    : MONITOR, TYPE="OTR" !moved to XLEAP (February 2017)
+otr_tcav: instrument, type = "OTR" !LI25 longitudinal diagnostics
+
+! bunch length monitors
+
+bl11: instrument !BC1+ (CSR-based relative bunch length monitor)
+bl12: instrument !BC1+ (ceramic gap-based relative bunch length monitor)
+bl21: instrument !BC2+ (CSR-based relative bunch length monitor)
+bl22: instrument !BC2+ (ceramic gap-based relative bunch length monitor)
+
+! bunch charge monitors (toroids)
+im01: marker !L0
+im02: marker !L0
+im03: marker !DL1-
+imbc1i: marker !BC1 input toriod (comparator with IMBC1O)
+imbc1o: marker !BC1 output toroid (comparator with IMBC1I)
+imbc2i: marker !BC2 input toroid (comparator with IMBC2O)
+imbc2o: marker !BC2 output toroid (comparator with IMBC2I)
+
+! other diagnostics
+
+fc01: instrument !L0 Faraday cup w/screen
+am00: instrument !gun laser normal incidence mirror
+am01: instrument !alignment mirror
+cr01: instrument !Cerenkov radiator bunch length monitor
+
+! collimators
+
+ce11: rcollimator, type = "HCOLL" !adjustable energy (x) collimator in middle of BC1 chicane
+ce21: rcollimator, type = "HCOLL" !adjustable energy (x) collimator in middle of BC2 chicane
+
+! dumps
+
+td11: instrument !BC1+ insertable block
+
+! miscellany
+
+sol1bk: solenoid, ks = 0, l = 0 !gun-bucking-solenoid (set to zero length and strength, with longitudinal unknown for now)
+cathode: instrument
+sol1: solenoid, ks = 0, l = lsol1/2 !gun-solenoid (set to zero strength)
+sol2: solenoid, ks = 0, l = 0 !2nd-solenoid (set to zero length and strength, with longitudinal position as the actual solenoid's center)
+l0awake: marker
+emat: marker !for Elegant only to remove energy error in DL1 bends
+dlfda: marker !dual-feed input coupler location at start of L0-a RF structure
+l0amid: marker
+outcpa: marker !output coupler location at end of L0-a RF structure
+l0bbeg: marker
+dlfdb: marker !dual-feed input coupler location at start of L0-b RF structure
+l0bmid: marker
+outcpb: marker !output coupler location at end of L0-b RF structure
+cnt0: marker
+xbeg: marker !before X-band RF, but after L1
+xend: marker !after X-band RF, but before BC1
+bc1cbeg: marker !start of BC1 chicane
+cnt1: marker !ELEGANT will correct the orbit here for CSR-steering
+bc1cend: marker !end of BC1 chicane
+li21beg: marker
+li21end: marker
+li22beg: marker
+li22end: marker
+li23beg: marker
+li23end: marker
+li24beg: marker
+li24term: marker !LI24 stops here ... the rest is BC2
+bc2cbeg: marker !start of BC2 chicane
+cnt2: marker !ELEGANT will correct the orbit here for CSR-steering
+bc2cend: marker !end of BC2 chicane
+li25beg: marker
+li25end: marker
+li26beg: marker
+li26end: marker
+li27beg: marker
+li27end: marker
+li28beg: marker
+li28end: marker
+li29beg: marker
+li29end: marker
+li30beg: marker
+li30term: marker !LI30 stops here ... the rest is part of the BSY reconfiguration
+
+! Permanent reference points in the linac (and LTU: Z') Z-coordinate system (in meters)
+! (NOTE: Z' is measured parallel to the undulator axis which is at an angle of
+! 2*AVB [=4.668514 mrad on May 4, 2004] w.r.t. the linac axis):
+! (Note Q20-901 is at 2029.4060 m in drawing ID-380-802-00 pg. 2 - this does not agree
+!  with Woodley/Seeman database at 2029.3939 m.  We assume drawing is right -PE, June 11, 2004)
+! ============================================================================================
+zlin00: marker !face of L0-a entrance flange : Z=2019.106625 (= 1.459000 m from cathode parallel to injector line, X = 9.612087)
+! DBMARK98 : MARK !(135SPECT)135-MeV spect. dump: Z=2036.774471
+zlin01: marker !entrance to 21-1b            : Z=2035.035130 (= 20*101.600 m + 3.0441 m - 0.00897 m: 8/1/05)
+zlin02: marker !center of QUAD LI21 201      : (not used anymore since Q21201 is a few mm off) [was Z=2045.436400 pre 1/11/07]
+zlin03: marker !center of QUAD LI21 301      : (not used anymore since Q21301 is a few mm off) [was Z=2057.855466 pre 1/11/07]
+zlin04: marker !entrance to 21-3b            : Z=2059.732900
+zlin05: marker !start of LI22                : Z=2133.600000
+zlin06: marker !start of LI23                : Z=2235.200000
+zlin07: marker !start of LI24                : Z=2336.800000
+zlin08: marker !center of QUAD LI24 701 (A)  : Z=2410.786000 (not moved)
+zlin09: marker !start of LI25                : Z=2438.400000
+zlin10: marker !start of LI26                : Z=2540.000000
+zlin11: marker !start of LI27                : Z=2641.600000
+zlin12: marker !start of LI28                : Z=2743.200000
+zlin13: marker !start of LI29                : Z=2844.800000
+zlin14: marker !start of LI30                : Z=2946.400000
+! DBMARK29 : MARK !end of linac                 : Z=3042.005000
+! WOODDOOR : MARK !start of BSY                 : Z=3050.512000
+! S100     : MARK !Station 100                  : Z=3048.000000
+
+! ==============================================================================
+! existing XCORs
+! ------------------------------------------------------------------------------
+
+ !XC460009T : HKIC
+ !XC460026T : HKIC
+ !XC460034T : HKIC !do not use to steer ... bad results in Elegant
+ !XC460036T : HKIC !do not use to steer ... bad results in Elegant
+ !XC920020T : HKIC
+ !XC921010T : HKIC !do not use to steer ... bad results in Elegant
+ !XCBSY09   : HKIC !names changed from above to these (Sep. 2008)
+ !XCBSY26   : HKIC
+ !XCBSY36   : HKIC !do not use to steer ... bad results in Elegant
+ !XCBSYQ2   : HKIC, TYPE="class-4" !was XCBSY09 (Mar. 2016)
+xcbsy34: kicker !do not use to steer ... bad results in Elegant
+ !XCBSYQ3   : HKIC, TYPE="class-4" !was XCBSY09 (Mar. 2016)
+xcbsy60: kicker
+xcbsy81: kicker !do not use to steer ... bad results in Elegant
+
+! ==============================================================================
+! new XCORs
+! ------------------------------------------------------------------------------
+
+xc00: kicker, type = "class-S"
+xc01: kicker, type = "class-G"
+xc02: kicker, type = "c-1s-L0a"
+xc03: kicker, type = "class-1s"
+xc04: kicker, type = "class-1s" !fast-feedback (loop-1)
+xc05: kicker, type = "class-1s" !calibrated to <1%
+xc06: kicker, type = "class-1t"
+xc07: kicker, type = "class-1a" !fast-feedback (loop-1)
+xc08: kicker, type = "class-1a"
+xc09: kicker, type = "class-1a"
+xc10: kicker, type = "class-1a"
+
+xc21101: kicker, type = "class-1s"
+xc21135: kicker, type = "class-1s"
+xc21165: kicker, type = "class-1s" !calibrated to <1%
+xc21175: kicker, type = "type-4"   !pulled off structure and replaced on beamline?
+xc21302: kicker, type = "type-4"   !pulled off structure and replaced on beamline?
+xc21191: kicker, type = "class-1x"
+xc21275: kicker, type = "class-1a"
+xc21325: kicker, type = "class-1a"
+
+! ==============================================================================
+! existing YCORs
+! ------------------------------------------------------------------------------
+
+ !YC460010T : VKIC
+ !YC460027T : VKIC !do not use to steer ... bad results in Elegant
+ !YC460035T : VKIC !do not use to steer ... bad results in Elegant
+ !YC460037T : VKIC
+ !YC920020T : VKIC
+ !YC921010T : VKIC !do not use to steer ... bad results in Elegant
+ !YCBSY10   : VKIC ! names changed from above to these (Sep. 2008)
+ !YCBSYQ1   : VKIC, TYPE="class-4" !was YCBSY10 (Mar. 2016)
+ycbsy27: kicker !do not use to steer ... bad results in Elegant
+ !YCBSY35   : VKIC !do not use to steer ... bad results in Elegant
+ycbsy37: kicker
+ !YCBSY62   : VKIC
+ycbsy82: kicker !do not use to steer ... bad results in Elegant
+
+! ==============================================================================
+! new YCORs
+! ------------------------------------------------------------------------------
+
+yc00: kicker, type = "class-S"
+yc01: kicker, type = "class-G"
+yc02: kicker, type = "c-1s-L0a"
+yc03: kicker, type = "class-1s"
+yc04: kicker, type = "class-1s" !fast-feedback (loop-1)
+yc05: kicker, type = "class-1s" !calibrated to <1%
+yc06: kicker, type = "class-1t"
+yc07: kicker, type = "class-1a" !fast-feedback (loop-1)
+yc08: kicker, type = "class-1a"
+yc09: kicker, type = "class-1a"
+yc10: kicker, type = "class-1a"
+
+yc21102: kicker, type = "class-1s"
+yc21136: kicker, type = "class-1s" !calibrated to <1%
+yc21166: kicker, type = "class-1s"
+yc21174: kicker, type = "type-4"
+yc21303: kicker, type = "type-4"   !pulled off structure and replaced on beamline?
+yc21192: kicker, type = "class-1x"
+yc21276: kicker, type = "class-1a"
+yc21325: kicker, type = "class-1a"
+
+yc5: kicker, type = "class-4"
+
+! ==============================================================================
+! existing BPMs
+! ------------------------------------------------------------------------------
+
+bpm21201: instrument, type = "20_um_res"
+bpm21301: instrument, type = "20_um_res"
+bpm21401: instrument, type = "10_um_res"
+bpm21501: instrument, type = "10_um_res"
+bpm21601: instrument, type = "10_um_res"
+bpm21701: instrument, type = "10_um_res"
+bpm21801: instrument, type = "10_um_res"
+bpm21901: instrument, type = "10_um_res"
+bpm22201: instrument, type = "10_um_res"
+bpm22301: instrument, type = "10_um_res"
+bpm22401: instrument, type = "10_um_res"
+bpm22501: instrument, type = "10_um_res"
+bpm22601: instrument, type = "10_um_res"
+bpm22701: instrument, type = "10_um_res"
+bpm22801: instrument, type = "10_um_res"
+bpm22901: instrument, type = "10_um_res"
+bpm23201: instrument, type = "10_um_res"
+bpm23301: instrument, type = "10_um_res"
+bpm23401: instrument, type = "10_um_res"
+bpm23501: instrument, type = "10_um_res"
+bpm23601: instrument, type = "10_um_res"
+bpm23701: instrument, type = "10_um_res"
+bpm23801: instrument, type = "10_um_res"
+bpm23901: instrument, type = "10_um_res"
+bpm24201: instrument, type = "10_um_res"
+bpm24301: instrument, type = "10_um_res"
+bpm24401: instrument, type = "10_um_res"
+bpm24501: instrument, type = "10_um_res"
+bpm24601: instrument, type = "10_um_res"
+bpm24701: instrument, type = "10_um_res"
+
+bpm24901: instrument, type = "10_um_res"
+bpm25201: instrument, type = "10_um_res"
+bpm25301: instrument, type = "10_um_res"
+bpm25401: instrument, type = "10_um_res"
+bpm25501: instrument, type = "10_um_res"
+bpm25601: instrument, type = "10_um_res"
+bpm25701: instrument, type = "10_um_res"
+bpm25801: instrument, type = "10_um_res"
+bpm25901: instrument, type = "10_um_res"
+bpm26201: instrument, type = "10_um_res"
+bpm26301: instrument, type = "10_um_res"
+bpm26401: instrument, type = "10_um_res"
+bpm26501: instrument, type = "10_um_res"
+bpm26601: instrument, type = "10_um_res"
+bpm26701: instrument, type = "10_um_res"
+bpm26801: instrument, type = "10_um_res"
+bpm26901: instrument, type = "10_um_res"
+bpm27201: instrument, type = "10_um_res"
+bpm27301: instrument, type = "10_um_res"
+bpm27401: instrument, type = "10_um_res"
+bpm27501: instrument, type = "10_um_res"
+bpm27601: instrument, type = "10_um_res"
+bpm27701: instrument, type = "10_um_res"
+bpm27801: instrument, type = "10_um_res"
+bpm27901: instrument, type = "10_um_res"
+bpm28201: instrument, type = "10_um_res"
+bpm28301: instrument, type = "10_um_res"
+bpm28401: instrument, type = "10_um_res"
+bpm28501: instrument, type = "10_um_res"
+bpm28601: instrument, type = "10_um_res"
+bpm28701: instrument, type = "10_um_res"
+bpm28801: instrument, type = "10_um_res"
+bpm28901: instrument, type = "10_um_res"
+bpm29201: instrument, type = "10_um_res"
+bpm29301: instrument, type = "10_um_res"
+bpm29401: instrument, type = "10_um_res"
+bpm29501: instrument, type = "10_um_res"
+bpm29601: instrument, type = "10_um_res"
+bpm29701: instrument, type = "10_um_res"
+bpm29801: instrument, type = "10_um_res"
+bpm29901: instrument, type = "10_um_res"
+bpm30201: instrument, type = "10_um_res"
+bpm30301: instrument, type = "10_um_res"
+bpm30401: instrument, type = "10_um_res"
+bpm30501: instrument, type = "10_um_res"
+bpm30601: instrument, type = "10_um_res"
+bpm30701: instrument, type = "10_um_res"
+bpm30801: instrument, type = "10_um_res"
+
+! ==============================================================================
+! new BPMs
+! ------------------------------------------------------------------------------
+
+bpm2: instrument, type = "25_um_res"
+bpm3: instrument, type = "25_um_res"
+bpm5: instrument, type = "25_um_res"
+bpm6: instrument, type = "10_um_res"
+bpm8: instrument, type = "10_um_res"
+bpm9: instrument, type = "25_um_res"
+bpm10: instrument, type = "25_um_res"
+bpm11: instrument, type = "25_um_res"
+bpm12: instrument, type = "25_um_res"
+bpm13: instrument, type = "25_um_res"
+bpm14: instrument, type = "25_um_res"
+bpm15: instrument, type = "25_um_res"
+
+bpma11: instrument, type = "20_um_res"
+bpma12: instrument, type = "20_um_res"
+
+bpms11: instrument, type = "20_um_res"
+bpmm12: instrument, type = "20_um_res"
+bpmm14: instrument, type = "20_um_res"
+
+bpms21: instrument, type = "40_um_res"
+
+! ==============================================================================
+! miscellaneous
+! ------------------------------------------------------------------------------
+
+d10cma: drift, l = 0.127
+
+! ==============================================================================
+! LINE definitions
+! ------------------------------------------------------------------------------
+
+l1c: line = (d9, daq1, qfl1, qfl1, daq1, d9, daq1, qdl1, qdl1, daq1)
+l2c: line = (4*d10, daq1, qfl2, qfl2, daq2, 4*d10, daq1, qdl2, qdl2, daq2)
+l3c: line = (4*d10, daq1, qfl3, qfl3, daq2, 4*d10, daq1, qdl3, qdl3, daq2)
+
+sc1: line = (xc01, yc01)
+ !SC2   : LINE=(XC02,YC02)
+ !SC3   : LINE=(XC03,YC03)
+ !SC4   : LINE=(XC04,YC04)
+ !SC5   : LINE=(XC05,YC05)
+sc7: line = (xc07, yc07)
+sc8: line = (xc08, yc08)
+sc9: line = (xc09, yc09)
+sc10: line = (xc10, yc10)
+ !SC11  : LINE=(XC21101,YC21102)
+ !SCA11 : LINE=(XC21135,YC21136)
+ !SCA12 : LINE=(XC21165,YC21166)
+ !SCM11 : LINE=(XC21191,YC21192)
+scm13: line = (xc21275, yc21276)
+scm15: line = (xc21325, yc21325)
+
+
+
+!************************
+! Replac L0A, L0B by hand
+! Old:
+!  l0a_full: line = (flnga1, 
+!  l0a___1, dlfda, 
+!  l0a___2, sol2, 
+!  l0a___3, xc02, yc02, 
+!  l0a___4, l0amid, 
+!  l0a___5, xc03, yc03, 
+!  l0a___6, outcpa, 
+!  l0a___7, 
+!  flnga2)
+
+!l0b_full: line = (flngb1, l0b___1, dlfdb, l0b___2, xc04, yc04, l0b___3, l0bmid, l0b___4, xc05,  &
+!        yc05, l0b___5, outcpb, l0b___6, flngb2)
+
+call, file = LCLS2cu_replacements.bmad
+!!************************
+
+
+!Old split line: line = (tcav0, xc06, yc06, tcav0)
+
+tcav0_full: line = (tcav0)
+tcav0[L] = 2*tcav0[L]
+xc06[superimpose] = T
+xc06[ref] = tcav0
+yc06[superimpose] = T
+yc06[ref] = tcav0
+l1x_full: line = (xbeg, l1x___1, xc21191, yc21192, l1x___2, xend)
+
+bxh1_full: line = (bxh1a, bxh1b)
+bxh2_full: line = (bxh2a, bxh2b)
+bxh3_full: line = (bxh3a, bxh3b)
+bxh4_full: line = (bxh4a, bxh4b)
+bx01_full: line = (bx01a, bx01b)
+bx02_full: line = (bx02a, bx02b)
+bx11_full: line = (bx11a, bx11b)
+bx12_full: line = (bx12a, bx12b)
+bx13_full: line = (bx13a, bx13b)
+bx14_full: line = (bx14a, bx14b)
+bx21_full: line = (bx21a, bx21b)
+bx22_full: line = (bx22a, bx22b)
+bx23_full: line = (bx23a, bx23b)
+bx24_full: line = (bx24a, bx24b)
+
+
+
+!Old split line: line = (qa01, qa01)
+
+qa01_full: line = (qa01)
+qa01[L] = 2*qa01[L]
+
+
+!Old split line: line = (qa02, bpm5, qa02)
+
+qa02_full: line = (qa02)
+qa02[L] = 2*qa02[L]
+bpm5[superimpose] = T
+bpm5[ref] = qa02
+
+
+!Old split line: line = (qe01, bpm6, qe01)
+
+qe01_full: line = (qe01)
+qe01[L] = 2*qe01[L]
+bpm6[superimpose] = T
+bpm6[ref] = qe01
+
+
+!Old split line: line = (qe02, qe02)
+
+qe02_full: line = (qe02)
+qe02[L] = 2*qe02[L]
+
+
+!Old split line: line = (qe03, bpm8, qe03)
+
+qe03_full: line = (qe03)
+qe03[L] = 2*qe03[L]
+bpm8[superimpose] = T
+bpm8[ref] = qe03
+
+
+!Old split line: line = (qe04, bpm9, qe04)
+
+qe04_full: line = (qe04)
+qe04[L] = 2*qe04[L]
+bpm9[superimpose] = T
+bpm9[ref] = qe04
+
+
+!Old split line: line = (qm01, bpm11, qm01)
+
+qm01_full: line = (qm01)
+qm01[L] = 2*qm01[L]
+bpm11[superimpose] = T
+bpm11[ref] = qm01
+
+
+!Old split line: line = (qm02, bpm12, qm02)
+
+qm02_full: line = (qm02)
+qm02[L] = 2*qm02[L]
+bpm12[superimpose] = T
+bpm12[ref] = qm02
+
+
+!Old split line: line = (qb, bpm13, qb)
+
+qb_full: line = (qb)
+qb[L] = 2*qb[L]
+bpm13[superimpose] = T
+bpm13[ref] = qb
+
+
+!Old split line: line = (qm03, bpm14, qm03)
+
+qm03_full: line = (qm03)
+qm03[L] = 2*qm03[L]
+bpm14[superimpose] = T
+bpm14[ref] = qm03
+
+
+!Old split line: line = (qm04, bpm15, qm04)
+
+qm04_full: line = (qm04)
+qm04[L] = 2*qm04[L]
+bpm15[superimpose] = T
+bpm15[ref] = qm04
+
+
+!Old split line: line = (q21201, bpm21201, zlin02, q21201)
+
+q21201_full: line = (q21201)
+q21201[L] = 2*q21201[L]
+bpm21201[superimpose] = T
+bpm21201[ref] = q21201
+zlin02[superimpose] = T
+zlin02[ref] = q21201
+
+
+!Old split line: line = (qm11, qm11)
+
+qm11_full: line = (qm11)
+qm11[L] = 2*qm11[L]
+
+
+!Old split line: line = (cq11, cq11)
+
+cq11_full: line = (cq11)
+cq11[L] = 2*cq11[L]
+
+
+!Old split line: line = (sq13, sq13)
+
+sq13_full: line = (sq13)
+sq13[L] = 2*sq13[L]
+
+
+!Old split line: line = (cq12, cq12)
+
+cq12_full: line = (cq12)
+cq12[L] = 2*cq12[L]
+
+
+!Old split line: line = (qm12, qm12)
+
+qm12_full: line = (qm12)
+qm12[L] = 2*qm12[L]
+
+
+!Old split line: line = (qm13, bpmm12, qm13)
+
+qm13_full: line = (qm13)
+qm13[L] = 2*qm13[L]
+bpmm12[superimpose] = T
+bpmm12[ref] = qm13
+
+
+!Old split line: line = (q21301, bpm21301, zlin03, q21301)
+
+q21301_full: line = (q21301)
+q21301[L] = 2*q21301[L]
+bpm21301[superimpose] = T
+bpm21301[ref] = q21301
+zlin03[superimpose] = T
+zlin03[ref] = q21301
+
+
+!Old split line: line = (qm14, bpmm14, qm14)
+
+qm14_full: line = (qm14)
+qm14[L] = 2*qm14[L]
+bpmm14[superimpose] = T
+bpmm14[ref] = qm14
+
+
+!Old split line: line = (qm15, qm15)
+
+qm15_full: line = (qm15)
+qm15[L] = 2*qm15[L]
+
+
+!Old split line: line = (q24701a, zlin08, q24701a)
+
+q24701a_full: line = (q24701a)
+q24701a[L] = 2*q24701a[L]
+zlin08[superimpose] = T
+zlin08[ref] = q24701a
+
+
+!Old split line: line = (q24701b, bpm24701, q24701b)
+
+q24701b_full: line = (q24701b)
+q24701b[L] = 2*q24701b[L]
+bpm24701[superimpose] = T
+bpm24701[ref] = q24701b
+
+
+!Old split line: line = (qm21, qm21)
+
+qm21_full: line = (qm21)
+qm21[L] = 2*qm21[L]
+
+
+!Old split line: line = (cq21, cq21)
+
+cq21_full: line = (cq21)
+cq21[L] = 2*cq21[L]
+
+
+!Old split line: line = (cq22, cq22)
+
+cq22_full: line = (cq22)
+cq22[L] = 2*cq22[L]
+
+
+!Old split line: line = (qm22, qm22)
+
+qm22_full: line = (qm22)
+qm22[L] = 2*qm22[L]
+
+
+!Old split line: line = (q24901a, bpm24901, q24901a)
+
+q24901a_full: line = (q24901a)
+q24901a[L] = 2*q24901a[L]
+bpm24901[superimpose] = T
+bpm24901[ref] = q24901a
+
+
+!Old split line: line = (q24901b, q24901b)
+
+q24901b_full: line = (q24901b)
+q24901b[L] = 2*q24901b[L]
+
+
+
+!Old split line: line = (sol1, cq01, xc00, yc00, sq01, sol1)
+
+sol1_full: line = (sol1)
+sol1[L] = 2*sol1[L]
+cq01[superimpose] = T
+cq01[ref] = sol1
+xc00[superimpose] = T
+xc00[ref] = sol1
+yc00[superimpose] = T
+yc00[ref] = sol1
+sq01[superimpose] = T
+sq01[ref] = sol1
+
+
+
+!Old split line: line = (lh_und, htrund, lh_und)
+
+lh_und_full: line = (lh_und)
+lh_und[L] = 2*lh_und[L]
+htrund[superimpose] = T
+htrund[ref] = lh_und
+
+gunbxg: line = (dl00, loadlock, beggun, sol1bk, dbmark80, cathode, dl01a, sol1_full, dl01a1, vv01 &
+        , dl01a2, am00, dl01a3, am01, dl01a4, yag01, dl01a5, fc01, dl01b, im01, dl01c, sc1, dl01h &
+        , bpm2, dl01d, dbmark81, endgun)
+
+bxgl0a: line = (begl0, dbxg, dl01e, bpm3, dl01f, cr01, dl01f2, yag02, dl01g, zlin00, l0a_full,  &
+        l0awake)
+
+gunl0a: line = (gunbxg, bxgl0a)
+
+l0al0b: line = (l0bbeg, dl02a1, yag03, dl02a2, dl02a3, qa01_full, dl02b1, ph01, dl02b2, qa02_full &
+        , dl02c, l0b_full, endl0)
+
+lsrhtr: line = (lhbeg, bxh1_full, dh01, bxh2_full, dh02a, otrh1, dh03a, lh_und_full, dh03b, otrh2 &
+        , dh02b, bxh3_full, dh01, bxh4_full, lhend)
+
+dl1_1: line = (begdl1_1, emat, de00, de00a, qe01_full, de01a, im02, de01b, vv02, de01c, qe02_full &
+        , dh00, lsrhtr, dh06, tcav0_full, de02, qe03_full, de03a, de03b, sc7, de03c, qe04_full,  &
+        de04, ws01, de05, otr1, de05c, vv03, de06a, rst1, de06b, ws02, de05a, mrk0, de05a, otr2,  &
+        de06d, bpm10, de06e, ws03, de05, otr3, de07, qm01_full, de08, sc8, de08a, vv04, de08b,  &
+        qm02_full, de09, dbmark82, enddl1_1)
+
+dl1_2: line = (begdl1_2, bx01_full, db00a, otr4, db00b, sc9, db00c, qb_full, db00d, ws04, db00e,  &
+        bx02_full, cnt0, dbmark83, dm00, sc10, dm00a, qm03_full, dm01, dm01a, qm04_full, dm02,  &
+        im03, dm02a, enddl1_2)
+
+dl1: line = (dl1_1, dl1_2) !nominal LCLS DL1 layout with BX01/BX02 bends on
+
+diag1: line = (ddg1, bpms11, ddg2, ce11, ddg3, otr11, ddg4)
+bc1c: line = (bc1cbeg, bx11_full, dbq1, cq11_full, d11o, bx12_full, diag1, bx13_full, d11oa,  &
+        sq13_full, d11ob, cq12_full, dbq1, bx14_full, cnt1, bc1cend)
+bc1i: line = (dl1xa, vvx1, dl1xb, l1x_full, dm10a, vvx2, dm10c, q21201_full, dm10x, imbc1i, dm11 &
+        , qm11_full, dm12)
+bc1e: line = (dm13a, bl11, dm13b, qm12_full, dm14a, dm14b, imbc1o, dm14c, qm13_full, dm15a, bl12 &
+        , dm15b, scm13, dm15c, ws11, dww1a, ws12, dww1b, otr12, dww1c1, ph02, dww1c2, xc21302,  &
+        dww1d, yc21303, dww1e, ws13, dm16, q21301_full, dm17a, dm17b, td11, dm17c, qm14_full,  &
+        dm18a, scm15, dm18b, qm15_full, dbmark28, dm19)
+bc1: line = (begbc1, bc1i, bc1c, bc1e, endbc1)
+
+diag2: line = (ddg1, bpms21, ddg2, ce21, ddg3, otr21, ddg4)
+bc2c1: line = (bc2cbeg, bx21_full, dbq2a, cq21_full, d21oa, bx22_full, ddg0, diag2, ddga,  &
+        bx23_full, d21ob, cq22_full, dbq2b, bx24_full, cnt2, bc2cend)
+bc2: line = (begbc2, dm20, q24701a_full, d10cma, q24701b_full, dm21z, dm21a, ws24, dm21h, imbc2i &
+        , dm21b, vv21, dm21c, qm21_full, dm21d, dm21e, bc2c1, d21w, d21x, bl21, d21y, dm23b,  &
+        qm22_full, dm24a, vv22, dm24b, dm24d, q24901a_full, dm24c, q24901b_full, dm25, endbc2)
+
+ecell: line = (qe31, dqec, dqec, qe32, qe32, dqec, dqec, qe31)
+
+! ------------------------------------------------------------------------------
+

@@ -1,0 +1,52 @@
+
+! *** OPTICS=AD_ACCEL-13JUN19 ***
+
+! CU_SFTH path configurations
+
+setsp = 0
+setcus = 0
+setal = 0
+setda = 0
+sethxrss = 0 !set to 1 to turn ON HXR self-seeding chicane
+setsxrss = 0 !set to 1 to turn ON SXR self-seeding chicane
+setxleap2 = 0 !set to 1 to turn ON XLEAP-II components
+
+intgsx = 20.0   !kG (30.0)
+intghx = 40.0   !kG
+ebc2cu = 4.300 !GeV
+efcu = 13.640 !GeV
+eucu = 13.640 !GeV
+
+call, filename = "LCLS2cu_master.bmad" !calls other xsif files
+
+q50q3[k1] = 0.385752335743
+q4[k1] = -0.220385532634
+q5[k1] = 0.172839699359
+q6[k1] = -0.115520035877
+qa0[k1] = 0.115396472684
+qvm1[k1] = -0.337436663026
+qvm2[k1] = 0.236576383993
+qvm3[k1] = 0.71515053765
+qvm4[k1] = -0.681649920856
+qum1[k1] = 0.265384062224 ! 0.265843852443
+qum2[k1] = -0.236197967124 !-0.23723331482
+qum3[k1] = 0.165786910657 ! 0.165420280362
+qum4[k1] = -0.176289890719 !-0.174981185812
+qhxh46[k1] = -0.456644089634 !-0.462007123826
+que1[k1] = -0.092119193855 !-0.094048953252
+que2[k1] = 0.157955482519 ! 0.160549634478
+qdmp1[k1] = -0.155219342716 !-0.155211312125
+qdmp2[k1] = -0.155219342716 !-0.155211312125
+
+!-!  COMMENT !to generate SURVEY
+!-!    USE, CU_SFTH !start at gun
+!-!    ! initial energy: E00
+!-!    ! initial SURVEY: Xi, 0, Zi, ADLi, 0, 0
+!-!  ENDCOMMENT
+
+ !COMMENT !to generate TWISS
+    ! initial energy: E00
+    ! initial Twiss : CBETX, CALFX, CBETY, CALFY
+ !ENDCOMMENT
+
+use, cu_sfth !start at gun

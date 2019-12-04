@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-2019next ***
+! *** OPTICS=AD_ACCEL-05DEC19 ***
 
 ! LCLS2sc bunch compressor chicane #2
 
@@ -115,7 +115,7 @@
   GB2      := 0.03335
   ZB2      := 0.549
   FB2      := 0.6287
-  AB2      := 0.0424879168 !R56=0.037
+  AB2      := 0.043924602172 !R56=0.03955
   BB2      := Brho2*SIN(AB2)/ZB2
   AB2_2    := AB2*AB2
   AB2_4    := AB2_2*AB2_2
@@ -148,13 +148,24 @@
   BCX24b : SBEN, TYPE="1D19.7", L=LB2S, ANGLE=+AB2S, HGAP=GB2/2, &
                  FINT=0, E2=0, FINTX=FB2
 
+! define unsplit SBENs for BMAD ... not used by MAD
+
+  BCX21 : SBEN, TYPE="1D19.7", HGAP=GB2/2, L=LB2, ANGLE=+AB2, &
+                E1=0, FINT=FB2, E2=+AB2, FINTX=FB2
+  BCX22 : SBEN, TYPE="1D19.7", HGAP=GB2/2, L=LB2, ANGLE=-AB2, &
+                E1=-AB2, FINT=FB2, E2=0, FINTX=FB2
+  BCX23 : SBEN, TYPE="1D19.7", HGAP=GB2/2, L=LB2, ANGLE=-AB2, &
+                E1=0, FINT=FB2, E2=-AB2, FINTX=FB2
+  BCX24 : SBEN, TYPE="1D19.7", HGAP=GB2/2, L=LB2, ANGLE=+AB2, &
+                E1=+AB2, FINT=FB2, E2=0, FINTX=FB2
+
 ! ==============================================================================
 ! QUAD
 ! ------------------------------------------------------------------------------
 
 ! L2 to BC2 chicane
 
-  KQ2C01 := 0.50920540285
+  KQ2C01 := 0.509106837541
 
   Q2C01 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQ2C01
 
@@ -168,10 +179,10 @@
 
 ! match into L3
 
-  KQE201 := -1.315553716994
-  KQE202 :=  1.992839578601
-  KQE203 := -1.823196901024
-  KQE204 :=  1.65279531646
+  KQE201 := -1.311184352516
+  KQE202 :=  1.991949996425
+  KQE203 := -1.816251165832
+  KQE204 :=  1.650789479332
 
   QE201 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1= KQE201
   QE202 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1= KQE202

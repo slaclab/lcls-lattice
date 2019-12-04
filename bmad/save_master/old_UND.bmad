@@ -1,0 +1,1813 @@
+
+! *** OPTICS=AD_ACCEL-13JUN19 ***
+
+! LCLS2sc undulator and undulator extension
+
+! ==============================================================================
+! Modification History
+! ------------------------------------------------------------------------------
+! 10-MAY-2019, M. Woodley
+!  * move BLM's in HXR cells from before undulator to after per H.-D. Nuhn
+! 30-APR-2019, M. Woodley
+!  * remove M1, M2, and YAGBRAG from HXRSS self-seeding chicane per H.-D. Nuhn
+! 19-FEB-2019, M. Woodley
+!  * move SXRSS self-seeding chicane from undulator cell 33 to cell 35 per
+!    G. Marcus (DCR_2018-012)
+!  * move undulator 35 and associated devices to cell 33 (replace "35" with
+!    "33" in device names)
+! ------------------------------------------------------------------------------
+! 08-JAN-2019, M. Woodley
+!  * define HXRSS and SXRSS chicane bend angles (rather than integrated
+!    strengths) to allow constant R56 when energy changes
+!  * set nominal SXRSS beam offset to +17.0 mm per G. Marcus
+!  * set nominal HXRSS R56 to +15.0 um per G. Marcus
+! ------------------------------------------------------------------------------
+! 27-NOV-2018, M. Woodley
+!  * move definition of Eu to LCLS2sc_master.xsif and LCLS2cu_master.xsif
+!    (for BMAD compatability)
+! 29-MAY-2018, M. Woodley
+!  * install LCLS HXRSS self-seeding chicane in HXR cell #28 per
+!    LCLSII-3.2-PR-0102-R1; chicane is off for high-rate beams from SC linac
+!  * install LCLS SXRSS self-seeding chicane in SXR cell #33 per
+!    LCLSII-3.2-PR-0101-R0
+! 30-APR-2018, M. Woodley
+!  * set aperture radius of PCPM0/PCPM0B to 1.75 cm (circular) per RP-14-15-R5
+!    section 4.3 (two permanant magnet bends in SXR safety dump line)
+! 27-APR-2018, M. Woodley
+!  * add a second set of beam phase monitors 1.5 m u/s of original set per
+!    C. Xu (TID); original cavities (PH31-32,PH31B-32B, for low-rate beam) are
+!    2805 MHz ... new cavities (PH33-34,PH33B-34B, for high-rate beam) will be
+!    2604 MHz; all but original LCLS cavities (PH31-32) are deferred
+! ------------------------------------------------------------------------------
+! 22-JAN-2018, M. Woodley
+!  * move SXR phase shifters 5 mm upstream per D. Bruch
+! 20-DEC-2017, M. Woodley
+!  * defer (level 0) PH31b and PH32b
+! 04-DEC-2017, M. Woodley
+!  * define dzHXTES parameter to adjust lengths of DUE5e and DDLWALL by ~0.7 um
+!    to set BSY-Z of MDLWALL to exactly 685 m (to align with HXR XTES system)
+!  * define drifts DUE5eB and DDLWALLB (DUE5e and DDLWALL on SXR side)
+!  * define dzSXTES parameter to adjust lengths of DUE5eB and DDLWALLB by ~0.7 um
+!    to set BSY-Z of MDLWALLb to exactly 685 m (to align with SXR XTES system)
+! ------------------------------------------------------------------------------
+! 06-SEP-2017, Y. Nosochkov
+!  * move PH32, PH32B 0.012 m upstream to Z = 674.062492 (BSY coordinates)
+!    (M. Kosovsky)
+!  * change length of DU2h drift from negative value to zero, adjust lengths
+!    of nearby drifts to keep the same device positions
+!  * update definition of phase shifters in undulators (H.-D. Nuhn),
+!    increase phase shifter period to 75 mm (SXR) and 45 mm (HXR),
+!    define phase shifter undulator K-parameter through phase integral (PI)
+!  * note: the present setting of the integrated field IntgHX of HXR undulator
+!    quadrupoles is 12 kG. Per H.-D. Nuhn, it needs to be increased to 26 kG.
+!    This however, does not match well with the dumpline optics at 4 GeV.
+!    Additional quad(s) may need to be included downstream of the undulator
+!    or in the dumpline -- to be studied
+! 05-SEP-2017, M. Woodley
+!  * move IntgSX and IntgHX defn's to LCLS2sc_main.xsif and LCLS2cu_main.xsif
+!  * move XbandF definition to common.xsif
+! ------------------------------------------------------------------------------
+! 05-MAY-2017, M. Woodley
+!  * Beam Loss Monitors (BLMS*, BLMH*): keyword=INST
+! ------------------------------------------------------------------------------
+! 24-FEB-2017, Y. Nosochkov
+!  * update device positions in the undulator cells (D. Bruch)
+!    note that RFBHX12 moves upstream into LTUH
+!  * remove RFBHX49 (D. Bruch, H-D. Nuhn)
+!  * move RFBHX51, RFBSX51 0.057 m upstream (D. Bruch)
+!  * move BTMQUEB 0.1016 m downstream (M. Owens)
+! ------------------------------------------------------------------------------
+! 02-NOV-2016, Y. Nosochkov
+!  * specify half-aperture of PCTCX, PCTCXB to be 4.5 mm (per deck note)
+! ------------------------------------------------------------------------------
+! 24-JUN-2016, Y. Nosochkov
+!  * defer PCTCXB, SPTCXB to level @1 (P. Emma)
+!  * change the type of existing BPMUE1, BPMUE2 from Stripline-1 to
+!    Stripline-13 (M. Woodley, Alev)
+!  * change the type of BPMUE1B, BPMUE2B from Stripline-1 to Stripline-5 to
+!    fit the 2Q10 quads
+!  * remove existing toroids IMUNDO, IMBCS3 as they are not compatible
+!    with SCRF beam (S. Mao, P. Emma)
+!  * remove deferred IMUNDOB (S. Mao)
+!  * update positions of BPMUE1&2, BPMUE1B&2B and BTMQUEB (M. Owens)
+! ------------------------------------------------------------------------------
+! 26-FEB-2016, Y. Nosochkov
+!  * replace the HXR undulator with HGVPU undulator (D. Bruch, M. Rowen)
+!  * VPU undulator length: 3.373968 m
+!  * VPU undulator cell length: 4.01266666667 m
+!  * same undulator period and K-value in VPU as before (H-D. Nuhn)
+!  * move the RFBHX16, previously located upstream of undulator, to just after
+!    the VPU undulator and rename to RFBHX49 -- this keeps the number
+!    of RFBPMs unchanged
+! 26-FEB-2016, M. Woodley
+!  * remove SEQnn MARKers
+!  * define new areas: UEH (HXR end to BYD1) and UES (SXR end to BYD1B)
+! ------------------------------------------------------------------------------
+! 24-AUG-2015, Y. Nosochkov
+!  * adjust positions of BPMUE1, BPMUE2 (per M. Owens)
+!  * match dumpline optics to new TCAV/OTR constraints (per Y. Ding)
+! ------------------------------------------------------------------------------
+! 19-JUN-2015, Y. Nosochkov
+!  * assign IMUNDO, IMUNDOb to be BCS current monitors
+! 20-MAY-2015, Y. Nosochkov
+!  * change the status of BPMUE1, BPMUE2, BPMUE1B, BPMUE2B from deferred
+!    to baseline
+!  * update aperture of PCPM0, PCPM0B (per Shanjie)
+!  * defer THz Be foils TRUE1, TRUE1B at level @5 (per Tor and A. Fisher)
+! ------------------------------------------------------------------------------
+! 20-MAR-2015, M. Woodley
+!  * assign TYPEs to BCS devices ... defer at level 0
+! 12-MAR-2015, Y. Nosochkov
+!  * change type of QUE1B, QUE2B from "1.97Q10" to "2Q10"
+! ------------------------------------------------------------------------------
+! 12-DEC-2014, M. Woodley
+!  * change some RFBs (defer=2) to BPMs (defer=0)
+!  * assign BPM TYPE attributes per PRD LCLSII-2.4-PR-0136
+! 09-DEC-2014, Y. Nosochkov
+!  * restore dumpline toroid IMBCS3 in HXR (per LCLSII-2.4-PR-0107)
+!  * assign the non-baseline level "4" to TRUE1b (Be foil, THz) in SXR
+!  * change type of QUE1b, QUE2b to "1.97Q10"
+!  * change type of undulator quads to "0.433Q3.1" (per J. Amann)
+!  * rename BTM0, BTM0b to BTMQUE, BTMQUEb (per Shanjie Xiao)
+!  * add BTM0, BTM0b downstream of PCPM0 and PCPM0b (per Shanjie Xiao)
+!  * change stripline to RF bpms in the SXR undulator extension:
+!    BPMSX16 -> RFBSX16, BPMSX19 -> RFBSX19, BPMSX21 -> RFBSX21
+!  * add PH31, PH32, PH31b, PH32b post-undulator phase measurement cavities
+! ------------------------------------------------------------------------------
+! 13-OCT-2014, Y. Nosochkov
+!  * remove RFBUE3, RFBUE3B in the dumplines
+!  * replace XCUE1 -> YCUE1, YCUE2 -> XCUE2, XCUE1b -> YCUE1b, YCUE2b -> XCUE2b
+!  * add marker for dumpline wall
+! 10-OCT-2014, Y. Nosochkov
+!  * update TYPE of (6) RFBPMs to indicate the non-baseline level "0"
+! 07-AUG-2014, M. Woodley
+!  * decorate device TYPE attributes to indicate non-baseline status
+! 31-JUL-2014, Y. Nosochkov
+!  * remove IMBCS3, IMBCS3b
+! 23-JUL-2014, Y. Nosochkov
+!  * remove SXR extension cell SXCEL15, use this space (4.4 m) for moving
+!    TDUNDb 2.8 m downstream,
+!  * replace the quads QSXh15 and QSXh22 with QSXh16 and QSXh21
+! 17-JUN-2014, Y. Nosochkov
+!  * replace all stripline BPMs downstream of the undulators with RFBPMs
+!    (per J. Frisch)
+!  * change type of IMUNDO, IMUNDOB from toroid to beam current monitor
+!    (per J. Frisch)
+! 21-MAY-2014, Y. Nosochkov
+!  * move marker points ENDSXR, BEGDMPS and ENDHXR, BEGDMPH to the downstream
+!    end of RFBSX51 and RFBHX51 in order to include these RFBPMs into the
+!    SXR and HXR areas as defined in PRD LCLSII-2.1-PR-0134
+!    (per request from D. Hanquist)
+! 02-MAY-2014, M. Woodley
+!  * add MTCX01 and MTCX01b MARKERs (for ELEGANT WATCH points)
+!  * explicitly define R55=R66=1 in MATRs (for translation to BMAD)
+! 24-APR-2014, Y. Nosochkov
+!  * include place holder DBKXDMPS(H) for dumpline x-kicker (per J. Frisch)
+! 22-APR-2014, Y. Nosochkov
+!  * restore T-cavities TCX01B, TCX02B in SXR dumpline (per J. Frisch)
+! 07-APR-2014, M. Woodley
+!  * move undulator phase shifter definitions earlier in this file to avoid
+!    using LPSSH and LPSHX parameters before they are defined
+! ------------------------------------------------------------------------------
+! 31-MAR-2014, M. Woodley
+!  * element names changed to conform to nomenclature PRD
+! 26-MAR-2014, Y. Nosochkov
+!  * put phase shifter and RFBPM positions back to 03/14 version
+! 21-MAR-2014, Y. Nosochkov
+!  * update positions of phase shifters and RFBPMs in undulator cells
+!  * add Y-corrector to each undulator
+!  * update phase shifter parameters (per H-D. Nuhn)
+! 07-MAR-2014, Y. Nosochkov
+!  * remove transverse deflecting cavities from SXR dumpline
+!  * slightly adjust Z-position of dumpline bends
+! 06-MAR-2014, Y. Nosochkov
+!  * minor matching update
+! ------------------------------------------------------------------------------
+! 28-FEB-2014, Y. Nosochkov
+!  * reduce undulator break length from 1.15 m to 1.0 m for cell length of 4.4 m
+!    use cell numbering from 15 to 50 (this includes cells with and without
+!    undulators)
+!    put SXR undulators in cells 26-32, 34-47
+!    put HXR undulators in cells 17-23, 25-31, 33-50
+!    the SXR cell-33 and HXR cells 24 and 32 have only quad and RFBPM --
+!    these cells will be used for self-seeding
+!    reduce length of undulator quadrupole to 0.084 m
+!    add one extra RFBPM about ~1 m after end of cell-50 in SXR and HXR
+!    add two RFBPMs in two cells upstream of SXR and HXR undulators
+!    use the last undulator quadrupole in cell-50 for matching to dump line
+! 17-JAN-2014, Y. Nosochkov
+!  * minor matching update
+! 18-DEC-2013, Y. Nosochkov
+!  * minor matching update
+! 16-DEC-2013, Y. Nosochkov
+!  * minor matching update
+! 23-OCT-2013, Y. Nosochkov
+!  * change the number of SXR undulator cells to 22 and the number of
+!    SXR extension cells to 12
+!  * change the number of HXR undulator cells to 34
+!  * change undulator cell length to 4.55 m
+!  * update undulator parameters and undulator quad field (per H.-D. Nuhn)
+!  * new position of SXRTERM, HXRTERM is at Z'=669.586491 m in BSY coordinates
+!  * move QUE1, QUE1B 4.0 m downstream
+!  * adjust strengths in the last two undulator quads to help with
+!    beta match in the dumpline
+! 17-OCT-2013, Y. Nosochkov
+!  * change quadrupole type of QUE1B, QUE2B, QDMP1B, QDMP2B to 3.94Q17
+! ------------------------------------------------------------------------------
+
+! ==============================================================================
+! SXR undulator and extension (north)
+! ==============================================================================
+
+! ------------------------------------------------------------------------------
+! SXR undulator PPM phase shifter
+! - Author: Heinz-Dieter Nuhn, Stanford Linear Accelerator Center
+! - Last edited September 06, 2017
+! - 10.0 mm miminum Undulator Gap
+! ------------------------------------------------------------------------------
+! - LPSSX  = SXR Phase Shifter length
+! - luPSSX = SXR Phase Shifter period
+! - PIPSSX = SXR Phase Shifter phase integral
+! - KPSSX  = SXR Phase Shifter Undulator parameter (rms); range 1.34-3.59
+! - kQPSSX = natural SXR Phase Shifter undulator focusing "k" in y-plane
+! ------------------------------------------------------------------------------
+
+ !Eu     :  definition moved to LCLS2sc_master.xsif and LCLS2cu_master.xsif
+gamu = eu/mc2                             !Lorentz energy factor in undulator [ ]
+lpssx = 0.0825                             !m
+lupssx = 0.075                              !m
+lpssxh = lpssx/2
+pipssx = 3814                               !T^2mm^3 (180-3814)
+kpssx = 1.e-9*c_light/mc2*sqrt(2.e-9*pipssx/lupssx)
+kqpssx = (kpssx*2*pi/lupssx/sqrt(2)/gamu)^2 !m^-2
+
+pssxh: taylor, type = "PSSXh", l = lpssxh, {1: 1.0, 1 0 0 0 0 0}, {1: lpssxh, 0 1 0 0 0 0}, {2:  &
+        0.0, 1 0 0 0 0 0}, {2: 1.0, 0 1 0 0 0 0}, {3: cos(lpssxh*sqrt(kqpssx)), 0 0 1 0 0 0}, {3 &
+        : sin(lpssxh*sqrt(kqpssx))/sqrt(kqpssx), 0 0 0 1 0 0}, {4:  &
+        -sin(lpssxh*sqrt(kqpssx))*sqrt(kqpssx), 0 0 1 0 0 0}, {4: cos(lpssxh*sqrt(kqpssx)),  &
+        0 0 0 1 0 0}, {5: 1.0, 0 0 0 0 1 0}, {6: 1.0, 0 0 0 0 0 1}
+
+! ------------------------------------------------------------------------------
+! SXR drifts
+! ------------------------------------------------------------------------------
+
+ldusegs = 3.4
+ldu1s = 0.1
+ldu2s = 0.03
+ldu3s = 0.25-lpssxh-0.04-0.005
+ldu4s = (0.25-lpssxh-0.5*lqu)/2+0.04+0.005
+ldu5s = (0.25-lpssxh-0.5*lqu)/2
+ldu6s = 0.12-lqu/2-lrfbub/2+0.01
+ldu7s = 0.25-lrfbub/2-0.01
+dldu0s = 0.0 !fine tune Z in undulator
+ldu0s = 2.1359-ldu6s-ldu7s-lqu+dldu0s
+
+du0s: drift, l = ldu0s
+du1s: drift, l = ldu1s
+du2s: drift, l = ldu2s
+du3s: drift, l = ldu3s
+du4s: drift, l = ldu4s
+du5s: drift, l = ldu5s
+du6s: drift, l = ldu6s
+du7s: drift, l = ldu7s
+
+due1ab: drift, l = 0.9-lrfbub-0.057
+due1e: drift, l = 0.057
+
+! ------------------------------------------------------------------------------
+! SXR extension quads
+! ------------------------------------------------------------------------------
+
+! note: the below K-values are for SC beam; the settings for Cu beam are
+! in the "LCLS2cu_main.mad8" file
+
+kqsx16 = 0.589502458599 ! 0.584170476419
+kqsx19 = -0.91531741252  !-0.916029555737
+kqsx21 = 1.109876931688 ! 1.112214118849
+kqsx24 = -1.085714742294 !-1.119664961437
+
+qsxh16: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqsx16
+qsxh19: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqsx19
+qsxh21: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqsx21
+qsxh24: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqsx24
+
+! ------------------------------------------------------------------------------
+! SXR extension X-steering coils in quads
+! ------------------------------------------------------------------------------
+
+xcsx16: kicker, type = "type-U"
+xcsx19: kicker, type = "type-U"
+xcsx21: kicker, type = "type-U"
+xcsx24: kicker, type = "type-U"
+
+! ------------------------------------------------------------------------------
+! SXR extension Y-steering coils in quads
+! ------------------------------------------------------------------------------
+
+ycsx16: kicker, type = "type-U"
+ycsx19: kicker, type = "type-U"
+ycsx21: kicker, type = "type-U"
+ycsx24: kicker, type = "type-U"
+
+! ------------------------------------------------------------------------------
+! SXR extension BPMs
+! ------------------------------------------------------------------------------
+
+rfbsx16: instrument, l = lrfbub, type = "CavityX-1"
+drfbs17: drift, l = lrfbub
+drfbs18: drift, l = lrfbub
+rfbsx19: instrument, l = lrfbub, type = "CavityX-1"
+drfbs20: drift, l = lrfbub
+rfbsx21: instrument, l = lrfbub, type = "CavityX-1"
+drfbs22: drift, l = lrfbub
+drfbs23: drift, l = lrfbub
+rfbsx24: instrument, l = lrfbub, type = "CavityX-1"
+rfbsx25: instrument, l = lrfbub, type = "CavityX-1"
+
+sxxstart: marker !start of soft X-ray extension system
+sxxterm: marker !end of soft X-ray extension system
+sxrstart: marker !start of undulator system
+sxrterm: marker !~end of undulator system
+muqs: marker
+mphs: marker
+
+qsxblk16: line = (qsxh16, xcsx16, ycsx16, qsxh16)
+dqsxbl17: drift, l = lqu
+dqsxbl18: drift, l = lqu
+qsxblk19: line = (qsxh19, xcsx19, ycsx19, qsxh19)
+dqsxbl20: drift, l = lqu
+qsxblk21: line = (qsxh21, xcsx21, ycsx21, qsxh21)
+dqsxbl22: drift, l = lqu
+dqsxbl23: drift, l = lqu
+qsxblk24: line = (qsxh24, xcsx24, ycsx24, qsxh24)
+dqsxbl25: drift, l = lqu
+
+dphss17: drift, l = lpssx
+dphss18: drift, l = lpssx
+dphss19: drift, l = lpssx
+dphss20: drift, l = lpssx
+dphss21: drift, l = lpssx
+dphss22: drift, l = lpssx
+dphss23: drift, l = lpssx
+dphss24: drift, l = lpssx
+dphss25: drift, l = lpssx
+
+sxbrk17: line = (du3s, dphss17, du4s, du5s, dqsxbl17, du6s, drfbs17, du7s)
+sxbrk18: line = (du3s, dphss18, du4s, du5s, dqsxbl18, du6s, drfbs18, du7s)
+sxbrk19: line = (du3s, dphss19, du4s, du5s, qsxblk19, du6s, rfbsx19, du7s)
+sxbrk20: line = (du3s, dphss20, du4s, du5s, dqsxbl20, du6s, drfbs20, du7s)
+sxbrk21: line = (du3s, dphss21, du4s, du5s, qsxblk21, du6s, rfbsx21, du7s)
+sxbrk22: line = (du3s, dphss22, du4s, du5s, dqsxbl22, du6s, drfbs22, du7s)
+sxbrk23: line = (du3s, dphss23, du4s, du5s, dqsxbl23, du6s, drfbs23, du7s)
+sxbrk24: line = (du3s, dphss24, du4s, du5s, qsxblk24, du6s, rfbsx24, du7s)
+sxbrk25: line = (du3s, dphss25, du4s, du5s, dqsxbl25, du6s, rfbsx25, du7s)
+
+dusegs17: drift, l = ldusegs
+dusegs18: drift, l = ldusegs
+dusegs19: drift, l = ldusegs
+dusegs20: drift, l = ldusegs
+dusegs21: drift, l = ldusegs
+dusegs22: drift, l = ldusegs
+dusegs23: drift, l = ldusegs
+dusegs24: drift, l = ldusegs
+dusegs25: drift, l = ldusegs
+
+sxcel17: line = (du1s, du2s, dusegs17, sxbrk17)
+sxcel18: line = (du1s, du2s, dusegs18, sxbrk18)
+sxcel19: line = (du1s, du2s, dusegs19, sxbrk19) !Q+RFBPM
+sxcel20: line = (du1s, du2s, dusegs20, sxbrk20)
+sxcel21: line = (du1s, du2s, dusegs21, sxbrk21) !Q+RFBPM
+sxcel22: line = (du1s, du2s, dusegs22, sxbrk22)
+sxcel23: line = (du1s, du2s, dusegs23, sxbrk23)
+sxcel24: line = (du1s, du2s, dusegs24, sxbrk24) !Q+RFBPM
+sxcel25: line = (du1s, du2s, dusegs25, sxbrk25) !RFBPM
+
+sxrxx: line = (begunds, sxxstart, du0s, qsxblk16, du6s, rfbsx16, du7s, sxcel17, sxcel18, sxcel19 &
+        , sxcel20, sxcel21, sxcel22, sxcel23, sxcel24, sxcel25, sxxterm)
+
+! ------------------------------------------------------------------------------
+! SXR undulator
+! ------------------------------------------------------------------------------
+! - Author: Heinz-Dieter Nuhn, Stanford Linear Accelerator Center
+! - Last edited Mar 03, 2014
+! - 7.2 mm miminum Undulator Gap; only constant break length each
+! - include natural vertical focusing over all but edge terminations
+! ------------------------------------------------------------------------------
+! - IntgSX  = integrated quadrupole gradient
+! - GQFSX   = QF and QD gradients can be made different to compensate for
+!             undulator focussing ...
+! - GQDSX   = ... but since undulator focussing depends on gamma^2, compensation
+!             will only work for one energy
+! - kQFSX   = QF undulator quadrupole focusing "k"
+! - kQDSX   = QD undulator quadrupole focusing "k"
+! - LDUSEGS = SXR Undulator segment length
+! - luSXU   = SXR Undulator period
+! - NpSXU   = SXR Undulator period count
+! - LSXUCR  = SXR Undulator magnetic length
+! - LSXUe   = SXR Undulator spacing between magnet array and strongback end
+! - KSXU    = SXR Undulator parameter (rms); range 2-5.5
+! - kQSX    = natural SXR undulator focusing "k" in y-plane
+! ------------------------------------------------------------------------------
+
+ !IntgSX :   definition moved to LCLS2sc_main.xsif and LCLS2cu_main.xsif
+gqfsx = intgsx/lqu/10*1.0           !T/m
+gqdsx = -intgsx/lqu/10*1.0           !T/m
+kqfsx = 1.e-9*gqfsx*c_light/gamu/mc2 !m^-2
+kqdsx = 1.e-9*gqdsx*c_light/gamu/mc2 !m^-2
+kqdsxm = -0.266792876891 !-0.406434161462
+
+qsxh26: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfsx
+qsxh27: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdsx
+qsxh28: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfsx
+qsxh29: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdsx
+qsxh30: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfsx
+qsxh31: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdsx
+qsxh32: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfsx
+qsxh33: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdsx
+qsxh34: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfsx
+qsxh35: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdsx
+qsxh36: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfsx
+qsxh37: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdsx
+qsxh38: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfsx
+qsxh39: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdsx
+qsxh40: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfsx
+qsxh41: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdsx
+qsxh42: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfsx
+qsxh43: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdsx
+qsxh44: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfsx
+qsxh45: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdsx
+qsxh46: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfsx
+qsxh47: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdsxm
+
+lusxu = 0.039                            !m
+npsxu = 87
+lsxucr = lusxu*npsxu                      !m
+lsxue = (ldusegs-lsxucr)/2               !m
+lsxuh = lsxucr/2
+ksxu = 5.0
+kqsx = (ksxu*2*pi/lusxu/sqrt(2)/gamu)^2 !m^-2
+
+umasxh: taylor, type = "UMASXh", l = lsxuh, {1: 1.0, 1 0 0 0 0 0}, {1: lsxuh, 0 1 0 0 0 0}, {2:  &
+        0.0, 1 0 0 0 0 0}, {2: 1.0, 0 1 0 0 0 0}, {3: cos(lsxuh*sqrt(kqsx)), 0 0 1 0 0 0}, {3:  &
+        sin(lsxuh*sqrt(kqsx))/sqrt(kqsx), 0 0 0 1 0 0}, {4: -sin(lsxuh*sqrt(kqsx))*sqrt(kqsx),  &
+        0 0 1 0 0 0}, {4: cos(lsxuh*sqrt(kqsx)), 0 0 0 1 0 0}, {5: 1.0, 0 0 0 0 1 0}, {6: 1.0,  &
+        0 0 0 0 0 1}
+
+umasxh26: umasxh
+umasxh27: umasxh
+umasxh28: umasxh
+umasxh29: umasxh
+umasxh30: umasxh
+umasxh31: umasxh
+umasxh32: umasxh
+umasxh33: umasxh
+umasxh34: umasxh
+umasxh36: umasxh
+umasxh37: umasxh
+umasxh38: umasxh
+umasxh39: umasxh
+umasxh40: umasxh
+umasxh41: umasxh
+umasxh42: umasxh
+umasxh43: umasxh
+umasxh44: umasxh
+umasxh45: umasxh
+umasxh46: umasxh
+umasxh47: umasxh
+
+! ------------------------------------------------------------------------------
+! SXR undulator X-steering coils in quads
+! ------------------------------------------------------------------------------
+
+xcsx26: kicker, type = "type-U"
+xcsx27: kicker, type = "type-U"
+xcsx28: kicker, type = "type-U"
+xcsx29: kicker, type = "type-U"
+xcsx30: kicker, type = "type-U"
+xcsx31: kicker, type = "type-U"
+xcsx32: kicker, type = "type-U"
+xcsx33: kicker, type = "type-U"
+xcsx34: kicker, type = "type-U"
+xcsx35: kicker, type = "type-U"
+xcsx36: kicker, type = "type-U"
+xcsx37: kicker, type = "type-U"
+xcsx38: kicker, type = "type-U"
+xcsx39: kicker, type = "type-U"
+xcsx40: kicker, type = "type-U"
+xcsx41: kicker, type = "type-U"
+xcsx42: kicker, type = "type-U"
+xcsx43: kicker, type = "type-U"
+xcsx44: kicker, type = "type-U"
+xcsx45: kicker, type = "type-U"
+xcsx46: kicker, type = "type-U"
+xcsx47: kicker, type = "type-U"
+
+! ------------------------------------------------------------------------------
+! SXR undulator Y-steering coils in quads
+! ------------------------------------------------------------------------------
+
+ycsx26: kicker, type = "type-U"
+ycsx27: kicker, type = "type-U"
+ycsx28: kicker, type = "type-U"
+ycsx29: kicker, type = "type-U"
+ycsx30: kicker, type = "type-U"
+ycsx31: kicker, type = "type-U"
+ycsx32: kicker, type = "type-U"
+ycsx33: kicker, type = "type-U"
+ycsx34: kicker, type = "type-U"
+ycsx35: kicker, type = "type-U"
+ycsx36: kicker, type = "type-U"
+ycsx37: kicker, type = "type-U"
+ycsx38: kicker, type = "type-U"
+ycsx39: kicker, type = "type-U"
+ycsx40: kicker, type = "type-U"
+ycsx41: kicker, type = "type-U"
+ycsx42: kicker, type = "type-U"
+ycsx43: kicker, type = "type-U"
+ycsx44: kicker, type = "type-U"
+ycsx45: kicker, type = "type-U"
+ycsx46: kicker, type = "type-U"
+ycsx47: kicker, type = "type-U"
+
+! ------------------------------------------------------------------------------
+! SXR undulator X-steering coils in undulator segments
+! ------------------------------------------------------------------------------
+
+xcsu26: kicker, type = "type-V"
+xcsu27: kicker, type = "type-V"
+xcsu28: kicker, type = "type-V"
+xcsu29: kicker, type = "type-V"
+xcsu30: kicker, type = "type-V"
+xcsu31: kicker, type = "type-V"
+xcsu32: kicker, type = "type-V"
+xcsu33: kicker, type = "type-V"
+xcsu34: kicker, type = "type-V"
+xcsu36: kicker, type = "type-V"
+xcsu37: kicker, type = "type-V"
+xcsu38: kicker, type = "type-V"
+xcsu39: kicker, type = "type-V"
+xcsu40: kicker, type = "type-V"
+xcsu41: kicker, type = "type-V"
+xcsu42: kicker, type = "type-V"
+xcsu43: kicker, type = "type-V"
+xcsu44: kicker, type = "type-V"
+xcsu45: kicker, type = "type-V"
+xcsu46: kicker, type = "type-V"
+xcsu47: kicker, type = "type-V"
+
+! ------------------------------------------------------------------------------
+! SXR undulator Y-steering coils in undulator segments
+! ------------------------------------------------------------------------------
+
+ycsu26: kicker, type = "type-V"
+ycsu27: kicker, type = "type-V"
+ycsu28: kicker, type = "type-V"
+ycsu29: kicker, type = "type-V"
+ycsu30: kicker, type = "type-V"
+ycsu31: kicker, type = "type-V"
+ycsu32: kicker, type = "type-V"
+ycsu33: kicker, type = "type-V"
+ycsu34: kicker, type = "type-V"
+ycsu36: kicker, type = "type-V"
+ycsu37: kicker, type = "type-V"
+ycsu38: kicker, type = "type-V"
+ycsu39: kicker, type = "type-V"
+ycsu40: kicker, type = "type-V"
+ycsu41: kicker, type = "type-V"
+ycsu42: kicker, type = "type-V"
+ycsu43: kicker, type = "type-V"
+ycsu44: kicker, type = "type-V"
+ycsu45: kicker, type = "type-V"
+ycsu46: kicker, type = "type-V"
+ycsu47: kicker, type = "type-V"
+
+! ------------------------------------------------------------------------------
+! SXR undulator BPMs
+! ------------------------------------------------------------------------------
+
+rfbsx26: instrument, l = lrfbub, type = "CavityX-1"
+rfbsx27: instrument, l = lrfbub, type = "CavityX-1"
+rfbsx28: instrument, l = lrfbub, type = "CavityX-1"
+rfbsx29: instrument, l = lrfbub, type = "CavityX-1"
+rfbsx30: instrument, l = lrfbub, type = "CavityX-1"
+rfbsx31: instrument, l = lrfbub, type = "CavityX-1"
+rfbsx32: instrument, l = lrfbub, type = "CavityX-1"
+rfbsx33: instrument, l = lrfbub, type = "CavityX-1"
+rfbsx34: instrument, l = lrfbub, type = "CavityX-1"
+rfbsx35: instrument, l = lrfbub, type = "CavityX-1"
+rfbsx36: instrument, l = lrfbub, type = "CavityX-1"
+rfbsx37: instrument, l = lrfbub, type = "CavityX-1"
+rfbsx38: instrument, l = lrfbub, type = "CavityX-1"
+rfbsx39: instrument, l = lrfbub, type = "CavityX-1"
+rfbsx40: instrument, l = lrfbub, type = "CavityX-1"
+rfbsx41: instrument, l = lrfbub, type = "CavityX-1"
+rfbsx42: instrument, l = lrfbub, type = "CavityX-1"
+rfbsx43: instrument, l = lrfbub, type = "CavityX-1"
+rfbsx44: instrument, l = lrfbub, type = "CavityX-1"
+rfbsx45: instrument, l = lrfbub, type = "CavityX-1"
+rfbsx46: instrument, l = lrfbub, type = "CavityX-1"
+rfbsx47: instrument, l = lrfbub, type = "CavityX-1"
+drfbs48: drift, l = lrfbub
+drfbs49: drift, l = lrfbub
+drfbs50: drift, l = lrfbub
+rfbsx51: instrument, l = lrfbub, type = "CavityX-1"
+
+! ------------------------------------------------------------------------------
+! DTSXU  = SXU undulator segment small terminations modeled as drift
+! ------------------------------------------------------------------------------
+
+dtsxu: drift, l = lsxue
+
+! ------------------------------------------------------------------------------
+! SXR undulator phase shifters
+! ------------------------------------------------------------------------------
+
+phssx26: line = (pssxh, mphs, pssxh)
+phssx27: line = (pssxh, mphs, pssxh)
+phssx28: line = (pssxh, mphs, pssxh)
+phssx29: line = (pssxh, mphs, pssxh)
+phssx30: line = (pssxh, mphs, pssxh)
+phssx31: line = (pssxh, mphs, pssxh)
+phssx32: line = (pssxh, mphs, pssxh)
+phssx33: line = (pssxh, mphs, pssxh)
+phssx34: line = (pssxh, mphs, pssxh)
+dphss35: drift, l = lpssx
+phssx36: line = (pssxh, mphs, pssxh)
+phssx37: line = (pssxh, mphs, pssxh)
+phssx38: line = (pssxh, mphs, pssxh)
+phssx39: line = (pssxh, mphs, pssxh)
+phssx40: line = (pssxh, mphs, pssxh)
+phssx41: line = (pssxh, mphs, pssxh)
+phssx42: line = (pssxh, mphs, pssxh)
+phssx43: line = (pssxh, mphs, pssxh)
+phssx44: line = (pssxh, mphs, pssxh)
+phssx45: line = (pssxh, mphs, pssxh)
+phssx46: line = (pssxh, mphs, pssxh)
+dphss47: drift, l = lpssx
+dphss48: drift, l = lpssx
+dphss49: drift, l = lpssx
+dphss50: drift, l = lpssx
+
+! ------------------------------------------------------------------------------
+! SXR undulator inline valves, VAT Series 48
+! ------------------------------------------------------------------------------
+
+vvsxu26: marker
+vvsxu32: marker
+vvsxu38: marker
+vvsxu44: marker
+vvsxu47: marker
+
+! ------------------------------------------------------------------------------
+! SXR undulator Beam Loss Monitors
+! ------------------------------------------------------------------------------
+
+blms26: instrument
+blms27: instrument
+blms28: instrument
+blms29: instrument
+blms30: instrument
+blms31: instrument
+blms32: instrument
+blms33: instrument
+blms34: instrument
+blms36: instrument
+blms37: instrument
+blms38: instrument
+blms39: instrument
+blms40: instrument
+blms41: instrument
+blms42: instrument
+blms43: instrument
+blms44: instrument
+blms45: instrument
+blms46: instrument
+blms47: instrument
+
+! ------------------------------------------------------------------------------
+! SXRSS self-seeding chicane (LCLSII-3.2-PR-0101-R0 doesn't specify chicane
+! requirements ... use LCLS PRD SLAC-I-081-101-003-00-R000)
+! NOTE: chicane slides across the aisle from LCLS to SXR; now bends toward the
+!       (north) wall, away from the aisle
+! ------------------------------------------------------------------------------
+
+! NOTEs:
+! - in LCLS: BXSS1-4
+! - nominal beam energy range is 3.35-4.74 GeV
+! - minimum energy is 2.6 GeV; maximum energy is 5.2 GeV
+! - Bmax = 2.56 kG-m @ 9 A (20 mm maximum beam offset)
+! - use series approximation for sinc(x)=sin(x)/x to allow AB5=0
+! - deflects toward +X (to the left/north/wall)
+! - bends toward coil side
+! - Dieter Walz designation: 1.575D14-C (pole-width rather than gap height)
+
+! BCXSS1 gets an X-offset of +1.0 mm (toward the wall)
+! BCXSS2 gets an X-offset of +9.7 mm (toward the wall)
+! BCXSS3 gets an X-offset of +9.7 mm (toward the wall)
+! BCXSS4 gets an X-offset of +1.0 mm (toward the wall)
+
+brho5 = cb*eu                             !beam rigidity at chicane (kG-m)
+gb5 = 0.315*in2m                        !full gap height [m]
+zb5 = 14.315*in2m                       !on-axis effective length is 14" + gap (rule-of-thumb)
+fb5 = 0.5                               !not measured
+ab5 = -0.014249046471*setsxrss          !bend angle (rad) for dX=+17.0 mm
+blb5 = brho5*ab5                         !integrated strength (-1.901188 kG-m @ 4 GeV)
+ab5_2 = ab5*ab5
+ab5_4 = ab5_2*ab5_2
+ab5_6 = ab5_4*ab5_2
+sincab5 = 1-ab5_2/6+ab5_4/120-ab5_6/5040    !~sinc(AB5)=sin(AB5)/AB5
+lb5 = zb5/sincab5                       !chicane bend path length (m)
+ab5s = asin(sin(ab5)/2)                  !"short" half chicane bend angle (rad)
+ab5s_2 = ab5s*ab5s
+ab5s_4 = ab5s_2*ab5s_2
+ab5s_6 = ab5s_4*ab5s_2
+sincab5s = 1-ab5s_2/6+ab5s_4/120-ab5s_6/5040 !~sinc(AB5s)=sin(AB5s)/AB5s
+lb5s = zb5/(2*sincab5s)                  !"short" half chicane bend path length (m)
+ab5l = ab5-ab5s                          !"long" half chicane bend angle (rad)
+lb5l = lb5-lb5s                          !"long" half chicane bend path length (m)
+
+bcxss1a: sbend, hgap = gb5/2, e1 = 0, fint = 0.5, fintx = 0, type = "0.315D14-C", l = lb5s, angle &
+         = lb5s * (+ab5s)/lb5s
+bcxss1b: sbend, hgap = gb5/2, e2 = +ab5, fint = 0, fintx = 0.5, type = "0.315D14-C", l = lb5l,  &
+        angle = lb5l * (+ab5l)/lb5l
+bcxss2a: sbend, hgap = gb5/2, e1 = -ab5, fint = 0.5, fintx = 0, type = "0.315D14-C", l = lb5l,  &
+        angle = lb5l * (-ab5l)/lb5l
+bcxss2b: sbend, hgap = gb5/2, e2 = 0, fint = 0, fintx = 0.5, type = "0.315D14-C", l = lb5s, angle &
+         = lb5s * (-ab5s)/lb5s
+bcxss3a: sbend, hgap = gb5/2, e1 = 0, fint = 0.5, fintx = 0, type = "0.315D14-C", l = lb5s, angle &
+         = lb5s * (-ab5s)/lb5s
+bcxss3b: sbend, hgap = gb5/2, e2 = -ab5, fint = 0, fintx = 0.5, type = "0.315D14-C", l = lb5l,  &
+        angle = lb5l * (-ab5l)/lb5l
+bcxss4a: sbend, hgap = gb5/2, e1 = +ab5, fint = 0.5, fintx = 0, type = "0.315D14-C", l = lb5l,  &
+        angle = lb5l * (+ab5l)/lb5l
+bcxss4b: sbend, hgap = gb5/2, e2 = 0, fint = 0, fintx = 0.5, type = "0.315D14-C", l = lb5s, angle &
+         = lb5s * (+ab5s)/lb5s
+
+
+lsssb2bo = 1.193 !outer bend center-to-center (PRD Table 3)
+lsssb2bi = 0.52  !inner bend center-to-center (PRD Table 3)
+
+zd1s = lsssb2bo-zb5
+zd1sa = 0.44
+zd1sb = 0.049
+zd1sc = zd1s-(zd1sa+zd1sb)
+zd1sd = 0.077
+zd1se = 0.185
+zd1sf = 0.128
+zd1sg = zd1s-(zd1sd+zd1se+zd1sf)
+
+dmonos: drift, l = (3.4-2*lsssb2bo-lsssb2bi-zb5)/2
+d1sa: drift, l = zd1sa/cos(ab5)
+d1sb: drift, l = zd1sb/cos(ab5)
+d1sc: drift, l = zd1sc/cos(ab5)
+d1sd: drift, l = zd1sd/cos(ab5)
+d1se: drift, l = zd1se/cos(ab5)
+d1sf: drift, l = zd1sf/cos(ab5)
+d1sg: drift, l = zd1sg/cos(ab5)
+dchs: drift, l = (lsssb2bi-zb5)/2
+
+sxrssbeg: marker
+gsxs1: instrument, type = "grating"
+msxs1: instrument, type = "mirror"
+cntrs: marker
+slsxs1: instrument, type = "slit"
+msxs2: instrument, type = "mirror"
+msxs3: instrument, type = "mirror"
+sxrssend: marker
+
+schicane: line = (sxrssbeg, dmonos, bcxss1a, bcxss1b, d1sa, gsxs1, d1sb, msxs1, d1sc, bcxss2a,  &
+        bcxss2b, dchs, cntrs, dchs, bcxss3a, bcxss3b, d1sd, slsxs1, d1se, msxs2, d1sf, msxs3,  &
+        d1sg, bcxss4a, bcxss4b, dmonos, sxrssend)
+
+! ------------------------------------------------------------------------------
+! SXR undulator cells
+! ------------------------------------------------------------------------------
+
+usegsx26: line = (dtsxu, umasxh26, xcsu26, ycsu26, umasxh26, dtsxu)
+usegsx27: line = (dtsxu, umasxh27, xcsu27, ycsu27, umasxh27, dtsxu)
+usegsx28: line = (dtsxu, umasxh28, xcsu28, ycsu28, umasxh28, dtsxu)
+usegsx29: line = (dtsxu, umasxh29, xcsu29, ycsu29, umasxh29, dtsxu)
+usegsx30: line = (dtsxu, umasxh30, xcsu30, ycsu30, umasxh30, dtsxu)
+usegsx31: line = (dtsxu, umasxh31, xcsu31, ycsu31, umasxh31, dtsxu)
+usegsx32: line = (dtsxu, umasxh32, xcsu32, ycsu32, umasxh32, dtsxu)
+usegsx33: line = (dtsxu, umasxh33, xcsu33, ycsu33, umasxh33, dtsxu)
+usegsx34: line = (dtsxu, umasxh34, xcsu34, ycsu34, umasxh34, dtsxu)
+dusegs35: line = (schicane) !DRIF, L=LDUSEGS
+usegsx36: line = (dtsxu, umasxh36, xcsu36, ycsu36, umasxh36, dtsxu)
+usegsx37: line = (dtsxu, umasxh37, xcsu37, ycsu37, umasxh37, dtsxu)
+usegsx38: line = (dtsxu, umasxh38, xcsu38, ycsu38, umasxh38, dtsxu)
+usegsx39: line = (dtsxu, umasxh39, xcsu39, ycsu39, umasxh39, dtsxu)
+usegsx40: line = (dtsxu, umasxh40, xcsu40, ycsu40, umasxh40, dtsxu)
+usegsx41: line = (dtsxu, umasxh41, xcsu41, ycsu41, umasxh41, dtsxu)
+usegsx42: line = (dtsxu, umasxh42, xcsu42, ycsu42, umasxh42, dtsxu)
+usegsx43: line = (dtsxu, umasxh43, xcsu43, ycsu43, umasxh43, dtsxu)
+usegsx44: line = (dtsxu, umasxh44, xcsu44, ycsu44, umasxh44, dtsxu)
+usegsx45: line = (dtsxu, umasxh45, xcsu45, ycsu45, umasxh45, dtsxu)
+usegsx46: line = (dtsxu, umasxh46, xcsu46, ycsu46, umasxh46, dtsxu)
+usegsx47: line = (dtsxu, umasxh47, xcsu47, ycsu47, umasxh47, dtsxu)
+dusegs48: drift, l = ldusegs
+dusegs49: drift, l = ldusegs
+dusegs50: drift, l = ldusegs
+
+qsxblk26: line = (qsxh26, xcsx26, muqs, ycsx26, qsxh26)
+qsxblk27: line = (qsxh27, xcsx27, muqs, ycsx27, qsxh27)
+qsxblk28: line = (qsxh28, xcsx28, muqs, ycsx28, qsxh28)
+qsxblk29: line = (qsxh29, xcsx29, muqs, ycsx29, qsxh29)
+qsxblk30: line = (qsxh30, xcsx30, muqs, ycsx30, qsxh30)
+qsxblk31: line = (qsxh31, xcsx31, muqs, ycsx31, qsxh31)
+qsxblk32: line = (qsxh32, xcsx32, muqs, ycsx32, qsxh32)
+qsxblk33: line = (qsxh33, xcsx33, muqs, ycsx33, qsxh33)
+qsxblk34: line = (qsxh34, xcsx34, muqs, ycsx34, qsxh34)
+qsxblk35: line = (qsxh35, xcsx35, muqs, ycsx35, qsxh35)
+qsxblk36: line = (qsxh36, xcsx36, muqs, ycsx36, qsxh36)
+qsxblk37: line = (qsxh37, xcsx37, muqs, ycsx37, qsxh37)
+qsxblk38: line = (qsxh38, xcsx38, muqs, ycsx38, qsxh38)
+qsxblk39: line = (qsxh39, xcsx39, muqs, ycsx39, qsxh39)
+qsxblk40: line = (qsxh40, xcsx40, muqs, ycsx40, qsxh40)
+qsxblk41: line = (qsxh41, xcsx41, muqs, ycsx41, qsxh41)
+qsxblk42: line = (qsxh42, xcsx42, muqs, ycsx42, qsxh42)
+qsxblk43: line = (qsxh43, xcsx43, muqs, ycsx43, qsxh43)
+qsxblk44: line = (qsxh44, xcsx44, muqs, ycsx44, qsxh44)
+qsxblk45: line = (qsxh45, xcsx45, muqs, ycsx45, qsxh45)
+qsxblk46: line = (qsxh46, xcsx46, muqs, ycsx46, qsxh46)
+qsxblk47: line = (qsxh47, xcsx47, muqs, ycsx47, qsxh47)
+dqsxbl48: drift, l = lqu
+dqsxbl49: drift, l = lqu
+dqsxbl50: drift, l = lqu
+
+sxbrk26: line = (du3s, phssx26, du4s, vvsxu26, du5s, qsxblk26, du6s, rfbsx26, du7s)
+sxbrk27: line = (du3s, phssx27, du4s, du5s, qsxblk27, du6s, rfbsx27, du7s)
+sxbrk28: line = (du3s, phssx28, du4s, du5s, qsxblk28, du6s, rfbsx28, du7s)
+sxbrk29: line = (du3s, phssx29, du4s, du5s, qsxblk29, du6s, rfbsx29, du7s)
+sxbrk30: line = (du3s, phssx30, du4s, du5s, qsxblk30, du6s, rfbsx30, du7s)
+sxbrk31: line = (du3s, phssx31, du4s, du5s, qsxblk31, du6s, rfbsx31, du7s)
+sxbrk32: line = (du3s, phssx32, du4s, vvsxu32, du5s, qsxblk32, du6s, rfbsx32, du7s)
+sxbrk33: line = (du3s, phssx33, du4s, du5s, qsxblk33, du6s, rfbsx33, du7s)
+sxbrk34: line = (du3s, phssx34, du4s, du5s, qsxblk34, du6s, rfbsx34, du7s)
+sxbrk35: line = (du3s, dphss35, du4s, du5s, qsxblk35, du6s, rfbsx35, du7s)
+sxbrk36: line = (du3s, phssx36, du4s, du5s, qsxblk36, du6s, rfbsx36, du7s)
+sxbrk37: line = (du3s, phssx37, du4s, du5s, qsxblk37, du6s, rfbsx37, du7s)
+sxbrk38: line = (du3s, phssx38, du4s, vvsxu38, du5s, qsxblk38, du6s, rfbsx38, du7s)
+sxbrk39: line = (du3s, phssx39, du4s, du5s, qsxblk39, du6s, rfbsx39, du7s)
+sxbrk40: line = (du3s, phssx40, du4s, du5s, qsxblk40, du6s, rfbsx40, du7s)
+sxbrk41: line = (du3s, phssx41, du4s, du5s, qsxblk41, du6s, rfbsx41, du7s)
+sxbrk42: line = (du3s, phssx42, du4s, du5s, qsxblk42, du6s, rfbsx42, du7s)
+sxbrk43: line = (du3s, phssx43, du4s, du5s, qsxblk43, du6s, rfbsx43, du7s)
+sxbrk44: line = (du3s, phssx44, du4s, vvsxu44, du5s, qsxblk44, du6s, rfbsx44, du7s)
+sxbrk45: line = (du3s, phssx45, du4s, du5s, qsxblk45, du6s, rfbsx45, du7s)
+sxbrk46: line = (du3s, phssx46, du4s, du5s, qsxblk46, du6s, rfbsx46, du7s)
+sxbrk47: line = (du3s, dphss47, du4s, vvsxu47, du5s, qsxblk47, du6s, rfbsx47, du7s)
+sxbrk48: line = (du3s, dphss48, du4s, du5s, dqsxbl48, du6s, drfbs48, du7s)
+sxbrk49: line = (du3s, dphss49, du4s, du5s, dqsxbl49, du6s, drfbs49, du7s)
+sxbrk50: line = (du3s, dphss50, du4s, du5s, dqsxbl50, du6s, drfbs50, du7s)
+
+sxcel26: line = (du1s, blms26, du2s, usegsx26, sxbrk26)
+sxcel27: line = (du1s, blms27, du2s, usegsx27, sxbrk27)
+sxcel28: line = (du1s, blms28, du2s, usegsx28, sxbrk28)
+sxcel29: line = (du1s, blms29, du2s, usegsx29, sxbrk29)
+sxcel30: line = (du1s, blms30, du2s, usegsx30, sxbrk30)
+sxcel31: line = (du1s, blms31, du2s, usegsx31, sxbrk31)
+sxcel32: line = (du1s, blms32, du2s, usegsx32, sxbrk32)
+sxcel33: line = (du1s, blms33, du2s, usegsx33, sxbrk33)
+sxcel34: line = (du1s, blms34, du2s, usegsx34, sxbrk34)
+sxcel35: line = (du1s, du2s, dusegs35, sxbrk35) !empty with Q+RFBPM
+sxcel36: line = (du1s, blms36, du2s, usegsx36, sxbrk36)
+sxcel37: line = (du1s, blms37, du2s, usegsx37, sxbrk37)
+sxcel38: line = (du1s, blms38, du2s, usegsx38, sxbrk38)
+sxcel39: line = (du1s, blms39, du2s, usegsx39, sxbrk39)
+sxcel40: line = (du1s, blms40, du2s, usegsx40, sxbrk40)
+sxcel41: line = (du1s, blms41, du2s, usegsx41, sxbrk41)
+sxcel42: line = (du1s, blms42, du2s, usegsx42, sxbrk42)
+sxcel43: line = (du1s, blms43, du2s, usegsx43, sxbrk43)
+sxcel44: line = (du1s, blms44, du2s, usegsx44, sxbrk44)
+sxcel45: line = (du1s, blms45, du2s, usegsx45, sxbrk45)
+sxcel46: line = (du1s, blms46, du2s, usegsx46, sxbrk46)
+sxcel47: line = (du1s, blms47, du2s, usegsx47, sxbrk47)
+sxcel48: line = (du1s, du2s, dusegs48, sxbrk48) !empty
+sxcel49: line = (du1s, du2s, dusegs49, sxbrk49) !empty
+sxcel50: line = (du1s, du2s, dusegs50, sxbrk50) !empty
+
+sxrcl: line = (sxcel26, sxcel27, sxcel28, sxcel29, sxcel30, sxcel31, sxcel32, sxcel33, sxcel34,  &
+        sxcel35, sxcel36, sxcel37, sxcel38, sxcel39, sxcel40, sxcel41, sxcel42, sxcel43, sxcel44 &
+        , sxcel45, sxcel46, sxcel47, sxcel48, sxcel49, sxcel50)
+
+sxr: line = (sxrstart, sxrcl, sxrterm, due1ab, rfbsx51, due1e, endunds)
+
+! ------------------------------------------------------------------------------
+! SXR undulator exit section
+! ------------------------------------------------------------------------------
+
+! note: the below K-values are for SC beam; the settings for Cu beam are
+! in the "LCLS2cu_main.mad8" file
+
+kque1b = -0.306247962224 !-0.297915551865
+kque2b = 0.394195575969 ! 0.390984021273
+
+que1b: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kque1b
+que2b: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kque2b
+
+tcx01b: lcavity, rf_frequency = xbandf * 1e6, type = "@1,TRANS_DEFL", l = 1.0/2 !horiz. deflection
+tcx02b: lcavity, rf_frequency = xbandf * 1e6, type = "@1,TRANS_DEFL", l = 1.0/2 !horiz. deflection
+
+lbkxdmp = 1.0 !x-kicker length in dumpline
+dbkxdmps: drift, l = lbkxdmp !placeholder for x-kicker in SXR dumpline
+
+dzsxtes = 0.468389399848e-10 !set MDLWALLb at 685 m exactly to align with SXR XTES system
+dzhxtes = 0.749541186639e-6  !set MDLWALL at 685 m exactly to align with HXR XTES system
+
+due1d: drift, l = 0.1
+due1b: drift, l = 1.5
+due1c: drift, l = 0.5
+due1ca: drift, l = 0.3
+due1cb: drift, l = 0.188-0.012
+due1cc: drift, l = due1c[l]-due1ca[l]-due1cb[l]
+due2a: drift, l = 0.5
+due2b: drift, l = 0.8
+due2d: drift, l = 0.188-0.012
+due2e: drift, l = 1.740055-due2b[l]-due2d[l]
+due2cb: drift, l = 0.615+(lqp-lqr)/2
+due3ab: drift, l = 0.375504+(lqp-lqr)/2-0.014955
+due3bb: drift, l = 1.2630495+0.014955
+due3c: drift, l = (1.7968755-lbkxdmp)/2
+dpcvv: drift, l = 0.397
+dvvtcx: drift, l = 0.32
+dtcx12: drift, l = 0.373/2
+dtcxsp: drift, l = 0.381
+due4b: drift, l = 0.454+(lqp-lqr)/2
+due5ab: drift, l = 0.477799+(lqp-lqr)/2-0.114162
+due5bb: drift, l = 0.264+0.114162-0.1016+0.1016
+due5cb: drift, l = 0.2674+0.1016-0.1016
+due5d: drift, l = 0.137055-0.05
+due5f: drift, l = 0.05
+due5e: drift, l = 0.252825-due5d[l]-due5f[l]-dzhxtes
+dsb0a: drift, l = 0.260150
+dsb0b: drift, l = 0.344
+dsb0c: drift, l = 0.32646
+dsb0d: drift, l = 0.123366
+ddsb0e = -0.403705866174e-3
+dsb0e: drift, l = 0.1059327+ddsb0e
+ddlwall: drift, l = 0.250825+dzhxtes !length of dumpline thermal barrier wall
+
+due5eb: drift, l = 0.252825-due5d[l]-due5f[l]+dzsxtes
+ddlwallb: drift, l = 0.250825-dzsxtes !length of dumpline thermal barrier wall
+
+xcue2b: kicker, type = "class-4"
+xcd3b: kicker, type = "class-5"
+
+ycue1b: kicker, type = "class-4"
+ycd3b: kicker, type = "class-5"
+
+bpmue1b: instrument, type = "Stripline-5" !RFBUE1B : MONI, TYPE="@2,CavityS-1"
+bpmue2b: instrument, type = "Stripline-5" !RFBUE2B : MONI, TYPE="@2,CavityS-1"
+ !RFBUE3B : MONI, TYPE="@2,CavityS-1"
+
+true1b: instrument, type = "@5" !Be foil inserter (THz)
+sptcxb: instrument, type = "@1" !XTCAV spoiler
+btmqueb: instrument !Burn-Through-Monitor
+btm0b: instrument !Burn-Through-Monitor behind the PCPM0B
+
+pctcxb: ecollimator, x_limit = 4.5e-3, y_limit = 4.5e-3, type = "@1" !XTCAV photon collimator (9 mm aperture)
+pcpm0b: ecollimator, x_limit = 17.5e-3, y_limit = 17.5e-3, l = lpcpm
+
+ !IMUNDOB : MARKER, TYPE="@0,BCS ACM" !BCS ACM
+
+mimundob: marker
+
+ph31b: instrument, type = "@0,2805 MHz" !post-undulator phase measurement RF cavity (low rate)
+ph32b: instrument, type = "@0,2805 MHz" !post-undulator phase measurement RF cavity (low rate)
+ph33b: instrument, type = "@1,2604 MHz" !post-undulator phase measurement RF cavity (high rate)
+ph34b: instrument, type = "@1,2604 MHz" !post-undulator phase measurement RF cavity (high rate)
+
+uebegb: marker
+vvtcxb: marker !XTCAV vacuum valve
+mtcx01b: marker !entrance to TCX01B (for ELEGANT WATCH point)
+mtcxb: marker !centerline between TCX01B and TCX02B (for matching)
+ueendb: marker
+vv36b: marker !treaty-point vacuum valve just downbeam of undulator
+vv37b: marker !vac. valve in dumpline
+dlstartb: marker
+mdlwallb: marker !front face of dumpline thermal barrier wall
+
+undexitb: line = (begdmps_1, uebegb, due1d, vv36b, due1b, mimundob, due1ca, ph33b, due1cb, ph34b &
+        , due1cc, due2a, ycue1b, due2b, ph31b, due2d, ph32b, due2e, xcue2b, due2cb, que1b, que1b &
+        , due3ab, bpmue1b, due3bb, true1b, due3c, dbkxdmps, due3c, pctcxb, dpcvv, vvtcxb, dvvtcx &
+        , mtcx01b, 2*tcx01b, dtcx12, mtcxb, dtcx12, 2*tcx02b, dtcxsp, sptcxb, due4b, que2b, que2b &
+        , due5ab, bpmue2b, due5bb, btmqueb, due5cb, pcpm0b, due5f, btm0b, due5d, due5eb, mdlwallb &
+        , ddlwallb, ueendb, dlstartb, dsb0a, ycd3b, dsb0b, xcd3b, dsb0c, vv37b, dsb0d, dsb0e,  &
+        enddmps_1)
+
+sxrund: line = (sxrxx, sxr, undexitb)
+
+! ==============================================================================
+! HXR HGVPU undulator (south)
+! ==============================================================================
+
+! ------------------------------------------------------------------------------
+! HXR undulator PPM phase shifter
+! - Author: Heinz-Dieter Nuhn, Stanford Linear Accelerator Center
+! - Last edited September 06, 2017
+! - 10.0 mm miminum Undulator Gap
+! ------------------------------------------------------------------------------
+! - LPSHX  = HXR Phase Shifter length
+! - luPSHX = HXR Phase Shifter period
+! - PIPSHX = HXR Phase Shifter phase integral
+! - KPSHX  = HXR Phase Shifter Undulator parameter (rms); range 0.18-1.91
+! - kQPSHX = natural HXR Phase Shifter undulator focusing "k" in y-plane
+! ------------------------------------------------------------------------------
+
+lpshx = 0.0495                             !m
+lupshx = 0.045                              !m
+lpshxh = lpshx/2
+pipshx = 490                                !T^2mm^3 (80-490)
+kpshx = 1.e-9*c_light/mc2*sqrt(2.e-9*pipshx/lupshx)
+kqpshx = (kpshx*2*pi/lupshx/sqrt(2)/gamu)^2 !m^-2
+
+pshxh: taylor, type = "PSHXh", l = lpshxh, {1: 1.0, 1 0 0 0 0 0}, {1: lpshxh, 0 1 0 0 0 0}, {2:  &
+        0.0, 1 0 0 0 0 0}, {2: 1.0, 0 1 0 0 0 0}, {3: cos(lpshxh*sqrt(kqpshx)), 0 0 1 0 0 0}, {3 &
+        : sin(lpshxh*sqrt(kqpshx))/sqrt(kqpshx), 0 0 0 1 0 0}, {4:  &
+        -sin(lpshxh*sqrt(kqpshx))*sqrt(kqpshx), 0 0 1 0 0 0}, {4: cos(lpshxh*sqrt(kqpshx)),  &
+        0 0 0 1 0 0}, {5: 1.0, 0 0 0 0 1 0}, {6: 1.0, 0 0 0 0 0 1}
+
+! ------------------------------------------------------------------------------
+! - Author: Heinz-Dieter Nuhn, Stanford Linear Accelerator Center
+! - Edited Mar 03, 2014
+! - Updated Dec 02, 2015 for HGVPU (Y. Nosochkov, D. Bruch)
+! - 7.2 mm miminum Undulator Gap; only constant break length each
+! - include natural horizontal focusing over all but edge terminations
+! ------------------------------------------------------------------------------
+! - IntgHX  = integrated quadrupole gradient
+! - GQFHX   = QF and QD gradients can be made different to compensate for
+!             undulator focussing ...
+! - GQDHX   = ... but since undulator focussing depends on gamma^2, compensation
+!             will only work for one energy
+! - kQFHX   = QF undulator quadrupole focusing "k"
+! - kQDHX   = QD undulator quadrupole focusing "k"
+! - LDUSEGH = HXR Undulator segment length
+! - luHXU   = HXR Undulator period
+! - NpHXU   = HXR Undulator period count
+! - LHXUCR  = HXR Undulator magnetic length
+! - LHXUe   = HXR Undulator spacing between magnet array and strongback end
+! - KHXU    = HXR Undulator parameter (rms); range 0.54-2.45
+! - kQHX    = natural HXR undulator focusing "k" in x-plane
+! ------------------------------------------------------------------------------
+
+ldusegh = 3.372032
+ldu1h = 0.040984
+ldu2h = 0.0
+ldu3h = (1.83-ldusegh/2-lqu/2)/2
+ldu4h = 0.13-lqu/2-lrfbub/2
+ldu5h = 0.1275-lpshxh-lrfbub/2
+ldu6h = 0.109243-lpshxh
+ldu7h = 0.08892366667
+ldu8h = 0.025
+dldu0h = 0.0 !fine tune Z of undulator
+ldu0h = 0.094391984077-ldu8h-lrfbub+lrfbub+dldu0h
+
+du0h: drift, l = ldu0h
+du1h: drift, l = ldu1h
+du2h: drift, l = ldu2h
+du3h: drift, l = ldu3h
+du4h: drift, l = ldu4h
+du5h: drift, l = ldu5h
+du6h: drift, l = ldu6h
+du7h: drift, l = ldu7h
+du8h: drift, l = ldu8h
+
+ddue1a = 0.0
+due1a: drift, l = 2.853174666558-lrfbub+ddue1a
+
+ !IntgHX :   definition moved to LCLS2sc_main.xsif and LCLS2cu_main.xsif
+gqfhx = intghx/lqu/10*1.0           !T/m
+gqdhx = -intghx/lqu/10*1.0           !T/m
+kqfhx = 1.e-9*gqfhx*c_light/gamu/mc2 !m^-2
+kqdhx = 1.e-9*gqdhx*c_light/gamu/mc2 !m^-2
+kqdhxm = -0.51857909178
+
+qhxh13: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhxh14: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+qhxh15: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhxh16: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+qhxh17: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhxh18: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+qhxh19: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhxh20: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+qhxh21: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhxh22: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+qhxh23: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhxh24: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+qhxh25: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhxh26: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+qhxh27: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhxh28: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+qhxh29: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhxh30: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+qhxh31: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhxh32: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+qhxh33: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhxh34: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+qhxh35: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhxh36: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+qhxh37: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhxh38: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+qhxh39: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhxh40: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+qhxh41: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhxh42: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+qhxh43: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhxh44: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+qhxh45: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+qhxh46: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhxm
+
+luhxu = 0.026                            !m
+nphxu = 129
+lhxucr = luhxu*nphxu                      !m
+lhxue = (ldusegh-lhxucr)/2               !m
+lhxuh = lhxucr/2
+khxu = 2.0
+kqhx = (khxu*2*pi/luhxu/sqrt(2)/gamu)^2 !m^-2
+
+umahxh: taylor, type = "UMAHXh", l = lhxuh, {1: cos(lhxuh*sqrt(kqhx)), 1 0 0 0 0 0}, {1:  &
+        sin(lhxuh*sqrt(kqhx))/sqrt(kqhx), 0 1 0 0 0 0}, {2: -sin(lhxuh*sqrt(kqhx))*sqrt(kqhx),  &
+        1 0 0 0 0 0}, {2: cos(lhxuh*sqrt(kqhx)), 0 1 0 0 0 0}, {3: 1.0, 0 0 1 0 0 0}, {3: lhxuh,  &
+        0 0 0 1 0 0}, {4: 0.0, 0 0 1 0 0 0}, {4: 1.0, 0 0 0 1 0 0}, {5: 1.0, 0 0 0 0 1 0}, {6:  &
+        1.0, 0 0 0 0 0 1}
+
+umahxh13: umahxh
+umahxh14: umahxh
+umahxh15: umahxh
+umahxh16: umahxh
+umahxh17: umahxh
+umahxh18: umahxh
+umahxh19: umahxh
+
+umahxh21: umahxh
+umahxh22: umahxh
+umahxh23: umahxh
+umahxh24: umahxh
+umahxh25: umahxh
+umahxh26: umahxh
+umahxh27: umahxh
+
+umahxh29: umahxh
+umahxh30: umahxh
+umahxh31: umahxh
+umahxh32: umahxh
+umahxh33: umahxh
+umahxh34: umahxh
+umahxh35: umahxh
+umahxh36: umahxh
+umahxh37: umahxh
+umahxh38: umahxh
+umahxh39: umahxh
+umahxh40: umahxh
+umahxh41: umahxh
+umahxh42: umahxh
+umahxh43: umahxh
+umahxh44: umahxh
+umahxh45: umahxh
+umahxh46: umahxh
+
+! ------------------------------------------------------------------------------
+! HXR undulator X-steering coils in quads
+! ------------------------------------------------------------------------------
+
+xchx13: kicker, type = "type-U"
+xchx14: kicker, type = "type-U"
+xchx15: kicker, type = "type-U"
+xchx16: kicker, type = "type-U"
+xchx17: kicker, type = "type-U"
+xchx18: kicker, type = "type-U"
+xchx19: kicker, type = "type-U"
+xchx20: kicker, type = "type-U"
+xchx21: kicker, type = "type-U"
+xchx22: kicker, type = "type-U"
+xchx23: kicker, type = "type-U"
+xchx24: kicker, type = "type-U"
+xchx25: kicker, type = "type-U"
+xchx26: kicker, type = "type-U"
+xchx27: kicker, type = "type-U"
+xchx28: kicker, type = "type-U"
+xchx29: kicker, type = "type-U"
+xchx30: kicker, type = "type-U"
+xchx31: kicker, type = "type-U"
+xchx32: kicker, type = "type-U"
+xchx33: kicker, type = "type-U"
+xchx34: kicker, type = "type-U"
+xchx35: kicker, type = "type-U"
+xchx36: kicker, type = "type-U"
+xchx37: kicker, type = "type-U"
+xchx38: kicker, type = "type-U"
+xchx39: kicker, type = "type-U"
+xchx40: kicker, type = "type-U"
+xchx41: kicker, type = "type-U"
+xchx42: kicker, type = "type-U"
+xchx43: kicker, type = "type-U"
+xchx44: kicker, type = "type-U"
+xchx45: kicker, type = "type-U"
+xchx46: kicker, type = "type-U"
+
+! ------------------------------------------------------------------------------
+! HXR undulator Y-steering coils in quads
+! ------------------------------------------------------------------------------
+
+ychx13: kicker, type = "type-U"
+ychx14: kicker, type = "type-U"
+ychx15: kicker, type = "type-U"
+ychx16: kicker, type = "type-U"
+ychx17: kicker, type = "type-U"
+ychx18: kicker, type = "type-U"
+ychx19: kicker, type = "type-U"
+ychx20: kicker, type = "type-U"
+ychx21: kicker, type = "type-U"
+ychx22: kicker, type = "type-U"
+ychx23: kicker, type = "type-U"
+ychx24: kicker, type = "type-U"
+ychx25: kicker, type = "type-U"
+ychx26: kicker, type = "type-U"
+ychx27: kicker, type = "type-U"
+ychx28: kicker, type = "type-U"
+ychx29: kicker, type = "type-U"
+ychx30: kicker, type = "type-U"
+ychx31: kicker, type = "type-U"
+ychx32: kicker, type = "type-U"
+ychx33: kicker, type = "type-U"
+ychx34: kicker, type = "type-U"
+ychx35: kicker, type = "type-U"
+ychx36: kicker, type = "type-U"
+ychx37: kicker, type = "type-U"
+ychx38: kicker, type = "type-U"
+ychx39: kicker, type = "type-U"
+ychx40: kicker, type = "type-U"
+ychx41: kicker, type = "type-U"
+ychx42: kicker, type = "type-U"
+ychx43: kicker, type = "type-U"
+ychx44: kicker, type = "type-U"
+ychx45: kicker, type = "type-U"
+ychx46: kicker, type = "type-U"
+
+! ------------------------------------------------------------------------------
+! HXR undulator X-steering coils in undulator segments
+! ------------------------------------------------------------------------------
+
+xchu13: kicker, type = "type-V"
+xchu14: kicker, type = "type-V"
+xchu15: kicker, type = "type-V"
+xchu16: kicker, type = "type-V"
+xchu17: kicker, type = "type-V"
+xchu18: kicker, type = "type-V"
+xchu19: kicker, type = "type-V"
+
+xchu21: kicker, type = "type-V"
+xchu22: kicker, type = "type-V"
+xchu23: kicker, type = "type-V"
+xchu24: kicker, type = "type-V"
+xchu25: kicker, type = "type-V"
+xchu26: kicker, type = "type-V"
+xchu27: kicker, type = "type-V"
+
+xchu29: kicker, type = "type-V"
+xchu30: kicker, type = "type-V"
+xchu31: kicker, type = "type-V"
+xchu32: kicker, type = "type-V"
+xchu33: kicker, type = "type-V"
+xchu34: kicker, type = "type-V"
+xchu35: kicker, type = "type-V"
+xchu36: kicker, type = "type-V"
+xchu37: kicker, type = "type-V"
+xchu38: kicker, type = "type-V"
+xchu39: kicker, type = "type-V"
+xchu40: kicker, type = "type-V"
+xchu41: kicker, type = "type-V"
+xchu42: kicker, type = "type-V"
+xchu43: kicker, type = "type-V"
+xchu44: kicker, type = "type-V"
+xchu45: kicker, type = "type-V"
+xchu46: kicker, type = "type-V"
+
+! ------------------------------------------------------------------------------
+! HXR undulator Y-steering coils in undulator segments
+! ------------------------------------------------------------------------------
+
+ychu13: kicker, type = "type-V"
+ychu14: kicker, type = "type-V"
+ychu15: kicker, type = "type-V"
+ychu16: kicker, type = "type-V"
+ychu17: kicker, type = "type-V"
+ychu18: kicker, type = "type-V"
+ychu19: kicker, type = "type-V"
+
+ychu21: kicker, type = "type-V"
+ychu22: kicker, type = "type-V"
+ychu23: kicker, type = "type-V"
+ychu24: kicker, type = "type-V"
+ychu25: kicker, type = "type-V"
+ychu26: kicker, type = "type-V"
+ychu27: kicker, type = "type-V"
+
+ychu29: kicker, type = "type-V"
+ychu30: kicker, type = "type-V"
+ychu31: kicker, type = "type-V"
+ychu32: kicker, type = "type-V"
+ychu33: kicker, type = "type-V"
+ychu34: kicker, type = "type-V"
+ychu35: kicker, type = "type-V"
+ychu36: kicker, type = "type-V"
+ychu37: kicker, type = "type-V"
+ychu38: kicker, type = "type-V"
+ychu39: kicker, type = "type-V"
+ychu40: kicker, type = "type-V"
+ychu41: kicker, type = "type-V"
+ychu42: kicker, type = "type-V"
+ychu43: kicker, type = "type-V"
+ychu44: kicker, type = "type-V"
+ychu45: kicker, type = "type-V"
+ychu46: kicker, type = "type-V"
+
+! ------------------------------------------------------------------------------
+! HXR undulator BPMs
+! ------------------------------------------------------------------------------
+
+rfbhx13: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx14: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx15: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx16: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx17: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx18: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx19: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx20: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx21: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx22: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx23: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx24: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx25: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx26: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx27: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx28: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx29: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx30: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx31: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx32: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx33: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx34: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx35: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx36: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx37: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx38: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx39: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx40: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx41: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx42: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx43: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx44: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx45: instrument, l = lrfbub, type = "CavityX-1"
+rfbhx46: instrument, l = lrfbub, type = "CavityX-1"
+drfbh47: drift, l = lrfbub
+drfbh48: drift, l = lrfbub
+drfbh49: drift, l = lrfbub
+drfbh50: drift, l = lrfbub
+rfbhx51: instrument, l = lrfbub, type = "CavityX-1"
+
+! ------------------------------------------------------------------------------
+! DTHXU = HXU undulator segment small terminations modeled as drift
+! ------------------------------------------------------------------------------
+
+dthxu: drift, l = lhxue
+
+! ------------------------------------------------------------------------------
+! markers
+! ------------------------------------------------------------------------------
+
+hxrstart: marker !start of undulator system
+hxrterm: marker !end of undulator system
+muqh: marker
+mphh: marker
+
+! ------------------------------------------------------------------------------
+! HXR undulator phase shifters
+! ------------------------------------------------------------------------------
+
+phshx13: line = (pshxh, mphh, pshxh)
+phshx14: line = (pshxh, mphh, pshxh)
+phshx15: line = (pshxh, mphh, pshxh)
+phshx16: line = (pshxh, mphh, pshxh)
+phshx17: line = (pshxh, mphh, pshxh)
+phshx18: line = (pshxh, mphh, pshxh)
+phshx19: line = (pshxh, mphh, pshxh)
+dphsh20: drift, l = lpshx
+phshx21: line = (pshxh, mphh, pshxh)
+phshx22: line = (pshxh, mphh, pshxh)
+phshx23: line = (pshxh, mphh, pshxh)
+phshx24: line = (pshxh, mphh, pshxh)
+phshx25: line = (pshxh, mphh, pshxh)
+phshx26: line = (pshxh, mphh, pshxh)
+phshx27: line = (pshxh, mphh, pshxh)
+dphsh28: drift, l = lpshx
+phshx29: line = (pshxh, mphh, pshxh)
+phshx30: line = (pshxh, mphh, pshxh)
+phshx31: line = (pshxh, mphh, pshxh)
+phshx32: line = (pshxh, mphh, pshxh)
+phshx33: line = (pshxh, mphh, pshxh)
+phshx34: line = (pshxh, mphh, pshxh)
+phshx35: line = (pshxh, mphh, pshxh)
+phshx36: line = (pshxh, mphh, pshxh)
+phshx37: line = (pshxh, mphh, pshxh)
+phshx38: line = (pshxh, mphh, pshxh)
+phshx39: line = (pshxh, mphh, pshxh)
+phshx40: line = (pshxh, mphh, pshxh)
+phshx41: line = (pshxh, mphh, pshxh)
+phshx42: line = (pshxh, mphh, pshxh)
+phshx43: line = (pshxh, mphh, pshxh)
+phshx44: line = (pshxh, mphh, pshxh)
+phshx45: line = (pshxh, mphh, pshxh)
+dphsh46: drift, l = lpshx
+dphsh47: drift, l = lpshx
+dphsh48: drift, l = lpshx
+dphsh49: drift, l = lpshx
+dphsh50: drift, l = lpshx
+
+! ------------------------------------------------------------------------------
+! HXR undulator inline valves (VAT Series 48?)
+! ------------------------------------------------------------------------------
+
+vvhxu13: marker
+vvhxu14: marker
+vvhxu15: marker
+vvhxu16: marker
+vvhxu17: marker
+vvhxu18: marker
+vvhxu19: marker
+
+vvhxu21: marker
+vvhxu22: marker
+vvhxu23: marker
+vvhxu24: marker
+vvhxu25: marker
+vvhxu26: marker
+vvhxu27: marker
+
+vvhxu29: marker
+vvhxu30: marker
+vvhxu31: marker
+vvhxu32: marker
+vvhxu33: marker
+vvhxu34: marker
+vvhxu35: marker
+vvhxu36: marker
+vvhxu37: marker
+vvhxu38: marker
+vvhxu39: marker
+vvhxu40: marker
+vvhxu41: marker
+vvhxu42: marker
+vvhxu43: marker
+vvhxu44: marker
+vvhxu45: marker
+vvhxu46: marker
+
+! ------------------------------------------------------------------------------
+! HXR undulator Beam Loss Monitors
+! ------------------------------------------------------------------------------
+
+blmh13: instrument
+blmh14: instrument
+blmh15: instrument
+blmh16: instrument
+blmh17: instrument
+blmh18: instrument
+blmh19: instrument
+
+blmh21: instrument
+blmh22: instrument
+blmh23: instrument
+blmh24: instrument
+blmh25: instrument
+blmh26: instrument
+blmh27: instrument
+
+blmh29: instrument
+blmh30: instrument
+blmh31: instrument
+blmh32: instrument
+blmh33: instrument
+blmh34: instrument
+blmh35: instrument
+blmh36: instrument
+blmh37: instrument
+blmh38: instrument
+blmh39: instrument
+blmh40: instrument
+blmh41: instrument
+blmh42: instrument
+blmh43: instrument
+blmh44: instrument
+blmh45: instrument
+blmh46: instrument
+
+! ------------------------------------------------------------------------------
+! HXRSS self-seeding chicane (LCLSII-3.2-PR-0102-R1)
+! ------------------------------------------------------------------------------
+
+! NOTEs:
+! - in LCLS: BXHS1-4
+! - Bmax = 1.9 kG-m @ 6 A (~24 mm beam offset)
+! - use series approximation for sinc(x)=sin(x)/x to allow BLB4=0
+! - deflects toward -X (to the right/south/wall)
+! - bends away from coil side
+
+! BCXHS1 gets an X-offset of  0    mm (toward the wall)
+! BCXHS2 gets an X-offset of -2.39 mm (toward the wall)
+! BCXHS3 gets an X-offset of -2.39 mm (toward the wall)
+! BCXHS4 gets an X-offset of  0    mm (toward the wall)
+
+brho4 = cb*eu                             !beam rigidity at chicane (kG-m)
+gb4 = 0.315*in2m                        !full gap height [m]
+zb4 = 14.315*in2m                       !on-axis effective length is 14" + gap (rule-of-thumb)
+fb4 = 0.5                               !not measured
+ab4 = +3.02786616797e-3*sethxrss        !bend angle (rad) for R56=+15.0 um
+blb4 = brho4*ab4                         !integrated strength (1.377623 kG-m @ 13.64 GeV)
+ab4_2 = ab4*ab4
+ab4_4 = ab4_2*ab4_2
+ab4_6 = ab4_4*ab4_2
+sincab4 = 1-ab4_2/6+ab4_4/120-ab4_6/5040    !~sinc(AB4)=sin(AB4)/AB4
+lb4 = zb4/sincab4                       !chicane bend path length (m)
+ab4s = asin(sin(ab4)/2)                  !"short" half chicane bend angle (rad)
+ab4s_2 = ab4s*ab4s
+ab4s_4 = ab4s_2*ab4s_2
+ab4s_6 = ab4s_4*ab4s_2
+sincab4s = 1-ab4s_2/6+ab4s_4/120-ab4s_6/5040 !~sinc(AB4s)=sin(AB4s)/AB4s
+lb4s = (zb4/2)/sincab4s                  !"short" half chicane bend path length (m)
+ab4l = ab4-ab4s                          !"long" half chicane bend angle (rad)
+lb4l = lb4-lb4s                          !"long" half chicane bend path length (m)
+
+bcxhs1a: sbend, hgap = gb4/2, e1 = 0, fint = fb4, fintx = 0, type = "0.315D14-C", l = lb4s, angle &
+         = lb4s * (+ab4s)/lb4s
+bcxhs1b: sbend, hgap = gb4/2, e2 = +ab4, fint = 0, fintx = fb4, type = "0.315D14-C", l = lb4l,  &
+        angle = lb4l * (+ab4l)/lb4l
+bcxhs2a: sbend, hgap = gb4/2, e1 = -ab4, fint = fb4, fintx = 0, type = "0.315D14-C", l = lb4l,  &
+        angle = lb4l * (-ab4l)/lb4l
+bcxhs2b: sbend, hgap = gb4/2, e2 = 0, fint = 0, fintx = fb4, type = "0.315D14-C", l = lb4s, angle &
+         = lb4s * (-ab4s)/lb4s
+bcxhs3a: sbend, hgap = gb4/2, e1 = 0, fint = fb4, fintx = 0, type = "0.315D14-C", l = lb4s, angle &
+         = lb4s * (-ab4s)/lb4s
+bcxhs3b: sbend, hgap = gb4/2, e2 = -ab4, fint = 0, fintx = fb4, type = "0.315D14-C", l = lb4l,  &
+        angle = lb4l * (-ab4l)/lb4l
+bcxhs4a: sbend, hgap = gb4/2, e1 = +ab4, fint = fb4, fintx = 0, type = "0.315D14-C", l = lb4l,  &
+        angle = lb4l * (+ab4l)/lb4l
+bcxhs4b: sbend, hgap = gb4/2, e2 = 0, fint = 0, fintx = fb4, type = "0.315D14-C", l = lb4s, angle &
+         = lb4s * (+ab4s)/lb4s
+
+lhssb2bo = 0.939 !outer bend center-to-center (PRD Table 3)
+lhssb2bi = 0.936 !inner bend center-to-center (PRD Table 3)
+
+d1: drift, l = (lhssb2bo-zb4)/cos(ab4)
+dch: drift, l = (lhssb2bi-zb4)/2
+dmono: drift, l = (ldusegh-2*lhssb2bo-lhssb2bi-zb4)/2
+
+hxrssbeg: marker
+diamond: instrument
+hxrssend: marker
+
+hchicane: line = (hxrssbeg, dmono, bcxhs1a, bcxhs1b, d1, bcxhs2a, bcxhs2b, dch, diamond, dch,  &
+        bcxhs3a, bcxhs3b, d1, bcxhs4a, bcxhs4b, dmono, hxrssend)
+
+! ------------------------------------------------------------------------------
+! HXR undulator cells
+! ------------------------------------------------------------------------------
+
+useghx13: line = (dthxu, umahxh13, xchu13, ychu13, umahxh13, dthxu)
+useghx14: line = (dthxu, umahxh14, xchu14, ychu14, umahxh14, dthxu)
+useghx15: line = (dthxu, umahxh15, xchu15, ychu15, umahxh15, dthxu)
+useghx16: line = (dthxu, umahxh16, xchu16, ychu16, umahxh16, dthxu)
+useghx17: line = (dthxu, umahxh17, xchu17, ychu17, umahxh17, dthxu)
+useghx18: line = (dthxu, umahxh18, xchu18, ychu18, umahxh18, dthxu)
+useghx19: line = (dthxu, umahxh19, xchu19, ychu19, umahxh19, dthxu)
+dusegh20: drift, l = ldusegh
+useghx21: line = (dthxu, umahxh21, xchu21, ychu21, umahxh21, dthxu)
+useghx22: line = (dthxu, umahxh22, xchu22, ychu22, umahxh22, dthxu)
+useghx23: line = (dthxu, umahxh23, xchu23, ychu23, umahxh23, dthxu)
+useghx24: line = (dthxu, umahxh24, xchu24, ychu24, umahxh24, dthxu)
+useghx25: line = (dthxu, umahxh25, xchu25, ychu25, umahxh25, dthxu)
+useghx26: line = (dthxu, umahxh26, xchu26, ychu26, umahxh26, dthxu)
+useghx27: line = (dthxu, umahxh27, xchu27, ychu27, umahxh27, dthxu)
+dusegh28: line = (hchicane) !DRIF, L=LDUSEGH
+useghx29: line = (dthxu, umahxh29, xchu29, ychu29, umahxh29, dthxu)
+useghx30: line = (dthxu, umahxh30, xchu30, ychu30, umahxh30, dthxu)
+useghx31: line = (dthxu, umahxh31, xchu31, ychu31, umahxh31, dthxu)
+useghx32: line = (dthxu, umahxh32, xchu32, ychu32, umahxh32, dthxu)
+useghx33: line = (dthxu, umahxh33, xchu33, ychu33, umahxh33, dthxu)
+useghx34: line = (dthxu, umahxh34, xchu34, ychu34, umahxh34, dthxu)
+useghx35: line = (dthxu, umahxh35, xchu35, ychu35, umahxh35, dthxu)
+useghx36: line = (dthxu, umahxh36, xchu36, ychu36, umahxh36, dthxu)
+useghx37: line = (dthxu, umahxh37, xchu37, ychu37, umahxh37, dthxu)
+useghx38: line = (dthxu, umahxh38, xchu38, ychu38, umahxh38, dthxu)
+useghx39: line = (dthxu, umahxh39, xchu39, ychu39, umahxh39, dthxu)
+useghx40: line = (dthxu, umahxh40, xchu40, ychu40, umahxh40, dthxu)
+useghx41: line = (dthxu, umahxh41, xchu41, ychu41, umahxh41, dthxu)
+useghx42: line = (dthxu, umahxh42, xchu42, ychu42, umahxh42, dthxu)
+useghx43: line = (dthxu, umahxh43, xchu43, ychu43, umahxh43, dthxu)
+useghx44: line = (dthxu, umahxh44, xchu44, ychu44, umahxh44, dthxu)
+useghx45: line = (dthxu, umahxh45, xchu45, ychu45, umahxh45, dthxu)
+useghx46: line = (dthxu, umahxh46, xchu46, ychu46, umahxh46, dthxu)
+dusegh47: drift, l = ldusegh
+dusegh48: drift, l = ldusegh
+dusegh49: drift, l = ldusegh
+dusegh50: drift, l = ldusegh
+
+qhxblk13: line = (qhxh13, xchx13, muqh, ychx13, qhxh13)
+qhxblk14: line = (qhxh14, xchx14, muqh, ychx14, qhxh14)
+qhxblk15: line = (qhxh15, xchx15, muqh, ychx15, qhxh15)
+qhxblk16: line = (qhxh16, xchx16, muqh, ychx16, qhxh16)
+qhxblk17: line = (qhxh17, xchx17, muqh, ychx17, qhxh17)
+qhxblk18: line = (qhxh18, xchx18, muqh, ychx18, qhxh18)
+qhxblk19: line = (qhxh19, xchx19, muqh, ychx19, qhxh19)
+qhxblk20: line = (qhxh20, xchx20, muqh, ychx20, qhxh20)
+qhxblk21: line = (qhxh21, xchx21, muqh, ychx21, qhxh21)
+qhxblk22: line = (qhxh22, xchx22, muqh, ychx22, qhxh22)
+qhxblk23: line = (qhxh23, xchx23, muqh, ychx23, qhxh23)
+qhxblk24: line = (qhxh24, xchx24, muqh, ychx24, qhxh24)
+qhxblk25: line = (qhxh25, xchx25, muqh, ychx25, qhxh25)
+qhxblk26: line = (qhxh26, xchx26, muqh, ychx26, qhxh26)
+qhxblk27: line = (qhxh27, xchx27, muqh, ychx27, qhxh27)
+qhxblk28: line = (qhxh28, xchx28, muqh, ychx28, qhxh28)
+qhxblk29: line = (qhxh29, xchx29, muqh, ychx29, qhxh29)
+qhxblk30: line = (qhxh30, xchx30, muqh, ychx30, qhxh30)
+qhxblk31: line = (qhxh31, xchx31, muqh, ychx31, qhxh31)
+qhxblk32: line = (qhxh32, xchx32, muqh, ychx32, qhxh32)
+qhxblk33: line = (qhxh33, xchx33, muqh, ychx33, qhxh33)
+qhxblk34: line = (qhxh34, xchx34, muqh, ychx34, qhxh34)
+qhxblk35: line = (qhxh35, xchx35, muqh, ychx35, qhxh35)
+qhxblk36: line = (qhxh36, xchx36, muqh, ychx36, qhxh36)
+qhxblk37: line = (qhxh37, xchx37, muqh, ychx37, qhxh37)
+qhxblk38: line = (qhxh38, xchx38, muqh, ychx38, qhxh38)
+qhxblk39: line = (qhxh39, xchx39, muqh, ychx39, qhxh39)
+qhxblk40: line = (qhxh40, xchx40, muqh, ychx40, qhxh40)
+qhxblk41: line = (qhxh41, xchx41, muqh, ychx41, qhxh41)
+qhxblk42: line = (qhxh42, xchx42, muqh, ychx42, qhxh42)
+qhxblk43: line = (qhxh43, xchx43, muqh, ychx43, qhxh43)
+qhxblk44: line = (qhxh44, xchx44, muqh, ychx44, qhxh44)
+qhxblk45: line = (qhxh45, xchx45, muqh, ychx45, qhxh45)
+qhxblk46: line = (qhxh46, xchx46, muqh, ychx46, qhxh46)
+dqhxbl47: drift, l = lqu
+dqhxbl48: drift, l = lqu
+dqhxbl49: drift, l = lqu
+dqhxbl50: drift, l = lqu
+
+hxbrk13: line = (du3h, blmh13, du3h, qhxblk13, du4h, rfbhx13, du5h, phshx13, du6h, vvhxu13, du7h)
+hxbrk14: line = (du3h, blmh14, du3h, qhxblk14, du4h, rfbhx14, du5h, phshx14, du6h, vvhxu14, du7h)
+hxbrk15: line = (du3h, blmh15, du3h, qhxblk15, du4h, rfbhx15, du5h, phshx15, du6h, vvhxu15, du7h)
+hxbrk16: line = (du3h, blmh16, du3h, qhxblk16, du4h, rfbhx16, du5h, phshx16, du6h, vvhxu16, du7h)
+hxbrk17: line = (du3h, blmh17, du3h, qhxblk17, du4h, rfbhx17, du5h, phshx17, du6h, vvhxu17, du7h)
+hxbrk18: line = (du3h, blmh18, du3h, qhxblk18, du4h, rfbhx18, du5h, phshx18, du6h, vvhxu18, du7h)
+hxbrk19: line = (du3h, blmh19, du3h, qhxblk19, du4h, rfbhx19, du5h, phshx19, du6h, vvhxu19, du7h)
+hxbrk20: line = (du3h, du3h, qhxblk20, du4h, rfbhx20, du5h, dphsh20, du6h, du7h)
+hxbrk21: line = (du3h, blmh21, du3h, qhxblk21, du4h, rfbhx21, du5h, phshx21, du6h, vvhxu21, du7h)
+hxbrk22: line = (du3h, blmh22, du3h, qhxblk22, du4h, rfbhx22, du5h, phshx22, du6h, vvhxu22, du7h)
+hxbrk23: line = (du3h, blmh23, du3h, qhxblk23, du4h, rfbhx23, du5h, phshx23, du6h, vvhxu23, du7h)
+hxbrk24: line = (du3h, blmh24, du3h, qhxblk24, du4h, rfbhx24, du5h, phshx24, du6h, vvhxu24, du7h)
+hxbrk25: line = (du3h, blmh25, du3h, qhxblk25, du4h, rfbhx25, du5h, phshx25, du6h, vvhxu25, du7h)
+hxbrk26: line = (du3h, blmh26, du3h, qhxblk26, du4h, rfbhx26, du5h, phshx26, du6h, vvhxu26, du7h)
+hxbrk27: line = (du3h, blmh27, du3h, qhxblk27, du4h, rfbhx27, du5h, phshx27, du6h, vvhxu27, du7h)
+hxbrk28: line = (du3h, du3h, qhxblk28, du4h, rfbhx28, du5h, dphsh28, du6h, du7h)
+hxbrk29: line = (du3h, blmh29, du3h, qhxblk29, du4h, rfbhx29, du5h, phshx29, du6h, vvhxu29, du7h)
+hxbrk30: line = (du3h, blmh30, du3h, qhxblk30, du4h, rfbhx30, du5h, phshx30, du6h, vvhxu30, du7h)
+hxbrk31: line = (du3h, blmh31, du3h, qhxblk31, du4h, rfbhx31, du5h, phshx31, du6h, vvhxu31, du7h)
+hxbrk32: line = (du3h, blmh32, du3h, qhxblk32, du4h, rfbhx32, du5h, phshx32, du6h, vvhxu32, du7h)
+hxbrk33: line = (du3h, blmh33, du3h, qhxblk33, du4h, rfbhx33, du5h, phshx33, du6h, vvhxu33, du7h)
+hxbrk34: line = (du3h, blmh34, du3h, qhxblk34, du4h, rfbhx34, du5h, phshx34, du6h, vvhxu34, du7h)
+hxbrk35: line = (du3h, blmh35, du3h, qhxblk35, du4h, rfbhx35, du5h, phshx35, du6h, vvhxu35, du7h)
+hxbrk36: line = (du3h, blmh36, du3h, qhxblk36, du4h, rfbhx36, du5h, phshx36, du6h, vvhxu36, du7h)
+hxbrk37: line = (du3h, blmh37, du3h, qhxblk37, du4h, rfbhx37, du5h, phshx37, du6h, vvhxu37, du7h)
+hxbrk38: line = (du3h, blmh38, du3h, qhxblk38, du4h, rfbhx38, du5h, phshx38, du6h, vvhxu38, du7h)
+hxbrk39: line = (du3h, blmh39, du3h, qhxblk39, du4h, rfbhx39, du5h, phshx39, du6h, vvhxu39, du7h)
+hxbrk40: line = (du3h, blmh40, du3h, qhxblk40, du4h, rfbhx40, du5h, phshx40, du6h, vvhxu40, du7h)
+hxbrk41: line = (du3h, blmh41, du3h, qhxblk41, du4h, rfbhx41, du5h, phshx41, du6h, vvhxu41, du7h)
+hxbrk42: line = (du3h, blmh42, du3h, qhxblk42, du4h, rfbhx42, du5h, phshx42, du6h, vvhxu42, du7h)
+hxbrk43: line = (du3h, blmh43, du3h, qhxblk43, du4h, rfbhx43, du5h, phshx43, du6h, vvhxu43, du7h)
+hxbrk44: line = (du3h, blmh44, du3h, qhxblk44, du4h, rfbhx44, du5h, phshx44, du6h, vvhxu44, du7h)
+hxbrk45: line = (du3h, blmh45, du3h, qhxblk45, du4h, rfbhx45, du5h, phshx45, du6h, vvhxu45, du7h)
+hxbrk46: line = (du3h, blmh46, du3h, qhxblk46, du4h, rfbhx46, du5h, dphsh46, du6h, vvhxu46, du7h)
+hxbrk47: line = (du3h, du3h, dqhxbl47, du4h, drfbh47, du5h, dphsh47, du6h, du7h)
+hxbrk48: line = (du3h, du3h, dqhxbl48, du4h, drfbh48, du5h, dphsh48, du6h, du7h)
+hxbrk49: line = (du3h, du3h, dqhxbl49, du4h, drfbh49, du5h, dphsh49, du6h, du7h)
+hxbrk50: line = (du3h, du3h, dqhxbl50, du4h, drfbh50, du5h, dphsh50, du6h, du7h)
+
+hxcel13: line = (du1h, du2h, useghx13, hxbrk13)
+hxcel14: line = (du1h, du2h, useghx14, hxbrk14)
+hxcel15: line = (du1h, du2h, useghx15, hxbrk15)
+hxcel16: line = (du1h, du2h, useghx16, hxbrk16)
+hxcel17: line = (du1h, du2h, useghx17, hxbrk17)
+hxcel18: line = (du1h, du2h, useghx18, hxbrk18)
+hxcel19: line = (du1h, du2h, useghx19, hxbrk19)
+hxcel20: line = (du1h, du2h, dusegh20, hxbrk20) !empty with Q+RFBPM
+hxcel21: line = (du1h, du2h, useghx21, hxbrk21)
+hxcel22: line = (du1h, du2h, useghx22, hxbrk22)
+hxcel23: line = (du1h, du2h, useghx23, hxbrk23)
+hxcel24: line = (du1h, du2h, useghx24, hxbrk24)
+hxcel25: line = (du1h, du2h, useghx25, hxbrk25)
+hxcel26: line = (du1h, du2h, useghx26, hxbrk26)
+hxcel27: line = (du1h, du2h, useghx27, hxbrk27)
+hxcel28: line = (du1h, du2h, dusegh28, hxbrk28) !empty with Q+RFBPM
+hxcel29: line = (du1h, du2h, useghx29, hxbrk29)
+hxcel30: line = (du1h, du2h, useghx30, hxbrk30)
+hxcel31: line = (du1h, du2h, useghx31, hxbrk31)
+hxcel32: line = (du1h, du2h, useghx32, hxbrk32)
+hxcel33: line = (du1h, du2h, useghx33, hxbrk33)
+hxcel34: line = (du1h, du2h, useghx34, hxbrk34)
+hxcel35: line = (du1h, du2h, useghx35, hxbrk35)
+hxcel36: line = (du1h, du2h, useghx36, hxbrk36)
+hxcel37: line = (du1h, du2h, useghx37, hxbrk37)
+hxcel38: line = (du1h, du2h, useghx38, hxbrk38)
+hxcel39: line = (du1h, du2h, useghx39, hxbrk39)
+hxcel40: line = (du1h, du2h, useghx40, hxbrk40)
+hxcel41: line = (du1h, du2h, useghx41, hxbrk41)
+hxcel42: line = (du1h, du2h, useghx42, hxbrk42)
+hxcel43: line = (du1h, du2h, useghx43, hxbrk43)
+hxcel44: line = (du1h, du2h, useghx44, hxbrk44)
+hxcel45: line = (du1h, du2h, useghx45, hxbrk45)
+hxcel46: line = (du1h, du2h, useghx46, hxbrk46) !no phase shifter
+hxcel47: line = (du1h, du2h, dusegh47, hxbrk47) !empty
+hxcel48: line = (du1h, du2h, dusegh48, hxbrk48) !empty
+hxcel49: line = (du1h, du2h, dusegh49, hxbrk49) !empty with RFBPM
+hxcel50: line = (du1h, du2h, dusegh50, hxbrk50) !empty
+
+hxrcl: line = (hxcel13, hxcel14, hxcel15, hxcel16, hxcel17, hxcel18, hxcel19, hxcel20, hxcel21,  &
+        hxcel22, hxcel23, hxcel24, hxcel25, hxcel26, hxcel27, hxcel28, hxcel29, hxcel30, hxcel31 &
+        , hxcel32, hxcel33, hxcel34, hxcel35, hxcel36, hxcel37, hxcel38, hxcel39, hxcel40,  &
+        hxcel41, hxcel42, hxcel43, hxcel44, hxcel45, hxcel46, hxcel47, hxcel48, hxcel49, hxcel50)
+
+hxr: line = (begundh, du0h, du8h, hxrstart, hxrcl, hxrterm, due1a, rfbhx51, due1e, endundh)
+
+! ------------------------------------------------------------------------------
+! HXR undulator exit section
+! ------------------------------------------------------------------------------
+
+! note: the below K-values are for SC beam; the settings for Cu beam are
+! in the "LCLS2cu_main.mad8" file
+
+kque1 = -0.09207220416
+kque2 = 0.160489725306
+
+que1: quadrupole, type = "3.25Q20", l = lqd/2, aperture = rqd, k1 = kque1
+que2: quadrupole, type = "3.25Q20", l = lqd/2, aperture = rqd, k1 = kque2
+
+tcx01: lcavity, rf_frequency = xbandf * 1e6, type = "TRANS_DEFL", l = 1.0/2 !horizontal deflection
+tcx02: lcavity, rf_frequency = xbandf * 1e6, type = "TRANS_DEFL", l = 1.0/2 !horizontal deflection
+
+dbkxdmph: drift, l = lbkxdmp !placeholder for x-kicker in HXR dumpline
+
+due2c: drift, l = due2cb[l]+(lqr-lqd)/2 !0.555
+due3a: drift, l = 0.375504+(lqp-lqd)/2+0.11496-0.063643
+due3b: drift, l = 1.2630495-0.11496+0.063643
+due4: drift, l = due4b[l]+(lqr-lqd)/2 !0.394
+due5a: drift, l = 0.477799+(lqp-lqd)/2+0.012675-0.063653
+due5b: drift, l = 0.264-0.012675+0.063653
+due5c: drift, l = 0.2674
+
+xcue2: kicker, type = "class-4"
+xcd3: kicker, type = "class-5"
+
+ycue1: kicker, type = "class-4"
+ycd3: kicker, type = "class-5"
+
+bpmue1: instrument, type = "Stripline-13" !RFBUE1 : MONI, TYPE="@2,CavityS-1"
+bpmue2: instrument, type = "Stripline-13" !RFBUE2 : MONI, TYPE="@2,CavityS-1"
+ !RFBUE3 : MONI, TYPE="@2,CavityS-1"
+
+ !IMUNDO : MARKER, TYPE="BCS toroid" !BCS toroid
+ !IMBCS3 : MARKER, TYPE="BCS toroid" !BCS toroid before dump bend (comparator with IMBCS4)
+
+mimundo: marker
+mimbcs3: marker
+
+true1: instrument, type = "@5" !Be foil inserter (THz) -- existing LCLS device
+sptcx: instrument !XTCAV spoiler
+btmque: instrument !Burn-Through-Monitor
+btm0: instrument !Burn-Through-Monitor behind the PCPM0
+
+pctcx: ecollimator, x_limit = 4.5e-3, y_limit = 4.5e-3 !XTCAV photon collimator (9 mm aperture)
+pcpm0: ecollimator, x_limit = 17.5e-3, y_limit = 17.5e-3, l = lpcpm
+
+ph31: instrument, type = "2805 MHz"    !post-undulator phase measurement RF cavity (existing LCLS device)
+ph32: instrument, type = "2805 MHz"    !post-undulator phase measurement RF cavity (existing LCLS device)
+ph33: instrument, type = "@1,2604 MHz" !post-undulator phase measurement RF cavity (high rate)
+ph34: instrument, type = "@1,2604 MHz" !post-undulator phase measurement RF cavity (high rate)
+
+uebeg: marker
+ueend: marker
+vvtcx: marker !XTCAV vacuum valve
+vv36: marker !treaty-point vacuum valve just downbeam of undulator
+vv37: marker !vac. valve in dumpline
+mtcx01: marker !entrance to TCX01 (for ELEGANT WATCH point)
+mtcx: marker !centerline between TCX01 and TCX02 (for matching)
+dlstart: marker !start of dumpline
+mdlwall: marker !front face of dumpline thermal barrier wall
+
+undexit: line = (begdmph_1, uebeg, due1d, vv36, due1b, mimundo, due1ca, ph33, due1cb, ph34,  &
+        due1cc, due2a, ycue1, due2b, ph31, due2d, ph32, due2e, xcue2, due2c, que1, que1, due3a,  &
+        bpmue1, due3b, true1, due3c, dbkxdmph, due3c, pctcx, dpcvv, vvtcx, dvvtcx, mtcx01,  &
+        2*tcx01, dtcx12, mtcx, dtcx12, 2*tcx02, dtcxsp, sptcx, due4, que2, que2, due5a, bpmue2,  &
+        due5b, btmque, due5c, pcpm0, due5f, btm0, due5d, mimbcs3, due5e, mdlwall, ddlwall, ueend &
+        , dlstart, dsb0a, ycd3, dsb0b, xcd3, dsb0c, vv37, dsb0d, dsb0e, enddmph_1)
+
+hxrund: line = (hxr, undexit)
+

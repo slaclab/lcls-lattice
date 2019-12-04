@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-2019next ***
+! *** OPTICS=AD_ACCEL-05DEC19 ***
 
 ! LCLS2cu various parts upstream of BSY
 
@@ -103,7 +103,7 @@
   dEL3    := GeV2MeV*(Ef-EBC2) !total L3 energy gain (MeV)
   PhiL3   := L3phase/360       !radians/2pi
   gfac3   := 161*P25*DLWL10+12*P50*DLWL10+3*P25*DLWL9+4*P25*DLWL7
-  gradL3  := dEL3/(gfac3*COS(PhiL3*TWOPI))
+  gradL3  := 15.833405341033 !16.7 !LI25_LI26
  !VALUE, gradL3
 
   L1X___1 : LCAV, TYPE="X1_Xband", FREQ=XbandF, L=DLWLX/2,  &
@@ -217,8 +217,8 @@
   CQ01 : MULT, TYPE="QSOL", K1L=0     !correction quad in 1st solenoid at gun (nominally set to 0)
   SQ01 : MULT, TYPE="QSOL", K1L=0, T1 !correction skew-quad in 1st solenoid at gun (nominally set to 0)
 
-  QG02 : QUAD, TYPE="QG", L=LQGx/2, APER=rQGx, K1=-35.48540
-  QG03 : QUAD, TYPE="QG", L=LQGx/2, APER=rQGx, K1= 80.16051
+  QG02 : QUAD, TYPE="QG", L=LQGx/2, APER=rQGx, K1=-35.485404325427
+  QG03 : QUAD, TYPE="QG", L=LQGx/2, APER=rQGx, K1= 80.16050904389
 
   DGS1 : DRIF, L=0.1900-LQGx/2-20E-6-0.0155757
   DGS2 : DRIF, L=(0.2300-LQGx)/2+20E-6
@@ -356,10 +356,10 @@
 ! ===
 
   Brho1 := Cb*EBC1            !beam rigidity at BC1 (kG-m)
-  AB11  := -0.093583513589    !full chicane bend angle (rad) (-0.086753564890323)
+  AB11  := -0.093575352547    !full chicane bend angle (rad) (-0.086753564890323)
   RB11  := LB1/SIN(AB11)      !bend radius (m)
   LB11  := RB11*AB11          !full chicane bend path length (m)
-  BB11  := Brho1/RB11         !bend field (kG) [-3.555805785115 kG @ 0.250 GeV]
+  BB11  := Brho1/RB11         !bend field (kG) (-3.83496008105)
   AB11S := ASIN((LB1/2)/RB11) !"short" half chicane bend angle (rad)
   LB11S := RB11*AB11S         !"short" half chicane bend path length (m)
   AB11L := AB11-AB11S         !"long" half chicane bend angle (rad)
@@ -412,10 +412,10 @@
 ! ===
 
   Brho2 := Cb*EBC2            !beam rigidity at BC2 (kG-m)
-  AB21  := -0.036971268085    !full chicane bend angle (rad) (-0.034727452562382)
+  AB21  := -0.036971323962    !full chicane bend angle (rad)
   RB21  := LB2/SIN(AB21)      !bend radius (m)
   LB21  := RB21*AB21          !full chicane bend path length (m)
-  BB21  := Brho2/RB21         !bend field (kG) [-9.071122639275 kG @ 4.300 GeV]
+  BB21  := Brho2/RB21         !bend field (kG) (-11.229050051323)
   AB21S := ASIN((LB2/2)/RB21) !"short" half chicane bend angle (rad)
   LB21S := RB21*AB21S         !"short" half chicane bend path length (m)
   AB21L := AB21-AB21S         !"long" half chicane bend angle (rad)
@@ -498,19 +498,19 @@
 
 ! rematched with laser-heater ON (chicane dX= 35 mm)
 
-  KQA01 := -12.319457174182
-  KQA02 :=  13.70811489073
-  KQE01 :=  -6.542797185475
-  KQE02 :=   5.356375572941
-  KQE03 :=   6.056002602406
-  KQE04 :=  -5.237184490825
+  KQA01 := -12.315067380182
+  KQA02 :=  13.705554947598
+  KQE01 :=  -6.532677301494
+  KQE02 :=   5.351055993902
+  KQE03 :=   6.053732882313
+  KQE04 :=  -5.234073678944
 
-  KQM01 :=  15.072053882204
-  KQM02 := -11.974604636345
-  KQM03 :=  -8.255421303054
-  KQM04 :=  13.306105246908
+  KQM01 :=  15.082997416875
+  KQM02 := -11.969358129236
+  KQM03 :=  -8.29494541292
+  KQM04 :=  13.33787357734
 
-  KQB   :=  22.169715923059 !22.169701529353
+  KQB   :=  22.169715923062
 
   QA01 : QUAD, TYPE="ETA", L=LQx/2, APER=rQx, K1=KQA01
   QA02 : QUAD, TYPE="ETA", L=LQx/2, APER=rQx, K1=KQA02
@@ -532,23 +532,23 @@
   QDL1 : QUAD, TYPE="QE", L=LQE/2, APER=rQE, K1=-KQL1
 
   KQA11 := -KQL1
-  KQA12 :=  1.832347728582 !1.863910872552
+  KQA12 :=  1.831403533749
 
   QA11 : QUAD, TYPE="ETA", L=LQx/2, APER=rQx, K1=KQA11
   QA12 : QUAD, TYPE="ETA", L=LQx/2, APER=rQx, K1=KQA12
 
 ! BC1
 
-  KQ21201 := -9.4016016478   !-9.357677119503
-  KQM11   :=  8.001404772165 ! 7.960339117021
-  KQM12   := -8.322577884808 !-8.366726970987
-  KQM13   :=  9.921822879541 ! 9.860390676906
+  KQ21201 := -9.394155388085
+  KQM11   :=  8.000790178508
+  KQM12   := -8.326568628912
+  KQM13   :=  9.937676628969
   KCQ11   :=  0
   KSQ13   :=  0
   KCQ12   :=  0
   KQ21301 := -0.1347         !turn this quad OFF for LCLS operations (this is meas'd remnant field of Gdl = 0.12 kG)
-  KQM14   :=  7.08022322559  ! 7.079239169293
-  KQM15   := -6.766778626493 !-6.765038435385
+  KQM14   :=  7.054168937435
+  KQM15   := -6.723000446327
 
   Q21201 : QUAD, TYPE="QE",  L=LQE/2,  APER=rQE,  K1=KQ21201     !QE-072 after Aug 2006; gets moved downstream of pre-LCLS location by 1.101312 m (measured parallel to main linac axis)
   QM11   : QUAD, TYPE="ETA", L=LQx/2,  APER=rQx,  K1=KQM11  
@@ -568,36 +568,36 @@
   QFL2 : QUAD, TYPE="QE", L=LQE/2, APER=rQE, K1=+KQL2
   QDL2 : QUAD, TYPE="QE", L=LQE/2, APER=rQE, K1=-KQL2
 
-  KQ21401 :=  1.045575989542 ! 1.044881943081 !QE-002 after Aug 2006
-  KQ21501 := -0.833682306526 !-0.833170329125 !use pre-Aug-2006 Q21201 magnet
+  KQ21401 :=  1.030123463078 !QE-002 after Aug 2006
+  KQ21501 := -0.820757556128 !use pre-Aug-2006 Q21201 magnet
   KQ21601 :=  KQL2                            !use pre-Aug-2006 Q21301 magnet
   KQ21701 := -KQL2
-  KQ21801 :=  0.721703961622
-  KQ21901 := -0.721930035688
+  KQ21801 :=  0.726696191485
+  KQ21901 := -0.721528926061
 
-  KQ22201 :=  0.711368406706
-  KQ22301 := -0.764179973154
+  KQ22201 :=  0.714603191911
+  KQ22301 := -0.762188913757
   KQ22401 :=  KQL2
   KQ22501 := -KQL2
   KQ22601 :=  KQL2
   KQ22701 := -KQL2
-  KQ22801 :=  0.748596129657
-  KQ22901 := -0.709657173604
+  KQ22801 :=  0.747560469838
+  KQ22901 := -0.709980930665
 
-  KQ23201 :=  0.721241098608
-  KQ23301 := -0.741011348313
+  KQ23201 :=  0.720791509747
+  KQ23301 := -0.741851024289
   KQ23401 :=  KQL2
   KQ23501 := -KQL2
   KQ23601 :=  KQL2
   KQ23701 := -KQL2
-  KQ23801 :=  0.770675623153
-  KQ23901 := -0.726878264576
+  KQ23801 :=  0.770666348011
+  KQ23901 := -0.726851638763
 
-  KQ24201 :=  0.779404953697
-  KQ24301 := -0.856812505218
-  KQ24401 :=  1.025618689057
-  KQ24501 := -0.932809842702 !-0.931675081162
-  KQ24601 :=  0.603859930448 ! 0.603160584173
+  KQ24201 :=  0.779293384791
+  KQ24301 := -0.856497177248
+  KQ24401 :=  1.024817869713
+  KQ24501 := -0.954003584585
+  KQ24601 :=  0.608135546584
 
   Q21401 : QUAD, TYPE="QE", L=LQE/2, APER=rQE, K1=KQ21401
   Q21501 : QUAD, TYPE="QE", L=LQE/2, APER=rQE, K1=KQ21501
@@ -632,12 +632,12 @@
 
 ! BC2
 
-  KQ24701 := -1.286376116895 !-1.286030138047
-  KQM21   :=  0.508141288763 ! 0.508115309359
+  KQ24701 := -1.307122793026
+  KQM21   :=  0.511895916574
   KCQ21   :=  1E-12
   KCQ22   :=  1E-12
-  KQM22   := -0.589507456153 !-0.590418980634
-  KQ24901 :=  1.081544590668 ! 1.082042245094
+  KQM22   := -0.589455717616
+  KQ24901 :=  1.081452709118
 
   Q24701A : QUAD, TYPE="QE",         L=LQE/2, APER=rQE, K1=KQ24701  !in same location as pre-LCLS (with its BPM)
   Q24701B : QUAD, TYPE="QE",         L=LQE/2, APER=rQE, K1=KQ24701  !10 cm between Q24701A & B
@@ -658,59 +658,58 @@
   QFL3 : QUAD, TYPE="QE", L=LQE/2, APER=rQE, K1=KQFL3
   QDL3 : QUAD, TYPE="QE", L=LQE/2, APER=rQE, K1=KQDL3
 
-  KQ25201 :=  0.698137203983 ! 0.697993592575
-  KQ25301 := -0.479540264892 !-0.478388226374
-  KQ25401 :=  0.429369312884 ! 0.42896785871
-  KQ25501 := -0.399966474543 !-0.399864956514
+  KQ25201 :=  0.69835390233
+  KQ25301 := -0.479854531304
+  KQ25401 :=  0.429832166012
+  KQ25501 := -0.400216279825
   KQ25601 :=  KQFL3
   KQ25701 :=  KQDL3
-  KQ25801 :=  0.407168436855
-  KQ25901 := -0.388171234952
+  KQ25801 :=  0.407524461523
+  KQ25901 := -0.38867870418
 
-  KQ26201 :=  0.388578933647
-  KQ26301 := -0.405404843557
+  KQ26201 :=  0.388844133085
+  KQ26301 := -0.405381176356
   KQ26401 :=  KQFL3
   KQ26501 :=  KQDL3
   KQ26601 :=  KQFL3
   KQ26701 :=  KQDL3
-  KQ26801 :=  0.406308742855
-  KQ26901 := -0.388549789828
+  KQ26801 :=  0.406007960598
+  KQ26901 := -0.388769548432
 
-  KQ27201 :=  0.390161854669
-  KQ27301 := -0.406474370795
+  KQ27201 :=  0.391071563294
+  KQ27301 := -0.407171874797
   KQ27401 :=  KQFL3
   KQ27501 :=  KQDL3
   KQ27601 :=  KQFL3
   KQ27701 :=  KQDL3
-  KQ27801 :=  0.406495928662
-  KQ27901 := -0.388870517181
+  KQ27801 :=  0.40682165023
+  KQ27901 := -0.389505138741
 
-  KQ28201 :=  0.390352348197
-  KQ28301 := -0.406461529502
+  KQ28201 :=  0.390810721273
+  KQ28301 := -0.406510005482
   KQ28401 :=  KQFL3
   KQ28501 :=  KQDL3
   KQ28601 :=  KQFL3
   KQ28701 :=  KQDL3
-  KQ28801 :=  0.406649614831
-  KQ28901 := -0.389077444001
+  KQ28801 :=  0.406821689691
+  KQ28901 := -0.389505198882
 
-  KQ29201 :=  0.390429567548
-  KQ29301 := -0.406416613477
+  KQ29201 :=  0.390810639876
+  KQ29301 := -0.40650981716
   KQ29401 :=  KQFL3
   KQ29501 :=  KQDL3
   KQ29601 :=  KQFL3
   KQ29701 :=  KQDL3
-  KQ29801 :=  0.406588653506
-  KQ29901 := -0.389037213556
+  KQ29801 :=  0.406747754958
+  KQ29901 := -0.389374252182
 
-  KQ30201 :=  0.39027307525
-  KQ30301 := -0.406178588622
-  KQ30401 :=  0.396480907847 ! KQFL3
-  KQ30501 := -0.396467538155 !-0.395648794699 !KQDL3
-  KQ30601 :=  0.395722103341 ! 0.395797744026 !KQFL3
-  KQ30701 := -0.395269902676 !-0.395649272846 !KQDL3
- !KQ30801 :=  0.418744300937 ! 0.418743774352
- !KQ30801 :=  0.484416787325 !copy from LCLS2sc LTU.xsif
+  KQ30201 :=  0.390540048432
+  KQ30301 := -0.406220459812
+  KQ30401 :=  KQFL3
+  KQ30501 :=  KQDL3
+  KQ30601 :=  KQFL3
+ !KQ30701 :=  see LTU.xsif
+ !KQ30801 :=  see LTU.xsif
 
   Q25201 : QUAD, TYPE="QE", L=LQE/2, APER=rQE, K1=KQ25201
   Q25301 : QUAD, TYPE="QE", L=LQE/2, APER=rQE, K1=KQ25301
@@ -820,17 +819,17 @@
 
 ! Heater-Chicane:
 
-! LSRHTR_ON := 1E-12          !set to 1E-12 for laser heater bends & undulator OFF and 1.0 for ON (nominal)
-  LSRHTR_ON := 1              !set to 1E-12 for laser heater bends & undulator OFF and 1.0 for ON (nominal)
-  Brhoh := Cb*Ei              !beam rigidity at heater (kG-m)
-  BBh1  := -4.749307427186*LSRHTR_ON !heater-chicane bend field for 35-mm etaX_pk (kG) (-4.751481741801)
-  RBh1  := Brhoh/BBh1         !heater-chicane bend radius (m)
-  ABh1  := ASIN(LBh/RBh1)     !heater-chicane bend angle (rad)
-  LBh1  := RBh1*ABh1          !heater-chicane bend path length (m)
-  ABh1S := ASIN((LBh/2)/RBh1) !"short" half heater-chicane bend angle (rad)
-  LBh1S := RBh1*ABh1S         !"short" half heater-chicane bend path length (m)
-  ABh1L := ABh1-ABh1S         !"long" half heater-chicane bend angle (rad)
-  LBh1L := RBh1*ABh1L         !"long" half heater-chicane bend path length (m)
+! LSRHTR_ON := 1E-12           !set to 1E-12 for laser heater bends & undulator OFF and 1.0 for ON (nominal)
+  LSRHTR_ON := 1               !set to 1E-12 for laser heater bends & undulator OFF and 1.0 for ON (nominal)
+  Brhoh := Cb*Ei               !beam rigidity at heater (kG-m)
+  ABh1  := -0.131709391614*LSRHTR_ON !heater-chicane bend angle (rad)
+  BBh1  := Brhoh*SIN(ABh1)/LBh !heater-chicane bend field for 35-mm etaX_pk (kG) (-4.75393301417)
+  RBh1  := Brhoh/BBh1          !heater-chicane bend radius (m)
+  LBh1  := RBh1*ABh1           !heater-chicane bend path length (m)
+  ABh1S := ASIN((LBh/2)/RBh1)  !"short" half heater-chicane bend angle (rad)
+  LBh1S := RBh1*ABh1S          !"short" half heater-chicane bend path length (m)
+  ABh1L := ABh1-ABh1S          !"long" half heater-chicane bend angle (rad)
+  LBh1L := RBh1*ABh1L          !"long" half heater-chicane bend path length (m)
 
   Dh00  : DRIF, L=0.13453045-dLBh/2
   Dh01  : DRIF, L=(0.155-dLBh)/COS(ABh1), TYPE="CSR"
@@ -877,32 +876,41 @@
   gami  := Ei/mc2                           !Lorentz energy factor in laser-heater undulator [ ]
   K_und := LSRHTR_ON*sqrt(2*(lamr*2*gami^2/lam - 1)) !undulator K for laser heater und.
   Lhun  := 0.506263                         !length of laser-heater undulator
+  Lhunh := Lhun/2
   kqlh  := (K_und*2*pi/lam/sqrt(2)/gami)^2  !natural undulator focusing "k" in y-plane [m^-2]
 
- !VALUE,gami,kqlh,K_und
+! handle K_und->0 by expressing R34 as an approximate SINC function
 
-  LHBEG : MARK
-  LHEND : MARK
+  ARGh     := Lhunh*sqrt(kqlh)
+  ARGh2    := ARGh*ARGh
+  ARGh4    := ARGh2*ARGh2
+  ARGh6    := ARGh4*ARGh2
+  SINCARGh := 1-ARGh2/6+ARGh4/120-ARGh6/5040 !~sinc(ARGh)=sin(ARGh)/ARGh
+  R34h     := Lhunh*SINCARGh
 
 ! laser-heater undulator modeled as R-matrix to include vertical natural focusing:
 
-  LH_UND : MATRIX, L=Lhun/2,                    &
-  RM(1,1) = 1.0,                                &
-  RM(1,2) = Lhun/2,                             &
-  RM(2,1) = 0.0,                                &
-  RM(2,2) = 1.0,                                &
-  RM(3,3) =  cos(Lhun/2*sqrt(kqlh)),            &
-  RM(3,4) =  sin(Lhun/2*sqrt(kqlh))/sqrt(kqlh), &
-  RM(4,3) = -sin(Lhun/2*sqrt(kqlh))*sqrt(kqlh), &
-  RM(4,4) =  cos(Lhun/2*sqrt(kqlh))
-! RM(5,6) =  Lhun/2/(gami^2)*(1+(K_und^2)/2)
+  LH_UND : MATRIX, TYPE="LHund", L=Lhunh,        &
+    RM(1,1) = 1.0,                               &
+    RM(1,2) = Lhunh,                             &
+    RM(2,1) = 0.0,                               &
+    RM(2,2) = 1.0,                               &
+    RM(3,3) =  cos(Lhunh*sqrt(kqlh)),            &
+    RM(3,4) =  R34h,                             &
+    RM(4,3) = -sin(Lhunh*sqrt(kqlh))*sqrt(kqlh), &
+    RM(4,4) =  cos(Lhunh*sqrt(kqlh)) !,          &
+   !RM(5,6) =  Lhunh/(gami^2)*(1+(K_und^2)/2)
 
+ !VALUE, gami,kqlh,K_und
  !VALUE, LH_UND[RM(1,2)],Lhun/2
  !VALUE, LH_UND[RM(3,3)],cos(Lhun/2*sqrt(kqlh))
  !VALUE, LH_UND[RM(3,4)],sin(Lhun/2*sqrt(kqlh))/sqrt(kqlh)
  !VALUE, LH_UND[RM(4,3)],-sin(Lhun/2*sqrt(kqlh))*sqrt(kqlh)
  !VALUE, LH_UND[RM(4,4)],cos(Lhun/2*sqrt(kqlh))
  !VALUE, LH_UND[RM(5,6)],Lhun/2/(gami^2)*(1+(K_und^2)/2)
+
+  LHBEG : MARK
+  LHEND : MARK
 
 ! DL1
 

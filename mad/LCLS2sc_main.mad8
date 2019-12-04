@@ -1,6 +1,6 @@
-  TITLE, "AD_ACCEL (2019next)" !superconducting linac
+  TITLE, "AD_ACCEL (December 5, 2019)" !superconducting linac
 
-! *** OPTICS=AD_ACCEL-2019next ***
+! *** OPTICS=AD_ACCEL-05DEC19 ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY, DOUBLE
   ASSIGN, ECHO="LCLS2sc.echo"
@@ -330,7 +330,8 @@
 ! CX...... = horizontal collimator (vertical jaws, adjustable)
 ! CY...... = vertical collimator (horizontal jaws, adjustable)
 ! CE...... = momentum collimator (adjustable)
-! PC...... = protection collimator (fixed aperture)
+! PC...... = protection collimator (fixed aperture) when keyword=ECOL
+! PC...... = RP spot shielding (external plates) when keyword=INST
 ! RO...... = coordinate rotation (non-physical element)
 ! XC...... = horizontal steering dipole
 ! XCM..... = standard cryomodule horizontal steering dipole
@@ -379,11 +380,8 @@
 ! integrated gradients for undulator quadrupoles
 ! ------------------------------------------------------------------------------
 
-  IntgSX := 20.0 !kG
-  IntgHX := 12.0 !kG
-
-  EfSC := 4.0 !nominal final beam energy from superconducting (SC) linac (GeV)
-  EuSC := 4.0 !beam energy in undulator (GeV)
+  IntgSX := 30.0 !kG
+  IntgHX := 30.0 !kG
 
 ! ------------------------------------------------------------------------------
 ! element and line definitions
@@ -424,27 +422,27 @@
 ! quad settings in A-line
 
   SETK2scA : SUBROUTINE !for LCLS2scA
-    SET, KQ10,  0.040732418682 ! 0.040693762343
-    SET, KQ11, -0.035470391686 !-0.034911857604
-    SET, KQ19,  0.028832646424 ! 0.028757782261
-    SET, KQ20,  0.011866327361 ! 0.012103871688
-    SET, KQ27, -0.068187477866 !-0.066254695301
-    SET, KQ28,  0.029868541394 ! 0.030361940715
-    SET, KQ30, -0.029618830812 !-0.029784752775
-    SET, KQ38,  0.034798028844 ! 0.034797296483
+    SET, KQ10,  0.04078118414  ! 0.040732418682
+    SET, KQ11, -0.035978491015 !-0.035470391686
+    SET, KQ19,  0.0288935235   ! 0.028832646424
+    SET, KQ20,  0.011673337852 ! 0.011866327361
+    SET, KQ27, -0.069796542848 !-0.068187477866
+    SET, KQ28,  0.029206357304 ! 0.029868541394
+    SET, KQ30, -0.029497355276 !-0.029618830812
+    SET, KQ38,  0.034805766493 ! 0.034798028844
   ENDSUBROUTINE
 
 ! quad settings in DASEL
 
   SETK2scDA : SUBROUTINE !for LCLS2scDA
-    SET, KQ10,  0.040388112814
-    SET, KQ11, -0.038712955409
-    SET, KQ19,  0.03054367869
-    SET, KQ20, -0.125186988934E-2
-    SET, KQ27, -0.074602195497
-    SET, KQ28,  0.041232949479
-    SET, KQ30, -0.029290738963
-    SET, KQ38,  0.034019960625
+    SET, KQ10,  0.04034296448     ! 0.040388112814
+    SET, KQ11, -0.03865438496     !-0.038712955409
+    SET, KQ19,  0.030550055348    ! 0.03054367869
+    SET, KQ20, -0.125475886882E-2 !-0.125186988934E-2
+    SET, KQ27, -0.074785603391    !-0.074602195497
+    SET, KQ28,  0.041188876983    ! 0.041232949479
+    SET, KQ30, -0.029276530035    !-0.029290738963
+    SET, KQ38,  0.034027229146    ! 0.034019960625
   ENDSUBROUTINE
 
   SETK2scXL2 : SUBROUTINE !for XLEAP-II
@@ -452,29 +450,72 @@
     ! UMXL1-4 undulator K=50
     ! self-seeding chicane R56=0.56 mm
     ! wiggler K=34
-    SET, KQEM1B,  1.782105086906
-    SET, KQEM2B, -1.893427941353
-    SET, KQEM3B,  1.4778561902
-    SET, KQEM4B, -1.008420259435
-    SET, KQE31B,  0.263097822804
-    SET, KQE32B, -0.465049032014
-    SET, KQE33B,  0.708498263073
-    SET, KQE34B, -0.702975844569
-    SET, KQE35B,  0.725508067973
-    SET, KQE36B, -0.272464322584
-    SET, KQUM1B,  1.043940116043 ! 1.045304716298
-    SET, KQUM2B, -1.131319760136 !-1.127266321918
-    SET, KQUM3B,  0.091635243224 ! 0.091990859369
-    SET, KQUM4B,  0.164719091719 ! 0.168743458401
-    SET, KQSX16,  1.149746713176 ! 1.179776342196
-    SET, KQSX19, -1.551005594041 !-1.555528787668
-    SET, KQSX21,  1.654950860956 ! 1.660683967379
-    SET, KQSX24, -1.927727127613 !-1.983210390097
-    SET, KQDSXM, -0.257825061187 !-0.406434161462
-    SET, KQUE1B, -0.30534765361  !-0.297915551865
-    SET, KQUE2B,  0.393680974176 ! 0.390984021273
-    SET, KQDMPB, -0.155219672598 !-0.154946553294
+    ! maximum energy=6.25 GeV
+    SET, KQEM1B,  1.753498810647 ! 1.782105086906
+    SET, KQEM2B, -1.89151879979  !-1.893427941353
+    SET, KQEM3B,  1.460130886376 ! 1.4778561902
+    SET, KQEM4B, -1.003271791653 !-1.008420259435
+    SET, KQE31B,  0.259199272111 ! 0.263097822804
+    SET, KQE32B, -0.465309355382 !-0.465049032014
+    SET, KQE33B,  0.709827895055 ! 0.708498263073
+    SET, KQE34B, -0.703993048304 !-0.702975844569
+    SET, KQE35B,  0.74174515358  ! 0.725508067973
+    SET, KQE36B, -0.26747744113  !-0.272464322584
+    SET, KQUM1B,  1.044383140731 ! 1.043940116043
+    SET, KQUM2B, -1.128507141132 !-1.131319760136
+    SET, KQUM3B,  0.093454443485 ! 0.091635243224
+    SET, KQUM4B,  0.172049650009 ! 0.164719091719
+    SET, KQSX16,  1.489214343735 ! 1.149746713176
+    SET, KQSX19, -1.599319392703 !-1.551005594041
+    SET, KQSX21,  1.728737247522 ! 1.654950860956
+    SET, KQSX24, -2.28070315173  !-1.927727127613
+    SET, KQDSXM, -1.28484        !-0.257825061187
+    SET, KQUE1B, -0.079627661951 !-0.30534765361 
+    SET, KQUE2B,  0.323427716703 ! 0.393680974176
+    SET, KQDMPB, -0.155766912296 !-0.155219672598
   ENDSUBROUTINE
+
+! ------------------------------------------------------------------------------
+
+  COMMENT !for testing the online Matlab model
+    BEAM, ENERGY=E0
+    USE, SC_EIC
+    TWISS, COUPLE, BETA0=TWSS0, TAPE="EIC_twiss.tape"
+
+    BEAM, ENERGY=E0
+    USE, SC_DIAG0
+    TWISS, COUPLE, SAVE, BETA0=TWSS0, TAPE="DIAG0_twiss.tape"
+    BEAM, ENERGY=Ei
+    USE, SC_DIAG0i
+    TWISS, BETA0=TWSSi, TAPE="DIAG0i_twiss.tape"
+
+    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
+   !SETK2scXL2
+    BEAM, ENERGY=E0
+    USE, SC_SXR
+    TWISS, COUPLE, BETA0=TWSS0, TAPE="LCLS2scS_twiss.tape"
+    BEAM, ENERGY=Ei
+    USE, SC_SXRi
+    TWISS, BETA0=TWSSi, TAPE="LCLS2scSi_twiss.tape"
+
+    SET, SETSP, SETSPh ; SET, SETAL, ALOFF
+    BEAM, ENERGY=E0
+    USE, SC_HXR
+    TWISS, COUPLE, BETA0=TWSS0, TAPE="LCLS2scH_twiss.tape"
+    BEAM, ENERGY=Ei
+    USE, SC_HXRi
+    TWISS, BETA0=TWSSi, TAPE="LCLS2scHi_twiss.tape"
+
+    SET, SETSP, SETSPd ; SET, SETDA, DAOFF
+    BEAM, ENERGY=E0
+    USE, SC_BSYD
+    TWISS, COUPLE, BETA0=TWSS0, TAPE="LCLS2scD_twiss.tape"
+    BEAM, ENERGY=Ei
+    USE, SC_BSYDi
+    TWISS, BETA0=TWSSi, TAPE="LCLS2scDi_twiss.tape"
+
+    STOP
+  ENDCOMMENT
 
 ! ==============================================================================
 ! COMMANDs
@@ -490,59 +531,6 @@
  !CALL, FILENAME="LCLS2sc_match.mad8"
  !CALL, FILENAME="RDB/LCLS2sc_makeSymbols.mad8"
  !CALL, FILENAME="elegant/LCLS2sc_makeElegant.mad8"
-
-  comment
-    BEAM, ENERGY=Ef
-    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
-    USE, BSYLCLS2scS
-    VALUE, DXL2BTM[L]
-    MATCH, SURVEY, XS=Xf, YS=Yf, ZS=Zf, THETAS=THETAf, PHIS=PHIf, PSIS=PSIf
-      VARY, DXL2BTM[L], STEP=1.E-6
-      WEIGHT, ZS=1
-      CONSTR, BTM12B, ZS=395.24
-     !LMDIF, TOL=1.E-20
-     !MIGRAD, TOL=1.E-20
-    ENDMATCH
-    VALUE, DXL2BTM[L]
-    PRINT, FULL
-    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf
-  endcomment
-
-  comment
-    VALUE, ABh,ZhBBo
-    BEAM, ENERGY=Eu
-    USE, LSRHTR
-    MATCH, BETX=1, BETY=1
-      VARY, ABh, STEP=1.E-6, LOWER=0
-     !VARY, ZhBBo, STEP=1.E-6
-      CONSTR, HTRUND, DX=0.075
-     !RMATRIX, #S/#E, RM(5,6)=R56HTR, WEIGHT(5,6)=1
-     !LMDIF, TOL=1.E-20, CALLS=10000
-     !MIGRAD, TOL=1.E-20, CALLS=10000
-    ENDMATCH
-    VALUE, ABh,ZhBBo,ABh*DEGRAD
-   !PRINT, FULL
-    SURVEY
-    TWISS, BETX=1, BETY=1, SAVE
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE=.F., FILE="match"
-  endcomment
-
-  comment
-    VALUE, Zbyp
-    BEAM, ENERGY=Ef
-    USE, BYPi
-    MATCH, BETX=10, BETY=10, SURVEY, XS=Xbyp, YS=Ybyp, ZS=Zbyp
-      VARY, Zbyp, STEP=1.E-60
-      WEIGHT, ZS=1
-      CONSTR, BPN12END, ZS=12*101.6
-      LMDIF, TOL=1.E-20
-      MIGRAD, TOL=1.E-20
-    ENDMATCH
-    VALUE, Zbyp
-    PRINT, FULL
-    SURVEY, X0=Xbyp, Y0=Ybyp, Z0=Zbyp
-  endcomment
 
  !STOP
 
@@ -604,7 +592,6 @@
     PRINT, FULL
     SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scSS_survey.tape"
     BEAM, ENERGY=Ei
-   !SETK2scXL2 !turns on XLEAP2 components and optics
     USE, SC_SFTSi
     PRINT, FULL
     TWISS, SAVE, BETA0=TWSSi, TAPE="LCLS2scSS_twiss.tape" !, &
@@ -618,20 +605,6 @@
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
       STYLE=100, SPLINE, RANGE=BEAM0/SFTDMPB, FILE="LCLS2scSS", &
       TITLE="SC-linac to SXR safety dump"
-  ENDCOMMENT
-
-! ------------------------------------------------------------------------------
-
-! SXR XTES (SURVEY only)
-
-  COMMENT
-    ASSIGN, PRINT="LCLS2scSXTES.print"
-    BEAM, ENERGY=E0
-    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
-    USE, SC_SXTES
-   !SAVELINE, NAME="SC_SXTES", FILENAME="LCLS2scSXTES.saveline"
-    PRINT, FULL
-    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scSXTES_survey.tape"
   ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
@@ -836,7 +809,7 @@
 
 ! Twiss plots
 
-  COMMENT
+ !COMMENT
     ASSIGN, PRINT="LCLS2sc.print"
 
   ! Cathode to BEAM0
@@ -948,7 +921,7 @@
       COLOUR=100, SPLINE, RANGE=BEGDASEL/ENDBSYA_2, FILE="LCLS2sc_color", &
       TITLE="DASEL to A-line"
     SET, ROLLRC, +1
-  ENDCOMMENT
+ !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
 

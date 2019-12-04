@@ -1,10 +1,18 @@
 
-! *** OPTICS=AD_ACCEL-2019next ***
+! *** OPTICS=AD_ACCEL-05DEC19 ***
 
 ! LCLS2sc 3-way spreader system
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 26-NOV-2019, M. Woodley
+!  * remove IMBCSh3, IMBCSs3, and IMBCSd3 per Y. Ding
+!  * undefer BKXRASD and BKYRASD (already installed)
+! 11-NOV-2019, M. Woodley
+!  * defer (level 0) BKXRASD and BKYRASD per D. Hanquist
+! 11-OCT-2019, M. Woodley
+!  * remove PCSP3D/BTMSP3D per S. Trovati
 ! ------------------------------------------------------------------------------
 ! 06-JUN-2019, M. Woodley
 !  * adjust location of BSY dump face per A. Ibrahimov
@@ -626,6 +634,87 @@
   BYSP2sb : SBEN, TYPE="1.0D22.625", L=LBCSP2s/2, ANGLE=ABCSP2s/2, &
             E2=ABCSP2s/2, E1=0, FINTX=FBCSP, FINT=0, HGAP=GBCSP/2, TILT
 
+! define unsplit SBENs for BMAD ... not used by MAD
+
+  BKYSP0h : SBEN, TYPE="@2,0.787K35.4", HGAP=GBKYSP/2, L=LBKYSP0h, &
+                  ANGLE=0, E1=0, FINT=0.5, E2=0, &
+                  FINTX=0.5, TILT
+  BKYSP1h : SBEN, TYPE="0.787K35.4", HGAP=GBKYSP/2, L=LBKYSP1h, &
+                  ANGLE=ABKYSP1h, E1=0, FINT=0.5, E2=ABKYSP1h, &
+                  FINTX=0.5, TILT
+  BKYSP2h : SBEN, TYPE="0.787K35.4", HGAP=GBKYSP/2, L=LBKYSP2h, &
+                  ANGLE=ABKYSP2h, E1=-ABKYSP1h, FINT=0.5, E2=ABKYSP12h, &
+                  FINTX=0.5, TILT
+  BKYSP3h : SBEN, TYPE="0.787K35.4", HGAP=GBKYSP/2, L=LBKYSP3h, &
+                  ANGLE=ABKYSP3h, E1=-ABKYSP12h, FINT=0.5, E2=ABKYSPh, &
+                  FINTX=0.5, TILT
+  BKYSP4h : SBEN, TYPE="@2,0.787K35.4", HGAP=GBKYSP/2, L=LBKYSP4h, &
+                  ANGLE=0, E1=-ABKYSPh, FINT=0.5, E2=ABKYSPh, &
+                  FINTX=0.5, TILT
+  BKYSP5h : SBEN, TYPE="@2,1.378K35.4", HGAP=GBKYSP5h/2, L=LBKYSP5h, &
+                  ANGLE=0, E1=-ABKYSPh, FINT=0.5, E2=ABKYSPh, &
+                  FINTX=0.5, TILT
+  BLXSPh  : SBEN, TYPE="0.625SD38.98", HGAP=GBLXSP/2, L=LBLXSPh, &
+                  ANGLE=ABLXSPh, E1=0, FINT=0.5, E2=ABLXSPh, FINTX=0.5
+  BYSP1h  : SBEN, TYPE="1.0D22.625", HGAP=GBCSP/2, L=LBCSP1h, &
+                  ANGLE=ABCSP1h, E1=ABCSP1h/2, FINT=FBCSP, E2=ABCSP1h/2, &
+                  FINTX=FBCSP, TILT
+  BYSP2h  : SBEN, TYPE="1.0D22.625", HGAP=GBCSP/2, L=LBCSP2h, &
+                  ANGLE=ABCSP2h, E1=ABCSP2h/2, FINT=FBCSP, E2=ABCSP2h/2, &
+                  FINTX=FBCSP, TILT
+  BRSP1h  : SBEN, TYPE="1.0D38.37", HGAP=GBSP/2, L=LBRSPh, &
+                  ANGLE=ABRSPh, E1=ABRSPh/2, FINT=FBSP, E2=ABRSPh/2, &
+                  FINTX=FBSP, TILT=TBRSPh
+  BRSP2h  : SBEN, TYPE="1.0D38.37", HGAP=GBSP/2, L=LBRSPh, &
+                  ANGLE=-ABRSPh, E1=-ABRSPh/2, FINT=FBSP, E2=-ABRSPh/2, &
+                  FINTX=FBSP, TILT=TBRSPh
+  BXSP1h  : SBEN, TYPE="1.0D38.37", HGAP=GBSP/2, L=LBXSPh, &
+                  ANGLE=ABXSPh, E1=ABXSPh/2, FINT=FBSP, E2=ABXSPh/2, &
+                  FINTX=FBSP
+
+  BKYSP0s : SBEN, TYPE="@2,0.787K35.4", HGAP=GBKYSP/2, L=LBKYSP0s, &
+                  ANGLE=0, E1=0, FINT=0.5, E2=0, &
+                  FINTX=0.5, TILT
+  BKYSP1s : SBEN, TYPE="0.787K35.4", HGAP=GBKYSP/2, L=LBKYSP1s, &
+                  ANGLE=ABKYSP1s, E1=0, FINT=0.5, E2=ABKYSP1s, &
+                  FINTX=0.5, TILT
+  BKYSP2s : SBEN, TYPE="0.787K35.4", HGAP=GBKYSP/2, L=LBKYSP2s, &
+                  ANGLE=ABKYSP2s, E1=-ABKYSP1s, FINT=0.5, E2=ABKYSP12s, &
+                  FINTX=0.5, TILT
+  BKYSP3s : SBEN, TYPE="0.787K35.4", HGAP=GBKYSP/2, L=LBKYSP3s, &
+                  ANGLE=ABKYSP3s, E1=-ABKYSP12s, FINT=0.5, E2=ABKYSPs, &
+                  FINTX=0.5, TILT
+  BKYSP4s : SBEN, TYPE="@2,0.787K35.4", HGAP=GBKYSP/2, L=LBKYSP4s, &
+                  ANGLE=0, E1=-ABKYSPs, FINT=0.5, E2=ABKYSPs, &
+                  FINTX=0.5, TILT
+  BKYSP5s : SBEN, TYPE="@2,1.378K35.4", HGAP=GBKYSP5s/2, L=LBKYSP5s, &
+                  ANGLE=0, E1=-ABKYSPs, FINT=0.5, E2=ABKYSPs, &
+                  FINTX=0.5, TILT
+  BLXSPs  : SBEN, TYPE="0.625SD38.98", HGAP=GBLXSP/2, L=LBLXSPs, &
+                  ANGLE=ABLXSPs, E1=0, FINT=0.5, E2=ABLXSPs, FINTX=0.5
+  BYSP1s  : SBEN, TYPE="1.0D22.625", HGAP=GBCSP/2, L=LBCSP1s, &
+                  ANGLE=ABCSP1s, E1=ABCSP1s/2, FINT=FBCSP, E2=ABCSP1s/2, &
+                  FINTX=FBCSP, TILT
+  BYSP2s  : SBEN, TYPE="1.0D22.625", HGAP=GBCSP/2, L=LBCSP2s, &
+                  ANGLE=ABCSP2s, E1=ABCSP2s/2, FINT=FBCSP, E2=ABCSP2s/2, &
+                  FINTX=FBCSP, TILT
+  BXSP1s  : SBEN, TYPE="1.0D38.37", HGAP=GBSP/2, L=LBXSPs, &
+                  ANGLE=-ABXSPs, E1=-ABXSPs/2, FINT=FBSP, E2=-ABXSPs/2, &
+                  FINTX=FBSP
+  BXSP2s  : SBEN, TYPE="1.0D38.37", HGAP=GBSP/2, L=LBXSPs, &
+                  ANGLE=-ABXSPs, E1=-ABXSPs/2, FINT=FBSP, E2=-ABXSPs/2, &
+                  FINTX=FBSP
+  BXSP3s  : SBEN, TYPE="1.0D38.37", HGAP=GBSP/2, L=LBXSPs, &
+                  ANGLE=ABXSPs, E1=ABXSPs/2, FINT=FBSP, E2=ABXSPs/2, &
+                  FINTX=FBSP
+
+  BYSP1d  : SBEN, TYPE="1.0D38.37", HGAP=GBSP/2, L=LBYSPd, &
+                  ANGLE=ABYSPd, E1=ABYSPd/2, FINT=FBSP, E2=ABYSPd/2, &
+                  FINTX=FBSP, TILT
+  BYSP2d  : SBEN, TYPE="1.0D38.37", HGAP=GBSP/2, L=LBYSPd, &
+                  ANGLE=-ABYSPd, E1=-ABYSPd/2, FINT=FBSP, E2=-ABYSPd/2, &
+                  FINTX=FBSP, TILT
+
 ! drifts
 
   LDSPCOR1 := 0.3617
@@ -782,8 +871,7 @@
   DSP12hc : DRIF, L=LDSP12hc
   DSP12hc1 : DRIF, L=9.035399208502
   DSP12hc2 : DRIF, L=0.30541
-  DSP12hc3 : DRIF, L=0.30541
-  DSP12hc4 : DRIF, L=DSP12hc[L]-DSP12hc1[L]-DSP12hc2[L]-DSP12hc3[L]
+  DSP12hc3 : DRIF, L=DSP12hc[L]-DSP12hc1[L]-DSP12hc2[L]
   DSP12hd : DRIF, L=LDSP12hd
   DSP12he : DRIF, L=LDSP12he
   DSP13ha : DRIF, L=LDSP13ha
@@ -948,8 +1036,7 @@
   DSP13sb  : DRIF, L=LDSP13sb
   DSP13sb1 : DRIF, L=9.337992506693
   DSP13sb2 : DRIF, L=0.30541
-  DSP13sb3 : DRIF, L=0.30541
-  DSP13sb4 : DRIF, L=DSP13sb[L]-DSP13sb1[L]-DSP13sb2[L]-DSP13sb3[L]
+  DSP13sb3 : DRIF, L=DSP13sb[L]-DSP13sb1[L]-DSP13sb2[L]
 
   LDSP2da2 := 2.0
   LDSP2da1 := 23.0-4.457-LDSP2da2 !adjusted for DASEL
@@ -991,7 +1078,7 @@
 
   LDSP7d   := 20.0818610101+0.4+0.803391932471 -18.115253 +0.761425
   LDSP7db  := 1.5
-  LDSP7da  := LDSP7d-LDSP7db-LPCSP
+  LDSP7da  := LDSP7d-LDSP7db
   LDSP7daa := 0.5
   LDSP7dab := LDSP7da-LDSP7daa
 
@@ -1012,8 +1099,7 @@
   DSP5dc  : DRIF, L=LDSP5dc
   DSP5dc1 : DRIF, L=0.694411378263
   DSP5dc2 : DRIF, L=0.30541
-  DSP5dc3 : DRIF, L=0.30541
-  DSP5dc4 : DRIF, L=DSP5dc[L]-DSP5dc1[L]-DSP5dc2[L]-DSP5dc3[L]
+  DSP5dc3 : DRIF, L=DSP5dc[L]-DSP5dc1[L]-DSP5dc2[L]
   DSP5dd  : DRIF, L=LDSP5dd
   DSP6da  : DRIF, L=LDSP6da
   DSP6db  : DRIF, L=LDSP6db
@@ -1032,8 +1118,8 @@
   DSP7daa : DRIF, L=LDSP7daa
   DSP7dab : DRIF, L=LDSP7dab
   DSP7db  : DRIF, L=LDSP7db
-  DWALLad : DRIF, L=1.840975    !distance from face of muon wall to BSY dump
-  DDUMPBSY: DRIF, L=61.120*in2m !length of BSY dump (per A. Ibrahimov)
+  DWALLad : DRIF, L=1.840975                     !distance from face of muon wall to BSY dump
+  DDUMPBSY: DRIF, L=61.120*in2m, TYPE="BCS dump" !length of BSY dump (per A. Ibrahimov)
 
 ! markers
 
@@ -1150,20 +1236,14 @@
   IMSP0s : IMON, TYPE="ICT" !diagnostic ACM in SPS
   IMSP0d : IMON, TYPE="ICT" !diagnostic ACM in SPD
 
-  IMBCSh1 : IMON, TYPE="@0,BCS ACM" !BCS ACM triplet in SPH
-  IMBCSh2 : IMON, TYPE="@0,BCS ACM" !BCS ACM triplet in SPH
-  IMBCSh3 : IMON, TYPE="@0,BCS ACM" !BCS ACM triplet in SPH
-  IMBCSs1 : IMON, TYPE="@0,BCS ACM" !BCS ACM triplet in SPS
-  IMBCSs2 : IMON, TYPE="@0,BCS ACM" !BCS ACM triplet in SPS
-  IMBCSs3 : IMON, TYPE="@0,BCS ACM" !BCS ACM triplet in SPS
-  IMBCSd1 : IMON, TYPE="@0,BCS ACM" !BCS ACM triplet in SPD
-  IMBCSd2 : IMON, TYPE="@0,BCS ACM" !BCS ACM triplet in SPD
-  IMBCSd3 : IMON, TYPE="@0,BCS ACM" !BCS ACM triplet in SPD
+  IMBCSh1 : IMON, TYPE="@0,BCS ACM" !BCS ACM doublet in SPH
+  IMBCSh2 : IMON, TYPE="@0,BCS ACM" !BCS ACM doublet in SPH
+  IMBCSs1 : IMON, TYPE="@0,BCS ACM" !BCS ACM doublet in SPS
+  IMBCSs2 : IMON, TYPE="@0,BCS ACM" !BCS ACM doublet in SPS
+  IMBCSd1 : IMON, TYPE="@0,BCS ACM" !BCS ACM doublet in SPD
+  IMBCSd2 : IMON, TYPE="@0,BCS ACM" !BCS ACM doublet in SPD
 
-  PCSP3d : ECOL, L=LPCSP, TYPE="BCS PC" !BCS protection collimator
-
-  BTMSP3d  : INST, TYPE="BCS BTM" !Burn-Through-Monitor behind PCSP3d
-  BTMSPDMP : INST, TYPE="BCS BTM" !Burn-Through-Monitor behind BSY dump
+  BTMSPDMP : INST, TYPE="PPS BTM" !Burn-Through-Monitor behind BSY dump
 
   WSSP1d : WIRE, TYPE="fast" !to measure beam size and energy before BSY dump
 
@@ -1245,10 +1325,10 @@
     QSP4h_full,DSP7ha,BPMSP4h,DSP7hb,XCSP5h,DSP7hc,&
     QSP5h_full,DSP8ha,BPMSP5h,DSP8hb,YCSP6h,DSP8hc,&
     QSP6h_full,DSP9ha,BPMSP6h,DSP9hb,DSP9hc,DSP9hd,DSP9he,DSP9hf,DSP9hg,&
-    QSP7h_full,QSP7h,DSP10ha,XCSP7h,DSP10hb,DSP10hc,YCSP8h,DSP10hd,&
+    QSP7h_full,DSP10ha,XCSP7h,DSP10hb,DSP10hc,YCSP8h,DSP10hd,&
     QSP8h_full,DSP11ha,BPMSP8h,DSP11hb,DSP11hc,&
     QSP9h_full,DSP12ha,BPMSP9h,DSP12hb,XCSP9h,DSP12hc1,&
-      IMBCSh1,DSP12hc2,IMBCSh2,DSP12hc3,IMBCSh3,DSP12hc4,&
+      IMBCSh1,DSP12hc2,IMBCSh2,DSP12hc3,&
       BPMSP10h,DSP12hd,YCSP10h,DSP12he,&
     QSP10h_full,DSP13ha,XCSP11h,DSP13hb,BPMSP11h,DSP13hc,&
     QSP11h_full,DSP14ha,WOODDOOR)
@@ -1304,7 +1384,7 @@
     QSP8s_full,DSP12sa,BPMSP8s,DSP12sb,XCSP9s,DSP12sca,&
     SSP2s_full,DSP12scb,&
     QSP9s_full,DSP13sa,BPMSP9s,DSP13sb1,&
-      IMBCSs1,DSP13sb2,IMBCSs2,DSP13sb3,IMBCSs3,DSP13sb4,&
+      IMBCSs1,DSP13sb2,IMBCSs2,DSP13sb3,&
     BXSP3s_full,CNTSP2S)
 
   SPRDs : LINE=(SPRDsa,SPRDsb)
@@ -1323,14 +1403,14 @@
     QSP1d_full,DSP3da,DSP3db,IMSP0d,DSP3dc,MRFBSP2d,BPMSP2d,DSP3dd,&
     QSP2d_full,DSP4da,YCSP2d,DSP4db,&
     BYSP1d_full,DSP5da,DSP5db,WSSP1d,DSP5dc1,&
-      IMBCSd1,DSP5dc2,IMBCSd2,DSP5dc3,IMBCSd3,DSP5dc4,BPMSP3d,DSP5dd,&
+      IMBCSd1,DSP5dc2,IMBCSd2,DSP5dc3,BPMSP3d,DSP5dd,&
     BYSP2d_full,CNTSP1D,DSP6da,XCSP3d,DSP6db,YCSP4d,DSP6dc,DSP6dd,&
       DSP6de,DSP6dfa,WOODDOOR)
 
   SPRDdd : LINE=(DSP6dfb,XCSP5d,DSP6dfc,YCSP6d,DSP6dfd,BPMSP4d,DSP6dg,&
       DSP6dh,RWWAKE3D,&
     BKXRASd,DSP6di,&
-    BKYRASd,DSP6dj,BPMSP5d,DSP7daa,OTRSPDMP,DSP7dab,PCSP3d,BTMSP3d,&
+    BKYRASd,DSP6dj,BPMSP5d,DSP7daa,OTRSPDMP,DSP7dab,&
       DSP7db,MUWALLd,DWALLad,DUMPBSY,DDUMPBSY,BTMSPDMP)
 
   SPRDd : LINE=(SPRDkh,SPRDks,SPRDda,SPRDdb,SPRDdc,SPRDdd)

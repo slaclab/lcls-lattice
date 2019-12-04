@@ -1,0 +1,97 @@
+!--------------------------
+!--------------------------
+! Full L0A
+l0a: lcavity, rf_frequency = sbandf * 1e6, gradient = gradl0a* 1e6,
+        phi0 = phil0, type = "DUALFEED", 
+        l = 3.095244,   ! == 0.0586460 + 0.1993540 + 0.6493198 + 0.6403022 + 1.1518464 + 0.3348566 + 0.0609190,
+        num_steps=500
+
+l0a_full: line = (flnga1, l0a, flnga2)
+
+dlfda[superimpose] = T    
+dlfda[ref] = l0a    
+dlfda[ref_origin] = beginning        
+dlfda[offset] = 0.0586460
+
+sol2[superimpose] = T    
+sol2[ref] = l0a    
+sol2[ref_origin] = beginning        
+sol2[offset] = 0.0586460 + 0.1993540
+
+xc02[superimpose] = T    
+xc02[ref] = l0a    
+xc02[ref_origin] = beginning        
+xc02[offset] = 0.0586460 + 0.1993540 + 0.6493198
+
+yc02[superimpose] = T    
+yc02[ref] = l0a    
+yc02[ref_origin] = beginning        
+yc02[offset] = 0.0586460 + 0.1993540 + 0.6493198
+
+l0amid[superimpose] = T    
+l0amid[ref] = l0a    
+l0amid[ref_origin] = beginning        
+l0amid[offset] = 0.0586460 + 0.1993540 + 0.6493198 + 0.6403022
+
+xc03[superimpose] = T    
+xc03[ref] = l0a    
+xc03[ref_origin] = beginning        
+xc03[offset] = 0.0586460 + 0.1993540 + 0.6493198 + 0.6403022 + 1.1518464
+
+yc03[superimpose] = T    
+yc03[ref] = l0a    
+yc03[ref_origin] = beginning        
+yc03[offset] = 0.0586460 + 0.1993540 + 0.6493198 + 0.6403022 + 1.1518464
+
+outcpa[superimpose] = T    
+outcpa[ref] = l0a    
+outcpa[ref_origin] = beginning        
+outcpa[offset] =  0.0586460 + 0.1993540 + 0.6493198 + 0.6403022 + 1.1518464 + 0.3348566   
+
+
+
+!--------------------------
+!--------------------------
+! Full L0B
+
+l0b: lcavity, rf_frequency = sbandf * 1e6, gradient = gradl0b* 1e6,
+        phi0 = phil0, type = "DUALFEED",
+         l = 3.095244  ! == 0.0586460 +  0.3371281 + 1.1518479 + 1.1515630 +  0.3351400 + 0.0609190
+
+l0b_full: line = (flngb1, l0b, flngb2)
+
+dlfdb[superimpose] = T    
+dlfdb[ref] = l0b    
+dlfdb[ref_origin] = beginning        
+dlfdb[offset] =    0.0586460
+
+xc04[superimpose] = T    
+xc04[ref] = l0b    
+xc04[ref_origin] = beginning        
+xc04[offset] =   0.0586460 +  0.3371281
+
+yc04[superimpose] = T    
+yc04[ref] = l0b    
+yc04[ref_origin] = beginning        
+yc04[offset] =   0.0586460 +  0.3371281
+
+l0bmid[superimpose] = T    
+l0bmid[ref] = l0b    
+
+xc05[superimpose] = T    
+xc05[ref] = l0b    
+xc05[ref_origin] = beginning        
+xc05[offset] =   0.0586460 +  0.3371281 + 1.1518479 + 1.1515630
+
+yc05[superimpose] = T    
+yc05[ref] = l0b    
+yc05[ref_origin] = beginning        
+yc05[offset] =   0.0586460 +  0.3371281 + 1.1518479 + 1.1515630
+
+outcpb[superimpose] = T    
+outcpb[ref] = l0b    
+outcpb[ref_origin] = beginning        
+outcpb[offset] =   0.0586460 +  0.3371281 + 1.1518479 + 1.1515630 +  0.3351400
+
+
+

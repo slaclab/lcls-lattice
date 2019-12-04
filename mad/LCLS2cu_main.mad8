@@ -1,6 +1,6 @@
-  TITLE, "AD_ACCEL (2019next)" !copper linac
+  TITLE, "AD_ACCEL (December 5, 2019)" !copper linac
 
-! *** OPTICS=AD_ACCEL-2019next ***
+! *** OPTICS=AD_ACCEL-05DEC19 ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY
   ASSIGN, ECHO="LCLS2cu.echo"
@@ -44,7 +44,7 @@
 !  * add CUSXR beamline for transport from Cu-linac to SXR
 ! ------------------------------------------------------------------------------
 ! 09-DEC-2014, Y. Nosochkov
-!  * update initial Twiss and survey coordinates at BSYBEG (BEGBSY1)
+!  * update initial Twiss and survey coordinates at BSY1BEG
 ! ------------------------------------------------------------------------------
 ! 28-OCT-2014, M. Woodley
 !  * redefine DBMARK29 to be LI30 IV30-9 (Z=3042.005)
@@ -127,12 +127,8 @@
 ! integrated gradients for undulator quadrupoles
 ! ------------------------------------------------------------------------------
 
-  IntgSX := 20.0 !kG (30.0)
-  IntgHX := 40.0 !kG
-
-  EBC2Cu :=  4.300 !nominal BC2 beam energy for copper (Cu) linac (GeV)
-  EfCu   := 13.640 !nominal final beam energy from copper (Cu) linac (GeV)
-  EuCu   := 13.640 !nominal beam energy in undulator (GeV)
+  IntgSX := 30.0 !kG
+  IntgHX := 30.0 !kG
 
 ! ------------------------------------------------------------------------------
 ! element and line definitions
@@ -189,30 +185,11 @@
 
 ! Twiss at the entrance of CUSXR kicker (BEGCLTS)
 
-  TWSCUS1 : BETA0, BETX=TBXCUS1, BETY=TBYCUS1, ALFX=TAXCUS1, ALFY=TAYCUS1
+  TWSCUS1 : BETA0, BETX=TBXCUS1, ALFX=TAXCUS1, BETY=TBYCUS1, ALFY=TAYCUS1
 
 ! ==============================================================================
 ! SUBROUTINEs
 ! ------------------------------------------------------------------------------
-
-! special redefinitions for 4 GeV Cu-linac beam (BC2 @ 3 GeV)
-
-  SETcu4GeV : SUBROUTINE
-    SET, KQ24501, -1.029980908916
-    SET, KQ24601,  0.616316598916
-    SET, KQ24701, -1.36878052582
-    SET, KQM21,    0.5225357815
-    SET, KQM22,   -0.594857067816
-    SET, KQ24901,  1.089353577161
-    SET, KQ25201,  0.698160660454
-    SET, KQ25301, -0.480298087986
-    SET, KQ25401,  0.430767851841
-    SET, KQ25501, -0.400748061047
-    SET, KQ30401,  0.397894163919
-    SET, KQ30501, -0.397685556058
-    SET, KQ30601,  0.395088626924
-    SET, KQ30701, -0.394221449278
-  ENDSUBROUTINE
 
 ! special redefinitions for Cu-linac (high energy) beam passing through lattice
 ! defined for SC-linac (low energy) beam
@@ -229,47 +206,56 @@
     SET, KQA0,    0.115396472684
     SET, KQVM1,  -0.337436663026
     SET, KQVM2,   0.236576383993
-    SET, KQVM3,   0.71515053765
+    SET, KQVM3,   0.71515053765 
     SET, KQVM4,  -0.681649920856
-    SET, KQUM1,   0.265384062224 ! 0.265843852443
-    SET, KQUM2,  -0.236197967124 !-0.23723331482
-    SET, KQUM3,   0.165786910657 ! 0.165420280362
-    SET, KQUM4,  -0.176289890719 !-0.174981185812
-    SET, kQDHXm, -0.456644089634 !-0.462007123826
-    SET, KQUE1,  -0.092119193855 !-0.094048953252
-    SET, KQUE2,   0.157955482519 ! 0.160549634478
-    SET, KQDMP,  -0.155219342716 !-0.155211312125
-  ENDSUBROUTINE
-
-  SETK2cuS : SUBROUTINE !for LCLS2cuS
-
-  ! fine-tune SXR quad strengths for a better match
-
-    SET, KQBP33, -0.644563496901 !-0.644797555731
-    SET, KQBP34,  0.595165383865 ! 0.593738252918
-    SET, KQDBL1, -1.066849469579 !-1.055130827555
-    SET, KQDBL2,  0.618084331747 ! 0.599839474166
-    SET, KQDL11,  0.358720317054 ! 0.358486452767
-    SET, KQSX16,  0.58425577059  ! 0.619304582328
-    SET, KQSX19, -0.916613463141 !-0.710128917867
-    SET, KQSX21,  1.112461107836 ! 0.634767514115
-    SET, KQSX24, -1.11933302972  !-0.554593873983
+    SET, KQEM1,  -0.386250956878
+    SET, KQEM2,   0.429466776058
+    SET, KQEM3,  -0.596168395282
+    SET, KQEM4,   0.419766074433
+    SET, KQUM1,   0.272741408897 ! 0.265843852443
+    SET, KQUM2,  -0.270601268265 !-0.23723331482
+    SET, KQUM3,   0.278762678373 ! 0.165420280362
+    SET, KQUM4,  -0.247470889897 !-0.174981185812
+    SET, kQDHXm, -1.734624260269 !-0.462007123826
+    SET, KQUE1,   0.169109252491 !-0.094048953252
+    SET, KQUE2,  -0.137840816238 ! 0.160549634478
+    SET, KQDMP,  -0.155212710055 !-0.155211312125
   ENDSUBROUTINE
 
   SETK2cuA : SUBROUTINE !for LCLS2cuA
 
   ! set BSY and A-line quad strengths for Cu-linac beam optics
 
-    SET, KQ50Q3,  0.385752335743
-    SET, KQ4,    -0.220385532634
-    SET, KQ10,    0.041961707092
-    SET, KQ11,   -0.03648177506
-    SET, KQ19,    0.02837620076
-    SET, KQ20,    0.01338101228
-    SET, KQ27,   -0.054612770505
-    SET, KQ28,    0.157593407299E-2
-    SET, KQ30,   -0.030459807124
-    SET, KQ38,    0.035234930357
+    SET, KQ50Q3,  0.385752335743    ! from SETK2cuH
+    SET, KQ4,    -0.220385532634    ! from SETK2cuH
+    SET, KQ10,    0.041974009109    ! 0.041961707092   
+    SET, KQ11,   -0.036636645098    !-0.03648177506    
+    SET, KQ19,    0.028395737191    ! 0.02837620076    
+    SET, KQ20,    0.013320774095    ! 0.01338101228    
+    SET, KQ27,   -0.055077440583    !-0.054612770505   
+    SET, KQ28,    0.815683133839E-3 ! 0.157593407299E-2
+    SET, KQ30,   -0.030393872169    !-0.030459807124   
+    SET, KQ38,    0.035231290737    ! 0.035234930357   
+  ENDSUBROUTINE
+
+  SETK2cuS : SUBROUTINE !for LCLS2cuS
+
+  ! fine-tune SXR quad strengths for a better match
+
+    SET, KQBP33, -0.644554011561 !-0.644563496901
+    SET, KQBP34,  0.595247855684 ! 0.595165383865
+    SET, KQDBL1, -1.067473401506 !-1.066849469579
+    SET, KQDBL2,  0.619068833425 ! 0.618084331747
+    SET, KQDL11,  0.358733393526 ! 0.358720317054
+    SET, KQUM4B, -0.61774146348  !-0.629809901233
+    SET, KQSX16,  0.677894017174 ! 0.58425577059 
+    SET, KQSX19, -0.893321229694 !-0.916613463141
+    SET, KQSX21,  0.901518123026 ! 1.112461107836
+    SET, KQSX24, -0.825282828044 !-1.11933302972 
+    SET, KQDSXM, -0.470663936073 !-0.266792876891
+    SET, KQUE1B, -0.251630752095 !-0.306247962224
+    SET, KQUE2B,  0.373117835514 ! 0.394195575969
+    SET, KQDMPB, -0.155049913166 !-0.15522011426
   ENDSUBROUTINE
 
   SETK2cuXL2 : SUBROUTINE !for XLEAP-II (copy of LCLS2sc_main.mad8:SETK2scXL2)
@@ -277,29 +263,62 @@
     ! UMXL1-4 undulator K=50
     ! self-seeding chicane R56=0.56 mm
     ! wiggler K=34
-    SET, KQEM1B,  1.782105086906
-    SET, KQEM2B, -1.893427941353
-    SET, KQEM3B,  1.4778561902
-    SET, KQEM4B, -1.008420259435
-    SET, KQE31B,  0.263097822804
-    SET, KQE32B, -0.465049032014
-    SET, KQE33B,  0.708498263073
-    SET, KQE34B, -0.702975844569
-    SET, KQE35B,  0.725508067973
-    SET, KQE36B, -0.272464322584
-    SET, KQUM1B,  1.043940116043 ! 1.045304716298
-    SET, KQUM2B, -1.131319760136 !-1.127266321918
-    SET, KQUM3B,  0.091635243224 ! 0.091990859369
-    SET, KQUM4B,  0.164719091719 ! 0.168743458401
-    SET, KQSX16,  1.149746713176 ! 1.179776342196
-    SET, KQSX19, -1.551005594041 !-1.555528787668
-    SET, KQSX21,  1.654950860956 ! 1.660683967379
-    SET, KQSX24, -1.927727127613 !-1.983210390097
-    SET, KQDSXM, -0.257825061187 !-0.406434161462
-    SET, KQUE1B, -0.30534765361  !-0.297915551865
-    SET, KQUE2B,  0.393680974176 ! 0.390984021273
-    SET, KQDMPB, -0.155219672598 !-0.154946553294
+    SET, KQEM1B,  1.560904302127 ! 1.782105086906
+    SET, KQEM2B, -1.772416798508 !-1.893427941353
+    SET, KQEM3B,  1.430460896976 ! 1.4778561902
+    SET, KQEM4B, -1.119834233916 !-1.008420259435
+    SET, KQE31B,  0.389114224422 ! 0.263097822804
+    SET, KQE32B, -0.428274608686 !-0.465049032014
+    SET, KQE33B,  0.642794706736 ! 0.708498263073
+    SET, KQE34B, -0.642089984485 !-0.702975844569
+    SET, KQE35B,  0.446636856032 ! 0.725508067973
+    SET, KQE36B, -0.392685358048 !-0.272464322584
+    SET, KQUM1B,  1.072463451017 ! 1.043940116043
+    SET, KQUM2B, -1.107294536084 !-1.131319760136
+    SET, KQUM3B,  0.059979645471 ! 0.091635243224
+    SET, KQUM4B,  0.106812909707 ! 0.164719091719
+    SET, KQSX16,  1.102489619557 ! 1.149746713176
+    SET, KQSX19, -1.553163738075 !-1.551005594041
+    SET, KQSX21,  1.582236150968 ! 1.654950860956
+    SET, KQSX24, -1.798254560431 !-1.927727127613
+    SET, KQDSXM, -0.474212397895 !-0.257825061187
+    SET, KQUE1B, -0.253497956905 !-0.30534765361 
+    SET, KQUE2B,  0.373661265662 ! 0.393680974176
+    SET, KQDMPB, -0.154668538334 !-0.155219672598
   ENDSUBROUTINE
+
+! ------------------------------------------------------------------------------
+
+  COMMENT !for testing the online Matlab model
+    BEAM, ENERGY=E00
+    USE, CU_GSPEC
+    TWISS, BETA0=TWSSC, TAPE="LCLS2cuGSPEC_twiss.tape"
+
+    BEAM, ENERGY=E00
+    USE, CU_SPEC
+    TWISS, BETA0=TWSSC, TAPE="LCLS2cuSPEC_twiss.tape"
+
+    SET, SETCUS, CUSOFF ; SET, SETAL, ALOFF
+    SETK2cuH
+    BEAM, ENERGY=E00
+    USE, CU_HXR
+    TWISS, BETA0=TWSSC, TAPE="LCLS2cuH_twiss.tape"
+
+    SET, SETCUS, CUSOFF ; SET, SETAL, ALON
+    SETK2cuA
+    BEAM, ENERGY=E00
+    USE, CU_ALINE
+    TWISS, BETA0=TWSSC, TAPE="LCLS2cuA_twiss.tape"
+
+    SET, SETCUS, CUSON !pulsed
+    SETK2cuS
+   !SETK2cuXL2 !turns on XLEAP2 components and optics
+    BEAM, ENERGY=E00
+    USE, CU_SXR
+    TWISS, BETA0=TWSSC, TAPE="LCLS2cuS_twiss.tape"
+
+    STOP
+  ENDCOMMENT
 
 ! ==============================================================================
 ! COMMANDs
@@ -311,7 +330,7 @@
 
 ! ------------------------------------------------------------------------------
 
- !CALL, FILENAME="LCLS2cu_match.mad8" !upstream of BSY routines not checked
+ !CALL, FILENAME="LCLS2cu_match.mad8"
  !CALL, FILENAME="RDB/LCLS2cu_makeSymbols.mad8"
  !CALL, FILENAME="elegant/LCLS2cu_makeElegant.mad8" !use LCLS_L*e.xsif
 
@@ -373,21 +392,6 @@
 
 ! ------------------------------------------------------------------------------
 
-! HXR XTES (SURVEY only)
-
-  COMMENT
-    ASSIGN, PRINT="LCLS2cuHXTES.print"
-    BEAM, ENERGY=E00
-    SET, SETCUS, CUSOFF ; SET, SETAL, ALOFF
-    SETK2cuH
-    USE, CU_HXTES
-   !SAVELINE, NAME="CU_HXTES", FILENAME="LCLS2cuHXTES.saveline"
-    PRINT, FULL
-    SURVEY, THETA0=ADL1, X0=Xi, Z0=Zi, TAPE="LCLS2cuHXTES_survey.tape"
-  ENDCOMMENT
-
-! ------------------------------------------------------------------------------
-
 ! SXR
 
  !COMMENT
@@ -396,8 +400,6 @@
     SET, SETCUS, CUSON   !pulsed
    !SET, SETCUS, CUSONDC !DC
    !VALUE, PULSED,DCMODE
-    SET, EBC2, 3.0 ; SET, Ef, 4.0 ; SET, Eu, 4.0
-    SETcu4GeV
     SETK2cuS
    !SETK2cuXL2 !turns on XLEAP2 components and optics
     USE, CU_SXR
@@ -415,7 +417,6 @@
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
       STYLE=100, SPLINE, RANGE=BEGDL1_1/DUMPFACEB, FILE="LCLS2cuS", &
       TITLE="Cu-linac to SXR dump"
-    SET, EBC2, EBC2Cu ; SET, Ef, EfCu ; SET, Eu, EuCu
  !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
@@ -448,7 +449,7 @@
 
 ! 6 MeV gun spectrometer
 
- !COMMENT
+  COMMENT
     ASSIGN, PRINT="LCLS2cuGSPEC.print"
     BEAM, ENERGY=E00
     USE, CU_GSPEC
@@ -460,13 +461,13 @@
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX, &
       STYLE=100, SPLINE, RANGE=BEGGUN/ENDGSPEC, FILE="LCLS2cuGSPEC", &
       TITLE="Cathode to 6-MeV Gun Spectrometer"
- !ENDCOMMENT
+  ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
 
 ! 135 MeV spectrometer
 
- !COMMENT
+  COMMENT
     ASSIGN, PRINT="LCLS2cuSPEC.print"
     BEAM, ENERGY=E00
     USE, CU_SPEC
@@ -478,7 +479,7 @@
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX, &
       STYLE=100, SPLINE, RANGE=BEGGUN/ENDSPEC, FILE="LCLS2cuSPEC", &
       TITLE="Cathode to 135-MeV Spectrometer"
- !ENDCOMMENT
+  ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
 ! SURVEY in BSY coordinates (from end of L3)
@@ -528,11 +529,24 @@
 
 ! ------------------------------------------------------------------------------
 
+! HXR TXI
+
+ !COMMENT
+    ASSIGN, PRINT="BSY-LCLS2cuHTXI.print"
+    BEAM, ENERGY=Ef
+    SET, SETCUS, CUSOFF ; SET, SETAL, ALOFF
+    USE, BSYLTUHTXI
+    PRINT, FULL
+    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
+      TAPE="BSY-LCLS2cuHTXI_survey.tape"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
 ! SXR
 
  !COMMENT
     ASSIGN, PRINT="BSY-LCLS2cuS.print"
-    SET, Ef, 4.0 ; SET, Eu, 4.0
     BEAM, ENERGY=Ef
     SET, SETCUS, CUSON   !pulsed
    !SET, SETCUS, CUSONDC !DC
@@ -543,7 +557,6 @@
     PRINT, FULL
     SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
       TAPE="BSY-LCLS2cuS_survey.tape"
-    SET, Ef, EfCu ; SET, Eu, EuCu
  !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
@@ -580,7 +593,7 @@
 
 ! Twiss plots
 
-  COMMENT
+ !COMMENT
     ASSIGN, PRINT="LCLS2cu.print"
 
   ! Cathode to HXR Main Dump
@@ -652,8 +665,6 @@
     SET, SETCUS, CUSON   !pulsed
    !SET, SETCUS, CUSONDC !DC
    !VALUE, PULSED,DCMODE
-    SET, EBC2, 3.0 ; SET, Ef, 4.0 ; SET, Eu, 4.0
-    SETcu4GeV
     SETK2cuS
    !SETK2cuXL2 !turns on XLEAP2 components and optics
     USE, CU_SXR
@@ -681,7 +692,6 @@
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
       COLOUR=100, SPLINE, RANGE=BEGDMPS_1/DUMPFACEb, FILE="LCLS2cu_color", &
       TITLE="Cu_linac: SXR Post-indulator to dump"
-    SET, EBC2, EBC2Cu ; SET, Ef, EfCu ; SET, Eu, EuCu
 
   ! Cathode to A-line
 
@@ -693,7 +703,7 @@
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=rBETX,rBETY, VAXIS2=DX,DY, &
       COLOUR=100, SPLINE, RANGE=BEGCLTH_0/ENDBSYA_2, FILE="LCLS2cu_color", &
       TITLE="Cu_linac: BSY to A-line"
-  ENDCOMMENT
+ !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
 

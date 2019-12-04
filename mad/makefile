@@ -69,6 +69,10 @@
 # Auth: 03-Apr-2014, Greg White (SLAC)
 #       
 # Mod:
+# 20-Aug-2019, Greg Whote (SLAC)
+#    Replace use of temp file elementdevices_lcls2.dat with newly generated
+#    elementdevices.dat, which now has all devices in combined SC and CU 
+#    machine.
 # 24-Apr-2019, Mark Woodley (SLAC)
 #    Initial LCLS facility release.
 # 21-Jan-2017, Greg White (SLAC)
@@ -124,7 +128,7 @@ LINES=$(patsubst %.dot, %_lines.dat, $(DOTS))
 # The location of the file defining the association between
 # MAD element names and control system device names, as used
 # in the maps and lines files.
-ELEMENTDEVICES:=../../../../script/elementdevices_lcls2.dat
+ELEMENTDEVICES:=../../../../script/elementdevices.dat
 
 #  What will be published to the opt/ directory of the deck release web site.
 OPTS:=$(DOTS) $(MAPS) $(MAPICONS) $(OPTICSICONS) *_lines.dat
@@ -222,8 +226,10 @@ DIAG0.pdf : DIAG0.ps
 # that beampath will not be emitted (since it would be 0-length). NOTE 2: The order of
 # input files to the awk script is important, it is: survey.tape, elementdevices, print.
 #
+#%_lines.dat %.dot : %_survey.tape $(ELEMENTDEVICES) %.print
+#	gawk -v width=38 -v height=4  -f ../../../../script/mad2dot.awk $+ > $*.dot
 %_lines.dat %.dot : %_survey.tape $(ELEMENTDEVICES) %.print
-	gawk -v width=38 -v height=4  -f ../../../../script/mad2dot.awk $+ > $*.dot
+	gawk  -f ../../../../script/mad2dot.awk $+ > $*.dot
 
 # DIAG0 line: Defined explicitly because scaling is different (height).
 DIAG0_lines.dat DIAG0.dot : DIAG0_survey.tape $(ELEMENTDEVICES) DIAG0.print 
@@ -234,23 +240,25 @@ DIAG0_lines.dat DIAG0.dot : DIAG0_survey.tape $(ELEMENTDEVICES) DIAG0.print
 # Icon files for maps on web site (rarely updated).
 # Do them individually so can scale differently depending on beamline size.
 #
+# 300 = -scale '20x0.5%"
+
 # Orgininal scaling 800.
 LCLS2scS_mapicon.png : LCLS2scS_map.pdf
-	convert -scale 300 $? $@ 
+	convert -scale '12x0.5%' $? $@ 
 LCLS2scH_mapicon.png : LCLS2scH_map.pdf
-	convert -scale 300 $? $@ 
+	convert -scale '12x0.5%' $? $@ 
 LCLS2scD_mapicon.png : LCLS2scD_map.pdf
-	convert -scale 125 $? $@ 
+	convert -scale '3x1%' $? $@ 
 LCLS2scDA_mapicon.png : LCLS2scDA_map.pdf
-	convert -scale 125 $? $@ 
+	convert -scale '3x1%' $? $@ 
 DIAG0_mapicon.png : DIAG0_map.pdf
-	convert -scale 10 $? $@ 
+	convert -scale '1x1%' $? $@ 
 LCLS2cuA_mapicon.png : LCLS2cuA_map.pdf
-	convert -scale 125 $? $@ 
+	convert -scale '3x1%' $? $@ 
 LCLS2cuH_mapicon.png : LCLS2cuH_map.pdf
-	convert -scale 300 $? $@ 
+	convert -scale '12x0.5%' $? $@ 
 LCLS2cuS_mapicon.png : LCLS2cuS_map.pdf
-	convert -scale 300 $? $@ 
+	convert -scale '12x0.5%' $? $@ 
 
 # Optics plot icons for web page
 #

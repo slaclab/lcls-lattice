@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-2019next ***
+! *** OPTICS=AD_ACCEL-05DEC19 ***
 
 ! LCLS2sc bypass line, plus match to LTU
 
@@ -214,12 +214,12 @@
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-  KQBP36 :=  0.581697629762
-  KQBP30 := -0.590302308366
-  KQBP31 :=  0.613494534195
-  KQBP32 := -0.4894624779
-  KQBP33 := -0.372466028535 !-0.372465866026
-  KQBP34 :=  0.548440043187 ! 0.548440309982
+  KQBP36 :=  0.581699291896
+  KQBP30 := -0.590323263504
+  KQBP31 :=  0.613692078346
+  KQBP32 := -0.489569044425
+  KQBP33 := -0.372430827402
+  KQBP34 :=  0.548586085637
 
   QBP13 : QUAD, TYPE="2Q4",  L=LQM/2, K1= KQY,    APER=rQM
   QBP14 : QUAD, TYPE="2Q4",  L=LQM/2, K1=-KQY,    APER=rQM
@@ -302,12 +302,12 @@
   DBP3b : DRIF, L=1.0
   DBP3a : DRIF, L=10.02938-LQM-(D2Q4a[L]+D2Q4b[L]+D2Q4c[L])-DBP3b[L]-Ljaw &
                   -zQBP33+zQBP34
-  DBP3aa : DRIF, L=4.854935+0.2492
-  DBP3ab : DRIF, L=DBP3a[L]-DBP3aa[L]-LPCSP
+  DBP3aa : DRIF, L=5.091435 !4.854935+0.2492
+  DBP3ab : DRIF, L=DBP3a[L]-DBP3aa[L]-Lplate
 
   LDCWL := 7.0
   DCWLb : DRIF, L=2.158425
-  DCWLa : DRIF, L=LDCWL-LPCSP-DCWLb[L]
+  DCWLa : DRIF, L=LDCWL-Lplate-DCWLb[L]
   
   D2Q4e  : DRIF, L=1.651 !1.27
   D2Q4f  : DRIF, L=D2Q4d[L]-(D2Q4e[L]+Ljaw)
@@ -323,20 +323,20 @@
   D2Q4l  : DRIF, L=4.47139075-(D2Q4a[L]+D2Q4b[L]+D2Q4c[L])-zQBP31+zQBP32
   D2Q4lb : DRIF, L=0.52015 -0.060376
   D2Q4la : DRIF, L=D2Q4l[L]-D2Q4lb[L]
-  D2Q4laa : DRIF, L=1.282797
-  D2Q4lab : DRIF, L=D2Q4la[L]-D2Q4laa[L]-LPCSP
+  D2Q4laa : DRIF, L=1.270097 !1.282797
+  D2Q4lab : DRIF, L=D2Q4la[L]-D2Q4laa[L]-Lplate
   D2Q4m  : DRIF, L=72.3206715-0.6096-(D2Q4a[L]+D2Q4b[L]+D2Q4c[L])-LQM/2 &
                   -zQBP32+zQBP33
   D2Q4ma : DRIF, L=61.387806499999-LBRCUS-0.6096 -zQBP32+zMRGCUS
-  D2Q4ma1 : DRIF, L=6.128206+0.2492
-  D2Q4ma2 : DRIF, L=D2Q4ma[L]-D2Q4ma1[L]-LPCSP
+  D2Q4ma1 : DRIF, L=6.364706 !6.128206+0.2492
+  D2Q4ma2 : DRIF, L=D2Q4ma[L]-D2Q4ma1[L]-Lplate
 
-  LSTEBD  := 2*(3.125*in2m) !length of EBD-type stopper
+  LSTEBD  := 11.75*in2m !length of EBD-type stopper !2*(3.125*in2m)
   D2Q4mb  : DRIF, L=D2Q4m[L]-D2Q4ma[L]-LBRCUS
-  D2Q4mba : DRIF, L=2.15244 !2.35
-  D2Q4mbb : DRIF, L=5.09756-LSTEBD/2
-  D2Q4mbc : DRIF, L=1.565-LSTEBD
-  D2Q4mbd : DRIF, L=D2Q4mb[L]-D2Q4mba[L]-D2Q4mbb[L]-LSTEBD-D2Q4mbc[L]-LSTEBD
+  D2Q4mba : DRIF, L=2.12069  !2.15244
+  D2Q4mbb : DRIF, L=4.916585 !5.018185
+  D2Q4mbc : DRIF, L=1.26655  !1.48925
+  D2Q4mbd : DRIF, L=D2Q4mb[L]-D2Q4mba[L]-D2Q4mbb[L]-D2Q4mbc[L]-Lplate-2*LSTEBD
 
   D2Q4o  : DRIF, L=8.58398-LDCWL -zQBP34
   D2Q4q  : DRIF, L=0.5
@@ -454,19 +454,17 @@
   WSBP3 : WIRE, TYPE="fast"
   WSBP4 : WIRE, TYPE="fast"
 
-  STBP34A : INST, L=LSTEBD, TYPE="PPS STOPPER" !LCLS EBD-type stopper
-  STBP34B : INST, L=LSTEBD, TYPE="PPS STOPPER" !LCLS EBD-type stopper
+  STBP34A  : INST, TYPE="PPS stopper", L=LSTEBD !LCLS EBD-type stopper
+  BTMBP34A : INST, TYPE="PPS BTM"               !Burn-Through-Monitor behind STBP34A
+  STBP34B  : INST, TYPE="PPS stopper", L=LSTEBD !LCLS EBD-type stopper
+  BTMBP34B : INST, TYPE="PPS BTM"               !Burn-Through-Monitor behind STBP34B
 
-  PCSP1s : ECOL, L=LPCSP, TYPE="BCS PC", XSIZE=10.2E-3, YSIZE=10.2E-3 !BCS protection collimator
-  PCSP2s : ECOL, L=LPCSP, TYPE="BCS PC", XSIZE=10.2E-3, YSIZE=10.2E-3 !BCS protection collimator
-  PCSP3s : ECOL, L=LPCSP, TYPE="BCS PC", XSIZE=10.2E-3, YSIZE=10.2E-3 !BCS protection collimator
-  PCSP4s : ECOL, L=LPCSP, TYPE="BCS PC", XSIZE=10.2E-3, YSIZE=10.2E-3 !BCS protection collimator
+  PCSP1s : INST, L=Lplate, TYPE="BCS plate" !shielding plate
+  PCSP2s : INST, L=Lplate, TYPE="BCS plate" !shielding plate
+  PCSP3s : INST, L=Lplate, TYPE="BCS plate" !shielding plate
+  PCSP4s : INST, L=Lplate, TYPE="BCS plate" !shielding plate
 
-! Note: BTMBP34a and BTMBP34b are part of stopper design
-
-  CBP33    : INST, TYPE="PPS COLL" !collimator plate (no BTM)
-  BTMBP34A : INST, TYPE="PPS BTM"  !Burn-Through-Monitor behind STBP34A
-  BTMBP34B : INST, TYPE="PPS BTM"  !Burn-Through-Monitor behind STBP34B
+  PCBP33 : INST, L=Lplate, TYPE="BCS plate" !shielding plate (no BTM)
 
 ! ==============================================================================
 ! MARKER points
@@ -587,7 +585,7 @@
     QBP32_full,D2Q4ab,D2Q4b,XCBP32,D2Q4c,YCBP32,D2Q4ma1,&
     PCSP2s,D2Q4ma2)
 
-  BYPM2 : LINE=(D2Q4mba,CBP33,D2Q4mbb,STBP34A,BTMBP34A,D2Q4mbc,&
+  BYPM2 : LINE=(D2Q4mba,PCBP33,D2Q4mbb,STBP34A,BTMBP34A,D2Q4mbc,&
     STBP34B,BTMBP34B,D2Q4mbd,DBP2b,&
     QBP33_full,D2Q4a,RFBBP33,D2Q4b,XCBP33,D2Q4c,YCBP33,DBP3aa,&
     PCSP3s,DBP3ab,CXBP34,DBP3b,&

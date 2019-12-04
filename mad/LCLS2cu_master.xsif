@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-2019next ***
+! *** OPTICS=AD_ACCEL-05DEC19 ***
 
 ! ------------------------------------------------------------------------------
 ! constants and global parameters
@@ -28,13 +28,13 @@
 
 ! energy profile
 
-  E00  := 0.006  !beam energy after gun (GeV)
-  E0i  := 0.064  !beam energy between L0a and L0b sections (GeV)
-  Ei   := 0.135  !initial beam energy (GeV) (150->135 MeV on July 9, 2003)
-  EBC1 := 0.250  !BC1 energy (GeV)
-  EBC2 := EBC2Cu !BC2 energy (GeV)
-  Ef   := EfCu   !final beam energy (GeV)
-  Eu   := EuCu   !energy in undulator (GeV)
+  E00  := 0.006 !beam energy after gun (GeV)
+  E0i  := 0.064 !beam energy between L0a and L0b sections (GeV)
+  Ei   := 0.135 !initial beam energy (GeV) (150->135 MeV on July 9, 2003)
+  EBC1 := 0.220 !BC1 energy (GeV)
+  EBC2 := 5.000 !BC2 energy (GeV)
+  Ef   := 8.000 !final beam energy (GeV)
+  Eu   := 8.000 !energy in undulator (GeV)
 
   Brhof := Cb*Ef
 
@@ -58,17 +58,17 @@
 ! Dummy, fitted twiss parameters at cathode which yield the above twiss parameters at
 ! L0a-exit (for plotting purposes only - assumes only drift between cathode and L0a-exit)
 
-  CBETX :=  15.574222013212  ! consistent with back-tracked from matched OTR2 through post Aug. 11, 2008 QA01-QE04 real BDES
-  CALFX :=  -3.081460532254
-  CBETY :=  0.390930039559
-  CALFY :=  0.551432669489E-2
+  CBETX :=  15.574222415628    ! consistent with back-tracked from matched OTR2 through post Aug. 11, 2008 QA01-QE04 real BDES
+  CALFX :=  -3.081460679784
+  CBETY :=   0.39093003939
+  CALFY :=   0.551431596242E-2
 
-! initial Twiss for SXR dogleg cells for Cu-linac beam (at DBMARK34B)
+! initial Twiss at BEGCLTS
 
-  MBETXCUS := 14.230935994022 !14.265662820746
-  MALFXCUS := -0.492407537024 !-0.492521160533
-  MBETYCUS := 41.635541126271 !41.585692319056
-  MALFYCUS :=  2.277864883454 ! 2.277903990577
+  MBETXCUS := 14.228996031908 !14.230935994022
+  MALFXCUS := -0.492401053172 !-0.492407537024
+  MBETYCUS := 41.636547360478 !41.635541126271
+  MALFYCUS :=  2.277912409007 ! 2.277864883454
 
 ! periodic Twiss in HXR dogleg cells (copy from LCLS2sc_main.mad8)
 
@@ -76,6 +76,13 @@
   MALFXH :=  3.139871668464
   MBETYH := 96.323786537904
   MALFYH :=  3.616905252587
+
+! match into HXR LTU emittance diagnostic section
+
+  BXEDh := 46.347592421655
+  AXEDh := -1.088004889273
+  BYEDh := 46.098656017174
+  AYEDh :=  1.08081945287
 
 ! Twiss at the beginning of L3 linac
 
@@ -213,19 +220,21 @@
 
  !CU_HXR   : copper linac to e- HXR dump
  !CU_SFTH  : copper linac to e- HXR safety dump
- !CU_HXTES : copper linac to HXR XTES system
+ !CU_HXTES : copper linac to HXR XTES system (photon)
+ !CU_HTXI  : copper linac to HXR TXI system (photon)
  !CU_SXR   : copper linac to e- SXR dump
  !CU_ALINE : copper linac to End Station A
  !CU_GSPEC : copper linac to gun spectrometer
  !CU_SPEC  : copper linac to 135 MeV spectrometer
 
-  CU_HXR   : LINE=(GUNL0a,L0b,LCLS2cuH)
-  CU_SFTH  : LINE=(GUNL0a,L0b,LCLS2cuHS)
-  CU_HXTES : LINE=(GUNL0a,L0b,LCLS2cuHXTES)
-  CU_SXR   : LINE=(GUNL0a,L0b,LCLS2cuS)
-  CU_ALINE : LINE=(GUNL0a,L0b,LCLS2cuA)
+  CU_HXR   : LINE=(GUNL0a,L0aL0b,LCLS2cuH)
+  CU_SFTH  : LINE=(GUNL0a,L0aL0b,LCLS2cuHS)
+  CU_HXTES : LINE=(GUNL0a,L0aL0b,LCLS2cuHXTES)
+  CU_HTXI  : LINE=(GUNL0a,L0aL0b,LCLS2cuHTXI)
+  CU_SXR   : LINE=(GUNL0a,L0aL0b,LCLS2cuS)
+  CU_ALINE : LINE=(GUNL0a,L0aL0b,LCLS2cuA)
   CU_GSPEC : LINE=(GUNBXG,GSPEC)
-  CU_SPEC  : LINE=(GUNL0a,L0b,DL1_1,SPECBL)
+  CU_SPEC  : LINE=(GUNL0a,L0aL0b,DL1_1,SPECBL)
 
 ! ------------------------------------------------------------------------------
 ! initial SURVEY coordinates
@@ -253,7 +262,7 @@
 
  !VALUE, Xf,Yf,Zf,THETAf,PHIf,PSIf,AVB
   
-! linac survey coordinates at BSYbeg (BEGBSY1)
+! linac survey coordinates at BSY1BEG
 
   XBSY1  := -3.309620550E-07
   ZBSY1  :=  3042.005

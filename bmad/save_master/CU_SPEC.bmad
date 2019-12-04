@@ -1,0 +1,33 @@
+
+! *** OPTICS=AD_ACCEL-13JUN19 ***
+
+! CU_SPEC path configurations
+
+setsp = 0
+setcus = 0
+setal = 0
+setda = 0
+sethxrss = 0 !set to 1 to turn ON HXR self-seeding chicane
+setsxrss = 0 !set to 1 to turn ON SXR self-seeding chicane
+setxleap2 = 0 !set to 1 to turn ON XLEAP-II components
+
+intgsx = 20.0   !kG (30.0)
+intghx = 40.0   !kG
+ebc2cu = 4.300 !GeV
+efcu = 13.640 !GeV
+eucu = 13.640 !GeV
+
+call, filename = "LCLS2cu_master.bmad" !calls other xsif files
+
+!-!  COMMENT !to generate SURVEY
+!-!    USE, CU_SPEC !start at gun
+!-!    ! initial energy: E00
+!-!    ! initial SURVEY: Xi, 0, Zi, ADLi, 0, 0
+!-!  ENDCOMMENT
+
+ !COMMENT !to generate TWISS
+    ! initial energy: E00
+    ! initial Twiss : CBETX, CALFX, CBETY, CALFY
+ !ENDCOMMENT
+
+use, cu_spec !start at gun

@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-2019next ***
+! *** OPTICS=AD_ACCEL-05DEC19 ***
 
 ! LCLS2sc transport from Cu-linac to SXR
 
@@ -146,6 +146,12 @@
   BKRCUSb : SBEN, TYPE="1.92K41.2", L=LBKRCUSb, ANGLE=ABKRCUSb, &
     E1=0, E2=ABKRCUS, FINT=0, FINTX=0.5, HGAP=GBKRCUS/2, TILT=PI/2+TCUSXR
 
+! define unsplit SBENs for BMAD ... not used by MAD
+
+  BKRCUS : SBEN, TYPE="1.92K41.2", HGAP=GBKRCUS/2, L=LBKRCUS, &
+                 ANGLE=ABKRCUS, E1=0, FINT=0.5, E2=ABKRCUS, FINTX=0.5, &
+                 TILT=PI/2+TCUSXR
+
 ! ------------------------------------------------------------------------------
 
 ! DC alternative to kicker comprised of two 3D8.8MK3 correctors, one at each end of BKRCUS
@@ -204,6 +210,15 @@
   DCUSBLRa : DRIF, L=LDCUSBLRa
   DCUSBLRb : DRIF, L=LDCUSBLRb
 
+! define unsplit SBENs for BMAD ... not used by MAD
+
+  BRCUSdc1 : SBEN, TYPE="3D8.8MK3", HGAP=GBRCUSdc/2, L=LBRCUSdc1, &
+                   ANGLE=ABRCUSdc1, E1=0, FINT=FBRCUSdc, E2=ABRCUSdc1, &
+                   FINTX=FBRCUSdc, TILT=PI/2+TBRCUSdc
+  BRCUSdc2 : SBEN, TYPE="3D8.8MK3", HGAP=GBRCUSdc/2, L=LBRCUSdc2, &
+                   ANGLE=ABRCUSdc2, E1=-ABRCUSdc1, FINT=FBRCUSdc, &
+                   E2=ABRCUSdc, FINTX=FBRCUSdc, TILT=PI/2+TBRCUSdc
+
 ! ------------------------------------------------------------------------------
 
 ! 2-hole rolled septum aligned along the BSY1 axis
@@ -230,6 +245,12 @@
   BLRCUSb : SBEN, TYPE="0.625SD38.98", L=LBLRCUSb, ANGLE=ABLRCUSb, &
             E1=0, E2=ABLRCUS, FINT=0, FINTX=0.5, HGAP=GBLRCUS/2, TILT=TCUSXR
 
+! define unsplit SBENs for BMAD ... not used by MAD
+
+  BLRCUS : SBEN, TYPE="0.625SD38.98", HGAP=GBLRCUS/2, L=LBLRCUS, &
+                 ANGLE=ABLRCUS, E1=0, FINT=0.5, E2=ABLRCUS, FINTX=0.5, &
+                 TILT=TCUSXR
+
 ! rolled DC bend
 ! Note: BRCUS1 is a merge DC-bend which is either turned ON to operate
 !       CURF beam in SXR, or turned OFF to operate SCRF beam in SXR
@@ -250,6 +271,12 @@
             E1=ABRCUS/2, E2=0, FINT=FBRCUS, FINTX=0, HGAP=GBRCUS/2, TILT=TBRCUS
   BRCUS1b : SBEN, TYPE="1.0D38.37", L=LBRCUS/2, ANGLE=ABRCUS/2, &
             E2=ABRCUS/2, E1=0, FINT=0, FINTX=FBRCUS, HGAP=GBRCUS/2, TILT=TBRCUS
+
+! define unsplit SBENs for BMAD ... not used by MAD
+
+  BRCUS1 : SBEN, TYPE="1.0D38.37", HGAP=GBRCUS/2, L=LBRCUS, &
+                 ANGLE=ABRCUS, E1=ABRCUS/2, FINT=FBRCUS, E2=ABRCUS/2, &
+                 FINTX=FBRCUS, TILT=TBRCUS
 
 ! inner vertical bends for R56 cancellation
 ! NOTE: 1.0D22.265 dipoles replaced with 3D8.8MK3 correctors
@@ -272,12 +299,23 @@
   BYCUS2b : SBEN, TYPE="3D8.8MK3", L=LBYCUS/2, ANGLE=-ABYCUS/2, &
             E2=-ABYCUS/2, E1=0, FINT=0, FINTX=FBYCUS, HGAP=GBYCUS/2, TILT=PI/2
 
+! define unsplit SBENs for BMAD ... not used by MAD
+
+  BYCUS1 : SBEN, TYPE="3D8.8MK3", HGAP=GBYCUS/2, L=LBYCUS, &
+                 ANGLE=ABYCUS, E1=ABYCUS/2, FINT=FBYCUS, E2=ABYCUS/2, &
+                 FINTX=FBYCUS, TILT=PI/2
+  BYCUS2 : SBEN, TYPE="3D8.8MK3", HGAP=GBYCUS/2, L=LBYCUS, &
+                 ANGLE=-ABYCUS, E1=-ABYCUS/2, FINT=FBYCUS, E2=-ABYCUS/2, &
+                 FINTX=FBYCUS, TILT=PI/2
+
 ! rolled DC corrector bends -- removed
 
   LBRCCUS  := 0.6
 
   DBRCCUS1 : DRIF, L=LBRCCUS/2
   DBRCCUS2 : DRIF, L=LBRCCUS/2
+
+! ------------------------------------------------------------------------------
 
 ! drifts
 
@@ -407,8 +445,9 @@
 
 ! insertable stopper / tuneup dump
 
-  STCLTS   : INST, L=30*in2m, TYPE="PPS STOPPER" !from PEP-II injection line
-  DCUS11b1 : DRIF, L=1.883313 !2.0609115
+  STCLTS   : INST, L=0.30, TYPE="PPS stopper" !from PEP-II injection line
+  BTMCLTS  : INST, TYPE="PPS BTM"
+  DCUS11b1 : DRIF, L=2.114313 !1.883313
   DCUS11b2 : DRIF, L=DCUS11b[L]-DCUS11b1[L]-STCLTS[L]
 
 ! SROT to remove rotation angle
@@ -466,7 +505,8 @@
     QCUS6_full,DCUS8a,YCCUS6,DCUS8b,ROCUS4,&
     BYCUS2_full,CNTCUS4,DCUS9a,DCUS9b,&
     QCUS7_full,DCUS10a,XCCUS7,DCUS10b,BPMCUS8,DCUS10c,&
-    QCUS8_full,DCUS11a,YCCUS8,DCUS11b1,STCLTS,DCUS11b2,BPMCUS9,DCUS11c,&
+    QCUS8_full,DCUS11a,YCCUS8,DCUS11b1,STCLTS,BTMCLTS,DCUS11b2,BPMCUS9,&
+      DCUS11c,&
     QCUS9_full,DCUS12a,YCCUS9,DCUS12b,XCCUS10,DCUS12c,BPMCUS10,DCUS12d,&
     QCUS10_full,DCUS13,ROCUS2,&
     BRCUS1_full,CNTCUS2)
