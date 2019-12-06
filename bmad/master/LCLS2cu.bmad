@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-2019next ***
+! *** OPTICS=AD_ACCEL-05DEC19 ***
 
 ! LCLS2cu various parts upstream of BSY
 
@@ -103,7 +103,7 @@ l3phase = 0.0               !L3 rf phase (deg)
 del3 = gev2mev*(ef-ebc2) !total L3 energy gain (MeV)
 phil3 = l3phase/360       !radians/2pi
 gfac3 = 161*p25*dlwl10+12*p50*dlwl10+3*p25*dlwl9+4*p25*dlwl7
-gradl3 = del3/(gfac3*cos(phil3*twopi))
+gradl3 = 15.833405341033 !16.7 !LI25_LI26
  !VALUE, gradL3
 
 l1x___1: lcavity, rf_frequency = xbandf * 1e6, gradient = del1x/2 * 1e6 / (dlwlx/2), phi0 =  &
@@ -217,8 +217,8 @@ lqgx = 0.076 !QG quadrupole effective length [m]
 cq01: multipole, type = "QSOL"     !correction quad in 1st solenoid at gun (nominally set to 0)
 sq01: multipole, type = "QSOL", t1 = pi / 4 !correction skew-quad in 1st solenoid at gun (nominally set to 0)
 
-qg02: quadrupole, type = "QG", l = lqgx/2, aperture = rqgx, k1 = -35.48540
-qg03: quadrupole, type = "QG", l = lqgx/2, aperture = rqgx, k1 = 80.16051
+qg02: quadrupole, type = "QG", l = lqgx/2, aperture = rqgx, k1 = -35.485404325427
+qg03: quadrupole, type = "QG", l = lqgx/2, aperture = rqgx, k1 = 80.16050904389
 
 dgs1: drift, l = 0.1900-lqgx/2-20e-6-0.0155757
 dgs2: drift, l = (0.2300-lqgx)/2+20e-6
@@ -380,10 +380,10 @@ bx02: sbend, hgap = gb0/2, e1 = aeb0, fint = 0.45, e2 = aeb0, type = "5D7.1", l 
 ! ===
 
 brho1 = cb*ebc1            !beam rigidity at BC1 (kG-m)
-ab11 = -0.093583513589    !full chicane bend angle (rad) (-0.086753564890323)
+ab11 = -0.093575352547    !full chicane bend angle (rad) (-0.086753564890323)
 rb11 = lb1/sin(ab11)      !bend radius (m)
 lb11 = rb11*ab11          !full chicane bend path length (m)
-bb11 = brho1/rb11         !bend field (kG) [-3.555805785115 kG @ 0.250 GeV]
+bb11 = brho1/rb11         !bend field (kG) (-3.83496008105)
 ab11s = asin((lb1/2)/rb11) !"short" half chicane bend angle (rad)
 lb11s = rb11*ab11s         !"short" half chicane bend path length (m)
 ab11l = ab11-ab11s         !"long" half chicane bend angle (rad)
@@ -436,10 +436,10 @@ ld11ob = ld11b/cos(ab11)           !path length downstream of SQ13
 ! ===
 
 brho2 = cb*ebc2            !beam rigidity at BC2 (kG-m)
-ab21 = -0.036971268085    !full chicane bend angle (rad) (-0.034727452562382)
+ab21 = -0.036971323962    !full chicane bend angle (rad)
 rb21 = lb2/sin(ab21)      !bend radius (m)
 lb21 = rb21*ab21          !full chicane bend path length (m)
-bb21 = brho2/rb21         !bend field (kG) [-9.071122639275 kG @ 4.300 GeV]
+bb21 = brho2/rb21         !bend field (kG) (-11.229050051323)
 ab21s = asin((lb2/2)/rb21) !"short" half chicane bend angle (rad)
 lb21s = rb21*ab21s         !"short" half chicane bend path length (m)
 ab21l = ab21-ab21s         !"long" half chicane bend angle (rad)
@@ -522,19 +522,19 @@ ldo4 = ld4/cos(ab21)           !outer bend-to-bend path length (m)
 
 ! rematched with laser-heater ON (chicane dX= 35 mm)
 
-kqa01 = -12.319457174182
-kqa02 = 13.70811489073
-kqe01 = -6.542797185475
-kqe02 = 5.356375572941
-kqe03 = 6.056002602406
-kqe04 = -5.237184490825
+kqa01 = -12.315067380182
+kqa02 = 13.705554947598
+kqe01 = -6.532677301494
+kqe02 = 5.351055993902
+kqe03 = 6.053732882313
+kqe04 = -5.234073678944
 
-kqm01 = 15.072053882204
-kqm02 = -11.974604636345
-kqm03 = -8.255421303054
-kqm04 = 13.306105246908
+kqm01 = 15.082997416875
+kqm02 = -11.969358129236
+kqm03 = -8.29494541292
+kqm04 = 13.33787357734
 
-kqb = 22.169715923059 !22.169701529353
+kqb = 22.169715923062
 
 qa01: quadrupole, type = "ETA", l = lqx/2, aperture = rqx, k1 = kqa01
 qa02: quadrupole, type = "ETA", l = lqx/2, aperture = rqx, k1 = kqa02
@@ -556,23 +556,23 @@ qfl1: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = +kql1
 qdl1: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = -kql1
 
 kqa11 = -kql1
-kqa12 = 1.832347728582 !1.863910872552
+kqa12 = 1.831403533749
 
 qa11: quadrupole, type = "ETA", l = lqx/2, aperture = rqx, k1 = kqa11
 qa12: quadrupole, type = "ETA", l = lqx/2, aperture = rqx, k1 = kqa12
 
 ! BC1
 
-kq21201 = -9.4016016478   !-9.357677119503
-kqm11 = 8.001404772165 ! 7.960339117021
-kqm12 = -8.322577884808 !-8.366726970987
-kqm13 = 9.921822879541 ! 9.860390676906
+kq21201 = -9.394155388085
+kqm11 = 8.000790178508
+kqm12 = -8.326568628912
+kqm13 = 9.937676628969
 kcq11 = 0
 ksq13 = 0
 kcq12 = 0
 kq21301 = -0.1347         !turn this quad OFF for LCLS operations (this is meas'd remnant field of Gdl = 0.12 kG)
-kqm14 = 7.08022322559  ! 7.079239169293
-kqm15 = -6.766778626493 !-6.765038435385
+kqm14 = 7.054168937435
+kqm15 = -6.723000446327
 
 q21201: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq21201     !QE-072 after Aug 2006; gets moved downstream of pre-LCLS location by 1.101312 m (measured parallel to main linac axis)
 qm11: quadrupole, type = "ETA", l = lqx/2, aperture = rqx, k1 = kqm11
@@ -592,36 +592,36 @@ kql2 = 0.708388522907
 qfl2: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = +kql2
 qdl2: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = -kql2
 
-kq21401 = 1.045575989542 ! 1.044881943081 !QE-002 after Aug 2006
-kq21501 = -0.833682306526 !-0.833170329125 !use pre-Aug-2006 Q21201 magnet
+kq21401 = 1.030123463078 !QE-002 after Aug 2006
+kq21501 = -0.820757556128 !use pre-Aug-2006 Q21201 magnet
 kq21601 = kql2                            !use pre-Aug-2006 Q21301 magnet
 kq21701 = -kql2
-kq21801 = 0.721703961622
-kq21901 = -0.721930035688
+kq21801 = 0.726696191485
+kq21901 = -0.721528926061
 
-kq22201 = 0.711368406706
-kq22301 = -0.764179973154
+kq22201 = 0.714603191911
+kq22301 = -0.762188913757
 kq22401 = kql2
 kq22501 = -kql2
 kq22601 = kql2
 kq22701 = -kql2
-kq22801 = 0.748596129657
-kq22901 = -0.709657173604
+kq22801 = 0.747560469838
+kq22901 = -0.709980930665
 
-kq23201 = 0.721241098608
-kq23301 = -0.741011348313
+kq23201 = 0.720791509747
+kq23301 = -0.741851024289
 kq23401 = kql2
 kq23501 = -kql2
 kq23601 = kql2
 kq23701 = -kql2
-kq23801 = 0.770675623153
-kq23901 = -0.726878264576
+kq23801 = 0.770666348011
+kq23901 = -0.726851638763
 
-kq24201 = 0.779404953697
-kq24301 = -0.856812505218
-kq24401 = 1.025618689057
-kq24501 = -0.932809842702 !-0.931675081162
-kq24601 = 0.603859930448 ! 0.603160584173
+kq24201 = 0.779293384791
+kq24301 = -0.856497177248
+kq24401 = 1.024817869713
+kq24501 = -0.954003584585
+kq24601 = 0.608135546584
 
 q21401: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq21401
 q21501: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq21501
@@ -656,12 +656,12 @@ q24601: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq24601
 
 ! BC2
 
-kq24701 = -1.286376116895 !-1.286030138047
-kqm21 = 0.508141288763 ! 0.508115309359
+kq24701 = -1.307122793026
+kqm21 = 0.511895916574
 kcq21 = 1e-12
 kcq22 = 1e-12
-kqm22 = -0.589507456153 !-0.590418980634
-kq24901 = 1.081544590668 ! 1.082042245094
+kqm22 = -0.589455717616
+kq24901 = 1.081452709118
 
 q24701a: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq24701  !in same location as pre-LCLS (with its BPM)
 q24701b: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq24701  !10 cm between Q24701A & B
@@ -682,59 +682,58 @@ kqdl3 = -0.395649286346  !gives TCAV3 -> OTR30 right + WS28 psiy: 48.96 deg, 45.
 qfl3: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kqfl3
 qdl3: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kqdl3
 
-kq25201 = 0.698137203983 ! 0.697993592575
-kq25301 = -0.479540264892 !-0.478388226374
-kq25401 = 0.429369312884 ! 0.42896785871
-kq25501 = -0.399966474543 !-0.399864956514
+kq25201 = 0.69835390233
+kq25301 = -0.479854531304
+kq25401 = 0.429832166012
+kq25501 = -0.400216279825
 kq25601 = kqfl3
 kq25701 = kqdl3
-kq25801 = 0.407168436855
-kq25901 = -0.388171234952
+kq25801 = 0.407524461523
+kq25901 = -0.38867870418
 
-kq26201 = 0.388578933647
-kq26301 = -0.405404843557
+kq26201 = 0.388844133085
+kq26301 = -0.405381176356
 kq26401 = kqfl3
 kq26501 = kqdl3
 kq26601 = kqfl3
 kq26701 = kqdl3
-kq26801 = 0.406308742855
-kq26901 = -0.388549789828
+kq26801 = 0.406007960598
+kq26901 = -0.388769548432
 
-kq27201 = 0.390161854669
-kq27301 = -0.406474370795
+kq27201 = 0.391071563294
+kq27301 = -0.407171874797
 kq27401 = kqfl3
 kq27501 = kqdl3
 kq27601 = kqfl3
 kq27701 = kqdl3
-kq27801 = 0.406495928662
-kq27901 = -0.388870517181
+kq27801 = 0.40682165023
+kq27901 = -0.389505138741
 
-kq28201 = 0.390352348197
-kq28301 = -0.406461529502
+kq28201 = 0.390810721273
+kq28301 = -0.406510005482
 kq28401 = kqfl3
 kq28501 = kqdl3
 kq28601 = kqfl3
 kq28701 = kqdl3
-kq28801 = 0.406649614831
-kq28901 = -0.389077444001
+kq28801 = 0.406821689691
+kq28901 = -0.389505198882
 
-kq29201 = 0.390429567548
-kq29301 = -0.406416613477
+kq29201 = 0.390810639876
+kq29301 = -0.40650981716
 kq29401 = kqfl3
 kq29501 = kqdl3
 kq29601 = kqfl3
 kq29701 = kqdl3
-kq29801 = 0.406588653506
-kq29901 = -0.389037213556
+kq29801 = 0.406747754958
+kq29901 = -0.389374252182
 
-kq30201 = 0.39027307525
-kq30301 = -0.406178588622
-kq30401 = 0.396480907847 ! KQFL3
-kq30501 = -0.396467538155 !-0.395648794699 !KQDL3
-kq30601 = 0.395722103341 ! 0.395797744026 !KQFL3
-kq30701 = -0.395269902676 !-0.395649272846 !KQDL3
- !KQ30801 :=  0.418744300937 ! 0.418743774352
- !KQ30801 :=  0.484416787325 !copy from LCLS2sc LTU.xsif
+kq30201 = 0.390540048432
+kq30301 = -0.406220459812
+kq30401 = kqfl3
+kq30501 = kqdl3
+kq30601 = kqfl3
+ !KQ30701 :=  see LTU.xsif
+ !KQ30801 :=  see LTU.xsif
 
 q25201: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq25201
 q25301: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq25301
@@ -844,23 +843,29 @@ dl02c: drift, l = 0.121498-lqx/2-0.001610
 
 ! Heater-Chicane:
 
-! LSRHTR_ON := 1E-12          !set to 1E-12 for laser heater bends & undulator OFF and 1.0 for ON (nominal)
-lsrhtr_on = 1              !set to 1E-12 for laser heater bends & undulator OFF and 1.0 for ON (nominal)
-brhoh = cb*ei              !beam rigidity at heater (kG-m)
-bbh1 = -4.749307427186*lsrhtr_on !heater-chicane bend field for 35-mm etaX_pk (kG) (-4.751481741801)
-rbh1 = brhoh/bbh1         !heater-chicane bend radius (m)
-abh1 = asin(lbh/rbh1)     !heater-chicane bend angle (rad)
-lbh1 = rbh1*abh1          !heater-chicane bend path length (m)
-abh1s = asin((lbh/2)/rbh1) !"short" half heater-chicane bend angle (rad)
-lbh1s = rbh1*abh1s         !"short" half heater-chicane bend path length (m)
-abh1l = abh1-abh1s         !"long" half heater-chicane bend angle (rad)
-lbh1l = rbh1*abh1l         !"long" half heater-chicane bend path length (m)
+! LSRHTR_ON := 1E-12           !set to 1E-12 for laser heater bends & undulator OFF and 1.0 for ON (nominal)
+lsrhtr_on = 1               !set to 1E-12 for laser heater bends & undulator OFF and 1.0 for ON (nominal)
+brhoh = cb*ei               !beam rigidity at heater (kG-m)
+abh1 = -0.131709391614*lsrhtr_on !heater-chicane bend angle (rad)
+bbh1 = brhoh*sin(abh1)/lbh !heater-chicane bend field for 35-mm etaX_pk (kG) (-4.75393301417)
+rbh1 = brhoh/bbh1          !heater-chicane bend radius (m)
+lbh1 = rbh1*abh1           !heater-chicane bend path length (m)
+abh1s = asin((lbh/2)/rbh1)  !"short" half heater-chicane bend angle (rad)
+lbh1s = rbh1*abh1s          !"short" half heater-chicane bend path length (m)
+abh1l = abh1-abh1s          !"long" half heater-chicane bend angle (rad)
+lbh1l = rbh1*abh1l          !"long" half heater-chicane bend path length (m)
 
 dh00: drift, l = 0.13453045-dlbh/2
 dh01: drift, l = (0.155-dlbh)/cos(abh1), type = "CSR"
 dh02a: drift, l = 0.06717020-dlbh/2, type = "CSR"
-dh03a: drift, l = 0.09290825, type = "CSR"
-dh03b: drift, l = 0.08401830, type = "CSR"
+
+! Shorten so that lh_und has an integer number of poles
+dh03a: drift, l = 0.09290825 - ( 10*0.054 - 0.506263 ) /2, type = "CSR"
+!old: dh03a: drift, l = 0.09290825, type = "CSR"
+
+! Shorten so that lh_und has an integer number of poles
+dh03b: drift, l = 0.08401830- ( 10*0.054 - 0.506263 ) /2, type = "CSR"
+!old: dh03b: drift, l = 0.08401830, type = "CSR"
 dh02b: drift, l = 0.09503020-dlbh/2, type = "CSR"
 dh06: drift, l = 0.13010070-dlbh/2, type = "CSR"
 
@@ -901,12 +906,17 @@ lamr = 758e-9                           !heater laser wavelength [m]
 gami = ei/mc2                           !Lorentz energy factor in laser-heater undulator [ ]
 k_und = lsrhtr_on*sqrt(2*(lamr*2*gami^2/lam-1)) !undulator K for laser heater und.
 lhun = 0.506263                         !length of laser-heater undulator
+lhunh = lhun/2
 kqlh = (k_und*2*pi/lam/sqrt(2)/gami)^2  !natural undulator focusing "k" in y-plane [m^-2]
 
- !VALUE,gami,kqlh,K_und
+! handle K_und->0 by expressing R34 as an approximate SINC function
 
-lhbeg: marker
-lhend: marker
+argh = lhunh*sqrt(kqlh)
+argh2 = argh*argh
+argh4 = argh2*argh2
+argh6 = argh4*argh2
+sincargh = 1-argh2/6+argh4/120-argh6/5040 !~sinc(ARGh)=sin(ARGh)/ARGh
+r34h = lhunh*sincargh
 
 ! laser-heater undulator modeled as R-matrix to include vertical natural focusing:
 
@@ -916,25 +926,29 @@ my_lh_und_k = 1.38523
 lh_und: wiggler, 
         type = "laser_heater_undulator",
         L_period = 0.054, 
-        n_period = 9, 
+        n_period = 10, 
         b_max = my_lh_und_k * 2*pi*m_electron / (c_light * 0.054), 
-        L = 0.506263, 
+         L = 10*0.054 ! Was: 0.506263, 
         ds_step = 0.054
         
 lh_und[L] = lh_und[L]/2 ! Will be doubled in desplitting process. 
-!---------------------------------
-!old: lh_und: taylor, l = lhun/2, {1: 1.0, 1 0 0 0 0 0}, {1: lhun/2, 0 1 0 0 0 0}, {2: 0.0, 1 0 0 0 0 0 &
-!old         }, {2: 1.0, 0 1 0 0 0 0}, {3: cos(lhun/2*sqrt(kqlh)), 0 0 1 0 0 0}, {3:  &
-!old         sin(lhun/2*sqrt(kqlh))/sqrt(kqlh), 0 0 0 1 0 0}, {4: -sin(lhun/2*sqrt(kqlh))*sqrt(kqlh),  &
-!old         0 0 1 0 0 0}, {4: cos(lhun/2*sqrt(kqlh)), 0 0 0 1 0 0}
-! R56 =  Lhun/2/(gami^2)*(1+(K_und^2)/2)
+!--------------------------------- !,          &
+!old: lh_und: taylor, type = "LHund", l = lhunh, {1: 1.0, 1 0 0 0 0 0}, {1: lhunh, 0 1 0 0 0 0}, {2:  &
+!old         0.0, 1 0 0 0 0 0}, {2: 1.0, 0 1 0 0 0 0}, {3: cos(lhunh*sqrt(kqlh)), 0 0 1 0 0 0}, {3:  &
+!old         r34h, 0 0 0 1 0 0}, {4: -sin(lhunh*sqrt(kqlh))*sqrt(kqlh), 0 0 1 0 0 0}, {4:  &
+!old         cos(lhunh*sqrt(kqlh)), 0 0 0 1 0 0}
+   !R56 =  Lhunh/(gami^2)*(1+(K_und^2)/2)
 
+ !VALUE, gami,kqlh,K_und
  !VALUE, LH_UND[R12],Lhun/2
  !VALUE, LH_UND[R33],cos(Lhun/2*sqrt(kqlh))
  !VALUE, LH_UND[R34],sin(Lhun/2*sqrt(kqlh))/sqrt(kqlh)
  !VALUE, LH_UND[R43],-sin(Lhun/2*sqrt(kqlh))*sqrt(kqlh)
  !VALUE, LH_UND[R44],cos(Lhun/2*sqrt(kqlh))
  !VALUE, LH_UND[R56],Lhun/2/(gami^2)*(1+(K_und^2)/2)
+
+lhbeg: marker
+lhend: marker
 
 ! DL1
 
@@ -1478,26 +1492,80 @@ sc10: line = (xc10, yc10)
 scm13: line = (xc21275, yc21276)
 scm15: line = (xc21325, yc21325)
 
-
-
-!************************
-! Replac L0A, L0B by hand
-! Old:
-!  l0a_full: line = (flnga1, 
-!  l0a___1, dlfda, 
-!  l0a___2, sol2, 
-!  l0a___3, xc02, yc02, 
-!  l0a___4, l0amid, 
-!  l0a___5, xc03, yc03, 
-!  l0a___6, outcpa, 
-!  l0a___7, 
-!  flnga2)
-
-!l0b_full: line = (flngb1, l0b___1, dlfdb, l0b___2, xc04, yc04, l0b___3, l0bmid, l0b___4, xc05,  &
-!        yc05, l0b___5, outcpb, l0b___6, flngb2)
-
-call, file = LCLS2cu_replacements.bmad
-!!************************
+!---------------------
+! L0A LCAVITY
+L0A: L0A___1, L = 3.095244
+L0A_full: line = (L0A)
+! contains zero length elements:
+    DLFDA[superimpose] = T
+    DLFDA[ref] = L0A
+    DLFDA[ref_origin] = beginning
+    DLFDA[offset] = 0.058646
+    SOL2[superimpose] = T
+    SOL2[ref] = L0A
+    SOL2[ref_origin] = beginning
+    SOL2[offset] = 0.258
+    XC02[superimpose] = T
+    XC02[ref] = L0A
+    XC02[ref_origin] = beginning
+    XC02[offset] = 0.9073198
+    YC02[superimpose] = T
+    YC02[ref] = L0A
+    YC02[ref_origin] = beginning
+    YC02[offset] = 0.9073198
+    L0AMID[superimpose] = T
+    L0AMID[ref] = L0A
+    L0AMID[ref_origin] = beginning
+    L0AMID[offset] = 1.547622
+    XC03[superimpose] = T
+    XC03[ref] = L0A
+    XC03[ref_origin] = beginning
+    XC03[offset] = 2.6994684
+    YC03[superimpose] = T
+    YC03[ref] = L0A
+    YC03[ref_origin] = beginning
+    YC03[offset] = 2.6994684
+    OUTCPA[superimpose] = T
+    OUTCPA[ref] = L0A
+    OUTCPA[ref_origin] = beginning
+    OUTCPA[offset] = 3.034325
+!old: l0a_full: line = (flnga1, l0a___1, dlfda, l0a___2, sol2, l0a___3, xc02, yc02, l0a___4, l0amid,  &
+!old         l0a___5, xc03, yc03, l0a___6, outcpa, l0a___7, flnga2)
+!---------------------
+! L0B LCAVITY
+L0B: L0B___1, L = 3.095244
+L0B_full: line = (L0B)
+! contains zero length elements:
+    DLFDB[superimpose] = T
+    DLFDB[ref] = L0B
+    DLFDB[ref_origin] = beginning
+    DLFDB[offset] = 0.058646
+    XC04[superimpose] = T
+    XC04[ref] = L0B
+    XC04[ref_origin] = beginning
+    XC04[offset] = 0.3957741
+    YC04[superimpose] = T
+    YC04[ref] = L0B
+    YC04[ref_origin] = beginning
+    YC04[offset] = 0.3957741
+    L0BMID[superimpose] = T
+    L0BMID[ref] = L0B
+    L0BMID[ref_origin] = beginning
+    L0BMID[offset] = 1.547622
+    XC05[superimpose] = T
+    XC05[ref] = L0B
+    XC05[ref_origin] = beginning
+    XC05[offset] = 2.699185
+    YC05[superimpose] = T
+    YC05[ref] = L0B
+    YC05[ref_origin] = beginning
+    YC05[offset] = 2.699185
+    OUTCPB[superimpose] = T
+    OUTCPB[ref] = L0B
+    OUTCPB[ref_origin] = beginning
+    OUTCPB[offset] = 3.034325
+!old: l0b_full: line = (flngb1, l0b___1, dlfdb, l0b___2, xc04, yc04, l0b___3, l0bmid, l0b___4, xc05,  &
+!old         yc05, l0b___5, outcpb, l0b___6, flngb2)
 
 
 !Old split line: line = (tcav0, xc06, yc06, tcav0)
@@ -1508,22 +1576,49 @@ xc06[superimpose] = T
 xc06[ref] = tcav0
 yc06[superimpose] = T
 yc06[ref] = tcav0
-l1x_full: line = (xbeg, l1x___1, xc21191, yc21192, l1x___2, xend)
+!---------------------
+! L1X LCAVITY
+L1X: L1X___1, L = 0.5948
+L1X_full: line = (L1X)
+! contains zero length elements:
+    XC21191[superimpose] = T
+    XC21191[ref] = L1X
+    XC21191[ref_origin] = beginning
+    XC21191[offset] = 0.2974
+    YC21192[superimpose] = T
+    YC21192[ref] = L1X
+    YC21192[ref_origin] = beginning
+    YC21192[offset] = 0.2974
+!old: l1x_full: line = (xbeg, l1x___1, xc21191, yc21192, l1x___2, xend)
 
-bxh1_full: line = (bxh1a, bxh1b)
-bxh2_full: line = (bxh2a, bxh2b)
-bxh3_full: line = (bxh3a, bxh3b)
-bxh4_full: line = (bxh4a, bxh4b)
-bx01_full: line = (bx01a, bx01b)
-bx02_full: line = (bx02a, bx02b)
-bx11_full: line = (bx11a, bx11b)
-bx12_full: line = (bx12a, bx12b)
-bx13_full: line = (bx13a, bx13b)
-bx14_full: line = (bx14a, bx14b)
-bx21_full: line = (bx21a, bx21b)
-bx22_full: line = (bx22a, bx22b)
-bx23_full: line = (bx23a, bx23b)
-bx24_full: line = (bx24a, bx24b)
+bxh1_full: line = (bxh1)
+!old: bxh1_full: line = (bxh1a, bxh1b)
+bxh2_full: line = (bxh2)
+!old: bxh2_full: line = (bxh2a, bxh2b)
+bxh3_full: line = (bxh3)
+!old: bxh3_full: line = (bxh3a, bxh3b)
+bxh4_full: line = (bxh4)
+!old: bxh4_full: line = (bxh4a, bxh4b)
+bx01_full: line = (bx01)
+!old: bx01_full: line = (bx01a, bx01b)
+bx02_full: line = (bx02)
+!old: bx02_full: line = (bx02a, bx02b)
+bx11_full: line = (bx11)
+!old: bx11_full: line = (bx11a, bx11b)
+bx12_full: line = (bx12)
+!old: bx12_full: line = (bx12a, bx12b)
+bx13_full: line = (bx13)
+!old: bx13_full: line = (bx13a, bx13b)
+bx14_full: line = (bx14)
+!old: bx14_full: line = (bx14a, bx14b)
+bx21_full: line = (bx21)
+!old: bx21_full: line = (bx21a, bx21b)
+bx22_full: line = (bx22)
+!old: bx22_full: line = (bx22a, bx22b)
+bx23_full: line = (bx23)
+!old: bx23_full: line = (bx23a, bx23b)
+bx24_full: line = (bx24)
+!old: bx24_full: line = (bx24a, bx24b)
 
 
 

@@ -1,10 +1,17 @@
 
-! *** OPTICS=AD_ACCEL-2019next ***
+! *** OPTICS=AD_ACCEL-05DEC19 ***
 
 ! LCLS2sc DASEL
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 25-NOV-2019, Y. Nosochkov
+!  * update quad/corrector/BPM positions per L. Borzenets
+!  * add two ACMs
+! ------------------------------------------------------------------------------
+! 23-AUG-2019, Y. Nosochkov
+!  * split drift DDASBK3 in two halves DDASBK3h
 ! ------------------------------------------------------------------------------
 ! 31-OCT-2018, Y. Nosochkov
 !  * move DASEL septum 3.685 m d/s to reduce each kicker BL to 25 Gm @ 8 GeV
@@ -189,15 +196,15 @@ brdas2b: sbend, e1 = 0, e2 = abrdas2/2, fint = 0, fintx = 0.5, hgap = gbsp/2, ty
 
 ! quads
 
-kqdas1 = -0.453031633402
-kqdas2 = 0.455967216654
-kqdas11 = -0.317841181102
-kqdas12 = 0.334321976205
-kqdas13 = -0.698280972694
-kqdas14 = 0.514501878557
-kqdas17 = -0.572591390282
-kqdas18 = 0.542929070684
-kqdas19 = -0.301611352669
+kqdas1 = -0.453695580774
+kqdas2 = 0.456501974891
+kqdas11 = -0.29960177747
+kqdas12 = 0.324000602479
+kqdas13 = -0.68249002529
+kqdas14 = 0.519096986888
+kqdas17 = -0.577539463501
+kqdas18 = 0.540526371867
+kqdas19 = -0.314095531193
 kqdas15 = -kqdas14
 kqdas16 = kqdas14
 
@@ -233,53 +240,57 @@ lddasblxb = zddasblxb/cos(abkrdas)
 
 ddasbk1: drift, l = lddasbk1
 ddasbk2: drift, l = lddasbk2
-ddasbk3: drift, l = lddasbk3
+ddasbk3h: drift, l = lddasbk3/2
 ddasbk4: drift, l = lddasbk4
 ddasbk5: drift, l = lddasbk5
 ddasblxa: drift, l = lddasblxa
 ddasblxb: drift, l = lddasblxb
 
 lddasqq = 0.1357
-lddas1 = 26.8935-3.685
+lddas1 = 23.2085-0.761426-0.000133
 lddas2a = 0.5
-lddas2b = 0.5
-lddas3 = 0.5
+lddas2b = 0.5+0.761426-0.025296+0.000133-0.000004
+lddas3 = 0.5+0.025296+0.000004
 dlddas4 = 0.0
 lddas4 = 1.9+dlddas4
 dlddas5 = 0.765561526879e-2
-lddas5 =  &
-        72.0+0.8-(lblsp+lbsp)/2-4*lqm-2*lddasqq-lddas1-lddas2a-lddas2b-lddas3-lddas4+dlddas5-3.685-12.8
+lddas5 = 56.315-(lblsp+lbsp)/2-4*lqm-2*lddasqq-lddas1-lddas2a-lddas2b-lddas3-lddas4+dlddas5
+lddas5b = 12.05*0.0254 !=0.30607 per C. Clarke
+lddas5c = 1.0
+lddas5a = lddas5-lddas5b-lddas5c
 
 dlddas11 = 0.0
-lddas11 = 5.6-0.5+0.4-(lbsp+lqm)/2+dlddas11
-lddas11a = 0.5
+lddas11 = 5.5-(lbsp+lqm)/2+dlddas11-0.7
+lddas11a = 0.5+0.300006+0.000003
 lddas11b = lddas11-lddas11a
 dlddas12 = 0.0
-lddas12 = 14.1+dlddas12
-lddas18 = 15.440177251451+0.1
-dlddas19 = 0.0
-lddas19 = 9.44017725092-0.2-lddasqq-lqm+dlddas19
-dlddas20 = 0.0
-lddas20 = 22.45+0.1-(lbsp+lqm)/2+dlddas20
-lddas20a = 0.5
-lddas20b = lddas20-lddas20a
-dlddas = -0.223640211404e-4
-lddas =  &
-        (146.56661801108-0.8-10*lqm-lbsp-lddasqq-lddas11-lddas18-lddas19-lddas20-lddas12)/5+dlddas+12.8/5
-lddas13 = lddas
+lddas12 = 14.1+dlddas12+0.7
+lddas13 = 18.128190337721+0.5
 lddas13a = 2.97
 lddas13b = lddas13-lddas13a
-lddas14 = lddas
+lddas14 = 18.128190337721-0.5+0.79997
 lddas14b = 0.5
 lddas14a = lddas14-lddas14b
-lddas15 = lddas
-lddas15a = lddas/2
-lddas15b = lddas15-lddas15a
-lddas16 = lddas
-lddas17 = lddas
+lddas14aa = 14.473260664942-0.5  !set Z=3050.512000 m at WOODDOOR
+lddas14ab = lddas14a-lddas14aa
+lddas17 = 18.128190337721-0.79997
 lddas17b = 0.5
 lddas17c = 0.5
 lddas17a = lddas17-lddas17b-lddas17c
+lddas18 = 15.540177251451
+dlddas19 = 0.0
+lddas19 = 9.24017725092-lddasqq-lqm+dlddas19
+dlddas20 = 0.0
+lddas20 = 22.55-(lbsp+lqm)/2+dlddas20
+lddas20a = 0.5-0.05163
+lddas20b = lddas20-lddas20a
+dlddas = 0.0
+lddas =  &
+        (158.566506190974298-10*lqm-lbsp-lddasqq-lddas11-lddas12-lddas13-lddas14-lddas17-lddas18-lddas19-lddas20)/2+dlddas
+lddas15 = lddas
+lddas15a = lddas/2-0.79997
+lddas15b = lddas15-lddas15a
+lddas16 = lddas
 
 ddasqq: drift, l = lddasqq
 ddas1: drift, l = lddas1
@@ -287,15 +298,17 @@ ddas2a: drift, l = lddas2a
 ddas2b: drift, l = lddas2b
 ddas3: drift, l = lddas3
 ddas4: drift, l = lddas4
-ddas5: drift, l = lddas5
+ddas5a: drift, l = lddas5a
+ddas5b: drift, l = lddas5b
+ddas5c: drift, l = lddas5c
 ddas11a: drift, l = lddas11a
 ddas11b: drift, l = lddas11b
 ddas12: drift, l = lddas12
 ddas13a: drift, l = lddas13a
 ddas13b: drift, l = lddas13b
 ddas14a: drift, l = lddas14a
-ddas14aa: drift, l = 14.473260664942  !set Z=3050.512000 m at WOODDOOR
-ddas14ab: drift, l = ddas14a[l]-ddas14aa[l]
+ddas14aa: drift, l = lddas14aa
+ddas14ab: drift, l = lddas14ab
 ddas14b: drift, l = lddas14b
 ddas15a: drift, l = lddas15a
 ddas15b: drift, l = lddas15b
@@ -351,6 +364,11 @@ prdas12: instrument, type = "@3,PHOSPHOR"
 prdas14: instrument, type = "@3,PHOSPHOR"
 prdas17: instrument, type = "@3,PHOSPHOR"
 
+! ACMs
+
+imdas1: marker, type = "@3,BCS ACM"
+imdas2: marker, type = "@3,BCS ACM"
+
 ! markers
 
 begdasel: marker
@@ -360,128 +378,35 @@ enddasel: marker
 ! A-line adjustments
 ! ------------------------------------------------------------------------------
 
-! quad strengths (also duplicate in SETK2scDA subroutine)
+! quad strengths (also copy to SETK2scDA subroutine)
 
 !=!  COMMENT !causes redefinitions when using SETK2scDA
 !=!  COMMENT !causes redefinitions when using SETK2scDA
-!=!    KQ10 :=  0.040388112814
-!=!    KQ11 := -0.038712955409
-!=!    KQ19 :=  0.03054367869
-!=!    KQ20 := -0.125186988934E-2
-!=!    KQ27 := -0.074602195497
-!=!    KQ28 :=  0.041232949479
-!=!    KQ30 := -0.029290738963
-!=!    KQ38 :=  0.034019960625
+!=!  KQ10 :=  0.04034296448
+!=!  KQ11 := -0.03865438496
+!=!  KQ19 :=  0.030550055348
+!=!  KQ20 := -0.125475886882E-2
+!=!  KQ27 := -0.074785603391
+!=!  KQ28 :=  0.041188876983
+!=!  KQ30 := -0.029276530035
+!=!  KQ38 :=  0.034027229146
 !=!  ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
 
 ! beamlines
 
-bkrdas1_full: line = (bkrdas1a, bkrdas1b)
-bkrdas2_full: line = (bkrdas2a, bkrdas2b)
-bkrdas3_full: line = (bkrdas3a, bkrdas3b)
-bkrdas4_full: line = (bkrdas4a, bkrdas4b)
-bkrdas5_full: line = (bkrdas5a, bkrdas5b)
-bkrdas6_full: line = (bkrdas6a, bkrdas6b)
-blrdas_full: line = (blrdasa, blrdasb)
-brdas1_full: line = (brdas1a, brdas1b)
-brdas2_full: line = (brdas2a, brdas2b)
-
-
-
-!Old split line: line = (qdas1b, qdas1b)
-
-qdas1b_full: line = (qdas1b)
-qdas1b[L] = 2*qdas1b[L]
-
-
-!Old split line: line = (qdas1a, qdas1a)
-
-qdas1a_full: line = (qdas1a)
-qdas1a[L] = 2*qdas1a[L]
-
-
-!Old split line: line = (qdas2a, qdas2a)
-
-qdas2a_full: line = (qdas2a)
-qdas2a[L] = 2*qdas2a[L]
-
-
-!Old split line: line = (qdas2b, qdas2b)
-
-qdas2b_full: line = (qdas2b)
-qdas2b[L] = 2*qdas2b[L]
-
-
-!Old split line: line = (qdas11, qdas11)
-
-qdas11_full: line = (qdas11)
-qdas11[L] = 2*qdas11[L]
-
-
-!Old split line: line = (qdas12, qdas12)
-
-qdas12_full: line = (qdas12)
-qdas12[L] = 2*qdas12[L]
-
-
-!Old split line: line = (qdas13, qdas13)
-
-qdas13_full: line = (qdas13)
-qdas13[L] = 2*qdas13[L]
-
-
-!Old split line: line = (qdas14, qdas14)
-
-qdas14_full: line = (qdas14)
-qdas14[L] = 2*qdas14[L]
-
-
-!Old split line: line = (qdas15, qdas15)
-
-qdas15_full: line = (qdas15)
-qdas15[L] = 2*qdas15[L]
-
-
-!Old split line: line = (qdas16, qdas16)
-
-qdas16_full: line = (qdas16)
-qdas16[L] = 2*qdas16[L]
-
-
-!Old split line: line = (qdas17, qdas17)
-
-qdas17_full: line = (qdas17)
-qdas17[L] = 2*qdas17[L]
-
-
-!Old split line: line = (qdas18a, qdas18a)
-
-qdas18a_full: line = (qdas18a)
-qdas18a[L] = 2*qdas18a[L]
-
-
-!Old split line: line = (qdas18b, qdas18b)
-
-qdas18b_full: line = (qdas18b)
-qdas18b[L] = 2*qdas18b[L]
-
-
-!Old split line: line = (qdas19, qdas19)
-
-qdas19_full: line = (qdas19)
-qdas19[L] = 2*qdas19[L]
-
-dasel: line = (bkrdas1_full, ddasbk1, bkrdas2_full, ddasbk2, bkrdas3_full, ddasbk3, bkrdas4_full &
-        , ddasbk4, bkrdas5_full, ddasbk5, bkrdas6_full, ddasblxa, bpmdas, ddasblxb, blrdas_full,  &
-        rodas1, ddas1, xcdas1, ddas2a, ycdas1, ddas2b, bpmdas1, ddas3, qdas1b_full, ddasqq,  &
-        qdas1a_full, ddas4, qdas2a_full, ddasqq, qdas2b_full, ddas5, brdas1_full, rodas2, ddas11a &
-        , rodas11p, rcdas11, rodas11m, ddas11b, qdas11_full, ddas12, qdas12_full, ddas13a,  &
-        prdas12, ddas13b, qdas13_full, ddas14aa, wooddoor, ddas14ab, xcdas14, ddas14b,  &
-        qdas14_full, ddas15a, prdas14, ddas15b, qdas15_full, ddas16, qdas16_full, ddas17a,  &
-        prdas17, ddas17b, ycdas17, ddas17c, qdas17_full, ddas18, qdas18a_full, ddasqq,  &
-        qdas18b_full, ddas19, qdas19_full, ddas20a, bpmdas19, ddas20b, rodas3, brdas2_full)
+dasel: line = (bkrdas1a, bkrdas1b, ddasbk1, bkrdas2a, bkrdas2b, ddasbk2, bkrdas3a, bkrdas3b,  &
+        ddasbk3h, ddasbk3h, bkrdas4a, bkrdas4b, ddasbk4, bkrdas5a, bkrdas5b, ddasbk5, bkrdas6a,  &
+        bkrdas6b, ddasblxa, bpmdas, ddasblxb, blrdasa, blrdasb, rodas1, ddas1, xcdas1, ddas2a,  &
+        ycdas1, ddas2b, bpmdas1, ddas3, qdas1b, qdas1b, ddasqq, qdas1a, qdas1a, ddas4, qdas2a,  &
+        qdas2a, ddasqq, qdas2b, qdas2b, ddas5a, imdas1, ddas5b, imdas2, ddas5c, brdas1a, brdas1b &
+        , rodas2, ddas11a, rodas11p, rcdas11, rodas11m, ddas11b, qdas11, qdas11, ddas12, qdas12,  &
+        qdas12, ddas13a, prdas12, ddas13b, qdas13, qdas13, ddas14aa, wooddoor, ddas14ab, xcdas14 &
+        , ddas14b, qdas14, qdas14, ddas15a, prdas14, ddas15b, qdas15, qdas15, ddas16, qdas16,  &
+        qdas16, ddas17a, prdas17, ddas17b, ycdas17, ddas17c, qdas17, qdas17, ddas18, qdas18a,  &
+        qdas18a, ddasqq, qdas18b, qdas18b, ddas19, qdas19, qdas19, ddas20a, bpmdas19, ddas20b,  &
+        rodas3, brdas2a, brdas2b)
 
 dasela: line = (begdasel, dasel, da04b, rodas19p, rcdas19, rodas19m, enddasel, alinec)
 

@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-2019next ***
+! *** OPTICS=AD_ACCEL-05DEC19 ***
 
 ! ==============================================================================
 ! 05-MAY-2017, M. Woodley
@@ -60,586 +60,676 @@
 !                             4  7   ft S-band sections @ 25% power
 ! ------------------------------------------------------------------------------
 
-k25_1a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3250 * 1e6 / 0.3250, phi0 &
-         = phil3, l = 0.3250, type = "10ft"
-k25_1a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3250 * 1e6 / 0.3250, phi0 &
-         = phil3, l = 0.3250, type = "10ft"
-k25_1a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.3941 * 1e6 / 2.3941, phi0 &
-         = phil3, l = 2.3941, type = "10ft"
-k25_1b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
- !K25_1c  : lcavity, FREQ=SbandF, L=3.0441, DELTAE=P25*gradL3*3.0441, PHI0=PhiL3, &
- !                TYPE="10ft"
+! klystron ON/OFF switches
+
+a25_1 = 1
+a25_2 = 1
+a25_3 = 1
+a25_4 = 1
+a25_5 = 1
+a25_6 = 1
+a25_7 = 1
+a25_8 = 1
+a26_1 = 1
+a26_2 = 1
+a26_3 = 1
+a26_4 = 1
+a26_5 = 1
+a26_6 = 1
+a26_7 = 1
+a26_8 = 1
+a27_1 = 0
+a27_2 = 0
+a27_3 = 0
+a27_4 = 0
+a27_5 = 0
+a27_6 = 0
+a27_7 = 0
+a27_8 = 0
+a28_1 = 0
+a28_2 = 0
+a28_3 = 0
+a28_4 = 0
+a28_5 = 0
+a28_6 = 0
+a28_7 = 0
+a28_8 = 0
+a29_1 = 0
+a29_2 = 0
+a29_3 = 0
+a29_4 = 0
+a29_5 = 0
+a29_6 = 0
+a29_7 = 0
+a29_8 = 0
+a30_1 = 0
+a30_2 = 0
+a30_3 = 0
+a30_4 = 0
+a30_5 = 0
+a30_6 = 0
+a30_7 = 0
+a30_8 = 0
+
+! structures
+
+k25_1a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_1*p25*gradl3*0.3250 * 1e6 / 0.3250 &
+        , phi0 = phil3, type = "10ft", l = 0.3250
+k25_1a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_1*p25*gradl3*0.3250 * 1e6 / 0.3250 &
+        , phi0 = phil3, type = "10ft", l = 0.3250
+k25_1a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_1*p25*gradl3*2.3941 * 1e6 / 2.3941 &
+        , phi0 = phil3, type = "10ft", l = 2.3941
+k25_1b: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_1*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
 d25_1c: drift, l = 3.0441
-k25_1d: lcavity, rf_frequency = sbandf * 1e6, gradient = p50*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
- !D25_1d  : DRIFT,L=3.0441
-k25_2a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.4530 * 1e6 / 0.4530, phi0 &
-         = phil3, l = 0.4530, type = "10ft"
-k25_2a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3175 * 1e6 / 0.3175, phi0 &
-         = phil3, l = 0.3175, type = "10ft"
-k25_2a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.2736 * 1e6 / 2.2736, phi0 &
-         = phil3, l = 2.2736, type = "10ft"
-k25_2b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k25_2c: lcavity, rf_frequency = sbandf * 1e6, gradient = p50*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k25_3a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3312 * 1e6 / 0.3312, phi0 &
-         = phil3, l = 0.3312, type = "10ft"
-k25_3a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3504 * 1e6 / 0.3504, phi0 &
-         = phil3, l = 0.3504, type = "10ft"
-k25_3a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.3625 * 1e6 / 2.3625, phi0 &
-         = phil3, l = 2.3625, type = "10ft"
-k25_3b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k25_3c: lcavity, rf_frequency = sbandf * 1e6, gradient = p50*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k25_4a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3268 * 1e6 / 0.3268, phi0 &
-         = phil3, l = 0.3268, type = "10ft"
-k25_4a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.2500 * 1e6 / 0.2500, phi0 &
-         = phil3, l = 0.2500, type = "10ft"
-k25_4a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.4673 * 1e6 / 2.4673, phi0 &
-         = phil3, l = 2.4673, type = "10ft"
-k25_4b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k25_4c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k25_4d: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k25_5a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3268 * 1e6 / 0.3268, phi0 &
-         = phil3, l = 0.3268, type = "10ft"
-k25_5a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.2500 * 1e6 / 0.2500, phi0 &
-         = phil3, l = 0.2500, type = "10ft"
-k25_5a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.4673 * 1e6 / 2.4673, phi0 &
-         = phil3, l = 2.4673, type = "10ft"
-k25_5b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k25_5c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k25_5d: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k25_6a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3280 * 1e6 / 0.3280, phi0 &
-         = phil3, l = 0.3280, type = "10ft"
-k25_6a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3822 * 1e6 / 0.3822, phi0 &
-         = phil3, l = 0.3822, type = "10ft"
-k25_6a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.3339 * 1e6 / 2.3339, phi0 &
-         = phil3, l = 2.3339, type = "10ft"
-k25_6b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k25_6c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k25_6d: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k25_7a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3336 * 1e6 / 0.3336, phi0 &
-         = phil3, l = 0.3336, type = "10ft"
-k25_7a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.2500 * 1e6 / 0.2500, phi0 &
-         = phil3, l = 0.2500, type = "10ft"
-k25_7a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.4605 * 1e6 / 2.4605, phi0 &
-         = phil3, l = 2.4605, type = "10ft"
-k25_7b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k25_7c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k25_7d: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k25_8a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3292 * 1e6 / 0.3292, phi0 &
-         = phil3, l = 0.3292, type = "10ft"
-k25_8a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.2500 * 1e6 / 0.2500, phi0 &
-         = phil3, l = 0.2500, type = "10ft"
-k25_8a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.4649 * 1e6 / 2.4649, phi0 &
-         = phil3, l = 2.4649, type = "10ft"
-k25_8b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k25_8c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k25_8d1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.3869 * 1e6 / 2.3869, phi0 &
-         = phil3, l = 2.3869, type = "10ft"
-k25_8d2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.2500 * 1e6 / 0.2500, phi0 &
-         = phil3, l = 0.2500, type = "10ft"
-k25_8d3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.4072 * 1e6 / 0.4072, phi0 &
-         = phil3, l = 0.4072, type = "10ft"
+k25_1d: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_1*p50*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
 
-k26_1a: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k26_1b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k26_1c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k26_1d: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k26_2a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3256 * 1e6 / 0.3256, phi0 &
-         = phil3, l = 0.3256, type = "10ft"
-k26_2a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3719 * 1e6 / 0.3719, phi0 &
-         = phil3, l = 0.3719, type = "10ft"
-k26_2a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.3466 * 1e6 / 2.3466, phi0 &
-         = phil3, l = 2.3466, type = "10ft"
-k26_2b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k26_2c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k26_2d: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k26_3a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3312 * 1e6 / 0.3312, phi0 &
-         = phil3, l = 0.3312, type = "10ft"
-k26_3a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.2500 * 1e6 / 0.2500, phi0 &
-         = phil3, l = 0.2500, type = "10ft"
-k26_3a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.4629 * 1e6 / 2.4629, phi0 &
-         = phil3, l = 2.4629, type = "10ft"
-k26_3b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k26_3c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k26_3d: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k26_4a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3268 * 1e6 / 0.3268, phi0 &
-         = phil3, l = 0.3268, type = "10ft"
-k26_4a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.2500 * 1e6 / 0.2500, phi0 &
-         = phil3, l = 0.2500, type = "10ft"
-k26_4a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.4673 * 1e6 / 2.4673, phi0 &
-         = phil3, l = 2.4673, type = "10ft"
-k26_4b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k26_4c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k26_4d: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k26_5a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3324 * 1e6 / 0.3324, phi0 &
-         = phil3, l = 0.3324, type = "10ft"
-k26_5a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.2500 * 1e6 / 0.2500, phi0 &
-         = phil3, l = 0.2500, type = "10ft"
-k26_5a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.4617 * 1e6 / 2.4617, phi0 &
-         = phil3, l = 2.4617, type = "10ft"
-k26_5b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k26_5c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k26_5d: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k26_6a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3280 * 1e6 / 0.3280, phi0 &
-         = phil3, l = 0.3280, type = "10ft"
-k26_6a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.4108 * 1e6 / 0.4108, phi0 &
-         = phil3, l = 0.4108, type = "10ft"
-k26_6a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.3053 * 1e6 / 2.3053, phi0 &
-         = phil3, l = 2.3053, type = "10ft"
-k26_6b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k26_6c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k26_6d: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k26_7a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3336 * 1e6 / 0.3336, phi0 &
-         = phil3, l = 0.3336, type = "10ft"
-k26_7a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.2500 * 1e6 / 0.2500, phi0 &
-         = phil3, l = 0.2500, type = "10ft"
-k26_7a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.4605 * 1e6 / 2.4605, phi0 &
-         = phil3, l = 2.4605, type = "10ft"
-k26_7b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k26_7c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k26_7d: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k26_8a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3292 * 1e6 / 0.3292, phi0 &
-         = phil3, l = 0.3292, type = "10ft"
-k26_8a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3810 * 1e6 / 0.3810, phi0 &
-         = phil3, l = 0.3810, type = "10ft"
-k26_8a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.3339 * 1e6 / 2.3339, phi0 &
-         = phil3, l = 2.3339, type = "10ft"
-k26_8b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k26_8c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k26_8d1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.3869 * 1e6 / 2.3869, phi0 &
-         = phil3, l = 2.3869, type = "10ft"
-k26_8d2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.2500 * 1e6 / 0.2500, phi0 &
-         = phil3, l = 0.2500, type = "10ft"
-k26_8d3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.4072 * 1e6 / 0.4072, phi0 &
-         = phil3, l = 0.4072, type = "10ft"
+k25_2a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_2*p25*gradl3*0.4530 * 1e6 / 0.4530 &
+        , phi0 = phil3, type = "10ft", l = 0.4530
+k25_2a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_2*p25*gradl3*0.3175 * 1e6 / 0.3175 &
+        , phi0 = phil3, type = "10ft", l = 0.3175
+k25_2a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_2*p25*gradl3*2.2736 * 1e6 / 2.2736 &
+        , phi0 = phil3, type = "10ft", l = 2.2736
+k25_2b: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_2*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k25_2c: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_2*p50*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
 
-k27_1a: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k27_1b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k27_1c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k27_1d: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k27_2a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3256 * 1e6 / 0.3256, phi0 &
-         = phil3, l = 0.3256, type = "10ft"
-k27_2a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.2500 * 1e6 / 0.2500, phi0 &
-         = phil3, l = 0.2500, type = "10ft"
-k27_2a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.4685 * 1e6 / 2.4685, phi0 &
-         = phil3, l = 2.4685, type = "10ft"
-k27_2b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k27_2c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k27_2d: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k27_3a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3312 * 1e6 / 0.3312, phi0 &
-         = phil3, l = 0.3312, type = "10ft"
-k27_3a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3695 * 1e6 / 0.3695, phi0 &
-         = phil3, l = 0.3695, type = "10ft"
-k27_3a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.3434 * 1e6 / 2.3434, phi0 &
-         = phil3, l = 2.3434, type = "10ft"
-k27_3b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k27_3c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k27_3d: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k27_4a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3268 * 1e6 / 0.3268, phi0 &
-         = phil3, l = 0.3268, type = "10ft"
-k27_4a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.2500 * 1e6 / 0.2500, phi0 &
-         = phil3, l = 0.2500, type = "10ft"
-k27_4a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.4673 * 1e6 / 2.4673, phi0 &
-         = phil3, l = 2.4673, type = "10ft"
-k27_4b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k27_4c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k27_4d: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k27_5a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3324 * 1e6 / 0.3324, phi0 &
-         = phil3, l = 0.3324, type = "10ft"
-k27_5a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3683 * 1e6 / 0.3683, phi0 &
-         = phil3, l = 0.3683, type = "10ft"
-k27_5a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.3434 * 1e6 / 2.3434, phi0 &
-         = phil3, l = 2.3434, type = "10ft"
-k27_5b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k27_5c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k27_5d: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k27_6a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3280 * 1e6 / 0.3280, phi0 &
-         = phil3, l = 0.3280, type = "10ft"
-k27_6a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.2500 * 1e6 / 0.2500, phi0 &
-         = phil3, l = 0.2500, type = "10ft"
-k27_6a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.4661 * 1e6 / 2.4661, phi0 &
-         = phil3, l = 2.4661, type = "10ft"
-k27_6b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k27_6c: lcavity, rf_frequency = sbandf * 1e6, gradient = p50*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k27_7a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3336 * 1e6 / 0.3336, phi0 &
-         = phil3, l = 0.3336, type = "10ft"
-k27_7a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3512 * 1e6 / 0.3512, phi0 &
-         = phil3, l = 0.3512, type = "10ft"
-k27_7a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.3593 * 1e6 / 2.3593, phi0 &
-         = phil3, l = 2.3593, type = "10ft"
-k27_7b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k27_7c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k27_7d: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k27_8a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3292 * 1e6 / 0.3292, phi0 &
-         = phil3, l = 0.3292, type = "10ft"
-k27_8a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.2500 * 1e6 / 0.2500, phi0 &
-         = phil3, l = 0.2500, type = "10ft"
-k27_8a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.4649 * 1e6 / 2.4649, phi0 &
-         = phil3, l = 2.4649, type = "10ft"
-k27_8b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k27_8c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k27_8d1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.2411 * 1e6 / 2.2411, phi0 &
-         = phil3, l = 2.2411, type = "10ft"
-k27_8d2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3958 * 1e6 / 0.3958, phi0 &
-         = phil3, l = 0.3958, type = "10ft"
-k27_8d3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.4072 * 1e6 / 0.4072, phi0 &
-         = phil3, l = 0.4072, type = "10ft"
+k25_3a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_3*p25*gradl3*0.3312 * 1e6 / 0.3312 &
+        , phi0 = phil3, type = "10ft", l = 0.3312
+k25_3a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_3*p25*gradl3*0.3504 * 1e6 / 0.3504 &
+        , phi0 = phil3, type = "10ft", l = 0.3504
+k25_3a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_3*p25*gradl3*2.3625 * 1e6 / 2.3625 &
+        , phi0 = phil3, type = "10ft", l = 2.3625
+k25_3b: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_3*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k25_3c: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_3*p50*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
 
-k28_1a: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k28_1b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k28_1c: lcavity, rf_frequency = sbandf * 1e6, gradient = p50*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k28_2a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3256 * 1e6 / 0.3256, phi0 &
-         = phil3, l = 0.3256, type = "10ft"
-k28_2a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.2500 * 1e6 / 0.2500, phi0 &
-         = phil3, l = 0.2500, type = "10ft"
-k28_2a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.4685 * 1e6 / 2.4685, phi0 &
-         = phil3, l = 2.4685, type = "10ft"
-k28_2b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k28_2c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k28_2d: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k28_3a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3312 * 1e6 / 0.3312, phi0 &
-         = phil3, l = 0.3312, type = "10ft"
-k28_3a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.2500 * 1e6 / 0.2500, phi0 &
-         = phil3, l = 0.2500, type = "10ft"
-k28_3a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.4629 * 1e6 / 2.4629, phi0 &
-         = phil3, l = 2.4629, type = "10ft"
-k28_3b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k28_3c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k28_3d: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k28_4a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3800 * 1e6 / 0.3800, phi0 &
-         = phil3, l = 0.3800, type = "10ft"
-k28_4a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.2921 * 1e6 / 0.2921, phi0 &
-         = phil3, l = 0.2921, type = "10ft"
-k28_4a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.3720 * 1e6 / 2.3720, phi0 &
-         = phil3, l = 2.3720, type = "10ft"
-k28_4b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k28_4c: lcavity, rf_frequency = sbandf * 1e6, gradient = p50*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k28_5a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3959 * 1e6 / 0.3959, phi0 &
-         = phil3, l = 0.3959, type = "10ft"
-k28_5a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3111 * 1e6 / 0.3111, phi0 &
-         = phil3, l = 0.3111, type = "10ft"
-k28_5a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.3371 * 1e6 / 2.3371, phi0 &
-         = phil3, l = 2.3371, type = "10ft"
-k28_5b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k28_5c: lcavity, rf_frequency = sbandf * 1e6, gradient = p50*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-!  K28_5d  : lcavity, FREQ=SbandF, L=3.0441, DELTAE=P25*gradL3*3.0441, PHI0=PhiL3, &
-!                  TYPE="10ft"
+k25_4a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_4*p25*gradl3*0.3268 * 1e6 / 0.3268 &
+        , phi0 = phil3, type = "10ft", l = 0.3268
+k25_4a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_4*p25*gradl3*0.2500 * 1e6 / 0.2500 &
+        , phi0 = phil3, type = "10ft", l = 0.2500
+k25_4a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_4*p25*gradl3*2.4673 * 1e6 / 2.4673 &
+        , phi0 = phil3, type = "10ft", l = 2.4673
+k25_4b: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_4*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k25_4c: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_4*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k25_4d: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_4*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+
+k25_5a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_5*p25*gradl3*0.3268 * 1e6 / 0.3268 &
+        , phi0 = phil3, type = "10ft", l = 0.3268
+k25_5a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_5*p25*gradl3*0.2500 * 1e6 / 0.2500 &
+        , phi0 = phil3, type = "10ft", l = 0.2500
+k25_5a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_5*p25*gradl3*2.4673 * 1e6 / 2.4673 &
+        , phi0 = phil3, type = "10ft", l = 2.4673
+k25_5b: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_5*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k25_5c: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_5*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k25_5d: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_5*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+
+k25_6a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_6*p25*gradl3*0.3280 * 1e6 / 0.3280 &
+        , phi0 = phil3, type = "10ft", l = 0.3280
+k25_6a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_6*p25*gradl3*0.3822 * 1e6 / 0.3822 &
+        , phi0 = phil3, type = "10ft", l = 0.3822
+k25_6a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_6*p25*gradl3*2.3339 * 1e6 / 2.3339 &
+        , phi0 = phil3, type = "10ft", l = 2.3339
+k25_6b: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_6*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k25_6c: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_6*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k25_6d: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_6*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+
+k25_7a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_7*p25*gradl3*0.3336 * 1e6 / 0.3336 &
+        , phi0 = phil3, type = "10ft", l = 0.3336
+k25_7a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_7*p25*gradl3*0.2500 * 1e6 / 0.2500 &
+        , phi0 = phil3, type = "10ft", l = 0.2500
+k25_7a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_7*p25*gradl3*2.4605 * 1e6 / 2.4605 &
+        , phi0 = phil3, type = "10ft", l = 2.4605
+k25_7b: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_7*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k25_7c: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_7*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k25_7d: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_7*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+
+k25_8a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_8*p25*gradl3*0.3292 * 1e6 / 0.3292 &
+        , phi0 = phil3, type = "10ft", l = 0.3292
+k25_8a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_8*p25*gradl3*0.2500 * 1e6 / 0.2500 &
+        , phi0 = phil3, type = "10ft", l = 0.2500
+k25_8a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_8*p25*gradl3*2.4649 * 1e6 / 2.4649 &
+        , phi0 = phil3, type = "10ft", l = 2.4649
+k25_8b: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_8*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k25_8c: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_8*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k25_8d1: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_8*p25*gradl3*2.3869 * 1e6 / 2.3869 &
+        , phi0 = phil3, type = "10ft", l = 2.3869
+k25_8d2: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_8*p25*gradl3*0.2500 * 1e6 / 0.2500 &
+        , phi0 = phil3, type = "10ft", l = 0.2500
+k25_8d3: lcavity, rf_frequency = sbandf * 1e6, gradient = a25_8*p25*gradl3*0.4072 * 1e6 / 0.4072 &
+        , phi0 = phil3, type = "10ft", l = 0.4072
+
+k26_1a: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_1*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k26_1b: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_1*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k26_1c: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_1*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k26_1d: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_1*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+
+k26_2a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_2*p25*gradl3*0.3256 * 1e6 / 0.3256 &
+        , phi0 = phil3, type = "10ft", l = 0.3256
+k26_2a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_2*p25*gradl3*0.3719 * 1e6 / 0.3719 &
+        , phi0 = phil3, type = "10ft", l = 0.3719
+k26_2a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_2*p25*gradl3*2.3466 * 1e6 / 2.3466 &
+        , phi0 = phil3, type = "10ft", l = 2.3466
+k26_2b: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_2*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k26_2c: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_2*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k26_2d: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_2*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+
+k26_3a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_3*p25*gradl3*0.3312 * 1e6 / 0.3312 &
+        , phi0 = phil3, type = "10ft", l = 0.3312
+k26_3a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_3*p25*gradl3*0.2500 * 1e6 / 0.2500 &
+        , phi0 = phil3, type = "10ft", l = 0.2500
+k26_3a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_3*p25*gradl3*2.4629 * 1e6 / 2.4629 &
+        , phi0 = phil3, type = "10ft", l = 2.4629
+k26_3b: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_3*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k26_3c: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_3*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k26_3d: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_3*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+
+k26_4a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_4*p25*gradl3*0.3268 * 1e6 / 0.3268 &
+        , phi0 = phil3, type = "10ft", l = 0.3268
+k26_4a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_4*p25*gradl3*0.2500 * 1e6 / 0.2500 &
+        , phi0 = phil3, type = "10ft", l = 0.2500
+k26_4a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_4*p25*gradl3*2.4673 * 1e6 / 2.4673 &
+        , phi0 = phil3, type = "10ft", l = 2.4673
+k26_4b: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_4*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k26_4c: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_4*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k26_4d: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_4*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+
+k26_5a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_5*p25*gradl3*0.3324 * 1e6 / 0.3324 &
+        , phi0 = phil3, type = "10ft", l = 0.3324
+k26_5a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_5*p25*gradl3*0.2500 * 1e6 / 0.2500 &
+        , phi0 = phil3, type = "10ft", l = 0.2500
+k26_5a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_5*p25*gradl3*2.4617 * 1e6 / 2.4617 &
+        , phi0 = phil3, type = "10ft", l = 2.4617
+k26_5b: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_5*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k26_5c: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_5*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k26_5d: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_5*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+
+k26_6a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_6*p25*gradl3*0.3280 * 1e6 / 0.3280 &
+        , phi0 = phil3, type = "10ft", l = 0.3280
+k26_6a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_6*p25*gradl3*0.4108 * 1e6 / 0.4108 &
+        , phi0 = phil3, type = "10ft", l = 0.4108
+k26_6a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_6*p25*gradl3*2.3053 * 1e6 / 2.3053 &
+        , phi0 = phil3, type = "10ft", l = 2.3053
+k26_6b: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_6*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k26_6c: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_6*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k26_6d: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_6*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+
+k26_7a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_7*p25*gradl3*0.3336 * 1e6 / 0.3336 &
+        , phi0 = phil3, type = "10ft", l = 0.3336
+k26_7a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_7*p25*gradl3*0.2500 * 1e6 / 0.2500 &
+        , phi0 = phil3, type = "10ft", l = 0.2500
+k26_7a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_7*p25*gradl3*2.4605 * 1e6 / 2.4605 &
+        , phi0 = phil3, type = "10ft", l = 2.4605
+k26_7b: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_7*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k26_7c: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_7*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k26_7d: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_7*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+
+k26_8a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_8*p25*gradl3*0.3292 * 1e6 / 0.3292 &
+        , phi0 = phil3, type = "10ft", l = 0.3292
+k26_8a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_8*p25*gradl3*0.3810 * 1e6 / 0.3810 &
+        , phi0 = phil3, type = "10ft", l = 0.3810
+k26_8a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_8*p25*gradl3*2.3339 * 1e6 / 2.3339 &
+        , phi0 = phil3, type = "10ft", l = 2.3339
+k26_8b: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_8*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k26_8c: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_8*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k26_8d1: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_8*p25*gradl3*2.3869 * 1e6 / 2.3869 &
+        , phi0 = phil3, type = "10ft", l = 2.3869
+k26_8d2: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_8*p25*gradl3*0.2500 * 1e6 / 0.2500 &
+        , phi0 = phil3, type = "10ft", l = 0.2500
+k26_8d3: lcavity, rf_frequency = sbandf * 1e6, gradient = a26_8*p25*gradl3*0.4072 * 1e6 / 0.4072 &
+        , phi0 = phil3, type = "10ft", l = 0.4072
+
+k27_1a: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_1*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k27_1b: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_1*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k27_1c: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_1*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k27_1d: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_1*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+
+k27_2a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_2*p25*gradl3*0.3256 * 1e6 / 0.3256 &
+        , phi0 = phil3, type = "10ft", l = 0.3256
+k27_2a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_2*p25*gradl3*0.2500 * 1e6 / 0.2500 &
+        , phi0 = phil3, type = "10ft", l = 0.2500
+k27_2a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_2*p25*gradl3*2.4685 * 1e6 / 2.4685 &
+        , phi0 = phil3, type = "10ft", l = 2.4685
+k27_2b: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_2*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k27_2c: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_2*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k27_2d: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_2*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+
+k27_3a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_3*p25*gradl3*0.3312 * 1e6 / 0.3312 &
+        , phi0 = phil3, type = "10ft", l = 0.3312
+k27_3a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_3*p25*gradl3*0.3695 * 1e6 / 0.3695 &
+        , phi0 = phil3, type = "10ft", l = 0.3695
+k27_3a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_3*p25*gradl3*2.3434 * 1e6 / 2.3434 &
+        , phi0 = phil3, type = "10ft", l = 2.3434
+k27_3b: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_3*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k27_3c: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_3*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k27_3d: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_3*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+
+k27_4a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_4*p25*gradl3*0.3268 * 1e6 / 0.3268 &
+        , phi0 = phil3, type = "10ft", l = 0.3268
+k27_4a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_4*p25*gradl3*0.2500 * 1e6 / 0.2500 &
+        , phi0 = phil3, type = "10ft", l = 0.2500
+k27_4a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_4*p25*gradl3*2.4673 * 1e6 / 2.4673 &
+        , phi0 = phil3, type = "10ft", l = 2.4673
+k27_4b: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_4*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k27_4c: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_4*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k27_4d: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_4*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+
+k27_5a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_5*p25*gradl3*0.3324 * 1e6 / 0.3324 &
+        , phi0 = phil3, type = "10ft", l = 0.3324
+k27_5a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_5*p25*gradl3*0.3683 * 1e6 / 0.3683 &
+        , phi0 = phil3, type = "10ft", l = 0.3683
+k27_5a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_5*p25*gradl3*2.3434 * 1e6 / 2.3434 &
+        , phi0 = phil3, type = "10ft", l = 2.3434
+k27_5b: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_5*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k27_5c: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_5*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k27_5d: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_5*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+
+k27_6a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_6*p25*gradl3*0.3280 * 1e6 / 0.3280 &
+        , phi0 = phil3, type = "10ft", l = 0.3280
+k27_6a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_6*p25*gradl3*0.2500 * 1e6 / 0.2500 &
+        , phi0 = phil3, type = "10ft", l = 0.2500
+k27_6a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_6*p25*gradl3*2.4661 * 1e6 / 2.4661 &
+        , phi0 = phil3, type = "10ft", l = 2.4661
+k27_6b: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_6*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k27_6c: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_6*p50*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+
+k27_7a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_7*p25*gradl3*0.3336 * 1e6 / 0.3336 &
+        , phi0 = phil3, type = "10ft", l = 0.3336
+k27_7a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_7*p25*gradl3*0.3512 * 1e6 / 0.3512 &
+        , phi0 = phil3, type = "10ft", l = 0.3512
+k27_7a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_7*p25*gradl3*2.3593 * 1e6 / 2.3593 &
+        , phi0 = phil3, type = "10ft", l = 2.3593
+k27_7b: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_7*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k27_7c: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_7*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k27_7d: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_7*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+
+k27_8a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_8*p25*gradl3*0.3292 * 1e6 / 0.3292 &
+        , phi0 = phil3, type = "10ft", l = 0.3292
+k27_8a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_8*p25*gradl3*0.2500 * 1e6 / 0.2500 &
+        , phi0 = phil3, type = "10ft", l = 0.2500
+k27_8a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_8*p25*gradl3*2.4649 * 1e6 / 2.4649 &
+        , phi0 = phil3, type = "10ft", l = 2.4649
+k27_8b: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_8*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k27_8c: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_8*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k27_8d1: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_8*p25*gradl3*2.2411 * 1e6 / 2.2411 &
+        , phi0 = phil3, type = "10ft", l = 2.2411
+k27_8d2: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_8*p25*gradl3*0.3958 * 1e6 / 0.3958 &
+        , phi0 = phil3, type = "10ft", l = 0.3958
+k27_8d3: lcavity, rf_frequency = sbandf * 1e6, gradient = a27_8*p25*gradl3*0.4072 * 1e6 / 0.4072 &
+        , phi0 = phil3, type = "10ft", l = 0.4072
+
+k28_1a: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_1*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k28_1b: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_1*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k28_1c: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_1*p50*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+
+k28_2a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_2*p25*gradl3*0.3256 * 1e6 / 0.3256 &
+        , phi0 = phil3, type = "10ft", l = 0.3256
+k28_2a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_2*p25*gradl3*0.2500 * 1e6 / 0.2500 &
+        , phi0 = phil3, type = "10ft", l = 0.2500
+k28_2a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_2*p25*gradl3*2.4685 * 1e6 / 2.4685 &
+        , phi0 = phil3, type = "10ft", l = 2.4685
+k28_2b: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_2*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k28_2c: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_2*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k28_2d: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_2*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+
+k28_3a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_3*p25*gradl3*0.3312 * 1e6 / 0.3312 &
+        , phi0 = phil3, type = "10ft", l = 0.3312
+k28_3a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_3*p25*gradl3*0.2500 * 1e6 / 0.2500 &
+        , phi0 = phil3, type = "10ft", l = 0.2500
+k28_3a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_3*p25*gradl3*2.4629 * 1e6 / 2.4629 &
+        , phi0 = phil3, type = "10ft", l = 2.4629
+k28_3b: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_3*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k28_3c: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_3*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k28_3d: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_3*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+
+k28_4a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_4*p25*gradl3*0.3800 * 1e6 / 0.3800 &
+        , phi0 = phil3, type = "10ft", l = 0.3800
+k28_4a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_4*p25*gradl3*0.2921 * 1e6 / 0.2921 &
+        , phi0 = phil3, type = "10ft", l = 0.2921
+k28_4a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_4*p25*gradl3*2.3720 * 1e6 / 2.3720 &
+        , phi0 = phil3, type = "10ft", l = 2.3720
+k28_4b: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_4*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k28_4c: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_4*p50*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+
+k28_5a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_5*p25*gradl3*0.3959 * 1e6 / 0.3959 &
+        , phi0 = phil3, type = "10ft", l = 0.3959
+k28_5a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_5*p25*gradl3*0.3111 * 1e6 / 0.3111 &
+        , phi0 = phil3, type = "10ft", l = 0.3111
+k28_5a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_5*p25*gradl3*2.3371 * 1e6 / 2.3371 &
+        , phi0 = phil3, type = "10ft", l = 2.3371
+k28_5b: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_5*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k28_5c: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_5*p50*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
 d28_5d: drift, l = 3.0441
-k28_6a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3280 * 1e6 / 0.3280, phi0 &
-         = phil3, l = 0.3280, type = "10ft"
-k28_6a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3600 * 1e6 / 0.3600, phi0 &
-         = phil3, l = 0.3600, type = "10ft"
-k28_6a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.3561 * 1e6 / 2.3561, phi0 &
-         = phil3, l = 2.3561, type = "10ft"
-k28_6b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k28_6c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k28_6d: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k28_7a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3336 * 1e6 / 0.3336, phi0 &
-         = phil3, l = 0.3336, type = "10ft"
-k28_7a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.4052 * 1e6 / 0.4052, phi0 &
-         = phil3, l = 0.4052, type = "10ft"
-k28_7a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.3053 * 1e6 / 2.3053, phi0 &
-         = phil3, l = 2.3053, type = "10ft"
-k28_7b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k28_7c: lcavity, rf_frequency = sbandf * 1e6, gradient = p50*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k28_8a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3292 * 1e6 / 0.3292, phi0 &
-         = phil3, l = 0.3292, type = "10ft"
-k28_8a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.2500 * 1e6 / 0.2500, phi0 &
-         = phil3, l = 0.2500, type = "10ft"
-k28_8a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.4649 * 1e6 / 2.4649, phi0 &
-         = phil3, l = 2.4649, type = "10ft"
-k28_8b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k28_8c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k28_8d1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.3869 * 1e6 / 2.3869, phi0 &
-         = phil3, l = 2.3869, type = "10ft"
-k28_8d2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.2500 * 1e6 / 0.2500, phi0 &
-         = phil3, l = 0.2500, type = "10ft"
-k28_8d3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.4072 * 1e6 / 0.4072, phi0 &
-         = phil3, l = 0.4072, type = "10ft"
 
-k29_1a: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k29_1b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k29_1c: lcavity, rf_frequency = sbandf * 1e6, gradient = p50*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k29_2a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3256 * 1e6 / 0.3256, phi0 &
-         = phil3, l = 0.3256, type = "10ft"
-k29_2a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3528 * 1e6 / 0.3528, phi0 &
-         = phil3, l = 0.3528, type = "10ft"
-k29_2a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.3657 * 1e6 / 2.3657, phi0 &
-         = phil3, l = 2.3657, type = "10ft"
-k29_2b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k29_2c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k29_2d: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k29_3a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3312 * 1e6 / 0.3312, phi0 &
-         = phil3, l = 0.3312, type = "10ft"
-k29_3a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3599 * 1e6 / 0.3599, phi0 &
-         = phil3, l = 0.3599, type = "10ft"
-k29_3a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.3530 * 1e6 / 2.3530, phi0 &
-         = phil3, l = 2.3530, type = "10ft"
-k29_3b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k29_3c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k29_3d: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k29_4a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3268 * 1e6 / 0.3268, phi0 &
-         = phil3, l = 0.3268, type = "10ft"
-k29_4a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.2500 * 1e6 / 0.2500, phi0 &
-         = phil3, l = 0.2500, type = "10ft"
-k29_4a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.4673 * 1e6 / 2.4673, phi0 &
-         = phil3, l = 2.4673, type = "10ft"
-k29_4b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k29_4c: lcavity, rf_frequency = sbandf * 1e6, gradient = p50*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k29_5a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3800 * 1e6 / 0.3800, phi0 &
-         = phil3, l = 0.3800, type = "10ft"
-k29_5a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.2762 * 1e6 / 0.2762, phi0 &
-         = phil3, l = 0.2762, type = "10ft"
-k29_5a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.3879 * 1e6 / 2.3879, phi0 &
-         = phil3, l = 2.3879, type = "10ft"
-k29_5b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k29_5c: lcavity, rf_frequency = sbandf * 1e6, gradient = p50*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k29_6a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.4498 * 1e6 / 0.4498, phi0 &
-         = phil3, l = 0.4498, type = "10ft"
-k29_6a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3715 * 1e6 / 0.3715, phi0 &
-         = phil3, l = 0.3715, type = "10ft"
-k29_6a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.2228 * 1e6 / 2.2228, phi0 &
-         = phil3, l = 2.2228, type = "10ft"
-k29_6b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k29_6c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k29_6d: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k29_7a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3336 * 1e6 / 0.3336, phi0 &
-         = phil3, l = 0.3336, type = "10ft"
-k29_7a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3988 * 1e6 / 0.3988, phi0 &
-         = phil3, l = 0.3988, type = "10ft"
-k29_7a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.3117 * 1e6 / 2.3117, phi0 &
-         = phil3, l = 2.3117, type = "10ft"
-k29_7b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k29_7c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k29_7d: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.8692 * 1e6 / 2.8692, phi0 &
-         = phil3, l = 2.8692, type = "9.4ft"
-k29_8a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3896 * 1e6 / 0.3896, phi0 &
-         = phil3, l = 0.3896, type = "10ft"
-k29_8a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.2790 * 1e6 / 0.2790, phi0 &
-         = phil3, l = 0.2790, type = "10ft"
-k29_8a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.3755 * 1e6 / 2.3755, phi0 &
-         = phil3, l = 2.3755, type = "10ft"
-k29_8b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k29_8c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k29_8d1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.4558 * 1e6 / 2.4558, phi0 &
-         = phil3, l = 2.4558, type = "10ft"
-k29_8d2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.2800 * 1e6 / 0.2800, phi0 &
-         = phil3, l = 0.2800, type = "10ft"
-k29_8d3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3083 * 1e6 / 0.3083, phi0 &
-         = phil3, l = 0.3083, type = "10ft"
+k28_6a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_6*p25*gradl3*0.3280 * 1e6 / 0.3280 &
+        , phi0 = phil3, type = "10ft", l = 0.3280
+k28_6a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_6*p25*gradl3*0.3600 * 1e6 / 0.3600 &
+        , phi0 = phil3, type = "10ft", l = 0.3600
+k28_6a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_6*p25*gradl3*2.3561 * 1e6 / 2.3561 &
+        , phi0 = phil3, type = "10ft", l = 2.3561
+k28_6b: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_6*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k28_6c: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_6*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k28_6d: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_6*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
 
-k30_1a: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k30_1b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k30_1c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k30_1d: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.1694 * 1e6 / 2.1694, phi0 &
-         = phil3, l = 2.1694, type = "7.1ft"
-k30_2a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.5006 * 1e6 / 0.5006, phi0 &
-         = phil3, l = 0.5006, type = "10ft"
-k30_2a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3302 * 1e6 / 0.3302, phi0 &
-         = phil3, l = 0.3302, type = "10ft"
-k30_2a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.2133 * 1e6 / 2.2133, phi0 &
-         = phil3, l = 2.2133, type = "10ft"
-k30_2b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k30_2c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k30_2d: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k30_3a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3986 * 1e6 / 0.3986, phi0 &
-         = phil3, l = 0.3986, type = "10ft"
-k30_3a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3300 * 1e6 / 0.3300, phi0 &
-         = phil3, l = 0.3300, type = "10ft"
-k30_3a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.3155 * 1e6 / 2.3155, phi0 &
-         = phil3, l = 2.3155, type = "10ft"
-k30_3b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k30_3c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k30_3d: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.1694 * 1e6 / 2.1694, phi0 &
-         = phil3, l = 2.1694, type = "7.1ft"
-k30_4a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3856 * 1e6 / 0.3856, phi0 &
-         = phil3, l = 0.3856, type = "10ft"
-k30_4a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.2790 * 1e6 / 0.2790, phi0 &
-         = phil3, l = 0.2790, type = "10ft"
-k30_4a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.3795 * 1e6 / 2.3795, phi0 &
-         = phil3, l = 2.3795, type = "10ft"
-k30_4b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k30_4c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k30_4d: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.1694 * 1e6 / 2.1694, phi0 &
-         = phil3, l = 2.1694, type = "7.1ft"
-k30_5a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3726 * 1e6 / 0.3726, phi0 &
-         = phil3, l = 0.3726, type = "10ft"
-k30_5a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.2920 * 1e6 / 0.2920, phi0 &
-         = phil3, l = 0.2920, type = "10ft"
-k30_5a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.3795 * 1e6 / 2.3795, phi0 &
-         = phil3, l = 2.3795, type = "10ft"
-k30_5b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k30_5c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k30_5d: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.1694 * 1e6 / 2.1694, phi0 &
-         = phil3, l = 2.1694, type = "7.1ft"
-k30_6a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3940 * 1e6 / 0.3940, phi0 &
-         = phil3, l = 0.3940, type = "10ft"
-k30_6a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3930 * 1e6 / 0.3930, phi0 &
-         = phil3, l = 0.3930, type = "10ft"
-k30_6a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.4070 * 1e6 / 0.4070, phi0 &
-         = phil3, l = 0.4070, type = "10ft"
-k30_6a4: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.9810 * 1e6 / 0.9810, phi0 &
-         = phil3, l = 0.9810, type = "10ft"
-k30_6a5: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3550 * 1e6 / 0.3550, phi0 &
-         = phil3, l = 0.3550, type = "10ft"
-k30_6a6: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.5141 * 1e6 / 0.5141, phi0 &
-         = phil3, l = 0.5141, type = "10ft"
-k30_6b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k30_6c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k30_6d: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.8692 * 1e6 / 2.8692, phi0 &
-         = phil3, l = 2.8692, type = "9.4ft"
-k30_7a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3813 * 1e6 / 0.3813, phi0 &
-         = phil3, l = 0.3813, type = "10ft"
-k30_7a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.4317 * 1e6 / 0.4317, phi0 &
-         = phil3, l = 0.4317, type = "10ft"
-k30_7a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3740 * 1e6 / 0.3740, phi0 &
-         = phil3, l = 0.3740, type = "10ft"
-k30_7a4: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.9910 * 1e6 / 0.9910, phi0 &
-         = phil3, l = 0.9910, type = "10ft"
-k30_7a5: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3590 * 1e6 / 0.3590, phi0 &
-         = phil3, l = 0.3590, type = "10ft"
-k30_7a6: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.5071 * 1e6 / 0.5071, phi0 &
-         = phil3, l = 0.5071, type = "10ft"
-k30_7b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k30_7c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k30_7d: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.8692 * 1e6 / 2.8692, phi0 &
-         = phil3, l = 2.8692, type = "9.4ft"
-k30_8a1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3859 * 1e6 / 0.3859, phi0 &
-         = phil3, l = 0.3859, type = "10ft"
-k30_8a2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*0.3810 * 1e6 / 0.3810, phi0 &
-         = phil3, l = 0.3810, type = "10ft"
-k30_8a3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*2.2772 * 1e6 / 2.2772, phi0 &
-         = phil3, l = 2.2772, type = "10ft"
-k30_8b: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl3*3.0441 * 1e6 / 3.0441, phi0 &
-         = phil3, l = 3.0441, type = "10ft"
-k30_8c1: lcavity, rf_frequency = sbandf * 1e6, gradient = p50*gradl3*0.7620 * 1e6 / 0.7620, phi0 &
-         = phil3, l = 0.7620, type = "10ft"
-k30_8c2: lcavity, rf_frequency = sbandf * 1e6, gradient = p50*gradl3*1.4669 * 1e6 / 1.4669, phi0 &
-         = phil3, l = 1.4669, type = "10ft"
-k30_8c3: lcavity, rf_frequency = sbandf * 1e6, gradient = p50*gradl3*0.8152 * 1e6 / 0.8152, phi0 &
-         = phil3, l = 0.8152, type = "10ft"
+k28_7a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_7*p25*gradl3*0.3336 * 1e6 / 0.3336 &
+        , phi0 = phil3, type = "10ft", l = 0.3336
+k28_7a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_7*p25*gradl3*0.4052 * 1e6 / 0.4052 &
+        , phi0 = phil3, type = "10ft", l = 0.4052
+k28_7a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_7*p25*gradl3*2.3053 * 1e6 / 2.3053 &
+        , phi0 = phil3, type = "10ft", l = 2.3053
+k28_7b: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_7*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k28_7c: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_7*p50*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+
+k28_8a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_8*p25*gradl3*0.3292 * 1e6 / 0.3292 &
+        , phi0 = phil3, type = "10ft", l = 0.3292
+k28_8a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_8*p25*gradl3*0.2500 * 1e6 / 0.2500 &
+        , phi0 = phil3, type = "10ft", l = 0.2500
+k28_8a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_8*p25*gradl3*2.4649 * 1e6 / 2.4649 &
+        , phi0 = phil3, type = "10ft", l = 2.4649
+k28_8b: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_8*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k28_8c: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_8*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k28_8d1: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_8*p25*gradl3*2.3869 * 1e6 / 2.3869 &
+        , phi0 = phil3, type = "10ft", l = 2.3869
+k28_8d2: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_8*p25*gradl3*0.2500 * 1e6 / 0.2500 &
+        , phi0 = phil3, type = "10ft", l = 0.2500
+k28_8d3: lcavity, rf_frequency = sbandf * 1e6, gradient = a28_8*p25*gradl3*0.4072 * 1e6 / 0.4072 &
+        , phi0 = phil3, type = "10ft", l = 0.4072
+
+k29_1a: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_1*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k29_1b: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_1*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k29_1c: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_1*p50*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+
+k29_2a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_2*p25*gradl3*0.3256 * 1e6 / 0.3256 &
+        , phi0 = phil3, type = "10ft", l = 0.3256
+k29_2a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_2*p25*gradl3*0.3528 * 1e6 / 0.3528 &
+        , phi0 = phil3, type = "10ft", l = 0.3528
+k29_2a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_2*p25*gradl3*2.3657 * 1e6 / 2.3657 &
+        , phi0 = phil3, type = "10ft", l = 2.3657
+k29_2b: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_2*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k29_2c: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_2*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k29_2d: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_2*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+
+k29_3a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_3*p25*gradl3*0.3312 * 1e6 / 0.3312 &
+        , phi0 = phil3, type = "10ft", l = 0.3312
+k29_3a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_3*p25*gradl3*0.3599 * 1e6 / 0.3599 &
+        , phi0 = phil3, type = "10ft", l = 0.3599
+k29_3a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_3*p25*gradl3*2.3530 * 1e6 / 2.3530 &
+        , phi0 = phil3, type = "10ft", l = 2.3530
+k29_3b: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_3*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k29_3c: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_3*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k29_3d: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_3*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+
+k29_4a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_4*p25*gradl3*0.3268 * 1e6 / 0.3268 &
+        , phi0 = phil3, type = "10ft", l = 0.3268
+k29_4a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_4*p25*gradl3*0.2500 * 1e6 / 0.2500 &
+        , phi0 = phil3, type = "10ft", l = 0.2500
+k29_4a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_4*p25*gradl3*2.4673 * 1e6 / 2.4673 &
+        , phi0 = phil3, type = "10ft", l = 2.4673
+k29_4b: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_4*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k29_4c: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_4*p50*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+
+k29_5a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_5*p25*gradl3*0.3800 * 1e6 / 0.3800 &
+        , phi0 = phil3, type = "10ft", l = 0.3800
+k29_5a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_5*p25*gradl3*0.2762 * 1e6 / 0.2762 &
+        , phi0 = phil3, type = "10ft", l = 0.2762
+k29_5a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_5*p25*gradl3*2.3879 * 1e6 / 2.3879 &
+        , phi0 = phil3, type = "10ft", l = 2.3879
+k29_5b: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_5*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k29_5c: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_5*p50*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+
+k29_6a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_6*p25*gradl3*0.4498 * 1e6 / 0.4498 &
+        , phi0 = phil3, type = "10ft", l = 0.4498
+k29_6a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_6*p25*gradl3*0.3715 * 1e6 / 0.3715 &
+        , phi0 = phil3, type = "10ft", l = 0.3715
+k29_6a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_6*p25*gradl3*2.2228 * 1e6 / 2.2228 &
+        , phi0 = phil3, type = "10ft", l = 2.2228
+k29_6b: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_6*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k29_6c: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_6*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k29_6d: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_6*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+
+k29_7a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_7*p25*gradl3*0.3336 * 1e6 / 0.3336 &
+        , phi0 = phil3, type = "10ft", l = 0.3336
+k29_7a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_7*p25*gradl3*0.3988 * 1e6 / 0.3988 &
+        , phi0 = phil3, type = "10ft", l = 0.3988
+k29_7a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_7*p25*gradl3*2.3117 * 1e6 / 2.3117 &
+        , phi0 = phil3, type = "10ft", l = 2.3117
+k29_7b: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_7*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k29_7c: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_7*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k29_7d: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_7*p25*gradl3*2.8692 * 1e6 / 2.8692,  &
+        phi0 = phil3, type = "9.4ft", l = 2.8692
+
+k29_8a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_8*p25*gradl3*0.3896 * 1e6 / 0.3896 &
+        , phi0 = phil3, type = "10ft", l = 0.3896
+k29_8a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_8*p25*gradl3*0.2790 * 1e6 / 0.2790 &
+        , phi0 = phil3, type = "10ft", l = 0.2790
+k29_8a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_8*p25*gradl3*2.3755 * 1e6 / 2.3755 &
+        , phi0 = phil3, type = "10ft", l = 2.3755
+k29_8b: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_8*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k29_8c: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_8*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k29_8d1: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_8*p25*gradl3*2.4558 * 1e6 / 2.4558 &
+        , phi0 = phil3, type = "10ft", l = 2.4558
+k29_8d2: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_8*p25*gradl3*0.2800 * 1e6 / 0.2800 &
+        , phi0 = phil3, type = "10ft", l = 0.2800
+k29_8d3: lcavity, rf_frequency = sbandf * 1e6, gradient = a29_8*p25*gradl3*0.3083 * 1e6 / 0.3083 &
+        , phi0 = phil3, type = "10ft", l = 0.3083
+
+k30_1a: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_1*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k30_1b: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_1*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k30_1c: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_1*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k30_1d: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_1*p25*gradl3*2.1694 * 1e6 / 2.1694,  &
+        phi0 = phil3, type = "7.1ft", l = 2.1694
+
+k30_2a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_2*p25*gradl3*0.5006 * 1e6 / 0.5006 &
+        , phi0 = phil3, type = "10ft", l = 0.5006
+k30_2a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_2*p25*gradl3*0.3302 * 1e6 / 0.3302 &
+        , phi0 = phil3, type = "10ft", l = 0.3302
+k30_2a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_2*p25*gradl3*2.2133 * 1e6 / 2.2133 &
+        , phi0 = phil3, type = "10ft", l = 2.2133
+k30_2b: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_2*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k30_2c: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_2*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k30_2d: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_2*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+
+k30_3a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_3*p25*gradl3*0.3986 * 1e6 / 0.3986 &
+        , phi0 = phil3, type = "10ft", l = 0.3986
+k30_3a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_3*p25*gradl3*0.3300 * 1e6 / 0.3300 &
+        , phi0 = phil3, type = "10ft", l = 0.3300
+k30_3a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_3*p25*gradl3*2.3155 * 1e6 / 2.3155 &
+        , phi0 = phil3, type = "10ft", l = 2.3155
+k30_3b: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_3*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k30_3c: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_3*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k30_3d: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_3*p25*gradl3*2.1694 * 1e6 / 2.1694,  &
+        phi0 = phil3, type = "7.1ft", l = 2.1694
+
+k30_4a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_4*p25*gradl3*0.3856 * 1e6 / 0.3856 &
+        , phi0 = phil3, type = "10ft", l = 0.3856
+k30_4a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_4*p25*gradl3*0.2790 * 1e6 / 0.2790 &
+        , phi0 = phil3, type = "10ft", l = 0.2790
+k30_4a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_4*p25*gradl3*2.3795 * 1e6 / 2.3795 &
+        , phi0 = phil3, type = "10ft", l = 2.3795
+k30_4b: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_4*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k30_4c: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_4*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k30_4d: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_4*p25*gradl3*2.1694 * 1e6 / 2.1694,  &
+        phi0 = phil3, type = "7.1ft", l = 2.1694
+
+k30_5a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_5*p25*gradl3*0.3726 * 1e6 / 0.3726 &
+        , phi0 = phil3, type = "10ft", l = 0.3726
+k30_5a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_5*p25*gradl3*0.2920 * 1e6 / 0.2920 &
+        , phi0 = phil3, type = "10ft", l = 0.2920
+k30_5a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_5*p25*gradl3*2.3795 * 1e6 / 2.3795 &
+        , phi0 = phil3, type = "10ft", l = 2.3795
+k30_5b: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_5*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k30_5c: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_5*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k30_5d: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_5*p25*gradl3*2.1694 * 1e6 / 2.1694,  &
+        phi0 = phil3, type = "7.1ft", l = 2.1694
+
+k30_6a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_6*p25*gradl3*0.3940 * 1e6 / 0.3940 &
+        , phi0 = phil3, type = "10ft", l = 0.3940
+k30_6a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_6*p25*gradl3*0.3930 * 1e6 / 0.3930 &
+        , phi0 = phil3, type = "10ft", l = 0.3930
+k30_6a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_6*p25*gradl3*0.4070 * 1e6 / 0.4070 &
+        , phi0 = phil3, type = "10ft", l = 0.4070
+k30_6a4: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_6*p25*gradl3*0.9810 * 1e6 / 0.9810 &
+        , phi0 = phil3, type = "10ft", l = 0.9810
+k30_6a5: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_6*p25*gradl3*0.3550 * 1e6 / 0.3550 &
+        , phi0 = phil3, type = "10ft", l = 0.3550
+k30_6a6: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_6*p25*gradl3*0.5141 * 1e6 / 0.5141 &
+        , phi0 = phil3, type = "10ft", l = 0.5141
+k30_6b: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_6*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k30_6c: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_6*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k30_6d: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_6*p25*gradl3*2.8692 * 1e6 / 2.8692,  &
+        phi0 = phil3, type = "9.4ft", l = 2.8692
+
+k30_7a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_7*p25*gradl3*0.3813 * 1e6 / 0.3813 &
+        , phi0 = phil3, type = "10ft", l = 0.3813
+k30_7a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_7*p25*gradl3*0.4317 * 1e6 / 0.4317 &
+        , phi0 = phil3, type = "10ft", l = 0.4317
+k30_7a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_7*p25*gradl3*0.3740 * 1e6 / 0.3740 &
+        , phi0 = phil3, type = "10ft", l = 0.3740
+k30_7a4: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_7*p25*gradl3*0.9910 * 1e6 / 0.9910 &
+        , phi0 = phil3, type = "10ft", l = 0.9910
+k30_7a5: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_7*p25*gradl3*0.3590 * 1e6 / 0.3590 &
+        , phi0 = phil3, type = "10ft", l = 0.3590
+k30_7a6: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_7*p25*gradl3*0.5071 * 1e6 / 0.5071 &
+        , phi0 = phil3, type = "10ft", l = 0.5071
+k30_7b: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_7*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k30_7c: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_7*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k30_7d: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_7*p25*gradl3*2.8692 * 1e6 / 2.8692,  &
+        phi0 = phil3, type = "9.4ft", l = 2.8692
+
+k30_8a1: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_8*p25*gradl3*0.3859 * 1e6 / 0.3859 &
+        , phi0 = phil3, type = "10ft", l = 0.3859
+k30_8a2: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_8*p25*gradl3*0.3810 * 1e6 / 0.3810 &
+        , phi0 = phil3, type = "10ft", l = 0.3810
+k30_8a3: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_8*p25*gradl3*2.2772 * 1e6 / 2.2772 &
+        , phi0 = phil3, type = "10ft", l = 2.2772
+k30_8b: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_8*p25*gradl3*3.0441 * 1e6 / 3.0441,  &
+        phi0 = phil3, type = "10ft", l = 3.0441
+k30_8c1: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_8*p50*gradl3*0.7620 * 1e6 / 0.7620 &
+        , phi0 = phil3, type = "10ft", l = 0.7620
+k30_8c2: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_8*p50*gradl3*1.4669 * 1e6 / 1.4669 &
+        , phi0 = phil3, type = "10ft", l = 1.4669
+k30_8c3: lcavity, rf_frequency = sbandf * 1e6, gradient = a30_8*p50*gradl3*0.8152 * 1e6 / 0.8152 &
+        , phi0 = phil3, type = "10ft", l = 0.8152
 
 ! ==============================================================================
 ! DRIFs
@@ -861,35 +951,152 @@ pk304: marker
 ! BEAMLINEs
 ! ------------------------------------------------------------------------------
 
-k25_1a_full: line = (k25_1a1, xc24900, k25_1a2, yc24900, k25_1a3)
+!---------------------
+! K25_1A LCAVITY
+K25_1A: K25_1A1, L = 3.0441
+K25_1A_full: line = (K25_1A)
+! contains zero length elements:
+    XC24900[superimpose] = T
+    XC24900[ref] = K25_1A
+    XC24900[ref_origin] = beginning
+    XC24900[offset] = 0.325
+    YC24900[superimpose] = T
+    YC24900[ref] = K25_1A
+    YC24900[ref_origin] = beginning
+    YC24900[offset] = 0.65
+!old: k25_1a_full: line = (k25_1a1, xc24900, k25_1a2, yc24900, k25_1a3)
 k25_1b_full: line = (k25_1b)
 k25_1d_full: line = (k25_1d)
-k25_2a_full: line = (k25_2a1, xc25202, k25_2a2, yc25203, k25_2a3)
+!---------------------
+! K25_2A LCAVITY
+K25_2A: K25_2A1, L = 3.0441
+K25_2A_full: line = (K25_2A)
+! contains zero length elements:
+    XC25202[superimpose] = T
+    XC25202[ref] = K25_2A
+    XC25202[ref_origin] = beginning
+    XC25202[offset] = 0.453
+    YC25203[superimpose] = T
+    YC25203[ref] = K25_2A
+    YC25203[ref_origin] = beginning
+    YC25203[offset] = 0.7705
+!old: k25_2a_full: line = (k25_2a1, xc25202, k25_2a2, yc25203, k25_2a3)
 k25_2b_full: line = (k25_2b)
 k25_2c_full: line = (k25_2c)
-k25_3a_full: line = (k25_3a1, xc25302, k25_3a2, yc25303, k25_3a3)
+!---------------------
+! K25_3A LCAVITY
+K25_3A: K25_3A1, L = 3.0441
+K25_3A_full: line = (K25_3A)
+! contains zero length elements:
+    XC25302[superimpose] = T
+    XC25302[ref] = K25_3A
+    XC25302[ref_origin] = beginning
+    XC25302[offset] = 0.3312
+    YC25303[superimpose] = T
+    YC25303[ref] = K25_3A
+    YC25303[ref_origin] = beginning
+    YC25303[offset] = 0.6816
+!old: k25_3a_full: line = (k25_3a1, xc25302, k25_3a2, yc25303, k25_3a3)
 k25_3b_full: line = (k25_3b)
 k25_3c_full: line = (k25_3c)
-k25_4a_full: line = (k25_4a1, xc25402, k25_4a2, yc25403, k25_4a3)
+!---------------------
+! K25_4A LCAVITY
+K25_4A: K25_4A1, L = 3.0441
+K25_4A_full: line = (K25_4A)
+! contains zero length elements:
+    XC25402[superimpose] = T
+    XC25402[ref] = K25_4A
+    XC25402[ref_origin] = beginning
+    XC25402[offset] = 0.3268
+    YC25403[superimpose] = T
+    YC25403[ref] = K25_4A
+    YC25403[ref_origin] = beginning
+    YC25403[offset] = 0.5768
+!old: k25_4a_full: line = (k25_4a1, xc25402, k25_4a2, yc25403, k25_4a3)
 k25_4b_full: line = (k25_4b)
 k25_4c_full: line = (k25_4c)
 k25_4d_full: line = (k25_4d)
-k25_5a_full: line = (k25_5a1, xc25502, k25_5a2, yc25503, k25_5a3)
+!---------------------
+! K25_5A LCAVITY
+K25_5A: K25_5A1, L = 3.0441
+K25_5A_full: line = (K25_5A)
+! contains zero length elements:
+    XC25502[superimpose] = T
+    XC25502[ref] = K25_5A
+    XC25502[ref_origin] = beginning
+    XC25502[offset] = 0.3268
+    YC25503[superimpose] = T
+    YC25503[ref] = K25_5A
+    YC25503[ref_origin] = beginning
+    YC25503[offset] = 0.5768
+!old: k25_5a_full: line = (k25_5a1, xc25502, k25_5a2, yc25503, k25_5a3)
 k25_5b_full: line = (k25_5b)
 k25_5c_full: line = (k25_5c)
 k25_5d_full: line = (k25_5d)
-k25_6a_full: line = (k25_6a1, xc25602, k25_6a2, yc25603, k25_6a3)
+!---------------------
+! K25_6A LCAVITY
+K25_6A: K25_6A1, L = 3.0441
+K25_6A_full: line = (K25_6A)
+! contains zero length elements:
+    XC25602[superimpose] = T
+    XC25602[ref] = K25_6A
+    XC25602[ref_origin] = beginning
+    XC25602[offset] = 0.328
+    YC25603[superimpose] = T
+    YC25603[ref] = K25_6A
+    YC25603[ref_origin] = beginning
+    YC25603[offset] = 0.7102
+!old: k25_6a_full: line = (k25_6a1, xc25602, k25_6a2, yc25603, k25_6a3)
 k25_6b_full: line = (k25_6b)
 k25_6c_full: line = (k25_6c)
 k25_6d_full: line = (k25_6d)
-k25_7a_full: line = (k25_7a1, xc25702, k25_7a2, yc25703, k25_7a3)
+!---------------------
+! K25_7A LCAVITY
+K25_7A: K25_7A1, L = 3.0441
+K25_7A_full: line = (K25_7A)
+! contains zero length elements:
+    XC25702[superimpose] = T
+    XC25702[ref] = K25_7A
+    XC25702[ref_origin] = beginning
+    XC25702[offset] = 0.3336
+    YC25703[superimpose] = T
+    YC25703[ref] = K25_7A
+    YC25703[ref_origin] = beginning
+    YC25703[offset] = 0.5836
+!old: k25_7a_full: line = (k25_7a1, xc25702, k25_7a2, yc25703, k25_7a3)
 k25_7b_full: line = (k25_7b)
 k25_7c_full: line = (k25_7c)
 k25_7d_full: line = (k25_7d)
-k25_8a_full: line = (k25_8a1, xc25802, k25_8a2, yc25803, k25_8a3)
+!---------------------
+! K25_8A LCAVITY
+K25_8A: K25_8A1, L = 3.0441
+K25_8A_full: line = (K25_8A)
+! contains zero length elements:
+    XC25802[superimpose] = T
+    XC25802[ref] = K25_8A
+    XC25802[ref_origin] = beginning
+    XC25802[offset] = 0.3292
+    YC25803[superimpose] = T
+    YC25803[ref] = K25_8A
+    YC25803[ref_origin] = beginning
+    YC25803[offset] = 0.5792
+!old: k25_8a_full: line = (k25_8a1, xc25802, k25_8a2, yc25803, k25_8a3)
 k25_8b_full: line = (k25_8b)
 k25_8c_full: line = (k25_8c)
-k25_8d_full: line = (k25_8d1, xc25900, k25_8d2, yc25900, k25_8d3)
+!---------------------
+! K25_8D LCAVITY
+K25_8D: K25_8D1, L = 3.0441
+K25_8D_full: line = (K25_8D)
+! contains zero length elements:
+    XC25900[superimpose] = T
+    XC25900[ref] = K25_8D
+    XC25900[ref_origin] = beginning
+    XC25900[offset] = 2.3869
+    YC25900[superimpose] = T
+    YC25900[ref] = K25_8D
+    YC25900[ref_origin] = beginning
+    YC25900[offset] = 2.6369
+!old: k25_8d_full: line = (k25_8d1, xc25900, k25_8d2, yc25900, k25_8d3)
 
 
 
@@ -981,34 +1188,138 @@ k26_1a_full: line = (k26_1a)
 k26_1b_full: line = (k26_1b)
 k26_1c_full: line = (k26_1c)
 k26_1d_full: line = (k26_1d)
-k26_2a_full: line = (k26_2a1, xc26202, k26_2a2, yc26203, k26_2a3)
+!---------------------
+! K26_2A LCAVITY
+K26_2A: K26_2A1, L = 3.0441
+K26_2A_full: line = (K26_2A)
+! contains zero length elements:
+    XC26202[superimpose] = T
+    XC26202[ref] = K26_2A
+    XC26202[ref_origin] = beginning
+    XC26202[offset] = 0.3256
+    YC26203[superimpose] = T
+    YC26203[ref] = K26_2A
+    YC26203[ref_origin] = beginning
+    YC26203[offset] = 0.6975
+!old: k26_2a_full: line = (k26_2a1, xc26202, k26_2a2, yc26203, k26_2a3)
 k26_2b_full: line = (k26_2b)
 k26_2c_full: line = (k26_2c)
 k26_2d_full: line = (k26_2d)
-k26_3a_full: line = (k26_3a1, xc26302, k26_3a2, yc26303, k26_3a3)
+!---------------------
+! K26_3A LCAVITY
+K26_3A: K26_3A1, L = 3.0441
+K26_3A_full: line = (K26_3A)
+! contains zero length elements:
+    XC26302[superimpose] = T
+    XC26302[ref] = K26_3A
+    XC26302[ref_origin] = beginning
+    XC26302[offset] = 0.3312
+    YC26303[superimpose] = T
+    YC26303[ref] = K26_3A
+    YC26303[ref_origin] = beginning
+    YC26303[offset] = 0.5812
+!old: k26_3a_full: line = (k26_3a1, xc26302, k26_3a2, yc26303, k26_3a3)
 k26_3b_full: line = (k26_3b)
 k26_3c_full: line = (k26_3c)
 k26_3d_full: line = (k26_3d)
-k26_4a_full: line = (k26_4a1, xc26402, k26_4a2, yc26403, k26_4a3)
+!---------------------
+! K26_4A LCAVITY
+K26_4A: K26_4A1, L = 3.0441
+K26_4A_full: line = (K26_4A)
+! contains zero length elements:
+    XC26402[superimpose] = T
+    XC26402[ref] = K26_4A
+    XC26402[ref_origin] = beginning
+    XC26402[offset] = 0.3268
+    YC26403[superimpose] = T
+    YC26403[ref] = K26_4A
+    YC26403[ref_origin] = beginning
+    YC26403[offset] = 0.5768
+!old: k26_4a_full: line = (k26_4a1, xc26402, k26_4a2, yc26403, k26_4a3)
 k26_4b_full: line = (k26_4b)
 k26_4c_full: line = (k26_4c)
 k26_4d_full: line = (k26_4d)
-k26_5a_full: line = (k26_5a1, xc26502, k26_5a2, yc26503, k26_5a3)
+!---------------------
+! K26_5A LCAVITY
+K26_5A: K26_5A1, L = 3.0441
+K26_5A_full: line = (K26_5A)
+! contains zero length elements:
+    XC26502[superimpose] = T
+    XC26502[ref] = K26_5A
+    XC26502[ref_origin] = beginning
+    XC26502[offset] = 0.3324
+    YC26503[superimpose] = T
+    YC26503[ref] = K26_5A
+    YC26503[ref_origin] = beginning
+    YC26503[offset] = 0.5824
+!old: k26_5a_full: line = (k26_5a1, xc26502, k26_5a2, yc26503, k26_5a3)
 k26_5b_full: line = (k26_5b)
 k26_5c_full: line = (k26_5c)
 k26_5d_full: line = (k26_5d)
-k26_6a_full: line = (k26_6a1, xc26602, k26_6a2, yc26603, k26_6a3)
+!---------------------
+! K26_6A LCAVITY
+K26_6A: K26_6A1, L = 3.0441
+K26_6A_full: line = (K26_6A)
+! contains zero length elements:
+    XC26602[superimpose] = T
+    XC26602[ref] = K26_6A
+    XC26602[ref_origin] = beginning
+    XC26602[offset] = 0.328
+    YC26603[superimpose] = T
+    YC26603[ref] = K26_6A
+    YC26603[ref_origin] = beginning
+    YC26603[offset] = 0.7388
+!old: k26_6a_full: line = (k26_6a1, xc26602, k26_6a2, yc26603, k26_6a3)
 k26_6b_full: line = (k26_6b)
 k26_6c_full: line = (k26_6c)
 k26_6d_full: line = (k26_6d)
-k26_7a_full: line = (k26_7a1, xc26702, k26_7a2, yc26703, k26_7a3)
+!---------------------
+! K26_7A LCAVITY
+K26_7A: K26_7A1, L = 3.0441
+K26_7A_full: line = (K26_7A)
+! contains zero length elements:
+    XC26702[superimpose] = T
+    XC26702[ref] = K26_7A
+    XC26702[ref_origin] = beginning
+    XC26702[offset] = 0.3336
+    YC26703[superimpose] = T
+    YC26703[ref] = K26_7A
+    YC26703[ref_origin] = beginning
+    YC26703[offset] = 0.5836
+!old: k26_7a_full: line = (k26_7a1, xc26702, k26_7a2, yc26703, k26_7a3)
 k26_7b_full: line = (k26_7b)
 k26_7c_full: line = (k26_7c)
 k26_7d_full: line = (k26_7d)
-k26_8a_full: line = (k26_8a1, xc26802, k26_8a2, yc26803, k26_8a3)
+!---------------------
+! K26_8A LCAVITY
+K26_8A: K26_8A1, L = 3.0441
+K26_8A_full: line = (K26_8A)
+! contains zero length elements:
+    XC26802[superimpose] = T
+    XC26802[ref] = K26_8A
+    XC26802[ref_origin] = beginning
+    XC26802[offset] = 0.3292
+    YC26803[superimpose] = T
+    YC26803[ref] = K26_8A
+    YC26803[ref_origin] = beginning
+    YC26803[offset] = 0.7102
+!old: k26_8a_full: line = (k26_8a1, xc26802, k26_8a2, yc26803, k26_8a3)
 k26_8b_full: line = (k26_8b)
 k26_8c_full: line = (k26_8c)
-k26_8d_full: line = (k26_8d1, xc26900, k26_8d2, yc26900, k26_8d3)
+!---------------------
+! K26_8D LCAVITY
+K26_8D: K26_8D1, L = 3.0441
+K26_8D_full: line = (K26_8D)
+! contains zero length elements:
+    XC26900[superimpose] = T
+    XC26900[ref] = K26_8D
+    XC26900[ref_origin] = beginning
+    XC26900[offset] = 2.3869
+    YC26900[superimpose] = T
+    YC26900[ref] = K26_8D
+    YC26900[ref_origin] = beginning
+    YC26900[offset] = 2.6369
+!old: k26_8d_full: line = (k26_8d1, xc26900, k26_8d2, yc26900, k26_8d3)
 
 
 
@@ -1090,33 +1401,137 @@ k27_1a_full: line = (k27_1a)
 k27_1b_full: line = (k27_1b)
 k27_1c_full: line = (k27_1c)
 k27_1d_full: line = (k27_1d)
-k27_2a_full: line = (k27_2a1, xc27202, k27_2a2, yc27203, k27_2a3)
+!---------------------
+! K27_2A LCAVITY
+K27_2A: K27_2A1, L = 3.0441
+K27_2A_full: line = (K27_2A)
+! contains zero length elements:
+    XC27202[superimpose] = T
+    XC27202[ref] = K27_2A
+    XC27202[ref_origin] = beginning
+    XC27202[offset] = 0.3256
+    YC27203[superimpose] = T
+    YC27203[ref] = K27_2A
+    YC27203[ref_origin] = beginning
+    YC27203[offset] = 0.5756
+!old: k27_2a_full: line = (k27_2a1, xc27202, k27_2a2, yc27203, k27_2a3)
 k27_2b_full: line = (k27_2b)
 k27_2c_full: line = (k27_2c)
 k27_2d_full: line = (k27_2d)
-k27_3a_full: line = (k27_3a1, xc27302, k27_3a2, yc27303, k27_3a3)
+!---------------------
+! K27_3A LCAVITY
+K27_3A: K27_3A1, L = 3.0441
+K27_3A_full: line = (K27_3A)
+! contains zero length elements:
+    XC27302[superimpose] = T
+    XC27302[ref] = K27_3A
+    XC27302[ref_origin] = beginning
+    XC27302[offset] = 0.3312
+    YC27303[superimpose] = T
+    YC27303[ref] = K27_3A
+    YC27303[ref_origin] = beginning
+    YC27303[offset] = 0.7007
+!old: k27_3a_full: line = (k27_3a1, xc27302, k27_3a2, yc27303, k27_3a3)
 k27_3b_full: line = (k27_3b)
 k27_3c_full: line = (k27_3c)
 k27_3d_full: line = (k27_3d)
-k27_4a_full: line = (k27_4a1, xc27402, k27_4a2, yc27403, k27_4a3)
+!---------------------
+! K27_4A LCAVITY
+K27_4A: K27_4A1, L = 3.0441
+K27_4A_full: line = (K27_4A)
+! contains zero length elements:
+    XC27402[superimpose] = T
+    XC27402[ref] = K27_4A
+    XC27402[ref_origin] = beginning
+    XC27402[offset] = 0.3268
+    YC27403[superimpose] = T
+    YC27403[ref] = K27_4A
+    YC27403[ref_origin] = beginning
+    YC27403[offset] = 0.5768
+!old: k27_4a_full: line = (k27_4a1, xc27402, k27_4a2, yc27403, k27_4a3)
 k27_4b_full: line = (k27_4b)
 k27_4c_full: line = (k27_4c)
 k27_4d_full: line = (k27_4d)
-k27_5a_full: line = (k27_5a1, xc27502, k27_5a2, yc27503, k27_5a3)
+!---------------------
+! K27_5A LCAVITY
+K27_5A: K27_5A1, L = 3.0441
+K27_5A_full: line = (K27_5A)
+! contains zero length elements:
+    XC27502[superimpose] = T
+    XC27502[ref] = K27_5A
+    XC27502[ref_origin] = beginning
+    XC27502[offset] = 0.3324
+    YC27503[superimpose] = T
+    YC27503[ref] = K27_5A
+    YC27503[ref_origin] = beginning
+    YC27503[offset] = 0.7007
+!old: k27_5a_full: line = (k27_5a1, xc27502, k27_5a2, yc27503, k27_5a3)
 k27_5b_full: line = (k27_5b)
 k27_5c_full: line = (k27_5c)
 k27_5d_full: line = (k27_5d)
-k27_6a_full: line = (k27_6a1, xc27602, k27_6a2, yc27603, k27_6a3)
+!---------------------
+! K27_6A LCAVITY
+K27_6A: K27_6A1, L = 3.0441
+K27_6A_full: line = (K27_6A)
+! contains zero length elements:
+    XC27602[superimpose] = T
+    XC27602[ref] = K27_6A
+    XC27602[ref_origin] = beginning
+    XC27602[offset] = 0.328
+    YC27603[superimpose] = T
+    YC27603[ref] = K27_6A
+    YC27603[ref_origin] = beginning
+    YC27603[offset] = 0.578
+!old: k27_6a_full: line = (k27_6a1, xc27602, k27_6a2, yc27603, k27_6a3)
 k27_6b_full: line = (k27_6b)
 k27_6c_full: line = (k27_6c)
-k27_7a_full: line = (k27_7a1, xc27702, k27_7a2, yc27703, k27_7a3)
+!---------------------
+! K27_7A LCAVITY
+K27_7A: K27_7A1, L = 3.0441
+K27_7A_full: line = (K27_7A)
+! contains zero length elements:
+    XC27702[superimpose] = T
+    XC27702[ref] = K27_7A
+    XC27702[ref_origin] = beginning
+    XC27702[offset] = 0.3336
+    YC27703[superimpose] = T
+    YC27703[ref] = K27_7A
+    YC27703[ref_origin] = beginning
+    YC27703[offset] = 0.6848
+!old: k27_7a_full: line = (k27_7a1, xc27702, k27_7a2, yc27703, k27_7a3)
 k27_7b_full: line = (k27_7b)
 k27_7c_full: line = (k27_7c)
 k27_7d_full: line = (k27_7d)
-k27_8a_full: line = (k27_8a1, xc27802, k27_8a2, yc27803, k27_8a3)
+!---------------------
+! K27_8A LCAVITY
+K27_8A: K27_8A1, L = 3.0441
+K27_8A_full: line = (K27_8A)
+! contains zero length elements:
+    XC27802[superimpose] = T
+    XC27802[ref] = K27_8A
+    XC27802[ref_origin] = beginning
+    XC27802[offset] = 0.3292
+    YC27803[superimpose] = T
+    YC27803[ref] = K27_8A
+    YC27803[ref_origin] = beginning
+    YC27803[offset] = 0.5792
+!old: k27_8a_full: line = (k27_8a1, xc27802, k27_8a2, yc27803, k27_8a3)
 k27_8b_full: line = (k27_8b)
 k27_8c_full: line = (k27_8c)
-k27_8d_full: line = (k27_8d1, xc27900, k27_8d2, yc27900, k27_8d3)
+!---------------------
+! K27_8D LCAVITY
+K27_8D: K27_8D1, L = 3.0441
+K27_8D_full: line = (K27_8D)
+! contains zero length elements:
+    XC27900[superimpose] = T
+    XC27900[ref] = K27_8D
+    XC27900[ref_origin] = beginning
+    XC27900[offset] = 2.2411
+    YC27900[superimpose] = T
+    YC27900[ref] = K27_8D
+    YC27900[ref_origin] = beginning
+    YC27900[offset] = 2.6369
+!old: k27_8d_full: line = (k27_8d1, xc27900, k27_8d2, yc27900, k27_8d3)
 
 
 
@@ -1197,31 +1612,135 @@ li27: line = (li27beg, zlin11, k27_1a_full, k27_1b_full, k27_1c_full, k27_1d_ful
 k28_1a_full: line = (k28_1a)
 k28_1b_full: line = (k28_1b)
 k28_1c_full: line = (k28_1c)
-k28_2a_full: line = (k28_2a1, xc28202, k28_2a2, yc28203, k28_2a3)
+!---------------------
+! K28_2A LCAVITY
+K28_2A: K28_2A1, L = 3.0441
+K28_2A_full: line = (K28_2A)
+! contains zero length elements:
+    XC28202[superimpose] = T
+    XC28202[ref] = K28_2A
+    XC28202[ref_origin] = beginning
+    XC28202[offset] = 0.3256
+    YC28203[superimpose] = T
+    YC28203[ref] = K28_2A
+    YC28203[ref_origin] = beginning
+    YC28203[offset] = 0.5756
+!old: k28_2a_full: line = (k28_2a1, xc28202, k28_2a2, yc28203, k28_2a3)
 k28_2b_full: line = (k28_2b)
 k28_2c_full: line = (k28_2c)
 k28_2d_full: line = (k28_2d)
-k28_3a_full: line = (k28_3a1, xc28302, k28_3a2, yc28303, k28_3a3)
+!---------------------
+! K28_3A LCAVITY
+K28_3A: K28_3A1, L = 3.0441
+K28_3A_full: line = (K28_3A)
+! contains zero length elements:
+    XC28302[superimpose] = T
+    XC28302[ref] = K28_3A
+    XC28302[ref_origin] = beginning
+    XC28302[offset] = 0.3312
+    YC28303[superimpose] = T
+    YC28303[ref] = K28_3A
+    YC28303[ref_origin] = beginning
+    YC28303[offset] = 0.5812
+!old: k28_3a_full: line = (k28_3a1, xc28302, k28_3a2, yc28303, k28_3a3)
 k28_3b_full: line = (k28_3b)
 k28_3c_full: line = (k28_3c)
 k28_3d_full: line = (k28_3d)
-k28_4a_full: line = (k28_4a1, xc28402, k28_4a2, yc28403, k28_4a3)
+!---------------------
+! K28_4A LCAVITY
+K28_4A: K28_4A1, L = 3.0441
+K28_4A_full: line = (K28_4A)
+! contains zero length elements:
+    XC28402[superimpose] = T
+    XC28402[ref] = K28_4A
+    XC28402[ref_origin] = beginning
+    XC28402[offset] = 0.38
+    YC28403[superimpose] = T
+    YC28403[ref] = K28_4A
+    YC28403[ref_origin] = beginning
+    YC28403[offset] = 0.6721
+!old: k28_4a_full: line = (k28_4a1, xc28402, k28_4a2, yc28403, k28_4a3)
 k28_4b_full: line = (k28_4b)
 k28_4c_full: line = (k28_4c)
-k28_5a_full: line = (k28_5a1, xc28502, k28_5a2, yc28503, k28_5a3)
+!---------------------
+! K28_5A LCAVITY
+K28_5A: K28_5A1, L = 3.0441
+K28_5A_full: line = (K28_5A)
+! contains zero length elements:
+    XC28502[superimpose] = T
+    XC28502[ref] = K28_5A
+    XC28502[ref_origin] = beginning
+    XC28502[offset] = 0.3959
+    YC28503[superimpose] = T
+    YC28503[ref] = K28_5A
+    YC28503[ref_origin] = beginning
+    YC28503[offset] = 0.707
+!old: k28_5a_full: line = (k28_5a1, xc28502, k28_5a2, yc28503, k28_5a3)
 k28_5b_full: line = (k28_5b)
 k28_5c_full: line = (k28_5c)
-k28_6a_full: line = (k28_6a1, xc28602, k28_6a2, yc28603, k28_6a3)
+!---------------------
+! K28_6A LCAVITY
+K28_6A: K28_6A1, L = 3.0441
+K28_6A_full: line = (K28_6A)
+! contains zero length elements:
+    XC28602[superimpose] = T
+    XC28602[ref] = K28_6A
+    XC28602[ref_origin] = beginning
+    XC28602[offset] = 0.328
+    YC28603[superimpose] = T
+    YC28603[ref] = K28_6A
+    YC28603[ref_origin] = beginning
+    YC28603[offset] = 0.688
+!old: k28_6a_full: line = (k28_6a1, xc28602, k28_6a2, yc28603, k28_6a3)
 k28_6b_full: line = (k28_6b)
 k28_6c_full: line = (k28_6c)
 k28_6d_full: line = (k28_6d)
-k28_7a_full: line = (k28_7a1, xc28702, k28_7a2, yc28703, k28_7a3)
+!---------------------
+! K28_7A LCAVITY
+K28_7A: K28_7A1, L = 3.0441
+K28_7A_full: line = (K28_7A)
+! contains zero length elements:
+    XC28702[superimpose] = T
+    XC28702[ref] = K28_7A
+    XC28702[ref_origin] = beginning
+    XC28702[offset] = 0.3336
+    YC28703[superimpose] = T
+    YC28703[ref] = K28_7A
+    YC28703[ref_origin] = beginning
+    YC28703[offset] = 0.7388
+!old: k28_7a_full: line = (k28_7a1, xc28702, k28_7a2, yc28703, k28_7a3)
 k28_7b_full: line = (k28_7b)
 k28_7c_full: line = (k28_7c)
-k28_8a_full: line = (k28_8a1, xc28802, k28_8a2, yc28803, k28_8a3)
+!---------------------
+! K28_8A LCAVITY
+K28_8A: K28_8A1, L = 3.0441
+K28_8A_full: line = (K28_8A)
+! contains zero length elements:
+    XC28802[superimpose] = T
+    XC28802[ref] = K28_8A
+    XC28802[ref_origin] = beginning
+    XC28802[offset] = 0.3292
+    YC28803[superimpose] = T
+    YC28803[ref] = K28_8A
+    YC28803[ref_origin] = beginning
+    YC28803[offset] = 0.5792
+!old: k28_8a_full: line = (k28_8a1, xc28802, k28_8a2, yc28803, k28_8a3)
 k28_8b_full: line = (k28_8b)
 k28_8c_full: line = (k28_8c)
-k28_8d_full: line = (k28_8d1, xc28900, k28_8d2, yc28900, k28_8d3)
+!---------------------
+! K28_8D LCAVITY
+K28_8D: K28_8D1, L = 3.0441
+K28_8D_full: line = (K28_8D)
+! contains zero length elements:
+    XC28900[superimpose] = T
+    XC28900[ref] = K28_8D
+    XC28900[ref_origin] = beginning
+    XC28900[offset] = 2.3869
+    YC28900[superimpose] = T
+    YC28900[ref] = K28_8D
+    YC28900[ref_origin] = beginning
+    YC28900[offset] = 2.6369
+!old: k28_8d_full: line = (k28_8d1, xc28900, k28_8d2, yc28900, k28_8d3)
 
 
 
@@ -1304,32 +1823,136 @@ li28: line = (li28beg, zlin12, k28_1a_full, k28_1b_full, k28_1c_full, daq5b1, xc
 k29_1a_full: line = (k29_1a)
 k29_1b_full: line = (k29_1b)
 k29_1c_full: line = (k29_1c)
-k29_2a_full: line = (k29_2a1, xc29202, k29_2a2, yc29203, k29_2a3)
+!---------------------
+! K29_2A LCAVITY
+K29_2A: K29_2A1, L = 3.0441
+K29_2A_full: line = (K29_2A)
+! contains zero length elements:
+    XC29202[superimpose] = T
+    XC29202[ref] = K29_2A
+    XC29202[ref_origin] = beginning
+    XC29202[offset] = 0.3256
+    YC29203[superimpose] = T
+    YC29203[ref] = K29_2A
+    YC29203[ref_origin] = beginning
+    YC29203[offset] = 0.6784
+!old: k29_2a_full: line = (k29_2a1, xc29202, k29_2a2, yc29203, k29_2a3)
 k29_2b_full: line = (k29_2b)
 k29_2c_full: line = (k29_2c)
 k29_2d_full: line = (k29_2d)
-k29_3a_full: line = (k29_3a1, xc29302, k29_3a2, yc29303, k29_3a3)
+!---------------------
+! K29_3A LCAVITY
+K29_3A: K29_3A1, L = 3.0441
+K29_3A_full: line = (K29_3A)
+! contains zero length elements:
+    XC29302[superimpose] = T
+    XC29302[ref] = K29_3A
+    XC29302[ref_origin] = beginning
+    XC29302[offset] = 0.3312
+    YC29303[superimpose] = T
+    YC29303[ref] = K29_3A
+    YC29303[ref_origin] = beginning
+    YC29303[offset] = 0.6911
+!old: k29_3a_full: line = (k29_3a1, xc29302, k29_3a2, yc29303, k29_3a3)
 k29_3b_full: line = (k29_3b)
 k29_3c_full: line = (k29_3c)
 k29_3d_full: line = (k29_3d)
-k29_4a_full: line = (k29_4a1, xc29402, k29_4a2, yc29403, k29_4a3)
+!---------------------
+! K29_4A LCAVITY
+K29_4A: K29_4A1, L = 3.0441
+K29_4A_full: line = (K29_4A)
+! contains zero length elements:
+    XC29402[superimpose] = T
+    XC29402[ref] = K29_4A
+    XC29402[ref_origin] = beginning
+    XC29402[offset] = 0.3268
+    YC29403[superimpose] = T
+    YC29403[ref] = K29_4A
+    YC29403[ref_origin] = beginning
+    YC29403[offset] = 0.5768
+!old: k29_4a_full: line = (k29_4a1, xc29402, k29_4a2, yc29403, k29_4a3)
 k29_4b_full: line = (k29_4b)
 k29_4c_full: line = (k29_4c)
-k29_5a_full: line = (k29_5a1, xc29502, k29_5a2, yc29503, k29_5a3)
+!---------------------
+! K29_5A LCAVITY
+K29_5A: K29_5A1, L = 3.0441
+K29_5A_full: line = (K29_5A)
+! contains zero length elements:
+    XC29502[superimpose] = T
+    XC29502[ref] = K29_5A
+    XC29502[ref_origin] = beginning
+    XC29502[offset] = 0.38
+    YC29503[superimpose] = T
+    YC29503[ref] = K29_5A
+    YC29503[ref_origin] = beginning
+    YC29503[offset] = 0.6562
+!old: k29_5a_full: line = (k29_5a1, xc29502, k29_5a2, yc29503, k29_5a3)
 k29_5b_full: line = (k29_5b)
 k29_5c_full: line = (k29_5c)
-k29_6a_full: line = (k29_6a1, xc29602, k29_6a2, yc29603, k29_6a3)
+!---------------------
+! K29_6A LCAVITY
+K29_6A: K29_6A1, L = 3.0441
+K29_6A_full: line = (K29_6A)
+! contains zero length elements:
+    XC29602[superimpose] = T
+    XC29602[ref] = K29_6A
+    XC29602[ref_origin] = beginning
+    XC29602[offset] = 0.4498
+    YC29603[superimpose] = T
+    YC29603[ref] = K29_6A
+    YC29603[ref_origin] = beginning
+    YC29603[offset] = 0.8213
+!old: k29_6a_full: line = (k29_6a1, xc29602, k29_6a2, yc29603, k29_6a3)
 k29_6b_full: line = (k29_6b)
 k29_6c_full: line = (k29_6c)
 k29_6d_full: line = (k29_6d)
-k29_7a_full: line = (k29_7a1, xc29702, k29_7a2, yc29703, k29_7a3)
+!---------------------
+! K29_7A LCAVITY
+K29_7A: K29_7A1, L = 3.0441
+K29_7A_full: line = (K29_7A)
+! contains zero length elements:
+    XC29702[superimpose] = T
+    XC29702[ref] = K29_7A
+    XC29702[ref_origin] = beginning
+    XC29702[offset] = 0.3336
+    YC29703[superimpose] = T
+    YC29703[ref] = K29_7A
+    YC29703[ref_origin] = beginning
+    YC29703[offset] = 0.7324
+!old: k29_7a_full: line = (k29_7a1, xc29702, k29_7a2, yc29703, k29_7a3)
 k29_7b_full: line = (k29_7b)
 k29_7c_full: line = (k29_7c)
 k29_7d_full: line = (k29_7d)
-k29_8a_full: line = (k29_8a1, xc29802, k29_8a2, yc29803, k29_8a3)
+!---------------------
+! K29_8A LCAVITY
+K29_8A: K29_8A1, L = 3.0441
+K29_8A_full: line = (K29_8A)
+! contains zero length elements:
+    XC29802[superimpose] = T
+    XC29802[ref] = K29_8A
+    XC29802[ref_origin] = beginning
+    XC29802[offset] = 0.3896
+    YC29803[superimpose] = T
+    YC29803[ref] = K29_8A
+    YC29803[ref_origin] = beginning
+    YC29803[offset] = 0.6686
+!old: k29_8a_full: line = (k29_8a1, xc29802, k29_8a2, yc29803, k29_8a3)
 k29_8b_full: line = (k29_8b)
 k29_8c_full: line = (k29_8c)
-k29_8d_full: line = (k29_8d1, xc29900, k29_8d2, yc29900, k29_8d3)
+!---------------------
+! K29_8D LCAVITY
+K29_8D: K29_8D1, L = 3.0441
+K29_8D_full: line = (K29_8D)
+! contains zero length elements:
+    XC29900[superimpose] = T
+    XC29900[ref] = K29_8D
+    XC29900[ref_origin] = beginning
+    XC29900[offset] = 2.4558
+    YC29900[superimpose] = T
+    YC29900[ref] = K29_8D
+    YC29900[ref_origin] = beginning
+    YC29900[offset] = 2.7358
+!old: k29_8d_full: line = (k29_8d1, xc29900, k29_8d2, yc29900, k29_8d3)
 
 
 
@@ -1412,35 +2035,163 @@ k30_1a_full: line = (k30_1a)
 k30_1b_full: line = (k30_1b)
 k30_1c_full: line = (k30_1c)
 k30_1d_full: line = (k30_1d)
-k30_2a_full: line = (k30_2a1, xc30202, k30_2a2, yc30203, k30_2a3)
+!---------------------
+! K30_2A LCAVITY
+K30_2A: K30_2A1, L = 3.0441
+K30_2A_full: line = (K30_2A)
+! contains zero length elements:
+    XC30202[superimpose] = T
+    XC30202[ref] = K30_2A
+    XC30202[ref_origin] = beginning
+    XC30202[offset] = 0.5006
+    YC30203[superimpose] = T
+    YC30203[ref] = K30_2A
+    YC30203[ref_origin] = beginning
+    YC30203[offset] = 0.8308
+!old: k30_2a_full: line = (k30_2a1, xc30202, k30_2a2, yc30203, k30_2a3)
 k30_2b_full: line = (k30_2b)
 k30_2c_full: line = (k30_2c)
 k30_2d_full: line = (k30_2d)
-k30_3a_full: line = (k30_3a1, xc30302, k30_3a2, yc30303, k30_3a3)
+!---------------------
+! K30_3A LCAVITY
+K30_3A: K30_3A1, L = 3.0441
+K30_3A_full: line = (K30_3A)
+! contains zero length elements:
+    XC30302[superimpose] = T
+    XC30302[ref] = K30_3A
+    XC30302[ref_origin] = beginning
+    XC30302[offset] = 0.3986
+    YC30303[superimpose] = T
+    YC30303[ref] = K30_3A
+    YC30303[ref_origin] = beginning
+    YC30303[offset] = 0.7286
+!old: k30_3a_full: line = (k30_3a1, xc30302, k30_3a2, yc30303, k30_3a3)
 k30_3b_full: line = (k30_3b)
 k30_3c_full: line = (k30_3c)
 k30_3d_full: line = (k30_3d)
-k30_4a_full: line = (k30_4a1, xc30402, k30_4a2, yc30403, k30_4a3)
+!---------------------
+! K30_4A LCAVITY
+K30_4A: K30_4A1, L = 3.0441
+K30_4A_full: line = (K30_4A)
+! contains zero length elements:
+    XC30402[superimpose] = T
+    XC30402[ref] = K30_4A
+    XC30402[ref_origin] = beginning
+    XC30402[offset] = 0.3856
+    YC30403[superimpose] = T
+    YC30403[ref] = K30_4A
+    YC30403[ref_origin] = beginning
+    YC30403[offset] = 0.6646
+!old: k30_4a_full: line = (k30_4a1, xc30402, k30_4a2, yc30403, k30_4a3)
 k30_4b_full: line = (k30_4b)
 k30_4c_full: line = (k30_4c)
 k30_4d_full: line = (k30_4d)
-k30_5a_full: line = (k30_5a1, xc30502, k30_5a2, yc30503, k30_5a3)
+!---------------------
+! K30_5A LCAVITY
+K30_5A: K30_5A1, L = 3.0441
+K30_5A_full: line = (K30_5A)
+! contains zero length elements:
+    XC30502[superimpose] = T
+    XC30502[ref] = K30_5A
+    XC30502[ref_origin] = beginning
+    XC30502[offset] = 0.3726
+    YC30503[superimpose] = T
+    YC30503[ref] = K30_5A
+    YC30503[ref_origin] = beginning
+    YC30503[offset] = 0.6646
+!old: k30_5a_full: line = (k30_5a1, xc30502, k30_5a2, yc30503, k30_5a3)
 k30_5b_full: line = (k30_5b)
 k30_5c_full: line = (k30_5c)
 k30_5d_full: line = (k30_5d)
-k30_6a_full: line = (k30_6a1, xc30602, k30_6a2, q30615a, k30_6a3, yc30603, k30_6a4, q30615b,  &
-        k30_6a5, q30615c, k30_6a6)
+!---------------------
+! K30_6A LCAVITY
+K30_6A: K30_6A1, L = 3.0441
+K30_6A_full: line = (K30_6A)
+! contains zero length elements:
+    XC30602[superimpose] = T
+    XC30602[ref] = K30_6A
+    XC30602[ref_origin] = beginning
+    XC30602[offset] = 0.394
+    Q30615A[superimpose] = T
+    Q30615A[ref] = K30_6A
+    Q30615A[ref_origin] = beginning
+    Q30615A[offset] = 0.787
+    YC30603[superimpose] = T
+    YC30603[ref] = K30_6A
+    YC30603[ref_origin] = beginning
+    YC30603[offset] = 1.194
+    Q30615B[superimpose] = T
+    Q30615B[ref] = K30_6A
+    Q30615B[ref_origin] = beginning
+    Q30615B[offset] = 2.175
+    Q30615C[superimpose] = T
+    Q30615C[ref] = K30_6A
+    Q30615C[ref_origin] = beginning
+    Q30615C[offset] = 2.53
+!old: k30_6a_full: line = (k30_6a1, xc30602, k30_6a2, q30615a, k30_6a3, yc30603, k30_6a4, q30615b,  &
+!old         k30_6a5, q30615c, k30_6a6)
 k30_6b_full: line = (k30_6b)
 k30_6c_full: line = (k30_6c)
 k30_6d_full: line = (k30_6d)
-k30_7a_full: line = (k30_7a1, xc30702, k30_7a2, q30715a, k30_7a3, yc30703, k30_7a4, q30715b,  &
-        k30_7a5, q30715c, k30_7a6)
+!---------------------
+! K30_7A LCAVITY
+K30_7A: K30_7A1, L = 3.0441
+K30_7A_full: line = (K30_7A)
+! contains zero length elements:
+    XC30702[superimpose] = T
+    XC30702[ref] = K30_7A
+    XC30702[ref_origin] = beginning
+    XC30702[offset] = 0.3813
+    Q30715A[superimpose] = T
+    Q30715A[ref] = K30_7A
+    Q30715A[ref_origin] = beginning
+    Q30715A[offset] = 0.813
+    YC30703[superimpose] = T
+    YC30703[ref] = K30_7A
+    YC30703[ref_origin] = beginning
+    YC30703[offset] = 1.187
+    Q30715B[superimpose] = T
+    Q30715B[ref] = K30_7A
+    Q30715B[ref_origin] = beginning
+    Q30715B[offset] = 2.178
+    Q30715C[superimpose] = T
+    Q30715C[ref] = K30_7A
+    Q30715C[ref_origin] = beginning
+    Q30715C[offset] = 2.537
+!old: k30_7a_full: line = (k30_7a1, xc30702, k30_7a2, q30715a, k30_7a3, yc30703, k30_7a4, q30715b,  &
+!old         k30_7a5, q30715c, k30_7a6)
 k30_7b_full: line = (k30_7b)
 k30_7c_full: line = (k30_7c)
 k30_7d_full: line = (k30_7d)
-k30_8a_full: line = (k30_8a1, xc30802, k30_8a2, yc30803, k30_8a3)
+!---------------------
+! K30_8A LCAVITY
+K30_8A: K30_8A1, L = 3.0441
+K30_8A_full: line = (K30_8A)
+! contains zero length elements:
+    XC30802[superimpose] = T
+    XC30802[ref] = K30_8A
+    XC30802[ref_origin] = beginning
+    XC30802[offset] = 0.3859
+    YC30803[superimpose] = T
+    YC30803[ref] = K30_8A
+    YC30803[ref_origin] = beginning
+    YC30803[offset] = 0.7669
+!old: k30_8a_full: line = (k30_8a1, xc30802, k30_8a2, yc30803, k30_8a3)
 k30_8b_full: line = (k30_8b)
-k30_8c_full: line = (k30_8c1, yc30900, k30_8c2, xc30900, k30_8c3)
+!---------------------
+! K30_8C LCAVITY
+K30_8C: K30_8C1, L = 3.0441
+K30_8C_full: line = (K30_8C)
+! contains zero length elements:
+    YC30900[superimpose] = T
+    YC30900[ref] = K30_8C
+    YC30900[ref_origin] = beginning
+    YC30900[offset] = 0.762
+    XC30900[superimpose] = T
+    XC30900[ref] = K30_8C
+    XC30900[ref_origin] = beginning
+    XC30900[offset] = 2.2289
+!old: k30_8c_full: line = (k30_8c1, yc30900, k30_8c2, xc30900, k30_8c3)
 
 
 

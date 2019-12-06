@@ -15,48 +15,40 @@ bc1_Lp_drift_default = 2.4349
 
  
  
-! Overlay for split rectangular bend
-! Split at the rectangular center
+! Overlays for rectangular bends
+!
 ! Lp : total projected length of the bend
 ! theta: total angle in radian
-!
+
 
 O_BX11: overlay = {
-  BX11A[g]:sin(theta)/Lp, 
-  BX11B[g]:sin(theta)/Lp, 
-  BX11A[L]:Lp/sin(theta)*asin(sin(theta)/2),
-  BX11B[L]:Lp/sin(theta) * (theta - asin(sin(theta)/2)),
-  BX11B[e2]:theta}, 
+  BX11[g]:sin(theta)/Lp, 
+  BX11[L]:Lp*theta/sin(theta),
+  BX11[e2]:theta}, 
   var = {Lp, theta},
   theta = bc1_theta_default,
   Lp = bc1_Lp_default
 
 O_BX12: overlay = {
-  BX12A[g]:sin(theta)/Lp, 
-  BX12B[g]:sin(theta)/Lp, 
-  BX12B[L]:Lp/sin(theta)*asin(sin(theta)/2),
-  BX12A[L]:Lp/sin(theta) * (theta - asin(sin(theta)/2)),
-  BX12A[e1]:theta}, 
+  BX12[g]:sin(theta)/Lp, 
+  BX12[L]:Lp*theta/sin(theta),
+  BX12[e1]:theta}, 
   var = {Lp, theta},
   theta = -bc1_theta_default,
   Lp = bc1_Lp_default
 
 O_BX13: overlay = {
-  BX13A[g]:sin(theta)/Lp, 
-  BX13B[g]:sin(theta)/Lp, 
-  BX13A[L]:Lp/sin(theta)*asin(sin(theta)/2),
-  BX13B[L]:Lp/sin(theta) * (theta - asin(sin(theta)/2)),
-  BX13B[e2]:theta}, 
+  BX13[g]:sin(theta)/Lp, 
+  BX13[L]:Lp*theta/sin(theta),
+  BX13[e2]:theta}, 
   var = {Lp, theta},
   theta = -bc1_theta_default,
   Lp = bc1_Lp_default
 
 O_BX14: overlay = {
-  BX14A[g]:sin(theta)/Lp, 
-  BX14B[g]:sin(theta)/Lp, 
-  BX14B[L]:Lp/sin(theta)*asin(sin(theta)/2),
-  BX14A[L]:Lp/sin(theta) * (theta - asin(sin(theta)/2)),
-  BX14A[e1]:theta}, 
+  BX14[g]:sin(theta)/Lp, 
+  BX14[L]:Lp*theta/sin(theta),
+  BX14[e1]:theta}, 
   var = {Lp, theta},
   theta = bc1_theta_default,
   Lp = bc1_Lp_default

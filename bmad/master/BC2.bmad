@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-2019next ***
+! *** OPTICS=AD_ACCEL-05DEC19 ***
 
 ! LCLS2sc bunch compressor chicane #2
 
@@ -115,7 +115,7 @@
 gb2 = 0.03335
 zb2 = 0.549
 fb2 = 0.6287
-ab2 = 0.0424879168 !R56=0.037
+ab2 = 0.043924602172 !R56=0.03955
 bb2 = brho2*sin(ab2)/zb2
 ab2_2 = ab2*ab2
 ab2_4 = ab2_2*ab2_2
@@ -148,13 +148,24 @@ bcx24a: sbend, hgap = gb2/2, e1 = +ab2, fint = fb2, fintx = 0, type = "1D19.7", 
 bcx24b: sbend, hgap = gb2/2, fint = 0, e2 = 0, fintx = fb2, type = "1D19.7", l = lb2s, angle =  &
         lb2s * (+ab2s)/lb2s
 
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bcx21: sbend, hgap = gb2/2, e1 = 0, fint = fb2, e2 = +ab2, type = "1D19.7", l = lb2, angle =  &
+        lb2 * (+ab2)/lb2
+bcx22: sbend, hgap = gb2/2, e1 = -ab2, fint = fb2, e2 = 0, type = "1D19.7", l = lb2, angle =  &
+        lb2 * (-ab2)/lb2
+bcx23: sbend, hgap = gb2/2, e1 = 0, fint = fb2, e2 = -ab2, type = "1D19.7", l = lb2, angle =  &
+        lb2 * (-ab2)/lb2
+bcx24: sbend, hgap = gb2/2, e1 = +ab2, fint = fb2, e2 = 0, type = "1D19.7", l = lb2, angle =  &
+        lb2 * (+ab2)/lb2
+
 ! ==============================================================================
 ! QUAD
 ! ------------------------------------------------------------------------------
 
 ! L2 to BC2 chicane
 
-kq2c01 = 0.50920540285
+kq2c01 = 0.509106837541
 
 q2c01: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kq2c01
 
@@ -168,10 +179,10 @@ cq22b: quadrupole, type = "1.69Q3.4", l = lqc/2, aperture = rqc, k1 = kcq22
 
 ! match into L3
 
-kqe201 = -1.315553716994
-kqe202 = 1.992839578601
-kqe203 = -1.823196901024
-kqe204 = 1.65279531646
+kqe201 = -1.311184352516
+kqe202 = 1.991949996425
+kqe203 = -1.816251165832
+kqe204 = 1.650789479332
 
 qe201: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqe201
 qe202: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqe202

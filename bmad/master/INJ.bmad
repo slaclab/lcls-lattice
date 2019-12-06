@@ -1,11 +1,17 @@
 
-! *** OPTICS=AD_ACCEL-2019next ***
+! *** OPTICS=AD_ACCEL-05DEC19 ***
 
 ! LCLS2sc injector: gun to start of L1 linac
 
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
+! 26-NOV-2019, M. Woodley
+!  * Remove IMBCSi3; undefer IMBCSi1 and IMBCSi2 ... per D. Yeremian
+! 20-NOV-2019, M. Woodley
+!  * New measured Leff (based on Bz^2) for gun solenoids per D. Dowell
+! 11-NOV-2019, M. Woodley
+!  * Use 9*lam as length of laser heater undulator per C. Mayes
 ! 03-JUL-2019, M. Woodley
 !  * Use measured Leff for gun solenoids (SOL1B=0.1342 m, SOL2B=0.1350 m)
 ! ------------------------------------------------------------------------------
@@ -217,6 +223,17 @@ bcxh4a: sbend, hgap = gbh/2, e1 = +abh, fint = fbh, fintx = 0, type = "5D3.9", l
 bcxh4b: sbend, hgap = gbh/2, fint = 0, e2 = 0, fintx = fbh, type = "5D3.9", l = lbhs, angle =  &
         lbhs * (+abhs)/lbhs
 
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bcxh1: sbend, hgap = gbh/2, e1 = 0, fint = fbh, e2 = +abh, type = "5D3.9", l = lbh, angle =  &
+        lbh * (+abh)/lbh
+bcxh2: sbend, hgap = gbh/2, e1 = -abh, fint = fbh, e2 = 0, type = "5D3.9", l = lbh, angle =  &
+        lbh * (-abh)/lbh
+bcxh3: sbend, hgap = gbh/2, e1 = 0, fint = fbh, e2 = -abh, type = "5D3.9", l = lbh, angle =  &
+        lbh * (-abh)/lbh
+bcxh4: sbend, hgap = gbh/2, e1 = +abh, fint = fbh, e2 = 0, type = "5D3.9", l = lbh, angle =  &
+        lbh * (+abh)/lbh
+
 ! ==============================================================================
 ! QUAD
 ! ------------------------------------------------------------------------------
@@ -244,10 +261,10 @@ q0h04: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h04
 
 !              heater ON        heater OFF        chicane OFF
 !           ---------------   ---------------   ---------------
-kq0h05 = -6.486739294274 ! -7.451314362911 ! -7.50807265705  !
-kq0h06 = 0.966024601548 !  1.835321162849 !  1.870908387703 !
-kq0h07 = 7.974521691066 !  7.794364054297 !  7.804907479843 !
-kq0h08 = -8.324215790715 ! -8.272683698332 ! -8.306722243052 !
+kq0h05 = -6.527332462108 ! -7.451314362911 ! -7.50807265705  !
+kq0h06 = 1.004021266025 !  1.835321162849 !  1.870908387703 !
+kq0h07 = 7.966955932383 !  7.794364054297 !  7.804907479843 !
+kq0h08 = -8.322028344122 ! -8.272683698332 ! -8.306722243052 !
 
 q0h05: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h05
 q0h06: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h06
@@ -258,10 +275,10 @@ q0h08: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h08
 
 !              heater ON        heater OFF        chicane OFF
 !           ---------------   ---------------   ---------------
-kqhd01 = -9.165493466042 ! -8.743988180274 ! -8.746794738551 !
-kqhd02 = 6.5393744713   !  6.400024201736 !  6.401620200766 !
-kqhd03 = -8.445995045319 ! -8.612136472635 ! -8.622952974047 !
-kqhd04 = 6.743451959252 !  6.860670404609 !  6.864937307631 !
+kqhd01 = -9.146654274235 ! -8.743988180274 ! -8.746794738551 !
+kqhd02 = 6.533213571851 !  6.400024201736 !  6.401620200767 !
+kqhd03 = -8.452537880402 ! -8.612136472635 ! -8.622952974047 !
+kqhd04 = 6.748361072085 !  6.860670404609 !  6.864937307631 !
 
 qhd01: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kqhd01
 qhd02: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kqhd02
@@ -279,18 +296,18 @@ qdcoll0: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = -kqcoll0
 
 ! COL0 collimation section
 
-kqc001 = 5.055115116458
-kqc002 = 0.157983740943
-kqc003 = -5.345027237214
-kqc004 = 2.756594856384
+kqc001 = 5.055115116374
+kqc002 = 0.157983741128
+kqc003 = -5.345027237286
+kqc004 = 2.756594856365
 kqc005 = -kqcoll0
 kqc006 = kqcoll0
 kqc007 = -kqcoll0
 kqc008 = kqcoll0
 kqc009 = -kqcoll0
-kqc010 = 1.029493895725
-kqc011 = -1.580615430886
-kqc012 = 1.296911536424
+kqc010 = 0.969436091839
+kqc011 = -1.547365108062
+kqc012 = 1.300461653449
 
 qc001: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc001
 qc002: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc002
@@ -312,8 +329,8 @@ qc012: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc012
 ! solenoids between gun and L0
 
 rsol = 0.0475/2
-lsol1 = 0.1342              !m (measured)
-lsol2 = 0.1350              !m (measured)
+lsol1 = 0.0861              !m (measured) !0.1342
+lsol2 = 0.0869              !m (measured) !0.1350
 bsol1 = 0                   !0.0570 T
 bsol2 = 0                   !0.0322 T
 brho = cb*sqrt(e0^2-mc2^2) !kG-m (non-relativistic)
@@ -344,7 +361,7 @@ lam = 0.054 !0.0471204
 lamr = 1030e-9
 gami = ei/(m_electron * 1e-9)
 k_und = sqrt(2*(lamr*2*gami^2/lam-1))
-lhun = 0.506263 !10*lam
+lhun = 9*lam !0.506263
 lhunh = lhun/2
 kqlh = (k_und*2*pi/lam/sqrt(2)/gami)^2
 
@@ -459,6 +476,8 @@ zhbmo = 1.53742329
 zhbmiu = 0.37561671
 zhbmid = 1.389994208901
 
+dlhun = 0.506263-9*lam !adjust undulator length
+
 dh01: drift, l = zhbbo/cos(abh), type = "CSR"
 dh01a: drift, l = zhbmo/cos(abh), type = "CSR"
 dh01b: drift, l = zhbmiu/cos(abh), type = "CSR"
@@ -468,12 +487,12 @@ dh02a: drift, l = 0.192614-ljaw/2, type = "CSR"
 dh02b: drift, l = 0.298450-ljaw/2, type = "CSR"
 
 ! Shorten so that umhtr has an integer number of poles
-dh02c: drift, l = 0.2795065 - ( 10*0.054 - 0.506263 ) /2 , type = "CSR" !0.297036 !0.297036
-!old: dh02c: drift, l = 0.2795065, type = "CSR"
+dh02c: drift, l = 0.2795065 - ( 10*0.054 - 0.506263 ) /2 , type = "CSR" !0.297036 !0.2795065
+!old: dh02c: drift, l = 0.2795065+dlhun/2, type = "CSR"
 
 ! Shorten so that umhtr has an integer number of poles
-dh02d: drift, l = 0.2724707 - ( 10*0.054 - 0.506263 ) /2, type = "CSR" !0.2900002 !0.2900002
-!old: dh02d: drift, l = 0.2724707, type = "CSR"
+dh02d: drift, l = 0.2724707 - ( 10*0.054 - 0.506263 ) /2, type = "CSR" !0.2900002 !0.2724707
+!old: dh02d: drift, l = 0.2724707+dlhun/2, type = "CSR"
 dh02e: drift, l = 0.4599998, type = "CSR"
 dh03: drift, l = zhbbo/cos(abh), type = "CSR"
 dh03a: drift, l = zhbmid/cos(abh), type = "CSR"
@@ -496,9 +515,8 @@ dhd01b: drift, l = dhd01[l]-dhd01a[l]-dhd01c[l]
 dhd02b: drift, l = 0.204906
 dhd02a: drift, l = dhd02[l]-dhd02b[l]
 dhd02a2: drift, l = 0.305410
-dhd02a3: drift, l = 0.334815
-dhd02a4: drift, l = 0.442479
-dhd02a1: drift, l = dhd02a[l]-dhd02a2[l]-dhd02a3[l]-dhd02a4[l]
+dhd02a3: drift, l = 0.777294
+dhd02a1: drift, l = dhd02a[l]-dhd02a2[l]-dhd02a3[l]
 dhd03b: drift, l = 0.204906
 dhd03a: drift, l = dhd03[l]-dhd03b[l]
 dhd04a: drift, l = 0.1208998
@@ -675,9 +693,8 @@ otr0h04: instrument, type = "@2,YAG/OTR PSI"
 bz0h04: instrument, type = "gap/diode"
 yagh1: instrument, type = "YAG INJ"
 yagh2: instrument, type = "YAG INJ"
-imbcsi1: marker, type = "@0,BCS ACM"
-imbcsi2: marker, type = "@0,BCS ACM"
-imbcsi3: marker, type = "@0,BCS ACM"
+imbcsi1: marker, type = "BCS ACM"
+imbcsi2: marker, type = "BCS ACM"
 otrc006: instrument, type = "@4,YAG/OTR PSI"
 wsc006: marker, type = "@4,fast"
 
@@ -993,8 +1010,8 @@ htr: line = (beghtr, rfb0h00, d0h00a, pc0h00, d0h00b, q0h01_full, d0h01a, yc0h01
         q0h06_full, d0h06a, xc0h05, d0h06b, xc0h07, d0h06c, q0h07_full, d0h07a, yc0h07, d0h07b,  &
         q0h08_full, d0h08a, rfb0h08, d0h08b, lsrhtr, dhd00a, rfbhd00, dhd00b, qhd01_full, dhd01a &
         , ychd01, dhd01b, xchd01, dhd01c, qhd02_full, dhd02a1, imbcsi1, dhd02a2, imbcsi2, dhd02a3 &
-        , imbcsi3, dhd02a4, ychd03, dhd02b, qhd03_full, dhd03a, xchd03, dhd03b, qhd04_full,  &
-        dhd04a, rfbhd04, dhd04b, endhtr)
+        , ychd03, dhd02b, qhd03_full, dhd03a, xchd03, dhd03b, qhd04_full, dhd04a, rfbhd04, dhd04b &
+        , endhtr)
  !ENDCOMMENT
 
 !=!  COMMENT !simplified

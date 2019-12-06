@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-2019next ***
+! *** OPTICS=AD_ACCEL-05DEC19 ***
 
 ! LCLS2sc safety dump lines
 
@@ -78,22 +78,32 @@ lbxpm1l = rbxpm*abxpm1l !path length in "long"  half of BXPM1
 lbxpm2s = rbxpm*abxpm2s !path length in "short" half of BXPM2
 lbxpm2l = rbxpm*abxpm2l !path length in "long"  half of BXPM2
 
-bxpm1a: sbend, hgap = gbxpm/2, fint = 0.5, fintx = 0.0, e2 = 0, e1 = 0, type = "4D36-C", l =  &
+lbxpm1 = lbxpm1s+lbxpm1l
+lbxpm2 = lbxpm2s+lbxpm2l
+
+bxpm11: sbend, hgap = gbxpm/2, fint = 0.5, fintx = 0.0, e2 = 0, e1 = 0, type = "4D36-C", l =  &
         lbxpm1s, angle = lbxpm1s * abxpm1s/lbxpm1s
-bxpm1b: sbend, hgap = gbxpm/2, fint = 0.0, fintx = 0.5, e1 = 0, e2 = abxpm1, type = "4D36-C", l &
+bxpm12: sbend, hgap = gbxpm/2, fint = 0.0, fintx = 0.5, e1 = 0, e2 = abxpm1, type = "4D36-C", l &
          = lbxpm1l, angle = lbxpm1l * abxpm1l/lbxpm1l
 
-bxpm2a: sbend, hgap = gbxpm/2, fint = 0.5, fintx = 0.0, e2 = 0, e1 = -abxpm1, type = "4D36-C", l &
+bxpm21: sbend, hgap = gbxpm/2, fint = 0.5, fintx = 0.0, e2 = 0, e1 = -abxpm1, type = "4D36-C", l &
          = lbxpm2s, angle = lbxpm2s * abxpm2s/lbxpm2s
-bxpm2b: sbend, hgap = gbxpm/2, fint = 0.0, fintx = 0.5, e1 = 0, e2 = abxpm1+abxpm2, type =  &
+bxpm22: sbend, hgap = gbxpm/2, fint = 0.0, fintx = 0.5, e1 = 0, e2 = abxpm1+abxpm2, type =  &
         "4D36-C", l = lbxpm2l, angle = lbxpm2l * abxpm2l/lbxpm2l
+
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bxpm1: sbend, hgap = gbxpm/2, e1 = 0, fint = 0.5, e2 = abxpm1, type = "4D36-C", l = lbxpm1, angle &
+         = lbxpm1 * abxpm1/lbxpm1
+bxpm2: sbend, hgap = gbxpm/2, e1 = -abxpm1, fint = 0.5, e2 = abxpm1+abxpm2, type = "4D36-C", l =  &
+        lbxpm2, angle = lbxpm2 * abxpm2/lbxpm2
 
 dyds: drift, l = lbyds*cos(abyds/2)
 dyd1: drift, l = lbdm*cos(abyds+abdm/2)
 dyd2: drift, l = lbdm*cos(abyds+3*abdm/2)
 dyd3: drift, l = lbdm*cos(abyds+5*abdm/2)
 
-ldsca = 0.479300 !0.479298938157
+ldsca = 0.479300-0.000001 !0.479298938157
 ldscb = 0.094517171073
 
 ds1s: drift, l = lds1*cos(abyds)
@@ -110,6 +120,8 @@ zsftdmp = 0.0762 !safety dump Z-length
 dpcbtm1: drift, l = 0.15-0.135
 dpcbtm2: drift, l = 0.15
 dpm1: drift, l = 0.5350338 !0.298
+dpm11: drift, l = 0.188644
+dpm12: drift, l = dpm1[l]-dpm11[l]
 dpm2: drift, l = 0.30/cos(abxpm1)
 dpm3: drift, l = ldpm3/cos(abxpm1+abxpm2)
 dpm31: drift, l = ldpm31/cos(abxpm1+abxpm2)
@@ -120,7 +132,11 @@ dsftdmp: drift, l = zsftdmp/cos(abxpm1+abxpm2)
 
 dxdcu: drift, l = 1.092223+0.75
 dxdcu1: drift, l = 0.8783
+dxdcu1a: drift, l = 0.840799
+dxdcu1b: drift, l = dxdcu1[l]-dxdcu1a[l]
 dxdcu2: drift, l = dxdcu[l]-dxdcu1[l]
+dxdcu2a: drift, l = 0.878201
+dxdcu2b: drift, l = dxdcu2[l]-dxdcu2a[l]
 xdca: drift, l = 0.312777 !XDC chamber
 xdcb: drift, l = 0.693    !XDC chamber
 xdcc: drift, l = 0.542    !XDC chamber
@@ -128,6 +144,8 @@ xdcd: drift, l = 0.255376 !XDC chamber
 dxdcd: drift, l = 7.1789662-dxdcu[l]-xdca[l]-xdcb[l]-xdcc[l]-xdcd[l] !7.266
 dxdcd1: drift, l = 2.661321
 dxdcd2: drift, l = 0.512986
+dxdcd2a: drift, l = 0.142402
+dxdcd2b: drift, l = dxdcd2[l]-dxdcd2a[l]
 dxdcd3: drift, l = dxdcd[l]-dxdcd1[l]-dxdcd2[l]
 
 pcpm1: ecollimator, x_limit = 0.0080, y_limit = 0.0080, l = lpcpm !per LCLSII-3.5-PR-0111-R1
@@ -141,24 +159,31 @@ btm2: instrument !Burn-Through-Monitor behind PCPM2
 mbtm3: marker !placeholder for BTM3
 btmsft: instrument !Burn-Through-Monitor behind HXR safety dump
 
-xdcxray: instrument             !existing safety dump line X-ray screen
-yagxray: instrument, type = "YAG" !existing safety dump line X-ray screen
+rtdsl0: instrument, type = "RAPID TRNAD DIAG"
+rtdsl0_yagxray: instrument, type = "MONITORILE MON (RTD"
 
-hxtes0: instrument, type = "treaty flange" !treaty point for HXR XTES system
-im1h: instrument, type = "imager"
+tp_hxtes0: instrument, type = "treaty flange" !treaty point for HXR XTES system
+tv1l0_vgc_1: instrument, type = "GATE VALVE"
+tv1l0_vrm_1: instrument, type = "RIGHT ANGLE VALV"
+tv1l0_gcc_1: instrument, type = "COLD CATHODE GAU"
+tv1l0_gpi_1: instrument, type = "PIRANI GAUGE"
+im1l0_xtes_vgc_1: instrument, type = "GATE VALVE"
+im1l0_xtes_vrm_1: instrument, type = "RIGHT ANGLE VALV"
+im1l0_xtes: instrument, type = "IMAGER"
+mbxpm1_pip_1: instrument, type = "ION PUMP"
 sftdmp: instrument !front face of HXR safety dump (Z'=712-715 m per PRD)
 
 vv38: marker !vac. valve in HXR safety dump line
-vv1h: marker !vac. valve in HXR XTES line
-vv2h: marker !vac. valve in HXR XTES line
 mvv10: marker !placeholder for vac. valve in HXR XTES line
 
-bxpm1_full: line = (bxpm1a, bxpm1b)
-bxpm2_full: line = (bxpm2a, bxpm2b)
+bxpm1_full: line = (bxpm11, bxpm12)
+bxpm2_full: line = (bxpm21, bxpm22)
 
 sftdump1: line = (begsfth_1, dyds, ds1s, dyd1, dssa, dyd2, dssb, dyd3, dscsa, vv38, dscsb, pcpm1 &
-        , dpcbtm1, btm1, dxdcu1, hxtes0, dxdcu2, xdca, xdcxray, xdcb, xdcc, yagxray, xdcd, dxdcd1 &
-        , vv2h, dxdcd2, im1h, dxdcd3, btm2, pcpm2, dpm1, endsfth_1)
+        , dpcbtm1, btm1, dxdcu1a, tv1l0_vgc_1, dxdcu1b, tp_hxtes0, dxdcu2a, tv1l0_vrm_1,  &
+        tv1l0_gcc_1, tv1l0_gpi_1, dxdcu2b, xdca, rtdsl0, xdcb, xdcc, rtdsl0_yagxray, xdcd, dxdcd1 &
+        , im1l0_xtes_vgc_1, dxdcd2a, im1l0_xtes_vrm_1, dxdcd2b, im1l0_xtes, dxdcd3, pcpm2, btm2,  &
+        dpm11, mbxpm1_pip_1, dpm12, endsfth_1)
 
 sftdump2: line = (begsfth_2, bxpm1_full, dpm2, bxpm2_full, dpm31, mvv10, dpm32, dpcpm3, dpcbtm3,  &
         mbtm3, dpm4, sftdmp, dsftdmp, btmsft, endsfth_2)
@@ -174,17 +199,26 @@ sftdump: line = (sftdump1, sftdump2)
 
 rbxpmb = brhof/bbxpm !bending radius (m) in permanent magnet
 
-abxpmb = (lbxpm/rbxpmb)/2            !PM bend half-angle
-abxpm1bs = asin(abxpmb)                !bending angle of "short" half of BXPM1B
-abxpm1bl = asin(2*abxpmb)-asin(abxpmb) !bending angle of "long"  half of BXPM1B
+abxpmbh = (lbxpm/rbxpmb)/2              !PM bend half-angle
+abxpm1bs = asin(abxpmbh)                 !bending angle of "short" half of BXPM1B
+abxpm1bl = asin(2*abxpmbh)-asin(abxpmbh) !bending angle of "long"  half of BXPM1B
+
+abxpm1b = abxpm1bs+abxpm1bl
 
 lbxpm1bs = rbxpmb*abxpm1bs !path length in "short" half of BXPM1B
 lbxpm1bl = rbxpmb*abxpm1bl !path length in "long"  half of BXPM1B
 
-bxpm1ba: sbend, hgap = gbxpm/2, fint = 0.5, fintx = 0.0, e2 = 0, e1 = 0, type = "4D36-C", l =  &
+lbxpm1b = lbxpm1bs+lbxpm1bl
+
+bxpm1b1: sbend, hgap = gbxpm/2, fint = 0.5, fintx = 0.0, e2 = 0, e1 = 0, type = "4D36-C", l =  &
         lbxpm1bs, angle = lbxpm1bs * abxpm1bs/lbxpm1bs
-bxpm1bb: sbend, hgap = gbxpm/2, fint = 0.0, fintx = 0.5, e1 = 0, e2 = abxpm1bs+abxpm1bl, type =  &
-        "4D36-C", l = lbxpm1bl, angle = lbxpm1bl * abxpm1bl/lbxpm1bl
+bxpm1b2: sbend, hgap = gbxpm/2, fint = 0.0, fintx = 0.5, e1 = 0, e2 = abxpm1b, type = "4D36-C", l &
+         = lbxpm1bl, angle = lbxpm1bl * abxpm1bl/lbxpm1bl
+
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bxpm1b: sbend, hgap = gbxpm/2, e1 = 0, fint = 0.5, e2 = abxpm1b, type = "4D36-C", l = lbxpm1b,  &
+        angle = lbxpm1b * abxpm1b/lbxpm1b
 
 dscsb1: drift, l = 0.478198407804 !DSCSa[L]
 dscsb2: drift, l = 0.0943         !DSCSa[L]
@@ -239,7 +273,7 @@ vv1s: marker !vac. valve in SXR safety dump line
 vv2s: marker !vac. valve in SXR safety dump line
 mvv3s: marker !placeholder for vac. valve in SXR XTES line
 
-bxpm1b_full: line = (bxpm1ba, bxpm1bb, dpm2ba)
+bxpm1b_full: line = (bxpm1b1, bxpm1b2)
 
 sftdumpb1: line = (begsfts_1, dyds, ds1s, dyd1, dssa, dyd2, dssb, dyd3, dscsb1, vv38b, dscsb2,  &
         pcpm1b, dpcbtm1, btm1b, dxdcub1, vv1s, dxdcub2, sxtes0, dxdcub3, xdcba, xdcbb, xdcbc,  &

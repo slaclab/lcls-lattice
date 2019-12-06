@@ -1,10 +1,18 @@
 
-! *** OPTICS=AD_ACCEL-2019next ***
+! *** OPTICS=AD_ACCEL-05DEC19 ***
 
 ! LCLS2sc 3-way spreader system
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 26-NOV-2019, M. Woodley
+!  * remove IMBCSh3, IMBCSs3, and IMBCSd3 per Y. Ding
+!  * undefer BKXRASD and BKYRASD (already installed)
+! 11-NOV-2019, M. Woodley
+!  * defer (level 0) BKXRASD and BKYRASD per D. Hanquist
+! 11-OCT-2019, M. Woodley
+!  * remove PCSP3D/BTMSP3D per S. Trovati
 ! ------------------------------------------------------------------------------
 ! 06-JUN-2019, M. Woodley
 !  * adjust location of BSY dump face per A. Ibrahimov
@@ -638,6 +646,63 @@ bysp2sa: sbend, e1 = abcsp2s/2, e2 = 0, fint = fbcsp, fintx = 0, hgap = gbcsp/2,
 bysp2sb: sbend, e2 = abcsp2s/2, e1 = 0, fintx = fbcsp, fint = 0, hgap = gbcsp/2, type =  &
         "1.0D22.625", ref_tilt = pi/2, l = lbcsp2s/2, angle = lbcsp2s/2 * abcsp2s/2/(lbcsp2s/2)
 
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bkysp0h: sbend, hgap = gbkysp/2, e1 = 0, fint = 0.5, e2 = 0, type = "@2,0.787K35.4", ref_tilt =  &
+        pi/2, l = lbkysp0h
+bkysp1h: sbend, hgap = gbkysp/2, e1 = 0, fint = 0.5, e2 = abkysp1h, type = "0.787K35.4", ref_tilt &
+         = pi/2, l = lbkysp1h, angle = lbkysp1h * abkysp1h/lbkysp1h
+bkysp2h: sbend, hgap = gbkysp/2, e1 = -abkysp1h, fint = 0.5, e2 = abkysp12h, type = "0.787K35.4" &
+        , ref_tilt = pi/2, l = lbkysp2h, angle = lbkysp2h * abkysp2h/lbkysp2h
+bkysp3h: sbend, hgap = gbkysp/2, e1 = -abkysp12h, fint = 0.5, e2 = abkysph, type = "0.787K35.4",  &
+        ref_tilt = pi/2, l = lbkysp3h, angle = lbkysp3h * abkysp3h/lbkysp3h
+bkysp4h: sbend, hgap = gbkysp/2, e1 = -abkysph, fint = 0.5, e2 = abkysph, type = "@2,0.787K35.4" &
+        , ref_tilt = pi/2, l = lbkysp4h
+bkysp5h: sbend, hgap = gbkysp5h/2, e1 = -abkysph, fint = 0.5, e2 = abkysph, type =  &
+        "@2,1.378K35.4", ref_tilt = pi/2, l = lbkysp5h
+blxsph: sbend, hgap = gblxsp/2, e1 = 0, fint = 0.5, e2 = ablxsph, type = "0.625SD38.98", l =  &
+        lblxsph, angle = lblxsph * ablxsph/lblxsph
+bysp1h: sbend, hgap = gbcsp/2, e1 = abcsp1h/2, fint = fbcsp, e2 = abcsp1h/2, type = "1.0D22.625" &
+        , ref_tilt = pi/2, l = lbcsp1h, angle = lbcsp1h * abcsp1h/lbcsp1h
+bysp2h: sbend, hgap = gbcsp/2, e1 = abcsp2h/2, fint = fbcsp, e2 = abcsp2h/2, type = "1.0D22.625" &
+        , ref_tilt = pi/2, l = lbcsp2h, angle = lbcsp2h * abcsp2h/lbcsp2h
+brsp1h: sbend, hgap = gbsp/2, e1 = abrsph/2, fint = fbsp, e2 = abrsph/2, type = "1.0D38.37",  &
+        ref_tilt = tbrsph, l = lbrsph, angle = lbrsph * abrsph/lbrsph
+brsp2h: sbend, hgap = gbsp/2, e1 = -abrsph/2, fint = fbsp, e2 = -abrsph/2, type = "1.0D38.37",  &
+        ref_tilt = tbrsph, l = lbrsph, angle = lbrsph * (-abrsph)/lbrsph
+bxsp1h: sbend, hgap = gbsp/2, e1 = abxsph/2, fint = fbsp, e2 = abxsph/2, type = "1.0D38.37", l =  &
+        lbxsph, angle = lbxsph * abxsph/lbxsph
+
+bkysp0s: sbend, hgap = gbkysp/2, e1 = 0, fint = 0.5, e2 = 0, type = "@2,0.787K35.4", ref_tilt =  &
+        pi/2, l = lbkysp0s
+bkysp1s: sbend, hgap = gbkysp/2, e1 = 0, fint = 0.5, e2 = abkysp1s, type = "0.787K35.4", ref_tilt &
+         = pi/2, l = lbkysp1s, angle = lbkysp1s * abkysp1s/lbkysp1s
+bkysp2s: sbend, hgap = gbkysp/2, e1 = -abkysp1s, fint = 0.5, e2 = abkysp12s, type = "0.787K35.4" &
+        , ref_tilt = pi/2, l = lbkysp2s, angle = lbkysp2s * abkysp2s/lbkysp2s
+bkysp3s: sbend, hgap = gbkysp/2, e1 = -abkysp12s, fint = 0.5, e2 = abkysps, type = "0.787K35.4",  &
+        ref_tilt = pi/2, l = lbkysp3s, angle = lbkysp3s * abkysp3s/lbkysp3s
+bkysp4s: sbend, hgap = gbkysp/2, e1 = -abkysps, fint = 0.5, e2 = abkysps, type = "@2,0.787K35.4" &
+        , ref_tilt = pi/2, l = lbkysp4s
+bkysp5s: sbend, hgap = gbkysp5s/2, e1 = -abkysps, fint = 0.5, e2 = abkysps, type =  &
+        "@2,1.378K35.4", ref_tilt = pi/2, l = lbkysp5s
+blxsps: sbend, hgap = gblxsp/2, e1 = 0, fint = 0.5, e2 = ablxsps, type = "0.625SD38.98", l =  &
+        lblxsps, angle = lblxsps * ablxsps/lblxsps
+bysp1s: sbend, hgap = gbcsp/2, e1 = abcsp1s/2, fint = fbcsp, e2 = abcsp1s/2, type = "1.0D22.625" &
+        , ref_tilt = pi/2, l = lbcsp1s, angle = lbcsp1s * abcsp1s/lbcsp1s
+bysp2s: sbend, hgap = gbcsp/2, e1 = abcsp2s/2, fint = fbcsp, e2 = abcsp2s/2, type = "1.0D22.625" &
+        , ref_tilt = pi/2, l = lbcsp2s, angle = lbcsp2s * abcsp2s/lbcsp2s
+bxsp1s: sbend, hgap = gbsp/2, e1 = -abxsps/2, fint = fbsp, e2 = -abxsps/2, type = "1.0D38.37", l &
+         = lbxsps, angle = lbxsps * (-abxsps)/lbxsps
+bxsp2s: sbend, hgap = gbsp/2, e1 = -abxsps/2, fint = fbsp, e2 = -abxsps/2, type = "1.0D38.37", l &
+         = lbxsps, angle = lbxsps * (-abxsps)/lbxsps
+bxsp3s: sbend, hgap = gbsp/2, e1 = abxsps/2, fint = fbsp, e2 = abxsps/2, type = "1.0D38.37", l =  &
+        lbxsps, angle = lbxsps * abxsps/lbxsps
+
+bysp1d: sbend, hgap = gbsp/2, e1 = abyspd/2, fint = fbsp, e2 = abyspd/2, type = "1.0D38.37",  &
+        ref_tilt = pi/2, l = lbyspd, angle = lbyspd * abyspd/lbyspd
+bysp2d: sbend, hgap = gbsp/2, e1 = -abyspd/2, fint = fbsp, e2 = -abyspd/2, type = "1.0D38.37",  &
+        ref_tilt = pi/2, l = lbyspd, angle = lbyspd * (-abyspd)/lbyspd
+
 ! drifts
 
 ldspcor1 = 0.3617
@@ -793,8 +858,7 @@ dsp12hb: drift, l = ldsp12hb
 dsp12hc: drift, l = ldsp12hc
 dsp12hc1: drift, l = 9.035399208502
 dsp12hc2: drift, l = 0.30541
-dsp12hc3: drift, l = 0.30541
-dsp12hc4: drift, l = dsp12hc[l]-dsp12hc1[l]-dsp12hc2[l]-dsp12hc3[l]
+dsp12hc3: drift, l = dsp12hc[l]-dsp12hc1[l]-dsp12hc2[l]
 dsp12hd: drift, l = ldsp12hd
 dsp12he: drift, l = ldsp12he
 dsp13ha: drift, l = ldsp13ha
@@ -959,8 +1023,7 @@ dsp13sa: drift, l = ldsp13sa
 dsp13sb: drift, l = ldsp13sb
 dsp13sb1: drift, l = 9.337992506693
 dsp13sb2: drift, l = 0.30541
-dsp13sb3: drift, l = 0.30541
-dsp13sb4: drift, l = dsp13sb[l]-dsp13sb1[l]-dsp13sb2[l]-dsp13sb3[l]
+dsp13sb3: drift, l = dsp13sb[l]-dsp13sb1[l]-dsp13sb2[l]
 
 ldsp2da2 = 2.0
 ldsp2da1 = 23.0-4.457-ldsp2da2 !adjusted for DASEL
@@ -1001,7 +1064,7 @@ ldsp6dfb = ldsp6df-ldsp6dfa-ldsp6dfc-ldsp6dfd
 
 ldsp7d = 20.0818610101+0.4+0.803391932471-18.115253+0.761425
 ldsp7db = 1.5
-ldsp7da = ldsp7d-ldsp7db-lpcsp
+ldsp7da = ldsp7d-ldsp7db
 ldsp7daa = 0.5
 ldsp7dab = ldsp7da-ldsp7daa
 
@@ -1022,8 +1085,7 @@ dsp5db: drift, l = ldsp5db
 dsp5dc: drift, l = ldsp5dc
 dsp5dc1: drift, l = 0.694411378263
 dsp5dc2: drift, l = 0.30541
-dsp5dc3: drift, l = 0.30541
-dsp5dc4: drift, l = dsp5dc[l]-dsp5dc1[l]-dsp5dc2[l]-dsp5dc3[l]
+dsp5dc3: drift, l = dsp5dc[l]-dsp5dc1[l]-dsp5dc2[l]
 dsp5dd: drift, l = ldsp5dd
 dsp6da: drift, l = ldsp6da
 dsp6db: drift, l = ldsp6db
@@ -1042,8 +1104,8 @@ dsp6dj: drift, l = ldsp6dj
 dsp7daa: drift, l = ldsp7daa
 dsp7dab: drift, l = ldsp7dab
 dsp7db: drift, l = ldsp7db
-dwallad: drift, l = 1.840975    !distance from face of muon wall to BSY dump
-ddumpbsy: drift, l = 61.120*in2m !length of BSY dump (per A. Ibrahimov)
+dwallad: drift, l = 1.840975                     !distance from face of muon wall to BSY dump
+ddumpbsy: drift, l = 61.120*in2m, type = "BCS dump" !length of BSY dump (per A. Ibrahimov)
 
 ! markers
 
@@ -1160,20 +1222,14 @@ imsp0h: marker, type = "ICT" !diagnostic ACM in SPH
 imsp0s: marker, type = "ICT" !diagnostic ACM in SPS
 imsp0d: marker, type = "ICT" !diagnostic ACM in SPD
 
-imbcsh1: marker, type = "@0,BCS ACM" !BCS ACM triplet in SPH
-imbcsh2: marker, type = "@0,BCS ACM" !BCS ACM triplet in SPH
-imbcsh3: marker, type = "@0,BCS ACM" !BCS ACM triplet in SPH
-imbcss1: marker, type = "@0,BCS ACM" !BCS ACM triplet in SPS
-imbcss2: marker, type = "@0,BCS ACM" !BCS ACM triplet in SPS
-imbcss3: marker, type = "@0,BCS ACM" !BCS ACM triplet in SPS
-imbcsd1: marker, type = "@0,BCS ACM" !BCS ACM triplet in SPD
-imbcsd2: marker, type = "@0,BCS ACM" !BCS ACM triplet in SPD
-imbcsd3: marker, type = "@0,BCS ACM" !BCS ACM triplet in SPD
+imbcsh1: marker, type = "@0,BCS ACM" !BCS ACM doublet in SPH
+imbcsh2: marker, type = "@0,BCS ACM" !BCS ACM doublet in SPH
+imbcss1: marker, type = "@0,BCS ACM" !BCS ACM doublet in SPS
+imbcss2: marker, type = "@0,BCS ACM" !BCS ACM doublet in SPS
+imbcsd1: marker, type = "@0,BCS ACM" !BCS ACM doublet in SPD
+imbcsd2: marker, type = "@0,BCS ACM" !BCS ACM doublet in SPD
 
-pcsp3d: ecollimator, l = lpcsp, type = "BCS PC" !BCS protection collimator
-
-btmsp3d: instrument, type = "BCS BTM" !Burn-Through-Monitor behind PCSP3d
-btmspdmp: instrument, type = "BCS BTM" !Burn-Through-Monitor behind BSY dump
+btmspdmp: instrument, type = "PPS BTM" !Burn-Through-Monitor behind BSY dump
 
 wssp1d: marker, type = "fast" !to measure beam size and energy before BSY dump
 
@@ -1316,11 +1372,10 @@ sprdha: line = (rosp1h, dsp2ha, bysp1h_full, dsp2hb, bysp2h_full, cntsp1h, dsp2h
         ssp2h_full, dsp5hcb, qsp3h_full, dsp6ha, bpmsp3h, dsp6hb, ycsp4h, dsp6hc, qsp4h_full,  &
         dsp7ha, bpmsp4h, dsp7hb, xcsp5h, dsp7hc, qsp5h_full, dsp8ha, bpmsp5h, dsp8hb, ycsp6h,  &
         dsp8hc, qsp6h_full, dsp9ha, bpmsp6h, dsp9hb, dsp9hc, dsp9hd, dsp9he, dsp9hf, dsp9hg,  &
-        qsp7h_full, qsp7h, dsp10ha, xcsp7h, dsp10hb, dsp10hc, ycsp8h, dsp10hd, qsp8h_full,  &
-        dsp11ha, bpmsp8h, dsp11hb, dsp11hc, qsp9h_full, dsp12ha, bpmsp9h, dsp12hb, xcsp9h,  &
-        dsp12hc1, imbcsh1, dsp12hc2, imbcsh2, dsp12hc3, imbcsh3, dsp12hc4, bpmsp10h, dsp12hd,  &
-        ycsp10h, dsp12he, qsp10h_full, dsp13ha, xcsp11h, dsp13hb, bpmsp11h, dsp13hc, qsp11h_full &
-        , dsp14ha, wooddoor)
+        qsp7h_full, dsp10ha, xcsp7h, dsp10hb, dsp10hc, ycsp8h, dsp10hd, qsp8h_full, dsp11ha,  &
+        bpmsp8h, dsp11hb, dsp11hc, qsp9h_full, dsp12ha, bpmsp9h, dsp12hb, xcsp9h, dsp12hc1,  &
+        imbcsh1, dsp12hc2, imbcsh2, dsp12hc3, bpmsp10h, dsp12hd, ycsp10h, dsp12he, qsp10h_full,  &
+        dsp13ha, xcsp11h, dsp13hb, bpmsp11h, dsp13hc, qsp11h_full, dsp14ha, wooddoor)
 
 brsp2h_full: line = (brsp2ha, brsp2hb)
 bxsp1h_full: line = (bxsp1ha, bxsp1hb)
@@ -1430,8 +1485,7 @@ sprdsb: line = (rosp1s, dsp2sa, bysp1s_full, dsp2sb, bysp2s_full, cntsp1s, dsp2s
         dsp8se, qsp6s_full, dsp9sa, bpmsp6s, dsp9sb, xcsp7s, dsp9sc, qsp7s_full, dsp10sa, bpmsp7s &
         , dsp10sb, bxsp2s_full, dsp11sa, dsp11sb, dsp11sc, dsp11sd, ycsp8s, dsp11se, qsp8s_full,  &
         dsp12sa, bpmsp8s, dsp12sb, xcsp9s, dsp12sca, ssp2s_full, dsp12scb, qsp9s_full, dsp13sa,  &
-        bpmsp9s, dsp13sb1, imbcss1, dsp13sb2, imbcss2, dsp13sb3, imbcss3, dsp13sb4, bxsp3s_full,  &
-        cntsp2s)
+        bpmsp9s, dsp13sb1, imbcss1, dsp13sb2, imbcss2, dsp13sb3, bxsp3s_full, cntsp2s)
 
 sprds: line = (sprdsa, sprdsb)
 
@@ -1457,13 +1511,12 @@ qsp2d[L] = 2*qsp2d[L]
 
 sprddc: line = (dsp2dc2, xcsp1d, dsp2dd, qsp1d_full, dsp3da, dsp3db, imsp0d, dsp3dc, mrfbsp2d,  &
         bpmsp2d, dsp3dd, qsp2d_full, dsp4da, ycsp2d, dsp4db, bysp1d_full, dsp5da, dsp5db, wssp1d &
-        , dsp5dc1, imbcsd1, dsp5dc2, imbcsd2, dsp5dc3, imbcsd3, dsp5dc4, bpmsp3d, dsp5dd,  &
-        bysp2d_full, cntsp1d, dsp6da, xcsp3d, dsp6db, ycsp4d, dsp6dc, dsp6dd, dsp6de, dsp6dfa,  &
-        wooddoor)
+        , dsp5dc1, imbcsd1, dsp5dc2, imbcsd2, dsp5dc3, bpmsp3d, dsp5dd, bysp2d_full, cntsp1d,  &
+        dsp6da, xcsp3d, dsp6db, ycsp4d, dsp6dc, dsp6dd, dsp6de, dsp6dfa, wooddoor)
 
 sprddd: line = (dsp6dfb, xcsp5d, dsp6dfc, ycsp6d, dsp6dfd, bpmsp4d, dsp6dg, dsp6dh, rwwake3d,  &
-        bkxrasd, dsp6di, bkyrasd, dsp6dj, bpmsp5d, dsp7daa, otrspdmp, dsp7dab, pcsp3d, btmsp3d,  &
-        dsp7db, muwalld, dwallad, dumpbsy, ddumpbsy, btmspdmp)
+        bkxrasd, dsp6di, bkyrasd, dsp6dj, bpmsp5d, dsp7daa, otrspdmp, dsp7dab, dsp7db, muwalld,  &
+        dwallad, dumpbsy, ddumpbsy, btmspdmp)
 
 sprdd: line = (sprdkh, sprdks, sprdda, sprddb, sprddc, sprddd)
 

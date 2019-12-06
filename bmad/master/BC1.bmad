@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-2019next ***
+! *** OPTICS=AD_ACCEL-05DEC19 ***
 
 ! LCLS2sc bunch compressor chicane #1
 
@@ -107,7 +107,7 @@
 gb1 = 0.04328
 zb1 = 0.2032
 fb1 = 0.3893
-ab1 = -0.102786245824 !R56=0.055
+ab1 = -0.100774150058 !R56=0.05285
 bb1 = brho1*sin(ab1)/zb1
 ab1_2 = ab1*ab1
 ab1_4 = ab1_2*ab1_2
@@ -144,13 +144,24 @@ bcx14b: sbend, hgap = gb1/2, fint = 0, e2 = 0, fintx = fb1, type = "1.69D6.28T",
  !VALUE, AB1,F
  !VALUE, F*GB1*(AB1/LB1)*(1+SIN(AB1)*SIN(AB1))/COS(AB1)
 
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bcx11: sbend, hgap = gb1/2, e1 = 0, fint = fb1, e2 = +ab1, type = "1.69D6.28T", l = lb1, angle =  &
+        lb1 * (+ab1)/lb1
+bcx12: sbend, hgap = gb1/2, e1 = -ab1, fint = fb1, e2 = 0, type = "1.69D6.28T", l = lb1, angle =  &
+        lb1 * (-ab1)/lb1
+bcx13: sbend, hgap = gb1/2, e1 = 0, fint = fb1, e2 = -ab1, type = "1.69D6.28T", l = lb1, angle =  &
+        lb1 * (-ab1)/lb1
+bcx14: sbend, hgap = gb1/2, e1 = +ab1, fint = fb1, e2 = 0, type = "1.69D6.28T", l = lb1, angle =  &
+        lb1 * (+ab1)/lb1
+
 ! ==============================================================================
 ! QUAD
 ! ------------------------------------------------------------------------------
 
 ! L1 to BC1 chicane
 
-kq1c01 = 0.997232505629
+kq1c01 = 0.974221026306
 
 q1c01: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kq1c01
 
@@ -175,18 +186,18 @@ qdcoll1: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = -kqcoll1
 
 ! COL1 collimation section
 
-kqc101 = -0.330815066091
-kqc102 = 2.092280702381
+kqc101 = -0.346554514277
+kqc102 = 2.068585209648
 kqc103 = 0.0
-kqc104 = -0.989821879445
-kqc105 = -1.659478212876
+kqc104 = -0.905335782198
+kqc105 = -1.722699148158
 kqc106 = kqcoll1
 kqc107 = -kqcoll1
 kqc108 = kqcoll1
 kqc109 = -kqcoll1
-kqc110 = 1.418293776343 ! KQColl1
-kqc111 = -1.796131659282
-kqc112 = 1.292282997623
+kqc110 = 1.409424568767 ! KQColl1
+kqc111 = -1.791720274198
+kqc112 = 1.289917325561
 
 qc101: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc101
 qc102: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc102

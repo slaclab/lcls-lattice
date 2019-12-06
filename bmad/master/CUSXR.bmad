@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-2019next ***
+! *** OPTICS=AD_ACCEL-05DEC19 ***
 
 ! LCLS2sc transport from Cu-linac to SXR
 
@@ -146,6 +146,11 @@ bkrcusa: sbend, e1 = 0, e2 = 0, fint = 0.5, fintx = 0, hgap = gbkrcus/2, type = 
 bkrcusb: sbend, e1 = 0, e2 = abkrcus, fint = 0, fintx = 0.5, hgap = gbkrcus/2, type = "1.92K41.2" &
         , ref_tilt = pi/2+tcusxr, l = lbkrcusb, angle = lbkrcusb * abkrcusb/lbkrcusb
 
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bkrcus: sbend, hgap = gbkrcus/2, e1 = 0, fint = 0.5, e2 = abkrcus, type = "1.92K41.2", ref_tilt &
+         = pi/2+tcusxr, l = lbkrcus, angle = lbkrcus * abkrcus/lbkrcus
+
 ! ------------------------------------------------------------------------------
 
 ! DC alternative to kicker comprised of two 3D8.8MK3 correctors, one at each end of BKRCUS
@@ -206,6 +211,14 @@ dckdc2: drift, l = ldckdc2
 dcusblra: drift, l = ldcusblra
 dcusblrb: drift, l = ldcusblrb
 
+! define unsplit SBENs for BMAD ... not used by MAD
+
+brcusdc1: sbend, hgap = gbrcusdc/2, e1 = 0, fint = fbrcusdc, e2 = abrcusdc1, type = "3D8.8MK3",  &
+        ref_tilt = pi/2+tbrcusdc, l = lbrcusdc1, angle = lbrcusdc1 * abrcusdc1/lbrcusdc1
+brcusdc2: sbend, hgap = gbrcusdc/2, e1 = -abrcusdc1, fint = fbrcusdc, e2 = abrcusdc, type =  &
+        "3D8.8MK3", ref_tilt = pi/2+tbrcusdc, l = lbrcusdc2, angle =  &
+        lbrcusdc2 * abrcusdc2/lbrcusdc2
+
 ! ------------------------------------------------------------------------------
 
 ! 2-hole rolled septum aligned along the BSY1 axis
@@ -232,6 +245,11 @@ blrcusa: sbend, e1 = 0, e2 = 0, fint = 0.5, fintx = 0, hgap = gblrcus/2, type = 
 blrcusb: sbend, e1 = 0, e2 = ablrcus, fint = 0, fintx = 0.5, hgap = gblrcus/2, type =  &
         "0.625SD38.98", ref_tilt = tcusxr, l = lblrcusb, angle = lblrcusb * ablrcusb/lblrcusb
 
+! define unsplit SBENs for BMAD ... not used by MAD
+
+blrcus: sbend, hgap = gblrcus/2, e1 = 0, fint = 0.5, e2 = ablrcus, type = "0.625SD38.98",  &
+        ref_tilt = tcusxr, l = lblrcus, angle = lblrcus * ablrcus/lblrcus
+
 ! rolled DC bend
 ! Note: BRCUS1 is a merge DC-bend which is either turned ON to operate
 !       CURF beam in SXR, or turned OFF to operate SCRF beam in SXR
@@ -252,6 +270,11 @@ brcus1a: sbend, e1 = abrcus/2, e2 = 0, fint = fbrcus, fintx = 0, hgap = gbrcus/2
         "1.0D38.37", ref_tilt = tbrcus, l = lbrcus/2, angle = lbrcus/2 * abrcus/2/(lbrcus/2)
 brcus1b: sbend, e2 = abrcus/2, e1 = 0, fint = 0, fintx = fbrcus, hgap = gbrcus/2, type =  &
         "1.0D38.37", ref_tilt = tbrcus, l = lbrcus/2, angle = lbrcus/2 * abrcus/2/(lbrcus/2)
+
+! define unsplit SBENs for BMAD ... not used by MAD
+
+brcus1: sbend, hgap = gbrcus/2, e1 = abrcus/2, fint = fbrcus, e2 = abrcus/2, type = "1.0D38.37",  &
+        ref_tilt = tbrcus, l = lbrcus, angle = lbrcus * abrcus/lbrcus
 
 ! inner vertical bends for R56 cancellation
 ! NOTE: 1.0D22.265 dipoles replaced with 3D8.8MK3 correctors
@@ -274,12 +297,21 @@ bycus2a: sbend, e1 = -abycus/2, e2 = 0, fint = fbycus, fintx = 0, hgap = gbycus/
 bycus2b: sbend, e2 = -abycus/2, e1 = 0, fint = 0, fintx = fbycus, hgap = gbycus/2, type =  &
         "3D8.8MK3", ref_tilt = pi/2, l = lbycus/2, angle = lbycus/2 * (-abycus/2)/(lbycus/2)
 
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bycus1: sbend, hgap = gbycus/2, e1 = abycus/2, fint = fbycus, e2 = abycus/2, type = "3D8.8MK3",  &
+        ref_tilt = pi/2, l = lbycus, angle = lbycus * abycus/lbycus
+bycus2: sbend, hgap = gbycus/2, e1 = -abycus/2, fint = fbycus, e2 = -abycus/2, type = "3D8.8MK3" &
+        , ref_tilt = pi/2, l = lbycus, angle = lbycus * (-abycus)/lbycus
+
 ! rolled DC corrector bends -- removed
 
 lbrccus = 0.6
 
 dbrccus1: drift, l = lbrccus/2
 dbrccus2: drift, l = lbrccus/2
+
+! ------------------------------------------------------------------------------
 
 ! drifts
 
@@ -409,8 +441,9 @@ yccus9: kicker, type = "class-4" !type TBD
 
 ! insertable stopper / tuneup dump
 
-stclts: instrument, l = 30*in2m, type = "PPS STOPPER" !from PEP-II injection line
-dcus11b1: drift, l = 1.883313 !2.0609115
+stclts: instrument, l = 0.30, type = "PPS stopper" !from PEP-II injection line
+btmclts: instrument, type = "PPS BTM"
+dcus11b1: drift, l = 2.114313 !1.883313
 dcus11b2: drift, l = dcus11b[l]-dcus11b1[l]-stclts[l]
 
 ! SROT to remove rotation angle
@@ -515,9 +548,9 @@ dlcusxr: line = (dcus1c, qcus1_full, dcus2a, bpmcus1, dcus2b, xccus1, dcus2c, qc
         dcus4c, qcus4_full, dcus5a, xccus4, dcus5b, bycus1_full, cntcus3, rocus3, dcus6a, dcus6b &
         , qcus5_full, dcus7, midcusxr, dcus7, qcus6_full, dcus8a, yccus6, dcus8b, rocus4,  &
         bycus2_full, cntcus4, dcus9a, dcus9b, qcus7_full, dcus10a, xccus7, dcus10b, bpmcus8,  &
-        dcus10c, qcus8_full, dcus11a, yccus8, dcus11b1, stclts, dcus11b2, bpmcus9, dcus11c,  &
-        qcus9_full, dcus12a, yccus9, dcus12b, xccus10, dcus12c, bpmcus10, dcus12d, qcus10_full,  &
-        dcus13, rocus2, brcus1_full, cntcus2)
+        dcus10c, qcus8_full, dcus11a, yccus8, dcus11b1, stclts, btmclts, dcus11b2, bpmcus9,  &
+        dcus11c, qcus9_full, dcus12a, yccus9, dcus12b, xccus10, dcus12c, bpmcus10, dcus12d,  &
+        qcus10_full, dcus13, rocus2, brcus1_full, cntcus2)
 
 cusxr: line = (begcusxr, kcusxr, dlcusxr, endcusxr)
 

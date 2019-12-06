@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-2019next ***
+! *** OPTICS=AD_ACCEL-05DEC19 ***
 
 ! ==============================================================================
 ! Modification History
@@ -49,7 +49,7 @@ dbxsp1hb: drift, l = bxsp1hb[l]
 
 clth2: line = (begclth_2, dbrcusdc1a, dbrcusdc1b, dckdc1, dbkrcusa, dbkrcusb, dckdc2, dbrcusdc2a &
         , dbrcusdc2b, dcusblra, bpmcus, dcusblrb, dblrcusa, dblrcusb, dbsy52c, dbxsp1ha, dbxsp1hb &
-        , endbsy1, endclth_2)
+        , bsy1end, endclth_2)
 
 bsyh1: line = (begbsyh_1, sphal, endbsyh_1)
 
@@ -69,7 +69,7 @@ bsya: line = (alinea, alineb, alinec)
 
 ! ------------------------------------------------------------------------------
 
-ltus: line = (dbldl21, ltusc, rwwake4s, endltus)
+ltus: line = (dbldl21, ltusc, rwwake4s, endltus, begunds, preunds)
 ltuh: line = (ltu)
 
 bsyltuh: line = (clth0, clth1, clth2, bsyh1, bsyh2, ltuh, hxrund, dumpline)
@@ -77,7 +77,8 @@ bsyltuhs: line = (clth0, clth1, clth2, bsyh1, bsyh2, ltuh, hxrund, sftdump)
 bsyltus: line = (clth0, clth1, clts, bsys, ltus, sxrund, dumplineb)
 bsyltuss: line = (clth0, clth1, clts, bsys, ltus, sxrund, sftdumpb)
 bsyaline: line = (clth0, clth1, clth2, bsyh1, bsya)
-bsyltuhxtes: line = (clth0, clth1, clth2, bsyh1, bsyh2, ltuh, hxrund, sftdump1, hxtes)
+bsyltuhxtes: line = (clth0, clth1, clth2, bsyh1, bsyh2, ltuh, hxrund, sftdump1, hxtes_1, hxtes_2)
+bsyltuhtxi: line = (clth0, clth1, clth2, bsyh1, bsyh2, ltuh, hxrund, sftdump1, hxtes_1, hxtes_3)
 
 lcls2cuc: line = (dl1, l1, bc1, l2, bc2, l3) !common
 lcls2cuh: line = (lcls2cuc, bsyltuh)     !to HXR
@@ -86,6 +87,7 @@ lcls2cus: line = (lcls2cuc, bsyltus)     !to SXR
 lcls2cuss: line = (lcls2cuc, bsyltuss)    !to SXR safety dump
 lcls2cua: line = (lcls2cuc, bsyaline)    !to A-line
 lcls2cuhxtes: line = (lcls2cuc, bsyltuhxtes) !to HXR XTES system
+lcls2cuhtxi: line = (lcls2cuc, bsyltuhtxi)  !to HXR XTES-TXI system
 
 ! ------------------------------------------------------------------------------
 

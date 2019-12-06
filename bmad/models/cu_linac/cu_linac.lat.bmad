@@ -17,8 +17,9 @@ beginning[theta_position] = -35*pi/180
 beginning[z_position] = 3050.512000 - 1032.60052
 beginning[x_position] = 10.44893
 
-call, file = $LCLS_LATTICE/bmad/master/CU_SXR.bmad
+call, file = $LCLS_LATTICE/bmad/master/CU_HXR.bmad
 call, file = $LCLS_LATTICE/bmad/master/LCLScu_devicenames.bmad
+
 
 ! Bunch Compressor overlays
 
@@ -55,17 +56,17 @@ sbend::*[fringe_type] = full
 
 
 ! Resistive wall, instantaneous
-RWWAKE3S[sr_wake] = call::$LCLS_LATTICE/bmad/wakefields/wakefield_SS_24.5mmR.bmad
-RWWAKE3S[sr_wake%scale_with_length] = F
-RWWAKE3S[sr_wake%amp_scale] = 182
+RWWAKE3H[sr_wake] = call::$LCLS_LATTICE/bmad/wakefields/wakefield_SS_24.5mmR.bmad
+RWWAKE3H[sr_wake%scale_with_length] = F
+RWWAKE3H[sr_wake%amp_scale] = 182
 
-RWWAKE4S[sr_wake] = call::$LCLS_LATTICE/bmad/wakefields/wakefield_SS_24.5mmR.bmad
-RWWAKE4S[sr_wake%scale_with_length] = F
-RWWAKE4S[sr_wake%amp_scale] = 341.8
+RWWAKE4H[sr_wake] = call::$LCLS_LATTICE/bmad/wakefields/wakefield_Cu_17.4mmR.bmad
+RWWAKE4H[sr_wake%scale_with_length] = F
+RWWAKE4H[sr_wake%amp_scale] = 339.1
 
-RWWAKE5S[sr_wake] = call::$LCLS_LATTICE/bmad/wakefields/wakefield_Al_5mm_gap_flat.bmad
-RWWAKE5S[sr_wake%scale_with_length] = F
-RWWAKE5S[sr_wake%amp_scale] = 110
+RWWAKE5H[sr_wake] = call::$LCLS_LATTICE/bmad/wakefields/wakefield_Al_5mm_gap_flat.bmad
+RWWAKE5H[sr_wake%scale_with_length] = F
+RWWAKE5H[sr_wake%amp_scale] = 130
 
 ! 
 call, file =  $LCLS_LATTICE/bmad/overlays/cu/klystrons.bmad
@@ -82,5 +83,7 @@ call, file =  $LCLS_LATTICE/bmad/overlays/cu/linac_fudge_overlays.bmad
 !quad::*[field_master] = T
 
 
+CU_LINAC   : LINE=(GUNL0a,L0aL0b,LCLS2cuC)
 
+use, CU_LINAC
 

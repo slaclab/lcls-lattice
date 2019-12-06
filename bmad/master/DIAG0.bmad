@@ -1,10 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-2019next ***
+! *** OPTICS=AD_ACCEL-05DEC19 ***
 
 ! LCLS2sc post laser heater diagnostic beamline
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 26-NOV-2019, M. Woodley
+!  * undefer TCXDG0 per D. Yeremian
 ! ------------------------------------------------------------------------------
 ! 17-JAN-2018, M. Woodley
 !  * move BPMDG000 back to Z=33.832875 m per H. Alvarez (dY = +9.425 mm)
@@ -122,7 +125,7 @@ kqbd0 = -7.825140556488    !-13.410702917581
 ! (NOTE: TCYDG0 might be installed as an uprgade at a later time)
 
 tcydg0: lcavity, rf_frequency = 2856 * 1e6, type = "@4,TRANS_YDEF", l = 0.8/2 !Y-deflector (split)
-tcxdg0: lcavity, rf_frequency = 2856 * 1e6, type = "@1,TRANS_XDEF", l = 0.8/2 !X-deflector (split)
+tcxdg0: lcavity, rf_frequency = 2856 * 1e6, type = "TRANS_XDEF", l = 0.8/2 !X-deflector (split)
 
 ! ==============================================================================
 ! SBEN
@@ -185,7 +188,8 @@ blrdg0b: sbend, hgap = gs0/2, e2 = as0, fint = 0, fintx = 0.5, type = "0.79SD14.
 
 gh0 = 0.02
 zh0 = 0.4
-ah0h = xang02/2 !half-angle
+ah0 = xang02
+ah0h = ah0/2 !half-angle
 ah0h_2 = ah0h*ah0h
 ah0h_4 = ah0h_2*ah0h_2
 ah0h_6 = ah0h_4*ah0h_2
@@ -210,18 +214,29 @@ bydg0a: sbend, hgap = gbdmp0/2, e1 = ebdmp0, fint = fbdmp0, fintx = 0, type = "B
 bydg0b: sbend, hgap = gbdmp0/2, e2 = ebdmp0, fint = 0, fintx = fbdmp0, type = "BXS", ref_tilt =  &
         90*degrees, l = lbdmp0/2, angle = lbdmp0/2 * abdmp0/2/(lbdmp0/2)
 
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bkrdg0: sbend, hgap = gk0/2, e1 = 0, fint = 0.5, e2 = ak0, type = "1.378K35.4", ref_tilt =  &
+        90*degrees+srol0, l = lk0, angle = lk0 * ak0/lk0
+blrdg0: sbend, hgap = gs0/2, e1 = 0, fint = 0.5, e2 = as0, type = "0.79SD14.96", ref_tilt = srol0 &
+        , l = ls0, angle = ls0 * as0/ls0
+bxdg0: sbend, hgap = gh0/2, e1 = -ah0h, fint = 0.5, e2 = -ah0h, type = "0.79D14.96", l = lh0,  &
+        angle = lh0 * (-ah0)/lh0
+bydg0: sbend, hgap = gbdmp0/2, e1 = ebdmp0, fint = fbdmp0, e2 = ebdmp0, type = "BXS", ref_tilt =  &
+        90*degrees, l = lbdmp0, angle = lbdmp0 * abdmp0/lbdmp0
+
 ! ==============================================================================
 ! QUAD
 ! ------------------------------------------------------------------------------
 
-kqdg004 = 8.65061788321
+kqdg004 = 8.650617883208
 kqdg005 = -12.05998268496
 kqdg006 = 6.896965013903
 kqdg007 = -4.414274650315
 kqdg008 = 11.243156019147
-kqdg009 = -11.689200167842
-kqdg010 = 13.020676786885
-kqdg011 = -10.983650981441
+kqdg009 = -11.689200167844
+kqdg010 = 13.02067678689
+kqdg011 = -10.983650981418
 
 qdg001: quadrupole, type = "1.51Q7.00", l = lqs/2, aperture = rqs, k1 = kqbf0
 qdg002: quadrupole, type = "1.51Q7.00", l = lqs/2, aperture = rqs, k1 = kqbd0

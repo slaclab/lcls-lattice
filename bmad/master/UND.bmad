@@ -1,11 +1,16 @@
 
-! *** OPTICS=AD_ACCEL-2019next ***
+! *** OPTICS=AD_ACCEL-05DEC19 ***
 
 ! LCLS2sc undulator and undulator extension
 
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
+! 20-NOV-2019, M. Woodley
+!  * add BOD10 and BOD12 for SXRSS-II project per D. Bruch
+! 13-NOV-2019, M. Woodley
+!  * KQDHXM, KQUE1, KQUE2, and KQDMP values come from Y. Nosochkov's
+!    UNDH_KQ4_USDS.xsif file, for E= 4.0 GeV and KHXU= 2.0 (IntgHX= 30.0 kG)
 ! 17-JUL-2019, M. Woodley
 !  * add cell number to phase shifter names
 ! ------------------------------------------------------------------------------
@@ -258,9 +263,9 @@ pssx: wiggler, type = "PSSX",
     n_period = 1
 pssx[L] = pssx[L]/2 ! Will be doubled in desplitting process. 
 !---------------------------------
-!old: pssx: taylor, type = "PSSX", l = lpssxh, {1: 1.0, 1 0 0 0 0 0}, {1: lpssxh, 0 1 0 0 0 0}, {2: 0.0 &
-!old         , 1 0 0 0 0 0}, {2: 1.0, 0 1 0 0 0 0}, {3: cos(lpssxh*sqrt(kqpssx)), 0 0 1 0 0 0}, {3:  &
-!old         sin(lpssxh*sqrt(kqpssx))/sqrt(kqpssx), 0 0 0 1 0 0}, {4:  &
+!old: pssx: taylor, type = "phase shifter", l = lpssxh, {1: 1.0, 1 0 0 0 0 0}, {1: lpssxh, 0 1 0 0 0 0} &
+!old         , {2: 0.0, 1 0 0 0 0 0}, {2: 1.0, 0 1 0 0 0 0}, {3: cos(lpssxh*sqrt(kqpssx)), 0 0 1 0 0 0 &
+!old         }, {3: sin(lpssxh*sqrt(kqpssx))/sqrt(kqpssx), 0 0 0 1 0 0}, {4:  &
 !old         -sin(lpssxh*sqrt(kqpssx))*sqrt(kqpssx), 0 0 1 0 0 0}, {4: cos(lpssxh*sqrt(kqpssx)),  &
 !old         0 0 0 1 0 0}, {5: 1.0, 0 0 0 0 1 0}, {6: 1.0, 0 0 0 0 0 1}
 
@@ -316,13 +321,16 @@ due1e: drift, l = 0.057
 ! SXR extension quads
 ! ------------------------------------------------------------------------------
 
-! note: the below K-values are for SC beam; the settings for Cu beam are
-! in the "LCLS2cu_main.mad8" file
+! note: the below K-values come from Y. Nosochkov's UNDS_KQ5_US.xsif file,
+!       for E= 4.0 GeV and KSXU= 5.0 (IntgXS= 30.0 kG)
 
-kqsx16 = 0.589502458599 ! 0.584170476419
-kqsx19 = -0.91531741252  !-0.916029555737
-kqsx21 = 1.109876931688 ! 1.112214118849
-kqsx24 = -1.085714742294 !-1.119664961437
+! note: the below K-values are for SC beam; the settings for Cu beam are
+!       in the "LCLS2cu_main.mad8" file
+
+kqsx16 = 0.386434780667
+kqsx19 = -0.894006742269
+kqsx21 = 1.22862150816
+kqsx24 = -1.251292803834
 
 qsx16: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqsx16
 qsx19: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqsx19
@@ -457,8 +465,8 @@ sxcel23: line = (du1s, du2s, dusegs23, sxbrk23)
 sxcel24: line = (du1s, du2s, dusegs24, sxbrk24) !Q+RFBPM
 sxcel25: line = (du1s, du2s, dusegs25, sxbrk25) !RFBPM
 
-sxrxx: line = (begunds, sxxstart, du0s, qsx16_full, du6s, rfbsx16, du7s, sxcel17, sxcel18,  &
-        sxcel19, sxcel20, sxcel21, sxcel22, sxcel23, sxcel24, sxcel25, sxxterm)
+sxrxx: line = (sxxstart, du0s, qsx16_full, du6s, rfbsx16, du7s, sxcel17, sxcel18, sxcel19,  &
+        sxcel20, sxcel21, sxcel22, sxcel23, sxcel24, sxcel25, sxxterm)
 
 ! ------------------------------------------------------------------------------
 ! SXR undulator
@@ -489,7 +497,7 @@ gqfsx = intgsx/lqu/10*1.0           !T/m
 gqdsx = -intgsx/lqu/10*1.0           !T/m
 kqfsx = 1.e-9*gqfsx*c_light/gamu/mc2 !m^-2
 kqdsx = 1.e-9*gqdsx*c_light/gamu/mc2 !m^-2
-kqdsxm = -0.266792876891 !-0.406434161462
+kqdsxm = -1.28484                     !-0.266792876891
 
 qsx26: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfsx
 qsx27: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdsx
@@ -535,7 +543,7 @@ umasx: wiggler,
         
 umasx[L] = umasx[L]/2 ! Will be doubled in desplitting process. 
 !---------------------------------
-!old: umasx: taylor, type = "UMASX", l = lsxuh, {1: 1.0, 1 0 0 0 0 0}, {1: lsxuh, 0 1 0 0 0 0}, {2: 0.0 &
+!old: umasx: taylor, type = "VGHPU", l = lsxuh, {1: 1.0, 1 0 0 0 0 0}, {1: lsxuh, 0 1 0 0 0 0}, {2: 0.0 &
 !old         , 1 0 0 0 0 0}, {2: 1.0, 0 1 0 0 0 0}, {3: cos(lsxuh*sqrt(kqsx)), 0 0 1 0 0 0}, {3:  &
 !old         sin(lsxuh*sqrt(kqsx))/sqrt(kqsx), 0 0 0 1 0 0}, {4: -sin(lsxuh*sqrt(kqsx))*sqrt(kqsx),  &
 !old         0 0 1 0 0 0}, {4: cos(lsxuh*sqrt(kqsx)), 0 0 0 1 0 0}, {5: 1.0, 0 0 0 0 1 0}, {6: 1.0,  &
@@ -971,6 +979,16 @@ bcxss4a: sbend, hgap = gb5/2, e1 = +ab5, fint = 0.5, fintx = 0, type = "0.315D14
 bcxss4b: sbend, hgap = gb5/2, e2 = 0, fint = 0, fintx = 0.5, type = "0.315D14-C", l = lb5s, angle &
          = lb5s * (+ab5s)/lb5s
 
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bcxss1: sbend, hgap = gb5/2, e1 = 0, fint = 0.5, e2 = +ab5, type = "0.315D14-C", l = lb5, angle &
+         = lb5 * (+ab5)/lb5
+bcxss2: sbend, hgap = gb5/2, e1 = -ab5, fint = 0.5, e2 = 0, type = "0.315D14-C", l = lb5, angle &
+         = lb5 * (-ab5)/lb5
+bcxss3: sbend, hgap = gb5/2, e1 = 0, fint = 0.5, e2 = -ab5, type = "0.315D14-C", l = lb5, angle &
+         = lb5 * (-ab5)/lb5
+bcxss4: sbend, hgap = gb5/2, e1 = +ab5, fint = 0.5, e2 = 0, type = "0.315D14-C", l = lb5, angle &
+         = lb5 * (+ab5)/lb5
 
 lsssb2bo = 1.193 !outer bend center-to-center (PRD Table 3)
 lsssb2bi = 0.52  !inner bend center-to-center (PRD Table 3)
@@ -1521,6 +1539,15 @@ dqsx48: drift, l = lqu
 dqsx49: drift, l = lqu
 dqsx50: drift, l = lqu
 
+! SXRSS-II BOD's
+
+du4sa: drift, l = 0.117258
+bod10: instrument, type = "Overlap Detector"
+du4sb: drift, l = du4s[l]-du4sa[l]
+du7sa: drift, l = 0.078508
+bod12: instrument, type = "Overlap Detector"
+du7sb: drift, l = du7s[l]-du7sa[l]
+
 sxbrk26: line = (du3s, pssx26_full, du4s, vvsxu26, du5s, qsx26_full, du6s, rfbsx26, du7s)
 sxbrk27: line = (du3s, pssx27_full, du4s, du5s, qsx27_full, du6s, rfbsx27, du7s)
 sxbrk28: line = (du3s, pssx28_full, du4s, du5s, qsx28_full, du6s, rfbsx28, du7s)
@@ -1530,9 +1557,9 @@ sxbrk31: line = (du3s, pssx31_full, du4s, du5s, qsx31_full, du6s, rfbsx31, du7s)
 sxbrk32: line = (du3s, pssx32_full, du4s, vvsxu32, du5s, qsx32_full, du6s, rfbsx32, du7s)
 sxbrk33: line = (du3s, pssx33_full, du4s, du5s, qsx33_full, du6s, rfbsx33, du7s)
 sxbrk34: line = (du3s, pssx34_full, du4s, du5s, qsx34_full, du6s, rfbsx34, du7s)
-sxbrk35: line = (du3s, dpssx35, du4s, du5s, qsx35_full, du6s, rfbsx35, du7s)
+sxbrk35: line = (du3s, dpssx35, du4sa, bod10, du4sb, du5s, qsx35_full, du6s, rfbsx35, du7s)
 sxbrk36: line = (du3s, pssx36_full, du4s, du5s, qsx36_full, du6s, rfbsx36, du7s)
-sxbrk37: line = (du3s, pssx37_full, du4s, du5s, qsx37_full, du6s, rfbsx37, du7s)
+sxbrk37: line = (du3s, pssx37_full, du4s, du5s, qsx37_full, du6s, rfbsx37, du7sa, bod12, du7sb)
 sxbrk38: line = (du3s, pssx38_full, du4s, vvsxu38, du5s, qsx38_full, du6s, rfbsx38, du7s)
 sxbrk39: line = (du3s, pssx39_full, du4s, du5s, qsx39_full, du6s, rfbsx39, du7s)
 sxbrk40: line = (du3s, pssx40_full, du4s, du5s, qsx40_full, du6s, rfbsx40, du7s)
@@ -1586,8 +1613,8 @@ sxr: line = (sxrstart, sxrcl, rwwake5s, sxrterm, due1ab, rfbsx51, due1e, endunds
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-kque1b = -0.306247962224 !-0.297915551865
-kque2b = 0.394195575969 ! 0.390984021273
+kque1b = -0.066533038872 !-0.306247962224
+kque2b = 0.317255382568 ! 0.394195575969
 
 que1b: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kque1b
 que2b: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kque2b
@@ -1659,10 +1686,10 @@ pcpm0b: ecollimator, x_limit = 17.5e-3, y_limit = 17.5e-3, l = lpcpm
 
 mimundob: marker
 
-ph31b: instrument, type = "@0,2805 MHz" !post-undulator phase measurement RF cavity (low rate)
-ph32b: instrument, type = "@0,2805 MHz" !post-undulator phase measurement RF cavity (low rate)
-ph33b: instrument, type = "@1,2604 MHz" !post-undulator phase measurement RF cavity (high rate)
-ph34b: instrument, type = "@1,2604 MHz" !post-undulator phase measurement RF cavity (high rate)
+ph31b: instrument, type = "2805 MHz" !post-undulator phase measurement RF cavity (low rate)
+ph32b: instrument, type = "2805 MHz" !post-undulator phase measurement RF cavity (low rate)
+ph33b: instrument, type = "2604 MHz" !post-undulator phase measurement RF cavity (high rate)
+ph34b: instrument, type = "2604 MHz" !post-undulator phase measurement RF cavity (high rate)
 
 uebegb: marker
 vvtcxb: marker !XTCAV vacuum valve
@@ -1735,9 +1762,9 @@ pshx: wiggler, type = "PSHX",
     n_period = 1
 pshx[L] = pshx[L]/2 ! Will be doubled in desplitting process. 
 !---------------------------------
-!old: pshx: taylor, type = "PSHXh", l = lpshxh, {1: 1.0, 1 0 0 0 0 0}, {1: lpshxh, 0 1 0 0 0 0}, {2:  &
-!old         0.0, 1 0 0 0 0 0}, {2: 1.0, 0 1 0 0 0 0}, {3: cos(lpshxh*sqrt(kqpshx)), 0 0 1 0 0 0}, {3 &
-!old         : sin(lpshxh*sqrt(kqpshx))/sqrt(kqpshx), 0 0 0 1 0 0}, {4:  &
+!old: pshx: taylor, type = "phase shifter", l = lpshxh, {1: 1.0, 1 0 0 0 0 0}, {1: lpshxh, 0 1 0 0 0 0} &
+!old         , {2: 0.0, 1 0 0 0 0 0}, {2: 1.0, 0 1 0 0 0 0}, {3: cos(lpshxh*sqrt(kqpshx)), 0 0 1 0 0 0 &
+!old         }, {3: sin(lpshxh*sqrt(kqpshx))/sqrt(kqpshx), 0 0 0 1 0 0}, {4:  &
 !old         -sin(lpshxh*sqrt(kqpshx))*sqrt(kqpshx), 0 0 1 0 0 0}, {4: cos(lpshxh*sqrt(kqpshx)),  &
 !old         0 0 0 1 0 0}, {5: 1.0, 0 0 0 0 1 0}, {6: 1.0, 0 0 0 0 0 1}
 
@@ -1826,7 +1853,7 @@ gqfhx = intghx/lqu/10*1.0           !T/m
 gqdhx = -intghx/lqu/10*1.0           !T/m
 kqfhx = 1.e-9*gqfhx*c_light/gamu/mc2 !m^-2
 kqdhx = 1.e-9*gqdhx*c_light/gamu/mc2 !m^-2
-kqdhxm = -0.51857909178
+kqdhxm = -2.482122917065 !-0.51857909178
 
 qhx13: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
 qhx14: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
@@ -1885,7 +1912,7 @@ umahx: wiggler,
         
 umahx[L] = umahx[L]/2 ! Will be doubled in desplitting process. 
 !---------------------------------
-!old: umahx: taylor, type = "UMAHXh", l = lhxuh, {1: cos(lhxuh*sqrt(kqhx)), 1 0 0 0 0 0}, {1:  &
+!old: umahx: taylor, type = "HGVPU", l = lhxuh, {1: cos(lhxuh*sqrt(kqhx)), 1 0 0 0 0 0}, {1:  &
 !old         sin(lhxuh*sqrt(kqhx))/sqrt(kqhx), 0 1 0 0 0 0}, {2: -sin(lhxuh*sqrt(kqhx))*sqrt(kqhx),  &
 !old         1 0 0 0 0 0}, {2: cos(lhxuh*sqrt(kqhx)), 0 1 0 0 0 0}, {3: 1.0, 0 0 1 0 0 0}, {3: lhxuh,  &
 !old         0 0 0 1 0 0}, {4: 0.0, 0 0 1 0 0 0}, {4: 1.0, 0 0 0 1 0 0}, {5: 1.0, 0 0 0 0 1 0}, {6:  &
@@ -2522,6 +2549,17 @@ bcxhs4a: sbend, hgap = gb4/2, e1 = +ab4, fint = fb4, fintx = 0, type = "0.315D14
         angle = lb4l * (+ab4l)/lb4l
 bcxhs4b: sbend, hgap = gb4/2, e2 = 0, fint = 0, fintx = fb4, type = "0.315D14-C", l = lb4s, angle &
          = lb4s * (+ab4s)/lb4s
+
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bcxhs1: sbend, hgap = gb4/2, e1 = 0, fint = fb4, e2 = +ab4, type = "0.315D14-C", l = lb4, angle &
+         = lb4 * (+ab4)/lb4
+bcxhs2: sbend, hgap = gb4/2, e1 = -ab4, fint = fb4, e2 = 0, type = "0.315D14-C", l = lb4, angle &
+         = lb4 * (-ab4)/lb4
+bcxhs3: sbend, hgap = gb4/2, e1 = 0, fint = fb4, e2 = -ab4, type = "0.315D14-C", l = lb4, angle &
+         = lb4 * (-ab4)/lb4
+bcxhs4: sbend, hgap = gb4/2, e1 = +ab4, fint = fb4, e2 = 0, type = "0.315D14-C", l = lb4, angle &
+         = lb4 * (+ab4)/lb4
 
 lhssb2bo = 0.939 !outer bend center-to-center (PRD Table 3)
 lhssb2bi = 0.936 !inner bend center-to-center (PRD Table 3)
@@ -3434,8 +3472,7 @@ hxrcl: line = (hxcel13, hxcel14, hxcel15, hxcel16, hxcel17, hxcel18, hxcel19, hx
         , hxcel32, hxcel33, hxcel34, hxcel35, hxcel36, hxcel37, hxcel38, hxcel39, hxcel40,  &
         hxcel41, hxcel42, hxcel43, hxcel44, hxcel45, hxcel46, hxcel47, hxcel48, hxcel49, hxcel50)
 
-hxr: line = (begundh, du0h, du8h, hxrstart, hxrcl, rwwake5h, hxrterm, due1a, rfbhx51, due1e,  &
-        endundh)
+hxr: line = (du0h, du8h, hxrstart, hxrcl, rwwake5h, hxrterm, due1a, rfbhx51, due1e, endundh)
 
 ! ------------------------------------------------------------------------------
 ! HXR undulator exit section
@@ -3444,8 +3481,8 @@ hxr: line = (begundh, du0h, du8h, hxrstart, hxrcl, rwwake5h, hxrterm, due1a, rfb
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-kque1 = -0.09207220416
-kque2 = 0.160489725306
+kque1 = 0.178908931125 !-0.09207220416
+kque2 = -0.136231234699 ! 0.160489725306
 
 que1: quadrupole, type = "3.25Q20", l = lqd/2, aperture = rqd, k1 = kque1
 que2: quadrupole, type = "3.25Q20", l = lqd/2, aperture = rqd, k1 = kque2
@@ -3487,10 +3524,10 @@ btm0: instrument !Burn-Through-Monitor behind the PCPM0
 pctcx: ecollimator, x_limit = 4.5e-3, y_limit = 4.5e-3 !XTCAV photon collimator (9 mm aperture)
 pcpm0: ecollimator, x_limit = 17.5e-3, y_limit = 17.5e-3, l = lpcpm
 
-ph31: instrument, type = "2805 MHz"    !post-undulator phase measurement RF cavity (existing LCLS device)
-ph32: instrument, type = "2805 MHz"    !post-undulator phase measurement RF cavity (existing LCLS device)
-ph33: instrument, type = "@1,2604 MHz" !post-undulator phase measurement RF cavity (high rate)
-ph34: instrument, type = "@1,2604 MHz" !post-undulator phase measurement RF cavity (high rate)
+ph31: instrument, type = "2805 MHz" !post-undulator phase measurement RF cavity (existing LCLS device)
+ph32: instrument, type = "2805 MHz" !post-undulator phase measurement RF cavity (existing LCLS device)
+ph33: instrument, type = "2604 MHz" !post-undulator phase measurement RF cavity (high rate)
+ph34: instrument, type = "2604 MHz" !post-undulator phase measurement RF cavity (high rate)
 
 uebeg: marker
 ueend: marker
