@@ -1,12 +1,21 @@
 beginning[beta_a] = 10
 beginning[beta_b] = 10
 
-beginning[e_tot] = 100e6
+
+
+BEGINNING[BETA_A] =   1.30072027093474E+02
+BEGINNING[ALPHA_A] =   5.15119476753127E+01
+BEGINNING[BETA_B] =   1.31470868757280E+02
+BEGINNING[ALPHA_B] =   5.20215835142379E+01
+
+beginning[p0c] = 750e3
+
+parameter[absolute_time_tracking] = T
 
 parameter[geometry] = open
 parameter[particle] = electron
 
-call, file = $LCLS_LATTICE/bmad/master/SC_SXR.bmad
+call, file = $LCLS_LATTICE/bmad/master/SC_DASEL.bmad
 call, file = $LCLS_LATTICE/bmad/master/LCLSsc_devicenames.bmad
 
 ! L1
@@ -30,20 +39,9 @@ QCM35[K1] =  -2.11134816854549E-03
 
 
 
+
 lcavity::*[ds_step] = .01
 sbend::*[fringe_type] = full
-
-
-!call, file = beginning/beginning_BEGHTR.bmad
-!use, lcls2scc
-
-!lat: line = (lcls2scc, LCLS2scS)
-!use, lat
-
-
-
-call, file = beginning_BEAM0.bmad
-call, file = floor_BEAM0.bmad
 
 
 RWWAKE1[sr_wake] = call::$LCLS_LATTICE/bmad/wakefields/wakefield_SS_24.5mmR.bmad
@@ -68,10 +66,5 @@ RWWAKE5S[sr_wake%scale_with_length] = F
 RWWAKE5S[sr_wake%amp_scale] = 100
 
 
-lat2: line = (LCLS2scI, lcls2scc)
-lat3: line = (LCLS2scI, lcls2scc, LCLS2scS)
-!use, lat3
 
-
-!use, SC_SXR
-use, SC_SXRi
+use, SC_DASEL
