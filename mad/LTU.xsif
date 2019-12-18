@@ -6,6 +6,9 @@
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
+! 12-DEC-2019, M. Woodley
+!  * move XLEAP wiggler to SXX (cell 17)
+!  * add "h" to UMXL1-4 (-> UMLX1-4h)
 ! 05-NOV-2019, M. Woodley
 !  * add BCS "collimator" plates per E. Johnson spreadsheet (10/24/2019)
 !  * remove LCLS CX31 per D. Hanquist
@@ -1367,7 +1370,7 @@
 ! undulator segment modeled as R-matrix to include vertical natural focusing
 ! over all but its edge terminations:
 
-  UMXL : MATR, TYPE="LCLS-I", L=Lundh, &
+  UMXLh : MATR, TYPE="LCLS-I", L=Lundh, &
     RM(1,1) = 1.0, &
     RM(1,2) = Lundh, &
     RM(2,1) = 0.0, &
@@ -1377,10 +1380,10 @@
     RM(4,3) = -sin(ARGu)*sqrt(kqund), &
     RM(4,4) = cos(ARGu)
 
-  UMXL1 : UMXL
-  UMXL2 : UMXL
-  UMXL3 : UMXL
-  UMXL4 : UMXL
+  UMXL1h : UMXLh
+  UMXL2h : UMXLh
+  UMXL3h : UMXLh
+  UMXL4h : UMXLh
 
   shrt  := 0.470                                 !standard short break length [m]
   LRFBu := 0                                     !undulator RF-BPM only implemented as zero length monitor
@@ -1406,18 +1409,18 @@
   DUUf  : DRIF, L=DUU[L]+DRFBf
   DBRSf : DRIF, L=DBRS[L]-DRFBf
 
-  UMXL1_full : LINE=(UMXL1,UMXL1)
-  UMXL2_full : LINE=(UMXL2,UMXL2)
-  UMXL3_full : LINE=(UMXL3,UMXL3)
-  UMXL4_full : LINE=(UMXL4,UMXL4)
+  UMXL1h_full : LINE=(UMXL1h,UMXL1h)
+  UMXL2h_full : LINE=(UMXL2h,UMXL2h)
+  UMXL3h_full : LINE=(UMXL3h,UMXL3h)
+  UMXL4h_full : LINE=(UMXL4h,UMXL4h)
 
-  XL2UND1 : LINE=(DRFBXL,DBRSf,DBWM,DB4,DT,UMXL1_full,DT)
-  XL2UND2 : LINE=(DRFBXL,DBRSf,DBWM,DB4,DT,UMXL2_full,DT)
-  XL2UND3 : LINE=(DRFBXL,DBRSf,DBWM,DB4,DT,UMXL3_full,DT)
-  XL2UND4 : LINE=(DRFBXL,DBRSf,DBWM,DB4,DT,UMXL4_full,DT)
+  XL2UND1 : LINE=(DRFBXL,DBRSf,DBWM,DB4,DT,UMXL1h_full,DT)
+  XL2UND2 : LINE=(DRFBXL,DBRSf,DBWM,DB4,DT,UMXL2h_full,DT)
+  XL2UND3 : LINE=(DRFBXL,DBRSf,DBWM,DB4,DT,UMXL3h_full,DT)
+  XL2UND4 : LINE=(DRFBXL,DBRSf,DBWM,DB4,DT,UMXL4h_full,DT)
 
-  LXL2UND := 2*(DRFBXL[L]+DBRS[L]+DBWM[L]+DB4[L]+DT[L]+UMXL1[L]+ &
-             UMXL1[L]+DT[L])+2*DUU[L]
+  LXL2UND := 2*(DRFBXL[L]+DBRS[L]+DBWM[L]+DB4[L]+DT[L]+UMXL1h[L]+ &
+             UMXL1h[L]+DT[L])+2*DUU[L]
 
 ! drifts around undulator pair
 
@@ -1549,42 +1552,6 @@
   DXLUd3f : DRIF, L=DXLUd3[L]+DRFBf !flip RF BPM
 
 ! ------------------------------------------------------------------------------
-! original XLEAP wiggler
-! ------------------------------------------------------------------------------
-
-! wiggler is modeled as R-matrix to include natural vertical focusing;
-! it is nominally OFF (opened to full gap, with Kwig~2); at minimum gap, Kwig=50
-
-  Kwig  := 34                                        !wiggler parameter [m^-1]
-  lamw  := 0.34                                      !wiggler period [m]
-  Lwigh := 2.38/2                                    !wiggler half-length [m]
-  gamw  := Eu/mc2                                    !Lorentz energy factor in wiggler [ ]
-  kqwig := SETXLEAP2*(2*pi*Kwig/lamw/sqrt(2)/gamw)^2 !natural vertical focusing "k" [m^-2]
-
-! handle Kwig->0 by expressing R34 as an approximate SINC function
-
-  ARGw     := Lwigh*sqrt(kqwig)
-  ARGw2    := ARGw*ARGw
-  ARGw4    := ARGw2*ARGw2
-  ARGw6    := ARGw4*ARGw2
-  SINCARGw := 1-ARGw2/6+ARGw4/120-ARGw6/5040 !~sinc(ARGw)=sin(ARGw)/ARGw
-  R34w     := Lwigh*SINCARGw
-
-  WIGXL : MATR, TYPE="variable gap", &
-    L       = Lwigh, &
-    RM(1,1) = 1.0, &
-    RM(1,2) = Lwigh, &
-    RM(2,1) = 0.0, &
-    RM(2,2) = 1.0, &
-    RM(3,3) = cos(ARGw), &
-    RM(3,4) = R34w, &
-    RM(4,3) = -sin(ARGw)*sqrt(kqwig), &
-    RM(4,4) = cos(ARGw)
-
- !VALUE, WIGXL[RM(1,1)],WIGXL[RM(1,2)],WIGXL[RM(2,1)],WIGXL[RM(2,2)]
- !VALUE, WIGXL[RM(3,3)],WIGXL[RM(3,4)],WIGXL[RM(4,3)],WIGXL[RM(4,4)]
-
-! ------------------------------------------------------------------------------
 ! SXR emittance diagnostic beamline
 ! ------------------------------------------------------------------------------
 
@@ -1682,11 +1649,6 @@
   DMUON1b    : DRIF, L=0.154859 +0.05 -0.060429
   DMUON3b    : DRIF, L=0.310592 -0.05
 
-  DW2TDb1 : DRIF, L=61.51*in2m-WIGXL[L]
-  DW2TDb2 : DRIF, L=DW2TDUNDb[L]-DW2TDb1[L]-2*WIGXL[L]
- !VALUE, DW2TDb1[L],DW2TDb2[L]
- !VALUE, DW2TDb1[L]+2*WIGXL[L]+DW2TDb2[L],DW2TDUNDb[L]
-
   BPMUM1B : MONI, TYPE="Stripline-2"
   BPMUM2B : MONI, TYPE="Stripline-2"
   BPMUM3B : MONI, TYPE="Stripline-2"
@@ -1718,10 +1680,6 @@
   DBMARK37b : MARK !end of undulator match
   RWWAKE4S  : MARK, TYPE="WAKE" !LTUS beampipe wake applied here
 
-  WIGXL_full : LINE=(WIGXL,WIGXL)
- !LW2TDb     : LINE=(DW2TDUNDb)
-  LW2TDb     : LINE=(DW2TDb1,WIGXL_full,DW2TDb2)
-
   QUM1B_full : LINE=(QUM1B,BPMUM1B,QUM1B)
   QUM2B_full : LINE=(QUM2B,BPMUM2B,QUM2B)
   QUM3B_full : LINE=(QUM3B,BPMUM3B,QUM3B)
@@ -1732,7 +1690,8 @@
     QUM2B_full,DUM2B,DU3m80cmB,XCUM3B,DUM3A,&
     QUM3B_full,DUM3B,D40cma,DU4m120cmB,YCUM4B,DUM4A,&
     QUM4B_full,DUM4B,DU5m80cmB,D40cmW,MUHWALL1b,DUHWALL1,DUHVEST,MUHWALL2b,&
-      DUHWALL2,LW2TDb,DTDUND1,TDUNDB,DTDUND2,DPCMUON,PCMUONb,DMUON1b,VV999b)
+      DUHWALL2,DW2TDUNDb,DTDUND1,TDUNDB,DTDUND2,DPCMUON,PCMUONb,DMUON1b,&
+      VV999b)
 
   LTUsc : LINE=(MM1b,DL2sc,VBSYSb,MM2b,EDMCHb,EDSYSb,UNMCHb)
 

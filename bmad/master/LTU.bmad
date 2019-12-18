@@ -6,6 +6,9 @@
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
+! 12-DEC-2019, M. Woodley
+!  * move XLEAP wiggler to SXX (cell 17)
+!  * add "h" to UMXL1-4 (-> UMLX1-4h)
 ! 05-NOV-2019, M. Woodley
 !  * add BCS "collimator" plates per E. Johnson spreadsheet (10/24/2019)
 !  * remove LCLS CX31 per D. Hanquist
@@ -1462,14 +1465,14 @@ r34u = lundh*sincargu
 ! undulator segment modeled as R-matrix to include vertical natural focusing
 ! over all but its edge terminations:
 
-umxl: taylor, type = "LCLS-I", l = lundh, {1: 1.0, 1 0 0 0 0 0}, {1: lundh, 0 1 0 0 0 0}, {2: 0.0 &
-        , 1 0 0 0 0 0}, {2: 1.0, 0 1 0 0 0 0}, {3: cos(argu), 0 0 1 0 0 0}, {3: r34u, 0 0 0 1 0 0 &
-        }, {4: -sin(argu)*sqrt(kqund), 0 0 1 0 0 0}, {4: cos(argu), 0 0 0 1 0 0}
+umxlh: taylor, type = "LCLS-I", l = lundh, {1: 1.0, 1 0 0 0 0 0}, {1: lundh, 0 1 0 0 0 0}, {2:  &
+        0.0, 1 0 0 0 0 0}, {2: 1.0, 0 1 0 0 0 0}, {3: cos(argu), 0 0 1 0 0 0}, {3: r34u,  &
+        0 0 0 1 0 0}, {4: -sin(argu)*sqrt(kqund), 0 0 1 0 0 0}, {4: cos(argu), 0 0 0 1 0 0}
 
-umxl1: umxl
-umxl2: umxl
-umxl3: umxl
-umxl4: umxl
+umxl1h: umxlh
+umxl2h: umxlh
+umxl3h: umxlh
+umxl4h: umxlh
 
 shrt = 0.470                                 !standard short break length [m]
 lrfbu = 0                                     !undulator RF-BPM only implemented as zero length monitor
@@ -1497,35 +1500,35 @@ dbrsf: drift, l = dbrs[l]-drfbf
 
 
 
-!Old split line: line = (umxl1, umxl1)
+!Old split line: line = (umxl1h, umxl1h)
 
-umxl1_full: line = (umxl1)
-umxl1[L] = 2*umxl1[L]
-
-
-!Old split line: line = (umxl2, umxl2)
-
-umxl2_full: line = (umxl2)
-umxl2[L] = 2*umxl2[L]
+umxl1h_full: line = (umxl1h)
+umxl1h[L] = 2*umxl1h[L]
 
 
-!Old split line: line = (umxl3, umxl3)
+!Old split line: line = (umxl2h, umxl2h)
 
-umxl3_full: line = (umxl3)
-umxl3[L] = 2*umxl3[L]
+umxl2h_full: line = (umxl2h)
+umxl2h[L] = 2*umxl2h[L]
 
 
-!Old split line: line = (umxl4, umxl4)
+!Old split line: line = (umxl3h, umxl3h)
 
-umxl4_full: line = (umxl4)
-umxl4[L] = 2*umxl4[L]
+umxl3h_full: line = (umxl3h)
+umxl3h[L] = 2*umxl3h[L]
 
-xl2und1: line = (drfbxl, dbrsf, dbwm, db4, dt, umxl1_full, dt)
-xl2und2: line = (drfbxl, dbrsf, dbwm, db4, dt, umxl2_full, dt)
-xl2und3: line = (drfbxl, dbrsf, dbwm, db4, dt, umxl3_full, dt)
-xl2und4: line = (drfbxl, dbrsf, dbwm, db4, dt, umxl4_full, dt)
 
-lxl2und = 2*(drfbxl[l]+dbrs[l]+dbwm[l]+db4[l]+dt[l]+umxl1[l]+umxl1[l]+dt[l])+2*duu[l]
+!Old split line: line = (umxl4h, umxl4h)
+
+umxl4h_full: line = (umxl4h)
+umxl4h[L] = 2*umxl4h[L]
+
+xl2und1: line = (drfbxl, dbrsf, dbwm, db4, dt, umxl1h_full, dt)
+xl2und2: line = (drfbxl, dbrsf, dbwm, db4, dt, umxl2h_full, dt)
+xl2und3: line = (drfbxl, dbrsf, dbwm, db4, dt, umxl3h_full, dt)
+xl2und4: line = (drfbxl, dbrsf, dbwm, db4, dt, umxl4h_full, dt)
+
+lxl2und = 2*(drfbxl[l]+dbrs[l]+dbwm[l]+db4[l]+dt[l]+umxl1h[l]+umxl1h[l]+dt[l])+2*duu[l]
 
 ! drifts around undulator pair
 
@@ -1651,35 +1654,6 @@ dxlud1: drift, l = 0.323714
 dxlud2: drift, l = 0.393700
 dxlud3: drift, l = dxlud[l]-dxlud1[l]-dxlud2[l]
 dxlud3f: drift, l = dxlud3[l]+drfbf !flip RF BPM
-
-! ------------------------------------------------------------------------------
-! original XLEAP wiggler
-! ------------------------------------------------------------------------------
-
-! wiggler is modeled as R-matrix to include natural vertical focusing;
-! it is nominally OFF (opened to full gap, with Kwig~2); at minimum gap, Kwig=50
-
-kwig = 34                                        !wiggler parameter [m^-1]
-lamw = 0.34                                      !wiggler period [m]
-lwigh = 2.38/2                                    !wiggler half-length [m]
-gamw = eu/mc2                                    !Lorentz energy factor in wiggler [ ]
-kqwig = setxleap2*(2*pi*kwig/lamw/sqrt(2)/gamw)^2 !natural vertical focusing "k" [m^-2]
-
-! handle Kwig->0 by expressing R34 as an approximate SINC function
-
-argw = lwigh*sqrt(kqwig)
-argw2 = argw*argw
-argw4 = argw2*argw2
-argw6 = argw4*argw2
-sincargw = 1-argw2/6+argw4/120-argw6/5040 !~sinc(ARGw)=sin(ARGw)/ARGw
-r34w = lwigh*sincargw
-
-wigxl: taylor, type = "variable gap", l = lwigh, {1: 1.0, 1 0 0 0 0 0}, {1: lwigh, 0 1 0 0 0 0} &
-        , {2: 0.0, 1 0 0 0 0 0}, {2: 1.0, 0 1 0 0 0 0}, {3: cos(argw), 0 0 1 0 0 0}, {3: r34w,  &
-        0 0 0 1 0 0}, {4: -sin(argw)*sqrt(kqwig), 0 0 1 0 0 0}, {4: cos(argw), 0 0 0 1 0 0}
-
- !VALUE, WIGXL[R11],WIGXL[R12],WIGXL[R21],WIGXL[R22]
- !VALUE, WIGXL[R33],WIGXL[R34],WIGXL[R43],WIGXL[R44]
 
 ! ------------------------------------------------------------------------------
 ! SXR emittance diagnostic beamline
@@ -1847,11 +1821,6 @@ dmuon1: drift, l = 0.154859+0.05
 dmuon1b: drift, l = 0.154859+0.05-0.060429
 dmuon3b: drift, l = 0.310592-0.05
 
-dw2tdb1: drift, l = 61.51*in2m-wigxl[l]
-dw2tdb2: drift, l = dw2tdundb[l]-dw2tdb1[l]-2*wigxl[l]
- !VALUE, DW2TDb1[L],DW2TDb2[L]
- !VALUE, DW2TDb1[L]+2*WIGXL[L]+DW2TDb2[L],DW2TDUNDb[L]
-
 bpmum1b: instrument, type = "Stripline-2"
 bpmum2b: instrument, type = "Stripline-2"
 bpmum3b: instrument, type = "Stripline-2"
@@ -1882,15 +1851,6 @@ muhwall1b: marker !upstream end of BTH/UH wall-1
 muhwall2b: marker !upstream end of BTH/UH wall-2
 dbmark37b: marker !end of undulator match
 rwwake4s: marker, type = "WAKE" !LTUS beampipe wake applied here
-
-
-
-!Old split line: line = (wigxl, wigxl)
-
-wigxl_full: line = (wigxl)
-wigxl[L] = 2*wigxl[L]
- !LW2TDb     : LINE=(DW2TDUNDb)
-lw2tdb: line = (dw2tdb1, wigxl_full, dw2tdb2)
 
 
 
@@ -1928,7 +1888,7 @@ bpmum4b[ref] = qum4b
 unmchb: line = (du1m80cm, dcx37, d32cmcb, dum1a, qum1b_full, dum1b, xcum1b, d32cm, du2m120cmb,  &
         dcy38, d32cma, ycum2b, dum2a, qum2b_full, dum2b, du3m80cmb, xcum3b, dum3a, qum3b_full,  &
         dum3b, d40cma, du4m120cmb, ycum4b, dum4a, qum4b_full, dum4b, du5m80cmb, d40cmw, muhwall1b &
-        , duhwall1, duhvest, muhwall2b, duhwall2, lw2tdb, dtdund1, tdundb, dtdund2, dpcmuon,  &
+        , duhwall1, duhvest, muhwall2b, duhwall2, dw2tdundb, dtdund1, tdundb, dtdund2, dpcmuon,  &
         pcmuonb, dmuon1b, vv999b)
 
 ltusc: line = (mm1b, dl2sc, vbsysb, mm2b, edmchb, edsysb, unmchb)
