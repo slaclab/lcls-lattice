@@ -30,36 +30,8 @@ QCM29[K1] =   1.82961998578843E-01
 QCM35[K1] =  -2.11134816854549E-03
 
 
-
-
 lcavity::*[ds_step] = .01
 sbend::*[fringe_type] = full
-
-
-!call, file = beginning/beginning_BEGHTR.bmad
-!use, lcls2scc
-
-!lat: line = (lcls2scc, LCLS2scS)
-!use, lat
-
-! Beginning for ele: BEAM0
-BEGINNING[BETA_A] =   9.34799999999386E+00
-BEGINNING[ALPHA_A] =  -1.69459999999829E+00
-BEGINNING[BETA_B] =   9.48702794424903E+00
-BEGINNING[ALPHA_B] =  -1.75970623484325E+00
-beginning[eta_x] =  0.000000000E+00
-beginning[eta_x] =  0.000000000E+00
-beginning[s] =  0.000000000E+00
-beginning[e_tot] = 100000000.0
-
-
-! WOODDOOR should be at:
-! X Y Z =  -0.650494      0.649478   3050.512000
-
-! Floor BEAM0
-beginning[z_position] = (3050.512000 - 3046.59781)
-beginning[x_position] = -0.650494 - (-0.93049 )
-
 
 
 RWWAKE1[sr_wake] = call::$LCLS_LATTICE/bmad/wakefields/wakefield_SS_24.5mmR.bmad
@@ -89,5 +61,8 @@ lat3: line = (LCLS2scI, lcls2scc, LCLS2scS)
 !use, lat3
 
 
-!use, SC_SXR
-use, SC_HXRi
+use, SC_HXR
+call, file = beginning_BEGGUNB.bmad
+
+!call, file = beginning_BEAM0.bmad
+!use, SC_HXRi
