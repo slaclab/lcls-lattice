@@ -1,0 +1,133 @@
+OPTION, ECHO=FALSE; 
+OPTION, INFO=FALSE;		//psdump and statdump are in time steps
+OPTION, STATDUMPFREQ = 10;	//How often beam stats dumped to .stat.  
+OPTION, PSDUMPFREQ = 300000000;
+OPTION, AUTOPHASE=4;		//Always leave this on, unless doing a phase scan
+Option, VERSION=10900;
+Option, ENABLEHDF5=FALSE; 
+
+Title, string="LCLS Gun";
+
+//------------------------------------------------------------------------
+//					Global Parameters
+
+REAL rf_freq         	     = 2855.9985e9;        //RF frequency. (Hz)
+REAL n_particles             = 1.0e4;        //Number of particles in simulation.
+REAL beam_bunch_charge       = 250.0*1e-12;     //Charge of bunch. (C)
+REAL beam_current            = rf_freq*beam_bunch_charge*1e6;
+
+//Initial energy Calc
+REAL Edes    = 1.4e-9;
+REAL gamma   = (Edes+EMASS)/EMASS;
+REAL beta    = sqrt(1-(1/gamma^2));
+REAL P0      = gamma*beta*EMASS;
+
+value , {Edes, P0}; 					
+
+//-------------------------------------------------------------------------------------
+// Gun
+//
+// Cavity/RF field.
+//
+// L:			physical element length (real in m). Length (of field map) (m).
+// VOLT:		field scaling factor (real). RF field magnitude (MV/m).
+// FMAPFN:		field file name (string)
+// ELEMEDGE:		physical start of the element on the floor (real in m)
+// TYPE:		specifies "STANDING" (default), "TRAVELLING" or "SINGLE GAP" structure
+// FREQ:		RF frequency of cavity (real in MHz). Resonance frequency.
+// LAG:			cavity phase (radians)
+//
+
+
+GUN:	RFCavity, L = 0.15, VOLT = 120.0, ELEMEDGE = 0.0, TYPE = "STANDING", 		
+        FMAPFN = "../fieldmaps/lcls_gun_2D.T7",
+	    FREQ = 2855.9985, LAG = 0.0; 
+
+//-------------------------------------------------------------------------------------
+// Solenoids
+//
+// L:           Physcial element length (m)
+// ELEMEDGE:    Physcial start of element (m)
+// KS:          Solenoid strength (T/m)
+// FMAPFM:      Field file (string)
+
+// Buck Focusing Solenoid
+// 	Max value in BF file  = 0.162544398
+// 	I usually run this magnet at 90%-100%
+//
+
+REAL SFB = 0.25; 
+
+BF:	Solenoid, L = 0.6, ELEMEDGE=0.0, KS = SFB,
+	FMAPFN = "../fieldmaps/lcls_gun_solenoid.T7";
+
+         
+//Drift Space 
+DR1:    DRIFT, L = 1, ELEMEDGE = 1.0; 
+
+//--------------------------------------------------------------------------------
+// YAG Screens
+
+DRIVE:  Line = (GUN, BF, DR1);
+//-------------------------------------------------------------------------------------
+// INITIAL DISTRIBUTION: FLATTOP
+
+Dist: DISTRIBUTION, TYPE = FLATTOP, //FROMFILE,   // FLATTOP,
+		SIGMAX = 0.0006,		// Radius of laser (m) 
+		SIGMAY = 0.0006, 		
+		TRISE = 1.0745e-12,	// (s)
+		TFALL = 1.0745e-12,	// See notes above for equation of TRISE 
+		TPULSEFWHM = 2e-12,	// FWHM length in time (s)
+		CUTOFFLONG = 4.0,
+		NBIN = 9,
+		EMISSIONSTEPS = 100,
+		EMISSIONMODEL = NONEQUIL,
+		EKIN = 0.2,
+		ELASER = 5.0,
+		W = 3.2,
+		FE = 3.2,
+		CATHTEMP = 321.95,
+		EMITTED = True,
+		WRITETOFILE = True;
+
+//-------------------------------------------------------------------------------------
+// Define Field solvers
+// The mesh sizes should be a factor of 2 for most efficient space charge (SC) calculation.
+
+FS_SC: Fieldsolver, FSTYPE = FFT, 
+      		    	MX = 16, MY = 16, MT = 32,
+		    		PARFFTX = false, 
+		    		PARFFTY = false, 
+		    		PARFFTT = true,
+		    		BCFFTX = open, 
+		    		BCFFTY = open, 
+		    		BCFFTT = open,
+		    		BBOXINCR = 1, 
+		    		GREENSF = INTEGRATED;
+
+//-------------------------------------------------------------------------------------
+// Beam Definition
+
+BEAM1: BEAM, PARTICLE = ELECTRON,
+	pc = P0, NPART = n_particles, BFREQ = rf_freq,
+      	BCURRENT = beam_current, CHARGE = -1;
+
+//-------------------------------------------------------------------------------------
+// Run beamline
+
+TRACK, LINE = DRIVE, BEAM = BEAM1, MAXSTEPS = 1900000, DT = {5.0e-13, 1.0e-11}, ZSTOP={0.15, 1.0}; 
+RUN, METHOD = "PARALLEL-T", BEAM = BEAM1, FIELDSOLVER = FS_SC, DISTRIBUTION = Dist;
+ENDTRACK;
+
+Stop; 
+Quit;
+
+
+
+
+
+
+
+
+
+
