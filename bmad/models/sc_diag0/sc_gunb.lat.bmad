@@ -1,0 +1,64 @@
+beginning[beta_a] = 10
+beginning[beta_b] = 10
+
+beginning[e_tot] = 100e6
+
+parameter[geometry] = open
+parameter[particle] = electron
+
+call, file = $LCLS_LATTICE/bmad/master/SC_HXR.bmad
+call, file = $LCLS_LATTICE/bmad/master/LCLSsc_devicenames.bmad
+
+
+
+! L1
+QC010[K1] =   1.10907301035523E+00
+QC011[K1] =  -1.35327509795726E+00
+QC012[K1] =   1.15177037295712E+00
+QCM02[K1] =  -3.20734975170457E-01
+QCM03[K1] =   2.30227751771640E-01
+
+! L2
+QCM04[K1] =  -3.34191128704008E-01
+QCM08[K1] =  -1.70402903006386E-01
+QCM11[K1] =   1.85190403717999E-01
+QCM15[K1] =   6.90228548409218E-02
+
+! L3
+QCM16[K1] =  -3.20560500520915E-01
+QCM22[K1] =  -1.90258142314360E-01
+QCM29[K1] =   1.82961998578843E-01
+QCM35[K1] =  -2.11134816854549E-03
+
+
+! WOODDOOR should be at:
+! X Y Z =  -0.650494      0.649478   3050.512000
+
+
+lcavity::*[ds_step] = .01
+sbend::*[fringe_type] = full
+
+RWWAKE1[sr_wake] = call::$LCLS_LATTICE/bmad/wakefields/wakefield_SS_24.5mmR.bmad
+RWWAKE1[sr_wake%scale_with_length] = F
+RWWAKE1[sr_wake%amp_scale] = 105.6
+
+
+RWWAKE2[sr_wake] = call::$LCLS_LATTICE/bmad/wakefields/wakefield_SS_24.5mmR.bmad
+RWWAKE2[sr_wake%scale_with_length] = F
+RWWAKE2[sr_wake%amp_scale] = 2035.2
+
+RWWAKE3S[sr_wake] = call::$LCLS_LATTICE/bmad/wakefields/wakefield_SS_24.5mmR.bmad
+RWWAKE3S[sr_wake%scale_with_length] = F
+RWWAKE3S[sr_wake%amp_scale] = 443.8
+
+RWWAKE4S[sr_wake] = call::$LCLS_LATTICE/bmad/wakefields/wakefield_SS_24.5mmR.bmad
+RWWAKE4S[sr_wake%scale_with_length] = F
+RWWAKE4S[sr_wake%amp_scale] = 341.8
+
+RWWAKE5S[sr_wake] = call::$LCLS_LATTICE/bmad/wakefields/wakefield_Al_5mm_gap_flat.bmad
+RWWAKE5S[sr_wake%scale_with_length] = F
+RWWAKE5S[sr_wake%amp_scale] = 100
+
+
+call, file = beginning_BEGGUNB.bmad
+use, sc_diag0
