@@ -1,0 +1,81 @@
+OPTION, ECHO=FALSE; 
+OPTION, INFO=FALSE;		//psdump and statdump are in time steps
+OPTION, STATDUMPFREQ = 10;	//How often beam stats dumped to .stat.  
+OPTION, PSDUMPFREQ = 300000000;
+OPTION, AUTOPHASE=4;		//Always leave this on, unless doing a phase scan
+Option, VERSION=20200;
+Option, ENABLEHDF5=FALSE; 
+
+Title, string="LCLS2";
+
+//------------------------------------------------------------------------
+//					Global Parameters
+
+REAL rf_freq         	     = 187.0e6;        //RF frequency. (Hz)
+REAL n_particles             = 1e4;            //Number of particles in simulation.
+REAL beam_bunch_charge       = 100.0*1e-12;    //Charge of bunch. (C)
+REAL beam_current            = rf_freq*beam_bunch_charge*1e6;
+
+//Initial energy Calc
+REAL Edes    = 1.4e-9;
+REAL gamma   = (Edes+EMASS)/EMASS;
+REAL beta    = sqrt(1-(1/gamma^2));
+REAL P0      = gamma*beta*EMASS;
+
+value , {Edes, P0}; 					
+
+// Element definitions
+CALL, FILE = "gunb.in";
+CALL, FILE = "cryomodule1.in";
+
+//Drift Space 
+DR1:    DRIFT, L = 5.0, ELEMEDGE = 2.0; 
+
+//--------------------------------------------------------------------------------
+// Accelerator lines
+
+SC_INJ:  Line = (EIC, CM1);
+//-------------------------------------------------------------------------------------
+
+// Distribution definition
+//CALL, FILE = "fromfile.in";
+Dist:DISTRIBUTION, TYPE = FROMFILE,
+                   FNAME = "opal_emitted_1e4.txt",
+                   EMITTED = TRUE,
+                   EMISSIONMODEL = ASTRA;
+
+
+//-------------------------------------------------------------------------------------
+// Define Field solvers
+// The mesh sizes should be a factor of 2 for most efficient space charge (SC) calculation.
+
+FS_SC: Fieldsolver, FSTYPE = FFT, 
+                     MX = 8, MY = 8, MT = 16,
+		    	     PARFFTX = false, 
+		    	     PARFFTY = false, 
+		    	     PARFFTT = true,
+		    	     BCFFTX = open, 
+		    	     BCFFTY = open, 
+		    	     BCFFTT = open,
+		    	     BBOXINCR = 1, 
+		    	     GREENSF = INTEGRATED;
+
+//-------------------------------------------------------------------------------------
+// Beam Definition
+
+BEAM1: BEAM, PARTICLE = ELECTRON,
+       pc = P0, NPART = n_particles, BFREQ = rf_freq,
+       BCURRENT = beam_current, CHARGE = -1;
+
+//-------------------------------------------------------------------------------------
+// Run beamline
+
+TRACK, LINE = SC_INJ, BEAM = BEAM1, MAXSTEPS = 1900000, DT = {5.0e-13, 1.0e-11}, ZSTOP={0.2, 15}; 
+RUN, METHOD = "PARALLEL-T", BEAM = BEAM1, FIELDSOLVER = FS_SC, DISTRIBUTION = Dist;
+ENDTRACK;
+
+Stop; 
+Quit;
+
+
+

@@ -1,0 +1,53 @@
+//Input components for LCLS2 - EIC area
+//-------------------------------------------------------------------------------------
+// Gun
+//
+// Cavity/RF field.
+//
+// L:			physical element length (real in m). Length (of field map) (m).
+// VOLT:		field scaling factor (real). RF field magnitude (MV/m).
+// FMAPFN:		field file name (string)
+// ELEMEDGE:		physical start of the element on the floor (real in m)
+// TYPE:		specifies "STANDING" (default), "TRAVELLING" or "SINGLE GAP" structure
+// FREQ:		RF frequency of cavity (real in MHz). Resonance frequency.
+// LAG:			cavity phase (radians)
+//
+
+REAL deg=3.14/180.0;
+
+GUN:	RFCavity, L = 0.199, VOLT = 20.0, ELEMEDGE = 0.0, TYPE = "STANDING", 		
+        FMAPFN = "../fieldmaps/gunb_187MHz.txt",
+        FREQ = 187.0, LAG = -20.0*deg; 
+
+// Buncher field map has z = -0.179 to 0.179
+// Element edge should be center of device
+BUNCHER:	RFCavity, L = 0.358, VOLT = 1.9, ELEMEDGE = 0.809116, TYPE = "STANDING", 		
+            FMAPFN = "../fieldmaps/gunb_buncher.txt", 
+            FREQ = 1300.0, LAG = -53*deg; 
+
+//-------------------------------------------------------------------------------------
+// Solenoids
+//
+// L:           Physcial element length (m)
+// ELEMEDGE:    Physcial start of element (m)
+// KS:          Solenoid strength (T/m)
+// FMAPFM:      Field file (string)
+
+//REAL SF1 = 0.060; 
+//REAL SF2 = 0.03; 
+
+// realbucking Field map has z = -2.5 to 2.5
+// Element edge should be center of device
+SOLBF:	Solenoid, L = 0.48, ELEMEDGE= -0.062, KS = 0.0,
+        FMAPFN = "../fieldmaps/gunb_solenoid.txt";
+
+// newSOL Field map has z = -0.24 to 0.24
+// Element edge should be center of device
+SOL1:	Solenoid, L = 0.48, ELEMEDGE= 0.24653, KS = 0.058,
+        FMAPFN = "../fieldmaps/gunb_solenoid.txt";
+        
+SOL2:	Solenoid, L = 0.48, ELEMEDGE= 1.64581, KS = 0.029,
+        FMAPFN = "../fieldmaps/gunb_solenoid.txt";
+        
+        
+EIC:  Line = (GUN, SOL1, BUNCHER, SOL2);
