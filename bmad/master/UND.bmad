@@ -1,10 +1,18 @@
 
-! *** OPTICS=AD_ACCEL-05DEC19 ***
+! *** OPTICS=AD_ACCEL-01APR20 ***
 
 ! LCLS2sc undulator and undulator extension
+! NOTE: "startup" configuration for HXR undulator (see UNDtemp.xsif)
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 03-MAR-2020, M. Woodley
+!  * move XLEAP wiggler to SXR cell #18
+!  * change keyword for "type-V" correctors from HKIC/VKIC to INST
+! 25-FEB-2020, M. Woodley
+!  * replace HXR cells 13-20 and 22-23 with "empty" (no undulator) LCLS girders
+!    > redefine QUADs and RFBPMs (different lengths)
 ! ------------------------------------------------------------------------------
 ! 12-DEC-2019, M. Woodley
 !  * swap HXR cells 20 and 21 ... cell 21 is now the empty cell per H.-D. Nuhn
@@ -353,10 +361,10 @@ wigxlh: taylor, type = "variable gap", l = lwigh, {1: 1.0, 1 0 0 0 0 0}, {1: lwi
  !VALUE, WIGXLh[R11],WIGXLh[R12],WIGXLh[R21],WIGXLh[R22]
  !VALUE, WIGXLh[R33],WIGXLh[R34],WIGXLh[R43],WIGXLh[R44]
 
-dusegs17a: drift, l = (ldusegs-2*wigxlh[l])/2
-dusegs17b: drift, l = ldusegs-dusegs17a[l]-2*wigxlh[l]
- !VALUE, DUSEGS17a[L],DUSEGS17b[L]
- !VALUE, DUSEGS17a[L]+2*WIGXLh[L]+DUSEGS17b[L],LDUSEGS
+dusegs18a: drift, l = (ldusegs-2*wigxlh[l])/2
+dusegs18b: drift, l = ldusegs-dusegs18a[l]-2*wigxlh[l]
+ !VALUE, DUSEGS18a[L],DUSEGS18b[L]
+ !VALUE, DUSEGS18a[L]+2*WIGXLh[L]+DUSEGS18b[L],LDUSEGS
 
 
 
@@ -364,7 +372,7 @@ dusegs17b: drift, l = ldusegs-dusegs17a[l]-2*wigxlh[l]
 
 wigxlh_full: line = (wigxlh)
 wigxlh[L] = 2*wigxlh[L]
-dusegs17: line = (dusegs17a, wigxlh_full, dusegs17b)
+dusegs18: line = (dusegs18a, wigxlh_full, dusegs18b)
 
 ! ------------------------------------------------------------------------------
 ! SXR extension quads
@@ -494,7 +502,7 @@ sxbrk23: line = (du3s, dpssx23, du4s, du5s, dqsx23, du6s, drfbs23, du7s)
 sxbrk24: line = (du3s, dpssx24, du4s, du5s, qsxh24_full, du6s, rfbsx24, du7s)
 sxbrk25: line = (du3s, dpssx25, du4s, du5s, dqsx25, du6s, rfbsx25, du7s)
 
-dusegs18: drift, l = ldusegs
+dusegs17: drift, l = ldusegs
 dusegs19: drift, l = ldusegs
 dusegs20: drift, l = ldusegs
 dusegs21: drift, l = ldusegs
@@ -503,8 +511,8 @@ dusegs23: drift, l = ldusegs
 dusegs24: drift, l = ldusegs
 dusegs25: drift, l = ldusegs
 
-sxcel17: line = (du1s, du2s, dusegs17, sxbrk17) !XLEAP wiggler
-sxcel18: line = (du1s, du2s, dusegs18, sxbrk18)
+sxcel17: line = (du1s, du2s, dusegs17, sxbrk17)
+sxcel18: line = (du1s, du2s, dusegs18, sxbrk18) !XLEAP wiggler
 sxcel19: line = (du1s, du2s, dusegs19, sxbrk19) !Q+RFBPM
 sxcel20: line = (du1s, du2s, dusegs20, sxbrk20)
 sxcel21: line = (du1s, du2s, dusegs21, sxbrk21) !Q+RFBPM
@@ -545,7 +553,7 @@ gqfsx = intgsx/lqu/10*1.0           !T/m
 gqdsx = -intgsx/lqu/10*1.0           !T/m
 kqfsx = 1.e-9*gqfsx*c_light/gamu/mc2 !m^-2
 kqdsx = 1.e-9*gqdsx*c_light/gamu/mc2 !m^-2
-kqdsxm = -1.28484                     !-0.266792876891
+kqdsxm = -2.295714281502              !-1.28484
 
 qsxh26: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfsx
 qsxh27: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdsx
@@ -677,53 +685,53 @@ ycsx47: kicker, type = "type-U"
 ! SXR undulator X-steering coils in undulator segments
 ! ------------------------------------------------------------------------------
 
-xcsu26: kicker, type = "type-V"
-xcsu27: kicker, type = "type-V"
-xcsu28: kicker, type = "type-V"
-xcsu29: kicker, type = "type-V"
-xcsu30: kicker, type = "type-V"
-xcsu31: kicker, type = "type-V"
-xcsu32: kicker, type = "type-V"
-xcsu33: kicker, type = "type-V"
-xcsu34: kicker, type = "type-V"
-xcsu36: kicker, type = "type-V"
-xcsu37: kicker, type = "type-V"
-xcsu38: kicker, type = "type-V"
-xcsu39: kicker, type = "type-V"
-xcsu40: kicker, type = "type-V"
-xcsu41: kicker, type = "type-V"
-xcsu42: kicker, type = "type-V"
-xcsu43: kicker, type = "type-V"
-xcsu44: kicker, type = "type-V"
-xcsu45: kicker, type = "type-V"
-xcsu46: kicker, type = "type-V"
-xcsu47: kicker, type = "type-V"
+xcsu26: instrument, type = "type-V"
+xcsu27: instrument, type = "type-V"
+xcsu28: instrument, type = "type-V"
+xcsu29: instrument, type = "type-V"
+xcsu30: instrument, type = "type-V"
+xcsu31: instrument, type = "type-V"
+xcsu32: instrument, type = "type-V"
+xcsu33: instrument, type = "type-V"
+xcsu34: instrument, type = "type-V"
+xcsu36: instrument, type = "type-V"
+xcsu37: instrument, type = "type-V"
+xcsu38: instrument, type = "type-V"
+xcsu39: instrument, type = "type-V"
+xcsu40: instrument, type = "type-V"
+xcsu41: instrument, type = "type-V"
+xcsu42: instrument, type = "type-V"
+xcsu43: instrument, type = "type-V"
+xcsu44: instrument, type = "type-V"
+xcsu45: instrument, type = "type-V"
+xcsu46: instrument, type = "type-V"
+xcsu47: instrument, type = "type-V"
 
 ! ------------------------------------------------------------------------------
 ! SXR undulator Y-steering coils in undulator segments
 ! ------------------------------------------------------------------------------
 
-ycsu26: kicker, type = "type-V"
-ycsu27: kicker, type = "type-V"
-ycsu28: kicker, type = "type-V"
-ycsu29: kicker, type = "type-V"
-ycsu30: kicker, type = "type-V"
-ycsu31: kicker, type = "type-V"
-ycsu32: kicker, type = "type-V"
-ycsu33: kicker, type = "type-V"
-ycsu34: kicker, type = "type-V"
-ycsu36: kicker, type = "type-V"
-ycsu37: kicker, type = "type-V"
-ycsu38: kicker, type = "type-V"
-ycsu39: kicker, type = "type-V"
-ycsu40: kicker, type = "type-V"
-ycsu41: kicker, type = "type-V"
-ycsu42: kicker, type = "type-V"
-ycsu43: kicker, type = "type-V"
-ycsu44: kicker, type = "type-V"
-ycsu45: kicker, type = "type-V"
-ycsu46: kicker, type = "type-V"
-ycsu47: kicker, type = "type-V"
+ycsu26: instrument, type = "type-V"
+ycsu27: instrument, type = "type-V"
+ycsu28: instrument, type = "type-V"
+ycsu29: instrument, type = "type-V"
+ycsu30: instrument, type = "type-V"
+ycsu31: instrument, type = "type-V"
+ycsu32: instrument, type = "type-V"
+ycsu33: instrument, type = "type-V"
+ycsu34: instrument, type = "type-V"
+ycsu36: instrument, type = "type-V"
+ycsu37: instrument, type = "type-V"
+ycsu38: instrument, type = "type-V"
+ycsu39: instrument, type = "type-V"
+ycsu40: instrument, type = "type-V"
+ycsu41: instrument, type = "type-V"
+ycsu42: instrument, type = "type-V"
+ycsu43: instrument, type = "type-V"
+ycsu44: instrument, type = "type-V"
+ycsu45: instrument, type = "type-V"
+ycsu46: instrument, type = "type-V"
+ycsu47: instrument, type = "type-V"
 
 ! ------------------------------------------------------------------------------
 ! SXR undulator BPMs
@@ -1665,8 +1673,8 @@ sxr: line = (sxrstart, sxrcl, rwwake5s, sxrterm, due1ab, rfbsx51, due1e, endunds
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-kque1b = -0.066533038872 !-0.306247962224
-kque2b = 0.317255382568 ! 0.394195575969
+kque1b = 0.28964739003    !-0.067476446146
+kque2b = -0.00606676202205 ! 0.317835100036
 
 que1b: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kque1b
 que2b: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kque2b
@@ -1683,13 +1691,10 @@ dzhxtes = 0.749541186639e-6  !set MDLWALL at 685 m exactly to align with HXR XTE
 due1d: drift, l = 0.1
 due1b: drift, l = 1.5
 due1c: drift, l = 0.5
-due1ca: drift, l = 0.3
-due1cb: drift, l = 0.188-0.012
-due1cc: drift, l = due1c[l]-due1ca[l]-due1cb[l]
 due2a: drift, l = 0.5
-due2b: drift, l = 0.8
-due2d: drift, l = 0.188-0.012
-due2e: drift, l = 1.740055-due2b[l]-due2d[l]
+due2d: drift, l = 0.188-0.012 !phase cavity center-to-center spacing
+due2b: drift, l = 0.8-due2d[l]+0.005555
+due2e: drift, l = 1.740055-due2b[l]-3*due2d[l]
 due2cb: drift, l = 0.615+(lqp-lqr)/2
 due3ab: drift, l = 0.375504+(lqp-lqr)/2-0.014955
 due3bb: drift, l = 1.2630495+0.014955
@@ -1766,8 +1771,8 @@ que1b[L] = 2*que1b[L]
 que2b_full: line = (que2b)
 que2b[L] = 2*que2b[L]
 
-undexitb: line = (begdmps_1, uebegb, due1d, vv36b, due1b, mimundob, due1ca, ph33b, due1cb, ph34b &
-        , due1cc, due2a, ycue1b, due2b, ph31b, due2d, ph32b, due2e, xcue2b, due2cb, que1b_full,  &
+undexitb: line = (begdmps_1, uebegb, due1d, vv36b, due1b, mimundob, due1c, due2a, ycue1b, due2b,  &
+        ph31b, due2d, ph32b, due2d, ph33b, due2d, ph34b, due2e, xcue2b, due2cb, que1b_full,  &
         due3ab, bpmue1b, due3bb, true1b, due3c, dbkxdmps, due3c, pctcxb, dpcvv, vvtcxb, dvvtcx,  &
         mtcx01b, 2*tcx01b, dtcx12, mtcxb, dtcx12, 2*tcx02b, dtcxsp, sptcxb, due4b, que2b_full,  &
         due5ab, bpmue2b, due5bb, btmqueb, due5cb, pcpm0b, due5f, btm0b, due5d, due5eb, mdlwallb,  &
@@ -1905,19 +1910,19 @@ gqfhx = intghx/lqu/10*1.0           !T/m
 gqdhx = -intghx/lqu/10*1.0           !T/m
 kqfhx = 1.e-9*gqfhx*c_light/gamu/mc2 !m^-2
 kqdhx = 1.e-9*gqdhx*c_light/gamu/mc2 !m^-2
-kqdhxm = -2.482122917065 !-0.51857909178
+kqdhxm = -2.482122917065
 
-qhxh13: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
-qhxh14: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
-qhxh15: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
-qhxh16: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
-qhxh17: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
-qhxh18: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
-qhxh19: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
-qhxh20: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
+ !QHXh13 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, aperture=rQu
+ !QHXh14 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, aperture=rQu
+ !QHXh15 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, aperture=rQu
+ !QHXh16 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, aperture=rQu
+ !QHXh17 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, aperture=rQu
+ !QHXh18 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, aperture=rQu
+ !QHXh19 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, aperture=rQu
+ !QHXh20 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, aperture=rQu
 qhxh21: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
-qhxh22: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
-qhxh23: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
+ !QHXh22 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, aperture=rQu
+ !QHXh23 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, aperture=rQu
 qhxh24: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
 qhxh25: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqfhx
 qhxh26: quadrupole, type = "0.433Q3.1", l = lqu/2, aperture = rqu, k1 = kqdhx
@@ -2085,91 +2090,91 @@ ychx46: kicker, type = "type-U"
 ! HXR undulator X-steering coils in undulator segments
 ! ------------------------------------------------------------------------------
 
-xchu13: kicker, type = "type-V"
-xchu14: kicker, type = "type-V"
-xchu15: kicker, type = "type-V"
-xchu16: kicker, type = "type-V"
-xchu17: kicker, type = "type-V"
-xchu18: kicker, type = "type-V"
-xchu19: kicker, type = "type-V"
-xchu20: kicker, type = "type-V"
-xchu22: kicker, type = "type-V"
-xchu23: kicker, type = "type-V"
-xchu24: kicker, type = "type-V"
-xchu25: kicker, type = "type-V"
-xchu26: kicker, type = "type-V"
-xchu27: kicker, type = "type-V"
-xchu29: kicker, type = "type-V"
-xchu30: kicker, type = "type-V"
-xchu31: kicker, type = "type-V"
-xchu32: kicker, type = "type-V"
-xchu33: kicker, type = "type-V"
-xchu34: kicker, type = "type-V"
-xchu35: kicker, type = "type-V"
-xchu36: kicker, type = "type-V"
-xchu37: kicker, type = "type-V"
-xchu38: kicker, type = "type-V"
-xchu39: kicker, type = "type-V"
-xchu40: kicker, type = "type-V"
-xchu41: kicker, type = "type-V"
-xchu42: kicker, type = "type-V"
-xchu43: kicker, type = "type-V"
-xchu44: kicker, type = "type-V"
-xchu45: kicker, type = "type-V"
-xchu46: kicker, type = "type-V"
+xchu13: instrument, type = "type-V"
+xchu14: instrument, type = "type-V"
+xchu15: instrument, type = "type-V"
+xchu16: instrument, type = "type-V"
+xchu17: instrument, type = "type-V"
+xchu18: instrument, type = "type-V"
+xchu19: instrument, type = "type-V"
+xchu20: instrument, type = "type-V"
+xchu22: instrument, type = "type-V"
+xchu23: instrument, type = "type-V"
+xchu24: instrument, type = "type-V"
+xchu25: instrument, type = "type-V"
+xchu26: instrument, type = "type-V"
+xchu27: instrument, type = "type-V"
+xchu29: instrument, type = "type-V"
+xchu30: instrument, type = "type-V"
+xchu31: instrument, type = "type-V"
+xchu32: instrument, type = "type-V"
+xchu33: instrument, type = "type-V"
+xchu34: instrument, type = "type-V"
+xchu35: instrument, type = "type-V"
+xchu36: instrument, type = "type-V"
+xchu37: instrument, type = "type-V"
+xchu38: instrument, type = "type-V"
+xchu39: instrument, type = "type-V"
+xchu40: instrument, type = "type-V"
+xchu41: instrument, type = "type-V"
+xchu42: instrument, type = "type-V"
+xchu43: instrument, type = "type-V"
+xchu44: instrument, type = "type-V"
+xchu45: instrument, type = "type-V"
+xchu46: instrument, type = "type-V"
 
 ! ------------------------------------------------------------------------------
 ! HXR undulator Y-steering coils in undulator segments
 ! ------------------------------------------------------------------------------
 
-ychu13: kicker, type = "type-V"
-ychu14: kicker, type = "type-V"
-ychu15: kicker, type = "type-V"
-ychu16: kicker, type = "type-V"
-ychu17: kicker, type = "type-V"
-ychu18: kicker, type = "type-V"
-ychu19: kicker, type = "type-V"
-ychu20: kicker, type = "type-V"
-ychu22: kicker, type = "type-V"
-ychu23: kicker, type = "type-V"
-ychu24: kicker, type = "type-V"
-ychu25: kicker, type = "type-V"
-ychu26: kicker, type = "type-V"
-ychu27: kicker, type = "type-V"
-ychu29: kicker, type = "type-V"
-ychu30: kicker, type = "type-V"
-ychu31: kicker, type = "type-V"
-ychu32: kicker, type = "type-V"
-ychu33: kicker, type = "type-V"
-ychu34: kicker, type = "type-V"
-ychu35: kicker, type = "type-V"
-ychu36: kicker, type = "type-V"
-ychu37: kicker, type = "type-V"
-ychu38: kicker, type = "type-V"
-ychu39: kicker, type = "type-V"
-ychu40: kicker, type = "type-V"
-ychu41: kicker, type = "type-V"
-ychu42: kicker, type = "type-V"
-ychu43: kicker, type = "type-V"
-ychu44: kicker, type = "type-V"
-ychu45: kicker, type = "type-V"
-ychu46: kicker, type = "type-V"
+ychu13: instrument, type = "type-V"
+ychu14: instrument, type = "type-V"
+ychu15: instrument, type = "type-V"
+ychu16: instrument, type = "type-V"
+ychu17: instrument, type = "type-V"
+ychu18: instrument, type = "type-V"
+ychu19: instrument, type = "type-V"
+ychu20: instrument, type = "type-V"
+ychu22: instrument, type = "type-V"
+ychu23: instrument, type = "type-V"
+ychu24: instrument, type = "type-V"
+ychu25: instrument, type = "type-V"
+ychu26: instrument, type = "type-V"
+ychu27: instrument, type = "type-V"
+ychu29: instrument, type = "type-V"
+ychu30: instrument, type = "type-V"
+ychu31: instrument, type = "type-V"
+ychu32: instrument, type = "type-V"
+ychu33: instrument, type = "type-V"
+ychu34: instrument, type = "type-V"
+ychu35: instrument, type = "type-V"
+ychu36: instrument, type = "type-V"
+ychu37: instrument, type = "type-V"
+ychu38: instrument, type = "type-V"
+ychu39: instrument, type = "type-V"
+ychu40: instrument, type = "type-V"
+ychu41: instrument, type = "type-V"
+ychu42: instrument, type = "type-V"
+ychu43: instrument, type = "type-V"
+ychu44: instrument, type = "type-V"
+ychu45: instrument, type = "type-V"
+ychu46: instrument, type = "type-V"
 
 ! ------------------------------------------------------------------------------
 ! HXR undulator BPMs
 ! ------------------------------------------------------------------------------
 
-rfbhx13: instrument, l = lrfbub, type = "CavityX-1"
-rfbhx14: instrument, l = lrfbub, type = "CavityX-1"
-rfbhx15: instrument, l = lrfbub, type = "CavityX-1"
-rfbhx16: instrument, l = lrfbub, type = "CavityX-1"
-rfbhx17: instrument, l = lrfbub, type = "CavityX-1"
-rfbhx18: instrument, l = lrfbub, type = "CavityX-1"
-rfbhx19: instrument, l = lrfbub, type = "CavityX-1"
-rfbhx20: instrument, l = lrfbub, type = "CavityX-1"
+ !RFBHX13 : MONI, L=LRFBub, TYPE="CavityX-1"
+ !RFBHX14 : MONI, L=LRFBub, TYPE="CavityX-1"
+ !RFBHX15 : MONI, L=LRFBub, TYPE="CavityX-1"
+ !RFBHX16 : MONI, L=LRFBub, TYPE="CavityX-1"
+ !RFBHX17 : MONI, L=LRFBub, TYPE="CavityX-1"
+ !RFBHX18 : MONI, L=LRFBub, TYPE="CavityX-1"
+ !RFBHX19 : MONI, L=LRFBub, TYPE="CavityX-1"
+ !RFBHX20 : MONI, L=LRFBub, TYPE="CavityX-1"
 rfbhx21: instrument, l = lrfbub, type = "CavityX-1"
-rfbhx22: instrument, l = lrfbub, type = "CavityX-1"
-rfbhx23: instrument, l = lrfbub, type = "CavityX-1"
+ !RFBHX22 : MONI, L=LRFBub, TYPE="CavityX-1"
+ !RFBHX23 : MONI, L=LRFBub, TYPE="CavityX-1"
 rfbhx24: instrument, l = lrfbub, type = "CavityX-1"
 rfbhx25: instrument, l = lrfbub, type = "CavityX-1"
 rfbhx26: instrument, l = lrfbub, type = "CavityX-1"
@@ -3000,102 +3005,16 @@ dusegh48: drift, l = ldusegh
 dusegh49: drift, l = ldusegh
 dusegh50: drift, l = ldusegh
 
+call, filename = "UNDtemp.bmad" !old LCLS girder definitions
 
-
-!Old split line: line = (qhxh13, xchx13, muqh, ychx13, qhxh13)
-
-qhxh13_full: line = (qhxh13)
-qhxh13[L] = 2*qhxh13[L]
-xchx13[superimpose] = T
-xchx13[ref] = qhxh13
-muqh[superimpose] = T
-muqh[ref] = qhxh13
-ychx13[superimpose] = T
-ychx13[ref] = qhxh13
-
-
-!Old split line: line = (qhxh14, xchx14, muqh, ychx14, qhxh14)
-
-qhxh14_full: line = (qhxh14)
-qhxh14[L] = 2*qhxh14[L]
-xchx14[superimpose] = T
-xchx14[ref] = qhxh14
-muqh[superimpose] = T
-muqh[ref] = qhxh14
-ychx14[superimpose] = T
-ychx14[ref] = qhxh14
-
-
-!Old split line: line = (qhxh15, xchx15, muqh, ychx15, qhxh15)
-
-qhxh15_full: line = (qhxh15)
-qhxh15[L] = 2*qhxh15[L]
-xchx15[superimpose] = T
-xchx15[ref] = qhxh15
-muqh[superimpose] = T
-muqh[ref] = qhxh15
-ychx15[superimpose] = T
-ychx15[ref] = qhxh15
-
-
-!Old split line: line = (qhxh16, xchx16, muqh, ychx16, qhxh16)
-
-qhxh16_full: line = (qhxh16)
-qhxh16[L] = 2*qhxh16[L]
-xchx16[superimpose] = T
-xchx16[ref] = qhxh16
-muqh[superimpose] = T
-muqh[ref] = qhxh16
-ychx16[superimpose] = T
-ychx16[ref] = qhxh16
-
-
-!Old split line: line = (qhxh17, xchx17, muqh, ychx17, qhxh17)
-
-qhxh17_full: line = (qhxh17)
-qhxh17[L] = 2*qhxh17[L]
-xchx17[superimpose] = T
-xchx17[ref] = qhxh17
-muqh[superimpose] = T
-muqh[ref] = qhxh17
-ychx17[superimpose] = T
-ychx17[ref] = qhxh17
-
-
-!Old split line: line = (qhxh18, xchx18, muqh, ychx18, qhxh18)
-
-qhxh18_full: line = (qhxh18)
-qhxh18[L] = 2*qhxh18[L]
-xchx18[superimpose] = T
-xchx18[ref] = qhxh18
-muqh[superimpose] = T
-muqh[ref] = qhxh18
-ychx18[superimpose] = T
-ychx18[ref] = qhxh18
-
-
-!Old split line: line = (qhxh19, xchx19, muqh, ychx19, qhxh19)
-
-qhxh19_full: line = (qhxh19)
-qhxh19[L] = 2*qhxh19[L]
-xchx19[superimpose] = T
-xchx19[ref] = qhxh19
-muqh[superimpose] = T
-muqh[ref] = qhxh19
-ychx19[superimpose] = T
-ychx19[ref] = qhxh19
-
-
-!Old split line: line = (qhxh20, xchx20, muqh, ychx20, qhxh20)
-
-qhxh20_full: line = (qhxh20)
-qhxh20[L] = 2*qhxh20[L]
-xchx20[superimpose] = T
-xchx20[ref] = qhxh20
-muqh[superimpose] = T
-muqh[ref] = qhxh20
-ychx20[superimpose] = T
-ychx20[ref] = qhxh20
+ !QHXh13_full : LINE=(QHXh13,XCHX13,MUQH,YCHX13,QHXh13)
+ !QHXh14_full : LINE=(QHXh14,XCHX14,MUQH,YCHX14,QHXh14)
+ !QHXh15_full : LINE=(QHXh15,XCHX15,MUQH,YCHX15,QHXh15)
+ !QHXh16_full : LINE=(QHXh16,XCHX16,MUQH,YCHX16,QHXh16)
+ !QHXh17_full : LINE=(QHXh17,XCHX17,MUQH,YCHX17,QHXh17)
+ !QHXh18_full : LINE=(QHXh18,XCHX18,MUQH,YCHX18,QHXh18)
+ !QHXh19_full : LINE=(QHXh19,XCHX19,MUQH,YCHX19,QHXh19)
+ !QHXh20_full : LINE=(QHXh20,XCHX20,MUQH,YCHX20,QHXh20)
 
 
 !Old split line: line = (qhxh21, xchx21, muqh, ychx21, qhxh21)
@@ -3108,30 +3027,8 @@ muqh[superimpose] = T
 muqh[ref] = qhxh21
 ychx21[superimpose] = T
 ychx21[ref] = qhxh21
-
-
-!Old split line: line = (qhxh22, xchx22, muqh, ychx22, qhxh22)
-
-qhxh22_full: line = (qhxh22)
-qhxh22[L] = 2*qhxh22[L]
-xchx22[superimpose] = T
-xchx22[ref] = qhxh22
-muqh[superimpose] = T
-muqh[ref] = qhxh22
-ychx22[superimpose] = T
-ychx22[ref] = qhxh22
-
-
-!Old split line: line = (qhxh23, xchx23, muqh, ychx23, qhxh23)
-
-qhxh23_full: line = (qhxh23)
-qhxh23[L] = 2*qhxh23[L]
-xchx23[superimpose] = T
-xchx23[ref] = qhxh23
-muqh[superimpose] = T
-muqh[ref] = qhxh23
-ychx23[superimpose] = T
-ychx23[ref] = qhxh23
+ !QHXh22_full : LINE=(QHXh22,XCHX22,MUQH,YCHX22,QHXh22)
+ !QHXh23_full : LINE=(QHXh23,XCHX23,MUQH,YCHX23,QHXh23)
 
 
 !Old split line: line = (qhxh24, xchx24, muqh, ychx24, qhxh24)
@@ -3523,10 +3420,22 @@ hxcel48: line = (du1h, du2h, dusegh48, hxbrk48) !empty
 hxcel49: line = (du1h, du2h, dusegh49, hxbrk49) !empty with RFBPM
 hxcel50: line = (du1h, du2h, dusegh50, hxbrk50) !empty
 
-hxrcl: line = (hxcel13, hxcel14, hxcel15, hxcel16, hxcel17, hxcel18, hxcel19, hxcel20, hxcel21,  &
-        hxcel22, hxcel23, hxcel24, hxcel25, hxcel26, hxcel27, hxcel28, hxcel29, hxcel30, hxcel31 &
-        , hxcel32, hxcel33, hxcel34, hxcel35, hxcel36, hxcel37, hxcel38, hxcel39, hxcel40,  &
-        hxcel41, hxcel42, hxcel43, hxcel44, hxcel45, hxcel46, hxcel47, hxcel48, hxcel49, hxcel50)
+!=!  comment !LCLS-II final configuration
+!=!  comment !LCLS-II final configuration
+!=!  HXRCL    : LINE=(&
+!=!    HXCEL13,HXCEL14,HXCEL15,HXCEL16,HXCEL17,HXCEL18,HXCEL19,HXCEL20,&
+!=!    HXCEL21,HXCEL22,HXCEL23,HXCEL24,HXCEL25,HXCEL26,HXCEL27,HXCEL28,&
+!=!    HXCEL29,HXCEL30,HXCEL31,HXCEL32,HXCEL33,HXCEL34,HXCEL35,HXCEL36,&
+!=!    HXCEL37,HXCEL38,HXCEL39,HXCEL40,HXCEL41,HXCEL42,HXCEL43,HXCEL44,&
+!=!    HXCEL45,HXCEL46,HXCEL47,HXCEL48,HXCEL49,HXCEL50)
+!=!  endcomment
+
+ !comment !LCLS-II startup configuration
+hxrcl: line = (undcla, hxcel21, undclb, hxcel24, hxcel25, hxcel26, hxcel27, hxcel28, hxcel29,  &
+        hxcel30, hxcel31, hxcel32, hxcel33, hxcel34, hxcel35, hxcel36, hxcel37, hxcel38, hxcel39 &
+        , hxcel40, hxcel41, hxcel42, hxcel43, hxcel44, hxcel45, hxcel46, hxcel47, hxcel48,  &
+        hxcel49, hxcel50)
+ !endcomment
 
 hxr: line = (du0h, du8h, hxrstart, hxrcl, rwwake5h, hxrterm, due1a, rfbhx51, due1e, endundh)
 
@@ -3537,8 +3446,8 @@ hxr: line = (du0h, du8h, hxrstart, hxrcl, rwwake5h, hxrterm, due1a, rfbhx51, due
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-kque1 = 0.178908931125 !-0.09207220416
-kque2 = -0.136231234699 ! 0.160489725306
+kque1 = 0.178908931125
+kque2 = -0.136231234699
 
 que1: quadrupole, type = "3.25Q20", l = lqd/2, aperture = rqd, k1 = kque1
 que2: quadrupole, type = "3.25Q20", l = lqd/2, aperture = rqd, k1 = kque2
@@ -3608,12 +3517,12 @@ que1[L] = 2*que1[L]
 que2_full: line = (que2)
 que2[L] = 2*que2[L]
 
-undexit: line = (begdmph_1, uebeg, due1d, vv36, due1b, mimundo, due1ca, ph33, due1cb, ph34,  &
-        due1cc, due2a, ycue1, due2b, ph31, due2d, ph32, due2e, xcue2, due2c, que1_full, due3a,  &
-        bpmue1, due3b, true1, due3c, dbkxdmph, due3c, pctcx, dpcvv, vvtcx, dvvtcx, mtcx01,  &
-        2*tcx01, dtcx12, mtcx, dtcx12, 2*tcx02, dtcxsp, sptcx, due4, que2_full, due5a, bpmue2,  &
-        due5b, btmque, due5c, pcpm0, due5f, btm0, due5d, mimbcs3, due5e, mdlwall, ddlwall, ueend &
-        , dlstart, dsb0a, ycd3, dsb0b, xcd3, dsb0c, vv37, dsb0d, dsb0e, enddmph_1)
+undexit: line = (begdmph_1, uebeg, due1d, vv36, due1b, mimundo, due1c, due2a, ycue1, due2b, ph31 &
+        , due2d, ph32, due2d, ph33, due2d, ph34, due2e, xcue2, due2c, que1_full, due3a, bpmue1,  &
+        due3b, true1, due3c, dbkxdmph, due3c, pctcx, dpcvv, vvtcx, dvvtcx, mtcx01, 2*tcx01,  &
+        dtcx12, mtcx, dtcx12, 2*tcx02, dtcxsp, sptcx, due4, que2_full, due5a, bpmue2, due5b,  &
+        btmque, due5c, pcpm0, due5f, btm0, due5d, mimbcs3, due5e, mdlwall, ddlwall, ueend,  &
+        dlstart, dsb0a, ycd3, dsb0b, xcd3, dsb0c, vv37, dsb0d, dsb0e, enddmph_1)
 
 hxrund: line = (hxr, undexit)
 
