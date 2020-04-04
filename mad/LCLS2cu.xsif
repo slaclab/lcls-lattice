@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-05DEC19 ***
+! *** OPTICS=AD_ACCEL-01APR20 ***
 
 ! LCLS2cu various parts upstream of BSY
 
@@ -355,7 +355,6 @@
 ! BC1
 ! ===
 
-  Brho1 := Cb*EBC1            !beam rigidity at BC1 (kG-m)
   AB11  := -0.093575352547    !full chicane bend angle (rad) (-0.086753564890323)
   RB11  := LB1/SIN(AB11)      !bend radius (m)
   LB11  := RB11*AB11          !full chicane bend path length (m)
@@ -411,7 +410,6 @@
 ! BC2
 ! ===
 
-  Brho2 := Cb*EBC2            !beam rigidity at BC2 (kG-m)
   AB21  := -0.036971323962    !full chicane bend angle (rad)
   RB21  := LB2/SIN(AB21)      !bend radius (m)
   LB21  := RB21*AB21          !full chicane bend path length (m)
@@ -821,10 +819,9 @@
 
 ! LSRHTR_ON := 1E-12           !set to 1E-12 for laser heater bends & undulator OFF and 1.0 for ON (nominal)
   LSRHTR_ON := 1               !set to 1E-12 for laser heater bends & undulator OFF and 1.0 for ON (nominal)
-  Brhoh := Cb*Ei               !beam rigidity at heater (kG-m)
   ABh1  := -0.131709391614*LSRHTR_ON !heater-chicane bend angle (rad)
-  BBh1  := Brhoh*SIN(ABh1)/LBh !heater-chicane bend field for 35-mm etaX_pk (kG) (-4.75393301417)
-  RBh1  := Brhoh/BBh1          !heater-chicane bend radius (m)
+  BBh1  := Brhoi*SIN(ABh1)/LBh !heater-chicane bend field for 35-mm etaX_pk (kG) (-4.75393301417)
+  RBh1  := Brhoi/BBh1          !heater-chicane bend radius (m)
   LBh1  := RBh1*ABh1           !heater-chicane bend path length (m)
   ABh1S := ASIN((LBh/2)/RBh1)  !"short" half heater-chicane bend angle (rad)
   LBh1S := RBh1*ABh1S          !"short" half heater-chicane bend path length (m)

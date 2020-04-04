@@ -1,10 +1,18 @@
 
-! *** OPTICS=AD_ACCEL-05DEC19 ***
+! *** OPTICS=AD_ACCEL-01APR20 ***
 
 ! LCLS2sc undulator and undulator extension
+! NOTE: "startup" configuration for HXR undulator (see UNDtemp.xsif)
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 03-MAR-2020, M. Woodley
+!  * move XLEAP wiggler to SXR cell #18
+!  * change keyword for "type-V" correctors from HKIC/VKIC to INST
+! 25-FEB-2020, M. Woodley
+!  * replace HXR cells 13-20 and 22-23 with "empty" (no undulator) LCLS girders
+!    > redefine QUADs and RFBPMs (different lengths)
 ! ------------------------------------------------------------------------------
 ! 12-DEC-2019, M. Woodley
 !  * swap HXR cells 20 and 21 ... cell 21 is now the empty cell per H.-D. Nuhn
@@ -352,13 +360,13 @@
  !VALUE, WIGXLh[RM(1,1)],WIGXLh[RM(1,2)],WIGXLh[RM(2,1)],WIGXLh[RM(2,2)]
  !VALUE, WIGXLh[RM(3,3)],WIGXLh[RM(3,4)],WIGXLh[RM(4,3)],WIGXLh[RM(4,4)]
 
-  DUSEGS17a : DRIF, L=(LDUSEGS-2*WIGXLh[L])/2
-  DUSEGS17b : DRIF, L=LDUSEGS-DUSEGS17a[L]-2*WIGXLh[L]
- !VALUE, DUSEGS17a[L],DUSEGS17b[L]
- !VALUE, DUSEGS17a[L]+2*WIGXLh[L]+DUSEGS17b[L],LDUSEGS
+  DUSEGS18a : DRIF, L=(LDUSEGS-2*WIGXLh[L])/2
+  DUSEGS18b : DRIF, L=LDUSEGS-DUSEGS18a[L]-2*WIGXLh[L]
+ !VALUE, DUSEGS18a[L],DUSEGS18b[L]
+ !VALUE, DUSEGS18a[L]+2*WIGXLh[L]+DUSEGS18b[L],LDUSEGS
 
   WIGXLh_full : LINE=(WIGXLh,WIGXLh)
-  DUSEGS17    : LINE=(DUSEGS17a,WIGXLh_full,DUSEGS17b)
+  DUSEGS18    : LINE=(DUSEGS18a,WIGXLh_full,DUSEGS18b)
 
 ! ------------------------------------------------------------------------------
 ! SXR extension quads
@@ -452,7 +460,7 @@
   SXBRK24 : LINE=(DU3s,DPSSX24,DU4s,DU5s,QSXh24_full,DU6s,RFBSX24,DU7s)
   SXBRK25 : LINE=(DU3s,DPSSX25,DU4s,DU5s,DQSX25     ,DU6s,RFBSX25,DU7s)
 
-  DUSEGS18 : DRIF, L=LDUSEGS
+  DUSEGS17 : DRIF, L=LDUSEGS
   DUSEGS19 : DRIF, L=LDUSEGS
   DUSEGS20 : DRIF, L=LDUSEGS
   DUSEGS21 : DRIF, L=LDUSEGS
@@ -461,8 +469,8 @@
   DUSEGS24 : DRIF, L=LDUSEGS
   DUSEGS25 : DRIF, L=LDUSEGS
 
-  SXCEL17 : LINE=(DU1s,DU2s,DUSEGS17,SXBRK17) !XLEAP wiggler
-  SXCEL18 : LINE=(DU1s,DU2s,DUSEGS18,SXBRK18)
+  SXCEL17 : LINE=(DU1s,DU2s,DUSEGS17,SXBRK17)
+  SXCEL18 : LINE=(DU1s,DU2s,DUSEGS18,SXBRK18) !XLEAP wiggler
   SXCEL19 : LINE=(DU1s,DU2s,DUSEGS19,SXBRK19) !Q+RFBPM
   SXCEL20 : LINE=(DU1s,DU2s,DUSEGS20,SXBRK20)
   SXCEL21 : LINE=(DU1s,DU2s,DUSEGS21,SXBRK21) !Q+RFBPM
@@ -506,7 +514,7 @@
   GQDSX  := -IntgSX/LQu/10*1.0           !T/m
   kQFSX  :=  1.E-9*GQFSX*CLIGHT/gamu/mc2 !m^-2
   kQDSX  :=  1.E-9*GQDSX*CLIGHT/gamu/mc2 !m^-2
-  kQDSXm := -1.28484                     !-0.266792876891
+  kQDSXm := -2.295714281502              !-1.28484
 
   QSXh26 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFSX, APER=rQu
   QSXh27 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDSX, APER=rQu
@@ -631,53 +639,53 @@
 ! SXR undulator X-steering coils in undulator segments
 ! ------------------------------------------------------------------------------
 
-  XCSU26 : HKIC, TYPE="type-V"
-  XCSU27 : HKIC, TYPE="type-V"
-  XCSU28 : HKIC, TYPE="type-V"
-  XCSU29 : HKIC, TYPE="type-V"
-  XCSU30 : HKIC, TYPE="type-V"
-  XCSU31 : HKIC, TYPE="type-V"
-  XCSU32 : HKIC, TYPE="type-V"
-  XCSU33 : HKIC, TYPE="type-V"
-  XCSU34 : HKIC, TYPE="type-V"
-  XCSU36 : HKIC, TYPE="type-V"
-  XCSU37 : HKIC, TYPE="type-V"
-  XCSU38 : HKIC, TYPE="type-V"
-  XCSU39 : HKIC, TYPE="type-V"
-  XCSU40 : HKIC, TYPE="type-V"
-  XCSU41 : HKIC, TYPE="type-V"
-  XCSU42 : HKIC, TYPE="type-V"
-  XCSU43 : HKIC, TYPE="type-V"
-  XCSU44 : HKIC, TYPE="type-V"
-  XCSU45 : HKIC, TYPE="type-V"
-  XCSU46 : HKIC, TYPE="type-V"
-  XCSU47 : HKIC, TYPE="type-V"
+  XCSU26 : INST, TYPE="type-V"
+  XCSU27 : INST, TYPE="type-V"
+  XCSU28 : INST, TYPE="type-V"
+  XCSU29 : INST, TYPE="type-V"
+  XCSU30 : INST, TYPE="type-V"
+  XCSU31 : INST, TYPE="type-V"
+  XCSU32 : INST, TYPE="type-V"
+  XCSU33 : INST, TYPE="type-V"
+  XCSU34 : INST, TYPE="type-V"
+  XCSU36 : INST, TYPE="type-V"
+  XCSU37 : INST, TYPE="type-V"
+  XCSU38 : INST, TYPE="type-V"
+  XCSU39 : INST, TYPE="type-V"
+  XCSU40 : INST, TYPE="type-V"
+  XCSU41 : INST, TYPE="type-V"
+  XCSU42 : INST, TYPE="type-V"
+  XCSU43 : INST, TYPE="type-V"
+  XCSU44 : INST, TYPE="type-V"
+  XCSU45 : INST, TYPE="type-V"
+  XCSU46 : INST, TYPE="type-V"
+  XCSU47 : INST, TYPE="type-V"
 
 ! ------------------------------------------------------------------------------
 ! SXR undulator Y-steering coils in undulator segments
 ! ------------------------------------------------------------------------------
 
-  YCSU26 : VKIC, TYPE="type-V"
-  YCSU27 : VKIC, TYPE="type-V"
-  YCSU28 : VKIC, TYPE="type-V"
-  YCSU29 : VKIC, TYPE="type-V"
-  YCSU30 : VKIC, TYPE="type-V"
-  YCSU31 : VKIC, TYPE="type-V"
-  YCSU32 : VKIC, TYPE="type-V"
-  YCSU33 : VKIC, TYPE="type-V"
-  YCSU34 : VKIC, TYPE="type-V"
-  YCSU36 : VKIC, TYPE="type-V"
-  YCSU37 : VKIC, TYPE="type-V"
-  YCSU38 : VKIC, TYPE="type-V"
-  YCSU39 : VKIC, TYPE="type-V"
-  YCSU40 : VKIC, TYPE="type-V"
-  YCSU41 : VKIC, TYPE="type-V"
-  YCSU42 : VKIC, TYPE="type-V"
-  YCSU43 : VKIC, TYPE="type-V"
-  YCSU44 : VKIC, TYPE="type-V"
-  YCSU45 : VKIC, TYPE="type-V"
-  YCSU46 : VKIC, TYPE="type-V"
-  YCSU47 : VKIC, TYPE="type-V"
+  YCSU26 : INST, TYPE="type-V"
+  YCSU27 : INST, TYPE="type-V"
+  YCSU28 : INST, TYPE="type-V"
+  YCSU29 : INST, TYPE="type-V"
+  YCSU30 : INST, TYPE="type-V"
+  YCSU31 : INST, TYPE="type-V"
+  YCSU32 : INST, TYPE="type-V"
+  YCSU33 : INST, TYPE="type-V"
+  YCSU34 : INST, TYPE="type-V"
+  YCSU36 : INST, TYPE="type-V"
+  YCSU37 : INST, TYPE="type-V"
+  YCSU38 : INST, TYPE="type-V"
+  YCSU39 : INST, TYPE="type-V"
+  YCSU40 : INST, TYPE="type-V"
+  YCSU41 : INST, TYPE="type-V"
+  YCSU42 : INST, TYPE="type-V"
+  YCSU43 : INST, TYPE="type-V"
+  YCSU44 : INST, TYPE="type-V"
+  YCSU45 : INST, TYPE="type-V"
+  YCSU46 : INST, TYPE="type-V"
+  YCSU47 : INST, TYPE="type-V"
 
 ! ------------------------------------------------------------------------------
 ! SXR undulator BPMs
@@ -1074,8 +1082,8 @@
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-  KQUE1B := -0.066533038872 !-0.306247962224
-  KQUE2B :=  0.317255382568 ! 0.394195575969
+  KQUE1B :=  0.28964739003    !-0.067476446146
+  KQUE2B := -0.00606676202205 ! 0.317835100036
 
   QUE1B : QUAD, TYPE="2Q10", L=LQR/2, K1=KQUE1b, APER=rQR
   QUE2B : QUAD, TYPE="2Q10", L=LQR/2, K1=KQUE2b, APER=rQR
@@ -1092,13 +1100,10 @@
   DUE1d   : DRIF, L=0.1
   DUE1b   : DRIF, L=1.5
   DUE1c   : DRIF, L=0.5
-  DUE1ca  : DRIF, L=0.3
-  DUE1cb  : DRIF, L=0.188 -0.012
-  DUE1cc  : DRIF, L=DUE1c[L]-DUE1ca[L]-DUE1cb[L] 
   DUE2a   : DRIF, L=0.5
-  DUE2b   : DRIF, L=0.8
-  DUE2d   : DRIF, L=0.188 -0.012
-  DUE2e   : DRIF, L=1.740055-DUE2b[L]-DUE2d[L]
+  DUE2d   : DRIF, L=0.188 -0.012 !phase cavity center-to-center spacing
+  DUE2b   : DRIF, L=0.8-DUE2d[L]+0.005555
+  DUE2e   : DRIF, L=1.740055-DUE2b[L]-3*DUE2d[L]
   DUE2cb  : DRIF, L=0.615    +(LQP-LQR)/2
   DUE3ab  : DRIF, L=0.375504 +(LQP-LQR)/2 -0.014955
   DUE3bb  : DRIF, L=1.2630495 +0.014955
@@ -1166,8 +1171,8 @@
   QUE2B_full : LINE=(QUE2B,QUE2B)
 
   UNDEXITb : LINE=(BEGDMPS_1,&
-      UEbegb,DUE1d,VV36b,DUE1b,MIMUNDOB,DUE1ca,PH33B,DUE1cb,PH34B,DUE1cc,&
-      DUE2a,YCUE1B,DUE2b,PH31B,DUE2d,PH32B,DUE2e,XCUE2B,DUE2cb,&
+      UEbegb,DUE1d,VV36b,DUE1b,MIMUNDOB,DUE1c,DUE2a,YCUE1B,&
+      DUE2b,PH31B,DUE2d,PH32B,DUE2d,PH33B,DUE2d,PH34B,DUE2e,XCUE2B,DUE2cb,&
     QUE1B_full,DUE3ab,BPMUE1B,DUE3bb,TRUE1B,DUE3c,DBKXDMPS,DUE3c,PCTCXB,&
       DPCVV,VVTCXb,DVVTCX,MTCX01b,&
     2*TCX01B,DTCX12,MTCXb,DTCX12,&
@@ -1300,19 +1305,19 @@
   GQDHX  := -IntgHX/LQu/10*1.0           !T/m
   kQFHX  :=  1.E-9*GQFHX*CLIGHT/gamu/mc2 !m^-2
   kQDHX  :=  1.E-9*GQDHX*CLIGHT/gamu/mc2 !m^-2
-  kQDHXm := -2.482122917065 !-0.51857909178
+  kQDHXm := -2.482122917065
 
-  QHXh13 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, APER=rQu
-  QHXh14 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, APER=rQu
-  QHXh15 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, APER=rQu
-  QHXh16 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, APER=rQu
-  QHXh17 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, APER=rQu
-  QHXh18 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, APER=rQu
-  QHXh19 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, APER=rQu
-  QHXh20 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, APER=rQu
+ !QHXh13 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, APER=rQu
+ !QHXh14 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, APER=rQu
+ !QHXh15 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, APER=rQu
+ !QHXh16 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, APER=rQu
+ !QHXh17 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, APER=rQu
+ !QHXh18 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, APER=rQu
+ !QHXh19 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, APER=rQu
+ !QHXh20 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, APER=rQu
   QHXh21 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, APER=rQu
-  QHXh22 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, APER=rQu
-  QHXh23 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, APER=rQu
+ !QHXh22 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, APER=rQu
+ !QHXh23 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, APER=rQu
   QHXh24 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, APER=rQu
   QHXh25 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, APER=rQu
   QHXh26 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, APER=rQu
@@ -1472,91 +1477,91 @@
 ! HXR undulator X-steering coils in undulator segments
 ! ------------------------------------------------------------------------------
 
-  XCHU13 : HKIC, TYPE="type-V"
-  XCHU14 : HKIC, TYPE="type-V"
-  XCHU15 : HKIC, TYPE="type-V"
-  XCHU16 : HKIC, TYPE="type-V"
-  XCHU17 : HKIC, TYPE="type-V"
-  XCHU18 : HKIC, TYPE="type-V"
-  XCHU19 : HKIC, TYPE="type-V"
-  XCHU20 : HKIC, TYPE="type-V"
-  XCHU22 : HKIC, TYPE="type-V"
-  XCHU23 : HKIC, TYPE="type-V"
-  XCHU24 : HKIC, TYPE="type-V"
-  XCHU25 : HKIC, TYPE="type-V"
-  XCHU26 : HKIC, TYPE="type-V"
-  XCHU27 : HKIC, TYPE="type-V"
-  XCHU29 : HKIC, TYPE="type-V"
-  XCHU30 : HKIC, TYPE="type-V"
-  XCHU31 : HKIC, TYPE="type-V"
-  XCHU32 : HKIC, TYPE="type-V"
-  XCHU33 : HKIC, TYPE="type-V"
-  XCHU34 : HKIC, TYPE="type-V"
-  XCHU35 : HKIC, TYPE="type-V"
-  XCHU36 : HKIC, TYPE="type-V"
-  XCHU37 : HKIC, TYPE="type-V"
-  XCHU38 : HKIC, TYPE="type-V"
-  XCHU39 : HKIC, TYPE="type-V"
-  XCHU40 : HKIC, TYPE="type-V"
-  XCHU41 : HKIC, TYPE="type-V"
-  XCHU42 : HKIC, TYPE="type-V"
-  XCHU43 : HKIC, TYPE="type-V"
-  XCHU44 : HKIC, TYPE="type-V"
-  XCHU45 : HKIC, TYPE="type-V"
-  XCHU46 : HKIC, TYPE="type-V"
+  XCHU13 : INST, TYPE="type-V"
+  XCHU14 : INST, TYPE="type-V"
+  XCHU15 : INST, TYPE="type-V"
+  XCHU16 : INST, TYPE="type-V"
+  XCHU17 : INST, TYPE="type-V"
+  XCHU18 : INST, TYPE="type-V"
+  XCHU19 : INST, TYPE="type-V"
+  XCHU20 : INST, TYPE="type-V"
+  XCHU22 : INST, TYPE="type-V"
+  XCHU23 : INST, TYPE="type-V"
+  XCHU24 : INST, TYPE="type-V"
+  XCHU25 : INST, TYPE="type-V"
+  XCHU26 : INST, TYPE="type-V"
+  XCHU27 : INST, TYPE="type-V"
+  XCHU29 : INST, TYPE="type-V"
+  XCHU30 : INST, TYPE="type-V"
+  XCHU31 : INST, TYPE="type-V"
+  XCHU32 : INST, TYPE="type-V"
+  XCHU33 : INST, TYPE="type-V"
+  XCHU34 : INST, TYPE="type-V"
+  XCHU35 : INST, TYPE="type-V"
+  XCHU36 : INST, TYPE="type-V"
+  XCHU37 : INST, TYPE="type-V"
+  XCHU38 : INST, TYPE="type-V"
+  XCHU39 : INST, TYPE="type-V"
+  XCHU40 : INST, TYPE="type-V"
+  XCHU41 : INST, TYPE="type-V"
+  XCHU42 : INST, TYPE="type-V"
+  XCHU43 : INST, TYPE="type-V"
+  XCHU44 : INST, TYPE="type-V"
+  XCHU45 : INST, TYPE="type-V"
+  XCHU46 : INST, TYPE="type-V"
 
 ! ------------------------------------------------------------------------------
 ! HXR undulator Y-steering coils in undulator segments
 ! ------------------------------------------------------------------------------
 
-  YCHU13 : VKIC, TYPE="type-V"
-  YCHU14 : VKIC, TYPE="type-V"
-  YCHU15 : VKIC, TYPE="type-V"
-  YCHU16 : VKIC, TYPE="type-V"
-  YCHU17 : VKIC, TYPE="type-V"
-  YCHU18 : VKIC, TYPE="type-V"
-  YCHU19 : VKIC, TYPE="type-V"
-  YCHU20 : VKIC, TYPE="type-V"
-  YCHU22 : VKIC, TYPE="type-V"
-  YCHU23 : VKIC, TYPE="type-V"
-  YCHU24 : VKIC, TYPE="type-V"
-  YCHU25 : VKIC, TYPE="type-V"
-  YCHU26 : VKIC, TYPE="type-V"
-  YCHU27 : VKIC, TYPE="type-V"
-  YCHU29 : VKIC, TYPE="type-V"
-  YCHU30 : VKIC, TYPE="type-V"
-  YCHU31 : VKIC, TYPE="type-V"
-  YCHU32 : VKIC, TYPE="type-V"
-  YCHU33 : VKIC, TYPE="type-V"
-  YCHU34 : VKIC, TYPE="type-V"
-  YCHU35 : VKIC, TYPE="type-V"
-  YCHU36 : VKIC, TYPE="type-V"
-  YCHU37 : VKIC, TYPE="type-V"
-  YCHU38 : VKIC, TYPE="type-V"
-  YCHU39 : VKIC, TYPE="type-V"
-  YCHU40 : VKIC, TYPE="type-V"
-  YCHU41 : VKIC, TYPE="type-V"
-  YCHU42 : VKIC, TYPE="type-V"
-  YCHU43 : VKIC, TYPE="type-V"
-  YCHU44 : VKIC, TYPE="type-V"
-  YCHU45 : VKIC, TYPE="type-V"
-  YCHU46 : VKIC, TYPE="type-V"
+  YCHU13 : INST, TYPE="type-V"
+  YCHU14 : INST, TYPE="type-V"
+  YCHU15 : INST, TYPE="type-V"
+  YCHU16 : INST, TYPE="type-V"
+  YCHU17 : INST, TYPE="type-V"
+  YCHU18 : INST, TYPE="type-V"
+  YCHU19 : INST, TYPE="type-V"
+  YCHU20 : INST, TYPE="type-V"
+  YCHU22 : INST, TYPE="type-V"
+  YCHU23 : INST, TYPE="type-V"
+  YCHU24 : INST, TYPE="type-V"
+  YCHU25 : INST, TYPE="type-V"
+  YCHU26 : INST, TYPE="type-V"
+  YCHU27 : INST, TYPE="type-V"
+  YCHU29 : INST, TYPE="type-V"
+  YCHU30 : INST, TYPE="type-V"
+  YCHU31 : INST, TYPE="type-V"
+  YCHU32 : INST, TYPE="type-V"
+  YCHU33 : INST, TYPE="type-V"
+  YCHU34 : INST, TYPE="type-V"
+  YCHU35 : INST, TYPE="type-V"
+  YCHU36 : INST, TYPE="type-V"
+  YCHU37 : INST, TYPE="type-V"
+  YCHU38 : INST, TYPE="type-V"
+  YCHU39 : INST, TYPE="type-V"
+  YCHU40 : INST, TYPE="type-V"
+  YCHU41 : INST, TYPE="type-V"
+  YCHU42 : INST, TYPE="type-V"
+  YCHU43 : INST, TYPE="type-V"
+  YCHU44 : INST, TYPE="type-V"
+  YCHU45 : INST, TYPE="type-V"
+  YCHU46 : INST, TYPE="type-V"
 
 ! ------------------------------------------------------------------------------
 ! HXR undulator BPMs
 ! ------------------------------------------------------------------------------
 
-  RFBHX13 : MONI, L=LRFBub, TYPE="CavityX-1"
-  RFBHX14 : MONI, L=LRFBub, TYPE="CavityX-1"
-  RFBHX15 : MONI, L=LRFBub, TYPE="CavityX-1"
-  RFBHX16 : MONI, L=LRFBub, TYPE="CavityX-1"
-  RFBHX17 : MONI, L=LRFBub, TYPE="CavityX-1"
-  RFBHX18 : MONI, L=LRFBub, TYPE="CavityX-1"
-  RFBHX19 : MONI, L=LRFBub, TYPE="CavityX-1"
-  RFBHX20 : MONI, L=LRFBub, TYPE="CavityX-1"
+ !RFBHX13 : MONI, L=LRFBub, TYPE="CavityX-1"
+ !RFBHX14 : MONI, L=LRFBub, TYPE="CavityX-1"
+ !RFBHX15 : MONI, L=LRFBub, TYPE="CavityX-1"
+ !RFBHX16 : MONI, L=LRFBub, TYPE="CavityX-1"
+ !RFBHX17 : MONI, L=LRFBub, TYPE="CavityX-1"
+ !RFBHX18 : MONI, L=LRFBub, TYPE="CavityX-1"
+ !RFBHX19 : MONI, L=LRFBub, TYPE="CavityX-1"
+ !RFBHX20 : MONI, L=LRFBub, TYPE="CavityX-1"
   RFBHX21 : MONI, L=LRFBub, TYPE="CavityX-1"
-  RFBHX22 : MONI, L=LRFBub, TYPE="CavityX-1"
-  RFBHX23 : MONI, L=LRFBub, TYPE="CavityX-1"
+ !RFBHX22 : MONI, L=LRFBub, TYPE="CavityX-1"
+ !RFBHX23 : MONI, L=LRFBub, TYPE="CavityX-1"
   RFBHX24 : MONI, L=LRFBub, TYPE="CavityX-1"
   RFBHX25 : MONI, L=LRFBub, TYPE="CavityX-1"
   RFBHX26 : MONI, L=LRFBub, TYPE="CavityX-1"
@@ -1881,17 +1886,19 @@
   DUSEGH49 : DRIF, L=LDUSEGH
   DUSEGH50 : DRIF, L=LDUSEGH
 
-  QHXh13_full : LINE=(QHXh13,XCHX13,MUQH,YCHX13,QHXh13)
-  QHXh14_full : LINE=(QHXh14,XCHX14,MUQH,YCHX14,QHXh14)
-  QHXh15_full : LINE=(QHXh15,XCHX15,MUQH,YCHX15,QHXh15)
-  QHXh16_full : LINE=(QHXh16,XCHX16,MUQH,YCHX16,QHXh16)
-  QHXh17_full : LINE=(QHXh17,XCHX17,MUQH,YCHX17,QHXh17)
-  QHXh18_full : LINE=(QHXh18,XCHX18,MUQH,YCHX18,QHXh18)
-  QHXh19_full : LINE=(QHXh19,XCHX19,MUQH,YCHX19,QHXh19)
-  QHXh20_full : LINE=(QHXh20,XCHX20,MUQH,YCHX20,QHXh20)
+  CALL, FILENAME="UNDtemp.xsif" !old LCLS girder definitions
+
+ !QHXh13_full : LINE=(QHXh13,XCHX13,MUQH,YCHX13,QHXh13)
+ !QHXh14_full : LINE=(QHXh14,XCHX14,MUQH,YCHX14,QHXh14)
+ !QHXh15_full : LINE=(QHXh15,XCHX15,MUQH,YCHX15,QHXh15)
+ !QHXh16_full : LINE=(QHXh16,XCHX16,MUQH,YCHX16,QHXh16)
+ !QHXh17_full : LINE=(QHXh17,XCHX17,MUQH,YCHX17,QHXh17)
+ !QHXh18_full : LINE=(QHXh18,XCHX18,MUQH,YCHX18,QHXh18)
+ !QHXh19_full : LINE=(QHXh19,XCHX19,MUQH,YCHX19,QHXh19)
+ !QHXh20_full : LINE=(QHXh20,XCHX20,MUQH,YCHX20,QHXh20)
   QHXh21_full : LINE=(QHXh21,XCHX21,MUQH,YCHX21,QHXh21)
-  QHXh22_full : LINE=(QHXh22,XCHX22,MUQH,YCHX22,QHXh22)
-  QHXh23_full : LINE=(QHXh23,XCHX23,MUQH,YCHX23,QHXh23)
+ !QHXh22_full : LINE=(QHXh22,XCHX22,MUQH,YCHX22,QHXh22)
+ !QHXh23_full : LINE=(QHXh23,XCHX23,MUQH,YCHX23,QHXh23)
   QHXh24_full : LINE=(QHXh24,XCHX24,MUQH,YCHX24,QHXh24)
   QHXh25_full : LINE=(QHXh25,XCHX25,MUQH,YCHX25,QHXh25)
   QHXh26_full : LINE=(QHXh26,XCHX26,MUQH,YCHX26,QHXh26)
@@ -2036,12 +2043,22 @@
   HXCEL49  : LINE=(DU1h,DU2h,DUSEGH49,HXBRK49) !empty with RFBPM
   HXCEL50  : LINE=(DU1h,DU2h,DUSEGH50,HXBRK50) !empty
 
+  comment !LCLS-II final configuration
   HXRCL    : LINE=(&
     HXCEL13,HXCEL14,HXCEL15,HXCEL16,HXCEL17,HXCEL18,HXCEL19,HXCEL20,&
     HXCEL21,HXCEL22,HXCEL23,HXCEL24,HXCEL25,HXCEL26,HXCEL27,HXCEL28,&
     HXCEL29,HXCEL30,HXCEL31,HXCEL32,HXCEL33,HXCEL34,HXCEL35,HXCEL36,&
     HXCEL37,HXCEL38,HXCEL39,HXCEL40,HXCEL41,HXCEL42,HXCEL43,HXCEL44,&
     HXCEL45,HXCEL46,HXCEL47,HXCEL48,HXCEL49,HXCEL50)
+  endcomment
+
+ !comment !LCLS-II startup configuration
+  HXRCL    : LINE=(&
+    UNDCLa,HXCEL21,UNDCLb,HXCEL24,HXCEL25,HXCEL26,HXCEL27,HXCEL28,&
+    HXCEL29,HXCEL30,HXCEL31,HXCEL32,HXCEL33,HXCEL34,HXCEL35,HXCEL36,&
+    HXCEL37,HXCEL38,HXCEL39,HXCEL40,HXCEL41,HXCEL42,HXCEL43,HXCEL44,&
+    HXCEL45,HXCEL46,HXCEL47,HXCEL48,HXCEL49,HXCEL50)
+ !endcomment
 
   HXR : LINE=(DU0h,DU8h,HXRSTART,HXRCL,RWWAKE5H,HXRTERM,DUE1a,RFBHX51,DUE1e,&
               ENDUNDH)
@@ -2053,8 +2070,8 @@
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-  KQUE1 :=  0.178908931125 !-0.09207220416
-  KQUE2 := -0.136231234699 ! 0.160489725306
+  KQUE1 :=  0.178908931125
+  KQUE2 := -0.136231234699
 
   QUE1 : QUAD, TYPE="3.25Q20", L=LQD/2, K1=KQUE1, APER=rQD
   QUE2 : QUAD, TYPE="3.25Q20", L=LQD/2, K1=KQUE2, APER=rQD
@@ -2115,8 +2132,8 @@
   QUE2_full : LINE=(QUE2,QUE2)
 
   UNDEXIT : LINE=(BEGDMPH_1,&
-      UEbeg,DUE1d,VV36,DUE1b,MIMUNDO,DUE1ca,PH33,DUE1cb,PH34,DUE1cc,&
-      DUE2a,YCUE1,DUE2b,PH31,DUE2d,PH32,DUE2e,XCUE2,DUE2c,&
+      UEbeg,DUE1d,VV36,DUE1b,MIMUNDO,DUE1c,DUE2a,YCUE1,&
+      DUE2b,PH31,DUE2d,PH32,DUE2d,PH33,DUE2d,PH34,DUE2e,XCUE2,DUE2c,&
     QUE1_full,DUE3a,BPMUE1,DUE3b,TRUE1,DUE3c,DBKXDMPH,DUE3c,PCTCX,&
       DPCVV,VVTCX,DVVTCX,MTCX01,&
     2*TCX01,DTCX12,MTCX,DTCX12,&
