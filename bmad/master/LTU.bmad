@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-05DEC19 ***
+! *** OPTICS=AD_ACCEL-01APR20 ***
 
 ! LCLS2sc LTU and dump
 
@@ -711,8 +711,8 @@ dwigsb: drift, l = dwigs[l]-dwigsa[l]-lplate
 ! note: the K-values below are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-kqdbl1 = -0.048819823179
-kqdbl2 = -0.560812460035
+kqdbl1 = -0.04881982318  !-0.048819823179
+kqdbl2 = -0.560812460034 !-0.560812460035
 
 qdbl1: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqdbl1
 qdbl2: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqdbl2
@@ -1219,7 +1219,8 @@ dxcvm2: drift, l = 0.25
 dvb25cm: drift, l = 0.25
 dvb25cmcb: drift, l = 1.32046
 d25cm: drift, l = 0.25
-dvbem25cmb: drift, l = 1.39092, type = "CSR"
+dvbem25cmb: drift, l = 1.39092-0.076175, type = "CSR"
+d25cmd: drift, l = 0.25+0.076175, type = "CSR"
 dvbem15cmb: drift, l = 0.243073, type = "CSR"
 d10cmb: drift, l = 0.1064869
 d25cma: drift, l = 0.2209001, type = "CSR"
@@ -1297,7 +1298,7 @@ vbendb: line = (vbinb, by1b_full, dvb1b, qvb1b_full, d40cmc, ycvb1b, dvb2m80cmb,
         by2b_full, cntlt2s, vboutb)
 
 vbsysb: line = (dycvm1, dqvm1, drqvm1, drqvm1, dqvm2, drqvm2ba, pc08b, btm08b, drqvm2bb, dxcvm2,  &
-        dvb25cm, vbendb, dvb25cmcb, xcvm3b, d25cm, qvm3b_full, dvbem25cmb, ycvm4b, d25cm,  &
+        dvb25cm, vbendb, dvb25cmcb, xcvm3b, d25cm, qvm3b_full, dvbem25cmb, ycvm4b, d25cmd,  &
         qvm4b_full, dvbem15cmb, d10cmb, d25cma)
 
 ! ------------------------------------------------------------------------------
@@ -1307,7 +1308,7 @@ vbsysb: line = (dycvm1, dqvm1, drqvm1, drqvm1, dqvm2, drqvm2ba, pc08b, btm08b, d
 kqem1b = 1.994771712802
 kqem2b = -1.809226178089
 kqem3b = 1.263611884311
-kqem4b = -0.891717464061
+kqem4b = -0.89171746406  !-0.891717464061
 
 qem1b: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqem1b
 qem2b: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqem2b
@@ -1836,8 +1837,8 @@ dtdund1: drift, l = 0.855853 !from u/s TDUND flange to TDUND center
 dtdund2: drift, l = 0.347853 !from TDUND center to d/s TDUND flange
 dpcmuon: drift, l = 0.031498
 dmuon1: drift, l = 0.154859+0.05
-dmuon1b: drift, l = 0.154859+0.05-0.060429
-dmuon3b: drift, l = 0.310592-0.05
+dmuon1b: drift, l = 0.154859+0.05-0.060429+0.117
+dmuon3b: drift, l = 0.310592-0.05-0.117
 
 bpmum1b: instrument, type = "Stripline-2"
 bpmum2b: instrument, type = "Stripline-2"
@@ -1919,7 +1920,7 @@ bsyltusc: line = (muwallb, dwalla, dumpbsys, dwallb, bsyendb, endsps, dbldl21, l
 ! SXR dumpline
 ! ------------------------------------------------------------------------------
 
-kqdmpb = -0.155745965723 !-0.15522011426
+kqdmpb = -0.154946553294 !-0.156309918216
 
 qdmp1b: quadrupole, type = "3.94Q17", l = lqp/2, aperture = rqp, k1 = kqdmpb
 qdmp2b: quadrupole, type = "3.94Q17", l = lqp/2, aperture = rqp, k1 = kqdmpb
@@ -2899,7 +2900,7 @@ d40cmf: drift, l = 0.40+0.090013-0.065013
 rfbhx12: instrument, l = lrfbub, type = "CavityX-1"
 
 dmuon4: drift, l = 0.059608016
-dmuon3: drift, l = dmuon3b[l]-dmuon4[l]-lrfbub
+dmuon3: drift, l = 0.310592-0.05-dmuon4[l]-lrfbub
 
 ! dechirper installation (August, 2015)
 
@@ -3262,10 +3263,10 @@ doglg2b: line = (dl23, trip3, ss3, dl24, trip4)
 ! HXR emittance diagnostic
 ! ------------------------------------------------------------------------------
 
-kqem1 = -0.386250956878
-kqem2 = 0.429466776058
-kqem3 = -0.596168395282
-kqem4 = 0.419766074433
+kqem1 = -0.387075869093 !-0.386250956878
+kqem2 = 0.429991896597 ! 0.429466776058
+kqem3 = -0.595826812909 !-0.596168395282
+kqem4 = 0.419884551845 ! 0.419766074433
 
 qem1: quadrupole, type = "1.26Q12", l = lqa/2, aperture = rqa, k1 = kqem1
 qem2: quadrupole, type = "1.26Q12", l = lqa/2, aperture = rqa, k1 = kqem2
@@ -3468,10 +3469,10 @@ edsys: line = (dbmark36, ws31, d40cm, de3ma, pc09, btm09, de3mb, xce31, dqea, qe
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 !       in the "LCLS2cu_main.mad8" file
 
-kqum1 = 0.21295276718  ! 0.266446647337
-kqum2 = -0.256692261825 !-0.257070322217
-kqum3 = 0.472597881562 ! 0.249191553356
-kqum4 = -0.42682658336  !-0.21849398386
+kqum1 = 0.21295276718
+kqum2 = -0.256692261825
+kqum3 = 0.472597881562
+kqum4 = -0.42682658336
 
 qum1: quadrupole, type = "1.26Q12", l = lqa/2, aperture = rqa, k1 = kqum1
 qum2: quadrupole, type = "1.26Q12", l = lqa/2, aperture = rqa, k1 = kqum2

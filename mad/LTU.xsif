@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-05DEC19 ***
+! *** OPTICS=AD_ACCEL-01APR20 ***
 
 ! LCLS2sc LTU and dump
 
@@ -713,8 +713,8 @@
 ! note: the K-values below are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-  KQDBL1 := -0.048819823179
-  KQDBL2 := -0.560812460035
+  KQDBL1 := -0.04881982318  !-0.048819823179
+  KQDBL2 := -0.560812460034 !-0.560812460035
 
   QDBL1 : QUAD, TYPE="1.085Q4.31", L=LQE/2, K1=KQDBL1, APER=rQE
   QDBL2 : QUAD, TYPE="1.085Q4.31", L=LQE/2, K1=KQDBL2, APER=rQE
@@ -1142,7 +1142,8 @@
   DVB25cm    : DRIF, L=0.25
   DVB25cmcB  : DRIF, L=1.32046
   D25cm      : DRIF, L=0.25
-  DVBem25cmb : DRIF, L=1.39092, TYPE="CSR"
+  DVBem25cmb : DRIF, L=1.39092-0.076175, TYPE="CSR"
+  D25cmd     : DRIF, L=0.25+0.076175, TYPE="CSR"
   DVBem15cmb : DRIF, L=0.243073, TYPE="CSR"
   D10cmb     : DRIF, L=0.1064869
   D25cma     : DRIF, L=0.2209001, TYPE="CSR"
@@ -1188,7 +1189,7 @@
   VBSYSb : LINE=(DYCVM1,DQVM1,DRQVM1,DRQVM1,DQVM2,DRQVM2Ba,PC08B,BTM08B,&
       DRQVM2Bb,DXCVM2,DVB25cm,&
     VBENDb,DVB25cmcB,XCVM3B,D25cm,&
-    QVM3B_full,DVBem25cmb,YCVM4B,D25cm,&
+    QVM3B_full,DVBem25cmb,YCVM4B,D25cmd,&
     QVM4B_full,DVBem15cmb,D10cmb,D25cma)
 
 ! ------------------------------------------------------------------------------
@@ -1198,7 +1199,7 @@
   KQEM1B :=  1.994771712802
   KQEM2B := -1.809226178089
   KQEM3B :=  1.263611884311
-  KQEM4B := -0.891717464061
+  KQEM4B := -0.89171746406  !-0.891717464061
 
   QEM1B  : QUAD, TYPE="1.085Q4.31", L=LQE/2, K1=KQEM1b, APER=rQE
   QEM2B  : QUAD, TYPE="1.085Q4.31", L=LQE/2, K1=KQEM2b, APER=rQE
@@ -1646,8 +1647,8 @@
   DTDUND2    : DRIF, L=0.347853 !from TDUND center to d/s TDUND flange
   DPCMUON    : DRIF, L=0.031498
   DMUON1     : DRIF, L=0.154859 +0.05
-  DMUON1b    : DRIF, L=0.154859 +0.05 -0.060429
-  DMUON3b    : DRIF, L=0.310592 -0.05
+  DMUON1b    : DRIF, L=0.154859 +0.05 -0.060429 +0.117
+  DMUON3b    : DRIF, L=0.310592 -0.05 -0.117
 
   BPMUM1B : MONI, TYPE="Stripline-2"
   BPMUM2B : MONI, TYPE="Stripline-2"
@@ -1704,7 +1705,7 @@
 ! SXR dumpline
 ! ------------------------------------------------------------------------------
 
-  KQDMPB := -0.155745965723 !-0.15522011426
+  KQDMPB := -0.154946553294 !-0.156309918216
 
   QDmp1B : QUAD, TYPE="3.94Q17", L=LQP/2, K1=KQDmpb, APER=rQP
   QDmp2B : QUAD, TYPE="3.94Q17", L=LQP/2, K1=KQDmpb, APER=rQP
@@ -2599,7 +2600,7 @@
   RFBHX12 : MONI, L=LRFBub, TYPE="CavityX-1"
 
   DMUON4  : DRIF, L=0.059608016
-  DMUON3  : DRIF, L=DMUON3b[L] -DMUON4[L]-LRFBub
+  DMUON3  : DRIF, L=0.310592 -0.05 -DMUON4[L] -LRFBub
 
 ! dechirper installation (August, 2015)
 
@@ -2860,10 +2861,10 @@
 ! HXR emittance diagnostic
 ! ------------------------------------------------------------------------------
 
-  KQEM1 := -0.386250956878
-  KQEM2 :=  0.429466776058
-  KQEM3 := -0.596168395282
-  KQEM4 :=  0.419766074433
+  KQEM1 := -0.387075869093 !-0.386250956878
+  KQEM2 :=  0.429991896597 ! 0.429466776058
+  KQEM3 := -0.595826812909 !-0.596168395282
+  KQEM4 :=  0.419884551845 ! 0.419766074433
 
   QEM1  : QUAD, TYPE="1.26Q12"  , L=LQA/2, K1=KQEM1, APER=rQA
   QEM2  : QUAD, TYPE="1.26Q12"  , L=LQA/2, K1=KQEM2, APER=rQA
@@ -2996,10 +2997,10 @@
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 !       in the "LCLS2cu_main.mad8" file
 
-  KQUM1 :=  0.21295276718  ! 0.266446647337
-  KQUM2 := -0.256692261825 !-0.257070322217
-  KQUM3 :=  0.472597881562 ! 0.249191553356
-  KQUM4 := -0.42682658336  !-0.21849398386
+  KQUM1 :=  0.21295276718
+  KQUM2 := -0.256692261825
+  KQUM3 :=  0.472597881562
+  KQUM4 := -0.42682658336
 
   QUM1 : QUAD, TYPE="1.26Q12", L=LQA/2, K1=KQUM1, APER=rQA
   QUM2 : QUAD, TYPE="1.26Q12", L=LQA/2, K1=KQUM2, APER=rQA

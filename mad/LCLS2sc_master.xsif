@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-05DEC19 ***
+! *** OPTICS=AD_ACCEL-01APR20 ***
 
 ! ------------------------------------------------------------------------------
 ! constants and global parameters
@@ -8,9 +8,9 @@
 ! constants
 
   Cb    : CONSTANT=1.0E10/CLIGHT   !kG-m/GeV
-  in2m  : CONSTANT=0.0254          !m/inch
   mc2   : CONSTANT=0.51099906E-3   !GeV
   QELEC : CONSTANT=1.602176462E-19 !C
+  in2m  : CONSTANT=0.0254          !m/inch
 
 ! energy profile
 
@@ -27,6 +27,7 @@
   Brho1 := Cb*E1
   Brho2 := Cb*E2
   Brhof := Cb*Ef
+  Brhou := Cb*Eu
 
 ! compression
 
@@ -203,6 +204,7 @@
   CALL, FILENAME="BYP.xsif"
   CALL, FILENAME="LTU.xsif"
   CALL, FILENAME="UND.xsif"
+ !CALL, FILENAME="UND0.xsif"
   CALL, FILENAME="SFT.xsif"
   CALL, FILENAME="SXTES.xsif"
   CALL, FILENAME="DASEL.xsif"
@@ -221,7 +223,9 @@
 
  !SC_SXR   : superconducting linac to e- SXR dump
  !SC_SFTS  : superconducting linac to e- SXR safety dump
- !SC_SXTES : superconducting linac to SXR XTES system
+ !SC_S2_X  : superconducting linac to SXR XTES "2.X" line
+ !SC_STXI  : superconducting linac to SXR XTES TXI line
+ !SC_STMO  : superconducting linac to SXR XTES TMO line
  !SC_HXR   : superconducting linac to e- HXR dump
  !SC_BSYD  : superconducting linac to BSY dump
  !SC_DIAG0 : superconducting linac to DIAG0
@@ -230,7 +234,9 @@
 
   SC_SXR   : LINE=(GUN,L0,LCLS2scC,LCLS2scS)
   SC_SFTS  : LINE=(GUN,L0,LCLS2scC,LCLS2scSS)
-  SC_SXTES : LINE=(GUN,L0,LCLS2scC,LCLS2scSXTES)
+  SC_S2_X  : LINE=(GUN,L0,LCLS2scC,LCLS2scS2_X)
+  SC_STXI  : LINE=(GUN,L0,LCLS2scC,LCLS2scSTXI)
+  SC_STMO  : LINE=(GUN,L0,LCLS2scC,LCLS2scSTMO)
   SC_HXR   : LINE=(GUN,L0,LCLS2scC,LCLS2scH)
   SC_BSYD  : LINE=(GUN,L0,LCLS2scC,LCLS2scD)
   SC_DIAG0 : LINE=(GUN,L0,HTR,DIAG0)
@@ -241,7 +247,9 @@
 
   SC_SXRi   : LINE=(LCLS2scI,LCLS2scC,LCLS2scS)
   SC_SFTSi  : LINE=(LCLS2scI,LCLS2scC,LCLS2scSS)
-  SC_SXTESi : LINE=(LCLS2scI,LCLS2scC,LCLS2scSXTES)
+  SC_S2_Xi  : LINE=(LCLS2scI,LCLS2scC,LCLS2scS2_X)
+  SC_STXIi  : LINE=(LCLS2scI,LCLS2scC,LCLS2scSTXI)
+  SC_STMOi  : LINE=(LCLS2scI,LCLS2scC,LCLS2scSTMO)
   SC_HXRi   : LINE=(LCLS2scI,LCLS2scC,LCLS2scH)
   SC_BSYDi  : LINE=(LCLS2scI,LCLS2scC,LCLS2scD)
   SC_DIAG0i : LINE=(LCLS2scI,HTR,DIAG0)

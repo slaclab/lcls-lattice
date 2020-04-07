@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-05DEC19 ***
+! *** OPTICS=AD_ACCEL-01APR20 ***
 
 ! ------------------------------------------------------------------------------
 ! constants and global parameters
@@ -8,9 +8,9 @@
 ! constants
 
 cb = 1.0e10/c_light   !kG-m/GeV
-in2m = 0.0254          !m/inch
 mc2 = 0.51099906e-3   !GeV
 qelec = 1.602176462e-19 !C
+in2m = 0.0254          !m/inch
 
 ! energy profile
 
@@ -27,6 +27,7 @@ brhoi = cb*ei
 brho1 = cb*e1
 brho2 = cb*e2
 brhof = cb*ef
+brhou = cb*eu
 
 ! compression
 
@@ -203,6 +204,7 @@ call, filename = "ALINE.bmad"
 call, filename = "BYP.bmad"
 call, filename = "LTU.bmad"
 call, filename = "UND.bmad"
+ !CALL, FILENAME="UND0.xsif"
 call, filename = "SFT.bmad"
 call, filename = "SXTES.bmad"
 call, filename = "DASEL.bmad"
@@ -220,7 +222,9 @@ call, filename = "BSYsc.bmad"
 
  !SC_SXR   : superconducting linac to e- SXR dump
  !SC_SFTS  : superconducting linac to e- SXR safety dump
- !SC_SXTES : superconducting linac to SXR XTES system
+ !SC_S2_X  : superconducting linac to SXR XTES "2.X" line
+ !SC_STXI  : superconducting linac to SXR XTES TXI line
+ !SC_STMO  : superconducting linac to SXR XTES TMO line
  !SC_HXR   : superconducting linac to e- HXR dump
  !SC_BSYD  : superconducting linac to BSY dump
  !SC_DIAG0 : superconducting linac to DIAG0
@@ -229,7 +233,9 @@ call, filename = "BSYsc.bmad"
 
 sc_sxr: line = (gun, l0, lcls2scc, lcls2scs)
 sc_sfts: line = (gun, l0, lcls2scc, lcls2scss)
-sc_sxtes: line = (gun, l0, lcls2scc, lcls2scsxtes)
+sc_s2_x: line = (gun, l0, lcls2scc, lcls2scs2_x)
+sc_stxi: line = (gun, l0, lcls2scc, lcls2scstxi)
+sc_stmo: line = (gun, l0, lcls2scc, lcls2scstmo)
 sc_hxr: line = (gun, l0, lcls2scc, lcls2sch)
 sc_bsyd: line = (gun, l0, lcls2scc, lcls2scd)
 sc_diag0: line = (gun, l0, htr, diag0)
@@ -240,7 +246,9 @@ sc_eic: line = (eic)
 
 sc_sxri: line = (lcls2sci, lcls2scc, lcls2scs)
 sc_sftsi: line = (lcls2sci, lcls2scc, lcls2scss)
-sc_sxtesi: line = (lcls2sci, lcls2scc, lcls2scsxtes)
+sc_s2_xi: line = (lcls2sci, lcls2scc, lcls2scs2_x)
+sc_stxii: line = (lcls2sci, lcls2scc, lcls2scstxi)
+sc_stmoi: line = (lcls2sci, lcls2scc, lcls2scstmo)
 sc_hxri: line = (lcls2sci, lcls2scc, lcls2sch)
 sc_bsydi: line = (lcls2sci, lcls2scc, lcls2scd)
 sc_diag0i: line = (lcls2sci, htr, diag0)

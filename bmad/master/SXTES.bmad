@@ -1,10 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-05DEC19 ***
+! *** OPTICS=AD_ACCEL-01APR20 ***
 
 ! SXR XTES
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 22-JAN-2020, M. Woodley
+!  * from: XTES_BG_SXR_1-13-2020.xlsx per P. Stephens
 ! ------------------------------------------------------------------------------
 ! 20-JUN-2018, M. Woodley
 !  * PCPM3B: keyw=ECOL, L=LPCPMW, XSIZE=0.0127, YSIZE=0.0127
@@ -19,276 +22,323 @@
 
 ! NOTE: change mirrors from MULT to INST for Matlab model generator creation!
 
-a1x = -0.024
-a1y = 0.0
-a2x = -0.028
-a2y = 0.0
-a3x = 0.0
-a3y = -0.028
-a4x = 0.0
-a4y = 0.042
-a5x = -0.042
-a5y = 0.0
+a1y = -0.03662
+a2y = -0.101767726243 !calculated with atan2
+a3y = 0.016246118946 !fitted
+a4x = 0.019693602
+a5x = 0.019693602
+a6x = -0.024
 
-m1k4: multipole, type = "MIRROR", k0l = a1x
-m2k4: multipole, type = "KB1-H MIRROR", k0l = a2x
-m3k4: multipole, type = "KB1-V MIRROR", k0l = a3y, t0 = pi / 2
-m4k4: multipole, type = "KB2-V MIRROR", k0l = a4y, t0 = pi / 2
-m5k4: multipole, type = "KB2-H MIRROR", k0l = a5x
+mr1k1_bend: multipole, type = "MIRROR", k0l = a1y, t0 = pi / 2
+sp1k1_mono: multipole, type = "MONOCHROMATOR", k0l = a2y, t0 = pi / 2
+mr3k1_grating: multipole, type = "GRATING", k0l = a3y, t0 = pi / 2
+mr1k3_txi: multipole, type = "MIRROR", k0l = a4x
+mr2k3_txi: multipole, type = "MIRROR", k0l = a5x
+mr1k4_soms: multipole, type = "MIRROR", k0l = a6x
 
- !M1K4 : INST, TYPE="MIRROR"
- !M2K4 : INST, TYPE="KB1-H MIRROR"
- !M3K4 : INST, TYPE="KB1-V MIRROR"
- !M4K4 : INST, TYPE="KB2-V MIRROR"
- !M5K4 : INST, TYPE="KB2-H MIRROR"
+ !MR1K1_BEND    : INST, TYPE="MIRROR"
+ !SP1K1_MONO    : INST, TYPE="MONOCHROMATOR"
+ !MR3K1_GRATING : INST, TYPE="GRATING"
+ !MR1K3_TXI     : INST, TYPE="MIRROR"
+ !MR2K3_TXI     : INST, TYPE="MIRROR"
+ !MR1K4_SOMS    : INST, TYPE="MIRROR"
 
 ! ==============================================================================
 ! DRIF
 ! ------------------------------------------------------------------------------
 
-a12x = a1x+a2x
-a12y = a1y+a2y
-a13x = a12x+a3x
-a13y = a12y+a3y
-a14x = a13x+a4x
-a14y = a13y+a4y
-a15x = a14x+a5x
-a15y = a14y+a5y
+! common line
 
 dsxtes01: drift, l = 0.472
 dsxtes02: drift, l = 1.5
-dsxtes03: drift, l = 0.0
-dsxtes04: drift, l = 2.885211-lpcpmw/2
-dsxtes05: drift, l = 0.0
-dsxtes06: drift, l = 0.0
-dsxtes07: drift, l = 0.0
-dsxtes08: drift, l = 0.4147889-lpcpmw/2
-dsxtes09: drift, l = 0.04
-dsxtes10: drift, l = 0.2412357
-dsxtes11: drift, l = 7.9187643
-dsxtes12: drift, l = 0.0762
-dsxtes13: drift, l = 1.549568
-dsxtes14: drift, l = 9.5419013
-dsxtes15: drift, l = 1.0172561
-dsxtes16: drift, l = 1.10555
-dsxtes17: drift, l = 2.4382606
-dsxtes18: drift, l = 0.0
-dsxtes19: drift, l = 0.0
-dsxtes20: drift, l = 0.0
-dsxtes21: drift, l = 0.1423749
-dsxtes22: drift, l = 0.0
-dsxtes23: drift, l = 0.0
-dsxtes24: drift, l = 0.1300308
-dsxtes25: drift, l = 0.2823663
-dsxtes26: drift, l = 0.861249
-dsxtes27: drift, l = 0.12245
-dsxtes28: drift, l = 0.0527038
-dsxtes29: drift, l = 0.29367914
-dsxtes30: drift, l = 0.41068296
-dsxtes31: drift, l = 0.0
-dsxtes32: drift, l = 0.0
-dsxtes33: drift, l = 0.0
-dsxtes34: drift, l = 0.0
-dsxtes35: drift, l = 0.6053889
-dsxtes36: drift, l = 0.4026472
-dsxtes37: drift, l = 3.876691
-dsxtes38: drift, l = 2.937
-dsxtes39: drift, l = 2.937
-dsxtes40: drift, l = 1.9210907
-dsxtes41: drift, l = 0.0
-dsxtes42: drift, l = 0.0
-dsxtes43: drift, l = 0.5653502
-dsxtes44: drift, l = 0.4505591
+dsxtes03: drift, l = 2.903755-lpcpmw/2
+dsxtes04: drift, l = 0.4141213
+dsxtes05: drift, l = 0.0760569
+dsxtes06: drift, l = 0.253741
+dsxtes07: drift, l = 7.8123258
+dsxtes08: drift, l = 0.0762
+dsxtes09: drift, l = 1.549568
+dsxtes10: drift, l = 3.954232
+dsxtes11: drift, l = 2.34
+dsxtes12: drift, l = 3.1593754
+dsxtes13: drift, l = 1.10555
+dsxtes14: drift, l = 1.1211476
+dsxtes15: drift, l = 2.422663
+dsxtes16: drift, l = 0.1423749
+dsxtes17: drift, l = 0.1348125
+dsxtes18: drift, l = 0.4494214
+dsxtes19: drift, l = 0.6894122
+dsxtes20: drift, l = 0.125603
+dsxtes21: drift, l = 0.04953
+dsxtes22: drift, l = 0.2718348
+dsxtes23: drift, l = 0.3749014
+dsxtes24: drift, l = 0.078
+dsxtes25: drift, l = 0.2957019
+dsxtes26: drift, l = 0.477647
+dsxtes27: drift, l = 0.3994505
+dsxtes28: drift, l = 0.5545744
 
-! mirror #1 (M1K4; horizontal)
+! "2.2" line
 
-dsxtes45: drift, l = 0.0/cos(a1x)/cos(a1y)
-dsxtes46: drift, l = 0.0/cos(a1x)/cos(a1y)
-dsxtes47: drift, l = 0.0/cos(a1x)/cos(a1y)
-dsxtes48: drift, l = 0.4505591/cos(a1x)/cos(a1y)
-dsxtes49: drift, l = 0.5414409/cos(a1x)/cos(a1y)
-dsxtes50: drift, l = 0.1174857/cos(a1x)/cos(a1y)
-dsxtes51: drift, l = 0.4205143/cos(a1x)/cos(a1y)
-dsxtes52: drift, l = 0.0/cos(a1x)/cos(a1y)
-dsxtes53: drift, l = 0.0/cos(a1x)/cos(a1y)
-dsxtes54: drift, l = 0.0/cos(a1x)/cos(a1y)
-dsxtes55: drift, l = 0.0/cos(a1x)/cos(a1y)
-dsxtes56: drift, l = 1.4194969/cos(a1x)/cos(a1y)
-dsxtes57: drift, l = 0.3660234/cos(a1x)/cos(a1y)
-dsxtes58: drift, l = 0.8367137/cos(a1x)/cos(a1y)
-dsxtes59: drift, l = 0.12245/cos(a1x)/cos(a1y)
-dsxtes60: drift, l = 0.0568367/cos(a1x)/cos(a1y)
-dsxtes61: drift, l = 0.2954817/cos(a1x)/cos(a1y)
-dsxtes62: drift, l = 2.5280924/cos(a1x)/cos(a1y)
-dsxtes63: drift, l = 0.4015629/cos(a1x)/cos(a1y)
-dsxtes64: drift, l = 0.0/cos(a1x)/cos(a1y)
-dsxtes65: drift, l = 0.0/cos(a1x)/cos(a1y)
-dsxtes66: drift, l = 0.0/cos(a1x)/cos(a1y)
-dsxtes67: drift, l = 0.0/cos(a1x)/cos(a1y)
-dsxtes68: drift, l = 0.7313423/cos(a1x)/cos(a1y)
-dsxtes69: drift, l = 0.0/cos(a1x)/cos(a1y)
-dsxtes70: drift, l = 0.0/cos(a1x)/cos(a1y)
-dsxtes71: drift, l = 0.0/cos(a1x)/cos(a1y)
-dsxtes72: drift, l = 0.0/cos(a1x)/cos(a1y)
-dsxtes73: drift, l = 0.460887/cos(a1x)/cos(a1y)
-dsxtes74: drift, l = 0.72537821/cos(a1x)/cos(a1y)
-dsxtes75: drift, l = 0.0/cos(a1x)/cos(a1y)
-dsxtes76: drift, l = 0.0/cos(a1x)/cos(a1y)
-dsxtes77: drift, l = 0.0/cos(a1x)/cos(a1y)
-dsxtes78: drift, l = 0.73037409/cos(a1x)/cos(a1y)
-dsxtes79: drift, l = 0.12245/cos(a1x)/cos(a1y)
-dsxtes80: drift, l = 0.0668367/cos(a1x)/cos(a1y)
-dsxtes81: drift, l = 0.246074/cos(a1x)/cos(a1y)
-dsxtes82: drift, l = 1.93/cos(a1x)/cos(a1y)
-dsxtes83: drift, l = 0.3219027/cos(a1x)/cos(a1y)
-dsxtes84: drift, l = 0.0/cos(a1x)/cos(a1y)
-dsxtes85: drift, l = 0.0/cos(a1x)/cos(a1y)
-dsxtes86: drift, l = 0.0/cos(a1x)/cos(a1y)
-dsxtes87: drift, l = 0.0380973/cos(a1x)/cos(a1y)
-dsxtes88: drift, l = 0.844/cos(a1x)/cos(a1y)
+a12y = a1y+a2y
+a13y = a1y+a2y+a3y
 
-! mirror #2 (M2K4; horizontal)
+dsxtes29: drift, l = 0.6897237/cos(a1y)
+dsxtes30: drift, l = 0.0289889/cos(a1y)
+dsxtes31: drift, l = 3.5372036/cos(a1y)
+dsxtes32: drift, l = 0.3344515/cos(a1y)
+dsxtes33: drift, l = 1.2596323/cos(a1y)
+dsxtes34: drift, l = 0.138444/cos(a12y)
+dsxtes35: drift, l = 0.4793516/cos(a13y)
+dsxtes36: drift, l = 0.0411908/cos(a13y)
 
-dsxtes89: drift, l = 0.649/cos(a12x)/cos(a12y)
+! TXI line
 
-! mirror #3 (M3K4; vertical)
+a45x = a4x+a5x
 
-dsxtes90: drift, l = 0.457/cos(a13x)/cos(a13y)
-dsxtes91: drift, l = 5.582/cos(a13x)/cos(a13y)
+dsxtes37: drift, l = 1.65
+dsxtes38: drift, l = 1.6/cos(a4x)
+dsxtes39: drift, l = 0.6779536/cos(a45x)
+dsxtes40: drift, l = 2.600075/cos(a45x)
+dsxtes41: drift, l = 0.0359746/cos(a45x)
+dsxtes42: drift, l = 0.1611878/cos(a45x)
+dsxtes43: drift, l = 0.3068738/cos(a45x)
+dsxtes44: drift, l = 0.5221997/cos(a45x)
+dsxtes45: drift, l = 2.2088562/cos(a45x)
+dsxtes46: drift, l = 0.4648793/cos(a45x)
+dsxtes47: drift, l = 0.1269015/cos(a45x)
+dsxtes48: drift, l = 0.0526591/cos(a45x)
+dsxtes49: drift, l = 0.3978243/cos(a45x)
+dsxtes50: drift, l = 0.1301076/cos(a45x)
+dsxtes51: drift, l = 5.671144/cos(a45x)
+dsxtes52: drift, l = 0.1243635/cos(a45x)
+dsxtes53: drift, l = 0.0563443/cos(a45x)
+dsxtes54: drift, l = 3.0113111/cos(a45x)
+dsxtes55: drift, l = 1.1359052/cos(a45x)
+dsxtes56: drift, l = 1.2134394/cos(a45x)
+dsxtes57: drift, l = 0.1269015/cos(a45x)
+dsxtes58: drift, l = 0.0526591/cos(a45x)
 
-! mirror #4 (M4K4; vertical)
+! TMO line
 
-dsxtes92: drift, l = 0.0/cos(a14x)/cos(a14y)
-dsxtes93: drift, l = 0.0/cos(a14x)/cos(a14y)
-dsxtes94: drift, l = 0.0/cos(a14x)/cos(a14y)
-dsxtes95: drift, l = 0.0/cos(a14x)/cos(a14y)
-dsxtes96: drift, l = 0.6/cos(a14x)/cos(a14y)
-
-! mirror #5 (M5K4; horizonal)
-
-dsxtes97: drift, l = 4.008001/cos(a15x)/cos(a15y)
+dsxtes59: drift, l = 3.9302483
+dsxtes60: drift, l = 2.7940192
+dsxtes61: drift, l = 1.1646045
+dsxtes62: drift, l = 1.8680321
+dsxtes63: drift, l = 1.0192086
+dsxtes64: drift, l = 1.1718873
+dsxtes65: drift, l = 0.9814383/cos(a6x)
+dsxtes66: drift, l = 0.3792905/cos(a6x)
+dsxtes67: drift, l = 0.0623195/cos(a6x)
+dsxtes68: drift, l = 0.1385356/cos(a6x)
+dsxtes69: drift, l = 0.1347981/cos(a6x)
+dsxtes70: drift, l = 0.0831388/cos(a6x)
+dsxtes71: drift, l = 0.5004792/cos(a6x)
+dsxtes72: drift, l = 0.6694969/cos(a6x)
+dsxtes73: drift, l = 1.2027371/cos(a6x)
+dsxtes74: drift, l = 0.125603/cos(a6x)
+dsxtes75: drift, l = 0.04953/cos(a6x)
+dsxtes76: drift, l = 0.2996354/cos(a6x)
+dsxtes77: drift, l = 0.4126311/cos(a6x)
+dsxtes78: drift, l = 0.8949946/cos(a6x)
+dsxtes79: drift, l = 0.1883719/cos(a6x)
+dsxtes80: drift, l = 1.0320948/cos(a6x)
+dsxtes81: drift, l = 0.4015629/cos(a6x)
+dsxtes82: drift, l = 0.7313423/cos(a6x)
+dsxtes83: drift, l = 0.460887/cos(a6x)
+dsxtes84: drift, l = 0.4046217/cos(a6x)
+dsxtes85: drift, l = 0.2274913/cos(a6x)
+dsxtes86: drift, l = 0.2199633/cos(a6x)
+dsxtes87: drift, l = 0.2770367/cos(a6x)
+dsxtes88: drift, l = 0.3308656/cos(a6x)
+dsxtes89: drift, l = 0.122407/cos(a6x)
+dsxtes90: drift, l = 0.0526898/cos(a6x)
+dsxtes91: drift, l = 0.2560376/cos(a6x)
+dsxtes92: drift, l = 1.93/cos(a6x)
 
 ! ==============================================================================
 ! instruments
 ! ------------------------------------------------------------------------------
 
+! common line
+
 mbxpm1b: instrument, type = "MAGNET"
-ip1s: instrument, type = "ION PUMP"
-snsr1s: instrument, type = "FAST VALVE SENSO"
-pcpm3b: ecollimator, x_limit = 0.0127, y_limit = 0.0127, l = lpcpmw, type = "ADJ aperture"
+pcpm3b_pip_1: instrument, type = "ION PUMP"
+pcpm3b_gfs_1: instrument, type = "FAST VALVE SENSO"
+pcpm3b: ecollimator, x_limit = 0.0127, y_limit = 0.0127, type = "ELECTRON COLL", l = lpcpmw
 btm3b: instrument, type = "BTM" !Burn-Through-Monitor behind PCPM3b
-sl1s: instrument, type = "COLD CATHODE GAU"
-ro3s: instrument, type = "PIRANI GAUGE"
-cg3s: instrument, type = "ELECTRON COLL"
-pg3s: instrument, type = "BTM"
-vv3s: instrument, type = "GATE VALVE"
+sl1k0_power: instrument, type = "ADJ aperture (AA1)"
+sl1k0_pwr_vrm_1: instrument, type = "RIGHT ANGLE VALV"
+sl1k0_pwr_gcc_1: instrument, type = "COLD CATHODE GAU"
+sl1k0_pwr_gpi_1: instrument, type = "PIRANI GAUGE"
+at1k0_gas_vgc_1: instrument, type = "GATE VALVE"
 msftdmpb: instrument, type = "SAFETY DUMP"
 mbtmsftb: instrument, type = "BTM"
-at1s: instrument, type = "GAS ATTEN"
-vv4s: instrument, type = "GATE VALVE"
-xgmd2s: instrument, type = "GAS MONITOR DECT"
-vv5s: instrument, type = "GATE VALVE"
-vv6s: instrument, type = "GATE VALVE"
-ro4s: instrument, type = "RIGHT ANGLE VALV"
-cg4s: instrument, type = "COLD CATHODE GAU"
-pg4s: instrument, type = "PIRANI GAUGE"
-spec: instrument, type = "RIGHT ANGLE VALV"
-ro6s: instrument, type = "COLD CATHODE GAU"
-cg7s: instrument, type = "PIRANI GAUGE"
-pg7s: instrument, type = "FAST VALVE"
-fv1s: instrument, type = "SPECTROMETER"
-pc2s: instrument, type = "PHOTON COLL"
-btm2s: instrument, type = "BTM"
-pcb1s: instrument, type = "BREMSS COLL"
-im2s: instrument, type = "IMAGER"
-sl2s: instrument, type = "ADJ aperture"
-rga1s: instrument, type = "RGA"
-ro8s: instrument, type = "RIGHT ANGLE VALV"
-cg6s: instrument, type = "COLD CATHODE GAU"
-pg6s: instrument, type = "PIRANI GAUGE"
-pa1s: instrument, type = "DIFF PUMP"
-vv7s: instrument, type = "GATE VALVE"
-ip2s: instrument, type = "ION PUMP"
-ip3s: instrument, type = "ION PUMP"
-ip4s: instrument, type = "ION PUMP"
-ro5s: instrument, type = "RIGHT ANGLE VALV"
-cg5s: instrument, type = "COLD CATHODE GAU"
-pg5s: instrument, type = "PIRANI GAUGE"
-gp1s: instrument, type = "GETTER PUMP (M1K"
-cg9s: instrument, type = "COLD CATHODE GAU"
-pg9s: instrument, type = "PIRANI GAUGE (M1"
-ip5s: instrument, type = "ION PUMP (M1K4)"
-gp2s: instrument, type = "GETTER PUMP (M1K"
-slit1s: instrument, type = "SINGLE SLIT ABSO"
-fv2s: instrument, type = "FAST VALVE"
-st1s: instrument, type = "MPS STOPPER"
-ro9s: instrument, type = "RIGHT ANGLE VALV"
-cg10s: instrument, type = "COLD CATHODE GAU"
-pg10s: instrument, type = "PIRANI GAUGE"
-ip6s: instrument, type = "ION PUMP"
-vv8s: instrument, type = "GATE VALVE"
-shldg: instrument, type = "SHADOW WALL"
-pc3s: instrument, type = "PHOTON COLL"
-btm3s: instrument, type = "BTM"
-pcb2s: instrument, type = "BREMSS COLL"
-im3s: instrument, type = "IMAGER"
-pc4s: instrument, type = "PHOTON COLL"
-st2s: instrument, type = "BCS STOPPER"
-ro10s: instrument, type = "RIGHT ANGLE VALV"
-cg11s: instrument, type = "COLD CATHODE GAU"
-pg11s: instrument, type = "PIRANI GAUGE"
-ip7s: instrument, type = "ION PUMP"
-st3s: instrument, type = "PPS STOPPER"
-ro11s: instrument, type = "RIGHT ANGLE VALV"
-cg12s: instrument, type = "COLD CATHODE GAU"
-pg12s: instrument, type = "PIRANI GAUGE"
-ip8s: instrument, type = "ION PUMP"
-vv9s: instrument, type = "GATE VALVE"
-ro12s: instrument, type = "RIGHT ANGLE VALV"
-cg13s: instrument, type = "COLD CATHODE GAU"
-pg13s: instrument, type = "PIRANI GAUGE"
-ip9s: instrument, type = "ION PUMP"
-pc5s: instrument, type = "PHOTON COLL"
-btm5s: instrument, type = "BTM"
-pcb3s: instrument, type = "BREMSS COLL"
-wall1se: instrument, type = "EAST WALL"
-wall1sw: instrument, type = "WEST WALL"
-vv10s: instrument, type = "GATE VALVE"
-ro7s: instrument, type = "RIGHT ANGLE VALV"
-cg8s: instrument, type = "COLD CATHODE GAU"
-pg8s: instrument, type = "PIRANI GAUGE"
-rga2s: instrument, type = "RGA"
-snsr2s: instrument, type = "FAST VALVE SENSO"
-ro13s: instrument, type = "RIGHT ANGLE VALV"
-cg14s: instrument, type = "COLD CATHODE GAU"
-pg14s: instrument, type = "PIRANI GAUGE"
-ip10s: instrument, type = "ION PUMP"
-hpd: instrument, type = "HUTCH PHOTON DUM"
+at1k0_gas: instrument, type = "GAS ATTEN"
+tp_wall1se: instrument, type = "EAST WALL"
+tp_wall1sw: instrument, type = "WEST WALL"
+em2k0_xgmd_vgc_1: instrument, type = "GATE VALVE"
+em2k0_xgmd: instrument, type = "GAS MONITOR DECT"
+em2k0_xgmd_vgc_2: instrument, type = "GATE VALVE"
+tv2k0_vgc_1: instrument, type = "GATE VALVE"
+tv2k0_vrm_1: instrument, type = "RIGHT ANGLE VALV"
+tv2k0_gcc_1: instrument, type = "COLD CATHODE GAU"
+tv2k0_gpi_1: instrument, type = "PIRANI GAUGE"
+tv2k0_vrm_2: instrument, type = "RIGHT ANGLE VALV"
+tv2k0_gcc_2: instrument, type = "COLD CATHODE GAU"
+tv2k0_gpi_2: instrument, type = "PIRANI GAUGE"
+tv2k0_vfs_1: instrument, type = "VALVE FAST SHUTT"
+sp1k0: instrument, type = "@0,SPECTROMETER"
+pc2k0_xtes: instrument, type = "PHOTON COLL"
+bt1k0_xtes: instrument, type = "BTM"
+bs1k0_xtes: instrument, type = "BREMSS COLL"
+pf1k0_wfs: instrument, type = "WAVEFRONT SENSOR"
+sl2k0_power: instrument, type = "ADJ aperture"
+pa1k0_rga_1: instrument, type = "RGA"
+pa1k0_vrm_1: instrument, type = "RIGHT ANGLE VALV"
+pa1k0_gcc_1: instrument, type = "COLD CATHODE GAU"
+pa1k0_gpi_1: instrument, type = "PIRANI GAUGE"
+pa1k0_pip_1: instrument, type = "ION PUMP 150 L/S"
+im2k0_xtes: instrument, type = "IMAGER"
+pa1k0: instrument, type = "DIFF PUMP"
+mr1k1_vgc_1: instrument, type = "GATE VALVE"
+
+! "2.2" line
+
+mr1k3_vgc_1: instrument, type = "GATE VALVE"
+nd1s: instrument, type = "NEUTRON DETECTOR"
+im1k1_ppm: instrument, type = "PPM"
+sp1k1_mono_vgc_1: instrument, type = "GATE VALVE"
+sp1k1_mono_vgc_2: instrument, type = "GATE VALVE"
+tp_2_x: instrument, type = "TREATY FLANGE FA"
+
+! TXI line
+
+mr2k3_txi_gbc_1: instrument, type = "BCS VAC SENSOR"
+bt2k0_pleg_txi: instrument, type = "BTM"
+im1k2_ppm_vgc_1: instrument, type = "GATE VALVE"
+tp_1_2sxr: instrument, type = "TREATY FLANGE FA"
+im1k3_ppm_pgt_1: instrument, type = "GETTER PUMP"
+im1k3_ppm: instrument, type = "PPM"
+bt1k3_air: instrument, type = "BTM"
+pc1k3_l2si_vrm_1: instrument, type = "RIGHT ANGLE VALV"
+pc1k3_l2si_gcc_1: instrument, type = "COLD CATHODE GAU"
+pc1k3_l2si_pip_1: instrument, type = "ION PUMP 150 L/S"
+pc1k3_l2si: instrument, type = "PHOTON COLL"
+bt2k3_xtes: instrument, type = "BTM"
+bs1k3_xtes: instrument, type = "BREMSS COLL"
+pc1k3_l2si_vrm_2: instrument, type = "RIGHT ANGLE VALV"
+pc1k3_l2si_gbc_1: instrument, type = "BCS VAC SENSOR"
+pc1k3_l2si_gcc_2: instrument, type = "COLD CATHODE GAU"
+pc1k3_l2si_pip_2: instrument, type = "ION PUMP 150 L/S"
+pc1k3_l2si_vgc_1: instrument, type = "GATE VALVE"
+tv1k3_vrm_1: instrument, type = "RIGHT ANGLE VALV"
+tv1k3_gcc_1: instrument, type = "COLD CATHODE GAU"
+tv1k3_gpi_1: instrument, type = "PIRANI GAUGE"
+tv1k3_pip_1: instrument, type = "ION PUMP 200 L/S"
+pc2k3_l2si: instrument, type = "PHOTON COLL"
+bt3k3_l2si: instrument, type = "BTM"
+tv1k3_vgc_1: instrument, type = "GATE VALVE"
+st1k3_pps: instrument, type = "STOPPER"
+st1k3_pps_gbc_1: instrument, type = "BCS VAC SENSOR"
+pc3k3_l2si: instrument, type = "PHOTON COLL"
+bt4k3_xtes: instrument, type = "BTM"
+bs2k3_xtes: instrument, type = "BREMSS COLL"
+
+! TMO line
+
+bt2k0_pleg_tmo: instrument, type = "BTM"
+tv3k0_vgc_1: instrument, type = "GATE VALVE"
+tv3k0_pgt_1: instrument, type = "GETTER PUMP"
+tv3k0_vrm_1: instrument, type = "RIGHT ANGLE VALV"
+tv3k0_gcc_1: instrument, type = "COLD CATHODE GAU"
+tv3k0_gpi_1: instrument, type = "PIRANI GAUGE"
+tv3k0_pip_1: instrument, type = "ION PUMP 150 L/S"
+mr1k4_vgc_1: instrument, type = "GATE VALVE"
+mr1k4_soms_gbc_1: instrument, type = "BCS VAC SENSOR"
+pc1k4_ssa: instrument, type = "SINGLE SLIT ABSO"
+bt1k4_l2si: instrument, type = "BTM"
+tv1k4_vgc_1: instrument, type = "GATE VALVE"
+tv1k4_vfs_1: instrument, type = "FAST VALVE SHUTT"
+tv1k4_vrm_1: instrument, type = "RIGHT ANGLE VALV"
+tv1k4_gcc_1: instrument, type = "COLD CATHODE GAU"
+tv1k4_gpi_1: instrument, type = "PIRANI GAUGE"
+nd2s: instrument, type = "NEUTRON DETECTOR"
+at1k4_solid: instrument, type = "@0,PULSE SELECT/"
+tv1k4_vgc_2: instrument, type = "GATE VALVE"
+pc2k4_xtes: instrument, type = "PHOTON COLL"
+bt2k4_xtes: instrument, type = "BTM"
+bs1k4_xtes: instrument, type = "BREMSS COLL"
+im1k4_xtes: instrument, type = "IMAGER"
+st1k4_test: instrument, type = "STOPPER"
+sp1k4: instrument, type = "@0,MONOCHROMATOR"
+lusi: instrument, type = "LUSI"
+pc3k4_xtes: instrument, type = "PHOTON COLL"
+st2k4_bcs: instrument, type = "STOPPER"
+st3k4_pps: instrument, type = "STOPPER"
+st3k4_pps_gbc_1: instrument, type = "BCS VAC SENSOR"
+st3k4_pps_vgc_1: instrument, type = "GATE VALVE"
+al1k4_l2si: instrument, type = "LASER"
+sl1k4_scatter: instrument, type = "SLIT"
+im2k4_ppm: instrument, type = "PPM"
+im2k4_xtes_vrm_1: instrument, type = "RIGHT ANGLE VALV"
+pc4k4_xtes_gcc_1: instrument, type = "COLD CATHODE GAU"
+pc4k4_xtes_gpi_1: instrument, type = "PIRANI GAUGE"
+pc4k4_xtes_pip_1: instrument, type = "ION PUMP 80 L/S"
+pc4k4_xtes: instrument, type = "PHOTON COLL"
+bt3k4_xtes: instrument, type = "BTM"
+bs2k4_xtes: instrument, type = "BREMSS COLL"
+tp_wall2e: instrument, type = "EAST WALL"
+tp_wall2w: instrument, type = "WEST WALL"
 
 ! ==============================================================================
 ! BEAMLINE
 ! ------------------------------------------------------------------------------
 
-sxtes: line = (begsxtes, dsxtes01, mbxpm1b, dsxtes02, ip1s, dsxtes03, snsr1s, dsxtes04, pcpm3b,  &
-        dsxtes05, btm3b, dsxtes06, sl1s, dsxtes07, ro3s, dsxtes08, cg3s, dsxtes09, pg3s, dsxtes10 &
-        , vv3s, dsxtes11, msftdmpb, dsxtes12, mbtmsftb, dsxtes13, at1s, dsxtes14, vv4s, dsxtes15 &
-        , xgmd2s, dsxtes16, vv5s, dsxtes17, vv6s, dsxtes18, ro4s, dsxtes19, cg4s, dsxtes20, pg4s &
-        , dsxtes21, spec, dsxtes22, ro6s, dsxtes23, cg7s, dsxtes24, pg7s, dsxtes25, fv1s,  &
-        dsxtes26, pc2s, dsxtes27, btm2s, dsxtes28, pcb1s, dsxtes29, im2s, dsxtes30, sl2s,  &
-        dsxtes31, rga1s, dsxtes32, ro8s, dsxtes33, cg6s, dsxtes34, pg6s, dsxtes35, pa1s, dsxtes36 &
-        , vv7s, dsxtes37, ip2s, dsxtes38, ip3s, dsxtes39, ip4s, dsxtes40, ro5s, dsxtes41, cg5s,  &
-        dsxtes42, pg5s, dsxtes43, gp1s, dsxtes44, m1k4, dsxtes45, cg9s, dsxtes46, pg9s, dsxtes47 &
-        , ip5s, dsxtes48, gp2s, dsxtes49, slit1s, dsxtes50, fv2s, dsxtes51, st1s, dsxtes52, ro9s &
-        , dsxtes53, cg10s, dsxtes54, pg10s, dsxtes55, ip6s, dsxtes56, vv8s, dsxtes57, shldg,  &
-        dsxtes58, pc3s, dsxtes59, btm3s, dsxtes60, pcb2s, dsxtes61, im3s, dsxtes62, pc4s,  &
-        dsxtes63, st2s, dsxtes64, ro10s, dsxtes65, cg11s, dsxtes66, pg11s, dsxtes67, ip7s,  &
-        dsxtes68, st3s, dsxtes69, ro11s, dsxtes70, cg12s, dsxtes71, pg12s, dsxtes72, ip8s,  &
-        dsxtes73, vv9s, dsxtes74, ro12s, dsxtes75, cg13s, dsxtes76, pg13s, dsxtes77, ip9s,  &
-        dsxtes78, pc5s, dsxtes79, btm5s, dsxtes80, pcb3s, dsxtes81, wall1se, dsxtes82, wall1sw,  &
-        dsxtes83, vv10s, dsxtes84, ro7s, dsxtes85, cg8s, dsxtes86, pg8s, dsxtes87, rga2s,  &
-        dsxtes88, m2k4, dsxtes89, m3k4, dsxtes90, snsr2s, dsxtes91, m4k4, dsxtes92, ro13s,  &
-        dsxtes93, cg14s, dsxtes94, pg14s, dsxtes95, ip10s, dsxtes96, m5k4, dsxtes97, hpd,  &
-        endsxtes)
+! common line
+
+sxtes1: line = (begsxtes_1, dsxtes01, mbxpm1b, dsxtes02, pcpm3b_pip_1, pcpm3b_gfs_1, dsxtes03,  &
+        pcpm3b, btm3b, dsxtes04, sl1k0_power, dsxtes05, sl1k0_pwr_vrm_1, sl1k0_pwr_gcc_1,  &
+        sl1k0_pwr_gpi_1, dsxtes06, at1k0_gas_vgc_1, dsxtes07, msftdmpb, dsxtes08, mbtmsftb,  &
+        dsxtes09, at1k0_gas, dsxtes10, tp_wall1se, dsxtes11, tp_wall1sw, dsxtes12,  &
+        em2k0_xgmd_vgc_1, dsxtes13, em2k0_xgmd, dsxtes14, em2k0_xgmd_vgc_2, dsxtes15, tv2k0_vgc_1 &
+        , tv2k0_vrm_1, tv2k0_gcc_1, tv2k0_gpi_1, dsxtes16, tv2k0_vrm_2, tv2k0_gcc_2, tv2k0_gpi_2 &
+        , dsxtes17, tv2k0_vfs_1, dsxtes18, sp1k0, dsxtes19, pc2k0_xtes, dsxtes20, bt1k0_xtes,  &
+        dsxtes21, bs1k0_xtes, dsxtes22, pf1k0_wfs, dsxtes23, sl2k0_power, dsxtes24, pa1k0_rga_1,  &
+        pa1k0_vrm_1, pa1k0_gcc_1, pa1k0_gpi_1, pa1k0_pip_1, dsxtes25, im2k0_xtes, dsxtes26, pa1k0 &
+        , dsxtes27, mr1k1_vgc_1, dsxtes28, endsxtes_1)
+
+! "2.2" line
+
+sxtes2: line = (begsxtes_2, mr1k1_bend, dsxtes29, mr1k3_vgc_1, dsxtes30, nd1s, dsxtes31,  &
+        im1k1_ppm, dsxtes32, sp1k1_mono_vgc_1, dsxtes33, sp1k1_mono, dsxtes34, mr3k1_grating,  &
+        dsxtes35, sp1k1_mono_vgc_2, dsxtes36, tp_2_x, endsxtes_2)
+
+! TXI line
+
+sxtes3: line = (begsxtes_3, dsxtes37, mr1k3_txi, dsxtes38, mr2k3_txi, mr2k3_txi_gbc_1, dsxtes39,  &
+        bt2k0_pleg_txi, dsxtes40, im1k2_ppm_vgc_1, dsxtes41, tp_1_2sxr, dsxtes42, im1k3_ppm_pgt_1 &
+        , dsxtes43, im1k3_ppm, dsxtes44, bt1k3_air, dsxtes45, pc1k3_l2si_vrm_1, pc1k3_l2si_gcc_1 &
+        , pc1k3_l2si_pip_1, dsxtes46, pc1k3_l2si, dsxtes47, bt2k3_xtes, dsxtes48, bs1k3_xtes,  &
+        dsxtes49, pc1k3_l2si_vrm_2, pc1k3_l2si_gbc_1, pc1k3_l2si_gcc_2, pc1k3_l2si_pip_2,  &
+        dsxtes50, pc1k3_l2si_vgc_1, dsxtes51, tv1k3_vrm_1, tv1k3_gcc_1, tv1k3_gpi_1, tv1k3_pip_1 &
+        , dsxtes52, pc2k3_l2si, dsxtes53, bt3k3_l2si, dsxtes54, tv1k3_vgc_1, dsxtes55, st1k3_pps &
+        , st1k3_pps_gbc_1, dsxtes56, pc3k3_l2si, dsxtes57, bt4k3_xtes, dsxtes58, bs2k3_xtes,  &
+        endsxtes_3)
+
+! TMO line
+
+sxtes4: line = (begsxtes_4, dsxtes59, bt2k0_pleg_tmo, dsxtes60, tv3k0_vgc_1, dsxtes61,  &
+        tv3k0_pgt_1, dsxtes62, tv3k0_vrm_1, tv3k0_gcc_1, tv3k0_gpi_1, tv3k0_pip_1, dsxtes63,  &
+        mr1k4_vgc_1, dsxtes64, mr1k4_soms, mr1k4_soms_gbc_1, dsxtes65, pc1k4_ssa, dsxtes66,  &
+        bt1k4_l2si, dsxtes67, tv1k4_vgc_1, dsxtes68, tv1k4_vfs_1, dsxtes69, tv1k4_vrm_1,  &
+        tv1k4_gcc_1, tv1k4_gpi_1, dsxtes70, nd2s, dsxtes71, at1k4_solid, dsxtes72, tv1k4_vgc_2,  &
+        dsxtes73, pc2k4_xtes, dsxtes74, bt2k4_xtes, dsxtes75, bs1k4_xtes, dsxtes76, im1k4_xtes,  &
+        dsxtes77, st1k4_test, dsxtes78, sp1k4, dsxtes79, lusi, dsxtes80, pc3k4_xtes, dsxtes81,  &
+        st2k4_bcs, dsxtes82, st3k4_pps, st3k4_pps_gbc_1, dsxtes83, st3k4_pps_vgc_1, dsxtes84,  &
+        al1k4_l2si, dsxtes85, sl1k4_scatter, dsxtes86, im2k4_ppm, dsxtes87, im2k4_xtes_vrm_1,  &
+        pc4k4_xtes_gcc_1, pc4k4_xtes_gpi_1, pc4k4_xtes_pip_1, dsxtes88, pc4k4_xtes, dsxtes89,  &
+        bt3k4_xtes, dsxtes90, bs2k4_xtes, dsxtes91, tp_wall2e, dsxtes92, tp_wall2w, endsxtes_4)
 
 ! ------------------------------------------------------------------------------
 

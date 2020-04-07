@@ -128,12 +128,16 @@ LINES=$(patsubst %.dot, %_lines.dat, $(DOTS))
 # The location of the file defining the association between
 # MAD element names and control system device names, as used
 # in the maps and lines files.
-ELEMENTDEVICES:=../../../../script/elementdevices.dat
+ELEMENTDEVICES:=../../../../script/elementdevices.dat \
+                ../../../../script/elementdevices_cavities_cuH.dat \
+                ../../../../script/elementdevices_cavities_cuS.dat \
+                ../../../../script/elementdevices_sbends_cuH.dat \
+                ../../../../script/elementdevices_sbends_cuS.dat
+#                ../../../../script/elementdevices_addendum.dat
 
 #  What will be published to the opt/ directory of the deck release web site.
 OPTS:=$(DOTS) $(MAPS) $(MAPICONS) $(OPTICSICONS) *_lines.dat
 WEB:=.htaccess 
-
 
 #
 # TARGETS

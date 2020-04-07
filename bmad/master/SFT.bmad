@@ -1,10 +1,14 @@
 
-! *** OPTICS=AD_ACCEL-05DEC19 ***
+! *** OPTICS=AD_ACCEL-01APR20 ***
 
 ! LCLS2sc safety dump lines
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 22-JAN-2020, M. Woodley
+!  * some device names, keywords, TYPEs, and Z-locations in SFTS_1 taken from
+!    XTES_BG_SXR_1-13-2020.xlsx per P. Stephens
 ! ------------------------------------------------------------------------------
 ! 26-MAR-2019, M. Woodley
 !  * split SFTH and SFTS areas into two subareas each: SFTH_1/SFTH_2
@@ -226,17 +230,21 @@ dscsb2: drift, l = 0.0943         !DSCSa[L]
 dxdcub: drift, l = 1.842223  !1.092223
 dxdcub1: drift, l = 0.8407994 !0.878299738776
 dxdcub2: drift, l = 0.0375006
-dxdcub3: drift, l = dxdcub[l]-dxdcub1[l]-dxdcub2[l]
+dxdcub3: drift, l = 0.878257
+dxdcub4: drift, l = dxdcub[l]-dxdcub1[l]-dxdcub2[l]-dxdcub3[l]
 xdcba: drift, l = 0.312777 !XDC chamber
 xdcbb: drift, l = 0.693    !XDC chamber
 xdcbc: drift, l = 0.542    !XDC chamber
+xdcbc1: drift, l = 0.0076773
+xdcbc2: drift, l = xdcbc[l]-xdcbc1[l]
 xdcbd: drift, l = 0.255376 !XDC chamber
 dxdcdb: drift, l = 7.266-dxdcub[l]-xdcba[l]-xdcbb[l]-xdcbc[l]-xdcbd[l]
 dxdcdb1: drift, l = 0.262395
-dxdcdb2: drift, l = 0.363747
-dxdcdb3: drift, l = 0.966253
-dxdcdb4: drift, l = 1.492023
-dxdcdb5: drift, l = dxdcdb[l]-dxdcdb1[l]-dxdcdb2[l]-dxdcdb3[l]-dxdcdb4[l]
+dxdcdb2: drift, l = 0.380049 !0.363747
+dxdcdb3: drift, l = 0.940451 !0.966253
+dxdcdb4: drift, l = 1.18874  !1.492023
+dxdcdb5: drift, l = 0.312783
+dxdcdb6: drift, l = dxdcdb[l]-dxdcdb1[l]-dxdcdb2[l]-dxdcdb3[l]-dxdcdb4[l]-dxdcdb5[l]
 
 dpm1b: drift, l = 0.448
 dpm2b: drift, l = 3.8732111/cos(abxpm1bs+abxpm1bl) !10.03
@@ -248,37 +256,45 @@ dpm3ba: drift, l = 0.6560246/cos(abxpm1bs+abxpm1bl)
 dpm3bb: drift, l = dpm3b[l]-dpm3ba[l]
 dsftdmpb: drift, l = zsftdmp/cos(abxpm1bs+abxpm1bl)
 
-pcpm1b: ecollimator, x_limit = 0.0100, y_limit = 0.0100, l = lpcpm !per LCLSII-3.5-PR-0111-R1
-pcpm2b: ecollimator, x_limit = 0.0127, y_limit = 0.0127, l = lpcpm
+pcpm1b: ecollimator, x_limit = 0.0100, y_limit = 0.0100, type = "ELECTRON COLL", l = lpcpm !per LCLSII-3.5-PR-0111-R1
+pcpm2b: ecollimator, x_limit = 0.0127, y_limit = 0.0127, type = "ELECTRON COLL", l = lpcpm
  !PCPM3B  : ECOL, L=LPCPM/COS(ABXPM1BS+ABXPM1BL), XSIZE=0.0100, YSIZE=0.0100
 dpcpm3b: drift, l = lpcpmw/cos(abxpm1bs+abxpm1bl) !placeholder for PCPM3B
 
-btm1b: instrument !Burn-Through-Monitor behind PCPM1B
-btm2b: instrument !Burn-Through-Monitor behind PCPM2B
+btm1b: instrument, type = "BTM" !Burn-Through-Monitor behind PCPM1B
+btm2b: instrument, type = "BTM" !Burn-Through-Monitor behind PCPM2B
  !BTM3B   : INST !Burn-Through-Monitor behind PCPM3B
 mbtm3b: marker !placeholder for BTM3B
 btmsftb: instrument !Burn-Through-Monitor behind SXR safety dump
 
-yagxrayb: instrument, type = "YAG" !safety dump line X-ray screen
-
-sxtes0: instrument, type = "treaty flange" !treaty point for SXR XTES system
-pc1s: instrument, type = "photon coll"
-gmd1s: instrument, type = "gas monitor"
-im1s: instrument, type = "imager"
+tp_sxtes0: instrument, type = "INTERFACE FLANGE" !treaty point for SXR XTES system (SXTES0)
+rtdsk0: instrument, type = "RAPID TRNAD DIAG"
+rtdsk0_yagxrayb: instrument, type = "MONITORILE MON (RTD" !safety dump line X-ray screen (YAGXRAYB)
+pc1k0_xtes: instrument, type = "PHOTON COLL" !PC1S
+em1k0_gmd: instrument, type = "GAS MONITOR DECT" !GMD1S
+im1k0_xtes: instrument, type = "IMAGER" !IM1S
 msl1s: marker, type = "adj aperture"
 sftdmpb: instrument !front face of SXR safety dump (Z'=712-715 m per PRD)
 
 vv38b: marker !vac. valve in SXR safety dump line
-vv1s: marker !vac. valve in SXR safety dump line
-vv2s: marker !vac. valve in SXR safety dump line
+rtdsk0_vgc_1: instrument, type = "GATE VALVE" !vac. valve in SXR safety dump line (VV1S)
+rtdsk0_vrm_1: instrument, type = "RIGHT ANGLE VALV"
+rtdsk0_gcc_1: instrument, type = "COLD CATHODE GAU"
+rtdsk0_gpi_1: instrument, type = "PIRANI GAUGE"
+em1k0_gmd_vgc_1: instrument, type = "GATE VALVE" !vac. valve in SXR safety dump line (VV2S)
+im1k0_xtes_vrm_1: instrument, type = "RIGHT ANGLE VALV"
+im1k0_xtes_gcc_1: instrument, type = "COLD CATHODE GAU"
+im1k0_xtes_gpi_1: instrument, type = "PIRANI GAUGE"
 mvv3s: marker !placeholder for vac. valve in SXR XTES line
 
 bxpm1b_full: line = (bxpm1b1, bxpm1b2)
 
 sftdumpb1: line = (begsfts_1, dyds, ds1s, dyd1, dssa, dyd2, dssb, dyd3, dscsb1, vv38b, dscsb2,  &
-        pcpm1b, dpcbtm1, btm1b, dxdcub1, vv1s, dxdcub2, sxtes0, dxdcub3, xdcba, xdcbb, xdcbc,  &
-        yagxrayb, xdcbd, dxdcdb1, pc1s, dxdcdb2, vv2s, dxdcdb3, gmd1s, dxdcdb4, im1s, dxdcdb5,  &
-        btm2b, pcpm2b, dpm1b, endsfts_1)
+        pcpm1b, dpcbtm1, btm1b, dxdcub1, rtdsk0_vgc_1, dxdcub2, tp_sxtes0, dxdcub3, rtdsk0_vrm_1 &
+        , rtdsk0_gcc_1, rtdsk0_gpi_1, dxdcub4, xdcba, xdcbb, xdcbc1, rtdsk0, xdcbc2,  &
+        rtdsk0_yagxrayb, xdcbd, dxdcdb1, pc1k0_xtes, dxdcdb2, em1k0_gmd_vgc_1, dxdcdb3, em1k0_gmd &
+        , dxdcdb4, im1k0_xtes_vrm_1, im1k0_xtes_gcc_1, im1k0_xtes_gpi_1, dxdcdb5, im1k0_xtes,  &
+        dxdcdb6, pcpm2b, btm2b, dpm1b, endsfts_1)
 
 sftdumpb2: line = (begsfts_2, bxpm1b_full, dpm2ba, dpcpm3b, dpcbtm3b, mbtm3b, dpm2bb, msl1s,  &
         dpm3ba, mvv3s, dpm3bb, sftdmpb, dsftdmpb, btmsftb, endsfts_2)

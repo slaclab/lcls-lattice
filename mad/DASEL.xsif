@@ -1,10 +1,20 @@
 
-! *** OPTICS=AD_ACCEL-05DEC19 ***
+! *** OPTICS=AD_ACCEL-01APR20 ***
 
 ! LCLS2sc DASEL
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 26-MAR-2020, M. Woodley
+!  * DASEL is being funded off-project ... undefer everything
+! 31-JAN-2020, Y. Nosochkov
+!  * add vertical collimator (jaw or shielding plate) in front of BLRDAS to
+!    prevent errant electrons entering the S30XL septum aperture
+!    when S30XL and SXR kickers are off
+!  * move PRDAS12 to 1.5 m d/s of QDAS11
+!  * add dump u/s of QDAS12 for S30XL stage-A (reuse PEP-II stopper per Alev)
+!  * rename DUMPS30XL to DUMPDAS for similar naming with other DASEL elements
 ! ------------------------------------------------------------------------------
 ! 25-NOV-2019, Y. Nosochkov
 !  * update quad/corrector/BPM positions per L. Borzenets
@@ -104,34 +114,34 @@
   LBKRDAS5  :=   LBKRDAS15-LBKRDAS14
   LBKRDAS6  :=   LBKRDAS  -LBKRDAS15
 
-  BKRDAS1a : SBEN, TYPE="@3,0.787K35.4", L=LBKRDAS1/2, ANGLE=ABKRDAS1/2, &
+  BKRDAS1a : SBEN, TYPE="0.787K35.4", L=LBKRDAS1/2, ANGLE=ABKRDAS1/2, &
     E1=0         , E2=0, FINT=0.5, FINTX=0, HGAP=GBKRDAS/2, TILT=PI/2+TBKRDAS
-  BKRDAS1b : SBEN, TYPE="@3,0.787K35.4", L=LBKRDAS1/2, ANGLE=ABKRDAS1/2, &
+  BKRDAS1b : SBEN, TYPE="0.787K35.4", L=LBKRDAS1/2, ANGLE=ABKRDAS1/2, &
     E2=ABKRDAS1  , E1=0, FINT=0, FINTX=0.5, HGAP=GBKRDAS/2, TILT=PI/2+TBKRDAS
 
-  BKRDAS2a : SBEN, TYPE="@3,0.787K35.4", L=LBKRDAS2/2, ANGLE=ABKRDAS2/2, &
+  BKRDAS2a : SBEN, TYPE="0.787K35.4", L=LBKRDAS2/2, ANGLE=ABKRDAS2/2, &
     E1=-ABKRDAS1 , E2=0, FINT=0.5, FINTX=0, HGAP=GBKRDAS/2, TILT=PI/2+TBKRDAS
-  BKRDAS2b : SBEN, TYPE="@3,0.787K35.4", L=LBKRDAS2/2, ANGLE=ABKRDAS2/2, &
+  BKRDAS2b : SBEN, TYPE="0.787K35.4", L=LBKRDAS2/2, ANGLE=ABKRDAS2/2, &
     E2= ABKRDAS12, E1=0, FINT=0, FINTX=0.5, HGAP=GBKRDAS/2, TILT=PI/2+TBKRDAS
 
-  BKRDAS3a : SBEN, TYPE="@3,0.787K35.4", L=LBKRDAS3/2, ANGLE=ABKRDAS3/2, &
+  BKRDAS3a : SBEN, TYPE="0.787K35.4", L=LBKRDAS3/2, ANGLE=ABKRDAS3/2, &
     E1=-ABKRDAS12, E2=0, FINT=0.5, FINTX=0, HGAP=GBKRDAS/2, TILT=PI/2+TBKRDAS
-  BKRDAS3b : SBEN, TYPE="@3,0.787K35.4", L=LBKRDAS3/2, ANGLE=ABKRDAS3/2, &
+  BKRDAS3b : SBEN, TYPE="0.787K35.4", L=LBKRDAS3/2, ANGLE=ABKRDAS3/2, &
     E2= ABKRDAS13, E1=0, FINT=0, FINTX=0.5, HGAP=GBKRDAS/2, TILT=PI/2+TBKRDAS
 
-  BKRDAS4a : SBEN, TYPE="@3,0.787K35.4", L=LBKRDAS4/2, ANGLE=ABKRDAS4/2, &
+  BKRDAS4a : SBEN, TYPE="0.787K35.4", L=LBKRDAS4/2, ANGLE=ABKRDAS4/2, &
     E1=-ABKRDAS13, E2=0, FINT=0.5, FINTX=0, HGAP=GBKRDAS/2, TILT=PI/2+TBKRDAS
-  BKRDAS4b : SBEN, TYPE="@3,0.787K35.4", L=LBKRDAS4/2, ANGLE=ABKRDAS4/2, &
+  BKRDAS4b : SBEN, TYPE="0.787K35.4", L=LBKRDAS4/2, ANGLE=ABKRDAS4/2, &
     E2= ABKRDAS14, E1=0, FINT=0, FINTX=0.5, HGAP=GBKRDAS/2, TILT=PI/2+TBKRDAS
 
-  BKRDAS5a : SBEN, TYPE="@3,0.787K35.4", L=LBKRDAS5/2, ANGLE=ABKRDAS5/2, &
+  BKRDAS5a : SBEN, TYPE="0.787K35.4", L=LBKRDAS5/2, ANGLE=ABKRDAS5/2, &
     E1=-ABKRDAS14, E2=0, FINT=0.5, FINTX=0, HGAP=GBKRDAS/2, TILT=PI/2+TBKRDAS
-  BKRDAS5b : SBEN, TYPE="@3,0.787K35.4", L=LBKRDAS5/2, ANGLE=ABKRDAS5/2, &
+  BKRDAS5b : SBEN, TYPE="0.787K35.4", L=LBKRDAS5/2, ANGLE=ABKRDAS5/2, &
     E2= ABKRDAS15, E1=0, FINT=0, FINTX=0.5, HGAP=GBKRDAS/2, TILT=PI/2+TBKRDAS
 
-  BKRDAS6a : SBEN, TYPE="@3,0.787K35.4", L=LBKRDAS6/2, ANGLE=ABKRDAS6/2, &
+  BKRDAS6a : SBEN, TYPE="0.787K35.4", L=LBKRDAS6/2, ANGLE=ABKRDAS6/2, &
     E1=-ABKRDAS15, E2=0, FINT=0.5, FINTX=0, HGAP=GBKRDAS/2, TILT=PI/2+TBKRDAS
-  BKRDAS6b : SBEN, TYPE="@3,0.787K35.4", L=LBKRDAS6/2, ANGLE=ABKRDAS6/2, &
+  BKRDAS6b : SBEN, TYPE="0.787K35.4", L=LBKRDAS6/2, ANGLE=ABKRDAS6/2, &
     E2= ABKRDAS  , E1=0, FINT=0, FINTX=0.5, HGAP=GBKRDAS/2, TILT=PI/2+TBKRDAS
 
 ! 2-hole rolled horizontal septum aligned along the BSY dumpline axis
@@ -152,9 +162,9 @@
   LBLRDASa := ZBLRDAS/2 /(1-ABLRDASa_2/6+ABLRDASa_4/120)/COS(ABKRDAS)
   LBLRDASb := LBLRDAS-LBLRDASa
 
-  BLRDASa : SBEN, TYPE="@3,0.625SD38.98", L=LBLRDASa, ANGLE=ABLRDASa, &
+  BLRDASa : SBEN, TYPE="0.625SD38.98", L=LBLRDASa, ANGLE=ABLRDASa, &
             E1=0, E2=0      , FINT=0.5, FINTX=0, HGAP=GBLRDAS/2, TILT=TBKRDAS
-  BLRDASb : SBEN, TYPE="@3,0.625SD38.98", L=LBLRDASb, ANGLE=ABLRDASb, &
+  BLRDASb : SBEN, TYPE="0.625SD38.98", L=LBLRDASb, ANGLE=ABLRDASb, &
             E1=0, E2=ABLRDAS, FINT=0, FINTX=0.5, HGAP=GBLRDAS/2, TILT=TBKRDAS
 
 ! rolled DC-bends (BLmax of 1.0D38.37 = 7.35 kGm per J. Amann)
@@ -163,9 +173,9 @@
   LBRDAS1 := LBSP*ABRDAS1/(2*SIN(ABRDAS1/2)) !BRDAS1 path length (m)
   TBRDAS1 := 0.219255742276                  !BRDAS1 roll angle (rad)
 
-  BRDAS1a : SBEN, TYPE="@3,1.0D38.37", L=LBRDAS1/2, ANGLE=ABRDAS1/2, &
+  BRDAS1a : SBEN, TYPE="1.0D38.37", L=LBRDAS1/2, ANGLE=ABRDAS1/2, &
             E1=ABRDAS1/2, E2=0, FINT=0.5, FINTX=0, HGAP=GBSP/2, TILT=TBRDAS1
-  BRDAS1b : SBEN, TYPE="@3,1.0D38.37", L=LBRDAS1/2, ANGLE=ABRDAS1/2, &
+  BRDAS1b : SBEN, TYPE="1.0D38.37", L=LBRDAS1/2, ANGLE=ABRDAS1/2, &
             E1=0, E2=ABRDAS1/2, FINT=0, FINTX=0.5, HGAP=GBSP/2, TILT=TBRDAS1
 
 ! Note: BRDAS2 is a merge DC-bend which is either turned ON to operate
@@ -174,10 +184,40 @@
 
   LBRDAS2 := LBSP*ABRDAS2/(2*SIN(ABRDAS2/2)) !BRDAS2 path length (m)
 
-  BRDAS2a : SBEN, TYPE="@3,1.0D38.37", L=LBRDAS2/2, ANGLE=ABRDAS2/2, &
+  BRDAS2a : SBEN, TYPE="1.0D38.37", L=LBRDAS2/2, ANGLE=ABRDAS2/2, &
             E1=ABRDAS2/2, E2=0, FINT=0.5, FINTX=0, HGAP=GBSP/2, TILT=TBRDAS2
-  BRDAS2b : SBEN, TYPE="@3,1.0D38.37", L=LBRDAS2/2, ANGLE=ABRDAS2/2, &
+  BRDAS2b : SBEN, TYPE="1.0D38.37", L=LBRDAS2/2, ANGLE=ABRDAS2/2, &
             E1=0, E2=ABRDAS2/2, FINT=0, FINTX=0.5, HGAP=GBSP/2, TILT=TBRDAS2
+
+! define unsplit SBENs for BMAD ... not used by MAD
+
+  BKRDAS1 : SBEN, TYPE="0.787K35.4", L=LBKRDAS1, ANGLE=ABKRDAS1, &
+    E1=0, FINT=0.5, E2=ABKRDAS1, FINTX=0.5, &
+    HGAP=GBKRDAS/2, TILT=PI/2+TBKRDAS
+  BKRDAS2 : SBEN, TYPE="0.787K35.4", L=LBKRDAS2, ANGLE=ABKRDAS2, &
+    E1=-ABKRDAS1 , FINT=0.5, E2=ABKRDAS12, FINTX=0.5, &
+    HGAP=GBKRDAS/2, TILT=PI/2+TBKRDAS
+  BKRDAS3 : SBEN, TYPE="0.787K35.4", L=LBKRDAS3, ANGLE=ABKRDAS3, &
+    E1=-ABKRDAS12, FINT=0.5, E2=ABKRDAS13, FINTX=0.5, &
+    HGAP=GBKRDAS/2, TILT=PI/2+TBKRDAS
+  BKRDAS4 : SBEN, TYPE="0.787K35.4", L=LBKRDAS4, ANGLE=ABKRDAS4, &
+    E1=-ABKRDAS13, FINT=0.5, E2=ABKRDAS14, FINTX=0.5, &
+    HGAP=GBKRDAS/2, TILT=PI/2+TBKRDAS
+  BKRDAS5 : SBEN, TYPE="0.787K35.4", L=LBKRDAS5, ANGLE=ABKRDAS5, &
+    E1=-ABKRDAS14, FINT=0.5, E2=ABKRDAS15, FINTX=0.5, &
+    HGAP=GBKRDAS/2, TILT=PI/2+TBKRDAS
+  BKRDAS6 : SBEN, TYPE="0.787K35.4", L=LBKRDAS6, ANGLE=ABKRDAS6, &
+    E1=-ABKRDAS15, FINT=0.5, E2=ABKRDAS, FINTX=0.5, &
+    HGAP=GBKRDAS/2, TILT=PI/2+TBKRDAS
+  BLRDAS : SBEN, TYPE="0.625SD38.98", L=LBLRDAS, ANGLE=ABLRDAS, &
+    E1=0, FINT=0.5, E2=ABLRDAS, FINTX=0.5, &
+    HGAP=GBLRDAS/2, TILT=TBKRDAS
+  BRDAS1 : SBEN, TYPE="1.0D38.37", L=LBRDAS1, ANGLE=ABRDAS1, &
+    E1=ABRDAS1/2, FINT=0.5, E2=ABRDAS1/2, FINTX=0.5, &
+    HGAP=GBSP/2, TILT=TBRDAS1
+  BRDAS2 : SBEN, TYPE="1.0D38.37", L=LBRDAS2, ANGLE=ABRDAS2, &
+    E1=ABRDAS2/2, FINT=0.5, E2=ABRDAS2/2, FINTX=0.5, &
+    HGAP=GBSP/2, TILT=TBRDAS2
 
 ! quads
 
@@ -193,43 +233,53 @@
   KQDAS15 := -KQDAS14
   KQDAS16 :=  KQDAS14
 
-  QDAS1a : QUAD, TYPE="@3,2Q4W", L=LQM/2, K1=KQDAS1 , APER=rQM
-  QDAS1b : QUAD, TYPE="@3,2Q4W", L=LQM/2, K1=KQDAS1 , APER=rQM
-  QDAS2a : QUAD, TYPE="@3,2Q4W", L=LQM/2, K1=KQDAS2 , APER=rQM
-  QDAS2b : QUAD, TYPE="@3,2Q4W", L=LQM/2, K1=KQDAS2 , APER=rQM
-  QDAS11 : QUAD, TYPE="@3,2Q4W", L=LQM/2, K1=KQDAS11, APER=rQM
-  QDAS12 : QUAD, TYPE="@3,2Q4W", L=LQM/2, K1=KQDAS12, APER=rQM
-  QDAS13 : QUAD, TYPE="@3,2Q4W", L=LQM/2, K1=KQDAS13, APER=rQM
-  QDAS14 : QUAD, TYPE="@3,2Q4W", L=LQM/2, K1=KQDAS14, APER=rQM
-  QDAS15 : QUAD, TYPE="@3,2Q4W", L=LQM/2, K1=KQDAS15, APER=rQM
-  QDAS16 : QUAD, TYPE="@3,2Q4W", L=LQM/2, K1=KQDAS16, APER=rQM
-  QDAS17 : QUAD, TYPE="@3,2Q4W", L=LQM/2, K1=KQDAS17, APER=rQM
-  QDAS18a: QUAD, TYPE="@3,2Q4W", L=LQM/2, K1=KQDAS18, APER=rQM
-  QDAS18b: QUAD, TYPE="@3,2Q4W", L=LQM/2, K1=KQDAS18, APER=rQM
-  QDAS19 : QUAD, TYPE="@3,2Q4W", L=LQM/2, K1=KQDAS19, APER=rQM
+  QDAS1a : QUAD, TYPE="2Q4W", L=LQM/2, K1=KQDAS1 , APER=rQM
+  QDAS1b : QUAD, TYPE="2Q4W", L=LQM/2, K1=KQDAS1 , APER=rQM
+  QDAS2a : QUAD, TYPE="2Q4W", L=LQM/2, K1=KQDAS2 , APER=rQM
+  QDAS2b : QUAD, TYPE="2Q4W", L=LQM/2, K1=KQDAS2 , APER=rQM
+  QDAS11 : QUAD, TYPE="2Q4W", L=LQM/2, K1=KQDAS11, APER=rQM
+  QDAS12 : QUAD, TYPE="2Q4W", L=LQM/2, K1=KQDAS12, APER=rQM
+  QDAS13 : QUAD, TYPE="2Q4W", L=LQM/2, K1=KQDAS13, APER=rQM
+  QDAS14 : QUAD, TYPE="2Q4W", L=LQM/2, K1=KQDAS14, APER=rQM
+  QDAS15 : QUAD, TYPE="2Q4W", L=LQM/2, K1=KQDAS15, APER=rQM
+  QDAS16 : QUAD, TYPE="2Q4W", L=LQM/2, K1=KQDAS16, APER=rQM
+  QDAS17 : QUAD, TYPE="2Q4W", L=LQM/2, K1=KQDAS17, APER=rQM
+  QDAS18a: QUAD, TYPE="2Q4W", L=LQM/2, K1=KQDAS18, APER=rQM
+  QDAS18b: QUAD, TYPE="2Q4W", L=LQM/2, K1=KQDAS18, APER=rQM
+  QDAS19 : QUAD, TYPE="2Q4W", L=LQM/2, K1=KQDAS19, APER=rQM
 
 ! drifts
 
-  ZDDASBK   := 0.3      !Z-space between consecutive kickers
-  ZDDASBLX  := 18.75 +3.685  !Z-space between the last kicker and the septum
-  ZDDASBLXa := 5.145    !set for y=5mm at BPM
-  ZDDASBLXb := ZDDASBLX-ZDDASBLXa
+  LPCBLRDAS  := 0.0 !thickness of PCBLRDAS -- to be determined !!!!!
 
-  LDDASBK1  := ZDDASBK  /COS(ABKRDAS1)
-  LDDASBK2  := ZDDASBK  /COS(ABKRDAS12)
-  LDDASBK3  := ZDDASBK  /COS(ABKRDAS13)
-  LDDASBK4  := ZDDASBK  /COS(ABKRDAS14)
-  LDDASBK5  := ZDDASBK  /COS(ABKRDAS15)
-  LDDASBLXa := ZDDASBLXa/COS(ABKRDAS)
-  LDDASBLXb := ZDDASBLXb/COS(ABKRDAS)
+  ZDDASBK    := 0.3      !Z-space between consecutive kickers
+  ZDDASBLX   := 18.75 +3.685 !Z-space between the last kicker and the septum
+  ZDDASBLXa  := 5.145    !set for y=5mm at BPM
+  ZDDASBLXb  := ZDDASBLX-ZDDASBLXa
+  ZDDASBLXb2 := 0.0      !distance from PCBLRDAS to BLRDAS to be determined !!!!!
+  ZDDASBLXb1 := ZDDASBLXb-ZDDASBLXb2-LPCBLRDAS
 
-  DDASBK1  : DRIF, L=LDDASBK1
-  DDASBK2  : DRIF, L=LDDASBK2
-  DDASBK3h : DRIF, L=LDDASBK3/2
-  DDASBK4  : DRIF, L=LDDASBK4
-  DDASBK5  : DRIF, L=LDDASBK5
-  DDASBLXa : DRIF, L=LDDASBLXa
-  DDASBLXb : DRIF, L=LDDASBLXb
+  LDDASBK1   := ZDDASBK   /COS(ABKRDAS1)
+  LDDASBK2   := ZDDASBK   /COS(ABKRDAS12)
+  LDDASBK3   := ZDDASBK   /COS(ABKRDAS13)
+  LDDASBK4   := ZDDASBK   /COS(ABKRDAS14)
+  LDDASBK5   := ZDDASBK   /COS(ABKRDAS15)
+  LDDASBLXa  := ZDDASBLXa /COS(ABKRDAS)
+  LDDASBLXb  := ZDDASBLXb /COS(ABKRDAS)
+  LDDASBLXb1 := ZDDASBLXb1/COS(ABKRDAS)
+  LDDASBLXb2 := ZDDASBLXb2/COS(ABKRDAS)
+
+  DDASBK1   : DRIF, L=LDDASBK1
+  DDASBK2   : DRIF, L=LDDASBK2
+  DDASBK3h  : DRIF, L=LDDASBK3/2
+  DDASBK4   : DRIF, L=LDDASBK4
+  DDASBK5   : DRIF, L=LDDASBK5
+  DDASBLXa  : DRIF, L=LDDASBLXa
+  DDASBLXb  : DRIF, L=LDDASBLXb
+  DDASBLXb1 : DRIF, L=LDDASBLXb1
+  DDASBLXb2 : DRIF, L=LDDASBLXb2
+
+  LDUMPDAS := 0.2032 !dump length = 8" = slug length of PEP2 inj. stoppper
 
   LDDASQQ := 0.1357
   LDDAS1  := 23.2085 -0.761426-0.000133
@@ -251,9 +301,12 @@
   LDDAS11b := LDDAS11-LDDAS11a
  dLDDAS12  := 0.0
   LDDAS12  := 14.1 +dLDDAS12 +0.7
+  LDDAS12a := 1.5
+  LDDAS12b := 9.877925-LDDAS12a-LDUMPDAS/2
+  LDDAS12c := LDDAS12-LDDAS12a-LDDAS12b-LDUMPDAS
   LDDAS13  := 18.128190337721 +0.5
-  LDDAS13a := 2.97
-  LDDAS13b := LDDAS13-LDDAS13a
+ !LDDAS13a := 2.97
+ !LDDAS13b := LDDAS13-LDDAS13a
   LDDAS14  := 18.128190337721 -0.5+0.79997
   LDDAS14b := 0.5
   LDDAS14a := LDDAS14-LDDAS14b
@@ -289,9 +342,10 @@
   DDAS5c  : DRIF, L=LDDAS5c
   DDAS11a : DRIF, L=LDDAS11a
   DDAS11b : DRIF, L=LDDAS11b
-  DDAS12  : DRIF, L=LDDAS12
-  DDAS13a : DRIF, L=LDDAS13a
-  DDAS13b : DRIF, L=LDDAS13b
+  DDAS12a : DRIF, L=LDDAS12a
+  DDAS12b : DRIF, L=LDDAS12b
+  DDAS12c : DRIF, L=LDDAS12c
+  DDAS13  : DRIF, L=LDDAS13
   DDAS14a : DRIF, L=LDDAS14a
   DDAS14aa : DRIF, L=LDDAS14aa
   DDAS14ab : DRIF, L=LDDAS14ab
@@ -319,22 +373,22 @@
 
 ! monitors
 
-  BPMDAS   : MONI, TYPE="@3,Stripline-5" !not rolled
-  BPMDAS1  : MONI, TYPE="@3,Stripline-5" !MPS BPM
-  BPMDAS19 : MONI, TYPE="@3,Stripline-5" !MPS BPM
+  BPMDAS   : MONI, TYPE="Stripline-5" !not rolled
+  BPMDAS1  : MONI, TYPE="Stripline-5" !MPS BPM
+  BPMDAS19 : MONI, TYPE="Stripline-5" !MPS BPM
 
 ! steering correctors
 ! Notes: trims on all bends are used as correctors as well,
 !        rolled correctors are rolled 90 deg relative to rolled bends
 
-  XCDAS1  : HKIC, TYPE="@3,class-4"
-  XCDAS14 : HKIC, TYPE="@3,class-4"
+  XCDAS1  : HKIC, TYPE="class-4"
+  XCDAS14 : HKIC, TYPE="class-4"
 
-  YCDAS1  : VKIC, TYPE="@3,class-4"
-  YCDAS17 : VKIC, TYPE="@3,class-4"
+  YCDAS1  : VKIC, TYPE="class-4"
+  YCDAS17 : VKIC, TYPE="class-4"
 
-  RCDAS11 : HKIC, TYPE="@3,class-4"
-  RCDAS19 : HKIC, TYPE="@3,class-4"
+  RCDAS11 : HKIC, TYPE="class-4"
+  RCDAS19 : HKIC, TYPE="class-4"
 
   ROLLRC := +1 !+1 for survey to show RC roll angle, but zero for twiss
 
@@ -346,14 +400,39 @@
 
 ! profile monitors
 
-  PRDAS12 : PROF, TYPE="@3,PHOSPHOR"
-  PRDAS14 : PROF, TYPE="@3,PHOSPHOR"
-  PRDAS17 : PROF, TYPE="@3,PHOSPHOR"
+  PRDAS12 : PROF, TYPE="PHOSPHOR"
+  PRDAS14 : PROF, TYPE="PHOSPHOR"
+  PRDAS17 : PROF, TYPE="PHOSPHOR"
 
 ! ACMs
 
-  IMDAS1 : IMON, TYPE="@3,BCS ACM"
-  IMDAS2 : IMON, TYPE="@3,BCS ACM"
+  IMDAS1 : IMON, TYPE="BCS ACM"
+  IMDAS2 : IMON, TYPE="BCS ACM"
+
+! collimator in front of BLRDAS septum
+! * this collimator should be attached to or be very close to the entrance
+!   of the septum aperture with the non-zero field
+! * the collimator length (thickness) is to be determined !!!!!
+! * it protects against large amplitude errant electrons which may enter
+!   the septum field aperture through turned off SXR and S30XL kickers
+! * the collimator may look like a shielding plate or a jaw covering
+!   the very bottom of the field aperture
+! * only the bottom jaw is needed
+! * it should not interfere with the no-field aperture
+! * the collimator X,Y sizes are relative to the beam center in the septum
+!   field aperture
+! * the vertical size is determined by maximum Y-coordinate of errant electrons
+!   at the septum entrance (=9.487mm measured from unkicked trajectory)
+! * horizontal size is sufficient for the expected range of the
+!   electron horizontal angles; a larger horizontal size is ok
+
+  PCBLRDAS : RCOL, TYPE="VCOLL", L=LPCBLRDAS/COS(ABKRDAS), &
+                   YSIZE=5.5E-3, XSIZE=10.E-3
+
+! stage-A dump (reused PEP2 inj. stopper with 8" slug length per Alev)
+
+  DUMPDAS : INST, TYPE="400W-dump", L=LDUMPDAS/2 !half-dump
+ !DUMPDAS : MONI, TYPE="400W-dump", L=LDUMPDAS/2 !half-dump
 
 ! markers
 
@@ -381,34 +460,113 @@
 
 ! beamlines
 
-  DASEL : LINE=(&
-    BKRDAS1a,BKRDAS1b,DDASBK1 ,&
-    BKRDAS2a,BKRDAS2b,DDASBK2 ,&
-    BKRDAS3a,BKRDAS3b,DDASBK3h,DDASBK3h,&
-    BKRDAS4a,BKRDAS4b,DDASBK4 ,&
-    BKRDAS5a,BKRDAS5b,DDASBK5 ,&
-    BKRDAS6a,BKRDAS6b,DDASBLXa,BPMDAS  ,DDASBLXb,&
-    BLRDASa ,BLRDASb ,RODAS1  ,DDAS1   ,&
-                               XCDAS1  ,DDAS2a  ,&
-                               YCDAS1  ,DDAS2b  ,&
-                               BPMDAS1 ,DDAS3   ,&
-    QDAS1b  ,QDAS1b  ,DDASQQ  ,&
-    QDAS1a  ,QDAS1a  ,DDAS4   ,&
-    QDAS2a  ,QDAS2a  ,DDASQQ  ,&
-    QDAS2b  ,QDAS2b  ,DDAS5a  ,IMDAS1  ,DDAS5b  ,IMDAS2 ,DDAS5c ,&
-    BRDAS1a ,BRDAS1b ,RODAS2  ,DDAS11a ,&
-                      RODAS11P,RCDAS11 ,RODAS11M,DDAS11b,&
-    QDAS11  ,QDAS11  ,DDAS12  ,&
-    QDAS12  ,QDAS12  ,DDAS13a ,PRDAS12 ,DDAS13b ,&
-    QDAS13  ,QDAS13  ,DDAS14aa,WOODDOOR,DDAS14ab,XCDAS14,DDAS14b,&
-    QDAS14  ,QDAS14  ,DDAS15a ,PRDAS14 ,DDAS15b ,&
-    QDAS15  ,QDAS15  ,DDAS16  ,&
-    QDAS16  ,QDAS16  ,DDAS17a ,PRDAS17 ,DDAS17b ,YCDAS17,DDAS17c,&
-    QDAS17  ,QDAS17  ,DDAS18  ,&
-    QDAS18a ,QDAS18a ,DDASQQ  ,&
-    QDAS18b ,QDAS18b ,DDAS19  ,&
-    QDAS19  ,QDAS19  ,DDAS20a ,BPMDAS19,DDAS20b ,RODAS3 ,&
-    BRDAS2a ,BRDAS2b )
+  BKRDAS1_full : LINE=(BKRDAS1a,BKRDAS1b)
+  BKRDAS2_full : LINE=(BKRDAS2a,BKRDAS2b)
+  BKRDAS3_full : LINE=(BKRDAS3a,BKRDAS3b)
+  BKRDAS4_full : LINE=(BKRDAS4a,BKRDAS4b)
+  BKRDAS5_full : LINE=(BKRDAS5a,BKRDAS5b)
+  BKRDAS6_full : LINE=(BKRDAS6a,BKRDAS6b)
+  BLRDAS_full  : LINE=(BLRDASa,BLRDASb)
+  BRDAS1_full  : LINE=(BRDAS1a,BRDAS1b)
+  BRDAS2_full  : LINE=(BRDAS2a,BRDAS2b)
+
+  QDAS1b_full  : LINE=(QDAS1b,QDAS1b)
+  QDAS1a_full  : LINE=(QDAS1a,QDAS1a)
+  QDAS2a_full  : LINE=(QDAS2a,QDAS2a)
+  QDAS2b_full  : LINE=(QDAS2b,QDAS2b)
+  QDAS11_full  : LINE=(QDAS11,QDAS11)
+  QDAS12_full  : LINE=(QDAS12,QDAS12)
+  QDAS13_full  : LINE=(QDAS13,QDAS13)
+  QDAS14_full  : LINE=(QDAS14,QDAS14)
+  QDAS15_full  : LINE=(QDAS15,QDAS15)
+  QDAS16_full  : LINE=(QDAS16,QDAS16)
+  QDAS17_full  : LINE=(QDAS17,QDAS17)
+  QDAS18a_full : LINE=(QDAS18a,QDAS18a)
+  QDAS18b_full : LINE=(QDAS18b,QDAS18b)
+  QDAS19_full  : LINE=(QDAS19,QDAS19)
+
+  DUMPDAS_full : LINE=(DUMPDAS,DUMPDAS)
+
+! stage-A and stage-B with dump in sector-30
+
+  DASELSA : LINE=(&
+    BKRDAS1_full,DDASBK1 ,&
+    BKRDAS2_full,DDASBK2 ,&
+    BKRDAS3_full,DDASBK3h,DDASBK3h,&
+    BKRDAS4_full,DDASBK4 ,&
+    BKRDAS5_full,DDASBK5 ,&
+    BKRDAS6_full,DDASBLXa,BPMDAS  ,DDASBLXb1,PCBLRDAS,DDASBLXb2,&
+    BLRDAS_full ,RODAS1  ,DDAS1   ,&
+                 XCDAS1  ,DDAS2a  ,&
+                 YCDAS1  ,DDAS2b  ,&
+                 BPMDAS1 ,DDAS3   ,&
+    QDAS1b_full,DDASQQ  ,&
+    QDAS1a_full,DDAS4   ,&
+    QDAS2a_full,DDASQQ  ,&
+    QDAS2b_full,DDAS5a  ,IMDAS1  ,DDAS5b  ,IMDAS2 ,DDAS5c ,&
+    BRDAS1_full,RODAS2  ,DDAS11a ,&
+                RODAS11P,RCDAS11 ,RODAS11M,DDAS11b,&
+    QDAS11_full,DDAS12a ,PRDAS12 ,DDAS12b ,DUMPDAS_full)
+
+  DASELSB : LINE=(&
+                 DDAS12c ,&
+    QDAS12_full ,DDAS13  ,&
+    QDAS13_full ,DDAS14aa,WOODDOOR,DDAS14ab,XCDAS14,DDAS14b,&
+    QDAS14_full ,DDAS15a ,PRDAS14 ,DDAS15b ,&
+    QDAS15_full ,DDAS16  ,&
+    QDAS16_full ,DDAS17a ,PRDAS17 ,DDAS17b ,YCDAS17,DDAS17c,&
+    QDAS17_full ,DDAS18  ,&
+    QDAS18a_full,DDASQQ  ,&
+    QDAS18b_full,DDAS19  ,&
+    QDAS19_full ,DDAS20a ,BPMDAS19,DDAS20b ,RODAS3 ,&
+    BRDAS2_full)
+
+! ------------------------------------------------------------------------------
+
+! stage-A and stage-B with dump in BSY (alternative design)
+
+COMMENT
+  DDAS12bc  : DRIF, L=LDDAS12b+LDDAS12c+LDUMPDAS
+  DDAS14ab1 : DRIF, L=2.688023-LDUMPDAS/2
+  DDAS14ab2 : DRIF, L=LDDAS14ab-DDAS14ab1[L]-LDUMPDAS
+
+
+  DASELSA : LINE=(&
+    BKRDAS1_full,DDASBK1 ,&
+    BKRDAS2_full,DDASBK2 ,&
+    BKRDAS3_full,DDASBK3h,DDASBK3h,&
+    BKRDAS4_full,DDASBK4 ,&
+    BKRDAS5_full,DDASBK5 ,&
+    BKRDAS6_full,DDASBLXa,BPMDAS  ,DDASBLXb1,PCBLRDAS,DDASBLXb2,&
+    BLRDAS_full ,RODAS1  ,DDAS1   ,&
+                 XCDAS1  ,DDAS2a  ,&
+                 YCDAS1  ,DDAS2b  ,&
+                 BPMDAS1 ,DDAS3   ,&
+    QDAS1b_full ,DDASQQ  ,&
+    QDAS1a_full ,DDAS4   ,&
+    QDAS2a_full ,DDASQQ  ,&
+    QDAS2b_full ,DDAS5a  ,IMDAS1  ,DDAS5b  ,IMDAS2 ,DDAS5c ,&
+    BRDAS1_full ,RODAS2  ,DDAS11a ,&
+                 RODAS11P,RCDAS11 ,RODAS11M,DDAS11b,&
+    QDAS11_full ,DDAS12a ,PRDAS12 ,DDAS12bc,&
+    QDAS12_full ,DDAS13  ,&
+    QDAS13_full ,DDAS14aa,WOODDOOR,DDAS14ab1,DUMPDAS,DUMPDAS)
+
+  DASELSB : LINE=(&
+                 DDAS14ab2,XCDAS14,DDAS14b ,&
+    QDAS14_full ,DDAS15a ,PRDAS14 ,DDAS15b ,&
+    QDAS15_full ,DDAS16  ,&
+    QDAS16_full ,DDAS17a ,PRDAS17 ,DDAS17b ,YCDAS17,DDAS17c,&
+    QDAS17_full ,DDAS18  ,&
+    QDAS18a_full,DDASQQ  ,&
+    QDAS18b_full,DDAS19  ,&
+    QDAS19_full ,DDAS20a ,BPMDAS19,DDAS20b ,RODAS3 ,&
+    BRDAS2_full)
+ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+  DASEL  : LINE=(DASELSA,DASELSB)
 
   DASELA : LINE=(BEGDASEL,DASEL,&
                  DA04b,RODAS19P,RCDAS19,RODAS19M,ENDDASEL,ALINEc)
@@ -416,78 +574,5 @@
   SPDASELA : LINE=(SPRDkh,SPRDks,SPRDda,DASELA)
 
 ! ------------------------------------------------------------------------------
-
-  RETURN
-
-! ------------------------------------------------------------------------------
-! DASEL stage-A beamline with dump in S30
-! ACMs and profile monitor per Tor
-
-COMMENT
-  DDAS12a  : DRIF, L=1.0 +0.7
-  DDAS12b  : DRIF, L=8.677925-DDAS12a[L] +0.7
-
-  DUMPS30XL : INST, TYPE="@3,400W-dump", L=1.0/2 !half-dump for S30XL stage-1
- !DUMPS30XL : MONI, TYPE="@3,400W-dump", L=1.0/2 !half-dump for S30XL stage-1
-
-  DASEL1S : LINE=(BEGDASEL,&
-    BKRDAS1a,BKRDAS1b,DDASBK1 ,&
-    BKRDAS2a,BKRDAS2b,DDASBK2 ,&
-    BKRDAS3a,BKRDAS3b,DDASBK3h,DDASBK3h,&
-    BKRDAS4a,BKRDAS4b,DDASBK4 ,&
-    BKRDAS5a,BKRDAS5b,DDASBK5 ,&
-    BKRDAS6a,BKRDAS6b,DDASBLXa,BPMDAS  ,DDASBLXb,&
-    BLRDASa ,BLRDASb ,RODAS1  ,DDAS1   ,&
-                               XCDAS1  ,DDAS2a  ,&
-                               YCDAS1  ,DDAS2b  ,&
-                               BPMDAS1 ,DDAS3   ,&
-    QDAS1b  ,QDAS1b  ,DDASQQ  ,&
-    QDAS1a  ,QDAS1a  ,DDAS4   ,&
-    QDAS2a  ,QDAS2a  ,DDASQQ  ,&
-    QDAS2b  ,QDAS2b  ,DDAS5a  ,IMDAS1  ,DDAS5b  ,IMDAS2 ,DDAS5c ,&
-    BRDAS1a ,BRDAS1b ,RODAS2  ,DDAS11a ,&
-                      RODAS11P,RCDAS11 ,RODAS11M,DDAS11b,&
-    QDAS11  ,QDAS11  ,DDAS12a ,PRDAS12 ,DDAS12b ,DUMPS30XL,DUMPS30XL)
-
-  SPDASEL1S : LINE=(SPRDkh,SPRDks,SPRDda,DASEL1S)
-ENDCOMMENT
-
-  RETURN
-
-! ------------------------------------------------------------------------------
-! DASEL stage-A beamline with dump in BSY
-
-COMMENT
-  DDAS14ab1 : DRIF, L=2.188023
-
-  DUMPS30XL : INST, TYPE="@3,400W-dump", L=1.0/2 !half-dump for S30XL stage-1
- !DUMPS30XL : MONI, TYPE="@3,400W-dump", L=1.0/2 !half-dump for S30XL stage-1
-
-  DASEL1B : LINE=(BEGDASEL,&
-    BKRDAS1a,BKRDAS1b,DDASBK1 ,&
-    BKRDAS2a,BKRDAS2b,DDASBK2 ,&
-    BKRDAS3a,BKRDAS3b,DDASBK3h,DDASBK3h,&
-    BKRDAS4a,BKRDAS4b,DDASBK4 ,&
-    BKRDAS5a,BKRDAS5b,DDASBK5 ,&
-    BKRDAS6a,BKRDAS6b,DDASBLXa,BPMDAS  ,DDASBLXb,&
-    BLRDASa ,BLRDASb ,RODAS1  ,DDAS1   ,&
-                               XCDAS1  ,DDAS2a  ,&
-                               YCDAS1  ,DDAS2b  ,&
-                               BPMDAS1 ,DDAS3   ,&
-    QDAS1b  ,QDAS1b  ,DDASQQ  ,&
-    QDAS1a  ,QDAS1a  ,DDAS4   ,&
-    QDAS2a  ,QDAS2a  ,DDASQQ  ,&
-    QDAS2b  ,QDAS2b  ,DDAS5a  ,IMDAS1  ,DDAS5b  ,IMDAS2 ,DDAS5c ,&
-    BRDAS1a ,BRDAS1b ,RODAS2  ,DDAS11a ,&
-                      RODAS11P,RCDAS11 ,RODAS11M,DDAS11b,&
-    QDAS11  ,QDAS11  ,DDAS12  ,&
-    QDAS12  ,QDAS12  ,DDAS13a ,PRDAS12 ,DDAS13b,&
-    QDAS13  ,QDAS13  ,DDAS14aa,WOODDOOR,DDAS14ab1,DUMPS30XL,DUMPS30XL)
-
-  SPDASEL1B : LINE=(SPRDkh,SPRDks,SPRDda,DASEL1B)
-
-  DASEL1S   : LINE=(DASEL1B)   !use name DASEL1S for printing twiss
-  SPDASEL1S : LINE=(SPDASEL1B) !use name SPDASEL1S for printing twiss
-ENDCOMMENT
 
   RETURN
