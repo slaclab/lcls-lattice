@@ -1,0 +1,65 @@
+! LCLS-II SC BC2 overlays
+
+
+! ???
+! Max horizontal offset: 520 mm
+! Min horizontal offset: -10 mm
+!  
+
+
+bc2_theta_default = ab2 ! SAME AS ab2 = 0.043924602172 !R56=0.03955
+bc2_Lp_default = 0.549
+bc2_Lp_drift_default = 9.8602
+
+
+! Overlays for rectangular bends
+!
+! Lp : total projected length of the bend
+! theta: total angle in radian
+
+!
+
+SC_BCX21: overlay = {
+  BCX21[g]:sin(theta)/Lp, 
+  BCX21[L]:Lp*theta/sin(theta),
+  BCX21[e2]:theta}, 
+  var = {Lp, theta},
+  theta = bc2_theta_default,
+  Lp = bc2_Lp_default
+
+SC_BCX22: overlay = {
+  BCX22[g]:sin(theta)/Lp, 
+  BCX22[L]:Lp*theta/sin(theta),
+  BCX22[e1]:theta}, 
+  var = {Lp, theta},
+  theta = -bc2_theta_default,
+  Lp = bc2_Lp_default
+
+SC_BCX23: overlay = {
+  BCX23[g]:sin(theta)/Lp, 
+  BCX23[L]:Lp*theta/sin(theta),
+  BCX23[e2]:theta}, 
+  var = {Lp, theta},
+  theta = -bc2_theta_default,
+  Lp = bc2_Lp_default
+
+SC_BCX24: overlay = {
+  BCX24[g]:sin(theta)/Lp, 
+  BCX24[L]:Lp*theta/sin(theta),
+  BCX24[e1]:theta}, 
+  var = {Lp, theta},
+  theta = bc2_theta_default,
+  Lp = bc2_Lp_default
+
+! Overall BC2 angle
+! Lp_drift is the total projected length of the drift between the first and second bends
+SC_BC2: overlay={
+  SC_BCX21[theta]:angle_deg*pi/180, 
+  SC_BCX22[theta]:-angle_deg*pi/180, 
+  SC_BCX23[theta]:-angle_deg*pi/180, 
+  SC_BCX24[theta]:angle_deg*pi/180,
+  DC2oB[L]:DC2oB[L] + Lp_drift*(1/cos(angle_deg*pi/180)-1/cos(bc2_theta_default)),
+  DC2oC[L]:DC2oC[L] + Lp_drift*(1/cos(angle_deg*pi/180)-1/cos(bc2_theta_default))},
+  var = {angle_deg, Lp_drift}, 
+  angle_deg = bc2_theta_default*180/pi,
+  Lp_drift=bc2_Lp_drift_default

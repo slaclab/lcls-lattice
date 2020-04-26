@@ -1,0 +1,67 @@
+! LCLS-II SC BC1 overlays
+
+!????
+! Max horizontal offset: 300 mm
+! Min horizontal offset: -10 mm
+!  
+
+
+
+
+bc1_theta_default = ab1! SAME AS ab1 = -0.100774150058 !R56=0.05285    !full chicane bend angle (rad)
+bc1_Lp_default = 0.2032  ! SAME AS zb1 = 0.2032
+bc1_Lp_drift_default = 2.4349 
+ 
+
+ 
+ 
+! Overlays for rectangular bends
+!
+! Lp : total projected length of the bend
+! theta: total angle in radian
+
+
+SC_BCX11: overlay = {
+  BCX11[g]:sin(theta)/Lp, 
+  BCX11[L]:Lp*theta/sin(theta),
+  BCX11[e2]:theta}, 
+  var = {Lp, theta},
+  theta = bc1_theta_default,
+  Lp = bc1_Lp_default
+
+SC_BCX12: overlay = {
+  BCX12[g]:sin(theta)/Lp, 
+  BCX12[L]:Lp*theta/sin(theta),
+  BCX12[e1]:theta}, 
+  var = {Lp, theta},
+  theta = -bc1_theta_default,
+  Lp = bc1_Lp_default
+
+SC_BCX13: overlay = {
+  BCX13[g]:sin(theta)/Lp, 
+  BCX13[L]:Lp*theta/sin(theta),
+  BCX13[e2]:theta}, 
+  var = {Lp, theta},
+  theta = -bc1_theta_default,
+  Lp = bc1_Lp_default
+
+SC_BCX14: overlay = {
+  BCX14[g]:sin(theta)/Lp, 
+  BCX14[L]:Lp*theta/sin(theta),
+  BCX14[e1]:theta}, 
+  var = {Lp, theta},
+  theta = bc1_theta_default,
+  Lp = bc1_Lp_default
+
+
+! Lp_drift is the total projected length of the drift between the first and second bends
+SC_BC1: overlay={
+  SC_BCX11[theta]:angle_deg*pi/180, 
+  SC_BCX12[theta]:-angle_deg*pi/180, 
+  SC_BCX13[theta]:-angle_deg*pi/180, 
+  SC_BCX14[theta]:angle_deg*pi/180,
+  DC1OC[L]:DC1OC[L] + Lp_drift*(1/cos(angle_deg*pi/180)-1/cos(bc1_theta_default)),
+  DC1OE[L]:DC1OE[L] + Lp_drift*(1/cos(angle_deg*pi/180)-1/cos(bc1_theta_default))},
+  var = {angle_deg, Lp_drift}, 
+  angle_deg = bc1_theta_default*180/pi,
+  Lp_drift=bc1_Lp_drift_default
