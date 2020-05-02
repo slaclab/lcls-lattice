@@ -154,15 +154,12 @@ tcav0: lcavity, type = "TRANS_DEFL", l = 0.6680236/2 !flange-to-flange (then spl
 tcav3: lcavity, type = "TRANS_DEFL", l = 2.438/2
 
  !LKIK   := 1.0601              ! kicker coil length per magnet (m) [41.737 in from SA-380-330-02, rev. 0]
-bxkika: sbend, hgap = 25.4e-3, e1 = 0, fint = 0.5, fintx = 0, type = "XPULSED", l = lkik/2, angle &
-         = lkik/2 * (1e-12)/(lkik/2)
-bxkikb: sbend, hgap = 25.4e-3, fint = 0, e2 = 2e-12, fintx = 0.5, type = "XPULSED", l = lkik/2,  &
-        angle = lkik/2 * (1e-12)/(lkik/2)
+bxkika: sbend, hgap = 25.4e-3, e1 = 0, fint = 0.5, fintx = 0, type = "XPULSED", l = lkik/2
+bxkikb: sbend, hgap = 25.4e-3, fint = 0, e2 = 2e-12, fintx = 0.5, type = "XPULSED", l = lkik/2
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-bxkik: sbend, hgap = 25.4e-3, e1 = 0, fint = 0.5, e2 = 2e-12, type = "XPULSED", l = lkik, angle &
-         = lkik * (1e-12)/lkik
+bxkik: sbend, hgap = 25.4e-3, e1 = 0, fint = 0.5, e2 = 0, type = "XPULSED", l = lkik
 
 ! ==============================================================================
 ! BENDs
@@ -656,8 +653,8 @@ q24601: quadrupole, type = "QE", l = lqe/2, aperture = rqe, k1 = kq24601
 
 kq24701 = -1.307122793026
 kqm21 = 0.511895916574
-kcq21 = 1e-12
-kcq22 = 1e-12
+kcq21 = 0
+kcq22 = 0
 kqm22 = -0.589455717616
 kq24901 = 1.081452709118
 

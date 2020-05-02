@@ -775,7 +775,8 @@ bx32b: sbend, hgap = gb3b/2, e1 = ab3pb/2, fint = 0.4297, e2 = ab3pb/2, type = "
 ! SXR single beam dumper vertical kicker, BPM, spoiler and in-line dump
 
 lkiks = 1.0601 !kicker coil length per magnet (m) [41.737 in from SA-380-330-02, rev. 0]
-abykiks = 1e-20  !=0.889371410732E-3 when BYKIKS1,2 are turned on
+abykiks = 0  !=0.889371410732E-3 when BYKIKS1,2 are turned on
+  !!!Old convention: ABYKIKS := 1E-20  !=0.889371410732E-3 when BYKIKS1,2 are turned on
 
 bykik1s1: sbend, e1 = abykiks/4, e2 = 0, fint = 0.5, fintx = 0, hgap = 25.4e-3, type =  &
         "1.92K41.2", ref_tilt = pi/2, l = lkiks/2, angle = lkiks/2 * abykiks/4/(lkiks/2)
@@ -2800,7 +2801,8 @@ bx36: sbend, hgap = gb3/2, e1 = ab3m/2, fint = fb3, e2 = ab3m/2, type = "0.68D10
 ! single beam dumper vertical kicker (existing, restored)
 
 lkik = 1.0601 !kicker coil length per magnet (m) [41.737 in from SA-380-330-02, rev. 0]
-abykik = 0.75e-3*1e-12 !full angle =0.75E-3 when BYKIK1,2 are turned on
+!!!  ABYKIK := 0.75E-3 *1E-12 !full angle =0.75E-3 when BYKIK1,2 are turned on
+abykik = 0
 
 bykik11: sbend, hgap = 25.4e-3, e1 = abykik/4, e2 = 0, fint = 0.5, fintx = 0, type = "1.92K41.2" &
         , ref_tilt = pi/2, l = lkik/2, angle = lkik/2 * abykik/4/(lkik/2)
@@ -3016,7 +3018,8 @@ dbmark34: marker !entrance of BX31
 ! based on FACET optics model (M. Woodley)
 ! (series approximation for sinc(x)=sin(x)/x to enable setting with x=0)
 
-bwgh = 1.e-12                  !wiggler bend field (kG)
+!!!  BWGh  := 1.E-12                  !wiggler bend field (kG)
+bwgh = 0
 awgh = asin(bwgh*zwhp/(ef*cb)) !bend angle per half-pole
 awgh2 = awgh*awgh
 awgh4 = awgh2*awgh2

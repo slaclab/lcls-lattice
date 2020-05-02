@@ -776,7 +776,8 @@
 ! SXR single beam dumper vertical kicker, BPM, spoiler and in-line dump
 
   LKIKS   := 1.0601 !kicker coil length per magnet (m) [41.737 in from SA-380-330-02, rev. 0]
-  ABYKIKS := 1E-20  !=0.889371410732E-3 when BYKIKS1,2 are turned on
+  ABYKIKS := 0  !=0.889371410732E-3 when BYKIKS1,2 are turned on  
+  !!!Old convention: ABYKIKS := 1E-20  !=0.889371410732E-3 when BYKIKS1,2 are turned on
 
   BYKIK1S1 : SBEN, TYPE="1.92K41.2", L=LKIKS/2, ANGLE=ABYKIKS/4, TILT, &
                    E1=ABYKIKS/4, E2=0, FINT=0.5, FINTX=0  , HGAP=25.4E-3
@@ -2500,7 +2501,8 @@
 ! single beam dumper vertical kicker (existing, restored)
 
   LKIK   := 1.0601 !kicker coil length per magnet (m) [41.737 in from SA-380-330-02, rev. 0]
-  ABYKIK := 0.75E-3 *1E-12 !full angle =0.75E-3 when BYKIK1,2 are turned on
+!!!  ABYKIK := 0.75E-3 *1E-12 !full angle =0.75E-3 when BYKIK1,2 are turned on
+ABYKIK = 0
 
   BYKIK11 : SBEN, TYPE="1.92K41.2", L=LKIK/2, ANGLE=ABYKIK/4, HGAP=25.4E-3, &
                   E1=ABYKIK/4, E2=0, FINT=0.5, FINTX=0  , TILT
@@ -2720,7 +2722,8 @@
 ! based on FACET optics model (M. Woodley)
 ! (series approximation for sinc(x)=sin(x)/x to enable setting with x=0)
 
-  BWGh  := 1.E-12                  !wiggler bend field (kG)
+!!!  BWGh  := 1.E-12                  !wiggler bend field (kG)
+BWGh  := 0
   AWGh  := ASIN(BWGh*ZWHP/(Ef*Cb)) !bend angle per half-pole
   AWGh2 := AWGh*AWGh
   AWGh4 := AWGh2*AWGh2

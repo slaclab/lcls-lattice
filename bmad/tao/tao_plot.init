@@ -1915,19 +1915,71 @@ curve(2)%legend_text = 'Y'
   
   curve(3)%data_source = 'lattice'
   curve(3)%data_type   = 'beta.a'
-  curve(3)%legend_text = 'Lattice \gb\dx\u'	
+  curve(3)%legend_text = 'Lattice \gb\da\u'	
   curve(3)%y_axis_scale_factor = 1
   curve(3)%line%color=2
   curve(3)%line%width=2
   curve(3)%line%pattern= 2 !Dashed
   curve(4)%data_source = 'lattice'
   curve(4)%data_type   = 'beta.b'
-  curve(4)%legend_text = 'Lattice \gb\dy\u'	
+  curve(4)%legend_text = 'Lattice \gb\db\u'	
   curve(4)%y_axis_scale_factor = 1
   curve(4)%line%color=3
   curve(4)%line%width=2
   curve(4)%line%pattern= 2 !Dashed
  /
+  
+  
+&tao_template_plot
+  plot%name = 'beambeta2'
+  plot%x%min =   0
+  plot%x%max = 100
+  !plot%x%major_div = 10
+  plot%x%label = ' '
+  plot%x_axis_type = 's'
+  plot%n_graph = 1
+/
+
+&tao_template_graph
+  graph%name = 'a'
+  graph_index = 1
+  graph%box = 1, 1, 1, 1
+  graph%title = 'Beta X, Y (m)'
+  graph%margin =  0.15, 0.06, 0.12, 0.12, '%BOX'
+  graph%y%label = 'Beta (m)'
+  graph%y%max =  20
+  graph%y%min = -20
+  graph%y%major_div = 4
+  graph%n_curve = 4
+  curve(1)%data_source = 'beam_tracking'
+  curve(1)%smooth_line_calc = F
+  curve(1)%data_type   = 'beta.x'
+  curve(1)%y_axis_scale_factor = 1
+  curve(1)%line%color=2
+  curve(1)%line%width=2
+  curve(2)%data_source = 'beam_tracking'
+  curve(2)%smooth_line_calc = F
+  curve(2)%data_type   = 'beta.y'
+  curve(2)%y_axis_scale_factor = 1
+  curve(2)%line%color = 3
+  curve(2)%line%width=2
+  
+  curve(3)%data_source = 'lattice'
+  curve(3)%data_type   = 'beta.a'
+  curve(3)%legend_text = 'Lattice \gb\da\u'	
+  curve(3)%y_axis_scale_factor = 1
+  curve(3)%line%color=2
+  curve(3)%line%width=2
+  curve(3)%line%pattern= 2 !Dashed
+  curve(4)%data_source = 'lattice'
+  curve(4)%data_type   = 'beta.b'
+  curve(4)%legend_text = 'Lattice \gb\db\u'	
+  curve(4)%y_axis_scale_factor = 1
+  curve(4)%line%color=3
+  curve(4)%line%width=2
+  curve(4)%line%pattern= 2 !Dashed
+ /
+    
   
 /
 
