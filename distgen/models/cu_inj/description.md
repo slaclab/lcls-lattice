@@ -9,5 +9,7 @@ px, py distributions show excellent agreement, with MTE = 414 meV
 
 pz in `partcl.data` is completely unmodeled. 
 
-x, y are an unknown distribution.
+x, y are radial Gaussian with a sigma of 0.4 mm and a cutoff at 1.5 sigma.
+
+
 
