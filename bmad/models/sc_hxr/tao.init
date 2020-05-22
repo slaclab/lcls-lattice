@@ -29,6 +29,25 @@
 
 
 
+&tao_beam_init
+beam_init%random_engine = 'quasi'
+ix_universe = 1
+beam_saved_at =  "MARKER::*"
+track_start = 'BEAM0'
+!track_end = 'DBMARK82'
+track_end = 'HXRSTART'
+beam_init%position_file = '$LCLS_LATTICE/bmad/beams/FZ_100pC_10NOV17_scattered_5keV_resampled_100k.beam0'
+!beam_init%position_file = 'beam_1.hdf5'
+beam_init%center(1) = 0.0
+beam_init%center(2) = 0.0
+beam_init%center(3) = 0.0
+beam_init%center(4) = 0.0
+beam_init%center(5) = 0.0
+beam_init%center(6) = 0.0
+
+/
+
+
 &tao_d2_data
         d2_data%name = 'L0'
         universe = 1
@@ -61,12 +80,12 @@
         ix_d1_data = 1
         default_weight = 1
         d1_data%name = 'begtwiss'
-        datum( 1) =  'beta.a'     '' '' 'HTRUNDB'   'target'  10  1e1
-        datum( 2) =  'alpha.a'    '' '' 'HTRUNDB'   'target'   0  1e2
-        datum( 3) =  'beta.b'     '' '' 'HTRUNDB'   'target'  10  1e1
-        datum( 4) =  'alpha.b'    '' '' 'HTRUNDB'   'target'   0  1e2
+        datum( 1) =  'beta.a'     '' '' 'HTRUNDB'   'target'  10   1e1
+        datum( 2) =  'alpha.a'    '' '' 'HTRUNDB'   'target' 0  1e2
+        datum( 3) =  'beta.b'     '' '' 'HTRUNDB'   'target'  10    1e1
+        datum( 4) =  'alpha.b'    '' '' 'HTRUNDB'   'target'  0  1e2
         datum( 5) =  'eta.x'      '' '' 'HTRUNDB'   'target'   0  1e1
-        datum( 6) =  'etap.x'     '' '' 'HTRUNDB'   'target'   0  1e2
+        datum( 6) =  'etap.x'     '' '' 'HTRUNDB'   'target'   0   1e2
 /   
 
 
@@ -211,6 +230,8 @@
     search_for_lat_eles = "Instrument::BPM*,Instrument::RFB*"
 /
 
+
+
 !-----------------------------------------------------------------------------------------
 !-----------------------------------------------------------------------------------------
 
@@ -256,6 +277,16 @@
 	default_attribute = 'K1'
 	var(1:)%ele_name = 'QCM16', 'QCM22', 'QCM29', 'QCM35'
 /
+
+
+
+&tao_var
+    v1_var%name = 'linac'
+	default_step = 0.1
+	default_attribute = 'phase_deg'
+	var(1:)%ele_name = 'SC_L1', 'SC_L1H', 'SC_L2', 'SC_L3'
+/
+
 
 
 !--- Correctors

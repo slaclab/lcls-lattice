@@ -1,0 +1,61 @@
+!---Turns on some typical CSR parameters
+
+!set global track_type = single
+
+set global plot_on = false
+set global lattice_calc_on=false
+
+!---Turn on ISR fluctuations
+set bmad_com radiation_fluctuations_on = T
+
+!---CSR---
+set csr_param beam_chamber_height = 0.024  ! 24 mm full height
+set csr_param n_shield_images = 0
+set csr_param ds_track_step = 0.01
+set csr_param n_bin = 40
+set csr_param particle_bin_span = 2
+set csr_param sigma_cutoff = 0.1 ! Cutoff for the lsc calc. If a bin sigma is < cutoff * sigma_ave then ignore.
+
+!---------------------------------------------
+alias csrstep set csr_param ds_track_step = [[1]]
+
+alias csron  set bmad_com csr_and_space_charge_on = T
+alias csroff set bmad_com csr_and_space_charge_on = F
+
+set bmad_com csr_and_space_charge_on = T
+
+
+!set ele * space_charge_method = off
+!set ele * CSR_METHOD  = off
+!set ele BEGBC1B:ENDBC1B CSR_METHOD  = 1_Dim
+!set ele BEGBC2B:ENDBC2B CSR_METHOD  = 1_Dim
+
+! Turn everything on
+set ele * space_charge_method = slice
+set ele * CSR_METHOD  = 1_Dim
+
+set ele SXRSTART:END space_charge_method = off
+set ele SXRSTART:END csr_method = off
+
+! Selectively turn off CSR
+set ele BEGINNING:BEGBC1B csr_method = off
+set ele ENDBC1B:BEGBC2B csr_method = off
+set ele ENDBC2B:BEGDOG csr_method = off
+set ele CCDLDEND:BEGSPS csr_method = off
+set ele S100B:CC31BBEG csr_method = off
+set ele MM2B:END csr_method = off
+
+
+set csr_param n_bin = 500
+
+! DEBUG:
+!set ele endl3:CC32END csr_method = 1_dim
+!set ele endl3:CC36END csr_method = 1_dim
+
+!set ele ENDl3:HXRSTART csr_method = 1_dim ! End of L3 to undulator
+!set ele MM1:CC36END csr_method = 1_dim  ! dogleg area
+!set ele CC32BEG:CC32END csr_method = 1_dim  ! HXR R56 compensating chicanes
+
+
+set global lattice_calc_on=true
+set global plot_on = true
