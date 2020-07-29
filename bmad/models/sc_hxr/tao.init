@@ -11,11 +11,12 @@
 &tao_design_lattice
   !unique_name_suffix="*::_##?"
   design_lattice(1)%file='sc_hxr.lat.bmad'
+  !design_lattice(1)%slice_lattice = "BEAM0:HXRSTART"
 /
 
 !------------------------------------------------------------------------
 &tao_params
-  !global%plot_on = T
+  global%plot_on = T
   global%track_type = 'single'
   global%beam_timer_on = T
   global%random_engine = 'pseudo' ! or: 'quasi'
@@ -57,19 +58,22 @@ beam_init%center(6) = 0.0
         ix_d1_data = 1
         default_weight = 1
         d1_data%name = 'energy'
-        datum( 1) =  'orbit.e_tot'     '' '' 'ENDL0B'   'target'  100e6  1e1
+        datum( 1) =  'orbit.e_tot'     '' '' 'BEAM0'   'target'  100e6  1e1
 /
 &tao_d1_data
     ix_d1_data = 2
     d1_data%name = 'endtwiss'
-    datum( 1) =  'beta.a'     '' '' 'ENDL0B'   'target'   2.124671319E+01   1e1
-    datum( 2) =  'alpha.a'    '' '' 'ENDL0B'   'target'  -1.623900964E+00   1e1
-    datum( 3) =  'beta.b'     '' '' 'ENDL0B'   'target'   4.416143920E+01   1e1
-    datum( 4) =  'alpha.b'    '' '' 'ENDL0B'   'target'  -5.562722043E+00   1e1
-    datum( 5) =  'eta.x'      '' '' 'ENDL0B'   'target'   0.000000000E+00   1e1
-    datum( 6) =  'etap.x'     '' '' 'ENDL0B'   'target'   0.000000000E+00   1e1
+    datum( 1) =  'beta.a'     '' '' 'BEAM0'   'target'   2.124671319E+01   1e1
+    datum( 2) =  'alpha.a'    '' '' 'BEAM0'   'target'  -1.623900964E+00   1e1
+    datum( 3) =  'beta.b'     '' '' 'BEAM0'   'target'   4.416143920E+01   1e1
+    datum( 4) =  'alpha.b'    '' '' 'BEAM0'   'target'  -5.562722043E+00   1e1
+    datum( 5) =  'eta.x'      '' '' 'BEAM0'   'target'   0.000000000E+00   1e1
+    datum( 6) =  'etap.x'     '' '' 'BEAM0'   'target'   0.000000000E+00   1e1
 /  
 
+
+!---------------------------------------------------------------------------------------
+! HTR
 
 &tao_d2_data
         d2_data%name = 'HTR'
@@ -89,10 +93,14 @@ beam_init%center(6) = 0.0
 /   
 
 
+
+!---------------------------------------------------------------------------------------
+! BC1
+
 &tao_d2_data
         d2_data%name = 'BC1'
         universe = 1
-        n_d1_data = 1
+        n_d1_data = 2
 /
 &tao_d1_data
         ix_d1_data = 1
@@ -104,16 +112,115 @@ beam_init%center(6) = 0.0
         datum( 4) =  'alpha.b'    '' '' 'BEGBC1B'   'target'  -7.975687433E-01  1e2
         datum( 5) =  'eta.x'      '' '' 'BEGBC1B'   'target'   0  1e1
         datum( 6) =  'etap.x'     '' '' 'BEGBC1B'   'target'   0   1e2
-/   
+/  
+
+&tao_d1_data
+        ix_d1_data = 2
+        default_weight = 1
+        d1_data%name = 'r56'
+        datum( 1) =  'r56_compaction'     'BEGBC1B' '' 'ENDBC1B'  'target' 45e-3  1e1
+/
+
+
+!---------------------------------------------------------------------------------------
+! COL1
+
+&tao_d2_data
+        d2_data%name = 'COL1'
+        universe = 1
+        n_d1_data = 1
+/
+&tao_d1_data
+        ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'endtwiss'
+        datum( 1) =  'beta.a'     '' '' 'ENDCOL1'   'target'  25.77163820    1e1
+        datum( 2) =  'alpha.a'    '' '' 'ENDCOL1'   'target' 0.86995449 1e2
+        datum( 3) =  'beta.b'     '' '' 'ENDCOL1'   'target'   5.02337989     1e1
+        datum( 4) =  'alpha.b'    '' '' 'ENDCOL1'   'target' -0.18284591  1e2
+        datum( 5) =  'eta.x'      '' '' 'ENDCOL1'   'target'   0  1e1
+        datum( 6) =  'etap.x'     '' '' 'ENDCOL1'   'target'   0   1e2
+/  
+
+
+
+
+
+!---------------------------------------------------------------------------------------
+! BC2
+
+&tao_d2_data
+        d2_data%name = 'BC2'
+        universe = 1
+        n_d1_data = 2
+/
+&tao_d1_data
+        ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'begtwiss'
+        datum( 1) =  'beta.a'     '' '' 'BEGBC2B'   'target'  3.870395077E+01   1e1
+        datum( 2) =  'alpha.a'    '' '' 'BEGBC2B'   'target'  4.476022866E-01    1e2
+        datum( 3) =  'beta.b'     '' '' 'BEGBC2B'   'target'  3.109163641E+01     1e1
+        datum( 4) =  'alpha.b'    '' '' 'BEGBC2B'   'target'  -7.975687433E-01   1e2
+        datum( 5) =  'eta.x'      '' '' 'BEGBC2B'   'target'   0  1e1
+        datum( 6) =  'etap.x'     '' '' 'BEGBC2B'   'target'   0   1e2
+/  
+
+&tao_d1_data
+        ix_d1_data = 2
+        default_weight = 1
+        d1_data%name = 'r56'
+        datum( 1) =  'r56_compaction'     'BEGBC2B' '' 'ENDBC2B'  'target' 45e-3  1e1
+/
+
+
+
+
+!---------------------------------------------------------------------------------------
+! EMIT2
+
+&tao_d2_data
+        d2_data%name = 'EMIT2'
+        universe = 1
+        n_d1_data = 1
+/
+&tao_d1_data
+        ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'endtwiss'
+        datum( 1) =  'beta.a'     '' '' 'ENDEMIT2'   'target'  55.29630154    1e1
+        datum( 2) =  'alpha.a'    '' '' 'ENDEMIT2'   'target'  1.50461172  1e2
+        datum( 3) =  'beta.b'     '' '' 'ENDEMIT2'   'target'   7.84219456      1e1
+        datum( 4) =  'alpha.b'    '' '' 'ENDEMIT2'   'target'  -0.39966385   1e2
+        datum( 5) =  'eta.x'      '' '' 'ENDEMIT2'   'target'   0  1e1
+        datum( 6) =  'etap.x'     '' '' 'ENDEMIT2'   'target'   0   1e2
+/  
+
+
+
+
+
+ 
+
+!---------------------------------------------------------------------------------------
+! L1
 
 
 &tao_d2_data
         d2_data%name = 'L1'
         universe = 1
-        n_d1_data = 1
+        n_d1_data = 2
 /
+
 &tao_d1_data
-    ix_d1_data = 1
+        ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'energy'
+        datum( 1) =  'orbit.e_tot'     '' '' 'ENDL1B'   'target'  230e6  1e1
+/
+
+&tao_d1_data
+    ix_d1_data = 2
     d1_data%name = 'endtwiss'
     datum( 1) =  'beta.a'     '' '' 'ENDL1B'   'target'   3.870395077E+01   1e1
     datum( 2) =  'alpha.a'    '' '' 'ENDL1B'   'target'   4.476022866E-01   1e1
@@ -124,13 +231,25 @@ beam_init%center(6) = 0.0
 /
 
 
+
+!---------------------------------------------------------------------------------------
+! L2
+
 &tao_d2_data
         d2_data%name = 'L2'
         universe = 1
-        n_d1_data = 1
+        n_d1_data = 2
 /
+
 &tao_d1_data
-    ix_d1_data = 1
+        ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'energy'
+        datum( 1) =  'orbit.e_tot'     '' '' 'ENDL2B'   'target'  1600e6  1e1
+/
+
+&tao_d1_data
+    ix_d1_data = 2
     d1_data%name = 'endtwiss'
     datum( 1) =  'beta.a'     '' '' 'ENDL2B'   'target'   2.301739816E+02   1e1
     datum( 2) =  'alpha.a'    '' '' 'ENDL2B'   'target'  -3.315233808E+00   1e1
@@ -141,13 +260,25 @@ beam_init%center(6) = 0.0
 /  
 
 
+!---------------------------------------------------------------------------------------
+! L3
+
 &tao_d2_data
         d2_data%name = 'L3'
         universe = 1
-        n_d1_data = 1
+        n_d1_data = 2
 /
+
+
 &tao_d1_data
-    ix_d1_data = 1
+        ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'energy'
+        datum( 1) =  'orbit.e_tot'     '' '' 'ENDL3B'   'target'  4000e6  1e1
+/
+
+&tao_d1_data
+    ix_d1_data = 2
     d1_data%name = 'endtwiss'
     datum( 1) =  'beta.a'     '' '' 'ENDL3B'   'target'   4.500235329E+01   1e1
     datum( 2) =  'alpha.a'    '' '' 'ENDL3B'   'target'  -1.062939587E+00   1e1
@@ -249,11 +380,26 @@ beam_init%center(6) = 0.0
 
 
 
-!&tao_var
-    v1_var%name = 'L0'
+&tao_var
+    v1_var%name = 'gradient.L0'
 	default_step = 1e-4
-	default_attribute = 'x'
-	var(1:)%ele_name = 'O_L0'
+	default_attribute = 'gradient'
+	search_for_lat_eles = 'lcavity::cavl01*'
+	!var(1:)%ele_name = 'O_L0'
+/
+&tao_var
+    v1_var%name = 'phi0.L0'
+	default_step = 1e-4
+	default_attribute = 'phi0'
+	search_for_lat_eles = 'lcavity::cavl01*'
+	!var(1:)%ele_name = 'O_L0'
+/
+
+&tao_var
+    v1_var%name = 'q.HTR'
+	default_step = 1e-4
+	default_attribute = 'K1'
+	search_for_lat_eles = 'quad::Q0H*'
 /
 
 &tao_var
@@ -281,12 +427,44 @@ beam_init%center(6) = 0.0
 
 
 &tao_var
-    v1_var%name = 'linac'
+    v1_var%name = 'linac_phase'
 	default_step = 0.1
 	default_attribute = 'phase_deg'
 	var(1:)%ele_name = 'SC_L1', 'SC_L1H', 'SC_L2', 'SC_L3'
 /
 
+&tao_var
+    v1_var%name = 'q.COL1'
+	default_step = 1e-4
+	default_attribute = 'K1'
+	var(1:)%ele_name = 'QC101', 'QC102', 'QC103', 'QC104'
+/
+
+&tao_var
+    v1_var%name = 'q.EMIT2'
+	default_step = 1e-4
+	default_attribute = 'K1'
+	var(1:)%ele_name = 'QE201', 'QE202', 'QE203', 'QE204'
+/
+
+
+&tao_var
+    v1_var%name = 'bc1'
+    default_step = 0.01
+    default_attribute = 'angle_deg'
+    var(1:)%low_lim = -8.35
+    var(1:)%high_lim = 0
+    var(1:)%ele_name = 'SC_BC1'
+/
+
+&tao_var
+    v1_var%name = 'bc2'
+    default_step = 0.01
+    default_attribute = 'angle_deg'
+    var(1:)%low_lim =  0 
+    var(1:)%high_lim =  9.1
+    var(1:)%ele_name = 'SC_BC2'
+/
 
 
 !--- Correctors

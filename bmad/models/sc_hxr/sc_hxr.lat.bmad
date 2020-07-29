@@ -34,9 +34,13 @@ QCM29[K1] =   1.82961998578843E-01
 QCM35[K1] =  -2.11134816854549E-03
 
 
-lcavity::*[ds_step] = .01
+!!!lcavity::*[ds_step] = .01
 sbend::*[fringe_type] = full
 
+
+! Cavity wakefields
+lcavity::CAVL*[sr_wake]  = call::$LCLS_LATTICE/bmad/wakefields/longitudinal_wakes_1300MHz.bmad
+lcavity::CAVC*[sr_wake]  = call::$LCLS_LATTICE/bmad/wakefields/longitudinal_wakes_3900MHz.bmad
 
 RWWAKE1[sr_wake] = call::$LCLS_LATTICE/bmad/wakefields/wakefield_SS_24.5mmR.bmad
 RWWAKE1[sr_wake%scale_with_length] = F
@@ -47,17 +51,20 @@ RWWAKE2[sr_wake] = call::$LCLS_LATTICE/bmad/wakefields/wakefield_SS_24.5mmR.bmad
 RWWAKE2[sr_wake%scale_with_length] = F
 RWWAKE2[sr_wake%amp_scale] = 2035.2
 
-RWWAKE3S[sr_wake] = call::$LCLS_LATTICE/bmad/wakefields/wakefield_SS_24.5mmR.bmad
-RWWAKE3S[sr_wake%scale_with_length] = F
-RWWAKE3S[sr_wake%amp_scale] = 443.8
+! HXR only
 
-RWWAKE4S[sr_wake] = call::$LCLS_LATTICE/bmad/wakefields/wakefield_SS_24.5mmR.bmad
-RWWAKE4S[sr_wake%scale_with_length] = F
-RWWAKE4S[sr_wake%amp_scale] = 341.8
+RWWAKE3H[sr_wake] = call::$LCLS_LATTICE/bmad/wakefields/wakefield_SS_24.5mmR.bmad
+RWWAKE3H[sr_wake%scale_with_length] = F
+RWWAKE3H[sr_wake%amp_scale] = 443.8
 
-RWWAKE5S[sr_wake] = call::$LCLS_LATTICE/bmad/wakefields/wakefield_Al_5mm_gap_flat.bmad
-RWWAKE5S[sr_wake%scale_with_length] = F
-RWWAKE5S[sr_wake%amp_scale] = 100
+
+RWWAKE4H[sr_wake] = call::$LCLS_LATTICE/bmad/wakefields/wakefield_Cu_17.4mmR.bmad
+RWWAKE4H[sr_wake%scale_with_length] = F
+RWWAKE4H[sr_wake%amp_scale] = 339.1
+
+RWWAKE5H[sr_wake] = call::$LCLS_LATTICE/bmad/wakefields/wakefield_Al_5mm_gap_flat.bmad
+RWWAKE5H[sr_wake%scale_with_length] = F
+RWWAKE5H[sr_wake%amp_scale] = 130
 
 
 lat2: line = (LCLS2scI, lcls2scc)

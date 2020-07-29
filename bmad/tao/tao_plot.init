@@ -2244,6 +2244,50 @@ curve(2)%legend_text = 'Y'
   curve(2)%line%width=2
   curve(2)%line%color=4
 /
+
+!-------------- t216 -----------------------------------
+
+&tao_template_plot
+  plot%name = 't216'
+  plot%x%min =   0
+  plot%x%max = 100
+  !plot%x%major_div = 10
+  plot%x%label = 's (m)'
+  plot%x_axis_type = 's'
+  plot%n_graph = 1
+/
+
+&tao_template_graph
+  graph%name = 'x'
+  graph_index = 1
+  graph%box = 1, 1, 1, 1
+  graph%title = 't216 (1)'
+  graph%margin =  0.15, 0.06, 0.12, 0.12, '%BOX'
+  graph%y%label = 't216 (1)'
+  graph%y%max =  20
+  graph%y%min = -20
+  graph%y%major_div = 4
+  graph%n_curve = 2
+  curve(1)%smooth_line_calc = .false.
+  curve(1)%data_source = 'lattice'
+  curve(1)%data_type   = 't.216'
+  curve(1)%y_axis_scale_factor = 1
+  curve(1)%ele_ref_name = 'BEGINNING'
+  curve(1)%draw_symbols=.false.
+  curve(1)%line%width=2
+  !curve(1)%line%color=2
+  
+  curve(2)%smooth_line_calc = .false.
+  curve(2)%data_source = 'lattice'
+  curve(2)%data_type   = 't.436'
+  curve(2)%y_axis_scale_factor = 1
+  curve(2)%ele_ref_name = 'BEGINNING'
+  curve(2)%draw_symbols=.false.
+  curve(2)%line%width=2
+  curve(2)%line%color=4
+/
+
+
 /
 !-------------- t266 -----------------------------------
 
@@ -3482,6 +3526,110 @@ curve(2)%legend_text = 'Y'
   curve(1)%smooth_line_calc = .false.
 /
 
+
+
+
+!--------- curlyH -------------
+&tao_template_plot
+  plot%name = 'OLDcurlyH'
+  plot%x%min =   0
+  plot%x%max = 10
+  !plot%x%major_div_nominal = 10
+  plot%x%label = ' '
+  plot%x_axis_type = 's'
+  plot%n_graph = 1
+/
+
+&tao_template_graph
+  graph%name = 'x'
+  graph_index = 1
+  graph%box = 1, 1, 1, 1
+  !graph%title = 'quadrupole, cell offset (mm)'
+  graph%margin =  0.15, 0.06, 0.12, 0.12, '%BOX'
+  graph%y%label = 'curlyH x (m)'
+  graph%y%label_offset=.4
+  graph%y%max =  -30
+  graph%y%min = 30
+  graph%y%major_div = 4
+  graph%n_curve = 1
+
+  curve(1)%data_source = 'lattice'
+  curve(1)%data_type = 'expression: beta.a*etap.x^2 + 2*alpha.a*eta.x*etap.x + gamma.a*eta.x^2'
+  curve(1)%y_axis_scale_factor = 1
+  curve(1)%draw_symbols = T
+  curve(1)%smooth_line_calc = F
+/
+
+
+!--------- curlyH -------------
+&tao_template_plot
+  plot%name = 'curlyH'
+  plot%x%min =   0
+  plot%x%max = 10
+  !plot%x%major_div_nominal = 10
+  plot%x%label = ' '
+  plot%x_axis_type = 's'
+  plot%n_graph = 1
+/
+
+&tao_template_graph
+  graph%name = 'x'
+  graph_index = 1
+  graph%box = 1, 1, 1, 1
+  !graph%title = 'quadrupole, cell offset (mm)'
+  graph%margin =  0.15, 0.06, 0.12, 0.12, '%BOX'
+  graph%y%label = 'curly H (m)'
+  graph%y%label_offset=.4
+  graph%y%max =  -30
+  graph%y%min = 30
+  graph%y%major_div = 4
+  graph%n_curve = 2
+
+  curve(1)%data_source = 'lattice'
+  curve(1)%data_type = 'curly_h.a'
+  curve(1)%y_axis_scale_factor = 1
+  curve(1)%draw_symbols = T
+  curve(1)%smooth_line_calc = F
+  
+  curve(2)%data_source = 'lattice'
+  curve(2)%data_type = 'curly_h.b'
+  curve(2)%y_axis_scale_factor = 1
+  curve(2)%draw_symbols = T
+  curve(2)%smooth_line_calc = F  
+  
+/
+
+
+!--------floor4----------------------------------------
+&tao_template_plot
+  plot%name = 'floor4'
+  plot%x%min =   0
+  plot%x%max = 4000
+  !plot%x%major_div = 10
+  plot%x%label = 'Z (m)'
+  plot%n_graph = 1
+/
+
+&tao_template_graph
+  graph_index = 1
+  graph%name = 'plan'
+  graph%type = 'floor_plan'
+  graph%floor_plan_draw_only_first_pass  = F
+  graph%correct_xy_distortion = F
+  graph%floor_plan_size_is_absolute = T
+  graph%box = 1, 1, 1, 1
+  graph%title = 'floor_plan'
+  graph%margin =  0.15, 0.06, 0.12, 0.12, '%BOX'
+  graph%y%label = 'X (m)'
+  graph%y%max = 0.1
+  graph%y%min = -0.1
+  graph%y%major_div = 4
+  ! Multiple floor plans
+  graph%floor_plan_orbit_scale = 1
+  graph%floor_plan_view  = 'zx'
+  graph%floor_plan_orbit_color = 'Purple'
+  graph%ix_universe = -2
+/
 
 
 

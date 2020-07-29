@@ -1,0 +1,30 @@
+
+! 1.3 GHz 9-cell TESLA cavity wakefield
+! Replicates the data in: elegant/zWake_1.3GHz_OneCavity_dz2um_TESLA2003-09.sdds
+!
+! from fits in TESLA Report 2003-19
+! https://www.desy.de/fel-beam/data/talks/papers/zagorodnov_weiland_-_short_range_wake_tesla_200319.pdf
+!
+! Call in Bmad as: 
+!   ele[sr_wake] = call::longitudinal_wakes_1300MHz.bmad
+!
+! Periodic Structure Wakefield, following:
+!  Short-range dipole wakefields in accelerating structures for the NLC
+!  Karl L.F. Bane SLAC-PUB-9663 LCC-0116 March 2003
+!
+!
+! Three-pseudomode fit for a wakefield of the form
+!
+!   W(z) = A * exp(-sqrt(z/z0))
+!
+! The actual modes below are a fit of exp(-sqrt(z)), so that scaling factors can be used.
+!
+! Scaling is for:
+!   z0 = 0.0017 m
+!   A  = 43035500000000.0 V/C
+! 
+{z_scale = 1/0.0017, amp_scale = 43035500000000.0, scale_with_length = T,
+  longitudinal = {0.3714410247401779, 0.2464597136255673, 0, 0.25, none},
+  longitudinal = {0.38523529768692505, 1.632620523181939, 0, 0.25, none},
+  longitudinal = {0.2335498532197653, 20.923620998774556, 0, 0.25, none},
+  z_max = 0.01}
