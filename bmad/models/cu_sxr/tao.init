@@ -169,6 +169,27 @@ beam_init%center(6) = 0.0
  
 
 &tao_d2_data
+        d2_data%name = 'WS32B'
+        universe = 1
+        n_d1_data = 1
+/
+
+&tao_d1_data
+        ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'twiss'
+        datum( 1) =  'beta.a'     '' '' 'WS32B'   'target' 69.83371867   1e1
+        datum( 2) =  'alpha.a'    '' '' 'WS32B'   'target' -1.33283418  1e2
+        datum( 3) =  'beta.b'     '' '' 'WS32B'   'target' 31.64312816     1e1
+        datum( 4) =  'alpha.b'    '' '' 'WS32B'   'target' 0.51256498  1e2
+        datum( 5) =  'eta.x'      '' '' 'WS32B'   'target'   0  1e1
+        datum( 6) =  'etap.x'     '' '' 'WS32B'   'target'   0   1e2
+/
+
+
+
+
+&tao_d2_data
         d2_data%name = 'BC2'
         universe = 1
         n_d1_data = 3
@@ -339,6 +360,13 @@ beam_init%center(6) = 0.0
 	default_step = 1e-4
 	default_attribute = 'f'
 	var(1:)%ele_name =  'O_L1_fudge', 'O_L2_fudge', 'O_L3_fudge'
+/
+
+&tao_var
+    v1_var%name = 'q.LTUS'
+        default_step = 1e-4
+        default_attribute = 'K1'
+        var(1:)%ele_name = 'QBP33', 'QBP34', 'QDBL1', 'QDBL2', 'QDL11'
 /
 
 
