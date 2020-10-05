@@ -1,11 +1,16 @@
 
-! *** OPTICS=AD_ACCEL-01APR20 ***
+! *** OPTICS=AD_ACCEL-05OCT20 ***
 
 ! LCLS2sc LTU and dump
 
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
+! 06-AUG-2020, M. Woodley
+!  * redefined XLEAP undulators
+! ------------------------------------------------------------------------------
+! 03-MAR-2020, M. Woodley
+!  * move XLEAP wiggler to SXR cell #18
 ! 12-DEC-2019, M. Woodley
 !  * move XLEAP wiggler to SXX (cell 17)
 !  * add "h" to UMXL1-4 (-> UMLX1-4h)
@@ -644,7 +649,7 @@ zwhp = 0.244         !half-pole Z length
 zdwg = 0.126525      !pole-to-pole Z spacing
 zwig = 4*zwhp+2*zdwg !total wiggler Z length
 
-bwgs = 1.e-12                  !wiggler bend field (kG)
+bwgs = 0                       !wiggler bend field (kG)
 awgs = asin(bwgs*zwhp/(ef*cb)) !bend angle per half-pole
 awgs2 = awgs*awgs
 awgs4 = awgs2*awgs2
@@ -711,8 +716,8 @@ dwigsb: drift, l = dwigs[l]-dwigsa[l]-lplate
 ! note: the K-values below are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-kqdbl1 = -0.04881982318  !-0.048819823179
-kqdbl2 = -0.560812460034 !-0.560812460035
+kqdbl1 = -0.050357323411
+kqdbl2 = -0.559361105837
 
 qdbl1: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqdbl1
 qdbl2: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqdbl2
@@ -774,26 +779,24 @@ bx32b: sbend, hgap = gb3b/2, e1 = ab3pb/2, fint = 0.4297, e2 = ab3pb/2, type = "
 
 ! SXR single beam dumper vertical kicker, BPM, spoiler and in-line dump
 
-lkiks = 1.0601 !kicker coil length per magnet (m) [41.737 in from SA-380-330-02, rev. 0]
-abykiks = 0  !=0.889371410732E-3 when BYKIKS1,2 are turned on
-  !!!Old convention: ABYKIKS := 1E-20  !=0.889371410732E-3 when BYKIKS1,2 are turned on
+abykiks = 0 !=0.889371410732E-3 when BYKIKS1,2 are turned on
 
-bykik1s1: sbend, e1 = abykiks/4, e2 = 0, fint = 0.5, fintx = 0, hgap = 25.4e-3, type =  &
-        "1.92K41.2", ref_tilt = pi/2, l = lkiks/2, angle = lkiks/2 * abykiks/4/(lkiks/2)
-bykik1s2: sbend, e1 = 0, e2 = abykiks/4, fint = 0, fintx = 0.5, hgap = 25.4e-3, type =  &
-        "1.92K41.2", ref_tilt = pi/2, l = lkiks/2, angle = lkiks/2 * abykiks/4/(lkiks/2)
+bykik1s1: sbend, e1 = abykiks/4, e2 = 0, fint = 0.5, fintx = 0, hgap = gkik, type = "1.92K41.2",  &
+        ref_tilt = pi/2, l = lkik/2, angle = lkik/2 * abykiks/4/(lkik/2)
+bykik1s2: sbend, e1 = 0, e2 = abykiks/4, fint = 0, fintx = 0.5, hgap = gkik, type = "1.92K41.2",  &
+        ref_tilt = pi/2, l = lkik/2, angle = lkik/2 * abykiks/4/(lkik/2)
 
-bykik2s1: sbend, e1 = abykiks/4, e2 = 0, fint = 0.5, fintx = 0, hgap = 25.4e-3, type =  &
-        "1.92K41.2", ref_tilt = pi/2, l = lkiks/2, angle = lkiks/2 * abykiks/4/(lkiks/2)
-bykik2s2: sbend, e1 = 0, e2 = abykiks/4, fint = 0, fintx = 0.5, hgap = 25.4e-3, type =  &
-        "1.92K41.2", ref_tilt = pi/2, l = lkiks/2, angle = lkiks/2 * abykiks/4/(lkiks/2)
+bykik2s1: sbend, e1 = abykiks/4, e2 = 0, fint = 0.5, fintx = 0, hgap = gkik, type = "1.92K41.2",  &
+        ref_tilt = pi/2, l = lkik/2, angle = lkik/2 * abykiks/4/(lkik/2)
+bykik2s2: sbend, e1 = 0, e2 = abykiks/4, fint = 0, fintx = 0.5, hgap = gkik, type = "1.92K41.2",  &
+        ref_tilt = pi/2, l = lkik/2, angle = lkik/2 * abykiks/4/(lkik/2)
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-bykik1s: sbend, hgap = 25.4e-3, e1 = abykiks/4, fint = 0.5, e2 = abykiks/4, type = "1.92K41.2",  &
-        ref_tilt = pi/2, l = lkiks, angle = lkiks * abykiks/2/lkiks
-bykik2s: sbend, hgap = 25.4e-3, e1 = abykiks/4, fint = 0.5, e2 = abykiks/4, type = "1.92K41.2",  &
-        ref_tilt = pi/2, l = lkiks, angle = lkiks * abykiks/2/lkiks
+bykik1s: sbend, hgap = gkik, e1 = abykiks/4, fint = 0.5, e2 = abykiks/4, type = "1.92K41.2",  &
+        ref_tilt = pi/2, l = lkik, angle = lkik * abykiks/2/lkik
+bykik2s: sbend, hgap = gkik, e1 = abykiks/4, fint = 0.5, e2 = abykiks/4, type = "1.92K41.2",  &
+        ref_tilt = pi/2, l = lkik, angle = lkik * abykiks/2/lkik
 
 bpmbyks: instrument, type = "Stripline-5"
 spoilers: instrument           !TDKIKS dump spoiler (1 mm Ti)
@@ -921,15 +924,15 @@ ldbyks = ldlcel/2-lqr !DL cell drift length
 
 dlmdw = 0
 
-dbyks01: drift, l = ddl10ba[l]      !QDL16 to CYDL16
-dbyks02: drift, l = ddl10bb[l]      !CYDL16 to BPMDL16
-dbyks03: drift, l = 1.145230        !BPMDL16 to BTM04B (DDL11BA[L]+0.299779)
-dbyks05: drift, l = 0.5893-lkiks/2  !(BYKIK1S to BYKIK2S)/2 (0.609226)
-dbyks06: drift, l = 4.360149        !BYKIK2S to XCDL17      (4.340223)
-dbyks07: drift, l = 0.634128        !XCDL17 to BPMDL17
-dbyks08: drift, l = 0.415873        !BPMDL17 to QDL17
-dbyks04: drift, l =  &       !BTM04B to BYKIK1S
-        ldbyks-dbyks01[l]-ljaw-dbyks02[l]-dbyks03[l]-lplate-2*(lkiks+dbyks05[l])-dbyks06[l]-dbyks07[l]-dbyks08[l]
+dbyks01: drift, l = ddl10ba[l]    !QDL16 to CYDL16
+dbyks02: drift, l = ddl10bb[l]    !CYDL16 to BPMDL16
+dbyks03: drift, l = 1.145230      !BPMDL16 to BTM04B (DDL11BA[L]+0.299779)
+dbyks05: drift, l = 0.5893-lkik/2 !(BYKIK1S to BYKIK2S)/2 (0.609226)
+dbyks06: drift, l = 4.360149      !BYKIK2S to XCDL17      (4.340223)
+dbyks07: drift, l = 0.634128      !XCDL17 to BPMDL17
+dbyks08: drift, l = 0.415873      !BPMDL17 to QDL17
+dbyks04: drift, l =  &     !BTM04B to BYKIK1S
+        ldbyks-dbyks01[l]-ljaw-dbyks02[l]-dbyks03[l]-lplate-2*(lkik+dbyks05[l])-dbyks06[l]-dbyks07[l]-dbyks08[l]
 
 dbyks11: drift, l = 0.51      !QDL17 to CEDL17
 dbyks12: drift, l = 0.735832  !CEDL17 to (removed) BTM05B
@@ -1140,8 +1143,8 @@ dl2sc: line = (dbmark34b, ddl20b, xcdl11, ddl6b, qdl11_full, ddl15ba, bpmdl11, d
 !=!  COMMENT !test line to find ABYKIKS angle for -14.2 mm offset at front face of TDKIKS
 !=!  COMMENT !test line to find ABYKIKS angle for -14.2 mm offset at front face of TDKIKS
 !=!ABYKIKS = 0.889371410732E-3
-!=!    KYKIK1S : VKIC, L=LKIKS/2, KICK=-ABYKIKS/4
-!=!    KYKIK2S : VKIC, L=LKIKS/2, KICK=-ABYKIKS/4
+!=!    KYKIK1S : VKIC, L=LKIK/2, KICK=-ABYKIKS/4
+!=!    KYKIK2S : VKIC, L=LKIK/2, KICK=-ABYKIKS/4
 !=!    KYKIK1S_full : LINE=(KYKIK1S,KYKIK1S)
 !=!    KYKIK2S_full : LINE=(KYKIK2S,KYKIK2S)
 !=!    TESTBYKIKS : LINE=(&
@@ -1309,13 +1312,14 @@ vbsysb: line = (dycvm1, dqvm1, drqvm1, drqvm1, dqvm2, drqvm2ba, pc08b, btm08b, d
 kqem1b = 1.994771712802
 kqem2b = -1.809226178089
 kqem3b = 1.263611884311
-kqem4b = -0.89171746406  !-0.891717464061
+kqem3vb = 0.0
+kqem4b = -0.89171746406
 
 qem1b: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqem1b
 qem2b: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqem2b
 qem3b: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqem3b
+qem3vb: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqem3vb
 qem4b: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqem4b
-qem3vb: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx
 
 kqed2b = 0.402753197988 !ED2 FODO quad strength
 
@@ -1350,6 +1354,10 @@ dem1bbb: drift, l = dem1b[l]-dem1bab[l]+(lqa-lqe)
 dem2b: drift, l = 0.50
 dmm3m80cm: drift, l = 11.27092
 dmm3m80cmx: drift, l = dmm3m80cm[l]+(lqa-lqe)
+
+dmm3m80cm1: drift, l = 5.677
+dmm3m80cm2: drift, l = dmm3m80cmx[l]-dmm3m80cm1[l]
+
 dmm3mab: drift, l = 4.425910+(lqa-lqe)/2
 dmm3mbb: drift, l = dmm3m80cm[l]-dmm3mab[l]+(lqa-lqe)
 dem3a: drift, l = 0.37
@@ -1451,68 +1459,101 @@ ycxl2: kicker, type = "class-4"
 xcxl2: kicker, type = "class-4"
 
 ! ------------------------------------------------------------------------------
-! recycled LCLS undulators
+! modified (recycled) LCLS undulators
 ! ------------------------------------------------------------------------------
 
-! definition of Eu is in LCLS2sc_master.xsif and LCLS2cu_master.xsif
+kund = 0          !undulator parameter (rms) [ ]
+lamu = 0.40       !undulator period [m]
+lseg = 3.400      !wiggler length [m]
+lue = 0.035      !wiggler termination length (approx) [m]
+lund = lseg-2*lue !wiggler length without terminations [m]
+lundh = lund/2     !wiggler half-length [m]
 
-gamxl = eu/mc2       !Lorentz energy factor [ ]
-kund = 50           !undulator parameter (rms) [ ]
-lamu = 0.40         !undulator period [m]
-lseg = 3.400        !undulator segment length [m]
-lue = 0.035        !undulator termination length (approx) [m]
-lund = lseg-2*lue !undulator segment length without terminations [m]
-lundh = lund/2       !undulator segment half-length [m]
+!=!  comment !special definition for Matlab model
+!=!  comment !special definition for Matlab model
+!=!    gamXL    := Eu/mc2
+!=!    kqund    := (Kund*2*pi/lamu/sqrt(2)/gamXL)^2
+!=!    ARGu     := Lundh*sqrt(kqund)
+!=!    ARGu2    := ARGu*ARGu
+!=!    ARGu4    := ARGu2*ARGu2
+!=!    ARGu6    := ARGu4*ARGu2
+!=!    SINCARGu := 1-ARGu2/6+ARGu4/120-ARGu6/5040 !~sinc(ARGu)=sin(ARGu)/ARGu
+!=!    R34u     := Lundh*SINCARGu
+!=!    UMXLh    : MATR, TYPE="LCLS-I", L=Lundh, &
+!=!      R11 = 1.0, &
+!=!      R12 = Lundh, &
+!=!      R21 = 0.0, &
+!=!      R22 = 1.0, &
+!=!      R33 = cos(Lundh*sqrt(kqund)), & !use this exact syntax!
+!=!      R34 = R34u, &
+!=!      R43 = -sin(Lundh*sqrt(kqund))*sqrt(kqund), &
+!=!      R44 = cos(Lundh*sqrt(kqund))
+!=!    UMXL1h : UMXLh
+!=!    UMXL2h : UMXLh
+!=!    UMXL3h : UMXLh
+!=!    UMXL4h : UMXLh
+!=!  endcomment
 
-! natural undulator focusing "k" in y-plane [m^-2]
+ !comment
 
-kqund = setxleap2*(kund*2*pi/lamu/sqrt(2)/gamxl)^2
+  ! half-wiggler modeled as an R-matrix which includes vertical focusing
+  ! and horizontal defocusing per Ago Martinelli (see wigXL2.m);
+  ! (see SUBROUTINE SETK2scXL2 in LCLS2sc_main.mad8)
 
-! handle K_und->0 (undulator moved out of beam) by expressing R34 as an
-! approximate SINC function
+  ! define XLEAP-II wigglers (as DRIFTs ... turn on with SETK2scXL2)
 
-argu = lundh*sqrt(kqund)
-argu2 = argu*argu
-argu4 = argu2*argu2
-argu6 = argu4*argu2
-sincargu = 1-argu2/6+argu4/120-argu6/5040 !~sinc(ARGu)=sin(ARGu)/ARGu
-r34u = lundh*sincargu
+r11xl1 = 1.0
+r12xl1 = lundh
+r21xl1 = 0.0
+r22xl1 = 1.0
+r33xl1 = 1.0
+r34xl1 = lundh
+r43xl1 = 0.0
+r44xl1 = 1.0
 
-! undulator segment modeled as R-matrix to include vertical natural focusing
-! over all but its edge terminations:
+umxl1h: taylor, type = "LCLS-I", l = lundh, {1: r11xl1, 1 0 0 0 0 0}, {1: r12xl1, 0 1 0 0 0 0}, { &
+        2: r21xl1, 1 0 0 0 0 0}, {2: r22xl1, 0 1 0 0 0 0}, {3: r33xl1, 0 0 1 0 0 0}, {3: r34xl1,  &
+        0 0 0 1 0 0}, {4: r43xl1, 0 0 1 0 0 0}, {4: r44xl1, 0 0 0 1 0 0}
 
-umxlh: taylor, type = "LCLS-I", l = lundh, {1: 1.0, 1 0 0 0 0 0}, {1: lundh, 0 1 0 0 0 0}, {2:  &
-        0.0, 1 0 0 0 0 0}, {2: 1.0, 0 1 0 0 0 0}, {3: cos(argu), 0 0 1 0 0 0}, {3: r34u,  &
-        0 0 0 1 0 0}, {4: -sin(argu)*sqrt(kqund), 0 0 1 0 0 0}, {4: cos(argu), 0 0 0 1 0 0}
+r11xl2 = 1.0
+r12xl2 = lundh
+r21xl2 = 0.0
+r22xl2 = 1.0
+r33xl2 = 1.0
+r34xl2 = lundh
+r43xl2 = 0.0
+r44xl2 = 1.0
 
-umxl1h: umxlh
-umxl2h: umxlh
-umxl3h: umxlh
-umxl4h: umxlh
+umxl2h: taylor, type = "LCLS-I", l = lundh, {1: r11xl2, 1 0 0 0 0 0}, {1: r12xl2, 0 1 0 0 0 0}, { &
+        2: r21xl2, 1 0 0 0 0 0}, {2: r22xl2, 0 1 0 0 0 0}, {3: r33xl2, 0 0 1 0 0 0}, {3: r34xl2,  &
+        0 0 0 1 0 0}, {4: r43xl2, 0 0 1 0 0 0}, {4: r44xl2, 0 0 0 1 0 0}
 
-shrt = 0.470                                 !standard short break length [m]
-lrfbu = 0                                     !undulator RF-BPM only implemented as zero length monitor
-lbr1 = 6.889e-2                              !und-seg to quad [m]
-lbr3 = 9.111e-2                              !quad to BPM [m]
-lbr4 = 5.8577e-2                             !radiation monitor to segment [m]
-lbrwm = 7.1683e-2                             !BFW to radiation monitor [m]
-lbrs = shrt-lrfbu-0.078-lbr1-lbr3-lbr4-lbrwm !standard short break length (BPM-to-quad distance) [m]
+r11xl3 = 1.0
+r12xl3 = lundh
+r21xl3 = 0.0
+r22xl3 = 1.0
+r33xl3 = 1.0
+r34xl3 = lundh
+r43xl3 = 0.0
+r44xl3 = 1.0
 
-dlbfw = 3.6016-3.63815 !BFW location adjustment per H. Loos
+umxl3h: taylor, type = "LCLS-I", l = lundh, {1: r11xl3, 1 0 0 0 0 0}, {1: r12xl3, 0 1 0 0 0 0}, { &
+        2: r21xl3, 1 0 0 0 0 0}, {2: r22xl3, 0 1 0 0 0 0}, {3: r33xl3, 0 0 1 0 0 0}, {3: r34xl3,  &
+        0 0 0 1 0 0}, {4: r43xl3, 0 0 1 0 0 0}, {4: r44xl3, 0 0 0 1 0 0}
 
-dbrs: drift, l = lbrs-dlbfw  !standard short undulator drift from BPM to segment
-dbwm: drift, l = lbrwm+dlbfw !BFW to radiation monitor drift
-db4: drift, l = lbr4        !radiation monitor to segment drift
-dt: drift, l = lue         !undulator segment small terminations modeled as drift
-duu: drift, l = 0.238/2     !undulator pair half-drift
+r11xl4 = 1.0
+r12xl4 = lundh
+r21xl4 = 0.0
+r22xl4 = 1.0
+r33xl4 = 1.0
+r34xl4 = lundh
+r43xl4 = 0.0
+r44xl4 = 1.0
 
-drfbxl: drift, l = lrfbu !RFBPMs associated with XLEAP-II undulators removed
-
-! flip RF BPMs
-
-drfbf = 0.61*in2m
-duuf: drift, l = duu[l]+drfbf
-dbrsf: drift, l = dbrs[l]-drfbf
+umxl4h: taylor, type = "LCLS-I", l = lundh, {1: r11xl4, 1 0 0 0 0 0}, {1: r12xl4, 0 1 0 0 0 0}, { &
+        2: r21xl4, 1 0 0 0 0 0}, {2: r22xl4, 0 1 0 0 0 0}, {3: r33xl4, 0 0 1 0 0 0}, {3: r34xl4,  &
+        0 0 0 1 0 0}, {4: r43xl4, 0 0 1 0 0 0}, {4: r44xl4, 0 0 0 1 0 0}
+ !endcomment
 
 
 
@@ -1539,24 +1580,35 @@ umxl3h[L] = 2*umxl3h[L]
 umxl4h_full: line = (umxl4h)
 umxl4h[L] = 2*umxl4h[L]
 
-xl2und1: line = (drfbxl, dbrsf, dbwm, db4, dt, umxl1h_full, dt)
-xl2und2: line = (drfbxl, dbrsf, dbwm, db4, dt, umxl2h_full, dt)
-xl2und3: line = (drfbxl, dbrsf, dbwm, db4, dt, umxl3h_full, dt)
-xl2und4: line = (drfbxl, dbrsf, dbwm, db4, dt, umxl4h_full, dt)
+! ------------------------------------------------------------------------------
+! new XLEAP-II quadrupoles (to mitigate focusing of wigglers)
+! ------------------------------------------------------------------------------
 
-lxl2und = 2*(drfbxl[l]+dbrs[l]+dbwm[l]+db4[l]+dt[l]+umxl1h[l]+umxl1h[l]+dt[l])+2*duu[l]
+kqfxl1 = 0
+kqfxl2 = 0
 
-! drifts around undulator pair
+qfxl1: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqfxl1
+qfxl2: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqfxl2
 
-lxl3132 = dqebx[l]+dcx31b[l]+dqebx2[l]+de3aba[l]
-dxlua: drift, l = (lxl3132-lxl2und)/2
-dxlub: drift, l = lxl3132-lxl2und-dxlua[l]
- !VALUE, DXLUa[L],DXLUb[L]
 
-dxlua1: drift, l = 0.404978
-dxlua2: drift, l = 0.395986
-dxlua3: drift, l = dxlua[l]-dxlua1[l]-dxlua2[l]
-dxlua3f: drift, l = dxlua3[l]+drfbf !flip RF BPM
+
+!Old split line: line = (qfxl1, qfxl1)
+
+qfxl1_full: line = (qfxl1)
+qfxl1[L] = 2*qfxl1[L]
+
+
+!Old split line: line = (qfxl2, qfxl2)
+
+qfxl2_full: line = (qfxl2)
+qfxl2[L] = 2*qfxl2[L]
+
+! wiggler pairs
+
+duqxl: drift, l = 0.2166
+
+umxlpair1: line = (umxl1h_full, duqxl, qfxl1_full, duqxl, umxl2h_full)
+umxlpair2: line = (umxl3h_full, duqxl, qfxl2_full, duqxl, umxl4h_full)
 
 ! ------------------------------------------------------------------------------
 ! original XLEAP self-seeding chicane (normally OFF)
@@ -1661,19 +1713,20 @@ bcxxl4_full: line = (bcxxl4)
 bcxlss: line = (bcxlssbeg, bcxxl1_full, dxlo, bcxxl2_full, dxli, bcxlssmid, dxli, bcxxl3_full,  &
         dxlo, bcxxl4_full, bcxlssend)
 
-! drifts around chicane and undulator pair
+! drifts around undulator pairs and chicane
 
-lxl3536 = dqebx[l]+dcx35b[l]+dqebx2[l]+de3[l]
-
+dxlua1: drift, l = 0.404978
+dxlua2: drift, l = 0.395986
+dumxl12u: drift, l = 0.566965333333
+dumxl12d: drift, l = 1.422304333333
 dxluc: drift, l = 3.5
-dxlud: drift, l = 1.0
-dxlue: drift, l = lxl3536-dxluc[l]-lbcxl-dxlud[l]-lxl2und
- !VALUE, DXLUc[L],DXLUd[L],DXLUe[L]
-
 dxlud1: drift, l = 0.323714
 dxlud2: drift, l = 0.393700
-dxlud3: drift, l = dxlud[l]-dxlud1[l]-dxlud2[l]
-dxlud3f: drift, l = dxlud3[l]+drfbf !flip RF BPM
+dumxl34u: drift, l = 0.549586
+dumxl34d: drift, l = 2.154753333333
+
+mxl2a: marker
+mxl2b: marker
 
 ! ------------------------------------------------------------------------------
 ! SXR emittance diagnostic beamline
@@ -1767,22 +1820,17 @@ bpme36b[superimpose] = T
 bpme36b[ref] = qe36b
 
 edmchb: line = (d25cmb, d25cmc, dmm1m90cmba, pc10b, btm10b, dmm1m90cmbb, xcem1b, dem1a,  &
-        qem1b_full, dem1bab, dem1bbb, qem2b_full, dem2b, ycem2b, dmm3m80cmx, xcem3b, dem3a,  &
-        qem3b_full, dem3bb, qem3vb_full, dmm4m90cmba, pc11b, btm11b, dmm4m90cmbb, ycem4b, dem4a,  &
-        qem4b_full, drfb, rfbem4b, dmm5ab, dmm5bb)
+        qem1b_full, dem1bab, dem1bbb, qem2b_full, dem2b, ycem2b, dmm3m80cm1, dmm3m80cm2, xcem3b,  &
+        dem3a, qem3b_full, dem3bb, qem3vb_full, dmm4m90cmba, pc11b, btm11b, dmm4m90cmbb, ycem4b,  &
+        dem4a, qem4b_full, drfb, rfbem4b, dmm5ab, dmm5bb)
 
- !XLEAP2a : LINE=(DQEBx,DCX31B,DQEBx2,DE3aBa)
-xleap2a: line = (dxlua1, ycxl1, dxlua2, xcxl1, dxlua3f, xl2und1, duu, duuf, xl2und2, dxlub)
-
- !XLEAP2b : LINE=(DQEBx,DCX35B,DQEBx2,DE3)
-xleap2b: line = (dxluc, bcxlss, dxlud1, ycxl2, dxlud2, xcxl2, dxlud3f, xl2und3, duu, duuf,  &
-        xl2und4, dxlue)
-
-edsysb: line = (dbmark36b, ws31b, d40cm, de3mab, de3mbb, xce31b, dqea, qe31b_full, xleap2a,  &
-        dxl2btm, pc12b, btm12b, dbtm2yc, yce32b, dqeaa, qe32b_full, drfb, rfbe32b, dqeby1, dcy32b &
-        , dqeby2, ws32b, d40cm, de3m80cmb, xce33b, dqeab, qe33b_full, dqec, de3m40cm, yce34b,  &
-        dqea, qe34b_full, drfb, rfbe34b, dqec1, ws33b, d40cm, de3m80cm, xce35b, dqeac, qe35b_full &
-        , xleap2b, yce36b, dqea, qe36b_full, drfb, rfbe36b, dqeby1, dcy36b, dqeby2, ws34b, d40cm)
+edsysb: line = (dbmark36b, ws31b, d40cm, de3mab, de3mbb, xce31b, dqea, qe31b_full, dxlua1, ycxl1 &
+        , dxlua2, xcxl1, dumxl12u, umxlpair1, mxl2a, dumxl12d, pc12b, btm12b, dbtm2yc, yce32b,  &
+        dqeaa, qe32b_full, drfb, rfbe32b, dqeby1, dcy32b, dqeby2, ws32b, d40cm, de3m80cmb, xce33b &
+        , dqeab, qe33b_full, dqec, de3m40cm, yce34b, dqea, qe34b_full, drfb, rfbe34b, dqec1,  &
+        ws33b, d40cm, de3m80cm, xce35b, dqeac, qe35b_full, dxluc, bcxlss, dxlud1, ycxl2, dxlud2,  &
+        xcxl2, dumxl34u, mxl2b, umxlpair2, dumxl34d, yce36b, dqea, qe36b_full, drfb, rfbe36b,  &
+        dqeby1, dcy36b, dqeby2, ws34b, d40cm)
 
 ecellb: line = (qe31b, dqec, dqec, qe32b, qe32b, dqec, dqec, qe31b)
 
@@ -2338,11 +2386,11 @@ cc36: line = (cc36beg, bcx361_full, dcc36o, bcx362_full, dcc36i, bcx363_full, dc
 ! note: the K-values below are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-kq50q3 = 0.434154040462
-kq4 = -0.217498744833
-kq5 = 0.110634649191
-kq6 = -0.107282100403
-kqa0 = 0.096403505318
+kq50q3 = 0.428856890325
+kq4 = -0.215847143445
+kq5 = 0.109793287928
+kq6 = -0.106129975211
+kqa0 = 0.096166562709
 
 q50q3: quadrupole, type = "50Q3", l = 0.143254, aperture = 0.010325, k1 = kq50q3
 q4: quadrupole, type = "0.91Q17.72", l = lqf/2, aperture = rqf, k1 = kq4
@@ -2487,10 +2535,10 @@ sphbsy: line = (sphbsya, sphbsyb, endsph)
 ! BSY1 upstream of the HXR merge bend
 ! ------------------------------------------------------------------------------
 
-kq30701 = -0.396231020082 !-0.395649272846
-kq30801 = 0.480592172677 ! 0.480537684959
-kq50q1 = -0.231522298208 !-0.231937689242
-kq50q2 = 0.10207433021  ! 0.102502945834
+kq30701 = -0.39623102008
+kq30801 = 0.480592172677
+kq50q1 = -0.231522298209
+kq50q2 = 0.102074330212
 
 q50q1: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kq50q1
 q50q2: quadrupole, type = "50Q2", l = 0.162151, aperture = 0.010325, k1 = kq50q2
@@ -2583,10 +2631,10 @@ s100sxr: line = (s100sxra, s100sxrb)
 ! HXR VBEND
 ! ------------------------------------------------------------------------------
 
-kqvm1 = -0.33743727324
-kqvm2 = 0.236577259388
-kqvm3 = 0.715150825178
-kqvm4 = -0.681650171008
+kqvm1 = -0.337437273245
+kqvm2 = 0.236577259392
+kqvm3 = 0.715150825176
+kqvm4 = -0.681650171006
 
 qvm1: quadrupole, type = "0.91Q17.72", l = lqf/2, aperture = rqf, k1 = kqvm1
 qvm2: quadrupole, type = "0.91Q17.72", l = lqf/2, aperture = rqf, k1 = kqvm2
@@ -2800,24 +2848,22 @@ bx36: sbend, hgap = gb3/2, e1 = ab3m/2, fint = fb3, e2 = ab3m/2, type = "0.68D10
 
 ! single beam dumper vertical kicker (existing, restored)
 
-lkik = 1.0601 !kicker coil length per magnet (m) [41.737 in from SA-380-330-02, rev. 0]
-!!!  ABYKIK := 0.75E-3 *1E-12 !full angle =0.75E-3 when BYKIK1,2 are turned on
-abykik = 0
+abykik = 0 !full angle (BYKIK1+BYKIK2) = 0.75E-3 when BYKIK1,2 are turned on
 
-bykik11: sbend, hgap = 25.4e-3, e1 = abykik/4, e2 = 0, fint = 0.5, fintx = 0, type = "1.92K41.2" &
-        , ref_tilt = pi/2, l = lkik/2, angle = lkik/2 * abykik/4/(lkik/2)
-bykik12: sbend, hgap = 25.4e-3, e1 = 0, e2 = abykik/4, fint = 0, fintx = 0.5, type = "1.92K41.2" &
-        , ref_tilt = pi/2, l = lkik/2, angle = lkik/2 * abykik/4/(lkik/2)
-bykik21: sbend, hgap = 25.4e-3, e1 = abykik/4, e2 = 0, fint = 0.5, fintx = 0, type = "1.92K41.2" &
-        , ref_tilt = pi/2, l = lkik/2, angle = lkik/2 * abykik/4/(lkik/2)
-bykik22: sbend, hgap = 25.4e-3, e1 = 0, e2 = abykik/4, fint = 0, fintx = 0.5, type = "1.92K41.2" &
-        , ref_tilt = pi/2, l = lkik/2, angle = lkik/2 * abykik/4/(lkik/2)
+bykik11: sbend, hgap = gkik, e1 = abykik/4, e2 = 0, fint = 0.5, fintx = 0, type = "1.92K41.2",  &
+        ref_tilt = pi/2, l = lkik/2, angle = lkik/2 * abykik/4/(lkik/2)
+bykik12: sbend, hgap = gkik, e1 = 0, e2 = abykik/4, fint = 0, fintx = 0.5, type = "1.92K41.2",  &
+        ref_tilt = pi/2, l = lkik/2, angle = lkik/2 * abykik/4/(lkik/2)
+bykik21: sbend, hgap = gkik, e1 = abykik/4, e2 = 0, fint = 0.5, fintx = 0, type = "1.92K41.2",  &
+        ref_tilt = pi/2, l = lkik/2, angle = lkik/2 * abykik/4/(lkik/2)
+bykik22: sbend, hgap = gkik, e1 = 0, e2 = abykik/4, fint = 0, fintx = 0.5, type = "1.92K41.2",  &
+        ref_tilt = pi/2, l = lkik/2, angle = lkik/2 * abykik/4/(lkik/2)
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-bykik1: sbend, hgap = 25.4e-3, e1 = abykik/4, fint = 0.5, e2 = abykik/4, type = "1.92K41.2",  &
+bykik1: sbend, hgap = gkik, e1 = abykik/4, fint = 0.5, e2 = abykik/4, type = "1.92K41.2",  &
         ref_tilt = pi/2, l = lkik, angle = lkik * abykik/2/lkik
-bykik2: sbend, hgap = 25.4e-3, e1 = abykik/4, fint = 0.5, e2 = abykik/4, type = "1.92K41.2",  &
+bykik2: sbend, hgap = gkik, e1 = abykik/4, fint = 0.5, e2 = abykik/4, type = "1.92K41.2",  &
         ref_tilt = pi/2, l = lkik, angle = lkik * abykik/2/lkik
 
  !DBYKIK1 : DRIF, L=LKIK
@@ -3018,8 +3064,7 @@ dbmark34: marker !entrance of BX31
 ! based on FACET optics model (M. Woodley)
 ! (series approximation for sinc(x)=sin(x)/x to enable setting with x=0)
 
-!!!  BWGh  := 1.E-12                  !wiggler bend field (kG)
-bwgh = 0
+bwgh = 0                       !wiggler bend field (kG)
 awgh = asin(bwgh*zwhp/(ef*cb)) !bend angle per half-pole
 awgh2 = awgh*awgh
 awgh4 = awgh2*awgh2
@@ -3266,10 +3311,10 @@ doglg2b: line = (dl23, trip3, ss3, dl24, trip4)
 ! HXR emittance diagnostic
 ! ------------------------------------------------------------------------------
 
-kqem1 = -0.387075869093 !-0.386250956878
-kqem2 = 0.429991896597 ! 0.429466776058
-kqem3 = -0.595826812909 !-0.596168395282
-kqem4 = 0.419884551845 ! 0.419766074433
+kqem1 = -0.390827735953
+kqem2 = 0.432215708114
+kqem3 = -0.593433950486
+kqem4 = 0.420485259237
 
 qem1: quadrupole, type = "1.26Q12", l = lqa/2, aperture = rqa, k1 = kqem1
 qem2: quadrupole, type = "1.26Q12", l = lqa/2, aperture = rqa, k1 = kqem2
@@ -3462,20 +3507,33 @@ edsys: line = (dbmark36, ws31, d40cm, de3ma, pc09, btm09, de3mb, xce31, dqea, qe
         dqebx, dcx35, dqebx2, de3, yce36, dqea, qe36_full, drfb, rfbe36, dqeby1, dcy36, dqeby2,  &
         ws34, d40cmg, dws35, d40cmh)
 
+edcel: line = (ws31, d40cm, de3ma, pc09, btm09, de3mb, xce31, dqea, qe31_full, dqebx, dcx31,  &
+        dqebx2, de3a, yce32, dqeaa, qe32_full, drfb, rfbe32, dqeby1, dcy32, dqeby2, ws32, d40cm,  &
+        de3m80cmb, xce33, dqeab, qe33_full, dqeca, yagpsi, dqecb, otr33, de3m40cm, yce34, dqea,  &
+        qe34_full, drfb, rfbe34, dqec1, ws33, d40cm, de3m80cm, xce35, dqeac, qe35_full, dqebx,  &
+        dcx35, dqebx2, de3, yce36, dqea, qe36_full, drfb, rfbe36, dqeby1, dcy36, dqeby2, ws34)
+
 ! ------------------------------------------------------------------------------
 ! HXR undulator match
 ! ------------------------------------------------------------------------------
 
-! note: the below K-values come from Y. Nosochkov's UNDH_KQ4_USDS.xsif file,
-!       for E= 4.0 GeV and KHXU= 2.0 (IntgHX= 30.0 kG)
-
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 !       in the "LCLS2cu_main.mad8" file
 
-kqum1 = 0.21295276718
-kqum2 = -0.256692261825
-kqum3 = 0.472597881562
-kqum4 = -0.42682658336
+! note: the below K-values come from Y. Nosochkov's UNDH_KQ4_USDS.xsif file,
+!       for E= 4.0 GeV and KHXU= 2.0 (IntgHX= 30.0 kG)
+
+ !KQUM1 :=  0.21295276718  !UNDH_KQ4_USDS.xsif (Eu=4.0, KHXU=2.0)
+ !KQUM2 := -0.256692261825 !UNDH_KQ4_USDS.xsif (Eu=4.0, KHXU=2.0)
+ !KQUM3 :=  0.472597881562 !UNDH_KQ4_USDS.xsif (Eu=4.0, KHXU=2.0)
+ !KQUM4 := -0.42682658336  !UNDH_KQ4_USDS.xsif (Eu=4.0, KHXU=2.0)
+
+! note: KQUM1-4 have been rematched (missing undulators in HXR)
+
+kqum1 = 0.208051169964 !Eu=4.0, KHXU=2.0
+kqum2 = -0.236961462677 !Eu=4.0, KHXU=2.0
+kqum3 = 0.453511862115 !Eu=4.0, KHXU=2.0
+kqum4 = -0.421214435967 !Eu=4.0, KHXU=2.0
 
 qum1: quadrupole, type = "1.26Q12", l = lqa/2, aperture = rqa, k1 = kqum1
 qum2: quadrupole, type = "1.26Q12", l = lqa/2, aperture = rqa, k1 = kqum2
@@ -3568,6 +3626,9 @@ unmch: line = (du1m80cma, dws36, du1m80cmb, dcx37, d32cmc, xcum1, dum1a, qum1_fu
 preundh: line = (dmuon3, rfbhx12, dmuon4, mm3, pfilt1, dbmark37)
 
 ltu: line = (vbsys, mm1, doglg2a, doglg2b, mm2, edmch, edsys, unmch, rwwake4h, endltuh, begundh,  &
+        preundh)
+
+ltum: line = (mm1, doglg2a, doglg2b, mm2, edmch, edsys, unmch, rwwake4h, endltuh, begundh,  &
         preundh)
 
 ! ------------------------------------------------------------------------------
@@ -3683,6 +3744,21 @@ dumpline: line = (begdmph_2, rodmp1h, bydsh_full, ds1, byd1_full, ds, byd2_full,
         , qdmp1_full, dd12a, bpmqd, dd12b, mqdmp, dd12c, qdmp2_full, dd2a, xcdd, dd2b, dd2c, dd3a &
         , bpmdd, dd3b, otrdmp, dwsdumpa, rfbdd, dwsdumpb, wsdump, dwsdumpc, rodmp2h, dumpface,  &
         ddump, dmpend, btmdump, dbmark38, enddmph_2)
+
+! ------------------------------------------------------------------------------
+
+! for matching phase advance between XLEAP-II wiggler pairs
+
+edsysb_xl2: line = (dbmark36b, ws31b, d40cm, de3mab, de3mbb, xce31b, dqea, qe31b_full, dxlua1,  &
+        ycxl1, dxlua2, xcxl1, dumxl12u, umxl1h, umxl1h, duqxl, qfxl1, qfxl1, duqxl, umxl2h,  &
+        umxl2h, mxl2a, dumxl12d, pc12b, btm12b, dbtm2yc, yce32b, dqeaa, qe32b_full, drfb, rfbe32b &
+        , dqeby1, dcy32b, dqeby2, ws32b, d40cm, de3m80cmb, xce33b, dqeab, qe33b_full, dqec,  &
+        de3m40cm, yce34b, dqea, qe32b_full, drfb, rfbe34b, dqec1, ws33b, d40cm, de3m80cm, xce35b &
+        , dqeac, qe33b_full, dxluc, bcxlss, dxlud1, ycxl2, dxlud2, xcxl2, dumxl34u, mxl2b, umxl3h &
+        , umxl3h, duqxl, qfxl2, qfxl2, duqxl, umxl4h, umxl4h, dumxl34d, yce36b, dqea, qe36b_full &
+        , drfb, rfbe36b, dqeby1, dcy36b, dqeby2, ws34b, d40cm)
+
+ltusc_xl2: line = (mm1b, dl2sc, vbsysb, mm2b, edmchb, edsysb_xl2, unmchb)
 
 ! ------------------------------------------------------------------------------
 

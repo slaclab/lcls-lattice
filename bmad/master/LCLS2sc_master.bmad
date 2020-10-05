@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-01APR20 ***
+! *** OPTICS=AD_ACCEL-05OCT20 ***
 
 ! ------------------------------------------------------------------------------
 ! constants and global parameters
@@ -167,10 +167,10 @@ ayeds = 1.084608326468
 
 ! match into HXR LTU emittance diagnostic section
 
-bxedh = 46.347592421655
-axedh = -1.088004889273
-byedh = 46.098656017174
-ayedh = 1.08081945287
+bxedh = 46.225914290403
+axedh = -1.084608326581
+byedh = 46.225914290403
+ayedh = 1.084608326581
 
 ! initial Twiss for SXR dogleg
 
@@ -179,12 +179,21 @@ malfxs = -0.28404741292
 mbetys = 47.120432391261
 malfys = 2.555848494222
 
-! periodic Twiss in HXR dogleg cells
+! periodic Twiss in HXR dogleg cells (@ MM1)
 
 mbetxh = 48.911502413792
 malfxh = 3.141736059434
 mbetyh = 92.803659415654
 malfyh = 3.519158552438
+
+! Twiss at start of HXR cell #24
+! (full complement of undulators; Yuri match; TWISS, COUPLE, BETA0=TWSSmh)
+
+enhxrm = 4.0
+bxhxrm = 12.974739845251
+axhxrm = 1.498073135623
+byhxrm = 6.123426356819
+ayhxrm = -0.747453073035
 
 ! ------------------------------------------------------------------------------
 ! load lattice definitions
@@ -203,8 +212,8 @@ call, filename = "CUSXR.bmad"
 call, filename = "ALINE.bmad"
 call, filename = "BYP.bmad"
 call, filename = "LTU.bmad"
-call, filename = "UND.bmad"
- !CALL, FILENAME="UND0.xsif"
+call, filename = "UND.bmad"  !startup configuration
+ !CALL, FILENAME="UND0.xsif" !final configuration
 call, filename = "SFT.bmad"
 call, filename = "SXTES.bmad"
 call, filename = "DASEL.bmad"

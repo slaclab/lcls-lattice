@@ -1,29 +1,31 @@
 
-! *** OPTICS=AD_ACCEL-01APR20 ***
+! *** OPTICS=AD_ACCEL-05OCT20 ***
 
 ! LCLS-style quadrupole (shorter effective length)
 
 lqut = 0.078 !LCLS undulator quadrupole effective length [m]
 
-intghx13 = 29.673579533188
-intghx14 = -31.079320404825
-intghx15 = 28.660549048536
-intghx16 = -28.846589136205
-intghx17 = 29.438380624827
-intghx18 = -27.936601652186
-intghx19 = 28.461216069912
-intghx20 = -30.111620004728
-intghx22 = -29.632718941697
-intghx23 = 30.92878037616
+intghx13 = 27.0
+intghx14 = -30.0
+intghx15 = 30.0
+intghx16 = -30.0
+intghx17 = 30.0
+! --------
+intghx19 = 30.0
+intghx20 = -30.0
+! --------
+intghx22 = -30.0
+intghx23 = 30.0
 
 kqhxh13 = intghx13/lqut/brhou
 kqhxh14 = intghx14/lqut/brhou
 kqhxh15 = intghx15/lqut/brhou
 kqhxh16 = intghx16/lqut/brhou
 kqhxh17 = intghx17/lqut/brhou
-kqhxh18 = intghx18/lqut/brhou
+! -------
 kqhxh19 = intghx19/lqut/brhou
 kqhxh20 = intghx20/lqut/brhou
+! -------
 kqhxh22 = intghx22/lqut/brhou
 kqhxh23 = intghx23/lqut/brhou
 
@@ -32,9 +34,10 @@ qhxh14: quadrupole, type = "QUND", l = lqut/2, k1 = kqhxh14 !QU02
 qhxh15: quadrupole, type = "QUND", l = lqut/2, k1 = kqhxh15 !QU03
 qhxh16: quadrupole, type = "QUND", l = lqut/2, k1 = kqhxh16 !QU04
 qhxh17: quadrupole, type = "QUND", l = lqut/2, k1 = kqhxh17 !QU05
-qhxh18: quadrupole, type = "QUND", l = lqut/2, k1 = kqhxh18 !QU06
+! ------
 qhxh19: quadrupole, type = "QUND", l = lqut/2, k1 = kqhxh19 !QU07
 qhxh20: quadrupole, type = "QUND", l = lqut/2, k1 = kqhxh20 !QU08
+! ------
 qhxh22: quadrupole, type = "QUND", l = lqut/2, k1 = kqhxh22 !QU10
 qhxh23: quadrupole, type = "QUND", l = lqut/2, k1 = kqhxh23 !QU11
 
@@ -45,9 +48,10 @@ rfbhx14: instrument, l = lrfbut, type = "01_um_res" !RFBU02
 rfbhx15: instrument, l = lrfbut, type = "01_um_res" !RFBU03
 rfbhx16: instrument, l = lrfbut, type = "01_um_res" !RFBU04
 rfbhx17: instrument, l = lrfbut, type = "01_um_res" !RFBU05
-rfbhx18: instrument, l = lrfbut, type = "01_um_res" !RFBU06
+! -------
 rfbhx19: instrument, l = lrfbut, type = "01_um_res" !RFBU07
 rfbhx20: instrument, l = lrfbut, type = "01_um_res" !RFBU08
+! -------
 rfbhx22: instrument, l = lrfbut, type = "01_um_res" !RFBU10
 rfbhx23: instrument, l = lrfbut, type = "01_um_res" !RFBU11
 
@@ -58,9 +62,10 @@ bfw02: marker
 bfw03: marker
 bfw04: marker
 bfw05: marker
-bfw06: marker
+! -----
 bfw07: marker
 bfw08: marker
+! -----
 bfw10: marker
 bfw11: marker
 
@@ -78,9 +83,10 @@ ustbk02: line = (dtt, dusegh, dusegh, dtt)
 ustbk03: line = (dtt, dusegh, dusegh, dtt)
 ustbk04: line = (dtt, dusegh, dusegh, dtt)
 ustbk05: line = (dtt, dusegh, dusegh, dtt)
-ustbk06: line = (dtt, dusegh, dusegh, dtt)
+! -------
 ustbk07: line = (dtt, dusegh, dusegh, dtt)
 ustbk08: line = (dtt, dusegh, dusegh, dtt)
+! -------
 ustbk10: line = (dtt, dusegh, dusegh, dtt)
 ustbk11: line = (dtt, dusegh, dusegh, dtt)
 
@@ -144,18 +150,7 @@ muqh[superimpose] = T
 muqh[ref] = qhxh17
 ychx17[superimpose] = T
 ychx17[ref] = qhxh17
-
-
-!Old split line: line = (qhxh18, xchx18, muqh, ychx18, qhxh18)
-
-qhxh18_full: line = (qhxh18)
-qhxh18[L] = 2*qhxh18[L]
-xchx18[superimpose] = T
-xchx18[ref] = qhxh18
-muqh[superimpose] = T
-muqh[ref] = qhxh18
-ychx18[superimpose] = T
-ychx18[ref] = qhxh18
+! -----------
 
 
 !Old split line: line = (qhxh19, xchx19, muqh, ychx19, qhxh19)
@@ -180,6 +175,7 @@ muqh[superimpose] = T
 muqh[ref] = qhxh20
 ychx20[superimpose] = T
 ychx20[ref] = qhxh20
+! -----------
 
 
 !Old split line: line = (qhxh22, xchx22, muqh, ychx22, qhxh22)
@@ -210,32 +206,30 @@ gird02: line = (bfw02, dbwmt, db4t, ustbk02, db1, qhxh14_full, db3, rfbhx14) !ce
 gird03: line = (bfw03, dbwmt, db4t, ustbk03, db1, qhxh15_full, db3, rfbhx15) !cell 15: LCLS-style, no undulator
 gird04: line = (bfw04, dbwmt, db4t, ustbk04, db1, qhxh16_full, db3, rfbhx16) !cell 16: LCLS-style, no undulator
 gird05: line = (bfw05, dbwmt, db4t, ustbk05, db1, qhxh17_full, db3, rfbhx17) !cell 17: LCLS-style, no undulator
-gird06: line = (bfw06, dbwmt, db4t, ustbk06, db1, qhxh18_full, db3, rfbhx18) !cell 18: LCLS-style, no undulator
+! ------
 gird07: line = (bfw07, dbwmt, db4t, ustbk07, db1, qhxh19_full, db3, rfbhx19) !cell 19: LCLS-style, no undulator
 gird08: line = (bfw08, dbwmt, db4t, ustbk08, db1, qhxh20_full, db3, rfbhx20) !cell 20: LCLS-style, no undulator
+! ------
 gird10: line = (bfw10, dbwmt, db4t, ustbk10, db1, qhxh22_full, db3, rfbhx22) !cell 22: LCLS-style, no undulator
 gird11: line = (bfw11, dbwmt, db4t, ustbk11, db1, qhxh23_full, db3, rfbhx23) !cell 23: LCLS-style, no undulator
 
-zbsyg01 = 515.2655814 !start of LCLS GIRD01
-zbsyg08 = 546.9432914 !end of LCLS GIRD08
-zbsyg10 = 551.3795814 !start of LCLS GIRD10
-zbsyg11 = 558.9812914 !end of LCLS GIRD11
+zbsyg01 = 5.152655814e+02 !start of LCLS GIRD01
+zbsyg05 = 5.349052914e+02 !end of LCLS GIRD05
+zbsyg07 = 5.393415814e+02 !start of LCLS GIRD07
+zbsyg08 = 5.469432914e+02 !end of LCLS GIRD08
+zbsyg10 = 5.513795814e+02 !start of LCLS GIRD10
+zbsyg11 = 5.589812914e+02 !end of LCLS GIRD11
 
-zbsyc13 = 515.0949847 !start of LCLS-II cell 13
-zbsyc20 = 547.1963181 !end of LCLS-II cell 20
-zbsyc22 = 551.2089847 !start of LCLS-II cell 22
-zbsyc23 = 559.2343181 !end of LCLS-II cell 23
+zbsyc13 = 5.150949847e+02 !start of LCLS-II cell 13
+zbsyc17 = 5.351583181e+02 !end of LCLS-II cell 17
+zbsyc19 = 5.391709847e+02 !start of LCLS-II cell 19
+zbsyc20 = 5.471963181e+02 !end of LCLS-II cell 20
+zbsyc22 = 5.512089847e+02 !start of LCLS-II cell 22
+zbsyc23 = 5.592343181e+02 !end of LCLS-II cell 23
 
 dgird01u: drift, l = zbsyg01-zbsyc13
+dgird05d: drift, l = zbsyc17-zbsyg05
+dgird07u: drift, l = zbsyg07-zbsyc19 !-0.1E-06
 dgird08d: drift, l = zbsyc20-zbsyg08
-dgird10u: drift, l = zbsyg10-zbsyc22-0.1e-06
+dgird10u: drift, l = zbsyg10-zbsyc22 !-0.1E-06
 dgird11d: drift, l = zbsyc23-zbsyg11
-
-! replaces HXR cells 13-20
-
-undcla: line = (dgird01u, gird01, dbrst, gird02, dbrst, gird03, dbrl, gird04, dbrst, gird05,  &
-        dbrst, gird06, dbrl, gird07, dbrst, gird08, dgird08d)
-
-! replaces HXR cells 22-23
-
-undclb: line = (dgird10u, gird10, dbrst, gird11, dgird11d)

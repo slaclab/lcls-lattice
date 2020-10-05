@@ -1,12 +1,15 @@
 
-! *** OPTICS=AD_ACCEL-01APR20 ***
+! *** OPTICS=AD_ACCEL-05OCT20 ***
 
 ! LCLS2cu various parts upstream of BSY
 
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
-! 26-JAL-2019, M. Woodley
+! 31-AUG-2020, M. Woodley
+!  * set TYPE="type-4al" for YC21174, XC21175, XC21302, and YC21303
+! ------------------------------------------------------------------------------
+! 26-JUL-2019, M. Woodley
 !  * set L1 and L2 phases, and L1 X-band amplitude, per Y. Ding
 ! ------------------------------------------------------------------------------
 ! 30-JAN-2019, M. Woodley
@@ -153,13 +156,14 @@ flngb2: marker !downstream face of L0b exit flange
 tcav0: lcavity, type = "TRANS_DEFL", l = 0.6680236/2 !flange-to-flange (then split in two)
 tcav3: lcavity, type = "TRANS_DEFL", l = 2.438/2
 
- !LKIK   := 1.0601              ! kicker coil length per magnet (m) [41.737 in from SA-380-330-02, rev. 0]
-bxkika: sbend, hgap = 25.4e-3, e1 = 0, fint = 0.5, fintx = 0, type = "XPULSED", l = lkik/2
-bxkikb: sbend, hgap = 25.4e-3, fint = 0, e2 = 2e-12, fintx = 0.5, type = "XPULSED", l = lkik/2
+! decommissioned kicker magnet
+
+bxkika: sbend, hgap = gkik, type = "1.92K41.2", l = lkik/2
+bxkikb: sbend, hgap = gkik, type = "1.92K41.2", l = lkik/2
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-bxkik: sbend, hgap = 25.4e-3, e1 = 0, fint = 0.5, e2 = 0, type = "XPULSED", l = lkik
+bxkik: sbend, hgap = gkik, type = "1.92K41.2", l = lkik
 
 ! ==============================================================================
 ! BENDs
@@ -203,8 +207,8 @@ bxg: sbend, hgap = gbxg/2, e1 = ebxg, fint = 0.492, e2 = ebxg, type = "BXG", l =
         lbxg * abxg/lbxg
 
 dxg0: drift, l = rbxg*sin(abxg/2)  !drift, w/BXG off, from BXG entrance face to its z-projected center
-dxga: sbend, l = 1e-9/2 !1st-half of gun-spec bend (set to ~zero length and strength, with longitudinal position as bend's center)
-dxgb: sbend, l = 1e-9/2 !2nd-half of gun-spec bend (set to ~zero length and strength, with longitudinal position as bend's center)
+ !DXGA : SBEN, L=1E-9/2, ANGLE=0/2 !1st-half of gun-spec bend (set to ~zero length and strength, with longitudinal position as bend's center)
+ !DXGB : SBEN, L=1E-9/2, ANGLE=0/2 !2nd-half of gun-spec bend (set to ~zero length and strength, with longitudinal position as bend's center)
 
 dbxg: drift, l = 0.132618358755-1e-9 !replaces DXG0/DXGA/DXGB
 
@@ -838,8 +842,8 @@ dl02c: drift, l = 0.121498-lqx/2-0.001610
 
 ! Heater-Chicane:
 
-! LSRHTR_ON := 1E-12           !set to 1E-12 for laser heater bends & undulator OFF and 1.0 for ON (nominal)
-lsrhtr_on = 1               !set to 1E-12 for laser heater bends & undulator OFF and 1.0 for ON (nominal)
+lsrhtr_on = 1 !set to 0 for laser heater bends & undulator OFF and 1 for ON (nominal)
+
 abh1 = -0.131709391614*lsrhtr_on !heater-chicane bend angle (rad)
 bbh1 = brhoi*sin(abh1)/lbh !heater-chicane bend field for 35-mm etaX_pk (kG) (-4.75393301417)
 rbh1 = brhoi/bbh1          !heater-chicane bend radius (m)
@@ -1295,8 +1299,8 @@ xc10: kicker, type = "class-1a"
 xc21101: kicker, type = "class-1s"
 xc21135: kicker, type = "class-1s"
 xc21165: kicker, type = "class-1s" !calibrated to <1%
-xc21175: kicker, type = "type-4"   !pulled off structure and replaced on beamline?
-xc21302: kicker, type = "type-4"   !pulled off structure and replaced on beamline?
+xc21175: kicker, type = "type-4al"
+xc21302: kicker, type = "type-4al"
 xc21191: kicker, type = "class-1x"
 xc21275: kicker, type = "class-1a"
 xc21325: kicker, type = "class-1a"
@@ -1338,8 +1342,8 @@ yc10: kicker, type = "class-1a"
 yc21102: kicker, type = "class-1s"
 yc21136: kicker, type = "class-1s" !calibrated to <1%
 yc21166: kicker, type = "class-1s"
-yc21174: kicker, type = "type-4"
-yc21303: kicker, type = "type-4"   !pulled off structure and replaced on beamline?
+yc21174: kicker, type = "type-4al"
+yc21303: kicker, type = "type-4al"
 yc21192: kicker, type = "class-1x"
 yc21276: kicker, type = "class-1a"
 yc21325: kicker, type = "class-1a"
