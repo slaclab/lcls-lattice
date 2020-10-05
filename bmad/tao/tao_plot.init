@@ -139,10 +139,10 @@ plot_page%size = 800, 400
    
 !&element_shapes_floor_plan
 &floor_plan_drawing
-  ele_shape(1) = "Quadrupole::F*"   	"Box"		"Blue"	13		'none'  ! 13 cm radius FFAG Quads
-  ele_shape(2) = "SBend::IN.MERGE*"		"Box"		"Red"		15.5		'none'
+  ele_shape(1) = "Quadrupole::*"   	"Box"		"Blue"	20	'none'
+  ele_shape(2) = "SBend::*"		"Box"		"Red"		30		'none'
   ele_shape(3) = "lcavity::*"		"XBox"		"Green"		20		'none'
-  ele_shape(4) = "wiggler::*"		"XBox"		"Orange"	10		'none'
+  ele_shape(4) = "wiggler::*"		"XBox"		"Orange"	40		'none'
   ele_shape(5) = "Sextupole::*"		"Box"	"orange"	4		'none'
   ele_shape(6) = "ECOLLIMATOR::*"	"Xbox"		"Black"		10		'none'
   ele_shape(7) = "hkicker::*"		"XBox"		"Red"		5		'none'
@@ -156,12 +156,7 @@ plot_page%size = 800, 400
   ele_shape(15) = "rfcavity::*"	    	"XBox"		"Red"		10		'none'
   ele_shape(16) = "E_GUN::*"	    	"XBox"		"Black"		20		'none'
   ele_shape(17) = "EM_FIELD::*"	    	"Box"		"Blue"		20		'none'
-  ele_shape(18) = "Quadrupole::Z*"   	"Box"		"Blue"	13		'none'  ! 13 cm radius FFAG Quads (includes correctors)
-  ele_shape(19) = "Quadrupole::T*"   	"Box"		"Blue"	13		'none'  ! 13 cm radius FFAG Quads 
-  ele_shape(20) = "Quadrupole::*"   	"Box"		"Blue"	7.5	'none'   ! All other quads
-  !ele_shape(20) = "Quadrupole::*"   	"Box"		"Blue"	13.0	'none'   ! TEST
   ele_shape(21) = 'wall::building' '-' 'black' 0 '-'
-  ele_shape(22) = "SBend::*"		"Box"		"Red"		12		'none'
 /  
                                           	
 ! Colors: 
@@ -1541,6 +1536,66 @@ curve(2)%legend_text = 'Y'
   curve(2)%data_type   = 'orbit.py'
   curve(2)%y_axis_scale_factor = 1000
   curve(2)%draw_symbols=.false.
+/
+
+!-------Orbit Z (mm) --------------------------------------
+
+&tao_template_plot
+  plot%name = 'orbitz'
+  plot%x%min =   0
+  plot%x%max = 100
+  !plot%x%major_div = 10
+  plot%x%label = ' '
+  plot%x_axis_type = 's'
+  plot%n_graph =1
+/
+
+&tao_template_graph
+  graph%name = 'z'
+  graph_index = 1
+  graph%box = 1, 1, 1, 1
+  !graph%title = 'Orbit Z (mm)'
+  graph%margin =  0.15, 0.06, 0.06, 0.0, '%BOX'
+  graph%y%label = 'Orbit Z (mm)'
+  graph%y%max =  20
+  graph%y%min = -20
+  graph%y%major_div = 4
+  graph%n_curve = 2
+  curve(1)%legend_text = 'Z'
+  curve(1)%data_source = 'lattice'
+  curve(1)%data_type   = 'orbit.z'
+  curve(1)%y_axis_scale_factor = 1000
+  curve(1)%draw_symbols=.false.
+/
+
+
+!-------Orbit Pz (mm) --------------------------------------
+&tao_template_plot
+  plot%name = 'orbitpz'
+  plot%x%min =   0
+  plot%x%max = 100
+  !plot%x%major_div = 10
+  plot%x%label = ' '
+  plot%x_axis_type = 's'
+  plot%n_graph =1
+/
+
+&tao_template_graph
+  graph%name = 'z'
+  graph_index = 1
+  graph%box = 1, 1, 1, 1
+  !graph%title = 'Orbit Z (1e-3)'
+  graph%margin =  0.15, 0.06, 0.06, 0.0, '%BOX'
+  graph%y%label = 'Orbit Pz (1e-3)'
+  graph%y%max =  20
+  graph%y%min = -20
+  graph%y%major_div = 4
+  graph%n_curve = 2
+  curve(1)%legend_text = 'Pz'
+  curve(1)%data_source = 'lattice'
+  curve(1)%data_type   = 'orbit.pz'
+  curve(1)%y_axis_scale_factor = 1000
+  curve(1)%draw_symbols=.false.
 /
 
 
