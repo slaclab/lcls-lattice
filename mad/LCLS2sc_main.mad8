@@ -602,8 +602,8 @@
       STYLE=100, SPLINE, RANGE=BEAM0/DUMPFACEB, FILE="LCLS2scS", &
       TITLE="SC-linac to SXR dump"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=VBOUTB/DU7S[31], FILE="LCLS2scS", &
-      TITLE="LTUS/UNDS (SC beam, 4 GeV)"
+      STYLE=100, SPLINE, RANGE=WS31B/DU7S[31], FILE="LCLS2scS", &
+      TITLE="UNDS (SC beam, 4 GeV)"
  !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
@@ -661,7 +661,7 @@
       STYLE=100, SPLINE, RANGE=BEAM0/DUMPFACE, FILE="LCLS2scH", &
       TITLE="SC-linac to HXR dump"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=WS31/QHXh46[2], FILE="LCLS2scH", &
+      STYLE=100, SPLINE, RANGE=WS31/DU7H[25], FILE="LCLS2scH", &
       TITLE="UNDH (SC beam, 4 GeV)"
  !ENDCOMMENT
 
@@ -989,50 +989,3 @@
 
   STOP
 
-! ------------------------------------------------------------------------------
-! working stuff
-! ------------------------------------------------------------------------------
-
-  comment !match SXRSS chicane to dX= 17.0 mm
-    BEAM, ENERGY=Ef
-    VALUE, Ef,Eu
-    SET, SETSXRSS, 1
-    USE, SCHICANE
-    VALUE, AB5,BLB5
-    MATCH, BETX=1, BETY=1, SURVEY
-      VARY, AB5, STEP=1.E-6, UPPER=0
-      WEIGHT, XS=1
-      CONSTR, CNTRS, XS=+17.0E-3
-      LMDIF, TOL=1.E-20
-      MIGRAD, TOL=1.E-20
-    ENDMATCH
-    VALUE, AB5,BLB5
-    PRINT, FULL
-    SURVEY
-  endcomment
-
-! ------------------------------------------------------------------------------
-
-  STOP
-
-! ------------------------------------------------------------------------------
-
-  SET, AB5, 0 !SXRSS off
-  BEAM, ENERGY=4.0
-  USE, SXCEL35
-  PRINT, FULL
-  SURVEY, TAPE="LCLS2scS_survey4.tape"
-
-  SET, AB5, -1.279114e-02 !bend angle (rad) for BL= 2.56 kG-m (9 A) @ 6 GeV
-  BEAM, ENERGY=6.0
-  USE, SXCEL35
-  PRINT, FULL
-  SURVEY, TAPE="LCLS2scS_survey6.tape"
-
-  SET, AB5, -8.527430e-03 !bend angle (rad) for BL= 2.56 kG-m (9 A) @ 9 GeV
-  BEAM, ENERGY=9.0
-  USE, SXCEL35
-  PRINT, FULL
-  SURVEY, TAPE="LCLS2scS_survey9.tape"
-
-  STOP
