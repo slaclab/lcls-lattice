@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-05OCT20 ***
+! *** OPTICS=AD_ACCEL-15OCT20 ***
 
 ! LCLS-style quadrupole (shorter effective length)
 
@@ -10,36 +10,36 @@ intghx14 = -30.0
 intghx15 = 30.0
 intghx16 = -30.0
 intghx17 = 30.0
-! --------
+! ------18
 intghx19 = 30.0
 intghx20 = -30.0
-! --------
-intghx22 = -30.0
-intghx23 = 30.0
+! ------21
+! ------22
+! ------23
 
 kqhxh13 = intghx13/lqut/brhou
 kqhxh14 = intghx14/lqut/brhou
 kqhxh15 = intghx15/lqut/brhou
 kqhxh16 = intghx16/lqut/brhou
 kqhxh17 = intghx17/lqut/brhou
-! -------
+! -----18
 kqhxh19 = intghx19/lqut/brhou
 kqhxh20 = intghx20/lqut/brhou
-! -------
-kqhxh22 = intghx22/lqut/brhou
-kqhxh23 = intghx23/lqut/brhou
+! -----21
+! -----22
+! -----23
 
 qhxh13: quadrupole, type = "QUND", l = lqut/2, k1 = kqhxh13 !QU01
 qhxh14: quadrupole, type = "QUND", l = lqut/2, k1 = kqhxh14 !QU02
 qhxh15: quadrupole, type = "QUND", l = lqut/2, k1 = kqhxh15 !QU03
 qhxh16: quadrupole, type = "QUND", l = lqut/2, k1 = kqhxh16 !QU04
 qhxh17: quadrupole, type = "QUND", l = lqut/2, k1 = kqhxh17 !QU05
-! ------
+! ----18
 qhxh19: quadrupole, type = "QUND", l = lqut/2, k1 = kqhxh19 !QU07
 qhxh20: quadrupole, type = "QUND", l = lqut/2, k1 = kqhxh20 !QU08
-! ------
-qhxh22: quadrupole, type = "QUND", l = lqut/2, k1 = kqhxh22 !QU10
-qhxh23: quadrupole, type = "QUND", l = lqut/2, k1 = kqhxh23 !QU11
+! ----21
+! ----22
+! ----23
 
 lrfbut = 0 !undulator RF-BPM only implemented as zero length monitor
 
@@ -48,12 +48,12 @@ rfbhx14: monitor, l = lrfbut, type = "01_um_res" !RFBU02
 rfbhx15: monitor, l = lrfbut, type = "01_um_res" !RFBU03
 rfbhx16: monitor, l = lrfbut, type = "01_um_res" !RFBU04
 rfbhx17: monitor, l = lrfbut, type = "01_um_res" !RFBU05
-! -------
+! -----18
 rfbhx19: monitor, l = lrfbut, type = "01_um_res" !RFBU07
 rfbhx20: monitor, l = lrfbut, type = "01_um_res" !RFBU08
-! -------
-rfbhx22: monitor, l = lrfbut, type = "01_um_res" !RFBU10
-rfbhx23: monitor, l = lrfbut, type = "01_um_res" !RFBU11
+! -----21
+! -----22
+! -----23
 
 ! unused Beam Finder Wires
 
@@ -62,12 +62,12 @@ bfw02: marker
 bfw03: marker
 bfw04: marker
 bfw05: marker
-! -----
+! ---06
 bfw07: marker
 bfw08: marker
-! -----
-bfw10: marker
-bfw11: marker
+! ---09
+! ---10
+! ---11
 
 dusegh: drift, l = 1.665
 dtt: drift, l = 0.035
@@ -83,12 +83,12 @@ dbrl: drift, l = 0.56629
   USTBK03 : LINE=(DTt,DUSEGH,DUSEGH,DTt)
   USTBK04 : LINE=(DTt,DUSEGH,DUSEGH,DTt)
   USTBK05 : LINE=(DTt,DUSEGH,DUSEGH,DTt)
-! -------
+! -----06
   USTBK07 : LINE=(DTt,DUSEGH,DUSEGH,DTt)
   USTBK08 : LINE=(DTt,DUSEGH,DUSEGH,DTt)
-! -------
-  USTBK10 : LINE=(DTt,DUSEGH,DUSEGH,DTt)
-  USTBK11 : LINE=(DTt,DUSEGH,DUSEGH,DTt)
+! -----09
+! -----10
+! -----11
 
 
 
@@ -150,7 +150,7 @@ muqh[superimpose] = T
 muqh[ref] = qhxh17
 ychx17[superimpose] = T
 ychx17[ref] = qhxh17
-! -----------
+! ----18-----
 
 
 !Old split line: LINE=(QHXh19,XCHX19,MUQH,YCHX19,QHXh19)
@@ -175,61 +175,33 @@ muqh[superimpose] = T
 muqh[ref] = qhxh20
 ychx20[superimpose] = T
 ychx20[ref] = qhxh20
-! -----------
-
-
-!Old split line: LINE=(QHXh22,XCHX22,MUQH,YCHX22,QHXh22)
-
-qhxh22_full: line = (qhxh22)
-qhxh22[L] = 2*qhxh22[L]
-xchx22[superimpose] = T
-xchx22[ref] = qhxh22
-muqh[superimpose] = T
-muqh[ref] = qhxh22
-ychx22[superimpose] = T
-ychx22[ref] = qhxh22
-
-
-!Old split line: LINE=(QHXh23,XCHX23,MUQH,YCHX23,QHXh23)
-
-qhxh23_full: line = (qhxh23)
-qhxh23[L] = 2*qhxh23[L]
-xchx23[superimpose] = T
-xchx23[ref] = qhxh23
-muqh[superimpose] = T
-muqh[ref] = qhxh23
-ychx23[superimpose] = T
-ychx23[ref] = qhxh23
+! ----21-----
+! ----22-----
+! ----23-----
 
   GIRD01 : LINE=(BFW01,DBWMt,DB4t,USTBK01,DB1,QHXh13_full,DB3,RFBHX13) !cell 13: LCLS-style, no undulator
   GIRD02 : LINE=(BFW02,DBWMt,DB4t,USTBK02,DB1,QHXh14_full,DB3,RFBHX14) !cell 14: LCLS-style, no undulator
   GIRD03 : LINE=(BFW03,DBWMt,DB4t,USTBK03,DB1,QHXh15_full,DB3,RFBHX15) !cell 15: LCLS-style, no undulator
   GIRD04 : LINE=(BFW04,DBWMt,DB4t,USTBK04,DB1,QHXh16_full,DB3,RFBHX16) !cell 16: LCLS-style, no undulator
   GIRD05 : LINE=(BFW05,DBWMt,DB4t,USTBK05,DB1,QHXh17_full,DB3,RFBHX17) !cell 17: LCLS-style, no undulator
-! ------
+! ----06
   GIRD07 : LINE=(BFW07,DBWMt,DB4t,USTBK07,DB1,QHXh19_full,DB3,RFBHX19) !cell 19: LCLS-style, no undulator
   GIRD08 : LINE=(BFW08,DBWMt,DB4t,USTBK08,DB1,QHXh20_full,DB3,RFBHX20) !cell 20: LCLS-style, no undulator
-! ------
-  GIRD10 : LINE=(BFW10,DBWMt,DB4t,USTBK10,DB1,QHXh22_full,DB3,RFBHX22) !cell 22: LCLS-style, no undulator
-  GIRD11 : LINE=(BFW11,DBWMt,DB4t,USTBK11,DB1,QHXh23_full,DB3,RFBHX23) !cell 23: LCLS-style, no undulator
+! ----09
+! ----10
+! ----11
 
 zbsyg01 = 5.152655814e+02 !start of LCLS GIRD01
 zbsyg05 = 5.349052914e+02 !end of LCLS GIRD05
 zbsyg07 = 5.393415814e+02 !start of LCLS GIRD07
 zbsyg08 = 5.469432914e+02 !end of LCLS GIRD08
-zbsyg10 = 5.513795814e+02 !start of LCLS GIRD10
-zbsyg11 = 5.589812914e+02 !end of LCLS GIRD11
 
 zbsyc13 = 5.150949847e+02 !start of LCLS-II cell 13
 zbsyc17 = 5.351583181e+02 !end of LCLS-II cell 17
 zbsyc19 = 5.391709847e+02 !start of LCLS-II cell 19
 zbsyc20 = 5.471963181e+02 !end of LCLS-II cell 20
-zbsyc22 = 5.512089847e+02 !start of LCLS-II cell 22
-zbsyc23 = 5.592343181e+02 !end of LCLS-II cell 23
 
 dgird01u: drift, l = zbsyg01-zbsyc13
 dgird05d: drift, l = zbsyc17-zbsyg05
 dgird07u: drift, l = zbsyg07-zbsyc19 !-0.1E-06
 dgird08d: drift, l = zbsyc20-zbsyg08
-dgird10u: drift, l = zbsyg10-zbsyc22 !-0.1E-06
-dgird11d: drift, l = zbsyc23-zbsyg11

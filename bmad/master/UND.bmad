@@ -1,11 +1,14 @@
 
-! *** OPTICS=AD_ACCEL-05OCT20 ***
+! *** OPTICS=AD_ACCEL-15OCT20 ***
 
 ! LCLS2sc undulator and undulator extension
 ! NOTE: "startup" configuration for HXR undulator (see UNDtemp.xsif)
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 19-OCT-2020, M. Woodley
+!  * install nominal LCLS-II HXR cells #22 and #23
 ! ------------------------------------------------------------------------------
 ! 02-OCT-2020, M. Woodley
 !  * install nominal LCLS-II cell HXR #18
@@ -1817,12 +1820,14 @@ pshxh17: pshxh
 pshxh18: pshxh
 pshxh19: pshxh
 pshxh20: pshxh
+! -----21
 pshxh22: pshxh
 pshxh23: pshxh
 pshxh24: pshxh
 pshxh25: pshxh
 pshxh26: pshxh
 pshxh27: pshxh
+! -----28
 pshxh29: pshxh
 pshxh30: pshxh
 pshxh31: pshxh
@@ -1905,8 +1910,8 @@ qhxh18: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu
  !QHXh19 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, aperture=rQu
  !QHXh20 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, aperture=rQu
 qhxh21: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu
- !QHXh22 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, aperture=rQu
- !QHXh23 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, aperture=rQu
+qhxh22: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu
+qhxh23: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu
 qhxh24: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu
 qhxh25: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu
 qhxh26: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu
@@ -1965,12 +1970,14 @@ umahxh17: umahxh
 umahxh18: umahxh
 umahxh19: umahxh
 umahxh20: umahxh
+! ------21
 umahxh22: umahxh
 umahxh23: umahxh
 umahxh24: umahxh
 umahxh25: umahxh
 umahxh26: umahxh
 umahxh27: umahxh
+! ------28
 umahxh29: umahxh
 umahxh30: umahxh
 umahxh31: umahxh
@@ -2155,8 +2162,8 @@ rfbhx18: monitor, l = lrfbub, type = "CavityX-1"
  !RFBHX19 : MONI, L=LRFBub, TYPE="CavityX-1"
  !RFBHX20 : MONI, L=LRFBub, TYPE="CavityX-1"
 rfbhx21: monitor, l = lrfbub, type = "CavityX-1"
- !RFBHX22 : MONI, L=LRFBub, TYPE="CavityX-1"
- !RFBHX23 : MONI, L=LRFBub, TYPE="CavityX-1"
+rfbhx22: monitor, l = lrfbub, type = "CavityX-1"
+rfbhx23: monitor, l = lrfbub, type = "CavityX-1"
 rfbhx24: monitor, l = lrfbub, type = "CavityX-1"
 rfbhx25: monitor, l = lrfbub, type = "CavityX-1"
 rfbhx26: monitor, l = lrfbub, type = "CavityX-1"
@@ -2696,6 +2703,7 @@ xchu20[superimpose] = T
 xchu20[ref] = umahxh20
 ychu20[superimpose] = T
 ychu20[ref] = umahxh20
+! ------21
 
 
 !Old split line: LINE=(UMAHXh22,XCHU22,YCHU22,UMAHXh22)
@@ -2756,6 +2764,7 @@ xchu27[superimpose] = T
 xchu27[ref] = umahxh27
 ychu27[superimpose] = T
 ychu27[ref] = umahxh27
+! ------28
 
 
 !Old split line: LINE=(UMAHXh29,XCHU29,YCHU29,UMAHXh29)
@@ -3009,8 +3018,30 @@ muqh[superimpose] = T
 muqh[ref] = qhxh21
 ychx21[superimpose] = T
 ychx21[ref] = qhxh21
- !QHXh22_full : LINE=(QHXh22,XCHX22,MUQH,YCHX22,QHXh22)
- !QHXh23_full : LINE=(QHXh23,XCHX23,MUQH,YCHX23,QHXh23)
+
+
+!Old split line: LINE=(QHXh22,XCHX22,MUQH,YCHX22,QHXh22)
+
+qhxh22_full: line = (qhxh22)
+qhxh22[L] = 2*qhxh22[L]
+xchx22[superimpose] = T
+xchx22[ref] = qhxh22
+muqh[superimpose] = T
+muqh[ref] = qhxh22
+ychx22[superimpose] = T
+ychx22[ref] = qhxh22
+
+
+!Old split line: LINE=(QHXh23,XCHX23,MUQH,YCHX23,QHXh23)
+
+qhxh23_full: line = (qhxh23)
+qhxh23[L] = 2*qhxh23[L]
+xchx23[superimpose] = T
+xchx23[ref] = qhxh23
+muqh[superimpose] = T
+muqh[ref] = qhxh23
+ychx23[superimpose] = T
+ychx23[ref] = qhxh23
 
 
 !Old split line: LINE=(QHXh24,XCHX24,MUQH,YCHX24,QHXh24)
@@ -3370,13 +3401,13 @@ dqhx50: drift, l = lqu
   HXCEL49  : LINE=(DU1h,DU2h,DUSEGH49,HXBRK49) !empty with RFBPM
   HXCEL50  : LINE=(DU1h,DU2h,DUSEGH50,HXBRK50) !empty
 
-! LCLS-II 05OCT20 configuration
+! LCLS-II post PAMM-5 (October 19-22, 2020) configuration
 
  !comment
   HXRCL    : LINE=(DGIRD01u,GIRD01,DBRSt,GIRD02,DBRSt,GIRD03,DBRL,GIRD04,DBRSt,GIRD05,DGIRD05d,HXCEL18,DGIRD07u,GIRD07,
-         DBRSt,GIRD08,DGIRD08d,HXCEL21,DGIRD10u,GIRD10,DBRSt,GIRD11,DGIRD11d,HXCEL24,HXCEL25,HXCEL26,HXCEL27,HXCEL28,HXCEL29,
-         HXCEL30,HXCEL31,HXCEL32,HXCEL33,HXCEL34,HXCEL35,HXCEL36,HXCEL37,HXCEL38,HXCEL39,HXCEL40,HXCEL41,HXCEL42,HXCEL43,HXCEL44,
-         HXCEL45,HXCEL46,HXCEL47,HXCEL48,HXCEL49,HXCEL50)
+         DBRSt,GIRD08,DGIRD08d,HXCEL21,HXCEL22,HXCEL23,HXCEL24,HXCEL25,HXCEL26,HXCEL27,HXCEL28,HXCEL29,HXCEL30,HXCEL31,HXCEL32,
+         HXCEL33,HXCEL34,HXCEL35,HXCEL36,HXCEL37,HXCEL38,HXCEL39,HXCEL40,HXCEL41,HXCEL42,HXCEL43,HXCEL44,HXCEL45,HXCEL46,HXCEL47,
+         HXCEL48,HXCEL49,HXCEL50)
  !endcomment
 
 ! LCLS-II final configuration

@@ -1,11 +1,16 @@
 
-! *** OPTICS=AD_ACCEL-05OCT20 ***
+! *** OPTICS=AD_ACCEL-15OCT20 ***
 
 ! LCLS2sc LTU and dump
 
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
+! 08-OCT-2020, M. Woodley
+!  * rename OTRDL18 to YAGDL18 (TYPE="YAG-PAL") and undefer per B. Jacobson
+! ------------------------------------------------------------------------------
+! 05-OCT-2020, M. Woodley
+!  * add XLEAP quadrupoles QFXL1 and QFXL2
 ! 06-AUG-2020, M. Woodley
 !  * redefined XLEAP undulators
 ! ------------------------------------------------------------------------------
@@ -922,9 +927,9 @@ dbyks13: drift, l = 0.687668  !(removed) BTM05B to SPOILERS
 dbyks14: drift, l = 3.200208  !SPOILERS to TDKIKS (3.220859)
 dbyks15: drift, l = 0.257457  !TDKIKS to PCTDKIKS1 (0.257426)
 dbyks16: drift, l = 0.266697  !PCTDKIKS to PCTDKIKS
-dbyks18: drift, l = 0.4       !OTRDL18 to YCDL18
+dbyks18: drift, l = 0.4       !YAGDL18 to YCDL18
 dbyks19: drift, l = 0.4       !YCDL18 to QDL18
-dbyks17: drift, !PCTDKIK4S to OTRDL18
+dbyks17: drift, !PCTDKIK4S to YAGDL18
           l = ldbyks- dbyks11[l]-ljaw-dbyks12[l]-dbyks13[l]- dbyks14[l]-tdkiks[l]-dbyks15[l]-  &
          4*lpctdkik-3*dbyks16[l]-dbyks18[l]-dbyks19[l]
 
@@ -971,7 +976,7 @@ pctdkik2s: ecollimator, type = "BCS PC", l = lpctdkik, x_limit = 11.1125e-3, y_l
 pctdkik3s: ecollimator, type = "@5,BCS PC", l = lpctdkik, x_limit = 11.1125e-3, y_limit = 11.1125e-3
 pctdkik4s: ecollimator, type = "@5,BCS PC", l = lpctdkik, x_limit = 11.1125e-3, y_limit = 11.1125e-3
 
-otrdl18: monitor, type = "@3,OTR"
+yagdl18: monitor, type = "YAG-PAL"
 
 pc01b: instrument, type = "BCS plate", l = lplate
 btm01b: instrument, type = "PPS BTM"
@@ -1112,7 +1117,7 @@ sdl2[L] = 2*sdl2[L]
          DDL6ba,SDL2_full,DDL6bb,QDL15_full,DDL0ba,BPMDL15,DDL0bb,DDL0bc,YCDL16,DDL6b,QDL16_full,DBYKS01,CYDL16,DBYKS02,BPMDL16,
          DBYKS03,PC04B,BTM04B,DBYKS04,BYKIK1S_full,DBYKS05,DBYKS05,BYKIK2S_full,DBYKS06,XCDL17,DBYKS07,BPMDL17,DBYKS08,
          QDL17_full,DBYKS11,CEDL17,DBYKS12,DBYKS13,SPOILERS,DBYKS14,TDKIKS,DBYKS15,PCTDKIK1S,DBYKS16,PCTDKIK2S,DBYKS16,PCTDKIK3S,
-         DBYKS16,PCTDKIK4S,DBYKS17,OTRDL18,DBYKS18,YCDL18,DBYKS19,QDL18_full,DDL19ba,BPMDL18,DDL19bb,PC06B,BTM06B,DDL19bc,XCDL19,
+         DBYKS16,PCTDKIK4S,DBYKS17,YAGDL18,DBYKS18,YCDL18,DBYKS19,QDL18_full,DDL19ba,BPMDL18,DDL19bb,PC06B,BTM06B,DDL19bc,XCDL19,
          DDL6b,QDL19_full,DDL2ba,BPMDL19,DDL2bb,BX32B_full,CNTLT1S,DDL14b,QDL20_full,DDL6b,YCDL20,DDL17b,CC32b,DDL18ba,PC07B,
          BTM07B,DDL18bb,YCDL21,DDL6b,QDL21_full,DDL4b,XCDL22,DDL6b,QDL22_full,DDL5b)
 
@@ -1468,9 +1473,9 @@ lundh = lund/2     !wiggler half-length [m]
 
   ! half-wiggler modeled as an R-matrix which includes vertical focusing
   ! and horizontal defocusing per Ago Martinelli (see wigXL2.m);
-  ! (see SUBROUTINE SETK2scXL2 in LCLS2sc_main.mad8)
+  ! (see SUBROUTINE SETK2XL2 in LCLS2sc_main.mad8)
 
-  ! define XLEAP-II wigglers (as DRIFTs ... turn on with SETK2scXL2)
+  ! define XLEAP-II wigglers (as DRIFTs ... turn on with SETK2XL2)
 
 r11xl1 = 1.0
 r12xl1 = lundh
@@ -2323,7 +2328,7 @@ pc119: ecollimator, l = lpc119, x_limit = 10.2e-3, y_limit = 10.2e-3 !existing p
 
 ! 2" ID BSY collimator -- part of 2-hole copper collimator d/s of A-line pulsed magnets
 
-pcbsyh: ecollimator, type = "@1,MPS PC", l = 0.45, x_limit = 25.4e-3, y_limit = 25.4e-3
+pcbsyh: ecollimator, type = "@1,MPS PC", l = 0.45, x_limit = 25.4e-3, y_limit = 25.4e-3 !installed, then removed
 
 dm3: drift, l = 0.8438 !0.2196
 dm4a: drift, l = 0.4410 !0.2114
@@ -3421,10 +3426,10 @@ bpme36[ref] = qe36
 
 ! note: KQUM1-4 have been rematched (missing undulators in HXR)
 
-kqum1 = 0.169599048542 !Eu=4.0, KHXU=2.0
-kqum2 = -0.195762254488 !Eu=4.0, KHXU=2.0
-kqum3 = 0.478206719083 !Eu=4.0, KHXU=2.0
-kqum4 = -0.452863527854 !Eu=4.0, KHXU=2.0
+kqum1 = 0.185067724051 !Eu=4.0, KHXU=2.0
+kqum2 = -0.215315592821 !Eu=4.0, KHXU=2.0
+kqum3 = 0.467778928122 !Eu=4.0, KHXU=2.0
+kqum4 = -0.43959648749  !Eu=4.0, KHXU=2.0
 
 qum1: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqum1, aperture = rqa
 qum2: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqum2, aperture = rqa

@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-05OCT20 ***
+! *** OPTICS=AD_ACCEL-15OCT20 ***
 
 ! LCLS2sc matching routines
 
@@ -2189,7 +2189,7 @@ ENDCOMMENT
   MDUMPs5 : SUBROUTINE
     BEAM, ENERGY=Ef
     SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
-   !SETK2scXL2 !turns on XLEAP2 components and optics
+   !SETK2XL2 !turns on XLEAP2 components and optics
     USE, (LTUsc,SXRUND,DUMPLINEb)
     VALUE, kQDSXm,KQUE1b,KQUE2b,KQDMPb
     MATCH, BETA0=TWSSms
@@ -2213,6 +2213,70 @@ ENDCOMMENT
     TWISS, BETA0=TWSSms, SAVE, TAPE="twiss.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
       STYLE=100, SPLINE=.T., RANGE=QSXh44[1]/DUMPFACEB, FILE="match"
+  ENDSUBROUTINE
+
+! ==============================================================================
+! XLEAP matching
+! ------------------------------------------------------------------------------
+
+  MXLEAP : SUBROUTINE !match from XLEAP-II wiggler section into UNDS
+    VALUE, Ef,Eu,Brhof
+    BEAM, ENERGY=Ef
+    SETK2XL2 !turns on XLEAP2 components and optics
+    VALUE, KQUM1B,KQUM2B,KQUM3B,KQUM4B
+    VALUE, KQSX16,KQSX19,KQSX21,KQSX24
+    USE, (LTUsc,RWWAKE4S,ENDLTUS,BEGUNDS,PREUNDS,SXRUND,DUMPLINEB)
+    MATCH, BETA0=TWSSms
+     !VARY, KQFXL2, STEP=1.E-6, LOWER= 0     , UPPER=+KmaxQE
+     !VARY, KQE36B, STEP=1.E-6, LOWER= 0     , UPPER=+KmaxQx
+     !VARY, KQUM1B, STEP=1.E-6, LOWER=-KmaxQE, UPPER= 0
+     !VARY, KQUM2B, STEP=1.E-6, LOWER= 0     , UPPER=+KmaxQE
+     !VARY, KQUM3B, STEP=1.E-6, LOWER= 0     , UPPER=+KmaxQE
+     !VARY, KQUM4B, STEP=1.E-6, LOWER=-KmaxQE, UPPER=+KmaxQE
+      VARY, KQSX16, STEP=1.E-4, LOWER= 0     , UPPER=+KmaxQu
+      VARY, KQSX19, STEP=1.E-4, LOWER=-KmaxQu, UPPER= 0
+      VARY, KQSX21, STEP=1.E-4, LOWER= 0     , UPPER=+KmaxQu
+      VARY, KQSX24, STEP=1.E-4, LOWER=-KmaxQu, UPPER= 0
+      WEIGHT, DX=0, DPX=0, DY=0, DPY=0, X=0, PX=0, Y=0, PY=0, T=0, PT=0
+      WEIGHT, BETX=1.E-5, BETY=1.E-5, ALFX=0, ALFY=0, MUX=0, MUY=0
+      COUPLE, MUQS[1]/MUQS[3]
+      COUPLE, MUQS[2]/MUQS[4]
+      COUPLE, MUQS[1]/MUQS[5]
+      COUPLE, MUQS[2]/MUQS[6]
+      COUPLE, MUQS[1]/MUQS[7]
+      COUPLE, MUQS[2]/MUQS[8]
+      COUPLE, MUQS[1]/MUQS[9]
+      COUPLE, MUQS[2]/MUQS[10]
+      COUPLE, MUQS[1]/MUQS[11]
+      COUPLE, MUQS[2]/MUQS[12]
+      COUPLE, MUQS[1]/MUQS[13]
+      COUPLE, MUQS[2]/MUQS[14]
+      COUPLE, MUQS[1]/MUQS[15]
+      COUPLE, MUQS[2]/MUQS[16]
+      COUPLE, MUQS[1]/MUQS[17]
+      COUPLE, MUQS[2]/MUQS[18]
+      COUPLE, MUQS[1]/MUQS[19]
+      COUPLE, MUQS[2]/MUQS[20]
+      COUPLE, MUQS[1]/MUQS[21]
+      WEIGHT, BETX=1.E-6, BETY=1.E-6
+      CONSTR, QE36B[1] , BETX<60, BETY<60
+      CONSTR, QUM1B[1] , BETX<80, BETY<80
+      CONSTR, QUM2B[1] , BETX<65, BETY<65
+      CONSTR, QUM3B[1] , BETX<65, BETY<65
+      CONSTR, QUM4B[1] , BETX<65, BETY<65
+      CONSTR, QSXh16[1], BETX<60, BETY<60
+      CONSTR, WIGXLh[1], BETX<60, BETY<60
+      CONSTR, QSXh19[1], BETX<65, BETY<65
+      CONSTR, QSXh21[1], BETX<110, BETY<110
+      LMDIF, TOL=1.E-20, CALLS=100000
+      MIGRAD, TOL=1.E-20, CALLS=100000
+    ENDMATCH
+    VALUE, KQUM1B,KQUM2B,KQUM3B,KQUM4B
+    VALUE, KQSX16,KQSX19,KQSX21,KQSX24
+    PRINT, FULL
+    TWISS, BETA0=TWSSms, SAVE, TAPE="twiss.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=VBOUTB/DU7S[31], FILE="match"
   ENDSUBROUTINE
 
 ! ==============================================================================
@@ -3273,6 +3337,8 @@ ENDCOMMENT
  !MDLBYP
  !MDIAG0
  !MBPMDG000
+
+ !MXLEAP
 
 ! ------------------------------------------------------------------------------
 

@@ -1,11 +1,16 @@
 
-! *** OPTICS=AD_ACCEL-05OCT20 ***
+! *** OPTICS=AD_ACCEL-15OCT20 ***
 
 ! LCLS2sc LTU and dump
 
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
+! 08-OCT-2020, M. Woodley
+!  * rename OTRDL18 to YAGDL18 (TYPE="YAG-PAL") and undefer per B. Jacobson
+! ------------------------------------------------------------------------------
+! 05-OCT-2020, M. Woodley
+!  * add XLEAP quadrupoles QFXL1 and QFXL2
 ! 06-AUG-2020, M. Woodley
 !  * redefined XLEAP undulators
 ! ------------------------------------------------------------------------------
@@ -943,9 +948,9 @@
   DBYKS14 : DRIFT, L=3.200208  !SPOILERS to TDKIKS (3.220859)
   DBYKS15 : DRIFT, L=0.257457  !TDKIKS to PCTDKIKS1 (0.257426)
   DBYKS16 : DRIFT, L=0.266697  !PCTDKIKS to PCTDKIKS
-  DBYKS18 : DRIFT, L=0.4       !OTRDL18 to YCDL18
+  DBYKS18 : DRIFT, L=0.4       !YAGDL18 to YCDL18
   DBYKS19 : DRIFT, L=0.4       !YCDL18 to QDL18
-  DBYKS17 : DRIFT, L=LDBYKS- & !PCTDKIK4S to OTRDL18
+  DBYKS17 : DRIFT, L=LDBYKS- & !PCTDKIK4S to YAGDL18
                      DBYKS11[L]-Ljaw-DBYKS12[L]-DBYKS13[L]- &
                      DBYKS14[L]-TDKIKS[L]-DBYKS15[L]- &
                      4*LPCTDKIK-3*DBYKS16[L]-DBYKS18[L]-DBYKS19[L]
@@ -997,7 +1002,7 @@
   PCTDKIK4S : ECOL, TYPE="@5,BCS PC", L=LPCTDKIK, &
                     XSIZE=11.1125E-3, YSIZE=11.1125E-3
 
-  OTRDL18 : PROF, TYPE="@3,OTR"
+  YAGDL18 : PROF, TYPE="YAG-PAL"
 
   PC01B  : INST, TYPE="BCS plate", L=Lplate
   BTM01B : INST, TYPE="PPS BTM"
@@ -1055,7 +1060,7 @@
     BYKIK2S_full,DBYKS06,XCDL17,DBYKS07,BPMDL17,DBYKS08,&
     QDL17_full,DBYKS11,CEDL17,DBYKS12,DBYKS13,SPOILERS,DBYKS14,&
       TDKIKS,DBYKS15,PCTDKIK1S,DBYKS16,PCTDKIK2S,DBYKS16,PCTDKIK3S,&
-      DBYKS16,PCTDKIK4S,DBYKS17,OTRDL18,DBYKS18,YCDL18,DBYKS19,&
+      DBYKS16,PCTDKIK4S,DBYKS17,YAGDL18,DBYKS18,YCDL18,DBYKS19,&
     QDL18_full,DDL19ba,BPMDL18,DDL19bb,PC06B,BTM06B,DDL19bc,XCDL19,DDL6b,&
     QDL19_full,DDL2ba,BPMDL19,DDL2bb,&
     BX32B_full,CNTLT1S,DDL14b,&
@@ -1388,9 +1393,9 @@
   
   ! half-wiggler modeled as an R-matrix which includes vertical focusing
   ! and horizontal defocusing per Ago Martinelli (see wigXL2.m);
-  ! (see SUBROUTINE SETK2scXL2 in LCLS2sc_main.mad8)
+  ! (see SUBROUTINE SETK2XL2 in LCLS2sc_main.mad8)
 
-  ! define XLEAP-II wigglers (as DRIFTs ... turn on with SETK2scXL2)
+  ! define XLEAP-II wigglers (as DRIFTs ... turn on with SETK2XL2)
 
     R11XL1 := 1.0
     R12XL1 := Lundh
@@ -2195,7 +2200,7 @@
 
 ! 2" ID BSY collimator -- part of 2-hole copper collimator d/s of A-line pulsed magnets
 
-  PCBSYH : ECOL, TYPE="@1,MPS PC", L=0.45, XSIZE=25.4E-3, YSIZE=25.4E-3
+  PCBSYH : ECOL, TYPE="@1,MPS PC", L=0.45, XSIZE=25.4E-3, YSIZE=25.4E-3 !installed, then removed
 
   DM3     : DRIF, L=0.8438 !0.2196
   DM4a    : DRIF, L=0.4410 !0.2114
@@ -3066,10 +3071,10 @@
 
 ! note: KQUM1-4 have been rematched (missing undulators in HXR)
 
-  KQUM1 :=  0.169599048542 !Eu=4.0, KHXU=2.0
-  KQUM2 := -0.195762254488 !Eu=4.0, KHXU=2.0
-  KQUM3 :=  0.478206719083 !Eu=4.0, KHXU=2.0
-  KQUM4 := -0.452863527854 !Eu=4.0, KHXU=2.0
+  KQUM1 :=  0.185067724051 !Eu=4.0, KHXU=2.0
+  KQUM2 := -0.215315592821 !Eu=4.0, KHXU=2.0
+  KQUM3 :=  0.467778928122 !Eu=4.0, KHXU=2.0
+  KQUM4 := -0.43959648749  !Eu=4.0, KHXU=2.0
 
   QUM1 : QUAD, TYPE="1.26Q12", L=LQA/2, K1=KQUM1, APER=rQA
   QUM2 : QUAD, TYPE="1.26Q12", L=LQA/2, K1=KQUM2, APER=rQA
