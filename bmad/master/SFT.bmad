@@ -85,34 +85,30 @@ lbxpm2l = rbxpm*abxpm2l !path length in "long"  half of BXPM2
 lbxpm1 = lbxpm1s+lbxpm1l
 lbxpm2 = lbxpm2s+lbxpm2l
 
-bxpm11: sbend, hgap = gbxpm/2, fint = 0.5, fintx = 0.0, e2 = 0, e1 = 0, type = "4D36-C", l =  &
-        lbxpm1s, angle = lbxpm1s * abxpm1s/lbxpm1s
-bxpm12: sbend, hgap = gbxpm/2, fint = 0.0, fintx = 0.5, e1 = 0, e2 = abxpm1, type = "4D36-C", l &
-         = lbxpm1l, angle = lbxpm1l * abxpm1l/lbxpm1l
+bxpm11: sbend, type = "4D36-C", l = lbxpm1s, angle = abxpm1s, hgap = gbxpm/2, fint = 0.5, fintx = 0, e2 = 0, e1 = 0
+bxpm12: sbend, type = "4D36-C", l = lbxpm1l, angle = abxpm1l, hgap = gbxpm/2, fint = 0, fintx = 0.5, e1 = 0, e2 = abxpm1
 
-bxpm21: sbend, hgap = gbxpm/2, fint = 0.5, fintx = 0.0, e2 = 0, e1 = -abxpm1, type = "4D36-C", l &
-         = lbxpm2s, angle = lbxpm2s * abxpm2s/lbxpm2s
-bxpm22: sbend, hgap = gbxpm/2, fint = 0.0, fintx = 0.5, e1 = 0, e2 = abxpm1+abxpm2, type =  &
-        "4D36-C", l = lbxpm2l, angle = lbxpm2l * abxpm2l/lbxpm2l
+bxpm21: sbend, type = "4D36-C", l = lbxpm2s, angle = abxpm2s, hgap = gbxpm/2, fint = 0.5, fintx = 0, e2 = 0, e1 = -abxpm1
+bxpm22: sbend, type = "4D36-C", l = lbxpm2l, angle = abxpm2l, hgap = gbxpm/2, fint = 0, fintx = 0.5, e1 = 0,
+          e2 = abxpm1+abxpm2
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-bxpm1: sbend, hgap = gbxpm/2, e1 = 0, fint = 0.5, e2 = abxpm1, type = "4D36-C", l = lbxpm1, angle &
-         = lbxpm1 * abxpm1/lbxpm1
-bxpm2: sbend, hgap = gbxpm/2, e1 = -abxpm1, fint = 0.5, e2 = abxpm1+abxpm2, type = "4D36-C", l =  &
-        lbxpm2, angle = lbxpm2 * abxpm2/lbxpm2
+bxpm1: sbend, type = "4D36-C", hgap = gbxpm/2, l = lbxpm1, angle = abxpm1, e1 = 0, fint = 0.5, e2 = abxpm1, fintx = 0.5
+bxpm2: sbend, type = "4D36-C", hgap = gbxpm/2, l = lbxpm2, angle = abxpm2, e1 = -abxpm1, fint = 0.5, e2 = abxpm1+abxpm2,
+          fintx = 0.5
 
 dyds: drift, l = lbyds*cos(abyds/2)
-dyd1: drift, l = lbdm*cos(abyds+abdm/2)
-dyd2: drift, l = lbdm*cos(abyds+3*abdm/2)
-dyd3: drift, l = lbdm*cos(abyds+5*abdm/2)
+dyd1: drift, l = lbdm *cos(abyds+  abdm/2)
+dyd2: drift, l = lbdm *cos(abyds+3*abdm/2)
+dyd3: drift, l = lbdm *cos(abyds+5*abdm/2)
 
 ldsca = 0.479300-0.000001 !0.479298938157
 ldscb = 0.094517171073
 
-ds1s: drift, l = lds1*cos(abyds)
-dssa: drift, l = lds*cos(abyds+abdm)
-dssb: drift, l = lds*cos(abyds+2*abdm)
+ds1s: drift, l = lds1 *cos(abyds)
+dssa: drift, l = lds  *cos(abyds+  abdm)
+dssb: drift, l = lds  *cos(abyds+2*abdm)
 dscsa: drift, l = ldsca*cos(abyds+3*abdm)
 dscsb: drift, l = ldscb*cos(abyds+3*abdm)
 
@@ -126,15 +122,15 @@ dpcbtm2: drift, l = 0.15
 dpm1: drift, l = 0.5350338 !0.298
 dpm11: drift, l = 0.188644
 dpm12: drift, l = dpm1[l]-dpm11[l]
-dpm2: drift, l = 0.30/cos(abxpm1)
-dpm3: drift, l = ldpm3/cos(abxpm1+abxpm2)
-dpm31: drift, l = ldpm31/cos(abxpm1+abxpm2)
-dpm32: drift, l = ldpm32/cos(abxpm1+abxpm2)
+dpm2: drift, l = 0.30   /cos(abxpm1)
+dpm3: drift, l = ldpm3  /cos(abxpm1+abxpm2)
+dpm31: drift, l = ldpm31 /cos(abxpm1+abxpm2)
+dpm32: drift, l = ldpm32 /cos(abxpm1+abxpm2)
 dpcbtm3: drift, l = 0 !BTM3 is attached to d/s face of PCPM3
-dpm4: drift, l = 2.42/cos(abxpm1+abxpm2)
+dpm4: drift, l = 2.42   /cos(abxpm1+abxpm2)
 dsftdmp: drift, l = zsftdmp/cos(abxpm1+abxpm2)
 
-dxdcu: drift, l = 1.092223+0.75
+dxdcu: drift, l = 1.092223 +0.75
 dxdcu1: drift, l = 0.8783
 dxdcu1a: drift, l = 0.840799
 dxdcu1b: drift, l = dxdcu1[l]-dxdcu1a[l]
@@ -152,8 +148,8 @@ dxdcd2a: drift, l = 0.142402
 dxdcd2b: drift, l = dxdcd2[l]-dxdcd2a[l]
 dxdcd3: drift, l = dxdcd[l]-dxdcd1[l]-dxdcd2[l]
 
-pcpm1: ecollimator, x_limit = 0.0080, y_limit = 0.0080, l = lpcpm !per LCLSII-3.5-PR-0111-R1
-pcpm2: ecollimator, x_limit = 0.0127, y_limit = 0.0127, l = lpcpm
+pcpm1: ecollimator, l = lpcpm, x_limit = 0.0080, y_limit = 0.0080 !per LCLSII-3.5-PR-0111-R1
+pcpm2: ecollimator, l = lpcpm, x_limit = 0.0127, y_limit = 0.0127
  !PCPM3  : ECOL, L=LPCPMW/COS(ABXPM1+ABXPM2), XSIZE=0.0080, YSIZE=0.0080
 dpcpm3: drift, l = lpcpmw/cos(abxpm1+abxpm2) !placeholder for PCPM3
 
@@ -163,8 +159,8 @@ btm2: instrument !Burn-Through-Monitor behind PCPM2
 mbtm3: marker !placeholder for BTM3
 btmsft: instrument !Burn-Through-Monitor behind HXR safety dump
 
-rtdsl0: instrument, type = "RAPID TRNAD DIAG"
-rtdsl0_yagxray: instrument, type = "MONITORILE MON (RTD"
+rtdsl0: monitor, type = "RAPID TRNAD DIAG"
+rtdsl0_yagxray: monitor, type = "MONITORILE MON (RTD"
 
 tp_hxtes0: instrument, type = "treaty flange" !treaty point for HXR XTES system
 tv1l0_vgc_1: instrument, type = "GATE VALVE"
@@ -180,19 +176,17 @@ sftdmp: instrument !front face of HXR safety dump (Z'=712-715 m per PRD)
 vv38: marker !vac. valve in HXR safety dump line
 mvv10: marker !placeholder for vac. valve in HXR XTES line
 
-bxpm1_full: line = (bxpm11, bxpm12)
-bxpm2_full: line = (bxpm21, bxpm22)
+  BXPM1_full : LINE=(BXPM11,BXPM12)
+  BXPM2_full : LINE=(BXPM21,BXPM22)
 
-sftdump1: line = (begsfth_1, dyds, ds1s, dyd1, dssa, dyd2, dssb, dyd3, dscsa, vv38, dscsb, pcpm1 &
-        , dpcbtm1, btm1, dxdcu1a, tv1l0_vgc_1, dxdcu1b, tp_hxtes0, dxdcu2a, tv1l0_vrm_1,  &
-        tv1l0_gcc_1, tv1l0_gpi_1, dxdcu2b, xdca, rtdsl0, xdcb, xdcc, rtdsl0_yagxray, xdcd, dxdcd1 &
-        , im1l0_xtes_vgc_1, dxdcd2a, im1l0_xtes_vrm_1, dxdcd2b, im1l0_xtes, dxdcd3, pcpm2, btm2,  &
-        dpm11, mbxpm1_pip_1, dpm12, endsfth_1)
+  SFTDUMP1: LINE=(BEGSFTH_1,DYDS,DS1S,DYD1,DSSA,DYD2,DSSB,DYD3,DSCSa,VV38,DSCSb,PCPM1,DPCBTM1,BTM1,DXDCU1a,TV1L0_VGC_1,
+         DXDCU1b,TP_HXTES0,DXDCU2a,TV1L0_VRM_1,TV1L0_GCC_1,TV1L0_GPI_1,DXDCU2b,XDCa,RTDSL0,XDCb,XDCc,RTDSL0_YAGXRAY,XDCd,DXDCD1,
+         IM1L0_XTES_VGC_1,DXDCD2a,IM1L0_XTES_VRM_1,DXDCD2b,IM1L0_XTES,DXDCD3,PCPM2,BTM2,DPM11,MBXPM1_PIP_1,DPM12,ENDSFTH_1)
 
-sftdump2: line = (begsfth_2, bxpm1_full, dpm2, bxpm2_full, dpm31, mvv10, dpm32, dpcpm3, dpcbtm3,  &
-        mbtm3, dpm4, sftdmp, dsftdmp, btmsft, endsfth_2)
+  SFTDUMP2: LINE=(BEGSFTH_2,BXPM1_full,DPM2,BXPM2_full,DPM31,MVV10,DPM32,DPCPM3,DPCBTM3,MBTM3,DPM4,SFTDMP,DSFTDMP,
+         BTMSFT,ENDSFTH_2)
 
-sftdump: line = (sftdump1, sftdump2)
+  SFTDUMP: LINE=(SFTDUMP1,SFTDUMP2)
 
 ! ------------------------------------------------------------------------------
 ! SXR safety dump
@@ -214,15 +208,14 @@ lbxpm1bl = rbxpmb*abxpm1bl !path length in "long"  half of BXPM1B
 
 lbxpm1b = lbxpm1bs+lbxpm1bl
 
-bxpm1b1: sbend, hgap = gbxpm/2, fint = 0.5, fintx = 0.0, e2 = 0, e1 = 0, type = "4D36-C", l =  &
-        lbxpm1bs, angle = lbxpm1bs * abxpm1bs/lbxpm1bs
-bxpm1b2: sbend, hgap = gbxpm/2, fint = 0.0, fintx = 0.5, e1 = 0, e2 = abxpm1b, type = "4D36-C", l &
-         = lbxpm1bl, angle = lbxpm1bl * abxpm1bl/lbxpm1bl
+bxpm1b1: sbend, type = "4D36-C", l = lbxpm1bs, angle = abxpm1bs, hgap = gbxpm/2, fint = 0.5, fintx = 0, e2 = 0, e1 = 0
+bxpm1b2: sbend, type = "4D36-C", l = lbxpm1bl, angle = abxpm1bl, hgap = gbxpm/2, fint = 0, fintx = 0.5, e1 = 0,
+          e2 = abxpm1b
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-bxpm1b: sbend, hgap = gbxpm/2, e1 = 0, fint = 0.5, e2 = abxpm1b, type = "4D36-C", l = lbxpm1b,  &
-        angle = lbxpm1b * abxpm1b/lbxpm1b
+bxpm1b: sbend, type = "4D36-C", hgap = gbxpm/2, l = lbxpm1b, angle = abxpm1b, e1 = 0, fint = 0.5, e2 = abxpm1b,
+          fintx = 0.5
 
 dscsb1: drift, l = 0.478198407804 !DSCSa[L]
 dscsb2: drift, l = 0.0943         !DSCSa[L]
@@ -254,10 +247,10 @@ dpcbtm3b: drift, l = 0 !BTM3B is attached to d/s face of PCPM3B
 dpm3b: drift, l = 8.5747889/cos(abxpm1bs+abxpm1bl) !2.272
 dpm3ba: drift, l = 0.6560246/cos(abxpm1bs+abxpm1bl)
 dpm3bb: drift, l = dpm3b[l]-dpm3ba[l]
-dsftdmpb: drift, l = zsftdmp/cos(abxpm1bs+abxpm1bl)
+dsftdmpb: drift, l = zsftdmp  /cos(abxpm1bs+abxpm1bl)
 
-pcpm1b: ecollimator, x_limit = 0.0100, y_limit = 0.0100, type = "ELECTRON COLL", l = lpcpm !per LCLSII-3.5-PR-0111-R1
-pcpm2b: ecollimator, x_limit = 0.0127, y_limit = 0.0127, type = "ELECTRON COLL", l = lpcpm
+pcpm1b: ecollimator, type = "ELECTRON COLL", l = lpcpm, x_limit = 0.0100, y_limit = 0.0100 !per LCLSII-3.5-PR-0111-R1
+pcpm2b: ecollimator, type = "ELECTRON COLL", l = lpcpm, x_limit = 0.0127, y_limit = 0.0127
  !PCPM3B  : ECOL, L=LPCPM/COS(ABXPM1BS+ABXPM1BL), XSIZE=0.0100, YSIZE=0.0100
 dpcpm3b: drift, l = lpcpmw/cos(abxpm1bs+abxpm1bl) !placeholder for PCPM3B
 
@@ -287,17 +280,15 @@ im1k0_xtes_gcc_1: instrument, type = "COLD CATHODE GAU"
 im1k0_xtes_gpi_1: instrument, type = "PIRANI GAUGE"
 mvv3s: marker !placeholder for vac. valve in SXR XTES line
 
-bxpm1b_full: line = (bxpm1b1, bxpm1b2)
+  BXPM1B_full : LINE=(BXPM1B1,BXPM1B2)
 
-sftdumpb1: line = (begsfts_1, dyds, ds1s, dyd1, dssa, dyd2, dssb, dyd3, dscsb1, vv38b, dscsb2,  &
-        pcpm1b, dpcbtm1, btm1b, dxdcub1, rtdsk0_vgc_1, dxdcub2, tp_sxtes0, dxdcub3, rtdsk0_vrm_1 &
-        , rtdsk0_gcc_1, rtdsk0_gpi_1, dxdcub4, xdcba, xdcbb, xdcbc1, rtdsk0, xdcbc2,  &
-        rtdsk0_yagxrayb, xdcbd, dxdcdb1, pc1k0_xtes, dxdcdb2, em1k0_gmd_vgc_1, dxdcdb3, em1k0_gmd &
-        , dxdcdb4, im1k0_xtes_vrm_1, im1k0_xtes_gcc_1, im1k0_xtes_gpi_1, dxdcdb5, im1k0_xtes,  &
-        dxdcdb6, pcpm2b, btm2b, dpm1b, endsfts_1)
+  SFTDUMPB1: LINE=(BEGSFTS_1,DYDS,DS1S,DYD1,DSSA,DYD2,DSSB,DYD3,DSCSB1,VV38B,DSCSB2,PCPM1B,DPCBTM1,BTM1B,DXDCUB1,
+         RTDSK0_VGC_1,DXDCUB2,TP_SXTES0,DXDCUB3,RTDSK0_VRM_1,RTDSK0_GCC_1,RTDSK0_GPI_1,DXDCUB4,XDCBa,XDCBb,XDCBc1,RTDSK0,XDCBc2,
+         RTDSK0_YAGXRAYB,XDCBd,DXDCDB1,PC1K0_XTES,DXDCDB2,EM1K0_GMD_VGC_1,DXDCDB3,EM1K0_GMD,DXDCDB4,IM1K0_XTES_VRM_1,
+         IM1K0_XTES_GCC_1,IM1K0_XTES_GPI_1,DXDCDB5,IM1K0_XTES,DXDCDB6,PCPM2B,BTM2B,DPM1B,ENDSFTS_1)
 
-sftdumpb2: line = (begsfts_2, bxpm1b_full, dpm2ba, dpcpm3b, dpcbtm3b, mbtm3b, dpm2bb, msl1s,  &
-        dpm3ba, mvv3s, dpm3bb, sftdmpb, dsftdmpb, btmsftb, endsfts_2)
+  SFTDUMPB2: LINE=(BEGSFTS_2,BXPM1B_full,DPM2Ba,DPCPM3B,DPCBTM3B,MBTM3B,DPM2Bb,MSL1S,DPM3Ba,MVV3S,DPM3Bb,SFTDMPB,
+         DSFTDMPB,BTMSFTB,ENDSFTS_2)
 
-sftdumpb: line = (sftdumpb1, sftdumpb2)
+  SFTDUMPB: LINE=(SFTDUMPB1,SFTDUMPB2)
 

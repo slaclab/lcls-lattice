@@ -29,9 +29,9 @@ a4x = 0.019693602
 a5x = 0.019693602
 a6x = -0.024
 
-mr1k1_bend: multipole, type = "MIRROR", k0l = a1y, t0 = pi / 2
-sp1k1_mono: multipole, type = "MONOCHROMATOR", k0l = a2y, t0 = pi / 2
-mr3k1_grating: multipole, type = "GRATING", k0l = a3y, t0 = pi / 2
+mr1k1_bend: multipole, type = "MIRROR", k0l = a1y,t0
+sp1k1_mono: multipole, type = "MONOCHROMATOR", k0l = a2y,t0
+mr3k1_grating: multipole, type = "GRATING", k0l = a3y,t0
 mr1k3_txi: multipole, type = "MIRROR", k0l = a4x
 mr2k3_txi: multipole, type = "MIRROR", k0l = a5x
 mr1k4_soms: multipole, type = "MIRROR", k0l = a6x
@@ -88,7 +88,7 @@ dsxtes30: drift, l = 0.0289889/cos(a1y)
 dsxtes31: drift, l = 3.5372036/cos(a1y)
 dsxtes32: drift, l = 0.3344515/cos(a1y)
 dsxtes33: drift, l = 1.2596323/cos(a1y)
-dsxtes34: drift, l = 0.138444/cos(a12y)
+dsxtes34: drift, l = 0.138444 /cos(a12y)
 dsxtes35: drift, l = 0.4793516/cos(a13y)
 dsxtes36: drift, l = 0.0411908/cos(a13y)
 
@@ -97,9 +97,9 @@ dsxtes36: drift, l = 0.0411908/cos(a13y)
 a45x = a4x+a5x
 
 dsxtes37: drift, l = 1.65
-dsxtes38: drift, l = 1.6/cos(a4x)
+dsxtes38: drift, l = 1.6      /cos(a4x)
 dsxtes39: drift, l = 0.6779536/cos(a45x)
-dsxtes40: drift, l = 2.600075/cos(a45x)
+dsxtes40: drift, l = 2.600075 /cos(a45x)
 dsxtes41: drift, l = 0.0359746/cos(a45x)
 dsxtes42: drift, l = 0.1611878/cos(a45x)
 dsxtes43: drift, l = 0.3068738/cos(a45x)
@@ -110,7 +110,7 @@ dsxtes47: drift, l = 0.1269015/cos(a45x)
 dsxtes48: drift, l = 0.0526591/cos(a45x)
 dsxtes49: drift, l = 0.3978243/cos(a45x)
 dsxtes50: drift, l = 0.1301076/cos(a45x)
-dsxtes51: drift, l = 5.671144/cos(a45x)
+dsxtes51: drift, l = 5.671144 /cos(a45x)
 dsxtes52: drift, l = 0.1243635/cos(a45x)
 dsxtes53: drift, l = 0.0563443/cos(a45x)
 dsxtes54: drift, l = 3.0113111/cos(a45x)
@@ -136,8 +136,8 @@ dsxtes70: drift, l = 0.0831388/cos(a6x)
 dsxtes71: drift, l = 0.5004792/cos(a6x)
 dsxtes72: drift, l = 0.6694969/cos(a6x)
 dsxtes73: drift, l = 1.2027371/cos(a6x)
-dsxtes74: drift, l = 0.125603/cos(a6x)
-dsxtes75: drift, l = 0.04953/cos(a6x)
+dsxtes74: drift, l = 0.125603 /cos(a6x)
+dsxtes75: drift, l = 0.04953  /cos(a6x)
 dsxtes76: drift, l = 0.2996354/cos(a6x)
 dsxtes77: drift, l = 0.4126311/cos(a6x)
 dsxtes78: drift, l = 0.8949946/cos(a6x)
@@ -145,16 +145,16 @@ dsxtes79: drift, l = 0.1883719/cos(a6x)
 dsxtes80: drift, l = 1.0320948/cos(a6x)
 dsxtes81: drift, l = 0.4015629/cos(a6x)
 dsxtes82: drift, l = 0.7313423/cos(a6x)
-dsxtes83: drift, l = 0.460887/cos(a6x)
+dsxtes83: drift, l = 0.460887 /cos(a6x)
 dsxtes84: drift, l = 0.4046217/cos(a6x)
 dsxtes85: drift, l = 0.2274913/cos(a6x)
 dsxtes86: drift, l = 0.2199633/cos(a6x)
 dsxtes87: drift, l = 0.2770367/cos(a6x)
 dsxtes88: drift, l = 0.3308656/cos(a6x)
-dsxtes89: drift, l = 0.122407/cos(a6x)
+dsxtes89: drift, l = 0.122407 /cos(a6x)
 dsxtes90: drift, l = 0.0526898/cos(a6x)
 dsxtes91: drift, l = 0.2560376/cos(a6x)
-dsxtes92: drift, l = 1.93/cos(a6x)
+dsxtes92: drift, l = 1.93     /cos(a6x)
 
 ! ==============================================================================
 ! instruments
@@ -165,7 +165,7 @@ dsxtes92: drift, l = 1.93/cos(a6x)
 mbxpm1b: instrument, type = "MAGNET"
 pcpm3b_pip_1: instrument, type = "ION PUMP"
 pcpm3b_gfs_1: instrument, type = "FAST VALVE SENSO"
-pcpm3b: ecollimator, x_limit = 0.0127, y_limit = 0.0127, type = "ELECTRON COLL", l = lpcpmw
+pcpm3b: ecollimator, type = "ELECTRON COLL", l = lpcpmw, x_limit = 0.0127, y_limit = 0.0127
 btm3b: instrument, type = "BTM" !Burn-Through-Monitor behind PCPM3b
 sl1k0_power: instrument, type = "ADJ aperture (AA1)"
 sl1k0_pwr_vrm_1: instrument, type = "RIGHT ANGLE VALV"
@@ -297,48 +297,38 @@ tp_wall2w: instrument, type = "WEST WALL"
 
 ! common line
 
-sxtes1: line = (begsxtes_1, dsxtes01, mbxpm1b, dsxtes02, pcpm3b_pip_1, pcpm3b_gfs_1, dsxtes03,  &
-        pcpm3b, btm3b, dsxtes04, sl1k0_power, dsxtes05, sl1k0_pwr_vrm_1, sl1k0_pwr_gcc_1,  &
-        sl1k0_pwr_gpi_1, dsxtes06, at1k0_gas_vgc_1, dsxtes07, msftdmpb, dsxtes08, mbtmsftb,  &
-        dsxtes09, at1k0_gas, dsxtes10, tp_wall1se, dsxtes11, tp_wall1sw, dsxtes12,  &
-        em2k0_xgmd_vgc_1, dsxtes13, em2k0_xgmd, dsxtes14, em2k0_xgmd_vgc_2, dsxtes15, tv2k0_vgc_1 &
-        , tv2k0_vrm_1, tv2k0_gcc_1, tv2k0_gpi_1, dsxtes16, tv2k0_vrm_2, tv2k0_gcc_2, tv2k0_gpi_2 &
-        , dsxtes17, tv2k0_vfs_1, dsxtes18, sp1k0, dsxtes19, pc2k0_xtes, dsxtes20, bt1k0_xtes,  &
-        dsxtes21, bs1k0_xtes, dsxtes22, pf1k0_wfs, dsxtes23, sl2k0_power, dsxtes24, pa1k0_rga_1,  &
-        pa1k0_vrm_1, pa1k0_gcc_1, pa1k0_gpi_1, pa1k0_pip_1, dsxtes25, im2k0_xtes, dsxtes26, pa1k0 &
-        , dsxtes27, mr1k1_vgc_1, dsxtes28, endsxtes_1)
+  SXTES1 : LINE=(BEGSXTES_1,DSXTES01,MBXPM1B,DSXTES02,PCPM3B_PIP_1,PCPM3B_GFS_1,DSXTES03,PCPM3B,BTM3B,DSXTES04,
+         SL1K0_POWER,DSXTES05,SL1K0_PWR_VRM_1,SL1K0_PWR_GCC_1,SL1K0_PWR_GPI_1,DSXTES06,AT1K0_GAS_VGC_1,DSXTES07,MSFTDMPB,
+         DSXTES08,MBTMSFTB,DSXTES09,AT1K0_GAS,DSXTES10,TP_WALL1SE,DSXTES11,TP_WALL1SW,DSXTES12,EM2K0_XGMD_VGC_1,DSXTES13,
+         EM2K0_XGMD,DSXTES14,EM2K0_XGMD_VGC_2,DSXTES15,TV2K0_VGC_1,TV2K0_VRM_1,TV2K0_GCC_1,TV2K0_GPI_1,DSXTES16,TV2K0_VRM_2,
+         TV2K0_GCC_2,TV2K0_GPI_2,DSXTES17,TV2K0_VFS_1,DSXTES18,SP1K0,DSXTES19,PC2K0_XTES,DSXTES20,BT1K0_XTES,DSXTES21,BS1K0_XTES,
+         DSXTES22,PF1K0_WFS,DSXTES23,SL2K0_POWER,DSXTES24,PA1K0_RGA_1,PA1K0_VRM_1,PA1K0_GCC_1,PA1K0_GPI_1,PA1K0_PIP_1,DSXTES25,
+         IM2K0_XTES,DSXTES26,PA1K0,DSXTES27,MR1K1_VGC_1,DSXTES28,ENDSXTES_1)
 
 ! "2.2" line
 
-sxtes2: line = (begsxtes_2, mr1k1_bend, dsxtes29, mr1k3_vgc_1, dsxtes30, nd1s, dsxtes31,  &
-        im1k1_ppm, dsxtes32, sp1k1_mono_vgc_1, dsxtes33, sp1k1_mono, dsxtes34, mr3k1_grating,  &
-        dsxtes35, sp1k1_mono_vgc_2, dsxtes36, tp_2_x, endsxtes_2)
+  SXTES2 : LINE=(BEGSXTES_2,MR1K1_BEND,DSXTES29,MR1K3_VGC_1,DSXTES30,ND1S,DSXTES31,IM1K1_PPM,DSXTES32,SP1K1_MONO_VGC_1,
+         DSXTES33,SP1K1_MONO,DSXTES34,MR3K1_GRATING,DSXTES35,SP1K1_MONO_VGC_2,DSXTES36,TP_2_X,ENDSXTES_2)
 
 ! TXI line
 
-sxtes3: line = (begsxtes_3, dsxtes37, mr1k3_txi, dsxtes38, mr2k3_txi, mr2k3_txi_gbc_1, dsxtes39,  &
-        bt2k0_pleg_txi, dsxtes40, im1k2_ppm_vgc_1, dsxtes41, tp_1_2sxr, dsxtes42, im1k3_ppm_pgt_1 &
-        , dsxtes43, im1k3_ppm, dsxtes44, bt1k3_air, dsxtes45, pc1k3_l2si_vrm_1, pc1k3_l2si_gcc_1 &
-        , pc1k3_l2si_pip_1, dsxtes46, pc1k3_l2si, dsxtes47, bt2k3_xtes, dsxtes48, bs1k3_xtes,  &
-        dsxtes49, pc1k3_l2si_vrm_2, pc1k3_l2si_gbc_1, pc1k3_l2si_gcc_2, pc1k3_l2si_pip_2,  &
-        dsxtes50, pc1k3_l2si_vgc_1, dsxtes51, tv1k3_vrm_1, tv1k3_gcc_1, tv1k3_gpi_1, tv1k3_pip_1 &
-        , dsxtes52, pc2k3_l2si, dsxtes53, bt3k3_l2si, dsxtes54, tv1k3_vgc_1, dsxtes55, st1k3_pps &
-        , st1k3_pps_gbc_1, dsxtes56, pc3k3_l2si, dsxtes57, bt4k3_xtes, dsxtes58, bs2k3_xtes,  &
-        endsxtes_3)
+  SXTES3 : LINE=(BEGSXTES_3,DSXTES37,MR1K3_TXI,DSXTES38,MR2K3_TXI,MR2K3_TXI_GBC_1,DSXTES39,BT2K0_PLEG_TXI,DSXTES40,
+         IM1K2_PPM_VGC_1,DSXTES41,TP_1_2SXR,DSXTES42,IM1K3_PPM_PGT_1,DSXTES43,IM1K3_PPM,DSXTES44,BT1K3_AIR,DSXTES45,
+         PC1K3_L2SI_VRM_1,PC1K3_L2SI_GCC_1,PC1K3_L2SI_PIP_1,DSXTES46,PC1K3_L2SI,DSXTES47,BT2K3_XTES,DSXTES48,BS1K3_XTES,DSXTES49,
+         PC1K3_L2SI_VRM_2,PC1K3_L2SI_GBC_1,PC1K3_L2SI_GCC_2,PC1K3_L2SI_PIP_2,DSXTES50,PC1K3_L2SI_VGC_1,DSXTES51,TV1K3_VRM_1,
+         TV1K3_GCC_1,TV1K3_GPI_1,TV1K3_PIP_1,DSXTES52,PC2K3_L2SI,DSXTES53,BT3K3_L2SI,DSXTES54,TV1K3_VGC_1,DSXTES55,ST1K3_PPS,
+         ST1K3_PPS_GBC_1,DSXTES56,PC3K3_L2SI,DSXTES57,BT4K3_XTES,DSXTES58,BS2K3_XTES,ENDSXTES_3)
 
 ! TMO line
 
-sxtes4: line = (begsxtes_4, dsxtes59, bt2k0_pleg_tmo, dsxtes60, tv3k0_vgc_1, dsxtes61,  &
-        tv3k0_pgt_1, dsxtes62, tv3k0_vrm_1, tv3k0_gcc_1, tv3k0_gpi_1, tv3k0_pip_1, dsxtes63,  &
-        mr1k4_vgc_1, dsxtes64, mr1k4_soms, mr1k4_soms_gbc_1, dsxtes65, pc1k4_ssa, dsxtes66,  &
-        bt1k4_l2si, dsxtes67, tv1k4_vgc_1, dsxtes68, tv1k4_vfs_1, dsxtes69, tv1k4_vrm_1,  &
-        tv1k4_gcc_1, tv1k4_gpi_1, dsxtes70, nd2s, dsxtes71, at1k4_solid, dsxtes72, tv1k4_vgc_2,  &
-        dsxtes73, pc2k4_xtes, dsxtes74, bt2k4_xtes, dsxtes75, bs1k4_xtes, dsxtes76, im1k4_xtes,  &
-        dsxtes77, st1k4_test, dsxtes78, sp1k4, dsxtes79, lusi, dsxtes80, pc3k4_xtes, dsxtes81,  &
-        st2k4_bcs, dsxtes82, st3k4_pps, st3k4_pps_gbc_1, dsxtes83, st3k4_pps_vgc_1, dsxtes84,  &
-        al1k4_l2si, dsxtes85, sl1k4_scatter, dsxtes86, im2k4_ppm, dsxtes87, im2k4_xtes_vrm_1,  &
-        pc4k4_xtes_gcc_1, pc4k4_xtes_gpi_1, pc4k4_xtes_pip_1, dsxtes88, pc4k4_xtes, dsxtes89,  &
-        bt3k4_xtes, dsxtes90, bs2k4_xtes, dsxtes91, tp_wall2e, dsxtes92, tp_wall2w, endsxtes_4)
+  SXTES4 : LINE=(BEGSXTES_4,DSXTES59,BT2K0_PLEG_TMO,DSXTES60,TV3K0_VGC_1,DSXTES61,TV3K0_PGT_1,DSXTES62,TV3K0_VRM_1,
+         TV3K0_GCC_1,TV3K0_GPI_1,TV3K0_PIP_1,DSXTES63,MR1K4_VGC_1,DSXTES64,MR1K4_SOMS,MR1K4_SOMS_GBC_1,DSXTES65,PC1K4_SSA,
+         DSXTES66,BT1K4_L2SI,DSXTES67,TV1K4_VGC_1,DSXTES68,TV1K4_VFS_1,DSXTES69,TV1K4_VRM_1,TV1K4_GCC_1,TV1K4_GPI_1,DSXTES70,
+         ND2S,DSXTES71,AT1K4_SOLID,DSXTES72,TV1K4_VGC_2,DSXTES73,PC2K4_XTES,DSXTES74,BT2K4_XTES,DSXTES75,BS1K4_XTES,DSXTES76,
+         IM1K4_XTES,DSXTES77,ST1K4_TEST,DSXTES78,SP1K4,DSXTES79,LUSI,DSXTES80,PC3K4_XTES,DSXTES81,ST2K4_BCS,DSXTES82,ST3K4_PPS,
+         ST3K4_PPS_GBC_1,DSXTES83,ST3K4_PPS_VGC_1,DSXTES84,AL1K4_L2SI,DSXTES85,SL1K4_SCATTER,DSXTES86,IM2K4_PPM,DSXTES87,
+         IM2K4_XTES_VRM_1,PC4K4_XTES_GCC_1,PC4K4_XTES_GPI_1,PC4K4_XTES_PIP_1,DSXTES88,PC4K4_XTES,DSXTES89,BT3K4_XTES,DSXTES90,
+         BS2K4_XTES,DSXTES91,TP_WALL2E,DSXTES92,TP_WALL2W,ENDSXTES_4)
 
 ! ------------------------------------------------------------------------------
 

@@ -101,51 +101,43 @@ sbkrapm = 1.055          !PM eff. straight length (m)
 tbkrapm = 0.014303833885 !PM tilt angle (rad)
 
 abkrapm0 = -0.276615046502e-2
-abkrapm = abkrapm0*setal     !angle per one PM (rad)
+abkrapm = abkrapm0 *setal     !angle per one PM (rad)
 abkrapmh = abkrapm/2           !PM half-angle
-abkrapmh2 = abkrapmh*abkrapmh
+abkrapmh2 = abkrapmh *abkrapmh
 abkrapmh4 = abkrapmh2*abkrapmh2
 
-lbkrapm = sbkrapm/(1-abkrapmh2/6+abkrapmh4/120) !PM path length
+lbkrapm = sbkrapm/(1 -abkrapmh2/6 +abkrapmh4/120) !PM path length
 
-bkrapm1a: sbend, e1 = abkrapm/2, e2 = 0, fint = 0.5, fintx = 0, hgap = gbkrapm/2, type =  &
-        "1.405K40.83", ref_tilt = tbkrapm, l = lbkrapm/2, angle =  &
-        lbkrapm/2 * abkrapm/2/(lbkrapm/2)
-bkrapm1b: sbend, e2 = abkrapm/2, e1 = 0, fint = 0, fintx = 0.5, hgap = gbkrapm/2, type =  &
-        "1.405K40.83", ref_tilt = tbkrapm, l = lbkrapm/2, angle =  &
-        lbkrapm/2 * abkrapm/2/(lbkrapm/2)
+bkrapm1a: sbend, type = "1.405K40.83", l = lbkrapm/2, angle = abkrapm/2, e1 = abkrapm/2, e2 = 0, fint = 0.5, fintx = 0,
+          hgap = gbkrapm/2, ref_tilt = tbkrapm
+bkrapm1b: sbend, type = "1.405K40.83", l = lbkrapm/2, angle = abkrapm/2, e2 = abkrapm/2, e1 = 0, fint = 0, fintx = 0.5,
+          hgap = gbkrapm/2, ref_tilt = tbkrapm
 
-bkrapm2a: sbend, e1 = abkrapm/2, e2 = 0, fint = 0.5, fintx = 0, hgap = gbkrapm/2, type =  &
-        "1.405K40.83", ref_tilt = tbkrapm, l = lbkrapm/2, angle =  &
-        lbkrapm/2 * abkrapm/2/(lbkrapm/2)
-bkrapm2b: sbend, e2 = abkrapm/2, e1 = 0, fint = 0, fintx = 0.5, hgap = gbkrapm/2, type =  &
-        "1.405K40.83", ref_tilt = tbkrapm, l = lbkrapm/2, angle =  &
-        lbkrapm/2 * abkrapm/2/(lbkrapm/2)
+bkrapm2a: sbend, type = "1.405K40.83", l = lbkrapm/2, angle = abkrapm/2, e1 = abkrapm/2, e2 = 0, fint = 0.5, fintx = 0,
+          hgap = gbkrapm/2, ref_tilt = tbkrapm
+bkrapm2b: sbend, type = "1.405K40.83", l = lbkrapm/2, angle = abkrapm/2, e2 = abkrapm/2, e1 = 0, fint = 0, fintx = 0.5,
+          hgap = gbkrapm/2, ref_tilt = tbkrapm
 
-bkrapm3a: sbend, e1 = abkrapm/2, e2 = 0, fint = 0.5, fintx = 0, hgap = gbkrapm/2, type =  &
-        "1.405K40.83", ref_tilt = tbkrapm, l = lbkrapm/2, angle =  &
-        lbkrapm/2 * abkrapm/2/(lbkrapm/2)
-bkrapm3b: sbend, e2 = abkrapm/2, e1 = 0, fint = 0, fintx = 0.5, hgap = gbkrapm/2, type =  &
-        "1.405K40.83", ref_tilt = tbkrapm, l = lbkrapm/2, angle =  &
-        lbkrapm/2 * abkrapm/2/(lbkrapm/2)
+bkrapm3a: sbend, type = "1.405K40.83", l = lbkrapm/2, angle = abkrapm/2, e1 = abkrapm/2, e2 = 0, fint = 0.5, fintx = 0,
+          hgap = gbkrapm/2, ref_tilt = tbkrapm
+bkrapm3b: sbend, type = "1.405K40.83", l = lbkrapm/2, angle = abkrapm/2, e2 = abkrapm/2, e1 = 0, fint = 0, fintx = 0.5,
+          hgap = gbkrapm/2, ref_tilt = tbkrapm
 
-bkrapm4a: sbend, e1 = abkrapm/2, e2 = 0, fint = 0.5, fintx = 0, hgap = gbkrapm/2, type =  &
-        "1.405K40.83", ref_tilt = tbkrapm, l = lbkrapm/2, angle =  &
-        lbkrapm/2 * abkrapm/2/(lbkrapm/2)
-bkrapm4b: sbend, e2 = abkrapm/2, e1 = 0, fint = 0, fintx = 0.5, hgap = gbkrapm/2, type =  &
-        "1.405K40.83", ref_tilt = tbkrapm, l = lbkrapm/2, angle =  &
-        lbkrapm/2 * abkrapm/2/(lbkrapm/2)
+bkrapm4a: sbend, type = "1.405K40.83", l = lbkrapm/2, angle = abkrapm/2, e1 = abkrapm/2, e2 = 0, fint = 0.5, fintx = 0,
+          hgap = gbkrapm/2, ref_tilt = tbkrapm
+bkrapm4b: sbend, type = "1.405K40.83", l = lbkrapm/2, angle = abkrapm/2, e2 = abkrapm/2, e1 = 0, fint = 0, fintx = 0.5,
+          hgap = gbkrapm/2, ref_tilt = tbkrapm
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-bkrapm1: sbend, hgap = gbkrapm/2, e1 = abkrapm/2, fint = 0.5, e2 = abkrapm/2, type =  &
-        "1.405K40.83", ref_tilt = tbkrapm, l = lbkrapm, angle = lbkrapm * abkrapm/lbkrapm
-bkrapm2: sbend, hgap = gbkrapm/2, e1 = abkrapm/2, fint = 0.5, e2 = abkrapm/2, type =  &
-        "1.405K40.83", ref_tilt = tbkrapm, l = lbkrapm, angle = lbkrapm * abkrapm/lbkrapm
-bkrapm3: sbend, hgap = gbkrapm/2, e1 = abkrapm/2, fint = 0.5, e2 = abkrapm/2, type =  &
-        "1.405K40.83", ref_tilt = tbkrapm, l = lbkrapm, angle = lbkrapm * abkrapm/lbkrapm
-bkrapm4: sbend, hgap = gbkrapm/2, e1 = abkrapm/2, fint = 0.5, e2 = abkrapm/2, type =  &
-        "1.405K40.83", ref_tilt = tbkrapm, l = lbkrapm, angle = lbkrapm * abkrapm/lbkrapm
+bkrapm1: sbend, type = "1.405K40.83", hgap = gbkrapm/2, l = lbkrapm, angle = abkrapm, e1 = abkrapm/2, fint = 0.5,
+          e2 = abkrapm/2, fintx = 0.5, ref_tilt = tbkrapm
+bkrapm2: sbend, type = "1.405K40.83", hgap = gbkrapm/2, l = lbkrapm, angle = abkrapm, e1 = abkrapm/2, fint = 0.5,
+          e2 = abkrapm/2, fintx = 0.5, ref_tilt = tbkrapm
+bkrapm3: sbend, type = "1.405K40.83", hgap = gbkrapm/2, l = lbkrapm, angle = abkrapm, e1 = abkrapm/2, fint = 0.5,
+          e2 = abkrapm/2, fintx = 0.5, ref_tilt = tbkrapm
+bkrapm4: sbend, type = "1.405K40.83", hgap = gbkrapm/2, l = lbkrapm, angle = abkrapm, e1 = abkrapm/2, fint = 0.5,
+          e2 = abkrapm/2, fintx = 0.5, ref_tilt = tbkrapm
 
 ! PM projections onto BSY HXR beam
 
@@ -171,101 +163,65 @@ abram1 = 0.23261117109e-2                !bend angle (rad)
 lbram1 = sbram1*abram1/(2*sin(abram1/2)) !path length (m)
 tbram1 = 0.014303788803                  !bend roll (rad)
 
-bram1a: sbend, e1 = abram1/2, e2 = 0, hgap = gbram1/2, fint = 0.5, fintx = 0, type = "2.0D38.37" &
-        , ref_tilt = tbram1, l = lbram1/2, angle = lbram1/2 * abram1/2/(lbram1/2)
-bram1b: sbend, e2 = abram1/2, e1 = 0, hgap = gbram1/2, fint = 0, fintx = 0.5, type = "2.0D38.37" &
-        , ref_tilt = tbram1, l = lbram1/2, angle = lbram1/2 * abram1/2/(lbram1/2)
+bram1a: sbend, type = "2.0D38.37", l = lbram1/2, angle = abram1/2, e1 = abram1/2, e2 = 0, hgap = gbram1/2, fint = 0.5,
+          fintx = 0, ref_tilt = tbram1
+bram1b: sbend, type = "2.0D38.37", l = lbram1/2, angle = abram1/2, e2 = abram1/2, e1 = 0, hgap = gbram1/2, fint = 0,
+          fintx = 0.5, ref_tilt = tbram1
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-bram1: sbend, hgap = gbram1/2, e1 = abram1/2, fint = 0.5, e2 = abram1/2, type = "2.0D38.37",  &
-        ref_tilt = tbram1, l = lbram1, angle = lbram1 * abram1/lbram1
+bram1: sbend, type = "2.0D38.37", hgap = gbram1/2, l = lbram1, angle = abram1, e1 = abram1/2, fint = 0.5, e2 = abram1/2,
+          fintx = 0.5, ref_tilt = tbram1
 
 ! A-bends
 
-aarc = -24*degrees             !total arc bend angle (24 degrees)
+aarc = -24*raddeg             !total arc bend angle (24 degrees)
 nbend = 12                     !number of arc bends
  !ABA   := AARC/Nbend             !nominal arc bend angle
-aba = -1.999526617334*degrees !arc bend angle per Transport deck
+aba = -1.999526617334*raddeg !arc bend angle per Transport deck
 
 lba = 3.024
 gba = 0.06  !Blue Book value
 
-b11a: sbend, hgap = gba/2, e1 = aba/2, fint = 0.5, fintx = 0, type = "Aline_bend", l = lba/2,  &
-        angle = lba/2 * aba/2/(lba/2)
-b11b: sbend, hgap = gba/2, e2 = aba/2, fint = 0, fintx = 0.5, type = "Aline_bend", l = lba/2,  &
-        angle = lba/2 * aba/2/(lba/2)
-b12a: sbend, hgap = gba/2, e1 = aba/2, fint = 0.5, fintx = 0, type = "Aline_bend", l = lba/2,  &
-        angle = lba/2 * aba/2/(lba/2)
-b12b: sbend, hgap = gba/2, e2 = aba/2, fint = 0, fintx = 0.5, type = "Aline_bend", l = lba/2,  &
-        angle = lba/2 * aba/2/(lba/2)
-b13a: sbend, hgap = gba/2, e1 = aba/2, fint = 0.5, fintx = 0, type = "Aline_bend", l = lba/2,  &
-        angle = lba/2 * aba/2/(lba/2)
-b13b: sbend, hgap = gba/2, e2 = aba/2, fint = 0, fintx = 0.5, type = "Aline_bend", l = lba/2,  &
-        angle = lba/2 * aba/2/(lba/2)
-b14a: sbend, hgap = gba/2, e1 = aba/2, fint = 0.5, fintx = 0, type = "Aline_bend", l = lba/2,  &
-        angle = lba/2 * aba/2/(lba/2)
-b14b: sbend, hgap = gba/2, e2 = aba/2, fint = 0, fintx = 0.5, type = "Aline_bend", l = lba/2,  &
-        angle = lba/2 * aba/2/(lba/2)
-b15a: sbend, hgap = gba/2, e1 = aba/2, fint = 0.5, fintx = 0, type = "Aline_bend", l = lba/2,  &
-        angle = lba/2 * aba/2/(lba/2)
-b15b: sbend, hgap = gba/2, e2 = aba/2, fint = 0, fintx = 0.5, type = "Aline_bend", l = lba/2,  &
-        angle = lba/2 * aba/2/(lba/2)
-b16a: sbend, hgap = gba/2, e1 = aba/2, fint = 0.5, fintx = 0, type = "Aline_bend", l = lba/2,  &
-        angle = lba/2 * aba/2/(lba/2)
-b16b: sbend, hgap = gba/2, e2 = aba/2, fint = 0, fintx = 0.5, type = "Aline_bend", l = lba/2,  &
-        angle = lba/2 * aba/2/(lba/2)
-b21a: sbend, hgap = gba/2, e1 = aba/2, fint = 0.5, fintx = 0, type = "Aline_bend", l = lba/2,  &
-        angle = lba/2 * aba/2/(lba/2)
-b21b: sbend, hgap = gba/2, e2 = aba/2, fint = 0, fintx = 0.5, type = "Aline_bend", l = lba/2,  &
-        angle = lba/2 * aba/2/(lba/2)
-b22a: sbend, hgap = gba/2, e1 = aba/2, fint = 0.5, fintx = 0, type = "Aline_bend", l = lba/2,  &
-        angle = lba/2 * aba/2/(lba/2)
-b22b: sbend, hgap = gba/2, e2 = aba/2, fint = 0, fintx = 0.5, type = "Aline_bend", l = lba/2,  &
-        angle = lba/2 * aba/2/(lba/2)
-b23a: sbend, hgap = gba/2, e1 = aba/2, fint = 0.5, fintx = 0, type = "Aline_bend", l = lba/2,  &
-        angle = lba/2 * aba/2/(lba/2)
-b23b: sbend, hgap = gba/2, e2 = aba/2, fint = 0, fintx = 0.5, type = "Aline_bend", l = lba/2,  &
-        angle = lba/2 * aba/2/(lba/2)
-b24a: sbend, hgap = gba/2, e1 = aba/2, fint = 0.5, fintx = 0, type = "Aline_bend", l = lba/2,  &
-        angle = lba/2 * aba/2/(lba/2)
-b24b: sbend, hgap = gba/2, e2 = aba/2, fint = 0, fintx = 0.5, type = "Aline_bend", l = lba/2,  &
-        angle = lba/2 * aba/2/(lba/2)
-b25a: sbend, hgap = gba/2, e1 = aba/2, fint = 0.5, fintx = 0, type = "Aline_bend", l = lba/2,  &
-        angle = lba/2 * aba/2/(lba/2)
-b25b: sbend, hgap = gba/2, e2 = aba/2, fint = 0, fintx = 0.5, type = "Aline_bend", l = lba/2,  &
-        angle = lba/2 * aba/2/(lba/2)
-b26a: sbend, hgap = gba/2, e1 = aba/2, fint = 0.5, fintx = 0, type = "Aline_bend", l = lba/2,  &
-        angle = lba/2 * aba/2/(lba/2)
-b26b: sbend, hgap = gba/2, e2 = aba/2, fint = 0, fintx = 0.5, type = "Aline_bend", l = lba/2,  &
-        angle = lba/2 * aba/2/(lba/2)
+b11a: sbend, l = lba/2, hgap = gba/2, angle = aba/2, e1 = aba/2, fint = 0.5, fintx = 0, type = "Aline_bend"
+b11b: sbend, l = lba/2, hgap = gba/2, angle = aba/2, e2 = aba/2, fint = 0, fintx = 0.5, type = "Aline_bend"
+b12a: sbend, l = lba/2, hgap = gba/2, angle = aba/2, e1 = aba/2, fint = 0.5, fintx = 0, type = "Aline_bend"
+b12b: sbend, l = lba/2, hgap = gba/2, angle = aba/2, e2 = aba/2, fint = 0, fintx = 0.5, type = "Aline_bend"
+b13a: sbend, l = lba/2, hgap = gba/2, angle = aba/2, e1 = aba/2, fint = 0.5, fintx = 0, type = "Aline_bend"
+b13b: sbend, l = lba/2, hgap = gba/2, angle = aba/2, e2 = aba/2, fint = 0, fintx = 0.5, type = "Aline_bend"
+b14a: sbend, l = lba/2, hgap = gba/2, angle = aba/2, e1 = aba/2, fint = 0.5, fintx = 0, type = "Aline_bend"
+b14b: sbend, l = lba/2, hgap = gba/2, angle = aba/2, e2 = aba/2, fint = 0, fintx = 0.5, type = "Aline_bend"
+b15a: sbend, l = lba/2, hgap = gba/2, angle = aba/2, e1 = aba/2, fint = 0.5, fintx = 0, type = "Aline_bend"
+b15b: sbend, l = lba/2, hgap = gba/2, angle = aba/2, e2 = aba/2, fint = 0, fintx = 0.5, type = "Aline_bend"
+b16a: sbend, l = lba/2, hgap = gba/2, angle = aba/2, e1 = aba/2, fint = 0.5, fintx = 0, type = "Aline_bend"
+b16b: sbend, l = lba/2, hgap = gba/2, angle = aba/2, e2 = aba/2, fint = 0, fintx = 0.5, type = "Aline_bend"
+b21a: sbend, l = lba/2, hgap = gba/2, angle = aba/2, e1 = aba/2, fint = 0.5, fintx = 0, type = "Aline_bend"
+b21b: sbend, l = lba/2, hgap = gba/2, angle = aba/2, e2 = aba/2, fint = 0, fintx = 0.5, type = "Aline_bend"
+b22a: sbend, l = lba/2, hgap = gba/2, angle = aba/2, e1 = aba/2, fint = 0.5, fintx = 0, type = "Aline_bend"
+b22b: sbend, l = lba/2, hgap = gba/2, angle = aba/2, e2 = aba/2, fint = 0, fintx = 0.5, type = "Aline_bend"
+b23a: sbend, l = lba/2, hgap = gba/2, angle = aba/2, e1 = aba/2, fint = 0.5, fintx = 0, type = "Aline_bend"
+b23b: sbend, l = lba/2, hgap = gba/2, angle = aba/2, e2 = aba/2, fint = 0, fintx = 0.5, type = "Aline_bend"
+b24a: sbend, l = lba/2, hgap = gba/2, angle = aba/2, e1 = aba/2, fint = 0.5, fintx = 0, type = "Aline_bend"
+b24b: sbend, l = lba/2, hgap = gba/2, angle = aba/2, e2 = aba/2, fint = 0, fintx = 0.5, type = "Aline_bend"
+b25a: sbend, l = lba/2, hgap = gba/2, angle = aba/2, e1 = aba/2, fint = 0.5, fintx = 0, type = "Aline_bend"
+b25b: sbend, l = lba/2, hgap = gba/2, angle = aba/2, e2 = aba/2, fint = 0, fintx = 0.5, type = "Aline_bend"
+b26a: sbend, l = lba/2, hgap = gba/2, angle = aba/2, e1 = aba/2, fint = 0.5, fintx = 0, type = "Aline_bend"
+b26b: sbend, l = lba/2, hgap = gba/2, angle = aba/2, e2 = aba/2, fint = 0, fintx = 0.5, type = "Aline_bend"
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-b11: sbend, hgap = gba/2, e1 = aba/2, fint = 0.5, e2 = aba/2, type = "Aline_bend", l = lba, angle &
-         = lba * aba/lba
-b12: sbend, hgap = gba/2, e1 = aba/2, fint = 0.5, e2 = aba/2, type = "Aline_bend", l = lba, angle &
-         = lba * aba/lba
-b13: sbend, hgap = gba/2, e1 = aba/2, fint = 0.5, e2 = aba/2, type = "Aline_bend", l = lba, angle &
-         = lba * aba/lba
-b14: sbend, hgap = gba/2, e1 = aba/2, fint = 0.5, e2 = aba/2, type = "Aline_bend", l = lba, angle &
-         = lba * aba/lba
-b15: sbend, hgap = gba/2, e1 = aba/2, fint = 0.5, e2 = aba/2, type = "Aline_bend", l = lba, angle &
-         = lba * aba/lba
-b16: sbend, hgap = gba/2, e1 = aba/2, fint = 0.5, e2 = aba/2, type = "Aline_bend", l = lba, angle &
-         = lba * aba/lba
-b21: sbend, hgap = gba/2, e1 = aba/2, fint = 0.5, e2 = aba/2, type = "Aline_bend", l = lba, angle &
-         = lba * aba/lba
-b22: sbend, hgap = gba/2, e1 = aba/2, fint = 0.5, e2 = aba/2, type = "Aline_bend", l = lba, angle &
-         = lba * aba/lba
-b23: sbend, hgap = gba/2, e1 = aba/2, fint = 0.5, e2 = aba/2, type = "Aline_bend", l = lba, angle &
-         = lba * aba/lba
-b24: sbend, hgap = gba/2, e1 = aba/2, fint = 0.5, e2 = aba/2, type = "Aline_bend", l = lba, angle &
-         = lba * aba/lba
-b25: sbend, hgap = gba/2, e1 = aba/2, fint = 0.5, e2 = aba/2, type = "Aline_bend", l = lba, angle &
-         = lba * aba/lba
-b26: sbend, hgap = gba/2, e1 = aba/2, fint = 0.5, e2 = aba/2, type = "Aline_bend", l = lba, angle &
-         = lba * aba/lba
+b11: sbend, type = "Aline_bend", hgap = gba/2, l = lba, angle = aba, e1 = aba/2, fint = 0.5, e2 = aba/2, fintx = 0.5
+b12: sbend, type = "Aline_bend", hgap = gba/2, l = lba, angle = aba, e1 = aba/2, fint = 0.5, e2 = aba/2, fintx = 0.5
+b13: sbend, type = "Aline_bend", hgap = gba/2, l = lba, angle = aba, e1 = aba/2, fint = 0.5, e2 = aba/2, fintx = 0.5
+b14: sbend, type = "Aline_bend", hgap = gba/2, l = lba, angle = aba, e1 = aba/2, fint = 0.5, e2 = aba/2, fintx = 0.5
+b15: sbend, type = "Aline_bend", hgap = gba/2, l = lba, angle = aba, e1 = aba/2, fint = 0.5, e2 = aba/2, fintx = 0.5
+b16: sbend, type = "Aline_bend", hgap = gba/2, l = lba, angle = aba, e1 = aba/2, fint = 0.5, e2 = aba/2, fintx = 0.5
+b21: sbend, type = "Aline_bend", hgap = gba/2, l = lba, angle = aba, e1 = aba/2, fint = 0.5, e2 = aba/2, fintx = 0.5
+b22: sbend, type = "Aline_bend", hgap = gba/2, l = lba, angle = aba, e1 = aba/2, fint = 0.5, e2 = aba/2, fintx = 0.5
+b23: sbend, type = "Aline_bend", hgap = gba/2, l = lba, angle = aba, e1 = aba/2, fint = 0.5, e2 = aba/2, fintx = 0.5
+b24: sbend, type = "Aline_bend", hgap = gba/2, l = lba, angle = aba, e1 = aba/2, fint = 0.5, e2 = aba/2, fintx = 0.5
+b25: sbend, type = "Aline_bend", hgap = gba/2, l = lba, angle = aba, e1 = aba/2, fint = 0.5, e2 = aba/2, fintx = 0.5
+b26: sbend, type = "Aline_bend", hgap = gba/2, l = lba, angle = aba, e1 = aba/2, fint = 0.5, e2 = aba/2, fintx = 0.5
 
 ! ESA bends (E158)
 
@@ -277,18 +233,18 @@ ad1s = 0.022344631354
 ad2s = -0.044690490267
 ad3s = 0.022345239962
 
-bxd1sa: sbend, fint = 0, l = ld1s/2, angle = ld1s/2 * ad1s/2/(ld1s/2)
-bxd1sb: sbend, fint = 0, l = ld1s/2, angle = ld1s/2 * ad1s/2/(ld1s/2)
-bxd2sa: sbend, fint = 0, l = ld2s/2, angle = ld2s/2 * ad2s/2/(ld2s/2)
-bxd2sb: sbend, fint = 0, l = ld2s/2, angle = ld2s/2 * ad2s/2/(ld2s/2)
-bxd3sa: sbend, fint = 0, l = ld3s/2, angle = ld3s/2 * ad3s/2/(ld3s/2)
-bxd3sb: sbend, fint = 0, l = ld3s/2, angle = ld3s/2 * ad3s/2/(ld3s/2)
+bxd1sa: sbend, l = ld1s/2, angle = ad1s/2, fint = 0, fintx = 0
+bxd1sb: sbend, l = ld1s/2, angle = ad1s/2, fint = 0, fintx = 0
+bxd2sa: sbend, l = ld2s/2, angle = ad2s/2, fint = 0, fintx = 0
+bxd2sb: sbend, l = ld2s/2, angle = ad2s/2, fint = 0, fintx = 0
+bxd3sa: sbend, l = ld3s/2, angle = ad3s/2, fint = 0, fintx = 0
+bxd3sb: sbend, l = ld3s/2, angle = ad3s/2, fint = 0, fintx = 0
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-bxd1s: sbend, fint = 0, l = ld1s, angle = ld1s * ad1s/ld1s
-bxd2s: sbend, fint = 0, l = ld2s, angle = ld2s * ad2s/ld2s
-bxd3s: sbend, fint = 0, l = ld3s, angle = ld3s * ad3s/ld3s
+bxd1s: sbend, l = ld1s, angle = ad1s, fint = 0, fintx = 0
+bxd2s: sbend, l = ld2s, angle = ad2s, fint = 0, fintx = 0
+bxd3s: sbend, l = ld3s, angle = ad3s, fint = 0, fintx = 0
 
 ! ==============================================================================
 ! quadrupoles
@@ -317,18 +273,18 @@ kq28 = 0.029206357304 ! 0.029868541394
 kq30 = -0.029497355276 !-0.029618830812
 kq38 = 0.034805766493 ! 0.034798028844
 
-q10: quadrupole, l = lq8cm/2, aperture = rq8cm, type = "Aline_Q8cm", k1 = kq10
-q11: quadrupole, l = lq8cm/2, aperture = rq8cm, type = "Aline_Q8cm", k1 = kq11
-q19: quadrupole, l = lq19/2, aperture = rq19, type = "Aline_Q19", k1 = kq19
-q20: quadrupole, l = lq20/2, aperture = rq20, type = "Aline_Q20", k1 = kq20
-q27: quadrupole, l = lq8cm/2, aperture = rq8cm, type = "Aline_Q8cm", k1 = kq27
-q28: quadrupole, l = lq8cm/2, aperture = rq8cm, type = "Aline_Q8cm", k1 = kq28
-q30: quadrupole, l = lq8cm/2, aperture = rq8cm, type = "Aline_Q8cm", k1 = kq30
-q38: quadrupole, l = lq8cm/2, aperture = rq8cm, type = "Aline_Q8cm", k1 = kq38
+q10: quadrupole, l = lq8cm/2, aperture = rq8cm, k1 = kq10, type = "Aline_Q8cm"
+q11: quadrupole, l = lq8cm/2, aperture = rq8cm, k1 = kq11, type = "Aline_Q8cm"
+q19: quadrupole, l = lq19/2, aperture = rq19, k1 = kq19, type = "Aline_Q19"
+q20: quadrupole, l = lq20/2, aperture = rq20, k1 = kq20, type = "Aline_Q20"
+q27: quadrupole, l = lq8cm/2, aperture = rq8cm, k1 = kq27, type = "Aline_Q8cm"
+q28: quadrupole, l = lq8cm/2, aperture = rq8cm, k1 = kq28, type = "Aline_Q8cm"
+q30: quadrupole, l = lq8cm/2, aperture = rq8cm, k1 = kq30, type = "Aline_Q8cm"
+q38: quadrupole, l = lq8cm/2, aperture = rq8cm, k1 = kq38, type = "Aline_Q8cm"
 
 ksq = 0.0
 
-sq27p5: quadrupole, l = lsq/2, aperture = rsq, type = "Aline_SQ27", k1 = ksq, tilt = pi/4
+sq27p5: quadrupole, tilt = pi/4, l = lsq/2, aperture = rsq, k1 = ksq, type = "Aline_SQ27"
 
 ! ESA quads (E158)
 
@@ -342,10 +298,10 @@ kq2sa = -0.031838409505
 kq3sa = 0.031838409505
 kq4sa = -0.016080013116
 
-q1s: quadrupole, l = lqsa/2, aperture = rqsa, k1 = kq1sa
-q2s: quadrupole, l = lqsa/2, aperture = rqsa, k1 = kq2sa
-q3s: quadrupole, l = lqsa/2, aperture = rqsa, k1 = kq3sa
-q4s: quadrupole, l = lqsa/2, aperture = rqsa, k1 = kq4sa
+q1s: quadrupole, l = lqsa/2, k1 = kq1sa, aperture = rqsa
+q2s: quadrupole, l = lqsa/2, k1 = kq2sa, aperture = rqsa
+q3s: quadrupole, l = lqsa/2, k1 = kq3sa, aperture = rqsa
+q4s: quadrupole, l = lqsa/2, k1 = kq4sa, aperture = rqsa
 
 ! ==============================================================================
 ! drifts
@@ -514,7 +470,7 @@ lda01 = 0.0471765+0.15
 lda02 = 4.371494-lda01-1.35/cos(4*abkrapm0)
 lda03 = 1.3206+1.35/cos(4*abkrapm0)
 lda04 = 47.451381526647
-ldbrdas2 = lbsp*cos(abrdas2*sin(tbrdas2)/2)*cos(abrdas2*cos(tbrdas2)/2)/cos(abrdas2*cos(tbrdas2))
+ldbrdas2 = lbsp*cos(abrdas2*sin(tbrdas2)/2)*cos(abrdas2*cos(tbrdas2)/2)/ cos(abrdas2*cos(tbrdas2))
 lda04b = 0.5
 lda04c = 19.829173726034 !!!
 lda04a = lda04-ldbrdas2-lda04b-lda04c
@@ -528,7 +484,7 @@ da03b: drift, l = 0.6
 da03a: drift, l = da03[l]-da03b[l]
 dbrdas2a: drift, l = ldbrdas2/2
 dbrdas2b: drift, l = ldbrdas2/2
-drcdas19: drift, l = 0.0
+drcdas19: drift, l = 0
 da04a: drift, l = lda04a
 da04b: drift, l = lda04b
 da04c: drift, l = lda04c
@@ -553,7 +509,7 @@ dzapm3: drift, l = ldzapm3
 dzapm4: drift, l = ldzapm4
 dza01: drift, l = ldza01
 dza02: drift, l = ldza02
-dscapm2: drift, l = 0.0
+dscapm2: drift, l = 0
 
 ! ==============================================================================
 ! coordinate rolls ... bend plane rotated to remove linac slope
@@ -573,23 +529,23 @@ rollon = 1.0
   !ROLL2 : SROT, ANGLE=-0.399639784046E-2 * ROLLON
   !ROLL3 : SROT, ANGLE= 0.0               * ROLLON !no ROLL3 per alignment group
 
-roll2: patch, tilt = (0.014303788803-0.399639784046e-2)*rollon
-roll3: patch, tilt = 0.0*rollon !no ROLL3 per alignment group
+roll2: patch, tilt = (0.014303788803-0.399639784046e-2) * rollon
+roll3: patch, tilt = 0.0 * rollon !no ROLL3 per alignment group
 
 ! ==============================================================================
 ! XCORs and YCORs
 ! ------------------------------------------------------------------------------
 
-xcapm2: kicker, type = "unknown" !type to be determined
-a28x: kicker
-a32x: kicker
+xcapm2: hkicker, type = "unknown" !type to be determined
+a28x: hkicker
+a32x: hkicker
 
-ycapm2: kicker, type = "unknown" !type to be determined
-ycbsya: kicker, type = "1D2"
-a10y: kicker
-a18y: kicker
-a29y: kicker
-a33y: kicker
+ycapm2: vkicker, type = "unknown" !type to be determined
+ycbsya: vkicker, type = "1D2"
+a10y: vkicker
+a18y: vkicker
+a29y: vkicker
+a33y: vkicker
 
 ! ==============================================================================
 ! BPMs
@@ -597,31 +553,31 @@ a33y: kicker
 
 ! rename BPM10 and BPM12 to avoid conflicts
 
-bpm10a: instrument
-bpm12a: instrument
-bpm17: instrument
-bpm24: instrument
-bpm28: instrument
-bpm31: instrument
-bpm32: instrument
+bpm10a: monitor
+bpm12a: monitor
+bpm17: monitor
+bpm24: monitor
+bpm28: monitor
+bpm31: monitor
+bpm32: monitor
 
 ! ==============================================================================
 ! profile monitors, wire scanners, wire arrays, synchrotron light ports,
 ! spectrum foils, burn-through monitors, and Cu-target
 ! ------------------------------------------------------------------------------
 
-pr10: instrument
+pr10: monitor
 sync: instrument
-pr18: instrument
+pr18: monitor
 sp18: instrument
-pr20: instrument
-pr28: instrument
-pr33: instrument
+pr20: monitor
+pr28: monitor
+pr33: monitor
 
 ! new devices
 
-yagapm: instrument, type = "YAG"     !YAG profile monitor
-prbram1: instrument, type = "unknown" !profile monitor, type to be determined
+yagapm: monitor, type = "YAG"     !YAG profile monitor
+prbram1: monitor, type = "unknown" !profile monitor, type to be determined
 tgtbram1: instrument, type = "Cu"      !secondary production Cu target
 
 ! ==============================================================================
@@ -651,15 +607,14 @@ pc26: ecollimator
 pc29: ecollimator
 c37: rcollimator
 
-pcapm1: ecollimator, x_limit = 44.45e-3, y_limit = 6.35e-3, type = "MPS PC", l = lpcapm1
-pcapm2: ecollimator, x_limit = 44.45e-3, y_limit = 6.35e-3, type = "MPS PC", l = lpcapm2
-pcapm3: ecollimator, x_limit = 44.45e-3, y_limit = 6.35e-3, type = "MPS PC", l = lpcapm3
-pcapm4: ecollimator, x_limit = 44.45e-3, y_limit = 6.35e-3, type = "MPS PC", l = lpcapm4
+pcapm1: ecollimator, type = "MPS PC", l = lpcapm1, x_limit = 44.45e-3, y_limit = 6.35e-3
+pcapm2: ecollimator, type = "MPS PC", l = lpcapm2, x_limit = 44.45e-3, y_limit = 6.35e-3
+pcapm3: ecollimator, type = "MPS PC", l = lpcapm3, x_limit = 44.45e-3, y_limit = 6.35e-3
+pcapm4: ecollimator, type = "MPS PC", l = lpcapm4, x_limit = 44.45e-3, y_limit = 6.35e-3
 
 ! 1" ID A-line collimator -- part of 2-hole copper collimator d/s of A-line PM
 
-pcbsya: ecollimator, x_limit = 12.7e-3, y_limit = 12.7e-3, type = "MPS PC", l =  &
-        0.45/cos(4*abkrapm0)
+pcbsya: ecollimator, type = "MPS PC", l = 0.45/cos(4*abkrapm0), x_limit = 12.7e-3, y_limit = 12.7e-3
 
 ! ==============================================================================
 ! vacuum components
@@ -689,159 +644,151 @@ rwwake3a: marker, type = "WAKE" !CLTH/BSYH beampipe wake applied here
 ! beamlines
 ! ------------------------------------------------------------------------------
 
-bkrapm1_full: line = (bkrapm1a, bkrapm1b)
-bkrapm2_full: line = (bkrapm2a, bkrapm2b)
-bkrapm3_full: line = (bkrapm3a, bkrapm3b)
-bkrapm4_full: line = (bkrapm4a, bkrapm4b)
+  BKRAPM1_full : LINE=(BKRAPM1a,BKRAPM1b)
+  BKRAPM2_full : LINE=(BKRAPM2a,BKRAPM2b)
+  BKRAPM3_full : LINE=(BKRAPM3a,BKRAPM3b)
+  BKRAPM4_full : LINE=(BKRAPM4a,BKRAPM4b)
 bram1_full: line = (bram1)
-!old: bram1_full: line = (bram1a, bram1b)
+!old:   BRAM1_full   : LINE=(BRAM1a,BRAM1b)
 b11_full: line = (b11)
-!old: b11_full: line = (b11a, b11b)
+!old:   B11_full     : LINE=(B11a,B11b)
 b12_full: line = (b12)
-!old: b12_full: line = (b12a, b12b)
+!old:   B12_full     : LINE=(B12a,B12b)
 b13_full: line = (b13)
-!old: b13_full: line = (b13a, b13b)
+!old:   B13_full     : LINE=(B13a,B13b)
 b14_full: line = (b14)
-!old: b14_full: line = (b14a, b14b)
+!old:   B14_full     : LINE=(B14a,B14b)
 b15_full: line = (b15)
-!old: b15_full: line = (b15a, b15b)
+!old:   B15_full     : LINE=(B15a,B15b)
 b16_full: line = (b16)
-!old: b16_full: line = (b16a, b16b)
+!old:   B16_full     : LINE=(B16a,B16b)
 b21_full: line = (b21)
-!old: b21_full: line = (b21a, b21b)
+!old:   B21_full     : LINE=(B21a,B21b)
 b22_full: line = (b22)
-!old: b22_full: line = (b22a, b22b)
+!old:   B22_full     : LINE=(B22a,B22b)
 b23_full: line = (b23)
-!old: b23_full: line = (b23a, b23b)
+!old:   B23_full     : LINE=(B23a,B23b)
 b24_full: line = (b24)
-!old: b24_full: line = (b24a, b24b)
+!old:   B24_full     : LINE=(B24a,B24b)
 b25_full: line = (b25)
-!old: b25_full: line = (b25a, b25b)
+!old:   B25_full     : LINE=(B25a,B25b)
 b26_full: line = (b26)
-!old: b26_full: line = (b26a, b26b)
-bxd1s_full: line = (bxd1sa, bxd1sb)
-bxd2s_full: line = (bxd2sa, bxd2sb)
-bxd3s_full: line = (bxd3sa, bxd3sb)
+!old:   B26_full     : LINE=(B26a,B26b)
+  BXD1S_full   : LINE=(BXD1Sa,BXD1Sb)
+  BXD2S_full   : LINE=(BXD2Sa,BXD2Sb)
+  BXD3S_full   : LINE=(BXD3Sa,BXD3Sb)
 
 
 
-!Old split line: line = (q10, q10)
+!Old split line: LINE=(Q10,Q10)
 
 q10_full: line = (q10)
 q10[L] = 2*q10[L]
 
 
-!Old split line: line = (q11, q11)
+!Old split line: LINE=(Q11,Q11)
 
 q11_full: line = (q11)
 q11[L] = 2*q11[L]
 
 
-!Old split line: line = (q19, q19)
+!Old split line: LINE=(Q19,Q19)
 
 q19_full: line = (q19)
 q19[L] = 2*q19[L]
 
 
-!Old split line: line = (q20, q20)
+!Old split line: LINE=(Q20,Q20)
 
 q20_full: line = (q20)
 q20[L] = 2*q20[L]
 
 
-!Old split line: line = (q27, q27)
+!Old split line: LINE=(Q27,Q27)
 
 q27_full: line = (q27)
 q27[L] = 2*q27[L]
 
 
-!Old split line: line = (sq27p5, sq27p5)
+!Old split line: LINE=(SQ27p5,SQ27p5)
 
 sq27p5_full: line = (sq27p5)
 sq27p5[L] = 2*sq27p5[L]
 
 
-!Old split line: line = (q28, q28)
+!Old split line: LINE=(Q28,Q28)
 
 q28_full: line = (q28)
 q28[L] = 2*q28[L]
 
 
-!Old split line: line = (q30, q30)
+!Old split line: LINE=(Q30,Q30)
 
 q30_full: line = (q30)
 q30[L] = 2*q30[L]
 
 
-!Old split line: line = (q38, q38)
+!Old split line: LINE=(Q38,Q38)
 
 q38_full: line = (q38)
 q38[L] = 2*q38[L]
 
 
-!Old split line: line = (q1s, q1s)
+!Old split line: LINE=(Q1S,Q1S)
 
 q1s_full: line = (q1s)
 q1s[L] = 2*q1s[L]
 
 
-!Old split line: line = (q2s, q2s)
+!Old split line: LINE=(Q2S,Q2S)
 
 q2s_full: line = (q2s)
 q2s[L] = 2*q2s[L]
 
 
-!Old split line: line = (q3s, q3s)
+!Old split line: LINE=(Q3S,Q3S)
 
 q3s_full: line = (q3s)
 q3s[L] = 2*q3s[L]
 
 
-!Old split line: line = (q4s, q4s)
+!Old split line: LINE=(Q4S,Q4S)
 
 q4s_full: line = (q4s)
 q4s[L] = 2*q4s[L]
 
-scapm2: line = (xcapm2, ycapm2)
+  SCAPM2 : LINE=(XCAPM2,YCAPM2)
 
-ld105: line = (d105a, pc10, d105b, iv10, d105c, fv10, d105d, bpm10a, d105e, i10, d105f, pr10,  &
-        d105g, a10y, d105h, i11, d105i)
-ld108: line = (d108a, pc12, d108b, bpm12a, d108c)
-ld110: line = (d110a, pc14, d110b)
-ld112: line = (d112a, sync, d112b, pc17, d112c, bpm17, d112d, a18y, d112e, pr18, d112f, sp18,  &
-        d112g)
-ld113: line = (d113a, sl19, d113b, sl10, d113c)
-ld114: line = (d114a, pc20, d114b, pr20, d114c)
-ld116: line = (d116a, st22, d116b)
-ld118: line = (d118a, pc24, d118b, bpm24, d118c, i24, d118d, c24, d118e)
-ld120: line = (d120a, pc26, d120b, iv26, d120c)
-ld123: line = (d123a, fv28, d123b, bpm28, d123c, i28, d123d, pr28, d123e, a28x, d123f, a29y,  &
-        d123g, st29, d123h, pc29, d123i, i29, d123j)
-ld124: line = (d124a, a32x, d124b, a33y, d124c, bpm31, d124d, bpm32, d124e, pr33, d124f, c37,  &
-        d124g)
+  LD105 : LINE=(D105a,PC10,D105b,IV10,D105c,FV10,D105d,BPM10A,D105e,I10,D105f,PR10,D105g,A10Y,D105h,I11,D105i)
+  LD108 : LINE=(D108a,PC12,D108b,BPM12A,D108c)
+  LD110 : LINE=(D110a,PC14,D110b)
+  LD112 : LINE=(D112a,SYNC,D112b,PC17,D112c,BPM17,D112d,A18Y,D112e,PR18,D112f,SP18,D112g)
+  LD113 : LINE=(D113a,SL19,D113b,SL10,D113c)
+  LD114 : LINE=(D114a,PC20,D114b,PR20,D114c)
+  LD116 : LINE=(D116a,ST22,D116b)
+  LD118 : LINE=(D118a,PC24,D118b,BPM24,D118c,I24,D118d,C24,D118e)
+  LD120 : LINE=(D120a,PC26,D120b,IV26,D120c)
+  LD123 : LINE=(D123a,FV28,D123b,BPM28,D123c,I28,D123d,PR28,D123e,A28X,D123f,A29Y,D123g,ST29,D123h,PC29,D123i,I29,D123j)
+  LD124 : LINE=(D124a,A32X,D124b,A33Y,D124c,BPM31,D124d,BPM32,D124e,PR33,D124f,C37,D124g)
 
 ! shared line with BSY
 
-alinea: line = (begbsya_1, rwwake3a, bkrapm1_full, dapm1, pcapm1, dapm1, bkrapm2_full, dapm2a,  &
-        dscapm2, dapm2b, pcapm2, dapm2, bkrapm3_full, dapm3, pcapm3, dapm3, bkrapm4_full, dapm4,  &
-        pcapm4, da01, da02)
+  ALINEa : LINE=(BEGBSYA_1,RWWAKE3A,BKRAPM1_full,DAPM1,PCAPM1,DAPM1,BKRAPM2_full,DAPM2a,DSCAPM2,DAPM2b,PCAPM2,DAPM2,
+         BKRAPM3_full,DAPM3,PCAPM3,DAPM3,BKRAPM4_full,DAPM4,PCAPM4,DA01,DA02)
 
 ! separate line from BSY
 
-alineb: line = (pcbsya, da03a, ycbsya, da03b, yagapm, da04a, dbrdas2a, dbrdas2b, da04b, drcdas19 &
-        , endbsya_1)
+  ALINEb : LINE=(PCBSYA,DA03a,YCBSYA,DA03b,YAGAPM,DA04a,DBRDAS2a,DBRDAS2b,DA04b,DRCDAS19,ENDBSYA_1)
 
-alinec: line = (begbsya_2, da04c, prbram1, da05, tgtbram1, da06, bram1_full, roll2, damq10,  &
-        q10_full, ld105, q11_full, d106, begb, b11_full, d107, b12_full, ld108, b13_full, d109,  &
-        b14_full, ld110, b15_full, d111, b16_full, ld112, q19_full, ld113, q20_full, ld114,  &
-        b21_full, d115, b22_full, ld116, b23_full, d117, b24_full, ld118, b25_full, d119,  &
-        b26_full, marc, roll3, endb, ld120, q27_full, d121, sq27p5_full, d122, q28_full, ld123,  &
-        q30_full, ld124, q38_full, d125, alwall, dpr2, endbsya_2)
+  ALINEc : LINE=(BEGBSYA_2,DA04c,PRBRAM1,DA05,TGTBRAM1,DA06,BRAM1_full,ROLL2,DAMQ10,Q10_full,LD105,Q11_full,D106,BEGB,
+         B11_full,D107,B12_full,LD108,B13_full,D109,B14_full,LD110,B15_full,D111,B16_full,LD112,Q19_full,LD113,Q20_full,LD114,
+         B21_full,D115,B22_full,LD116,B23_full,D117,B24_full,LD118,B25_full,D119,B26_full,MARC,ROLL3,ENDB,LD120,Q27_full,D121,
+         SQ27p5_full,D122,Q28_full,LD123,Q30_full,LD124,Q38_full,D125,ALWALL,DPR2,ENDBSYA_2)
 
-esas: line = (d201, bxd1s_full, d202, bxd2s_full, d203, bxd3s_full, d204, q1s_full, d205,  &
-        q2s_full, d206, q3s_full, d207, q4s_full, d208, esae, d209, bmde)
+  ESAs : LINE=(D201,BXD1S_full,D202,BXD2S_full,D203,BXD3S_full,D204,Q1S_full,D205,Q2S_full,D206,Q3S_full,D207,Q4S_full,
+         D208,ESAE,D209,BMDE)
 
-aline: line = (alinea, alineb, alinec, esas)
+  ALINE : LINE=(ALINEa,ALINEb,ALINEc,ESAs)
 
 ! ------------------------------------------------------------------------------
 

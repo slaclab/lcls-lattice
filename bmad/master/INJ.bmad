@@ -163,8 +163,8 @@ abun = 0.0517  !m
 gbun = 0       !MV/m
 pbun = 0       !deg
 
-bun1b: lcavity, rf_frequency = 1300 * 1e6, gradient = gbun*lbun/2 * 1e6 / (lbun/2), phi0 =  &
-        pbun/360, type = "LBNL", l = lbun/2, aperture = abun/2
+bun1b: lcavity, type = "LBNL", rf_frequency = 1300 * 1e6, l = lbun/2, aperture = abun/2, voltage = gbun*lbun/2 * 1e6,
+          phi0 = pbun/360
 
 ! ==============================================================================
 ! SBEN
@@ -206,33 +206,21 @@ lbhs = zbh/(2*sincabhs)
 abhl = abh-abhs
 lbhl = lbh-lbhs
 
-bcxh1a: sbend, hgap = gbh/2, e1 = 0, fint = fbh, fintx = 0, type = "5D3.9", l = lbhs, angle =  &
-        lbhs * (+abhs)/lbhs
-bcxh1b: sbend, hgap = gbh/2, fint = 0, e2 = +abh, fintx = fbh, type = "5D3.9", l = lbhl, angle =  &
-        lbhl * (+abhl)/lbhl
-bcxh2a: sbend, hgap = gbh/2, e1 = -abh, fint = fbh, fintx = 0, type = "5D3.9", l = lbhl, angle =  &
-        lbhl * (-abhl)/lbhl
-bcxh2b: sbend, hgap = gbh/2, fint = 0, e2 = 0, fintx = fbh, type = "5D3.9", l = lbhs, angle =  &
-        lbhs * (-abhs)/lbhs
-bcxh3a: sbend, hgap = gbh/2, e1 = 0, fint = fbh, fintx = 0, type = "5D3.9", l = lbhs, angle =  &
-        lbhs * (-abhs)/lbhs
-bcxh3b: sbend, hgap = gbh/2, fint = 0, e2 = -abh, fintx = fbh, type = "5D3.9", l = lbhl, angle =  &
-        lbhl * (-abhl)/lbhl
-bcxh4a: sbend, hgap = gbh/2, e1 = +abh, fint = fbh, fintx = 0, type = "5D3.9", l = lbhl, angle =  &
-        lbhl * (+abhl)/lbhl
-bcxh4b: sbend, hgap = gbh/2, fint = 0, e2 = 0, fintx = fbh, type = "5D3.9", l = lbhs, angle =  &
-        lbhs * (+abhs)/lbhs
+bcxh1a: sbend, type = "5D3.9", l = lbhs, angle = +abhs, hgap = gbh/2, e1 = 0, fint = fbh, fintx = 0
+bcxh1b: sbend, type = "5D3.9", l = lbhl, angle = +abhl, hgap = gbh/2, fint = 0, e2 = +abh, fintx = fbh
+bcxh2a: sbend, type = "5D3.9", l = lbhl, angle = -abhl, hgap = gbh/2, e1 = -abh, fint = fbh, fintx = 0
+bcxh2b: sbend, type = "5D3.9", l = lbhs, angle = -abhs, hgap = gbh/2, fint = 0, e2 = 0, fintx = fbh
+bcxh3a: sbend, type = "5D3.9", l = lbhs, angle = -abhs, hgap = gbh/2, e1 = 0, fint = fbh, fintx = 0
+bcxh3b: sbend, type = "5D3.9", l = lbhl, angle = -abhl, hgap = gbh/2, fint = 0, e2 = -abh, fintx = fbh
+bcxh4a: sbend, type = "5D3.9", l = lbhl, angle = +abhl, hgap = gbh/2, e1 = +abh, fint = fbh, fintx = 0
+bcxh4b: sbend, type = "5D3.9", l = lbhs, angle = +abhs, hgap = gbh/2, fint = 0, e2 = 0, fintx = fbh
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-bcxh1: sbend, hgap = gbh/2, e1 = 0, fint = fbh, e2 = +abh, type = "5D3.9", l = lbh, angle =  &
-        lbh * (+abh)/lbh
-bcxh2: sbend, hgap = gbh/2, e1 = -abh, fint = fbh, e2 = 0, type = "5D3.9", l = lbh, angle =  &
-        lbh * (-abh)/lbh
-bcxh3: sbend, hgap = gbh/2, e1 = 0, fint = fbh, e2 = -abh, type = "5D3.9", l = lbh, angle =  &
-        lbh * (-abh)/lbh
-bcxh4: sbend, hgap = gbh/2, e1 = +abh, fint = fbh, e2 = 0, type = "5D3.9", l = lbh, angle =  &
-        lbh * (+abh)/lbh
+bcxh1: sbend, type = "5D3.9", hgap = gbh/2, l = lbh, angle = +abh, e1 = 0, fint = fbh, e2 = +abh, fintx = fbh
+bcxh2: sbend, type = "5D3.9", hgap = gbh/2, l = lbh, angle = -abh, e1 = -abh, fint = fbh, e2 = 0, fintx = fbh
+bcxh3: sbend, type = "5D3.9", hgap = gbh/2, l = lbh, angle = -abh, e1 = 0, fint = fbh, e2 = -abh, fintx = fbh
+bcxh4: sbend, type = "5D3.9", hgap = gbh/2, l = lbh, angle = +abh, e1 = +abh, fint = fbh, e2 = 0, fintx = fbh
 
 ! ==============================================================================
 ! QUAD
@@ -240,10 +228,10 @@ bcxh4: sbend, hgap = gbh/2, e1 = +abh, fint = fbh, e2 = 0, type = "5D3.9", l = l
 
 ! correction coils co-wound on GUNB solenoids
 
-cq01b: multipole, type = "solenoid trim", aperture = 0.0475/2
-sq01b: multipole, type = "solenoid trim", aperture = 0.0475/2, t1 = pi / 4
-cq02b: multipole, type = "solenoid trim", aperture = 0.0475/2
-sq02b: multipole, type = "solenoid trim", aperture = 0.0475/2, t1 = pi / 4
+cq01b: multipole, type = "solenoid trim", aperture = 0.0475/2, k1l = 0
+sq01b: multipole, type = "solenoid trim", aperture = 0.0475/2, k1l = 0,t1
+cq02b: multipole, type = "solenoid trim", aperture = 0.0475/2, k1l = 0
+sq02b: multipole, type = "solenoid trim", aperture = 0.0475/2, k1l = 0,t1
 
 ! L0 to WS/OTR (Q0H01-4 match to waists at WS0H04)
 
@@ -337,9 +325,9 @@ brho = cb*sqrt(e0^2-mc2^2) !kG-m (non-relativistic)
 ksol1 = (10*bsol1)/brho     !1/m
 ksol2 = (10*bsol2)/brho     !1/m
 
-sol1bkb: solenoid, ks = 0, type = "Bucking Coil", l = 0
-sol1b: solenoid, ks = ksol1, type = "LBNL", l = lsol1/2, aperture = rsol
-sol2b: solenoid, ks = ksol2, type = "LBNL", l = lsol2/2, aperture = rsol
+sol1bkb: solenoid, type = "Bucking Coil", l = 0, ks = 0
+sol1b: solenoid, type = "LBNL", l = lsol1/2, aperture = rsol, ks = ksol1
+sol2b: solenoid, type = "LBNL", l = lsol2/2, aperture = rsol, ks = ksol2
 
 ! ==============================================================================
 ! MATR
@@ -359,7 +347,7 @@ sol2b: solenoid, ks = ksol2, type = "LBNL", l = lsol2/2, aperture = rsol
 
 lam = 0.054 !0.0471204
 lamr = 1030e-9
-gami = ei/(m_electron * 1e-9)
+gami = ei/emass
 k_und = sqrt(2*(lamr*2*gami^2/lam-1))
 lhun = 9*lam !0.506263
 lhunh = lhun/2
@@ -390,10 +378,8 @@ umhtr: wiggler,
         
 umhtr[L] = umhtr[L]/2 ! Will be doubled in desplitting process. 
 !--------------------------------- !,                               &
-!old: umhtr: taylor, type = "LHund", l = lhunh, {1: 1.0, 1 0 0 0 0 0}, {1: lhunh, 0 1 0 0 0 0}, {2: 0.0 &
-!old         , 1 0 0 0 0 0}, {2: 1.0, 0 1 0 0 0 0}, {3: cos(lhunh*sqrt(kqlh)), 0 0 1 0 0 0}, {3: r34h &
-!old         , 0 0 0 1 0 0}, {4: -sin(lhunh*sqrt(kqlh))*sqrt(kqlh), 0 0 1 0 0 0}, {4:  &
-!old         cos(lhunh*sqrt(kqlh)), 0 0 0 1 0 0}, {5: 1, 0 0 0 0 1 0}, {6: 1, 0 0 0 0 0 1}
+!old: umhtr: taylor, type = "LHund", l = lhunh, tt11 = 1.0, tt12 = lhunh, tt21 = 0, tt22 = 1.0, tt33 = cos(lhunh*sqrt(kqlh)),
+!old           tt34 = r34h, tt43 = -sin(lhunh*sqrt(kqlh))*sqrt(kqlh), tt44 = cos(lhunh*sqrt(kqlh)), tt55 = 1, tt66 = 1
    !R56=Lhunh/(gami^2)*(1+(K_und^2)/2)
 
 ! ==============================================================================
@@ -582,85 +568,85 @@ dc000ab: drift, l = zksd0b
 ! BPMs
 ! ------------------------------------------------------------------------------
 
-bpm1b: instrument, type = "Stripline-4"
-bpm2b: instrument, type = "Stripline-4"
+bpm1b: monitor, type = "Stripline-4"
+bpm2b: monitor, type = "Stripline-4"
 
-bpm0h01: instrument, type = "Stripline-12"
-bpm0h04: instrument, type = "Stripline-12"
-bpm0h05: instrument, type = "Stripline-12"
-bpm0h08: instrument, type = "Stripline-12"
-bpmh1: instrument, type = "Stripline-8"
-bpmh2: instrument, type = "Stripline-8"
-bpmhd01: instrument, type = "Stripline-12"
-bpmhd02: instrument, type = "Stripline-12"
-bpmhd03: instrument, type = "Stripline-12"
-bpmhd04: instrument, type = "Stripline-12"
-bpmc001: instrument, type = "Stripline-1"
-bpmc002: instrument, type = "Stripline-1"
-bpmc003: instrument, type = "Stripline-1"
-bpmc004: instrument, type = "Stripline-1"
-bpmc005: instrument, type = "Stripline-1"
-bpmc006: instrument, type = "Stripline-1"
-bpmc007: instrument, type = "Stripline-1"
-bpmc008: instrument, type = "Stripline-1"
-bpmc009: instrument, type = "Stripline-1"
-bpmc010: instrument, type = "Stripline-1"
-bpmc011: instrument, type = "Stripline-1"
-bpmc012: instrument, type = "Stripline-1"
+bpm0h01: monitor, type = "Stripline-12"
+bpm0h04: monitor, type = "Stripline-12"
+bpm0h05: monitor, type = "Stripline-12"
+bpm0h08: monitor, type = "Stripline-12"
+bpmh1: monitor, type = "Stripline-8"
+bpmh2: monitor, type = "Stripline-8"
+bpmhd01: monitor, type = "Stripline-12"
+bpmhd02: monitor, type = "Stripline-12"
+bpmhd03: monitor, type = "Stripline-12"
+bpmhd04: monitor, type = "Stripline-12"
+bpmc001: monitor, type = "Stripline-1"
+bpmc002: monitor, type = "Stripline-1"
+bpmc003: monitor, type = "Stripline-1"
+bpmc004: monitor, type = "Stripline-1"
+bpmc005: monitor, type = "Stripline-1"
+bpmc006: monitor, type = "Stripline-1"
+bpmc007: monitor, type = "Stripline-1"
+bpmc008: monitor, type = "Stripline-1"
+bpmc009: monitor, type = "Stripline-1"
+bpmc010: monitor, type = "Stripline-1"
+bpmc011: monitor, type = "Stripline-1"
+bpmc012: monitor, type = "Stripline-1"
 
-rfb0h00: instrument, type = "@2,CavityS-1"
-rfb0h04: instrument, type = "@2,CavityS-1"
-rfb0h08: instrument, type = "@2,CavityS-1"
-rfbhd00: instrument, type = "@2,CavityS-1"
-rfbhd04: instrument, type = "@2,CavityS-1"
-rfbc006: instrument, type = "@2,CavityS-1"
-rfbc011: instrument, type = "@4,CavityS-1"
+rfb0h00: monitor, type = "@2,CavityS-1"
+rfb0h04: monitor, type = "@2,CavityS-1"
+rfb0h08: monitor, type = "@2,CavityS-1"
+rfbhd00: monitor, type = "@2,CavityS-1"
+rfbhd04: monitor, type = "@2,CavityS-1"
+rfbc006: monitor, type = "@2,CavityS-1"
+rfbc011: monitor, type = "@4,CavityS-1"
 
 ! ==============================================================================
 ! XCORs
 ! ------------------------------------------------------------------------------
 
-xc01b: kicker, type = "LBNL-xy"
-xc02b: kicker, type = "LBNL-xy"
-xc03b: kicker, type = "LBNL-xy"
-xc04b: kicker, type = "LBNL-xy"
-xc05b: kicker, type = "LBNL-xy"
+xc01b: hkicker, type = "LBNL-xy"
+xc02b: hkicker, type = "LBNL-xy"
+xc03b: hkicker, type = "LBNL-xy"
+xc04b: hkicker, type = "LBNL-xy"
+xc05b: hkicker, type = "LBNL-xy"
 
-xc0h01: kicker, type = "class-6"
-xc0h03: kicker, type = "class-6"
-xc0h05: kicker, type = "class-6"
-xc0h07: kicker, type = "class-6"
-xchd01: kicker, type = "class-6"
-xchd03: kicker, type = "class-6"
-xcc000: kicker, type = "class-1a"
-xcc004: kicker, type = "class-6"
-xcc006: kicker, type = "class-6"
-xcc008: kicker, type = "class-6"
-xcc010: kicker, type = "class-6"
-xcc012: kicker, type = "class-6"
+xc0h01: hkicker, type = "class-6"
+xc0h03: hkicker, type = "class-6"
+xc0h05: hkicker, type = "class-6"
+xc0h07: hkicker, type = "class-6"
+xchd01: hkicker, type = "class-6"
+xchd03: hkicker, type = "class-6"
+xcc000: hkicker, type = "class-1a"
+xcc004: hkicker, type = "class-6"
+xcc006: hkicker, type = "class-6"
+xcc008: hkicker, type = "class-6"
+xcc010: hkicker, type = "class-6"
+xcc012: hkicker, type = "class-6"
 
 ! ==============================================================================
 ! YCORs
 ! ------------------------------------------------------------------------------
 
-yc01b: kicker, type = "LBNL-xy"
-yc02b: kicker, type = "LBNL-xy"
-yc03b: kicker, type = "LBNL-xy"
-yc04b: kicker, type = "LBNL-xy"
-yc05b: kicker, type = "LBNL-xy"
+yc01b: vkicker, type = "LBNL-xy"
+yc02b: vkicker, type = "LBNL-xy"
+yc03b: vkicker, type = "LBNL-xy"
+yc04b: vkicker, type = "LBNL-xy"
+yc05b: vkicker, type = "LBNL-xy"
 
-yc0h01: kicker, type = "class-6"
-yc0h03: kicker, type = "class-6"
-yc0h05: kicker, type = "class-6"
-yc0h07: kicker, type = "class-6"
-ychd01: kicker, type = "class-6"
-ychd03: kicker, type = "class-6"
-ycc000: kicker, type = "class-1a"
-ycc003: kicker, type = "class-6"
-ycc005: kicker, type = "class-6"
-ycc007: kicker, type = "class-6"
-ycc009: kicker, type = "class-6"
-ycc011: kicker, type = "class-6"
+yc0h01: vkicker, type = "class-6"
+yc0h03: vkicker, type = "class-6"
+yc0h05: vkicker, type = "class-6"
+yc0h07: vkicker, type = "class-6"
+ychd01: vkicker, type = "class-6"
+ychd03: vkicker, type = "class-6"
+ycc000: vkicker, type = "class-1a"
+ycc003: vkicker, type = "class-6"
+ycc005: vkicker, type = "class-6"
+ycc007: vkicker, type = "class-6"
+ycc009: vkicker, type = "class-6"
+ycc011: vkicker, type = "class-6"
 
 ! ==============================================================================
 ! diagnostics, etc.
@@ -668,34 +654,34 @@ ycc011: kicker, type = "class-6"
 
 ! halo/dark current collimator
 
-pc0h00: ecollimator, x_limit = 6.0e-3, y_limit = 6.0e-3, l = ljaw, type = "tungsten"
+pc0h00: ecollimator, l = ljaw, x_limit = 6.0e-3, y_limit = 6.0e-3, type = "tungsten"
 
 ! collimators
 ! (betatron X/Y half-gaps are 24/16 sigma for 1 um normalized emittance)
 
-cehtr: rcollimator, x_limit = 3.0e-3, l = ljaw, type = "HCOLL"    !X momentum collimator
-cyc01: rcollimator, y_limit = 4.4e-3, l = ljaw, type = "VCOLL"    !Y betatron collimator
-cxc01: rcollimator, x_limit = 4.4e-3, l = ljaw, type = "HCOLL"    !X betatron collimator
-cyc02: rcollimator, y_limit = 4.4e-3, l = ljaw, type = "@4,VCOLL" !Y betatron collimator
-cxc02: rcollimator, x_limit = 4.4e-3, l = ljaw, type = "@4,HCOLL" !X betatron collimator
-cyc03: rcollimator, y_limit = 4.4e-3, l = ljaw, type = "VCOLL"    !Y betatron collimator
-cxc03: rcollimator, x_limit = 4.4e-3, l = ljaw, type = "HCOLL"    !X betatron collimator
+cehtr: rcollimator, l = ljaw, x_limit = 3.0e-3, type = "HCOLL"    !X momentum collimator
+cyc01: rcollimator, l = ljaw, y_limit = 4.4e-3, type = "VCOLL"    !Y betatron collimator
+cxc01: rcollimator, l = ljaw, x_limit = 4.4e-3, type = "HCOLL"    !X betatron collimator
+cyc02: rcollimator, l = ljaw, y_limit = 4.4e-3, type = "@4,VCOLL" !Y betatron collimator
+cxc02: rcollimator, l = ljaw, x_limit = 4.4e-3, type = "@4,HCOLL" !X betatron collimator
+cyc03: rcollimator, l = ljaw, y_limit = 4.4e-3, type = "VCOLL"    !Y betatron collimator
+cxc03: rcollimator, l = ljaw, x_limit = 4.4e-3, type = "HCOLL"    !X betatron collimator
 
 ! instruments
 
 cathodeb: instrument
 vv01b: instrument
 im01b: marker, type = "ICT"
-yag01b: instrument, type = "YAG INJ"
+yag01b: monitor, type = "YAG INJ"
 vv02b: instrument
 ws0h04: marker, type = "fast"
-otr0h04: instrument, type = "YAG/OTR PAL"
-bz0h04: instrument, type = "gap/diode"
-yagh1: instrument, type = "YAG INJ"
-yagh2: instrument, type = "YAG INJ"
+otr0h04: monitor, type = "YAG/OTR PAL"
+bz0h04: monitor, type = "gap/diode"
+yagh1: monitor, type = "YAG INJ"
+yagh2: monitor, type = "YAG INJ"
 imbcsi1: marker, type = "BCS ACM"
 imbcsi2: marker, type = "BCS ACM"
-otrc006: instrument, type = "YAG/OTR PAL"
+otrc006: monitor, type = "YAG/OTR PAL"
 wsc006: marker, type = "@4,fast"
 
 fc00eic: instrument, type = "Faraday cup"
@@ -724,23 +710,23 @@ endeic: marker
 
 
 
-!Old split line: line = (bun1b, bun1b)
+!Old split line: LINE=(BUN1B,BUN1B)
 
 bun1b_full: line = (bun1b)
 bun1b[L] = 2*bun1b[L]
 
 bcxh1_full: line = (bcxh1)
-!old: bcxh1_full: line = (bcxh1a, bcxh1b)
+!old:   BCXH1_full : LINE=(BCXH1a,BCXH1b)
 bcxh2_full: line = (bcxh2)
-!old: bcxh2_full: line = (bcxh2a, bcxh2b)
+!old:   BCXH2_full : LINE=(BCXH2a,BCXH2b)
 bcxh3_full: line = (bcxh3)
-!old: bcxh3_full: line = (bcxh3a, bcxh3b)
+!old:   BCXH3_full : LINE=(BCXH3a,BCXH3b)
 bcxh4_full: line = (bcxh4)
-!old: bcxh4_full: line = (bcxh4a, bcxh4b)
+!old:   BCXH4_full : LINE=(BCXH4a,BCXH4b)
 
 
 
-!Old split line: line = (q0h01, bpm0h01, q0h01)
+!Old split line: LINE=(Q0H01,BPM0H01,Q0H01)
 
 q0h01_full: line = (q0h01)
 q0h01[L] = 2*q0h01[L]
@@ -748,19 +734,19 @@ bpm0h01[superimpose] = T
 bpm0h01[ref] = q0h01
 
 
-!Old split line: line = (q0h02, q0h02)
+!Old split line: LINE=(Q0H02,Q0H02)
 
 q0h02_full: line = (q0h02)
 q0h02[L] = 2*q0h02[L]
 
 
-!Old split line: line = (q0h03, q0h03)
+!Old split line: LINE=(Q0H03,Q0H03)
 
 q0h03_full: line = (q0h03)
 q0h03[L] = 2*q0h03[L]
 
 
-!Old split line: line = (q0h04, bpm0h04, q0h04)
+!Old split line: LINE=(Q0H04,BPM0H04,Q0H04)
 
 q0h04_full: line = (q0h04)
 q0h04[L] = 2*q0h04[L]
@@ -768,7 +754,7 @@ bpm0h04[superimpose] = T
 bpm0h04[ref] = q0h04
 
 
-!Old split line: line = (q0h05, bpm0h05, q0h05)
+!Old split line: LINE=(Q0H05,BPM0H05,Q0H05)
 
 q0h05_full: line = (q0h05)
 q0h05[L] = 2*q0h05[L]
@@ -776,19 +762,19 @@ bpm0h05[superimpose] = T
 bpm0h05[ref] = q0h05
 
 
-!Old split line: line = (q0h06, q0h06)
+!Old split line: LINE=(Q0H06,Q0H06)
 
 q0h06_full: line = (q0h06)
 q0h06[L] = 2*q0h06[L]
 
 
-!Old split line: line = (q0h07, q0h07)
+!Old split line: LINE=(Q0H07,Q0H07)
 
 q0h07_full: line = (q0h07)
 q0h07[L] = 2*q0h07[L]
 
 
-!Old split line: line = (q0h08, bpm0h08, q0h08)
+!Old split line: LINE=(Q0H08,BPM0H08,Q0H08)
 
 q0h08_full: line = (q0h08)
 q0h08[L] = 2*q0h08[L]
@@ -796,7 +782,7 @@ bpm0h08[superimpose] = T
 bpm0h08[ref] = q0h08
 
 
-!Old split line: line = (qhd01, bpmhd01, qhd01)
+!Old split line: LINE=(QHD01,BPMHD01,QHD01)
 
 qhd01_full: line = (qhd01)
 qhd01[L] = 2*qhd01[L]
@@ -804,7 +790,7 @@ bpmhd01[superimpose] = T
 bpmhd01[ref] = qhd01
 
 
-!Old split line: line = (qhd02, bpmhd02, qhd02)
+!Old split line: LINE=(QHD02,BPMHD02,QHD02)
 
 qhd02_full: line = (qhd02)
 qhd02[L] = 2*qhd02[L]
@@ -812,7 +798,7 @@ bpmhd02[superimpose] = T
 bpmhd02[ref] = qhd02
 
 
-!Old split line: line = (qhd03, bpmhd03, qhd03)
+!Old split line: LINE=(QHD03,BPMHD03,QHD03)
 
 qhd03_full: line = (qhd03)
 qhd03[L] = 2*qhd03[L]
@@ -820,7 +806,7 @@ bpmhd03[superimpose] = T
 bpmhd03[ref] = qhd03
 
 
-!Old split line: line = (qhd04, bpmhd04, qhd04)
+!Old split line: LINE=(QHD04,BPMHD04,QHD04)
 
 qhd04_full: line = (qhd04)
 qhd04[L] = 2*qhd04[L]
@@ -828,7 +814,7 @@ bpmhd04[superimpose] = T
 bpmhd04[ref] = qhd04
 
 
-!Old split line: line = (qc001, bpmc001, qc001)
+!Old split line: LINE=(QC001,BPMC001,QC001)
 
 qc001_full: line = (qc001)
 qc001[L] = 2*qc001[L]
@@ -836,7 +822,7 @@ bpmc001[superimpose] = T
 bpmc001[ref] = qc001
 
 
-!Old split line: line = (qc002, bpmc002, qc002)
+!Old split line: LINE=(QC002,BPMC002,QC002)
 
 qc002_full: line = (qc002)
 qc002[L] = 2*qc002[L]
@@ -844,7 +830,7 @@ bpmc002[superimpose] = T
 bpmc002[ref] = qc002
 
 
-!Old split line: line = (qc003, bpmc003, qc003)
+!Old split line: LINE=(QC003,BPMC003,QC003)
 
 qc003_full: line = (qc003)
 qc003[L] = 2*qc003[L]
@@ -852,7 +838,7 @@ bpmc003[superimpose] = T
 bpmc003[ref] = qc003
 
 
-!Old split line: line = (qc004, bpmc004, qc004)
+!Old split line: LINE=(QC004,BPMC004,QC004)
 
 qc004_full: line = (qc004)
 qc004[L] = 2*qc004[L]
@@ -860,7 +846,7 @@ bpmc004[superimpose] = T
 bpmc004[ref] = qc004
 
 
-!Old split line: line = (qc005, bpmc005, qc005)
+!Old split line: LINE=(QC005,BPMC005,QC005)
 
 qc005_full: line = (qc005)
 qc005[L] = 2*qc005[L]
@@ -868,7 +854,7 @@ bpmc005[superimpose] = T
 bpmc005[ref] = qc005
 
 
-!Old split line: line = (qc006, bpmc006, qc006)
+!Old split line: LINE=(QC006,BPMC006,QC006)
 
 qc006_full: line = (qc006)
 qc006[L] = 2*qc006[L]
@@ -876,7 +862,7 @@ bpmc006[superimpose] = T
 bpmc006[ref] = qc006
 
 
-!Old split line: line = (qc007, bpmc007, qc007)
+!Old split line: LINE=(QC007,BPMC007,QC007)
 
 qc007_full: line = (qc007)
 qc007[L] = 2*qc007[L]
@@ -884,7 +870,7 @@ bpmc007[superimpose] = T
 bpmc007[ref] = qc007
 
 
-!Old split line: line = (qc008, bpmc008, qc008)
+!Old split line: LINE=(QC008,BPMC008,QC008)
 
 qc008_full: line = (qc008)
 qc008[L] = 2*qc008[L]
@@ -892,7 +878,7 @@ bpmc008[superimpose] = T
 bpmc008[ref] = qc008
 
 
-!Old split line: line = (qc009, bpmc009, qc009)
+!Old split line: LINE=(QC009,BPMC009,QC009)
 
 qc009_full: line = (qc009)
 qc009[L] = 2*qc009[L]
@@ -900,7 +886,7 @@ bpmc009[superimpose] = T
 bpmc009[ref] = qc009
 
 
-!Old split line: line = (qc010, bpmc010, qc010)
+!Old split line: LINE=(QC010,BPMC010,QC010)
 
 qc010_full: line = (qc010)
 qc010[L] = 2*qc010[L]
@@ -908,7 +894,7 @@ bpmc010[superimpose] = T
 bpmc010[ref] = qc010
 
 
-!Old split line: line = (qc011, bpmc011, qc011)
+!Old split line: LINE=(QC011,BPMC011,QC011)
 
 qc011_full: line = (qc011)
 qc011[L] = 2*qc011[L]
@@ -916,7 +902,7 @@ bpmc011[superimpose] = T
 bpmc011[ref] = qc011
 
 
-!Old split line: line = (qc012, bpmc012, qc012)
+!Old split line: LINE=(QC012,BPMC012,QC012)
 
 qc012_full: line = (qc012)
 qc012[L] = 2*qc012[L]
@@ -925,7 +911,7 @@ bpmc012[ref] = qc012
 
 
 
-!Old split line: line = (sol1b, cq01b, sq01b, sol1b)
+!Old split line: LINE=(SOL1B,CQ01B,SQ01B,SOL1B)
 
 sol1b_full: line = (sol1b)
 sol1b[L] = 2*sol1b[L]
@@ -935,7 +921,7 @@ sq01b[superimpose] = T
 sq01b[ref] = sol1b
 
 
-!Old split line: line = (sol2b, cq02b, sq02b, sol2b)
+!Old split line: LINE=(SOL2B,CQ02B,SQ02B,SOL2B)
 
 sol2b_full: line = (sol2b)
 sol2b[L] = 2*sol2b[L]
@@ -946,29 +932,27 @@ sq02b[ref] = sol2b
 
 
 
-!Old split line: line = (umhtr, htrundb, umhtr)
+!Old split line: LINE=(UMHTR,HTRUNDB,UMHTR)
 
 umhtr_full: line = (umhtr)
 umhtr[L] = 2*umhtr[L]
 htrundb[superimpose] = T
 htrundb[ref] = umhtr
 
-sc1b: line = (xc01b, yc01b)
-sc2b: line = (xc02b, yc02b)
-sc3b: line = (xc03b, yc03b)
-sc4b: line = (xc04b, yc04b)
-sc5b: line = (xc05b, yc05b)
-scc000: line = (xcc000, ycc000)
+  SC1B   : LINE=(XC01B,YC01B)
+  SC2B   : LINE=(XC02B,YC02B)
+  SC3B   : LINE=(XC03B,YC03B)
+  SC4B   : LINE=(XC04B,YC04B)
+  SC5B   : LINE=(XC05B,YC05B)
+  SCC000 : LINE=(XCC000,YCC000)
 
-gun: line = (beggunb, dgbca, sol1bkb, dgbcb, cathodeb, dgun, dg001, sol1b_full, dg002, vv01b,  &
-        dg003, sc1b, dg004, bpm1b, dg005, im01b, dg006, sc2b, dg007, bun1b_full, dg008, sc3b,  &
-        dg009, am00b, dg010, sc4b, dg011, yag01b, dg012, sol2b_full, dg013, vv02b, dg014, bpm2b,  &
-        dg015, sc5b, dg016a, blfu, dg016b, endgunb)
+  GUN : LINE=(BEGGUNB,DGBCa,SOL1BKB,DGBCb,CATHODEB,DGUN,DG001,SOL1B_full,DG002,VV01B,DG003,SC1B,DG004,BPM1B,DG005,IM01B,
+         DG006,SC2B,DG007,BUN1B_full,DG008,SC3B,DG009,AM00B,DG010,SC4B,DG011,YAG01B,DG012,SOL2B_full,DG013,VV02B,DG014,BPM2B,
+         DG015,SC5B,DG016a,BLFU,DG016b,ENDGUNB)
 
-eic: line = (begeic, dgbca, sol1bkb, dgbcb, cathodeb, dgun, dg001, sol1b_full, dg002, vv01b,  &
-        dg003, sc1b, dg004, bpm1b, dg005, im01b, dg006, sc2b, dg007, bun1b_full, dg008, sc3b,  &
-        dg009, am00b, dg010, sc4b, dg011, yag01b, dg012, sol2b_full, dg013, vv02b, dg014, bpm2b,  &
-        dg015, sc5b, dg016a, blfu, dg016b, ecueic, dgeic, fc00eic, endeic)
+  EIC : LINE=(BEGEIC,DGBCa,SOL1BKB,DGBCb,CATHODEB,DGUN,DG001,SOL1B_full,DG002,VV01B,DG003,SC1B,DG004,BPM1B,DG005,IM01B,
+         DG006,SC2B,DG007,BUN1B_full,DG008,SC3B,DG009,AM00B,DG010,SC4B,DG011,YAG01B,DG012,SOL2B_full,DG013,VV02B,DG014,BPM2B,
+         DG015,SC5B,DG016a,BLFU,DG016b,ECUEIC,DGEIC,FC00EIC,ENDEIC)
 
 !=!  COMMENT !simplified
 !=!  COMMENT !simplified
@@ -981,9 +965,8 @@ eic: line = (begeic, dgbca, sol1bkb, dgbcb, cathodeb, dgun, dg001, sol1b_full, d
 !=!  ENDCOMMENT
 
  !COMMENT !complete
-lsrhtr: line = (lhbegb, bcxh1_full, dh01a, bpmh1, dh01b, mirlhu, dh01c, bcxh2_full, dh02a, cehtr &
-        , dh02b, yagh1, dh02c, umhtr_full, dh02d, yagh2, dh02e, bcxh3_full, dh03a, mirlhd, dh03b &
-        , bpmh2, dh03c, bcxh4_full, cnthtr, lhendb)
+    LSRHTR : LINE=(LHBEGB,BCXH1_full,Dh01a,BPMH1,Dh01b,MIRLHu,Dh01c,BCXH2_full,Dh02a,CEHTR,Dh02b,YAGH1,Dh02c,UMHTR_full,
+         Dh02d,YAGH2,Dh02e,BCXH3_full,Dh03a,MIRLHd,Dh03b,BPMH2,Dh03c,BCXH4_full,CNTHTR,LHENDB)
  !ENDCOMMENT
 
 !=!  COMMENT !simplified
@@ -1007,15 +990,12 @@ lsrhtr: line = (lhbegb, bcxh1_full, dh01a, bpmh1, dh01b, mirlhu, dh01c, bcxh2_fu
 !=!  ENDCOMMENT
 
  !COMMENT !complete
-htr: line = (beghtr, rfb0h00, d0h00a, pc0h00, d0h00b, q0h01_full, d0h01a, yc0h01, d0h01b,  &
-        q0h02_full, d0h02a, xc0h01, d0h02b, dp0h01, d0h02c, dp0h02, d0h02d, dp0h03, d0h02e,  &
-        xc0h03, d0h02f, q0h03_full, d0h03a, yc0h03, d0h03b, q0h04_full, d0h04a, rfb0h04, d0h04b,  &
-        otr0h04, d0h04c, ws0h04, d0h04d, bz0h04, d0h04e, q0h05_full, d0h05a, yc0h05, d0h05b,  &
-        q0h06_full, d0h06a, xc0h05, d0h06b, xc0h07, d0h06c, q0h07_full, d0h07a, yc0h07, d0h07b,  &
-        q0h08_full, d0h08a, rfb0h08, d0h08b, lsrhtr, dhd00a, rfbhd00, dhd00b, qhd01_full, dhd01a &
-        , ychd01, dhd01b, xchd01, dhd01c, qhd02_full, dhd02a1, imbcsi1, dhd02a2, imbcsi2, dhd02a3 &
-        , ychd03, dhd02b, qhd03_full, dhd03a, xchd03, dhd03b, qhd04_full, dhd04a, rfbhd04, dhd04b &
-        , endhtr)
+    HTR : LINE=(BEGHTR,RFB0H00,D0H00a,PC0H00,D0H00b,Q0H01_full,D0H01a,YC0H01,D0H01b,Q0H02_full,D0H02a,XC0H01,D0H02b,
+         DP0H01,D0H02c,DP0H02,D0H02d,DP0H03,D0H02e,XC0H03,D0H02f,Q0H03_full,D0H03a,YC0H03,D0H03b,Q0H04_full,D0H04a,RFB0H04,
+         D0H04b,OTR0H04,D0H04c,WS0H04,D0H04d,BZ0H04,D0H04e,Q0H05_full,D0H05a,YC0H05,D0H05b,Q0H06_full,D0H06a,XC0H05,D0H06b,
+         XC0H07,D0H06c,Q0H07_full,D0H07a,YC0H07,D0H07b,Q0H08_full,D0H08a,RFB0H08,D0H08b,LSRHTR,DHD00a,RFBHD00,DHD00b,QHD01_full,
+         DHD01a,YCHD01,DHD01b,XCHD01,DHD01c,QHD02_full,DHD02a1,IMBCSi1,DHD02a2,IMBCSi2,DHD02a3,YCHD03,DHD02b,QHD03_full,DHD03a,
+         XCHD03,DHD03b,QHD04_full,DHD04a,RFBHD04,DHD04b,ENDHTR)
  !ENDCOMMENT
 
 !=!  COMMENT !simplified
@@ -1039,17 +1019,15 @@ htr: line = (beghtr, rfb0h00, d0h00a, pc0h00, d0h00b, q0h01_full, d0h01a, yc0h01
 !=!  ENDCOMMENT
 
  !COMMENT !complete
-col0: line = (begcol0, dbkrdg0a, dbkrdg0b, dc000aa, bpmdg000, dc000ab, dblrdg0a, dblrdg0b, dc000b &
-        , scc000, dc000c, qc001_full, dc001, qc002_full, dc002, qc003_full, dc003a, ycc003,  &
-        dc003b, qc004_full, dc004a, xcc004, dc004b, cyc01, dc004c, qc005_full, dcoll0a, ycc005,  &
-        dcoll0b, cxc01, dcoll0c, qc006_full, dcoll0a, xcc006, dcoll0b1, otrc006, dcoll0b2, wsc006 &
-        , dcoll0b3, rfbc006, dcoll0b4, cyc02, dcoll0c, qc007_full, dcoll0a, ycc007, dcoll0b5,  &
-        cxc02, dcoll0c, qc008_full, dcoll0a, xcc008, dcoll0b, cyc03, dcoll0c, qc009_full, dcoll0a &
-        , ycc009, dcoll0b, cxc03, dcoll0c, qc010_full, dc010a, xcc010, dc010b, rfbc011, dc010c,  &
-        qc011_full, dc011a, ycc011, dc011b, xcc012, dc011c, qc012_full, endcol0)
+    COL0 : LINE=(BEGCOL0,DBKRDG0a,DBKRDG0b,DC000aa,BPMDG000,DC000ab,DBLRDG0a,DBLRDG0b,DC000b,SCC000,DC000c,QC001_full,
+         DC001,QC002_full,DC002,QC003_full,DC003a,YCC003,DC003b,QC004_full,DC004a,XCC004,DC004b,CYC01,DC004c,QC005_full,DColl0a,
+         YCC005,DColl0b,CXC01,DColl0c,QC006_full,DColl0a,XCC006,DColl0b1,OTRC006,DColl0b2,WSC006,DColl0b3,RFBC006,DColl0b4,CYC02,
+         DColl0c,QC007_full,DColl0a,YCC007,DColl0b5,CXC02,DColl0c,QC008_full,DColl0a,XCC008,DColl0b,CYC03,DColl0c,QC009_full,
+         DColl0a,YCC009,DColl0b,CXC03,DColl0c,QC010_full,DC010a,XCC010,DC010b,RFBC011,DC010c,QC011_full,DC011a,YCC011,DC011b,
+         XCC012,DC011c,QC012_full,ENDCOL0)
  !ENDCOMMENT
 
-c0fodo: line = (qfcoll0, dcoll0, qdcoll0, qdcoll0, dcoll0, qfcoll0)
+  C0fodo : LINE=(QFColl0,DColl0,QDColl0,QDColl0,DColl0,QFColl0)
 
 ! ------------------------------------------------------------------------------
 

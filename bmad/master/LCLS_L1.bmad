@@ -28,37 +28,26 @@
 
 dlb1 = 0.200+0.253432
 dlb2 = dlwl9-dlb1
-k21_1b1: lcavity, rf_frequency = sbandf * 1e6, gradient = p50*gradl1*dlb1 * 1e6 / dlb1, phi0 =  &
-        phil1, l = dlb1, type = "9.4ft"
-k21_1b2: lcavity, rf_frequency = sbandf * 1e6, gradient = p50*gradl1*dlb2 * 1e6 / dlb2, phi0 =  &
-        phil1, l = dlb2, type = "9.4ft"
+k21_1b1: lcavity, rf_frequency = sbandf * 1e6, l = dlb1, voltage = p50*gradl1*dlb1 * 1e6, phi0 = phil1, type = "9.4ft"
+k21_1b2: lcavity, rf_frequency = sbandf * 1e6, l = dlb2, voltage = p50*gradl1*dlb2 * 1e6, phi0 = phil1, type = "9.4ft"
 dlc1 = 0.200+0.2534458
 dlc2 = dlwl9-dlc1
-k21_1c1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl1*dlc1 * 1e6 / dlc1, phi0 =  &
-        phil1, l = dlc1, type = "9.4ft"
-k21_1c2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl1*dlc2 * 1e6 / dlc2, phi0 =  &
-        phil1, l = dlc2, type = "9.4ft"
+k21_1c1: lcavity, rf_frequency = sbandf * 1e6, l = dlc1, voltage = p25*gradl1*dlc1 * 1e6, phi0 = phil1, type = "9.4ft"
+k21_1c2: lcavity, rf_frequency = sbandf * 1e6, l = dlc2, voltage = p25*gradl1*dlc2 * 1e6, phi0 = phil1, type = "9.4ft"
 dld1 = 0.200+0.1693348
 dld3 = 0.300+0.167527-0.1799554
 dld4 = 0.200+0.1799554
 dld2 = dlwl10-dld1-dld3-dld4
-k21_1d1: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl1*dld1 * 1e6 / dld1, phi0 =  &
-        phil1, l = dld1, type = "10ft"
-k21_1d2: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl1*dld2 * 1e6 / dld2, phi0 =  &
-        phil1, l = dld2, type = "10ft"
-k21_1d3: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl1*dld3 * 1e6 / dld3, phi0 =  &
-        phil1, l = dld3, type = "10ft"
-k21_1d4: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl1*dld4 * 1e6 / dld4, phi0 =  &
-        phil1, l = dld4, type = "10ft"
+k21_1d1: lcavity, rf_frequency = sbandf * 1e6, l = dld1, voltage = p25*gradl1*dld1 * 1e6, phi0 = phil1, type = "10ft"
+k21_1d2: lcavity, rf_frequency = sbandf * 1e6, l = dld2, voltage = p25*gradl1*dld2 * 1e6, phi0 = phil1, type = "10ft"
+k21_1d3: lcavity, rf_frequency = sbandf * 1e6, l = dld3, voltage = p25*gradl1*dld3 * 1e6, phi0 = phil1, type = "10ft"
+k21_1d4: lcavity, rf_frequency = sbandf * 1e6, l = dld4, voltage = p25*gradl1*dld4 * 1e6, phi0 = phil1, type = "10ft"
 
 ! define unsplit lcavitys for BMAD ... not used by MAD
 
-k21_1b: lcavity, rf_frequency = sbandf * 1e6, gradient = p50*gradl1*dlwl9 * 1e6 / dlwl9, phi0 =  &
-        phil1, l = dlwl9, type = "9.4ft"
-k21_1c: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl1*dlwl9 * 1e6 / dlwl9, phi0 =  &
-        phil1, l = dlwl9, type = "9.4ft"
-k21_1d: lcavity, rf_frequency = sbandf * 1e6, gradient = p25*gradl1*dlwl10 * 1e6 / dlwl10, phi0 &
-         = phil1, l = dlwl10, type = "10ft"
+k21_1b: lcavity, rf_frequency = sbandf * 1e6, l = dlwl9, voltage = p50*gradl1*dlwl9 * 1e6, phi0 = phil1, type = "9.4ft"
+k21_1c: lcavity, rf_frequency = sbandf * 1e6, l = dlwl9, voltage = p25*gradl1*dlwl9 * 1e6, phi0 = phil1, type = "9.4ft"
+k21_1d: lcavity, rf_frequency = sbandf * 1e6, l = dlwl10, voltage = p25*gradl1*dlwl10 * 1e6, phi0 = phil1, type = "10ft"
 
 ! ==============================================================================
 ! BEAMLINEs
@@ -76,7 +65,7 @@ K21_1B_full: line = (K21_1B)
     YC21102[ref] = K21_1B
     YC21102[ref_origin] = beginning
     YC21102[offset] = 0.453432
-!old: k21_1b_full: line = (k21_1b1, xc21101, yc21102, k21_1b2)
+!old:   K21_1b_full : LINE=(K21_1b1,XC21101,YC21102,K21_1b2)
 !---------------------
 ! K21_1C LCAVITY
 K21_1C_full: line = (K21_1C)
@@ -89,7 +78,7 @@ K21_1C_full: line = (K21_1C)
     YC21136[ref] = K21_1C
     YC21136[ref_origin] = beginning
     YC21136[offset] = 0.4534458
-!old: k21_1c_full: line = (k21_1c1, xc21135, yc21136, k21_1c2)
+!old:   K21_1c_full : LINE=(K21_1c1,XC21135,YC21136,K21_1c2)
 !---------------------
 ! K21_1D LCAVITY
 K21_1D_full: line = (K21_1D)
@@ -110,11 +99,11 @@ K21_1D_full: line = (K21_1D)
     XC21175[ref] = K21_1D
     XC21175[ref_origin] = beginning
     XC21175[offset] = 2.6641446
-!old: k21_1d_full: line = (k21_1d1, xc21165, yc21166, k21_1d2, yc21174, k21_1d3, xc21175, k21_1d4)
+!old:   K21_1d_full : LINE=(K21_1d1,XC21165,YC21166,K21_1d2,YC21174,K21_1d3,XC21175,K21_1d4)
 
 
 
-!Old split line: line = (qa11, bpma11, qa11)
+!Old split line: LINE=(QA11,BPMA11,QA11)
 
 qa11_full: line = (qa11)
 qa11[L] = 2*qa11[L]
@@ -122,15 +111,14 @@ bpma11[superimpose] = T
 bpma11[ref] = qa11
 
 
-!Old split line: line = (qa12, bpma12, qa12)
+!Old split line: LINE=(QA12,BPMA12,QA12)
 
 qa12_full: line = (qa12)
 qa12[L] = 2*qa12[L]
 bpma12[superimpose] = T
 bpma12[ref] = qa12
 
-l1: line = (begl1, zlin01, k21_1b_full, daqa1, qa11_full, daqa2, k21_1c_full, daqa3, qa12_full,  &
-        daqa4, k21_1d_full, endl1)
+  L1 : LINE=(BEGL1,ZLIN01,K21_1b_full,DAQA1,QA11_full,DAQA2,K21_1c_full,DAQA3,QA12_full,DAQA4,K21_1d_full,ENDL1)
 
 ! ==============================================================================
 

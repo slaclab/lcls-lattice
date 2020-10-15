@@ -106,16 +106,16 @@ kqcus6 = kqcus5
 kqcus7 = kqcus4
 kqcus8 = kqcus3
 
-qcus1: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kqcus1
-qcus2: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kqcus2
-qcus3: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kqcus3
-qcus4: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqcus4
-qcus5: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqcus5
-qcus6: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqcus6
-qcus7: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqcus7
-qcus8: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kqcus8
-qcus9: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kqcus9
-qcus10: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kqcus10
+qcus1: quadrupole, type = "2Q10", l = lqr/2, k1 = kqcus1, aperture = rqr
+qcus2: quadrupole, type = "2Q10", l = lqr/2, k1 = kqcus2, aperture = rqr
+qcus3: quadrupole, type = "2Q10", l = lqr/2, k1 = kqcus3, aperture = rqr
+qcus4: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqcus4, aperture = rqe
+qcus5: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqcus5, aperture = rqe
+qcus6: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqcus6, aperture = rqe
+qcus7: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqcus7, aperture = rqe
+qcus8: quadrupole, type = "2Q10", l = lqr/2, k1 = kqcus8, aperture = rqr
+qcus9: quadrupole, type = "2Q10", l = lqr/2, k1 = kqcus9, aperture = rqr
+qcus10: quadrupole, type = "2Q10", l = lqr/2, k1 = kqcus10, aperture = rqr
 
 ! ------------------------------------------------------------------------------
 
@@ -132,24 +132,24 @@ abkrcus = abkrcus0*pulsed          !total kicker angle (rad)
 abkrcusa = asin(sin(abkrcus)/2)     !1st half-kicker angle (rad)
 abkrcusb = abkrcus-abkrcusa         !2nd half-kicker angle (rad)
 
-abkrcus_2 = abkrcus*abkrcus
-abkrcus_4 = abkrcus_2*abkrcus_2
-abkrcusa_2 = abkrcusa*abkrcusa
+abkrcus_2 = abkrcus   *abkrcus
+abkrcus_4 = abkrcus_2 *abkrcus_2
+abkrcusa_2 = abkrcusa  *abkrcusa
 abkrcusa_4 = abkrcusa_2*abkrcusa_2
 
-lbkrcus = zbkrcus/(1-abkrcus_2/6+abkrcus_4/120)
-lbkrcusa = zbkrcus/2/(1-abkrcusa_2/6+abkrcusa_4/120)
+lbkrcus = zbkrcus   /(1 -abkrcus_2 /6 +abkrcus_4 /120)
+lbkrcusa = zbkrcus/2 /(1 -abkrcusa_2/6 +abkrcusa_4/120)
 lbkrcusb = lbkrcus-lbkrcusa
 
-bkrcusa: sbend, e1 = 0, e2 = 0, fint = 0.5, fintx = 0, hgap = gbkrcus/2, type = "1.92K41.2",  &
-        ref_tilt = pi/2+tcusxr, l = lbkrcusa, angle = lbkrcusa * abkrcusa/lbkrcusa
-bkrcusb: sbend, e1 = 0, e2 = abkrcus, fint = 0, fintx = 0.5, hgap = gbkrcus/2, type = "1.92K41.2" &
-        , ref_tilt = pi/2+tcusxr, l = lbkrcusb, angle = lbkrcusb * abkrcusb/lbkrcusb
+bkrcusa: sbend, type = "1.92K41.2", l = lbkrcusa, angle = abkrcusa, e1 = 0, e2 = 0, fint = 0.5, fintx = 0,
+          hgap = gbkrcus/2, ref_tilt = pi/2+tcusxr
+bkrcusb: sbend, type = "1.92K41.2", l = lbkrcusb, angle = abkrcusb, e1 = 0, e2 = abkrcus, fint = 0, fintx = 0.5,
+          hgap = gbkrcus/2, ref_tilt = pi/2+tcusxr
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-bkrcus: sbend, hgap = gbkrcus/2, e1 = 0, fint = 0.5, e2 = abkrcus, type = "1.92K41.2", ref_tilt &
-         = pi/2+tcusxr, l = lbkrcus, angle = lbkrcus * abkrcus/lbkrcus
+bkrcus: sbend, type = "1.92K41.2", hgap = gbkrcus/2, l = lbkrcus, angle = abkrcus, e1 = 0, fint = 0.5, e2 = abkrcus,
+          fintx = 0.5, ref_tilt = pi/2+tcusxr
 
 ! ------------------------------------------------------------------------------
 
@@ -177,22 +177,20 @@ lbrcusdc1b = lbrcusdc1-lbrcusdc1a
 abrcusdc1a = abrcusdc1*(lbrcusdc1a/lbrcusdc1)
 abrcusdc1b = abrcusdc1-abrcusdc1a
 
-brcusdc1a: sbend, hgap = gbrcusdc/2, e1 = 0, fint = fbrcusdc, fintx = 0, type = "3D8.8MK3",  &
-        ref_tilt = pi/2+tbrcusdc, l = lbrcusdc1a, angle = lbrcusdc1a * abrcusdc1a/lbrcusdc1a
-brcusdc1b: sbend, hgap = gbrcusdc/2, fint = 0, e2 = abrcusdc1, fintx = fbrcusdc, type =  &
-        "3D8.8MK3", ref_tilt = pi/2+tbrcusdc, l = lbrcusdc1b, angle =  &
-        lbrcusdc1b * abrcusdc1b/lbrcusdc1b
+brcusdc1a: sbend, type = "3D8.8MK3", l = lbrcusdc1a, angle = abrcusdc1a, hgap = gbrcusdc/2, e1 = 0, fint = fbrcusdc,
+          fintx = 0, ref_tilt = pi/2+tbrcusdc
+brcusdc1b: sbend, type = "3D8.8MK3", l = lbrcusdc1b, angle = abrcusdc1b, hgap = gbrcusdc/2, fint = 0, e2 = abrcusdc1,
+          fintx = fbrcusdc, ref_tilt = pi/2+tbrcusdc
 
 lbrcusdc2a = 0.1345578935 !ZBRCUSdc/2
 lbrcusdc2b = lbrcusdc2-lbrcusdc2a
 abrcusdc2a = abrcusdc2*(lbrcusdc2a/lbrcusdc2)
 abrcusdc2b = abrcusdc2-abrcusdc2a
 
-brcusdc2a: sbend, hgap = gbrcusdc/2, e1 = -abrcusdc1, fint = fbrcusdc, fintx = 0, type =  &
-        "3D8.8MK3", ref_tilt = pi/2+tbrcusdc, l = lbrcusdc2a, angle =  &
-        lbrcusdc2a * abrcusdc2a/lbrcusdc2a
-brcusdc2b: sbend, hgap = gbrcusdc/2, fint = 0, e2 = abrcusdc, fintx = fbrcusdc, type = "3D8.8MK3" &
-        , ref_tilt = pi/2+tbrcusdc, l = lbrcusdc2b, angle = lbrcusdc2b * abrcusdc2b/lbrcusdc2b
+brcusdc2a: sbend, type = "3D8.8MK3", l = lbrcusdc2a, angle = abrcusdc2a, hgap = gbrcusdc/2, e1 = -abrcusdc1,
+          fint = fbrcusdc, fintx = 0, ref_tilt = pi/2+tbrcusdc
+brcusdc2b: sbend, type = "3D8.8MK3", l = lbrcusdc2b, angle = abrcusdc2b, hgap = gbrcusdc/2, fint = 0, e2 = abrcusdc,
+          fintx = fbrcusdc, ref_tilt = pi/2+tbrcusdc
 
 ldck = 40.03*in2m                !center-to-center Z-distance between corrector and kicker
 zckdc = ldck-(zbrcusdc+zbkrcus)/2 !Z-distance between corrector and kicker
@@ -213,11 +211,10 @@ dcusblrb: drift, l = ldcusblrb
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-brcusdc1: sbend, hgap = gbrcusdc/2, e1 = 0, fint = fbrcusdc, e2 = abrcusdc1, type = "3D8.8MK3",  &
-        ref_tilt = pi/2+tbrcusdc, l = lbrcusdc1, angle = lbrcusdc1 * abrcusdc1/lbrcusdc1
-brcusdc2: sbend, hgap = gbrcusdc/2, e1 = -abrcusdc1, fint = fbrcusdc, e2 = abrcusdc, type =  &
-        "3D8.8MK3", ref_tilt = pi/2+tbrcusdc, l = lbrcusdc2, angle =  &
-        lbrcusdc2 * abrcusdc2/lbrcusdc2
+brcusdc1: sbend, type = "3D8.8MK3", hgap = gbrcusdc/2, l = lbrcusdc1, angle = abrcusdc1, e1 = 0, fint = fbrcusdc,
+          e2 = abrcusdc1, fintx = fbrcusdc, ref_tilt = pi/2+tbrcusdc
+brcusdc2: sbend, type = "3D8.8MK3", hgap = gbrcusdc/2, l = lbrcusdc2, angle = abrcusdc2, e1 = -abrcusdc1,
+          fint = fbrcusdc, e2 = abrcusdc, fintx = fbrcusdc, ref_tilt = pi/2+tbrcusdc
 
 ! ------------------------------------------------------------------------------
 
@@ -231,24 +228,24 @@ ablrcus = ablrcus0*abs(setcus) !septum bending angle (rad)
 ablrcusa = asin(sin(ablrcus)/2) !angle per 1st half of the septum
 ablrcusb = ablrcus-ablrcusa     !angle per 2nd half of the septum
 
-ablrcus_2 = ablrcus*ablrcus
-ablrcus_4 = ablrcus_2*ablrcus_2
-ablrcusa_2 = ablrcusa*ablrcusa
+ablrcus_2 = ablrcus   *ablrcus
+ablrcus_4 = ablrcus_2 *ablrcus_2
+ablrcusa_2 = ablrcusa  *ablrcusa
 ablrcusa_4 = ablrcusa_2*ablrcusa_2
 
-lblrcus = zblrcus/(1-ablrcus_2/6+ablrcus_4/120)/cos(abkrcus)
-lblrcusa = zblrcus/2/(1-ablrcusa_2/6+ablrcusa_4/120)/cos(abkrcus)
+lblrcus = zblrcus   /(1 -ablrcus_2/6  +ablrcus_4 /120)/cos(abkrcus)
+lblrcusa = zblrcus/2 /(1 -ablrcusa_2/6 +ablrcusa_4/120)/cos(abkrcus)
 lblrcusb = lblrcus-lblrcusa
 
-blrcusa: sbend, e1 = 0, e2 = 0, fint = 0.5, fintx = 0, hgap = gblrcus/2, type = "0.625SD38.98",  &
-        ref_tilt = tcusxr, l = lblrcusa, angle = lblrcusa * ablrcusa/lblrcusa
-blrcusb: sbend, e1 = 0, e2 = ablrcus, fint = 0, fintx = 0.5, hgap = gblrcus/2, type =  &
-        "0.625SD38.98", ref_tilt = tcusxr, l = lblrcusb, angle = lblrcusb * ablrcusb/lblrcusb
+blrcusa: sbend, type = "0.625SD38.98", l = lblrcusa, angle = ablrcusa, e1 = 0, e2 = 0, fint = 0.5, fintx = 0,
+          hgap = gblrcus/2, ref_tilt = tcusxr
+blrcusb: sbend, type = "0.625SD38.98", l = lblrcusb, angle = ablrcusb, e1 = 0, e2 = ablrcus, fint = 0, fintx = 0.5,
+          hgap = gblrcus/2, ref_tilt = tcusxr
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-blrcus: sbend, hgap = gblrcus/2, e1 = 0, fint = 0.5, e2 = ablrcus, type = "0.625SD38.98",  &
-        ref_tilt = tcusxr, l = lblrcus, angle = lblrcus * ablrcus/lblrcus
+blrcus: sbend, type = "0.625SD38.98", hgap = gblrcus/2, l = lblrcus, angle = ablrcus, e1 = 0, fint = 0.5, e2 = ablrcus,
+          fintx = 0.5, ref_tilt = tcusxr
 
 ! rolled DC bend
 ! Note: BRCUS1 is a merge DC-bend which is either turned ON to operate
@@ -262,19 +259,19 @@ fbrcus = 0.4861 !measured FINT
 dabrcus = -0.417540592574e-4
 abrcus = (-ablrcus0+dabrcus)*abs(setcus)
 abrcush = abrcus/2
-abrcush_2 = abrcush*abrcush
-abrcush_4 = abrcush_2*abrcush_2
-lbrcus = zbrcus/(1-abrcush_2/6+abrcush_4/120) !bend path length (m)
+abrcush_2 = abrcush   *abrcush
+abrcush_4 = abrcush_2 *abrcush_2
+lbrcus = zbrcus/(1-abrcush_2/6 +abrcush_4/120) !bend path length (m)
 
-brcus1a: sbend, e1 = abrcus/2, e2 = 0, fint = fbrcus, fintx = 0, hgap = gbrcus/2, type =  &
-        "1.0D38.37", ref_tilt = tbrcus, l = lbrcus/2, angle = lbrcus/2 * abrcus/2/(lbrcus/2)
-brcus1b: sbend, e2 = abrcus/2, e1 = 0, fint = 0, fintx = fbrcus, hgap = gbrcus/2, type =  &
-        "1.0D38.37", ref_tilt = tbrcus, l = lbrcus/2, angle = lbrcus/2 * abrcus/2/(lbrcus/2)
+brcus1a: sbend, type = "1.0D38.37", l = lbrcus/2, angle = abrcus/2, e1 = abrcus/2, e2 = 0, fint = fbrcus, fintx = 0,
+          hgap = gbrcus/2, ref_tilt = tbrcus
+brcus1b: sbend, type = "1.0D38.37", l = lbrcus/2, angle = abrcus/2, e2 = abrcus/2, e1 = 0, fint = 0, fintx = fbrcus,
+          hgap = gbrcus/2, ref_tilt = tbrcus
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-brcus1: sbend, hgap = gbrcus/2, e1 = abrcus/2, fint = fbrcus, e2 = abrcus/2, type = "1.0D38.37",  &
-        ref_tilt = tbrcus, l = lbrcus, angle = lbrcus * abrcus/lbrcus
+brcus1: sbend, type = "1.0D38.37", hgap = gbrcus/2, l = lbrcus, angle = abrcus, e1 = abrcus/2, fint = fbrcus,
+          e2 = abrcus/2, fintx = fbrcus, ref_tilt = tbrcus
 
 ! inner vertical bends for R56 cancellation
 ! NOTE: 1.0D22.625 dipoles replaced with 3D8.8MK3 correctors
@@ -287,22 +284,22 @@ dld2c = (0.6-zbycus)/2 !1.0D22.625 -> 3D8.8MK3
 abycus = 0.4e-3
 lbycus = zbycus*abycus/(2*sin(abycus/2)) !bend path length (m)
 
-bycus1a: sbend, e1 = abycus/2, e2 = 0, fint = fbycus, fintx = 0, hgap = gbycus/2, type =  &
-        "3D8.8MK3", ref_tilt = pi/2, l = lbycus/2, angle = lbycus/2 * abycus/2/(lbycus/2)
-bycus1b: sbend, e2 = abycus/2, e1 = 0, fint = 0, fintx = fbycus, hgap = gbycus/2, type =  &
-        "3D8.8MK3", ref_tilt = pi/2, l = lbycus/2, angle = lbycus/2 * abycus/2/(lbycus/2)
+bycus1a: sbend, type = "3D8.8MK3", l = lbycus/2, angle = abycus/2, e1 = abycus/2, e2 = 0, fint = fbycus, fintx = 0,
+          hgap = gbycus/2, ref_tilt = pi/2
+bycus1b: sbend, type = "3D8.8MK3", l = lbycus/2, angle = abycus/2, e2 = abycus/2, e1 = 0, fint = 0, fintx = fbycus,
+          hgap = gbycus/2, ref_tilt = pi/2
 
-bycus2a: sbend, e1 = -abycus/2, e2 = 0, fint = fbycus, fintx = 0, hgap = gbycus/2, type =  &
-        "3D8.8MK3", ref_tilt = pi/2, l = lbycus/2, angle = lbycus/2 * (-abycus/2)/(lbycus/2)
-bycus2b: sbend, e2 = -abycus/2, e1 = 0, fint = 0, fintx = fbycus, hgap = gbycus/2, type =  &
-        "3D8.8MK3", ref_tilt = pi/2, l = lbycus/2, angle = lbycus/2 * (-abycus/2)/(lbycus/2)
+bycus2a: sbend, type = "3D8.8MK3", l = lbycus/2, angle = -abycus/2, e1 = -abycus/2, e2 = 0, fint = fbycus, fintx = 0,
+          hgap = gbycus/2, ref_tilt = pi/2
+bycus2b: sbend, type = "3D8.8MK3", l = lbycus/2, angle = -abycus/2, e2 = -abycus/2, e1 = 0, fint = 0, fintx = fbycus,
+          hgap = gbycus/2, ref_tilt = pi/2
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-bycus1: sbend, hgap = gbycus/2, e1 = abycus/2, fint = fbycus, e2 = abycus/2, type = "3D8.8MK3",  &
-        ref_tilt = pi/2, l = lbycus, angle = lbycus * abycus/lbycus
-bycus2: sbend, hgap = gbycus/2, e1 = -abycus/2, fint = fbycus, e2 = -abycus/2, type = "3D8.8MK3" &
-        , ref_tilt = pi/2, l = lbycus, angle = lbycus * (-abycus)/lbycus
+bycus1: sbend, type = "3D8.8MK3", hgap = gbycus/2, l = lbycus, angle = abycus, e1 = abycus/2, fint = fbycus,
+          e2 = abycus/2, fintx = fbycus, ref_tilt = pi/2
+bycus2: sbend, type = "3D8.8MK3", hgap = gbycus/2, l = lbycus, angle = -abycus, e1 = -abycus/2, fint = fbycus,
+          e2 = -abycus/2, fintx = fbycus, ref_tilt = pi/2
 
 ! rolled DC corrector bends -- removed
 
@@ -321,24 +318,24 @@ dldcus3 = -0.9  !adjust positions of QCUS3,8
 dldcus4 = 0.16 !adjust positions of QCUS4,7
 dldcus13 = 0.0  !asymmetry between LDCUS1 and LDCUS13
 
-ldcus0 = 5.133675753223652+dldcus0
+ldcus0 = 5.133675753223652 +dldcus0
 ldcus1 = 29.4
-ldcus2 = ldcus0+dldcus2
-ldcus3 = ldcus0-dldcus2+dldcus3
-ldcus4 = ldcus0-dldcus3+dldcus4+0.599963125932
-ldcus5 = 1.5-0.25-dldcus4+dld2c
-ldcus6 = 1.0+0.25+dld2c
+ldcus2 = ldcus0         +dldcus2
+ldcus3 = ldcus0 -dldcus2+dldcus3
+ldcus4 = ldcus0 -dldcus3+dldcus4 +0.599963125932
+ldcus5 = 1.5-0.25 -dldcus4 +dld2c
+ldcus6 = 1.0+0.25 +dld2c
 ldcus7 = 0.3/2
 ldcus8 = ldcus6
 ldcus9 = ldcus5
 ldcus10 = ldcus4
 ldcus11 = ldcus3
 ldcus12 = ldcus2
-ldcus13 = ldcus1+lblrcus/2-lbrcus/2+dldcus13
+ldcus13 = ldcus1+lblrcus/2-lbrcus/2 +dldcus13
 
 ldcus1b = 7.0
 ldcus1c = 0.5
-ldcus1a = ldcus1-ldcus1b-ldcus1c-lbrccus-lbrccus-dldcus13
+ldcus1a = ldcus1-ldcus1b-ldcus1c-lbrccus-lbrccus -dldcus13
 ldcus2a = 0.464083 !0.4471
 ldcus2b = 0.747032 !0.619817
 ldcus2c = ldcus2-ldcus2a-ldcus2b
@@ -348,18 +345,18 @@ ldcus3d = 0.389900 !0.593909
 ldcus3c = ldcus3-ldcus3a-ldcus3b-ldcus3d
 ldcus4a = 0.4285
 ldcus4c = 0.1924
-ldcus4b = ldcus4-ldcus4a-ldcus4c+(lqr-lqe)/2
+ldcus4b = ldcus4-ldcus4a-ldcus4c +(lqr-lqe)/2
 ldcus5a = 0.4
-ldcus5b = ldcus5-ldcus5a+(lqr-lqe)/2
+ldcus5b = ldcus5-ldcus5a +(lqr-lqe)/2
 ldcus6b = 0.1924
-ldcus6a = ldcus6-ldcus6b+(lqr-lqe)/2-lqe/2-ldcus7
+ldcus6a = ldcus6-ldcus6b +(lqr-lqe)/2 -lqe/2-ldcus7
 ldcus8a = 0.4
-ldcus8b = ldcus8-ldcus8a+(lqr-lqe)/2-lqe/2-ldcus7
+ldcus8b = ldcus8-ldcus8a +(lqr-lqe)/2 -lqe/2-ldcus7
 ldcus9b = 0.1924
-ldcus9a = ldcus9-ldcus9b+(lqr-lqe)/2
+ldcus9a = ldcus9-ldcus9b +(lqr-lqe)/2
 ldcus10a = 0.4
 ldcus10c = 0.390327 !0.4781
-ldcus10b = ldcus10-ldcus10a-ldcus10c+(lqr-lqe)/2
+ldcus10b = ldcus10-ldcus10a-ldcus10c +(lqr-lqe)/2
 ldcus11a = 0.4285
 ldcus11c = 0.390815 !0.4781
 ldcus11b = ldcus11-ldcus11a-ldcus11c
@@ -415,29 +412,29 @@ endcusxr: marker
 
 ! monitors
 
-bpmcus: instrument, type = "Stripline-5"
-bpmcus1: instrument, type = "Stripline-5"
-bpmcus2: instrument, type = "Stripline-5"
-bpmcus3: instrument, type = "Stripline-5"
-bpmcus4: instrument, type = "Stripline-2"
-bpmcus5: instrument, type = "Stripline-2"
-bpmcus7: instrument, type = "Stripline-2"
-bpmcus8: instrument, type = "Stripline-5"
-bpmcus9: instrument, type = "Stripline-5"
-bpmcus10: instrument, type = "Stripline-5"
+bpmcus: monitor, type = "Stripline-5"
+bpmcus1: monitor, type = "Stripline-5"
+bpmcus2: monitor, type = "Stripline-5"
+bpmcus3: monitor, type = "Stripline-5"
+bpmcus4: monitor, type = "Stripline-2"
+bpmcus5: monitor, type = "Stripline-2"
+bpmcus7: monitor, type = "Stripline-2"
+bpmcus8: monitor, type = "Stripline-5"
+bpmcus9: monitor, type = "Stripline-5"
+bpmcus10: monitor, type = "Stripline-5"
 
 ! steering correctors
 
-xccus1: kicker, type = "class-4" !type TBD
-xccus4: kicker, type = "class-4" !type TBD
-xccus7: kicker, type = "class-4" !type TBD
-xccus10: kicker, type = "class-4" !type TBD
+xccus1: hkicker, type = "class-4" !type TBD
+xccus4: hkicker, type = "class-4" !type TBD
+xccus7: hkicker, type = "class-4" !type TBD
+xccus10: hkicker, type = "class-4" !type TBD
 
-yccus2: kicker, type = "class-4" !type TBD
-yccus3: kicker, type = "class-4" !type TBD
-yccus6: kicker, type = "class-4" !type TBD
-yccus8: kicker, type = "class-4" !type TBD
-yccus9: kicker, type = "class-4" !type TBD
+yccus2: vkicker, type = "class-4" !type TBD
+yccus3: vkicker, type = "class-4" !type TBD
+yccus6: vkicker, type = "class-4" !type TBD
+yccus8: vkicker, type = "class-4" !type TBD
+yccus9: vkicker, type = "class-4" !type TBD
 
 ! insertable stopper / tuneup dump
 
@@ -461,41 +458,41 @@ rocus4: patch, tilt = arocus4
 ! beamlines
 
 brcusdc1_full: line = (brcusdc1)
-!old: brcusdc1_full: line = (brcusdc1a, brcusdc1b)
+!old:   BRCUSdc1_full : LINE=(BRCUSdc1a,BRCUSdc1b)
 bkrcus_full: line = (bkrcus)
-!old: bkrcus_full: line = (bkrcusa, bkrcusb)
+!old:   BKRCUS_full   : LINE=(BKRCUSa,BKRCUSb)
 brcusdc2_full: line = (brcusdc2)
-!old: brcusdc2_full: line = (brcusdc2a, brcusdc2b)
+!old:   BRCUSdc2_full : LINE=(BRCUSdc2a,BRCUSdc2b)
 blrcus_full: line = (blrcus)
-!old: blrcus_full: line = (blrcusa, blrcusb)
+!old:   BLRCUS_full   : LINE=(BLRCUSa,BLRCUSb)
 bycus1_full: line = (bycus1)
-!old: bycus1_full: line = (bycus1a, bycus1b)
+!old:   BYCUS1_full   : LINE=(BYCUS1a,BYCUS1b)
 bycus2_full: line = (bycus2)
-!old: bycus2_full: line = (bycus2a, bycus2b)
+!old:   BYCUS2_full   : LINE=(BYCUS2a,BYCUS2b)
 brcus1_full: line = (brcus1)
-!old: brcus1_full: line = (brcus1a, brcus1b)
+!old:   BRCUS1_full   : LINE=(BRCUS1a,BRCUS1b)
 
 
 
-!Old split line: line = (qcus1, qcus1)
+!Old split line: LINE=(QCUS1,QCUS1)
 
 qcus1_full: line = (qcus1)
 qcus1[L] = 2*qcus1[L]
 
 
-!Old split line: line = (qcus2, qcus2)
+!Old split line: LINE=(QCUS2,QCUS2)
 
 qcus2_full: line = (qcus2)
 qcus2[L] = 2*qcus2[L]
 
 
-!Old split line: line = (qcus3, qcus3)
+!Old split line: LINE=(QCUS3,QCUS3)
 
 qcus3_full: line = (qcus3)
 qcus3[L] = 2*qcus3[L]
 
 
-!Old split line: line = (qcus4, bpmcus4, qcus4)
+!Old split line: LINE=(QCUS4,BPMCUS4,QCUS4)
 
 qcus4_full: line = (qcus4)
 qcus4[L] = 2*qcus4[L]
@@ -503,7 +500,7 @@ bpmcus4[superimpose] = T
 bpmcus4[ref] = qcus4
 
 
-!Old split line: line = (qcus5, bpmcus5, qcus5)
+!Old split line: LINE=(QCUS5,BPMCUS5,QCUS5)
 
 qcus5_full: line = (qcus5)
 qcus5[L] = 2*qcus5[L]
@@ -511,13 +508,13 @@ bpmcus5[superimpose] = T
 bpmcus5[ref] = qcus5
 
 
-!Old split line: line = (qcus6, qcus6)
+!Old split line: LINE=(QCUS6,QCUS6)
 
 qcus6_full: line = (qcus6)
 qcus6[L] = 2*qcus6[L]
 
 
-!Old split line: line = (qcus7, bpmcus7, qcus7)
+!Old split line: LINE=(QCUS7,BPMCUS7,QCUS7)
 
 qcus7_full: line = (qcus7)
 qcus7[L] = 2*qcus7[L]
@@ -525,39 +522,34 @@ bpmcus7[superimpose] = T
 bpmcus7[ref] = qcus7
 
 
-!Old split line: line = (qcus8, qcus8)
+!Old split line: LINE=(QCUS8,QCUS8)
 
 qcus8_full: line = (qcus8)
 qcus8[L] = 2*qcus8[L]
 
 
-!Old split line: line = (qcus9, qcus9)
+!Old split line: LINE=(QCUS9,QCUS9)
 
 qcus9_full: line = (qcus9)
 qcus9[L] = 2*qcus9[L]
 
 
-!Old split line: line = (qcus10, qcus10)
+!Old split line: LINE=(QCUS10,QCUS10)
 
 qcus10_full: line = (qcus10)
 qcus10[L] = 2*qcus10[L]
 
-kcusxra: line = (brcusdc1_full, dckdc1, bkrcus_full, dckdc2, brcusdc2_full, dcusblra, bpmcus,  &
-        dcusblrb, blrcus_full)
+  KCUSXRa : LINE=(BRCUSdc1_full,DCKdc1,BKRCUS_full,DCKdc2,BRCUSdc2_full,DCUSBLRa,BPMCUS,DCUSBLRb,BLRCUS_full)
 
-kcusxrb: line = (cntcus1, rocus1, dcus1a, dbrccus1, dbrccus1, dcus1b, dbrccus2, dbrccus2, cntcus5 &
-        )
+  KCUSXRb : LINE=(CNTCUS1,ROCUS1,DCUS1a,DBRCCUS1,DBRCCUS1,DCUS1b,DBRCCUS2,DBRCCUS2,CNTCUS5)
 
-kcusxr: line = (kcusxra, kcusxrb)
+  KCUSXR : LINE=(KCUSXRa,KCUSXRb)
 
-dlcusxr: line = (dcus1c, qcus1_full, dcus2a, bpmcus1, dcus2b, xccus1, dcus2c, qcus2_full, dcus3a &
-        , bpmcus2, dcus3b, yccus2, dcus3c, bpmcus3, dcus3d, qcus3_full, dcus4a, yccus3, dcus4b,  &
-        dcus4c, qcus4_full, dcus5a, xccus4, dcus5b, bycus1_full, cntcus3, rocus3, dcus6a, dcus6b &
-        , qcus5_full, dcus7, midcusxr, dcus7, qcus6_full, dcus8a, yccus6, dcus8b, rocus4,  &
-        bycus2_full, cntcus4, dcus9a, dcus9b, qcus7_full, dcus10a, xccus7, dcus10b, bpmcus8,  &
-        dcus10c, qcus8_full, dcus11a, yccus8, dcus11b1, stclts, btmclts, dcus11b2, bpmcus9,  &
-        dcus11c, qcus9_full, dcus12a, yccus9, dcus12b, xccus10, dcus12c, bpmcus10, dcus12d,  &
-        qcus10_full, dcus13, rocus2, brcus1_full, cntcus2)
+  DLCUSXR : LINE=(DCUS1c,QCUS1_full,DCUS2a,BPMCUS1,DCUS2b,XCCUS1,DCUS2c,QCUS2_full,DCUS3a,BPMCUS2,DCUS3b,YCCUS2,DCUS3c,
+         BPMCUS3,DCUS3d,QCUS3_full,DCUS4a,YCCUS3,DCUS4b,DCUS4c,QCUS4_full,DCUS5a,XCCUS4,DCUS5b,BYCUS1_full,CNTCUS3,ROCUS3,DCUS6a,
+         DCUS6b,QCUS5_full,DCUS7,MIDCUSXR,DCUS7,QCUS6_full,DCUS8a,YCCUS6,DCUS8b,ROCUS4,BYCUS2_full,CNTCUS4,DCUS9a,DCUS9b,
+         QCUS7_full,DCUS10a,XCCUS7,DCUS10b,BPMCUS8,DCUS10c,QCUS8_full,DCUS11a,YCCUS8,DCUS11b1,STCLTS,BTMCLTS,DCUS11b2,BPMCUS9,
+         DCUS11c,QCUS9_full,DCUS12a,YCCUS9,DCUS12b,XCCUS10,DCUS12c,BPMCUS10,DCUS12d,QCUS10_full,DCUS13,ROCUS2,BRCUS1_full,CNTCUS2)
 
-cusxr: line = (begcusxr, kcusxr, dlcusxr, endcusxr)
+  CUSXR : LINE=(BEGCUSXR,KCUSXR,DLCUSXR,ENDCUSXR)
 

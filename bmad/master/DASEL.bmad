@@ -90,7 +90,7 @@ zbkrdas = 1.0             !kicker straight length (m)
 tbkrdas = -0.030150284271 !kicker tilt angle relative to y-axis (rad)
 
 abkrdas0 = -0.56211349418e-3
-abkrdas = abkrdas0*setda        !total kicker angle (rad)
+abkrdas = abkrdas0 *setda        !total kicker angle (rad)
 abkrdas1 = asin(1*sin(abkrdas)/6) !1st kicker angle (rad)
 abkrdas12 = asin(2*sin(abkrdas)/6) !1st+2nd kicker angle (rad)
 abkrdas13 = asin(3*sin(abkrdas)/6) !1+2+3 kicker angle (rad)
@@ -100,60 +100,49 @@ abkrdas2 = abkrdas12-abkrdas1     !2nd kicker angle (rad)
 abkrdas3 = abkrdas13-abkrdas12    !3rd kicker angle (rad)
 abkrdas4 = abkrdas14-abkrdas13    !4th kicker angle (rad)
 abkrdas5 = abkrdas15-abkrdas14    !5th kicker angle (rad)
-abkrdas6 = abkrdas-abkrdas15    !6th kicker angle (rad)
+abkrdas6 = abkrdas  -abkrdas15    !6th kicker angle (rad)
 
-lbkrdas1 = 1*zbkrdas/(1-abkrdas1*abkrdas1/6)
+lbkrdas1 = 1*zbkrdas/(1-abkrdas1 *abkrdas1 /6)
 lbkrdas12 = 2*zbkrdas/(1-abkrdas12*abkrdas12/6)
 lbkrdas13 = 3*zbkrdas/(1-abkrdas13*abkrdas13/6)
 lbkrdas14 = 4*zbkrdas/(1-abkrdas14*abkrdas14/6)
 lbkrdas15 = 5*zbkrdas/(1-abkrdas15*abkrdas15/6)
-lbkrdas = 6*zbkrdas/(1-abkrdas*abkrdas/6)
+lbkrdas = 6*zbkrdas/(1-abkrdas  *abkrdas  /6)
 lbkrdas2 = lbkrdas12-lbkrdas1
 lbkrdas3 = lbkrdas13-lbkrdas12
 lbkrdas4 = lbkrdas14-lbkrdas13
 lbkrdas5 = lbkrdas15-lbkrdas14
-lbkrdas6 = lbkrdas-lbkrdas15
+lbkrdas6 = lbkrdas  -lbkrdas15
 
-bkrdas1a: sbend, e1 = 0, e2 = 0, fint = 0.5, fintx = 0, hgap = gbkrdas/2, type = "0.787K35.4",  &
-        ref_tilt = pi/2+tbkrdas, l = lbkrdas1/2, angle = lbkrdas1/2 * abkrdas1/2/(lbkrdas1/2)
-bkrdas1b: sbend, e2 = abkrdas1, e1 = 0, fint = 0, fintx = 0.5, hgap = gbkrdas/2, type =  &
-        "0.787K35.4", ref_tilt = pi/2+tbkrdas, l = lbkrdas1/2, angle =  &
-        lbkrdas1/2 * abkrdas1/2/(lbkrdas1/2)
+bkrdas1a: sbend, type = "0.787K35.4", l = lbkrdas1/2, angle = abkrdas1/2, e1 = 0, e2 = 0, fint = 0.5, fintx = 0,
+          hgap = gbkrdas/2, ref_tilt = pi/2+tbkrdas
+bkrdas1b: sbend, type = "0.787K35.4", l = lbkrdas1/2, angle = abkrdas1/2, e2 = abkrdas1, e1 = 0, fint = 0, fintx = 0.5,
+          hgap = gbkrdas/2, ref_tilt = pi/2+tbkrdas
 
-bkrdas2a: sbend, e1 = -abkrdas1, e2 = 0, fint = 0.5, fintx = 0, hgap = gbkrdas/2, type =  &
-        "0.787K35.4", ref_tilt = pi/2+tbkrdas, l = lbkrdas2/2, angle =  &
-        lbkrdas2/2 * abkrdas2/2/(lbkrdas2/2)
-bkrdas2b: sbend, e2 = abkrdas12, e1 = 0, fint = 0, fintx = 0.5, hgap = gbkrdas/2, type =  &
-        "0.787K35.4", ref_tilt = pi/2+tbkrdas, l = lbkrdas2/2, angle =  &
-        lbkrdas2/2 * abkrdas2/2/(lbkrdas2/2)
+bkrdas2a: sbend, type = "0.787K35.4", l = lbkrdas2/2, angle = abkrdas2/2, e1 = -abkrdas1, e2 = 0, fint = 0.5, fintx = 0,
+          hgap = gbkrdas/2, ref_tilt = pi/2+tbkrdas
+bkrdas2b: sbend, type = "0.787K35.4", l = lbkrdas2/2, angle = abkrdas2/2, e2 = abkrdas12, e1 = 0, fint = 0, fintx = 0.5,
+          hgap = gbkrdas/2, ref_tilt = pi/2+tbkrdas
 
-bkrdas3a: sbend, e1 = -abkrdas12, e2 = 0, fint = 0.5, fintx = 0, hgap = gbkrdas/2, type =  &
-        "0.787K35.4", ref_tilt = pi/2+tbkrdas, l = lbkrdas3/2, angle =  &
-        lbkrdas3/2 * abkrdas3/2/(lbkrdas3/2)
-bkrdas3b: sbend, e2 = abkrdas13, e1 = 0, fint = 0, fintx = 0.5, hgap = gbkrdas/2, type =  &
-        "0.787K35.4", ref_tilt = pi/2+tbkrdas, l = lbkrdas3/2, angle =  &
-        lbkrdas3/2 * abkrdas3/2/(lbkrdas3/2)
+bkrdas3a: sbend, type = "0.787K35.4", l = lbkrdas3/2, angle = abkrdas3/2, e1 = -abkrdas12, e2 = 0, fint = 0.5,
+          fintx = 0, hgap = gbkrdas/2, ref_tilt = pi/2+tbkrdas
+bkrdas3b: sbend, type = "0.787K35.4", l = lbkrdas3/2, angle = abkrdas3/2, e2 = abkrdas13, e1 = 0, fint = 0, fintx = 0.5,
+          hgap = gbkrdas/2, ref_tilt = pi/2+tbkrdas
 
-bkrdas4a: sbend, e1 = -abkrdas13, e2 = 0, fint = 0.5, fintx = 0, hgap = gbkrdas/2, type =  &
-        "0.787K35.4", ref_tilt = pi/2+tbkrdas, l = lbkrdas4/2, angle =  &
-        lbkrdas4/2 * abkrdas4/2/(lbkrdas4/2)
-bkrdas4b: sbend, e2 = abkrdas14, e1 = 0, fint = 0, fintx = 0.5, hgap = gbkrdas/2, type =  &
-        "0.787K35.4", ref_tilt = pi/2+tbkrdas, l = lbkrdas4/2, angle =  &
-        lbkrdas4/2 * abkrdas4/2/(lbkrdas4/2)
+bkrdas4a: sbend, type = "0.787K35.4", l = lbkrdas4/2, angle = abkrdas4/2, e1 = -abkrdas13, e2 = 0, fint = 0.5,
+          fintx = 0, hgap = gbkrdas/2, ref_tilt = pi/2+tbkrdas
+bkrdas4b: sbend, type = "0.787K35.4", l = lbkrdas4/2, angle = abkrdas4/2, e2 = abkrdas14, e1 = 0, fint = 0, fintx = 0.5,
+          hgap = gbkrdas/2, ref_tilt = pi/2+tbkrdas
 
-bkrdas5a: sbend, e1 = -abkrdas14, e2 = 0, fint = 0.5, fintx = 0, hgap = gbkrdas/2, type =  &
-        "0.787K35.4", ref_tilt = pi/2+tbkrdas, l = lbkrdas5/2, angle =  &
-        lbkrdas5/2 * abkrdas5/2/(lbkrdas5/2)
-bkrdas5b: sbend, e2 = abkrdas15, e1 = 0, fint = 0, fintx = 0.5, hgap = gbkrdas/2, type =  &
-        "0.787K35.4", ref_tilt = pi/2+tbkrdas, l = lbkrdas5/2, angle =  &
-        lbkrdas5/2 * abkrdas5/2/(lbkrdas5/2)
+bkrdas5a: sbend, type = "0.787K35.4", l = lbkrdas5/2, angle = abkrdas5/2, e1 = -abkrdas14, e2 = 0, fint = 0.5,
+          fintx = 0, hgap = gbkrdas/2, ref_tilt = pi/2+tbkrdas
+bkrdas5b: sbend, type = "0.787K35.4", l = lbkrdas5/2, angle = abkrdas5/2, e2 = abkrdas15, e1 = 0, fint = 0, fintx = 0.5,
+          hgap = gbkrdas/2, ref_tilt = pi/2+tbkrdas
 
-bkrdas6a: sbend, e1 = -abkrdas15, e2 = 0, fint = 0.5, fintx = 0, hgap = gbkrdas/2, type =  &
-        "0.787K35.4", ref_tilt = pi/2+tbkrdas, l = lbkrdas6/2, angle =  &
-        lbkrdas6/2 * abkrdas6/2/(lbkrdas6/2)
-bkrdas6b: sbend, e2 = abkrdas, e1 = 0, fint = 0, fintx = 0.5, hgap = gbkrdas/2, type =  &
-        "0.787K35.4", ref_tilt = pi/2+tbkrdas, l = lbkrdas6/2, angle =  &
-        lbkrdas6/2 * abkrdas6/2/(lbkrdas6/2)
+bkrdas6a: sbend, type = "0.787K35.4", l = lbkrdas6/2, angle = abkrdas6/2, e1 = -abkrdas15, e2 = 0, fint = 0.5,
+          fintx = 0, hgap = gbkrdas/2, ref_tilt = pi/2+tbkrdas
+bkrdas6b: sbend, type = "0.787K35.4", l = lbkrdas6/2, angle = abkrdas6/2, e2 = abkrdas, e1 = 0, fint = 0, fintx = 0.5,
+          hgap = gbkrdas/2, ref_tilt = pi/2+tbkrdas
 
 ! 2-hole rolled horizontal septum aligned along the BSY dumpline axis
 
@@ -161,22 +150,22 @@ gblrdas = gblsp !septum gap height (m)
 zblrdas = lblsp !septum straight length (m)
 
 ablrdas0 = -0.018635912887
-ablrdas = ablrdas0*setda      !septum bending angle (rad)
+ablrdas = ablrdas0 *setda      !septum bending angle (rad)
 ablrdasa = asin(sin(ablrdas)/2) !angle per 1st half of the septum
 ablrdasb = ablrdas-ablrdasa     !angle per 2nd half of the septum
-ablrdas_2 = ablrdas*ablrdas
-ablrdas_4 = ablrdas_2*ablrdas_2
-ablrdasa_2 = ablrdasa*ablrdasa
+ablrdas_2 = ablrdas   *ablrdas
+ablrdas_4 = ablrdas_2 *ablrdas_2
+ablrdasa_2 = ablrdasa  *ablrdasa
 ablrdasa_4 = ablrdasa_2*ablrdasa_2
 
-lblrdas = zblrdas/(1-ablrdas_2/6+ablrdas_4/120)/cos(abkrdas)
-lblrdasa = zblrdas/2/(1-ablrdasa_2/6+ablrdasa_4/120)/cos(abkrdas)
+lblrdas = zblrdas   /(1-ablrdas_2/6 +ablrdas_4/120 )/cos(abkrdas)
+lblrdasa = zblrdas/2 /(1-ablrdasa_2/6+ablrdasa_4/120)/cos(abkrdas)
 lblrdasb = lblrdas-lblrdasa
 
-blrdasa: sbend, e1 = 0, e2 = 0, fint = 0.5, fintx = 0, hgap = gblrdas/2, type = "0.625SD38.98",  &
-        ref_tilt = tbkrdas, l = lblrdasa, angle = lblrdasa * ablrdasa/lblrdasa
-blrdasb: sbend, e1 = 0, e2 = ablrdas, fint = 0, fintx = 0.5, hgap = gblrdas/2, type =  &
-        "0.625SD38.98", ref_tilt = tbkrdas, l = lblrdasb, angle = lblrdasb * ablrdasb/lblrdasb
+blrdasa: sbend, type = "0.625SD38.98", l = lblrdasa, angle = ablrdasa, e1 = 0, e2 = 0, fint = 0.5, fintx = 0,
+          hgap = gblrdas/2, ref_tilt = tbkrdas
+blrdasb: sbend, type = "0.625SD38.98", l = lblrdasb, angle = ablrdasb, e1 = 0, e2 = ablrdas, fint = 0, fintx = 0.5,
+          hgap = gblrdas/2, ref_tilt = tbkrdas
 
 ! rolled DC-bends (BLmax of 1.0D38.37 = 7.35 kGm per J. Amann)
 
@@ -184,10 +173,10 @@ abrdas1 = 0.019101579697
 lbrdas1 = lbsp*abrdas1/(2*sin(abrdas1/2)) !BRDAS1 path length (m)
 tbrdas1 = 0.219255742276                  !BRDAS1 roll angle (rad)
 
-brdas1a: sbend, e1 = abrdas1/2, e2 = 0, fint = 0.5, fintx = 0, hgap = gbsp/2, type = "1.0D38.37" &
-        , ref_tilt = tbrdas1, l = lbrdas1/2, angle = lbrdas1/2 * abrdas1/2/(lbrdas1/2)
-brdas1b: sbend, e1 = 0, e2 = abrdas1/2, fint = 0, fintx = 0.5, hgap = gbsp/2, type = "1.0D38.37" &
-        , ref_tilt = tbrdas1, l = lbrdas1/2, angle = lbrdas1/2 * abrdas1/2/(lbrdas1/2)
+brdas1a: sbend, type = "1.0D38.37", l = lbrdas1/2, angle = abrdas1/2, e1 = abrdas1/2, e2 = 0, fint = 0.5, fintx = 0,
+          hgap = gbsp/2, ref_tilt = tbrdas1
+brdas1b: sbend, type = "1.0D38.37", l = lbrdas1/2, angle = abrdas1/2, e1 = 0, e2 = abrdas1/2, fint = 0, fintx = 0.5,
+          hgap = gbsp/2, ref_tilt = tbrdas1
 
 ! Note: BRDAS2 is a merge DC-bend which is either turned ON to operate
 !       DASEL beam in A-line, or turned OFF to operate beam in A-line from
@@ -195,31 +184,31 @@ brdas1b: sbend, e1 = 0, e2 = abrdas1/2, fint = 0, fintx = 0.5, hgap = gbsp/2, ty
 
 lbrdas2 = lbsp*abrdas2/(2*sin(abrdas2/2)) !BRDAS2 path length (m)
 
-brdas2a: sbend, e1 = abrdas2/2, e2 = 0, fint = 0.5, fintx = 0, hgap = gbsp/2, type = "1.0D38.37" &
-        , ref_tilt = tbrdas2, l = lbrdas2/2, angle = lbrdas2/2 * abrdas2/2/(lbrdas2/2)
-brdas2b: sbend, e1 = 0, e2 = abrdas2/2, fint = 0, fintx = 0.5, hgap = gbsp/2, type = "1.0D38.37" &
-        , ref_tilt = tbrdas2, l = lbrdas2/2, angle = lbrdas2/2 * abrdas2/2/(lbrdas2/2)
+brdas2a: sbend, type = "1.0D38.37", l = lbrdas2/2, angle = abrdas2/2, e1 = abrdas2/2, e2 = 0, fint = 0.5, fintx = 0,
+          hgap = gbsp/2, ref_tilt = tbrdas2
+brdas2b: sbend, type = "1.0D38.37", l = lbrdas2/2, angle = abrdas2/2, e1 = 0, e2 = abrdas2/2, fint = 0, fintx = 0.5,
+          hgap = gbsp/2, ref_tilt = tbrdas2
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-bkrdas1: sbend, e1 = 0, fint = 0.5, e2 = abkrdas1, hgap = gbkrdas/2, type = "0.787K35.4",  &
-        ref_tilt = pi/2+tbkrdas, l = lbkrdas1, angle = lbkrdas1 * abkrdas1/lbkrdas1
-bkrdas2: sbend, e1 = -abkrdas1, fint = 0.5, e2 = abkrdas12, hgap = gbkrdas/2, type = "0.787K35.4" &
-        , ref_tilt = pi/2+tbkrdas, l = lbkrdas2, angle = lbkrdas2 * abkrdas2/lbkrdas2
-bkrdas3: sbend, e1 = -abkrdas12, fint = 0.5, e2 = abkrdas13, hgap = gbkrdas/2, type =  &
-        "0.787K35.4", ref_tilt = pi/2+tbkrdas, l = lbkrdas3, angle = lbkrdas3 * abkrdas3/lbkrdas3
-bkrdas4: sbend, e1 = -abkrdas13, fint = 0.5, e2 = abkrdas14, hgap = gbkrdas/2, type =  &
-        "0.787K35.4", ref_tilt = pi/2+tbkrdas, l = lbkrdas4, angle = lbkrdas4 * abkrdas4/lbkrdas4
-bkrdas5: sbend, e1 = -abkrdas14, fint = 0.5, e2 = abkrdas15, hgap = gbkrdas/2, type =  &
-        "0.787K35.4", ref_tilt = pi/2+tbkrdas, l = lbkrdas5, angle = lbkrdas5 * abkrdas5/lbkrdas5
-bkrdas6: sbend, e1 = -abkrdas15, fint = 0.5, e2 = abkrdas, hgap = gbkrdas/2, type = "0.787K35.4" &
-        , ref_tilt = pi/2+tbkrdas, l = lbkrdas6, angle = lbkrdas6 * abkrdas6/lbkrdas6
-blrdas: sbend, e1 = 0, fint = 0.5, e2 = ablrdas, hgap = gblrdas/2, type = "0.625SD38.98",  &
-        ref_tilt = tbkrdas, l = lblrdas, angle = lblrdas * ablrdas/lblrdas
-brdas1: sbend, e1 = abrdas1/2, fint = 0.5, e2 = abrdas1/2, hgap = gbsp/2, type = "1.0D38.37",  &
-        ref_tilt = tbrdas1, l = lbrdas1, angle = lbrdas1 * abrdas1/lbrdas1
-brdas2: sbend, e1 = abrdas2/2, fint = 0.5, e2 = abrdas2/2, hgap = gbsp/2, type = "1.0D38.37",  &
-        ref_tilt = tbrdas2, l = lbrdas2, angle = lbrdas2 * abrdas2/lbrdas2
+bkrdas1: sbend, type = "0.787K35.4", l = lbkrdas1, angle = abkrdas1, e1 = 0, fint = 0.5, e2 = abkrdas1, fintx = 0.5,
+          hgap = gbkrdas/2, ref_tilt = pi/2+tbkrdas
+bkrdas2: sbend, type = "0.787K35.4", l = lbkrdas2, angle = abkrdas2, e1 = -abkrdas1, fint = 0.5, e2 = abkrdas12,
+          fintx = 0.5, hgap = gbkrdas/2, ref_tilt = pi/2+tbkrdas
+bkrdas3: sbend, type = "0.787K35.4", l = lbkrdas3, angle = abkrdas3, e1 = -abkrdas12, fint = 0.5, e2 = abkrdas13,
+          fintx = 0.5, hgap = gbkrdas/2, ref_tilt = pi/2+tbkrdas
+bkrdas4: sbend, type = "0.787K35.4", l = lbkrdas4, angle = abkrdas4, e1 = -abkrdas13, fint = 0.5, e2 = abkrdas14,
+          fintx = 0.5, hgap = gbkrdas/2, ref_tilt = pi/2+tbkrdas
+bkrdas5: sbend, type = "0.787K35.4", l = lbkrdas5, angle = abkrdas5, e1 = -abkrdas14, fint = 0.5, e2 = abkrdas15,
+          fintx = 0.5, hgap = gbkrdas/2, ref_tilt = pi/2+tbkrdas
+bkrdas6: sbend, type = "0.787K35.4", l = lbkrdas6, angle = abkrdas6, e1 = -abkrdas15, fint = 0.5, e2 = abkrdas,
+          fintx = 0.5, hgap = gbkrdas/2, ref_tilt = pi/2+tbkrdas
+blrdas: sbend, type = "0.625SD38.98", l = lblrdas, angle = ablrdas, e1 = 0, fint = 0.5, e2 = ablrdas, fintx = 0.5,
+          hgap = gblrdas/2, ref_tilt = tbkrdas
+brdas1: sbend, type = "1.0D38.37", l = lbrdas1, angle = abrdas1, e1 = abrdas1/2, fint = 0.5, e2 = abrdas1/2,
+          fintx = 0.5, hgap = gbsp/2, ref_tilt = tbrdas1
+brdas2: sbend, type = "1.0D38.37", l = lbrdas2, angle = abrdas2, e1 = abrdas2/2, fint = 0.5, e2 = abrdas2/2,
+          fintx = 0.5, hgap = gbsp/2, ref_tilt = tbrdas2
 
 ! quads
 
@@ -235,39 +224,39 @@ kqdas19 = -0.314095531193
 kqdas15 = -kqdas14
 kqdas16 = kqdas14
 
-qdas1a: quadrupole, type = "2Q4W", l = lqm/2, aperture = rqm, k1 = kqdas1
-qdas1b: quadrupole, type = "2Q4W", l = lqm/2, aperture = rqm, k1 = kqdas1
-qdas2a: quadrupole, type = "2Q4W", l = lqm/2, aperture = rqm, k1 = kqdas2
-qdas2b: quadrupole, type = "2Q4W", l = lqm/2, aperture = rqm, k1 = kqdas2
-qdas11: quadrupole, type = "2Q4W", l = lqm/2, aperture = rqm, k1 = kqdas11
-qdas12: quadrupole, type = "2Q4W", l = lqm/2, aperture = rqm, k1 = kqdas12
-qdas13: quadrupole, type = "2Q4W", l = lqm/2, aperture = rqm, k1 = kqdas13
-qdas14: quadrupole, type = "2Q4W", l = lqm/2, aperture = rqm, k1 = kqdas14
-qdas15: quadrupole, type = "2Q4W", l = lqm/2, aperture = rqm, k1 = kqdas15
-qdas16: quadrupole, type = "2Q4W", l = lqm/2, aperture = rqm, k1 = kqdas16
-qdas17: quadrupole, type = "2Q4W", l = lqm/2, aperture = rqm, k1 = kqdas17
-qdas18a: quadrupole, type = "2Q4W", l = lqm/2, aperture = rqm, k1 = kqdas18
-qdas18b: quadrupole, type = "2Q4W", l = lqm/2, aperture = rqm, k1 = kqdas18
-qdas19: quadrupole, type = "2Q4W", l = lqm/2, aperture = rqm, k1 = kqdas19
+qdas1a: quadrupole, type = "2Q4W", l = lqm/2, k1 = kqdas1, aperture = rqm
+qdas1b: quadrupole, type = "2Q4W", l = lqm/2, k1 = kqdas1, aperture = rqm
+qdas2a: quadrupole, type = "2Q4W", l = lqm/2, k1 = kqdas2, aperture = rqm
+qdas2b: quadrupole, type = "2Q4W", l = lqm/2, k1 = kqdas2, aperture = rqm
+qdas11: quadrupole, type = "2Q4W", l = lqm/2, k1 = kqdas11, aperture = rqm
+qdas12: quadrupole, type = "2Q4W", l = lqm/2, k1 = kqdas12, aperture = rqm
+qdas13: quadrupole, type = "2Q4W", l = lqm/2, k1 = kqdas13, aperture = rqm
+qdas14: quadrupole, type = "2Q4W", l = lqm/2, k1 = kqdas14, aperture = rqm
+qdas15: quadrupole, type = "2Q4W", l = lqm/2, k1 = kqdas15, aperture = rqm
+qdas16: quadrupole, type = "2Q4W", l = lqm/2, k1 = kqdas16, aperture = rqm
+qdas17: quadrupole, type = "2Q4W", l = lqm/2, k1 = kqdas17, aperture = rqm
+qdas18a: quadrupole, type = "2Q4W", l = lqm/2, k1 = kqdas18, aperture = rqm
+qdas18b: quadrupole, type = "2Q4W", l = lqm/2, k1 = kqdas18, aperture = rqm
+qdas19: quadrupole, type = "2Q4W", l = lqm/2, k1 = kqdas19, aperture = rqm
 
 ! drifts
 
 lpcblrdas = 0.0 !thickness of PCBLRDAS -- to be determined !!!!!
 
 zddasbk = 0.3      !Z-space between consecutive kickers
-zddasblx = 18.75+3.685 !Z-space between the last kicker and the septum
+zddasblx = 18.75 +3.685 !Z-space between the last kicker and the septum
 zddasblxa = 5.145    !set for y=5mm at BPM
 zddasblxb = zddasblx-zddasblxa
 zddasblxb2 = 0.0      !distance from PCBLRDAS to BLRDAS to be determined !!!!!
 zddasblxb1 = zddasblxb-zddasblxb2-lpcblrdas
 
-lddasbk1 = zddasbk/cos(abkrdas1)
-lddasbk2 = zddasbk/cos(abkrdas12)
-lddasbk3 = zddasbk/cos(abkrdas13)
-lddasbk4 = zddasbk/cos(abkrdas14)
-lddasbk5 = zddasbk/cos(abkrdas15)
-lddasblxa = zddasblxa/cos(abkrdas)
-lddasblxb = zddasblxb/cos(abkrdas)
+lddasbk1 = zddasbk   /cos(abkrdas1)
+lddasbk2 = zddasbk   /cos(abkrdas12)
+lddasbk3 = zddasbk   /cos(abkrdas13)
+lddasbk4 = zddasbk   /cos(abkrdas14)
+lddasbk5 = zddasbk   /cos(abkrdas15)
+lddasblxa = zddasblxa /cos(abkrdas)
+lddasblxb = zddasblxb /cos(abkrdas)
 lddasblxb1 = zddasblxb1/cos(abkrdas)
 lddasblxb2 = zddasblxb2/cos(abkrdas)
 
@@ -284,51 +273,50 @@ ddasblxb2: drift, l = lddasblxb2
 ldumpdas = 0.2032 !dump length = 8" = slug length of PEP2 inj. stoppper
 
 lddasqq = 0.1357
-lddas1 = 23.2085-0.761426-0.000133
+lddas1 = 23.2085 -0.761426-0.000133
 lddas2a = 0.5
-lddas2b = 0.5+0.761426-0.025296+0.000133-0.000004
-lddas3 = 0.5+0.025296+0.000004
+lddas2b = 0.5 +0.761426-0.025296+0.000133-0.000004
+lddas3 = 0.5 +0.025296+0.000004
 dlddas4 = 0.0
-lddas4 = 1.9+dlddas4
+lddas4 = 1.9 +dlddas4
 dlddas5 = 0.765561526879e-2
-lddas5 = 56.315-(lblsp+lbsp)/2-4*lqm-2*lddasqq-lddas1-lddas2a-lddas2b-lddas3-lddas4+dlddas5
+lddas5 = 56.315-(lblsp+lbsp)/2-4*lqm-2*lddasqq -lddas1-lddas2a-lddas2b-lddas3-lddas4 +dlddas5
 lddas5b = 12.05*0.0254 !=0.30607 per C. Clarke
 lddas5c = 1.0
 lddas5a = lddas5-lddas5b-lddas5c
 
 dlddas11 = 0.0
-lddas11 = 5.5-(lbsp+lqm)/2+dlddas11-0.7
-lddas11a = 0.5+0.300006+0.000003
+lddas11 = 5.5-(lbsp+lqm)/2 +dlddas11 -0.7
+lddas11a = 0.5 +0.300006+0.000003
 lddas11b = lddas11-lddas11a
 dlddas12 = 0.0
-lddas12 = 14.1+dlddas12+0.7
+lddas12 = 14.1 +dlddas12 +0.7
 lddas12a = 1.5
 lddas12b = 9.877925-lddas12a-ldumpdas/2
 lddas12c = lddas12-lddas12a-lddas12b-ldumpdas
-lddas13 = 18.128190337721+0.5
+lddas13 = 18.128190337721 +0.5
  !LDDAS13a := 2.97
  !LDDAS13b := LDDAS13-LDDAS13a
-lddas14 = 18.128190337721-0.5+0.79997
+lddas14 = 18.128190337721 -0.5+0.79997
 lddas14b = 0.5
 lddas14a = lddas14-lddas14b
-lddas14aa = 14.473260664942-0.5  !set Z=3050.512000 m at WOODDOOR
+lddas14aa = 14.473260664942 -0.5  !set Z=3050.512000 m at WOODDOOR
 lddas14ab = lddas14a-lddas14aa
-lddas17 = 18.128190337721-0.79997
+lddas17 = 18.128190337721 -0.79997
 lddas17b = 0.5
 lddas17c = 0.5
 lddas17a = lddas17-lddas17b-lddas17c
 lddas18 = 15.540177251451
 dlddas19 = 0.0
-lddas19 = 9.24017725092-lddasqq-lqm+dlddas19
+lddas19 = 9.24017725092-lddasqq-lqm +dlddas19
 dlddas20 = 0.0
-lddas20 = 22.55-(lbsp+lqm)/2+dlddas20
-lddas20a = 0.5-0.05163
+lddas20 = 22.55-(lbsp+lqm)/2 +dlddas20
+lddas20a = 0.5 -0.05163
 lddas20b = lddas20-lddas20a
 dlddas = 0.0
-lddas =  &
-        (158.566506190974298-10*lqm-lbsp-lddasqq-lddas11-lddas12-lddas13-lddas14-lddas17-lddas18-lddas19-lddas20)/2+dlddas
+lddas = (158.566506190974298-10*lqm-lbsp-lddasqq-lddas11-lddas12 -lddas13-lddas14-lddas17-lddas18-lddas19-lddas20)/2 +dlddas
 lddas15 = lddas
-lddas15a = lddas/2-0.79997
+lddas15a = lddas/2 -0.79997
 lddas15b = lddas15-lddas15a
 lddas16 = lddas
 
@@ -374,36 +362,36 @@ rodas3: patch, tilt = arodas3
 
 ! monitors
 
-bpmdas: instrument, type = "Stripline-5" !not rolled
-bpmdas1: instrument, type = "Stripline-5" !MPS BPM
-bpmdas19: instrument, type = "Stripline-5" !MPS BPM
+bpmdas: monitor, type = "Stripline-5" !not rolled
+bpmdas1: monitor, type = "Stripline-5" !MPS BPM
+bpmdas19: monitor, type = "Stripline-5" !MPS BPM
 
 ! steering correctors
 ! Notes: trims on all bends are used as correctors as well,
 !        rolled correctors are rolled 90 deg relative to rolled bends
 
-xcdas1: kicker, type = "class-4"
-xcdas14: kicker, type = "class-4"
+xcdas1: hkicker, type = "class-4"
+xcdas14: hkicker, type = "class-4"
 
-ycdas1: kicker, type = "class-4"
-ycdas17: kicker, type = "class-4"
+ycdas1: vkicker, type = "class-4"
+ycdas17: vkicker, type = "class-4"
 
-rcdas11: kicker, type = "class-4"
-rcdas19: kicker, type = "class-4"
+rcdas11: hkicker, type = "class-4"
+rcdas19: hkicker, type = "class-4"
 
 rollrc = +1 !+1 for survey to show RC roll angle, but zero for twiss
 
-rodas11p: patch, tilt = (tbrdas1-pi/2)*rollrc
+rodas11p: patch, tilt = (tbrdas1-pi/2) *rollrc
 rodas11m: patch, tilt = -rodas11p[tilt]
 
-rodas19p: patch, tilt = (tbrdas2-pi/2)*rollrc
+rodas19p: patch, tilt = (tbrdas2-pi/2) *rollrc
 rodas19m: patch, tilt = -rodas19p[tilt]
 
 ! profile monitors
 
-prdas12: instrument, type = "PHOSPHOR"
-prdas14: instrument, type = "PHOSPHOR"
-prdas17: instrument, type = "PHOSPHOR"
+prdas12: monitor, type = "PHOSPHOR"
+prdas14: monitor, type = "PHOSPHOR"
+prdas17: monitor, type = "PHOSPHOR"
 
 ! ACMs
 
@@ -427,8 +415,7 @@ imdas2: marker, type = "BCS ACM"
 ! * horizontal size is sufficient for the expected range of the
 !   electron horizontal angles; a larger horizontal size is ok
 
-pcblrdas: rcollimator, y_limit = 5.5e-3, x_limit = 10.e-3, type = "VCOLL", l =  &
-        lpcblrdas/cos(abkrdas)
+pcblrdas: rcollimator, type = "VCOLL", l = lpcblrdas/cos(abkrdas), y_limit = 5.5e-3, x_limit = 10.e-3
 
 ! stage-A dump (reused PEP2 inj. stopper with 8" slug length per Alev)
 
@@ -463,129 +450,127 @@ enddasel: marker
 ! beamlines
 
 bkrdas1_full: line = (bkrdas1)
-!old: bkrdas1_full: line = (bkrdas1a, bkrdas1b)
+!old:   BKRDAS1_full : LINE=(BKRDAS1a,BKRDAS1b)
 bkrdas2_full: line = (bkrdas2)
-!old: bkrdas2_full: line = (bkrdas2a, bkrdas2b)
+!old:   BKRDAS2_full : LINE=(BKRDAS2a,BKRDAS2b)
 bkrdas3_full: line = (bkrdas3)
-!old: bkrdas3_full: line = (bkrdas3a, bkrdas3b)
+!old:   BKRDAS3_full : LINE=(BKRDAS3a,BKRDAS3b)
 bkrdas4_full: line = (bkrdas4)
-!old: bkrdas4_full: line = (bkrdas4a, bkrdas4b)
+!old:   BKRDAS4_full : LINE=(BKRDAS4a,BKRDAS4b)
 bkrdas5_full: line = (bkrdas5)
-!old: bkrdas5_full: line = (bkrdas5a, bkrdas5b)
+!old:   BKRDAS5_full : LINE=(BKRDAS5a,BKRDAS5b)
 bkrdas6_full: line = (bkrdas6)
-!old: bkrdas6_full: line = (bkrdas6a, bkrdas6b)
+!old:   BKRDAS6_full : LINE=(BKRDAS6a,BKRDAS6b)
 blrdas_full: line = (blrdas)
-!old: blrdas_full: line = (blrdasa, blrdasb)
+!old:   BLRDAS_full  : LINE=(BLRDASa,BLRDASb)
 brdas1_full: line = (brdas1)
-!old: brdas1_full: line = (brdas1a, brdas1b)
+!old:   BRDAS1_full  : LINE=(BRDAS1a,BRDAS1b)
 brdas2_full: line = (brdas2)
-!old: brdas2_full: line = (brdas2a, brdas2b)
+!old:   BRDAS2_full  : LINE=(BRDAS2a,BRDAS2b)
 
 
 
-!Old split line: line = (qdas1b, qdas1b)
+!Old split line: LINE=(QDAS1b,QDAS1b)
 
 qdas1b_full: line = (qdas1b)
 qdas1b[L] = 2*qdas1b[L]
 
 
-!Old split line: line = (qdas1a, qdas1a)
+!Old split line: LINE=(QDAS1a,QDAS1a)
 
 qdas1a_full: line = (qdas1a)
 qdas1a[L] = 2*qdas1a[L]
 
 
-!Old split line: line = (qdas2a, qdas2a)
+!Old split line: LINE=(QDAS2a,QDAS2a)
 
 qdas2a_full: line = (qdas2a)
 qdas2a[L] = 2*qdas2a[L]
 
 
-!Old split line: line = (qdas2b, qdas2b)
+!Old split line: LINE=(QDAS2b,QDAS2b)
 
 qdas2b_full: line = (qdas2b)
 qdas2b[L] = 2*qdas2b[L]
 
 
-!Old split line: line = (qdas11, qdas11)
+!Old split line: LINE=(QDAS11,QDAS11)
 
 qdas11_full: line = (qdas11)
 qdas11[L] = 2*qdas11[L]
 
 
-!Old split line: line = (qdas12, qdas12)
+!Old split line: LINE=(QDAS12,QDAS12)
 
 qdas12_full: line = (qdas12)
 qdas12[L] = 2*qdas12[L]
 
 
-!Old split line: line = (qdas13, qdas13)
+!Old split line: LINE=(QDAS13,QDAS13)
 
 qdas13_full: line = (qdas13)
 qdas13[L] = 2*qdas13[L]
 
 
-!Old split line: line = (qdas14, qdas14)
+!Old split line: LINE=(QDAS14,QDAS14)
 
 qdas14_full: line = (qdas14)
 qdas14[L] = 2*qdas14[L]
 
 
-!Old split line: line = (qdas15, qdas15)
+!Old split line: LINE=(QDAS15,QDAS15)
 
 qdas15_full: line = (qdas15)
 qdas15[L] = 2*qdas15[L]
 
 
-!Old split line: line = (qdas16, qdas16)
+!Old split line: LINE=(QDAS16,QDAS16)
 
 qdas16_full: line = (qdas16)
 qdas16[L] = 2*qdas16[L]
 
 
-!Old split line: line = (qdas17, qdas17)
+!Old split line: LINE=(QDAS17,QDAS17)
 
 qdas17_full: line = (qdas17)
 qdas17[L] = 2*qdas17[L]
 
 
-!Old split line: line = (qdas18a, qdas18a)
+!Old split line: LINE=(QDAS18a,QDAS18a)
 
 qdas18a_full: line = (qdas18a)
 qdas18a[L] = 2*qdas18a[L]
 
 
-!Old split line: line = (qdas18b, qdas18b)
+!Old split line: LINE=(QDAS18b,QDAS18b)
 
 qdas18b_full: line = (qdas18b)
 qdas18b[L] = 2*qdas18b[L]
 
 
-!Old split line: line = (qdas19, qdas19)
+!Old split line: LINE=(QDAS19,QDAS19)
 
 qdas19_full: line = (qdas19)
 qdas19[L] = 2*qdas19[L]
 
 
 
-!Old split line: line = (dumpdas, dumpdas)
+!Old split line: LINE=(DUMPDAS,DUMPDAS)
 
 dumpdas_full: line = (dumpdas)
 dumpdas[L] = 2*dumpdas[L]
 
 ! stage-A and stage-B with dump in sector-30
 
-daselsa: line = (bkrdas1_full, ddasbk1, bkrdas2_full, ddasbk2, bkrdas3_full, ddasbk3h, ddasbk3h,  &
-        bkrdas4_full, ddasbk4, bkrdas5_full, ddasbk5, bkrdas6_full, ddasblxa, bpmdas, ddasblxb1,  &
-        pcblrdas, ddasblxb2, blrdas_full, rodas1, ddas1, xcdas1, ddas2a, ycdas1, ddas2b, bpmdas1 &
-        , ddas3, qdas1b_full, ddasqq, qdas1a_full, ddas4, qdas2a_full, ddasqq, qdas2b_full,  &
-        ddas5a, imdas1, ddas5b, imdas2, ddas5c, brdas1_full, rodas2, ddas11a, rodas11p, rcdas11,  &
-        rodas11m, ddas11b, qdas11_full, ddas12a, prdas12, ddas12b, dumpdas_full)
+  DASELSA : LINE=(BKRDAS1_full,DDASBK1 ,BKRDAS2_full,DDASBK2 ,BKRDAS3_full,DDASBK3h,DDASBK3h,BKRDAS4_full,DDASBK4 ,
+         BKRDAS5_full,DDASBK5 ,BKRDAS6_full,DDASBLXa,BPMDAS  ,DDASBLXb1,PCBLRDAS,DDASBLXb2,BLRDAS_full ,RODAS1  ,DDAS1   ,
+         XCDAS1  ,DDAS2a  ,YCDAS1  ,DDAS2b  ,BPMDAS1 ,DDAS3   ,QDAS1b_full,DDASQQ  ,QDAS1a_full,DDAS4   ,QDAS2a_full,DDASQQ  ,
+         QDAS2b_full,DDAS5a  ,IMDAS1  ,DDAS5b  ,IMDAS2 ,DDAS5c ,BRDAS1_full,RODAS2  ,DDAS11a ,RODAS11P,RCDAS11 ,RODAS11M,DDAS11b,
+         QDAS11_full,DDAS12a ,PRDAS12 ,DDAS12b ,DUMPDAS_full)
 
-daselsb: line = (ddas12c, qdas12_full, ddas13, qdas13_full, ddas14aa, wooddoor, ddas14ab, xcdas14 &
-        , ddas14b, qdas14_full, ddas15a, prdas14, ddas15b, qdas15_full, ddas16, qdas16_full,  &
-        ddas17a, prdas17, ddas17b, ycdas17, ddas17c, qdas17_full, ddas18, qdas18a_full, ddasqq,  &
-        qdas18b_full, ddas19, qdas19_full, ddas20a, bpmdas19, ddas20b, rodas3, brdas2_full)
+  DASELSB : LINE=(DDAS12c ,QDAS12_full ,DDAS13  ,QDAS13_full ,DDAS14aa,WOODDOOR,DDAS14ab,XCDAS14,DDAS14b,QDAS14_full ,
+         DDAS15a ,PRDAS14 ,DDAS15b ,QDAS15_full ,DDAS16  ,QDAS16_full ,DDAS17a ,PRDAS17 ,DDAS17b ,YCDAS17,DDAS17c,QDAS17_full ,
+         DDAS18  ,QDAS18a_full,DDASQQ  ,QDAS18b_full,DDAS19  ,QDAS19_full ,DDAS20a ,BPMDAS19,DDAS20b ,RODAS3 ,BRDAS2_full)
 
 ! ------------------------------------------------------------------------------
 
@@ -633,11 +618,11 @@ daselsb: line = (ddas12c, qdas12_full, ddas13, qdas13_full, ddas14aa, wooddoor, 
 
 ! ------------------------------------------------------------------------------
 
-dasel: line = (daselsa, daselsb)
+  DASEL  : LINE=(DASELSA,DASELSB)
 
-dasela: line = (begdasel, dasel, da04b, rodas19p, rcdas19, rodas19m, enddasel, alinec)
+  DASELA : LINE=(BEGDASEL,DASEL,DA04b,RODAS19P,RCDAS19,RODAS19M,ENDDASEL,ALINEc)
 
-spdasela: line = (sprdkh, sprdks, sprdda, dasela)
+  SPDASELA : LINE=(SPRDkh,SPRDks,SPRDda,DASELA)
 
 ! ------------------------------------------------------------------------------
 

@@ -14,7 +14,7 @@ def replace_element(lines, ele_name, new_ele, verbose=True):
         if inele:
             # Continued element definition.
             newlines.append('!old '+line)
-            if line.strip()[-1] != '&':
+            if line.strip()[-1] not in (',', '&'):
                 inele=False
             continue
         
@@ -30,7 +30,7 @@ def replace_element(lines, ele_name, new_ele, verbose=True):
             print('Found ele:', ele_name)
         newlines.append(new_ele)
         newlines.append('!old: '+line)
-        if line.strip()[-1] == '&':
+        if line.strip()[-1] in (',', '&'):
             # Element definition continues
             inele = True
     return newlines

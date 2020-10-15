@@ -149,8 +149,8 @@ muy_l3 = 30.130/360 !July 13, 2005 - set for 3*90 deg TCAV3[1] to OTR30 (TCAV3 -
 
 ! input beam definition (at L0a-exit)
 
-emitx = emitxn/(e0i/(m_electron * 1e-9))
-emity = emityn/(e0i/(m_electron * 1e-9))
+emitx = emitxn/(e0i/emass)
+emity = emityn/(e0i/emass)
 tgamx = (1+talfx*talfx)/tbetx
 tgamy = (1+talfy*talfy)/tbety
 sig11 = emitx*tbetx
@@ -194,22 +194,22 @@ dbmark29: marker !(IV30-9  ) LI30 isolation valve ... start of BSY
 
 ! LCLS2scH and LCLS1 optics
 
-call, filename = "common.bmad"
-call, filename = "SPRD.bmad"
-call, filename = "CUSXR.bmad"
-call, filename = "ALINE.bmad"
-call, filename = "BYP.bmad"
-call, filename = "LTU.bmad"
-call, filename = "UND.bmad"
-call, filename = "SFT.bmad"
-call, filename = "HXTES.bmad"
-call, filename = "LCLS2cu.bmad"
+call, file = common.bmad
+call, file = SPRD.bmad
+call, file = CUSXR.bmad
+call, file = ALINE.bmad
+call, file = BYP.bmad
+call, file = LTU.bmad
+call, file = UND.bmad
+call, file = SFT.bmad
+call, file = HXTES.bmad
+call, file = LCLS2cu.bmad
 
 ! design L1, L2, and L3 lattices ...
 
-call, filename = "LCLS_L1.bmad"
-call, filename = "LCLS_L2.bmad"
-call, filename = "LCLS_L3.bmad"
+call, file = LCLS_L1.bmad
+call, file = LCLS_L2.bmad
+call, file = LCLS_L3.bmad
 
 ! ... or simplified L1, L2, and L3 lattices (for ELEGANT)
 
@@ -219,7 +219,7 @@ call, filename = "LCLS_L3.bmad"
 
 ! new BSY area definitions
 
-call, filename = "BSYcu.bmad"
+call, file = BSYcu.bmad
 
 ! beam paths
 
@@ -232,14 +232,14 @@ call, filename = "BSYcu.bmad"
  !CU_GSPEC : copper linac to gun spectrometer
  !CU_SPEC  : copper linac to 135 MeV spectrometer
 
-cu_hxr: line = (gunl0a, l0al0b, lcls2cuh)
-cu_sfth: line = (gunl0a, l0al0b, lcls2cuhs)
-cu_hxtes: line = (gunl0a, l0al0b, lcls2cuhxtes)
-cu_htxi: line = (gunl0a, l0al0b, lcls2cuhtxi)
-cu_sxr: line = (gunl0a, l0al0b, lcls2cus)
-cu_aline: line = (gunl0a, l0al0b, lcls2cua)
-cu_gspec: line = (gunbxg, gspec)
-cu_spec: line = (gunl0a, l0al0b, dl1_1, specbl)
+  CU_HXR   : LINE=(GUNL0a,L0aL0b,LCLS2cuH)
+  CU_SFTH  : LINE=(GUNL0a,L0aL0b,LCLS2cuHS)
+  CU_HXTES : LINE=(GUNL0a,L0aL0b,LCLS2cuHXTES)
+  CU_HTXI  : LINE=(GUNL0a,L0aL0b,LCLS2cuHTXI)
+  CU_SXR   : LINE=(GUNL0a,L0aL0b,LCLS2cuS)
+  CU_ALINE : LINE=(GUNL0a,L0aL0b,LCLS2cuA)
+  CU_GSPEC : LINE=(GUNBXG,GSPEC)
+  CU_SPEC  : LINE=(GUNL0a,L0aL0b,DL1_1,SPECBL)
 
 ! ------------------------------------------------------------------------------
 ! initial SURVEY coordinates

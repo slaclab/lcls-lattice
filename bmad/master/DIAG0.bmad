@@ -124,8 +124,8 @@ kqbd0 = -7.825140556488    !-13.410702917581
 ! transverse deflecting cavities
 ! (NOTE: TCYDG0 might be installed as an uprgade at a later time)
 
-tcydg0: lcavity, rf_frequency = 2856 * 1e6, type = "@4,TRANS_YDEF", l = 0.8/2 !Y-deflector (split)
-tcxdg0: lcavity, rf_frequency = 2856 * 1e6, type = "TRANS_XDEF", l = 0.8/2 !X-deflector (split)
+tcydg0: lcavity, type = "@4,TRANS_YDEF", rf_frequency = 2856 * 1e6, l = 0.8/2 !Y-deflector (split)
+tcxdg0: lcavity, type = "TRANS_XDEF", rf_frequency = 2856 * 1e6, l = 0.8/2 !X-deflector (split)
 
 ! ==============================================================================
 ! SBEN
@@ -134,7 +134,7 @@ tcxdg0: lcavity, rf_frequency = 2856 * 1e6, type = "TRANS_XDEF", l = 0.8/2 !X-de
 ykoff0 = 15e-3      !vertical offset at septum face (m)
 zks0 = 2.0        !z-distance from BKRDG0 center to BLRDG0 center (m)
 dx0 = -0.5        !x-distance from linac axis to diagnostic line axis (m)
-xang02 = 6.0*degrees !BXDG0 bend angle (rad)
+xang02 = 6.0*raddeg !BXDG0 bend angle (rad)
 
 ! kicker
 
@@ -155,10 +155,10 @@ lk0s = zk0/(2*sincak0s)
 ak0l = ak0-ak0s
 lk0l = lk0-lk0s
 
-bkrdg0a: sbend, hgap = gk0/2, e1 = 0, fint = 0.5, fintx = 0, type = "1.378K35.4", ref_tilt =  &
-        90*degrees+srol0, l = lk0s, angle = lk0s * ak0s/lk0s
-bkrdg0b: sbend, hgap = gk0/2, e2 = ak0, fint = 0, fintx = 0.5, type = "1.378K35.4", ref_tilt =  &
-        90*degrees+srol0, l = lk0l, angle = lk0l * ak0l/lk0l
+bkrdg0a: sbend, type = "1.378K35.4", hgap = gk0/2, l = lk0s, angle = ak0s, e1 = 0, fint = 0.5, fintx = 0,
+          ref_tilt = 90*raddeg+srol0
+bkrdg0b: sbend, type = "1.378K35.4", hgap = gk0/2, l = lk0l, angle = ak0l, e2 = ak0, fint = 0, fintx = 0.5,
+          ref_tilt = 90*raddeg+srol0
 
 ! septum
 
@@ -179,10 +179,10 @@ ls0s = (zs0/cos(ak0))/(2*sincas0s)
 as0l = as0-as0s
 ls0l = ls0-ls0s
 
-blrdg0a: sbend, hgap = gs0/2, e1 = 0, fint = 0.5, fintx = 0, type = "0.79SD14.96", ref_tilt =  &
-        srol0, l = ls0s, angle = ls0s * as0s/ls0s
-blrdg0b: sbend, hgap = gs0/2, e2 = as0, fint = 0, fintx = 0.5, type = "0.79SD14.96", ref_tilt =  &
-        srol0, l = ls0l, angle = ls0l * as0l/ls0l
+blrdg0a: sbend, type = "0.79SD14.96", hgap = gs0/2, l = ls0s, angle = as0s, e1 = 0, fint = 0.5, fintx = 0,
+          ref_tilt = srol0
+blrdg0b: sbend, type = "0.79SD14.96", hgap = gs0/2, l = ls0l, angle = as0l, e2 = as0, fint = 0, fintx = 0.5,
+          ref_tilt = srol0
 
 ! horizontal bend
 
@@ -196,34 +196,31 @@ ah0h_6 = ah0h_4*ah0h_2
 sincah0h = 1-ah0h_2/6+ah0h_4/120-ah0h_6/5040 !~sinc(AH0h)=sin(AH0h)/AH0h
 lh0 = zh0/sincah0h
 
-bxdg0a: sbend, hgap = gh0/2, e1 = -ah0h, fint = 0.5, fintx = 0, type = "0.79D14.96", l = lh0/2,  &
-        angle = lh0/2 * (-ah0h)/(lh0/2)
-bxdg0b: sbend, hgap = gh0/2, e2 = -ah0h, fint = 0, fintx = 0.5, type = "0.79D14.96", l = lh0/2,  &
-        angle = lh0/2 * (-ah0h)/(lh0/2)
+bxdg0a: sbend, type = "0.79D14.96", hgap = gh0/2, l = lh0/2, angle = -ah0h, e1 = -ah0h, fint = 0.5, fintx = 0
+bxdg0b: sbend, type = "0.79D14.96", hgap = gh0/2, l = lh0/2, angle = -ah0h, e2 = -ah0h, fint = 0, fintx = 0.5
 
 ! spectrometer (dump) bend
 
 lbdmp0 = 0.5435       !measured
 gbdmp0 = 0.034
-abdmp0 = -35*degrees
-ebdmp0 = -7.29*degrees !measured
+abdmp0 = -35*raddeg
+ebdmp0 = -7.29*raddeg !measured
 fbdmp0 = 0.391        !measured
 
-bydg0a: sbend, hgap = gbdmp0/2, e1 = ebdmp0, fint = fbdmp0, fintx = 0, type = "BXS", ref_tilt =  &
-        90*degrees, l = lbdmp0/2, angle = lbdmp0/2 * abdmp0/2/(lbdmp0/2)
-bydg0b: sbend, hgap = gbdmp0/2, e2 = ebdmp0, fint = 0, fintx = fbdmp0, type = "BXS", ref_tilt =  &
-        90*degrees, l = lbdmp0/2, angle = lbdmp0/2 * abdmp0/2/(lbdmp0/2)
+bydg0a: sbend, type = "BXS", hgap = gbdmp0/2, l = lbdmp0/2, angle = abdmp0/2, e1 = ebdmp0, fint = fbdmp0, fintx = 0,
+          ref_tilt = 90*raddeg
+bydg0b: sbend, type = "BXS", hgap = gbdmp0/2, l = lbdmp0/2, angle = abdmp0/2, e2 = ebdmp0, fint = 0, fintx = fbdmp0,
+          ref_tilt = 90*raddeg
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-bkrdg0: sbend, hgap = gk0/2, e1 = 0, fint = 0.5, e2 = ak0, type = "1.378K35.4", ref_tilt =  &
-        90*degrees+srol0, l = lk0, angle = lk0 * ak0/lk0
-blrdg0: sbend, hgap = gs0/2, e1 = 0, fint = 0.5, e2 = as0, type = "0.79SD14.96", ref_tilt = srol0 &
-        , l = ls0, angle = ls0 * as0/ls0
-bxdg0: sbend, hgap = gh0/2, e1 = -ah0h, fint = 0.5, e2 = -ah0h, type = "0.79D14.96", l = lh0,  &
-        angle = lh0 * (-ah0)/lh0
-bydg0: sbend, hgap = gbdmp0/2, e1 = ebdmp0, fint = fbdmp0, e2 = ebdmp0, type = "BXS", ref_tilt =  &
-        90*degrees, l = lbdmp0, angle = lbdmp0 * abdmp0/lbdmp0
+bkrdg0: sbend, type = "1.378K35.4", hgap = gk0/2, l = lk0, angle = ak0, e1 = 0, fint = 0.5, e2 = ak0, fintx = 0.5,
+          ref_tilt = 90*raddeg+srol0
+blrdg0: sbend, type = "0.79SD14.96", hgap = gs0/2, l = ls0, angle = as0, e1 = 0, fint = 0.5, e2 = as0, fintx = 0.5,
+          ref_tilt = srol0
+bxdg0: sbend, type = "0.79D14.96", hgap = gh0/2, l = lh0, angle = -ah0, e1 = -ah0h, fint = 0.5, e2 = -ah0h, fintx = 0.5
+bydg0: sbend, type = "BXS", hgap = gbdmp0/2, l = lbdmp0, angle = abdmp0, e1 = ebdmp0, fint = fbdmp0, e2 = ebdmp0,
+          fintx = fbdmp0, ref_tilt = 90*raddeg
 
 ! ==============================================================================
 ! QUAD
@@ -256,8 +253,8 @@ qdg011: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqdg011
 
 ! model misaligned quadrupoles
 
-dyqdg001: multipole, k0l = yk01, t0 = pi / 2
-dyqdg003: multipole, k0l = yk02, t0 = pi / 2
+dyqdg001: multipole, k0l = yk01,t0
+dyqdg003: multipole, k0l = yk02,t0
 
  !VALUE, 1.E3*YK01/(KQBF0*LQs),1.E3*YK02/(KQBF0*LQs) !vertical offsets (mm)
 
@@ -294,8 +291,8 @@ zhh4d0 = zhh0/4-zqs/2-zh0/2
 
 dkv0: drift, l = zksd0/cos(ak0)
 dqb01: drift, l = (zhh1d0-ztwk0a+ztwk0b)/cos(xang02)
-dqb02: drift, l = (zhh2d0+ztwk0a)/cos(xang02)
-dqb03: drift, l = (zhh3d0+ztwk0a)/cos(xang02)
+dqb02: drift, l = (zhh2d0+ztwk0a       )/cos(xang02)
+dqb03: drift, l = (zhh3d0+ztwk0a       )/cos(xang02)
 dqb04: drift, l = (zhh4d0-ztwk0a-ztwk0b)/cos(xang02)
 
 !=!  COMMENT
@@ -339,7 +336,7 @@ ddg005b: drift, l = ddg005[l]-ddg005a[l]
 ddg006a: drift, l = 0.296
 ddg006b: drift, l = 0.12714
 ddg006c: drift, l = 0.17286
-ddg006d: drift, l = ddg006[l]-ddg006a[l]-2*tcydg0[l]-ddg006b[l]-ddg006c[l]-2*tcxdg0[l]
+ddg006d: drift, l = ddg006[l]-ddg006a[l]-2*tcydg0[l]-ddg006b[l]-ddg006c[l] -2*tcxdg0[l]
 ddg008a: drift, l = 0.296
 ddg008b: drift, l = ddg008[l]-ddg008a[l]
 ddg009a: drift, l = 0.296
@@ -347,7 +344,7 @@ ddg009b: drift, l = 0.7
 ddg009c: drift, l = 0.3
 ddg009d: drift, l = 0.3
 ddg009e: drift, l = 0.7
-ddg009f: drift, l = ddg009[l]-ddg009a[l]-ddg009b[l]-ddg009c[l]-ddg009d[l]-ddg009e[l]
+ddg009f: drift, l = ddg009[l]-ddg009a[l]-ddg009b[l]-ddg009c[l]-ddg009d[l] -ddg009e[l]
 ddg010a: drift, l = 0.296
 ddg010b: drift, l = ddg010[l]-ddg010a[l]
 ddg011a: drift, l = 0.3
@@ -362,43 +359,43 @@ bmindg0 = (ddg009b[l]+ddg009c[l])/sqrt(3) !waist (120 deg between OTRs)
 ! BPMs
 ! ------------------------------------------------------------------------------
 
-bpmdg000: instrument, type = "Stripline-4"
-bpmdg001: instrument, type = "Stripline-9"
-bpmdg002: instrument, type = "Stripline-9"
-bpmdg003: instrument, type = "Stripline-9"
-bpmdg004: instrument, type = "Stripline-1"
-bpmdg005: instrument, type = "Stripline-1"
-bpmdg0rf: instrument, type = "Stripline-1"
-bpmdg008: instrument, type = "Stripline-1"
-bpmdg009: instrument, type = "Stripline-1"
-bpmdg011: instrument, type = "Stripline-1"
+bpmdg000: monitor, type = "Stripline-4"
+bpmdg001: monitor, type = "Stripline-9"
+bpmdg002: monitor, type = "Stripline-9"
+bpmdg003: monitor, type = "Stripline-9"
+bpmdg004: monitor, type = "Stripline-1"
+bpmdg005: monitor, type = "Stripline-1"
+bpmdg0rf: monitor, type = "Stripline-1"
+bpmdg008: monitor, type = "Stripline-1"
+bpmdg009: monitor, type = "Stripline-1"
+bpmdg011: monitor, type = "Stripline-1"
 
-rfbdg001: instrument, type = "@2,CavityL-1"
-rfbdg002: instrument, type = "@2,CavityS-1"
-rfbdg003: instrument, type = "@2,CavityS-1"
-bpmdg012: instrument, type = "Stripline-11" !RFBDG004 : MONI, TYPE="@2,CavityL-1"
+rfbdg001: monitor, type = "@2,CavityL-1"
+rfbdg002: monitor, type = "@2,CavityS-1"
+rfbdg003: monitor, type = "@2,CavityS-1"
+bpmdg012: monitor, type = "Stripline-11" !RFBDG004 : MONI, TYPE="@2,CavityL-1"
 
 ! ==============================================================================
 ! XCORs
 ! ------------------------------------------------------------------------------
 
-xcdg001: kicker, type = "class-6"
-xcdg002: kicker, type = "class-6"
-xcdg003: kicker, type = "class-1a"
-xcdg005: kicker, type = "class-1a"
-xcdg008: kicker, type = "class-1a"
-xcdg010: kicker, type = "class-1a"
+xcdg001: hkicker, type = "class-6"
+xcdg002: hkicker, type = "class-6"
+xcdg003: hkicker, type = "class-1a"
+xcdg005: hkicker, type = "class-1a"
+xcdg008: hkicker, type = "class-1a"
+xcdg010: hkicker, type = "class-1a"
 
 ! ==============================================================================
 ! YCORs
 ! ------------------------------------------------------------------------------
 
-ycdg001: kicker, type = "class-6"
-ycdg002: kicker, type = "class-6"
-ycdg003: kicker, type = "class-1a"
-ycdg005: kicker, type = "class-1a"
-ycdg008: kicker, type = "class-1a"
-ycdg010: kicker, type = "class-1a"
+ycdg001: vkicker, type = "class-6"
+ycdg002: vkicker, type = "class-6"
+ycdg003: vkicker, type = "class-1a"
+ycdg005: vkicker, type = "class-1a"
+ycdg008: vkicker, type = "class-1a"
+ycdg010: vkicker, type = "class-1a"
 
 ! ==============================================================================
 ! diagnostics, etc.
@@ -406,10 +403,10 @@ ycdg010: kicker, type = "class-1a"
 
 ! profile monitors
 
-otrdg01: instrument, type = "@3,YAG/OTR PSI"
-otrdg02: instrument, type = "OTR INJ"
-otrdg03: instrument, type = "@3,YAG/OTR PSI"
-otrdg04: instrument, type = "OTR INJ"
+otrdg01: monitor, type = "@3,YAG/OTR PSI"
+otrdg02: monitor, type = "OTR INJ"
+otrdg03: monitor, type = "@3,YAG/OTR PSI"
+otrdg04: monitor, type = "OTR INJ"
 
 ! wire scanners
 
@@ -435,7 +432,7 @@ mtcxdg0: marker
 
 
 
-!Old split line: line = (tcydg0, mtcydg0, tcydg0)
+!Old split line: LINE=(TCYDG0,MTCYDG0,TCYDG0)
 
 tcydg0_full: line = (tcydg0)
 tcydg0[L] = 2*tcydg0[L]
@@ -443,7 +440,7 @@ mtcydg0[superimpose] = T
 mtcydg0[ref] = tcydg0
 
 
-!Old split line: line = (tcxdg0, mtcxdg0, tcxdg0)
+!Old split line: LINE=(TCXDG0,MTCXDG0,TCXDG0)
 
 tcxdg0_full: line = (tcxdg0)
 tcxdg0[L] = 2*tcxdg0[L]
@@ -451,17 +448,17 @@ mtcxdg0[superimpose] = T
 mtcxdg0[ref] = tcxdg0
 
 bkrdg0_full: line = (bkrdg0)
-!old: bkrdg0_full: line = (bkrdg0a, bkrdg0b)
+!old:   BKRDG0_full : LINE=(BKRDG0a,BKRDG0b)
 blrdg0_full: line = (blrdg0)
-!old: blrdg0_full: line = (blrdg0a, blrdg0b)
+!old:   BLRDG0_full : LINE=(BLRDG0a,BLRDG0b)
 bxdg0_full: line = (bxdg0)
-!old: bxdg0_full: line = (bxdg0a, bxdg0b)
+!old:   BXDG0_full  : LINE=(BXDG0a,BXDG0b)
 bydg0_full: line = (bydg0)
-!old: bydg0_full: line = (bydg0a, bydg0b)
+!old:   BYDG0_full  : LINE=(BYDG0a,BYDG0b)
 
 
 
-!Old split line: line = (qdg001, bpmdg001, dyqdg001, qdg001)
+!Old split line: LINE=(QDG001,BPMDG001,DYQDG001,QDG001)
 
 qdg001_full: line = (qdg001)
 qdg001[L] = 2*qdg001[L]
@@ -471,7 +468,7 @@ dyqdg001[superimpose] = T
 dyqdg001[ref] = qdg001
 
 
-!Old split line: line = (qdg002, bpmdg002, qdg002)
+!Old split line: LINE=(QDG002,BPMDG002,QDG002)
 
 qdg002_full: line = (qdg002)
 qdg002[L] = 2*qdg002[L]
@@ -479,7 +476,7 @@ bpmdg002[superimpose] = T
 bpmdg002[ref] = qdg002
 
 
-!Old split line: line = (qdg003, bpmdg003, dyqdg003, qdg003)
+!Old split line: LINE=(QDG003,BPMDG003,DYQDG003,QDG003)
 
 qdg003_full: line = (qdg003)
 qdg003[L] = 2*qdg003[L]
@@ -489,7 +486,7 @@ dyqdg003[superimpose] = T
 dyqdg003[ref] = qdg003
 
 
-!Old split line: line = (qdg004, bpmdg004, qdg004)
+!Old split line: LINE=(QDG004,BPMDG004,QDG004)
 
 qdg004_full: line = (qdg004)
 qdg004[L] = 2*qdg004[L]
@@ -497,7 +494,7 @@ bpmdg004[superimpose] = T
 bpmdg004[ref] = qdg004
 
 
-!Old split line: line = (qdg005, bpmdg005, qdg005)
+!Old split line: LINE=(QDG005,BPMDG005,QDG005)
 
 qdg005_full: line = (qdg005)
 qdg005[L] = 2*qdg005[L]
@@ -505,19 +502,19 @@ bpmdg005[superimpose] = T
 bpmdg005[ref] = qdg005
 
 
-!Old split line: line = (qdg006, qdg006)
+!Old split line: LINE=(QDG006,QDG006)
 
 qdg006_full: line = (qdg006)
 qdg006[L] = 2*qdg006[L]
 
 
-!Old split line: line = (qdg007, qdg007)
+!Old split line: LINE=(QDG007,QDG007)
 
 qdg007_full: line = (qdg007)
 qdg007[L] = 2*qdg007[L]
 
 
-!Old split line: line = (qdg008, bpmdg008, qdg008)
+!Old split line: LINE=(QDG008,BPMDG008,QDG008)
 
 qdg008_full: line = (qdg008)
 qdg008[L] = 2*qdg008[L]
@@ -525,7 +522,7 @@ bpmdg008[superimpose] = T
 bpmdg008[ref] = qdg008
 
 
-!Old split line: line = (qdg009, bpmdg009, qdg009)
+!Old split line: LINE=(QDG009,BPMDG009,QDG009)
 
 qdg009_full: line = (qdg009)
 qdg009[L] = 2*qdg009[L]
@@ -533,23 +530,23 @@ bpmdg009[superimpose] = T
 bpmdg009[ref] = qdg009
 
 
-!Old split line: line = (qdg010, qdg010)
+!Old split line: LINE=(QDG010,QDG010)
 
 qdg010_full: line = (qdg010)
 qdg010[L] = 2*qdg010[L]
 
 
-!Old split line: line = (qdg011, bpmdg011, qdg011)
+!Old split line: LINE=(QDG011,BPMDG011,QDG011)
 
 qdg011_full: line = (qdg011)
 qdg011[L] = 2*qdg011[L]
 bpmdg011[superimpose] = T
 bpmdg011[ref] = qdg011
 
-scdg003: line = (xcdg003, ycdg003)
-scdg005: line = (xcdg005, ycdg005)
-scdg008: line = (xcdg008, ycdg008)
-scdg010: line = (xcdg010, ycdg010)
+  SCDG003 : LINE=(XCDG003,YCDG003)
+  SCDG005 : LINE=(XCDG005,YCDG005)
+  SCDG008 : LINE=(XCDG008,YCDG008)
+  SCDG010 : LINE=(XCDG010,YCDG010)
 
 !=!  COMMENT !simplified
 !=!  COMMENT !simplified
@@ -573,16 +570,13 @@ scdg010: line = (xcdg010, ycdg010)
 !=!  ENDCOMMENT
 
  !COMMENT !complete
-diag0: line = (begdiag0, bkrdg0_full, rodg0k, dkv0a, bpmdg000, dkv0b, m1dg0, blrdg0_full, rodg0l &
-        , dqb01a, rfbdg001, dqb01b, xcdg001, dqb01c, qdg001_full, dqb02a, ycdg001, dqb02b,  &
-        qdg002_full, dqb03a, xcdg002, dqb03b, qdg003_full, dqb04a, ycdg002, dqb04b, bxdg0_full,  &
-        cntdg0, m2dg0, ddg003, qdg004_full, ddg004a, scdg003, ddg004b, qdg005_full, ddg005a,  &
-        scdg005, ddg005b, qdg006_full, ddg006a, tcydg0_full, ddg006b, bpmdg0rf, ddg006c,  &
-        tcxdg0_full, ddg006d, qdg007_full, ddg007, qdg008_full, ddg008a, scdg008, ddg008b,  &
-        qdg009_full, ddg009a, otrdg01, ddg009b, rfbdg002, ddg009c, otrdg02, ddg009d, wsdg01,  &
-        ddg009e, otrdg03, ddg009f, qdg010_full, ddg010a, scdg010, ddg010b, qdg011_full, ddg011a,  &
-        rfbdg003, ddg011b, bydg0_full, ddg012a, bpmdg012, ddg012b, otrdg04, ddg012c, fcdg0du,  &
-        enddiag0)
+    DIAG0 : LINE=(BEGDIAG0,BKRDG0_full,RODG0K,DKV0a,BPMDG000,DKV0b,M1DG0,BLRDG0_full,RODG0L,DQB01a,RFBDG001,DQB01b,
+         XCDG001,DQB01c,QDG001_full,DQB02a,YCDG001,DQB02b,QDG002_full,DQB03a,XCDG002,DQB03b,QDG003_full,DQB04a,YCDG002,DQB04b,
+         BXDG0_full,CNTDG0,M2DG0,DDG003,QDG004_full,DDG004a,SCDG003,DDG004b,QDG005_full,DDG005a,SCDG005,DDG005b,QDG006_full,
+         DDG006a,TCYDG0_full,DDG006b,BPMDG0RF,DDG006c,TCXDG0_full,DDG006d,QDG007_full,DDG007,QDG008_full,DDG008a,SCDG008,DDG008b,
+         QDG009_full,DDG009a,OTRDG01,DDG009b,RFBDG002,DDG009c,OTRDG02,DDG009d,WSDG01,DDG009e,OTRDG03,DDG009f,QDG010_full,DDG010a,
+         SCDG010,DDG010b,QDG011_full,DDG011a,RFBDG003,DDG011b,BYDG0_full,DDG012a,BPMDG012,DDG012b,OTRDG04,DDG012c,FCDG0DU,
+         ENDDIAG0)
  !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------

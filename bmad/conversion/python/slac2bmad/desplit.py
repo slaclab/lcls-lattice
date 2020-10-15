@@ -23,6 +23,7 @@ def desplit_ele(line, double_length=True, verbose=True):
     """
     # Check if this is a _full line
     original_line = line
+  
     
     s = line.split(':')
     if len(s) ==1:
@@ -32,6 +33,8 @@ def desplit_ele(line, double_length=True, verbose=True):
         return line
     # Should be. 
     ele, line = line.split(':')
+    ele = ele.strip()
+    
     name = ele.split('_full')[0].lower()
     eles = [e.strip().lower() for e in (line.split('(')[1].split(')')[0]).split(',')]
     
