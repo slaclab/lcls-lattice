@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-01APR20 ***
+! *** OPTICS=AD_ACCEL-15OCT20 ***
 
 ! LCLS2sc sector 7 dogleg plus match to bypass line
 
@@ -133,22 +133,18 @@ lbcxdlus = zbcc/(2*sincbcxdlus)
 abcxdlul = abcxdlu-abcxdlus
 lbcxdlul = lbcxdlu-lbcxdlus
 
-bcxdlu1a: sbend, hgap = gbcc/2, e1 = 0, fint = fbcc, fintx = 0, type = "0.788D11.50", l =  &
-        lbcxdlus, angle = lbcxdlus * (+abcxdlus)/lbcxdlus
-bcxdlu1b: sbend, hgap = gbcc/2, e2 = +abcxdlu, fint = 0, fintx = fbcc, type = "0.788D11.50", l =  &
-        lbcxdlul, angle = lbcxdlul * (+abcxdlul)/lbcxdlul
-bcxdlu2a: sbend, hgap = gbcc/2, e1 = -abcxdlu, fint = fbcc, fintx = 0, type = "0.788D11.50", l =  &
-        lbcxdlul, angle = lbcxdlul * (-abcxdlul)/lbcxdlul
-bcxdlu2b: sbend, hgap = gbcc/2, e2 = 0, fint = 0, fintx = fbcc, type = "0.788D11.50", l =  &
-        lbcxdlus, angle = lbcxdlus * (-abcxdlus)/lbcxdlus
-bcxdlu3a: sbend, hgap = gbcc/2, e1 = 0, fint = fbcc, fintx = 0, type = "0.788D11.50", l =  &
-        lbcxdlus, angle = lbcxdlus * (-abcxdlus)/lbcxdlus
-bcxdlu3b: sbend, hgap = gbcc/2, e2 = -abcxdlu, fint = 0, fintx = fbcc, type = "0.788D11.50", l =  &
-        lbcxdlul, angle = lbcxdlul * (-abcxdlul)/lbcxdlul
-bcxdlu4a: sbend, hgap = gbcc/2, e1 = +abcxdlu, fint = fbcc, fintx = 0, type = "0.788D11.50", l =  &
-        lbcxdlul, angle = lbcxdlul * (+abcxdlul)/lbcxdlul
-bcxdlu4b: sbend, hgap = gbcc/2, e2 = 0, fint = 0, fintx = fbcc, type = "0.788D11.50", l =  &
-        lbcxdlus, angle = lbcxdlus * (+abcxdlus)/lbcxdlus
+bcxdlu1a: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbcxdlus, angle = +abcxdlus, e1 = 0, fint = fbcc, fintx = 0
+bcxdlu1b: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbcxdlul, angle = +abcxdlul, e2 = +abcxdlu, fint = 0,
+          fintx = fbcc
+bcxdlu2a: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbcxdlul, angle = -abcxdlul, e1 = -abcxdlu, fint = fbcc,
+          fintx = 0
+bcxdlu2b: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbcxdlus, angle = -abcxdlus, e2 = 0, fint = 0, fintx = fbcc
+bcxdlu3a: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbcxdlus, angle = -abcxdlus, e1 = 0, fint = fbcc, fintx = 0
+bcxdlu3b: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbcxdlul, angle = -abcxdlul, e2 = -abcxdlu, fint = 0,
+          fintx = fbcc
+bcxdlu4a: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbcxdlul, angle = +abcxdlul, e1 = +abcxdlu, fint = fbcc,
+          fintx = 0
+bcxdlu4b: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbcxdlus, angle = +abcxdlus, e2 = 0, fint = 0, fintx = fbcc
 
 ! dogleg
 
@@ -166,14 +162,14 @@ xoff = -25.610*in2m
 yoff = 25.570*in2m
 rolla = -1.054575132367
 
-brb1a: sbend, hgap = gbr/2, e1 = anga/2, e2 = 0, fint = fbr, fintx = 0, type = "1.0D38.37",  &
-        ref_tilt = rolla, l = lbr/2, angle = lbr/2 * anga/2/(lbr/2)
-brb1b: sbend, hgap = gbr/2, e1 = 0, e2 = anga/2, fint = 0, fintx = fbr, type = "1.0D38.37",  &
-        ref_tilt = rolla, l = lbr/2, angle = lbr/2 * anga/2/(lbr/2)
-brb2a: sbend, hgap = gbr/2, e1 = -anga/2, e2 = 0, fint = fbr, fintx = 0, type = "1.0D38.37",  &
-        ref_tilt = rolla, l = lbr/2, angle = lbr/2 * (-anga/2)/(lbr/2)
-brb2b: sbend, hgap = gbr/2, e1 = 0, e2 = -anga/2, fint = 0, fintx = fbr, type = "1.0D38.37",  &
-        ref_tilt = rolla, l = lbr/2, angle = lbr/2 * (-anga/2)/(lbr/2)
+brb1a: sbend, type = "1.0D38.37", hgap = gbr/2, l = lbr/2, angle = anga/2, e1 = anga/2, e2 = 0, fint = fbr, fintx = 0,
+          ref_tilt = rolla
+brb1b: sbend, type = "1.0D38.37", hgap = gbr/2, l = lbr/2, angle = anga/2, e1 = 0, e2 = anga/2, fint = 0, fintx = fbr,
+          ref_tilt = rolla
+brb2a: sbend, type = "1.0D38.37", hgap = gbr/2, l = lbr/2, angle = -anga/2, e1 = -anga/2, e2 = 0, fint = fbr, fintx = 0,
+          ref_tilt = rolla
+brb2b: sbend, type = "1.0D38.37", hgap = gbr/2, l = lbr/2, angle = -anga/2, e1 = 0, e2 = -anga/2, fint = 0, fintx = fbr,
+          ref_tilt = rolla
 
 
 ! downstream R56 compensation chicane:
@@ -202,45 +198,41 @@ lbcxdlds = zbcc/(2*sincbcxdlds)
 abcxdldl = abcxdld-abcxdlds
 lbcxdldl = lbcxdld-lbcxdlds
 
-bcxdld1a: sbend, hgap = gbcc/2, e1 = 0, fint = fbcc, fintx = 0, type = "0.788D11.50", l =  &
-        lbcxdlds, angle = lbcxdlds * (+abcxdlds)/lbcxdlds
-bcxdld1b: sbend, hgap = gbcc/2, e2 = +abcxdld, fint = 0, fintx = fbcc, type = "0.788D11.50", l =  &
-        lbcxdldl, angle = lbcxdldl * (+abcxdldl)/lbcxdldl
-bcxdld2a: sbend, hgap = gbcc/2, e1 = -abcxdld, fint = fbcc, fintx = 0, type = "0.788D11.50", l =  &
-        lbcxdldl, angle = lbcxdldl * (-abcxdldl)/lbcxdldl
-bcxdld2b: sbend, hgap = gbcc/2, e2 = 0, fint = 0, fintx = fbcc, type = "0.788D11.50", l =  &
-        lbcxdlds, angle = lbcxdlds * (-abcxdlds)/lbcxdlds
-bcxdld3a: sbend, hgap = gbcc/2, e1 = 0, fint = fbcc, fintx = 0, type = "0.788D11.50", l =  &
-        lbcxdlds, angle = lbcxdlds * (-abcxdlds)/lbcxdlds
-bcxdld3b: sbend, hgap = gbcc/2, e2 = -abcxdld, fint = 0, fintx = fbcc, type = "0.788D11.50", l =  &
-        lbcxdldl, angle = lbcxdldl * (-abcxdldl)/lbcxdldl
-bcxdld4a: sbend, hgap = gbcc/2, e1 = +abcxdld, fint = fbcc, fintx = 0, type = "0.788D11.50", l =  &
-        lbcxdldl, angle = lbcxdldl * (+abcxdldl)/lbcxdldl
-bcxdld4b: sbend, hgap = gbcc/2, e2 = 0, fint = 0, fintx = fbcc, type = "0.788D11.50", l =  &
-        lbcxdlds, angle = lbcxdlds * (+abcxdlds)/lbcxdlds
+bcxdld1a: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbcxdlds, angle = +abcxdlds, e1 = 0, fint = fbcc, fintx = 0
+bcxdld1b: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbcxdldl, angle = +abcxdldl, e2 = +abcxdld, fint = 0,
+          fintx = fbcc
+bcxdld2a: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbcxdldl, angle = -abcxdldl, e1 = -abcxdld, fint = fbcc,
+          fintx = 0
+bcxdld2b: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbcxdlds, angle = -abcxdlds, e2 = 0, fint = 0, fintx = fbcc
+bcxdld3a: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbcxdlds, angle = -abcxdlds, e1 = 0, fint = fbcc, fintx = 0
+bcxdld3b: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbcxdldl, angle = -abcxdldl, e2 = -abcxdld, fint = 0,
+          fintx = fbcc
+bcxdld4a: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbcxdldl, angle = +abcxdldl, e1 = +abcxdld, fint = fbcc,
+          fintx = 0
+bcxdld4b: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbcxdlds, angle = +abcxdlds, e2 = 0, fint = 0, fintx = fbcc
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-bcxdlu1: sbend, hgap = gbcc/2, e1 = 0, fint = fbcc, e2 = +abcxdlu, type = "0.788D11.50", l =  &
-        lbcxdlu, angle = lbcxdlu * (+abcxdlu)/lbcxdlu
-bcxdlu2: sbend, hgap = gbcc/2, e1 = -abcxdlu, fint = fbcc, e2 = 0, type = "0.788D11.50", l =  &
-        lbcxdlu, angle = lbcxdlu * (-abcxdlu)/lbcxdlu
-bcxdlu3: sbend, hgap = gbcc/2, e1 = 0, fint = fbcc, e2 = -abcxdlu, type = "0.788D11.50", l =  &
-        lbcxdlu, angle = lbcxdlu * (-abcxdlu)/lbcxdlu
-bcxdlu4: sbend, hgap = gbcc/2, e1 = +abcxdlu, fint = fbcc, e2 = 0, type = "0.788D11.50", l =  &
-        lbcxdlu, angle = lbcxdlu * (+abcxdlu)/lbcxdlu
-brb1: sbend, hgap = gbr/2, e1 = anga/2, fint = fbr, e2 = anga/2, type = "1.0D38.37", ref_tilt =  &
-        rolla, l = lbr, angle = lbr * anga/lbr
-brb2: sbend, hgap = gbr/2, e1 = -anga/2, fint = fbr, e2 = -anga/2, type = "1.0D38.37", ref_tilt &
-         = rolla, l = lbr, angle = lbr * (-anga)/lbr
-bcxdld1: sbend, hgap = gbcc/2, e1 = 0, fint = fbcc, e2 = +abcxdld, type = "0.788D11.50", l =  &
-        lbcxdld, angle = lbcxdld * (+abcxdld)/lbcxdld
-bcxdld2: sbend, hgap = gbcc/2, e1 = -abcxdld, fint = fbcc, e2 = 0, type = "0.788D11.50", l =  &
-        lbcxdld, angle = lbcxdld * (-abcxdld)/lbcxdld
-bcxdld3: sbend, hgap = gbcc/2, e1 = 0, fint = fbcc, e2 = -abcxdld, type = "0.788D11.50", l =  &
-        lbcxdld, angle = lbcxdld * (-abcxdld)/lbcxdld
-bcxdld4: sbend, hgap = gbcc/2, e1 = +abcxdld, fint = fbcc, e2 = 0, type = "0.788D11.50", l =  &
-        lbcxdld, angle = lbcxdld * (+abcxdld)/lbcxdld
+bcxdlu1: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbcxdlu, angle = +abcxdlu, e1 = 0, fint = fbcc, e2 = +abcxdlu,
+          fintx = fbcc
+bcxdlu2: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbcxdlu, angle = -abcxdlu, e1 = -abcxdlu, fint = fbcc, e2 = 0,
+          fintx = fbcc
+bcxdlu3: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbcxdlu, angle = -abcxdlu, e1 = 0, fint = fbcc, e2 = -abcxdlu,
+          fintx = fbcc
+bcxdlu4: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbcxdlu, angle = +abcxdlu, e1 = +abcxdlu, fint = fbcc, e2 = 0,
+          fintx = fbcc
+brb1: sbend, type = "1.0D38.37", hgap = gbr/2, l = lbr, angle = anga, e1 = anga/2, fint = fbr, e2 = anga/2, fintx = fbr,
+          ref_tilt = rolla
+brb2: sbend, type = "1.0D38.37", hgap = gbr/2, l = lbr, angle = -anga, e1 = -anga/2, fint = fbr, e2 = -anga/2,
+          fintx = fbr, ref_tilt = rolla
+bcxdld1: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbcxdld, angle = +abcxdld, e1 = 0, fint = fbcc, e2 = +abcxdld,
+          fintx = fbcc
+bcxdld2: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbcxdld, angle = -abcxdld, e1 = -abcxdld, fint = fbcc, e2 = 0,
+          fintx = fbcc
+bcxdld3: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbcxdld, angle = -abcxdld, e1 = 0, fint = fbcc, e2 = -abcxdld,
+          fintx = fbcc
+bcxdld4: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbcxdld, angle = +abcxdld, e1 = +abcxdld, fint = fbcc, e2 = 0,
+          fintx = fbcc
 
 ! ==============================================================================
 ! QUAD
@@ -318,10 +310,8 @@ ksdog2 = 22.656285406772 !-20.61
 tsdog1 = -13.252537412109 !-0.2331*DEGRAD
 tsdog2 = 16.730337124259 ! 0.3342*DEGRAD
 
-sdog1: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdog1, tilt =  &
-        degrees*tsdog1
-sdog2: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdog2, tilt =  &
-        degrees*tsdog2
+sdog1: sextupole, tilt = raddeg*tsdog1, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdog1
+sdog2: sextupole, tilt = raddeg*tsdog2, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdog2
 
 !=!  COMMENT
 !=!  COMMENT
@@ -463,59 +453,59 @@ dbpe: drift, l = 0.1
 dbpf: drift, l = 1.0
 dbpd: drift, l = dbp[l]-dbpa[l]-dbpb[l]-dbpe[l]-dbpf[l]
 
-dbpd1: drift, l = 21.403397
-s10wall: drift, l = 1.83
+dbpd1: drift, l = 21.299397
+s10wall: drift, l = 2.0
 dbpd2: drift, l = dbpd[l]-dbpd1[l]-s10wall[l]
 
 ! ==============================================================================
 ! BPMs
 ! ------------------------------------------------------------------------------
 
-bpmdog1: instrument, type = "Stripline-5"
-bpmdog2: instrument, type = "Stripline-5" !RFBDOG2 : MONI, TYPE="@2,CavityL-1"
-bpmdog3: instrument, type = "Stripline-5"
-bpmdog4: instrument, type = "Stripline-5"
-bpmdog5: instrument, type = "Stripline-5"
-bpmdog6: instrument, type = "Stripline-5" !RFBDOG6 : MONI, TYPE="@2,CavityL-1"
-bpmdog7: instrument, type = "Stripline-5"
-bpmdog8: instrument, type = "Stripline-5"
-bpml1p: instrument, type = "Stripline-5"
-bpml2p: instrument, type = "Stripline-5"
-bpml3p: instrument, type = "Stripline-5"
-bpml4p: instrument, type = "Stripline-5"
-bpml5p: instrument, type = "Stripline-5"
-bpmbp10: instrument, type = "Stripline-5"
-bpmbp11: instrument, type = "Stripline-5"
-bpmbp12: instrument, type = "Stripline-5"
+bpmdog1: monitor, type = "Stripline-5"
+bpmdog2: monitor, type = "Stripline-5" !RFBDOG2 : MONI, TYPE="@2,CavityL-1"
+bpmdog3: monitor, type = "Stripline-5"
+bpmdog4: monitor, type = "Stripline-5"
+bpmdog5: monitor, type = "Stripline-5"
+bpmdog6: monitor, type = "Stripline-5" !RFBDOG6 : MONI, TYPE="@2,CavityL-1"
+bpmdog7: monitor, type = "Stripline-5"
+bpmdog8: monitor, type = "Stripline-5"
+bpml1p: monitor, type = "Stripline-5"
+bpml2p: monitor, type = "Stripline-5"
+bpml3p: monitor, type = "Stripline-5"
+bpml4p: monitor, type = "Stripline-5"
+bpml5p: monitor, type = "Stripline-5"
+bpmbp10: monitor, type = "Stripline-5"
+bpmbp11: monitor, type = "Stripline-5"
+bpmbp12: monitor, type = "Stripline-5"
 
-rfbwsbp1: instrument, type = "@2,CavityS-1"
+rfbwsbp1: monitor, type = "@2,CavityS-1"
 
 ! ==============================================================================
 ! XCORs
 ! ------------------------------------------------------------------------------
 
-xcdog1: kicker, type = "type-4"
-xcdog3: kicker, type = "type-4"
-xcdog5: kicker, type = "type-4"
-xcdog7: kicker, type = "type-4"
-xcl1p: kicker, type = "type-4"
-xcl3p: kicker, type = "type-4"
-xcl5p: kicker, type = "type-4"
-xcbp11: kicker, type = "type-4"
+xcdog1: hkicker, type = "type-4"
+xcdog3: hkicker, type = "type-4"
+xcdog5: hkicker, type = "type-4"
+xcdog7: hkicker, type = "type-4"
+xcl1p: hkicker, type = "type-4"
+xcl3p: hkicker, type = "type-4"
+xcl5p: hkicker, type = "type-4"
+xcbp11: hkicker, type = "type-4"
 
 ! ==============================================================================
 ! YCORs
 ! ------------------------------------------------------------------------------
 
-ycdog0: kicker, type = "type-4"
-ycdog2: kicker, type = "type-4"
-ycdog4: kicker, type = "type-4"
-ycdog6: kicker, type = "type-4"
-ycdog8: kicker, type = "type-4"
-ycl2p: kicker, type = "type-4"
-ycl4p: kicker, type = "type-4"
-ycbp10: kicker, type = "type-4"
-ycbp12: kicker, type = "type-4"
+ycdog0: vkicker, type = "type-4"
+ycdog2: vkicker, type = "type-4"
+ycdog4: vkicker, type = "type-4"
+ycdog6: vkicker, type = "type-4"
+ycdog8: vkicker, type = "type-4"
+ycl2p: vkicker, type = "type-4"
+ycl4p: vkicker, type = "type-4"
+ycbp10: vkicker, type = "type-4"
+ycbp12: vkicker, type = "type-4"
 
 ! ==============================================================================
 ! marker points, etc.
@@ -525,13 +515,13 @@ ycbp12: kicker, type = "type-4"
 
 ! CEDOG : energy coll in bypass dog-leg (YSIZE is half-gap)
 
-cedog: rcollimator, y_limit = 8.6e-3, l = ljaw, type = "VCOLL"
+cedog: rcollimator, l = ljaw, y_limit = 8.6e-3, type = "VCOLL"
 
 ! beam profile measurement
 
-otrdog: instrument, type = "OTR"
+otrdog: monitor, type = "OTR"
 wsdog: marker, type = "@3,fast"
-otr31: instrument, type = "@3,YAG/OTR PSI" !CSR-induced coupling from dogleg
+otr31: monitor, type = "@3,YAG/OTR PSI" !CSR-induced coupling from dogleg
 wsbp1: marker, type = "fast"
 
 ! markers
@@ -567,141 +557,141 @@ bpn12beg: marker
 ! ------------------------------------------------------------------------------
 
 bcxdlu1_full: line = (bcxdlu1)
-!old: bcxdlu1_full: line = (bcxdlu1a, bcxdlu1b)
+!old:   BCXDLU1_full : LINE=(BCXDLU1a,BCXDLU1b)
 bcxdlu2_full: line = (bcxdlu2)
-!old: bcxdlu2_full: line = (bcxdlu2a, bcxdlu2b)
+!old:   BCXDLU2_full : LINE=(BCXDLU2a,BCXDLU2b)
 bcxdlu3_full: line = (bcxdlu3)
-!old: bcxdlu3_full: line = (bcxdlu3a, bcxdlu3b)
+!old:   BCXDLU3_full : LINE=(BCXDLU3a,BCXDLU3b)
 bcxdlu4_full: line = (bcxdlu4)
-!old: bcxdlu4_full: line = (bcxdlu4a, bcxdlu4b)
+!old:   BCXDLU4_full : LINE=(BCXDLU4a,BCXDLU4b)
 brb1_full: line = (brb1)
-!old: brb1_full: line = (brb1a, clbrb1, brb1b)
+!old:   BRB1_full    : LINE=(BRB1a,clBRB1,BRB1b)
 brb2_full: line = (brb2)
-!old: brb2_full: line = (brb2a, clbrb2, brb2b)
+!old:   BRB2_full    : LINE=(BRB2a,clBRB2,BRB2b)
 bcxdld1_full: line = (bcxdld1)
-!old: bcxdld1_full: line = (bcxdld1a, bcxdld1b)
+!old:   BCXDLD1_full : LINE=(BCXDLD1a,BCXDLD1b)
 bcxdld2_full: line = (bcxdld2)
-!old: bcxdld2_full: line = (bcxdld2a, bcxdld2b)
+!old:   BCXDLD2_full : LINE=(BCXDLD2a,BCXDLD2b)
 bcxdld3_full: line = (bcxdld3)
-!old: bcxdld3_full: line = (bcxdld3a, bcxdld3b)
+!old:   BCXDLD3_full : LINE=(BCXDLD3a,BCXDLD3b)
 bcxdld4_full: line = (bcxdld4)
-!old: bcxdld4_full: line = (bcxdld4a, bcxdld4b)
+!old:   BCXDLD4_full : LINE=(BCXDLD4a,BCXDLD4b)
 
 
 
-!Old split line: line = (qdog1, qdog1)
+!Old split line: LINE=(QDOG1,QDOG1)
 
 qdog1_full: line = (qdog1)
 qdog1[L] = 2*qdog1[L]
 
 
-!Old split line: line = (qdog2, qdog2)
+!Old split line: LINE=(QDOG2,QDOG2)
 
 qdog2_full: line = (qdog2)
 qdog2[L] = 2*qdog2[L]
 
 
-!Old split line: line = (qdog3, qdog3)
+!Old split line: LINE=(QDOG3,QDOG3)
 
 qdog3_full: line = (qdog3)
 qdog3[L] = 2*qdog3[L]
 
 
-!Old split line: line = (qdog4, qdog4)
+!Old split line: LINE=(QDOG4,QDOG4)
 
 qdog4_full: line = (qdog4)
 qdog4[L] = 2*qdog4[L]
 
 
-!Old split line: line = (qdog5, qdog5)
+!Old split line: LINE=(QDOG5,QDOG5)
 
 qdog5_full: line = (qdog5)
 qdog5[L] = 2*qdog5[L]
 
 
-!Old split line: line = (qdog6, qdog6)
+!Old split line: LINE=(QDOG6,QDOG6)
 
 qdog6_full: line = (qdog6)
 qdog6[L] = 2*qdog6[L]
 
 
-!Old split line: line = (qdog7, qdog7)
+!Old split line: LINE=(QDOG7,QDOG7)
 
 qdog7_full: line = (qdog7)
 qdog7[L] = 2*qdog7[L]
 
 
-!Old split line: line = (qdog8, qdog8)
+!Old split line: LINE=(QDOG8,QDOG8)
 
 qdog8_full: line = (qdog8)
 qdog8[L] = 2*qdog8[L]
 
 
-!Old split line: line = (ql1p, ql1p)
+!Old split line: LINE=(QL1P,QL1P)
 
 ql1p_full: line = (ql1p)
 ql1p[L] = 2*ql1p[L]
 
 
-!Old split line: line = (ql2p, ql2p)
+!Old split line: LINE=(QL2P,QL2P)
 
 ql2p_full: line = (ql2p)
 ql2p[L] = 2*ql2p[L]
 
 
-!Old split line: line = (ql3p, ql3p)
+!Old split line: LINE=(QL3P,QL3P)
 
 ql3p_full: line = (ql3p)
 ql3p[L] = 2*ql3p[L]
 
 
-!Old split line: line = (ql4p, ql4p)
+!Old split line: LINE=(QL4P,QL4P)
 
 ql4p_full: line = (ql4p)
 ql4p[L] = 2*ql4p[L]
 
 
-!Old split line: line = (ql5p, ql5p)
+!Old split line: LINE=(QL5P,QL5P)
 
 ql5p_full: line = (ql5p)
 ql5p[L] = 2*ql5p[L]
 
 
-!Old split line: line = (qbp10, qbp10)
+!Old split line: LINE=(QBP10,QBP10)
 
 qbp10_full: line = (qbp10)
 qbp10[L] = 2*qbp10[L]
 
 
-!Old split line: line = (qbp11, qbp11)
+!Old split line: LINE=(QBP11,QBP11)
 
 qbp11_full: line = (qbp11)
 qbp11[L] = 2*qbp11[L]
 
 
-!Old split line: line = (qbp12, qbp12)
+!Old split line: LINE=(QBP12,QBP12)
 
 qbp12_full: line = (qbp12)
 qbp12[L] = 2*qbp12[L]
 
 
 
-!Old split line: line = (sdog1, sdog1)
+!Old split line: LINE=(SDOG1,SDOG1)
 
 sdog1_full: line = (sdog1)
 sdog1[L] = 2*sdog1[L]
 
 
-!Old split line: line = (sdog2, sdog2)
+!Old split line: LINE=(SDOG2,SDOG2)
 
 sdog2_full: line = (sdog2)
 sdog2[L] = 2*sdog2[L]
 
-ccdlu: line = (ccdlubeg, bcxdlu1_full, dccdluo, bcxdlu2_full, dccdlui, ccdlumid, dccdlui,  &
-        bcxdlu3_full, dccdluo, bcxdlu4_full, cntdlu, ccdluend)
+  CCDLU : LINE=(CCDLUBEG,BCXDLU1_full,DCCDLUo,BCXDLU2_full,DCCDLUi,CCDLUMID,DCCDLUi,BCXDLU3_full,DCCDLUo,BCXDLU4_full,
+         CNTDLU,CCDLUEND)
 
-ccdld: line = (ccdldbeg, bcxdld1_full, dccdldo, bcxdld2_full, dccdldi, ccdldmid, dccdldi,  &
-        bcxdld3_full, dccdldo, bcxdld4_full, cntdld, ccdldend)
+  CCDLD : LINE=(CCDLDBEG,BCXDLD1_full,DCCDLDo,BCXDLD2_full,DCCDLDi,CCDLDMID,DCCDLDi,BCXDLD3_full,DCCDLDo,BCXDLD4_full,
+         CNTDLD,CCDLDEND)
 
 !=!  COMMENT !simplified (1st order)
 !=!  COMMENT !simplified (1st order)
@@ -736,13 +726,11 @@ ccdld: line = (ccdldbeg, bcxdld1_full, dccdldo, bcxdld2_full, dccdldi, ccdldmid,
 !=!  ENDCOMMENT
 
  !COMMENT !complete
-dlbp: line = (bdbeg, brb1_full, robrb1, dbd0a, ycdog0, dbd0b, xcdog1, dbd0c, qdog1_full, dbd1a,  &
-        bpmdog1, dbd1b, cedog, dbd1c, sdog1_full, dbd1d, qdog2_full, dbd2a, bpmdog2, dbd2b,  &
-        ycdog2, dbd2c, xcdog3, dbd2d, qdog3_full, dbd3a, bpmdog3, dbd3b, ycdog4, dbd3c,  &
-        qdog4_full, dbd4a, bpmdog4, dbd4b, xcdog5, dbd4c, qdog5_full, dbd5a, bpmdog5, dbd5b,  &
-        ycdog6, dbd5c, otrdog, dbd5d, qdog6_full, dbd6a, bpmdog6, dbd6b, wsdog, dbd6c, xcdog7,  &
-        dbd6d, sdog2_full, dbd6e, qdog7_full, dbd7a, bpmdog7, dbd7b, ycdog8, dbd7c, qdog8_full,  &
-        dbd8a, bpmdog8, dbd8b, robrb2, brb2_full, cntdog, rwwake1, bdend)
+    DLBP : LINE=(BDBEG,BRB1_full,ROBRB1,DBD0a,YCDOG0,DBD0b,XCDOG1,DBD0c,QDOG1_full,DBD1a,BPMDOG1,DBD1b,CEDOG,DBD1c,
+         SDOG1_full,DBD1d,QDOG2_full,DBD2a,BPMDOG2,DBD2b,YCDOG2,DBD2c,XCDOG3,DBD2d,QDOG3_full,DBD3a,BPMDOG3,DBD3b,YCDOG4,DBD3c,
+         QDOG4_full,DBD4a,BPMDOG4,DBD4b,XCDOG5,DBD4c,QDOG5_full,DBD5a,BPMDOG5,DBD5b,YCDOG6,DBD5c,OTRDOG,DBD5d,QDOG6_full,DBD6a,
+         BPMDOG6,DBD6b,WSDOG,DBD6c,XCDOG7,DBD6d,SDOG2_full,DBD6e,QDOG7_full,DBD7a,BPMDOG7,DBD7b,YCDOG8,DBD7c,QDOG8_full,DBD8a,
+         BPMDOG8,DBD8b,ROBRB2,BRB2_full,CNTDOG,RWWAKE1,BDEND)
  !ENDCOMMENT
 
 !=!  COMMENT !simplified
@@ -760,18 +748,16 @@ dlbp: line = (bdbeg, brb1_full, robrb1, dbd0a, ycdog0, dbd0b, xcdog1, dbd0c, qdo
 !=!  ENDCOMMENT
 
  !COMMENT !complete
-mtch1: line = (dlccp, ccdld, dl0pa, otr31, dl0pb, ql1p_full, dl1pa, bpml1p, dl1pb, xcl1p, dl1pc,  &
-        ql2p_full, dl2pa, bpml2p, dl2pb, ycl2p, dl2pc, ql3p_full, dl3pa, bpml3p, dl3pb, xcl3p,  &
-        dl3pc, bpn09beg, dl3pd, ql4p_full, dl4pa, bpml4p, dl4pb, ycl4p, dl4pc, ql5p_full, dbpa,  &
-        bpml5p, dbpb, xcl5p, dbpc, dbpsa, bpn09end, bpn10beg, dbpsb, qbp10_full, dbpa, bpmbp10,  &
-        dbpb, ycbp10, dbpd1, s10wall, dbpd2, rfbwsbp1, dbpe, wsbp1, dbpf, dbpsa, bpn10end,  &
-        bpn11beg, dbpsb, qbp11_full, dbpa, bpmbp11, dbpb, xcbp11, dbpc, dbpsa, bpn11end, bpn12beg &
-        , dbpsb, qbp12_full, dbpa, bpmbp12, dbpb, ycbp12, dbpd)
+    MTCH1 : LINE=(DLCCP,CCDLD,DL0Pa,OTR31,DL0Pb,QL1P_full,DL1Pa,BPML1P,DL1Pb,XCL1P,DL1Pc,QL2P_full,DL2Pa,BPML2P,DL2Pb,
+         YCL2P,DL2Pc,QL3P_full,DL3Pa,BPML3P,DL3Pb,XCL3P,DL3Pc,BPN09BEG,DL3Pd,QL4P_full,DL4Pa,BPML4P,DL4Pb,YCL4P,DL4Pc,QL5P_full,
+         DBPa,BPML5P,DBPb,XCL5P,DBPc,DBPsa,BPN09END,BPN10BEG,DBPsb,QBP10_full,DBPa,BPMBP10,DBPb,YCBP10,DBPd1,S10WALL,DBPd2,
+         RFBWSBP1,DBPe,WSBP1,DBPf,DBPsa,BPN10END,BPN11BEG,DBPsb,QBP11_full,DBPa,BPMBP11,DBPb,XCBP11,DBPc,DBPsa,BPN11END,BPN12BEG,
+         DBPsb,QBP12_full,DBPa,BPMBP12,DBPb,YCBP12,DBPd)
  !ENDCOMMENT
 
-dlbm: line = (begdog, ccdlu, dbdm1, dlbp, mtch1, enddog)
+  DLBM : LINE=(BEGDOG,CCDLU,DBDm1,DLBP,MTCH1,ENDDOG)
 
-bfodo: line = (qbpf, dbp, dbp, qbpd, qbpd, dbp, dbp, qbpf)
+  Bfodo : LINE=(QBPF,DBP,DBP,QBPD,QBPD,DBP,DBP,QBPF)
 
 ! ------------------------------------------------------------------------------
 

@@ -1,0 +1,36 @@
+&tao_start
+  n_universes = 5
+  plot_file   ='$LCLS_LATTICE/bmad/tao/tao_plot.init '
+  startup_file='$LCLS_LATTICE/bmad/tao/tao.startup'
+/
+
+
+
+
+!--------------------------------------------------------
+&tao_design_lattice
+    design_lattice(1)%file= '$LCLS_LATTICE/bmad/models/cu_hxr/cu_hxr.lat.bmad'
+    design_lattice(2)%file= '$LCLS_LATTICE/bmad/models/cu_sxr/cu_sxr.lat.bmad'
+    design_lattice(3)%file= '$LCLS_LATTICE/bmad/models/sc_hxr/sc_hxr.lat.bmad'
+    design_lattice(4)%file= '$LCLS_LATTICE/bmad/models/sc_sxr/sc_sxr.lat.bmad'  
+    
+    design_lattice(5)%file=  '$FACET2_LATTICE/bmad/models/FACET2e/facet2e.lat.bmad'
+/
+
+!------------------------------------------------------------------------
+&tao_params
+  !global%plot_on = T
+  global%track_type = 'single'
+  global%beam_timer_on = T
+  global%random_engine = 'pseudo' ! or: 'quasi'
+  global%de_lm_step_ratio = 1500
+  global%optimizer = 'lmdif'
+  global%n_opti_cycles = 100
+  !---Bmad---
+  bmad_com%radiation_damping_on = F
+  bmad_com%radiation_fluctuations_on = T
+/
+
+
+
+

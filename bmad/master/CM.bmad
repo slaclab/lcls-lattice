@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-01APR20 ***
+! *** OPTICS=AD_ACCEL-15OCT20 ***
 
 ! LCLS2sc linacs: L0, L1, L2 L3
 
@@ -173,13 +173,11 @@ p018 = 6.0
 
 ! Fix scaling to end up with final injection energy Ei:
 
-l0_factor1 =  &
-        l011_scale*cos(degrees*p011)+l012_scale*cos(degrees*p012)+l013_scale*cos(degrees*p013)+l014_scale*cos(degrees*p014)
-l0_factor2 =  &
-        l015_scale*cos(degrees*p015)+l016_scale*cos(degrees*p016)+l017_scale*cos(degrees*p017)+l018_scale*cos(degrees*p018)
+l0_factor1 = l011_scale*cos(raddeg*p011)+ l012_scale*cos(raddeg*p012)+ l013_scale*cos(raddeg*p013)+ l014_scale*cos(raddeg*p014)
+l0_factor2 = l015_scale*cos(raddeg*p015)+ l016_scale*cos(raddeg*p016)+ l017_scale*cos(raddeg*p017)+ l018_scale*cos(raddeg*p018)
 
  !L0_scale := 1.0E3*(Ei-(E0+MC2))/(L0_factor1+L0_factor2)/LcavL
-l0_scale = 1.0e3*(ei-e0)/(l0_factor1+l0_factor2)/lcavl
+l0_scale = 1.0e3*(ei- e0     )/(l0_factor1+l0_factor2)/lcavl
 
 g011 = l011_scale*l0_scale
 g012 = l012_scale*l0_scale
@@ -190,24 +188,24 @@ g016 = l016_scale*l0_scale
 g017 = l017_scale*l0_scale
 g018 = l018_scale*l0_scale
 
-cavl011: lcavity, rf_frequency = 1300 * 1e6, gradient = g011*lcavl * 1e6 / lcavl, phi0 = p011/360 &
-        , l = lcavl, aperture = lcavr, type = "cryo"
-cavl012: lcavity, rf_frequency = 1300 * 1e6, gradient = g012*lcavl * 1e6 / lcavl, phi0 = p012/360 &
-        , l = lcavl, aperture = lcavr, type = "cryo"
-cavl013: lcavity, rf_frequency = 1300 * 1e6, gradient = g013*lcavl * 1e6 / lcavl, phi0 = p013/360 &
-        , l = lcavl, aperture = lcavr, type = "cryo"
-cavl014: lcavity, rf_frequency = 1300 * 1e6, gradient = g014*lcavl * 1e6 / lcavl, phi0 = p014/360 &
-        , l = lcavl, aperture = lcavr, type = "cryo"
-cavl015a: lcavity, rf_frequency = 1300 * 1e6, gradient = g015*lcavla * 1e6 / lcavla, phi0 =  &
-        p015/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl015b: lcavity, rf_frequency = 1300 * 1e6, gradient = g015*lcavlb * 1e6 / lcavlb, phi0 =  &
-        p015/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl016: lcavity, rf_frequency = 1300 * 1e6, gradient = g016*lcavl * 1e6 / lcavl, phi0 = p016/360 &
-        , l = lcavl, aperture = lcavr, type = "cryo"
-cavl017: lcavity, rf_frequency = 1300 * 1e6, gradient = g017*lcavl * 1e6 / lcavl, phi0 = p017/360 &
-        , l = lcavl, aperture = lcavr, type = "cryo"
-cavl018: lcavity, rf_frequency = 1300 * 1e6, gradient = g018*lcavl * 1e6 / lcavl, phi0 = p018/360 &
-        , l = lcavl, aperture = lcavr, type = "cryo"
+cavl011: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = g011*lcavl * 1e6, phi0 = p011/360, aperture = lcavr,
+          type = "cryo"
+cavl012: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = g012*lcavl * 1e6, phi0 = p012/360, aperture = lcavr,
+          type = "cryo"
+cavl013: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = g013*lcavl * 1e6, phi0 = p013/360, aperture = lcavr,
+          type = "cryo"
+cavl014: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = g014*lcavl * 1e6, phi0 = p014/360, aperture = lcavr,
+          type = "cryo"
+cavl015a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = g015*lcavla * 1e6, phi0 = p015/360,
+          aperture = lcavr, type = "cryo"
+cavl015b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = g015*lcavlb * 1e6, phi0 = p015/360,
+          aperture = lcavr, type = "cryo"
+cavl016: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = g016*lcavl * 1e6, phi0 = p016/360, aperture = lcavr,
+          type = "cryo"
+cavl017: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = g017*lcavl * 1e6, phi0 = p017/360, aperture = lcavr,
+          type = "cryo"
+cavl018: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = g018*lcavl * 1e6, phi0 = p018/360, aperture = lcavr,
+          type = "cryo"
 
 ! L1
 
@@ -228,24 +226,24 @@ p027 = phasl1
 g028 = gradl1
 p028 = phasl1
 
-cavl021: lcavity, rf_frequency = 1300 * 1e6, gradient = g021*lcavl * 1e6 / lcavl, phi0 = p021/360 &
-        , l = lcavl, aperture = lcavr, type = "cryo"
-cavl022: lcavity, rf_frequency = 1300 * 1e6, gradient = g022*lcavl * 1e6 / lcavl, phi0 = p022/360 &
-        , l = lcavl, aperture = lcavr, type = "cryo"
-cavl023: lcavity, rf_frequency = 1300 * 1e6, gradient = g023*lcavl * 1e6 / lcavl, phi0 = p023/360 &
-        , l = lcavl, aperture = lcavr, type = "cryo"
-cavl024: lcavity, rf_frequency = 1300 * 1e6, gradient = g024*lcavl * 1e6 / lcavl, phi0 = p024/360 &
-        , l = lcavl, aperture = lcavr, type = "cryo"
-cavl025a: lcavity, rf_frequency = 1300 * 1e6, gradient = g025*lcavla * 1e6 / lcavla, phi0 =  &
-        p025/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl025b: lcavity, rf_frequency = 1300 * 1e6, gradient = g025*lcavlb * 1e6 / lcavlb, phi0 =  &
-        p025/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl026: lcavity, rf_frequency = 1300 * 1e6, gradient = g026*lcavl * 1e6 / lcavl, phi0 = p026/360 &
-        , l = lcavl, aperture = lcavr, type = "cryo"
-cavl027: lcavity, rf_frequency = 1300 * 1e6, gradient = g027*lcavl * 1e6 / lcavl, phi0 = p027/360 &
-        , l = lcavl, aperture = lcavr, type = "cryo"
-cavl028: lcavity, rf_frequency = 1300 * 1e6, gradient = g028*lcavl * 1e6 / lcavl, phi0 = p028/360 &
-        , l = lcavl, aperture = lcavr, type = "cryo"
+cavl021: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = g021*lcavl * 1e6, phi0 = p021/360, aperture = lcavr,
+          type = "cryo"
+cavl022: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = g022*lcavl * 1e6, phi0 = p022/360, aperture = lcavr,
+          type = "cryo"
+cavl023: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = g023*lcavl * 1e6, phi0 = p023/360, aperture = lcavr,
+          type = "cryo"
+cavl024: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = g024*lcavl * 1e6, phi0 = p024/360, aperture = lcavr,
+          type = "cryo"
+cavl025a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = g025*lcavla * 1e6, phi0 = p025/360,
+          aperture = lcavr, type = "cryo"
+cavl025b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = g025*lcavlb * 1e6, phi0 = p025/360,
+          aperture = lcavr, type = "cryo"
+cavl026: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = g026*lcavl * 1e6, phi0 = p026/360, aperture = lcavr,
+          type = "cryo"
+cavl027: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = g027*lcavl * 1e6, phi0 = p027/360, aperture = lcavr,
+          type = "cryo"
+cavl028: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = g028*lcavl * 1e6, phi0 = p028/360, aperture = lcavr,
+          type = "cryo"
 
 g031 = gradl1
 p031 = phasl1
@@ -264,753 +262,753 @@ p037 = phasl1
 g038 = gradl1
 p038 = phasl1
 
-cavl031: lcavity, rf_frequency = 1300 * 1e6, gradient = g031*lcavl * 1e6 / lcavl, phi0 = p031/360 &
-        , l = lcavl, aperture = lcavr, type = "cryo"
-cavl032: lcavity, rf_frequency = 1300 * 1e6, gradient = g032*lcavl * 1e6 / lcavl, phi0 = p032/360 &
-        , l = lcavl, aperture = lcavr, type = "cryo"
-cavl033: lcavity, rf_frequency = 1300 * 1e6, gradient = g033*lcavl * 1e6 / lcavl, phi0 = p033/360 &
-        , l = lcavl, aperture = lcavr, type = "cryo"
-cavl034: lcavity, rf_frequency = 1300 * 1e6, gradient = g034*lcavl * 1e6 / lcavl, phi0 = p034/360 &
-        , l = lcavl, aperture = lcavr, type = "cryo"
-cavl035a: lcavity, rf_frequency = 1300 * 1e6, gradient = g035*lcavla * 1e6 / lcavla, phi0 =  &
-        p035/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl035b: lcavity, rf_frequency = 1300 * 1e6, gradient = g035*lcavlb * 1e6 / lcavlb, phi0 =  &
-        p035/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl036: lcavity, rf_frequency = 1300 * 1e6, gradient = g036*lcavl * 1e6 / lcavl, phi0 = p036/360 &
-        , l = lcavl, aperture = lcavr, type = "cryo"
-cavl037: lcavity, rf_frequency = 1300 * 1e6, gradient = g037*lcavl * 1e6 / lcavl, phi0 = p037/360 &
-        , l = lcavl, aperture = lcavr, type = "cryo"
-cavl038: lcavity, rf_frequency = 1300 * 1e6, gradient = g038*lcavl * 1e6 / lcavl, phi0 = p038/360 &
-        , l = lcavl, aperture = lcavr, type = "cryo"
+cavl031: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = g031*lcavl * 1e6, phi0 = p031/360, aperture = lcavr,
+          type = "cryo"
+cavl032: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = g032*lcavl * 1e6, phi0 = p032/360, aperture = lcavr,
+          type = "cryo"
+cavl033: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = g033*lcavl * 1e6, phi0 = p033/360, aperture = lcavr,
+          type = "cryo"
+cavl034: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = g034*lcavl * 1e6, phi0 = p034/360, aperture = lcavr,
+          type = "cryo"
+cavl035a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = g035*lcavla * 1e6, phi0 = p035/360,
+          aperture = lcavr, type = "cryo"
+cavl035b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = g035*lcavlb * 1e6, phi0 = p035/360,
+          aperture = lcavr, type = "cryo"
+cavl036: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = g036*lcavl * 1e6, phi0 = p036/360, aperture = lcavr,
+          type = "cryo"
+cavl037: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = g037*lcavl * 1e6, phi0 = p037/360, aperture = lcavr,
+          type = "cryo"
+cavl038: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = g038*lcavl * 1e6, phi0 = p038/360, aperture = lcavr,
+          type = "cryo"
 
 ! 3rd harmonic linearizer
 
-cavc011: lcavity, rf_frequency = 3900 * 1e6, gradient = ghcav*ccavl * 1e6 / ccavl, phi0 =  &
-        phcav/360, l = ccavl, aperture = ccavr, type = "cryo"
-cavc012a: lcavity, rf_frequency = 3900 * 1e6, gradient = ghcav*ccavla * 1e6 / ccavla, phi0 =  &
-        phcav/360, l = ccavla, aperture = ccavr, type = "cryo"
-cavc012b: lcavity, rf_frequency = 3900 * 1e6, gradient = ghcav*ccavlb * 1e6 / ccavlb, phi0 =  &
-        phcav/360, l = ccavlb, aperture = ccavr, type = "cryo"
-cavc013: lcavity, rf_frequency = 3900 * 1e6, gradient = ghcav*ccavl * 1e6 / ccavl, phi0 =  &
-        phcav/360, l = ccavl, aperture = ccavr, type = "cryo"
-cavc014: lcavity, rf_frequency = 3900 * 1e6, gradient = ghcav*ccavl * 1e6 / ccavl, phi0 =  &
-        phcav/360, l = ccavl, aperture = ccavr, type = "cryo"
-cavc015: lcavity, rf_frequency = 3900 * 1e6, gradient = ghcav*ccavl * 1e6 / ccavl, phi0 =  &
-        phcav/360, l = ccavl, aperture = ccavr, type = "cryo"
-cavc016: lcavity, rf_frequency = 3900 * 1e6, gradient = ghcav*ccavl * 1e6 / ccavl, phi0 =  &
-        phcav/360, l = ccavl, aperture = ccavr, type = "cryo"
-cavc017: lcavity, rf_frequency = 3900 * 1e6, gradient = ghcav*ccavl * 1e6 / ccavl, phi0 =  &
-        phcav/360, l = ccavl, aperture = ccavr, type = "cryo"
-cavc018: lcavity, rf_frequency = 3900 * 1e6, gradient = ghcav*ccavl * 1e6 / ccavl, phi0 =  &
-        phcav/360, l = ccavl, aperture = ccavr, type = "cryo"
+cavc011: lcavity, rf_frequency = 3900 * 1e6, l = ccavl, voltage = ghcav*ccavl * 1e6, phi0 = phcav/360, aperture = ccavr,
+          type = "cryo"
+cavc012a: lcavity, rf_frequency = 3900 * 1e6, l = ccavla, voltage = ghcav*ccavla * 1e6, phi0 = phcav/360,
+          aperture = ccavr, type = "cryo"
+cavc012b: lcavity, rf_frequency = 3900 * 1e6, l = ccavlb, voltage = ghcav*ccavlb * 1e6, phi0 = phcav/360,
+          aperture = ccavr, type = "cryo"
+cavc013: lcavity, rf_frequency = 3900 * 1e6, l = ccavl, voltage = ghcav*ccavl * 1e6, phi0 = phcav/360, aperture = ccavr,
+          type = "cryo"
+cavc014: lcavity, rf_frequency = 3900 * 1e6, l = ccavl, voltage = ghcav*ccavl * 1e6, phi0 = phcav/360, aperture = ccavr,
+          type = "cryo"
+cavc015: lcavity, rf_frequency = 3900 * 1e6, l = ccavl, voltage = ghcav*ccavl * 1e6, phi0 = phcav/360, aperture = ccavr,
+          type = "cryo"
+cavc016: lcavity, rf_frequency = 3900 * 1e6, l = ccavl, voltage = ghcav*ccavl * 1e6, phi0 = phcav/360, aperture = ccavr,
+          type = "cryo"
+cavc017: lcavity, rf_frequency = 3900 * 1e6, l = ccavl, voltage = ghcav*ccavl * 1e6, phi0 = phcav/360, aperture = ccavr,
+          type = "cryo"
+cavc018: lcavity, rf_frequency = 3900 * 1e6, l = ccavl, voltage = ghcav*ccavl * 1e6, phi0 = phcav/360, aperture = ccavr,
+          type = "cryo"
 
-cavc021: lcavity, rf_frequency = 3900 * 1e6, gradient = ghcav*ccavl * 1e6 / ccavl, phi0 =  &
-        phcav/360, l = ccavl, aperture = ccavr, type = "cryo"
-cavc022a: lcavity, rf_frequency = 3900 * 1e6, gradient = ghcav*ccavla * 1e6 / ccavla, phi0 =  &
-        phcav/360, l = ccavla, aperture = ccavr, type = "cryo"
-cavc022b: lcavity, rf_frequency = 3900 * 1e6, gradient = ghcav*ccavlb * 1e6 / ccavlb, phi0 =  &
-        phcav/360, l = ccavlb, aperture = ccavr, type = "cryo"
-cavc023: lcavity, rf_frequency = 3900 * 1e6, gradient = ghcav*ccavl * 1e6 / ccavl, phi0 =  &
-        phcav/360, l = ccavl, aperture = ccavr, type = "cryo"
-cavc024: lcavity, rf_frequency = 3900 * 1e6, gradient = ghcav*ccavl * 1e6 / ccavl, phi0 =  &
-        phcav/360, l = ccavl, aperture = ccavr, type = "cryo"
-cavc025: lcavity, rf_frequency = 3900 * 1e6, gradient = ghcav*ccavl * 1e6 / ccavl, phi0 =  &
-        phcav/360, l = ccavl, aperture = ccavr, type = "cryo"
-cavc026: lcavity, rf_frequency = 3900 * 1e6, gradient = ghcav*ccavl * 1e6 / ccavl, phi0 =  &
-        phcav/360, l = ccavl, aperture = ccavr, type = "cryo"
-cavc027: lcavity, rf_frequency = 3900 * 1e6, gradient = ghcav*ccavl * 1e6 / ccavl, phi0 =  &
-        phcav/360, l = ccavl, aperture = ccavr, type = "cryo"
-cavc028: lcavity, rf_frequency = 3900 * 1e6, gradient = ghcav*ccavl * 1e6 / ccavl, phi0 =  &
-        phcav/360, l = ccavl, aperture = ccavr, type = "cryo"
+cavc021: lcavity, rf_frequency = 3900 * 1e6, l = ccavl, voltage = ghcav*ccavl * 1e6, phi0 = phcav/360, aperture = ccavr,
+          type = "cryo"
+cavc022a: lcavity, rf_frequency = 3900 * 1e6, l = ccavla, voltage = ghcav*ccavla * 1e6, phi0 = phcav/360,
+          aperture = ccavr, type = "cryo"
+cavc022b: lcavity, rf_frequency = 3900 * 1e6, l = ccavlb, voltage = ghcav*ccavlb * 1e6, phi0 = phcav/360,
+          aperture = ccavr, type = "cryo"
+cavc023: lcavity, rf_frequency = 3900 * 1e6, l = ccavl, voltage = ghcav*ccavl * 1e6, phi0 = phcav/360, aperture = ccavr,
+          type = "cryo"
+cavc024: lcavity, rf_frequency = 3900 * 1e6, l = ccavl, voltage = ghcav*ccavl * 1e6, phi0 = phcav/360, aperture = ccavr,
+          type = "cryo"
+cavc025: lcavity, rf_frequency = 3900 * 1e6, l = ccavl, voltage = ghcav*ccavl * 1e6, phi0 = phcav/360, aperture = ccavr,
+          type = "cryo"
+cavc026: lcavity, rf_frequency = 3900 * 1e6, l = ccavl, voltage = ghcav*ccavl * 1e6, phi0 = phcav/360, aperture = ccavr,
+          type = "cryo"
+cavc027: lcavity, rf_frequency = 3900 * 1e6, l = ccavl, voltage = ghcav*ccavl * 1e6, phi0 = phcav/360, aperture = ccavr,
+          type = "cryo"
+cavc028: lcavity, rf_frequency = 3900 * 1e6, l = ccavl, voltage = ghcav*ccavl * 1e6, phi0 = phcav/360, aperture = ccavr,
+          type = "cryo"
 
 ! L2
 
-cavl041: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl042: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl043: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl044: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl045a: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavla * 1e6 / lcavla, phi0 =  &
-        phasl2/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl045b: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavlb * 1e6 / lcavlb, phi0 =  &
-        phasl2/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl046: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl047: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl048: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
+cavl041: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl042: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl043: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl044: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl045a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = gradl2*lcavla * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl045b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = gradl2*lcavlb * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl046: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl047: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl048: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
 
-cavl051: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl052: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl053: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl054: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl055a: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavla * 1e6 / lcavla, phi0 =  &
-        phasl2/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl055b: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavlb * 1e6 / lcavlb, phi0 =  &
-        phasl2/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl056: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl057: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl058: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
+cavl051: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl052: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl053: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl054: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl055a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = gradl2*lcavla * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl055b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = gradl2*lcavlb * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl056: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl057: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl058: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
 
-cavl061: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl062: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl063: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl064: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl065a: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavla * 1e6 / lcavla, phi0 =  &
-        phasl2/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl065b: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavlb * 1e6 / lcavlb, phi0 =  &
-        phasl2/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl066: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl067: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl068: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
+cavl061: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl062: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl063: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl064: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl065a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = gradl2*lcavla * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl065b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = gradl2*lcavlb * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl066: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl067: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl068: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
 
-cavl071: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl072: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl073: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl074: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl075a: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavla * 1e6 / lcavla, phi0 =  &
-        phasl2/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl075b: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavlb * 1e6 / lcavlb, phi0 =  &
-        phasl2/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl076: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl077: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl078: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
+cavl071: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl072: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl073: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl074: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl075a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = gradl2*lcavla * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl075b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = gradl2*lcavlb * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl076: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl077: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl078: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
 
-cavl081: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl082: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl083: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl084: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl085a: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavla * 1e6 / lcavla, phi0 =  &
-        phasl2/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl085b: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavlb * 1e6 / lcavlb, phi0 =  &
-        phasl2/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl086: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl087: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl088: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
+cavl081: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl082: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl083: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl084: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl085a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = gradl2*lcavla * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl085b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = gradl2*lcavlb * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl086: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl087: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl088: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
 
-cavl091: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl092: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl093: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl094: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl095a: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavla * 1e6 / lcavla, phi0 =  &
-        phasl2/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl095b: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavlb * 1e6 / lcavlb, phi0 =  &
-        phasl2/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl096: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl097: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl098: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
+cavl091: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl092: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl093: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl094: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl095a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = gradl2*lcavla * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl095b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = gradl2*lcavlb * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl096: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl097: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl098: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
 
-cavl101: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl102: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl103: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl104: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl105a: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavla * 1e6 / lcavla, phi0 =  &
-        phasl2/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl105b: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavlb * 1e6 / lcavlb, phi0 =  &
-        phasl2/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl106: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl107: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl108: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
+cavl101: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl102: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl103: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl104: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl105a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = gradl2*lcavla * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl105b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = gradl2*lcavlb * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl106: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl107: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl108: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
 
-cavl111: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl112: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl113: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl114: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl115a: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavla * 1e6 / lcavla, phi0 =  &
-        phasl2/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl115b: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavlb * 1e6 / lcavlb, phi0 =  &
-        phasl2/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl116: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl117: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl118: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
+cavl111: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl112: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl113: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl114: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl115a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = gradl2*lcavla * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl115b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = gradl2*lcavlb * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl116: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl117: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl118: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
 
-cavl121: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl122: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl123: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl124: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl125a: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavla * 1e6 / lcavla, phi0 =  &
-        phasl2/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl125b: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavlb * 1e6 / lcavlb, phi0 =  &
-        phasl2/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl126: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl127: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl128: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
+cavl121: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl122: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl123: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl124: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl125a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = gradl2*lcavla * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl125b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = gradl2*lcavlb * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl126: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl127: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl128: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
 
-cavl131: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl132: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl133: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl134: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl135a: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavla * 1e6 / lcavla, phi0 =  &
-        phasl2/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl135b: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavlb * 1e6 / lcavlb, phi0 =  &
-        phasl2/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl136: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl137: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl138: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
+cavl131: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl132: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl133: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl134: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl135a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = gradl2*lcavla * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl135b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = gradl2*lcavlb * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl136: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl137: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl138: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
 
-cavl141: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl142: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl143: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl144: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl145a: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavla * 1e6 / lcavla, phi0 =  &
-        phasl2/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl145b: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavlb * 1e6 / lcavlb, phi0 =  &
-        phasl2/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl146: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl147: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl148: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
+cavl141: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl142: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl143: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl144: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl145a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = gradl2*lcavla * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl145b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = gradl2*lcavlb * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl146: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl147: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl148: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
 
-cavl151: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl152: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl153: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl154: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl155a: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavla * 1e6 / lcavla, phi0 =  &
-        phasl2/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl155b: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavlb * 1e6 / lcavlb, phi0 =  &
-        phasl2/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl156: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl157: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl158: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, l = lcavl, aperture = lcavr, type = "cryo"
+cavl151: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl152: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl153: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl154: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl155a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = gradl2*lcavla * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl155b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = gradl2*lcavlb * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl156: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl157: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
+cavl158: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6, phi0 = phasl2/360,
+          aperture = lcavr, type = "cryo"
 
 ! L3
 
-cavl161: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl162: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl163: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl164: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl165a: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavla * 1e6 / lcavla, phi0 =  &
-        phasl3/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl165b: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavlb * 1e6 / lcavlb, phi0 =  &
-        phasl3/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl166: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl167: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl168: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
+cavl161: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl162: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl163: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl164: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl165a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = gradl3*lcavla * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl165b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = gradl3*lcavlb * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl166: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl167: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl168: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
 
-cavl171: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl172: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl173: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl174: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl175a: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavla * 1e6 / lcavla, phi0 =  &
-        phasl3/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl175b: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavlb * 1e6 / lcavlb, phi0 =  &
-        phasl3/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl176: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl177: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl178: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
+cavl171: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl172: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl173: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl174: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl175a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = gradl3*lcavla * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl175b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = gradl3*lcavlb * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl176: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl177: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl178: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
 
-cavl181: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl182: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl183: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl184: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl185a: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavla * 1e6 / lcavla, phi0 =  &
-        phasl3/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl185b: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavlb * 1e6 / lcavlb, phi0 =  &
-        phasl3/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl186: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl187: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl188: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
+cavl181: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl182: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl183: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl184: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl185a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = gradl3*lcavla * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl185b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = gradl3*lcavlb * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl186: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl187: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl188: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
 
-cavl191: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl192: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl193: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl194: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl195a: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavla * 1e6 / lcavla, phi0 =  &
-        phasl3/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl195b: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavlb * 1e6 / lcavlb, phi0 =  &
-        phasl3/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl196: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl197: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl198: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
+cavl191: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl192: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl193: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl194: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl195a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = gradl3*lcavla * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl195b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = gradl3*lcavlb * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl196: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl197: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl198: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
 
-cavl201: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl202: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl203: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl204: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl205a: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavla * 1e6 / lcavla, phi0 =  &
-        phasl3/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl205b: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavlb * 1e6 / lcavlb, phi0 =  &
-        phasl3/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl206: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl207: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl208: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
+cavl201: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl202: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl203: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl204: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl205a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = gradl3*lcavla * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl205b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = gradl3*lcavlb * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl206: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl207: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl208: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
 
-cavl211: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl212: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl213: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl214: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl215a: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavla * 1e6 / lcavla, phi0 =  &
-        phasl3/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl215b: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavlb * 1e6 / lcavlb, phi0 =  &
-        phasl3/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl216: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl217: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl218: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
+cavl211: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl212: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl213: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl214: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl215a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = gradl3*lcavla * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl215b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = gradl3*lcavlb * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl216: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl217: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl218: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
 
-cavl221: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl222: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl223: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl224: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl225a: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavla * 1e6 / lcavla, phi0 =  &
-        phasl3/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl225b: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavlb * 1e6 / lcavlb, phi0 =  &
-        phasl3/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl226: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl227: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl228: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
+cavl221: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl222: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl223: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl224: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl225a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = gradl3*lcavla * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl225b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = gradl3*lcavlb * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl226: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl227: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl228: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
 
-cavl231: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl232: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl233: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl234: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl235a: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavla * 1e6 / lcavla, phi0 =  &
-        phasl3/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl235b: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavlb * 1e6 / lcavlb, phi0 =  &
-        phasl3/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl236: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl237: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl238: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
+cavl231: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl232: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl233: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl234: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl235a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = gradl3*lcavla * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl235b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = gradl3*lcavlb * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl236: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl237: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl238: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
 
-cavl241: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl242: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl243: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl244: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl245a: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavla * 1e6 / lcavla, phi0 =  &
-        phasl3/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl245b: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavlb * 1e6 / lcavlb, phi0 =  &
-        phasl3/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl246: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl247: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl248: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
+cavl241: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl242: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl243: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl244: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl245a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = gradl3*lcavla * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl245b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = gradl3*lcavlb * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl246: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl247: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl248: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
 
-cavl251: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl252: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl253: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl254: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl255a: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavla * 1e6 / lcavla, phi0 =  &
-        phasl3/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl255b: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavlb * 1e6 / lcavlb, phi0 =  &
-        phasl3/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl256: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl257: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl258: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
+cavl251: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl252: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl253: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl254: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl255a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = gradl3*lcavla * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl255b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = gradl3*lcavlb * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl256: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl257: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl258: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
 
-cavl261: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl262: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl263: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl264: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl265a: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavla * 1e6 / lcavla, phi0 =  &
-        phasl3/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl265b: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavlb * 1e6 / lcavlb, phi0 =  &
-        phasl3/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl266: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl267: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl268: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
+cavl261: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl262: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl263: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl264: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl265a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = gradl3*lcavla * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl265b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = gradl3*lcavlb * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl266: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl267: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl268: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
 
-cavl271: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl272: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl273: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl274: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl275a: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavla * 1e6 / lcavla, phi0 =  &
-        phasl3/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl275b: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavlb * 1e6 / lcavlb, phi0 =  &
-        phasl3/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl276: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl277: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl278: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
+cavl271: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl272: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl273: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl274: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl275a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = gradl3*lcavla * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl275b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = gradl3*lcavlb * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl276: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl277: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl278: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
 
-cavl281: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl282: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl283: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl284: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl285a: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavla * 1e6 / lcavla, phi0 =  &
-        phasl3/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl285b: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavlb * 1e6 / lcavlb, phi0 =  &
-        phasl3/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl286: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl287: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl288: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
+cavl281: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl282: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl283: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl284: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl285a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = gradl3*lcavla * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl285b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = gradl3*lcavlb * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl286: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl287: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl288: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
 
-cavl291: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl292: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl293: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl294: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl295a: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavla * 1e6 / lcavla, phi0 =  &
-        phasl3/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl295b: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavlb * 1e6 / lcavlb, phi0 =  &
-        phasl3/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl296: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl297: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl298: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
+cavl291: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl292: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl293: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl294: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl295a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = gradl3*lcavla * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl295b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = gradl3*lcavlb * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl296: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl297: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl298: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
 
-cavl301: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl302: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl303: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl304: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl305a: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavla * 1e6 / lcavla, phi0 =  &
-        phasl3/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl305b: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavlb * 1e6 / lcavlb, phi0 =  &
-        phasl3/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl306: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl307: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl308: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
+cavl301: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl302: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl303: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl304: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl305a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = gradl3*lcavla * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl305b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = gradl3*lcavlb * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl306: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl307: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl308: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
 
-cavl311: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl312: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl313: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl314: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl315a: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavla * 1e6 / lcavla, phi0 =  &
-        phasl3/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl315b: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavlb * 1e6 / lcavlb, phi0 =  &
-        phasl3/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl316: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl317: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl318: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
+cavl311: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl312: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl313: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl314: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl315a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = gradl3*lcavla * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl315b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = gradl3*lcavlb * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl316: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl317: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl318: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
 
-cavl321: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl322: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl323: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl324: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl325a: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavla * 1e6 / lcavla, phi0 =  &
-        phasl3/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl325b: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavlb * 1e6 / lcavlb, phi0 =  &
-        phasl3/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl326: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl327: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl328: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
+cavl321: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl322: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl323: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl324: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl325a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = gradl3*lcavla * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl325b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = gradl3*lcavlb * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl326: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl327: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl328: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
 
-cavl331: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl332: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl333: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl334: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl335a: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavla * 1e6 / lcavla, phi0 =  &
-        phasl3/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl335b: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavlb * 1e6 / lcavlb, phi0 =  &
-        phasl3/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl336: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl337: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl338: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
+cavl331: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl332: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl333: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl334: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl335a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = gradl3*lcavla * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl335b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = gradl3*lcavlb * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl336: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl337: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl338: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
 
-cavl341: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl342: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl343: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl344: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl345a: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavla * 1e6 / lcavla, phi0 =  &
-        phasl3/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl345b: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavlb * 1e6 / lcavlb, phi0 =  &
-        phasl3/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl346: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl347: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl348: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
+cavl341: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl342: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl343: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl344: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl345a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = gradl3*lcavla * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl345b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = gradl3*lcavlb * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl346: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl347: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl348: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
 
-cavl351: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl352: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl353: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl354: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl355a: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavla * 1e6 / lcavla, phi0 =  &
-        phasl3/360, l = lcavla, aperture = lcavr, type = "cryo"
-cavl355b: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavlb * 1e6 / lcavlb, phi0 =  &
-        phasl3/360, l = lcavlb, aperture = lcavr, type = "cryo"
-cavl356: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl357: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
-cavl358: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, l = lcavl, aperture = lcavr, type = "cryo"
+cavl351: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl352: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl353: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl354: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl355a: lcavity, rf_frequency = 1300 * 1e6, l = lcavla, voltage = gradl3*lcavla * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl355b: lcavity, rf_frequency = 1300 * 1e6, l = lcavlb, voltage = gradl3*lcavlb * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl356: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl357: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
+cavl358: lcavity, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6, phi0 = phasl3/360,
+          aperture = lcavr, type = "cryo"
 
 ! define unsplit lcavitys for BMAD ... not used by MAD
 
-cavl015: lcavity, rf_frequency = 1300 * 1e6, gradient = g015*lcavl * 1e6 / lcavl, phi0 = p015/360 &
-        , type = "cryo", aperture = lcavr, l = lcavl
-cavl025: lcavity, rf_frequency = 1300 * 1e6, gradient = g025*lcavl * 1e6 / lcavl, phi0 = p025/360 &
-        , type = "cryo", aperture = lcavr, l = lcavl
-cavl035: lcavity, rf_frequency = 1300 * 1e6, gradient = g035*lcavl * 1e6 / lcavl, phi0 = p035/360 &
-        , type = "cryo", aperture = lcavr, l = lcavl
-cavc012: lcavity, rf_frequency = 3900 * 1e6, gradient = ghcav*ccavl * 1e6 / ccavl, phi0 =  &
-        phcav/360, type = "cryo", aperture = ccavr, l = ccavl
-cavc022: lcavity, rf_frequency = 3900 * 1e6, gradient = ghcav*ccavl * 1e6 / ccavl, phi0 =  &
-        phcav/360, type = "cryo", aperture = ccavr, l = ccavl
-cavl045: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, type = "cryo", aperture = lcavr, l = lcavl
-cavl055: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, type = "cryo", aperture = lcavr, l = lcavl
-cavl065: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, type = "cryo", aperture = lcavr, l = lcavl
-cavl075: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, type = "cryo", aperture = lcavr, l = lcavl
-cavl085: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, type = "cryo", aperture = lcavr, l = lcavl
-cavl095: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, type = "cryo", aperture = lcavr, l = lcavl
-cavl105: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, type = "cryo", aperture = lcavr, l = lcavl
-cavl115: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, type = "cryo", aperture = lcavr, l = lcavl
-cavl125: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, type = "cryo", aperture = lcavr, l = lcavl
-cavl135: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, type = "cryo", aperture = lcavr, l = lcavl
-cavl145: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, type = "cryo", aperture = lcavr, l = lcavl
-cavl155: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl2*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl2/360, type = "cryo", aperture = lcavr, l = lcavl
-cavl165: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, type = "cryo", aperture = lcavr, l = lcavl
-cavl175: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, type = "cryo", aperture = lcavr, l = lcavl
-cavl185: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, type = "cryo", aperture = lcavr, l = lcavl
-cavl195: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, type = "cryo", aperture = lcavr, l = lcavl
-cavl205: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, type = "cryo", aperture = lcavr, l = lcavl
-cavl215: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, type = "cryo", aperture = lcavr, l = lcavl
-cavl225: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, type = "cryo", aperture = lcavr, l = lcavl
-cavl235: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, type = "cryo", aperture = lcavr, l = lcavl
-cavl245: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, type = "cryo", aperture = lcavr, l = lcavl
-cavl255: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, type = "cryo", aperture = lcavr, l = lcavl
-cavl265: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, type = "cryo", aperture = lcavr, l = lcavl
-cavl275: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, type = "cryo", aperture = lcavr, l = lcavl
-cavl285: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, type = "cryo", aperture = lcavr, l = lcavl
-cavl295: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, type = "cryo", aperture = lcavr, l = lcavl
-cavl305: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, type = "cryo", aperture = lcavr, l = lcavl
-cavl315: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, type = "cryo", aperture = lcavr, l = lcavl
-cavl325: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, type = "cryo", aperture = lcavr, l = lcavl
-cavl335: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, type = "cryo", aperture = lcavr, l = lcavl
-cavl345: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, type = "cryo", aperture = lcavr, l = lcavl
-cavl355: lcavity, rf_frequency = 1300 * 1e6, gradient = gradl3*lcavl * 1e6 / lcavl, phi0 =  &
-        phasl3/360, type = "cryo", aperture = lcavr, l = lcavl
+cavl015: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = g015*lcavl * 1e6,
+          phi0 = p015/360
+cavl025: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = g025*lcavl * 1e6,
+          phi0 = p025/360
+cavl035: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = g035*lcavl * 1e6,
+          phi0 = p035/360
+cavc012: lcavity, type = "cryo", aperture = ccavr, rf_frequency = 3900 * 1e6, l = ccavl, voltage = ghcav*ccavl * 1e6,
+          phi0 = phcav/360
+cavc022: lcavity, type = "cryo", aperture = ccavr, rf_frequency = 3900 * 1e6, l = ccavl, voltage = ghcav*ccavl * 1e6,
+          phi0 = phcav/360
+cavl045: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6,
+          phi0 = phasl2/360
+cavl055: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6,
+          phi0 = phasl2/360
+cavl065: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6,
+          phi0 = phasl2/360
+cavl075: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6,
+          phi0 = phasl2/360
+cavl085: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6,
+          phi0 = phasl2/360
+cavl095: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6,
+          phi0 = phasl2/360
+cavl105: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6,
+          phi0 = phasl2/360
+cavl115: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6,
+          phi0 = phasl2/360
+cavl125: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6,
+          phi0 = phasl2/360
+cavl135: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6,
+          phi0 = phasl2/360
+cavl145: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6,
+          phi0 = phasl2/360
+cavl155: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl2*lcavl * 1e6,
+          phi0 = phasl2/360
+cavl165: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6,
+          phi0 = phasl3/360
+cavl175: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6,
+          phi0 = phasl3/360
+cavl185: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6,
+          phi0 = phasl3/360
+cavl195: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6,
+          phi0 = phasl3/360
+cavl205: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6,
+          phi0 = phasl3/360
+cavl215: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6,
+          phi0 = phasl3/360
+cavl225: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6,
+          phi0 = phasl3/360
+cavl235: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6,
+          phi0 = phasl3/360
+cavl245: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6,
+          phi0 = phasl3/360
+cavl255: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6,
+          phi0 = phasl3/360
+cavl265: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6,
+          phi0 = phasl3/360
+cavl275: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6,
+          phi0 = phasl3/360
+cavl285: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6,
+          phi0 = phasl3/360
+cavl295: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6,
+          phi0 = phasl3/360
+cavl305: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6,
+          phi0 = phasl3/360
+cavl315: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6,
+          phi0 = phasl3/360
+cavl325: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6,
+          phi0 = phasl3/360
+cavl335: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6,
+          phi0 = phasl3/360
+cavl345: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6,
+          phi0 = phasl3/360
+cavl355: lcavity, type = "cryo", aperture = lcavr, rf_frequency = 1300 * 1e6, l = lcavl, voltage = gradl3*lcavl * 1e6,
+          phi0 = phasl3/360
 
 ! ==============================================================================
 ! QUAD
@@ -1036,41 +1034,41 @@ qcm03: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.2396321375
 
 ! L2
 
-qcm04: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.337961546545 !-KQCMfodo2
-qcm05: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.30139383074  ! KQCMfodo2
-qcm06: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.198247592192 !-KQCMfodo2
-qcm07: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.171374449674 ! KQCMfodo2
-qcm08: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.171719110376 !-KQCMfodo2
-qcm09: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.174074499825 ! KQCMfodo2
-qcm10: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.174836643588 !-KQCMfodo2
-qcm11: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.17644901691  ! KQCMfodo2
-qcm12: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.18155309543  !-KQCMfodo2
-qcm13: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.062968974993 ! KQCMfodo2
+qcm04: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.337961546572 !-KQCMfodo2
+qcm05: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.301393830753 ! KQCMfodo2
+qcm06: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.198247592167 !-KQCMfodo2
+qcm07: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.17137444971  ! KQCMfodo2
+qcm08: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.171719110362 !-KQCMfodo2
+qcm09: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.174074499842 ! KQCMfodo2
+qcm10: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.174836643616 !-KQCMfodo2
+qcm11: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.176449016841 ! KQCMfodo2
+qcm12: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.181553095532 !-KQCMfodo2
+qcm13: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.062968975261 ! KQCMfodo2
 qcm14: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.176070484188 !-KQCMfodo2
-qcm15: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.067235224899 ! KQCMfodo2
+qcm15: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.067235224924 ! KQCMfodo2
 
 ! L3
 
-qcm16: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.31666848621  !-KQCMfodo3
-qcm17: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.258400025673 ! KQCMfodo3
-qcm18: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.210508915512 !-KQCMfodo3
-qcm19: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.193498338579 ! KQCMfodo3
-qcm20: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.187169022347 !-KQCMfodo3
+qcm16: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.316668486163 !-KQCMfodo3
+qcm17: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.258400025669 ! KQCMfodo3
+qcm18: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.210508915484 !-KQCMfodo3
+qcm19: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.193498338564 ! KQCMfodo3
+qcm20: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.187169022374 !-KQCMfodo3
 qcm21: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = kqcmfodo3
 qcm22: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -kqcmfodo3
 qcm23: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = kqcmfodo3
-qcm24: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.190499689137 !-KQCMfodo3
-qcm25: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.181764322884 ! KQCMfodo3
-qcm26: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.181491332716 !-KQCMfodo3
-qcm27: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.190245621978 ! KQCMfodo3
+qcm24: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.190499689122 !-KQCMfodo3
+qcm25: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.18176432291  ! KQCMfodo3
+qcm26: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.181491332809 !-KQCMfodo3
+qcm27: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.190245621895 ! KQCMfodo3
 qcm28: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -kqcmfodo3
-qcm29: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.185719761499 ! KQCMfodo3
-qcm30: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.188023739048 !-KQCMfodo3
-qcm31: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.194636646982 ! KQCMfodo3
-qcm32: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.211302280779 !-KQCMfodo3
-qcm33: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.258254876336 ! KQCMfodo3
-qcm34: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.246773847976 !-KQCMfodo3
-qcm35: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq            ! KQCMfodo3
+qcm29: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.185719761489 ! KQCMfodo3
+qcm30: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.188023739028 !-KQCMfodo3
+qcm31: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.194636647003 ! KQCMfodo3
+qcm32: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.211302280821 !-KQCMfodo3
+qcm33: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.258254876261 ! KQCMfodo3
+qcm34: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.246773847964 !-KQCMfodo3
+qcm35: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0            ! KQCMfodo3
 
 ! ==============================================================================
 ! DRIF
@@ -1226,125 +1224,125 @@ ldcmfodo = lcryol+lgv2gv-lcmq
 ! BPMs
 ! ------------------------------------------------------------------------------
 
-cmb01: instrument, type = "Button-1"
-cmb02: instrument, type = "Button-1"
-cmb03: instrument, type = "Button-1"
-cmbh1: instrument, type = "Button-1"
-cmbh2: instrument, type = "Button-1"
-cmb04: instrument, type = "Button-1"
-cmb05: instrument, type = "Button-1"
-cmb06: instrument, type = "Button-1"
-cmb07: instrument, type = "Button-1"
-cmb08: instrument, type = "Button-1"
-cmb09: instrument, type = "Button-1"
-cmb10: instrument, type = "Button-1"
-cmb11: instrument, type = "Button-1"
-cmb12: instrument, type = "Button-1"
-cmb13: instrument, type = "Button-1"
-cmb14: instrument, type = "Button-1"
-cmb15: instrument, type = "Button-1"
-cmb16: instrument, type = "Button-1"
-cmb17: instrument, type = "Button-1"
-cmb18: instrument, type = "Button-1"
-cmb19: instrument, type = "Button-1"
-cmb20: instrument, type = "Button-1"
-cmb21: instrument, type = "Button-1"
-cmb22: instrument, type = "Button-1"
-cmb23: instrument, type = "Button-1"
-cmb24: instrument, type = "Button-1"
-cmb25: instrument, type = "Button-1"
-cmb26: instrument, type = "Button-1"
-cmb27: instrument, type = "Button-1"
-cmb28: instrument, type = "Button-1"
-cmb29: instrument, type = "Button-1"
-cmb30: instrument, type = "Button-1"
-cmb31: instrument, type = "Button-1"
-cmb32: instrument, type = "Button-1"
-cmb33: instrument, type = "Button-1"
-cmb34: instrument, type = "Button-1"
-cmb35: instrument, type = "Button-1"
+cmb01: monitor, type = "Button-1"
+cmb02: monitor, type = "Button-1"
+cmb03: monitor, type = "Button-1"
+cmbh1: monitor, type = "Button-1"
+cmbh2: monitor, type = "Button-1"
+cmb04: monitor, type = "Button-1"
+cmb05: monitor, type = "Button-1"
+cmb06: monitor, type = "Button-1"
+cmb07: monitor, type = "Button-1"
+cmb08: monitor, type = "Button-1"
+cmb09: monitor, type = "Button-1"
+cmb10: monitor, type = "Button-1"
+cmb11: monitor, type = "Button-1"
+cmb12: monitor, type = "Button-1"
+cmb13: monitor, type = "Button-1"
+cmb14: monitor, type = "Button-1"
+cmb15: monitor, type = "Button-1"
+cmb16: monitor, type = "Button-1"
+cmb17: monitor, type = "Button-1"
+cmb18: monitor, type = "Button-1"
+cmb19: monitor, type = "Button-1"
+cmb20: monitor, type = "Button-1"
+cmb21: monitor, type = "Button-1"
+cmb22: monitor, type = "Button-1"
+cmb23: monitor, type = "Button-1"
+cmb24: monitor, type = "Button-1"
+cmb25: monitor, type = "Button-1"
+cmb26: monitor, type = "Button-1"
+cmb27: monitor, type = "Button-1"
+cmb28: monitor, type = "Button-1"
+cmb29: monitor, type = "Button-1"
+cmb30: monitor, type = "Button-1"
+cmb31: monitor, type = "Button-1"
+cmb32: monitor, type = "Button-1"
+cmb33: monitor, type = "Button-1"
+cmb34: monitor, type = "Button-1"
+cmb35: monitor, type = "Button-1"
 
-rfb2c00: instrument, type = "@2,CavityS-1"
+rfb2c00: monitor, type = "@2,CavityS-1"
 
 ! ==============================================================================
 ! XCORs
 ! ------------------------------------------------------------------------------
 
-xcm01: kicker, type = "cryo"
-xcm02: kicker, type = "cryo"
-xcm03: kicker, type = "cryo"
-xcm04: kicker, type = "cryo"
-xcm05: kicker, type = "cryo"
-xcm06: kicker, type = "cryo"
-xcm07: kicker, type = "cryo"
-xcm08: kicker, type = "cryo"
-xcm09: kicker, type = "cryo"
-xcm10: kicker, type = "cryo"
-xcm11: kicker, type = "cryo"
-xcm12: kicker, type = "cryo"
-xcm13: kicker, type = "cryo"
-xcm14: kicker, type = "cryo"
-xcm15: kicker, type = "cryo"
-xcm16: kicker, type = "cryo"
-xcm17: kicker, type = "cryo"
-xcm18: kicker, type = "cryo"
-xcm19: kicker, type = "cryo"
-xcm20: kicker, type = "cryo"
-xcm21: kicker, type = "cryo"
-xcm22: kicker, type = "cryo"
-xcm23: kicker, type = "cryo"
-xcm24: kicker, type = "cryo"
-xcm25: kicker, type = "cryo"
-xcm26: kicker, type = "cryo"
-xcm27: kicker, type = "cryo"
-xcm28: kicker, type = "cryo"
-xcm29: kicker, type = "cryo"
-xcm30: kicker, type = "cryo"
-xcm31: kicker, type = "cryo"
-xcm32: kicker, type = "cryo"
-xcm33: kicker, type = "cryo"
-xcm34: kicker, type = "cryo"
-xcm35: kicker, type = "cryo"
+xcm01: hkicker, type = "cryo"
+xcm02: hkicker, type = "cryo"
+xcm03: hkicker, type = "cryo"
+xcm04: hkicker, type = "cryo"
+xcm05: hkicker, type = "cryo"
+xcm06: hkicker, type = "cryo"
+xcm07: hkicker, type = "cryo"
+xcm08: hkicker, type = "cryo"
+xcm09: hkicker, type = "cryo"
+xcm10: hkicker, type = "cryo"
+xcm11: hkicker, type = "cryo"
+xcm12: hkicker, type = "cryo"
+xcm13: hkicker, type = "cryo"
+xcm14: hkicker, type = "cryo"
+xcm15: hkicker, type = "cryo"
+xcm16: hkicker, type = "cryo"
+xcm17: hkicker, type = "cryo"
+xcm18: hkicker, type = "cryo"
+xcm19: hkicker, type = "cryo"
+xcm20: hkicker, type = "cryo"
+xcm21: hkicker, type = "cryo"
+xcm22: hkicker, type = "cryo"
+xcm23: hkicker, type = "cryo"
+xcm24: hkicker, type = "cryo"
+xcm25: hkicker, type = "cryo"
+xcm26: hkicker, type = "cryo"
+xcm27: hkicker, type = "cryo"
+xcm28: hkicker, type = "cryo"
+xcm29: hkicker, type = "cryo"
+xcm30: hkicker, type = "cryo"
+xcm31: hkicker, type = "cryo"
+xcm32: hkicker, type = "cryo"
+xcm33: hkicker, type = "cryo"
+xcm34: hkicker, type = "cryo"
+xcm35: hkicker, type = "cryo"
 
 ! ==============================================================================
 ! YCORs
 ! ------------------------------------------------------------------------------
 
-ycm01: kicker, type = "cryo"
-ycm02: kicker, type = "cryo"
-ycm03: kicker, type = "cryo"
-ycm04: kicker, type = "cryo"
-ycm05: kicker, type = "cryo"
-ycm06: kicker, type = "cryo"
-ycm07: kicker, type = "cryo"
-ycm08: kicker, type = "cryo"
-ycm09: kicker, type = "cryo"
-ycm10: kicker, type = "cryo"
-ycm11: kicker, type = "cryo"
-ycm12: kicker, type = "cryo"
-ycm13: kicker, type = "cryo"
-ycm14: kicker, type = "cryo"
-ycm15: kicker, type = "cryo"
-ycm16: kicker, type = "cryo"
-ycm17: kicker, type = "cryo"
-ycm18: kicker, type = "cryo"
-ycm19: kicker, type = "cryo"
-ycm20: kicker, type = "cryo"
-ycm21: kicker, type = "cryo"
-ycm22: kicker, type = "cryo"
-ycm23: kicker, type = "cryo"
-ycm24: kicker, type = "cryo"
-ycm25: kicker, type = "cryo"
-ycm26: kicker, type = "cryo"
-ycm27: kicker, type = "cryo"
-ycm28: kicker, type = "cryo"
-ycm29: kicker, type = "cryo"
-ycm30: kicker, type = "cryo"
-ycm31: kicker, type = "cryo"
-ycm32: kicker, type = "cryo"
-ycm33: kicker, type = "cryo"
-ycm34: kicker, type = "cryo"
-ycm35: kicker, type = "cryo"
+ycm01: vkicker, type = "cryo"
+ycm02: vkicker, type = "cryo"
+ycm03: vkicker, type = "cryo"
+ycm04: vkicker, type = "cryo"
+ycm05: vkicker, type = "cryo"
+ycm06: vkicker, type = "cryo"
+ycm07: vkicker, type = "cryo"
+ycm08: vkicker, type = "cryo"
+ycm09: vkicker, type = "cryo"
+ycm10: vkicker, type = "cryo"
+ycm11: vkicker, type = "cryo"
+ycm12: vkicker, type = "cryo"
+ycm13: vkicker, type = "cryo"
+ycm14: vkicker, type = "cryo"
+ycm15: vkicker, type = "cryo"
+ycm16: vkicker, type = "cryo"
+ycm17: vkicker, type = "cryo"
+ycm18: vkicker, type = "cryo"
+ycm19: vkicker, type = "cryo"
+ycm20: vkicker, type = "cryo"
+ycm21: vkicker, type = "cryo"
+ycm22: vkicker, type = "cryo"
+ycm23: vkicker, type = "cryo"
+ycm24: vkicker, type = "cryo"
+ycm25: vkicker, type = "cryo"
+ycm26: vkicker, type = "cryo"
+ycm27: vkicker, type = "cryo"
+ycm28: vkicker, type = "cryo"
+ycm29: vkicker, type = "cryo"
+ycm30: vkicker, type = "cryo"
+ycm31: vkicker, type = "cryo"
+ycm32: vkicker, type = "cryo"
+ycm33: vkicker, type = "cryo"
+ycm34: vkicker, type = "cryo"
+ycm35: vkicker, type = "cryo"
 
 ! ==============================================================================
 ! MARK, etc.
@@ -1511,7 +1509,7 @@ CAVL015_full: line = (CAVL015)
     CSP01[ref] = CAVL015
     CSP01[ref_origin] = beginning
     CSP01[offset] = 0.659221562
-!old: cavl015_full: line = (cavl015a, csp01, cavl015b)
+!old:   CAVL015_full : LINE=(CAVL015a,CSP01,CAVL015b)
 !---------------------
 ! CAVL025 LCAVITY
 CAVL025_full: line = (CAVL025)
@@ -1520,7 +1518,7 @@ CAVL025_full: line = (CAVL025)
     CSP02[ref] = CAVL025
     CSP02[ref_origin] = beginning
     CSP02[offset] = 0.659221562
-!old: cavl025_full: line = (cavl025a, csp02, cavl025b)
+!old:   CAVL025_full : LINE=(CAVL025a,CSP02,CAVL025b)
 !---------------------
 ! CAVL035 LCAVITY
 CAVL035_full: line = (CAVL035)
@@ -1529,7 +1527,7 @@ CAVL035_full: line = (CAVL035)
     CSP03[ref] = CAVL035
     CSP03[ref_origin] = beginning
     CSP03[offset] = 0.659221562
-!old: cavl035_full: line = (cavl035a, csp03, cavl035b)
+!old:   CAVL035_full : LINE=(CAVL035a,CSP03,CAVL035b)
 !---------------------
 ! CAVC012 LCAVITY
 CAVC012_full: line = (CAVC012)
@@ -1538,7 +1536,7 @@ CAVC012_full: line = (CAVC012)
     CSPH1[ref] = CAVC012
     CSPH1[ref_origin] = beginning
     CSPH1[offset] = 0.060337187
-!old: cavc012_full: line = (cavc012a, csph1, cavc012b)
+!old:   CAVC012_full : LINE=(CAVC012a,CSPH1,CAVC012b)
 !---------------------
 ! CAVC022 LCAVITY
 CAVC022_full: line = (CAVC022)
@@ -1547,7 +1545,7 @@ CAVC022_full: line = (CAVC022)
     CSPH2[ref] = CAVC022
     CSPH2[ref_origin] = beginning
     CSPH2[offset] = 0.060337187
-!old: cavc022_full: line = (cavc022a, csph2, cavc022b)
+!old:   CAVC022_full : LINE=(CAVC022a,CSPH2,CAVC022b)
 !---------------------
 ! CAVL045 LCAVITY
 CAVL045_full: line = (CAVL045)
@@ -1556,7 +1554,7 @@ CAVL045_full: line = (CAVL045)
     CSP04[ref] = CAVL045
     CSP04[ref_origin] = beginning
     CSP04[offset] = 0.659221562
-!old: cavl045_full: line = (cavl045a, csp04, cavl045b)
+!old:   CAVL045_full : LINE=(CAVL045a,CSP04,CAVL045b)
 !---------------------
 ! CAVL055 LCAVITY
 CAVL055_full: line = (CAVL055)
@@ -1565,7 +1563,7 @@ CAVL055_full: line = (CAVL055)
     CSP05[ref] = CAVL055
     CSP05[ref_origin] = beginning
     CSP05[offset] = 0.659221562
-!old: cavl055_full: line = (cavl055a, csp05, cavl055b)
+!old:   CAVL055_full : LINE=(CAVL055a,CSP05,CAVL055b)
 !---------------------
 ! CAVL065 LCAVITY
 CAVL065_full: line = (CAVL065)
@@ -1574,7 +1572,7 @@ CAVL065_full: line = (CAVL065)
     CSP06[ref] = CAVL065
     CSP06[ref_origin] = beginning
     CSP06[offset] = 0.659221562
-!old: cavl065_full: line = (cavl065a, csp06, cavl065b)
+!old:   CAVL065_full : LINE=(CAVL065a,CSP06,CAVL065b)
 !---------------------
 ! CAVL075 LCAVITY
 CAVL075_full: line = (CAVL075)
@@ -1583,7 +1581,7 @@ CAVL075_full: line = (CAVL075)
     CSP07[ref] = CAVL075
     CSP07[ref_origin] = beginning
     CSP07[offset] = 0.659221562
-!old: cavl075_full: line = (cavl075a, csp07, cavl075b)
+!old:   CAVL075_full : LINE=(CAVL075a,CSP07,CAVL075b)
 !---------------------
 ! CAVL085 LCAVITY
 CAVL085_full: line = (CAVL085)
@@ -1592,7 +1590,7 @@ CAVL085_full: line = (CAVL085)
     CSP08[ref] = CAVL085
     CSP08[ref_origin] = beginning
     CSP08[offset] = 0.659221562
-!old: cavl085_full: line = (cavl085a, csp08, cavl085b)
+!old:   CAVL085_full : LINE=(CAVL085a,CSP08,CAVL085b)
 !---------------------
 ! CAVL095 LCAVITY
 CAVL095_full: line = (CAVL095)
@@ -1601,7 +1599,7 @@ CAVL095_full: line = (CAVL095)
     CSP09[ref] = CAVL095
     CSP09[ref_origin] = beginning
     CSP09[offset] = 0.659221562
-!old: cavl095_full: line = (cavl095a, csp09, cavl095b)
+!old:   CAVL095_full : LINE=(CAVL095a,CSP09,CAVL095b)
 !---------------------
 ! CAVL105 LCAVITY
 CAVL105_full: line = (CAVL105)
@@ -1610,7 +1608,7 @@ CAVL105_full: line = (CAVL105)
     CSP10[ref] = CAVL105
     CSP10[ref_origin] = beginning
     CSP10[offset] = 0.659221562
-!old: cavl105_full: line = (cavl105a, csp10, cavl105b)
+!old:   CAVL105_full : LINE=(CAVL105a,CSP10,CAVL105b)
 !---------------------
 ! CAVL115 LCAVITY
 CAVL115_full: line = (CAVL115)
@@ -1619,7 +1617,7 @@ CAVL115_full: line = (CAVL115)
     CSP11[ref] = CAVL115
     CSP11[ref_origin] = beginning
     CSP11[offset] = 0.659221562
-!old: cavl115_full: line = (cavl115a, csp11, cavl115b)
+!old:   CAVL115_full : LINE=(CAVL115a,CSP11,CAVL115b)
 !---------------------
 ! CAVL125 LCAVITY
 CAVL125_full: line = (CAVL125)
@@ -1628,7 +1626,7 @@ CAVL125_full: line = (CAVL125)
     CSP12[ref] = CAVL125
     CSP12[ref_origin] = beginning
     CSP12[offset] = 0.659221562
-!old: cavl125_full: line = (cavl125a, csp12, cavl125b)
+!old:   CAVL125_full : LINE=(CAVL125a,CSP12,CAVL125b)
 !---------------------
 ! CAVL135 LCAVITY
 CAVL135_full: line = (CAVL135)
@@ -1637,7 +1635,7 @@ CAVL135_full: line = (CAVL135)
     CSP13[ref] = CAVL135
     CSP13[ref_origin] = beginning
     CSP13[offset] = 0.659221562
-!old: cavl135_full: line = (cavl135a, csp13, cavl135b)
+!old:   CAVL135_full : LINE=(CAVL135a,CSP13,CAVL135b)
 !---------------------
 ! CAVL145 LCAVITY
 CAVL145_full: line = (CAVL145)
@@ -1646,7 +1644,7 @@ CAVL145_full: line = (CAVL145)
     CSP14[ref] = CAVL145
     CSP14[ref_origin] = beginning
     CSP14[offset] = 0.659221562
-!old: cavl145_full: line = (cavl145a, csp14, cavl145b)
+!old:   CAVL145_full : LINE=(CAVL145a,CSP14,CAVL145b)
 !---------------------
 ! CAVL155 LCAVITY
 CAVL155_full: line = (CAVL155)
@@ -1655,7 +1653,7 @@ CAVL155_full: line = (CAVL155)
     CSP15[ref] = CAVL155
     CSP15[ref_origin] = beginning
     CSP15[offset] = 0.659221562
-!old: cavl155_full: line = (cavl155a, csp15, cavl155b)
+!old:   CAVL155_full : LINE=(CAVL155a,CSP15,CAVL155b)
 !---------------------
 ! CAVL165 LCAVITY
 CAVL165_full: line = (CAVL165)
@@ -1664,7 +1662,7 @@ CAVL165_full: line = (CAVL165)
     CSP16[ref] = CAVL165
     CSP16[ref_origin] = beginning
     CSP16[offset] = 0.659221562
-!old: cavl165_full: line = (cavl165a, csp16, cavl165b)
+!old:   CAVL165_full : LINE=(CAVL165a,CSP16,CAVL165b)
 !---------------------
 ! CAVL175 LCAVITY
 CAVL175_full: line = (CAVL175)
@@ -1673,7 +1671,7 @@ CAVL175_full: line = (CAVL175)
     CSP17[ref] = CAVL175
     CSP17[ref_origin] = beginning
     CSP17[offset] = 0.659221562
-!old: cavl175_full: line = (cavl175a, csp17, cavl175b)
+!old:   CAVL175_full : LINE=(CAVL175a,CSP17,CAVL175b)
 !---------------------
 ! CAVL185 LCAVITY
 CAVL185_full: line = (CAVL185)
@@ -1682,7 +1680,7 @@ CAVL185_full: line = (CAVL185)
     CSP18[ref] = CAVL185
     CSP18[ref_origin] = beginning
     CSP18[offset] = 0.659221562
-!old: cavl185_full: line = (cavl185a, csp18, cavl185b)
+!old:   CAVL185_full : LINE=(CAVL185a,CSP18,CAVL185b)
 !---------------------
 ! CAVL195 LCAVITY
 CAVL195_full: line = (CAVL195)
@@ -1691,7 +1689,7 @@ CAVL195_full: line = (CAVL195)
     CSP19[ref] = CAVL195
     CSP19[ref_origin] = beginning
     CSP19[offset] = 0.659221562
-!old: cavl195_full: line = (cavl195a, csp19, cavl195b)
+!old:   CAVL195_full : LINE=(CAVL195a,CSP19,CAVL195b)
 !---------------------
 ! CAVL205 LCAVITY
 CAVL205_full: line = (CAVL205)
@@ -1700,7 +1698,7 @@ CAVL205_full: line = (CAVL205)
     CSP20[ref] = CAVL205
     CSP20[ref_origin] = beginning
     CSP20[offset] = 0.659221562
-!old: cavl205_full: line = (cavl205a, csp20, cavl205b)
+!old:   CAVL205_full : LINE=(CAVL205a,CSP20,CAVL205b)
 !---------------------
 ! CAVL215 LCAVITY
 CAVL215_full: line = (CAVL215)
@@ -1709,7 +1707,7 @@ CAVL215_full: line = (CAVL215)
     CSP21[ref] = CAVL215
     CSP21[ref_origin] = beginning
     CSP21[offset] = 0.659221562
-!old: cavl215_full: line = (cavl215a, csp21, cavl215b)
+!old:   CAVL215_full : LINE=(CAVL215a,CSP21,CAVL215b)
 !---------------------
 ! CAVL225 LCAVITY
 CAVL225_full: line = (CAVL225)
@@ -1718,7 +1716,7 @@ CAVL225_full: line = (CAVL225)
     CSP22[ref] = CAVL225
     CSP22[ref_origin] = beginning
     CSP22[offset] = 0.659221562
-!old: cavl225_full: line = (cavl225a, csp22, cavl225b)
+!old:   CAVL225_full : LINE=(CAVL225a,CSP22,CAVL225b)
 !---------------------
 ! CAVL235 LCAVITY
 CAVL235_full: line = (CAVL235)
@@ -1727,7 +1725,7 @@ CAVL235_full: line = (CAVL235)
     CSP23[ref] = CAVL235
     CSP23[ref_origin] = beginning
     CSP23[offset] = 0.659221562
-!old: cavl235_full: line = (cavl235a, csp23, cavl235b)
+!old:   CAVL235_full : LINE=(CAVL235a,CSP23,CAVL235b)
 !---------------------
 ! CAVL245 LCAVITY
 CAVL245_full: line = (CAVL245)
@@ -1736,7 +1734,7 @@ CAVL245_full: line = (CAVL245)
     CSP24[ref] = CAVL245
     CSP24[ref_origin] = beginning
     CSP24[offset] = 0.659221562
-!old: cavl245_full: line = (cavl245a, csp24, cavl245b)
+!old:   CAVL245_full : LINE=(CAVL245a,CSP24,CAVL245b)
 !---------------------
 ! CAVL255 LCAVITY
 CAVL255_full: line = (CAVL255)
@@ -1745,7 +1743,7 @@ CAVL255_full: line = (CAVL255)
     CSP25[ref] = CAVL255
     CSP25[ref_origin] = beginning
     CSP25[offset] = 0.659221562
-!old: cavl255_full: line = (cavl255a, csp25, cavl255b)
+!old:   CAVL255_full : LINE=(CAVL255a,CSP25,CAVL255b)
 !---------------------
 ! CAVL265 LCAVITY
 CAVL265_full: line = (CAVL265)
@@ -1754,7 +1752,7 @@ CAVL265_full: line = (CAVL265)
     CSP26[ref] = CAVL265
     CSP26[ref_origin] = beginning
     CSP26[offset] = 0.659221562
-!old: cavl265_full: line = (cavl265a, csp26, cavl265b)
+!old:   CAVL265_full : LINE=(CAVL265a,CSP26,CAVL265b)
 !---------------------
 ! CAVL275 LCAVITY
 CAVL275_full: line = (CAVL275)
@@ -1763,7 +1761,7 @@ CAVL275_full: line = (CAVL275)
     CSP27[ref] = CAVL275
     CSP27[ref_origin] = beginning
     CSP27[offset] = 0.659221562
-!old: cavl275_full: line = (cavl275a, csp27, cavl275b)
+!old:   CAVL275_full : LINE=(CAVL275a,CSP27,CAVL275b)
 !---------------------
 ! CAVL285 LCAVITY
 CAVL285_full: line = (CAVL285)
@@ -1772,7 +1770,7 @@ CAVL285_full: line = (CAVL285)
     CSP28[ref] = CAVL285
     CSP28[ref_origin] = beginning
     CSP28[offset] = 0.659221562
-!old: cavl285_full: line = (cavl285a, csp28, cavl285b)
+!old:   CAVL285_full : LINE=(CAVL285a,CSP28,CAVL285b)
 !---------------------
 ! CAVL295 LCAVITY
 CAVL295_full: line = (CAVL295)
@@ -1781,7 +1779,7 @@ CAVL295_full: line = (CAVL295)
     CSP29[ref] = CAVL295
     CSP29[ref_origin] = beginning
     CSP29[offset] = 0.659221562
-!old: cavl295_full: line = (cavl295a, csp29, cavl295b)
+!old:   CAVL295_full : LINE=(CAVL295a,CSP29,CAVL295b)
 !---------------------
 ! CAVL305 LCAVITY
 CAVL305_full: line = (CAVL305)
@@ -1790,7 +1788,7 @@ CAVL305_full: line = (CAVL305)
     CSP30[ref] = CAVL305
     CSP30[ref_origin] = beginning
     CSP30[offset] = 0.659221562
-!old: cavl305_full: line = (cavl305a, csp30, cavl305b)
+!old:   CAVL305_full : LINE=(CAVL305a,CSP30,CAVL305b)
 !---------------------
 ! CAVL315 LCAVITY
 CAVL315_full: line = (CAVL315)
@@ -1799,7 +1797,7 @@ CAVL315_full: line = (CAVL315)
     CSP31[ref] = CAVL315
     CSP31[ref_origin] = beginning
     CSP31[offset] = 0.659221562
-!old: cavl315_full: line = (cavl315a, csp31, cavl315b)
+!old:   CAVL315_full : LINE=(CAVL315a,CSP31,CAVL315b)
 !---------------------
 ! CAVL325 LCAVITY
 CAVL325_full: line = (CAVL325)
@@ -1808,7 +1806,7 @@ CAVL325_full: line = (CAVL325)
     CSP32[ref] = CAVL325
     CSP32[ref_origin] = beginning
     CSP32[offset] = 0.659221562
-!old: cavl325_full: line = (cavl325a, csp32, cavl325b)
+!old:   CAVL325_full : LINE=(CAVL325a,CSP32,CAVL325b)
 !---------------------
 ! CAVL335 LCAVITY
 CAVL335_full: line = (CAVL335)
@@ -1817,7 +1815,7 @@ CAVL335_full: line = (CAVL335)
     CSP33[ref] = CAVL335
     CSP33[ref_origin] = beginning
     CSP33[offset] = 0.659221562
-!old: cavl335_full: line = (cavl335a, csp33, cavl335b)
+!old:   CAVL335_full : LINE=(CAVL335a,CSP33,CAVL335b)
 !---------------------
 ! CAVL345 LCAVITY
 CAVL345_full: line = (CAVL345)
@@ -1826,7 +1824,7 @@ CAVL345_full: line = (CAVL345)
     CSP34[ref] = CAVL345
     CSP34[ref_origin] = beginning
     CSP34[offset] = 0.659221562
-!old: cavl345_full: line = (cavl345a, csp34, cavl345b)
+!old:   CAVL345_full : LINE=(CAVL345a,CSP34,CAVL345b)
 !---------------------
 ! CAVL355 LCAVITY
 CAVL355_full: line = (CAVL355)
@@ -1835,11 +1833,11 @@ CAVL355_full: line = (CAVL355)
     CSP35[ref] = CAVL355
     CSP35[ref_origin] = beginning
     CSP35[offset] = 0.659221562
-!old: cavl355_full: line = (cavl355a, csp35, cavl355b)
+!old:   CAVL355_full : LINE=(CAVL355a,CSP35,CAVL355b)
 
 
 
-!Old split line: line = (qcm01, xcm01, ycm01, qcm01)
+!Old split line: LINE=(QCM01,XCM01,YCM01,QCM01)
 
 qcm01_full: line = (qcm01)
 qcm01[L] = 2*qcm01[L]
@@ -1849,7 +1847,7 @@ ycm01[superimpose] = T
 ycm01[ref] = qcm01
 
 
-!Old split line: line = (qcm02, xcm02, ycm02, qcm02)
+!Old split line: LINE=(QCM02,XCM02,YCM02,QCM02)
 
 qcm02_full: line = (qcm02)
 qcm02[L] = 2*qcm02[L]
@@ -1859,7 +1857,7 @@ ycm02[superimpose] = T
 ycm02[ref] = qcm02
 
 
-!Old split line: line = (qcm03, xcm03, ycm03, qcm03)
+!Old split line: LINE=(QCM03,XCM03,YCM03,QCM03)
 
 qcm03_full: line = (qcm03)
 qcm03[L] = 2*qcm03[L]
@@ -1869,7 +1867,7 @@ ycm03[superimpose] = T
 ycm03[ref] = qcm03
 
 
-!Old split line: line = (qcm04, xcm04, ycm04, qcm04)
+!Old split line: LINE=(QCM04,XCM04,YCM04,QCM04)
 
 qcm04_full: line = (qcm04)
 qcm04[L] = 2*qcm04[L]
@@ -1879,7 +1877,7 @@ ycm04[superimpose] = T
 ycm04[ref] = qcm04
 
 
-!Old split line: line = (qcm05, xcm05, ycm05, qcm05)
+!Old split line: LINE=(QCM05,XCM05,YCM05,QCM05)
 
 qcm05_full: line = (qcm05)
 qcm05[L] = 2*qcm05[L]
@@ -1889,7 +1887,7 @@ ycm05[superimpose] = T
 ycm05[ref] = qcm05
 
 
-!Old split line: line = (qcm06, xcm06, ycm06, qcm06)
+!Old split line: LINE=(QCM06,XCM06,YCM06,QCM06)
 
 qcm06_full: line = (qcm06)
 qcm06[L] = 2*qcm06[L]
@@ -1899,7 +1897,7 @@ ycm06[superimpose] = T
 ycm06[ref] = qcm06
 
 
-!Old split line: line = (qcm07, xcm07, ycm07, qcm07)
+!Old split line: LINE=(QCM07,XCM07,YCM07,QCM07)
 
 qcm07_full: line = (qcm07)
 qcm07[L] = 2*qcm07[L]
@@ -1909,7 +1907,7 @@ ycm07[superimpose] = T
 ycm07[ref] = qcm07
 
 
-!Old split line: line = (qcm08, xcm08, ycm08, qcm08)
+!Old split line: LINE=(QCM08,XCM08,YCM08,QCM08)
 
 qcm08_full: line = (qcm08)
 qcm08[L] = 2*qcm08[L]
@@ -1919,7 +1917,7 @@ ycm08[superimpose] = T
 ycm08[ref] = qcm08
 
 
-!Old split line: line = (qcm09, xcm09, ycm09, qcm09)
+!Old split line: LINE=(QCM09,XCM09,YCM09,QCM09)
 
 qcm09_full: line = (qcm09)
 qcm09[L] = 2*qcm09[L]
@@ -1929,7 +1927,7 @@ ycm09[superimpose] = T
 ycm09[ref] = qcm09
 
 
-!Old split line: line = (qcm10, xcm10, ycm10, qcm10)
+!Old split line: LINE=(QCM10,XCM10,YCM10,QCM10)
 
 qcm10_full: line = (qcm10)
 qcm10[L] = 2*qcm10[L]
@@ -1939,7 +1937,7 @@ ycm10[superimpose] = T
 ycm10[ref] = qcm10
 
 
-!Old split line: line = (qcm11, xcm11, ycm11, qcm11)
+!Old split line: LINE=(QCM11,XCM11,YCM11,QCM11)
 
 qcm11_full: line = (qcm11)
 qcm11[L] = 2*qcm11[L]
@@ -1949,7 +1947,7 @@ ycm11[superimpose] = T
 ycm11[ref] = qcm11
 
 
-!Old split line: line = (qcm12, xcm12, ycm12, qcm12)
+!Old split line: LINE=(QCM12,XCM12,YCM12,QCM12)
 
 qcm12_full: line = (qcm12)
 qcm12[L] = 2*qcm12[L]
@@ -1959,7 +1957,7 @@ ycm12[superimpose] = T
 ycm12[ref] = qcm12
 
 
-!Old split line: line = (qcm13, xcm13, ycm13, qcm13)
+!Old split line: LINE=(QCM13,XCM13,YCM13,QCM13)
 
 qcm13_full: line = (qcm13)
 qcm13[L] = 2*qcm13[L]
@@ -1969,7 +1967,7 @@ ycm13[superimpose] = T
 ycm13[ref] = qcm13
 
 
-!Old split line: line = (qcm14, xcm14, ycm14, qcm14)
+!Old split line: LINE=(QCM14,XCM14,YCM14,QCM14)
 
 qcm14_full: line = (qcm14)
 qcm14[L] = 2*qcm14[L]
@@ -1979,7 +1977,7 @@ ycm14[superimpose] = T
 ycm14[ref] = qcm14
 
 
-!Old split line: line = (qcm15, xcm15, ycm15, qcm15)
+!Old split line: LINE=(QCM15,XCM15,YCM15,QCM15)
 
 qcm15_full: line = (qcm15)
 qcm15[L] = 2*qcm15[L]
@@ -1989,7 +1987,7 @@ ycm15[superimpose] = T
 ycm15[ref] = qcm15
 
 
-!Old split line: line = (qcm16, xcm16, ycm16, qcm16)
+!Old split line: LINE=(QCM16,XCM16,YCM16,QCM16)
 
 qcm16_full: line = (qcm16)
 qcm16[L] = 2*qcm16[L]
@@ -1999,7 +1997,7 @@ ycm16[superimpose] = T
 ycm16[ref] = qcm16
 
 
-!Old split line: line = (qcm17, xcm17, ycm17, qcm17)
+!Old split line: LINE=(QCM17,XCM17,YCM17,QCM17)
 
 qcm17_full: line = (qcm17)
 qcm17[L] = 2*qcm17[L]
@@ -2009,7 +2007,7 @@ ycm17[superimpose] = T
 ycm17[ref] = qcm17
 
 
-!Old split line: line = (qcm18, xcm18, ycm18, qcm18)
+!Old split line: LINE=(QCM18,XCM18,YCM18,QCM18)
 
 qcm18_full: line = (qcm18)
 qcm18[L] = 2*qcm18[L]
@@ -2019,7 +2017,7 @@ ycm18[superimpose] = T
 ycm18[ref] = qcm18
 
 
-!Old split line: line = (qcm19, xcm19, ycm19, qcm19)
+!Old split line: LINE=(QCM19,XCM19,YCM19,QCM19)
 
 qcm19_full: line = (qcm19)
 qcm19[L] = 2*qcm19[L]
@@ -2029,7 +2027,7 @@ ycm19[superimpose] = T
 ycm19[ref] = qcm19
 
 
-!Old split line: line = (qcm20, xcm20, ycm20, qcm20)
+!Old split line: LINE=(QCM20,XCM20,YCM20,QCM20)
 
 qcm20_full: line = (qcm20)
 qcm20[L] = 2*qcm20[L]
@@ -2039,7 +2037,7 @@ ycm20[superimpose] = T
 ycm20[ref] = qcm20
 
 
-!Old split line: line = (qcm21, xcm21, ycm21, qcm21)
+!Old split line: LINE=(QCM21,XCM21,YCM21,QCM21)
 
 qcm21_full: line = (qcm21)
 qcm21[L] = 2*qcm21[L]
@@ -2049,7 +2047,7 @@ ycm21[superimpose] = T
 ycm21[ref] = qcm21
 
 
-!Old split line: line = (qcm22, xcm22, ycm22, qcm22)
+!Old split line: LINE=(QCM22,XCM22,YCM22,QCM22)
 
 qcm22_full: line = (qcm22)
 qcm22[L] = 2*qcm22[L]
@@ -2059,7 +2057,7 @@ ycm22[superimpose] = T
 ycm22[ref] = qcm22
 
 
-!Old split line: line = (qcm23, xcm23, ycm23, qcm23)
+!Old split line: LINE=(QCM23,XCM23,YCM23,QCM23)
 
 qcm23_full: line = (qcm23)
 qcm23[L] = 2*qcm23[L]
@@ -2069,7 +2067,7 @@ ycm23[superimpose] = T
 ycm23[ref] = qcm23
 
 
-!Old split line: line = (qcm24, xcm24, ycm24, qcm24)
+!Old split line: LINE=(QCM24,XCM24,YCM24,QCM24)
 
 qcm24_full: line = (qcm24)
 qcm24[L] = 2*qcm24[L]
@@ -2079,7 +2077,7 @@ ycm24[superimpose] = T
 ycm24[ref] = qcm24
 
 
-!Old split line: line = (qcm25, xcm25, ycm25, qcm25)
+!Old split line: LINE=(QCM25,XCM25,YCM25,QCM25)
 
 qcm25_full: line = (qcm25)
 qcm25[L] = 2*qcm25[L]
@@ -2089,7 +2087,7 @@ ycm25[superimpose] = T
 ycm25[ref] = qcm25
 
 
-!Old split line: line = (qcm26, xcm26, ycm26, qcm26)
+!Old split line: LINE=(QCM26,XCM26,YCM26,QCM26)
 
 qcm26_full: line = (qcm26)
 qcm26[L] = 2*qcm26[L]
@@ -2099,7 +2097,7 @@ ycm26[superimpose] = T
 ycm26[ref] = qcm26
 
 
-!Old split line: line = (qcm27, xcm27, ycm27, qcm27)
+!Old split line: LINE=(QCM27,XCM27,YCM27,QCM27)
 
 qcm27_full: line = (qcm27)
 qcm27[L] = 2*qcm27[L]
@@ -2109,7 +2107,7 @@ ycm27[superimpose] = T
 ycm27[ref] = qcm27
 
 
-!Old split line: line = (qcm28, xcm28, ycm28, qcm28)
+!Old split line: LINE=(QCM28,XCM28,YCM28,QCM28)
 
 qcm28_full: line = (qcm28)
 qcm28[L] = 2*qcm28[L]
@@ -2119,7 +2117,7 @@ ycm28[superimpose] = T
 ycm28[ref] = qcm28
 
 
-!Old split line: line = (qcm29, xcm29, ycm29, qcm29)
+!Old split line: LINE=(QCM29,XCM29,YCM29,QCM29)
 
 qcm29_full: line = (qcm29)
 qcm29[L] = 2*qcm29[L]
@@ -2129,7 +2127,7 @@ ycm29[superimpose] = T
 ycm29[ref] = qcm29
 
 
-!Old split line: line = (qcm30, xcm30, ycm30, qcm30)
+!Old split line: LINE=(QCM30,XCM30,YCM30,QCM30)
 
 qcm30_full: line = (qcm30)
 qcm30[L] = 2*qcm30[L]
@@ -2139,7 +2137,7 @@ ycm30[superimpose] = T
 ycm30[ref] = qcm30
 
 
-!Old split line: line = (qcm31, xcm31, ycm31, qcm31)
+!Old split line: LINE=(QCM31,XCM31,YCM31,QCM31)
 
 qcm31_full: line = (qcm31)
 qcm31[L] = 2*qcm31[L]
@@ -2149,7 +2147,7 @@ ycm31[superimpose] = T
 ycm31[ref] = qcm31
 
 
-!Old split line: line = (qcm32, xcm32, ycm32, qcm32)
+!Old split line: LINE=(QCM32,XCM32,YCM32,QCM32)
 
 qcm32_full: line = (qcm32)
 qcm32[L] = 2*qcm32[L]
@@ -2159,7 +2157,7 @@ ycm32[superimpose] = T
 ycm32[ref] = qcm32
 
 
-!Old split line: line = (qcm33, xcm33, ycm33, qcm33)
+!Old split line: LINE=(QCM33,XCM33,YCM33,QCM33)
 
 qcm33_full: line = (qcm33)
 qcm33[L] = 2*qcm33[L]
@@ -2169,7 +2167,7 @@ ycm33[superimpose] = T
 ycm33[ref] = qcm33
 
 
-!Old split line: line = (qcm34, xcm34, ycm34, qcm34)
+!Old split line: LINE=(QCM34,XCM34,YCM34,QCM34)
 
 qcm34_full: line = (qcm34)
 qcm34[L] = 2*qcm34[L]
@@ -2179,7 +2177,7 @@ ycm34[superimpose] = T
 ycm34[ref] = qcm34
 
 
-!Old split line: line = (qcm35, xcm35, ycm35, qcm35)
+!Old split line: LINE=(QCM35,XCM35,YCM35,QCM35)
 
 qcm35_full: line = (qcm35)
 qcm35[L] = 2*qcm35[L]
@@ -2190,181 +2188,140 @@ ycm35[ref] = qcm35
 
 ! L0
 
-cm01: line = (cm01beg, dcm1, cavl011, dcm2, cavl012, dcm2, cavl013, dcm2, cavl014, dcm2,  &
-        cavl015_full, dcm2, cavl016, dcm2, cavl017, dcm2, cavl018, dcm3, cmb01, dcm4a, beam0,  &
-        dcm4b, qcm01_full, dcm5, cm01end)
+  CM01 : LINE=(CM01BEG,DCM1,CAVL011,DCM2,CAVL012,DCM2,CAVL013,DCM2,CAVL014,DCM2,CAVL015_full,DCM2,CAVL016,DCM2,CAVL017,
+         DCM2,CAVL018,DCM3,CMB01,DCM4a,BEAM0,DCM4b,QCM01_full,DCM5,CM01END)
 
 ! L1
 
-cm02: line = (cm02beg, dcm1, cavl021, dcm2, cavl022, dcm2, cavl023, dcm2, cavl024, dcm2,  &
-        cavl025_full, dcm2, cavl026, dcm2, cavl027, dcm2, cavl028, dcm3, cmb02, dcm4, qcm02_full &
-        , dcm5, cm02end)
+  CM02 : LINE=(CM02BEG,DCM1,CAVL021,DCM2,CAVL022,DCM2,CAVL023,DCM2,CAVL024,DCM2,CAVL025_full,DCM2,CAVL026,DCM2,CAVL027,
+         DCM2,CAVL028,DCM3,CMB02,DCM4,QCM02_full,DCM5,CM02END)
 
-cm03: line = (cm03beg, dcm1, cavl031, dcm2, cavl032, dcm2, cavl033, dcm2, cavl034, dcm2,  &
-        cavl035_full, dcm2, cavl036, dcm2, cavl037, dcm2, cavl038, dcm3, cmb03, dcm4, qcm03_full &
-        , dcm5, cm03end)
+  CM03 : LINE=(CM03BEG,DCM1,CAVL031,DCM2,CAVL032,DCM2,CAVL033,DCM2,CAVL034,DCM2,CAVL035_full,DCM2,CAVL036,DCM2,CAVL037,
+         DCM2,CAVL038,DCM3,CMB03,DCM4,QCM03_full,DCM5,CM03END)
 
-cmh1: line = (cmh1beg, dcmh0, cavc011, dcmh2, cavc012_full, dcmh2, cavc013, dcmh2, cavc014, dcmh2 &
-        , cavc015, dcmh2, cavc016, dcmh2, cavc017, dcmh2, cavc018, dcmh3, cmbh1, dcmh4, cmh1end)
+  CMH1 : LINE=(CMH1BEG,DCMH0,CAVC011,DCMH2,CAVC012_full,DCMH2,CAVC013,DCMH2,CAVC014,DCMH2,CAVC015,DCMH2,CAVC016,DCMH2,
+         CAVC017,DCMH2,CAVC018,DCMH3,CMBH1,DCMH4,CMH1END)
 
-cmh2: line = (cmh2beg, dcmh1, cavc021, dcmh2, cavc022_full, dcmh2, cavc023, dcmh2, cavc024, dcmh2 &
-        , cavc025, dcmh2, cavc026, dcmh2, cavc027, dcmh2, cavc028, dcmh3, cmbh2, dcmh4, cmh2end)
+  CMH2 : LINE=(CMH2BEG,DCMH1,CAVC021,DCMH2,CAVC022_full,DCMH2,CAVC023,DCMH2,CAVC024,DCMH2,CAVC025,DCMH2,CAVC026,DCMH2,
+         CAVC027,DCMH2,CAVC028,DCMH3,CMBH2,DCMH4,CMH2END)
 
 ! L2
 
-cm04: line = (cm04beg, dcm1, cavl041, dcm2, cavl042, dcm2, cavl043, dcm2, cavl044, dcm2,  &
-        cavl045_full, dcm2, cavl046, dcm2, cavl047, dcm2, cavl048, dcm3, cmb04, dcm4, qcm04_full &
-        , dcm5, cm04end)
+  CM04 : LINE=(CM04BEG,DCM1,CAVL041,DCM2,CAVL042,DCM2,CAVL043,DCM2,CAVL044,DCM2,CAVL045_full,DCM2,CAVL046,DCM2,CAVL047,
+         DCM2,CAVL048,DCM3,CMB04,DCM4,QCM04_full,DCM5,CM04END)
 
-cm05: line = (cm05beg, dcm1, cavl051, dcm2, cavl052, dcm2, cavl053, dcm2, cavl054, dcm2,  &
-        cavl055_full, dcm2, cavl056, dcm2, cavl057, dcm2, cavl058, dcm3, cmb05, dcm4, qcm05_full &
-        , dcm5, cm05end)
+  CM05 : LINE=(CM05BEG,DCM1,CAVL051,DCM2,CAVL052,DCM2,CAVL053,DCM2,CAVL054,DCM2,CAVL055_full,DCM2,CAVL056,DCM2,CAVL057,
+         DCM2,CAVL058,DCM3,CMB05,DCM4,QCM05_full,DCM5,CM05END)
 
-cm06: line = (cm06beg, dcm1, cavl061, dcm2, cavl062, dcm2, cavl063, dcm2, cavl064, dcm2,  &
-        cavl065_full, dcm2, cavl066, dcm2, cavl067, dcm2, cavl068, dcm3, cmb06, dcm4, qcm06_full &
-        , dcm5, cm06end)
+  CM06 : LINE=(CM06BEG,DCM1,CAVL061,DCM2,CAVL062,DCM2,CAVL063,DCM2,CAVL064,DCM2,CAVL065_full,DCM2,CAVL066,DCM2,CAVL067,
+         DCM2,CAVL068,DCM3,CMB06,DCM4,QCM06_full,DCM5,CM06END)
 
-cm07: line = (cm07beg, dcm1, cavl071, dcm2, cavl072, dcm2, cavl073, dcm2, cavl074, dcm2,  &
-        cavl075_full, dcm2, cavl076, dcm2, cavl077, dcm2, cavl078, dcm3, cmb07, dcm4, qcm07_full &
-        , dcm5, cm07end)
+  CM07 : LINE=(CM07BEG,DCM1,CAVL071,DCM2,CAVL072,DCM2,CAVL073,DCM2,CAVL074,DCM2,CAVL075_full,DCM2,CAVL076,DCM2,CAVL077,
+         DCM2,CAVL078,DCM3,CMB07,DCM4,QCM07_full,DCM5,CM07END)
 
-cm08: line = (cm08beg, dcm1, cavl081, dcm2, cavl082, dcm2, cavl083, dcm2, cavl084, dcm2,  &
-        cavl085_full, dcm2, cavl086, dcm2, cavl087, dcm2, cavl088, dcm3, cmb08, dcm4, qcm08_full &
-        , dcm5, cm08end)
+  CM08 : LINE=(CM08BEG,DCM1,CAVL081,DCM2,CAVL082,DCM2,CAVL083,DCM2,CAVL084,DCM2,CAVL085_full,DCM2,CAVL086,DCM2,CAVL087,
+         DCM2,CAVL088,DCM3,CMB08,DCM4,QCM08_full,DCM5,CM08END)
 
-cm09: line = (cm09beg, dcm1, cavl091, dcm2, cavl092, dcm2, cavl093, dcm2, cavl094, dcm2,  &
-        cavl095_full, dcm2, cavl096, dcm2, cavl097, dcm2, cavl098, dcm3, cmb09, dcm4, qcm09_full &
-        , dcm5, cm09end)
+  CM09 : LINE=(CM09BEG,DCM1,CAVL091,DCM2,CAVL092,DCM2,CAVL093,DCM2,CAVL094,DCM2,CAVL095_full,DCM2,CAVL096,DCM2,CAVL097,
+         DCM2,CAVL098,DCM3,CMB09,DCM4,QCM09_full,DCM5,CM09END)
 
-cm10: line = (cm10beg, dcm1, cavl101, dcm2, cavl102, dcm2, cavl103, dcm2, cavl104, dcm2,  &
-        cavl105_full, dcm2, cavl106, dcm2, cavl107, dcm2, cavl108, dcm3, cmb10, dcm4, qcm10_full &
-        , dcm5, cm10end)
+  CM10 : LINE=(CM10BEG,DCM1,CAVL101,DCM2,CAVL102,DCM2,CAVL103,DCM2,CAVL104,DCM2,CAVL105_full,DCM2,CAVL106,DCM2,CAVL107,
+         DCM2,CAVL108,DCM3,CMB10,DCM4,QCM10_full,DCM5,CM10END)
 
-cm11: line = (cm11beg, dcm1, cavl111, dcm2, cavl112, dcm2, cavl113, dcm2, cavl114, dcm2,  &
-        cavl115_full, dcm2, cavl116, dcm2, cavl117, dcm2, cavl118, dcm3, cmb11, dcm4, qcm11_full &
-        , dcm5, cm11end)
+  CM11 : LINE=(CM11BEG,DCM1,CAVL111,DCM2,CAVL112,DCM2,CAVL113,DCM2,CAVL114,DCM2,CAVL115_full,DCM2,CAVL116,DCM2,CAVL117,
+         DCM2,CAVL118,DCM3,CMB11,DCM4,QCM11_full,DCM5,CM11END)
 
-cm12: line = (cm12beg, dcm1, cavl121, dcm2, cavl122, dcm2, cavl123, dcm2, cavl124, dcm2,  &
-        cavl125_full, dcm2, cavl126, dcm2, cavl127, dcm2, cavl128, dcm3, cmb12, dcm4, qcm12_full &
-        , dcm5, cm12end)
+  CM12 : LINE=(CM12BEG,DCM1,CAVL121,DCM2,CAVL122,DCM2,CAVL123,DCM2,CAVL124,DCM2,CAVL125_full,DCM2,CAVL126,DCM2,CAVL127,
+         DCM2,CAVL128,DCM3,CMB12,DCM4,QCM12_full,DCM5,CM12END)
 
-cm13: line = (cm13beg, dcm1, cavl131, dcm2, cavl132, dcm2, cavl133, dcm2, cavl134, dcm2,  &
-        cavl135_full, dcm2, cavl136, dcm2, cavl137, dcm2, cavl138, dcm3, cmb13, dcm4, qcm13_full &
-        , dcm5, cm13end)
+  CM13 : LINE=(CM13BEG,DCM1,CAVL131,DCM2,CAVL132,DCM2,CAVL133,DCM2,CAVL134,DCM2,CAVL135_full,DCM2,CAVL136,DCM2,CAVL137,
+         DCM2,CAVL138,DCM3,CMB13,DCM4,QCM13_full,DCM5,CM13END)
 
-cm14: line = (cm14beg, dcm1, cavl141, dcm2, cavl142, dcm2, cavl143, dcm2, cavl144, dcm2,  &
-        cavl145_full, dcm2, cavl146, dcm2, cavl147, dcm2, cavl148, dcm3, cmb14, dcm4, qcm14_full &
-        , dcm5, cm14end)
+  CM14 : LINE=(CM14BEG,DCM1,CAVL141,DCM2,CAVL142,DCM2,CAVL143,DCM2,CAVL144,DCM2,CAVL145_full,DCM2,CAVL146,DCM2,CAVL147,
+         DCM2,CAVL148,DCM3,CMB14,DCM4,QCM14_full,DCM5,CM14END)
 
-cm15: line = (cm15beg, dcm1, cavl151, dcm2, cavl152, dcm2, cavl153, dcm2, cavl154, dcm2,  &
-        cavl155_full, dcm2, cavl156, dcm2, cavl157, dcm2, cavl158, dcm3, cmb15, dcm4, qcm15_full &
-        , dcm5, cm15end)
+  CM15 : LINE=(CM15BEG,DCM1,CAVL151,DCM2,CAVL152,DCM2,CAVL153,DCM2,CAVL154,DCM2,CAVL155_full,DCM2,CAVL156,DCM2,CAVL157,
+         DCM2,CAVL158,DCM3,CMB15,DCM4,QCM15_full,DCM5,CM15END)
 
 ! L3
 
-cm16: line = (cm16beg, dcm1, cavl161, dcm2, cavl162, dcm2, cavl163, dcm2, cavl164, dcm2,  &
-        cavl165_full, dcm2, cavl166, dcm2, cavl167, dcm2, cavl168, dcm3, cmb16, dcm4, qcm16_full &
-        , dcm5, cm16end)
+  CM16 : LINE=(CM16BEG,DCM1,CAVL161,DCM2,CAVL162,DCM2,CAVL163,DCM2,CAVL164,DCM2,CAVL165_full,DCM2,CAVL166,DCM2,CAVL167,
+         DCM2,CAVL168,DCM3,CMB16,DCM4,QCM16_full,DCM5,CM16END)
 
-cm17: line = (cm17beg, dcm1, cavl171, dcm2, cavl172, dcm2, cavl173, dcm2, cavl174, dcm2,  &
-        cavl175_full, dcm2, cavl176, dcm2, cavl177, dcm2, cavl178, dcm3, cmb17, dcm4, qcm17_full &
-        , dcm5, cm17end)
+  CM17 : LINE=(CM17BEG,DCM1,CAVL171,DCM2,CAVL172,DCM2,CAVL173,DCM2,CAVL174,DCM2,CAVL175_full,DCM2,CAVL176,DCM2,CAVL177,
+         DCM2,CAVL178,DCM3,CMB17,DCM4,QCM17_full,DCM5,CM17END)
 
-cm18: line = (cm18beg, dcm1, cavl181, dcm2, cavl182, dcm2, cavl183, dcm2, cavl184, dcm2,  &
-        cavl185_full, dcm2, cavl186, dcm2, cavl187, dcm2, cavl188, dcm3, cmb18, dcm4, qcm18_full &
-        , dcm5, cm18end)
+  CM18 : LINE=(CM18BEG,DCM1,CAVL181,DCM2,CAVL182,DCM2,CAVL183,DCM2,CAVL184,DCM2,CAVL185_full,DCM2,CAVL186,DCM2,CAVL187,
+         DCM2,CAVL188,DCM3,CMB18,DCM4,QCM18_full,DCM5,CM18END)
 
-cm19: line = (cm19beg, dcm1, cavl191, dcm2, cavl192, dcm2, cavl193, dcm2, cavl194, dcm2,  &
-        cavl195_full, dcm2, cavl196, dcm2, cavl197, dcm2, cavl198, dcm3, cmb19, dcm4, qcm19_full &
-        , dcm5, cm19end)
+  CM19 : LINE=(CM19BEG,DCM1,CAVL191,DCM2,CAVL192,DCM2,CAVL193,DCM2,CAVL194,DCM2,CAVL195_full,DCM2,CAVL196,DCM2,CAVL197,
+         DCM2,CAVL198,DCM3,CMB19,DCM4,QCM19_full,DCM5,CM19END)
 
-cm20: line = (cm20beg, dcm1, cavl201, dcm2, cavl202, dcm2, cavl203, dcm2, cavl204, dcm2,  &
-        cavl205_full, dcm2, cavl206, dcm2, cavl207, dcm2, cavl208, dcm3, cmb20, dcm4, qcm20_full &
-        , dcm5, cm20end)
+  CM20 : LINE=(CM20BEG,DCM1,CAVL201,DCM2,CAVL202,DCM2,CAVL203,DCM2,CAVL204,DCM2,CAVL205_full,DCM2,CAVL206,DCM2,CAVL207,
+         DCM2,CAVL208,DCM3,CMB20,DCM4,QCM20_full,DCM5,CM20END)
 
-cm21: line = (cm21beg, dcm1, cavl211, dcm2, cavl212, dcm2, cavl213, dcm2, cavl214, dcm2,  &
-        cavl215_full, dcm2, cavl216, dcm2, cavl217, dcm2, cavl218, dcm3, cmb21, dcm4, qcm21_full &
-        , dcm5, cm21end)
+  CM21 : LINE=(CM21BEG,DCM1,CAVL211,DCM2,CAVL212,DCM2,CAVL213,DCM2,CAVL214,DCM2,CAVL215_full,DCM2,CAVL216,DCM2,CAVL217,
+         DCM2,CAVL218,DCM3,CMB21,DCM4,QCM21_full,DCM5,CM21END)
 
-cm22: line = (cm22beg, dcm1, cavl221, dcm2, cavl222, dcm2, cavl223, dcm2, cavl224, dcm2,  &
-        cavl225_full, dcm2, cavl226, dcm2, cavl227, dcm2, cavl228, dcm3, cmb22, dcm4, qcm22_full &
-        , dcm5, cm22end)
+  CM22 : LINE=(CM22BEG,DCM1,CAVL221,DCM2,CAVL222,DCM2,CAVL223,DCM2,CAVL224,DCM2,CAVL225_full,DCM2,CAVL226,DCM2,CAVL227,
+         DCM2,CAVL228,DCM3,CMB22,DCM4,QCM22_full,DCM5,CM22END)
 
-cm23: line = (cm23beg, dcm1, cavl231, dcm2, cavl232, dcm2, cavl233, dcm2, cavl234, dcm2,  &
-        cavl235_full, dcm2, cavl236, dcm2, cavl237, dcm2, cavl238, dcm3, cmb23, dcm4, qcm23_full &
-        , dcm5, cm23end)
+  CM23 : LINE=(CM23BEG,DCM1,CAVL231,DCM2,CAVL232,DCM2,CAVL233,DCM2,CAVL234,DCM2,CAVL235_full,DCM2,CAVL236,DCM2,CAVL237,
+         DCM2,CAVL238,DCM3,CMB23,DCM4,QCM23_full,DCM5,CM23END)
 
-cm24: line = (cm24beg, dcm1, cavl241, dcm2, cavl242, dcm2, cavl243, dcm2, cavl244, dcm2,  &
-        cavl245_full, dcm2, cavl246, dcm2, cavl247, dcm2, cavl248, dcm3, cmb24, dcm4, qcm24_full &
-        , dcm5, cm24end)
+  CM24 : LINE=(CM24BEG,DCM1,CAVL241,DCM2,CAVL242,DCM2,CAVL243,DCM2,CAVL244,DCM2,CAVL245_full,DCM2,CAVL246,DCM2,CAVL247,
+         DCM2,CAVL248,DCM3,CMB24,DCM4,QCM24_full,DCM5,CM24END)
 
-cm25: line = (cm25beg, dcm1, cavl251, dcm2, cavl252, dcm2, cavl253, dcm2, cavl254, dcm2,  &
-        cavl255_full, dcm2, cavl256, dcm2, cavl257, dcm2, cavl258, dcm3, cmb25, dcm4, qcm25_full &
-        , dcm5, cm25end)
+  CM25 : LINE=(CM25BEG,DCM1,CAVL251,DCM2,CAVL252,DCM2,CAVL253,DCM2,CAVL254,DCM2,CAVL255_full,DCM2,CAVL256,DCM2,CAVL257,
+         DCM2,CAVL258,DCM3,CMB25,DCM4,QCM25_full,DCM5,CM25END)
 
-cm26: line = (cm26beg, dcm1, cavl261, dcm2, cavl262, dcm2, cavl263, dcm2, cavl264, dcm2,  &
-        cavl265_full, dcm2, cavl266, dcm2, cavl267, dcm2, cavl268, dcm3, cmb26, dcm4, qcm26_full &
-        , dcm5, cm26end)
+  CM26 : LINE=(CM26BEG,DCM1,CAVL261,DCM2,CAVL262,DCM2,CAVL263,DCM2,CAVL264,DCM2,CAVL265_full,DCM2,CAVL266,DCM2,CAVL267,
+         DCM2,CAVL268,DCM3,CMB26,DCM4,QCM26_full,DCM5,CM26END)
 
-cm27: line = (cm27beg, dcm1, cavl271, dcm2, cavl272, dcm2, cavl273, dcm2, cavl274, dcm2,  &
-        cavl275_full, dcm2, cavl276, dcm2, cavl277, dcm2, cavl278, dcm3, cmb27, dcm4, qcm27_full &
-        , dcm5, cm27end)
+  CM27 : LINE=(CM27BEG,DCM1,CAVL271,DCM2,CAVL272,DCM2,CAVL273,DCM2,CAVL274,DCM2,CAVL275_full,DCM2,CAVL276,DCM2,CAVL277,
+         DCM2,CAVL278,DCM3,CMB27,DCM4,QCM27_full,DCM5,CM27END)
 
-cm28: line = (cm28beg, dcm1, cavl281, dcm2, cavl282, dcm2, cavl283, dcm2, cavl284, dcm2,  &
-        cavl285_full, dcm2, cavl286, dcm2, cavl287, dcm2, cavl288, dcm3, cmb28, dcm4, qcm28_full &
-        , dcm5, cm28end)
+  CM28 : LINE=(CM28BEG,DCM1,CAVL281,DCM2,CAVL282,DCM2,CAVL283,DCM2,CAVL284,DCM2,CAVL285_full,DCM2,CAVL286,DCM2,CAVL287,
+         DCM2,CAVL288,DCM3,CMB28,DCM4,QCM28_full,DCM5,CM28END)
 
-cm29: line = (cm29beg, dcm1, cavl291, dcm2, cavl292, dcm2, cavl293, dcm2, cavl294, dcm2,  &
-        cavl295_full, dcm2, cavl296, dcm2, cavl297, dcm2, cavl298, dcm3, cmb29, dcm4, qcm29_full &
-        , dcm5, cm29end)
+  CM29 : LINE=(CM29BEG,DCM1,CAVL291,DCM2,CAVL292,DCM2,CAVL293,DCM2,CAVL294,DCM2,CAVL295_full,DCM2,CAVL296,DCM2,CAVL297,
+         DCM2,CAVL298,DCM3,CMB29,DCM4,QCM29_full,DCM5,CM29END)
 
-cm30: line = (cm30beg, dcm1, cavl301, dcm2, cavl302, dcm2, cavl303, dcm2, cavl304, dcm2,  &
-        cavl305_full, dcm2, cavl306, dcm2, cavl307, dcm2, cavl308, dcm3, cmb30, dcm4, qcm30_full &
-        , dcm5, cm30end)
+  CM30 : LINE=(CM30BEG,DCM1,CAVL301,DCM2,CAVL302,DCM2,CAVL303,DCM2,CAVL304,DCM2,CAVL305_full,DCM2,CAVL306,DCM2,CAVL307,
+         DCM2,CAVL308,DCM3,CMB30,DCM4,QCM30_full,DCM5,CM30END)
 
-cm31: line = (cm31beg, dcm1, cavl311, dcm2, cavl312, dcm2, cavl313, dcm2, cavl314, dcm2,  &
-        cavl315_full, dcm2, cavl316, dcm2, cavl317, dcm2, cavl318, dcm3, cmb31, dcm4, qcm31_full &
-        , dcm5, cm31end)
+  CM31 : LINE=(CM31BEG,DCM1,CAVL311,DCM2,CAVL312,DCM2,CAVL313,DCM2,CAVL314,DCM2,CAVL315_full,DCM2,CAVL316,DCM2,CAVL317,
+         DCM2,CAVL318,DCM3,CMB31,DCM4,QCM31_full,DCM5,CM31END)
 
-cm32: line = (cm32beg, dcm1, cavl321, dcm2, cavl322, dcm2, cavl323, dcm2, cavl324, dcm2,  &
-        cavl325_full, dcm2, cavl326, dcm2, cavl327, dcm2, cavl328, dcm3, cmb32, dcm4, qcm32_full &
-        , dcm5, cm32end)
+  CM32 : LINE=(CM32BEG,DCM1,CAVL321,DCM2,CAVL322,DCM2,CAVL323,DCM2,CAVL324,DCM2,CAVL325_full,DCM2,CAVL326,DCM2,CAVL327,
+         DCM2,CAVL328,DCM3,CMB32,DCM4,QCM32_full,DCM5,CM32END)
 
-cm33: line = (cm33beg, dcm1, cavl331, dcm2, cavl332, dcm2, cavl333, dcm2, cavl334, dcm2,  &
-        cavl335_full, dcm2, cavl336, dcm2, cavl337, dcm2, cavl338, dcm3, cmb33, dcm4, qcm33_full &
-        , dcm5, cm33end)
+  CM33 : LINE=(CM33BEG,DCM1,CAVL331,DCM2,CAVL332,DCM2,CAVL333,DCM2,CAVL334,DCM2,CAVL335_full,DCM2,CAVL336,DCM2,CAVL337,
+         DCM2,CAVL338,DCM3,CMB33,DCM4,QCM33_full,DCM5,CM33END)
 
-cm34: line = (cm34beg, dcm1, cavl341, dcm2, cavl342, dcm2, cavl343, dcm2, cavl344, dcm2,  &
-        cavl345_full, dcm2, cavl346, dcm2, cavl347, dcm2, cavl348, dcm3, cmb34, dcm4, qcm34_full &
-        , dcm5, cm34end)
+  CM34 : LINE=(CM34BEG,DCM1,CAVL341,DCM2,CAVL342,DCM2,CAVL343,DCM2,CAVL344,DCM2,CAVL345_full,DCM2,CAVL346,DCM2,CAVL347,
+         DCM2,CAVL348,DCM3,CMB34,DCM4,QCM34_full,DCM5,CM34END)
 
-cm35: line = (cm35beg, dcm1, cavl351, dcm2, cavl352, dcm2, cavl353, dcm2, cavl354, dcm2,  &
-        cavl355_full, dcm2, cavl356, dcm2, cavl357, dcm2, cavl358, dcm3, cmb35, dcm4, qcm35_full &
-        , dcm5, cm35end)
+  CM35 : LINE=(CM35BEG,DCM1,CAVL351,DCM2,CAVL352,DCM2,CAVL353,DCM2,CAVL354,DCM2,CAVL355_full,DCM2,CAVL356,DCM2,CAVL357,
+         DCM2,CAVL358,DCM3,CMB35,DCM4,QCM35_full,DCM5,CM35END)
 
-l0: line = (begl0b, ecu, dcap0u, cm01, dcmcm1, homcm, dcap0da, astra, dcap0db, fc1, dmsc0da, blf1 &
-        , dmsc0db, vg0h00, dmsc0dc, vp0h00, dmsc0dd, vv0h00, dmsc0de, msc0d, endl0b)
+  L0 : LINE=(BEGL0B,ECU,DCAP0u,CM01,DCMCM1,HOMCM,DCAP0da,ASTRA,DCAP0db,FC1,DMSC0da,BLF1,DMSC0db,VG0H00,DMSC0dc,VP0H00,
+         DMSC0dd,VV0H00,DMSC0de,MSC0d,ENDL0B)
 
-l1: line = (begl1b, psc1u, dpsc1u, msc1u, dmsc1ua, blf2, dmsc1ub, fc2, dcap1u, cm02, dcmcm1,  &
-        homcm, dcmcm2, cm03, dcmcmh1, homcm, dcmcmh2, cmh1, dcmhcmh1, homcm, dcmhcmh2, cmh2,  &
-        dcap1d, fc3, dmsc1da, blf3, dmsc1db, msc1d, dpsc1d, psc1d, endl1b)
+  L1 : LINE=(BEGL1B,PSC1u,DPSC1u,MSC1u,DMSC1ua,BLF2,DMSC1ub,FC2,DCAP1u,CM02,DCMCM1,HOMCM,DCMCM2,CM03,DCMCMH1,HOMCM,
+         DCMCMH2,CMH1,DCMHCMH1,HOMCM,DCMHCMH2,CMH2,DCAP1d,FC3,DMSC1da,BLF3,DMSC1db,MSC1d,DPSC1d,PSC1d,ENDL1B)
 
-l2: line = (begl2b, psc2u, dpsc2u, msc2u, dmsc2ua, blf4, dmsc2ub, fc4, dcap2u, cm04, dcmcm1,  &
-        homcm, dcmcm2, cm05, dcmcm1, homcm, dcmcm2, cm06, dcmcm1, homcm, dcmcm2, cm07, dcmcm1,  &
-        homcm, dcmcm2, cm08, dcmcm1, homcm, dcmcm2, cm09, dcmcm1, homcm, dcmcm2, cm10, dcmcm1,  &
-        homcm, dcmcm2, cm11, dcmcm1, homcm, dcmcm2, cm12, dcmcm1, homcm, dcmcm2, cm13, dcmcm1,  &
-        homcm, dcmcm2, cm14, dcmcm1, homcm, dcmcm2, cm15, dcmcm1, homcm, dcap2d, fc5, dmsc2da,  &
-        blf5, dmsc2db, msc2d, rfb2c00, dpsc2d, psc2d, endl2b)
+  L2 : LINE=(BEGL2B,PSC2u,DPSC2u,MSC2u,DMSC2ua,BLF4,DMSC2ub,FC4,DCAP2u,CM04,DCMCM1,HOMCM,DCMCM2,CM05,DCMCM1,HOMCM,
+         DCMCM2,CM06,DCMCM1,HOMCM,DCMCM2,CM07,DCMCM1,HOMCM,DCMCM2,CM08,DCMCM1,HOMCM,DCMCM2,CM09,DCMCM1,HOMCM,DCMCM2,CM10,DCMCM1,
+         HOMCM,DCMCM2,CM11,DCMCM1,HOMCM,DCMCM2,CM12,DCMCM1,HOMCM,DCMCM2,CM13,DCMCM1,HOMCM,DCMCM2,CM14,DCMCM1,HOMCM,DCMCM2,CM15,
+         DCMCM1,HOMCM,DCAP2d,FC5,DMSC2da,BLF5,DMSC2db,MSC2d,RFB2C00,DPSC2d,PSC2d,ENDL2B)
 
-l3: line = (begl3b, psc3u, dpsc3u, msc3u, dmsc3ua, blf6, dmsc3ub, fc6, dcap3u, cm16, dcmcm1,  &
-        homcm, dcmcm2, cm17, dcmcm1, homcm, dcmcm2, cm18, dcmcm1, homcm, dcmcm2, cm19, dcmcm1,  &
-        homcm, dcmcm2, cm20, dcmcm1, homcm, dcmcm2, cm21, dcmcm1, homcm, dcmcm2, cm22, dcmcm1,  &
-        homcm, dcmcm2, cm23, dcmcm1, homcm, dcmcm2, cm24, dcmcm1, homcm, dcmcm2, cm25, dcmcm1,  &
-        homcm, dcmcm2, dbreak, cm26, dcmcm1, homcm, dcmcm2, cm27, dcmcm1, homcm, dcmcm2, cm28,  &
-        dcmcm1, homcm, dcmcm2, cm29, dcmcm1, homcm, dcmcm2, cm30, dcmcm1, homcm, dcmcm2, cm31,  &
-        dcmcm1, homcm, dcmcm2, cm32, dcmcm1, homcm, dcmcm2, cm33, dcmcm1, homcm, dcmcm2, cm34,  &
-        dcmcm1, homcm, dcmcm2, cm35, dcmcm1, homcm, dcap3d, ecd, dmsc3da, blfd, dmsc3db, msc3d,  &
-        dpsc3d, psc3d, endl3b)
+  L3 : LINE=(BEGL3B,PSC3u,DPSC3u,MSC3u,DMSC3ua,BLF6,DMSC3ub,FC6,DCAP3u,CM16,DCMCM1,HOMCM,DCMCM2,CM17,DCMCM1,HOMCM,
+         DCMCM2,CM18,DCMCM1,HOMCM,DCMCM2,CM19,DCMCM1,HOMCM,DCMCM2,CM20,DCMCM1,HOMCM,DCMCM2,CM21,DCMCM1,HOMCM,DCMCM2,CM22,DCMCM1,
+         HOMCM,DCMCM2,CM23,DCMCM1,HOMCM,DCMCM2,CM24,DCMCM1,HOMCM,DCMCM2,CM25,DCMCM1,HOMCM,DCMCM2,DBREAK,CM26,DCMCM1,HOMCM,DCMCM2,
+         CM27,DCMCM1,HOMCM,DCMCM2,CM28,DCMCM1,HOMCM,DCMCM2,CM29,DCMCM1,HOMCM,DCMCM2,CM30,DCMCM1,HOMCM,DCMCM2,CM31,DCMCM1,HOMCM,
+         DCMCM2,CM32,DCMCM1,HOMCM,DCMCM2,CM33,DCMCM1,HOMCM,DCMCM2,CM34,DCMCM1,HOMCM,DCMCM2,CM35,DCMCM1,HOMCM,DCAP3d,ECD,DMSC3da,
+         BLFD,DMSC3db,MSC3d,DPSC3d,PSC3d,ENDL3B)
 
 ! ==============================================================================
 ! coasting FODO
@@ -2379,9 +2336,9 @@ qdcmfodo3: quadrupole, l = lcmq/2, aperture = rcmq, k1 = -kqcmfodo3 !L3 QD
 
 dcmfodo: drift, l = ldcmfodo
 
-cmfodo1: line = (qfcmfodo1, dcmfodo, qdcmfodo1, qdcmfodo1, dcmfodo, qfcmfodo1)
-cmfodo2: line = (qfcmfodo2, dcmfodo, qdcmfodo2, qdcmfodo2, dcmfodo, qfcmfodo2)
-cmfodo3: line = (qfcmfodo3, dcmfodo, qdcmfodo3, qdcmfodo3, dcmfodo, qfcmfodo3)
+  CMfodo1 : LINE=(QFCMfodo1,DCMfodo,QDCMfodo1,QDCMfodo1,DCMfodo,QFCMfodo1)
+  CMfodo2 : LINE=(QFCMfodo2,DCMfodo,QDCMfodo2,QDCMfodo2,DCMfodo,QFCMfodo2)
+  CMfodo3 : LINE=(QFCMfodo3,DCMfodo,QDCMfodo3,QDCMfodo3,DCMfodo,QFCMfodo3)
 
 ! ------------------------------------------------------------------------------
 

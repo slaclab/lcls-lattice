@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-01APR20 ***
+! *** OPTICS=AD_ACCEL-15OCT20 ***
 
 ! ==============================================================================
 ! Modification History
@@ -32,9 +32,9 @@
 ! from copper linac
 ! ------------------------------------------------------------------------------
 
-clth0: line = (begclth_0, bsybeg, bsys100, s100sxra, endclth_0)
+  CLTH0 : LINE=(BEGCLTH_0,BSYBEG,BSYS100,S100SXRA,ENDCLTH_0)
 
-clth1: line = (begclth_1, s100sxrb, endclth_1)
+  CLTH1 : LINE=(BEGCLTH_1,S100SXRB,ENDCLTH_1)
 
 dbrcusdc1a: drift, l = zbrcusdc/2
 dbrcusdc1b: drift, l = zbrcusdc/2
@@ -47,47 +47,45 @@ dblrcusb: drift, l = blrcusb[l]
 dbxsp1ha: drift, l = bxsp1ha[l]
 dbxsp1hb: drift, l = bxsp1hb[l]
 
-clth2: line = (begclth_2, dbrcusdc1a, dbrcusdc1b, dckdc1, dbkrcusa, dbkrcusb, dckdc2, dbrcusdc2a &
-        , dbrcusdc2b, dcusblra, bpmcus, dcusblrb, dblrcusa, dblrcusb, dbsy52c, dbxsp1ha, dbxsp1hb &
-        , bsy1end, endclth_2)
+  CLTH2 : LINE=(BEGCLTH_2,DBRCUSdc1A,DBRCUSdc1B,DCKdc1,DBKRCUSA,DBKRCUSB,DCKdc2,DBRCUSdc2A,DBRCUSdc2B,DCUSBLRA,BPMCUS,
+         DCUSBLRB,DBLRCUSA,DBLRCUSB,DBSY52C,DBXSP1HA,DBXSP1HB,BSY1END,ENDCLTH_2)
 
-bsyh1: line = (begbsyh_1, sphal, endbsyh_1)
+  BSYH1 : LINE=(BEGBSYH_1,SPHAL,ENDBSYH_1)
 
-bsyh2: line = (begbsyh_2, dbkrapm1a, dbkrapm1b, dzapm1, pcapm1, dzapm1, dbkrapm2a, dbkrapm2b,  &
-        dzapm2a, scapm2, dzapm2b, pcapm2, dzapm2, dbkrapm3a, dbkrapm3b, dzapm3, pcapm3, dzapm3,  &
-        dbkrapm4a, dbkrapm4b, dzapm4, pcapm4, dza01, dza02, sphbsyb, endbsyh_2)
+  BSYH2 : LINE=(BEGBSYH_2,DBKRAPM1a,DBKRAPM1b,DZAPM1,PCAPM1,DZAPM1,DBKRAPM2a,DBKRAPM2b,DZAPM2a,SCAPM2,DZAPM2b,PCAPM2,
+         DZAPM2,DBKRAPM3a,DBKRAPM3b,DZAPM3,PCAPM3,DZAPM3,DBKRAPM4a,DBKRAPM4b,DZAPM4,PCAPM4,DZA01,DZA02,SPHBSYB,ENDBSYH_2)
 
 ! ------------------------------------------------------------------------------
 
-clts: line = (begclts, kcusxr, dlcusxr, endclts)
+  CLTS : LINE=(BEGCLTS,KCUSXR,DLCUSXR,ENDCLTS)
 
-bsys: line = (begbsys, bypm2, muwallb, dwalla, dumpbsys, dwallb, bsyendb, rwwake3s, endbsys)
-
-! ------------------------------------------------------------------------------
-
-bsya: line = (alinea, alineb, alinec)
+  BSYS : LINE=(BEGBSYS,BYPM2,MUWALLB,DWALLA,DUMPBSYS,DWALLB,BSYENDB,RWWAKE3S,ENDBSYS)
 
 ! ------------------------------------------------------------------------------
 
-ltus: line = (dbldl21, ltusc, rwwake4s, endltus, begunds, preunds)
-ltuh: line = (ltu)
+  BSYA : LINE=(ALINEA,ALINEB,ALINEC)
 
-bsyltuh: line = (clth0, clth1, clth2, bsyh1, bsyh2, ltuh, hxrund, dumpline)
-bsyltuhs: line = (clth0, clth1, clth2, bsyh1, bsyh2, ltuh, hxrund, sftdump)
-bsyltus: line = (clth0, clth1, clts, bsys, ltus, sxrund, dumplineb)
-bsyltuss: line = (clth0, clth1, clts, bsys, ltus, sxrund, sftdumpb)
-bsyaline: line = (clth0, clth1, clth2, bsyh1, bsya)
-bsyltuhxtes: line = (clth0, clth1, clth2, bsyh1, bsyh2, ltuh, hxrund, sftdump1, hxtes_1, hxtes_2)
-bsyltuhtxi: line = (clth0, clth1, clth2, bsyh1, bsyh2, ltuh, hxrund, sftdump1, hxtes_1, hxtes_3)
+! ------------------------------------------------------------------------------
 
-lcls2cuc: line = (dl1, l1, bc1, l2, bc2, l3) !common
-lcls2cuh: line = (lcls2cuc, bsyltuh)     !to HXR
-lcls2cuhs: line = (lcls2cuc, bsyltuhs)    !to HXR safety dump
-lcls2cus: line = (lcls2cuc, bsyltus)     !to SXR
-lcls2cuss: line = (lcls2cuc, bsyltuss)    !to SXR safety dump
-lcls2cua: line = (lcls2cuc, bsyaline)    !to A-line
-lcls2cuhxtes: line = (lcls2cuc, bsyltuhxtes) !to HXR XTES system
-lcls2cuhtxi: line = (lcls2cuc, bsyltuhtxi)  !to HXR XTES-TXI system
+  LTUS : LINE=(DBLDL21,LTUSC,RWWAKE4S,ENDLTUS,BEGUNDS,PREUNDS)
+  LTUH : LINE=(LTU)
+
+  BSYLTUH     : LINE=(CLTH0,CLTH1,CLTH2,BSYH1,BSYH2,LTUH,HXRUND,DUMPLINE)
+  BSYLTUHS    : LINE=(CLTH0,CLTH1,CLTH2,BSYH1,BSYH2,LTUH,HXRUND,SFTDUMP)
+  BSYLTUS     : LINE=(CLTH0,CLTH1,CLTS,BSYS,LTUS,SXRUND,DUMPLINEB)
+  BSYLTUSS    : LINE=(CLTH0,CLTH1,CLTS,BSYS,LTUS,SXRUND,SFTDUMPB)
+  BSYALINE    : LINE=(CLTH0,CLTH1,CLTH2,BSYH1,BSYA)
+  BSYLTUHXTES : LINE=(CLTH0,CLTH1,CLTH2,BSYH1,BSYH2,LTUH,HXRUND,SFTDUMP1,HXTES_1,HXTES_2)
+  BSYLTUHTXI  : LINE=(CLTH0,CLTH1,CLTH2,BSYH1,BSYH2,LTUH,HXRUND,SFTDUMP1,HXTES_1,HXTES_3)
+
+  LCLS2cuC     : LINE=(DL1,L1,BC1,L2,BC2,L3) !common
+  LCLS2cuH     : LINE=(LCLS2cuC,BSYLTUH)     !to HXR
+  LCLS2cuHS    : LINE=(LCLS2cuC,BSYLTUHS)    !to HXR safety dump
+  LCLS2cuS     : LINE=(LCLS2cuC,BSYLTUS)     !to SXR
+  LCLS2cuSS    : LINE=(LCLS2cuC,BSYLTUSS)    !to SXR safety dump
+  LCLS2cuA     : LINE=(LCLS2cuC,BSYALINE)    !to A-line
+  LCLS2cuHXTES : LINE=(LCLS2cuC,BSYLTUHXTES) !to HXR XTES system
+  LCLS2cuHTXI  : LINE=(LCLS2cuC,BSYLTUHTXI)  !to HXR XTES-TXI system
 
 ! ------------------------------------------------------------------------------
 

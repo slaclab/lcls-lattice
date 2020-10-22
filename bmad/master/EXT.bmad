@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-01APR20 ***
+! *** OPTICS=AD_ACCEL-15OCT20 ***
 
 ! LCLS2sc linac extension: end of L3 to start of bypass dogleg
 
@@ -57,8 +57,8 @@
 ! QUAD
 ! ------------------------------------------------------------------------------
 
-kqx01 = 0.953828315174
-kqx02 = -1.076664690711
+kqx01 = 0.953828315197
+kqx02 = -1.076664690593
 
 qx01: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqx01
 qx02: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqx02
@@ -89,22 +89,22 @@ dx02b: drift, l = dx02[l]-dx02a[l]
 ! BPMs
 ! ------------------------------------------------------------------------------
 
-bpmx01: instrument, type = "Stripline-2"
-bpmx02: instrument, type = "Stripline-2"
+bpmx01: monitor, type = "Stripline-2"
+bpmx02: monitor, type = "Stripline-2"
 
-rfbx02: instrument, type = "@2,CavityS-1"
+rfbx02: monitor, type = "@2,CavityS-1"
 
 ! ==============================================================================
 ! XCORs
 ! ------------------------------------------------------------------------------
 
-xcx01: kicker, type = "class-4"
+xcx01: hkicker, type = "class-4"
 
 ! ==============================================================================
 ! YCORs
 ! ------------------------------------------------------------------------------
 
-ycx02: kicker, type = "class-4"
+ycx02: vkicker, type = "class-4"
 
 ! ==============================================================================
 ! BEAMLINE
@@ -112,7 +112,7 @@ ycx02: kicker, type = "class-4"
 
 
 
-!Old split line: line = (qx01, bpmx01, qx01)
+!Old split line: LINE=(QX01,BPMX01,QX01)
 
 qx01_full: line = (qx01)
 qx01[L] = 2*qx01[L]
@@ -120,17 +120,16 @@ bpmx01[superimpose] = T
 bpmx01[ref] = qx01
 
 
-!Old split line: line = (qx02, bpmx02, qx02)
+!Old split line: LINE=(QX02,BPMX02,QX02)
 
 qx02_full: line = (qx02)
 qx02[L] = 2*qx02[L]
 bpmx02[superimpose] = T
 bpmx02[ref] = qx02
 
-ext0: line = (begext, dx00, qx01, qx01, dx01, qx02, qx02, dx02, endext)
+  EXT0 : LINE=(BEGEXT,DX00,QX01,QX01,DX01,QX02,QX02,DX02,ENDEXT)
 
-ext: line = (begext, dx00, qx01_full, dx01a, xcx01, dx01b, rfbx02, dx01c, qx02_full, dx02a, ycx02 &
-        , dx02b, endext)
+  EXT : LINE=(BEGEXT,DX00,QX01_full,DX01a,XCX01,DX01b,RFBX02,DX01c,QX02_full,DX02a,YCX02,DX02b,ENDEXT)
 
 ! ------------------------------------------------------------------------------
 

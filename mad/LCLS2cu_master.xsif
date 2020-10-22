@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-01APR20 ***
+! *** OPTICS=AD_ACCEL-15OCT20 ***
 
 ! ------------------------------------------------------------------------------
 ! constants and global parameters
@@ -69,14 +69,25 @@
   CBETY :=   0.39093003939
   CALFY :=   0.551431596242E-2
 
-! initial Twiss at BEGCLTS
+! Twiss at the beginning of L3 linac
 
-  MBETXCUS := 14.228996031908 !14.230935994022
-  MALFXCUS := -0.492401053172 !-0.492407537024
-  MBETYCUS := 41.636547360478 !41.635541126271
-  MALFYCUS :=  2.277912409007 ! 2.277864883454
+  ENBEGL3 :=  5.0
+  BXBEGL3 := 11.063556098243
+  AXBEGL3 := -0.949687069393
+  BYBEGL3 := 70.645797110388
+  AYBEGL3 :=  2.189962742976
 
-! periodic Twiss in HXR dogleg cells (copy from LCLS2sc_main.mad8)
+! Twiss at the end of L3 linac (L3END)
+
+  ENENDL3 :=  8.0
+  BXENDL3 := 33.223271647948
+  AXENDL3 :=  1.179788571613
+  BYENDL3 := 62.179034958633
+  AYENDL3 := -1.656755986913
+
+! initial Twiss at BEGCLTS (see CUSXR.xsif)
+
+! periodic Twiss in HXR dogleg cells (@ MM1; copy from LCLS2sc_master.xsif)
 
   MBETXH := 48.911502413792
   MALFXH :=  3.141736059434
@@ -85,38 +96,26 @@
 
 ! match into HXR LTU emittance diagnostic section
 
-  BXEDh := 46.347592421655
-  AXEDh := -1.088004889273
-  BYEDh := 46.098656017174
-  AYEDh :=  1.08081945287
+  BXEDh := 46.225914290403
+  AXEDh := -1.084608326581
+  BYEDh := 46.225914290403
+  AYEDh :=  1.084608326581
 
-! Twiss at the beginning of L3 linac
+! match into SXR dogleg (@ MM1B)
 
-  ENBEGL3 :=  4.3
-  BXBEGL3 :=  1.106003893E+01
-  AXBEGL3 := -9.490138298E-01
-  BYBEGL3 :=  7.102804796E+01
-  AYBEGL3 :=  2.204492752E+00
+  MBETXS := 14.225768169159
+  MALFXS := -0.494962167072
+  MBETYS := 41.657375271635
+  MALFYS :=  2.281685862975
 
-! Twiss at the end of L3 linac (L3END)
+! Twiss at start of HXR cell #24
+! (full complement of undulators; Yuri match; TWISS, COUPLE, BETA0=TWSSmh)
 
-  ENENDL3 := 13.64
- !BXENDL3 := 33.136631364328
- !AXENDL3 :=  1.179540229644
- !BYENDL3 := 62.298526576063
- !AYENDL3 := -1.660316777995
-
- !uncoupled
- !BXENDL3 := 33.136631364327
- !AXENDL3 :=  1.179540229644
- !BYENDL3 := 62.298526576057
- !AYENDL3 := -1.660316777995
-
- !coupled
-  BXENDL3 := 33.141247960385
-  AXENDL3 :=  1.182309496676
-  BYENDL3 := 62.400972351791
-  AYENDL3 := -1.660808264783
+  ENHXRm :=  8.0
+  BXHXRm := 20.490094388158
+  AXHXRm :=  1.140342746628
+  BYHXRm := 15.097163649464
+  AYHXRm := -0.86968583842
 
 ! for matching ...
 
@@ -268,11 +267,11 @@
 
  !VALUE, Xf,Yf,Zf,THETAf,PHIf,PSIf,AVB
   
-! linac survey coordinates at BSY1BEG
+! linac survey coordinates at BSY1BEG (not used)
 
-  XBSY1  := -3.309620550E-07
-  ZBSY1  :=  3042.005
-  THBSY1 := -2.000049721E-12
+ !XBSY1  := -3.309620550E-07
+ !ZBSY1  :=  3042.005
+ !THBSY1 := -2.000049721E-12
 
 ! ------------------------------------------------------------------------------
 

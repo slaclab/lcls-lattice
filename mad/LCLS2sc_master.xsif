@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-01APR20 ***
+! *** OPTICS=AD_ACCEL-15OCT20 ***
 
 ! ------------------------------------------------------------------------------
 ! constants and global parameters
@@ -167,10 +167,10 @@
 
 ! match into HXR LTU emittance diagnostic section
 
-  BXEDh := 46.347592421655
-  AXEDh := -1.088004889273
-  BYEDh := 46.098656017174
-  AYEDh :=  1.08081945287
+  BXEDh := 46.225914290403
+  AXEDh := -1.084608326581
+  BYEDh := 46.225914290403
+  AYEDh :=  1.084608326581
 
 ! initial Twiss for SXR dogleg
 
@@ -179,12 +179,21 @@
   MBETYS := 47.120432391261
   MALFYS :=  2.555848494222
 
-! periodic Twiss in HXR dogleg cells
+! periodic Twiss in HXR dogleg cells (@ MM1)
 
   MBETXH := 48.911502413792
   MALFXH :=  3.141736059434
   MBETYH := 92.803659415654
   MALFYH :=  3.519158552438
+
+! Twiss at start of HXR cell #24
+! (full complement of undulators; Yuri match; TWISS, COUPLE, BETA0=TWSSmh)
+
+  ENHXRm :=  4.0
+  BXHXRm := 12.974739845251
+  AXHXRm :=  1.498073135623
+  BYHXRm :=  6.123426356819
+  AYHXRm := -0.747453073035
 
 ! ------------------------------------------------------------------------------
 ! load lattice definitions
@@ -203,8 +212,8 @@
   CALL, FILENAME="ALINE.xsif"
   CALL, FILENAME="BYP.xsif"
   CALL, FILENAME="LTU.xsif"
-  CALL, FILENAME="UND.xsif"
- !CALL, FILENAME="UND0.xsif"
+  CALL, FILENAME="UND.xsif"  !startup configuration
+ !CALL, FILENAME="UND0.xsif" !final configuration
   CALL, FILENAME="SFT.xsif"
   CALL, FILENAME="SXTES.xsif"
   CALL, FILENAME="DASEL.xsif"
