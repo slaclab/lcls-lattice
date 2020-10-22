@@ -1,11 +1,14 @@
 
-! *** OPTICS=AD_ACCEL-15OCT20 ***
+! *** OPTICS=AD_ACCEL-22OCT20 ***
 
 ! LCLS2sc undulator and undulator extension
 ! NOTE: "startup" configuration for HXR undulator (see UNDtemp.xsif)
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 28-OCT-2020, M. Woodley
+!  * install nominal LCLS-II HXR cells #19 and #20
 ! ------------------------------------------------------------------------------
 ! 19-OCT-2020, M. Woodley
 !  * install nominal LCLS-II HXR cells #22 and #23
@@ -1907,8 +1910,8 @@ kqdhxm = -2.482122917065
  !QHXh16 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, aperture=rQu
  !QHXh17 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, aperture=rQu
 qhxh18: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu
- !QHXh19 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, aperture=rQu
- !QHXh20 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, aperture=rQu
+qhxh19: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu
+qhxh20: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu
 qhxh21: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu
 qhxh22: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu
 qhxh23: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu
@@ -2159,8 +2162,8 @@ ychu46: instrument, type = "type-V"
  !RFBHX16 : MONI, L=LRFBub, TYPE="CavityX-1"
  !RFBHX17 : MONI, L=LRFBub, TYPE="CavityX-1"
 rfbhx18: monitor, l = lrfbub, type = "CavityX-1"
- !RFBHX19 : MONI, L=LRFBub, TYPE="CavityX-1"
- !RFBHX20 : MONI, L=LRFBub, TYPE="CavityX-1"
+rfbhx19: monitor, l = lrfbub, type = "CavityX-1"
+rfbhx20: monitor, l = lrfbub, type = "CavityX-1"
 rfbhx21: monitor, l = lrfbub, type = "CavityX-1"
 rfbhx22: monitor, l = lrfbub, type = "CavityX-1"
 rfbhx23: monitor, l = lrfbub, type = "CavityX-1"
@@ -3004,8 +3007,30 @@ muqh[superimpose] = T
 muqh[ref] = qhxh18
 ychx18[superimpose] = T
 ychx18[ref] = qhxh18
- !QHXh19_full : LINE=(QHXh19,XCHX19,MUQH,YCHX19,QHXh19)
- !QHXh20_full : LINE=(QHXh20,XCHX20,MUQH,YCHX20,QHXh20)
+
+
+!Old split line: LINE=(QHXh19,XCHX19,MUQH,YCHX19,QHXh19)
+
+qhxh19_full: line = (qhxh19)
+qhxh19[L] = 2*qhxh19[L]
+xchx19[superimpose] = T
+xchx19[ref] = qhxh19
+muqh[superimpose] = T
+muqh[ref] = qhxh19
+ychx19[superimpose] = T
+ychx19[ref] = qhxh19
+
+
+!Old split line: LINE=(QHXh20,XCHX20,MUQH,YCHX20,QHXh20)
+
+qhxh20_full: line = (qhxh20)
+qhxh20[L] = 2*qhxh20[L]
+xchx20[superimpose] = T
+xchx20[ref] = qhxh20
+muqh[superimpose] = T
+muqh[ref] = qhxh20
+ychx20[superimpose] = T
+ychx20[ref] = qhxh20
 
 
 !Old split line: LINE=(QHXh21,XCHX21,MUQH,YCHX21,QHXh21)
@@ -3401,13 +3426,12 @@ dqhx50: drift, l = lqu
   HXCEL49  : LINE=(DU1h,DU2h,DUSEGH49,HXBRK49) !empty with RFBPM
   HXCEL50  : LINE=(DU1h,DU2h,DUSEGH50,HXBRK50) !empty
 
-! LCLS-II post PAMM-5 (October 19-22, 2020) configuration
+! LCLS-II post PAMM-6 (October 28-30, 2020) configuration
 
  !comment
-  HXRCL    : LINE=(DGIRD01u,GIRD01,DBRSt,GIRD02,DBRSt,GIRD03,DBRL,GIRD04,DBRSt,GIRD05,DGIRD05d,HXCEL18,DGIRD07u,GIRD07,
-         DBRSt,GIRD08,DGIRD08d,HXCEL21,HXCEL22,HXCEL23,HXCEL24,HXCEL25,HXCEL26,HXCEL27,HXCEL28,HXCEL29,HXCEL30,HXCEL31,HXCEL32,
-         HXCEL33,HXCEL34,HXCEL35,HXCEL36,HXCEL37,HXCEL38,HXCEL39,HXCEL40,HXCEL41,HXCEL42,HXCEL43,HXCEL44,HXCEL45,HXCEL46,HXCEL47,
-         HXCEL48,HXCEL49,HXCEL50)
+  HXRCL    : LINE=(DGIRD01u,GIRD01,DBRSt,GIRD02,DBRSt,GIRD03,DBRL,GIRD04,DBRSt,GIRD05,DGIRD05d,HXCEL18,HXCEL19,HXCEL20,
+         HXCEL21,HXCEL22,HXCEL23,HXCEL24,HXCEL25,HXCEL26,HXCEL27,HXCEL28,HXCEL29,HXCEL30,HXCEL31,HXCEL32,HXCEL33,HXCEL34,HXCEL35,
+         HXCEL36,HXCEL37,HXCEL38,HXCEL39,HXCEL40,HXCEL41,HXCEL42,HXCEL43,HXCEL44,HXCEL45,HXCEL46,HXCEL47,HXCEL48,HXCEL49,HXCEL50)
  !endcomment
 
 ! LCLS-II final configuration
