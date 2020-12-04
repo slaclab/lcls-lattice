@@ -3688,6 +3688,115 @@ curve(2)%legend_text = 'Y'
 
 
 
+!!------------  energy2 (MeV) ------------
+
+&tao_template_plot
+  plot%name = 'energy2'
+  plot%x_axis_type = 's'
+  plot%x%label = 's (m)'
+  plot%n_graph = 1
+/
+
+&tao_template_graph
+  graph%name = 'energy'
+
+ !graph%title = 'Energy'
+ !graph%x%draw_numbers = .false.
+ !graph%x%draw_label = .false.
+  graph_index = 1
+
+  !graph%margin =  0.15, 0.05, 0.05, 0.0, '%BOX'
+  graph%margin =  0.15, 0.05, 0.05, 0.0, '%BOX'
+  graph%y%label = '\(0555) (MeV)'  ! \(0555) is caligraphic E
+  graph%y%label_offset=.4
+  graph%n_curve = 2
+
+  curve(1)%data_source = 'lattice'
+  curve(1)%data_type = 'orbit.e_tot'
+  curve(1)%y_axis_scale_factor = 1e-6
+  curve(1)%line%color='red'
+  curve(1)%line%width=2
+  curve(1)%draw_symbols=.false.
+  curve(1)%legend_text = 'Pass 1' 
+  curve(1)%ix_universe = 1
+  
+  curve(2)%data_source = 'lattice'
+  curve(2)%data_type = 'orbit.e_tot'
+  curve(2)%y_axis_scale_factor = 1e-6
+  curve(2)%line%color= 'blue'
+  curve(2)%line%width=2
+  curve(2)%draw_symbols=.false.
+  curve(2)%legend_text = 'Pass 2' 
+  curve(2)%ix_universe = 2  
+
+/
+
+!!------------ beta a b 2 ------------
+
+&tao_template_plot
+  plot%name = 'beta2'
+  plot%x_axis_type = 's'
+  plot%x%label = 's (m)'
+  plot%n_graph = 1
+/
+
+&tao_template_graph
+  graph%name = 'beta'
+
+ !graph%title = 'Lattice \gb functions'
+ !graph%x%draw_numbers = .false.
+ !graph%x%draw_label = .false.
+  graph_index = 1
+
+  graph%margin =  0.15, 0.05, 0.05, 0.0, '%BOX'
+  graph%y%label = '\gb\dx\u, \gb\dy\u (m)'
+  graph%y%label_offset=.4
+  graph%n_curve =4
+
+  curve(1)%data_source = 'lattice'
+  curve(1)%data_type   = 'beta.a'
+  curve(1)%y_axis_scale_factor = 1
+  curve(1)%line%color= 'RED'
+  curve(1)%line%width=2
+  curve(1)%draw_symbols=.false.
+  curve(1)%legend_text = '\gb\dx\u'
+  curve(1)%ix_universe=1
+  curve(1)%line%pattern = 'solid'
+
+  curve(2)%data_source = 'lattice'
+  curve(2)%data_type   = 'beta.b'
+  curve(2)%y_axis_scale_factor = 1
+  curve(2)%draw_symbols=.false.
+  curve(2)%line%color = 'GREEN'
+  curve(2)%line%width= 2
+  curve(2)%legend_text = '\gb\dy\u'
+  curve(2)%ix_universe=1
+  curve(2)%line%pattern = 'solid'  
+  
+  curve(3)%data_source = 'lattice'
+  curve(3)%data_type   = 'beta.a'
+  curve(3)%y_axis_scale_factor = 1
+  curve(3)%line%color= 'RED'
+  curve(3)%line%width=2
+  curve(3)%draw_symbols=.false.
+  curve(3)%legend_text = '\gb\dx\u'
+  curve(3)%ix_universe=2
+  curve(3)%line%pattern = 'dashed'
+
+  curve(4)%data_source = 'lattice'
+  curve(4)%data_type   = 'beta.b'
+  curve(4)%y_axis_scale_factor = 1
+  curve(4)%draw_symbols=.false.
+  curve(4)%line%color = 'GREEN'
+  curve(4)%line%width= 2
+  curve(4)%legend_text = '\gb\dy\u'
+  curve(4)%ix_universe=2
+  curve(4)%line%pattern = 'dashed'    
+    
+/
+
+
+
 !The Quick Plot line patterns (curve(1)%line%pattern= ) are: 
 !1 -- solid$ Solid 
 !2 -- dashed$ Dashed 
