@@ -1486,8 +1486,22 @@ r34xl1 = lundh
 r43xl1 = 0.0
 r44xl1 = 1.0
 
-umxl1h: taylor, type = "LCLS-I", l = lundh, tt11 = r11xl1, tt12 = r12xl1, tt21 = r21xl1, tt22 = r22xl1, tt33 = r33xl1,
-          tt34 = r34xl1, tt43 = r43xl1, tt44 = r44xl1
+
+!------- XLEAP-II wigglers -------
+umxl0h: wiggler, 
+        type = "LCLS-I",
+        L_period = 0.55, 
+        n_period = 6, 
+        b_max = 0, ! = K * 2*pi*m_electron / (c_light * 0.55), 
+        L = 6*0.55
+        !ds_step = 0.55*10
+                
+umxl0h[L] = umxl0h[L]/2 ! Will be doubled in desplitting process. 
+!---------------------------------
+
+umxl1h: umxl0h
+!old: umxl1h: taylor, type = "LCLS-I", l = lundh, tt11 = r11xl1, tt12 = r12xl1, tt21 = r21xl1, tt22 = r22xl1, tt33 = r33xl1,
+!old           tt34 = r34xl1, tt43 = r43xl1, tt44 = r44xl1
 
 r11xl2 = 1.0
 r12xl2 = lundh
@@ -1498,8 +1512,10 @@ r34xl2 = lundh
 r43xl2 = 0.0
 r44xl2 = 1.0
 
-umxl2h: taylor, type = "LCLS-I", l = lundh, tt11 = r11xl2, tt12 = r12xl2, tt21 = r21xl2, tt22 = r22xl2, tt33 = r33xl2,
-          tt34 = r34xl2, tt43 = r43xl2, tt44 = r44xl2
+
+umxl2h: umxl0h
+!old: umxl2h: taylor, type = "LCLS-I", l = lundh, tt11 = r11xl2, tt12 = r12xl2, tt21 = r21xl2, tt22 = r22xl2, tt33 = r33xl2,
+!old           tt34 = r34xl2, tt43 = r43xl2, tt44 = r44xl2
 
 r11xl3 = 1.0
 r12xl3 = lundh
@@ -1510,8 +1526,10 @@ r34xl3 = lundh
 r43xl3 = 0.0
 r44xl3 = 1.0
 
-umxl3h: taylor, type = "LCLS-I", l = lundh, tt11 = r11xl3, tt12 = r12xl3, tt21 = r21xl3, tt22 = r22xl3, tt33 = r33xl3,
-          tt34 = r34xl3, tt43 = r43xl3, tt44 = r44xl3
+
+umxl3h: umxl0h
+!old: umxl3h: taylor, type = "LCLS-I", l = lundh, tt11 = r11xl3, tt12 = r12xl3, tt21 = r21xl3, tt22 = r22xl3, tt33 = r33xl3,
+!old           tt34 = r34xl3, tt43 = r43xl3, tt44 = r44xl3
 
 r11xl4 = 1.0
 r12xl4 = lundh
@@ -1522,8 +1540,10 @@ r34xl4 = lundh
 r43xl4 = 0.0
 r44xl4 = 1.0
 
-umxl4h: taylor, type = "LCLS-I", l = lundh, tt11 = r11xl4, tt12 = r12xl4, tt21 = r21xl4, tt22 = r22xl4, tt33 = r33xl4,
-          tt34 = r34xl4, tt43 = r43xl4, tt44 = r44xl4
+
+umxl4h: umxl0h
+!old: umxl4h: taylor, type = "LCLS-I", l = lundh, tt11 = r11xl4, tt12 = r12xl4, tt21 = r21xl4, tt22 = r22xl4, tt33 = r33xl4,
+!old           tt34 = r34xl4, tt43 = r43xl4, tt44 = r44xl4
  !endcomment
 
 
@@ -1576,7 +1596,10 @@ qfxl2[L] = 2*qfxl2[L]
 
 ! wiggler pairs
 
-duqxl: drift, l = 0.2166
+
+! Extend to account for real WIGGLER elements for XLEAP
+duqxl: drift, L = 0.2166 + 0.03
+!old: duqxl: drift, l = 0.2166
 
   UMXLpair1 : LINE=(UMXL1h_full,DUQXL,QFXL1_full,DUQXL,UMXL2h_full)
   UMXLpair2 : LINE=(UMXL3h_full,DUQXL,QFXL2_full,DUQXL,UMXL4h_full)
