@@ -1,0 +1,198 @@
+&tao_start
+  n_universes = 1
+  plot_file   ='$LCLS_LATTICE/bmad/tao/tao_plot.init '
+!  startup_file='$LCLS_LATTICE/bmad/tao/tao.startup'
+ startup_file='LTUH.tao'
+/
+
+
+
+
+!--------------------------------------------------------
+&tao_design_lattice
+  !unique_name_suffix="*::_##?"
+  design_lattice(1)%file= 'lat.bmad'
+  
+ ! design_lattice(1)%slice_lattice = 'QVM1:DTDUND2'
+    design_lattice(1)%slice_lattice = 'QVM1:CEDL3'
+  
+  
+!  combine_consecutive_elements_of_like_name = T
+/
+
+!------------------------------------------------------------------------
+&tao_params
+  !global%plot_on = T
+  global%track_type = 'single'
+  global%beam_timer_on = T
+  global%random_engine = 'pseudo' ! or: 'quasi'
+  global%de_lm_step_ratio = 1500
+  global%optimizer = 'lmdif'
+  global%n_opti_cycles = 100
+  global%var_out_file = ''
+  !---Bmad---
+  bmad_com%radiation_damping_on = F
+  bmad_com%radiation_fluctuations_on = T
+/
+
+
+!&tao_beam_init
+!beam_init%random_engine = 'quasi'
+!ix_universe = 1
+!beam_saved_at =  "MARKER::*"
+!track_start = 'OTR2'
+!!track_end = 'DBMARK82'
+!!track_end = 'BC1CEND'
+!beam_init%position_file = '$LCLS_LATTICE/bmad/beams/OTR2_250pC_rescaleto540um_solGTF1M_flat_scattered_20keV_100k.beam0'
+!!beam_init%position_file = 'beam_1.hdf5'
+!beam_init%center(1) = 0.0
+!beam_init%center(2) = 0.0
+!beam_init%center(3) = 0.0
+!beam_init%center(4) = 0.0
+!beam_init%center(5) = 0.0
+!beam_init%center(6) = 0.0
+!
+!/
+!
+
+
+
+
+!----------------------------------------
+! Aperture for Orbit Plot
+
+
+&tao_d2_data 
+ d2_data%name = "aperture" 
+ universe = '*' 
+ n_d1_data=2 
+/ 
+&tao_d1_data 
+ ix_d1_data = 1 
+ d1_data%name = "p" 
+ ix_min_data = 0 
+ ix_max_data = 8000 
+ default_data_source      = 'lat' 
+ default_data_type     = 'element_attrib.x2_limit' 
+ search_for_lat_eles = 'rcollimator::*,marker::APERTURE_*'  ! Special apertures put into lattice file as markers
+/ 
+&tao_d1_data 
+ ix_d1_data = 2 
+ d1_data%name = "n" 
+ ix_min_data = 0 
+ ix_max_data = 8000 
+ default_data_source      = 'lat' 
+ default_data_type     = 'element_attrib.x1_limit' 
+ use_same_lat_eles_as = 'aperture.p' 
+/
+
+
+
+
+
+
+!----------------------------------------
+! Orbit 
+
+&tao_d2_data
+    d2_data%name = "orbit"
+    universe = 1
+    n_d1_data = 5
+/
+
+&tao_d1_data
+    ix_d1_data = 1
+    default_weight = 1
+    d1_data%name = 'x'
+    default_data_type = 'bpm_orbit.x'
+    default_data_source = 'lat'
+    search_for_lat_eles = "Monitor::BPM*"
+/
+
+&tao_d1_data
+    ix_d1_data = 2
+    default_weight = 1
+    d1_data%name = 'y'
+    default_data_type = 'bpm_orbit.y'
+    default_data_source = 'lat'
+    search_for_lat_eles = "Instrument::BPM*,Instrument::RFB*"
+/
+
+&tao_d1_data
+    ix_d1_data = 3
+    default_weight = 1
+    d1_data%name = 'profx'
+    default_data_type = 'orbit.x'
+    default_data_source = 'lat'
+    search_for_lat_eles = "Instrument::YAG*,Instrument::OTR*"
+/
+
+&tao_d1_data
+    ix_d1_data = 4
+    default_weight = 1
+    d1_data%name = 'profy'
+    default_data_type = 'orbit.y'
+    default_data_source = 'lat'
+    search_for_lat_eles = "Instrument::YAG*,Instrument::OTR*"
+/
+
+&tao_d1_data
+    ix_d1_data = 5
+    default_weight = 1
+    d1_data%name = 'e'
+    default_data_type = 'orbit.e_tot'
+    default_data_source = 'lat'
+    search_for_lat_eles = "Instrument::BPM*,Instrument::RFB*"
+/
+
+
+
+
+!----------------------------------------
+
+&tao_d2_data
+    d2_data%name = "loss"
+    universe = 1
+    n_d1_data = 2
+/
+
+&tao_d1_data
+
+  ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'point'
+        datum( 1) =  'orbit.x'     '' '' 'XCDL3'   'target' .034     1e1
+/
+
+
+&tao_d1_data
+
+  ix_d1_data =2
+        default_weight = 1
+        d1_data%name = 'unstable'
+        datum( 1) =  'unstable.orbit'     '' '' 'XCDL3'   'target' 1     1e10
+/
+
+
+
+
+!----------------------------------------
+!----------------------------------------
+
+
+&tao_var
+    v1_var%name = 'xcors'
+        default_step = 1e-2
+        default_attribute = 'bl_kick'
+       !  default_attribute = 'hkick'
+default_merit_type = 'target'
+        var(1:)%ele_name =  'XCVM2', 'XCVB2','XCVM3','XCDL1' ,'XCQT12','XCDL2' ,'XCQT22','XCDL3','XCQT32','XCDL4','XCQT42','XCEM2','XCEM4','XCE31','XCE33','XCE35','XCUM1','XCUM3'
+        var(1:)%high_lim = 6.000e-03, 3.000e-03, 6.000e-03, 6.000e-03, 0.000e+00, 6.000e-03, 1.200e-02, 6.000e-03, 8.950e-03, 8.950e-03, 1.200e-02, 6.000e-03, 6.000e-03, 6.000e-03, 6.000e-03, 6.000e-03, 6.000e-03, 6.000e-03
+        var(1:)%low_lim = -6.000e-03, -3.000e-03, -6.000e-03, -6.000e-03, -1.200e-02, -6.000e-03, 0.000e+00, -6.000e-03, -8.950e-03, -8.950e-03, -1.200e-02, -6.000e-03, -6.000e-03, -6.000e-03, -6.000e-03, -6.000e-03, -6.000e-03, -6.000e-03
+
+
+default_key_bound = T
+default_key_delta = 1e-4
+/
+
+
