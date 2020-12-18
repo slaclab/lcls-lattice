@@ -13,8 +13,8 @@
   !unique_name_suffix="*::_##?"
   design_lattice(1)%file= 'lat.bmad'
   
- ! design_lattice(1)%slice_lattice = 'QVM1:DTDUND2'
-    design_lattice(1)%slice_lattice = 'QVM1:CEDL3'
+  design_lattice(1)%slice_lattice = 'QVM1:DTDUND2'
+  !  design_lattice(1)%slice_lattice = 'QVM1:CEDL3'
   
   
 !  combine_consecutive_elements_of_like_name = T
@@ -153,24 +153,15 @@
 &tao_d2_data
     d2_data%name = "loss"
     universe = 1
-    n_d1_data = 2
+    n_d1_data = 1
 /
 
 &tao_d1_data
 
   ix_d1_data = 1
         default_weight = 1
-        d1_data%name = 'point'
-        datum( 1) =  'orbit.x'     '' '' 'XCDL3'   'target' .034     1e1
-/
-
-
-&tao_d1_data
-
-  ix_d1_data =2
-        default_weight = 1
-        d1_data%name = 'unstable'
-        datum( 1) =  'unstable.orbit'     '' '' 'XCDL3'   'target' 1     1e10
+        d1_data%name = 'rel_point'
+        datum( 1) =  'unstable.orbit'     '' '' 'CEDL3'   'target' 147     1e10  ! Reference element at the end, this is the ix requested loss before that. 
 /
 
 
