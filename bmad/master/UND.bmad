@@ -1,11 +1,14 @@
 
-! *** OPTICS=AD_ACCEL-22OCT20 ***
+! *** OPTICS=AD_ACCEL-22JAN21 ***
 
 ! LCLS2sc undulator and undulator extension
 ! NOTE: "startup" configuration for HXR undulator (see UNDtemp.xsif)
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 18-JAN-2021, M. Woodley
+!  * install final nominal LCLS-II HXR cells (#13, #14, #15, #16, and #17)
 ! ------------------------------------------------------------------------------
 ! 28-OCT-2020, M. Woodley
 !  * install nominal LCLS-II HXR cells #19 and #20
@@ -1597,10 +1600,10 @@ dqsx50: drift, l = lqu
 ! SXRSS-II BOD's
 
 du4sa: drift, l = 0.117258
-bod10: instrument, type = "Overlap Detector"
+bod10: monitor, type = "YAG" !Beam Overlap Device
 du4sb: drift, l = du4s[l]-du4sa[l]
 du7sa: drift, l = 0.078508
-bod12: instrument, type = "Overlap Detector"
+bod12: monitor, type = "YAG" !Beam Overlap Device
 du7sb: drift, l = du7s[l]-du7sa[l]
 
   SXBRK26 : LINE=(DU3s,PSSXh26_full,DU4s,VVSXU26,DU5s,QSXh26_full,DU6s,RFBSX26,DU7s)
@@ -1904,11 +1907,11 @@ kqfhx = 1.e-9*gqfhx*c_light/gamu/mc2 !m^-2
 kqdhx = 1.e-9*gqdhx*c_light/gamu/mc2 !m^-2
 kqdhxm = -2.482122917065
 
- !QHXh13 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, aperture=rQu
- !QHXh14 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, aperture=rQu
- !QHXh15 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, aperture=rQu
- !QHXh16 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, aperture=rQu
- !QHXh17 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, aperture=rQu
+qhxh13: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu
+qhxh14: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu
+qhxh15: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu
+qhxh16: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu
+qhxh17: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu
 qhxh18: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu
 qhxh19: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu
 qhxh20: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu
@@ -2156,11 +2159,11 @@ ychu46: instrument, type = "type-V"
 ! HXR undulator BPMs
 ! ------------------------------------------------------------------------------
 
- !RFBHX13 : MONI, L=LRFBub, TYPE="CavityX-1"
- !RFBHX14 : MONI, L=LRFBub, TYPE="CavityX-1"
- !RFBHX15 : MONI, L=LRFBub, TYPE="CavityX-1"
- !RFBHX16 : MONI, L=LRFBub, TYPE="CavityX-1"
- !RFBHX17 : MONI, L=LRFBub, TYPE="CavityX-1"
+rfbhx13: monitor, l = lrfbub, type = "CavityX-1"
+rfbhx14: monitor, l = lrfbub, type = "CavityX-1"
+rfbhx15: monitor, l = lrfbub, type = "CavityX-1"
+rfbhx16: monitor, l = lrfbub, type = "CavityX-1"
+rfbhx17: monitor, l = lrfbub, type = "CavityX-1"
 rfbhx18: monitor, l = lrfbub, type = "CavityX-1"
 rfbhx19: monitor, l = lrfbub, type = "CavityX-1"
 rfbhx20: monitor, l = lrfbub, type = "CavityX-1"
@@ -2988,13 +2991,66 @@ dusegh48: drift, l = ldusegh
 dusegh49: drift, l = ldusegh
 dusegh50: drift, l = ldusegh
 
-call, file = UNDtemp.bmad !old LCLS girder definitions
 
- !QHXh13_full : LINE=(QHXh13,XCHX13,MUQH,YCHX13,QHXh13)
- !QHXh14_full : LINE=(QHXh14,XCHX14,MUQH,YCHX14,QHXh14)
- !QHXh15_full : LINE=(QHXh15,XCHX15,MUQH,YCHX15,QHXh15)
- !QHXh16_full : LINE=(QHXh16,XCHX16,MUQH,YCHX16,QHXh16)
- !QHXh17_full : LINE=(QHXh17,XCHX17,MUQH,YCHX17,QHXh17)
+
+!Old split line: LINE=(QHXh13,XCHX13,MUQH,YCHX13,QHXh13)
+
+qhxh13_full: line = (qhxh13)
+qhxh13[L] = 2*qhxh13[L]
+xchx13[superimpose] = T
+xchx13[ref] = qhxh13
+muqh[superimpose] = T
+muqh[ref] = qhxh13
+ychx13[superimpose] = T
+ychx13[ref] = qhxh13
+
+
+!Old split line: LINE=(QHXh14,XCHX14,MUQH,YCHX14,QHXh14)
+
+qhxh14_full: line = (qhxh14)
+qhxh14[L] = 2*qhxh14[L]
+xchx14[superimpose] = T
+xchx14[ref] = qhxh14
+muqh[superimpose] = T
+muqh[ref] = qhxh14
+ychx14[superimpose] = T
+ychx14[ref] = qhxh14
+
+
+!Old split line: LINE=(QHXh15,XCHX15,MUQH,YCHX15,QHXh15)
+
+qhxh15_full: line = (qhxh15)
+qhxh15[L] = 2*qhxh15[L]
+xchx15[superimpose] = T
+xchx15[ref] = qhxh15
+muqh[superimpose] = T
+muqh[ref] = qhxh15
+ychx15[superimpose] = T
+ychx15[ref] = qhxh15
+
+
+!Old split line: LINE=(QHXh16,XCHX16,MUQH,YCHX16,QHXh16)
+
+qhxh16_full: line = (qhxh16)
+qhxh16[L] = 2*qhxh16[L]
+xchx16[superimpose] = T
+xchx16[ref] = qhxh16
+muqh[superimpose] = T
+muqh[ref] = qhxh16
+ychx16[superimpose] = T
+ychx16[ref] = qhxh16
+
+
+!Old split line: LINE=(QHXh17,XCHX17,MUQH,YCHX17,QHXh17)
+
+qhxh17_full: line = (qhxh17)
+qhxh17[L] = 2*qhxh17[L]
+xchx17[superimpose] = T
+xchx17[ref] = qhxh17
+muqh[superimpose] = T
+muqh[ref] = qhxh17
+ychx17[superimpose] = T
+ychx17[ref] = qhxh17
 
 
 !Old split line: LINE=(QHXh18,XCHX18,MUQH,YCHX18,QHXh18)
@@ -3402,7 +3458,7 @@ dqhx50: drift, l = lqu
   HXCEL25  : LINE=(DU1h,DU2h,USEGHX25,HXBRK25)
   HXCEL26  : LINE=(DU1h,DU2h,USEGHX26,HXBRK26)
   HXCEL27  : LINE=(DU1h,DU2h,USEGHX27,HXBRK27)
-  HXCEL28  : LINE=(DU1h,DU2h,DUSEGH28,HXBRK28) !empty with Q+RFBPM
+  HXCEL28  : LINE=(DU1h,DU2h,DUSEGH28,HXBRK28) !empty with Q+RFBPM+HXRSS
   HXCEL29  : LINE=(DU1h,DU2h,USEGHX29,HXBRK29)
   HXCEL30  : LINE=(DU1h,DU2h,USEGHX30,HXBRK30)
   HXCEL31  : LINE=(DU1h,DU2h,USEGHX31,HXBRK31)
@@ -3426,25 +3482,11 @@ dqhx50: drift, l = lqu
   HXCEL49  : LINE=(DU1h,DU2h,DUSEGH49,HXBRK49) !empty with RFBPM
   HXCEL50  : LINE=(DU1h,DU2h,DUSEGH50,HXBRK50) !empty
 
-! LCLS-II post PAMM-6 (October 28-30, 2020) configuration
-
- !comment
-  HXRCL    : LINE=(DGIRD01u,GIRD01,DBRSt,GIRD02,DBRSt,GIRD03,DBRL,GIRD04,DBRSt,GIRD05,DGIRD05d,HXCEL18,HXCEL19,HXCEL20,
-         HXCEL21,HXCEL22,HXCEL23,HXCEL24,HXCEL25,HXCEL26,HXCEL27,HXCEL28,HXCEL29,HXCEL30,HXCEL31,HXCEL32,HXCEL33,HXCEL34,HXCEL35,
-         HXCEL36,HXCEL37,HXCEL38,HXCEL39,HXCEL40,HXCEL41,HXCEL42,HXCEL43,HXCEL44,HXCEL45,HXCEL46,HXCEL47,HXCEL48,HXCEL49,HXCEL50)
- !endcomment
-
 ! LCLS-II final configuration
 
-!=!  comment
-!=!  comment
-!=!  HXRCL    : LINE=(&
-!=!    HXCEL13,HXCEL14,HXCEL15,HXCEL16,HXCEL17,HXCEL18,HXCEL19,HXCEL20,&
-!=!    HXCEL21,HXCEL22,HXCEL23,HXCEL24,HXCEL25,HXCEL26,HXCEL27,HXCEL28,&
-!=!    HXCEL29,HXCEL30,HXCEL31,HXCEL32,HXCEL33,HXCEL34,HXCEL35,HXCEL36,&
-!=!    HXCEL37,HXCEL38,HXCEL39,HXCEL40,HXCEL41,HXCEL42,HXCEL43,HXCEL44,&
-!=!    HXCEL45,HXCEL46,HXCEL47,HXCEL48,HXCEL49,HXCEL50)
-!=!  endcomment
+  HXRCL    : LINE=(HXCEL13,HXCEL14,HXCEL15,HXCEL16,HXCEL17,HXCEL18,HXCEL19,HXCEL20,HXCEL21,HXCEL22,HXCEL23,HXCEL24,
+         HXCEL25,HXCEL26,HXCEL27,HXCEL28,HXCEL29,HXCEL30,HXCEL31,HXCEL32,HXCEL33,HXCEL34,HXCEL35,HXCEL36,HXCEL37,HXCEL38,HXCEL39,
+         HXCEL40,HXCEL41,HXCEL42,HXCEL43,HXCEL44,HXCEL45,HXCEL46,HXCEL47,HXCEL48,HXCEL49,HXCEL50)
 
   HXR : LINE=(DU0h,DU8h,HXRSTART,HXRCL,RWWAKE5H,HXRTERM,DUE1a,RFBHX51,DUE1e,ENDUNDH)
 
