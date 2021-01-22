@@ -1,6 +1,6 @@
-  TITLE, "AD_ACCEL (October 23, 2020)" ! copper linac
+  TITLE, "AD_ACCEL (January 22, 2021)" ! copper linac
 
-! *** OPTICS=AD_ACCEL-23OCT20 ***
+! *** OPTICS=AD_ACCEL-22JAN21 ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY
   ASSIGN, ECHO="LCLS2cu.echo"
@@ -196,23 +196,22 @@
   SETK2cuH : SUBROUTINE !for LCLS2cuH
 
   ! set quad strengths for 8 GeV Cu-linac beam to DMPH
-  ! (rematch into HXR with QUM1-4 ... missing undulators)
 
     SET, KQ50Q3,  0.384840836193
     SET, KQ4,    -0.219396715005
     SET, KQ5,     0.165708852383
     SET, KQ6,    -0.113569101471
     SET, KQA0,    0.109210100868
-  !                  rematch       Yuri (8.0/2.0)
-  !              ---------------  ---------------
-    SET, KQUM1,   0.272553098847 ! 0.272741408897
-    SET, KQUM2,  -0.263599579651 !-0.270601268265
-    SET, KQUM3,   0.262980025439 ! 0.278762678373
-    SET, KQUM4,  -0.246652106195 !-0.247470889897
-    SET, kQDHXm,                  -1.734624260269
-    SET, KQUE1,                    0.169109252491
-    SET, KQUE2,                   -0.137840816238
-    SET, KQDMP,                   -0.155212710055
+  !               Yuri (8.0/2.0)
+  !              ---------------
+    SET, KQUM1,   0.272741408897
+    SET, KQUM2,  -0.270601268265
+    SET, KQUM3,   0.278762678373
+    SET, KQUM4,  -0.247470889897
+    SET, kQDHXm, -1.734624260269
+    SET, KQUE1,   0.169109252491
+    SET, KQUE2,  -0.137840816238
+    SET, KQDMP,  -0.155212710055
   ENDSUBROUTINE
 
   SETK2cuS : SUBROUTINE !for LCLS2cuS
@@ -256,48 +255,6 @@
     SET, KQ38,    0.035190121249
   ENDSUBROUTINE
 
-! XLEAP-II optics
-
-  SETK2XL2 : SUBROUTINE !8 GeV
-    SET, SETXLEAP2, 0 !turn off XLEAP chicane and XLEAP wiggler
-    ! turn on all 4 modified undulators (8.0 GeV R-matrix)
-    SET, R11XL1,  1.024433796036150 
-    SET, R12XL1,  1.678538794967410 
-    SET, R21XL1,  0.029468846719147 
-    SET, R22XL1,  R11XL1
-    SET, R33XL1,  0.975763600637818 
-    SET, R34XL1,  1.651526938083830 
-    SET, R43XL1, -0.028994619806734 
-    SET, R44XL1,  R33XL1
-    SET, R11XL2,  R11XL1 ; SET, R11XL3, R11XL1 ; SET, R11XL4, R11XL1
-    SET, R12XL2,  R12XL1 ; SET, R12XL3, R12XL1 ; SET, R12XL4, R12XL1
-    SET, R21XL2,  R21XL1 ; SET, R21XL3, R21XL1 ; SET, R21XL4, R21XL1
-    SET, R22XL2,  R22XL1 ; SET, R22XL3, R22XL1 ; SET, R22XL4, R22XL1
-    SET, R33XL2,  R33XL1 ; SET, R33XL3, R33XL1 ; SET, R33XL4, R33XL1
-    SET, R34XL2,  R34XL1 ; SET, R34XL3, R34XL1 ; SET, R34XL4, R34XL1
-    SET, R43XL2,  R43XL1 ; SET, R43XL3, R43XL1 ; SET, R43XL4, R43XL1
-    SET, R44XL2,  R44XL1 ; SET, R44XL3, R44XL1 ; SET, R44XL4, R44XL1
-    SET, KQEM2B, -1.90691592871
-    SET, KQEM3B,  1.191623728587
-    SET, KQEM4B, -0.664838884251
-    SET, KQE31B,  0.230547717948
-    SET, KQFXL1,  1.111758049867
-    SET, KQFXL2,  0.860443402996
-    SET, KQE36B, -0.077408092485
-    SET, KQUM1B,  0.434691947164
-    SET, KQUM2B, -0.548225028845
-    SET, KQUM3B,  0.621296994427
-    SET, KQUM4B, -0.628731651054
-    SET, KQSX16,  0.543960817976
-    SET, KQSX19, -0.861045437853
-    SET, KQSX21,  1.018046151755
-    SET, KQSX24, -1.016332178809
-   !SET, KQDSXM, -1.490999999792 !dump not matched
-   !SET, KQUE1B,  0.305069257552
-   !SET, KQUE2B, -0.118056311812
-   !SET, KQDMPB, -0.154946553294
-  ENDSUBROUTINE
-
 ! ------------------------------------------------------------------------------
 
   COMMENT !for testing the online Matlab model
@@ -332,14 +289,6 @@
     TWISS, BETA0=TWSSC, TAPE="LCLS2cuS_twiss.tape", &
       RTAPE="LCLS2cuS_rmat.tape"
 
-    SET, SETCUS, CUSON !pulsed
-    SETK2cuS
-    SETK2XL2
-    BEAM, ENERGY=E00
-    USE, CU_SXR
-    TWISS, BETA0=TWSSC, TAPE="LCLS2cuS-XL2_twiss.tape", &
-      RTAPE="LCLS2cuS-XL2_rmat.tape"
-
     STOP
   ENDCOMMENT
 
@@ -354,6 +303,7 @@
 ! ------------------------------------------------------------------------------
 
  !CALL, FILENAME="LCLS2cu_match.mad8"
+ !CALL, FILENAME="LCLS2cu_XLEAP.mad8"
  !CALL, FILENAME="RDB/LCLS2cu_makeSymbols.mad8"
  !CALL, FILENAME="elegant/LCLS2cu_makeElegant.mad8" !use LCLS_L*e.xsif
 
@@ -427,7 +377,6 @@
    !SET, SETCUS, CUSONDC !DC
    !VALUE, PULSED,DCMODE
     SETK2cuS
-   !SETK2XL2 !turns on XLEAP2 components and optics
     USE, CU_SXR
    !SAVELINE, NAME="CU_SXR", FILENAME="LCLS2cuS.saveline"
     PRINT, FULL
