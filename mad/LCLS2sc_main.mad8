@@ -1,6 +1,6 @@
-  TITLE, "AD_ACCEL (October 23, 2020)" ! superconducting linac
+  TITLE, "AD_ACCEL (January 22, 2021)" ! superconducting linac
 
-! *** OPTICS=AD_ACCEL-23OCT20 ***
+! *** OPTICS=AD_ACCEL-22JAN21 ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY, DOUBLE
   ASSIGN, ECHO="LCLS2sc.echo"
@@ -445,51 +445,11 @@
     SET, KQ38,  0.034027229146
   ENDSUBROUTINE
 
-! XLEAP-II optics
-
-  SETK2XL2 : SUBROUTINE
-    SET, SETXLEAP2, 0 !turn off XLEAP chicane and XLEAP wiggler
-    ! turn on all 4 modified undulators (4.0 GeV R-matrix)
-    SET, R11XL1,  1.098929204922070
-    SET, R12XL1,  1.719551869522400
-    SET, R21XL1,  0.120755530037211
-    SET, R22XL1,  R11XL1
-    SET, R33XL1,  0.904229208659358
-    SET, R34XL1,  1.611499871655030
-    SET, R43XL1, -0.113167578486975
-    SET, R44XL1,  R33XL1
-    SET, R11XL2,  R11XL1 ; SET, R11XL3, R11XL1 ; SET, R11XL4, R11XL1
-    SET, R12XL2,  R12XL1 ; SET, R12XL3, R12XL1 ; SET, R12XL4, R12XL1
-    SET, R21XL2,  R21XL1 ; SET, R21XL3, R21XL1 ; SET, R21XL4, R21XL1
-    SET, R22XL2,  R22XL1 ; SET, R22XL3, R22XL1 ; SET, R22XL4, R22XL1
-    SET, R33XL2,  R33XL1 ; SET, R33XL3, R33XL1 ; SET, R33XL4, R33XL1
-    SET, R34XL2,  R34XL1 ; SET, R34XL3, R34XL1 ; SET, R34XL4, R34XL1
-    SET, R43XL2,  R43XL1 ; SET, R43XL3, R43XL1 ; SET, R43XL4, R43XL1
-    SET, R44XL2,  R44XL1 ; SET, R44XL3, R44XL1 ; SET, R44XL4, R44XL1
-    SET, KQEM2B, -1.880605524021
-    SET, KQEM3B,  2.069752927129
-    SET, KQEM4B, -1.862484558251
-    SET, KQE31B, -0.213564559953
-    SET, KQFXL1,  3.87518025077
-    SET, KQFXL2,  3.389784667405
-    SET, KQE36B,  0.469447247291
-    SET, KQUM1B, -1.300105092094
-    SET, KQUM2B,  1.062637967695
-    SET, KQUM3B,  0.411987391197
-    SET, KQUM4B, -0.609598137628
-    SET, KQSX16,  0.327498660924
-    SET, KQSX19, -0.853095089845
-    SET, KQSX21,  1.241589295738
-    SET, KQSX24, -1.336331499694
-   !SET, KQDSXM, -1.490999999792 !dump not matched
-   !SET, KQUE1B,  0.305069257552
-   !SET, KQUE2B, -0.118056311812
-   !SET, KQDMPB, -0.154946553294
-  ENDSUBROUTINE
-
+! ==============================================================================
+! for testing the online Matlab model
 ! ------------------------------------------------------------------------------
 
-  COMMENT !for testing the online Matlab model
+  COMMENT
     BEAM, ENERGY=E0
     USE, SC_EIC
     TWISS, COUPLE, BETA0=TWSS0, TAPE="EIC_twiss.tape", &
@@ -535,7 +495,6 @@
       RTAPE="LCLS2scDi_rmat.tape"
 
     SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
-    SETK2XL2
     BEAM, ENERGY=E0
     USE, SC_SXR
     TWISS, COUPLE, BETA0=TWSS0, TAPE="LCLS2scS-XL2_twiss.tape", &
@@ -560,6 +519,7 @@
 
  !CALL, FILENAME="LCLS2sc_beams.mad8" !alternate beams & configurations
  !CALL, FILENAME="LCLS2sc_match.mad8"
+ !CALL, FILENAME="LCLS2sc_XLEAP.mad8"
  !CALL, FILENAME="RDB/LCLS2sc_makeSymbols.mad8"
  !CALL, FILENAME="elegant/LCLS2sc_makeElegant.mad8"
 
@@ -593,7 +553,6 @@
     PRINT, FULL
     SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scS_survey.tape"
     BEAM, ENERGY=Ei
-   !SETK2XL2 !turns on XLEAP2 components and optics
     USE, SC_SXRi
     PRINT, FULL
     TWISS, SAVE, BETA0=TWSSi, TAPE="LCLS2scS_twiss.tape" !, &
@@ -856,7 +815,7 @@
 
 ! ------------------------------------------------------------------------------
 
-! DASEL (deferred)
+! S30XL (a.k.a. DASEL)
 
  !COMMENT
     ASSIGN, PRINT="BSY-LCLS2scDA.print"

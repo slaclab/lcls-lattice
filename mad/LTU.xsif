@@ -1,13 +1,16 @@
 
-! *** OPTICS=AD_ACCEL-23OCT20 ***
+! *** OPTICS=AD_ACCEL-22JAN21 ***
 
 ! LCLS2sc LTU and dump
 
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
-! 20-OCT-2020, M. Woodley
-!  * rename OTRDL18 to YAGDL18 (TYPE="YAG-PAL")
+! 14-JAN-2021, M. Woodley
+!  * move RFBHX12 9.373 mm u/s per G. Gassner
+! ------------------------------------------------------------------------------
+! 08-OCT-2020, M. Woodley
+!  * rename OTRDL18 to YAGDL18 (TYPE="YAG-PAL") and undefer per B. Jacobson
 ! ------------------------------------------------------------------------------
 ! 05-OCT-2020, M. Woodley
 !  * add XLEAP quadrupoles QFXL1 and QFXL2
@@ -1002,7 +1005,7 @@
   PCTDKIK4S : ECOL, TYPE="@5,BCS PC", L=LPCTDKIK, &
                     XSIZE=11.1125E-3, YSIZE=11.1125E-3
 
-  YAGDL18 : PROF, TYPE="@3,YAG-PAL"
+  YAGDL18 : PROF, TYPE="YAG-PAL"
 
   PC01B  : INST, TYPE="BCS plate", L=Lplate
   BTM01B : INST, TYPE="PPS BTM"
@@ -2657,7 +2660,7 @@
 
   RFBHX12 : MONI, L=LRFBub, TYPE="CavityX-1"
 
-  DMUON4  : DRIF, L=0.059608016
+  DMUON4  : DRIF, L=0.059608016 +0.009373
   DMUON3  : DRIF, L=0.310592 -0.05 -DMUON4[L] -LRFBub
 
 ! dechirper installation (August, 2015)
@@ -3064,17 +3067,10 @@
 ! note: the below K-values come from Y. Nosochkov's UNDH_KQ4_USDS.xsif file,
 !       for E= 4.0 GeV and KHXU= 2.0 (IntgHX= 30.0 kG)
 
- !KQUM1 :=  0.21295276718  !UNDH_KQ4_USDS.xsif (Eu=4.0, KHXU=2.0)
- !KQUM2 := -0.256692261825 !UNDH_KQ4_USDS.xsif (Eu=4.0, KHXU=2.0)
- !KQUM3 :=  0.472597881562 !UNDH_KQ4_USDS.xsif (Eu=4.0, KHXU=2.0)
- !KQUM4 := -0.42682658336  !UNDH_KQ4_USDS.xsif (Eu=4.0, KHXU=2.0)
-
-! note: KQUM1-4 have been rematched (missing undulators in HXR)
-
-  KQUM1 :=  0.19571185928  !Eu=4.0, KHXU=2.0
-  KQUM2 := -0.232404307364 !Eu=4.0, KHXU=2.0
-  KQUM3 :=  0.473924417931 !Eu=4.0, KHXU=2.0
-  KQUM4 := -0.434402112235 !Eu=4.0, KHXU=2.0
+  KQUM1 :=  0.21295276718  !UNDH_KQ4_USDS.xsif (Eu=4.0, KHXU=2.0)
+  KQUM2 := -0.256692261825 !UNDH_KQ4_USDS.xsif (Eu=4.0, KHXU=2.0)
+  KQUM3 :=  0.472597881562 !UNDH_KQ4_USDS.xsif (Eu=4.0, KHXU=2.0)
+  KQUM4 := -0.42682658336  !UNDH_KQ4_USDS.xsif (Eu=4.0, KHXU=2.0)
 
   QUM1 : QUAD, TYPE="1.26Q12", L=LQA/2, K1=KQUM1, APER=rQA
   QUM2 : QUAD, TYPE="1.26Q12", L=LQA/2, K1=KQUM2, APER=rQA

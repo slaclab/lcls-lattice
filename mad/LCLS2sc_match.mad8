@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-23OCT20 ***
+! *** OPTICS=AD_ACCEL-22JAN21 ***
 
 ! LCLS2sc matching routines
 
@@ -46,8 +46,8 @@
 
   KmaxSb  := 870.00/(Brhof*LSb) !max |K2| @ Ef for 1.38S3.00
 
-  VALUE, KmaxQR,KmaxQA,KmaxQM,KmaxQz,KmaxQE,KmaxQx,KmaxQu
-  VALUE, KmaxSb
+ !VALUE, KmaxQR,KmaxQA,KmaxQM,KmaxQz,KmaxQE,KmaxQx,KmaxQu
+ !VALUE, KmaxSb
 
   GLmaxQUM := 100 !BMAX = 100 kG @ 120 A (bipolar)
   KmaxQUM  := GLmaxQUM/LQA/(Cb*4) !max |K1| @ 4 GeV for QUM1-4
@@ -58,89 +58,93 @@
 ! Injector/Linac matching
 ! ------------------------------------------------------------------------------
 
-  ML0E : SUBROUTINE !check final energy
+  ML0E : SUBROUTINE
     BEAM, ENERGY=E0
     USE, (GUN,L0)
-    SAVEBETA, TWSSm, #E
-    PRINT, FULL
-    TWISS, COUPLE, BETA0=TWSS0, SAVE, TAPE="twiss.tape"
-    VALUE, TWSSm[ENERGY]
+    VALUE, FracL0,G014
+    MATCH, BETX=1, BETY=1
+      VARY, FracL0, STEP=1.E-6
+      WEIGHT, ENERGY=1
+      CONSTR, #E, ENERGY=Ei
+     !LMDIF, TOL=1.E-20, CALLS=10000
+     !MIGRAD, TOL=1.E-20, CALLS=10000
+    ENDMATCH
+    VALUE, FracL0,G014
+    BEAM, ENERGY=E0
+    USE, (GUN,L0)
+    TWISS, BETX=1, BETY=1, SAVE, TAPE="twiss.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
-      STYLE=100, SPLINE=.F., FILE="match"
+      STYLE=100, -SPLINE, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
 
   ML1E : SUBROUTINE
-    VALUE, FracL1,GradL1
     BEAM, ENERGY=Ei
     USE, L1
+    VALUE, FracL1
     MATCH, BETX=1, BETY=1
       VARY, FracL1, STEP=1.E-6
-     !VARY, GradL1, STEP=1.E-6
       WEIGHT, ENERGY=1
       CONSTR, #E, ENERGY=E1
      !LMDIF, TOL=1.E-20, CALLS=10000
      !MIGRAD, TOL=1.E-20, CALLS=10000
     ENDMATCH
-    VALUE, E1,FracL1,GradL1,GradL1/FracL1,100*(1-FracL1)
-    BEAM, ENERGY=Ei
+    VALUE, FracL1
     USE, L1
-    TWISS, BETX=1, BETY=1, SAVE
+    TWISS, BETX=1, BETY=1, SAVE, TAPE="twiss.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
-      STYLE=100, SPLINE=.F., FILE="match"
+      STYLE=100, -SPLINE, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
 
   ML2E : SUBROUTINE
-    VALUE, FracL2,GradL2
     BEAM, ENERGY=E1
     USE, L2
+    VALUE, FracL2
     MATCH, BETX=1, BETY=1
       VARY, FracL2, STEP=1.E-6
-     !VARY, GradL2, STEP=1.E-6
       WEIGHT, ENERGY=1
       CONSTR, #E, ENERGY=E2
      !LMDIF, TOL=1.E-20, CALLS=10000
      !MIGRAD, TOL=1.E-20, CALLS=10000
     ENDMATCH
-    VALUE, E2,FracL2,GradL2,GradL2/FracL2,100*(1-FracL2)
+    VALUE, FracL2
     BEAM, ENERGY=E1
     USE, L2
-    TWISS, BETX=1, BETY=1, SAVE
+    TWISS, BETX=1, BETY=1, SAVE, TAPE="twiss.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
-      STYLE=100, SPLINE=.T., FILE="L2"
+      STYLE=100, -SPLINE, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
 
   ML3E : SUBROUTINE
-    VALUE, FracL3,GradL3
     BEAM, ENERGY=E2
     USE, L3
+    VALUE, FracL3
     MATCH, BETX=1, BETY=1
       VARY, FracL3, STEP=1.E-6
-     !VARY, GradL3, STEP=1.E-6
       WEIGHT, ENERGY=1
       CONSTR, #E, ENERGY=Ef
      !LMDIF, TOL=1.E-20, CALLS=10000
      !MIGRAD, TOL=1.E-20, CALLS=10000
     ENDMATCH
-    VALUE, Ef,FracL3,GradL3,GradL3/FracL3,100*(1-FracL3)
+    VALUE, FracL3
     BEAM, ENERGY=E2
     USE, L3
-    TWISS, BETX=1, BETY=1, SAVE
+    TWISS, BETX=1, BETY=1, SAVE, TAPE="twiss.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
-      STYLE=100, SPLINE=.T., FILE="L3"
+      STYLE=100, -SPLINE, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
 
   MCMfodo1 : SUBROUTINE
-    VALUE, KQCMfodo1
     BEAM, ENERGY=1
     USE, CMfodo1
+    VALUE, KQCMfodo1
     CELL
       VARY, KQCMfodo1, STEP=1.E-6
       CONSTR, #E, MUX=45/360, MUY=45/360
@@ -155,15 +159,15 @@
     SET, BYCMfodo1, TWSSm[BETY]
     VALUE, BXCMfodo1,BYCMfodo1
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE=.T., FILE="match"
+      STYLE=100, SPLINE, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
 
   MCMfodo2 : SUBROUTINE
-    VALUE, KQCMfodo2
     BEAM, ENERGY=1
     USE, CMfodo2
+    VALUE, KQCMfodo2
     CELL
       VARY, KQCMfodo2, STEP=1.E-6
       CONSTR, #E, MUX=30/360, MUY=30/360
@@ -178,15 +182,15 @@
     SET, BYCMfodo2, TWSSm[BETY]
     VALUE, BXCMfodo2,BYCMfodo2
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE=.T., FILE="match"
+      STYLE=100, SPLINE, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
 
   MCMfodo3 : SUBROUTINE
-    VALUE, KQCMfodo3
     BEAM, ENERGY=1
     USE, CMfodo3
+    VALUE, KQCMfodo3
     CELL
       VARY, KQCMfodo3, STEP=1.E-6
       CONSTR, #E, MUX=30/360, MUY=30/360
@@ -201,15 +205,15 @@
     SET, BYCMfodo3, TWSSm[BETY]
     VALUE, BXCMfodo3,BYCMfodo3
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE=.T., FILE="match"
+      STYLE=100, SPLINE, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
 
   MC0fodo : SUBROUTINE
-    VALUE, KQColl0
     BEAM, ENERGY=E1
     USE, C0fodo
+    VALUE, KQColl0
     CELL
       VARY, KQColl0, STEP=1.E-6
       CONSTR, #E, MUX=45/360
@@ -225,15 +229,15 @@
    !PRINT, FULL
     TWISS, BETA0=TWSSm, SAVE
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE=.T., FILE="match"
+      STYLE=100, SPLINE, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
 
   MC1fodo : SUBROUTINE
-    VALUE, KQColl1
     BEAM, ENERGY=E1
     USE, C1fodo
+    VALUE, KQColl1
     CELL
       VARY, KQColl1,   STEP=1.E-6
       CONSTR, #E, MUX=45/360
@@ -249,16 +253,16 @@
    !PRINT, FULL
     TWISS, BETA0=TWSSm, SAVE
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE=.T., FILE="match"
+      STYLE=100, SPLINE, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
 
   MHEATER : SUBROUTINE !match with heater undulator OFF
-    VALUE, ABh,ZhBBo
     BEAM, ENERGY=Ei
     USE, LSRHTR
     SET, K_und, 0
+    VALUE, ABh,ZhBBo
     MATCH, BETX=1, BETY=1
       VARY, ABh, STEP=1.E-6, LOWER=0
      !VARY, ZhBBo, STEP=1.E-6
@@ -275,15 +279,15 @@
     SURVEY
     TWISS, BETX=1, BETY=1, SAVE
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE=.F., FILE="match"
+      STYLE=100, -SPLINE, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
 
   MBC1 : SUBROUTINE
-    VALUE, AB1
     BEAM, ENERGY=E1
     USE, BC1c
+    VALUE, AB1
     MATCH, BETX=1, BETY=1, SURVEY
       VARY, AB1, STEP=1.E-6, UPPER=0
       RMATRIX, #S/#E, RM(5,6)=R56BC1, WEIGHT(5,6)=1
@@ -297,15 +301,15 @@
     SURVEY
     TWISS, BETX=1, BETY=1, SAVE
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE=.F., FILE="match"
+      STYLE=100, -SPLINE, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
 
   MBC2 : SUBROUTINE
-    VALUE, AB2
     BEAM, ENERGY=E2
     USE, BC2c
+    VALUE, AB2
     MATCH, BETX=1, BETY=1, SURVEY
       VARY, AB2, STEP=1.E-6, LOWER=0
       RMATRIX, #S/#E, RM(5,6)=R56BC2, WEIGHT(5,6)=1
@@ -319,16 +323,16 @@
     SURVEY
     TWISS, BETX=1, BETY=1, SAVE
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE=.F., FILE="match"
+      STYLE=100, -SPLINE, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
 
   MCCDLU : SUBROUTINE
-    VALUE, ABCXDLU0
     BEAM, ENERGY=Ef
     USE, CCDLU
     SET, ABCXDLU, ABCXDLU0
+    VALUE, ABCXDLU
     MATCH, BETX=1, BETY=1
       VARY, ABCXDLU, STEP=1.E-6, LOWER=0
       RMATRIX, #S/#E, RM(5,6)=R56CCDLU, WEIGHT(5,6)=1
@@ -339,16 +343,16 @@
    !PRINT, FULL
     TWISS, BETX=1, BETY=1, SAVE
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE=.F., FILE="match"
+      STYLE=100, -SPLINE, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
 
   MCCDLD : SUBROUTINE
-    VALUE, ABCXDLD0
     BEAM, ENERGY=Ef
     USE, CCDLD
     SET, ABCXDLD, ABCXDLD0
+    VALUE, ABCXDLD
     MATCH, BETX=1, BETY=1
       VARY, ABCXDLD, STEP=1.E-6, LOWER=0
       RMATRIX, #S/#E, RM(5,6)=R56CCDLD, WEIGHT(5,6)=1
@@ -359,15 +363,15 @@
    !PRINT, FULL
     TWISS, BETX=1, BETY=1, SAVE
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE=.F., FILE="match"
+      STYLE=100, -SPLINE, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
 
   MASTRA : SUBROUTINE
-    VALUE, Lastra,DCAP0da[L],DCAP0db[L]
     BEAM, ENERGY=E0
     USE, (GUN,L0)
+    VALUE, Lastra,DCAP0da[L],DCAP0db[L]
     MATCH, SURVEY, ZS=Zgun
       VARY, Lastra, STEP=1.E-6
       WEIGHT, ZS=1
@@ -385,10 +389,10 @@
 ! ------------------------------------------------------------------------------
 
   MTWSS0a : SUBROUTINE
-    SET, QCM01[K1], 0
-    VALUE, BX0,AX0,BY0,AY0
     BEAM, ENERGY=E0
     USE, (GUN,L0)
+    SET, QCM01[K1], 0
+    VALUE, BX0,AX0,BY0,AY0
     MATCH, BETA0=TWSS0
       VARY, BX0, STEP=1.E-6, LOWER=0
       VARY, AX0, STEP=1.E-6
@@ -427,7 +431,6 @@
       VARY, AY0, STEP=1.E-6
       CONSTR, BEAM0, BETX=BXi, ALFX=AXi, BETY=BYi, ALFY=AYi
      !LMDIF, TOL=1.E-20, CALLS=10000
-     !SIMPLEX
      !MIGRAD, TOL=1.E-20, CALLS=10000
     ENDMATCH
     VALUE, BX0,AX0,BY0,AY0
@@ -435,19 +438,18 @@
     USE, (GUN,L0)
    !PRINT, FULL
     SAVEBETA, TWSSi, BEAM0
-    SAVEBETA, TWSSm, ASTRA
+    SAVEBETA, TWSSa, ASTRA
     TWISS, COUPLE, BETA0=TWSS0
     SHOW, TWSSi
-    SHOW, TWSSm
-   !VALUE, TWSSm[ENERGY],TWSSm[BETX],TWSSm[ALFX],TWSSm[BETY],TWSSm[ALFY]
+    SHOW, TWSSa
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
 
   ML0LH : SUBROUTINE
-    VALUE, QCM01[K1],KQ0H01,KQ0H02,KQ0H03,KQ0H04
     BEAM, ENERGY=Ei
     USE, (LCLS2scI,HTR)
+    VALUE, QCM01[K1],KQ0H01,KQ0H02,KQ0H03,KQ0H04
     MATCH, BETA0=TWSSi
       VARY, QCM01[K1], STEP=1.E-6, LOWER=0
       VARY, KQ0H01,    STEP=1.E-6, UPPER=0
@@ -479,18 +481,18 @@
     SURVEY, Z0=3.91419
     TWISS, COUPLE, BETA0=TWSSi, SAVE, TAPE="twiss.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE=.T., VMIN=0, FILE="match"
+      STYLE=100, SPLINE, VMIN=0, FILE="match"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE=.F., VMIN=0, FILE="match"
+      STYLE=100, -SPLINE, VMIN=0, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
 
   MLHD0 : SUBROUTINE
-    VALUE, KQHD01,KQHD02,KQHD03,KQHD04
-    VALUE, DHD00[L],DHD01[L],DHD02[L],DHD03[L],DHD04[L]
     BEAM, ENERGY=Ei
     USE, (LCLS2scI,HTR,DIAG0)
+    VALUE, KQHD01,KQHD02,KQHD03,KQHD04
+    VALUE, DHD00[L],DHD01[L],DHD02[L],DHD03[L],DHD04[L]
     MATCH, BETA0=TWSSi
       VARY, KQHD01,   STEP=1.E-6, UPPER=0
       VARY, KQHD02,   STEP=1.E-6, LOWER=0
@@ -513,19 +515,19 @@
     SURVEY, X0=Xgun, Y0=Ygun, Z0=Zi, TAPE="survey.tape"
     TWISS, COUPLE, BETA0=TWSSi, SAVE, TAPE="twiss.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE=.T., FILE="match" !, RANGE=#S/SEQ01END
+      STYLE=100, SPLINE, FILE="match" !, RANGE=#S/SEQ01END
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE=.F., FILE="match", RANGE=BEGHTR/#E
+      STYLE=100, -SPLINE, FILE="match", RANGE=BEGHTR/#E
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE=.T., FILE="match", RANGE=BEGHTR/#E
+      STYLE=100, SPLINE, FILE="match", RANGE=BEGHTR/#E
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
 
   MD0Coll0 : SUBROUTINE
-    VALUE, KQC001,KQC002,KQC003,KQC004
     BEAM, ENERGY=Ei
     USE, (LCLS2scI,HTR,COL0,L1)
+    VALUE, KQC001,KQC002,KQC003,KQC004
     MATCH, BETA0=TWSSi, SURVEY, ZS=Zi
       VARY, KQC001,   STEP=1.E-6 !, LOWER=0
       VARY, KQC002,   STEP=1.E-6 !, LOWER=0
@@ -553,7 +555,7 @@
     SURVEY, X0=Xgun, Y0=Ygun, Z0=Zi, TAPE="survey.tape"
     TWISS, COUPLE, BETA0=TWSSi, SAVE, TAPE="twiss.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE=.T., FILE="match", RANGE=COL0 !ENDHTR/CXC03
+      STYLE=100, SPLINE, FILE="match", RANGE=COL0 !ENDHTR/CXC03
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
@@ -580,10 +582,10 @@
      !MIGRAD, TOL=1.E-20, CALLS=10000
     ENDMATCH
     VALUE, KQC010,KQC011,KQC012,QCM02[K1],QCM03[K1],KQ1C01
-    VALUE, KQC101,KQC102,KQC103,KQC104,KQC105
-    VALUE, DC102[L],DC103[L],DC104[L]
     BEAM, ENERGY=Ei
     USE, (LCLS2scI,HTR,COL0,L1,BC1,COL1)
+    VALUE, KQC101,KQC102,KQC103,KQC104,KQC105
+    VALUE, DC102[L],DC103[L],DC104[L]
     MATCH, BETA0=TWSSi
       VARY, KQC101,   STEP=1.E-6, UPPER=0
       VARY, KQC102,   STEP=1.E-6, LOWER=0
@@ -607,24 +609,24 @@
     PRINT, FULL
     TWISS, BETA0=TWSSi, SAVE, TAPE="twiss.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=#S/BC1BcEND, &
-      STYLE=100, SPLINE=.T., FILE="match"
+      STYLE=100, SPLINE, FILE="match"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=BC1BcEND/QC110[1], &
-      STYLE=100, SPLINE=.T., FILE="match"
+      STYLE=100, SPLINE, FILE="match"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=#S/QC110[1], &
-      STYLE=100, SPLINE=.T., FILE="match"
+      STYLE=100, SPLINE, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
 
   MColl1L2 : SUBROUTINE
+    BEAM, ENERGY=Ei
+    USE, (LCLS2scI,HTR,COL0,L1,BC1)
     SET, QCM13[K1],  KQCMfodo2
     SET, QCM14[K1], -KQCMfodo2
     SET, QCM15[K1],  KQCMfodo2
     VALUE, KQC110,KQC111,KQC112
     VALUE, QCM04[K1],QCM05[K1],QCM06[K1],QCM07[K1],QCM08[K1],QCM09[K1]
     VALUE, QCM10[K1],QCM11[K1],QCM12[K1]
-    BEAM, ENERGY=Ei
-    USE, (LCLS2scI,HTR,COL0,L1,BC1)
     SAVEBETA, TWSSm, #E
     TWISS, COUPLE, BETA0=TWSSi
     BEAM, ENERGY=TWSSm[ENERGY]
@@ -645,8 +647,8 @@
       VARY, QCM12[K1], STEP=1.E-6, UPPER=0
       CONSTR, QC111[1], BETY<45
       CONSTR, QC112[1], BETX<55
-      CONSTR, QCM04[1], BETY<65 !=BXCMfodo2
-      CONSTR, QCM05[1], BETX<65 !=BXCMfodo2
+      CONSTR, QCM04[1], BETY<69 !=BXCMfodo2
+      CONSTR, QCM05[1], BETX<69 !=BXCMfodo2
       CONSTR, QCM06[1], BETY=BXCMfodo2
       CONSTR, QCM07[1], BETX=BXCMfodo2
       CONSTR, QCM08[1], BETY=BXCMfodo2
@@ -683,7 +685,7 @@
     TWISS, COUPLE, SAVE, TAPE="twiss.tape", &
       BETX=TWSSm[BETX], ALFX=TWSSm[ALFX], BETY=TWSSm[BETY], ALFY=TWSSm[ALFY]
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE=.T., FILE="match"
+      STYLE=100, SPLINE, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
@@ -693,9 +695,9 @@
     USE, (LCLS2scI,HTR,COL0,L1,BC1,COL1)
     SAVEBETA, TWSSm, #E
     TWISS, COUPLE, BETA0=TWSSi
-    VALUE, QCM13[K1],QCM14[K1],QCM15[K1],KQ2C01
     BEAM, ENERGY=TWSSm[ENERGY]
     USE, (L2,BC2)
+    VALUE, QCM13[K1],QCM14[K1],QCM15[K1],KQ2C01
     MATCH, &
       BETX=TWSSm[BETX], ALFX=TWSSm[ALFX], BETY=TWSSm[BETY], ALFY=TWSSm[ALFY]
       VARY, QCM13[K1], STEP=1.E-6, LOWER=0
@@ -713,7 +715,7 @@
     TWISS, COUPLE, SAVE, TAPE="twiss.tape", &
       BETX=TWSSm[BETX], ALFX=TWSSm[ALFX], BETY=TWSSm[BETY], ALFY=TWSSm[ALFY]
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE=.T., FILE="match", RANGE=CMB06/#E
+      STYLE=100, SPLINE, FILE="match", RANGE=CMB06/#E
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
@@ -724,10 +726,10 @@
     SAVEBETA, TWSSm, #E
     TWISS, COUPLE, BETA0=TWSSi
    !VALUE, TWSSm[ENERGY]
-    VALUE, KQE201,KQE202
-    VALUE, DE201[L],DE202a[L]
     BEAM, ENERGY=TWSSm[ENERGY]
     USE, (L2,BC2,EMIT2)
+    VALUE, KQE201,KQE202
+    VALUE, DE201[L],DE202a[L]
     MATCH, &
       BETX=TWSSm[BETX], ALFX=TWSSm[ALFX], BETY=TWSSm[BETY], ALFY=TWSSm[ALFY]
       VARY, KQE201,    STEP=1.E-6, UPPER=0, LOWER=-16.0/LQX/BRHO2
@@ -735,7 +737,7 @@
      !VARY, DE201[L],  STEP=1.E-6, LOWER=0.5
      !VARY, DE202a[L], STEP=1.E-6, LOWER=0.5, UPPER=11
       CONSTR, WSEMIT2, ALFX=0, ALFY=0 !, BETX=6, BETY=6
-     !LMDIF, TOL=1.E-20, CALLS=1000
+     !MDIF, TOL=1.E-20, CALLS=1000
      !MIGRAD, TOL=1.E-20, CALLS=1000
     ENDMATCH
     VALUE, KQE201,KQE202
@@ -746,7 +748,7 @@
     TWISS, COUPLE, SAVE, TAPE="twiss.tape", &
       BETX=TWSSm[BETX], ALFX=TWSSm[ALFX], BETY=TWSSm[BETY], ALFY=TWSSm[ALFY]
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=EMIT2, &
-      STYLE=100, SPLINE=.T., FILE="match"
+      STYLE=100, SPLINE, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
@@ -757,12 +759,12 @@
     SAVEBETA, TWSSm, #E
     TWISS, COUPLE, BETA0=TWSSi
    !VALUE, TWSSm[ENERGY]
+    BEAM, ENERGY=TWSSm[ENERGY]
+    USE, (L2,BC2,EMIT2,L3)
     SET, QCM24[K1], -KQCMfodo3
     SET, QCM25[K1],  KQCMfodo3
     VALUE, KQE203,KQE204
     VALUE, QCM16[K1],QCM17[K1],QCM18[K1],QCM19[K1],QCM20[K1]
-    BEAM, ENERGY=TWSSm[ENERGY]
-    USE, (L2,BC2,EMIT2,L3)
     MATCH, &
       BETX=TWSSm[BETX], ALFX=TWSSm[ALFX], BETY=TWSSm[BETY], ALFY=TWSSm[ALFY]
       VARY, KQE203,    STEP=1.E-6, UPPER=0
@@ -806,7 +808,7 @@
     TWISS, COUPLE, SAVE, TAPE="twiss.tape", &
       BETX=TWSSm[BETX], ALFX=TWSSm[ALFX], BETY=TWSSm[BETY], ALFY=TWSSm[ALFY]
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=WSEMIT2/CM26END, &
-      STYLE=100, SPLINE=.T., FILE="match"
+      STYLE=100, SPLINE, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
@@ -816,6 +818,8 @@
     USE, (LCLS2scI,HTR,COL0,L1,BC1,COL1,L2,BC2)
     SAVEBETA, TWSSm, #E
     TWISS, COUPLE, BETA0=TWSSi
+    BEAM, ENERGY=TWSSm[ENERGY]
+    USE, (EMIT2,L3)
     SET, QCM29[K1],  KQCMfodo3
     SET, QCM30[K1], -KQCMfodo3
     SET, QCM31[K1],  KQCMfodo3
@@ -824,8 +828,6 @@
     SET, QCM34[K1], -KQCMfodo3
     SET, QCM35[K1],  KQCMfodo3
     VALUE, QCM24[K1],QCM25[K1],QCM26[K1],QCM27[K1]
-    BEAM, ENERGY=TWSSm[ENERGY]
-    USE, (EMIT2,L3)
     MATCH, &
       BETX=TWSSm[BETX], ALFX=TWSSm[ALFX], BETY=TWSSm[BETY], ALFY=TWSSm[ALFY]
       VARY, QCM24[K1], STEP=1.E-6, UPPER=0
@@ -859,15 +861,15 @@
     TWISS, COUPLE, SAVE, TAPE="twiss.tape", &
       BETX=TWSSm[BETX], ALFX=TWSSm[ALFX], BETY=TWSSm[BETY], ALFY=TWSSm[ALFY]
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=WSEMIT2/ECD, &
-      STYLE=100, SPLINE=.T., FILE="match"
+      STYLE=100, SPLINE, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
 
   MDLGEO : SUBROUTINE
     BEAM, ENERGY=Ef
-    VALUE, ANGA,ROLLA,AROBRB1,LTOTA
     USE, DLBP
+    VALUE, ANGA,ROLLA,AROBRB1,LTOTA
     MATCH, BETX=1, BETY=1, SURVEY, XS=Xgun, YS=Ygun
       VARY, ANGA,    STEP=1.E-6
       VARY, ROLLA,   STEP=1.E-6, LOWER=-PI/2, UPPER=0
@@ -889,8 +891,8 @@
 
   MDLDXY : SUBROUTINE
     BEAM, ENERGY=Ef
-    VALUE, KQDOG,dLDBD
     USE, (QDOG1,DBD1,QDOG2,QDOG2,DBD1,QDOG1)
+    VALUE, KQDOG,dLDBD
     MATCH
       VARY, KQDOG, STEP=1.E-6, LOWER=0
       CONSTR, #E, MUX=0.25
@@ -910,15 +912,15 @@
     SURVEY, X0=Xgun, Y0=Ygun
     TWISS, BETX=BXDLm, ALFX=AXDLm, BETY=BYDLm, ALFY=AYDLm, SAVE
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE=.T., FILE="match"
+      STYLE=100, SPLINE, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
 
   MDLBXY : SUBROUTINE
     BEAM, ENERGY=Ef
-    VALUE, BXDLm,AXDLm,BYDLm,AYDLm
     USE, DLBP
+    VALUE, BXDLm,AXDLm,BYDLm,AYDLm
     MATCH, BETX=BXDLm, ALFX=AXDLm, BETY=BYDLm, ALFY=AYDLm
       VARY, BXDLm, STEP=1.E-6, LOWER=0
       VARY, AXDLm, STEP=1.E-6
@@ -933,7 +935,7 @@
    !PRINT, FULL
     TWISS, BETX=BXDLm, ALFX=AXDLm, BETY=BYDLm, ALFY=AYDLm, SAVE
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE=.T., FILE="match"
+      STYLE=100, SPLINE, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
@@ -965,15 +967,15 @@
     TWISS, CHROM, SAVE=CHROM, TAPE="chrom.tape", &
       BETX=BXDLm, ALFX=AXDLm, BETY=BYDLm, ALFY=AYDLm
     PLOT, TABLE=CHROM, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE=.T., FILE="match"
+      STYLE=100, SPLINE, FILE="match"
     PLOT, TABLE=CHROM, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE=.F., FILE="match"
+      STYLE=100, -SPLINE, FILE="match"
     PLOT, TABLE=CHROM, HAXIS=S, VAXIS=DDX,DDY, &
-      STYLE=100, SPLINE=.F., FILE="match"
+      STYLE=100, -SPLINE, FILE="match"
     PLOT, TABLE=CHROM, HAXIS=S, VAXIS=DDPX,DDPY, &
-      STYLE=100, SPLINE=.F., FILE="match"
+      STYLE=100, -SPLINE, FILE="match"
     PLOT, TABLE=CHROM, HAXIS=S, VAXIS=WX,WY, &
-      STYLE=100, SPLINE=.F., FILE="match"
+      STYLE=100, -SPLINE, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
@@ -1033,9 +1035,9 @@
     TWISS, COUPLE, SAVE, TAPE="twiss.tape", &
       BETX=TWSSm[BETX], ALFX=TWSSm[ALFX], BETY=TWSSm[BETY], ALFY=TWSSm[ALFY]
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=CM29BEG/CNTDOG, &
-      STYLE=100, SPLINE=.T., FILE="match"
+      STYLE=100, SPLINE, FILE="match"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE=.T., FILE="match"
+      STYLE=100, SPLINE, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
@@ -1061,10 +1063,10 @@
 ! ------------------------------------------------------------------------------
 
   MDLBYP : SUBROUTINE
-    VALUE, KQL1P,KQL2P,KQL3P,KQL4P,KQL5P
-    VALUE, LL0,LL1,LL2,LL3,LL4
     BEAM, ENERGY=Ef
     USE, (DLBP,MTCH1,FODOLa)
+    VALUE, KQL1P,KQL2P,KQL3P,KQL4P,KQL5P
+    VALUE, LL0,LL1,LL2,LL3,LL4
     MATCH, BETX=BXDLm, ALFX=AXDLm, BETY=BYDLm, ALFY=AYDLm
       VARY, KQL1P, STEP=1.E-4 !, LOWER= 0    , UPPER=0.332
       VARY, KQL2P, STEP=1.E-4 !, LOWER=-0.250, UPPER=0
@@ -1095,11 +1097,11 @@
     SURVEY, X0=Xgun, Y0=Ygun, Z0=Zdog
     TWISS, BETX=BXDLm, ALFX=AXDLm, BETY=BYDLm, ALFY=AYDLm, SAVE
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=#S/MQBP13, &
-      STYLE=100, SPLINE=.T., FILE="match"
+      STYLE=100, SPLINE, FILE="match"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, RANGE=#S/MQBP13, &
-      STYLE=100, SPLINE=.T., FILE="match"
+      STYLE=100, SPLINE, FILE="match"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE=.T., FILE="match"
+      STYLE=100, SPLINE, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
@@ -1177,9 +1179,9 @@
     TWISS, COUPLE, SAVE, TAPE="twiss.tape", &
       BETX=TWSSm[BETX], ALFX=TWSSm[ALFX], BETY=TWSSm[BETY], ALFY=TWSSm[ALFY]
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE=.T., FILE="match"
+      STYLE=100, SPLINE, FILE="match"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=DX, VAXIS2=DY, &
-      STYLE=100, SPLINE=.T., FILE="match"
+      STYLE=100, SPLINE, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
@@ -1203,10 +1205,6 @@
     PRINT, FULL
     SURVEY, X0=Xgun, Y0=Ygun, Z0=Zdg0, TAPE="survey.tape"
   ENDSUBROUTINE
-
-! ------------------------------------------------------------------------------
-
- !CALL, FILENAME="XLEAP2/XLEAP2match.mad8"
 
 ! ==============================================================================
 ! Bypass/LTU matching
@@ -2219,6 +2217,7 @@ ENDCOMMENT
 ! XLEAP matching
 ! ------------------------------------------------------------------------------
 
+  comment
   MXLEAP : SUBROUTINE !match from XLEAP-II wiggler section into UNDS
     VALUE, Ef,Eu,Brhof
     BEAM, ENERGY=Ef
@@ -2278,6 +2277,7 @@ ENDCOMMENT
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
       STYLE=100, SPLINE, RANGE=VBOUTB/DU7S[31], FILE="match"
   ENDSUBROUTINE
+  endcomment
 
 ! ==============================================================================
 ! HXR matching
@@ -3337,8 +3337,6 @@ ENDCOMMENT
  !MDLBYP
  !MDIAG0
  !MBPMDG000
-
- !MXLEAP
 
 ! ------------------------------------------------------------------------------
 
