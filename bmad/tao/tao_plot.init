@@ -653,32 +653,21 @@ plot_page%size = 800, 400
 
 &tao_template_graph
   graph%name = 'orbit'
-
- !graph%title = 'Lattice orbit'
- !graph%x%draw_numbers = .false.
- !graph%x%draw_label = .false.
   graph_index = 1
-
   graph%margin =  0.15, 0.05, 0.05, 0.0, '%BOX'
-  graph%y%label = 'Orbit (mm)'
+  graph%y%label = 'Orbit X (mm)'
   graph%y%label_offset=.1
   graph%n_curve = 3
+  graph%y%min = -24
+  graph%y%max =  24
 
-  graph%y%min = -20
-  graph%y%max =  20
-
-
- curve(1)%data_source = 'data' 
- curve(1)%data_type = 'aperture.n' 
-! curve(1)%legend_text = 'physical aperture' 
+ curve(1)%data_type = 'aperture.-x' 
  curve(1)%smooth_line_calc = F 
  curve(1)%line%color = 'Black'
  curve(1)%line%width = 10 
- curve(1)%y_axis_scale_factor = -1000
+ curve(1)%y_axis_scale_factor = 1000
 
- curve(2)%data_source = 'data' 
- curve(2)%data_type = 'aperture.p' 
- !curve(2)%legend_text = 'physical aperture' 
+ curve(2)%data_type = 'aperture.+x' 
  curve(2)%smooth_line_calc = F 
  curve(2)%line%color = 'Black'
  curve(2)%line%width = 10 
@@ -695,6 +684,45 @@ plot_page%size = 800, 400
   
 /
 
+&tao_template_plot
+  plot%name = 'orbit_aperture_y'
+  plot%x_axis_type = 's'
+  plot%x%label = 's (m)'
+  plot%n_graph = 1
+/
+
+&tao_template_graph
+  graph%name = 'orbit'
+  graph_index = 1
+  graph%margin =  0.15, 0.05, 0.05, 0.0, '%BOX'
+  graph%y%label = 'Orbit Y (mm)'
+  graph%y%label_offset=.1
+  graph%n_curve = 3
+  graph%y%min = -24
+  graph%y%max =  24
+
+ curve(1)%data_type = 'aperture.-y' 
+ curve(1)%smooth_line_calc = F 
+ curve(1)%line%color = 'Black'
+ curve(1)%line%width = 10 
+ curve(1)%y_axis_scale_factor = 1000
+
+ curve(2)%data_type = 'aperture.+y' 
+ curve(2)%smooth_line_calc = F 
+ curve(2)%line%color = 'Black'
+ curve(2)%line%width = 10 
+ curve(2)%y_axis_scale_factor = 1000
+
+  curve(3)%data_source = 'lattice'
+  curve(3)%data_type   = 'orbit.x'
+  curve(3)%y_axis_scale_factor = 1
+  curve(3)%line%color = 'blue'
+  curve(3)%line%width= 2
+  curve(3)%draw_symbols=.false.
+  curve(3)%legend_text = 'orbit.y'
+  curve(3)%y_axis_scale_factor = 1000
+  
+/
 
 
 
