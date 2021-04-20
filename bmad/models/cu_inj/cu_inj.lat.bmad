@@ -1,0 +1,49 @@
+
+! Makes L0BBEG correct
+BEGINNING[BETA_A] =   1.51417606703273E+00
+BEGINNING[ALPHA_A] =  -1.60406910641986E-01
+BEGINNING[BETA_B] =   1.53986428507105E+00
+BEGINNING[ALPHA_B] =  -1.63793752798038E-01
+
+
+beginning[e_tot] = 6e6
+parameter[geometry] = open
+parameter[particle] = electron
+
+! WOODDOOR should be at:
+! X Y Z =  0 0  3050.512000
+
+beginning[theta_position] = -35*pi/180
+beginning[z_position] = 3050.512000 - 1032.60052
+beginning[x_position] = 10.44893
+
+call, file = $LCLS_LATTICE/bmad/master/CU_HXR.bmad
+call, file = $LCLS_LATTICE/bmad/master/LCLScu_devicenames.bmad
+
+
+! Cavity wakefields, traveling wave, full sbend
+
+
+! Matches Impact
+
+QA01[k1] = -8.6773946E+00
+QA02[k1] =  8.6773946E+00
+
+QE01[k1] = -4.1571519E-01
+QE02[k1] = -3.6885840E-01
+QE03[k1] = 5.8646487E+00
+QE04[k1] = -6.6176883E+00
+
+
+lcavity::L0*[sr_wake]  = call::$LCLS_LATTICE/bmad/wakefields/longitudinal_wakes_sband.bmad
+lcavity::*[cavity_type] = traveling_wave
+sbend::*[fringe_type] = full
+
+
+
+
+
+
+use, cu_spec !start at gun
+
+

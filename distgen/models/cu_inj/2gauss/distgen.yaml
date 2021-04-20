@@ -1,0 +1,50 @@
+n_particle: 100000
+random_type: hammersley
+
+start:
+  type: cathode
+  MTE:
+    value: 414
+    units: meV    
+
+total_charge:
+  value: 250
+  units: pC
+    
+r_dist:
+  n_sigma_cutoff: 1.5
+  sigma_xy:
+    value: 0.4
+    units: mm
+  type: radial_gaussian
+
+t_dist:
+  type: superposition
+  dists: 
+    d1: 
+      type: gaussian
+      avg_t:
+        units: ps
+        value: 0
+      sigma_t:
+        units: ps
+        value: 1
+      n_sigma_cutoff: 5  
+    d2: 
+      type: gaussian
+      avg_t:
+        units: ps
+        value: 2
+      sigma_t:
+        units: ps
+        value: 1
+      n_sigma_cutoff: 5
+  
+
+# Re-center
+transforms:
+  t1:
+    avg_t:
+      units: ps
+      value:  0
+    type: set_avg t

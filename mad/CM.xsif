@@ -1,10 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-01APR20 ***
+! *** OPTICS=AD_ACCEL-22JAN21 ***
 
 ! LCLS2sc linacs: L0, L1, L2 L3
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 16-JAN-2021, M. Woodley
+!  * new standard configuration per Y. Ding
 ! ------------------------------------------------------------------------------
 ! 02-NOV-2018, M. Woodley
 !  * L0 gradients and phases from 100 pC ASTRA run, per C. Mayes
@@ -133,66 +136,46 @@
   CcavLa   := CcavL/2-Ccav22cp !cavity #2 length u/s of support post
   CcavLb   := CcavL-CcavLa     !cavity #2 length d/s of support post
   
-  FracL1 :=    0.993584966016 !100*(1-FracL1)= L1 overhead (%)
-  GradL1 :=   11.1*FracL1
-  PhasL1 :=  -19.2
-  GHcav  :=    9.053035
-  PHcav  := -148.97
-  FracL2 :=    0.986958273387 !100*(1-FracL2)= L2 overhead (%)
-  GradL2 :=   14.9*FracL2
-  PhasL2 :=  -20.75
-  FracL3 :=    0.944734910147 !100*(1-FracL3)= L3 overhead (%)
-  GradL3 :=   15.3*FracL3
-  PhasL3 :=    0.0
+  FracL0 := 3.18748889257 !Ei=100 MeV
+  AmplL1 := 231.0 !MV
+  FracL1 := 0.999806824006 !E1=250 MeV
+  GradL1 := FracL1*AmplL1/(2*8*LcavL) !MV/m (2 8-cavity CM's)
+  PhasL1 := -24.9 !degrees
+  AHcav  := 60.0 !MV
+  GHcav  := AHcav/(2*8*CcavL) !MV/m (2 8-cavity CM's)
+  PHcav  := -172.5 !degrees
+  AmplL2 := 1479.0 !MV
+  FracL2 := 0.903789787524 !E2=1.500 GeV
+  GradL2 := FracL2*AmplL2/(12*8*LcavL) !MV/m (12 8-cavity CM's)
+  PhasL2 := -20.75 !degrees
+  AmplL3 := 2500.0 !MV
+  FracL3 := 1.0 !Ef=4.000 GeV
+  GradL3 := FracL3*AmplL3/(20*8*LcavL) !MV/m (20 8-cavity CM's)
+  PhasL3 := 0.0
 
  !VALUE, 100*(1-FracL1),100*(1-FracL2),100*(1-FracL3)
 
-! L0 (new settings from reference 100 pC Astra run July 2017 per C. Mayes)
+! Cavity gradients (MV/m)
+
+  G011 :=  6.32
+  G012 :=  1.58
+  G013 :=  9.47
+  G014 :=  3.68*FracL0
+  G015 := 16.6
+  G016 := 16.6
+  G017 := 16.6
+  G018 := 16.6
   
-! Maximum E_z in MV/m from Astra optimization
+! Cavity phases (deg)
 
-  L011_scale := 15.8
-  L012_scale :=  0   ! off
-  L013_scale :=  0   ! off
-  L014_scale := 28   
-  L015_scale := 32 
-  L016_scale := 32
-  L017_scale := 32
-  L018_scale := 32 
-  
-! Phases (deg)
-
-  P011 := -4.0
-  P012 :=  0 
-  P013 :=  0 
-  P014 :=  0
-  P015 :=  0
-  P016 :=  0
-  P017 :=  1.25
-  P018 :=  6.0
-
-! Fix scaling to end up with final injection energy Ei:   
-
-  L0_factor1 := L011_scale*COS(RADDEG*P011)+ &
-                L012_scale*COS(RADDEG*P012)+ &
-                L013_scale*COS(RADDEG*P013)+ &  
-                L014_scale*COS(RADDEG*P014)
-  L0_factor2 := L015_scale*COS(RADDEG*P015)+ &
-                L016_scale*COS(RADDEG*P016)+ &
-                L017_scale*COS(RADDEG*P017)+ &
-                L018_scale*COS(RADDEG*P018)    
-
- !L0_scale := 1.0E3*(Ei-(E0+MC2))/(L0_factor1+L0_factor2)/LcavL
-  L0_scale := 1.0E3*(Ei- E0     )/(L0_factor1+L0_factor2)/LcavL
-
-  G011 := L011_scale*L0_scale 
-  G012 := L012_scale*L0_scale 
-  G013 := L013_scale*L0_scale 
-  G014 := L014_scale*L0_scale 
-  G015 := L015_scale*L0_scale 
-  G016 := L016_scale*L0_scale 
-  G017 := L017_scale*L0_scale 
-  G018 := L018_scale*L0_scale 
+  P011 :=  -2
+  P012 := -20 
+  P013 :=  +3
+  P014 := -10
+  P015 :=   0
+  P016 :=   0
+  P017 :=  +1.25
+  P018 :=   6
 
   CAVL011  : LCAV, FREQ=1300, L=LcavL,  DELTAE=G011*LcavL,  PHI0=P011/360, &
                    APER=LcavR, TYPE="cryo"
@@ -1019,45 +1002,45 @@
 
 ! L1
 
-  QCM02 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.350806201565 !-KQCMfodo1
-  QCM03 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.239632137591 ! KQCMfodo1
+  QCM02 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.378467749242 !-KQCMfodo1
+  QCM03 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.232219173255 ! KQCMfodo1
 
 ! L2
 
-  QCM04 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.337961546545 !-KQCMfodo2
-  QCM05 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.30139383074  ! KQCMfodo2
-  QCM06 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.198247592192 !-KQCMfodo2
-  QCM07 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.171374449674 ! KQCMfodo2
-  QCM08 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.171719110376 !-KQCMfodo2
-  QCM09 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.174074499825 ! KQCMfodo2
-  QCM10 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.174836643588 !-KQCMfodo2
-  QCM11 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.17644901691  ! KQCMfodo2
-  QCM12 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.18155309543  !-KQCMfodo2
-  QCM13 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.062968974993 ! KQCMfodo2
+  QCM04 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.344092966844 !-KQCMfodo2
+  QCM05 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.306618035518 ! KQCMfodo2
+  QCM06 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.199371715603 !-KQCMfodo2
+  QCM07 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.169850870065 ! KQCMfodo2
+  QCM08 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.172327398379 !-KQCMfodo2
+  QCM09 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.1749837368   ! KQCMfodo2
+  QCM10 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.175730818386 !-KQCMfodo2
+  QCM11 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.177171032355 ! KQCMfodo2
+  QCM12 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.181853736228 !-KQCMfodo2
+  QCM13 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.062938917713 ! KQCMfodo2
   QCM14 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.176070484188 !-KQCMfodo2
-  QCM15 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.067235224899 ! KQCMfodo2
+  QCM15 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.067245247109 ! KQCMfodo2
 
 ! L3
 
-  QCM16 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.31666848621  !-KQCMfodo3
-  QCM17 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.258400025673 ! KQCMfodo3
-  QCM18 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.210508915512 !-KQCMfodo3
-  QCM19 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.193498338579 ! KQCMfodo3
-  QCM20 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.187169022347 !-KQCMfodo3
+  QCM16 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.31746768308  !-KQCMfodo3
+  QCM17 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.259131716721 ! KQCMfodo3
+  QCM18 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.210445297911 !-KQCMfodo3
+  QCM19 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.193179715134 ! KQCMfodo3
+  QCM20 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.186979818294 !-KQCMfodo3
   QCM21 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= KQCMfodo3
   QCM22 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-KQCMfodo3
   QCM23 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= KQCMfodo3
-  QCM24 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.190499689137 !-KQCMfodo3
-  QCM25 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.181764322884 ! KQCMfodo3
-  QCM26 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.181491332716 !-KQCMfodo3
-  QCM27 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.190245621978 ! KQCMfodo3
+  QCM24 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.190366144886 !-KQCMfodo3
+  QCM25 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.181617589167 ! KQCMfodo3
+  QCM26 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.18147160521  !-KQCMfodo3
+  QCM27 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.190315103489 ! KQCMfodo3
   QCM28 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-KQCMfodo3
-  QCM29 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.185719761499 ! KQCMfodo3
-  QCM30 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.188023739048 !-KQCMfodo3
-  QCM31 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.194636646982 ! KQCMfodo3
-  QCM32 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.211302280779 !-KQCMfodo3
-  QCM33 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.258254876336 ! KQCMfodo3
-  QCM34 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.246773847976 !-KQCMfodo3
+  QCM29 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.185722473354 ! KQCMfodo3
+  QCM30 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.188058911582 !-KQCMfodo3
+  QCM31 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.194631115781 ! KQCMfodo3
+  QCM32 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.2112219263   !-KQCMfodo3
+  QCM33 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.25819270683  ! KQCMfodo3
+  QCM34 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.246763246317 !-KQCMfodo3
   QCM35 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.0            ! KQCMfodo3
 
 ! ==============================================================================

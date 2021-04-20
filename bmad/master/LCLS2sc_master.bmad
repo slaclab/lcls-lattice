@@ -1,5 +1,12 @@
 
-! *** OPTICS=AD_ACCEL-01APR20 ***
+! *** OPTICS=AD_ACCEL-22JAN21 ***
+
+! ==============================================================================
+! Modification History
+! ------------------------------------------------------------------------------
+! 16-JAN-2021, M. Woodley
+!  * new standard configuration per Y. Ding
+! ------------------------------------------------------------------------------
 
 ! ------------------------------------------------------------------------------
 ! constants and global parameters
@@ -16,8 +23,8 @@ in2m = 0.0254          !m/inch
 
 e0 = mc2+0.750e-3 !NGLS/APEX gun energy (GeV) ... 750 kV gun
 ei = 0.1          !energy at end of L0B (GeV)
-e1 = 0.23         !BC1 energy (GeV)
-e2 = 1.6          !BC2 energy (GeV)
+e1 = 0.25         !BC1 energy (GeV)
+e2 = 1.5          !BC2 energy (GeV)
 ef = 4.0          !final beam energy (GeV)
 eu = 4.0          !energy in undulator (GeV)
 emax = 10.0         !maximum beam energy
@@ -32,8 +39,8 @@ brhou = cb*eu
 ! compression
 
 r56htr = 0.0035 !DXmax = 75 cm
-r56bc1 = 0.05285
-r56bc2 = 0.03955
+r56bc1 = 0.053
+r56bc2 = 0.045
 
 r56ccdlu = 9.99e-5
 r56ccdld = 9.99e-5
@@ -44,16 +51,16 @@ r56ccdld = 9.99e-5
 
 ! Twiss at gun
 
-bx0 = 54.70910663424
-ax0 = 24.927276694193
-by0 = 54.64124177612
-ay0 = 24.896728669354
+bx0 = 24.132987592581
+ax0 = 12.721498354446
+by0 = 24.1032534071
+ay0 = 12.70542401701
 
 ! Twiss at S= 15.0 m (ASTRA MARKER)
 
-bxa = 13.325594260685
-axa = -2.125811087318
-bya = 13.315541277702
+bxa = 13.32559426069
+axa = -2.125811087319
+bya = 13.315541277703
 aya = -2.123153832086
 
 ! Twiss at BEAM0 MARKER (specified)
@@ -71,20 +78,20 @@ bmax = 50
 
 b0h04w = 5.0
 
-! beam parameters
+! approximate beam parameters
 
-qbnch = 100.0e-12  !C
-emitxn = 0.2953e-06 !m
-emityn = 0.2954e-06 !m
-sig_z = 0.9987e-03 !m
-sig_dp = 0.0379e-02 !1
+qbnch = 100.0e-12 !C
+emitxn = 0.35e-06  !m
+emityn = 0.35e-06  !m
+sig_z = 1.0e-03   !m
+sig_dp = 0.03e-02  !1
 
 ! ------------------------------------------------------------------------------
 ! input beam definition (at BEAM0)
 ! ------------------------------------------------------------------------------
 
-emitx = emitxn/(ei/(m_electron * 1e-9))
-emity = emityn/(ei/(m_electron * 1e-9))
+emitx = emitxn/(ei/emass)
+emity = emityn/(ei/emass)
 
 gxi = (1+axi*axi)/bxi
 sig11 = emitx*bxi
@@ -167,10 +174,10 @@ ayeds = 1.084608326468
 
 ! match into HXR LTU emittance diagnostic section
 
-bxedh = 46.347592421655
-axedh = -1.088004889273
-byedh = 46.098656017174
-ayedh = 1.08081945287
+bxedh = 46.225914290403
+axedh = -1.084608326581
+byedh = 46.225914290403
+ayedh = 1.084608326581
 
 ! initial Twiss for SXR dogleg
 
@@ -179,44 +186,52 @@ malfxs = -0.28404741292
 mbetys = 47.120432391261
 malfys = 2.555848494222
 
-! periodic Twiss in HXR dogleg cells
+! periodic Twiss in HXR dogleg cells (@ MM1)
 
 mbetxh = 48.911502413792
 malfxh = 3.141736059434
 mbetyh = 92.803659415654
 malfyh = 3.519158552438
 
+! Twiss at start of HXR cell #24
+! (full complement of undulators; Yuri match; TWISS, COUPLE, BETA0=TWSSmh)
+
+enhxrm = 4.0
+bxhxrm = 12.974739845251
+axhxrm = 1.498073135623
+byhxrm = 6.123426356819
+ayhxrm = -0.747453073035
+
 ! ------------------------------------------------------------------------------
 ! load lattice definitions
 ! ------------------------------------------------------------------------------
 
-call, filename = "common.bmad"
-call, filename = "CM.bmad"
-call, filename = "DIAG0.bmad" !must come before INJ.xsif
-call, filename = "INJ.bmad"
-call, filename = "BC1.bmad"
-call, filename = "BC2.bmad"
-call, filename = "EXT.bmad"
-call, filename = "DLBM.bmad"
-call, filename = "SPRD.bmad"
-call, filename = "CUSXR.bmad"
-call, filename = "ALINE.bmad"
-call, filename = "BYP.bmad"
-call, filename = "LTU.bmad"
-call, filename = "UND.bmad"
- !CALL, FILENAME="UND0.xsif"
-call, filename = "SFT.bmad"
-call, filename = "SXTES.bmad"
-call, filename = "DASEL.bmad"
+call, file = common.bmad
+call, file = CM.bmad
+call, file = DIAG0.bmad !must come before INJ.xsif
+call, file = INJ.bmad
+call, file = BC1.bmad
+call, file = BC2.bmad
+call, file = EXT.bmad
+call, file = DLBM.bmad
+call, file = SPRD.bmad
+call, file = CUSXR.bmad
+call, file = ALINE.bmad
+call, file = BYP.bmad
+call, file = LTU.bmad
+call, file = UND.bmad  !startup configuration
+ !CALL, FILENAME="UND0.xsif" !final configuration
+call, file = SFT.bmad
+call, file = SXTES.bmad
+call, file = DASEL.bmad
 
-lcls2sci: line = (beam0, dcm4b, qcm01_full, dcm5, cm01end, dcmcm1, homcm, dcap0da, astra, dcap0db &
-        , fc1, dmsc0da, blf1, dmsc0db, vg0h00, dmsc0dc, vp0h00, dmsc0dd, vv0h00, dmsc0de, msc0d,  &
-        endl0b)
-lcls2scc: line = (htr, col0, l1, bc1, col1, l2, bc2, emit2, l3, ext, dlbm)
+  LCLS2scI : LINE=(BEAM0,DCM4b,QCM01_full,DCM5,CM01END,DCMCM1,HOMCM,DCAP0da,ASTRA,DCAP0db,FC1,DMSC0da,BLF1,DMSC0db,
+         VG0H00,DMSC0dc,VP0H00,DMSC0dd,VV0H00,DMSC0de,MSC0d,ENDL0B)
+  LCLS2scC : LINE=(HTR,COL0,L1,BC1,COL1,L2,BC2,EMIT2,L3,EXT,DLBM)
 
 ! new BSY area definitions
 
-call, filename = "BSYsc.bmad"
+call, file = BSYsc.bmad
 
 ! beam path definitions
 
@@ -231,28 +246,28 @@ call, filename = "BSYsc.bmad"
  !SC_DASEL : superconducting linac to End Station A (DASEL)
  !SC_EIC   : superconducting linac Early Injector Commissioning
 
-sc_sxr: line = (gun, l0, lcls2scc, lcls2scs)
-sc_sfts: line = (gun, l0, lcls2scc, lcls2scss)
-sc_s2_x: line = (gun, l0, lcls2scc, lcls2scs2_x)
-sc_stxi: line = (gun, l0, lcls2scc, lcls2scstxi)
-sc_stmo: line = (gun, l0, lcls2scc, lcls2scstmo)
-sc_hxr: line = (gun, l0, lcls2scc, lcls2sch)
-sc_bsyd: line = (gun, l0, lcls2scc, lcls2scd)
-sc_diag0: line = (gun, l0, htr, diag0)
-sc_dasel: line = (gun, l0, lcls2scc, lcls2scda)
-sc_eic: line = (eic)
+  SC_SXR   : LINE=(GUN,L0,LCLS2scC,LCLS2scS)
+  SC_SFTS  : LINE=(GUN,L0,LCLS2scC,LCLS2scSS)
+  SC_S2_X  : LINE=(GUN,L0,LCLS2scC,LCLS2scS2_X)
+  SC_STXI  : LINE=(GUN,L0,LCLS2scC,LCLS2scSTXI)
+  SC_STMO  : LINE=(GUN,L0,LCLS2scC,LCLS2scSTMO)
+  SC_HXR   : LINE=(GUN,L0,LCLS2scC,LCLS2scH)
+  SC_BSYD  : LINE=(GUN,L0,LCLS2scC,LCLS2scD)
+  SC_DIAG0 : LINE=(GUN,L0,HTR,DIAG0)
+  SC_DASEL : LINE=(GUN,L0,LCLS2scC,LCLS2scDA)
+  SC_EIC   : LINE=(EIC)
 
 ! for Twiss starting at BEAM0
 
-sc_sxri: line = (lcls2sci, lcls2scc, lcls2scs)
-sc_sftsi: line = (lcls2sci, lcls2scc, lcls2scss)
-sc_s2_xi: line = (lcls2sci, lcls2scc, lcls2scs2_x)
-sc_stxii: line = (lcls2sci, lcls2scc, lcls2scstxi)
-sc_stmoi: line = (lcls2sci, lcls2scc, lcls2scstmo)
-sc_hxri: line = (lcls2sci, lcls2scc, lcls2sch)
-sc_bsydi: line = (lcls2sci, lcls2scc, lcls2scd)
-sc_diag0i: line = (lcls2sci, htr, diag0)
-sc_daseli: line = (lcls2sci, lcls2scc, lcls2scda)
+  SC_SXRi   : LINE=(LCLS2scI,LCLS2scC,LCLS2scS)
+  SC_SFTSi  : LINE=(LCLS2scI,LCLS2scC,LCLS2scSS)
+  SC_S2_Xi  : LINE=(LCLS2scI,LCLS2scC,LCLS2scS2_X)
+  SC_STXIi  : LINE=(LCLS2scI,LCLS2scC,LCLS2scSTXI)
+  SC_STMOi  : LINE=(LCLS2scI,LCLS2scC,LCLS2scSTMO)
+  SC_HXRi   : LINE=(LCLS2scI,LCLS2scC,LCLS2scH)
+  SC_BSYDi  : LINE=(LCLS2scI,LCLS2scC,LCLS2scD)
+  SC_DIAG0i : LINE=(LCLS2scI,HTR,DIAG0)
+  SC_DASELi : LINE=(LCLS2scI,LCLS2scC,LCLS2scDA)
 
 ! ------------------------------------------------------------------------------
 ! initial BSY coordinates at BEGSP (LTUSPLIT)

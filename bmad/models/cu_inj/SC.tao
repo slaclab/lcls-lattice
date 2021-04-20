@@ -1,0 +1,36 @@
+
+
+
+
+!---CSR---
+set csr_param beam_chamber_height = 0.024  ! 24 mm full height
+set csr_param n_shield_images = 0
+set csr_param ds_track_step = 0.01
+set csr_param n_bin = 40
+set csr_param particle_bin_span = 2
+set csr_param sigma_cutoff = 0.1 ! Cutoff for the lsc calc. If a bin sigma is < cutoff * sigma_ave then ignore.
+
+
+
+! Space Charge
+
+
+
+alias csrstep set csr_param ds_track_step = [[1]]
+
+alias scon  set bmad_com csr_and_space_charge_on = T
+alias scoff set bmad_com csr_and_space_charge_on = F
+
+
+set bmad_com csr_and_space_charge_on = T
+
+set ele * csr_method  = off
+set ele * space_charge_method = off
+
+
+set ele BEGL0:ENDL0 space_charge_method = fft_3d
+
+set bmad_com space_charge_mesh_size = 16 16 16
+
+
+

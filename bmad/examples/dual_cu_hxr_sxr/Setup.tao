@@ -1,0 +1,52 @@
+call $LCLS_LATTICE/bmad/tao/tao.startup
+
+set uni * off
+
+place top2 energy2
+place middle2 beta2
+place bottom layout
+x-a all s
+sc
+sc top2 0 15000
+sc middle2 0 120
+
+
+
+
+vv
+vd
+
+use dat 1@to_hxr.twiss[1:4]   
+use dat 1@to_hxr.betas[1:2]   
+!use dat 1@to_hxr.energy[1:1]  
+
+use dat 2@to_sxr.twiss[1:4]   
+use dat 2@to_sxr.betas[1:2]   
+!use dat 2@to_sxr.energy[1:1]  
+
+use var q
+
+set ele 1@O_K* enld_mev = 110
+set ele 2@O_K* enld_mev = 0
+
+! Write universe 1 gradients 
+sho -write quad_gradients.bmad var q -bmad
+
+! This is needed to allow variables to gang
+set ele *@quad::* field_master = T
+
+! Make sure things are consistent
+view 1
+read lattice quad_gradients.bmad
+view 2
+read lattice quad_gradients.bmad
+view 1
+
+! Read a solution
+! view 2
+! read lattice sol.bmad
+! view 1
+! read lattice sol.bmad
+
+set uni * on
+

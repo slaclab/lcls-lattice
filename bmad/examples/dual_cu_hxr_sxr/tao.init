@@ -1,0 +1,170 @@
+&tao_start
+  n_universes = 2
+  plot_file   ='$LCLS_LATTICE/bmad/tao/tao_plot.init '
+!  startup_file='$LCLS_LATTICE/bmad/tao/tao.startup'
+  startup_file='Setup.tao'
+/
+
+
+
+
+!--------------------------------------------------------
+&tao_design_lattice
+  !unique_name_suffix="*::_##?"
+  design_lattice(1)%file= '$LCLS_LATTICE/bmad/models/cu_hxr/cu_hxr.lat.bmad'
+  design_lattice(2)%file= '$LCLS_LATTICE/bmad/models/cu_sxr/cu_sxr.lat.bmad'  
+  design_lattice(1)%slice_lattice =  'BEGL3:BEGCLTH_2'   ! These should be at the same place
+  design_lattice(2)%slice_lattice =  'BEGL3:BEGCLTS'
+/
+
+!  design_lattice(1)%slice_lattice =  'BEGL3:END' 
+!  design_lattice(2)%slice_lattice =  'BEGL3:END'
+
+!------------------------------------------------------------------------
+&tao_params
+  !global%plot_on = T
+  global%track_type = 'single'
+  global%beam_timer_on = T
+  global%random_engine = 'pseudo' ! or: 'quasi'
+  global%de_lm_step_ratio = 1500
+  global%optimizer = 'lmdif'
+  global%n_opti_cycles = 100
+  !---Bmad---
+  bmad_com%radiation_damping_on = F
+  bmad_com%radiation_fluctuations_on = T
+/
+
+
+!--------- Energy 1 (to HXR) ----------
+&tao_d2_data
+        d2_data%name = 'to_hxr'
+        universe = 1
+        n_d1_data = 3
+/
+&tao_d1_data
+    ix_d1_data = 1
+    d1_data%name = 'twiss'
+    datum( 1) =  'beta.a'     '' '' 'BEGCLTH_2'   'target'   29.29335585   1e1
+    datum( 2) =  'alpha.a'    '' '' 'BEGCLTH_2'   'target'  -0.11916068  1e2
+    datum( 3) =  'beta.b'     '' '' 'BEGCLTH_2'   'target'   51.57428793   1e1
+    datum( 4) =  'alpha.b'    '' '' 'BEGCLTH_2'   'target'  0.74667452   1e2
+/  
+&tao_d1_data
+    ix_d1_data = 2
+    d1_data%name = 'betas'
+    datum( 1) =  'beta.a'     '' 'BEGL3 ' 'BEGCLTH_2'   'max'   120   1e1
+    datum( 2) =  'beta.b'     '' 'BEGL3 ' 'BEGCLTH_2'   'max'   120   1e1
+    datum( 3) =  'beta.a'     '' 'BEGL3 ' 'BEGCLTH_2'   'min'   5   1e1
+    datum( 4) =  'beta.b'     '' 'BEGL3 ' 'BEGCLTH_2'   'min'   5   1e1    
+    datum( 5) =  'beta.a'     '' 'BEGL3 ' 'BEGCLTH_2'   'average'   0   1e1
+    datum( 6) =  'beta.b'     '' 'BEGL3 ' 'BEGCLTH_2'   'average'   0   1e1    
+/  
+
+&tao_d1_data
+    ix_d1_data = 3
+    d1_data%name = 'energy'
+    datum( 1) =  'e_tot_ref'     '' '' 'BEGCLTH_2'   'target'   1400e6   1e1
+/  
+
+!--------- Energy 2 (to SXR) ----------
+&tao_d2_data
+        d2_data%name = 'to_sxr'
+        universe = 2
+        n_d1_data = 3
+/
+&tao_d1_data
+    ix_d1_data = 1
+    d1_data%name = 'twiss'
+    datum( 1) =  'beta.a'     '' '' 'BEGCLTS'   'target'   29.29335585   1e1
+    datum( 2) =  'alpha.a'    '' '' 'BEGCLTS'   'target'  -0.11916068  1e2
+    datum( 3) =  'beta.b'     '' '' 'BEGCLTS'   'target'   51.57428793   1e1
+    datum( 4) =  'alpha.b'    '' '' 'BEGCLTS'   'target'  0.74667452   1e2
+/  
+&tao_d1_data
+    ix_d1_data = 2
+    d1_data%name = 'betas'
+    datum( 1) =  'beta.a'     '' 'BEGL3' 'BEGCLTS'   'max'   120   1e1
+    datum( 2) =  'beta.b'     '' 'BEGL3' 'BEGCLTS'   'max'   120   1e1
+    datum( 3) =  'beta.a'     '' 'BEGL3' 'BEGCLTS'   'min'   5   1e1
+    datum( 4) =  'beta.b'     '' 'BEGL3' 'BEGCLTS'   'min'   5   1e1    
+    datum( 5) =  'beta.a'     '' 'BEGL3' 'BEGCLTS'   'average'   0   1e1
+    datum( 6) =  'beta.b'     '' 'BEGL3' 'BEGCLTS'   'average'   0   1e1    
+/  
+
+&tao_d1_data
+    ix_d1_data = 3
+    d1_data%name = 'energy'
+    datum( 1) =  'e_tot_ref'     '' '' 'BEGCLTS'   'target'   4000e6   1e1
+/  
+
+
+
+!----------------------------------------
+!----------------------------------------
+
+&tao_var
+  v1_var%name = 'q'
+  default_step = 1e-4
+  default_universe = 'gang'
+  default_attribute = 'b1_gradient'
+  !default_low_lim = -50
+  !default_high_lim = 50
+  default_key_delta = 1e-2
+  ix_min_var = 1
+  !search_for_lat_eles = 'Quad::*'
+  ! or:
+  !var(1:)%ele_name = 'Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6'
+  default_key_bound = T
+  var(1:)%ele_name = 'Q25201',
+  'Q25301',
+  'Q25401',
+  'Q25501',
+  'Q25601',
+  'Q25701',
+  'Q25801',
+  'Q25901',
+  'Q26201',
+  'Q26301',
+  'Q26401',
+  'Q26501',
+  'Q26601',
+  'Q26701',
+  'Q26801',
+  'Q26901',
+  'Q27201',
+  'Q27301',
+  'Q27401',
+  'Q27501',
+  'Q27601',
+  'Q27701',
+  'Q27801',
+  'Q27901',
+  'Q28201',
+  'Q28301',
+  'Q28401',
+  'Q28501',
+  'Q28601',
+  'Q28701',
+  'Q28801',
+  'Q28901',
+  'Q29201',
+  'Q29301',
+  'Q29401',
+  'Q29501',
+  'Q29601',
+  'Q29701',
+  'Q29801',
+  'Q29901',
+  'Q30201',
+  'Q30301',
+  'Q30401',
+  'Q30501',
+  'Q30601',
+  'Q30701',
+  'Q30801'
+  
+  
+  
+  
+/
+

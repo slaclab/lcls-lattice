@@ -13,3 +13,10 @@ x, y are radial Gaussian with a sigma of 0.4 mm and a cutoff at 1.5 sigma.
 
 
 
+
+## `2gauss`: Two stacked Gaussians
+
+
+
+
+

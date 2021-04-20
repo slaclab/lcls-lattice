@@ -1,6 +1,6 @@
-  TITLE, "AD_ACCEL (April 1, 2020)" ! copper linac
+  TITLE, "AD_ACCEL (January 22, 2021)" ! copper linac
 
-! *** OPTICS=AD_ACCEL-01APR20 ***
+! *** OPTICS=AD_ACCEL-22JAN21 ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY
   ASSIGN, ECHO="LCLS2cu.echo"
@@ -164,15 +164,6 @@
 
   TWSSC : BETA0, ENERGY=E00, BETX=CBETX, ALFX=CALFX, BETY=CBETY, ALFY=CALFY
 
-! initial Twiss for SXR dogleg cells for Cu-linac beam (at DBMARK34B)
-
-  TWSSmcus : BETA0, ENERGY=Ef, BETX=MBETXcus, ALFX=MALFXcus, &
-                               BETY=MBETYcus, ALFY=MALFYcus
-
-! periodic Twiss in HXR dogleg cells (copy from LCLS2sc_main.mad8)
-
-  TWSSmh : BETA0, ENERGY=Ef, BETX=MBETXh, ALFX=MALFXh, BETY=MBETYh, ALFY=MALFYh
-
 ! Twiss at the beginning of L3 linac
 
   TWBEGL3 : BETA0, BETX=BXBEGL3, ALFX=AXBEGL3, &
@@ -187,6 +178,14 @@
 
   TWSCUS1 : BETA0, BETX=TBXCUS1, ALFX=TAXCUS1, BETY=TBYCUS1, ALFY=TAYCUS1
 
+! periodic Twiss in HXR dogleg cells (copy from LCLS2sc_main.mad8)
+
+  TWSSmh : BETA0, ENERGY=Ef, BETX=MBETXh, ALFX=MALFXh, BETY=MBETYh, ALFY=MALFYh
+
+! periodic Twiss in SXR dogleg cells (at QDL12 center)
+
+  TWSSms : BETA0, ENERGY=Ef, BETX=MBETXs, ALFX=MALFXs, BETY=MBETYs, ALFY=MALFYs
+
 ! ==============================================================================
 ! SUBROUTINEs
 ! ------------------------------------------------------------------------------
@@ -196,61 +195,39 @@
 
   SETK2cuH : SUBROUTINE !for LCLS2cuH
 
-  ! set BSY quad strengths for Cu-linac beam optics
-  ! fine-tune HXR quad strengths for a better match
+  ! set quad strengths for 8 GeV Cu-linac beam to DMPH
 
-    SET, KQ50Q3,  0.385752335743
-    SET, KQ4,    -0.220385532634
-    SET, KQ5,     0.172839699359
-    SET, KQ6,    -0.115520035877
-    SET, KQA0,    0.115396472684
-    SET, KQVM1,  -0.352804447054 !-0.337436663026
-    SET, KQVM2,   0.250159483801 ! 0.236576383993
-    SET, KQVM3,   0.712606330512 ! 0.71515053765 
-    SET, KQVM4,  -0.677900833187 !-0.681649920856
-    SET, KQEM1,  -0.386250956878
-    SET, KQEM2,   0.429466776058
-    SET, KQEM3,  -0.596168395282
-    SET, KQEM4,   0.419766074433
-!                    startup      Yuri's LEM-able
-!                ---------------  ---------------
-    SET, KQUM1,   0.285801254931 ! 0.272741408897
-    SET, KQUM2,  -0.272240334535 !-0.270601268265
-    SET, KQUM3,   0.200322325057 ! 0.278762678373
-    SET, KQUM4,  -0.178166313312 !-0.247470889897
-    SET, kQDHXm, -1.734624260269 !-1.734624260269
-    SET, KQUE1,   0.169109252491 ! 0.169109252491
-    SET, KQUE2,  -0.137840816238 !-0.137840816238
-    SET, KQDMP,  -0.155212710055 !-0.155212710055
-  ENDSUBROUTINE
-
-  SETK2cuA : SUBROUTINE !for LCLS2cuA
-
-  ! set BSY and A-line quad strengths for Cu-linac beam optics
-
-    SET, KQ50Q3,  0.385752335743    ! from SETK2cuH
-    SET, KQ4,    -0.220385532634    ! from SETK2cuH
-    SET, KQ10,    0.041974009109    ! 0.041961707092   
-    SET, KQ11,   -0.036636645098    !-0.03648177506    
-    SET, KQ19,    0.028395737191    ! 0.02837620076    
-    SET, KQ20,    0.013320774095    ! 0.01338101228    
-    SET, KQ27,   -0.055077440583    !-0.054612770505   
-    SET, KQ28,    0.815683133839E-3 ! 0.157593407299E-2
-    SET, KQ30,   -0.030393872169    !-0.030459807124   
-    SET, KQ38,    0.035231290737    ! 0.035234930357   
+    SET, KQ50Q3,  0.384840836193
+    SET, KQ4,    -0.219396715005
+    SET, KQ5,     0.165708852383
+    SET, KQ6,    -0.113569101471
+    SET, KQA0,    0.109210100868
+  !               Yuri (8.0/2.0)
+  !              ---------------
+    SET, KQUM1,   0.272741408897
+    SET, KQUM2,  -0.270601268265
+    SET, KQUM3,   0.278762678373
+    SET, KQUM4,  -0.247470889897
+    SET, kQDHXm, -1.734624260269
+    SET, KQUE1,   0.169109252491
+    SET, KQUE2,  -0.137840816238
+    SET, KQDMP,  -0.155212710055
   ENDSUBROUTINE
 
   SETK2cuS : SUBROUTINE !for LCLS2cuS
 
-  ! fine-tune SXR quad strengths for a better match
+  ! set quad strengths for 8 GeV Cu-linac beam to DMPS
 
-    SET, KQBP33, -0.644554011561 !-0.644563496901
-    SET, KQBP34,  0.595247855684 ! 0.595165383865
-    SET, KQDBL1, -1.067473401506 !-1.066849469579
-    SET, KQDBL2,  0.619068833425 ! 0.618084331747
-    SET, KQDL11,  0.358733393526 ! 0.358720317054
-!                Yuri's LEM-able
-!                ---------------
+    SET, KQBP33, -0.644549451693
+    SET, KQBP34,  0.595248248123
+    SET, KQDBL1, -1.067412487101
+    SET, KQDBL2,  0.618987949218
+    SET, KQDL11,  0.358732502069
+  !               Yuri (8.0/5.0)
+  !              ---------------
+    SET, KQUM1B,  0.311729673613
+    SET, KQUM2B, -0.13
+    SET, KQUM3B,  0.384569277452
     SET, KQUM4B, -0.61774146348
     SET, KQSX16,  0.677894017174
     SET, KQSX19, -0.893321229694
@@ -262,29 +239,20 @@
     SET, KQDMPB, -0.154946553294
   ENDSUBROUTINE
 
-  SETK2cuXL2 : SUBROUTINE !for XLEAP-II (copy of LCLS2sc_main.mad8:SETK2scXL2)
-    SET, SETXLEAP2, 1 !switch ON xleap components
-    ! UMXL1-4 undulator K=50
-    ! self-seeding chicane R56=0.56 mm
-    ! wiggler K=34
-    SET, KQEM1B,  1.570972432056
-    SET, KQEM2B, -1.774546885254
-    SET, KQEM3B,  1.433963060044
-    SET, KQEM4B, -1.119965735709
-    SET, KQE31B,  0.390635554867
-    SET, KQE32B, -0.432824122873
-    SET, KQE33B,  0.65336756743
-    SET, KQE34B, -0.648668839576
-    SET, KQE35B,  0.468729516503
-    SET, KQE36B,  0.050164011768
-    SET, KQUM1B,  1.018540067312
-    SET, KQUM2B, -1.144566415164
-    SET, KQUM3B,  0.090083732402
-    SET, KQUM4B,  0.186695665782
-    SET, KQSX16,  0.73250393284
-    SET, KQSX19, -1.354344937099
-    SET, KQSX21,  1.308504032287
-    SET, KQSX24, -1.248392626068
+  SETK2cuA : SUBROUTINE !for LCLS2cuA
+
+  ! set quad strengths for 8 GeV Cu-linac beam to Aline
+
+    SET, KQ50Q3,  0.384840836193 !from SETK2cuH
+    SET, KQ4,    -0.219396715005 !from SETK2cuH
+    SET, KQ10,    0.042155252569
+    SET, KQ11,   -0.037534648193
+    SET, KQ19,    0.028451022652
+    SET, KQ20,    0.013158276826
+    SET, KQ27,   -0.05915714658
+    SET, KQ28,    0.0
+    SET, KQ30,   -0.030016910355
+    SET, KQ38,    0.035190121249
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
@@ -292,30 +260,34 @@
   COMMENT !for testing the online Matlab model
     BEAM, ENERGY=E00
     USE, CU_GSPEC
-    TWISS, BETA0=TWSSC, TAPE="LCLS2cuGSPEC_twiss.tape"
+    TWISS, BETA0=TWSSC, TAPE="LCLS2cuGSPEC_twiss.tape", &
+      RTAPE="LCLS2cuGSPEC_rmat.tape"
 
     BEAM, ENERGY=E00
     USE, CU_SPEC
-    TWISS, BETA0=TWSSC, TAPE="LCLS2cuSPEC_twiss.tape"
+    TWISS, BETA0=TWSSC, TAPE="LCLS2cuSPEC_twiss.tape", &
+      RTAPE="LCLS2cuSPEC_rmat.tape"
 
     SET, SETCUS, CUSOFF ; SET, SETAL, ALOFF
     SETK2cuH
     BEAM, ENERGY=E00
     USE, CU_HXR
-    TWISS, BETA0=TWSSC, TAPE="LCLS2cuH_twiss.tape"
+    TWISS, BETA0=TWSSC, TAPE="LCLS2cuH_twiss.tape", &
+      RTAPE="LCLS2cuH_rmat.tape"
 
     SET, SETCUS, CUSOFF ; SET, SETAL, ALON
     SETK2cuA
     BEAM, ENERGY=E00
     USE, CU_ALINE
-    TWISS, BETA0=TWSSC, TAPE="LCLS2cuA_twiss.tape"
+    TWISS, BETA0=TWSSC, TAPE="LCLS2cuA_twiss.tape", &
+      RTAPE="LCLS2cuA_rmat.tape"
 
     SET, SETCUS, CUSON !pulsed
     SETK2cuS
-   !SETK2cuXL2 !turns on XLEAP2 components and optics
     BEAM, ENERGY=E00
     USE, CU_SXR
-    TWISS, BETA0=TWSSC, TAPE="LCLS2cuS_twiss.tape"
+    TWISS, BETA0=TWSSC, TAPE="LCLS2cuS_twiss.tape", &
+      RTAPE="LCLS2cuS_rmat.tape"
 
     STOP
   ENDCOMMENT
@@ -331,6 +303,7 @@
 ! ------------------------------------------------------------------------------
 
  !CALL, FILENAME="LCLS2cu_match.mad8"
+ !CALL, FILENAME="LCLS2cu_XLEAP.mad8"
  !CALL, FILENAME="RDB/LCLS2cu_makeSymbols.mad8"
  !CALL, FILENAME="elegant/LCLS2cu_makeElegant.mad8" !use LCLS_L*e.xsif
 
@@ -353,7 +326,7 @@
     SURVEY, THETA0=ADL1, X0=Xi, Z0=Zi, TAPE="LCLS2cuH_survey.tape"
     TWISS, SAVE, BETA0=TWSSC, TAPE="LCLS2cuH_twiss.tape" !, &
    !  RTAPE="LCLS2cuH_rmat.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, VMAX=9, &
       STYLE=100, SPLINE, RANGE=BEGDL1_1/DUMPFACE, FILE="LCLS2cuH", &
       TITLE="Cu-linac to HXR dump"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
@@ -362,6 +335,9 @@
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
       STYLE=100, SPLINE, RANGE=BEGDL1_1/DUMPFACE, FILE="LCLS2cuH", &
       TITLE="Cu-linac to HXR dump"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=WS31/DU7H[25], FILE="LCLS2cuH", &
+      TITLE="UNDH (Cu beam, 8 GeV)"
  !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
@@ -401,7 +377,6 @@
    !SET, SETCUS, CUSONDC !DC
    !VALUE, PULSED,DCMODE
     SETK2cuS
-   !SETK2cuXL2 !turns on XLEAP2 components and optics
     USE, CU_SXR
    !SAVELINE, NAME="CU_SXR", FILENAME="LCLS2cuS.saveline"
     PRINT, FULL
@@ -417,6 +392,9 @@
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
       STYLE=100, SPLINE, RANGE=BEGDL1_1/DUMPFACEB, FILE="LCLS2cuS", &
       TITLE="Cu-linac to SXR dump"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=VBOUTB/DU7S[31], FILE="LCLS2cuS", &
+      TITLE="UNDS (Cu beam, 8 GeV)"
  !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
@@ -552,7 +530,6 @@
    !SET, SETCUS, CUSONDC !DC
    !VALUE, PULSED,DCMODE
     SETK2cuS
-   !SETK2cuXL2 !turns on XLEAP2 components and optics
     USE, BSYLTUS
     PRINT, FULL
     SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
@@ -666,7 +643,6 @@
    !SET, SETCUS, CUSONDC !DC
    !VALUE, PULSED,DCMODE
     SETK2cuS
-   !SETK2cuXL2 !turns on XLEAP2 components and optics
     USE, CU_SXR
    !SAVELINE, NAME="CU_SXR", FILENAME="LCLS2cuS.saveline"
     PRINT, FULL
@@ -713,27 +689,3 @@
 
   STOP
 
-! ------------------------------------------------------------------------------
-! working stuff
-! ------------------------------------------------------------------------------
-
-  comment !match HXRSS chicane to R56= 15.0 um
-    BEAM, ENERGY=Ef
-    VALUE, Ef,Eu
-    SET, SETHXRSS, 1
-    USE, HCHICANE
-    VALUE, AB4,BLB4
-    MATCH, BETX=1, BETY=1
-      VARY, AB4, STEP=1.E-6, LOWER=0
-      RMATRIX, #S/#E, RM(5,6)=15.0E-6, WEIGHT(5,6)=1
-      LMDIF, TOL=1.E-20
-      MIGRAD, TOL=1.E-20
-    ENDMATCH
-    VALUE, AB4,BLB4
-    PRINT, FULL
-    SURVEY
-  endcomment
-
-! ------------------------------------------------------------------------------
-
-  STOP

@@ -1,12 +1,15 @@
 
-! *** OPTICS=AD_ACCEL-01APR20 ***
+! *** OPTICS=AD_ACCEL-22JAN21 ***
 
 ! LCLS2cu various parts upstream of BSY
 
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
-! 26-JAL-2019, M. Woodley
+! 31-AUG-2020, M. Woodley
+!  * set TYPE="type-4al" for YC21174, XC21175, XC21302, and YC21303
+! ------------------------------------------------------------------------------
+! 26-JUL-2019, M. Woodley
 !  * set L1 and L2 phases, and L1 X-band amplitude, per Y. Ding
 ! ------------------------------------------------------------------------------
 ! 30-JAN-2019, M. Woodley
@@ -150,19 +153,17 @@
 
  !TCAV0 : DRIF, L=0.6680236/2  !flange-to-flange (then split in two)
  !TCAV3 : DRIF, L=2.438/2
-  TCAV0 : LCAV, TYPE="TRANS_DEFL", L=0.6680236/2 !flange-to-flange (then split in two)
-  TCAV3 : LCAV, TYPE="TRANS_DEFL", L=2.438/2
+  TCAV0 : LCAV, TYPE="TRANS_DEFL", FREQ=SbandF, L=0.6680236/2 !flange-to-flange (then split in two)
+  TCAV3 : LCAV, TYPE="TRANS_DEFL", FREQ=SbandF, L=2.438/2
 
- !LKIK   := 1.0601              ! kicker coil length per magnet (m) [41.737 in from SA-380-330-02, rev. 0]
-  BXKIKa : SBEN, TYPE="XPULSED", L=LKIK/2, ANGLE=0, HGAP=25.4E-3, &
-                 E1=0  , FINT=0.5, FINTX=0
-  BXKIKb : SBEN, TYPE="XPULSED", L=LKIK/2, ANGLE=0, HGAP=25.4E-3, &
-                 FINT=0, E2=2E-12, FINTX=0.5
+! decommissioned kicker magnet
+
+  BXKIKa : SBEN, TYPE="1.92K41.2", L=LKIK/2, HGAP=GKIK
+  BXKIKb : SBEN, TYPE="1.92K41.2", L=LKIK/2, HGAP=GKIK
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-  BXKIK : SBEN, TYPE="XPULSED", HGAP=25.4E-3, L=LKIK, ANGLE=0, &
-                E1=0, FINT=0.5, E2=0, FINTX=0.5
+  BXKIK : SBEN, TYPE="1.92K41.2", L=LKIK, HGAP=GKIK
 
 ! ==============================================================================
 ! BENDs
@@ -206,8 +207,8 @@
               E1=EBXG, FINT=0.492, E2=EBXG, FINTX=0.492
 
   DXG0 : DRIF, L=RBXG*SIN(ABXG/2)  !drift, w/BXG off, from BXG entrance face to its z-projected center
-  DXGA : SBEN, L=1E-9/2, ANGLE=0/2 !1st-half of gun-spec bend (set to ~zero length and strength, with longitudinal position as bend's center)
-  DXGB : SBEN, L=1E-9/2, ANGLE=0/2 !2nd-half of gun-spec bend (set to ~zero length and strength, with longitudinal position as bend's center)
+ !DXGA : SBEN, L=1E-9/2, ANGLE=0/2 !1st-half of gun-spec bend (set to ~zero length and strength, with longitudinal position as bend's center)
+ !DXGB : SBEN, L=1E-9/2, ANGLE=0/2 !2nd-half of gun-spec bend (set to ~zero length and strength, with longitudinal position as bend's center)
 
   DBXG : DRIF, L=0.132618358755-1E-9 !replaces DXG0/DXGA/DXGB
 
@@ -817,8 +818,8 @@
 
 ! Heater-Chicane:
 
-! LSRHTR_ON := 1E-12           !set to 1E-12 for laser heater bends & undulator OFF and 1.0 for ON (nominal)
-  LSRHTR_ON := 1               !set to 1E-12 for laser heater bends & undulator OFF and 1.0 for ON (nominal)
+  LSRHTR_ON := 1 !set to 0 for laser heater bends & undulator OFF and 1 for ON (nominal)
+
   ABh1  := -0.131709391614*LSRHTR_ON !heater-chicane bend angle (rad)
   BBh1  := Brhoi*SIN(ABh1)/LBh !heater-chicane bend field for 35-mm etaX_pk (kG) (-4.75393301417)
   RBh1  := Brhoi/BBh1          !heater-chicane bend radius (m)
@@ -1260,8 +1261,8 @@
   XC21101 : HKIC, TYPE="class-1s"
   XC21135 : HKIC, TYPE="class-1s"
   XC21165 : HKIC, TYPE="class-1s" !calibrated to <1%
-  XC21175 : HKIC, TYPE="type-4"   !pulled off structure and replaced on beamline?
-  XC21302 : HKIC, TYPE="type-4"   !pulled off structure and replaced on beamline?
+  XC21175 : HKIC, TYPE="type-4al"
+  XC21302 : HKIC, TYPE="type-4al"
   XC21191 : HKIC, TYPE="class-1x"
   XC21275 : HKIC, TYPE="class-1a"
   XC21325 : HKIC, TYPE="class-1a"
@@ -1303,8 +1304,8 @@
   YC21102 : VKIC, TYPE="class-1s"
   YC21136 : VKIC, TYPE="class-1s" !calibrated to <1%
   YC21166 : VKIC, TYPE="class-1s"
-  YC21174 : VKIC, TYPE="type-4"
-  YC21303 : VKIC, TYPE="type-4"   !pulled off structure and replaced on beamline?
+  YC21174 : VKIC, TYPE="type-4al"
+  YC21303 : VKIC, TYPE="type-4al"
   YC21192 : VKIC, TYPE="class-1x"
   YC21276 : VKIC, TYPE="class-1a"
   YC21325 : VKIC, TYPE="class-1a"

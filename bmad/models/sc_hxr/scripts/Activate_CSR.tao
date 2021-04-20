@@ -25,36 +25,25 @@ alias csroff set bmad_com csr_and_space_charge_on = F
 set bmad_com csr_and_space_charge_on = T
 
 
-!set ele * space_charge_method = off
-!set ele * CSR_METHOD  = off
-!set ele BEGBC1B:ENDBC1B CSR_METHOD  = 1_Dim
-!set ele BEGBC2B:ENDBC2B CSR_METHOD  = 1_Dim
-
-! Turn everything on
+! Master switches
 set ele * space_charge_method = slice
 set ele * CSR_METHOD  = 1_Dim
 
-set ele SXRSTART:END space_charge_method = off
-set ele SXRSTART:END csr_method = off
+set ele HXRSTART:END space_charge_method = off
+set ele HXRSTART:END csr_method = off
 
-! Selectively turn off CSR
+! Selectively turn off CSR for non-dispersive sections
 set ele BEGINNING:BEGBC1B csr_method = off
 set ele ENDBC1B:BEGBC2B csr_method = off
 set ele ENDBC2B:BEGDOG csr_method = off
-set ele CCDLDEND:BEGSPS csr_method = off
-set ele S100B:CC31BBEG csr_method = off
-set ele MM2B:END csr_method = off
 
 
-set csr_param n_bin = 500
+! Test 
+set ele BEGDOG:HXRSTART csr_method = off
+set ele BEGDOG:HXRSTART space_charge_method = off
 
-! DEBUG:
-!set ele endl3:CC32END csr_method = 1_dim
-!set ele endl3:CC36END csr_method = 1_dim
+set csr_param n_bin = 40
 
-!set ele ENDl3:HXRSTART csr_method = 1_dim ! End of L3 to undulator
-!set ele MM1:CC36END csr_method = 1_dim  ! dogleg area
-!set ele CC32BEG:CC32END csr_method = 1_dim  ! HXR R56 compensating chicanes
 
 
 set global lattice_calc_on=true
