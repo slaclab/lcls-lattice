@@ -401,18 +401,33 @@ plot_page%size = 800, 400
   graph_index = 1
 
   graph%margin  =  0.15, 0.05, 0.05, 0.0, '%BOX'
-  graph%y%label = '\gb\dx\u, \gb\dy\u (m)'
+  graph%y%label = 'Quadrupole k1 (m\u-2\d)'
   graph%y%label_offset = .1
-  graph%n_curve = 1
+  graph%n_curve = 2
 
   curve(1)%data_source = 'lattice'
+  curve(1)%component = 'model'
   curve(1)%data_type = 'element_attrib.k1'
   curve(1)%y_axis_scale_factor = 1
-  curve(1)%line%color = 2 
+  curve(1)%line%color = 'red'
+  curve(1)%line%pattern = 'solid'
   curve(1)%line%width = 2
   curve(1)%smooth_line_calc = F
-  curve(1)%draw_symbols = .false.
-  curve(1)%legend_text  = '\gb\dx\u'
+  curve(1)%draw_symbols = T
+  curve(1)%legend_text  = 'k1'
+
+  curve(2)%data_source = 'lattice'
+  curve(2)%component = 'design'
+  curve(2)%data_type = 'element_attrib.k1'
+  curve(2)%y_axis_scale_factor = 1
+  curve(2)%line%color = 'blue'
+  curve(2)%line%pattern = 'dashed'
+  curve(2)%line%width = 2
+  curve(2)%smooth_line_calc = F
+  curve(2)%draw_symbols = T
+  curve(2)%legend_text  = 'k1'
+
+
 
 /
 
@@ -3093,33 +3108,12 @@ curve(2)%legend_text = 'Y'
   curve(1)%line%color=4
   curve(1)%line%width=2
   /
-!----------------------------------------------------------------
 
-!&tao_template_plot
-  plot%name = 'quads'
-  plot%x%min =   0
-  plot%x%max = 120
-  !plot%x%major_div = 10
-  plot%x%label = ' '
-  plot%x_axis_type = 'index'
-  plot%n_graph = 1
-/
 
-!&tao_template_graph
-  graph%name = 'k1'
-  graph_index = 1
-  graph%box = 1, 1, 1, 1
-  graph%title = 'Quadrupole K1 (m\u-2\d)'
-  graph%margin =  0.15, 0.06, 0.12, 0.12, '%BOX'
-  graph%y%label = 'k1'
-  graph%y%max =  0.1
-  graph%y%min = -0.1
-  graph%y%major_div = 4
-  graph%n_curve = 1
-  curve(1)%data_source = 'lattice'
-  curve(1)%data_type = 'element_param.k1'
-  curve(1)%y_axis_scale_factor = 1
-/
+
+
+
+
 
 !----------ploss (Particles Lost)------------------------------------
 
