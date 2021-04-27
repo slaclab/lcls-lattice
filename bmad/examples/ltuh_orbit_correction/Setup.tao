@@ -1,0 +1,24 @@
+place floor orbit_aperture_x
+place middle var_correctors
+x-a all s
+sc
+sc floor -24 24
+sc middle -6000 6000
+veto var *
+veto dat *
+
+set dat orbit.x|meas = 0
+use dat orbit.x
+
+
+! Turn off collimators
+set ele rcoll::* x1_limit = 20e-3
+set ele rcoll::* x2_limit = 20e-3
+
+set var *|key_bound=F
+use var mykick.x
+set var mykick.x|key_bound=T
+ 
+
+
+

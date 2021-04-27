@@ -2,7 +2,7 @@
   n_universes = 1
   plot_file   ='$LCLS_LATTICE/bmad/tao/tao_plot.init '
 !  startup_file='$LCLS_LATTICE/bmad/tao/tao.startup'
- startup_file='LTUH.tao'
+ startup_file='Setup.tao'
 /
 
 
@@ -13,6 +13,7 @@
   !unique_name_suffix="*::_##?"
   design_lattice(1)%file= 'lat.bmad'
   
+ ! design_lattice(1)%slice_lattice = 'L1X:DTDUND2'
   design_lattice(1)%slice_lattice = 'QVM1:DTDUND2'
   !  design_lattice(1)%slice_lattice = 'QVM1:CEDL3'
   
@@ -54,6 +55,38 @@
 !
 !/
 !
+
+
+
+
+!----------------------------------------
+! Aperture for Orbit Plot
+
+
+&tao_d2_data 
+ d2_data%name = "aperture" 
+ universe = '*' 
+ n_d1_data=2 
+/ 
+&tao_d1_data 
+ ix_d1_data = 1 
+ d1_data%name = "p" 
+ ix_min_data = 0 
+ ix_max_data = 8000 
+ default_data_source      = 'lat' 
+ default_data_type     = 'element_attrib.x2_limit' 
+ search_for_lat_eles = 'rcollimator::*,marker::APERTURE_*'  ! Special apertures put into lattice file as markers
+/ 
+&tao_d1_data 
+ ix_d1_data = 2 
+ d1_data%name = "n" 
+ ix_min_data = 0 
+ ix_max_data = 8000 
+ default_data_source      = 'lat' 
+ default_data_type     = 'element_attrib.x1_limit' 
+ use_same_lat_eles_as = 'aperture.p' 
+/
+
 
 
 
@@ -152,6 +185,19 @@ default_merit_type = 'target'
 
 default_key_bound = T
 default_key_delta = 1e-4
+/
+
+&tao_var
+    v1_var%name = 'mykick.x'
+        default_step = 1e-6
+        default_attribute = 'bl_kick'
+    search_for_lat_eles = 'hkicker::XX*'
+    
+default_merit_type = 'limit'
+default_low_lim = -2e-4
+default_high_lim = 2e-4  
+default_key_bound = T
+default_key_delta = 1e-5
 /
 
 
