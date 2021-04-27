@@ -237,9 +237,48 @@ beam_init%center(6) = 0.0
         datum( 3) =  'orbit.e_tot'     '' '' 'BEGL3'   'target'  0   
         datum( 4) =  'orbit.e_tot'     '' '' 'ENDL3'   'target'  0   
  / 
-
-  
-
+ 
+  &tao_d2_data
+       d2_data%name = 'emitmeas'
+       universe = 1
+       n_d1_data = 4
+  /
+  &tao_d1_data
+       ix_d1_data = 1
+       default_weight = 1
+       d1_data%name = 'OTR2'
+       datum( 1) =  'beta.a'     '' '' 'OTR2'   'target' 1.11311451
+       datum( 2) =  'alpha.a'    '' '' 'OTR2'   'target' -0.06893843
+       datum( 3) =  'beta.b'     '' '' 'OTR2'   'target' 1.11304981
+       datum( 4) =  'alpha.b'    '' '' 'OTR2'   'target' -0.07029174
+  /
+  &tao_d1_data
+       ix_d1_data = 2
+       default_weight = 1
+       d1_data%name = 'LI21'
+       datum( 1) =  'beta.a'     '' '' 'WS11'   'target' 3.78159449
+       datum( 2) =  'alpha.a'    '' '' 'WS11'   'target' 1.76951916
+       datum( 3) =  'beta.b'     '' '' 'WS11'   'target' 3.78281555
+       datum( 4) =  'alpha.b'    '' '' 'WS11'   'target' 1.69039968
+  /
+  &tao_d1_data
+       ix_d1_data = 3
+       default_weight = 1
+       d1_data%name = 'LI28'
+       datum( 1) =  'beta.a'     '' '' 'WS28144'   'target' 63.27768133
+       datum( 2) =  'alpha.a'    '' '' 'WS28144'   'target' -1.28409851
+       datum( 3) =  'beta.b'     '' '' 'WS28144'   'target' 35.47144303
+       datum( 4) =  'alpha.b'    '' '' 'WS28144'   'target' 0.68275107
+  /
+  &tao_d1_data
+       ix_d1_data = 4
+       default_weight = 1
+       d1_data%name = 'LTU'
+       datum( 1) =  'beta.a'     '' '' 'WS32B'   'target' 45.93010380
+       datum( 2) =  'alpha.a'    '' '' 'WS32B'   'target' -1.05917271
+       datum( 3) =  'beta.b'     '' '' 'WS32B'   'target' 46.50371613
+       datum( 4) =  'alpha.b'    '' '' 'WS32B'   'target' 1.08520368
+  /
 !&tao_d2_data
         d2_data%name = 'r56'
         universe = 1
@@ -333,12 +372,32 @@ beam_init%center(6) = 0.0
 /
 
 &tao_var
+    v1_var%name = 'q.LI21'
+	default_step = 1e-4
+	default_attribute = 'K1'
+	var(1:)%ele_name = 'Q21201','QM11', 'QM12', 'QM13'
+/
+
+&tao_var
+    v1_var%name = 'q.LI26'
+	default_step = 1e-4
+	default_attribute = 'K1'
+	var(1:)%ele_name = 'Q26201','Q26301', 'Q26401', 'Q26501', 'Q26601', 'Q26701', 'Q26801', 'Q26901'
+/
+
+&tao_var
+    v1_var%name = 'q.LTU'
+	default_step = 1e-4
+	default_attribute = 'K1'
+	var(1:)%ele_name = 'QEM1B','QEM2B','QEM3B','QEM4B'
+/
+
+&tao_var
     v1_var%name = 'q.LI22'
 	default_step = 1e-4
 	default_attribute = 'K1'
 	var(1:)%ele_name = 'Q21601','Q21701', 'Q21801', 'Q21901'
 /
-
 
 &tao_var
     v1_var%name = 'q.BC1'
