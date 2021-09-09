@@ -1,0 +1,91 @@
+beginning[beta_a] = 10
+beginning[beta_b] = 10
+
+beginning[e_tot] = 100e6
+
+parameter[geometry] = open
+parameter[particle] = electron
+
+call, file = $LCLS_LATTICE/bmad/master/SC_BSYD.bmad
+call, file = $LCLS_LATTICE/bmad/master/LCLSsc_devicenames.bmad
+
+call, file = $LCLS_LATTICE/bmad/overlays/sc/linac_overlays.bmad
+call, file = $LCLS_LATTICE/bmad/overlays/sc/bc1_overlays.bmad
+call, file = $LCLS_LATTICE/bmad/overlays/sc/bc2_overlays.bmad
+
+! Get energy exactly right
+CAVL018[PHI0] =  1.50741452922019872E-002
+
+! HTR
+Q0H01[K1] = -6.76513748439819285E+000
+Q0H02[K1] =  6.32280924976927228E+000
+Q0H03[K1] =  1.56638196842175814E+000
+Q0H04[K1] = -4.19850266846804310E+000
+Q0H05[K1] = -7.82329509499020315E+000
+Q0H06[K1] =  1.15454797071580306E+000
+
+! L1
+QC010[K1] =  1.10907300480255500E+000
+QC011[K1] = -1.35327512449576792E+000
+QC012[K1] =  1.15177039112537827E+000
+QCM02[K1] = -3.20734976994815846E-001
+QCM03[K1] =  2.30227751706038458E-001
+
+! L2
+QCM04[K1] = -2.95191360911050249E-001
+QCM08[K1] = -1.54623610884211948E-001
+QCM11[K1] =  1.94520705525796062E-001
+QCM15[K1] =  6.82445375869711879E-002
+
+! L3
+QCM16[K1] = -3.21285997025024972E-001
+QCM22[K1] = -1.89957558448385355E-001
+QCM29[K1] =  1.83568141942781093E-001
+QCM35[K1] = -1.32665222630478220E-003
+
+
+
+lcavity::*[ds_step] = .01
+sbend::*[fringe_type] = full
+
+
+
+
+! Cavity wakefields
+lcavity::CAVL*[sr_wake]  = call::$LCLS_LATTICE/bmad/wakefields/longitudinal_wakes_1300MHz.bmad
+lcavity::CAVC*[sr_wake]  = call::$LCLS_LATTICE/bmad/wakefields/longitudinal_wakes_3900MHz.bmad
+
+RWWAKE1[sr_wake] = call::$LCLS_LATTICE/bmad/wakefields/wakefield_SS_24.5mmR.bmad
+RWWAKE1[sr_wake%scale_with_length] = F
+RWWAKE1[sr_wake%amp_scale] = 105.6
+
+
+RWWAKE2[sr_wake] = call::$LCLS_LATTICE/bmad/wakefields/wakefield_SS_24.5mmR.bmad
+RWWAKE2[sr_wake%scale_with_length] = F
+RWWAKE2[sr_wake%amp_scale] = 2035.2
+
+! SXR only
+
+RWWAKE3S[sr_wake] = call::$LCLS_LATTICE/bmad/wakefields/wakefield_SS_24.5mmR.bmad
+RWWAKE3S[sr_wake%scale_with_length] = F
+RWWAKE3S[sr_wake%amp_scale] = 443.8
+
+RWWAKE4S[sr_wake] = call::$LCLS_LATTICE/bmad/wakefields/wakefield_SS_24.5mmR.bmad
+RWWAKE4S[sr_wake%scale_with_length] = F
+RWWAKE4S[sr_wake%amp_scale] = 341.8
+
+RWWAKE5S[sr_wake] = call::$LCLS_LATTICE/bmad/wakefields/wakefield_Al_5mm_gap_flat.bmad
+RWWAKE5S[sr_wake%scale_with_length] = F
+RWWAKE5S[sr_wake%amp_scale] = 100
+
+
+lat2: line = (LCLS2scI, lcls2scc)
+lat3: line = (LCLS2scI, lcls2scc, LCLS2scS)
+!use, lat3
+
+
+use, SC_BSYD
+call, file = beginning_BEGGUNB.bmad
+
+
+
