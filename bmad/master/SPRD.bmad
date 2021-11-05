@@ -303,8 +303,10 @@ kssp2h = 22.597513710817 ! 22.597505265891
 tssp1h = 15.249352738505 ! 15.249361095235
 tssp2h = 17.803041269766 ! 17.803035424509
 
-ssp1h: sextupole, tilt = raddeg*tssp1h, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = kssp1h
-ssp2h: sextupole, tilt = raddeg*tssp2h, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = kssp2h
+SSP1H: drift, L = 0.1, type ="@1,1.38S3.00", descrip = "deferred SEXTUPOLE"
+!old: ssp1h: sextupole, tilt = raddeg*tssp1h, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = kssp1h
+SSP2H: drift, L = 0.1, type ="@1,1.38S3.00", descrip = "deferred SEXTUPOLE"
+!old: ssp2h: sextupole, tilt = raddeg*tssp2h, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = kssp2h
 
 !=!  COMMENT
 !=!  COMMENT
@@ -347,8 +349,10 @@ qsp9s: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqsp9s, aperture = rqa
 kssp1s = 12.701345963181 ! 12.701341641754
 kssp2s = 12.699237045946 ! 12.699235330279
 
-ssp1s: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = kssp1s
-ssp2s: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = kssp2s
+SSP1S: drift, L = 0.1, type ="@1,1.38S3.00", descrip = "deferred SEXTUPOLE"
+!old: ssp1s: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = kssp1s
+SSP2S: drift, L = 0.1, type ="@1,1.38S3.00", descrip = "deferred SEXTUPOLE"
+!old: ssp2s: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = kssp2s
 
 !=!  COMMENT
 !=!  COMMENT
@@ -636,18 +640,21 @@ bysp2sb: sbend, type = "1.0D22.625", l = lbcsp2s/2, angle = abcsp2s/2, e2 = abcs
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-bkysp0h: sbend, type = "@2,0.787K35.4", hgap = gbkysp/2, l = lbkysp0h, angle = 0, e1 = 0, fint = 0.5, e2 = 0,
-          fintx = 0.5, ref_tilt = pi/2
+BKYSP0H: drift, L = 1.0, type ="@2,0.787K35.4", descrip = "deferred SBEND"
+!old: bkysp0h: sbend, type = "@2,0.787K35.4", hgap = gbkysp/2, l = lbkysp0h, angle = 0, e1 = 0, fint = 0.5, e2 = 0,
+!old           fintx = 0.5, ref_tilt = pi/2
 bkysp1h: sbend, type = "0.787K35.4", hgap = gbkysp/2, l = lbkysp1h, angle = abkysp1h, e1 = 0, fint = 0.5, e2 = abkysp1h,
           fintx = 0.5, ref_tilt = pi/2
 bkysp2h: sbend, type = "0.787K35.4", hgap = gbkysp/2, l = lbkysp2h, angle = abkysp2h, e1 = -abkysp1h, fint = 0.5,
           e2 = abkysp12h, fintx = 0.5, ref_tilt = pi/2
 bkysp3h: sbend, type = "0.787K35.4", hgap = gbkysp/2, l = lbkysp3h, angle = abkysp3h, e1 = -abkysp12h, fint = 0.5,
           e2 = abkysph, fintx = 0.5, ref_tilt = pi/2
-bkysp4h: sbend, type = "@2,0.787K35.4", hgap = gbkysp/2, l = lbkysp4h, angle = 0, e1 = -abkysph, fint = 0.5,
-          e2 = abkysph, fintx = 0.5, ref_tilt = pi/2
-bkysp5h: sbend, type = "@2,1.378K35.4", hgap = gbkysp5h/2, l = lbkysp5h, angle = 0, e1 = -abkysph, fint = 0.5,
-          e2 = abkysph, fintx = 0.5, ref_tilt = pi/2
+BKYSP4H: drift, L = 1.00000028125007, type ="@2,0.787K35.4", descrip = "deferred SBEND"
+!old: bkysp4h: sbend, type = "@2,0.787K35.4", hgap = gbkysp/2, l = lbkysp4h, angle = 0, e1 = -abkysph, fint = 0.5,
+!old           e2 = abkysph, fintx = 0.5, ref_tilt = pi/2
+BKYSP5H: drift, L = 1.00000028125007, type ="@2,1.378K35.4", descrip = "deferred SBEND"
+!old: bkysp5h: sbend, type = "@2,1.378K35.4", hgap = gbkysp5h/2, l = lbkysp5h, angle = 0, e1 = -abkysph, fint = 0.5,
+!old           e2 = abkysph, fintx = 0.5, ref_tilt = pi/2
 blxsph: sbend, type = "0.625SD38.98", hgap = gblxsp/2, l = lblxsph, angle = ablxsph, e1 = 0, fint = 0.5, e2 = ablxsph,
           fintx = 0.5
 bysp1h: sbend, type = "1.0D22.625", hgap = gbcsp/2, l = lbcsp1h, angle = abcsp1h, e1 = abcsp1h/2, fint = fbcsp,
@@ -661,18 +668,21 @@ brsp2h: sbend, type = "1.0D38.37", hgap = gbsp/2, l = lbrsph, angle = -abrsph, e
 bxsp1h: sbend, type = "1.0D38.37", hgap = gbsp/2, l = lbxsph, angle = abxsph, e1 = abxsph/2, fint = fbsp, e2 = abxsph/2,
           fintx = fbsp
 
-bkysp0s: sbend, type = "@2,0.787K35.4", hgap = gbkysp/2, l = lbkysp0s, angle = 0, e1 = 0, fint = 0.5, e2 = 0,
-          fintx = 0.5, ref_tilt = pi/2
+BKYSP0S: drift, L = 1.0, type ="@2,0.787K35.4", descrip = "deferred SBEND"
+!old: bkysp0s: sbend, type = "@2,0.787K35.4", hgap = gbkysp/2, l = lbkysp0s, angle = 0, e1 = 0, fint = 0.5, e2 = 0,
+!old           fintx = 0.5, ref_tilt = pi/2
 bkysp1s: sbend, type = "0.787K35.4", hgap = gbkysp/2, l = lbkysp1s, angle = abkysp1s, e1 = 0, fint = 0.5, e2 = abkysp1s,
           fintx = 0.5, ref_tilt = pi/2
 bkysp2s: sbend, type = "0.787K35.4", hgap = gbkysp/2, l = lbkysp2s, angle = abkysp2s, e1 = -abkysp1s, fint = 0.5,
           e2 = abkysp12s, fintx = 0.5, ref_tilt = pi/2
 bkysp3s: sbend, type = "0.787K35.4", hgap = gbkysp/2, l = lbkysp3s, angle = abkysp3s, e1 = -abkysp12s, fint = 0.5,
           e2 = abkysps, fintx = 0.5, ref_tilt = pi/2
-bkysp4s: sbend, type = "@2,0.787K35.4", hgap = gbkysp/2, l = lbkysp4s, angle = 0, e1 = -abkysps, fint = 0.5,
-          e2 = abkysps, fintx = 0.5, ref_tilt = pi/2
-bkysp5s: sbend, type = "@2,1.378K35.4", hgap = gbkysp5s/2, l = lbkysp5s, angle = 0, e1 = -abkysps, fint = 0.5,
-          e2 = abkysps, fintx = 0.5, ref_tilt = pi/2
+BKYSP4S: drift, L = 1.00000028125007, type ="@2,0.787K35.4", descrip = "deferred SBEND"
+!old: bkysp4s: sbend, type = "@2,0.787K35.4", hgap = gbkysp/2, l = lbkysp4s, angle = 0, e1 = -abkysps, fint = 0.5,
+!old           e2 = abkysps, fintx = 0.5, ref_tilt = pi/2
+BKYSP5S: drift, L = 1.00000028125007, type ="@2,1.378K35.4", descrip = "deferred SBEND"
+!old: bkysp5s: sbend, type = "@2,1.378K35.4", hgap = gbkysp5s/2, l = lbkysp5s, angle = 0, e1 = -abkysps, fint = 0.5,
+!old           e2 = abkysps, fintx = 0.5, ref_tilt = pi/2
 blxsps: sbend, type = "0.625SD38.98", hgap = gblxsp/2, l = lblxsps, angle = ablxsps, e1 = 0, fint = 0.5, e2 = ablxsps,
           fintx = 0.5
 bysp1s: sbend, type = "1.0D22.625", hgap = gbcsp/2, l = lbcsp1s, angle = abcsp1s, e1 = abcsp1s/2, fint = fbcsp,
@@ -1181,11 +1191,13 @@ ycsp8s: vkicker, type = "class-4"
 
 xcsp1d: hkicker, type = "class-4"
 xcsp3d: hkicker, type = "class-4"
-xcsp5d: hkicker, type = "@0,class-5"
+XCSP5D: drift, L = 0.0, type ="@0,class-5", descrip = "deferred HKICKER"
+!old: xcsp5d: hkicker, type = "@0,class-5"
 
 ycsp2d: vkicker, type = "class-4"
 ycsp4d: vkicker, type = "class-4"
-ycsp6d: vkicker, type = "@0,class-5"
+YCSP6D: drift, L = 0.0, type ="@0,class-5", descrip = "deferred VKICKER"
+!old: ycsp6d: vkicker, type = "@0,class-5"
 
 ! rastering kickers operating at ~60 Hz with 90 deg phase between each other
 
@@ -1210,18 +1222,25 @@ imsp0h: marker, type = "ICT" !diagnostic ACM in SPH
 imsp0s: marker, type = "ICT" !diagnostic ACM in SPS
 imsp0d: marker, type = "ICT" !diagnostic ACM in SPD
 
-imbcsh1: marker, type = "@0,BCS ACM" !BCS ACM doublet in SPH
-imbcsh2: marker, type = "@0,BCS ACM" !BCS ACM doublet in SPH
-imbcss1: marker, type = "@0,BCS ACM" !BCS ACM doublet in SPS
-imbcss2: marker, type = "@0,BCS ACM" !BCS ACM doublet in SPS
-imbcsd1: marker, type = "@0,BCS ACM" !BCS ACM doublet in SPD
-imbcsd2: marker, type = "@0,BCS ACM" !BCS ACM doublet in SPD
+IMBCSH1: drift, L = 0.0, type ="@0,BCS ACM", descrip = "deferred MARKER" !BCS ACM doublet in SPH
+!old: imbcsh1: marker, type = "@0,BCS ACM"
+IMBCSH2: drift, L = 0.0, type ="@0,BCS ACM", descrip = "deferred MARKER" !BCS ACM doublet in SPH
+!old: imbcsh2: marker, type = "@0,BCS ACM"
+IMBCSS1: drift, L = 0.0, type ="@0,BCS ACM", descrip = "deferred MARKER" !BCS ACM doublet in SPS
+!old: imbcss1: marker, type = "@0,BCS ACM"
+IMBCSS2: drift, L = 0.0, type ="@0,BCS ACM", descrip = "deferred MARKER" !BCS ACM doublet in SPS
+!old: imbcss2: marker, type = "@0,BCS ACM"
+IMBCSD1: drift, L = 0.0, type ="@0,BCS ACM", descrip = "deferred MARKER" !BCS ACM doublet in SPD
+!old: imbcsd1: marker, type = "@0,BCS ACM"
+IMBCSD2: drift, L = 0.0, type ="@0,BCS ACM", descrip = "deferred MARKER" !BCS ACM doublet in SPD
+!old: imbcsd2: marker, type = "@0,BCS ACM"
 
 btmspdmp: instrument, type = "PPS BTM" !Burn-Through-Monitor behind BSY dump
 
 wssp1d: marker, type = "fast" !to measure beam size and energy before BSY dump
 
-otrspdmp: monitor, type = "@0,OTR" !OTR screen before BSY dump
+OTRSPDMP: drift, L = 0.0, type ="@0,OTR", descrip = "deferred MONITOR" !OTR screen before BSY dump
+!old: otrspdmp: monitor, type = "@0,OTR"
 
 ! beamlines
 

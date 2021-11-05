@@ -1676,8 +1676,10 @@ kque2b = -0.00606676202205 ! 0.317835100036
 que1b: quadrupole, type = "2Q10", l = lqr/2, k1 = kque1b, aperture = rqr
 que2b: quadrupole, type = "2Q10", l = lqr/2, k1 = kque2b, aperture = rqr
 
-tcx01b: lcavity, rf_frequency = xbandf * 1e6, type = "@1,TRANS_DEFL", l = 1.0/2 !horiz. deflection
-tcx02b: lcavity, rf_frequency = xbandf * 1e6, type = "@1,TRANS_DEFL", l = 1.0/2 !horiz. deflection
+TCX01B: drift, L = 0.5, type ="@1,TRANS_DEFL", descrip = "deferred LCAVITY" !horiz. deflection
+!old: tcx01b: lcavity, rf_frequency = xbandf * 1e6, type = "@1,TRANS_DEFL", l = 1.0/2
+TCX02B: drift, L = 0.5, type ="@1,TRANS_DEFL", descrip = "deferred LCAVITY" !horiz. deflection
+!old: tcx02b: lcavity, rf_frequency = xbandf * 1e6, type = "@1,TRANS_DEFL", l = 1.0/2
 
 lbkxdmp = 1.0 !x-kicker length in dumpline
 dbkxdmps: drift, l = lbkxdmp !placeholder for x-kicker in SXR dumpline
@@ -1728,12 +1730,15 @@ bpmue1b: monitor, type = "Stripline-5" !RFBUE1B : MONI, TYPE="@2,CavityS-1"
 bpmue2b: monitor, type = "Stripline-5" !RFBUE2B : MONI, TYPE="@2,CavityS-1"
  !RFBUE3B : MONI, TYPE="@2,CavityS-1"
 
-true1b: instrument, type = "@5" !Be foil inserter (THz)
-sptcxb: instrument, type = "@1" !XTCAV spoiler
+TRUE1B: drift, L = 0.0, type ="@5", descrip = "deferred INSTRUMENT" !Be foil inserter (THz)
+!old: true1b: instrument, type = "@5"
+SPTCXB: drift, L = 0.0, type ="@1", descrip = "deferred INSTRUMENT" !XTCAV spoiler
+!old: sptcxb: instrument, type = "@1"
 btmqueb: instrument !Burn-Through-Monitor
 btm0b: instrument !Burn-Through-Monitor behind the PCPM0B
 
-pctcxb: ecollimator, type = "@1", x_limit = 4.5e-3, y_limit = 4.5e-3 !XTCAV photon collimator (9 mm aperture)
+PCTCXB: drift, L = 0.0, type ="@1", descrip = "deferred ECOLLIMATOR" !XTCAV photon collimator (9 mm aperture)
+!old: pctcxb: ecollimator, type = "@1", x_limit = 4.5e-3, y_limit = 4.5e-3
 pcpm0b: ecollimator, l = lpcpm, x_limit = 17.5e-3, y_limit = 17.5e-3
 
  !IMUNDOB : MARKER, TYPE="@0,BCS ACM" !BCS ACM
@@ -3532,7 +3537,8 @@ bpmue2: monitor, type = "Stripline-13" !RFBUE2 : MONI, TYPE="@2,CavityS-1"
 mimundo: marker
 mimbcs3: marker
 
-true1: instrument, type = "@5" !Be foil inserter (THz) -- existing LCLS device
+TRUE1: drift, L = 0.0, type ="@5", descrip = "deferred INSTRUMENT" !Be foil inserter (THz) -- existing LCLS device
+!old: true1: instrument, type = "@5"
 sptcx: instrument !XTCAV spoiler
 btmque: instrument !Burn-Through-Monitor
 btm0: instrument !Burn-Through-Monitor behind the PCPM0
