@@ -1,6 +1,6 @@
-  TITLE, "AD_ACCEL (January 22, 2021)" ! superconducting linac
+  TITLE, "AD_ACCEL (September 15, 2021)" ! superconducting linac
 
-! *** OPTICS=AD_ACCEL-22JAN21 ***
+! *** OPTICS=AD_ACCEL-15SEP21 ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY, DOUBLE
   ASSIGN, ECHO="LCLS2sc.echo"
@@ -494,16 +494,6 @@
     TWISS, BETA0=TWSSi, TAPE="LCLS2scDi_twiss.tape", &
       RTAPE="LCLS2scDi_rmat.tape"
 
-    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
-    BEAM, ENERGY=E0
-    USE, SC_SXR
-    TWISS, COUPLE, BETA0=TWSS0, TAPE="LCLS2scS-XL2_twiss.tape", &
-      RTAPE="LCLS2scS-XL2_rmat.tape"
-    BEAM, ENERGY=Ei
-    USE, SC_SXRi
-    TWISS, BETA0=TWSSi, TAPE="LCLS2scSi-XL2_twiss.tape", &
-      RTAPE="LCLS2scSi-XL2_rmat.tape"
-
     STOP
   ENDCOMMENT
 
@@ -580,24 +570,48 @@
     BEAM, ENERGY=E0
     SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
     USE, SC_SFTS
-   !SAVELINE, NAME="SC_SFTS", FILENAME="LCLS2scSS.saveline"
     PRINT, FULL
     SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scSS_survey.tape"
-    BEAM, ENERGY=Ei
-    USE, SC_SFTSi
-    PRINT, FULL
-    TWISS, SAVE, BETA0=TWSSi, TAPE="LCLS2scSS_twiss.tape" !, &
-   !  RTAPE="LCLS2scSS_rmat.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, VMAX=5, &
-      STYLE=100, SPLINE, RANGE=BEAM0/SFTDMPB, FILE="LCLS2scSS", &
-      TITLE="SC-linac to SXR safety dump"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=BEAM0/SFTDMPB, FILE="LCLS2scSS", &
-      TITLE="SC-linac to SXR safety dump"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE, RANGE=BEAM0/SFTDMPB, FILE="LCLS2scSS", &
-      TITLE="SC-linac to SXR safety dump"
   ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! SXR "2.x"
+
+ !COMMENT
+    ASSIGN, PRINT="LCLS2scS2_X.print"
+    BEAM, ENERGY=E0
+    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
+    USE, SC_S2_X
+    PRINT, FULL
+    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scS2_X_survey.tape"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! SXR TXI
+
+ !COMMENT
+    ASSIGN, PRINT="LCLS2scSTXI.print"
+    BEAM, ENERGY=E0
+    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
+    USE, SC_STXI
+    PRINT, FULL
+    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scSTXI_survey.tape"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! SXR TMO
+
+ !COMMENT
+    ASSIGN, PRINT="LCLS2scSTMO.print"
+    BEAM, ENERGY=E0
+    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
+    USE, SC_STMO
+    PRINT, FULL
+    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scSTMO_survey.tape"
+ !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
 
@@ -684,7 +698,7 @@
 
 ! ------------------------------------------------------------------------------
 
-! DASEL (deferred)
+! DASEL (funded off-project)
 
  !COMMENT
     ASSIGN, PRINT="LCLS2scDA.print"
@@ -953,4 +967,3 @@
 ! ------------------------------------------------------------------------------
 
   STOP
-

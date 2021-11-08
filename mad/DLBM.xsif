@@ -1,10 +1,16 @@
 
-! *** OPTICS=AD_ACCEL-22JAN21 ***
+! *** OPTICS=AD_ACCEL-15SEP21 ***
 
 ! LCLS2sc sector 7 dogleg plus match to bypass line
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 12-JUL-2021, M. Woodley
+!  * move XCBP11 10" downstream per T. Fak
+! ------------------------------------------------------------------------------
+! 11-MAY-2021, M. Woodley
+!  * correct spacing of 2Q4/BPM/XCOR/YCOR per ID drawings
 ! ------------------------------------------------------------------------------
 ! 30-APR-2019, M. Woodley
 !  * use measured FINT=0.4875 for 1.0D38.37 @ 262A
@@ -452,13 +458,15 @@
   DL4Pa : DRIF, L=0.4598
   DL4Pb : DRIF, L=0.7433
   DL4Pc : DRIF, L=LL4-DL4Pa[L]-DL4Pb[L]
-  DBPa  : DRIF, L=0.4598
-  DBPb  : DRIF, L=0.7433
+  DBPa  : DRIF, L=0.44518 !0.4598
+  DBPb  : DRIF, L=0.62865 !0.7433
   DBPc  : DRIF, L=DBP[L]-DBPa[L]-DBPb[L]
   DBPe  : DRIF, L=0.1
   DBPf  : DRIF, L=1.0
   DBPd  : DRIF, L=DBP[L]-DBPa[L]-DBPb[L]-DBPe[L]-DBPf[L]
 
+  DBPb1   : DRIF, L=DBPb[L]+0.38327
+  DBPc1   : DRIF, L=DBPc[L]-0.38327
   DBPd1   : DRIF, L=21.299397
   S10WALL : DRIF, L=2.0
   DBPd2   : DRIF, L=DBPd[L]-DBPd1[L]-S10WALL[L]
@@ -676,7 +684,7 @@
       QBP10_full,DBPa,BPMBP10,DBPb,YCBP10,DBPd1,S10WALL,DBPd2,&
         RFBWSBP1,DBPe,WSBP1,DBPf,&
         DBPsa,BPN10END,BPN11BEG,DBPsb,&
-      QBP11_full,DBPa,BPMBP11,DBPb,XCBP11,DBPc,&
+      QBP11_full,DBPa,BPMBP11,DBPb1,XCBP11,DBPc1,&
         DBPsa,BPN11END,BPN12BEG,DBPsb,&
       QBP12_full,DBPa,BPMBP12,DBPb,YCBP12,DBPd)
  !ENDCOMMENT

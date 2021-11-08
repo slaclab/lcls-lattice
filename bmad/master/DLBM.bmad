@@ -1,10 +1,16 @@
 
-! *** OPTICS=AD_ACCEL-22JAN21 ***
+! *** OPTICS=AD_ACCEL-15SEP21 ***
 
 ! LCLS2sc sector 7 dogleg plus match to bypass line
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 12-JUL-2021, M. Woodley
+!  * move XCBP11 10" downstream per T. Fak
+! ------------------------------------------------------------------------------
+! 11-MAY-2021, M. Woodley
+!  * correct spacing of 2Q4/BPM/XCOR/YCOR per ID drawings
 ! ------------------------------------------------------------------------------
 ! 30-APR-2019, M. Woodley
 !  * use measured FINT=0.4875 for 1.0D38.37 @ 262A
@@ -310,9 +316,9 @@ ksdog2 = 22.656285406772 !-20.61
 tsdog1 = -13.252537412109 !-0.2331*DEGRAD
 tsdog2 = 16.730337124259 ! 0.3342*DEGRAD
 
-SDOG1: drift, L = 0.1, type ="@1,1.38S3.00", descrip = "deferred SEXTUPOLE"
+SDOG1: drift, L = 0.05, type ="@1,1.38S3.00", descrip = "deferred SEXTUPOLE"
 !old: sdog1: sextupole, tilt = raddeg*tsdog1, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdog1
-SDOG2: drift, L = 0.1, type ="@1,1.38S3.00", descrip = "deferred SEXTUPOLE"
+SDOG2: drift, L = 0.05, type ="@1,1.38S3.00", descrip = "deferred SEXTUPOLE"
 !old: sdog2: sextupole, tilt = raddeg*tsdog2, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdog2
 
 !=!  COMMENT
@@ -448,13 +454,15 @@ dl3pd: drift, l = ll3-dl3pa[l]-dl3pb[l]-dl3pc[l]
 dl4pa: drift, l = 0.4598
 dl4pb: drift, l = 0.7433
 dl4pc: drift, l = ll4-dl4pa[l]-dl4pb[l]
-dbpa: drift, l = 0.4598
-dbpb: drift, l = 0.7433
+dbpa: drift, l = 0.44518 !0.4598
+dbpb: drift, l = 0.62865 !0.7433
 dbpc: drift, l = dbp[l]-dbpa[l]-dbpb[l]
 dbpe: drift, l = 0.1
 dbpf: drift, l = 1.0
 dbpd: drift, l = dbp[l]-dbpa[l]-dbpb[l]-dbpe[l]-dbpf[l]
 
+dbpb1: drift, l = dbpb[l]+0.38327
+dbpc1: drift, l = dbpc[l]-0.38327
 dbpd1: drift, l = 21.299397
 s10wall: drift, l = 2.0
 dbpd2: drift, l = dbpd[l]-dbpd1[l]-s10wall[l]
@@ -561,26 +569,60 @@ bpn12beg: marker
 ! BEAMLINE
 ! ------------------------------------------------------------------------------
 
+
+
+!Old split line: LINE=(BCXDLU1a,BCXDLU1b)
+
 bcxdlu1_full: line = (bcxdlu1)
-!old:   BCXDLU1_full : LINE=(BCXDLU1a,BCXDLU1b)
+
+
+!Old split line: LINE=(BCXDLU2a,BCXDLU2b)
+
 bcxdlu2_full: line = (bcxdlu2)
-!old:   BCXDLU2_full : LINE=(BCXDLU2a,BCXDLU2b)
+
+
+!Old split line: LINE=(BCXDLU3a,BCXDLU3b)
+
 bcxdlu3_full: line = (bcxdlu3)
-!old:   BCXDLU3_full : LINE=(BCXDLU3a,BCXDLU3b)
+
+
+!Old split line: LINE=(BCXDLU4a,BCXDLU4b)
+
 bcxdlu4_full: line = (bcxdlu4)
-!old:   BCXDLU4_full : LINE=(BCXDLU4a,BCXDLU4b)
+
+
+!Old split line: LINE=(BRB1a,clBRB1,BRB1b)
+
 brb1_full: line = (brb1)
-!old:   BRB1_full    : LINE=(BRB1a,clBRB1,BRB1b)
+clbrb1[superimpose] = T
+clbrb1[ref] = brb1
+
+
+!Old split line: LINE=(BRB2a,clBRB2,BRB2b)
+
 brb2_full: line = (brb2)
-!old:   BRB2_full    : LINE=(BRB2a,clBRB2,BRB2b)
+clbrb2[superimpose] = T
+clbrb2[ref] = brb2
+
+
+!Old split line: LINE=(BCXDLD1a,BCXDLD1b)
+
 bcxdld1_full: line = (bcxdld1)
-!old:   BCXDLD1_full : LINE=(BCXDLD1a,BCXDLD1b)
+
+
+!Old split line: LINE=(BCXDLD2a,BCXDLD2b)
+
 bcxdld2_full: line = (bcxdld2)
-!old:   BCXDLD2_full : LINE=(BCXDLD2a,BCXDLD2b)
+
+
+!Old split line: LINE=(BCXDLD3a,BCXDLD3b)
+
 bcxdld3_full: line = (bcxdld3)
-!old:   BCXDLD3_full : LINE=(BCXDLD3a,BCXDLD3b)
+
+
+!Old split line: LINE=(BCXDLD4a,BCXDLD4b)
+
 bcxdld4_full: line = (bcxdld4)
-!old:   BCXDLD4_full : LINE=(BCXDLD4a,BCXDLD4b)
 
 
 
@@ -756,8 +798,8 @@ sdog2[L] = 2*sdog2[L]
     MTCH1 : LINE=(DLCCP,CCDLD,DL0Pa,OTR31,DL0Pb,QL1P_full,DL1Pa,BPML1P,DL1Pb,XCL1P,DL1Pc,QL2P_full,DL2Pa,BPML2P,DL2Pb,
          YCL2P,DL2Pc,QL3P_full,DL3Pa,BPML3P,DL3Pb,XCL3P,DL3Pc,BPN09BEG,DL3Pd,QL4P_full,DL4Pa,BPML4P,DL4Pb,YCL4P,DL4Pc,QL5P_full,
          DBPa,BPML5P,DBPb,XCL5P,DBPc,DBPsa,BPN09END,BPN10BEG,DBPsb,QBP10_full,DBPa,BPMBP10,DBPb,YCBP10,DBPd1,S10WALL,DBPd2,
-         RFBWSBP1,DBPe,WSBP1,DBPf,DBPsa,BPN10END,BPN11BEG,DBPsb,QBP11_full,DBPa,BPMBP11,DBPb,XCBP11,DBPc,DBPsa,BPN11END,BPN12BEG,
-         DBPsb,QBP12_full,DBPa,BPMBP12,DBPb,YCBP12,DBPd)
+         RFBWSBP1,DBPe,WSBP1,DBPf,DBPsa,BPN10END,BPN11BEG,DBPsb,QBP11_full,DBPa,BPMBP11,DBPb1,XCBP11,DBPc1,DBPsa,BPN11END,
+         BPN12BEG,DBPsb,QBP12_full,DBPa,BPMBP12,DBPb,YCBP12,DBPd)
  !ENDCOMMENT
 
   DLBM : LINE=(BEGDOG,CCDLU,DBDm1,DLBP,MTCH1,ENDDOG)

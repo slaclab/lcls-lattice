@@ -1,11 +1,14 @@
 
-! *** OPTICS=AD_ACCEL-22JAN21 ***
+! *** OPTICS=AD_ACCEL-15SEP21 ***
 
 ! LCLS2sc undulator and undulator extension
-! NOTE: "startup" configuration for HXR undulator (see UNDtemp.xsif)
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 26-MAR-2021, M. Woodley
+!  * add PEPPEx devices at end of SXR
+!  * add VGCCPEPX1 and VGPRPEPX1 (INST) per S. Alverson
 ! ------------------------------------------------------------------------------
 ! 18-JAN-2021, M. Woodley
 !  * install final nominal LCLS-II HXR cells (#13, #14, #15, #16, and #17)
@@ -295,6 +298,7 @@
   PSSXh32 : PSSXh
   PSSXh33 : PSSXh
   PSSXh34 : PSSXh
+
   PSSXh36 : PSSXh
   PSSXh37 : PSSXh
   PSSXh38 : PSSXh
@@ -582,6 +586,7 @@
   UMASXh32 : UMASXh
   UMASXh33 : UMASXh
   UMASXh34 : UMASXh
+! ------35
   UMASXh36 : UMASXh
   UMASXh37 : UMASXh
   UMASXh38 : UMASXh
@@ -662,6 +667,7 @@
   XCSU32 : INST, TYPE="type-V"
   XCSU33 : INST, TYPE="type-V"
   XCSU34 : INST, TYPE="type-V"
+! ----35
   XCSU36 : INST, TYPE="type-V"
   XCSU37 : INST, TYPE="type-V"
   XCSU38 : INST, TYPE="type-V"
@@ -688,6 +694,7 @@
   YCSU32 : INST, TYPE="type-V"
   YCSU33 : INST, TYPE="type-V"
   YCSU34 : INST, TYPE="type-V"
+! ----35
   YCSU36 : INST, TYPE="type-V"
   YCSU37 : INST, TYPE="type-V"
   YCSU38 : INST, TYPE="type-V"
@@ -700,7 +707,7 @@
   YCSU45 : INST, TYPE="type-V"
   YCSU46 : INST, TYPE="type-V"
   YCSU47 : INST, TYPE="type-V"
-
+  
 ! ------------------------------------------------------------------------------
 ! SXR undulator BPMs
 ! ------------------------------------------------------------------------------
@@ -931,6 +938,7 @@
   UMASXh32_full : LINE=(UMASXh32,XCSU32,YCSU32,UMASXh32)
   UMASXh33_full : LINE=(UMASXh33,XCSU33,YCSU33,UMASXh33)
   UMASXh34_full : LINE=(UMASXh34,XCSU34,YCSU34,UMASXh34)
+! ------35
   UMASXh36_full : LINE=(UMASXh36,XCSU36,YCSU36,UMASXh36)
   UMASXh37_full : LINE=(UMASXh37,XCSU37,YCSU37,UMASXh37)
   UMASXh38_full : LINE=(UMASXh38,XCSU38,YCSU38,UMASXh38)
@@ -1005,6 +1013,38 @@
   BOD12 : PROF, TYPE="YAG" !Beam Overlap Device
   DU7sb : DRIF, L=DU7s[L]-DU7sa[L]
 
+! PEPPEx components
+
+  DU7sc     : DRIF, L=0.184
+  FSPEPX1   : INST, TYPE="fast shutter"
+  DU7sd     : DRIF, L=DU7s[L]-DU7sc[L]
+  DU3sa     : DRIF, L=0.114
+  XCPEPX1   : HKIC, TYPE="type-4 mod 1.5"
+  DU3sb     : DRIF, L=DU3s[L]-DU3sa[L]
+  DU7se     : DRIF, L=0.074
+  VGPEPX1   : MARK, TYPE="vacuum gauges"
+  VGCCPEPX1 : INST, TYPE="cold cathode"
+  VGPRPEPX1 : INST, TYPE="pirani"
+  DU7sf     : DRIF, L=DU7s[L]-DU7se[L]
+  DUSEGS50a : DRIF, L=0.064
+  XCPEPX2   : HKIC, TYPE="type-4 mod 1.5"
+  DUSEGS50b : DRIF, L=0.586
+  ZPPEPX    : INST, TYPE="zone plate"
+  DUSEGS50c : DRIF, L=0.29
+  VPPEPX1   : MARK, TYPE="ion pump"
+  DUSEGS50d : DRIF, L=0.224
+  XCPEPX3   : HKIC, TYPE="type-4 mod 1.5"
+  DUSEGS50e : DRIF, L=0.95
+  XCPEPX4   : HKIC, TYPE="type-4 mod 1.5"
+  DUSEGS50f : DRIF, L=0.6
+  GJPEPX    : INST, TYPE="gas jet"
+  DUSEGS50g : DRIF, L=DUSEGS50[L]-DUSEGS50a[L]-DUSEGS50b[L]&
+                      -DUSEGS50c[L]-DUSEGS50d[L]-DUSEGS50e[L]&
+                      -DUSEGS50f[L]
+  DUE1ab1   : DRIF, L=0.121
+  VPPEPX2   : MARK, TYPE="ion pump"
+  DUE1ab2 : DRIF, L=DUE1ab[L]-DUE1ab1[L]
+
   SXBRK26 : LINE=(&
     DU3s,PSSXh26_full,DU4s,VVSXU26,DU5s,QSXh26_full,DU6s,RFBSX26,DU7s)
   SXBRK27 : LINE=(&
@@ -1047,14 +1087,12 @@
     DU3s,PSSXh45_full,DU4s,        DU5s,QSXh45_full,DU6s,RFBSX45,DU7s)
   SXBRK46 : LINE=(&
     DU3s,PSSXh46_full,DU4s,        DU5s,QSXh46_full,DU6s,RFBSX46,DU7s)
-  SXBRK47 : LINE=(&
-    DU3s,DPSSX47     ,DU4s,VVSXU47,DU5s,QSXh47_full,DU6s,RFBSX47,DU7s)
-  SXBRK48 : LINE=(&
-    DU3s,DPSSX48     ,DU4s,        DU5s,DQSX48     ,DU6s,DRFBS48,DU7s)
-  SXBRK49 : LINE=(&
-    DU3s,DPSSX49     ,DU4s,        DU5s,DQSX49     ,DU6s,DRFBS49,DU7s)
-  SXBRK50 : LINE=(&
-    DU3s,DPSSX50     ,DU4s,        DU5s,DQSX50     ,DU6s,DRFBS50,DU7s)
+  SXBRK47 : LINE=(DU3s,DPSSX47,DU4s,VVSXU47,DU5s,QSXh47_full,DU6s,&
+    RFBSX47,DU7sc,FSPEPX1,DU7sd)
+  SXBRK48 : LINE=(DU3s,DPSSX48,DU4s,DU5s,DQSX48,DU6s,DRFBS48,DU7s)
+  SXBRK49 : LINE=(DU3sa,XCPEPX1,DU3sb,DPSSX49,DU4s,DU5s,DQSX49,DU6s,&
+    DRFBS49,DU7se,VGPEPX1,VGCCPEPX1,VGPRPEPX1,DU7sf)
+  SXBRK50 : LINE=(DU3s,DPSSX50,DU4s,DU5s,DQSX50,DU6s,DRFBS50,DU7s)
 
   SXCEL26  : LINE=(DU1s,MBLMS26,DU2s,USEGSX26,SXBRK26)
   SXCEL27  : LINE=(DU1s,MBLMS27,DU2s,USEGSX27,SXBRK27)
@@ -1065,7 +1103,7 @@
   SXCEL32  : LINE=(DU1s,MBLMS32,DU2s,USEGSX32,SXBRK32)
   SXCEL33  : LINE=(DU1s,MBLMS33,DU2s,USEGSX33,SXBRK33)
   SXCEL34  : LINE=(DU1s,MBLMS34,DU2s,USEGSX34,SXBRK34)
-  SXCEL35  : LINE=(DU1s,MBLMS35,DU2s,DUSEGS35,SXBRK35) !empty with Q+RFBPM
+  SXCEL35  : LINE=(DU1s,MBLMS35,DU2s,DUSEGS35,SXBRK35) !SXRSS+Q+RFBPM
   SXCEL36  : LINE=(DU1s,MBLMS36,DU2s,USEGSX36,SXBRK36)
   SXCEL37  : LINE=(DU1s,MBLMS37,DU2s,USEGSX37,SXBRK37)
   SXCEL38  : LINE=(DU1s,MBLMS38,DU2s,USEGSX38,SXBRK38)
@@ -1079,8 +1117,10 @@
   SXCEL46  : LINE=(DU1s,MBLMS46,DU2s,USEGSX46,SXBRK46)
   SXCEL47  : LINE=(DU1s,MBLMS47,DU2s,USEGSX47,SXBRK47)
   SXCEL48  : LINE=(DU1s,MBLMS48,DU2s,DUSEGS48,SXBRK48) !empty
-  SXCEL49  : LINE=(DU1s,        DU2s,DUSEGS49,SXBRK49) !empty
-  SXCEL50  : LINE=(DU1s,        DU2s,DUSEGS50,SXBRK50) !empty
+  SXCEL49  : LINE=(DU1s,DU2s,DUSEGS49,SXBRK49) !empty
+  SXCEL50  : LINE=(DU1s,DU2s,DUSEGS50a,XCPEPX2,DUSEGS50b,ZPPEPX,&
+   DUSEGS50c,VPPEPX1,DUSEGS50d,XCPEPX3,DUSEGS50e,XCPEPX4,DUSEGS50f,&
+   GJPEPX,DUSEGS50g,SXBRK50) !PEPPEx stuff
 
   SXRCL    : LINE=(&
     SXCEL26,SXCEL27,SXCEL28,SXCEL29,SXCEL30,&
@@ -1089,7 +1129,8 @@
     SXCEL41,SXCEL42,SXCEL43,SXCEL44,SXCEL45,&
     SXCEL46,SXCEL47,SXCEL48,SXCEL49,SXCEL50)
 
-  SXR : LINE=(SXRSTART,SXRCL,RWWAKE5S,SXRTERM,DUE1ab,RFBSX51,DUE1e,ENDUNDS)
+  SXR : LINE=(SXRSTART,SXRCL,RWWAKE5S,SXRTERM,DUE1ab1,VPPEPX2,DUE1ab2,&
+    RFBSX51,DUE1e,ENDUNDS)
 
 ! ------------------------------------------------------------------------------
 ! SXR undulator exit section
@@ -1146,6 +1187,10 @@
   DUE5eB   : DRIF, L=0.252825-DUE5d[L]-DUE5f[L]+dzSXTES
   DDLWALLB : DRIF, L=0.250825-dzSXTES !length of dumpline thermal barrier wall
 
+  DPCVVa  : DRIF, L=0.320516
+  FSPEPX3 : INST, TYPE="fast shutter"
+  DPCVVb  : DRIF, L=DPCVV[L]-DPCVVa[L]
+
   XCUE2B  : HKIC,TYPE="class-4"
   XCD3B   : HKIC,TYPE="class-5"
 
@@ -1190,7 +1235,7 @@
       UEbegb,DUE1d,VV36b,DUE1b,MIMUNDOB,DUE1c,DUE2a,YCUE1B,&
       DUE2b,PH31B,DUE2d,PH32B,DUE2d,PH33B,DUE2d,PH34B,DUE2e,XCUE2B,DUE2cb,&
     QUE1B_full,DUE3ab,BPMUE1B,DUE3bb,TRUE1B,DUE3c,DBKXDMPS,DUE3c,PCTCXB,&
-      DPCVV,VVTCXb,DVVTCX,MTCX01b,&
+      DPCVVa,FSPEPX3,DPCVVb,VVTCXb,DVVTCX,MTCX01b,&
     2*TCX01B,DTCX12,MTCXb,DTCX12,&
     2*TCX02B,DTCXSP,SPTCXB,DUE4b,&
     QUE2B_full,DUE5ab,BPMUE2B,DUE5bb,BTMQUEB,DUE5cb,PCPM0B,DUE5f,BTM0B,&
@@ -1505,12 +1550,14 @@
   XCHU18 : INST, TYPE="type-V"
   XCHU19 : INST, TYPE="type-V"
   XCHU20 : INST, TYPE="type-V"
+! ----21
   XCHU22 : INST, TYPE="type-V"
   XCHU23 : INST, TYPE="type-V"
   XCHU24 : INST, TYPE="type-V"
   XCHU25 : INST, TYPE="type-V"
   XCHU26 : INST, TYPE="type-V"
   XCHU27 : INST, TYPE="type-V"
+! ----28
   XCHU29 : INST, TYPE="type-V"
   XCHU30 : INST, TYPE="type-V"
   XCHU31 : INST, TYPE="type-V"
@@ -1542,12 +1589,14 @@
   YCHU18 : INST, TYPE="type-V"
   YCHU19 : INST, TYPE="type-V"
   YCHU20 : INST, TYPE="type-V"
+! ----21
   YCHU22 : INST, TYPE="type-V"
   YCHU23 : INST, TYPE="type-V"
   YCHU24 : INST, TYPE="type-V"
   YCHU25 : INST, TYPE="type-V"
   YCHU26 : INST, TYPE="type-V"
   YCHU27 : INST, TYPE="type-V"
+! ----28
   YCHU29 : INST, TYPE="type-V"
   YCHU30 : INST, TYPE="type-V"
   YCHU31 : INST, TYPE="type-V"
@@ -1682,12 +1731,14 @@
   VVHXU18 : MARK
   VVHXU19 : MARK
   VVHXU20 : MARK
+! -----21
   VVHXU22 : MARK
   VVHXU23 : MARK
   VVHXU24 : MARK
   VVHXU25 : MARK
   VVHXU26 : MARK
   VVHXU27 : MARK
+! -----28
   VVHXU29 : MARK
   VVHXU30 : MARK
   VVHXU31 : MARK
@@ -2041,7 +2092,7 @@
   HXCEL25  : LINE=(DU1h,DU2h,USEGHX25,HXBRK25)
   HXCEL26  : LINE=(DU1h,DU2h,USEGHX26,HXBRK26)
   HXCEL27  : LINE=(DU1h,DU2h,USEGHX27,HXBRK27)
-  HXCEL28  : LINE=(DU1h,DU2h,DUSEGH28,HXBRK28) !empty with Q+RFBPM+HXRSS
+  HXCEL28  : LINE=(DU1h,DU2h,DUSEGH28,HXBRK28) !HXRSS+Q+RFBPM
   HXCEL29  : LINE=(DU1h,DU2h,USEGHX29,HXBRK29)
   HXCEL30  : LINE=(DU1h,DU2h,USEGHX30,HXBRK30)
   HXCEL31  : LINE=(DU1h,DU2h,USEGHX31,HXBRK31)

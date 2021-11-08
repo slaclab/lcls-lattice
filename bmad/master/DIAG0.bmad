@@ -1,10 +1,14 @@
 
-! *** OPTICS=AD_ACCEL-22JAN21 ***
+! *** OPTICS=AD_ACCEL-15SEP21 ***
 
 ! LCLS2sc post laser heater diagnostic beamline
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 13-SEP-2021, M. Woodley
+!  * add X/Y corrector pair to TCYDG0 (class-1t) deferred level 4
+!  * add X/Y corrector pair to TCXDG0 (class-1t) undeferred
 ! ------------------------------------------------------------------------------
 ! 26-NOV-2019, M. Woodley
 !  * undefer TCXDG0 per D. Yeremian
@@ -124,7 +128,8 @@ kqbd0 = -7.825140556488    !-13.410702917581
 ! transverse deflecting cavities
 ! (NOTE: TCYDG0 might be installed as an uprgade at a later time)
 
-tcydg0: lcavity, type = "@4,TRANS_YDEF", rf_frequency = 2856 * 1e6, l = 0.8/2 !Y-deflector (split)
+TCYDG0: drift, L = 0.8, type ="@4,TRANS_YDEF", descrip = "deferred LCAVITY" !Y-deflector (split)
+!old: tcydg0: lcavity, type = "@4,TRANS_YDEF", rf_frequency = 2856 * 1e6, l = 0.8/2
 tcxdg0: lcavity, type = "TRANS_XDEF", rf_frequency = 2856 * 1e6, l = 0.8/2 !X-deflector (split)
 
 ! ==============================================================================
@@ -386,6 +391,9 @@ xcdg001: hkicker, type = "class-6"
 xcdg002: hkicker, type = "class-6"
 xcdg003: hkicker, type = "class-1a"
 xcdg005: hkicker, type = "class-1a"
+XCDGTCY: drift, L = 0.0, type ="@4,class-1t", descrip = "deferred HKICKER"
+!old: xcdgtcy: hkicker, type = "@4,class-1t"
+xcdgtcx: hkicker, type = "class-1t"
 xcdg008: hkicker, type = "class-1a"
 xcdg010: hkicker, type = "class-1a"
 
@@ -397,6 +405,9 @@ ycdg001: vkicker, type = "class-6"
 ycdg002: vkicker, type = "class-6"
 ycdg003: vkicker, type = "class-1a"
 ycdg005: vkicker, type = "class-1a"
+YCDGTCY: drift, L = 0.0, type ="@4,class-1t", descrip = "deferred VKICKER"
+!old: ycdgtcy: vkicker, type = "@4,class-1t"
+ycdgtcx: vkicker, type = "class-1t"
 ycdg008: vkicker, type = "class-1a"
 ycdg010: vkicker, type = "class-1a"
 
@@ -437,29 +448,49 @@ mtcxdg0: marker
 
 
 
-!Old split line: LINE=(TCYDG0,MTCYDG0,TCYDG0)
+!Old split line: LINE=(TCYDG0,XCDGTCY,MTCYDG0,YCDGTCY,TCYDG0)
 
 tcydg0_full: line = (tcydg0)
 tcydg0[L] = 2*tcydg0[L]
+xcdgtcy[superimpose] = T
+xcdgtcy[ref] = tcydg0
 mtcydg0[superimpose] = T
 mtcydg0[ref] = tcydg0
+ycdgtcy[superimpose] = T
+ycdgtcy[ref] = tcydg0
 
 
-!Old split line: LINE=(TCXDG0,MTCXDG0,TCXDG0)
+!Old split line: LINE=(TCXDG0,XCDGTCX,MTCXDG0,YCDGTCX,TCXDG0)
 
 tcxdg0_full: line = (tcxdg0)
 tcxdg0[L] = 2*tcxdg0[L]
+xcdgtcx[superimpose] = T
+xcdgtcx[ref] = tcxdg0
 mtcxdg0[superimpose] = T
 mtcxdg0[ref] = tcxdg0
+ycdgtcx[superimpose] = T
+ycdgtcx[ref] = tcxdg0
+
+
+
+!Old split line: LINE=(BKRDG0a,BKRDG0b)
 
 bkrdg0_full: line = (bkrdg0)
-!old:   BKRDG0_full : LINE=(BKRDG0a,BKRDG0b)
+
+
+!Old split line: LINE=(BLRDG0a,BLRDG0b)
+
 blrdg0_full: line = (blrdg0)
-!old:   BLRDG0_full : LINE=(BLRDG0a,BLRDG0b)
+
+
+!Old split line: LINE=(BXDG0a,BXDG0b)
+
 bxdg0_full: line = (bxdg0)
-!old:   BXDG0_full  : LINE=(BXDG0a,BXDG0b)
+
+
+!Old split line: LINE=(BYDG0a,BYDG0b)
+
 bydg0_full: line = (bydg0)
-!old:   BYDG0_full  : LINE=(BYDG0a,BYDG0b)
 
 
 

@@ -1,10 +1,17 @@
 
-! *** OPTICS=AD_ACCEL-22JAN21 ***
+! *** OPTICS=AD_ACCEL-15SEP21 ***
 
 ! LCLS2sc 3-way spreader system
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 20-JUL-2021, M. Woodley
+!  * quad strength changes for Yuri's "symmetric" SPRDs/SPRDh match
+! ------------------------------------------------------------------------------
+! 28-APR-2021, M. Woodley
+!  * move YCSP4S 10" upstream per T. Fak
+!  * move XCSP1D 18" upstream per T. Fak
 ! ------------------------------------------------------------------------------
 ! 26-NOV-2019, M. Woodley
 !  * remove IMBCSh3, IMBCSs3, and IMBCSd3 per Y. Ding
@@ -267,19 +274,19 @@ pssph = 0.0
 
 ! HXR quads
 
-kqsp1h = 0.492283667698 ! 0.492284061187
-kqsp2h = -1.000975451311 !-1.000975933726
-kqsp3h = 0.304631037813 ! 0.304631069714
-kqsp4h = -0.301467336919 !-0.301467337182
-kqsp5h = 0.179797525903 ! 0.179797501925
-kqsp6h = -0.221916299351 !-0.221916295184
-kqsp7h = 0.447153951126 ! 0.447153906987
-kqsp10h = -0.301520274195 !-0.301520272128
-kqsp11h = 0.304797784837 ! 0.304797809076
-kqsp12h = -0.991899431333 !-0.991897597733
-kqsp13h = 0.491351727496 ! 0.49135154631
+kqsp1h = 0.492324446747
+kqsp2h = -1.001967523398
+kqsp3h = 0.304769059951
+kqsp4h = -0.300033974381
+kqsp5h = 0.179267068866
+kqsp6h = -0.222726806069
+kqsp7h = 0.448434480039
 kqsp8h = kqsp6h
 kqsp9h = kqsp5h
+kqsp10h = kqsp4h
+kqsp11h = kqsp3h
+kqsp12h = -1.001082746242
+kqsp13h = kqsp1h
 
 qsp1h: quadrupole, type = "2Q10", l = lqr/2, k1 = kqsp1h, aperture = rqr
 qsp2h: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqsp2h, aperture = rqe
@@ -303,9 +310,9 @@ kssp2h = 22.597513710817 ! 22.597505265891
 tssp1h = 15.249352738505 ! 15.249361095235
 tssp2h = 17.803041269766 ! 17.803035424509
 
-SSP1H: drift, L = 0.1, type ="@1,1.38S3.00", descrip = "deferred SEXTUPOLE"
+SSP1H: drift, L = 0.05, type ="@1,1.38S3.00", descrip = "deferred SEXTUPOLE"
 !old: ssp1h: sextupole, tilt = raddeg*tssp1h, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = kssp1h
-SSP2H: drift, L = 0.1, type ="@1,1.38S3.00", descrip = "deferred SEXTUPOLE"
+SSP2H: drift, L = 0.05, type ="@1,1.38S3.00", descrip = "deferred SEXTUPOLE"
 !old: ssp2h: sextupole, tilt = raddeg*tssp2h, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = kssp2h
 
 !=!  COMMENT
@@ -324,15 +331,15 @@ qsp2: quadrupole, type = "2Q10", l = lqr/2, k1 = kqsp2, aperture = rqr
 
 ! SXR quads
 
-kqsp1s = 0.633653576661 ! 0.633675228645 ! 0.633675409102
-kqsp2s = -0.558885462267 !-0.558846778994 !-0.558846970939
-kqsp3s = 0.651984725505 ! 0.652027259917 ! 0.652027344684
-kqsp4s = -0.497614883856 !-0.497671456472 !-0.497671571574
-kqsp5s = 0.184573897566 ! 0.184431144204 ! 0.184431117493
-kqsp8s = -0.55912664167  !-0.559080484823 !-0.559079941433
-kqsp9s = 0.633788997918 ! 0.633806872701 ! 0.633806671882
+kqsp1s = 0.633592368552
+kqsp2s = -0.558572403531
+kqsp3s = 0.652091326391
+kqsp4s = -0.497963158567
+kqsp5s = 0.184546784571
 kqsp6s = kqsp4s
 kqsp7s = kqsp3s
+kqsp8s = kqsp2s
+kqsp9s = kqsp1s
 
 qsp1s: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqsp1s, aperture = rqa
 qsp2s: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqsp2s, aperture = rqa
@@ -349,9 +356,9 @@ qsp9s: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqsp9s, aperture = rqa
 kssp1s = 12.701345963181 ! 12.701341641754
 kssp2s = 12.699237045946 ! 12.699235330279
 
-SSP1S: drift, L = 0.1, type ="@1,1.38S3.00", descrip = "deferred SEXTUPOLE"
+SSP1S: drift, L = 0.05, type ="@1,1.38S3.00", descrip = "deferred SEXTUPOLE"
 !old: ssp1s: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = kssp1s
-SSP2S: drift, L = 0.1, type ="@1,1.38S3.00", descrip = "deferred SEXTUPOLE"
+SSP2S: drift, L = 0.05, type ="@1,1.38S3.00", descrip = "deferred SEXTUPOLE"
 !old: ssp2s: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = kssp2s
 
 !=!  COMMENT
@@ -939,7 +946,7 @@ ldsp5sa = ldsp5s-ldsp5sb
 dldsp6s = 0.0
 ldsp6s = 2.5925 +(lqn-lqa)/2 +dldsp6s
 ldsp6sa = ldspbpm2 +(lqn-lqa)/2
-ldsp6sc = ldspcor1
+ldsp6sc = ldspcor1+10*in2m !move 10" u/s per T. Fak
 ldsp6sb = ldsp6s-ldsp6sa-ldsp6sc
 ldsp7s = 56.746/2-lqa-1.5*lqr-ldsp5s-ldsp6s
 ldsp7sa = ldspbpm1
@@ -1027,7 +1034,7 @@ ldsp2da2 = 2.0
 ldsp2da1 = 23.0-4.457-ldsp2da2 !adjusted for DASEL
 ldsp2db = 1.657
 ldsp2dc1 = 27.25 +3.685 !adjustment for DASEL with 25G kickers
-ldsp2dd = ldspcor1
+ldsp2dd = ldspcor1+18*in2m !move 18" u/s per T. Fak
 dldsp3d = 0.0
 ldsp3d = 3.317 +dldsp3d
 ldsp3da = ldspbpm1
@@ -1244,20 +1251,41 @@ OTRSPDMP: drift, L = 0.0, type ="@0,OTR", descrip = "deferred MONITOR" !OTR scre
 
 ! beamlines
 
+
+
+!Old split line: LINE=(BKYSP0ha,BKYSP0hb)
+
 bkysp0h_full: line = (bkysp0h)
-!old:   BKYSP0h_full : LINE=(BKYSP0ha,BKYSP0hb)
+
+
+!Old split line: LINE=(BKYSP1ha,BKYSP1hb)
+
 bkysp1h_full: line = (bkysp1h)
-!old:   BKYSP1h_full : LINE=(BKYSP1ha,BKYSP1hb)
+
+
+!Old split line: LINE=(BKYSP2ha,BKYSP2hb)
+
 bkysp2h_full: line = (bkysp2h)
-!old:   BKYSP2h_full : LINE=(BKYSP2ha,BKYSP2hb)
+
+
+!Old split line: LINE=(BKYSP3ha,BKYSP3hb)
+
 bkysp3h_full: line = (bkysp3h)
-!old:   BKYSP3h_full : LINE=(BKYSP3ha,BKYSP3hb)
+
+
+!Old split line: LINE=(BKYSP4ha,BKYSP4hb)
+
 bkysp4h_full: line = (bkysp4h)
-!old:   BKYSP4h_full : LINE=(BKYSP4ha,BKYSP4hb)
+
+
+!Old split line: LINE=(BKYSP5ha,BKYSP5hb)
+
 bkysp5h_full: line = (bkysp5h)
-!old:   BKYSP5h_full : LINE=(BKYSP5ha,BKYSP5hb)
+
+
+!Old split line: LINE=(BLXSPha,BLXSPhb)
+
 blxsph_full: line = (blxsph)
-!old:   BLXSPh_full  : LINE=(BLXSPha,BLXSPhb)
 
   SPRDkh : LINE=(BKYSP0h_full,DSPBK0h,BKYSP1h_full,DSPBK1h,BKYSP2h_full,DSPBK2h,BKYSP3h_full,DSPBK3h,BKYSP4h_full,
          DSPBK4h,BKYSP5h_full,DSPBK5ha,BPMSPh,DSPBK5hb,BLXSPh_full)
@@ -1277,32 +1305,62 @@ qsp2[L] = 2*qsp2[L]
 
   SPRDksa : LINE=(DSPQ1a,BPMSP1,DSPQ1b,DSPQ1c,QSP1_full,DSPQ2a,XCSP1,DSPQ2b,BPMSP2,DSPQ2c,QSP2_full,DSPQ3a,YCSP2,DSPQ3b)
 
+
+
+!Old split line: LINE=(BKYSP0sa,BKYSP0sb)
+
 bkysp0s_full: line = (bkysp0s)
-!old:   BKYSP0s_full : LINE=(BKYSP0sa,BKYSP0sb)
+
+
+!Old split line: LINE=(BKYSP1sa,BKYSP1sb)
+
 bkysp1s_full: line = (bkysp1s)
-!old:   BKYSP1s_full : LINE=(BKYSP1sa,BKYSP1sb)
+
+
+!Old split line: LINE=(BKYSP2sa,BKYSP2sb)
+
 bkysp2s_full: line = (bkysp2s)
-!old:   BKYSP2s_full : LINE=(BKYSP2sa,BKYSP2sb)
+
+
+!Old split line: LINE=(BKYSP3sa,BKYSP3sb)
+
 bkysp3s_full: line = (bkysp3s)
-!old:   BKYSP3s_full : LINE=(BKYSP3sa,BKYSP3sb)
+
+
+!Old split line: LINE=(BKYSP4sa,BKYSP4sb)
+
 bkysp4s_full: line = (bkysp4s)
-!old:   BKYSP4s_full : LINE=(BKYSP4sa,BKYSP4sb)
+
+
+!Old split line: LINE=(BKYSP5sa,BKYSP5sb)
+
 bkysp5s_full: line = (bkysp5s)
-!old:   BKYSP5s_full : LINE=(BKYSP5sa,BKYSP5sb)
+
+
+!Old split line: LINE=(BLXSPsa,BLXSPsb)
+
 blxsps_full: line = (blxsps)
-!old:   BLXSPs_full  : LINE=(BLXSPsa,BLXSPsb)
 
   SPRDksb : LINE=(BKYSP0s_full,DSPBK0s,BKYSP1s_full,DSPBK1s,BKYSP2s_full,DSPBK2s,BKYSP3s_full,DSPBK3s,BKYSP4s_full,
          DSPBK4s,BKYSP5s_full,DSPBK5sa,BPMSPs,DSPBK5sb,BLXSPs_full)
 
   SPRDks : LINE=(SPRDksa,SPRDksb)
 
+
+
+!Old split line: LINE=(BYSP1ha,BYSP1hb)
+
 bysp1h_full: line = (bysp1h)
-!old:   BYSP1h_full : LINE=(BYSP1ha,BYSP1hb)
+
+
+!Old split line: LINE=(BYSP2ha,BYSP2hb)
+
 bysp2h_full: line = (bysp2h)
-!old:   BYSP2h_full : LINE=(BYSP2ha,BYSP2hb)
+
+
+!Old split line: LINE=(BRSP1ha,BRSP1hb)
+
 brsp1h_full: line = (brsp1h)
-!old:   BRSP1h_full : LINE=(BRSP1ha,BRSP1hb)
 
 
 
@@ -1396,10 +1454,16 @@ ssp2h[L] = 2*ssp2h[L]
          QSP9h_full,DSP12ha,BPMSP9h,DSP12hb,XCSP9h,DSP12hc1,IMBCSh1,DSP12hc2,IMBCSh2,DSP12hc3,BPMSP10h,DSP12hd,YCSP10h,DSP12he,
          QSP10h_full,DSP13ha,XCSP11h,DSP13hb,BPMSP11h,DSP13hc,QSP11h_full,DSP14ha,WOODDOOR)
 
+
+
+!Old split line: LINE=(BRSP2ha,BRSP2hb)
+
 brsp2h_full: line = (brsp2h)
-!old:   BRSP2h_full : LINE=(BRSP2ha,BRSP2hb)
+
+
+!Old split line: LINE=(BXSP1ha,BXSP1hb)
+
 bxsp1h_full: line = (bxsp1h)
-!old:   BXSP1h_full : LINE=(BXSP1ha,BXSP1hb)
 
 
 
@@ -1423,16 +1487,31 @@ qsp13h[L] = 2*qsp13h[L]
 
   SPRDsa : LINE=(SPRDkh,SPRDks)
 
+
+
+!Old split line: LINE=(BYSP1sa,BYSP1sb)
+
 bysp1s_full: line = (bysp1s)
-!old:   BYSP1s_full : LINE=(BYSP1sa,BYSP1sb)
+
+
+!Old split line: LINE=(BYSP2sa,BYSP2sb)
+
 bysp2s_full: line = (bysp2s)
-!old:   BYSP2s_full : LINE=(BYSP2sa,BYSP2sb)
+
+
+!Old split line: LINE=(BXSP1sa,BXSP1sb)
+
 bxsp1s_full: line = (bxsp1s)
-!old:   BXSP1s_full : LINE=(BXSP1sa,BXSP1sb)
+
+
+!Old split line: LINE=(BXSP2sa,BXSP2sb)
+
 bxsp2s_full: line = (bxsp2s)
-!old:   BXSP2s_full : LINE=(BXSP2sa,BXSP2sb)
+
+
+!Old split line: LINE=(BXSP3sa,BXSP3sb)
+
 bxsp3s_full: line = (bxsp3s)
-!old:   BXSP3s_full : LINE=(BXSP3sa,BXSP3sb)
 
 
 
@@ -1515,8 +1594,16 @@ ssp2s[L] = 2*ssp2s[L]
 
   SPRDdb : LINE=(DSP2dc1)
 
-  BYSP1d_full : LINE=(BYSP1da,BYSP1db)
-  BYSP2d_full : LINE=(BYSP2da,BYSP2db)
+
+
+!Old split line: LINE=(BYSP1da,BYSP1db)
+
+bysp1d_full: line = (bysp1d)
+
+
+!Old split line: LINE=(BYSP2da,BYSP2db)
+
+bysp2d_full: line = (bysp2d)
 
 
 

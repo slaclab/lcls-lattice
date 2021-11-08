@@ -1,10 +1,16 @@
 
-! *** OPTICS=AD_ACCEL-22JAN21 ***
+! *** OPTICS=AD_ACCEL-15SEP21 ***
 
 ! LCLS2cu various parts upstream of BSY
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 08-NOV-2021, M. Woodley
+!  * defer BXKIK (decommissioned) at level 9 for Matlab model
+! ------------------------------------------------------------------------------
+! 04-MAR-2021, M. Woodley
+!  * set FREQ=2856 for TCAV0 and TCAV3
 ! ------------------------------------------------------------------------------
 ! 31-AUG-2020, M. Woodley
 !  * set TYPE="type-4al" for YC21174, XC21175, XC21302, and YC21303
@@ -151,17 +157,18 @@ flngb2: marker !downstream face of L0b exit flange
 
  !TCAV0 : DRIF, L=0.6680236/2  !flange-to-flange (then split in two)
  !TCAV3 : DRIF, L=2.438/2
-tcav0: lcavity, type = "TRANS_DEFL", rf_frequency = sbandf * 1e6, l = 0.6680236/2 !flange-to-flange (then split in two)
-tcav3: lcavity, type = "TRANS_DEFL", rf_frequency = sbandf * 1e6, l = 2.438/2
+tcav0: lcavity, type = "TRANS_DEFL", rf_frequency = 2856 * 1e6, l = 0.6680236/2 !flange-to-flange (then split in two)
+tcav3: lcavity, type = "TRANS_DEFL", rf_frequency = 2856 * 1e6, l = 2.438/2
 
 ! decommissioned kicker magnet
 
-bxkika: sbend, type = "1.92K41.2", l = lkik/2, hgap = gkik
-bxkikb: sbend, type = "1.92K41.2", l = lkik/2, hgap = gkik
+bxkika: sbend, type = "@9,1.92K41.2", l = lkik/2, hgap = gkik
+bxkikb: sbend, type = "@9,1.92K41.2", l = lkik/2, hgap = gkik
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-bxkik: sbend, type = "1.92K41.2", l = lkik, hgap = gkik
+BXKIK: drift, L = 1.0601, type ="@9,1.92K41.2", descrip = "deferred SBEND"
+!old: bxkik: sbend, type = "@9,1.92K41.2", l = lkik, hgap = gkik
 
 ! ==============================================================================
 ! BENDs
@@ -234,7 +241,11 @@ crg1: instrument                   !Cerenkov radiator bunch length monitor
 yagg1: monitor, type = "YAG"       !6-MeV spectrometer screen
 fcg1: instrument                   !gun-spec. Faraday cup w/screen
 
-  BXG_full : LINE=(BXGa,BXGb)
+
+
+!Old split line: LINE=(BXGa,BXGb)
+
+bxg_full: line = (bxg)
 
 
 
@@ -320,14 +331,11 @@ ycs1: vkicker, type = "class-1a"
 xcs2: hkicker, type = "class-1a"
 ycs2: vkicker, type = "class-1a"
 
+
+
+!Old split line: LINE=(BXSa,BXSb)
+
 bxs_full: line = (bxs)
-!old: bxs_full: line = (bxs)
-!old: bxs_full: line = (bxs)
-!old: bxs_full: line = (bxs)
-!old: bxs_full: line = (bxs)
-!old: bxs_full: line = (bxs)
-!old: bxs_full: line = (bxs)
-!old:   BXS_full : LINE=(BXSa,BXSb)
 
 
 
@@ -1543,118 +1551,76 @@ L1X_full: line = (L1X)
     YC21192[offset] = 0.2974
 !old:   L1X_full   : LINE=(XBEG,L1X___1,XC21191,YC21192,L1X___2,XEND)
 
+
+
+!Old split line: LINE=(BXH1a,BXH1b)
+
 bxh1_full: line = (bxh1)
-!old: bxh1_full: line = (bxh1)
-!old: bxh1_full: line = (bxh1)
-!old: bxh1_full: line = (bxh1)
-!old: bxh1_full: line = (bxh1)
-!old: bxh1_full: line = (bxh1)
-!old: bxh1_full: line = (bxh1)
-!old:   BXH1_full : LINE=(BXH1a,BXH1b)
+
+
+!Old split line: LINE=(BXH2a,BXH2b)
+
 bxh2_full: line = (bxh2)
-!old: bxh2_full: line = (bxh2)
-!old: bxh2_full: line = (bxh2)
-!old: bxh2_full: line = (bxh2)
-!old: bxh2_full: line = (bxh2)
-!old: bxh2_full: line = (bxh2)
-!old: bxh2_full: line = (bxh2)
-!old:   BXH2_full : LINE=(BXH2a,BXH2b)
+
+
+!Old split line: LINE=(BXH3a,BXH3b)
+
 bxh3_full: line = (bxh3)
-!old: bxh3_full: line = (bxh3)
-!old: bxh3_full: line = (bxh3)
-!old: bxh3_full: line = (bxh3)
-!old: bxh3_full: line = (bxh3)
-!old: bxh3_full: line = (bxh3)
-!old: bxh3_full: line = (bxh3)
-!old:   BXH3_full : LINE=(BXH3a,BXH3b)
+
+
+!Old split line: LINE=(BXH4a,BXH4b)
+
 bxh4_full: line = (bxh4)
-!old: bxh4_full: line = (bxh4)
-!old: bxh4_full: line = (bxh4)
-!old: bxh4_full: line = (bxh4)
-!old: bxh4_full: line = (bxh4)
-!old: bxh4_full: line = (bxh4)
-!old: bxh4_full: line = (bxh4)
-!old:   BXH4_full : LINE=(BXH4a,BXH4b)
+
+
+!Old split line: LINE=(BX01a,BX01b)
+
 bx01_full: line = (bx01)
-!old: bx01_full: line = (bx01)
-!old: bx01_full: line = (bx01)
-!old: bx01_full: line = (bx01)
-!old: bx01_full: line = (bx01)
-!old: bx01_full: line = (bx01)
-!old: bx01_full: line = (bx01)
-!old:   BX01_full : LINE=(BX01a,BX01b)
+
+
+!Old split line: LINE=(BX02a,BX02b)
+
 bx02_full: line = (bx02)
-!old: bx02_full: line = (bx02)
-!old: bx02_full: line = (bx02)
-!old: bx02_full: line = (bx02)
-!old: bx02_full: line = (bx02)
-!old: bx02_full: line = (bx02)
-!old: bx02_full: line = (bx02)
-!old:   BX02_full : LINE=(BX02a,BX02b)
+
+
+!Old split line: LINE=(BX11a,BX11b)
+
 bx11_full: line = (bx11)
-!old: bx11_full: line = (bx11)
-!old: bx11_full: line = (bx11)
-!old: bx11_full: line = (bx11)
-!old: bx11_full: line = (bx11)
-!old: bx11_full: line = (bx11)
-!old: bx11_full: line = (bx11)
-!old:   BX11_full : LINE=(BX11a,BX11b)
+
+
+!Old split line: LINE=(BX12a,BX12b)
+
 bx12_full: line = (bx12)
-!old: bx12_full: line = (bx12)
-!old: bx12_full: line = (bx12)
-!old: bx12_full: line = (bx12)
-!old: bx12_full: line = (bx12)
-!old: bx12_full: line = (bx12)
-!old: bx12_full: line = (bx12)
-!old:   BX12_full : LINE=(BX12a,BX12b)
+
+
+!Old split line: LINE=(BX13a,BX13b)
+
 bx13_full: line = (bx13)
-!old: bx13_full: line = (bx13)
-!old: bx13_full: line = (bx13)
-!old: bx13_full: line = (bx13)
-!old: bx13_full: line = (bx13)
-!old: bx13_full: line = (bx13)
-!old: bx13_full: line = (bx13)
-!old:   BX13_full : LINE=(BX13a,BX13b)
+
+
+!Old split line: LINE=(BX14a,BX14b)
+
 bx14_full: line = (bx14)
-!old: bx14_full: line = (bx14)
-!old: bx14_full: line = (bx14)
-!old: bx14_full: line = (bx14)
-!old: bx14_full: line = (bx14)
-!old: bx14_full: line = (bx14)
-!old: bx14_full: line = (bx14)
-!old:   BX14_full : LINE=(BX14a,BX14b)
+
+
+!Old split line: LINE=(BX21a,BX21b)
+
 bx21_full: line = (bx21)
-!old: bx21_full: line = (bx21)
-!old: bx21_full: line = (bx21)
-!old: bx21_full: line = (bx21)
-!old: bx21_full: line = (bx21)
-!old: bx21_full: line = (bx21)
-!old: bx21_full: line = (bx21)
-!old:   BX21_full : LINE=(BX21a,BX21b)
+
+
+!Old split line: LINE=(BX22a,BX22b)
+
 bx22_full: line = (bx22)
-!old: bx22_full: line = (bx22)
-!old: bx22_full: line = (bx22)
-!old: bx22_full: line = (bx22)
-!old: bx22_full: line = (bx22)
-!old: bx22_full: line = (bx22)
-!old: bx22_full: line = (bx22)
-!old:   BX22_full : LINE=(BX22a,BX22b)
+
+
+!Old split line: LINE=(BX23a,BX23b)
+
 bx23_full: line = (bx23)
-!old: bx23_full: line = (bx23)
-!old: bx23_full: line = (bx23)
-!old: bx23_full: line = (bx23)
-!old: bx23_full: line = (bx23)
-!old: bx23_full: line = (bx23)
-!old: bx23_full: line = (bx23)
-!old:   BX23_full : LINE=(BX23a,BX23b)
+
+
+!Old split line: LINE=(BX24a,BX24b)
+
 bx24_full: line = (bx24)
-!old: bx24_full: line = (bx24)
-!old: bx24_full: line = (bx24)
-!old: bx24_full: line = (bx24)
-!old: bx24_full: line = (bx24)
-!old: bx24_full: line = (bx24)
-!old: bx24_full: line = (bx24)
-!old:   BX24_full : LINE=(BX24a,BX24b)
 
 
 

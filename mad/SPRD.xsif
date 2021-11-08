@@ -1,10 +1,17 @@
 
-! *** OPTICS=AD_ACCEL-22JAN21 ***
+! *** OPTICS=AD_ACCEL-15SEP21 ***
 
 ! LCLS2sc 3-way spreader system
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 20-JUL-2021, M. Woodley
+!  * quad strength changes for Yuri's "symmetric" SPRDs/SPRDh match
+! ------------------------------------------------------------------------------
+! 28-APR-2021, M. Woodley
+!  * move YCSP4S 10" upstream per T. Fak
+!  * move XCSP1D 18" upstream per T. Fak
 ! ------------------------------------------------------------------------------
 ! 26-NOV-2019, M. Woodley
 !  * remove IMBCSh3, IMBCSs3, and IMBCSd3 per Y. Ding
@@ -267,19 +274,19 @@
 
 ! HXR quads
 
-  KQSP1H  :=  0.492283667698 ! 0.492284061187
-  KQSP2H  := -1.000975451311 !-1.000975933726
-  KQSP3H  :=  0.304631037813 ! 0.304631069714
-  KQSP4H  := -0.301467336919 !-0.301467337182
-  KQSP5H  :=  0.179797525903 ! 0.179797501925
-  KQSP6H  := -0.221916299351 !-0.221916295184
-  KQSP7H  :=  0.447153951126 ! 0.447153906987
-  KQSP10H := -0.301520274195 !-0.301520272128
-  KQSP11H :=  0.304797784837 ! 0.304797809076
-  KQSP12H := -0.991899431333 !-0.991897597733
-  KQSP13H :=  0.491351727496 ! 0.49135154631
+  KQSP1H  :=  0.492324446747
+  KQSP2H  := -1.001967523398
+  KQSP3H  :=  0.304769059951
+  KQSP4H  := -0.300033974381
+  KQSP5H  :=  0.179267068866
+  KQSP6H  := -0.222726806069
+  KQSP7H  :=  0.448434480039
   KQSP8h  :=  KQSP6h
   KQSP9h  :=  KQSP5h
+  KQSP10H :=  KQSP4H
+  KQSP11H :=  KQSP3H
+  KQSP12H := -1.001082746242
+  KQSP13H :=  KQSP1H
 
   QSP1h  : QUAD, TYPE="2Q10"      , L=LQR/2, K1=KQSP1h , APER=rQR
   QSP2h  : QUAD, TYPE="1.085Q4.31", L=LQE/2, K1=KQSP2h , APER=rQE
@@ -323,15 +330,15 @@
 
 ! SXR quads
 
-  KQSP1S :=  0.633653576661 ! 0.633675228645 ! 0.633675409102
-  KQSP2S := -0.558885462267 !-0.558846778994 !-0.558846970939
-  KQSP3S :=  0.651984725505 ! 0.652027259917 ! 0.652027344684
-  KQSP4S := -0.497614883856 !-0.497671456472 !-0.497671571574
-  KQSP5S :=  0.184573897566 ! 0.184431144204 ! 0.184431117493
-  KQSP8S := -0.55912664167  !-0.559080484823 !-0.559079941433
-  KQSP9S :=  0.633788997918 ! 0.633806872701 ! 0.633806671882
+  KQSP1S :=  0.633592368552
+  KQSP2S := -0.558572403531
+  KQSP3S :=  0.652091326391
+  KQSP4S := -0.497963158567
+  KQSP5S :=  0.184546784571
   KQSP6s :=  KQSP4s
   KQSP7s :=  KQSP3s
+  KQSP8S :=  KQSP2S
+  KQSP9S :=  KQSP1S
 
   QSP1s : QUAD, TYPE="1.26Q12", L=LQA/2, K1=KQSP1s, APER=rQA
   QSP2s : QUAD, TYPE="1.26Q12", L=LQA/2, K1=KQSP2s, APER=rQA
@@ -954,7 +961,7 @@
  dLDSP6s   := 0.0
   LDSP6s   := 2.5925 +(LQN-LQA)/2 +dLDSP6s
   LDSP6sa  := LDSPBPM2 +(LQN-LQA)/2
-  LDSP6sc  := LDSPCOR1
+  LDSP6sc  := LDSPCOR1+10*in2m !move 10" u/s per T. Fak
   LDSP6sb  := LDSP6s-LDSP6sa-LDSP6sc
   LDSP7s   := 56.746/2-LQA-1.5*LQR-LDSP5s-LDSP6s
   LDSP7sa  := LDSPBPM1
@@ -1042,7 +1049,7 @@
   LDSP2da1 := 23.0-4.457-LDSP2da2 !adjusted for DASEL
   LDSP2db  := 1.657
   LDSP2dc1 := 27.25 +3.685 !adjustment for DASEL with 25G kickers
-  LDSP2dd  := LDSPCOR1
+  LDSP2dd  := LDSPCOR1+18*in2m !move 18" u/s per T. Fak
  dLDSP3d   := 0.0
   LDSP3d   := 3.317 +dLDSP3d
   LDSP3da  := LDSPBPM1

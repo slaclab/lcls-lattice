@@ -46,9 +46,21 @@ def desplit_ele(line, double_length=True, verbose=True):
     
     # Make sure this is true
     if eles[0] != name or eles[-1] != name:
-        if verbose:
-            print('Warning: different starting and ending ele names: '+ original_line, '\n   Skipping.')
-        return original_line
+        #return original_line
+        # This is okay though
+        if (eles[0].endswith('1') and eles[-1].endswith('2')):
+            double_length = False
+            
+            if verbose: print(f'Special desplit, names end with 1,2: {original_line}')
+        elif (eles[0].lower().endswith('a') and eles[-1].lower().endswith('b')):
+            double_length = False
+            
+            if verbose: print(f'Special desplit, names end with a,b: {original_line}')            
+            
+        else:
+            if verbose:
+                print(f'Warning: different starting and ending ele names: {original_line}, skipping.')
+            return original_line
     
     if verbose:
         print(f'Desplitting ele: {name}')
@@ -65,7 +77,10 @@ def desplit_ele(line, double_length=True, verbose=True):
         lines.append(e+'[superimpose] = T')
         lines.append(e+'[ref] = '+name)
     lines.append('\n')
-    return '\n'.join(lines)
+    
+    output = '\n'.join(lines)
+    
+    return output
         
 def desplit_eles(lines, verbose=True):
     return [desplit_ele(line, verbose=verbose) for line in lines]

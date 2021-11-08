@@ -1,10 +1,16 @@
 
-! *** OPTICS=AD_ACCEL-22JAN21 ***
+! *** OPTICS=AD_ACCEL-15SEP21 ***
 
 ! LCLS2cu various parts upstream of BSY
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 08-NOV-2021, M. Woodley
+!  * defer BXKIK (decommissioned) at level 9 for Matlab model
+! ------------------------------------------------------------------------------
+! 04-MAR-2021, M. Woodley
+!  * set FREQ=2856 for TCAV0 and TCAV3
 ! ------------------------------------------------------------------------------
 ! 31-AUG-2020, M. Woodley
 !  * set TYPE="type-4al" for YC21174, XC21175, XC21302, and YC21303
@@ -153,17 +159,17 @@
 
  !TCAV0 : DRIF, L=0.6680236/2  !flange-to-flange (then split in two)
  !TCAV3 : DRIF, L=2.438/2
-  TCAV0 : LCAV, TYPE="TRANS_DEFL", FREQ=SbandF, L=0.6680236/2 !flange-to-flange (then split in two)
-  TCAV3 : LCAV, TYPE="TRANS_DEFL", FREQ=SbandF, L=2.438/2
+  TCAV0 : LCAV, TYPE="TRANS_DEFL", FREQ=2856, L=0.6680236/2 !flange-to-flange (then split in two)
+  TCAV3 : LCAV, TYPE="TRANS_DEFL", FREQ=2856, L=2.438/2
 
 ! decommissioned kicker magnet
 
-  BXKIKa : SBEN, TYPE="1.92K41.2", L=LKIK/2, HGAP=GKIK
-  BXKIKb : SBEN, TYPE="1.92K41.2", L=LKIK/2, HGAP=GKIK
+  BXKIKa : SBEN, TYPE="@9,1.92K41.2", L=LKIK/2, HGAP=GKIK
+  BXKIKb : SBEN, TYPE="@9,1.92K41.2", L=LKIK/2, HGAP=GKIK
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-  BXKIK : SBEN, TYPE="1.92K41.2", L=LKIK, HGAP=GKIK
+  BXKIK : SBEN, TYPE="@9,1.92K41.2", L=LKIK, HGAP=GKIK
 
 ! ==============================================================================
 ! BENDs

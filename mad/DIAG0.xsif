@@ -1,10 +1,14 @@
 
-! *** OPTICS=AD_ACCEL-22JAN21 ***
+! *** OPTICS=AD_ACCEL-15SEP21 ***
 
 ! LCLS2sc post laser heater diagnostic beamline
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 13-SEP-2021, M. Woodley
+!  * add X/Y corrector pair to TCYDG0 (class-1t) deferred level 4
+!  * add X/Y corrector pair to TCXDG0 (class-1t) undeferred
 ! ------------------------------------------------------------------------------
 ! 26-NOV-2019, M. Woodley
 !  * undefer TCXDG0 per D. Yeremian
@@ -390,6 +394,8 @@
   XCDG002 : HKIC, TYPE="class-6"
   XCDG003 : HKIC, TYPE="class-1a"
   XCDG005 : HKIC, TYPE="class-1a"
+  XCDGTCY : HKIC, TYPE="@4,class-1t"
+  XCDGTCX : HKIC, TYPE="class-1t"
   XCDG008 : HKIC, TYPE="class-1a"
   XCDG010 : HKIC, TYPE="class-1a"
 
@@ -401,6 +407,8 @@
   YCDG002 : VKIC, TYPE="class-6"
   YCDG003 : VKIC, TYPE="class-1a"
   YCDG005 : VKIC, TYPE="class-1a"
+  YCDGTCY : VKIC, TYPE="@4,class-1t"
+  YCDGTCX : VKIC, TYPE="class-1t"
   YCDG008 : VKIC, TYPE="class-1a"
   YCDG010 : VKIC, TYPE="class-1a"
 
@@ -437,8 +445,8 @@
 ! BEAMLINE
 ! ------------------------------------------------------------------------------
 
-  TCYDG0_full : LINE=(TCYDG0,MTCYDG0,TCYDG0)
-  TCXDG0_full : LINE=(TCXDG0,MTCXDG0,TCXDG0)
+  TCYDG0_full : LINE=(TCYDG0,XCDGTCY,MTCYDG0,YCDGTCY,TCYDG0)
+  TCXDG0_full : LINE=(TCXDG0,XCDGTCX,MTCXDG0,YCDGTCX,TCXDG0)
 
   BKRDG0_full : LINE=(BKRDG0a,BKRDG0b)
   BLRDG0_full : LINE=(BLRDG0a,BLRDG0b)

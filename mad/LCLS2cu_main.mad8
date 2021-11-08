@@ -1,6 +1,6 @@
-  TITLE, "AD_ACCEL (January 22, 2021)" ! copper linac
+  TITLE, "AD_ACCEL (September 15, 2021)" ! copper linac
 
-! *** OPTICS=AD_ACCEL-22JAN21 ***
+! *** OPTICS=AD_ACCEL-15SEP21 ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY
   ASSIGN, ECHO="LCLS2cu.echo"
@@ -218,25 +218,27 @@
 
   ! set quad strengths for 8 GeV Cu-linac beam to DMPS
 
-    SET, KQBP33, -0.644549451693
-    SET, KQBP34,  0.595248248123
-    SET, KQDBL1, -1.067412487101
-    SET, KQDBL2,  0.618987949218
+  !                Mark rematch     Yuri rematch       22JAN21	   
+  !              ---------------  ---------------  ---------------  
+    SET, KQBP33, -0.645066535808 !-0.64483675561  !-0.644549451693
+    SET, KQBP34,  0.592977153135 ! 0.594232917856 ! 0.595248248123
+    SET, KQDBL1, -1.045760158543 !-1.056286788769 !-1.067412487101
+    SET, KQDBL2,  0.585600770813 ! 0.600969748735 ! 0.618987949218
     SET, KQDL11,  0.358732502069
-  !               Yuri (8.0/5.0)
-  !              ---------------
-    SET, KQUM1B,  0.311729673613
-    SET, KQUM2B, -0.13
-    SET, KQUM3B,  0.384569277452
-    SET, KQUM4B, -0.61774146348
-    SET, KQSX16,  0.677894017174
-    SET, KQSX19, -0.893321229694
-    SET, KQSX21,  0.901518123026
-    SET, KQSX24, -0.825282828044
-    SET, KQDSXM, -1.843482712046
-    SET, KQUE1B,  0.325725075565
-    SET, KQUE2B, -0.144356640751
-    SET, KQDMPB, -0.154946553294
+  !                Mark rematch    Yuri (8.0/5.0)  
+  !              ---------------  ---------------  
+    SET, KQUM1B,                   0.311729673613
+    SET, KQUM2B,                  -0.13
+    SET, KQUM3B,                   0.384569277452
+    SET, KQUM4B,                  -0.61774146348
+    SET, KQSX16,  0.677696586055 ! 0.677894017174
+    SET, KQSX19, -0.894080323674 !-0.893321229694
+    SET, KQSX21,  0.902720730991 ! 0.901518123026
+    SET, KQSX24, -0.825788398259 !-0.825282828044
+    SET, KQDSXM,                  -1.843482712046
+    SET, KQUE1B,                   0.325725075565
+    SET, KQUE2B,                  -0.144356640751
+    SET, KQDMPB,                  -0.154946553294
   ENDSUBROUTINE
 
   SETK2cuA : SUBROUTINE !for LCLS2cuA
@@ -255,6 +257,8 @@
     SET, KQ38,    0.035190121249
   ENDSUBROUTINE
 
+! ==============================================================================
+! for testing the online Matlab model
 ! ------------------------------------------------------------------------------
 
   COMMENT !for testing the online Matlab model
@@ -350,21 +354,37 @@
     SET, SETCUS, CUSOFF ; SET, SETAL, ALOFF
     SETK2cuH
     USE, CU_SFTH
-   !SAVELINE, NAME="CU_SFTH", FILENAME="LCLS2cuHS.saveline"
     PRINT, FULL
     SURVEY, THETA0=ADL1, X0=Xi, Z0=Zi, TAPE="LCLS2cuHS_survey.tape"
-    TWISS, SAVE, BETA0=TWSSC, TAPE="LCLS2cuHS_twiss.tape" !, &
-   !  RTAPE="LCLS2cuHS_rmat.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
-      STYLE=100, SPLINE, RANGE=BEGDL1_1/SFTDMP, FILE="LCLS2cuHS", &
-      TITLE="Cu-linac to HXR safety dump"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=BEGDL1_1/SFTDMP, FILE="LCLS2cuHS", &
-      TITLE="Cu-linac to HXR safety dump"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE, RANGE=BEGDL1_1/SFTDMP, FILE="LCLS2cuHS", &
-      TITLE="Cu-linac to HXR safety dump"
   ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! HXR XTES
+
+ !COMMENT
+    ASSIGN, PRINT="LCLS2cuHXTES.print"
+    BEAM, ENERGY=E00
+    SET, SETCUS, CUSOFF ; SET, SETAL, ALOFF
+    SETK2cuH
+    USE, CU_HXTES
+    PRINT, FULL
+    SURVEY, THETA0=ADL1, X0=Xi, Z0=Zi, TAPE="LCLS2cuHXTES_survey.tape"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! HXR TXI
+
+ !COMMENT
+    ASSIGN, PRINT="LCLS2cuHTXI.print"
+    BEAM, ENERGY=E00
+    SET, SETCUS, CUSOFF ; SET, SETAL, ALOFF
+    SETK2cuH
+    USE, CU_HTXI
+    PRINT, FULL
+    SURVEY, THETA0=ADL1, X0=Xi, Z0=Zi, TAPE="LCLS2cuHTXI_survey.tape"
+ !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
 
@@ -688,4 +708,3 @@
 ! ------------------------------------------------------------------------------
 
   STOP
-

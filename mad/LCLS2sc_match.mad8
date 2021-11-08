@@ -1,10 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-22JAN21 ***
+! *** OPTICS=AD_ACCEL-15SEP21 ***
 
 ! LCLS2sc matching routines
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 20-JUL-2021, M. Woodley
+!  * add Yuri's "symmetric" SPRDs/SPRDh matching routines (MSPsR56s, MSPhR56s)
 ! ------------------------------------------------------------------------------
 ! 31-OCT-2018, Y. Nosochkov
 !  * update DASEL matching routines
@@ -128,8 +131,8 @@
       VARY, FracL3, STEP=1.E-6
       WEIGHT, ENERGY=1
       CONSTR, #E, ENERGY=Ef
-     !LMDIF, TOL=1.E-20, CALLS=10000
-     !MIGRAD, TOL=1.E-20, CALLS=10000
+      LMDIF, TOL=1.E-20, CALLS=10000
+      MIGRAD, TOL=1.E-20, CALLS=10000
     ENDMATCH
     VALUE, FracL3
     BEAM, ENERGY=E2
@@ -737,7 +740,7 @@
      !VARY, DE201[L],  STEP=1.E-6, LOWER=0.5
      !VARY, DE202a[L], STEP=1.E-6, LOWER=0.5, UPPER=11
       CONSTR, WSEMIT2, ALFX=0, ALFY=0 !, BETX=6, BETY=6
-     !MDIF, TOL=1.E-20, CALLS=1000
+     !LMDIF, TOL=1.E-20, CALLS=1000
      !MIGRAD, TOL=1.E-20, CALLS=1000
     ENDMATCH
     VALUE, KQE201,KQE202
@@ -1436,7 +1439,7 @@
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
-! match HXR spreader line
+! match HXR spreader line (asymmetric quadrupole strengths)
 
   TBXSPM := 120.
   TBYSPM :=  60.
@@ -1512,6 +1515,80 @@
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
+! match HXR spreader line (symmetric quadrupole strengths)
+
+  MSPhR56s : SUBROUTINE
+    BEAM, ENERGY=Ef
+    SET, SETSP, SETSPh ; SET, SETAL, ALOFF
+    USE, (SPRDh,BSYH1,BSYH2,LTUH), RANGE=#S/MM1
+    MATCH, BETA0=TWSSP
+      VARY, KQSP1h, STEP=1.E-4, LOWER=0, UPPER= 0.570 !10 GeV
+      VARY, KQSP2h, STEP=1.E-4, UPPER=0, LOWER=-2.807 !10 GeV
+      VARY, KQSP3h, STEP=1.E-4, LOWER=0, UPPER= 1.405 !10 GeV
+      VARY, KQSP4h, STEP=1.E-4, UPPER=0, LOWER=-0.570
+      VARY, KQSP5h, STEP=1.E-4, LOWER=0, UPPER= 0.570
+      VARY, KQSP6h, STEP=1.E-4, UPPER=0, LOWER=-0.570
+      VARY, KQSP7h, STEP=1.E-4, LOWER=0, UPPER= 2.807
+      VARY, KQSP12h, STEP=1.E-4, UPPER=0, LOWER=-2.807
+     !VARY, KQ50Q3, STEP=1.E-4 !not efficient for match
+      VARY, KQ4   , STEP=1.E-4, LOWER=-0.949*17/10, UPPER=0.949*17/10 !10 GeV
+      VARY, KQ5   , STEP=1.E-4, LOWER=-0.949*17/10, UPPER=0.949*17/10
+      VARY, KQ6   , STEP=1.E-4, LOWER=-0.949*17/10, UPPER=0.949*17/10
+      VARY, KQA0  , STEP=1.E-4, LOWER=-0.949*17/10, UPPER=0.949*17/10
+      RMATRIX, #S/CNTSP3H[1], RM(5,6)=R56SPh, WEIGHT(5,6)=100
+      CONSTR, MM1[1], BETX=MBETXh, BETY=MBETYh, ALFX=MALFXh, ALFY=MALFYh
+     !WEIGHT, ALFX=1.E-3, ALFY=1.E-3
+      CONSTR, QSP7h[1], ALFX=0, ALFY=0
+      CONSTR, CNTSP3H[1], DX=0, DPX=0, DY=0, DPY=0
+      WEIGHT, DX=0.1, DY=0.1
+      CONSTR, Q50Q3[1], DX=0, DY=0
+      CONSTR, Q4[1]   , DX=0, DY=0
+      CONSTR, Q5[1]   , DX=0, DY=0
+      CONSTR, Q6[1]   , DX=0, DY=0
+      CONSTR, QA0[1]  , DX=0, DY=0
+      CONSTR, QVM1[1] , DX=0, DY=0
+      CONSTR, QVM2[1] , DX=0, DY=0
+      CONSTR, QVM3[1] , DX=0, DY=0
+      CONSTR, QVM4[1] , DX=0, DY=0
+      WEIGHT, BETX=3.E-6, BETY=3.E-6
+      CONSTR, QSP2h[1] , BETX<210, BETY<210
+      CONSTR, QSP12h[1], BETX<210, BETY<210
+      CONSTR, QSP13h[1], BETX<210, BETY<210
+      WEIGHT, BETX=1.E-6, BETY=1.E-6
+      CONSTR, QSP3h[1] , BETX<110, BETY<110 
+      CONSTR, QSP4h[1] , BETX<110, BETY<110 
+      CONSTR, QSP5h[1] , BETX<110, BETY<110 
+      CONSTR, QSP6h[1] , BETX<110, BETY<110 
+      CONSTR, QSP7h[1] , BETX<110, BETY<110 
+      CONSTR, QSP8h[1] , BETX<110, BETY<110 
+      CONSTR, QSP9h[1] , BETX<110, BETY<110 
+      CONSTR, QSP10h[1], BETX<110, BETY<110 
+      CONSTR, QSP11h[1], BETX<110, BETY<110 
+      CONSTR, Q50Q3[1] , BETX<105, BETY<105
+      CONSTR, Q4[1]    , BETX<105, BETY<105
+      CONSTR, Q5[1]    , BETX<120, BETY<105
+      CONSTR, Q6[1]    , BETX<105, BETY<105
+      WEIGHT, ALFX=0, ALFY=0, DX=0, DPX=0, DY=0, DPY=0
+      WEIGHT, X=0, PX=0, Y=0, PY=0, T=0, PT=0
+      WEIGHT, BETX=1.E-6, BETY=1.E-6
+      COUPLE, QSP1h[1]/QSP13h[1]
+      COUPLE, QSP2h[1]/QSP12h[1]
+      COUPLE, QSP3h[1]/QSP11h[1]
+      COUPLE, QSP4h[1]/QSP10h[1]
+      COUPLE, QSP5h[1]/QSP9h[1]
+      COUPLE, QSP6h[1]/QSP8h[1]
+     !LMDIF, TOL=1.E-20, CALLS=100000
+    ENDMATCH
+    VALUE, KQSP1h,KQSP2h,KQSP3h,KQSP4h,KQSP5h,KQSP6h,KQSP7h,KQSP12h
+    VALUE, KQ50Q3,KQ4,KQ5,KQ6,KQA0
+   !PRINT, CLASS=QUADRUPOLE ; PRINT, CLASS=SBEND
+    TWISS, BETA0=TWSSP, SAVE
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      RANGE=#S/MM1, STYLE=100, SPLINE, FILE="match", &
+      VMIN=-100,-0.5, VMAX=300,3.5
+  ENDSUBROUTINE
+
+! ------------------------------------------------------------------------------
 ! match HXR spreader line 2nd-order dispersion
 
   MSPRDh2 : SUBROUTINE
@@ -1553,7 +1630,7 @@
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
-! match SXR spreader line
+! match SXR spreader line (asymmetric quadrupole strengths)
 
   MSPRDs : SUBROUTINE
     BEAM, ENERGY=Ef
@@ -1610,6 +1687,73 @@
       STYLE=100, SPLINE, RANGE=#S/#E, FILE="match"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
       STYLE=100, SPLINE, RANGE=CNTSP2S/#E, FILE="match"
+  ENDSUBROUTINE
+
+! ------------------------------------------------------------------------------
+! match SXR spreader line (symmetric quadrupole strengths)
+
+! for fully symmetric SPS the match of 4 d/s quads is only needed for R56=0
+! for R56 tuning the d/s quads may not be needed since betas at end of SPS 
+! are pretty much constant
+
+  MSPsR56s : SUBROUTINE
+    BEAM, ENERGY=Ef
+    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
+    USE, (SPRDs,FODOLb,FODOLc,BYPM,BSYLTUsc)
+    MATCH, BETA0=TWSSP
+      VARY, KQSP1s, STEP=1.E-4, LOWER=0, UPPER= 1.405 !10 GeV
+      VARY, KQSP2s, STEP=1.E-4, UPPER=0, LOWER=-1.405
+      VARY, KQSP3s, STEP=1.E-4, LOWER=0, UPPER= 1.405
+      VARY, KQSP4s, STEP=1.E-4, UPPER=0, LOWER=-0.570 !10 GeV
+      VARY, KQSP5s, STEP=1.E-4, LOWER=0, UPPER= 0.570
+      VARY, KQBP36, STEP=1.E-4, LOWER=-0.650, UPPER=0.650 !10 GeV
+      VARY, KQBP30, STEP=1.E-4, LOWER=-0.650, UPPER=0.650
+      VARY, KQBP31, STEP=1.E-4, LOWER=-0.650, UPPER=0.650
+      VARY, KQBP32, STEP=1.E-4, LOWER=-0.650, UPPER=0.650
+      RMATRIX, #S/CNTSP2S[1], RM(5,6)=R56SPs, WEIGHT(5,6)=100
+      CONSTR, DBMARK34B, BETX=MBETXs, BETY=MBETYs, ALFX=MALFXs, ALFY=MALFYs
+     !WEIGHT, ALFX=1.E-3, ALFY=1.E-3
+      CONSTR, QSP5s[1], ALFX=0, ALFY=0
+     !CONSTR, CNTSP2S[1], DX=0, DPX=0 !cannot be matched well
+      WEIGHT, DX=0.1, DY=1.E-6
+      CONSTR, QBP36[1], DX=0, DY=0
+      CONSTR, QBP30[1], DX=0, DY=0
+      CONSTR, QBP31[1], DX=0, DY=0
+      CONSTR, QBP32[1], DX=0, DY=0
+      CONSTR, QBP33[1], DX=0, DY=0
+      CONSTR, QBP34[1], DX=0, DY=0
+      CONSTR, QDBL1[1], DX=0, DY=0
+      CONSTR, QDBL2[1], DX=0, DY=0
+      CONSTR, QDL11[1], DX=0, DY=0
+      WEIGHT, BETX=1.E-6, BETY=1.E-6
+      CONSTR, QSP1s[1], BETX<100, BETY<100
+      CONSTR, QSP2s[1], BETX<100, BETY<145
+      CONSTR, QSP3s[1], BETX<100, BETY<100
+      CONSTR, QSP4s[1], BETX<100, BETY<100
+      CONSTR, QSP5s[1], BETX<100, BETY<100
+      CONSTR, QSP6s[1], BETX<100, BETY<100
+      CONSTR, QSP7s[1], BETX<100, BETY<100
+      CONSTR, QSP8s[1], BETX<100, BETY<145
+      CONSTR, QSP9s[1], BETX<100, BETY<100
+      CONSTR, QBP36[1], BETX<100, BETY<100
+      CONSTR, QBP30[1], BETX<125, BETY<125
+      CONSTR, QBP31[1], BETX<155, BETY<125
+      WEIGHT, BETX=1.E-6, BETY=1.E-6
+      WEIGHT, ALFX=0, ALFY=0, DX=0, DPX=0, DY=0, DPY=0
+      WEIGHT, X=0, PX=0, Y=0, PY=0, T=0, PT=0
+      COUPLE, QSP1s[1]/QSP9s[1]
+      COUPLE, QSP2s[1]/QSP8s[1]
+      COUPLE, QSP3s[1]/QSP7s[1]
+      COUPLE, QSP4s[1]/QSP6s[1]
+     !LMDIF, TOL=1.E-20, CALLS=100000
+    ENDMATCH
+    VALUE, KQSP1s,KQSP2s,KQSP3s,KQSP4s,KQSP5s
+    VALUE, KQBP36,KQBP30,KQBP31,KQBP32
+   !PRINT, CLASS=QUADRUPOLE ; PRINT, CLASS=SBEND
+    TWISS, BETA0=TWSSP, SAVE
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      RANGE=#S/DBLDL21, STYLE=100, SPLINE=.T., FILE="match", &
+      VMIN=-100,-0.5, VMAX=200,2.5
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
@@ -2187,7 +2331,6 @@ ENDCOMMENT
   MDUMPs5 : SUBROUTINE
     BEAM, ENERGY=Ef
     SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
-   !SETK2XL2 !turns on XLEAP2 components and optics
     USE, (LTUsc,SXRUND,DUMPLINEb)
     VALUE, kQDSXm,KQUE1b,KQUE2b,KQDMPb
     MATCH, BETA0=TWSSms
@@ -2212,72 +2355,6 @@ ENDCOMMENT
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
       STYLE=100, SPLINE=.T., RANGE=QSXh44[1]/DUMPFACEB, FILE="match"
   ENDSUBROUTINE
-
-! ==============================================================================
-! XLEAP matching
-! ------------------------------------------------------------------------------
-
-  comment
-  MXLEAP : SUBROUTINE !match from XLEAP-II wiggler section into UNDS
-    VALUE, Ef,Eu,Brhof
-    BEAM, ENERGY=Ef
-    SETK2XL2 !turns on XLEAP2 components and optics
-    VALUE, KQUM1B,KQUM2B,KQUM3B,KQUM4B
-    VALUE, KQSX16,KQSX19,KQSX21,KQSX24
-    USE, (LTUsc,RWWAKE4S,ENDLTUS,BEGUNDS,PREUNDS,SXRUND,DUMPLINEB)
-    MATCH, BETA0=TWSSms
-     !VARY, KQFXL2, STEP=1.E-6, LOWER= 0     , UPPER=+KmaxQE
-     !VARY, KQE36B, STEP=1.E-6, LOWER= 0     , UPPER=+KmaxQx
-     !VARY, KQUM1B, STEP=1.E-6, LOWER=-KmaxQE, UPPER= 0
-     !VARY, KQUM2B, STEP=1.E-6, LOWER= 0     , UPPER=+KmaxQE
-     !VARY, KQUM3B, STEP=1.E-6, LOWER= 0     , UPPER=+KmaxQE
-     !VARY, KQUM4B, STEP=1.E-6, LOWER=-KmaxQE, UPPER=+KmaxQE
-      VARY, KQSX16, STEP=1.E-4, LOWER= 0     , UPPER=+KmaxQu
-      VARY, KQSX19, STEP=1.E-4, LOWER=-KmaxQu, UPPER= 0
-      VARY, KQSX21, STEP=1.E-4, LOWER= 0     , UPPER=+KmaxQu
-      VARY, KQSX24, STEP=1.E-4, LOWER=-KmaxQu, UPPER= 0
-      WEIGHT, DX=0, DPX=0, DY=0, DPY=0, X=0, PX=0, Y=0, PY=0, T=0, PT=0
-      WEIGHT, BETX=1.E-5, BETY=1.E-5, ALFX=0, ALFY=0, MUX=0, MUY=0
-      COUPLE, MUQS[1]/MUQS[3]
-      COUPLE, MUQS[2]/MUQS[4]
-      COUPLE, MUQS[1]/MUQS[5]
-      COUPLE, MUQS[2]/MUQS[6]
-      COUPLE, MUQS[1]/MUQS[7]
-      COUPLE, MUQS[2]/MUQS[8]
-      COUPLE, MUQS[1]/MUQS[9]
-      COUPLE, MUQS[2]/MUQS[10]
-      COUPLE, MUQS[1]/MUQS[11]
-      COUPLE, MUQS[2]/MUQS[12]
-      COUPLE, MUQS[1]/MUQS[13]
-      COUPLE, MUQS[2]/MUQS[14]
-      COUPLE, MUQS[1]/MUQS[15]
-      COUPLE, MUQS[2]/MUQS[16]
-      COUPLE, MUQS[1]/MUQS[17]
-      COUPLE, MUQS[2]/MUQS[18]
-      COUPLE, MUQS[1]/MUQS[19]
-      COUPLE, MUQS[2]/MUQS[20]
-      COUPLE, MUQS[1]/MUQS[21]
-      WEIGHT, BETX=1.E-6, BETY=1.E-6
-      CONSTR, QE36B[1] , BETX<60, BETY<60
-      CONSTR, QUM1B[1] , BETX<80, BETY<80
-      CONSTR, QUM2B[1] , BETX<65, BETY<65
-      CONSTR, QUM3B[1] , BETX<65, BETY<65
-      CONSTR, QUM4B[1] , BETX<65, BETY<65
-      CONSTR, QSXh16[1], BETX<60, BETY<60
-      CONSTR, WIGXLh[1], BETX<60, BETY<60
-      CONSTR, QSXh19[1], BETX<65, BETY<65
-      CONSTR, QSXh21[1], BETX<110, BETY<110
-      LMDIF, TOL=1.E-20, CALLS=100000
-      MIGRAD, TOL=1.E-20, CALLS=100000
-    ENDMATCH
-    VALUE, KQUM1B,KQUM2B,KQUM3B,KQUM4B
-    VALUE, KQSX16,KQSX19,KQSX21,KQSX24
-    PRINT, FULL
-    TWISS, BETA0=TWSSms, SAVE, TAPE="twiss.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=VBOUTB/DU7S[31], FILE="match"
-  ENDSUBROUTINE
-  endcomment
 
 ! ==============================================================================
 ! HXR matching
@@ -3372,14 +3449,16 @@ ENDCOMMENT
    !MXYZDL2s
    !MXYZDMP
    !MZCUSXR
-   !MSPRDh
-   !MSPRDh2 !added by MDW
-   !MSPRDs
-   !MSPRDs2 !added by MDW
+   !MSPRDh   !asymmetric quad strengths
+   !MSPhR56s !symmetris quad strengths
+   !MSPRDh2  !added by MDW
+   !MSPRDs   !asymmetric quad strengths
+   !MSPsR56s !symmetris quad strengths
+   !MSPRDs2  !added by MDW
    !MSPRDd
    !MBYPSP
    !MDL2Bb
-   !MDL2Bb2 !added by MDW
+   !MDL2Bb2  !added by MDW
    !MDL2Mb
    !MSPLTUs
    !MVBENDb
