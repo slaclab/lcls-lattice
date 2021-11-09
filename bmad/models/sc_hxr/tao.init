@@ -307,22 +307,49 @@ beam_init%center(6) = 0.0
 
 
 
-!----------------------------------------
-! Orbit 
+!-----------------------------------------
+! BPM Orbit 
 
 &tao_d2_data
-    d2_data%name = "orbit"
+    d2_data%name = 'orbit'
     universe = 1
-    n_d1_data = 5
-/
-
+    n_d1_data = 2
+/    
+    
 &tao_d1_data
     ix_d1_data = 1
     default_weight = 1
     d1_data%name = 'x'
     default_data_type = 'bpm_orbit.x'
     default_data_source = 'lat'
-    search_for_lat_eles = "MONITOR::BPM*,MONITOR::RFB*"
+    !search_for_lat_eles = "monitor::bpm*,monitor::rfb*" 
+    datum(1:)%ele_name =  'BPM1B', 'BPM2B', 'BPM0H01', 'BPM0H04', 'BPM0H05', 'BPM0H08',
+     'BPMH1', 'BPMH2', 'BPMHD01', 'BPMHD02', 'BPMHD03', 'BPMHD04',
+     'BPMDG000', 'BPMC001', 'BPMC002', 'BPMC003', 'BPMC004', 'BPMC005',
+     'BPMC006', 'BPMC007', 'BPMC008', 'BPMC009', 'BPMC010', 'BPMC011',
+     'BPMC012', 'BPM1C01', 'BPM11B', 'BPMC101', 'BPMC102', 'BPMC103',
+     'BPMC104', 'BPMC105', 'BPMC106', 'BPMC107', 'BPMC108', 'BPMC109',
+     'BPMC110', 'BPMC111', 'BPMC112', 'BPM2C01', 'BPM21B', 'BPME201',
+     'BPME202', 'BPME203', 'BPME204', 'BPMX01', 'BPMX02', 'BPMDOG1', 'BPMDOG2',
+     'BPMDOG3', 'BPMDOG4', 'BPMDOG5', 'BPMDOG6', 'BPMDOG7', 'BPMDOG8',
+     'BPML1P', 'BPML2P', 'BPML3P', 'BPML4P', 'BPML5P', 'BPMBP10', 'BPMBP11',
+     'BPMBP12', 'BPMBP13', 'BPMBP14', 'BPMBP15', 'BPMBP16', 'BPMBP17',
+     'BPMBP18', 'BPMBP19', 'BPMBP20', 'BPMBP21', 'BPMBP22', 'BPMBP23',
+     'BPMBP24', 'BPMBP25', 'BPMBP26', 'BPMBP27', 'BPMBP35', 'BPMBP28',
+     'BPMSPH', 'BPMSP1H', 'BPMSP2H', 'BPMSP3H', 'BPMSP4H', 'BPMSP5H',
+     'BPMSP6H', 'BPMSP7H', 'BPMSP8H', 'BPMSP9H', 'BPMSP10H', 'BPMSP11H',
+     'BPMSP12H', 'BPMSP13H', 'BPMBSYQ3', 'BPMBSYQ4', 'BPMBSYQ5', 'BPMBSYQ6',
+     'BPMBSYQA0', 'BPMVM1', 'BPMVM2', 'BPMVB1', 'BPMVB2', 'BPMVB3', 'BPMVM3',
+     'BPMVM4', 'BPMDL1', 'BPMT12', 'BPMDL2', 'BPMT22', 'BPMDL3', 'BPMT32',
+     'BPMDL4', 'BPMT42', 'BPMEM1', 'BPMEM2', 'BPMEM3', 'BPMEM4', 'BPME31',
+     'BPME32', 'BPME33', 'BPME34', 'BPME35', 'BPME36', 'BPMUM1', 'BPMUM2',
+     'BPMUM3', 'BPMUM4', 'BPMUE1', 'BPMUE2', 'BPMQD', 'BPMDD', 'RFB07', 'RFB08',
+     'RFBHX12', 'RFBHX13', 'RFBHX14', 'RFBHX15', 'RFBHX16', 'RFBHX17',
+     'RFBHX18', 'RFBHX19', 'RFBHX20', 'RFBHX21', 'RFBHX22', 'RFBHX23',
+     'RFBHX24', 'RFBHX25', 'RFBHX26', 'RFBHX27', 'RFBHX28', 'RFBHX29',
+     'RFBHX30', 'RFBHX31', 'RFBHX32', 'RFBHX33', 'RFBHX34', 'RFBHX35',
+     'RFBHX36', 'RFBHX37', 'RFBHX38', 'RFBHX39', 'RFBHX40', 'RFBHX41',
+     'RFBHX42', 'RFBHX43', 'RFBHX44', 'RFBHX45', 'RFBHX46', 'RFBHX51'
 /
 
 &tao_d1_data
@@ -331,34 +358,8 @@ beam_init%center(6) = 0.0
     d1_data%name = 'y'
     default_data_type = 'bpm_orbit.y'
     default_data_source = 'lat'
-    search_for_lat_eles = "MONITOR::BPM*,MONITOR::RFB*"
-/
-
-&tao_d1_data
-    ix_d1_data = 3
-    default_weight = 1
-    d1_data%name = 'profx'
-    default_data_type = 'orbit.x'
-    default_data_source = 'lat'
-    search_for_lat_eles = "MONITOR::YAG*,MONITOR::OTR*"
-/
-
-&tao_d1_data
-    ix_d1_data = 4
-    default_weight = 1
-    d1_data%name = 'profy'
-    default_data_type = 'orbit.y'
-    default_data_source = 'lat'
-    search_for_lat_eles = "MONITOR::YAG*,MONITOR::OTR*"
-/
-
-&tao_d1_data
-    ix_d1_data = 5
-    default_weight = 1
-    d1_data%name = 'e'
-    default_data_type = 'orbit.e_tot'
-    default_data_source = 'lat'
-    search_for_lat_eles = "MONITOR::BPM*,MONITOR::RFB*"
+    !search_for_lat_eles = "monitor::bpm*,monitor::rfb*" 
+    use_same_lat_eles_as = 'orbit.x'
 /
 
 

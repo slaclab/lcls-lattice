@@ -73,38 +73,26 @@
 
 
 
-&tao_d2_data
-        d2_data%name = 'r56'
-        universe = 1
-        n_d1_data = 1
-/    
-&tao_d1_data
-        ix_d1_data = 1
-        default_weight = 1
-        d1_data%name = 'endtwiss'
-        datum( 1) =  'r56_compaction'     'BEGHTR' '' 'ENDHTR' 
-        datum( 2) =  'r56_compaction'     'BEGBC1B' '' 'ENDBC1B' 
-        datum( 3) =  'r56_compaction'     'BEGBC2B' '' 'ENDBC2B'   
-/
-
-
-
-!----------------------------------------
-! Orbit 
+!-----------------------------------------
+! BPM Orbit 
 
 &tao_d2_data
-    d2_data%name = "orbit"
+    d2_data%name = 'orbit'
     universe = 1
-    n_d1_data = 5
-/
-
+    n_d1_data = 2
+/    
+    
 &tao_d1_data
     ix_d1_data = 1
     default_weight = 1
     d1_data%name = 'x'
     default_data_type = 'bpm_orbit.x'
     default_data_source = 'lat'
-    search_for_lat_eles = "Instrument::BPM*,Instrument::RFB*"
+    !search_for_lat_eles = "monitor::bpm*,monitor::rfb*" 
+    datum(1:)%ele_name =  'BPM1B', 'BPM2B', 'BPM0H01', 'BPM0H04', 'BPM0H05', 'BPM0H08',
+     'BPMH1', 'BPMH2', 'BPMHD01', 'BPMHD02', 'BPMHD03', 'BPMHD04',
+     'BPMDG000', 'BPMDG001', 'BPMDG002', 'BPMDG003', 'BPMDG004', 'BPMDG005',
+     'BPMDG0RF', 'BPMDG008', 'BPMDG009', 'BPMDG011', 'BPMDG012'
 /
 
 &tao_d1_data
@@ -113,34 +101,8 @@
     d1_data%name = 'y'
     default_data_type = 'bpm_orbit.y'
     default_data_source = 'lat'
-    search_for_lat_eles = "Instrument::BPM*,Instrument::RFB*"
-/
-
-&tao_d1_data
-    ix_d1_data = 3
-    default_weight = 1
-    d1_data%name = 'profx'
-    default_data_type = 'orbit.x'
-    default_data_source = 'lat'
-    search_for_lat_eles = "Instrument::YAG*,Instrument::OTR*"
-/
-
-&tao_d1_data
-    ix_d1_data = 4
-    default_weight = 1
-    d1_data%name = 'profy'
-    default_data_type = 'orbit.y'
-    default_data_source = 'lat'
-    search_for_lat_eles = "Instrument::YAG*,Instrument::OTR*"
-/
-
-&tao_d1_data
-    ix_d1_data = 5
-    default_weight = 1
-    d1_data%name = 'e'
-    default_data_type = 'orbit.e_tot'
-    default_data_source = 'lat'
-    search_for_lat_eles = "Instrument::BPM*,Instrument::RFB*"
+    !search_for_lat_eles = "monitor::bpm*,monitor::rfb*" 
+    use_same_lat_eles_as = 'orbit.x'
 /
 
 !-----------------------------------------------------------------------------------------
@@ -165,28 +127,6 @@
 	default_step = 1e-4
 	default_attribute = 'x'
 	var(1:)%ele_name = 'O_L0'
-/
-
-&tao_var
-    v1_var%name = 'q.L1'
-	default_step = 1e-4
-	default_attribute = 'K1'
-	var(1:)%ele_name = 'QC010', 'QC011','QC012', 'QCM02', 'QCM03'
-/
-
-
-&tao_var
-    v1_var%name = 'q.L2'
-	default_step = 1e-4
-	default_attribute = 'K1'
-	var(1:)%ele_name = 'QCM04', 'QCM08', 'QCM11', 'QCM15'
-/
-
-&tao_var
-    v1_var%name = 'q.L3'
-	default_step = 1e-4
-	default_attribute = 'K1'
-	var(1:)%ele_name = 'QCM16', 'QCM22', 'QCM29', 'QCM35'
 /
 
 
