@@ -303,15 +303,17 @@ beam_init%center(6) = 0.0
 /
 
 
-!----------------------------------------
-! Orbit 
 
+!-----------------------------------------
+! BPM Orbit
+! Auto-generated BPM datums using: $LCLS_LATTICE/bmad/conversion/tao/create_vars_and_datums.ipynb
+        
 &tao_d2_data
-    d2_data%name = "orbit"
+    d2_data%name = 'orbit'
     universe = 1
-    n_d1_data = 5
-/
-
+    n_d1_data = 2
+/    
+    
 &tao_d1_data
     ix_d1_data = 1
     default_weight = 1
@@ -342,12 +344,12 @@ beam_init%center(6) = 0.0
      'BPMVB2B', 'BPMVB3B', 'BPMVM3B', 'BPMVM4B', 'BPMEM1B', 'BPMEM2B',
      'BPMEM3B', 'BPMEM4B', 'BPME31B', 'BPME32B', 'BPME33B', 'BPME34B',
      'BPME35B', 'BPME36B', 'BPMUM1B', 'BPMUM2B', 'BPMUM3B', 'BPMUM4B',
-     'BPMUE1B', 'BPMUE2B', 'BPMQDB', 'BPMDDB', 'RFBSX16', 'RFBSX19', 'RFBSX21',
-     'RFBSX24', 'RFBSX25', 'RFBSX26', 'RFBSX27', 'RFBSX28', 'RFBSX29',
-     'RFBSX30', 'RFBSX31', 'RFBSX32', 'RFBSX33', 'RFBSX34', 'RFBSX35',
-     'RFBSX36', 'RFBSX37', 'RFBSX38', 'RFBSX39', 'RFBSX40', 'RFBSX41',
-     'RFBSX42', 'RFBSX43', 'RFBSX44', 'RFBSX45', 'RFBSX46', 'RFBSX47',
-     'RFBSX51'
+     'RFBSX16', 'RFBSX19', 'RFBSX21', 'RFBSX24', 'RFBSX25', 'RFBSX26',
+     'RFBSX27', 'RFBSX28', 'RFBSX29', 'RFBSX30', 'RFBSX31', 'RFBSX32',
+     'RFBSX33', 'RFBSX34', 'RFBSX35', 'RFBSX36', 'RFBSX37', 'RFBSX38',
+     'RFBSX39', 'RFBSX40', 'RFBSX41', 'RFBSX42', 'RFBSX43', 'RFBSX44',
+     'RFBSX45', 'RFBSX46', 'RFBSX47', 'RFBSX51', 'BPMUE1B', 'BPMUE2B',
+     'BPMQDB', 'BPMDDB'
 /
 
 &tao_d1_data
@@ -360,33 +362,8 @@ beam_init%center(6) = 0.0
     use_same_lat_eles_as = 'orbit.x'
 /
 
-&tao_d1_data
-    ix_d1_data = 3
-    default_weight = 1
-    d1_data%name = 'profx'
-    default_data_type = 'orbit.x'
-    default_data_source = 'lat'
-    search_for_lat_eles = "MONITOR::YAG*,MONITOR::OTR*"
-/
 
-&tao_d1_data
-    ix_d1_data = 4
-    default_weight = 1
-    d1_data%name = 'profy'
-    default_data_type = 'orbit.y'
-    default_data_source = 'lat'
-    search_for_lat_eles = "MONITOR::YAG*,MONITOR::OTR*"
-/
-
-&tao_d1_data
-    ix_d1_data = 5
-    default_weight = 1
-    d1_data%name = 'e'
-    default_data_type = 'orbit.e_tot'
-    default_data_source = 'lat'
-    search_for_lat_eles = "MONITOR::BPM*,MONITOR::RFB*"
-/
-
+!-----------------------------------------
 
 !----------------------------------------
 !----------------------------------------
@@ -468,4 +445,69 @@ beam_init%center(6) = 0.0
 /
 
 
+!----------------------------------------
+! Correctors
+! Auto-generated corrector datums using: $LCLS_LATTICE/bmad/conversion/tao/create_vars_and_datums.ipynb
+        
+&tao_var
+    v1_var%name = 'xcor'
+    default_step = 1e-2
+    default_attribute = 'bl_kick'
+    var(1:)%ele_name =  'XC00', 'XC01', 'XC02', 'XC03', 'XC04', 'XC05', 'XC06', 'XC07', 'XC08', 'XC09',
+     'XC10', 'XC21101', 'XC21135', 'XC21165', 'XC21175', 'XC21191',
+     'XC21275', 'XC21302', 'XC21325', 'XC21402', 'XC21502', 'XC21602',
+     'XC21702', 'XC21802', 'XC21900', 'XC22202', 'XC22302', 'XC22402',
+     'XC22502', 'XC22602', 'XC22702', 'XC22802', 'XC22900', 'XC23202',
+     'XC23302', 'XC23402', 'XC23502', 'XC23602', 'XC23702', 'XC23802',
+     'XC23900', 'XC24202', 'XC24302', 'XC24402', 'XC24502', 'XC24602',
+     'XC24702', 'XC24900', 'XC25202', 'XC25302', 'XC25402', 'XC25502',
+     'XC25602', 'XC25702', 'XC25802', 'XC25900', 'XC26202', 'XC26302',
+     'XC26402', 'XC26502', 'XC26602', 'XC26702', 'XC26802', 'XC26900',
+     'XC27202', 'XC27302', 'XC27402', 'XC27502', 'XC27602', 'XC27702',
+     'XC27802', 'XC27900', 'XC28202', 'XC28302', 'XC28402', 'XC28502',
+     'XC28602', 'XC28702', 'XC28802', 'XC28900', 'XC29202', 'XC29302',
+     'XC29402', 'XC29502', 'XC29602', 'XC29702', 'XC29802', 'XC29900',
+     'XC30202', 'XC30302', 'XC30402', 'XC30502', 'XC30602', 'XC30702',
+     'XC30802', 'XC30900', 'XCBSYQ2', 'XCCUS1', 'XCCUS4', 'XCCUS7', 'XCCUS10',
+     'XCBP33', 'XCBP34', 'XCDBL2', 'XCDL11', 'XCDL13', 'XCDL15', 'XCDL17',
+     'XCDL19', 'XCDL22', 'XCVB2B', 'XCVM3B', 'XCEM1B', 'XCEM3B', 'XCE31B',
+     'XCXL1', 'XCE33B', 'XCE35B', 'XCXL2', 'XCUM1B', 'XCUM3B', 'XCSX16',
+     'XCSX19', 'XCSX21', 'XCSX24', 'XCSX26', 'XCSX27', 'XCSX28', 'XCSX29',
+     'XCSX30', 'XCSX31', 'XCSX32', 'XCSX33', 'XCSX34', 'XCSX35', 'XCSX36',
+     'XCSX37', 'XCSX38', 'XCSX39', 'XCSX40', 'XCSX41', 'XCSX42', 'XCSX43',
+     'XCSX44', 'XCSX45', 'XCSX46', 'XCSX47', 'XCPEPX1', 'XCPEPX2', 'XCPEPX3',
+     'XCPEPX4', 'XCUE2B', 'XCD3B', 'XCDDB'
+/
+
+
+&tao_var
+    v1_var%name = 'ycor'
+    default_step = 1e-2
+    default_attribute = 'bl_kick'
+    var(1:)%ele_name =  'YC00', 'YC01', 'YC02', 'YC03', 'YC04', 'YC05', 'YC06', 'YC07', 'YC08', 'YC09',
+     'YC10', 'YC21102', 'YC21136', 'YC21166', 'YC21174', 'YC21192',
+     'YC21276', 'YC21303', 'YC21325', 'YC21403', 'YC21503', 'YC21603',
+     'YC21703', 'YC21803', 'YC21900', 'YC22203', 'YC22303', 'YC22403',
+     'YC22503', 'YC22603', 'YC22703', 'YC22803', 'YC22900', 'YC23203',
+     'YC23303', 'YC23403', 'YC23503', 'YC23603', 'YC23703', 'YC23803',
+     'YC23900', 'YC24203', 'YC24303', 'YC24403', 'YC24503', 'YC24603',
+     'YC24703', 'YC24900', 'YC25203', 'YC25303', 'YC25403', 'YC25503',
+     'YC25603', 'YC25703', 'YC25803', 'YC25900', 'YC26203', 'YC26303',
+     'YC26403', 'YC26503', 'YC26603', 'YC26703', 'YC26803', 'YC26900',
+     'YC27203', 'YC27303', 'YC27403', 'YC27503', 'YC27603', 'YC27703',
+     'YC27803', 'YC27900', 'YC28203', 'YC28303', 'YC28403', 'YC28503',
+     'YC28603', 'YC28703', 'YC28803', 'YC28900', 'YC29203', 'YC29303',
+     'YC29403', 'YC29503', 'YC29603', 'YC29703', 'YC29803', 'YC29900',
+     'YC30203', 'YC30303', 'YC30403', 'YC30503', 'YC30603', 'YC30703',
+     'YC30803', 'YC30900', 'YCBSYQ1', 'YCCUS2', 'YCCUS3', 'YCCUS6', 'YCCUS8',
+     'YCCUS9', 'YCBP33', 'YCBP34', 'YCDBL1', 'YCDL12', 'YCDL14', 'YCDL16',
+     'YCDL18', 'YCDL20', 'YCDL21', 'YCVB1B', 'YCVB3B', 'YCVM4B', 'YCEM2B',
+     'YCEM4B', 'YCXL1', 'YCE32B', 'YCE34B', 'YCXL2', 'YCE36B', 'YCUM2B', 'YCUM4B',
+     'YCSX16', 'YCSX19', 'YCSX21', 'YCSX24', 'YCSX26', 'YCSX27', 'YCSX28',
+     'YCSX29', 'YCSX30', 'YCSX31', 'YCSX32', 'YCSX33', 'YCSX34', 'YCSX35',
+     'YCSX36', 'YCSX37', 'YCSX38', 'YCSX39', 'YCSX40', 'YCSX41', 'YCSX42',
+     'YCSX43', 'YCSX44', 'YCSX45', 'YCSX46', 'YCSX47', 'YCUE1B', 'YCD3B', 'YCDDB'
+/
+
+!----------------------------------------
 
