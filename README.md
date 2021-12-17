@@ -7,3 +7,4 @@ Many of the paths will use the `$LCLS_LATTICE` environmental variable, which sho
 `export LCLS_LATTICE=/path/to/this/repo`
 
 
+
