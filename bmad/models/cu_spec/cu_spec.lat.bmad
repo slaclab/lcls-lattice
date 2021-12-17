@@ -1,9 +1,9 @@
 
-! Makes L0BBEG correct
-BEGINNING[BETA_A] =   1.51417606703273E+00
-BEGINNING[ALPHA_A] =  -1.60406910641986E-01
-BEGINNING[BETA_B] =   1.53986428507105E+00
-BEGINNING[ALPHA_B] =  -1.63793752798038E-01
+! Match reference beam at YAG03
+BEGINNING[BETA_A] =  5.91253676811640894E+000
+BEGINNING[ALPHA_A] =  3.55631307633660354E+000
+BEGINNING[BETA_B] =  5.91253676811640982E+000
+BEGINNING[ALPHA_B] =  3.55631307633660398E+000
 
 
 beginning[e_tot] = 6e6
@@ -21,9 +21,18 @@ call, file = $LCLS_LATTICE/bmad/master/CU_HXR.bmad
 call, file = $LCLS_LATTICE/bmad/master/LCLScu_devicenames.bmad
 
 
+
+! Retune OTR2
+QA01[K1] = -9.87905093935879641E+000
+QA02[K1] =  1.07755271503770107E+001
+QE01[K1] = -2.74317636842800583E-001
+QE02[K1] =  7.82936661696055469E-001
+QE03[K1] =  1.15680484675381496E+001
+QE04[K1] = -6.78990977461671985E+000
+
+
+
 ! Cavity wakefields, traveling wave, full sbend
-
-
 lcavity::L0*[sr_wake]  = call::$LCLS_LATTICE/bmad/wakefields/longitudinal_wakes_sband.bmad
 lcavity::*[cavity_type] = traveling_wave
 sbend::*[fringe_type] = full

@@ -33,11 +33,9 @@
 beam_init%random_engine = 'quasi'
 ix_universe = 1
 beam_saved_at =  "MARKER::*"
-track_start = 'BEGL0'
-!track_end = 'DBMARK82'
-track_end = 'ENDL0'
-!beam_init%position_file = '$LCLS_LATTICE/bmad/beams/OTR2_250pC_rescaleto540um_solGTF1M_flat_scattered_20keV_100k.beam0'
-beam_init%position_file = 'test.beam0'
+track_start = 'YAG03'
+track_end = 'OTR2'
+beam_init%position_file = '$LCLS_LATTICE/bmad/beams/YAG03_100k.h5'
 beam_init%center(1) = 0.0
 beam_init%center(2) = 0.0
 beam_init%center(3) = 0.0
@@ -117,7 +115,7 @@ beam_init%center(6) = 0.0
 &tao_d2_data
     d2_data%name = 'orbit'
     universe = 1
-    n_d1_data = 2
+    n_d1_data = 3
 /    
     
 &tao_d1_data
@@ -141,6 +139,19 @@ beam_init%center(6) = 0.0
     use_same_lat_eles_as = 'orbit.x'
 /
 
+&tao_d1_data
+    ix_d1_data = 3
+    default_weight = 1
+    d1_data%name = 'charge'
+    default_data_type = 'bunch_charge.live'
+    default_data_source = 'beam'
+    !search_for_lat_eles = "monitor::bpm*,monitor::rfb*" 
+    use_same_lat_eles_as = 'orbit.x'
+/
+
+
+
+
 
 !-----------------------------------------
 
@@ -159,6 +170,31 @@ beam_init%center(6) = 0.0
     var(1)%low_lim = 0.01
     var(3)%low_lim = 0.01
 /
+
+
+&tao_var
+	v1_var%name = 'begorbit'
+	default_step = 1e-4
+	default_universe = '1'
+	ix_min_var = 1
+	ix_max_var = 4
+	var(1:)%ele_name  = 'particle_start', 'particle_start', 'particle_start', 'particle_start'
+    var(1:)%attribute = 'x', 'px', 'y', 'py'
+/
+
+&tao_var
+	v1_var%name = 'L0_errors'
+	default_step = 1e-4
+	default_universe = '1'
+	ix_min_var = 1
+	!ix_max_var = 4
+	var(1:)%ele_name  = 'L0A', 'L0B', 'L0A', 'L0B', 'QA01', 'QA02', 'QA01', 'QA02'
+    !var(1:)%attribute = 'x_pitch', 'y_pitch', 'x_pitch', 'y_pitch'
+    var(1:)%attribute = 'bl_hkick', 'bl_hkick', 'bl_vkick', 'bl_vkick', 'bl_hkick', 'bl_hkick', 'bl_vkick', 'bl_vkick'
+/
+
+
+
 
 &tao_var
     v1_var%name = 'q.OTR2'
