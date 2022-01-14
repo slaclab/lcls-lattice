@@ -20,6 +20,23 @@ beginning[x_position] = 10.44893
 call, file = $LCLS_LATTICE/bmad/master/CU_HXR.bmad
 call, file = $LCLS_LATTICE/bmad/master/LCLScu_devicenames.bmad
 
+! Add fieldmap elements
+call, file = $LCLS_LATTICE/bmad/fieldmaps/lcls_gun/lcls_gun.bmad
+call, file = $LCLS_LATTICE/bmad/fieldmaps/lcls_gun_solenoid/lcls_gun_solenoid.bmad
+!lcls_gun: e_gun, L = 0.135
+
+beginning[p0c] = 0
+RFGUN: lcls_gun
+SOL1a: lcls_gun_solenoid
+
+!SOL1a[L] = 0.196010*2
+SOL1a[L] = 0.19*2
+SOL1a[superimpose] = T
+SOL1a[ref_origin] = beginning
+SOL1a[ele_origin] = center
+SOL1a[ref] = BEGGUN
+SOL1a[offset] = 0.196010
+SOL1a[bs_field] = 0.25
 
 ! Cavity wakefields, traveling wave, full sbend
 
@@ -40,10 +57,26 @@ lcavity::*[cavity_type] = traveling_wave
 sbend::*[fringe_type] = full
 
 
+XGUNBXG : LINE=(
+ !DL00,LOADLOCK,
+ !BEGGUN,SOL1BK,DBMARK80,CATHODE,
+ DL01a,SOL1_full,DL01a1,VV01,DL01a2,AM00,DL01a3,AM01,
+         DL01a4,YAG01,DL01a5,FC01,DL01b,IM01,DL01c,SC1,DL01h,BPM2,DL01d,DBMARK81,ENDGUN)
+ 
 
 
-
+ 
 
 use, cu_spec !start at gun
+use, XGUNBXG
 
+D000: drift, L = 0.9778443 - RFGUN[L]
+
+GUNA: line = (BEGGUN, RFGUN, d000, ENDGUN)
+
+lat: line = (GUNA, BXGL0a, L0aL0b, DL1_1)
+
+call, File = markers.bmad
+
+use, lat
 
