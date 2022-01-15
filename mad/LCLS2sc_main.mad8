@@ -1,6 +1,6 @@
-  TITLE, "AD_ACCEL (September 15, 2021)" ! superconducting linac
+  TITLE, "AD_ACCEL (January 12, 2022)" ! superconducting linac
 
-! *** OPTICS=AD_ACCEL-15SEP21 ***
+! *** OPTICS=AD_ACCEL-12JAN22 ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY, DOUBLE
   ASSIGN, ECHO="LCLS2sc.echo"
@@ -364,17 +364,23 @@
 ! ==============================================================================
 
 ! ------------------------------------------------------------------------------
-! deflector switch definitions
+! switch definitions
 ! ------------------------------------------------------------------------------
 
-  SETSP     := 0 !deflector switch for HXR/SXR/BSYD spreader
-  SETCUS    := 0 !deflector switch for HXR/CUSXR
-  SETAL     := 0 !deflector switch for HXR/Aline
-  SETDA     := 0 !deflector switch for BSYD/DASEL
-  SETXLEAP2 := 0 !selector switch for XLEAP-II components
+! deflector switches
 
-  SETHXRSS := 0 !ON/OFF switch for HXR self-seeding chicane
-  SETSXRSS := 0 !ON/OFF switch for SXR self-seeding chicane
+  SETSP  := 0 !deflector switch for HXR/SXR/BSYD spreader
+  SETCUS := 0 !deflector switch for HXR/CUSXR
+  SETAL  := 0 !deflector switch for HXR/Aline
+  SETDA  := 0 !deflector switch for BSYD/DASEL
+
+! other switches
+
+  SETHXRSS  := 0 !ON/OFF switch for HXR self-seeding chicane
+  SETSXRSS  := 0 !ON/OFF switch for SXR self-seeding chicane
+  SETXLEAP2 := 0 !ON/OFF switch for XLEAP-II chicane
+  SETPEPX   := 0 !ON/OFF switch for PEPPEx chicane
+  SETCBXFEL := 0 !ON/OFF switch for CBXFEL chicane(s)
 
 ! ------------------------------------------------------------------------------
 ! integrated gradients for undulator quadrupoles
@@ -451,11 +457,6 @@
 
   COMMENT
     BEAM, ENERGY=E0
-    USE, SC_EIC
-    TWISS, COUPLE, BETA0=TWSS0, TAPE="EIC_twiss.tape", &
-      RTAPE="EIC_rmat.tape"
-
-    BEAM, ENERGY=E0
     USE, SC_DIAG0
     TWISS, COUPLE, SAVE, BETA0=TWSS0, TAPE="DIAG0_twiss.tape", &
       RTAPE="DIAG0_rmat.tape"
@@ -517,19 +518,6 @@
 
 ! ------------------------------------------------------------------------------
 ! SURVEY in linac coordinates
-! ------------------------------------------------------------------------------
-
-! EIC (Early Injector Commissioning)
-
-  COMMENT
-    ASSIGN, PRINT="EIC.print"
-    BEAM, ENERGY=E0
-    USE, SC_EIC
-    PRINT, FULL
-    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun
-    TWISS, COUPLE, BETA0=TWSS0, TAPE="EIC_twiss.tape", RTAPE="EIC_rmat.tape"
-  ENDCOMMENT
-
 ! ------------------------------------------------------------------------------
 
 ! SXR
@@ -698,7 +686,7 @@
 
 ! ------------------------------------------------------------------------------
 
-! DASEL (funded off-project)
+! S30XL (a.k.a. DASEL; funded off-project)
 
  !COMMENT
     ASSIGN, PRINT="LCLS2scDA.print"
@@ -967,3 +955,4 @@
 ! ------------------------------------------------------------------------------
 
   STOP
+

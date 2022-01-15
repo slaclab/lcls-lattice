@@ -1,6 +1,6 @@
-  TITLE, "AD_ACCEL (September 15, 2021)" ! copper linac
+  TITLE, "AD_ACCEL (January 12, 2022)" ! copper linac
 
-! *** OPTICS=AD_ACCEL-15SEP21 ***
+! *** OPTICS=AD_ACCEL-12JAN22 ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY
   ASSIGN, ECHO="LCLS2cu.echo"
@@ -120,8 +120,10 @@
   SETDA     := 0 !deflector switch for BSYD/DASEL
   SETXLEAP2 := 0 !selector switch for XLEAP-II components
 
-  SETHXRSS := 0 !ON/OFF switch for HXR self-seeding chicane
-  SETSXRSS := 0 !ON/OFF switch for SXR self-seeding chicane
+  SETHXRSS  := 0 !ON/OFF switch for HXR self-seeding chicane
+  SETSXRSS  := 0 !ON/OFF switch for SXR self-seeding chicane
+  SETPEPX   := 0 !ON/OFF switch for PEPPEx chicane
+  SETCBXFEL := 0 !ON/OFF switch for CBXFEL chicanes
 
 ! ------------------------------------------------------------------------------
 ! integrated gradients for undulator quadrupoles
@@ -163,6 +165,10 @@
 ! L0a-exit (for plotting purposes only - assumes only drift between cathode and L0a-exit)
 
   TWSSC : BETA0, ENERGY=E00, BETX=CBETX, ALFX=CALFX, BETY=CBETY, ALFY=CALFY
+
+! Twiss at OTR2
+
+  TWSSi : BETA0, ENERGY=Ei, BETX=BXi, ALFX=AXi, BETY=BYi, ALFY=AYi
 
 ! Twiss at the beginning of L3 linac
 
@@ -208,7 +214,7 @@
     SET, KQUM2,  -0.270601268265
     SET, KQUM3,   0.278762678373
     SET, KQUM4,  -0.247470889897
-    SET, kQDHXm, -1.734624260269
+    SET, kQHX46, -1.734624260269
     SET, KQUE1,   0.169109252491
     SET, KQUE2,  -0.137840816238
     SET, KQDMP,  -0.155212710055
@@ -218,15 +224,15 @@
 
   ! set quad strengths for 8 GeV Cu-linac beam to DMPS
 
-  !                Mark rematch     Yuri rematch       22JAN21	   
-  !              ---------------  ---------------  ---------------  
+  !                Mark rematch     Yuri rematch       22JAN21
+  !              ---------------  ---------------  ---------------
     SET, KQBP33, -0.645066535808 !-0.64483675561  !-0.644549451693
     SET, KQBP34,  0.592977153135 ! 0.594232917856 ! 0.595248248123
     SET, KQDBL1, -1.045760158543 !-1.056286788769 !-1.067412487101
     SET, KQDBL2,  0.585600770813 ! 0.600969748735 ! 0.618987949218
     SET, KQDL11,  0.358732502069
-  !                Mark rematch    Yuri (8.0/5.0)  
-  !              ---------------  ---------------  
+  !                Mark rematch    Yuri (8.0/5.0)
+  !              ---------------  ---------------
     SET, KQUM1B,                   0.311729673613
     SET, KQUM2B,                  -0.13
     SET, KQUM3B,                   0.384569277452
@@ -271,6 +277,10 @@
     USE, CU_SPEC
     TWISS, BETA0=TWSSC, TAPE="LCLS2cuSPEC_twiss.tape", &
       RTAPE="LCLS2cuSPEC_rmat.tape"
+    BEAM, ENERGY=Ei
+    USE, CU_SPECi
+    TWISS, BETA0=TWSSi, TAPE="LCLS2cuSPECi_twiss.tape", &
+      RTAPE="LCLS2cuSPECi_rmat.tape"
 
     SET, SETCUS, CUSOFF ; SET, SETAL, ALOFF
     SETK2cuH
@@ -278,6 +288,10 @@
     USE, CU_HXR
     TWISS, BETA0=TWSSC, TAPE="LCLS2cuH_twiss.tape", &
       RTAPE="LCLS2cuH_rmat.tape"
+    BEAM, ENERGY=Ei
+    USE, CU_HXRi
+    TWISS, BETA0=TWSSi, TAPE="LCLS2cuHi_twiss.tape", &
+      RTAPE="LCLS2cuHi_rmat.tape"
 
     SET, SETCUS, CUSOFF ; SET, SETAL, ALON
     SETK2cuA
@@ -285,6 +299,10 @@
     USE, CU_ALINE
     TWISS, BETA0=TWSSC, TAPE="LCLS2cuA_twiss.tape", &
       RTAPE="LCLS2cuA_rmat.tape"
+    BEAM, ENERGY=Ei
+    USE, CU_ALINEi
+    TWISS, BETA0=TWSSi, TAPE="LCLS2cuAi_twiss.tape", &
+      RTAPE="LCLS2cuAi_rmat.tape"
 
     SET, SETCUS, CUSON !pulsed
     SETK2cuS
@@ -292,6 +310,10 @@
     USE, CU_SXR
     TWISS, BETA0=TWSSC, TAPE="LCLS2cuS_twiss.tape", &
       RTAPE="LCLS2cuS_rmat.tape"
+    BEAM, ENERGY=Ei
+    USE, CU_SXRi
+    TWISS, BETA0=TWSSi, TAPE="LCLS2cuSi_twiss.tape", &
+      RTAPE="LCLS2cuSi_rmat.tape"
 
     STOP
   ENDCOMMENT
@@ -328,8 +350,10 @@
    !SAVELINE, NAME="CU_HXR", FILENAME="LCLS2cuH.saveline"
     PRINT, FULL
     SURVEY, THETA0=ADL1, X0=Xi, Z0=Zi, TAPE="LCLS2cuH_survey.tape"
+    SAVEBETA, TWm, OTR2
     TWISS, SAVE, BETA0=TWSSC, TAPE="LCLS2cuH_twiss.tape" !, &
    !  RTAPE="LCLS2cuH_rmat.tape"
+    SHOW, TWm
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, VMAX=9, &
       STYLE=100, SPLINE, RANGE=BEGDL1_1/DUMPFACE, FILE="LCLS2cuH", &
       TITLE="Cu-linac to HXR dump"
@@ -708,3 +732,4 @@
 ! ------------------------------------------------------------------------------
 
   STOP
+

@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-15SEP21 ***
+! *** OPTICS=AD_ACCEL-12JAN22 ***
 
 ! CU_HXR path configurations
 
@@ -10,6 +10,8 @@
   SETHXRSS  := 0 !set to 1 to turn ON HXR self-seeding chicane
   SETSXRSS  := 0 !set to 1 to turn ON SXR self-seeding chicane
   SETXLEAP2 := 0 !set to 1 to turn ON XLEAP-II components
+  SETPEPX   := 0 !set to 1 to turn ON PEPPEx chicane
+  SETCBXFEL := 0 !set to 1 to turn ON CBXFEL chicanes
 
   IntgSX := 30.0 !kG
   IntgHX := 30.0 !kG
@@ -37,10 +39,16 @@
     ! initial SURVEY: Xi, 0, Zi, ADLi, 0, 0
   ENDCOMMENT
 
- !COMMENT !to generate TWISS
+  COMMENT !to generate TWISS
     USE, CU_HXR !start at gun
     ! initial energy: E00
     ! initial Twiss : CBETX, CALFX, CBETY, CALFY
+  ENDCOMMENT
+
+ !COMMENT !to generate TWISS
+    USE, CU_HXRi !start at OTR2
+    ! initial energy: Ei
+    ! initial Twiss : BXi, AXi, BYi, AYi
  !ENDCOMMENT
 
   RETURN

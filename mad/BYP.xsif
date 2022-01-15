@@ -1,11 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-15SEP21 ***
+! *** OPTICS=AD_ACCEL-12JAN22 ***
 
 ! LCLS2sc bypass line, plus match to LTU
 
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
+! 14-DEC-2021, M. Woodley
+!  * add Sector 20 shield wall per A. Ibrahimov and G. Gassner
 ! 20-JUL-2021, M. Woodley
 !  * quad strength changes for Yuri's "symmetric" SPRDs/SPRDh match
 ! ------------------------------------------------------------------------------
@@ -267,6 +269,12 @@
   DCYsa : DRIF, L=15.468697 !to sector boundary
   DCYsb : DRIF, L=DCY[L]-DCYsa[L]
   DCYc  : DRIF, L=15.28728 -zQBP30
+
+! Sector 20 shield wall
+
+  DCYsa1 : DRIF, L=4.976697
+  S20WALL : DRIF, L=2.0
+  DCYsa2  : DRIF, L=DCYsa[L]-DCYsa1[L]-S20WALL[L]
 
 ! existing PEP-II HER Bypass Line (LI13-27)
 
@@ -564,7 +572,7 @@
     QBP19_full,D2Q4a0,BPMBP19,D2Q4b0,XCBP19,D2Q4c0,YCBP19,D2Q4d0,&
       DCYsa,BPN19END,BPN20BEG,DCYsb,&
     QBP20_full,D2Q4a0,BPMBP20,D2Q4b0,XCBP20,D2Q4c0,YCBP20,D2Q4d0,&
-      DCYsa,BPN20END,BPN21BEG,DCYsb,&
+      DCYsa1,S20WALL,DCYsa2,BPN20END,BPN21BEG,DCYsb,&
     QBP21_full,D2Q4a0,BPMBP21,D2Q4b0,XCBP21,D2Q4c0,YCBP21,D2Q4e0,&
       CXBP21,D2Q4f0,&
       DCYsa,BPN21END,BPN22BEG,DCYsb,&
