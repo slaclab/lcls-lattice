@@ -1,7 +1,10 @@
 
-! *** OPTICS=AD_ACCEL-15SEP21 ***
+! *** OPTICS=AD_ACCEL-12JAN22 ***
 
 ! ==============================================================================
+! 21-OCT-2021, M. Woodley
+!  * add ultra-fast stripline kickers at 21-9 per A. Halavanau
+! ------------------------------------------------------------------------------
 ! 23-FEB-2017, M. Woodley
 !    Change TYPE of LI21 XCORs and YCORs to "type-4al" for consistency with LCLS
 ! ------------------------------------------------------------------------------
@@ -323,6 +326,19 @@ yc24603: vkicker, type = "type-4"
 yc24703: vkicker, type = "type-4c" !calibrated to <1%
 
 ! ==============================================================================
+! ultrafast stripline kickers for LCLS Multibunch project
+! ------------------------------------------------------------------------------
+
+lufkick = 0.300 !electrical length (m)
+
+bky21929: instrument, type = "0.79K11.8", l = lufkick
+bkx21957: instrument, type = "0.79K11.8", l = lufkick
+
+d219a: drift, l = 0.4609-lufkick/2
+d219b: drift, l = 0.5439-lufkick
+d219c: drift, l = daq4[l]-d219a[l]-lufkick-d219b[l]-lufkick
+
+! ==============================================================================
 ! BEAMLINEs
 ! ------------------------------------------------------------------------------
 
@@ -478,7 +494,8 @@ bpm21901[ref] = q21901
   LI21 : LINE=(LI21beg,ZLIN04,K21_3b_full,K21_3c_full,K21_3d_full,DAQ1,Q21401_full,DAQ2,K21_4a_full,K21_4b_full,
          K21_4c_full,K21_4d_full,DAQ1,Q21501_full,DAQ2,K21_5a_full,K21_5b_full,K21_5c_full,K21_5d_full,DAQ1,Q21601_full,DAQ2,
          K21_6a_full,K21_6b_full,K21_6c_full,K21_6d_full,DAQ1,Q21701_full,DAQ2,K21_7a_full,K21_7b_full,K21_7c_full,K21_7d_full,
-         DAQ1,Q21801_full,DAQ2,K21_8a_full,K21_8b_full,K21_8c_full,K21_8d_full,DAQ3,Q21901_full,DAQ4,LI21end)
+         DAQ1,Q21801_full,DAQ2,K21_8a_full,K21_8b_full,K21_8c_full,K21_8d_full,DAQ3,Q21901_full,D219a,BKY21929,D219b,BKX21957,
+         D219c,LI21end)
 
 ! ------------------------------------------------------------------------------
 

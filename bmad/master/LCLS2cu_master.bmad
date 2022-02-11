@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-15SEP21 ***
+! *** OPTICS=AD_ACCEL-12JAN22 ***
 
 ! ------------------------------------------------------------------------------
 ! constants and global parameters
@@ -68,6 +68,14 @@ cbetx = 15.574222415628    ! consistent with back-tracked from matched OTR2 thro
 calfx = -3.081460679784
 cbety = 0.39093003939
 calfy = 0.551431596242e-2
+
+! Twiss at OTR2
+
+!           uncoupled         coupled
+bxi = 1.11308102615  ! 1.110117412898
+axi = -0.068940358788 !-0.068770525275
+byi = 1.113021659127 ! 1.110117410955
+ayi = -0.070294897537 !-0.068770524742
 
 ! Twiss at the beginning of L3 linac
 
@@ -223,23 +231,37 @@ call, file = BSYcu.bmad
 
 ! beam paths
 
+ !CU_GSPEC : copper linac to gun spectrometer
+ !CU_SPEC  : copper linac to 135 MeV spectrometer
+ !CU_SXR   : copper linac to e- SXR dump
+ !CU_ALINE : copper linac to End Station A
  !CU_HXR   : copper linac to e- HXR dump
  !CU_SFTH  : copper linac to e- HXR safety dump
  !CU_HXTES : copper linac to HXR XTES system (photon)
  !CU_HTXI  : copper linac to HXR TXI system (photon)
- !CU_SXR   : copper linac to e- SXR dump
- !CU_ALINE : copper linac to End Station A
- !CU_GSPEC : copper linac to gun spectrometer
- !CU_SPEC  : copper linac to 135 MeV spectrometer
 
+  CU_GSPEC : LINE=(GUNBXG,GSPEC)
+  CU_SPEC  : LINE=(GUNL0a,L0aL0b,DL1_1,SPECBL)
+  CU_SXR   : LINE=(GUNL0a,L0aL0b,LCLS2cuS)
+  CU_ALINE : LINE=(GUNL0a,L0aL0b,LCLS2cuA)
   CU_HXR   : LINE=(GUNL0a,L0aL0b,LCLS2cuH)
   CU_SFTH  : LINE=(GUNL0a,L0aL0b,LCLS2cuHS)
   CU_HXTES : LINE=(GUNL0a,L0aL0b,LCLS2cuHXTES)
   CU_HTXI  : LINE=(GUNL0a,L0aL0b,LCLS2cuHTXI)
-  CU_SXR   : LINE=(GUNL0a,L0aL0b,LCLS2cuS)
-  CU_ALINE : LINE=(GUNL0a,L0aL0b,LCLS2cuA)
-  CU_GSPEC : LINE=(GUNBXG,GSPEC)
-  CU_SPEC  : LINE=(GUNL0a,L0aL0b,DL1_1,SPECBL)
+
+! for Twiss starting at OTR2
+
+  LCLS2cuI  : LINE=(OTR2,DE06d,BPM10,DE06e,WS03,DE05,OTR3,DE07,QM01_full,DE08,SC8,DE08a,VV04,DE08b,QM02_full,DE09,
+         DBMARK82,ENDDL1_1)
+  LCLS2cuCI : LINE=(DL1_2,L1,BC1,L2,BC2,L3)
+
+  CU_SPECi  : LINE=(LCLS2cuI,SPECBL)
+  CU_SXRi   : LINE=(LCLS2cuI,LCLS2cuCI,BSYLTUS)
+  CU_ALINEi : LINE=(LCLS2cuI,LCLS2cuCI,BSYALINE)
+  CU_HXRi   : LINE=(LCLS2cuI,LCLS2cuCI,BSYLTUH)
+  CU_SFTHi  : LINE=(LCLS2cuI,LCLS2cuCI,BSYLTUHS)
+  CU_HXTESi : LINE=(LCLS2cuI,LCLS2cuCI,BSYLTUHXTES)
+  CU_HTXIi  : LINE=(LCLS2cuI,LCLS2cuCI,BSYLTUHTXI)
 
 ! ------------------------------------------------------------------------------
 ! initial SURVEY coordinates
