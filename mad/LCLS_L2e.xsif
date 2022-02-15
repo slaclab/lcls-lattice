@@ -1,7 +1,10 @@
 
-! *** OPTICS=AD_ACCEL-15SEP21 ***
+! *** OPTICS=AD_ACCEL-12JAN22 ***
 
 ! ==============================================================================
+! 21-OCT-2021, M. Woodley
+!  * add ultra-fast stripline kickers at 21-9 per A. Halavanau
+! ------------------------------------------------------------------------------
 ! 23-FEB-2017, M. Woodley
 !    Fix longstanding error in XCOR and YCOR names
 ! ------------------------------------------------------------------------------
@@ -146,6 +149,19 @@
   YC24703 : VKIC, TYPE="type-4c" !calibrated to <1%
 
 ! ==============================================================================
+! ultrafast stripline kickers for LCLS Multibunch project
+! ------------------------------------------------------------------------------
+
+  Lufkick := 0.300 !electrical length (m)
+
+  BKY21929 : INST, TYPE="0.79K11.8", L=Lufkick
+  BKX21957 : INST, TYPE="0.79K11.8", L=Lufkick
+
+  D219a : DRIF, L=0.4609-Lufkick/2
+  D219b : DRIF, L=0.5439-Lufkick
+  D219c : DRIF, L=DAQ4[L]-D219a[L]-Lufkick-D219b[L]-Lufkick
+
+! ==============================================================================
 ! BEAMLINEs
 ! ------------------------------------------------------------------------------
 
@@ -191,7 +207,8 @@
       XC21702,YC21703,&
     K21_7a_full,K21_7b_full,K21_7c_full,K21_7c_full,DAQ1,Q21801_full,DAQ2,&
       XC21802,YC21803,&
-    K21_8a_full,K21_8b_full,K21_8c_full,K21_8c_full,DAQ3,Q21901_full,DAQ4,&
+    K21_8a_full,K21_8b_full,K21_8c_full,K21_8c_full,DAQ3,Q21901_full,&
+      D219a,BKY21929,D219b,BKX21957,D219c,&
       XC21900,YC21900,&
     LI21end)
 

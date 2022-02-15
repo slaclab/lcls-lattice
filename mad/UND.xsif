@@ -1,10 +1,15 @@
 
-! *** OPTICS=AD_ACCEL-15SEP21 ***
+! *** OPTICS=AD_ACCEL-12JAN22 ***
 
 ! LCLS2sc undulator and undulator extension
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 11-OCT-2021, M. Woodley
+!  * add CBXFEL chicane in HXR cell 21
+!  * add phase shifter to HXR cell 46 per G. Kraft
+!  * add HXU/BLM/QUAD/RFBPM to HXR cell 47 (no phase shifter, no VV) per G. Kraft
 ! ------------------------------------------------------------------------------
 ! 26-MAR-2021, M. Woodley
 !  * add PEPPEx devices at end of SXR
@@ -1015,11 +1020,13 @@
 
 ! PEPPEx components
 
+  PEPXANG := 0.105263157895E-2 !offset beam toward aisle (south)
+
   DU7sc     : DRIF, L=0.184
   FSPEPX1   : INST, TYPE="fast shutter"
   DU7sd     : DRIF, L=DU7s[L]-DU7sc[L]
   DU3sa     : DRIF, L=0.114
-  XCPEPX1   : HKIC, TYPE="type-4 mod 1.5"
+  XCPEPX1   : HKIC, TYPE="2.19 Gap Type 4", KICK=-PEPXANG*SETPEPX
   DU3sb     : DRIF, L=DU3s[L]-DU3sa[L]
   DU7se     : DRIF, L=0.074
   VGPEPX1   : MARK, TYPE="vacuum gauges"
@@ -1027,15 +1034,15 @@
   VGPRPEPX1 : INST, TYPE="pirani"
   DU7sf     : DRIF, L=DU7s[L]-DU7se[L]
   DUSEGS50a : DRIF, L=0.064
-  XCPEPX2   : HKIC, TYPE="type-4 mod 1.5"
+  XCPEPX2   : HKIC, TYPE="2.19 Gap Type 4", KICK=+PEPXANG*SETPEPX
   DUSEGS50b : DRIF, L=0.586
   ZPPEPX    : INST, TYPE="zone plate"
   DUSEGS50c : DRIF, L=0.29
   VPPEPX1   : MARK, TYPE="ion pump"
   DUSEGS50d : DRIF, L=0.224
-  XCPEPX3   : HKIC, TYPE="type-4 mod 1.5"
+  XCPEPX3   : HKIC, TYPE="2.19 Gap Type 4", KICK=+PEPXANG*SETPEPX
   DUSEGS50e : DRIF, L=0.95
-  XCPEPX4   : HKIC, TYPE="type-4 mod 1.5"
+  XCPEPX4   : HKIC, TYPE="2.19 Gap Type 4", KICK=-PEPXANG*SETPEPX
   DUSEGS50f : DRIF, L=0.6
   GJPEPX    : INST, TYPE="gas jet"
   DUSEGS50g : DRIF, L=DUSEGS50[L]-DUSEGS50a[L]-DUSEGS50b[L]&
@@ -1314,6 +1321,7 @@
   PSHXh43 : PSHXh
   PSHXh44 : PSHXh
   PSHXh45 : PSHXh
+  PSHXh46 : PSHXh
 
 ! ------------------------------------------------------------------------------
 ! - Author: Heinz-Dieter Nuhn, Stanford Linear Accelerator Center
@@ -1363,47 +1371,49 @@
  dDUE1a := 0.0
   DUE1a : DRIF, L=2.853174666558-LRFBub +dDUE1a
 
- !IntgHX :   definition moved to LCLS2sc_main.xsif and LCLS2cu_main.xsif
+ !IntgHX : definition moved to LCLS2sc_main.xsif and LCLS2cu_main.xsif
   GQFHX  :=  IntgHX/LQu/10*1.0           !T/m
   GQDHX  := -IntgHX/LQu/10*1.0           !T/m
   kQFHX  :=  1.E-9*GQFHX*CLIGHT/gamu/mc2 !m^-2
   kQDHX  :=  1.E-9*GQDHX*CLIGHT/gamu/mc2 !m^-2
-  kQDHXm := -2.482122917065
+  kQHX46 := -2.482122917065
+  kQHX47 :=  0.0
 
-  QHXh13 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, APER=rQu
-  QHXh14 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, APER=rQu
-  QHXh15 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, APER=rQu
-  QHXh16 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, APER=rQu
-  QHXh17 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, APER=rQu
-  QHXh18 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, APER=rQu
-  QHXh19 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, APER=rQu
-  QHXh20 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, APER=rQu
-  QHXh21 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, APER=rQu
-  QHXh22 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, APER=rQu
-  QHXh23 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, APER=rQu
-  QHXh24 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, APER=rQu
-  QHXh25 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, APER=rQu
-  QHXh26 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, APER=rQu
-  QHXh27 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, APER=rQu
-  QHXh28 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, APER=rQu
-  QHXh29 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, APER=rQu
-  QHXh30 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, APER=rQu
-  QHXh31 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, APER=rQu
-  QHXh32 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, APER=rQu
-  QHXh33 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, APER=rQu
-  QHXh34 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, APER=rQu
-  QHXh35 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, APER=rQu
-  QHXh36 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, APER=rQu
-  QHXh37 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, APER=rQu
-  QHXh38 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, APER=rQu
-  QHXh39 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, APER=rQu
-  QHXh40 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, APER=rQu
-  QHXh41 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, APER=rQu
-  QHXh42 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, APER=rQu
-  QHXh43 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, APER=rQu
-  QHXh44 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX, APER=rQu
-  QHXh45 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX, APER=rQu
-  QHXh46 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHXm, APER=rQu
+  QHXh13 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX,  APER=rQu
+  QHXh14 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX,  APER=rQu
+  QHXh15 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX,  APER=rQu
+  QHXh16 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX,  APER=rQu
+  QHXh17 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX,  APER=rQu
+  QHXh18 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX,  APER=rQu
+  QHXh19 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX,  APER=rQu
+  QHXh20 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX,  APER=rQu
+  QHXh21 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX,  APER=rQu
+  QHXh22 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX,  APER=rQu
+  QHXh23 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX,  APER=rQu
+  QHXh24 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX,  APER=rQu
+  QHXh25 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX,  APER=rQu
+  QHXh26 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX,  APER=rQu
+  QHXh27 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX,  APER=rQu
+  QHXh28 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX,  APER=rQu
+  QHXh29 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX,  APER=rQu
+  QHXh30 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX,  APER=rQu
+  QHXh31 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX,  APER=rQu
+  QHXh32 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX,  APER=rQu
+  QHXh33 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX,  APER=rQu
+  QHXh34 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX,  APER=rQu
+  QHXh35 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX,  APER=rQu
+  QHXh36 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX,  APER=rQu
+  QHXh37 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX,  APER=rQu
+  QHXh38 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX,  APER=rQu
+  QHXh39 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX,  APER=rQu
+  QHXh40 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX,  APER=rQu
+  QHXh41 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX,  APER=rQu
+  QHXh42 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX,  APER=rQu
+  QHXh43 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX,  APER=rQu
+  QHXh44 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDHX,  APER=rQu
+  QHXh45 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX,  APER=rQu
+  QHXh46 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQHX46, APER=rQu
+  QHXh47 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQHX47, APER=rQu
 
   luHXU   := 0.026                            !m
   NpHXU   := 129
@@ -1459,6 +1469,7 @@
   UMAHXh44 : UMAHXh
   UMAHXh45 : UMAHXh
   UMAHXh46 : UMAHXh
+  UMAHXh47 : UMAHXh
 
 ! ------------------------------------------------------------------------------
 ! HXR undulator X-steering coils in quads
@@ -1498,6 +1509,7 @@
   XCHX44 : HKIC, TYPE="type-U"
   XCHX45 : HKIC, TYPE="type-U"
   XCHX46 : HKIC, TYPE="type-U"
+  XCHX47 : HKIC, TYPE="type-U"
 
 ! ------------------------------------------------------------------------------
 ! HXR undulator Y-steering coils in quads
@@ -1537,6 +1549,7 @@
   YCHX44 : VKIC, TYPE="type-U"
   YCHX45 : VKIC, TYPE="type-U"
   YCHX46 : VKIC, TYPE="type-U"
+  YCHX47 : VKIC, TYPE="type-U"
 
 ! ------------------------------------------------------------------------------
 ! HXR undulator X-steering coils in undulator segments
@@ -1576,6 +1589,7 @@
   XCHU44 : INST, TYPE="type-V"
   XCHU45 : INST, TYPE="type-V"
   XCHU46 : INST, TYPE="type-V"
+  XCHU47 : INST, TYPE="type-V"
 
 ! ------------------------------------------------------------------------------
 ! HXR undulator Y-steering coils in undulator segments
@@ -1615,6 +1629,7 @@
   YCHU44 : INST, TYPE="type-V"
   YCHU45 : INST, TYPE="type-V"
   YCHU46 : INST, TYPE="type-V"
+  YCHU47 : INST, TYPE="type-V"
 
 ! ------------------------------------------------------------------------------
 ! HXR undulator BPMs
@@ -1654,7 +1669,7 @@
   RFBHX44 : MONI, L=LRFBub, TYPE="CavityX-1"
   RFBHX45 : MONI, L=LRFBub, TYPE="CavityX-1"
   RFBHX46 : MONI, L=LRFBub, TYPE="CavityX-1"
-  DRFBH47 : DRIF, L=LRFBub
+  RFBHX47 : MONI, L=LRFBub, TYPE="CavityX-1"
   DRFBH48 : DRIF, L=LRFBub
   DRFBH49 : DRIF, L=LRFBub
   DRFBH50 : DRIF, L=LRFBub
@@ -1713,50 +1728,31 @@
   PSHXh43_full : LINE=(PSHXh43,MPHH,PSHXh43)
   PSHXh44_full : LINE=(PSHXh44,MPHH,PSHXh44)
   PSHXh45_full : LINE=(PSHXh45,MPHH,PSHXh45)
-  DPSHX46      : DRIF, L=LPSHX
+  PSHXh46_full : LINE=(PSHXh46,MPHH,PSHXh46)
   DPSHX47      : DRIF, L=LPSHX
   DPSHX48      : DRIF, L=LPSHX
   DPSHX49      : DRIF, L=LPSHX
   DPSHX50      : DRIF, L=LPSHX
 
 ! ------------------------------------------------------------------------------
-! HXR undulator inline valves (VAT Series 48?)
+! HXR undulator inline vacuum isolation valves (VAT Series 48?)
 ! ------------------------------------------------------------------------------
 
-  VVHXU13 : MARK
   VVHXU14 : MARK
-  VVHXU15 : MARK
-  VVHXU16 : MARK
   VVHXU17 : MARK
-  VVHXU18 : MARK
-  VVHXU19 : MARK
   VVHXU20 : MARK
-! -----21
   VVHXU22 : MARK
-  VVHXU23 : MARK
   VVHXU24 : MARK
-  VVHXU25 : MARK
-  VVHXU26 : MARK
   VVHXU27 : MARK
-! -----28
   VVHXU29 : MARK
-  VVHXU30 : MARK
-  VVHXU31 : MARK
   VVHXU32 : MARK
-  VVHXU33 : MARK
-  VVHXU34 : MARK
   VVHXU35 : MARK
-  VVHXU36 : MARK
   VVHXU37 : MARK
-  VVHXU38 : MARK
-  VVHXU39 : MARK
   VVHXU40 : MARK
-  VVHXU41 : MARK
-  VVHXU42 : MARK
   VVHXU43 : MARK
-  VVHXU44 : MARK
   VVHXU45 : MARK
-  VVHXU46 : MARK
+
+  DVVHXU : DRIF, L=0
 
 ! ------------------------------------------------------------------------------
 ! HXR undulator Beam Loss Monitors (placeholders)
@@ -1796,6 +1792,7 @@
   MBLMH44 : MARK
   MBLMH45 : MARK
   MBLMH46 : MARK
+  MBLMH47 : MARK
 
 ! ------------------------------------------------------------------------------
 ! HXRSS self-seeding chicane (LCLSII-3.2-PR-0102-R1)
@@ -1884,6 +1881,160 @@
     BCXHS4_full,DMONO,HXRSSEND)
 
 ! ------------------------------------------------------------------------------
+! CBXFEL chicanes (off-project)
+! ------------------------------------------------------------------------------
+
+! NOTEs:
+! - Bmax = 3.5 kG-m @ 12 A (approximately)
+! - Emax = 10.35 GeV for CBXFEL project (8.6 GeV for DBFEL project)
+! - use series approximation for sinc(x)=sin(x)/x to allow AB6=0
+! - deflects toward -X (to the right/south/wall)
+! - bends away from coil side
+! - use Everson Tesla (ETI) "0.276D14-C" dipoles (356 mm core, 7 mm gap)
+! - the chicane in HXR cell 13 will not be installed until "later"
+
+  Ecmax  := 10.35        !6.3-10.35 GeV
+  Brho6  := Cb*Ecmax     !beam rigidity at CBXFEL chicanes (kG-m)
+  BL6max :=  3.5         !kG-m @ ~12 A (measured)
+  AB6max := BL6max/Brho6 !rad
+
+  GB6      := 0.007                             !full gap height [m]
+  ZB6      := 0.368                             !on-axis effective length (per ETI)
+  FB6      := 1.0408                            !measured
+  AB6      := +AB6max*SETCBXFEL                 !bend angle (rad)
+  AB6_2    := AB6*AB6
+  AB6_4    := AB6_2*AB6_2
+  AB6_6    := AB6_4*AB6_2
+  SINCAB6  := 1-AB6_2/6+AB6_4/120-AB6_6/5040    !~sinc(AB6)=sin(AB6)/AB6
+  LB6      := ZB6/SINCAB6                       !chicane bend path length (m)
+  AB6s     := ASIN(SIN(AB6)/2)                  !"short" half chicane bend angle (rad)
+  AB6s_2   := AB6s*AB6s
+  AB6s_4   := AB6s_2*AB6s_2
+  AB6s_6   := AB6s_4*AB6s_2
+  SINCAB6s := 1-AB6s_2/6+AB6s_4/120-AB6s_6/5040 !~sinc(AB6s)=sin(AB6s)/AB6s
+  LB6s     := (ZB6/2)/SINCAB6s                  !"short" half chicane bend path length (m)
+  AB6L     := AB6-AB6S                          !"long" half chicane bend angle (rad)
+  LB6L     := LB6-LB6S                          !"long" half chicane bend path length (m)
+
+  BCXCB11a : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6S, ANGLE=+AB6S, &
+                   E1=0, FINT=FB6, FINTX=0
+  BCXCB11b : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6L, ANGLE=+AB6L, &
+                   E2=+AB6, FINT=0, FINTX=FB6
+  BCXCB12a : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6L, ANGLE=-AB6L, &
+                   E1=-AB6, FINT=FB6, FINTX=0
+  BCXCB12b : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6S, ANGLE=-AB6S, &
+                   E2=0, FINT=0, FINTX=FB6
+  BCXCB13a : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6S, ANGLE=-AB6S, &
+                   E1=0, FINT=FB6, FINTX=0
+  BCXCB13b : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6L, ANGLE=-AB6L, &
+                   E2=-AB6, FINT=0, FINTX=FB6
+  BCXCB14a : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6L, ANGLE=+AB6L, &
+                   E1=+AB6, FINT=FB6, FINTX=0
+  BCXCB14b : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6S, ANGLE=+AB6S, &
+                   E2=0, FINT=0, FINTX=FB6
+
+  BCXCB21a : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6S, ANGLE=+AB6S, &
+                   E1=0, FINT=FB6, FINTX=0
+  BCXCB21b : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6L, ANGLE=+AB6L, &
+                   E2=+AB6, FINT=0, FINTX=FB6
+  BCXCB22a : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6L, ANGLE=-AB6L, &
+                   E1=-AB6, FINT=FB6, FINTX=0
+  BCXCB22b : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6S, ANGLE=-AB6S, &
+                   E2=0, FINT=0, FINTX=FB6
+  BCXCB23a : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6S, ANGLE=-AB6S, &
+                   E1=0, FINT=FB6, FINTX=0
+  BCXCB23b : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6L, ANGLE=-AB6L, &
+                   E2=-AB6, FINT=0, FINTX=FB6
+  BCXCB24a : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6L, ANGLE=+AB6L, &
+                   E1=+AB6, FINT=FB6, FINTX=0
+  BCXCB24b : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6S, ANGLE=+AB6S, &
+                   E2=0, FINT=0, FINTX=FB6
+
+! define unsplit SBENs for BMAD ... not used by MAD
+
+  BCXCB11 : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6, ANGLE=+AB6, &
+                  E1=0, FINT=FB6, E2=+AB6, FINTX=FB6
+  BCXCB12 : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6, ANGLE=-AB6, &
+                  E1=-AB6, FINT=FB6, E2=0, FINTX=FB6
+  BCXCB13 : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6, ANGLE=-AB6, &
+                  E1=0, FINT=FB6, E2=-AB6, FINTX=FB6
+  BCXCB14 : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6, ANGLE=+AB6, &
+                  E1=+AB6, FINT=FB6, E2=0, FINTX=FB6
+
+  BCXCB21 : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6, ANGLE=+AB6, &
+                  E1=0, FINT=FB6, E2=+AB6, FINTX=FB6
+  BCXCB22 : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6, ANGLE=-AB6, &
+                  E1=-AB6, FINT=FB6, E2=0, FINTX=FB6
+  BCXCB23 : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6, ANGLE=-AB6, &
+                  E1=0, FINT=FB6, E2=-AB6, FINTX=FB6
+  BCXCB24 : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6, ANGLE=+AB6, &
+                  E1=+AB6, FINT=FB6, E2=0, FINTX=FB6
+
+  Ztotal  := 134.391*in2m !total system length
+  Zuseg   := 3.372032     !undulator segment length
+  ZB2Bo   := 1.230350     !outer bend center-to-center
+  ZB2Bi   := 0.535763     !inner bend center-to-center
+  ZB3toC1 := 0.32356      !3rd bend center to DBFEL crystal #1
+  ZB3toC4 := 0.77365      !3rd bend center to DBFEL crystal #4
+
+  D0CB    : DRIF, L=0.26456-(DU1H[L]+DU2H[L]+ZB6/2)
+  D1CB    : DRIF, L=(ZB2Bo-ZB6)/COS(AB6)
+  DCHCB   : DRIF, L=(ZB2Bi-ZB6)/2
+  D2CB    : DRIF, L=D1CB[L]
+  D3CB    : DRIF, L=Zuseg-(D0CB[L]+ZB6/2+ZB2Bo+ZB2Bi+ZB2Bo+ZB6/2)
+  DU3hCBa : DRIF, L=DU3h[L]+0.030605
+  DU3hCBb : DRIF, L=DU3h[L]+0.102780
+  DU4hCB  : DRIF, L=DU4h[L]-0.025003
+  DU5hCB  : DRIF, L=DU5h[L]-0.108382
+
+! CBXFEL
+
+  D1CBa : DRIF, L=D1CB[L]/2
+  D1CBb : DRIF, L=D1CB[L]-D1CBa[L]
+
+! DBFEL
+
+  D2CBa : DRIF, L=(ZB3toC1-ZB6/2)/COS(AB6)
+  D2CBb : DRIF, L=(ZB3toC4-ZB3toC1)/COS(AB6)
+  D2CBc : DRIF, L=D2CB[L]-D2CBa[L]-D2CBb[L]
+  
+  HXRCB1BEG : MARK
+  MIRROR1   : INST !1.5 mm
+  CENTER1   : MARK
+  CRYSTAL11 : INST !1.55 mm 
+  CRYSTAL12 : INST !1.55 mm
+  HXRCB1END : MARK
+  
+  HXRCB2BEG : MARK
+  MIRROR2   : INST !1.5 mm
+  CENTER2   : MARK
+  CRYSTAL21 : INST !1.55 mm 
+  CRYSTAL22 : INST !1.55 mm
+  HXRCB2END : MARK
+
+  BCXCB11_full : LINE=(BCXCB11a,BCXCB11b)
+  BCXCB12_full : LINE=(BCXCB12a,BCXCB12b)
+  BCXCB13_full : LINE=(BCXCB13a,BCXCB13b)
+  BCXCB14_full : LINE=(BCXCB14a,BCXCB14b)
+
+  BCXCB21_full : LINE=(BCXCB21a,BCXCB21b)
+  BCXCB22_full : LINE=(BCXCB22a,BCXCB22b)
+  BCXCB23_full : LINE=(BCXCB23a,BCXCB23b)
+  BCXCB24_full : LINE=(BCXCB24a,BCXCB24b)
+
+  CBCHICANE1 : LINE=(HXRCB1BEG,D0CB,&
+    BCXCB11_full,D1CBa,MIRROR1,D1CBb,&
+    BCXCB12_full,DCHCB,CENTER1,DCHCB,&
+    BCXCB13_full,D2CBa,CRYSTAL11,D2CBb,CRYSTAL12,D2CBc,&
+    BCXCB14_full,D3CB,HXRCB1END)
+
+  CBCHICANE2 : LINE=(HXRCB2BEG,D0CB,&
+    BCXCB21_full,D1CBa,MIRROR2,D1CBb,&
+    BCXCB22_full,DCHCB,CENTER2,DCHCB,&
+    BCXCB23_full,D2CBa,CRYSTAL21,D2CBb,CRYSTAL22,D2CBc,&
+    BCXCB24_full,D3CB,HXRCB2END)
+
+! ------------------------------------------------------------------------------
 ! HXR undulator cells
 ! ------------------------------------------------------------------------------
 
@@ -1921,8 +2072,9 @@
   UMAHXh44_full : LINE=(UMAHXh44,XCHU44,YCHU44,UMAHXh44)
   UMAHXh45_full : LINE=(UMAHXh45,XCHU45,YCHU45,UMAHXh45)
   UMAHXh46_full : LINE=(UMAHXh46,XCHU46,YCHU46,UMAHXh46)
+  UMAHXh47_full : LINE=(UMAHXh47,XCHU47,YCHU47,UMAHXh47)
 
-  USEGHX13 : LINE=(DTHXU,UMAHXh13_full,DTHXU)
+  USEGHX13 : LINE=(DTHXU,UMAHXh13_full,DTHXU) !(CBCHICANE1)
   USEGHX14 : LINE=(DTHXU,UMAHXh14_full,DTHXU)
   USEGHX15 : LINE=(DTHXU,UMAHXh15_full,DTHXU)
   USEGHX16 : LINE=(DTHXU,UMAHXh16_full,DTHXU)
@@ -1930,7 +2082,7 @@
   USEGHX18 : LINE=(DTHXU,UMAHXh18_full,DTHXU)
   USEGHX19 : LINE=(DTHXU,UMAHXh19_full,DTHXU)
   USEGHX20 : LINE=(DTHXU,UMAHXh20_full,DTHXU)
-  DUSEGH21 : DRIF, L=LDUSEGH
+  DUSEGH21 : LINE=(CBCHICANE2) !DRIF, L=LDUSEGH
   USEGHX22 : LINE=(DTHXU,UMAHXh22_full,DTHXU)
   USEGHX23 : LINE=(DTHXU,UMAHXh23_full,DTHXU)
   USEGHX24 : LINE=(DTHXU,UMAHXh24_full,DTHXU)
@@ -1956,7 +2108,7 @@
   USEGHX44 : LINE=(DTHXU,UMAHXh44_full,DTHXU)
   USEGHX45 : LINE=(DTHXU,UMAHXh45_full,DTHXU)
   USEGHX46 : LINE=(DTHXU,UMAHXh46_full,DTHXU)
-  DUSEGH47 : DRIF, L=LDUSEGH
+  USEGHX47 : LINE=(DTHXU,UMAHXh47_full,DTHXU)
   DUSEGH48 : DRIF, L=LDUSEGH
   DUSEGH49 : DRIF, L=LDUSEGH
   DUSEGH50 : DRIF, L=LDUSEGH
@@ -1995,39 +2147,42 @@
   QHXh44_full : LINE=(QHXh44,XCHX44,MUQH,YCHX44,QHXh44)
   QHXh45_full : LINE=(QHXh45,XCHX45,MUQH,YCHX45,QHXh45)
   QHXh46_full : LINE=(QHXh46,XCHX46,MUQH,YCHX46,QHXh46)
-  DQHX47      : DRIF, L=LQu
+  QHXh47_full : LINE=(QHXh47,XCHX47,MUQH,YCHX47,QHXh47)
   DQHX48      : DRIF, L=LQu
   DQHX49      : DRIF, L=LQu
   DQHX50      : DRIF, L=LQu
 
+ !HXBRK13 : LINE=(DU3hCBa,MBLMH13,DU3hCBb,QHXh13_full,DU4hCB,RFBHX13,DU5hCB,&
+ !                DPSHX13     ,DU6h        ,DU7h)
+
   HXBRK13 : LINE=(DU3h,MBLMH13,DU3h,QHXh13_full,DU4h,RFBHX13,DU5h,&
-                  PSHXh13_full,DU6h,VVHXU13,DU7h)
+                  PSHXh13_full,DU6h,DVVHXU,DU7h)
   HXBRK14 : LINE=(DU3h,MBLMH14,DU3h,QHXh14_full,DU4h,RFBHX14,DU5h,&
                   PSHXh14_full,DU6h,VVHXU14,DU7h)
   HXBRK15 : LINE=(DU3h,MBLMH15,DU3h,QHXh15_full,DU4h,RFBHX15,DU5h,&
-                  PSHXh15_full,DU6h,VVHXU15,DU7h)
+                  PSHXh15_full,DU6h,DVVHXU,DU7h)
   HXBRK16 : LINE=(DU3h,MBLMH16,DU3h,QHXh16_full,DU4h,RFBHX16,DU5h,&
-                  PSHXh16_full,DU6h,VVHXU16,DU7h)
+                  PSHXh16_full,DU6h,DVVHXU,DU7h)
   HXBRK17 : LINE=(DU3h,MBLMH17,DU3h,QHXh17_full,DU4h,RFBHX17,DU5h,&
                   PSHXh17_full,DU6h,VVHXU17,DU7h)
   HXBRK18 : LINE=(DU3h,MBLMH18,DU3h,QHXh18_full,DU4h,RFBHX18,DU5h,&
-                  PSHXh18_full,DU6h,VVHXU18,DU7h)
+                  PSHXh18_full,DU6h,DVVHXU,DU7h)
   HXBRK19 : LINE=(DU3h,MBLMH19,DU3h,QHXh19_full,DU4h,RFBHX19,DU5h,&
-                  PSHXh19_full,DU6h,VVHXU19,DU7h)
+                  PSHXh19_full,DU6h,DVVHXU,DU7h)
   HXBRK20 : LINE=(DU3h,MBLMH20,DU3h,QHXh20_full,DU4h,RFBHX20,DU5h,&
                   PSHXh20_full,DU6h,VVHXU20,DU7h)
-  HXBRK21 : LINE=(DU3h,MBLMH21,DU3h,QHXh21_full,DU4h,RFBHX21,DU5h,&
+  HXBRK21 : LINE=(DU3hCBa,MBLMH21,DU3hCBb,QHXh21_full,DU4hCB,RFBHX21,DU5hCB,&
                   DPSHX21     ,DU6h        ,DU7h)
   HXBRK22 : LINE=(DU3h,MBLMH22,DU3h,QHXh22_full,DU4h,RFBHX22,DU5h,&
                   PSHXh22_full,DU6h,VVHXU22,DU7h)
   HXBRK23 : LINE=(DU3h,MBLMH23,DU3h,QHXh23_full,DU4h,RFBHX23,DU5h,&
-                  PSHXh23_full,DU6h,VVHXU23,DU7h)
+                  PSHXh23_full,DU6h,DVVHXU,DU7h)
   HXBRK24 : LINE=(DU3h,MBLMH24,DU3h,QHXh24_full,DU4h,RFBHX24,DU5h,&
                   PSHXh24_full,DU6h,VVHXU24,DU7h)
   HXBRK25 : LINE=(DU3h,MBLMH25,DU3h,QHXh25_full,DU4h,RFBHX25,DU5h,&
-                  PSHXh25_full,DU6h,VVHXU25,DU7h)
+                  PSHXh25_full,DU6h,DVVHXU,DU7h)
   HXBRK26 : LINE=(DU3h,MBLMH26,DU3h,QHXh26_full,DU4h,RFBHX26,DU5h,&
-                  PSHXh26_full,DU6h,VVHXU26,DU7h)
+                  PSHXh26_full,DU6h,DVVHXU,DU7h)
   HXBRK27 : LINE=(DU3h,MBLMH27,DU3h,QHXh27_full,DU4h,RFBHX27,DU5h,&
                   PSHXh27_full,DU6h,VVHXU27,DU7h)
   HXBRK28 : LINE=(DU3h,MBLMH28,DU3h,QHXh28_full,DU4h,RFBHX28,DU5h,&
@@ -2035,41 +2190,41 @@
   HXBRK29 : LINE=(DU3h,MBLMH29,DU3h,QHXh29_full,DU4h,RFBHX29,DU5h,&
                   PSHXh29_full,DU6h,VVHXU29,DU7h)
   HXBRK30 : LINE=(DU3h,MBLMH30,DU3h,QHXh30_full,DU4h,RFBHX30,DU5h,&
-                  PSHXh30_full,DU6h,VVHXU30,DU7h)
+                  PSHXh30_full,DU6h,DVVHXU,DU7h)
   HXBRK31 : LINE=(DU3h,MBLMH31,DU3h,QHXh31_full,DU4h,RFBHX31,DU5h,&
-                  PSHXh31_full,DU6h,VVHXU31,DU7h)
+                  PSHXh31_full,DU6h,DVVHXU,DU7h)
   HXBRK32 : LINE=(DU3h,MBLMH32,DU3h,QHXh32_full,DU4h,RFBHX32,DU5h,&
                   PSHXh32_full,DU6h,VVHXU32,DU7h)
   HXBRK33 : LINE=(DU3h,MBLMH33,DU3h,QHXh33_full,DU4h,RFBHX33,DU5h,&
-                  PSHXh33_full,DU6h,VVHXU33,DU7h)
+                  PSHXh33_full,DU6h,DVVHXU,DU7h)
   HXBRK34 : LINE=(DU3h,MBLMH34,DU3h,QHXh34_full,DU4h,RFBHX34,DU5h,&
-                  PSHXh34_full,DU6h,VVHXU34,DU7h)
+                  PSHXh34_full,DU6h,DVVHXU,DU7h)
   HXBRK35 : LINE=(DU3h,MBLMH35,DU3h,QHXh35_full,DU4h,RFBHX35,DU5h,&
                   PSHXh35_full,DU6h,VVHXU35,DU7h)
   HXBRK36 : LINE=(DU3h,MBLMH36,DU3h,QHXh36_full,DU4h,RFBHX36,DU5h,&
-                  PSHXh36_full,DU6h,VVHXU36,DU7h)
+                  PSHXh36_full,DU6h,DVVHXU,DU7h)
   HXBRK37 : LINE=(DU3h,MBLMH37,DU3h,QHXh37_full,DU4h,RFBHX37,DU5h,&
                   PSHXh37_full,DU6h,VVHXU37,DU7h)
   HXBRK38 : LINE=(DU3h,MBLMH38,DU3h,QHXh38_full,DU4h,RFBHX38,DU5h,&
-                  PSHXh38_full,DU6h,VVHXU38,DU7h)
+                  PSHXh38_full,DU6h,DVVHXU,DU7h)
   HXBRK39 : LINE=(DU3h,MBLMH39,DU3h,QHXh39_full,DU4h,RFBHX39,DU5h,&
-                  PSHXh39_full,DU6h,VVHXU39,DU7h)
+                  PSHXh39_full,DU6h,DVVHXU,DU7h)
   HXBRK40 : LINE=(DU3h,MBLMH40,DU3h,QHXh40_full,DU4h,RFBHX40,DU5h,&
                   PSHXh40_full,DU6h,VVHXU40,DU7h)
   HXBRK41 : LINE=(DU3h,MBLMH41,DU3h,QHXh41_full,DU4h,RFBHX41,DU5h,&
-                  PSHXh41_full,DU6h,VVHXU41,DU7h)
+                  PSHXh41_full,DU6h,DVVHXU,DU7h)
   HXBRK42 : LINE=(DU3h,MBLMH42,DU3h,QHXh42_full,DU4h,RFBHX42,DU5h,&
-                  PSHXh42_full,DU6h,VVHXU42,DU7h)
+                  PSHXh42_full,DU6h,DVVHXU,DU7h)
   HXBRK43 : LINE=(DU3h,MBLMH43,DU3h,QHXh43_full,DU4h,RFBHX43,DU5h,&
                   PSHXh43_full,DU6h,VVHXU43,DU7h)
   HXBRK44 : LINE=(DU3h,MBLMH44,DU3h,QHXh44_full,DU4h,RFBHX44,DU5h,&
-                  PSHXh44_full,DU6h,VVHXU44,DU7h)
+                  PSHXh44_full,DU6h,DVVHXU,DU7h)
   HXBRK45 : LINE=(DU3h,MBLMH45,DU3h,QHXh45_full,DU4h,RFBHX45,DU5h,&
                   PSHXh45_full,DU6h,VVHXU45,DU7h)
   HXBRK46 : LINE=(DU3h,MBLMH46,DU3h,QHXh46_full,DU4h,RFBHX46,DU5h,&
-                  DPSHX46     ,DU6h,VVHXU46,DU7h)
-  HXBRK47 : LINE=(DU3h        ,DU3h,DQHX47     ,DU4h,DRFBH47,DU5h,&
-                  DPSHX47     ,DU6h        ,DU7h)
+                  PSHXh46_full,DU6h,DVVHXU,DU7h)
+  HXBRK47 : LINE=(DU3h,MBLMH47,DU3h,QHXh47_full,DU4h,RFBHX47,DU5h,&
+                  DPSHX47     ,DU6h,DVVHXU,DU7h)
   HXBRK48 : LINE=(DU3h        ,DU3h,DQHX48     ,DU4h,DRFBH48,DU5h,&
                   DPSHX48     ,DU6h        ,DU7h)
   HXBRK49 : LINE=(DU3h        ,DU3h,DQHX49     ,DU4h,DRFBH49,DU5h,&
@@ -2085,7 +2240,7 @@
   HXCEL18  : LINE=(DU1h,DU2h,USEGHX18,HXBRK18)
   HXCEL19  : LINE=(DU1h,DU2h,USEGHX19,HXBRK19)
   HXCEL20  : LINE=(DU1h,DU2h,USEGHX20,HXBRK20)
-  HXCEL21  : LINE=(DU1h,DU2h,DUSEGH21,HXBRK21) !empty with Q+RFBPM
+  HXCEL21  : LINE=(DU1h,DU2h,DUSEGH21,HXBRK21) !CBCHICANE2+Q+RFBPM
   HXCEL22  : LINE=(DU1h,DU2h,USEGHX22,HXBRK22)
   HXCEL23  : LINE=(DU1h,DU2h,USEGHX23,HXBRK23)
   HXCEL24  : LINE=(DU1h,DU2h,USEGHX24,HXBRK24)
@@ -2110,13 +2265,11 @@
   HXCEL43  : LINE=(DU1h,DU2h,USEGHX43,HXBRK43)
   HXCEL44  : LINE=(DU1h,DU2h,USEGHX44,HXBRK44)
   HXCEL45  : LINE=(DU1h,DU2h,USEGHX45,HXBRK45)
-  HXCEL46  : LINE=(DU1h,DU2h,USEGHX46,HXBRK46) !no phase shifter
-  HXCEL47  : LINE=(DU1h,DU2h,DUSEGH47,HXBRK47) !empty
+  HXCEL46  : LINE=(DU1h,DU2h,USEGHX46,HXBRK46)
+  HXCEL47  : LINE=(DU1h,DU2h,USEGHX47,HXBRK47) !no phase shifter
   HXCEL48  : LINE=(DU1h,DU2h,DUSEGH48,HXBRK48) !empty
-  HXCEL49  : LINE=(DU1h,DU2h,DUSEGH49,HXBRK49) !empty with RFBPM
+  HXCEL49  : LINE=(DU1h,DU2h,DUSEGH49,HXBRK49) !empty
   HXCEL50  : LINE=(DU1h,DU2h,DUSEGH50,HXBRK50) !empty
-
-! LCLS-II final configuration
 
   HXRCL    : LINE=(&
     HXCEL13,HXCEL14,HXCEL15,HXCEL16,HXCEL17,HXCEL18,HXCEL19,HXCEL20,&

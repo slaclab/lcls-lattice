@@ -1,10 +1,15 @@
 
-! *** OPTICS=AD_ACCEL-15SEP21 ***
+! *** OPTICS=AD_ACCEL-12JAN22 ***
 
 ! LCLS2sc LTU and dump
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 30-NOV-2021, M. Woodley
+!  * change TYPE of BPMQD and BPMQDB to "Stripline-11" (vertical orientation)
+! 22-NOV-2021, M. Woodley
+!  * undefer OTRDMPB per T. Maxwell
 ! ------------------------------------------------------------------------------
 ! 14-JAN-2021, M. Woodley
 !  * move RFBHX12 9.373 mm u/s per G. Gassner
@@ -1852,7 +1857,7 @@
   DWSDUMPc  : DRIF, L=2.038949 +dDWSDUMP
   DDUMP     : DRIF, L=61.120*in2m !length of EBD dump (per A. Ibrahimov)
 
-  BPMQDB : MONI, TYPE="Stripline-8" !RFBQDB : MONI, TYPE="@2,CavityL-1"
+  BPMQDB : MONI, TYPE="Stripline-11" !RFBQDB : MONI, TYPE="@2,CavityL-1"
   BPMDDB : MONI, TYPE="Stripline-8"
   RFBDDB : MONI, TYPE="@2,CavityL-1"
 
@@ -1860,7 +1865,7 @@
 
   YCDDB : VKIC,TYPE="class-5"
 
-  OTRDMPB : PROF, TYPE="@1,OTR" !Dump screen
+  OTRDMPB : PROF, TYPE="OTR" !Dump screen
 
   WSDUMPB : WIRE, TYPE="@3,special"
 
@@ -3120,7 +3125,7 @@
   BLTOF    : BLMO !LTUH (gas-jet time-of-flight bunch length monitor)
   MUHWALL1 : MARK !upstream end of BTH/UH wall-1
   MUHWALL2 : MARK !upstream end of BTH/UH wall-2
-  VV999    : MARK !new vacuum valve just upbeam of undulator
+  VV999    : MARK, TYPE="installed" !new vacuum valve just upbeam of undulator
   PFILT1   : MARK
   DBMARK37 : MARK !end of undulator match
   RWWAKE4H : MARK, TYPE="WAKE" !LTUH beampipe wake applied here
@@ -3202,7 +3207,7 @@
   DD1d : DRIF, L=LDMP1-(DD1a[L]+PCPM1L[L]+DD1b[L]+DD1c[L]+&
                  DD1e[L]+PCPM2L[L]+DD1f[L])
 
-  BPMQD : MONI, TYPE="Stripline-8" !RFBQD : MONI, TYPE="@2,CavityL-1"
+  BPMQD : MONI, TYPE="Stripline-11" !RFBQD : MONI, TYPE="@2,CavityL-1"
   BPMDD : MONI, TYPE="Stripline-8"
   RFBDD : MONI, TYPE="@2,CavityL-1"
 

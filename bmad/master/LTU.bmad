@@ -1,10 +1,15 @@
 
-! *** OPTICS=AD_ACCEL-15SEP21 ***
+! *** OPTICS=AD_ACCEL-12JAN22 ***
 
 ! LCLS2sc LTU and dump
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 30-NOV-2021, M. Woodley
+!  * change TYPE of BPMQD and BPMQDB to "Stripline-11" (vertical orientation)
+! 22-NOV-2021, M. Woodley
+!  * undefer OTRDMPB per T. Maxwell
 ! ------------------------------------------------------------------------------
 ! 14-JAN-2021, M. Woodley
 !  * move RFBHX12 9.373 mm u/s per G. Gassner
@@ -2107,7 +2112,7 @@ dwsdumpb: drift, l = 0.44156-dwsdumpa[l]
 dwsdumpc: drift, l = 2.038949 +ddwsdump
 ddump: drift, l = 61.120*in2m !length of EBD dump (per A. Ibrahimov)
 
-bpmqdb: monitor, type = "Stripline-8" !RFBQDB : MONI, TYPE="@2,CavityL-1"
+bpmqdb: monitor, type = "Stripline-11" !RFBQDB : MONI, TYPE="@2,CavityL-1"
 bpmddb: monitor, type = "Stripline-8"
 RFBDDB: drift, L = 0.0, type ="@2,CavityL-1", descrip = "deferred MONITOR"
 !old: rfbddb: monitor, type = "@2,CavityL-1"
@@ -2117,7 +2122,7 @@ xcddb: hkicker, type = "class-5"
 ycddb: vkicker, type = "class-5"
 
 OTRDMPB: drift, L = 0.0, type ="@1,OTR", descrip = "deferred MONITOR" !Dump screen
-!old: otrdmpb: monitor, type = "@1,OTR"
+!old: otrdmpb: monitor, type = "OTR"
 
 WSDUMPB: drift, L = 0.0, type ="@3,special", descrip = "deferred MARKER"
 !old: wsdumpb: marker, type = "@3,special"
@@ -3687,7 +3692,7 @@ eoblm: marker !future electro-optic bunch length monitor?
 bltof: monitor !LTUH (gas-jet time-of-flight bunch length monitor)
 muhwall1: marker !upstream end of BTH/UH wall-1
 muhwall2: marker !upstream end of BTH/UH wall-2
-vv999: marker !new vacuum valve just upbeam of undulator
+vv999: marker, type = "installed" !new vacuum valve just upbeam of undulator
 pfilt1: marker
 dbmark37: marker !end of undulator match
 rwwake4h: marker, type = "WAKE" !LTUH beampipe wake applied here
@@ -3790,7 +3795,7 @@ dd1e: drift, l = 0.249638105611
 dd1f: drift, l = 0.409240058046
 dd1d: drift, l = ldmp1-(dd1a[l]+pcpm1l[l]+dd1b[l]+dd1c[l]+dd1e[l]+pcpm2l[l]+dd1f[l])
 
-bpmqd: monitor, type = "Stripline-8" !RFBQD : MONI, TYPE="@2,CavityL-1"
+bpmqd: monitor, type = "Stripline-11" !RFBQD : MONI, TYPE="@2,CavityL-1"
 bpmdd: monitor, type = "Stripline-8"
 RFBDD: drift, L = 0.0, type ="@2,CavityL-1", descrip = "deferred MONITOR"
 !old: rfbdd: monitor, type = "@2,CavityL-1"
