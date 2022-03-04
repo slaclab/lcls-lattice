@@ -26,6 +26,9 @@ def run_tao(model):
     tao = Tao(init)
     return tao
 
+def test_path():
+    assert os.path.exists(mdir)
+
 @pytest.mark.parametrize("model", MODELS)
 def test_model(model):
     tao = run_tao(model)
