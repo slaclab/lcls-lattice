@@ -9,7 +9,7 @@ jobs:
   build:
     if: ${{ github.repository == 'slaclab/lcls-lattice' }}
     runs-on: ubuntu-latest
-    name:  Build docs
+    name: Publish lattice to lcls-lattice-data
     steps:
       - uses: actions/checkout@v2
       - uses: conda-incubator/setup-miniconda@v2
@@ -18,7 +18,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
           channels: conda-forge,anaconda
           channel-priority: flexible
-      - name: Build package
+      - name: Run lattice export
         shell: bash -l {0}
         run: |
           conda config --set always_yes yes --set changeps1 no
