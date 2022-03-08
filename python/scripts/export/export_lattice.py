@@ -16,7 +16,7 @@ MODELS = ['cu_sxr',
  'sc_diag0',
 
 # 'cu_inj',
-# 'sc_dasel',
+# 'sc_dasel', # crashes Bmad, bug reported
 # 'cu_linac',
  #'sc_sxr',
  #'sc_hxr',
@@ -50,7 +50,7 @@ def export_model(model, src_root_dir, dst_root_dir):
     latname = os.path.split(lat)[1]
     
     # Run Tao, write lattice
-    tao = Tao(f'-init {path1}/tao.init -noplot', so_lib=so_lib)    
+    tao = Tao(f'-init {path1}/tao.init -noplot')    
     outfile = os.path.join(path2, latname)
     tao.cmd(f'write bmad_lattice {outfile}')
     
@@ -73,16 +73,16 @@ def export_all(src_root_dir, dst_root_dir):
         export_dir(dir, src_root_dir, dst_root_dir)          
     
     
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(description="""
+    Export Bmad lattices, preserving the directory structure.
+    
+    Example: 
+        python export_lattice.py --source $LCLS_LATTICE --dest /path/to/lcls-lattice-data/
+""")
 parser.add_argument('--source', help='source directory root (e.g. $LCLS_LATTICE)', required=True)    
 parser.add_argument('--dest', help='destination directory root', required=True)      
     
 if __name__ =='__main__':
-    """
-    Script to export Bmad lattices
-    
-    """
-
     args = parser.parse_args()   
     export_all(args.source, args.dest)
     
