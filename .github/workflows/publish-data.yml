@@ -17,7 +17,7 @@ jobs:
       - uses: conda-incubator/setup-miniconda@v2
         with:
           auto-activate-base: true
-          python-version: ${{ matrix.python-version }}
+          python-version: 3.9
           channels: conda-forge,anaconda
           channel-priority: flexible
       - name: Run lattice export
@@ -25,6 +25,7 @@ jobs:
         run: |
           conda config --set always_yes yes --set changeps1 no
           conda install -c conda-forge pytao bmad
+          mkdir /tmp/lattice-data
           python python/scripts/export/export_lattice.py --source $(pwd) --dest /tmp/lattice-data
       - name: Push directory to another repository
         uses: cpina/github-action-push-to-another-repository@v1.4.1
