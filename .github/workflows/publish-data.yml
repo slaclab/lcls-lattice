@@ -26,8 +26,9 @@ jobs:
           conda config --set always_yes yes --set changeps1 no
           conda install -c conda-forge pytao bmad
           mkdir /tmp/lattice-data
+          export LCLS_LATTICE=$(pwd)
           python python/scripts/export/export_lattice.py --source $(pwd) --dest /tmp/lattice-data
-      - name: Push directory to another repository
+      - name: Push directory to lcls-lattice-data
         uses: cpina/github-action-push-to-another-repository@v1.4.1
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
@@ -37,4 +38,5 @@ jobs:
           destination-repository-name: lcls-lattice-data
           user-email: ${{ secrets.LCLS_LATTICE_DATA_USER_EMAIL }}
           target-branch: main
+          commit-message: ${{ github.event.head_commit.message }}
 
