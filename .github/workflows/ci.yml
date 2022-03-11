@@ -1,0 +1,30 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          python-version: 3.9
+          mamba-version: "*"
+          channels: conda-forge
+          channel-priority: true
+          
+      - name: Install dependencies
+        run: |
+          mamba install pytest pytao bmad
+          
+      - name: Run tests
+        shell: bash -l {0}
+        run: |
+          conda activate base
+          export LCLS_LATTICE=$GITHUB_WORKSPACE
+          pytest python/tests/ -v        
+          
+        
