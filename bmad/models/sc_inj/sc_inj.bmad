@@ -1,0 +1,120 @@
+
+
+
+
+
+apex_gun: e_gun, 
+   L = 0.175,
+   tracking_method = time_runge_kutta,  mat6_calc_method = tracking, 
+   rf_frequency = 1300e6/7, 
+   field_calc = fieldmap, 
+   grid_field = call::$LCLS_LATTICE/bmad/fieldmaps/apex_gun/apex_gun_fieldmesh.h5,
+   aperture_at = continuous, aperture_type=wall3d,
+   wall = {section={s=0, v(1) = {0, 0, 0.015}}, section={s=0.175, v(1)={0, 0, 0.015}} }
+
+! apex_gun[voltage] = 750e3
+apex_gun[FIELD_AUTOSCALE] = 20e6
+apex_gun[PHI0_AUTOSCALE] = 0.22007420312842 ! Help out the parser
+
+
+apex_buncher_1300MHz: lcavity, 
+    L = 0.3,
+    voltage = 1e6,
+    tracking_method = runge_kutta, 
+    mat6_calc_method = tracking,  
+    n_cell = 2, longitudinal = 0, 
+    rf_frequency = 1300000000.0, 
+    field_calc = fieldmap, 
+    aperture_at = continuous, aperture_type=wall3d,
+    grid_field = call::$LCLS_LATTICE/bmad/fieldmaps/apex_buncher/apex_buncher_1300MHz_center.h5,
+    wall = {section = { s = 0.0, v(1) = {0.0, 0.0, 0.025} },
+            section = { s = 0.3, v(1) = {0.0, 0.0, 0.025} } }
+    
+lcls2_solenoid: solenoid, 
+   L =  0.48,
+   bs_field = 0.06, ! T
+   tracking_method = runge_kutta,  mat6_calc_method = tracking, 
+   field_calc = fieldmap, 
+   grid_field = call::$LCLS_LATTICE/bmad/fieldmaps/lcls2_solenoid/lcls2_solenoid_fieldmesh.h5    
+    
+
+
+cavity9_1300MHz: lcavity, 
+    L = 1.3,
+    voltage = 1e6,
+    tracking_method = runge_kutta, 
+    mat6_calc_method = tracking,  n_cell = 9, longitudinal = 0, 
+    rf_frequency = 1300000000.0, 
+    field_calc = fieldmap, 
+    aperture_at = continuous, aperture_type=wall3d,
+    !grid_field = call::$LCLS_LATTICE/bmad/fieldmaps/cavity9/cavity9_1300MHz_center.h5,
+    grid_field = call::$LCLS_LATTICE/bmad/fieldmaps/cavity9/cavity9_1300MHz_full.h5,    
+    wall = call::$LCLS_LATTICE/bmad/fieldmaps/cavity9/cavity9_1300MHz_full_wall.bmad
+
+
+
+
+
+
+! From convert_to_astra notebook:
+RFGUNB: apex_gun,
+  rf_frequency = 187000000.0, voltage = 759250.2223014082, phi0 = 0.02361111111111111
+
+SOL1B: lcls2_solenoid,
+  ! B_max = 0.0559 T,
+  ! \int B dL = B_max * 0.12896517423475376 m,
+  ! \int B^2 dL = B_max^2 * 0.08623994625099243 m,
+  ! Hard edge L = 0.19285745050205194 m,
+  ! Hard edge B = 0.03738073494674779 T,
+  bs_field = 0.0559,
+  superimpose, ele_origin = beginning, offset = 0.24653
+SOL2B: lcls2_solenoid,
+  ! B_max = 0.0299 T,
+  ! \int B dL = B_max * 0.12896517423475376 m,
+  ! \int B^2 dL = B_max^2 * 0.08623994625099243 m,
+  ! Hard edge L = 0.19285745050205194 m,
+  ! Hard edge B = 0.019994346599423236 T,
+  bs_field = 0.0299,
+  superimpose, ele_origin = beginning, offset = 1.64581
+
+
+
+BUN1B: apex_buncher_1300MHz,
+  rf_frequency = 1300000000.0, voltage = 210652.95554408507, phi0 = -0.24583333333333332,
+  superimpose, ele_origin = center, offset = 0.809116
+CAVL011: cavity9_1300MHz,
+  rf_frequency = 1300000000.0, voltage = 5988735.717353206, phi0 = 0.022222222222222223,
+  superimpose, ele_origin = center, offset = 3.3428
+CAVL012: cavity9_1300MHz,
+  rf_frequency = 1300000000.0, voltage = 0.0, phi0 = -0.025,
+  superimpose, ele_origin = center, offset = 4.7264
+CAVL013: cavity9_1300MHz,
+  rf_frequency = 1300000000.0, voltage = 14155193.513743944, phi0 = -0.05555555555555555,
+  superimpose, ele_origin = center, offset = 6.11
+CAVL014: cavity9_1300MHz,
+  rf_frequency = 1300000000.0, voltage = 11433040.914947031, phi0 = 0.07222222222222222,
+  superimpose, ele_origin = center, offset = 7.4936
+CAVL015: cavity9_1300MHz,
+  rf_frequency = 1300000000.0, voltage = 17421776.632300235, phi0 = 0.0,
+  superimpose, ele_origin = center, offset = 8.8772
+CAVL016: cavity9_1300MHz,
+  rf_frequency = 1300000000.0, voltage = 17421776.632300235, phi0 = 0.0,
+  superimpose, ele_origin = center, offset = 10.2608
+CAVL017: cavity9_1300MHz,
+  rf_frequency = 1300000000.0, voltage = 17421776.632300235, phi0 = 0.0,
+  superimpose, ele_origin = center, offset = 11.6444
+CAVL018: cavity9_1300MHz,
+  rf_frequency = 1300000000.0, voltage = 17421776.632300235, phi0 = 0.0,
+  superimpose, ele_origin = center, offset = 13.028
+
+
+
+
+
+! L0B section
+drift0: drift, L = 17.912610 - apex_gun[L] 
+ENDL0B: marker
+
+sc_inj: line = (RFGUNB, drift0, ENDL0B)  
+  
+
