@@ -52,7 +52,7 @@ def export_model(model, src_root_dir, dst_root_dir):
     # Run Tao, write lattice
     tao = Tao(f'-init {path1}/tao.init -noplot')    
     outfile = os.path.join(path2, latname)
-    tao.cmd(f'write bmad_lattice {outfile}')
+    tao.cmd(f'write bmad {outfile}')
     
     # copy tao.init file
     src = os.path.join(path1, 'tao.init')
