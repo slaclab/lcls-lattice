@@ -29,6 +29,13 @@ jobs:
           export LCLS_LATTICE=$(pwd)
           python python/scripts/export/export_lattice.py --source $(pwd) --dest ${{ github.workspace }}/lattice-data
           echo "lattice_data_dir=${{ github.workspace }}/lattice-data" >> $GITHUB_ENV
+      - name: Copy tests and CI workflow
+        shell: bash -l {0}
+        run: |
+          cp -r tests/ ${{ github.workspace }}/lattice-data/tests
+          mkdir -p ${{ github.workspace }}/lattice-data/.github/worklflows
+          cp .github/worklflows/ci.yml ${{ github.workspace }}/lattice-data/.github/worklflows/ci.yml
+
       - name: Push directory to lcls-lattice-data
         uses: cpina/github-action-push-to-another-repository@v1.4.1
         env:
