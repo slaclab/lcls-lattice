@@ -16,11 +16,11 @@ MODELS = ['cu_sxr',
  'sc_diag0',
 
 # 'cu_inj',
-# 'sc_dasel', # crashes Bmad, bug reported
+ 'sc_dasel', # crashes Bmad, bug reported
 # 'cu_linac',
- #'sc_sxr',
- #'sc_hxr',
- #'sc_bsyd',
+ 'sc_sxr',
+ 'sc_hxr',
+ 'sc_bsyd',
  'cu_hxr'         
          ]
 
