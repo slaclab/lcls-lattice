@@ -6,10 +6,14 @@ on:
       - master
 
 jobs:
-  build:
+  publish:
     if: ${{ github.repository == 'slaclab/lcls-lattice' }}
     runs-on: ubuntu-latest
-    name: Publish lattice to lcls-lattice-data
+    name: Publish lattice
+    env: 
+      DEST_REPO: lcls-lattice-data
+      DEST_USERNAME: slaclab
+      DEST_BRANCH: main
     steps:
       - uses: actions/checkout@v3
         with:
@@ -23,21 +27,35 @@ jobs:
       - name: Run lattice export
         shell: bash -l {0}
         run: |
+          export DEST=${{ github.workspace }}/lattice-data/
           conda config --set always_yes yes --set changeps1 no
           conda install -c conda-forge pytao bmad
-          mkdir ${{ github.workspace }}/lattice-data
+          mkdir $DEST
           export LCLS_LATTICE=$(pwd)
-          python python/scripts/export/export_lattice.py --source $(pwd) --dest ${{ github.workspace }}/lattice-data
-          echo "lattice_data_dir=${{ github.workspace }}/lattice-data" >> $GITHUB_ENV
-      - name: Push directory to lcls-lattice-data
+          python python/scripts/export/export_lattice.py --source $(pwd) --dest $DEST
+      - name: Push lcls lattice
         uses: cpina/github-action-push-to-another-repository@v1.4.1
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
           source-directory: lattice-data
-          destination-github-username: slaclab
-          destination-repository-name: lcls-lattice-data
+          target-directory: src
+          destination-github-username: ${{ env.DEST_USERNAME }}
+          destination-repository-name: ${{ env.DEST_REPO }}
           user-email: ${{ secrets.LCLS_LATTICE_DATA_USER_EMAIL }}
-          target-branch: main
+          target-branch: ${{ env.DEST_BRANCH }}
+          commit-message: ${{ github.event.head_commit.message }}
+
+      - name: Push test directory to lcls-lattice-data
+        uses: cpina/github-action-push-to-another-repository@v1.4.1
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source-directory: python/tests
+          target-directory: tests
+          destination-github-username: ${{ env.DEST_USERNAME }}
+          destination-repository-name: ${{ env.DEST_REPO }}
+          user-email: ${{ secrets.LCLS_LATTICE_DATA_USER_EMAIL }}
+          target-branch: ${{ env.DEST_BRANCH }}
           commit-message: ${{ github.event.head_commit.message }}
 
