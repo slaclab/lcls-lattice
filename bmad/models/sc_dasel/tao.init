@@ -157,22 +157,40 @@
 
 
 
-!----------------------------------------
-! Orbit 
 
+!-----------------------------------------
+! BPM Orbit
+! Auto-generated BPM datums using: $LCLS_LATTICE/bmad/conversion/tao/create_vars_and_datums.ipynb
+        
 &tao_d2_data
-    d2_data%name = "orbit"
+    d2_data%name = 'orbit'
     universe = 1
-    n_d1_data = 5
-/
-
+    n_d1_data = 3
+/    
+    
 &tao_d1_data
     ix_d1_data = 1
     default_weight = 1
     d1_data%name = 'x'
     default_data_type = 'bpm_orbit.x'
     default_data_source = 'lat'
-    search_for_lat_eles = "Instrument::BPM*,Instrument::RFB*"
+    !search_for_lat_eles = "monitor::bpm*,monitor::rfb*" 
+    datum(1:)%ele_name =  'BPM1B', 'BPM2B', 'BPM0H01', 'BPM0H04', 'BPM0H05', 'BPM0H08',
+     'BPMH1', 'BPMH2', 'BPMHD01', 'BPMHD02', 'BPMHD03', 'BPMHD04',
+     'BPMDG000', 'BPMC001', 'BPMC002', 'BPMC003', 'BPMC004', 'BPMC005',
+     'BPMC006', 'BPMC007', 'BPMC008', 'BPMC009', 'BPMC010', 'BPMC011',
+     'BPMC012', 'BPM1C01', 'BPM11B', 'BPMC101', 'BPMC102', 'BPMC103',
+     'BPMC104', 'BPMC105', 'BPMC106', 'BPMC107', 'BPMC108', 'BPMC109',
+     'BPMC110', 'BPMC111', 'BPMC112', 'BPM2C01', 'BPM21B', 'BPME201',
+     'BPME202', 'BPME203', 'BPME204', 'BPMX01', 'BPMX02', 'BPMDOG1', 'BPMDOG2',
+     'BPMDOG3', 'BPMDOG4', 'BPMDOG5', 'BPMDOG6', 'BPMDOG7', 'BPMDOG8',
+     'BPML1P', 'BPML2P', 'BPML3P', 'BPML4P', 'BPML5P', 'BPMBP10', 'BPMBP11',
+     'BPMBP12', 'BPMBP13', 'BPMBP14', 'BPMBP15', 'BPMBP16', 'BPMBP17',
+     'BPMBP18', 'BPMBP19', 'BPMBP20', 'BPMBP21', 'BPMBP22', 'BPMBP23',
+     'BPMBP24', 'BPMBP25', 'BPMBP26', 'BPMBP27', 'BPMBP35', 'BPMBP28',
+     'BPMSPH', 'BPMSP1', 'BPMSP2', 'BPMSPS', 'BPMSP1D', 'BPMDAS', 'BPMDAS1',
+     'BPMDAS19', 'BPM10A', 'BPM12A', 'BPM17', 'BPM24', 'BPM28', 'BPM31', 'BPM32'
+    datum(1:)%meas = 0
 /
 
 &tao_d1_data
@@ -181,36 +199,26 @@
     d1_data%name = 'y'
     default_data_type = 'bpm_orbit.y'
     default_data_source = 'lat'
-    search_for_lat_eles = "Instrument::BPM*,Instrument::RFB*"
+    !search_for_lat_eles = "monitor::bpm*,monitor::rfb*" 
+    use_same_lat_eles_as = 'orbit.x'
+    datum(1:)%meas = 0
 /
 
 &tao_d1_data
     ix_d1_data = 3
     default_weight = 1
-    d1_data%name = 'profx'
-    default_data_type = 'orbit.x'
-    default_data_source = 'lat'
-    search_for_lat_eles = "Instrument::YAG*,Instrument::OTR*"
+    d1_data%name = 'charge'
+    default_data_type = 'bunch_charge.live'
+    default_data_source = 'beam'
+    !search_for_lat_eles = "monitor::bpm*,monitor::rfb*" 
+    use_same_lat_eles_as = 'orbit.x'
 /
 
-&tao_d1_data
-    ix_d1_data = 4
-    default_weight = 1
-    d1_data%name = 'profy'
-    default_data_type = 'orbit.y'
-    default_data_source = 'lat'
-    search_for_lat_eles = "Instrument::YAG*,Instrument::OTR*"
-/
 
-&tao_d1_data
-    ix_d1_data = 5
-    default_weight = 1
-    d1_data%name = 'e'
-    default_data_type = 'orbit.e_tot'
-    default_data_source = 'lat'
-    search_for_lat_eles = "Instrument::BPM*,Instrument::RFB*"
-/
 
+
+
+!-----------------------------------------
 
 
 !-----------------------------------------------------------------------------------------
@@ -258,6 +266,51 @@
 	default_attribute = 'K1'
 	var(1:)%ele_name = 'QCM16', 'QCM22', 'QCM29', 'QCM35'
 /
+
+!----------------------------------------
+! Correctors
+! Auto-generated corrector datums using: $LCLS_LATTICE/bmad/conversion/tao/create_vars_and_datums.ipynb
+        
+&tao_var
+    v1_var%name = 'xcor'
+    default_step = 1e-2
+    default_attribute = 'bl_kick'
+    var(1:)%ele_name =  'XC01B', 'XC02B', 'XC03B', 'XC04B', 'XC05B', 'XCM01', 'XC0H01',
+     'XC0H03', 'XC0H05', 'XC0H07', 'XCHD01', 'XCHD03', 'XCC000', 'XCC004',
+     'XCC006', 'XCC008', 'XCC010', 'XCC012', 'XCM02', 'XCM03', 'XC1C00', 'XCM12B',
+     'XCC101', 'XCC104', 'XCC106', 'XCC108', 'XCC110', 'XCC112', 'XCM04', 'XCM05',
+     'XCM06', 'XCM07', 'XCM08', 'XCM09', 'XCM10', 'XCM11', 'XCM12', 'XCM13', 'XCM14',
+     'XCM15', 'XC2C00', 'XCE202', 'XCE204', 'XCM16', 'XCM17', 'XCM18', 'XCM19',
+     'XCM20', 'XCM21', 'XCM22', 'XCM23', 'XCM24', 'XCM25', 'XCM26', 'XCM27', 'XCM28',
+     'XCM29', 'XCM30', 'XCM31', 'XCM32', 'XCM33', 'XCM34', 'XCM35', 'XCX01',
+     'XCDOG1', 'XCDOG3', 'XCDOG5', 'XCDOG7', 'XCL1P', 'XCL3P', 'XCL5P', 'XCBP11',
+     'XCBP13', 'XCBP14', 'XCBP15', 'XCBP16', 'XCBP17', 'XCBP18', 'XCBP19',
+     'XCBP20', 'XCBP21', 'XCBP22', 'XCBP23', 'XCBP24', 'XCBP25', 'XCBP26',
+     'XCBP27', 'XCBP35', 'XCBP28', 'XCSP1', 'XCDAS1', 'RCDAS11', 'XCDAS14',
+     'RCDAS19', 'A28X', 'A32X'
+/
+
+
+&tao_var
+    v1_var%name = 'ycor'
+    default_step = 1e-2
+    default_attribute = 'bl_kick'
+    var(1:)%ele_name =  'YC01B', 'YC02B', 'YC03B', 'YC04B', 'YC05B', 'YCM01', 'YC0H01',
+     'YC0H03', 'YC0H05', 'YC0H07', 'YCHD01', 'YCHD03', 'YCC000', 'YCC003',
+     'YCC005', 'YCC007', 'YCC009', 'YCC011', 'YCM02', 'YCM03', 'YC1C00', 'YCM12B',
+     'YCC101', 'YCC105', 'YCC107', 'YCC109', 'YCC111', 'YCM04', 'YCM05', 'YCM06',
+     'YCM07', 'YCM08', 'YCM09', 'YCM10', 'YCM11', 'YCM12', 'YCM13', 'YCM14', 'YCM15',
+     'YC2C00', 'YCE201', 'YCE203', 'YCM16', 'YCM17', 'YCM18', 'YCM19', 'YCM20',
+     'YCM21', 'YCM22', 'YCM23', 'YCM24', 'YCM25', 'YCM26', 'YCM27', 'YCM28', 'YCM29',
+     'YCM30', 'YCM31', 'YCM32', 'YCM33', 'YCM34', 'YCM35', 'YCX02', 'YCDOG0',
+     'YCDOG2', 'YCDOG4', 'YCDOG6', 'YCDOG8', 'YCL2P', 'YCL4P', 'YCBP10', 'YCBP12',
+     'YCBP13', 'YCBP14', 'YCBP15', 'YCBP16', 'YCBP17', 'YCBP18', 'YCBP19',
+     'YCBP20', 'YCBP21', 'YCBP22', 'YCBP23', 'YCBP24', 'YCBP25', 'YCBP26',
+     'YCBP27', 'YCBP35', 'YCBP28', 'YCSP2', 'YCDAS1', 'YCDAS17', 'A10Y', 'A18Y',
+     'A29Y', 'A33Y'
+/
+
+!----------------------------------------
 
 
 
