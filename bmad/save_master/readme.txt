@@ -1,1 +1,0 @@
-These files have been converted from the originals in mad/ using the AML parser.
