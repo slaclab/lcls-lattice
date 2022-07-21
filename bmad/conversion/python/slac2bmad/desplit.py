@@ -119,13 +119,12 @@ def process_padded_desplit(name, eles, note=""):
     sele = eles[2]
     assert eles[3].startswith(name), eles[3]
     
+    
     line = f"""! {note}   
 {name}_full: line = ({pad}, {name}, {pad})
     {sele}[superimpose] = T
     {sele}[ref] = {name}
-    {sele}[ele_origin] = beginning
-    {sele}[ref_origin] = beginning
-    {sele}[offset] = {eles[1]}[L] 
+    {sele}[offset] = ({eles[1]}[L] - {eles[3]}[L]) / 2 
     """
 
     return line
