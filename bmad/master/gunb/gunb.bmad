@@ -1,0 +1,46 @@
+
+
+!
+! LCLS GUNB for Bmad
+! ------------------
+!
+! This is a drop-in replacement for the GUN line based on:
+!     $LCLS_LATTICE/bmad/models/sc_diag0/
+!
+! It is a skeleton on top of which fieldmaps and thin elements can be superimposed
+
+GUNB_PIP01: PIPE, L = 0.484116
+GUNB_PIP02: PIPE, L = 1.093461
+BUN1B[L] = 0.3
+
+GUNB: Line = (BEGGUNB,
+    RFGUNB, 
+      GUNB_PIP01,
+    BUN1B,
+      GUNB_PIP02,
+    ENDGUNB) ! Should end at s = 2.052577 m
+
+
+! From convert_to_astra notebook:
+RFGUNB:  e_gun,
+  !rf_frequency = 187000000.0,
+  voltage = 759250.2223014082,
+!  phi0 = 0.02361111111111111,
+    L = 0.175
+
+
+SOL1B[superimpose] = T
+SOL1B[offset] = 0.24653
+SOL1B[ref] = BEGGUNB
+
+BUN1B[phi0] = -0.25
+BUN1B[n_cell] = 2
+BUN1B[longitudinal] = 0
+
+SOL2B[superimpose] = T
+SOL2B[offset] = 1.64581
+SOL2B[ref] = BEGGUNB
+
+
+
+

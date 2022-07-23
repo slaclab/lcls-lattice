@@ -1,8 +1,7 @@
 beginning[beta_a] = 10
 beginning[beta_b] = 10
 
-!beginning[e_tot] = 1e6
-
+!beginning[e_tot] = 750e3 + m_electron
 beginning[p0c] = 0
 
 parameter[geometry] = open
@@ -16,9 +15,25 @@ BEGINNING[BETA_B] =   2.65918932582190E+00
 BEGINNING[ALPHA_B] =   7.78606959645387E+00
 
 
-call, file = sc_inj.bmad
+!call, file = sc_inj.bmad
+
+call, file = $LCLS_LATTICE/bmad/master/SC_HXR.bmad
+call, file = $LCLS_LATTICE/bmad/master/LCLSsc_devicenames.bmad
+
+call, file  = $LCLS_LATTICE/bmad/master/gunb/gunb.bmad
+call, file  = $LCLS_LATTICE/bmad/master/gunb/gunb_thin_elements.bmad
+
+call, file = $LCLS_LATTICE/bmad/master/gunb/gunb_fieldmaps.bmad
+call, file = $LCLS_LATTICE/bmad/master/gunb/gunb_settings.bmad
+
+call, file = $LCLS_LATTICE/bmad/master/l0b/l0b_fieldmaps.bmad
+call, file = $LCLS_LATTICE/bmad/master/l0b/l0b_settings.bmad
 
 
-use, sc_inj
+QCM01[K1] = 0
+
+lat: line = (gunb, l0)
+
+use, lat
 
 

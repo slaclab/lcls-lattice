@@ -1,0 +1,80 @@
+
+
+
+! GUNB fieldmap modifications 
+! ---------------------------
+
+apex_gun: e_gun, 
+   L = 0.175,
+   tracking_method = time_runge_kutta,  mat6_calc_method = tracking, 
+   rf_frequency = 1300e6/7, 
+   field_calc = fieldmap, 
+   grid_field = call::$LCLS_LATTICE/bmad/fieldmaps/apex_gun/apex_gun_fieldmesh.h5,
+   aperture_at = continuous, aperture_type=wall3d
+
+lcls2_solenoid: solenoid, 
+   L =  0.48,
+   bs_field = 0.06, ! T
+   tracking_method = runge_kutta,  mat6_calc_method = tracking, 
+   field_calc = fieldmap, 
+   grid_field = call::$LCLS_LATTICE/bmad/fieldmaps/lcls2_solenoid/lcls2_solenoid_fieldmesh.h5    
+
+apex_buncher_1300MHz: lcavity, 
+    L = 0.3,
+    voltage = 1e6,
+    tracking_method = runge_kutta, 
+    mat6_calc_method = tracking,  
+    n_cell = 2, longitudinal = 0, 
+    rf_frequency = 1300000000.0, 
+    field_calc = fieldmap,
+    grid_field = call::$LCLS_LATTICE/bmad/fieldmaps/apex_buncher/apex_buncher_1300MHz_center.h5
+
+
+
+! RFGUNB
+RFGUNB[L] = apex_gun[L]
+RFGUNB[field_calc] = apex_gun[field_calc]
+RFGUNB[grid_field] = apex_gun[grid_field]
+RFGUNB[tracking_method] = apex_gun[tracking_method]
+RFGUNB[mat6_calc_method] = apex_gun[mat6_calc_method]
+RFGUNB[rf_frequency] = apex_gun[rf_frequency]
+RFGUNB[voltage] = 759250.2223014082
+RFGUNB[phi0] = 0.02361111111111111
+
+
+! SO1B
+SOL1B[L] = lcls2_solenoid[L]
+SOL1B[field_calc] = lcls2_solenoid[field_calc]
+SOL1B[grid_field] = lcls2_solenoid[grid_field]
+SOL1B[tracking_method] = lcls2_solenoid[tracking_method]
+SOL1B[mat6_calc_method] = lcls2_solenoid[mat6_calc_method]
+! B_max = 0.0559 T,
+! \int B dL = B_max * 0.12896517423475376 m,
+! \int B^2 dL = B_max^2 * 0.08623994625099243 m,
+! Hard edge L = 0.19285745050205194 m,
+! Hard edge B = 0.03738073494674779 T
+SOL1B[bs_field] = 0.0559
+
+! BUN1B
+BUN1B[L] = apex_buncher_1300MHz[L]
+BUN1B[field_calc] = apex_buncher_1300MHz[field_calc]
+BUN1B[grid_field] = apex_buncher_1300MHz[grid_field]
+BUN1B[tracking_method] = apex_buncher_1300MHz[tracking_method]
+BUN1B[mat6_calc_method] = apex_buncher_1300MHz[mat6_calc_method]
+BUN1B[voltage] = 210652.95554408507
+BUN1B[phi0] = -0.24583333333333332
+
+! SOL2B
+SOL2B[L] = lcls2_solenoid[L]
+SOL2B[field_calc] = lcls2_solenoid[field_calc]
+SOL2B[grid_field] = lcls2_solenoid[grid_field]
+SOL2B[tracking_method] = lcls2_solenoid[tracking_method]
+SOL2B[mat6_calc_method] = lcls2_solenoid[mat6_calc_method]
+! B_max = 0.0299 T,
+! \int B dL = B_max * 0.12896517423475376 m,
+! \int B^2 dL = B_max^2 * 0.08623994625099243 m,
+! Hard edge L = 0.19285745050205194 m,
+! Hard edge B = 0.019994346599423236 T,
+SOL2B[bs_field] = 0.0299
+
+
