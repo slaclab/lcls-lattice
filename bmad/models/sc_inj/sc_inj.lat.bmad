@@ -1,0 +1,46 @@
+!beginning[e_tot] = 750e3 + m_electron
+beginning[p0c] = 0
+
+parameter[geometry] = open
+parameter[particle] = electron
+parameter[absolute_time_tracking] = T
+
+! Makes match to beam at BEAM0
+BEGINNING[BETA_A] =  9.55668230510238192E-001
+BEGINNING[ALPHA_A] =  4.17027573949438057E+000
+BEGINNING[BETA_B] =  9.54994328479112142E-001
+BEGINNING[ALPHA_B] =  4.16661360511150836E+000
+
+
+call, file = $LCLS_LATTICE/bmad/master/SC_HXR.bmad
+call, file = $LCLS_LATTICE/bmad/master/LCLSsc_devicenames.bmad
+
+call, file  = $LCLS_LATTICE/bmad/master/gunb/gunb.bmad
+call, file  = $LCLS_LATTICE/bmad/master/gunb/gunb_thin_elements.bmad
+
+call, file = $LCLS_LATTICE/bmad/master/gunb/gunb_fieldmaps.bmad
+call, file = $LCLS_LATTICE/bmad/master/gunb/gunb_settings.bmad
+
+call, file = $LCLS_LATTICE/bmad/master/l0b/l0b_fieldmaps.bmad
+call, file = $LCLS_LATTICE/bmad/master/l0b/l0b_settings.bmad
+
+
+
+! CAVL011[phi0] = 2/360 ! Should give better emittance, was: 8/360
+
+QCM01[K1] = 0
+
+
+! HTR
+Q0H01[K1] = -5.80121867108624834E+000
+Q0H02[K1] =  5.92928766157127374E+000
+Q0H03[K1] =  1.61305839782176208E+000
+Q0H04[K1] = -7.27953501465479391E+000
+Q0H05[K1] = -3.48192622020081632E+000
+Q0H06[K1] =  2.99303967061566123E+000
+
+lat: line = (gunb, l0, htr)
+
+use, lat
+
+
