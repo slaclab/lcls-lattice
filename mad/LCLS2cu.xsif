@@ -1,10 +1,14 @@
 
-! *** OPTICS=AD_ACCEL-12JAN22 ***
+! *** OPTICS=AD_ACCEL-14SEP22 ***
 
 ! LCLS2cu various parts upstream of BSY
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 05-APR-2022, M. Woodley
+!  * change TYPE of BX01 and BX02 to "1.182D6.82T"; change TYPE of BC1 dipoles
+!    to "1.69D6.28T"
 ! ------------------------------------------------------------------------------
 ! 08-NOV-2021, M. Woodley
 !  * defer BXKIK (decommissioned) at level 9 for Matlab model
@@ -180,10 +184,10 @@
   dLBh := 0.0144     !increase to lengthen BXH1-4 eff. length (m)
   LBh  := 0.110+dLBh !5D3.9 "Z" length (m)   laser-heater chicane bends approx. effective length (R. Carr, 01-AUG-05 -PE)
   GBh  := 30E-3      !5D3.9 gap height (m)
-  LB0  := 0.2032     !5D7.1 "Z" length (m)
-  GB0  := 30E-3      !5D7.1 gap height (m)
-  LB1  := 0.2032     !5D7.1 "Z" length (m)
-  GB1  := 43.28E-3   !5D7.1 gap height (m)
+  LB0  := 0.2032     !1.182D6.82T "Z" length (m)
+  GB0  := 30E-3      !1.182D6.82T gap height (m)
+  LB1  := 0.2032     !1.69D6.28T "Z" length (m)
+  GB1  := 43.28E-3   !1.69D6.28T gap height (m)
   LB2  := 0.5490     !1D19.7 "Z" length (m)      !changed from 0.540 m to 0.549 on Sep. 28, '07 based on magnetic measurements - PE
   GB2  := 33.35E-3   !1D19.7 gap height (m)
  !LB3  := 2.623      !4D102.36T effective length (m)
@@ -343,20 +347,20 @@
   LeffB0 := LB0*AB0/(2*SIN(AB0/2)) !full bend path length (m)
   AEB0   := AB0/2                  !edge angles
 
-  BX01a : SBEN, TYPE="5D7.1", L=LeffB0/2, HGAP=GB0/2, ANGLE=AB0/2, &
+  BX01a : SBEN, TYPE="1.182D6.82T", L=LeffB0/2, HGAP=GB0/2, ANGLE=AB0/2, &
                 E1=AEB0, FINT=0.45, FINTX=0
-  BX01b : SBEN, TYPE="5D7.1", L=LeffB0/2, HGAP=GB0/2, ANGLE=AB0/2, &
+  BX01b : SBEN, TYPE="1.182D6.82T", L=LeffB0/2, HGAP=GB0/2, ANGLE=AB0/2, &
                 E2=AEB0, FINT=0, FINTX=0.45
-  BX02a : SBEN, TYPE="5D7.1", L=LeffB0/2, HGAP=GB0/2, ANGLE=AB0/2, &
+  BX02a : SBEN, TYPE="1.182D6.82T", L=LeffB0/2, HGAP=GB0/2, ANGLE=AB0/2, &
                 E1=AEB0, FINT=0.45, FINTX=0
-  BX02b : SBEN, TYPE="5D7.1", L=LeffB0/2, HGAP=GB0/2, ANGLE=AB0/2, &
+  BX02b : SBEN, TYPE="1.182D6.82T", L=LeffB0/2, HGAP=GB0/2, ANGLE=AB0/2, &
                 E2=AEB0, FINT=0, FINTX=0.45
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-  BX01 : SBEN, TYPE="5D7.1", HGAP=GB0/2, L=LeffB0, ANGLE=AB0, &
+  BX01 : SBEN, TYPE="1.182D6.82T", HGAP=GB0/2, L=LeffB0, ANGLE=AB0, &
                E1=AEB0, FINT=0.45, E2=AEB0, FINTX=0.45
-  BX02 : SBEN, TYPE="5D7.1", HGAP=GB0/2, L=LeffB0, ANGLE=AB0, &
+  BX02 : SBEN, TYPE="1.182D6.82T", HGAP=GB0/2, L=LeffB0, ANGLE=AB0, &
                E1=AEB0, FINT=0.45, E2=AEB0, FINTX=0.45
 
 ! BC1
@@ -377,32 +381,32 @@
 ! BX13 gets an offset of 2.2 mm (theta*L/8) towards the aisle
 ! BX14 gets an offset of 2.2 mm (theta*L/8) towards the wall
 
-  BX11a : SBEN, TYPE="5D7.1", L=LB11S, ANGLE=+AB11S, HGAP=GB1/2, &
+  BX11a : SBEN, TYPE="1.69D6.28T", L=LB11S, ANGLE=+AB11S, HGAP=GB1/2, &
                 E1=0, FINT=FB11, FINTX=0
-  BX11b : SBEN, TYPE="5D7.1", L=LB11L, ANGLE=+AB11L, HGAP=GB1/2, &
+  BX11b : SBEN, TYPE="1.69D6.28T", L=LB11L, ANGLE=+AB11L, HGAP=GB1/2, &
                 FINT=0, E2=+AB11, FINTX=FB11
-  BX12a : SBEN, TYPE="5D7.1", L=LB11L, ANGLE=-AB11L, HGAP=GB1/2, &
+  BX12a : SBEN, TYPE="1.69D6.28T", L=LB11L, ANGLE=-AB11L, HGAP=GB1/2, &
                 E1=-AB11, FINT=FB11, FINTX=0
-  BX12b : SBEN, TYPE="5D7.1", L=LB11S, ANGLE=-AB11S, HGAP=GB1/2, &
+  BX12b : SBEN, TYPE="1.69D6.28T", L=LB11S, ANGLE=-AB11S, HGAP=GB1/2, &
                 FINT=0, E2=0, FINTX=FB11
-  BX13a : SBEN, TYPE="5D7.1", L=LB11S, ANGLE=-AB11S, HGAP=GB1/2, &
+  BX13a : SBEN, TYPE="1.69D6.28T", L=LB11S, ANGLE=-AB11S, HGAP=GB1/2, &
                 E1=0, FINT=FB11, FINTX=0
-  BX13b : SBEN, TYPE="5D7.1", L=LB11L, ANGLE=-AB11L, HGAP=GB1/2, &
+  BX13b : SBEN, TYPE="1.69D6.28T", L=LB11L, ANGLE=-AB11L, HGAP=GB1/2, &
                 FINT=0, E2=-AB11, FINTX=FB11
-  BX14a : SBEN, TYPE="5D7.1", L=LB11L, ANGLE=+AB11L, HGAP=GB1/2, &
+  BX14a : SBEN, TYPE="1.69D6.28T", L=LB11L, ANGLE=+AB11L, HGAP=GB1/2, &
                 E1=+AB11, FINT=FB11, FINTX=0
-  BX14b : SBEN, TYPE="5D7.1", L=LB11S, ANGLE=+AB11S, HGAP=GB1/2, &
+  BX14b : SBEN, TYPE="1.69D6.28T", L=LB11S, ANGLE=+AB11S, HGAP=GB1/2, &
                 FINT=0, E2=0, FINTX=FB11
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-  BX11 : SBEN, TYPE="5D7.1", HGAP=GB1/2, L=LB11, ANGLE=+AB11, &
+  BX11 : SBEN, TYPE="1.69D6.28T", HGAP=GB1/2, L=LB11, ANGLE=+AB11, &
                E1=0, FINT=FB11, E2=+AB11, FINTX=FB11
-  BX12 : SBEN, TYPE="5D7.1", HGAP=GB1/2, L=LB11, ANGLE=-AB11, &
+  BX12 : SBEN, TYPE="1.69D6.28T", HGAP=GB1/2, L=LB11, ANGLE=-AB11, &
                E1=-AB11, FINT=FB11, E2=0, FINTX=FB11
-  BX13 : SBEN, TYPE="5D7.1", HGAP=GB1/2, L=LB11, ANGLE=-AB11, &
+  BX13 : SBEN, TYPE="1.69D6.28T", HGAP=GB1/2, L=LB11, ANGLE=-AB11, &
                E1=0, FINT=FB11, E2=-AB11, FINTX=FB11
-  BX14 : SBEN, TYPE="5D7.1", HGAP=GB1/2, L=LB11, ANGLE=+AB11, &
+  BX14 : SBEN, TYPE="1.69D6.28T", HGAP=GB1/2, L=LB11, ANGLE=+AB11, &
                E1=+AB11, FINT=FB11, E2=0, FINTX=FB11
 
 ! magnet-to-magnet path lengths

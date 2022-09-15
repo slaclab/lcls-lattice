@@ -1,10 +1,15 @@
 
-! *** OPTICS=AD_ACCEL-12JAN22 ***
+! *** OPTICS=AD_ACCEL-14SEP22 ***
 
 ! LCLS2sc 3-way spreader system
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 29-AUG-2022, M. Woodley
+!  * defer (level 0) XCSP5d and YCSP6d ... these have not been installed
+! 05-APR-2022, M. Woodley
+!  * move OTRSPDMP 3 inches upstream per L. Borzenets
 ! ------------------------------------------------------------------------------
 ! 06-OCT-2021, M. Woodley
 !  * change TYPE for BKXRASd and BKYRASd to "class-4" per A. Ibrahimov
@@ -757,10 +762,10 @@
   LDSP2ha  := LDSP2h-LDSP2hb-LDSP2hc-LBCSP1h-LBCSP2h
  dLDSP3h   := 0.0
   LDSP3h   := 4.6611 +dLDSP3h
-  LDSP3ha  := LDSPBPM1
-  LDSP3haa := 0.1
+  LDSP3ha  := 0.701153024135 !LDSPBPM1
+  LDSP3haa := 0.1443452812   !0.1
   LDSP3hab := LDSP3ha-LDSP3haa-LSb
-  LDSP3hb  := 0.6368
+  LDSP3hb  := 0.636709727546 !0.6368
   LDSP3hd  := 0.1924
   LDSP3hc  := LDSP3h-LDSP3ha-LDSP3hb-LDSP3hd
  dLDSP4h   := 0.012085492416
@@ -770,9 +775,9 @@
   LDSP4hb  := LDSP4h-LDSP4ha-LDSP4hc
  dLDSP5h   := 0.0 !adjust position of QSP3h,QSP11h
   LDSP5h   := 14.474 +(LQN-LQA)/2 +dLDSP5h
-  LDSP5ha  := 1.424131
-  LDSP5hc  := LDSPCOR2 +(LQN-LQA)/2
-  LDSP5hcb := 0.1 +(LQN-LQA)/2
+  LDSP5ha  := 1.261892512166 !1.424131
+  LDSP5hc  := 0.799538487834 !LDSPCOR2 +(LQN-LQA)/2
+  LDSP5hcb := 0.234535460174 !0.1 +(LQN-LQA)/2
   LDSP5hca := LDSP5hc-LDSP5hcb-LSb
   LDSP5hb  := LDSP5h-LDSP5ha-LDSP5hc
  dLDSP6h   := 0.0 !adjust position of QSP4h,QSP10h
@@ -947,10 +952,10 @@
   LDSP2sa  := LDSP2s-LDSP2sb-LDSP2sc-LBCSP1s-LBCSP2s
  dLDSP3s   := 0.0
   LDSP3s   := 1.828 +(LQN-LQA) +dLDSP3s
-  LDSP3sa  := LDSPBPM2 +(LQN-LQA)/2
-  LDSP3saa := 0.1 +(LQN-LQA)/2
+  LDSP3sa  := 0.7912067845   !LDSPBPM2 +(LQN-LQA)/2
+  LDSP3saa := 0.234475817809 !0.1 +(LQN-LQA)/2
   LDSP3sab := LDSP3sa-LDSP3saa-LSb
-  LDSP3sb  := 0.6445
+  LDSP3sb  := 0.600136674875 !0.6445
   LDSP3sc  := LDSP3s-LDSP3sa-LDSP3sb
   LDSP4s   := 8.689 +(LQN-LQA)/2 -dLDSP2s -dLDSP3s
   LDSP4sa  := LDSPBPM2 +(LQN-LQA)/2
@@ -992,9 +997,9 @@
   LDSP11sd := LDSP11s-LDSP11sa-LDSP11sb-LDSP11sc-LDSP11se
   LDSP12s  := LDSP3s
   LDSP12sa := LDSPBPM2 +(LQN-LQA)/2
-  LDSP12sc := LDSPCOR2 +(LQN-LQA)/2
-  LDSP12scb:= 0.1 +(LQN-LQA)/2
-  LDSP12sca:= LDSP12sc-LDSP12scb-LSb
+  LDSP12sc := 0.73889094850  !LDSPCOR2 +(LQN-LQA)/2
+  LDSP12sca:= 0.404427770474 !0.1 +(LQN-LQA)/2
+  LDSP12scb:= LDSP12sc-LDSP12sca-LSb
   LDSP12sb := LDSP12s-LDSP12sa-LDSP12sc
  dLDSP13s  := -0.406195675138E-4
   LDSP13s  := LDSP2s +dLDSP13s +LBLXSPs/2-LBXSPs/2
@@ -1089,7 +1094,7 @@
   LDSP7d   := 20.0818610101+0.4+0.803391932471 -18.115253 +0.761425
   LDSP7db  := 1.5
   LDSP7da  := LDSP7d-LDSP7db
-  LDSP7daa := 0.5
+  LDSP7daa := 0.5-3.0*in2m
   LDSP7dab := LDSP7da-LDSP7daa
 
   DSP2da1 : DRIF, L=LDSP2da1
@@ -1217,13 +1222,16 @@
 
   XCSP1d  : HKIC, TYPE="class-4"
   XCSP3d  : HKIC, TYPE="class-4"
-  XCSP5d  : HKIC, TYPE="@0,class-5"
+  XCSP5d  : HKIC, TYPE="@0,class-5" !not installed
 
   YCSP2d  : VKIC, TYPE="class-4"
   YCSP4d  : VKIC, TYPE="class-4"
-  YCSP6d  : VKIC, TYPE="@0,class-5"
+  YCSP6d  : VKIC, TYPE="@0,class-5" !not installed
 
-! regular correctors (NOT rastering kickers operating at ~60 Hz with 90 deg phase between each other)
+! NOTE: the raster magnets operating at ~60 Hz with 90 deg phase between each
+!       other have been de-scoped from the LCLS-II project ... BKXRASd and
+!       BKYRASd are normal (class-4) correctors which were installed instead
+!       of XCSP5d and YCSP6d
 
   BKXRASd : HKIC, TYPE="class-4"
   BKYRASd : VKIC, TYPE="class-4"

@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-12JAN22 ***
+! *** OPTICS=AD_ACCEL-14SEP22 ***
 
 ! ==============================================================================
 ! Modification History
@@ -142,14 +142,15 @@
 ! twiss parameter definitions (for matching, etc.)
 ! ------------------------------------------------------------------------------
 
-! "treaty" Twiss at center of laser heater undulator
+! "treaty" Twiss at center of laser heater undulator (at element HTRUNDB)
 
   BXlh := 10.0
   AXlh := 0
   BYlh := 10.0
   AYlh := 0
 
-! matched Twiss for coasting linac FODOs
+! matched Twiss at start of coasting linac FODOs
+! (see CM.xsif for CMfodo1, CMfodo2, and CMfodo3 definitions)
 
   BXCMfodo1 := 47.734300019352 !L1: 45 degrees per cell
   BYCMfodo1 := 21.362810104773 !L1: 45 degrees per cell
@@ -158,43 +159,48 @@
   BXCMfodo3 := 61.483042301615 !L3: 30 degrees per cell
   BYCMfodo3 := 36.259471142003 !L3: 30 degrees per cell
 
-! match into bypass dogleg
+! match into bypass dogleg FODO cell (at center of QDOG1)
+! LINE=(QDOG1,DBD1,QDOG2,QDOG2,DBD1,QDOG1)
 
   BXDLm := 13.103975995473
   AXDLm := -1.328121315284
   BYDLm := 15.962707890972
   AYDLm :=  1.529775364964
 
-! match into SXR LTU emittance diagnostic section
+! matched Twiss at SXR LTU emittance diagnostic wire scanners
+! (at elements WS31b, WS32b, WS33b, and WS34b)
 
   BXEDs := 46.225914318019
   AXEDs := -1.084608326468
   BYEDs := 46.225914318019
   AYEDs :=  1.084608326468
 
-! match into HXR LTU emittance diagnostic section
+! match into HXR LTU emittance diagnostic section (at element WS31)
 
   BXEDh := 46.225914290403
   AXEDh := -1.084608326581
   BYEDh := 46.225914290403
   AYEDh :=  1.084608326581
 
-! initial Twiss for SXR dogleg
+! initial Twiss for SXR dogleg (at element DBMARK34B)
+! (found by setting ALFX=ALFY=0 at centers of SXR dogleg quadrupoles QDL12-QDL18)
 
   MBETXS :=  6.841330859726
   MALFXS := -0.28404741292
   MBETYS := 47.120432391261
   MALFYS :=  2.555848494222
 
-! periodic Twiss in HXR dogleg cells (@ MM1)
+! periodic Twiss in HXR dogleg cell (at element MM1)
+! (found by setting ALFX=ALFY=0 at centers of HXR dogleg quadrupoles QDL31,32,33 and QT12,22,32)
+! (NOTE: this is an inexact match ... see SUBROUTINE MDL2M2 in LCLS2sc_match.mad8)
 
   MBETXH := 48.911502413792
   MALFXH :=  3.141736059434
   MBETYH := 92.803659415654
   MALFYH :=  3.519158552438
 
-! Twiss at start of HXR cell #24
-! (full complement of undulators; Yuri match; TWISS, COUPLE, BETA0=TWSSmh)
+! Twiss at start of HXR cell #24 (for matching without full complement of undulators)
+! (full complement of undulators; Yuri match)
 
   ENHXRm :=  4.0
   BXHXRm := 12.974739845251
