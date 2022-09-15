@@ -1,10 +1,14 @@
 
-! *** OPTICS=AD_ACCEL-12JAN22 ***
+! *** OPTICS=AD_ACCEL-14SEP22 ***
 
 ! LCLS2cu various parts upstream of BSY
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 05-APR-2022, M. Woodley
+!  * change TYPE of BX01 and BX02 to "1.182D6.82T"; change TYPE of BC1 dipoles
+!    to "1.69D6.28T"
 ! ------------------------------------------------------------------------------
 ! 08-NOV-2021, M. Woodley
 !  * defer BXKIK (decommissioned) at level 9 for Matlab model
@@ -179,10 +183,10 @@ BXKIK: pipe, L = 1.0601, type ="@9,1.92K41.2", descrip = "deferred SBEND"
 dlbh = 0.0144     !increase to lengthen BXH1-4 eff. length (m)
 lbh = 0.110+dlbh !5D3.9 "Z" length (m)   laser-heater chicane bends approx. effective length (R. Carr, 01-AUG-05 -PE)
 gbh = 30e-3      !5D3.9 gap height (m)
-lb0 = 0.2032     !5D7.1 "Z" length (m)
-gb0 = 30e-3      !5D7.1 gap height (m)
-lb1 = 0.2032     !5D7.1 "Z" length (m)
-gb1 = 43.28e-3   !5D7.1 gap height (m)
+lb0 = 0.2032     !1.182D6.82T "Z" length (m)
+gb0 = 30e-3      !1.182D6.82T gap height (m)
+lb1 = 0.2032     !1.69D6.28T "Z" length (m)
+gb1 = 43.28e-3   !1.69D6.28T gap height (m)
 lb2 = 0.5490     !1D19.7 "Z" length (m)      !changed from 0.540 m to 0.549 on Sep. 28, '07 based on magnetic measurements - PE
 gb2 = 33.35e-3   !1D19.7 gap height (m)
  !LB3  := 2.623      !4D102.36T effective length (m)
@@ -367,15 +371,15 @@ ab0 = adl1/2                 !full bend angle (rad)
 leffb0 = lb0*ab0/(2*sin(ab0/2)) !full bend path length (m)
 aeb0 = ab0/2                  !edge angles
 
-bx01a: sbend, type = "5D7.1", l = leffb0/2, hgap = gb0/2, angle = ab0/2, e1 = aeb0, fint = 0.45, fintx = 0
-bx01b: sbend, type = "5D7.1", l = leffb0/2, hgap = gb0/2, angle = ab0/2, e2 = aeb0, fint = 0, fintx = 0.45
-bx02a: sbend, type = "5D7.1", l = leffb0/2, hgap = gb0/2, angle = ab0/2, e1 = aeb0, fint = 0.45, fintx = 0
-bx02b: sbend, type = "5D7.1", l = leffb0/2, hgap = gb0/2, angle = ab0/2, e2 = aeb0, fint = 0, fintx = 0.45
+bx01a: sbend, type = "1.182D6.82T", l = leffb0/2, hgap = gb0/2, angle = ab0/2, e1 = aeb0, fint = 0.45, fintx = 0
+bx01b: sbend, type = "1.182D6.82T", l = leffb0/2, hgap = gb0/2, angle = ab0/2, e2 = aeb0, fint = 0, fintx = 0.45
+bx02a: sbend, type = "1.182D6.82T", l = leffb0/2, hgap = gb0/2, angle = ab0/2, e1 = aeb0, fint = 0.45, fintx = 0
+bx02b: sbend, type = "1.182D6.82T", l = leffb0/2, hgap = gb0/2, angle = ab0/2, e2 = aeb0, fint = 0, fintx = 0.45
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-bx01: sbend, type = "5D7.1", hgap = gb0/2, l = leffb0, angle = ab0, e1 = aeb0, fint = 0.45, e2 = aeb0, fintx = 0.45
-bx02: sbend, type = "5D7.1", hgap = gb0/2, l = leffb0, angle = ab0, e1 = aeb0, fint = 0.45, e2 = aeb0, fintx = 0.45
+bx01: sbend, type = "1.182D6.82T", hgap = gb0/2, l = leffb0, angle = ab0, e1 = aeb0, fint = 0.45, e2 = aeb0, fintx = 0.45
+bx02: sbend, type = "1.182D6.82T", hgap = gb0/2, l = leffb0, angle = ab0, e1 = aeb0, fint = 0.45, e2 = aeb0, fintx = 0.45
 
 ! BC1
 ! ===
@@ -395,21 +399,21 @@ fb11 = 0.387              !fringe field integral
 ! BX13 gets an offset of 2.2 mm (theta*L/8) towards the aisle
 ! BX14 gets an offset of 2.2 mm (theta*L/8) towards the wall
 
-bx11a: sbend, type = "5D7.1", l = lb11s, angle = +ab11s, hgap = gb1/2, e1 = 0, fint = fb11, fintx = 0
-bx11b: sbend, type = "5D7.1", l = lb11l, angle = +ab11l, hgap = gb1/2, fint = 0, e2 = +ab11, fintx = fb11
-bx12a: sbend, type = "5D7.1", l = lb11l, angle = -ab11l, hgap = gb1/2, e1 = -ab11, fint = fb11, fintx = 0
-bx12b: sbend, type = "5D7.1", l = lb11s, angle = -ab11s, hgap = gb1/2, fint = 0, e2 = 0, fintx = fb11
-bx13a: sbend, type = "5D7.1", l = lb11s, angle = -ab11s, hgap = gb1/2, e1 = 0, fint = fb11, fintx = 0
-bx13b: sbend, type = "5D7.1", l = lb11l, angle = -ab11l, hgap = gb1/2, fint = 0, e2 = -ab11, fintx = fb11
-bx14a: sbend, type = "5D7.1", l = lb11l, angle = +ab11l, hgap = gb1/2, e1 = +ab11, fint = fb11, fintx = 0
-bx14b: sbend, type = "5D7.1", l = lb11s, angle = +ab11s, hgap = gb1/2, fint = 0, e2 = 0, fintx = fb11
+bx11a: sbend, type = "1.69D6.28T", l = lb11s, angle = +ab11s, hgap = gb1/2, e1 = 0, fint = fb11, fintx = 0
+bx11b: sbend, type = "1.69D6.28T", l = lb11l, angle = +ab11l, hgap = gb1/2, fint = 0, e2 = +ab11, fintx = fb11
+bx12a: sbend, type = "1.69D6.28T", l = lb11l, angle = -ab11l, hgap = gb1/2, e1 = -ab11, fint = fb11, fintx = 0
+bx12b: sbend, type = "1.69D6.28T", l = lb11s, angle = -ab11s, hgap = gb1/2, fint = 0, e2 = 0, fintx = fb11
+bx13a: sbend, type = "1.69D6.28T", l = lb11s, angle = -ab11s, hgap = gb1/2, e1 = 0, fint = fb11, fintx = 0
+bx13b: sbend, type = "1.69D6.28T", l = lb11l, angle = -ab11l, hgap = gb1/2, fint = 0, e2 = -ab11, fintx = fb11
+bx14a: sbend, type = "1.69D6.28T", l = lb11l, angle = +ab11l, hgap = gb1/2, e1 = +ab11, fint = fb11, fintx = 0
+bx14b: sbend, type = "1.69D6.28T", l = lb11s, angle = +ab11s, hgap = gb1/2, fint = 0, e2 = 0, fintx = fb11
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-bx11: sbend, type = "5D7.1", hgap = gb1/2, l = lb11, angle = +ab11, e1 = 0, fint = fb11, e2 = +ab11, fintx = fb11
-bx12: sbend, type = "5D7.1", hgap = gb1/2, l = lb11, angle = -ab11, e1 = -ab11, fint = fb11, e2 = 0, fintx = fb11
-bx13: sbend, type = "5D7.1", hgap = gb1/2, l = lb11, angle = -ab11, e1 = 0, fint = fb11, e2 = -ab11, fintx = fb11
-bx14: sbend, type = "5D7.1", hgap = gb1/2, l = lb11, angle = +ab11, e1 = +ab11, fint = fb11, e2 = 0, fintx = fb11
+bx11: sbend, type = "1.69D6.28T", hgap = gb1/2, l = lb11, angle = +ab11, e1 = 0, fint = fb11, e2 = +ab11, fintx = fb11
+bx12: sbend, type = "1.69D6.28T", hgap = gb1/2, l = lb11, angle = -ab11, e1 = -ab11, fint = fb11, e2 = 0, fintx = fb11
+bx13: sbend, type = "1.69D6.28T", hgap = gb1/2, l = lb11, angle = -ab11, e1 = 0, fint = fb11, e2 = -ab11, fintx = fb11
+bx14: sbend, type = "1.69D6.28T", hgap = gb1/2, l = lb11, angle = +ab11, e1 = +ab11, fint = fb11, e2 = 0, fintx = fb11
 
 ! magnet-to-magnet path lengths
 

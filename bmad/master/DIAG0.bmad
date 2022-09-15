@@ -1,11 +1,15 @@
 
-! *** OPTICS=AD_ACCEL-12JAN22 ***
+! *** OPTICS=AD_ACCEL-14SEP22 ***
 
 ! LCLS2sc post laser heater diagnostic beamline
 
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
+! 09-SEP-2022, M. Woodley
+!  * redefine (deferred) OTRDG01 and OTRDG03
+! 15-JUL-2022, M. Woodley
+!  * defer (level 0) TCXDG0, XCDGTCX, and YCDGTCX ... they're not installed (!)
 ! 13-SEP-2021, M. Woodley
 !  * add X/Y corrector pair to TCYDG0 (class-1t) deferred level 4
 !  * add X/Y corrector pair to TCXDG0 (class-1t) undeferred
@@ -130,7 +134,8 @@ kqbd0 = -7.825140556488    !-13.410702917581
 
 TCYDG0: pipe, L = 0.8, type ="@4,TRANS_YDEF", descrip = "deferred LCAVITY" !Y-deflector (split)
 !old: tcydg0: lcavity, type = "@4,TRANS_YDEF", rf_frequency = 2856 * 1e6, l = 0.8/2
-tcxdg0: lcavity, type = "TRANS_XDEF", rf_frequency = 2856 * 1e6, l = 0.8/2 !X-deflector (split)
+TCXDG0: pipe, L = 0.8, type ="@0,TRANS_XDEF", descrip = "deferred LCAVITY" !X-deflector (split)
+!old: tcxdg0: lcavity, type = "@0,TRANS_XDEF", rf_frequency = 2856 * 1e6, l = 0.8/2
 
 ! ==============================================================================
 ! SBEN
@@ -393,7 +398,8 @@ xcdg003: hkicker, type = "class-1a"
 xcdg005: hkicker, type = "class-1a"
 XCDGTCY: pipe, L = 0.0, type ="@4,class-1t", descrip = "deferred HKICKER"
 !old: xcdgtcy: hkicker, type = "@4,class-1t"
-xcdgtcx: hkicker, type = "class-1t"
+XCDGTCX: pipe, L = 0.0, type ="@0,class-1t", descrip = "deferred HKICKER"
+!old: xcdgtcx: hkicker, type = "@0,class-1t"
 xcdg008: hkicker, type = "class-1a"
 xcdg010: hkicker, type = "class-1a"
 
@@ -407,7 +413,8 @@ ycdg003: vkicker, type = "class-1a"
 ycdg005: vkicker, type = "class-1a"
 YCDGTCY: pipe, L = 0.0, type ="@4,class-1t", descrip = "deferred VKICKER"
 !old: ycdgtcy: vkicker, type = "@4,class-1t"
-ycdgtcx: vkicker, type = "class-1t"
+YCDGTCX: pipe, L = 0.0, type ="@0,class-1t", descrip = "deferred VKICKER"
+!old: ycdgtcx: vkicker, type = "@0,class-1t"
 ycdg008: vkicker, type = "class-1a"
 ycdg010: vkicker, type = "class-1a"
 
@@ -417,12 +424,21 @@ ycdg010: vkicker, type = "class-1a"
 
 ! profile monitors
 
-OTRDG01: pipe, L = 0.0, type ="@3,YAG/OTR PSI", descrip = "deferred MONITOR"
-!old: otrdg01: monitor, type = "@3,YAG/OTR PSI"
 otrdg02: monitor, type = "OTR INJ"
-OTRDG03: pipe, L = 0.0, type ="@3,YAG/OTR PSI", descrip = "deferred MONITOR"
-!old: otrdg03: monitor, type = "@3,YAG/OTR PSI"
 otrdg04: monitor, type = "OTR INJ"
+
+! combination OTR/YAG !PSI type
+
+OTRDG01: pipe, L = 0.0, type ="@3,OTR", descrip = "deferred MONITOR"
+!old: otrdg01: monitor, type = "@3,OTR"
+OTRDG01_YAG: pipe, L = 0.0, type ="@3,YAG", descrip = "deferred MONITOR"
+!old: otrdg01_yag: monitor, type = "@3,YAG"
+  OTRDG01_full : LINE=(OTRDG01,OTRDG01_YAG)
+OTRDG03: pipe, L = 0.0, type ="@3,OTR", descrip = "deferred MONITOR"
+!old: otrdg03: monitor, type = "@3,OTR"
+OTRDG03_YAG: pipe, L = 0.0, type ="@3,YAG", descrip = "deferred MONITOR"
+!old: otrdg03_yag: monitor, type = "@3,YAG"
+  OTRDG03_full : LINE=(OTRDG03,OTRDG03_YAG)
 
 ! wire scanners
 
@@ -610,9 +626,9 @@ bpmdg011[ref] = qdg011
          XCDG001,DQB01c,QDG001_full,DQB02a,YCDG001,DQB02b,QDG002_full,DQB03a,XCDG002,DQB03b,QDG003_full,DQB04a,YCDG002,DQB04b,
          BXDG0_full,CNTDG0,M2DG0,DDG003,QDG004_full,DDG004a,SCDG003,DDG004b,QDG005_full,DDG005a,SCDG005,DDG005b,QDG006_full,
          DDG006a,TCYDG0_full,DDG006b,BPMDG0RF,DDG006c,TCXDG0_full,DDG006d,QDG007_full,DDG007,QDG008_full,DDG008a,SCDG008,DDG008b,
-         QDG009_full,DDG009a,OTRDG01,DDG009b,RFBDG002,DDG009c,OTRDG02,DDG009d,WSDG01,DDG009e,OTRDG03,DDG009f,QDG010_full,DDG010a,
-         SCDG010,DDG010b,QDG011_full,DDG011a,RFBDG003,DDG011b,BYDG0_full,DDG012a,BPMDG012,DDG012b,OTRDG04,DDG012c,FCDG0DU,
-         ENDDIAG0)
+         QDG009_full,DDG009a,OTRDG01_full,DDG009b,RFBDG002,DDG009c,OTRDG02,DDG009d,WSDG01,DDG009e,OTRDG03_full,DDG009f,
+         QDG010_full,DDG010a,SCDG010,DDG010b,QDG011_full,DDG011a,RFBDG003,DDG011b,BYDG0_full,DDG012a,BPMDG012,DDG012b,OTRDG04,
+         DDG012c,FCDG0DU,ENDDIAG0)
  !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
