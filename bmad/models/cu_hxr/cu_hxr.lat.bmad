@@ -1,73 +1,23 @@
+! 
+! cu_hxr
+!
 
-! Match reference beam at YAG03
-BEGINNING[BETA_A] =  5.91253676811640894E+000
-BEGINNING[ALPHA_A] =  3.55631307633660354E+000
-BEGINNING[BETA_B] =  5.91253676811640982E+000
-BEGINNING[ALPHA_B] =  3.55631307633660398E+000
 
-beginning[e_tot] = 6e6
-parameter[geometry] = open
-parameter[particle] = electron
-
-! WOODDOOR should be at:
-! X Y Z =  0 0  3050.512000
-
-beginning[theta_position] = -35*pi/180
-beginning[z_position] = 3050.512000 - 1032.60052
-beginning[x_position] = 10.44893
+call, file = $LCLS_LATTICE/bmad/master/cu/beginning_cu_linac.bmad
 
 call, file = $LCLS_LATTICE/bmad/master/CU_HXR.bmad
 call, file = $LCLS_LATTICE/bmad/master/LCLScu_devicenames.bmad
 
-
 ! Bunch Compressor overlays
-
 call, file = $LCLS_LATTICE/bmad/overlays/cu/bc1_overlays.bmad
 call, file = $LCLS_LATTICE/bmad/overlays/cu/bc2_overlays.bmad
 
-! Retune OTR2
-QA01[K1] = -9.87905093935879641E+000
-QA02[K1] =  1.07755271503770107E+001
-QE01[K1] = -2.74317636842800583E-001
-QE02[K1] =  7.82936661696055469E-001
-QE03[K1] =  1.15680484675381496E+001
-QE04[K1] = -6.78990977461671985E+000
+call, file = $LCLS_LATTICE/bmad/master/cu/cu_linac_settings.bmad
+call, file = $LCLS_LATTICE/bmad/master/cu/cu_linac_wakefields.bmad
 
-! Tune BC1BEG
-QA11[K1] =  -3.77793667230024E+00
-QA12[K1] =   1.88139427368180E+00
-Q21201[K1] =  -9.33825405949416E+00
-QM11[K1] =   7.94906252387771E+00
-
-! Tune LI22BEG
-Q21601[K1] =   7.13914268545471E-01
-Q21701[K1] =  -7.05827351725973E-01
-Q21801[K1] =   7.35692624807240E-01
-Q21901[K1] =  -7.18205140809118E-01
-
-
-! Cavity wakefields, traveling wave, full sbend
-lcavity::L0*[sr_wake]  = call::$LCLS_LATTICE/bmad/wakefields/longitudinal_wakes_sband.bmad
-lcavity::K*[sr_wake]    = call::$LCLS_LATTICE/bmad/wakefields/longitudinal_wakes_sband.bmad
-lcavity::L1X*[sr_wake]  = call::$LCLS_LATTICE/bmad/wakefields/longitudinal_wakes_xband.bmad
 lcavity::*[cavity_type] = traveling_wave
 sbend::*[fringe_type] = full
 
-
-! Resistive wall, instantaneous
-RWWAKE3H[sr_wake] = call::$LCLS_LATTICE/bmad/wakefields/wakefield_SS_24.5mmR.bmad
-RWWAKE3H[sr_wake%scale_with_length] = F
-RWWAKE3H[sr_wake%amp_scale] = 182
-
-RWWAKE4H[sr_wake] = call::$LCLS_LATTICE/bmad/wakefields/wakefield_Cu_17.4mmR.bmad
-RWWAKE4H[sr_wake%scale_with_length] = F
-RWWAKE4H[sr_wake%amp_scale] = 339.1
-
-RWWAKE5H[sr_wake] = call::$LCLS_LATTICE/bmad/wakefields/wakefield_Al_5mm_gap_flat.bmad
-RWWAKE5H[sr_wake%scale_with_length] = F
-RWWAKE5H[sr_wake%amp_scale] = 130
-
-! 
 call, file =  $LCLS_LATTICE/bmad/overlays/cu/klystrons.bmad
 call, file =  $LCLS_LATTICE/bmad/overlays/cu/klystron_design_settings.bmad
 call, file =  $LCLS_LATTICE/bmad/overlays/cu/linac_phase_overlays.bmad 
