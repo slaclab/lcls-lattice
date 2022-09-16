@@ -8,3 +8,9 @@ Many of the paths will use the `$LCLS_LATTICE` environmental variable, which sho
 
 
 
+## Versioning
+
+We now use release tags of the form YYYY.MM.DD (full year, short month, short day) according to https://calver.org.  This should be more memorable and align better with the physical LCLS machines.
+
+
+
