@@ -1,10 +1,15 @@
 
-! *** OPTICS=AD_ACCEL-12JAN22 ***
+! *** OPTICS=AD_ACCEL-14SEP22 ***
 
 ! LCLS2sc injector: gun to start of L1 linac
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 08-SEP-2022, M. Woodley
+!  * redefine YAG01B, OTR0H04, and OTRC001
+! 14-APR-2022, M. Woodley
+!  * replace YAG01B_YAG1 and YAG01B_YAG2 with YAG01B
 ! ------------------------------------------------------------------------------
 ! 28-SEP-2021, M. Woodley
 !  * replace YAG01B with combination YAG/COLL/FC device
@@ -662,7 +667,7 @@ ycc009: vkicker, type = "class-6"
 ycc011: vkicker, type = "class-6"
 
 ! ==============================================================================
-! diagnostics, etc.
+! collimators, diagnostics, etc.
 ! ------------------------------------------------------------------------------
 
 ! halo/dark current collimator
@@ -682,37 +687,44 @@ CXC02: pipe, L = 0.06, type ="@4,HCOLL", descrip = "deferred RCOLLIMATOR" !X bet
 cyc03: rcollimator, l = ljaw, y_limit = 4.4e-3, type = "VCOLL"    !Y betatron collimator
 cxc03: rcollimator, l = ljaw, x_limit = 4.4e-3, type = "HCOLL"    !X betatron collimator
 
-! combination YAG/collimator/Faraday Cup (beam pipe ID = 47.6 mm)
-
-yag01b_yag1: monitor, type = "YAG"
-yag01b_yag2: monitor, type = "YAG"
-yag01b_col0: ecollimator, type = "beam pipe", x_limit = 47.6e-3/2, y_limit = 47.6e-3/2
-yag01b_col1: ecollimator, type = "12mm bore"
-yag01b_col2: ecollimator, type = "16mm bore"
-yag01b_col3: ecollimator, type = "20mm bore"
-yag01b_col4: ecollimator, type = "24mm bore"
-yag01b_fcup: instrument, type = "Faraday Cup"
-  YAG01B_full : LINE=(YAG01B_YAG1,YAG01B_YAG2,YAG01B_COL0,YAG01B_COL1,YAG01B_COL2,YAG01B_COL3,YAG01B_COL4,YAG01B_FCUP)
-
 ! instruments
 
 cathodeb: instrument
 vv01b: instrument
 im01b: marker, type = "ICT"
-yag01b: monitor, type = "YAG"
 vv02b: instrument
 ws0h04: marker, type = "fast"
-otr0h04: monitor, type = "YAG/OTR PAL"
 bz0h04: monitor, type = "gap/diode"
 yagh1: monitor, type = "YAG INJ"
 yagh2: monitor, type = "YAG INJ"
 imbcsi1: marker, type = "BCS ACM"
 imbcsi2: marker, type = "BCS ACM"
-otrc006: monitor, type = "YAG/OTR PAL"
 WSC006: pipe, L = 0.0, type ="@4,fast", descrip = "deferred MARKER"
 !old: wsc006: marker, type = "@4,fast"
 
 fc00eic: instrument, type = "Faraday cup"
+
+! combination YAG/collimator/Faraday Cup
+! - beam pipe ID = 47.6 mm
+! - one standard YAG crystal
+! - one YAG crystal with a 6 mm diameter hole in it (for measuring beam halo)
+! - four circular collimator bores
+! - Faraday Cup
+
+yag01b: monitor, type = "YAG" !with or without hole
+yag01b_coll: ecollimator, type = "collimator" !bore: 12mm, 16mm, 20mm, or 24mm
+yag01b_fcup: instrument, type = "Faraday Cup"
+  YAG01B_full : LINE=(YAG01B,YAG01B_COLL,YAG01B_FCUP)
+
+! combination OTR/YAG !PAL type
+
+otr0h04: monitor, type = "OTR"
+otr0h04_yag: monitor, type = "YAG"
+  OTR0H04_full : LINE=(OTR0H04,OTR0H04_YAG)
+
+otrc006: monitor, type = "OTR"
+otrc006_yag: monitor, type = "YAG"
+  OTRC006_full : LINE=(OTRC006,OTRC006_YAG)
 
 ! marker points
 
@@ -991,16 +1003,17 @@ htrundb[ref] = umhtr
          BPM2B,DG015,SC5B,DG016a,BLFU,DG016b,ENDGUNB)
 
   EIC : LINE=(BEGEIC,DGBCa,SOL1BKB,DGBCb,CATHODEB,DGUN,DG001,SOL1B_full,DG002,VV01B,DG003,SC1B,DG004,BPM1B,DG005,IM01B,
-         DG006,SC2B,DG007,BUN1B_full,DG008,SC3B,DG009,AM00B,DG010,SC4B,DG011,YAG01B,DG012,SOL2B_full,DG013,VV02B,DG014,BPM2B,
-         DG015,SC5B,DG016a,BLFU,DG016b,ECUEIC,DGEIC,FC00EIC,ENDEIC)
+         DG006,SC2B,DG007,BUN1B_full,DG008,SC3B,DG009,AM00B,DG010,SC4B,DG011,YAG01B_full,DG012,SOL2B_full,DG013,VV02B,DG014,
+         BPM2B,DG015,SC5B,DG016a,BLFU,DG016b,ECUEIC,DGEIC,FC00EIC,ENDEIC)
 
 !=!  COMMENT !simplified
 !=!  COMMENT !simplified
 !=!    LSRHTR : LINE=(LHBEGB,&
-!=!      BCXH1a,BCXH1b,Dh01a,Dh01b,Dh01c,&
-!=!      BCXH2a,BCXH2b,Dh02a,CEHTR,Dh02b,Dh02c,UMHTR,UMHTR,Dh02d,Dh02e,&
-!=!      BCXH3a,BCXH3b,Dh03a,Dh03b,Dh03c,&
-!=!      BCXH4a,BCXH4b,&
+!=!      BCXH1_full,Dh01a,Dh01b,Dh01c,&
+!=!      BCXH2_full,Dh02a,CEHTR,Dh02b,Dh02c,&
+!=!      UMHTR_full,Dh02d,Dh02e,&
+!=!      BCXH3_full,Dh03a,Dh03b,Dh03c,&
+!=!      BCXH4_full,&
 !=!      LHENDB)
 !=!  ENDCOMMENT
 
@@ -1032,7 +1045,7 @@ htrundb[ref] = umhtr
  !COMMENT !complete
     HTR : LINE=(BEGHTR,RFB0H00,D0H00a,PC0H00,D0H00b,Q0H01_full,D0H01a,YC0H01,D0H01b,Q0H02_full,D0H02a,XC0H01,D0H02b,
          DP0H01,D0H02c,DP0H02,D0H02d,DP0H03,D0H02e,XC0H03,D0H02f,Q0H03_full,D0H03a,YC0H03,D0H03b,Q0H04_full,D0H04a,RFB0H04,
-         D0H04b,OTR0H04,D0H04c,WS0H04,D0H04d,BZ0H04,D0H04e,Q0H05_full,D0H05a,YC0H05,D0H05b,Q0H06_full,D0H06a,XC0H05,D0H06b,
+         D0H04b,OTR0H04_full,D0H04c,WS0H04,D0H04d,BZ0H04,D0H04e,Q0H05_full,D0H05a,YC0H05,D0H05b,Q0H06_full,D0H06a,XC0H05,D0H06b,
          XC0H07,D0H06c,Q0H07_full,D0H07a,YC0H07,D0H07b,Q0H08_full,D0H08a,RFB0H08,D0H08b,LSRHTR,DHD00a,RFBHD00,DHD00b,QHD01_full,
          DHD01a,YCHD01,DHD01b,XCHD01,DHD01c,QHD02_full,DHD02a1,IMBCSi1,DHD02a2,IMBCSi2,DHD02a3,YCHD03,DHD02b,QHD03_full,DHD03a,
          XCHD03,DHD03b,QHD04_full,DHD04a,RFBHD04,DHD04b,ENDHTR)
@@ -1061,10 +1074,10 @@ htrundb[ref] = umhtr
  !COMMENT !complete
     COL0 : LINE=(BEGCOL0,DBKRDG0a,DBKRDG0b,DC000aa,BPMDG000,DC000ab,DBLRDG0a,DBLRDG0b,DC000b,SCC000,DC000c,QC001_full,
          DC001,QC002_full,DC002,QC003_full,DC003a,YCC003,DC003b,QC004_full,DC004a,XCC004,DC004b,CYC01,DC004c,QC005_full,DColl0a,
-         YCC005,DColl0b,CXC01,DColl0c,QC006_full,DColl0a,XCC006,DColl0b1,OTRC006,DColl0b2,WSC006,DColl0b3,RFBC006,DColl0b4,CYC02,
-         DColl0c,QC007_full,DColl0a,YCC007,DColl0b5,CXC02,DColl0c,QC008_full,DColl0a,XCC008,DColl0b,CYC03,DColl0c,QC009_full,
-         DColl0a,YCC009,DColl0b,CXC03,DColl0c,QC010_full,DC010a,XCC010,DC010b,RFBC011,DC010c,QC011_full,DC011a,YCC011,DC011b,
-         XCC012,DC011c,QC012_full,ENDCOL0)
+         YCC005,DColl0b,CXC01,DColl0c,QC006_full,DColl0a,XCC006,DColl0b1,OTRC006_full,DColl0b2,WSC006,DColl0b3,RFBC006,DColl0b4,
+         CYC02,DColl0c,QC007_full,DColl0a,YCC007,DColl0b5,CXC02,DColl0c,QC008_full,DColl0a,XCC008,DColl0b,CYC03,DColl0c,
+         QC009_full,DColl0a,YCC009,DColl0b,CXC03,DColl0c,QC010_full,DC010a,XCC010,DC010b,RFBC011,DC010c,QC011_full,DC011a,YCC011,
+         DC011b,XCC012,DC011c,QC012_full,ENDCOL0)
  !ENDCOMMENT
 
   C0fodo : LINE=(QFColl0,DColl0,QDColl0,QDColl0,DColl0,QFColl0)

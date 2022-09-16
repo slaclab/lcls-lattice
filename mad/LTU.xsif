@@ -1,10 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-12JAN22 ***
+! *** OPTICS=AD_ACCEL-14SEP22 ***
 
 ! LCLS2sc LTU and dump
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 07-SEP-2022, M. Woodley
+!  * redefine YAGDL18
 ! ------------------------------------------------------------------------------
 ! 30-NOV-2021, M. Woodley
 !  * change TYPE of BPMQD and BPMQDB to "Stripline-11" (vertical orientation)
@@ -1010,7 +1013,11 @@
   PCTDKIK4S : ECOL, TYPE="@5,BCS PC", L=LPCTDKIK, &
                     XSIZE=11.1125E-3, YSIZE=11.1125E-3
 
-  YAGDL18 : PROF, TYPE="YAG-PAL"
+! combination YAG/OTR !PAL type
+
+  YAGDL18      : PROF, TYPE="YAG"
+  YAGDL18_OTR  : PROF, TYPE="OTR"
+  YAGDL18_full : LINE=(YAGDL18,YAGDL18_OTR)
 
   PC01B  : INST, TYPE="BCS plate", L=Lplate
   BTM01B : INST, TYPE="PPS BTM"
@@ -1068,7 +1075,7 @@
     BYKIK2S_full,DBYKS06,XCDL17,DBYKS07,BPMDL17,DBYKS08,&
     QDL17_full,DBYKS11,CEDL17,DBYKS12,DBYKS13,SPOILERS,DBYKS14,&
       TDKIKS,DBYKS15,PCTDKIK1S,DBYKS16,PCTDKIK2S,DBYKS16,PCTDKIK3S,&
-      DBYKS16,PCTDKIK4S,DBYKS17,YAGDL18,DBYKS18,YCDL18,DBYKS19,&
+      DBYKS16,PCTDKIK4S,DBYKS17,YAGDL18_full,DBYKS18,YCDL18,DBYKS19,&
     QDL18_full,DDL19ba,BPMDL18,DDL19bb,PC06B,BTM06B,DDL19bc,XCDL19,DDL6b,&
     QDL19_full,DDL2ba,BPMDL19,DDL2bb,&
     BX32B_full,CNTLT1S,DDL14b,&
@@ -1595,7 +1602,7 @@
   BCXLSSBEG : MARK
   BCXLSSMID : MARK
   BCXLSSEND : MARK
-
+  
 ! beamline
 
   BCXXL1_full : LINE=(BCXXL11,BCXXL12)
@@ -1713,7 +1720,6 @@
   DTDUND1    : DRIF, L=0.855853 !from u/s TDUND flange to TDUND center
   DTDUND2    : DRIF, L=0.347853 !from TDUND center to d/s TDUND flange
   DPCMUON    : DRIF, L=0.031498
-  DMUON1     : DRIF, L=0.154859 +0.05
   DMUON1b    : DRIF, L=0.154859 +0.05 -0.060429 +0.117
   DMUON3b    : DRIF, L=0.310592 -0.05 -0.117
 
@@ -2669,7 +2675,9 @@
 
   RFBHX12 : MONI, L=LRFBub, TYPE="CavityX-1"
 
-  DMUON4  : DRIF, L=0.059608016 +0.009373
+  DMUON1  : DRIF, L=0.186743984144 !0.154859 +0.05
+  DMUON2  : DRIF, L=0.018115015856 !0.0
+  DMUON4  : DRIF, L=0.093980765446-LRFBub/2 !0.059608016 +0.009373
   DMUON3  : DRIF, L=0.310592 -0.05 -DMUON4[L] -LRFBub
 
 ! dechirper installation (August, 2015)
@@ -3007,7 +3015,7 @@
 
   IM36 : IMON, TYPE="120Hz toroid" !comparator with IM31 (existing LCLS device)
 
-  YAGPSI : PROF, TYPE="YAG-PAL" !existing LCLS device
+  YAGPSI : PROF, TYPE="YAG PAL" !existing LCLS device
   OTR33  : PROF, TYPE="OTR" !LTU slice emittance (existing LCLS device)
 
   PC07  : INST, TYPE="BCS plate", L=Lplate
@@ -3141,7 +3149,7 @@
     QUM3_full,DUM3B,D40cma,EOBLM,DU4m120cm,YCUM4,DUM4A,&
     QUM4_full,DUM4B,RFB07,DU5m80cm,IMUNDI,D40cmWa,BLTOF,D40cmWb,&
       MUHWALL1,DUHWALL1,DUHVESTa,RFB08,DUHVESTb,MUHWALL2,DUHWALL2,&
-      DW2TDUND,DTDUND1,TDUND,DTDUND2,DPCMUON,PCMUON,DMUON1,VV999)
+      DW2TDUND,DTDUND1,TDUND,DTDUND2,DPCMUON,PCMUON,DMUON1,VV999,DMUON2)
 
   PREUNDH : LINE=(DMUON3,RFBHX12,DMUON4,MM3,PFILT1,DBMARK37)
 

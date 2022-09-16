@@ -1,10 +1,15 @@
 
-! *** OPTICS=AD_ACCEL-12JAN22 ***
+! *** OPTICS=AD_ACCEL-14SEP22 ***
 
 ! LCLS2sc 3-way spreader system
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 29-AUG-2022, M. Woodley
+!  * defer (level 0) XCSP5d and YCSP6d ... these have not been installed
+! 05-APR-2022, M. Woodley
+!  * move OTRSPDMP 3 inches upstream per L. Borzenets
 ! ------------------------------------------------------------------------------
 ! 06-OCT-2021, M. Woodley
 !  * change TYPE for BKXRASd and BKYRASd to "class-4" per A. Ibrahimov
@@ -743,10 +748,10 @@ ldsp2hc = 0.5285
 ldsp2ha = ldsp2h-ldsp2hb-ldsp2hc-lbcsp1h-lbcsp2h
 dldsp3h = 0.0
 ldsp3h = 4.6611 +dldsp3h
-ldsp3ha = ldspbpm1
-ldsp3haa = 0.1
+ldsp3ha = 0.701153024135 !LDSPBPM1
+ldsp3haa = 0.1443452812   !0.1
 ldsp3hab = ldsp3ha-ldsp3haa-lsb
-ldsp3hb = 0.6368
+ldsp3hb = 0.636709727546 !0.6368
 ldsp3hd = 0.1924
 ldsp3hc = ldsp3h-ldsp3ha-ldsp3hb-ldsp3hd
 dldsp4h = 0.012085492416
@@ -756,9 +761,9 @@ ldsp4hc = 0.3459992
 ldsp4hb = ldsp4h-ldsp4ha-ldsp4hc
 dldsp5h = 0.0 !adjust position of QSP3h,QSP11h
 ldsp5h = 14.474 +(lqn-lqa)/2 +dldsp5h
-ldsp5ha = 1.424131
-ldsp5hc = ldspcor2 +(lqn-lqa)/2
-ldsp5hcb = 0.1 +(lqn-lqa)/2
+ldsp5ha = 1.261892512166 !1.424131
+ldsp5hc = 0.799538487834 !LDSPCOR2 +(LQN-LQA)/2
+ldsp5hcb = 0.234535460174 !0.1 +(LQN-LQA)/2
 ldsp5hca = ldsp5hc-ldsp5hcb-lsb
 ldsp5hb = ldsp5h-ldsp5ha-ldsp5hc
 dldsp6h = 0.0 !adjust position of QSP4h,QSP10h
@@ -932,10 +937,10 @@ ldsp2sc = 0.6676 +(lqn-lqa)/2
 ldsp2sa = ldsp2s-ldsp2sb-ldsp2sc-lbcsp1s-lbcsp2s
 dldsp3s = 0.0
 ldsp3s = 1.828 +(lqn-lqa) +dldsp3s
-ldsp3sa = ldspbpm2 +(lqn-lqa)/2
-ldsp3saa = 0.1 +(lqn-lqa)/2
+ldsp3sa = 0.7912067845   !LDSPBPM2 +(LQN-LQA)/2
+ldsp3saa = 0.234475817809 !0.1 +(LQN-LQA)/2
 ldsp3sab = ldsp3sa-ldsp3saa-lsb
-ldsp3sb = 0.6445
+ldsp3sb = 0.600136674875 !0.6445
 ldsp3sc = ldsp3s-ldsp3sa-ldsp3sb
 ldsp4s = 8.689 +(lqn-lqa)/2 -dldsp2s -dldsp3s
 ldsp4sa = ldspbpm2 +(lqn-lqa)/2
@@ -977,9 +982,9 @@ ldsp11se = ldspcor2 +(lqn-lqa)/2
 ldsp11sd = ldsp11s-ldsp11sa-ldsp11sb-ldsp11sc-ldsp11se
 ldsp12s = ldsp3s
 ldsp12sa = ldspbpm2 +(lqn-lqa)/2
-ldsp12sc = ldspcor2 +(lqn-lqa)/2
-ldsp12scb = 0.1 +(lqn-lqa)/2
-ldsp12sca = ldsp12sc-ldsp12scb-lsb
+ldsp12sc = 0.73889094850  !LDSPCOR2 +(LQN-LQA)/2
+ldsp12sca = 0.404427770474 !0.1 +(LQN-LQA)/2
+ldsp12scb = ldsp12sc-ldsp12sca-lsb
 ldsp12sb = ldsp12s-ldsp12sa-ldsp12sc
 dldsp13s = -0.406195675138e-4
 ldsp13s = ldsp2s +dldsp13s +lblxsps/2-lbxsps/2
@@ -1073,7 +1078,7 @@ ldsp6dfb = ldsp6df-ldsp6dfa-ldsp6dfc-ldsp6dfd
 ldsp7d = 20.0818610101+0.4+0.803391932471 -18.115253 +0.761425
 ldsp7db = 1.5
 ldsp7da = ldsp7d-ldsp7db
-ldsp7daa = 0.5
+ldsp7daa = 0.5-3.0*in2m
 ldsp7dab = ldsp7da-ldsp7daa
 
 dsp2da1: drift, l = ldsp2da1
@@ -1201,15 +1206,18 @@ ycsp8s: vkicker, type = "class-4"
 
 xcsp1d: hkicker, type = "class-4"
 xcsp3d: hkicker, type = "class-4"
-XCSP5D: pipe, L = 0.0, type ="@0,class-5", descrip = "deferred HKICKER"
+XCSP5D: pipe, L = 0.0, type ="@0,class-5", descrip = "deferred HKICKER" !not installed
 !old: xcsp5d: hkicker, type = "@0,class-5"
 
 ycsp2d: vkicker, type = "class-4"
 ycsp4d: vkicker, type = "class-4"
-YCSP6D: pipe, L = 0.0, type ="@0,class-5", descrip = "deferred VKICKER"
+YCSP6D: pipe, L = 0.0, type ="@0,class-5", descrip = "deferred VKICKER" !not installed
 !old: ycsp6d: vkicker, type = "@0,class-5"
 
-! regular correctors (NOT rastering kickers operating at ~60 Hz with 90 deg phase between each other)
+! NOTE: the raster magnets operating at ~60 Hz with 90 deg phase between each
+!       other have been de-scoped from the LCLS-II project ... BKXRASd and
+!       BKYRASd are normal (class-4) correctors which were installed instead
+!       of XCSP5d and YCSP6d
 
 bkxrasd: hkicker, type = "class-4"
 bkyrasd: vkicker, type = "class-4"

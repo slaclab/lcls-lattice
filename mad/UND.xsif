@@ -1,10 +1,15 @@
 
-! *** OPTICS=AD_ACCEL-12JAN22 ***
+! *** OPTICS=AD_ACCEL-14SEP22 ***
 
 ! LCLS2sc undulator and undulator extension
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 15-JUL-2022, M. Woodley
+!  * install CBXFEL chicanes in HXR cells 13 and 21 * per X. Permanyer
+! 29-APR-2022, M. Woodley
+!  * change names of CBXFEL chicane dipoles from BCXCB* to BCXCBX* per G. Marcus
 ! ------------------------------------------------------------------------------
 ! 11-OCT-2021, M. Woodley
 !  * add CBXFEL chicane in HXR cell 21
@@ -1288,7 +1293,7 @@
     RM(5,5) = 1.0,                                    &
     RM(6,6) = 1.0
 
-  PSHXh13 : PSHXh
+! -----13
   PSHXh14 : PSHXh
   PSHXh15 : PSHXh
   PSHXh16 : PSHXh
@@ -1435,7 +1440,7 @@
     RM(5,5) = 1.0,                               &
     RM(6,6) = 1.0
 
-  UMAHXh13 : UMAHXh
+! ------13
   UMAHXh14 : UMAHXh
   UMAHXh15 : UMAHXh
   UMAHXh16 : UMAHXh
@@ -1555,7 +1560,7 @@
 ! HXR undulator X-steering coils in undulator segments
 ! ------------------------------------------------------------------------------
 
-  XCHU13 : INST, TYPE="type-V"
+! ----13
   XCHU14 : INST, TYPE="type-V"
   XCHU15 : INST, TYPE="type-V"
   XCHU16 : INST, TYPE="type-V"
@@ -1595,7 +1600,7 @@
 ! HXR undulator Y-steering coils in undulator segments
 ! ------------------------------------------------------------------------------
 
-  YCHU13 : INST, TYPE="type-V"
+! ----13
   YCHU14 : INST, TYPE="type-V"
   YCHU15 : INST, TYPE="type-V"
   YCHU16 : INST, TYPE="type-V"
@@ -1695,7 +1700,7 @@
 ! HXR undulator phase shifters
 ! ------------------------------------------------------------------------------
 
-  PSHXh13_full : LINE=(PSHXh13,MPHH,PSHXh13)
+  DPSHX13      : DRIF, L=LPSHX
   PSHXh14_full : LINE=(PSHXh14,MPHH,PSHXh14)
   PSHXh15_full : LINE=(PSHXh15,MPHH,PSHXh15)
   PSHXh16_full : LINE=(PSHXh16,MPHH,PSHXh16)
@@ -1758,7 +1763,7 @@
 ! HXR undulator Beam Loss Monitors (placeholders)
 ! ------------------------------------------------------------------------------
 
-  MBLMH13 : MARK
+  BLMH13  : MARK
   MBLMH14 : MARK
   MBLMH15 : MARK
   MBLMH16 : MARK
@@ -1888,10 +1893,9 @@
 ! - Bmax = 3.5 kG-m @ 12 A (approximately)
 ! - Emax = 10.35 GeV for CBXFEL project (8.6 GeV for DBFEL project)
 ! - use series approximation for sinc(x)=sin(x)/x to allow AB6=0
-! - deflects toward -X (to the right/south/wall)
-! - bends away from coil side
+! - deflects toward +X (to the left/north/aisle)
+! - bends toward coil side of C-dipoles
 ! - use Everson Tesla (ETI) "0.276D14-C" dipoles (356 mm core, 7 mm gap)
-! - the chicane in HXR cell 13 will not be installed until "later"
 
   Ecmax  := 10.35        !6.3-10.35 GeV
   Brho6  := Cb*Ecmax     !beam rigidity at CBXFEL chicanes (kG-m)
@@ -1916,129 +1920,145 @@
   AB6L     := AB6-AB6S                          !"long" half chicane bend angle (rad)
   LB6L     := LB6-LB6S                          !"long" half chicane bend path length (m)
 
-  BCXCB11a : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6S, ANGLE=+AB6S, &
-                   E1=0, FINT=FB6, FINTX=0
-  BCXCB11b : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6L, ANGLE=+AB6L, &
-                   E2=+AB6, FINT=0, FINTX=FB6
-  BCXCB12a : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6L, ANGLE=-AB6L, &
-                   E1=-AB6, FINT=FB6, FINTX=0
-  BCXCB12b : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6S, ANGLE=-AB6S, &
-                   E2=0, FINT=0, FINTX=FB6
-  BCXCB13a : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6S, ANGLE=-AB6S, &
-                   E1=0, FINT=FB6, FINTX=0
-  BCXCB13b : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6L, ANGLE=-AB6L, &
-                   E2=-AB6, FINT=0, FINTX=FB6
-  BCXCB14a : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6L, ANGLE=+AB6L, &
-                   E1=+AB6, FINT=FB6, FINTX=0
-  BCXCB14b : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6S, ANGLE=+AB6S, &
-                   E2=0, FINT=0, FINTX=FB6
+  BCXCBX11a : SBEN, TYPE="0.276D14-C", HGAP=GB6/2, L=LB6S, ANGLE=-AB6S, &
+                    E1=0, FINT=FB6, FINTX=0
+  BCXCBX11b : SBEN, TYPE="0.276D14-C", HGAP=GB6/2, L=LB6L, ANGLE=-AB6L, &
+                    E2=-AB6, FINT=0, FINTX=FB6
+  BCXCBX12a : SBEN, TYPE="0.276D14-C", HGAP=GB6/2, L=LB6L, ANGLE=+AB6L, &
+                    E1=+AB6, FINT=FB6, FINTX=0
+  BCXCBX12b : SBEN, TYPE="0.276D14-C", HGAP=GB6/2, L=LB6S, ANGLE=+AB6S, &
+                    E2=0, FINT=0, FINTX=FB6
+  BCXCBX13a : SBEN, TYPE="0.276D14-C", HGAP=GB6/2, L=LB6S, ANGLE=+AB6S, &
+                    E1=0, FINT=FB6, FINTX=0
+  BCXCBX13b : SBEN, TYPE="0.276D14-C", HGAP=GB6/2, L=LB6L, ANGLE=+AB6L, &
+                    E2=+AB6, FINT=0, FINTX=FB6
+  BCXCBX14a : SBEN, TYPE="0.276D14-C", HGAP=GB6/2, L=LB6L, ANGLE=-AB6L, &
+                    E1=-AB6, FINT=FB6, FINTX=0
+  BCXCBX14b : SBEN, TYPE="0.276D14-C", HGAP=GB6/2, L=LB6S, ANGLE=-AB6S, &
+                    E2=0, FINT=0, FINTX=FB6
 
-  BCXCB21a : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6S, ANGLE=+AB6S, &
-                   E1=0, FINT=FB6, FINTX=0
-  BCXCB21b : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6L, ANGLE=+AB6L, &
-                   E2=+AB6, FINT=0, FINTX=FB6
-  BCXCB22a : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6L, ANGLE=-AB6L, &
-                   E1=-AB6, FINT=FB6, FINTX=0
-  BCXCB22b : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6S, ANGLE=-AB6S, &
-                   E2=0, FINT=0, FINTX=FB6
-  BCXCB23a : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6S, ANGLE=-AB6S, &
-                   E1=0, FINT=FB6, FINTX=0
-  BCXCB23b : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6L, ANGLE=-AB6L, &
-                   E2=-AB6, FINT=0, FINTX=FB6
-  BCXCB24a : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6L, ANGLE=+AB6L, &
-                   E1=+AB6, FINT=FB6, FINTX=0
-  BCXCB24b : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6S, ANGLE=+AB6S, &
-                   E2=0, FINT=0, FINTX=FB6
+  BCXCBX21a : SBEN, TYPE="0.276D14-C", HGAP=GB6/2, L=LB6S, ANGLE=-AB6S, &
+                    E1=0, FINT=FB6, FINTX=0
+  BCXCBX21b : SBEN, TYPE="0.276D14-C", HGAP=GB6/2, L=LB6L, ANGLE=-AB6L, &
+                    E2=-AB6, FINT=0, FINTX=FB6
+  BCXCBX22a : SBEN, TYPE="0.276D14-C", HGAP=GB6/2, L=LB6L, ANGLE=+AB6L, &
+                    E1=+AB6, FINT=FB6, FINTX=0
+  BCXCBX22b : SBEN, TYPE="0.276D14-C", HGAP=GB6/2, L=LB6S, ANGLE=+AB6S, &
+                    E2=0, FINT=0, FINTX=FB6
+  BCXCBX23a : SBEN, TYPE="0.276D14-C", HGAP=GB6/2, L=LB6S, ANGLE=+AB6S, &
+                    E1=0, FINT=FB6, FINTX=0
+  BCXCBX23b : SBEN, TYPE="0.276D14-C", HGAP=GB6/2, L=LB6L, ANGLE=+AB6L, &
+                    E2=+AB6, FINT=0, FINTX=FB6
+  BCXCBX24a : SBEN, TYPE="0.276D14-C", HGAP=GB6/2, L=LB6L, ANGLE=-AB6L, &
+                    E1=-AB6, FINT=FB6, FINTX=0
+  BCXCBX24b : SBEN, TYPE="0.276D14-C", HGAP=GB6/2, L=LB6S, ANGLE=-AB6S, &
+                    E2=0, FINT=0, FINTX=FB6
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-  BCXCB11 : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6, ANGLE=+AB6, &
-                  E1=0, FINT=FB6, E2=+AB6, FINTX=FB6
-  BCXCB12 : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6, ANGLE=-AB6, &
-                  E1=-AB6, FINT=FB6, E2=0, FINTX=FB6
-  BCXCB13 : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6, ANGLE=-AB6, &
-                  E1=0, FINT=FB6, E2=-AB6, FINTX=FB6
-  BCXCB14 : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6, ANGLE=+AB6, &
-                  E1=+AB6, FINT=FB6, E2=0, FINTX=FB6
+  BCXCBX11 : SBEN, TYPE="0.276D14-C", HGAP=GB6/2, L=LB6, ANGLE=-AB6, &
+                   E1=0, FINT=FB6, E2=-AB6, FINTX=FB6
+  BCXCBX12 : SBEN, TYPE="0.276D14-C", HGAP=GB6/2, L=LB6, ANGLE=+AB6, &
+                   E1=+AB6, FINT=FB6, E2=0, FINTX=FB6
+  BCXCBX13 : SBEN, TYPE="0.276D14-C", HGAP=GB6/2, L=LB6, ANGLE=+AB6, &
+                   E1=0, FINT=FB6, E2=+AB6, FINTX=FB6
+  BCXCBX14 : SBEN, TYPE="0.276D14-C", HGAP=GB6/2, L=LB6, ANGLE=-AB6, &
+                   E1=-AB6, FINT=FB6, E2=0, FINTX=FB6
 
-  BCXCB21 : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6, ANGLE=+AB6, &
-                  E1=0, FINT=FB6, E2=+AB6, FINTX=FB6
-  BCXCB22 : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6, ANGLE=-AB6, &
-                  E1=-AB6, FINT=FB6, E2=0, FINTX=FB6
-  BCXCB23 : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6, ANGLE=-AB6, &
-                  E1=0, FINT=FB6, E2=-AB6, FINTX=FB6
-  BCXCB24 : SBEN, TYPE="0.315D14-C", HGAP=GB6/2, L=LB6, ANGLE=+AB6, &
-                  E1=+AB6, FINT=FB6, E2=0, FINTX=FB6
+  BCXCBX21 : SBEN, TYPE="0.276D14-C", HGAP=GB6/2, L=LB6, ANGLE=-AB6, &
+                   E1=0, FINT=FB6, E2=-AB6, FINTX=FB6
+  BCXCBX22 : SBEN, TYPE="0.276D14-C", HGAP=GB6/2, L=LB6, ANGLE=+AB6, &
+                   E1=+AB6, FINT=FB6, E2=0, FINTX=FB6
+  BCXCBX23 : SBEN, TYPE="0.276D14-C", HGAP=GB6/2, L=LB6, ANGLE=+AB6, &
+                   E1=0, FINT=FB6, E2=+AB6, FINTX=FB6
+  BCXCBX24 : SBEN, TYPE="0.276D14-C", HGAP=GB6/2, L=LB6, ANGLE=-AB6, &
+                   E1=-AB6, FINT=FB6, E2=0, FINTX=FB6
 
-  Ztotal  := 134.391*in2m !total system length
-  Zuseg   := 3.372032     !undulator segment length
-  ZB2Bo   := 1.230350     !outer bend center-to-center
-  ZB2Bi   := 0.535763     !inner bend center-to-center
-  ZB3toC1 := 0.32356      !3rd bend center to DBFEL crystal #1
-  ZB3toC4 := 0.77365      !3rd bend center to DBFEL crystal #4
+  Ztotal  := 134.391*in2m  !total system length
+  Zuseg   := 3.372032      !undulator segment length
+  ZB2Bo   := 1.23035       !outer bend center-to-center
+  ZB2Bi   := 0.535763      !inner bend center-to-center
 
-  D0CB    : DRIF, L=0.26456-(DU1H[L]+DU2H[L]+ZB6/2)
-  D1CB    : DRIF, L=(ZB2Bo-ZB6)/COS(AB6)
-  DCHCB   : DRIF, L=(ZB2Bi-ZB6)/2
-  D2CB    : DRIF, L=D1CB[L]
-  D3CB    : DRIF, L=Zuseg-(D0CB[L]+ZB6/2+ZB2Bo+ZB2Bi+ZB2Bo+ZB6/2)
-  DU3hCBa : DRIF, L=DU3h[L]+0.030605
-  DU3hCBb : DRIF, L=DU3h[L]+0.102780
-  DU4hCB  : DRIF, L=DU4h[L]-0.025003
-  DU5hCB  : DRIF, L=DU5h[L]-0.108382
+  D0CB1    : DRIF, L=0.264603-(DU1H[L]+DU2H[L]+ZB6/2) !0.26456
+  D1CB1    : DRIF, L=(ZB2Bo-ZB6)/COS(AB6)
+  D1CB1a   : DRIF, L=(0.656172-ZB6/2)/COS(AB6)
+  D1CB1b   : DRIF, L=0.05/COS(AB6)
+  D1CB1c   : DRIF, L=0.0559/COS(AB6)
+  D1CB1d   : DRIF, L=D1CB1[L]-D1CB1a[L]-D1CB1b[L]-D1CB1c[L]
+  DCHCB1   : DRIF, L=(ZB2Bi-ZB6)/2
+  D2CB     : DRIF, L=D1CB1[L]
+  D3CB1    : DRIF, L=Zuseg-(D0CB1[L]+ZB6/2+ZB2Bo+ZB2Bi+ZB2Bo+ZB6/2)
+  DU3hCB1a : DRIF, L=DU3h[L]+0.030605
+  DU3hCB1b : DRIF, L=DU3h[L]+0.102823 ! 0.102780
+  DU4hCB1  : DRIF, L=DU4h[L]-0.000176 !-0.025003
+  DU5hCB1  : DRIF, L=DU5h[L]-0.133252 !-0.108382
 
-! CBXFEL
+  D0CB2    : DRIF, L=0.264610-(DU1H[L]+DU2H[L]+ZB6/2) !0.26456
+  D1CB2    : DRIF, L=D1CB1[L]
+  D1CB2a   : DRIF, L=(0.605982-ZB6/2)/COS(AB6)
+  D1CB2b   : DRIF, L=0.050190/COS(AB6)
+  D1CB2c   : DRIF, L=D1CB2[L]-D1CB2a[L]-D1CB2b[L]
+  DCHCB2   : DRIF, L=DCHCB1[L]
+  D3CB2    : DRIF, L=Zuseg-(D0CB2[L]+ZB6/2+ZB2Bo+ZB2Bi+ZB2Bo+ZB6/2)
+  DU3hCB2  : DRIF, L=DU3h[L]+0.184427
+  DU4hCB2  : DRIF, L=DU4h[L]-0.000176 !-0.025003
+  DU5hCB2  : DRIF, L=DU5h[L]-0.133259 !-0.108382
 
-  D1CBa : DRIF, L=D1CB[L]/2
-  D1CBb : DRIF, L=D1CB[L]-D1CBa[L]
-
-! DBFEL
-
-  D2CBa : DRIF, L=(ZB3toC1-ZB6/2)/COS(AB6)
-  D2CBb : DRIF, L=(ZB3toC4-ZB3toC1)/COS(AB6)
-  D2CBc : DRIF, L=D2CB[L]-D2CBa[L]-D2CBb[L]
-  
   HXRCB1BEG : MARK
-  MIRROR1   : INST !1.5 mm
+  MCBX4     : INST !X-ray diamond crystal mirror
+  YAGCBX42  : PROF !YAG scintillator screen
+  BODCBX40  : PROF !Beam Overlap Diagnostic
   CENTER1   : MARK
-  CRYSTAL11 : INST !1.55 mm 
-  CRYSTAL12 : INST !1.55 mm
   HXRCB1END : MARK
-  
+
   HXRCB2BEG : MARK
-  MIRROR2   : INST !1.5 mm
+  DSSCBX11  : PROF !Diamond scintillator screen
+  MCBX1     : INST !X-ray diamond crystal mirror
   CENTER2   : MARK
-  CRYSTAL21 : INST !1.55 mm 
-  CRYSTAL22 : INST !1.55 mm
   HXRCB2END : MARK
 
-  BCXCB11_full : LINE=(BCXCB11a,BCXCB11b)
-  BCXCB12_full : LINE=(BCXCB12a,BCXCB12b)
-  BCXCB13_full : LINE=(BCXCB13a,BCXCB13b)
-  BCXCB14_full : LINE=(BCXCB14a,BCXCB14b)
+  BCXCBX11_full : LINE=(BCXCBX11a,BCXCBX11b)
+  BCXCBX12_full : LINE=(BCXCBX12a,BCXCBX12b)
+  BCXCBX13_full : LINE=(BCXCBX13a,BCXCBX13b)
+  BCXCBX14_full : LINE=(BCXCBX14a,BCXCBX14b)
 
-  BCXCB21_full : LINE=(BCXCB21a,BCXCB21b)
-  BCXCB22_full : LINE=(BCXCB22a,BCXCB22b)
-  BCXCB23_full : LINE=(BCXCB23a,BCXCB23b)
-  BCXCB24_full : LINE=(BCXCB24a,BCXCB24b)
+  BCXCBX21_full : LINE=(BCXCBX21a,BCXCBX21b)
+  BCXCBX22_full : LINE=(BCXCBX22a,BCXCBX22b)
+  BCXCBX23_full : LINE=(BCXCBX23a,BCXCBX23b)
+  BCXCBX24_full : LINE=(BCXCBX24a,BCXCBX24b)
 
-  CBCHICANE1 : LINE=(HXRCB1BEG,D0CB,&
-    BCXCB11_full,D1CBa,MIRROR1,D1CBb,&
-    BCXCB12_full,DCHCB,CENTER1,DCHCB,&
-    BCXCB13_full,D2CBa,CRYSTAL11,D2CBb,CRYSTAL12,D2CBc,&
-    BCXCB14_full,D3CB,HXRCB1END)
+  CBCHICANE1 : LINE=(HXRCB1BEG,D0CB1,&
+    BCXCBX11_full,D1CB1a,MCBX4,D1CB1b,YAGCBX42,D1CB1c,BODCBX40,D1CB1d,&
+    BCXCBX12_full,DCHCB1,CENTER1,DCHCB1,&
+    BCXCBX13_full,D2CB,&
+    BCXCBX14_full,D3CB1,HXRCB1END)
 
-  CBCHICANE2 : LINE=(HXRCB2BEG,D0CB,&
-    BCXCB21_full,D1CBa,MIRROR2,D1CBb,&
-    BCXCB22_full,DCHCB,CENTER2,DCHCB,&
-    BCXCB23_full,D2CBa,CRYSTAL21,D2CBb,CRYSTAL22,D2CBc,&
-    BCXCB24_full,D3CB,HXRCB2END)
+  CBCHICANE2 : LINE=(HXRCB2BEG,D0CB2,&
+    BCXCBX21_full,D1CB2a,DSSCBX11,D1CB2b,MCBX1,D1CB2c,&
+    BCXCBX22_full,DCHCB2,CENTER2,DCHCB2,&
+    BCXCBX23_full,D2CB,&
+    BCXCBX24_full,D3CB2,HXRCB2END)
+
+! DBFEL (install later)
+
+ !ZB3toC1 := 0.32356 !3rd bend center to DBFEL crystal #1
+ !ZB3toC4 := 0.77365 !3rd bend center to DBFEL crystal #4
+
+ !D2CBa : DRIF, L=(ZB3toC1-ZB6/2)/COS(AB6)
+ !D2CBb : DRIF, L=(ZB3toC4-ZB3toC1)/COS(AB6)
+ !D2CBd : DRIF, L=0.0 +dSmdw
+ !D2CBc : DRIF, L=D2CB[L]-D2CBa[L]-D2CBb[L]-D2CBd[L]
+
+ !CRYSTAL11 : INST !1.55 mm
+ !CRYSTAL12 : INST !1.55 mm
+ !CRYSTAL21 : INST !1.55 mm
+ !CRYSTAL22 : INST !1.55 mm
 
 ! ------------------------------------------------------------------------------
 ! HXR undulator cells
 ! ------------------------------------------------------------------------------
 
-  UMAHXh13_full : LINE=(UMAHXh13,XCHU13,YCHU13,UMAHXh13)
+! ------13
   UMAHXh14_full : LINE=(UMAHXh14,XCHU14,YCHU14,UMAHXh14)
   UMAHXh15_full : LINE=(UMAHXh15,XCHU15,YCHU15,UMAHXh15)
   UMAHXh16_full : LINE=(UMAHXh16,XCHU16,YCHU16,UMAHXh16)
@@ -2074,7 +2094,7 @@
   UMAHXh46_full : LINE=(UMAHXh46,XCHU46,YCHU46,UMAHXh46)
   UMAHXh47_full : LINE=(UMAHXh47,XCHU47,YCHU47,UMAHXh47)
 
-  USEGHX13 : LINE=(DTHXU,UMAHXh13_full,DTHXU) !(CBCHICANE1)
+  USEGHX13 : LINE=(CBCHICANE1)
   USEGHX14 : LINE=(DTHXU,UMAHXh14_full,DTHXU)
   USEGHX15 : LINE=(DTHXU,UMAHXh15_full,DTHXU)
   USEGHX16 : LINE=(DTHXU,UMAHXh16_full,DTHXU)
@@ -2082,14 +2102,14 @@
   USEGHX18 : LINE=(DTHXU,UMAHXh18_full,DTHXU)
   USEGHX19 : LINE=(DTHXU,UMAHXh19_full,DTHXU)
   USEGHX20 : LINE=(DTHXU,UMAHXh20_full,DTHXU)
-  DUSEGH21 : LINE=(CBCHICANE2) !DRIF, L=LDUSEGH
+  DUSEGH21 : LINE=(CBCHICANE2)
   USEGHX22 : LINE=(DTHXU,UMAHXh22_full,DTHXU)
   USEGHX23 : LINE=(DTHXU,UMAHXh23_full,DTHXU)
   USEGHX24 : LINE=(DTHXU,UMAHXh24_full,DTHXU)
   USEGHX25 : LINE=(DTHXU,UMAHXh25_full,DTHXU)
   USEGHX26 : LINE=(DTHXU,UMAHXh26_full,DTHXU)
   USEGHX27 : LINE=(DTHXU,UMAHXh27_full,DTHXU)
-  DUSEGH28 : LINE=(HCHICANE) !DRIF, L=LDUSEGH
+  DUSEGH28 : LINE=(HCHICANE)
   USEGHX29 : LINE=(DTHXU,UMAHXh29_full,DTHXU)
   USEGHX30 : LINE=(DTHXU,UMAHXh30_full,DTHXU)
   USEGHX31 : LINE=(DTHXU,UMAHXh31_full,DTHXU)
@@ -2152,11 +2172,8 @@
   DQHX49      : DRIF, L=LQu
   DQHX50      : DRIF, L=LQu
 
- !HXBRK13 : LINE=(DU3hCBa,MBLMH13,DU3hCBb,QHXh13_full,DU4hCB,RFBHX13,DU5hCB,&
- !                DPSHX13     ,DU6h        ,DU7h)
-
-  HXBRK13 : LINE=(DU3h,MBLMH13,DU3h,QHXh13_full,DU4h,RFBHX13,DU5h,&
-                  PSHXh13_full,DU6h,DVVHXU,DU7h)
+  HXBRK13 : LINE=(DU3hCB1a,BLMH13,DU3hCB1b,QHXh13_full,&
+                  DU4hCB1,RFBHX13,DU5hCB1,DPSHX13,DU6h,DU7h)
   HXBRK14 : LINE=(DU3h,MBLMH14,DU3h,QHXh14_full,DU4h,RFBHX14,DU5h,&
                   PSHXh14_full,DU6h,VVHXU14,DU7h)
   HXBRK15 : LINE=(DU3h,MBLMH15,DU3h,QHXh15_full,DU4h,RFBHX15,DU5h,&
@@ -2171,8 +2188,8 @@
                   PSHXh19_full,DU6h,DVVHXU,DU7h)
   HXBRK20 : LINE=(DU3h,MBLMH20,DU3h,QHXh20_full,DU4h,RFBHX20,DU5h,&
                   PSHXh20_full,DU6h,VVHXU20,DU7h)
-  HXBRK21 : LINE=(DU3hCBa,MBLMH21,DU3hCBb,QHXh21_full,DU4hCB,RFBHX21,DU5hCB,&
-                  DPSHX21     ,DU6h        ,DU7h)
+  HXBRK21 : LINE=(DU3hCB2,QHXh21_full,&
+                  DU4hCB2,RFBHX21,DU5hCB2,DPSHX21,DU6h,DU7h)
   HXBRK22 : LINE=(DU3h,MBLMH22,DU3h,QHXh22_full,DU4h,RFBHX22,DU5h,&
                   PSHXh22_full,DU6h,VVHXU22,DU7h)
   HXBRK23 : LINE=(DU3h,MBLMH23,DU3h,QHXh23_full,DU4h,RFBHX23,DU5h,&
@@ -2232,7 +2249,7 @@
   HXBRK50 : LINE=(DU3h        ,DU3H,DQHX50     ,DU4h,DRFBH50,DU5h,&
                   DPSHX50     ,DU6h        ,DU7h)
 
-  HXCEL13  : LINE=(DU1h,DU2h,USEGHX13,HXBRK13)
+  HXCEL13  : LINE=(DU1h,DU2h,USEGHX13,HXBRK13) !CBCHICANE1+Q+RFBPM
   HXCEL14  : LINE=(DU1h,DU2h,USEGHX14,HXBRK14)
   HXCEL15  : LINE=(DU1h,DU2h,USEGHX15,HXBRK15)
   HXCEL16  : LINE=(DU1h,DU2h,USEGHX16,HXBRK16)

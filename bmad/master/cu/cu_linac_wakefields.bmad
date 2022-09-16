@@ -1,0 +1,19 @@
+
+! Cavity wakefields, traveling wave, full sbend
+lcavity::L0*[sr_wake]  = call::$LCLS_LATTICE/bmad/wakefields/longitudinal_wakes_sband.bmad
+lcavity::K*[sr_wake]    = call::$LCLS_LATTICE/bmad/wakefields/longitudinal_wakes_sband.bmad
+lcavity::L1X*[sr_wake]  = call::$LCLS_LATTICE/bmad/wakefields/longitudinal_wakes_xband.bmad
+
+! Resistive wall, instantaneous
+RWWAKE3H[sr_wake] = call::$LCLS_LATTICE/bmad/wakefields/wakefield_SS_24.5mmR.bmad
+RWWAKE3H[sr_wake%scale_with_length] = F
+RWWAKE3H[sr_wake%amp_scale] = 182
+
+RWWAKE4H[sr_wake] = call::$LCLS_LATTICE/bmad/wakefields/wakefield_Cu_17.4mmR.bmad
+RWWAKE4H[sr_wake%scale_with_length] = F
+RWWAKE4H[sr_wake%amp_scale] = 339.1
+
+RWWAKE5H[sr_wake] = call::$LCLS_LATTICE/bmad/wakefields/wakefield_Al_5mm_gap_flat.bmad
+RWWAKE5H[sr_wake%scale_with_length] = F
+RWWAKE5H[sr_wake%amp_scale] = 130
+

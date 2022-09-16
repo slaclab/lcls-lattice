@@ -1,10 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-12JAN22 ***
+! *** OPTICS=AD_ACCEL-14SEP22 ***
 
 ! LCLS2sc LTU and dump
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 07-SEP-2022, M. Woodley
+!  * redefine YAGDL18
 ! ------------------------------------------------------------------------------
 ! 30-NOV-2021, M. Woodley
 !  * change TYPE of BPMQD and BPMQDB to "Stripline-11" (vertical orientation)
@@ -1026,7 +1029,11 @@ PCTDKIK3S: pipe, L = 0.8128, type ="@5,BCS PC", descrip = "deferred ECOLLIMATOR"
 PCTDKIK4S: pipe, L = 0.8128, type ="@5,BCS PC", descrip = "deferred ECOLLIMATOR"
 !old: pctdkik4s: ecollimator, type = "@5,BCS PC", l = lpctdkik, x_limit = 11.1125e-3, y_limit = 11.1125e-3
 
-yagdl18: monitor, type = "YAG-PAL"
+! combination YAG/OTR !PAL type
+
+yagdl18: monitor, type = "YAG"
+yagdl18_otr: monitor, type = "OTR"
+  YAGDL18_full : LINE=(YAGDL18,YAGDL18_OTR)
 
 pc01b: instrument, type = "BCS plate", l = lplate
 btm01b: instrument, type = "PPS BTM"
@@ -1179,9 +1186,9 @@ sdl2[L] = 2*sdl2[L]
          DDL6ba,SDL2_full,DDL6bb,QDL15_full,DDL0ba,BPMDL15,DDL0bb,DDL0bc,YCDL16,DDL6b,QDL16_full,DBYKS01,CYDL16,DBYKS02,BPMDL16,
          DBYKS03,PC04B,BTM04B,DBYKS04,BYKIK1S_full,DBYKS05,DBYKS05,BYKIK2S_full,DBYKS06,XCDL17,DBYKS07,BPMDL17,DBYKS08,
          QDL17_full,DBYKS11,CEDL17,DBYKS12,DBYKS13,SPOILERS,DBYKS14,TDKIKS,DBYKS15,PCTDKIK1S,DBYKS16,PCTDKIK2S,DBYKS16,PCTDKIK3S,
-         DBYKS16,PCTDKIK4S,DBYKS17,YAGDL18,DBYKS18,YCDL18,DBYKS19,QDL18_full,DDL19ba,BPMDL18,DDL19bb,PC06B,BTM06B,DDL19bc,XCDL19,
-         DDL6b,QDL19_full,DDL2ba,BPMDL19,DDL2bb,BX32B_full,CNTLT1S,DDL14b,QDL20_full,DDL6b,YCDL20,DDL17b,CC32b,DDL18ba,PC07B,
-         BTM07B,DDL18bb,YCDL21,DDL6b,QDL21_full,DDL4b,XCDL22,DDL6b,QDL22_full,DDL5b)
+         DBYKS16,PCTDKIK4S,DBYKS17,YAGDL18_full,DBYKS18,YCDL18,DBYKS19,QDL18_full,DDL19ba,BPMDL18,DDL19bb,PC06B,BTM06B,DDL19bc,
+         XCDL19,DDL6b,QDL19_full,DDL2ba,BPMDL19,DDL2bb,BX32B_full,CNTLT1S,DDL14b,QDL20_full,DDL6b,YCDL20,DDL17b,CC32b,DDL18ba,
+         PC07B,BTM07B,DDL18bb,YCDL21,DDL6b,QDL21_full,DDL4b,XCDL22,DDL6b,QDL22_full,DDL5b)
 
 !=!  COMMENT !test line to find ABYKIKS angle for -14.2 mm offset at front face of TDKIKS
 !=!  COMMENT !test line to find ABYKIKS angle for -14.2 mm offset at front face of TDKIKS
@@ -1947,7 +1954,6 @@ dw2tdundb: drift, l = 3.001537 +0.060429 !drift from BTH/UH wall-2 to TDUNDB u/s
 dtdund1: drift, l = 0.855853 !from u/s TDUND flange to TDUND center
 dtdund2: drift, l = 0.347853 !from TDUND center to d/s TDUND flange
 dpcmuon: drift, l = 0.031498
-dmuon1: drift, l = 0.154859 +0.05
 dmuon1b: drift, l = 0.154859 +0.05 -0.060429 +0.117
 dmuon3b: drift, l = 0.310592 -0.05 -0.117
 
@@ -3041,7 +3047,9 @@ d40cmf: drift, l = 0.40+0.090013-0.065013
 
 rfbhx12: monitor, l = lrfbub, type = "CavityX-1"
 
-dmuon4: drift, l = 0.059608016 +0.009373
+dmuon1: drift, l = 0.186743984144 !0.154859 +0.05
+dmuon2: drift, l = 0.018115015856 !0.0
+dmuon4: drift, l = 0.093980765446-lrfbub/2 !0.059608016 +0.009373
 dmuon3: drift, l = 0.310592 -0.05 -dmuon4[l] -lrfbub
 
 ! dechirper installation (August, 2015)
@@ -3510,7 +3518,7 @@ dws36: marker
 
 im36: marker, type = "120Hz toroid" !comparator with IM31 (existing LCLS device)
 
-yagpsi: monitor, type = "YAG-PAL" !existing LCLS device
+yagpsi: monitor, type = "YAG PAL" !existing LCLS device
 otr33: monitor, type = "OTR" !LTU slice emittance (existing LCLS device)
 
 pc07: instrument, type = "BCS plate", l = lplate
@@ -3732,7 +3740,7 @@ bpmum4[ref] = qum4
   UNMCH : LINE=(DU1m80cma,DWS36,DU1m80cmb,DCX37,D32cmc,XCUM1,DUM1A,QUM1_full,DUM1B,D32cm,DU2m120cm,DCY38,D32cma,YCUM2,
          DUM2A,QUM2_full,DUM2B,DU3m80cm,XCUM3,DUM3A,QUM3_full,DUM3B,D40cma,EOBLM,DU4m120cm,YCUM4,DUM4A,QUM4_full,DUM4B,RFB07,
          DU5m80cm,IMUNDI,D40cmWa,BLTOF,D40cmWb,MUHWALL1,DUHWALL1,DUHVESTa,RFB08,DUHVESTb,MUHWALL2,DUHWALL2,DW2TDUND,DTDUND1,
-         TDUND,DTDUND2,DPCMUON,PCMUON,DMUON1,VV999)
+         TDUND,DTDUND2,DPCMUON,PCMUON,DMUON1,VV999,DMUON2)
 
   PREUNDH : LINE=(DMUON3,RFBHX12,DMUON4,MM3,PFILT1,DBMARK37)
 

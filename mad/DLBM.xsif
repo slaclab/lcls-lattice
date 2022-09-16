@@ -1,10 +1,16 @@
 
-! *** OPTICS=AD_ACCEL-12JAN22 ***
+! *** OPTICS=AD_ACCEL-14SEP22 ***
 
 ! LCLS2sc sector 7 dogleg plus match to bypass line
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 09-SEP-2022, M. Woodley
+!  * redefine (deferred) OTR31
+! 20-JUN-2022, M. Woodley
+!  * correct location and thickness of Sector 10 (FACET) wall (concrete only)
+!    per L.Borzenets email of Thursday, February 24, 2022 11:50 AM
 ! ------------------------------------------------------------------------------
 ! 12-JUL-2021, M. Woodley
 !  * move XCBP11 10" downstream per T. Fak
@@ -467,8 +473,8 @@
 
   DBPb1   : DRIF, L=DBPb[L]+0.38327
   DBPc1   : DRIF, L=DBPc[L]-0.38327
-  DBPd1   : DRIF, L=21.299397
-  S10WALL : DRIF, L=2.0
+  DBPd1   : DRIF, L=21.516667
+  S10WALL : DRIF, L=1.848
   DBPd2   : DRIF, L=DBPd[L]-DBPd1[L]-S10WALL[L]
 
 ! ==============================================================================
@@ -535,8 +541,13 @@
 
   OTRDOG : PROF, TYPE="OTR"
   WSDOG  : WIRE, TYPE="@3,fast"
-  OTR31  : PROF, TYPE="@3,YAG/OTR PSI" !CSR-induced coupling from dogleg
   WSBP1  : WIRE, TYPE="fast"
+
+! combination OTR/YAG !PSI type
+
+  OTR31      : PROF, TYPE="@3,OTR"
+  OTR31_YAG  : PROF, TYPE="@3,YAG"
+  OTR31_full : LINE=(OTR31,OTR31_YAG)
 
 ! markers
 
@@ -674,7 +685,7 @@
 
  !COMMENT !complete
     MTCH1 : LINE=(DLCCP,&
-      CCDLD,DL0Pa,OTR31,DL0Pb,&
+      CCDLD,DL0Pa,OTR31_full,DL0Pb,&
       QL1P_full,DL1Pa,BPML1P,DL1Pb,XCL1P,DL1Pc,&
       QL2P_full,DL2Pa,BPML2P,DL2Pb,YCL2P,DL2Pc,&
       QL3P_full,DL3Pa,BPML3P,DL3Pb,XCL3P,DL3Pc,BPN09BEG,DL3Pd,&
