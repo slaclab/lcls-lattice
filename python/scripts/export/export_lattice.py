@@ -18,6 +18,7 @@ MODELS = ['cu_sxr',
 # 'cu_inj',
  'sc_dasel', # crashes Bmad, bug reported
 # 'cu_linac',
+ 'sc_inj',
  'sc_sxr',
  'sc_hxr',
  'sc_bsyd',
