@@ -91,6 +91,57 @@ beam_init%position_file = 'cathode_probe_particles.h5'
 
 
 
+
+!-----------------------------------------
+! BPM Orbit
+! Auto-generated BPM datums using: $LCLS_LATTICE/bmad/conversion/tao/create_vars_and_datums.ipynb
+        
+&tao_d2_data
+    d2_data%name = 'orbit'
+    universe = 1
+    n_d1_data = 3
+/    
+    
+&tao_d1_data
+    ix_d1_data = 1
+    default_weight = 1
+    d1_data%name = 'x'
+    default_data_type = 'bpm_orbit.x'
+    default_data_source = 'lat'
+    !search_for_lat_eles = "monitor::bpm*,monitor::rfb*" 
+    datum(1:)%ele_name =  'BPM1B', 'BPM2B', 'BPM0H01', 'BPM0H04', 'BPM0H05', 'BPM0H08',
+     'BPMH1', 'BPMH2', 'BPMHD01', 'BPMHD02', 'BPMHD03', 'BPMHD04'
+    datum(1:)%meas = 0
+/
+
+&tao_d1_data
+    ix_d1_data = 2
+    default_weight = 1
+    d1_data%name = 'y'
+    default_data_type = 'bpm_orbit.y'
+    default_data_source = 'lat'
+    !search_for_lat_eles = "monitor::bpm*,monitor::rfb*" 
+    use_same_lat_eles_as = 'orbit.x'
+    datum(1:)%meas = 0
+/
+
+&tao_d1_data
+    ix_d1_data = 3
+    default_weight = 1
+    d1_data%name = 'charge'
+    default_data_type = 'bunch_charge.live'
+    default_data_source = 'beam'
+    !search_for_lat_eles = "monitor::bpm*,monitor::rfb*" 
+    use_same_lat_eles_as = 'orbit.x'
+/
+
+
+
+
+
+!-----------------------------------------
+
+
 !-----------------------------------------
 !-----------------------------------------------------------------------------------------
 
@@ -119,3 +170,27 @@ beam_init%position_file = 'cathode_probe_particles.h5'
     default_attribute = 'K1'
     search_for_lat_eles = 'quad::Q0H*'
 /
+
+
+!----------------------------------------
+! Correctors
+! Auto-generated corrector datums using: $LCLS_LATTICE/bmad/conversion/tao/create_vars_and_datums.ipynb
+        
+&tao_var
+    v1_var%name = 'xcor'
+    default_step = 1e-2
+    default_attribute = 'bl_kick'
+    var(1:)%ele_name =  'XC01B', 'XC02B', 'XC03B', 'XC04B', 'XC05B', 'XCM01', 'XC0H01',
+     'XC0H03', 'XC0H05', 'XC0H07', 'XCHD01', 'XCHD03'
+/
+
+
+&tao_var
+    v1_var%name = 'ycor'
+    default_step = 1e-2
+    default_attribute = 'bl_kick'
+    var(1:)%ele_name =  'YC01B', 'YC02B', 'YC03B', 'YC04B', 'YC05B', 'YCM01', 'YC0H01',
+     'YC0H03', 'YC0H05', 'YC0H07', 'YCHD01', 'YCHD03'
+/
+
+!----------------------------------------
