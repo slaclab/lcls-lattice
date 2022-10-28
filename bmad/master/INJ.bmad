@@ -1,10 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-14SEP22 ***
+! *** OPTICS=AD_ACCEL-14SEP22a ***
 
 ! LCLS2sc injector: gun to start of L1 linac
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 24-OCT-2022, M. Woodley
+!  * replace CQ02B (SOL2B trim) with "mini-quad"
 ! ------------------------------------------------------------------------------
 ! 08-SEP-2022, M. Woodley
 !  * redefine YAG01B, OTR0H04, and OTRC001
@@ -241,8 +244,12 @@ bcxh4: sbend, type = "5D3.9", hgap = gbh/2, l = lbh, angle = +abh, e1 = +abh, fi
 
 cq01b: multipole, type = "solenoid trim", aperture = 0.0475/2, k1l = 0
 sq01b: multipole, type = "solenoid trim", aperture = 0.0475/2, k1l = 0,t1
-cq02b: multipole, type = "solenoid trim", aperture = 0.0475/2, k1l = 0
+ !CQ02B : MULT, TYPE="solenoid trim", aperture=0.0475/2, K1L=0     !shorted out
 sq02b: multipole, type = "solenoid trim", aperture = 0.0475/2, k1l = 0,t1
+
+! replacement for original CQ02B (correction coil co-wound on SOL2B)
+
+cq02b: quadrupole, type = "3.37Q1.2", l = lqg/2, aperture = rqg, k1 = 0
 
 ! L0 to WS/OTR (Q0H01-4 match to waists at WS0H04)
 
@@ -421,6 +428,8 @@ dg014: drift, l = 0.101444
 dg015: drift, l = 0.004540
 dg016: drift, l = 0.163813
 
+dg012a: drift, l = 0.08-lqg/2
+dg012b: drift, l = dg012[l]-lqg-dg012a[l]
 dg016b: drift, l = 0.082968
 dg016a: drift, l = dg016[l]-dg016b[l]
 
@@ -778,6 +787,12 @@ bcxh4_full: line = (bcxh4)
 
 
 
+!Old split line:  CQ02B_full : LINE=(CQ02B,CQ02B)
+
+cq02b_full: line = (cq02b)
+cq02b[L] = 2*cq02b[L]
+
+
 !Old split line:  Q0H01_full : LINE=(Q0H01,BPM0H01,Q0H01)
 
 q0h01_full: line = (q0h01)
@@ -973,12 +988,10 @@ sq01b[superimpose] = T
 sq01b[ref] = sol1b
 
 
-!Old split line:  SOL2B_full : LINE=(SOL2B,CQ02B,SQ02B,SOL2B)
+!Old split line:  SOL2B_full : LINE=(SOL2B,      SQ02B,SOL2B)
 
 sol2b_full: line = (sol2b)
 sol2b[L] = 2*sol2b[L]
-cq02b[superimpose] = T
-cq02b[ref] = sol2b
 sq02b[superimpose] = T
 sq02b[ref] = sol2b
 
@@ -999,12 +1012,12 @@ htrundb[ref] = umhtr
   SCC000 : LINE=(XCC000,YCC000)
 
   GUN : LINE=(BEGGUNB,DGBCa,SOL1BKB,DGBCb,CATHODEB,DGUN,DG001,SOL1B_full,DG002,VV01B,DG003,SC1B,DG004,BPM1B,DG005,IM01B,
-         DG006,SC2B,DG007,BUN1B_full,DG008,SC3B,DG009,AM00B,DG010,SC4B,DG011,YAG01B_full,DG012,SOL2B_full,DG013,VV02B,DG014,
-         BPM2B,DG015,SC5B,DG016a,BLFU,DG016b,ENDGUNB)
+         DG006,SC2B,DG007,BUN1B_full,DG008,SC3B,DG009,AM00B,DG010,SC4B,DG011,YAG01B_full,DG012a,CQ02B_full,DG012b,SOL2B_full,
+         DG013,VV02B,DG014,BPM2B,DG015,SC5B,DG016a,BLFU,DG016b,ENDGUNB)
 
   EIC : LINE=(BEGEIC,DGBCa,SOL1BKB,DGBCb,CATHODEB,DGUN,DG001,SOL1B_full,DG002,VV01B,DG003,SC1B,DG004,BPM1B,DG005,IM01B,
-         DG006,SC2B,DG007,BUN1B_full,DG008,SC3B,DG009,AM00B,DG010,SC4B,DG011,YAG01B_full,DG012,SOL2B_full,DG013,VV02B,DG014,
-         BPM2B,DG015,SC5B,DG016a,BLFU,DG016b,ECUEIC,DGEIC,FC00EIC,ENDEIC)
+         DG006,SC2B,DG007,BUN1B_full,DG008,SC3B,DG009,AM00B,DG010,SC4B,DG011,YAG01B,DG012,SOL2B_full,DG013,VV02B,DG014,BPM2B,
+         DG015,SC5B,DG016a,BLFU,DG016b,ECUEIC,DGEIC,FC00EIC,ENDEIC)
 
 !=!  COMMENT !simplified
 !=!  COMMENT !simplified
