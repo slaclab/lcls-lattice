@@ -72,6 +72,49 @@ beam_init%center(6) = 0.0
 /  
 
 
+
+!---------------------------------------------------------------------------------------
+! Q0H01
+
+&tao_d2_data
+        d2_data%name = 'Q0H01'
+        universe = 1
+        n_d1_data = 1
+/
+&tao_d1_data
+        ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'begtwiss'
+        datum( 1) =  'beta.a'     '' '' 'D0H00B'   'target'  10  1e1
+        datum( 2) =  'alpha.a'    '' '' 'D0H00B'   'target'   0  1e2
+        datum( 3) =  'beta.b'     '' '' 'D0H00B'   'target'  10  1e1
+        datum( 4) =  'alpha.b'    '' '' 'D0H00B'   'target'   0  1e2
+        datum( 5) =  'eta.x'      '' '' 'D0H00B'   'target'   0  1e1
+        datum( 6) =  'etap.x'     '' '' 'D0H00B'   'target'   0  1e2
+/  
+
+
+
+!---------------------------------------------------------------------------------------
+! OTR0H04
+
+&tao_d2_data
+        d2_data%name = 'OTR0H04'
+        universe = 1
+        n_d1_data = 1
+/
+&tao_d1_data
+        ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'midtwiss'
+        datum( 1) =  'beta.a'     '' '' 'D0H00B'   'target'   5.01187794  1e1
+        datum( 2) =  'alpha.a'    '' '' 'D0H00B'   'target'   0.04874000  1e2
+        datum( 3) =  'beta.b'     '' '' 'D0H00B'   'target'   4.96994136  1e1
+        datum( 4) =  'alpha.b'    '' '' 'D0H00B'   'target'   0.00576731  1e2
+        datum( 5) =  'eta.x'      '' '' 'D0H00B'   'target'   0  1e1
+        datum( 6) =  'etap.x'     '' '' 'D0H00B'   'target'   0  1e2
+/  
+
 !---------------------------------------------------------------------------------------
 ! HTR
 
@@ -460,10 +503,17 @@ beam_init%center(6) = 0.0
 
 
 &tao_var
-    v1_var%name = 'q.L1'
+    v1_var%name = 'q.match.COL1'
 	default_step = 1e-4
 	default_attribute = 'K1'
-	var(1:)%ele_name = 'QC010', 'QC011','QC012', 'QCM02', 'QCM03'
+	var(1:)%ele_name = 'QC001', 
+        'QC002',
+        'QC003',
+        'QC004',
+        'QC005',
+        'QC006',
+        'QC007',
+        'QC008', 'QC009', 'QC010', 'QC011','QC012', 'QCM02', 'QCM03'
 /
 
 
@@ -488,6 +538,24 @@ beam_init%center(6) = 0.0
 	default_step = 0.1
 	default_attribute = 'phase_deg'
 	var(1:)%ele_name = 'SC_L1', 'SC_L1H', 'SC_L2', 'SC_L3'
+/
+
+&tao_var
+    v1_var%name = 'q.COL0'
+	default_step = 1e-4
+	default_attribute = 'K1'
+	var(1:)%ele_name = 'QC001',
+        'QC002', 
+        'QC003',
+        'QC004',
+        'QC005',
+        'QC006',
+        'QC007',
+        'QC008',
+        'QC009',
+        'QC010',
+        'QC011',
+        'QC012'                                                                              
 /
 
 &tao_var
