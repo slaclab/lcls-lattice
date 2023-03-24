@@ -1,11 +1,14 @@
 
-! *** OPTICS=AD_ACCEL-14SEP22 ***
+! *** OPTICS=AD_ACCEL-13MAR23 ***
 
 ! ==============================================================================
-! 28-JUL-2022, M. Woodley
-!  * change ultra-fast stripline kickers from INST to VKIC and HKIC
+! 30-JAN-2023, M. Woodley
+!  * add ultra-fast stripline kickers at 22-9 per A. Halavanau
+!    (change keyword from INST to BEND in makeExcel.m)
+! ------------------------------------------------------------------------------
 ! 21-OCT-2021, M. Woodley
 !  * add ultra-fast stripline kickers at 21-9 per A. Halavanau
+!    (change keyword from INST to BEND in makeExcel.m)
 ! ------------------------------------------------------------------------------
 ! 23-FEB-2017, M. Woodley
 !    Change TYPE of LI21 XCORs and YCORs to "type-4al" for consistency with LCLS
@@ -532,11 +535,16 @@
 
   BKY21929 : INST, TYPE="0.79K11.8", L=Lufkick
   BKX21957 : INST, TYPE="0.79K11.8", L=Lufkick
+  BKY22929 : INST, TYPE="0.79K11.8", L=Lufkick
+  BKX22957 : INST, TYPE="0.79K11.8", L=Lufkick
 
   D219a : DRIF, L=0.4609-Lufkick/2
   D219b : DRIF, L=0.5439-Lufkick
   D219c : DRIF, L=DAQ4[L]-D219a[L]-Lufkick-D219b[L]-Lufkick
-
+  D229a : DRIF, L=D219a[L]
+  D229b : DRIF, L=D219b[L]
+  D229c : DRIF, L=D219c[L]
+  
 ! ==============================================================================
 ! BEAMLINEs
 ! ------------------------------------------------------------------------------
@@ -579,7 +587,7 @@
     K21_6a_full,K21_6b_full,K21_6c_full,K21_6d_full,DAQ1,Q21701_full,DAQ2,&
     K21_7a_full,K21_7b_full,K21_7c_full,K21_7d_full,DAQ1,Q21801_full,DAQ2,&
     K21_8a_full,K21_8b_full,K21_8c_full,K21_8d_full,DAQ3,Q21901_full,&
-    D219a,BKY21929,D219b,BKX21957,D219c,&
+     D219a,BKY21929,D219b,BKX21957,D219c,&
     LI21end)
 
 ! ------------------------------------------------------------------------------
@@ -634,7 +642,8 @@
     K22_5a_full,K22_5b_full,K22_5c_full,K22_5d_full,DAQ1,Q22601_full,DAQ2,&
     K22_6a_full,K22_6b_full,K22_6c_full,K22_6d_full,DAQ1,Q22701_full,DAQ2,&
     K22_7a_full,K22_7b_full,K22_7c_full,K22_7d_full,DAQ1,Q22801_full,DAQ2,&
-    K22_8a_full,K22_8b_full,K22_8c_full,K22_8d_full,DAQ3,Q22901_full,DAQ4,&
+    K22_8a_full,K22_8b_full,K22_8c_full,K22_8d_full,DAQ3,Q22901_full,&
+     D229a,BKY22929,D229b,BKX22957,D229c,&
     LI22end)
 
 ! ------------------------------------------------------------------------------
