@@ -1,10 +1,19 @@
 
-! *** OPTICS=AD_ACCEL-14SEP22 ***
+! *** OPTICS=AD_ACCEL-13MAR23 ***
 
 ! LCLS2sc undulator and undulator extension
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 02-MAR-2023, M. Woodley
+!  * reomve FSPEPX1 and FSPEPX3 (PEPPEx Phase 2) per X. Permanyer
+! 17-FEB-2023, M. Woodley
+!  * change TYPE of SXR undulators to "VGHPU39"
+! 07-FEB-2023, M. Woodley
+!  * modified SXR undulator end area: single (1.5 m long) TCX01B per P. Krejcik
+! 20-DEC-2022, M. Woodley
+!  * relocate BCXHS1 and BCXHS4 to as-built locations per Metrology
 ! ------------------------------------------------------------------------------
 ! 15-JUL-2022, M. Woodley
 !  * install CBXFEL chicanes in HXR cells 13 and 21 * per X. Permanyer
@@ -575,7 +584,7 @@
   KSXU   := 5.0
   kQSX   := (KSXU*2*pi/luSXU/sqrt(2)/gamu)^2 !m^-2
 
-  UMASXh : MATR, TYPE="VGHPU", L=LSXUh,         &
+  UMASXh : MATR, TYPE="VGHPU39", L=LSXUh,         &
     RM(1,1) = 1.0,                               &
     RM(1,2) = LSXUh,                             &
     RM(2,1) = 0.0,                               &
@@ -1027,9 +1036,9 @@
 
   PEPXANG := 0.105263157895E-2 !offset beam toward aisle (south)
 
-  DU7sc     : DRIF, L=0.184
-  FSPEPX1   : INST, TYPE="fast shutter"
-  DU7sd     : DRIF, L=DU7s[L]-DU7sc[L]
+ !DU7sc     : DRIF, L=0.184
+ !FSPEPX1   : INST, TYPE="fast shutter"
+ !DU7sd     : DRIF, L=DU7s[L]-DU7sc[L]
   DU3sa     : DRIF, L=0.114
   XCPEPX1   : HKIC, TYPE="2.19 Gap Type 4", KICK=-PEPXANG*SETPEPX
   DU3sb     : DRIF, L=DU3s[L]-DU3sa[L]
@@ -1055,7 +1064,7 @@
                       -DUSEGS50f[L]
   DUE1ab1   : DRIF, L=0.121
   VPPEPX2   : MARK, TYPE="ion pump"
-  DUE1ab2 : DRIF, L=DUE1ab[L]-DUE1ab1[L]
+  DUE1ab2   : DRIF, L=DUE1ab[L]-DUE1ab1[L]
 
   SXBRK26 : LINE=(&
     DU3s,PSSXh26_full,DU4s,VVSXU26,DU5s,QSXh26_full,DU6s,RFBSX26,DU7s)
@@ -1099,12 +1108,13 @@
     DU3s,PSSXh45_full,DU4s,        DU5s,QSXh45_full,DU6s,RFBSX45,DU7s)
   SXBRK46 : LINE=(&
     DU3s,PSSXh46_full,DU4s,        DU5s,QSXh46_full,DU6s,RFBSX46,DU7s)
-  SXBRK47 : LINE=(DU3s,DPSSX47,DU4s,VVSXU47,DU5s,QSXh47_full,DU6s,&
-    RFBSX47,DU7sc,FSPEPX1,DU7sd)
+  SXBRK47 : LINE=(&
+    DU3s,DPSSX47     ,DU4s,VVSXU47,DU5s,QSXh47_full,DU6s,RFBSX47,DU7s)
   SXBRK48 : LINE=(DU3s,DPSSX48,DU4s,DU5s,DQSX48,DU6s,DRFBS48,DU7s)
   SXBRK49 : LINE=(DU3sa,XCPEPX1,DU3sb,DPSSX49,DU4s,DU5s,DQSX49,DU6s,&
     DRFBS49,DU7se,VGPEPX1,VGCCPEPX1,VGPRPEPX1,DU7sf)
-  SXBRK50 : LINE=(DU3s,DPSSX50,DU4s,DU5s,DQSX50,DU6s,DRFBS50,DU7s)
+  SXBRK50 : LINE=(&
+    DU3s,DPSSX50     ,DU4s,        DU5s,DQSX50     ,DU6s,DRFBS50,DU7s)
 
   SXCEL26  : LINE=(DU1s,MBLMS26,DU2s,USEGSX26,SXBRK26)
   SXCEL27  : LINE=(DU1s,MBLMS27,DU2s,USEGSX27,SXBRK27)
@@ -1148,6 +1158,8 @@
 ! SXR undulator exit section
 ! ------------------------------------------------------------------------------
 
+  TCX01B : LCAV, FREQ=XbandF, TYPE="TRANS_DEFL", L=1.5/2 !horiz. deflection
+
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
@@ -1157,102 +1169,87 @@
   QUE1B : QUAD, TYPE="2Q10", L=LQR/2, K1=KQUE1b, APER=rQR
   QUE2B : QUAD, TYPE="2Q10", L=LQR/2, K1=KQUE2b, APER=rQR
 
-  TCX01B : LCAV, FREQ=XbandF, TYPE="@1,TRANS_DEFL", L=1.0/2 !horiz. deflection
-  TCX02B : LCAV, FREQ=XbandF, TYPE="@1,TRANS_DEFL", L=1.0/2 !horiz. deflection
-
-  LBKXDMP := 1.0 !x-kicker length in dumpline
-  DBKXDMPS : DRIF, L=LBKXDMP !placeholder for x-kicker in SXR dumpline
-
-  dzSXTES := 0.468389399848E-10 !set MDLWALLb at 685 m exactly to align with SXR XTES system
-  dzHXTES := 0.749541186639E-6  !set MDLWALL at 685 m exactly to align with HXR XTES system
-
-  DUE1d   : DRIF, L=0.1
-  DUE1b   : DRIF, L=1.5
-  DUE1c   : DRIF, L=0.5
-  DUE2a   : DRIF, L=0.5
-  DUE2d   : DRIF, L=0.188 -0.012 !phase cavity center-to-center spacing
-  DUE2b   : DRIF, L=0.8-DUE2d[L]+0.005555
-  DUE2e   : DRIF, L=1.740055-DUE2b[L]-3*DUE2d[L]
-  DUE2cb  : DRIF, L=0.615    +(LQP-LQR)/2
-  DUE3ab  : DRIF, L=0.375504 +(LQP-LQR)/2 -0.014955
-  DUE3bb  : DRIF, L=1.2630495 +0.014955
-  DUE3c   : DRIF, L=(1.7968755-LBKXDMP)/2
-  DPCVV   : DRIF, L=0.397
-  DVVTCX  : DRIF, L=0.32
-  DTCX12  : DRIF, L=0.373/2
-  DTCXSP  : DRIF, L=0.381
-  DUE4b   : DRIF, L=0.454    +(LQP-LQR)/2
-  DUE5ab  : DRIF, L=0.477799 +(LQP-LQR)/2 -0.114162
-  DUE5bb  : DRIF, L=0.264 +0.114162-0.1016+0.1016
-  DUE5cb  : DRIF, L=0.2674         +0.1016-0.1016
-  DUE5d   : DRIF, L=0.137055-0.05
-  DUE5f   : DRIF, L=0.05
-  DUE5e   : DRIF, L=0.252825-DUE5d[L]-DUE5f[L]-dzHXTES
-  DSB0a   : DRIF, L=0.260150
-  DSB0b   : DRIF, L=0.344
-  DSB0c   : DRIF, L=0.32646
-  DSB0d   : DRIF, L=0.123366
+  LBKXDMP :=  1.0                !x-kicker length in dumpline
+  dzSXTES :=  0.468389399848E-10 !set MDLWALLb at 685 m exactly to align with SXR XTES system
   dDSB0e  := -0.403705866174E-3
-  DSB0e   : DRIF, L=0.1059327 +dDSB0e
-  DDLWALL : DRIF, L=0.250825+dzHXTES !length of dumpline thermal barrier wall
 
+  DUE1d    : DRIF, L=0.1
+  DUE1b    : DRIF, L=1.5
+  DUE1c    : DRIF, L=0.5
+  DUE2a    : DRIF, L=0.5
+  DUE2d    : DRIF, L=0.188-0.012 !phase cavity center-to-center spacing
+  DUE2b    : DRIF, L=0.8-DUE2d[L]+0.005555
+  DUE2e    : DRIF, L=1.740055-DUE2b[L]-3*DUE2d[L]
+  DUE2cb   : DRIF, L=0.615+(LQP-LQR)/2
+  DUE3ab   : DRIF, L=0.375504+(LQP-LQR)/2-0.014955
+  DUE3bb   : DRIF, L=1.2630495+0.014955
+  DUE3c    : DRIF, L=(1.7968755-LBKXDMP)/2
+  DBKXDMPS : DRIF, L=LBKXDMP !placeholder for x-kicker in SXR dumpline
+  DUE3d    : DRIF, L=0.435884 !0.320516
+  DFSPCB   : DRIF, L=0.115368
+  DPCBVVB  : DRIF, L=0.401785
+  DVVBTCXB : DRIF, L=0.314355
+  DTCXBSPB : DRIF, L=0.380565 !0.381
+  DUE4B    : DRIF, L=0.975911
+  DUE5ab   : DRIF, L=0.477799+(LQP-LQR)/2-0.114162
+  DUE5bb   : DRIF, L=0.264+0.114162-0.1016+0.1016
+  DUE5cb   : DRIF, L=0.2674+0.1016-0.1016
+  DUE5f    : DRIF, L=0.05
+  DUE5d    : DRIF, L=0.137055-0.05
   DUE5eB   : DRIF, L=0.252825-DUE5d[L]-DUE5f[L]+dzSXTES
   DDLWALLB : DRIF, L=0.250825-dzSXTES !length of dumpline thermal barrier wall
-
-  DPCVVa  : DRIF, L=0.320516
-  FSPEPX3 : INST, TYPE="fast shutter"
-  DPCVVb  : DRIF, L=DPCVV[L]-DPCVVa[L]
-
-  XCUE2B  : HKIC,TYPE="class-4"
-  XCD3B   : HKIC,TYPE="class-5"
-
-  YCUE1B  : VKIC,TYPE="class-4"
-  YCD3B   : VKIC,TYPE="class-5"
+  DSB0a    : DRIF, L=0.260150
+  DSB0b    : DRIF, L=0.344
+  DSB0c    : DRIF, L=0.32646
+  DSB0d    : DRIF, L=0.123366
+  DSB0e    : DRIF, L=0.1059327+dDSB0e
 
   BPMUE1B : MONI, TYPE="Stripline-5" !RFBUE1B : MONI, TYPE="@2,CavityS-1"
   BPMUE2B : MONI, TYPE="Stripline-5" !RFBUE2B : MONI, TYPE="@2,CavityS-1"
- !RFBUE3B : MONI, TYPE="@2,CavityS-1"
 
+  XCUE2B : HKIC,TYPE="class-4"
+  XCD3B  : HKIC,TYPE="class-5"
+
+  YCUE1B : VKIC,TYPE="class-4"
+  YCD3B  : VKIC,TYPE="class-5"
+
+  PCTCXB : ECOL, TYPE="XCS coll", XSIZE=4.0E-3/2, YSIZE=4.0E-3/2 !XTCAV photon collimator (4 mm aperture)
+  PCPM0B : ECOL, L=LPCPM, XSIZE=17.5E-3, YSIZE=17.5E-3
+
+  PH31B   : INST, TYPE="2805 MHz" !post-undulator phase measurement RF cavity (low rate)
+  PH32B   : INST, TYPE="2805 MHz" !post-undulator phase measurement RF cavity (low rate)
+  PH33B   : INST, TYPE="2604 MHz" !post-undulator phase measurement RF cavity (high rate)
+  PH34B   : INST, TYPE="2604 MHz" !post-undulator phase measurement RF cavity (high rate)
   TRUE1B  : INST, TYPE="@5" !Be foil inserter (THz)
-  SPTCXB  : INST, TYPE="@1" !XTCAV spoiler
+  SPTCXB  : INST, TYPE="XTCAV spoiler"
   BTMQUEB : INST !Burn-Through-Monitor
   BTM0B   : INST !Burn-Through-Monitor behind the PCPM0B
 
-  PCTCXB  : ECOL, TYPE="@1", XSIZE=4.5E-3, YSIZE=4.5E-3 !XTCAV photon collimator (9 mm aperture)
-  PCPM0B  : ECOL, L=LPCPM, XSIZE=17.5E-3, YSIZE=17.5E-3
+  UEbegB   : MARK
+  VV36B    : MARK !treaty-point vacuum valve just downbeam of undulator
+  MIMUNDOB : MARK !IMUNDOB : IMON, TYPE="@0,BCS ACM" !BCS ACM
+  VVTCXB   : MARK !XTCAV vacuum valve
+  MTCX01B  : MARK !entrance to TCX01B (for ELEGANT WATCH point)
+  MTCXB    : MARK !center of TCX01B (for matching)
+  MDLWALLB : MARK !front face of dumpline thermal barrier wall
+  UEendB   : MARK
+  DLstartB : MARK !start of dumpline
+  VV37B    : MARK !vac. valve in dumpline
 
- !IMUNDOB : IMON, TYPE="@0,BCS ACM" !BCS ACM
-
-  MIMUNDOB : MARK
-
-  PH31B : INST, TYPE="2805 MHz" !post-undulator phase measurement RF cavity (low rate)
-  PH32B : INST, TYPE="2805 MHz" !post-undulator phase measurement RF cavity (low rate)
-  PH33B : INST, TYPE="2604 MHz" !post-undulator phase measurement RF cavity (high rate)
-  PH34B : INST, TYPE="2604 MHz" !post-undulator phase measurement RF cavity (high rate)
-
-  UEbegb   : MARK
-  VVTCXb   : MARK !XTCAV vacuum valve
-  MTCX01b  : MARK !entrance to TCX01B (for ELEGANT WATCH point)
-  MTCXb    : MARK !centerline between TCX01B and TCX02B (for matching)
-  UEendb   : MARK
-  VV36b    : MARK !treaty-point vacuum valve just downbeam of undulator
-  VV37b    : MARK !vac. valve in dumpline
-  DLSTARTb : MARK
-  MDLWALLb : MARK !front face of dumpline thermal barrier wall
+  TCX01B_full : LINE=(TCX01B,MTCXB,TCX01B)
 
   QUE1B_full : LINE=(QUE1B,QUE1B)
   QUE2B_full : LINE=(QUE2B,QUE2B)
 
   UNDEXITb : LINE=(BEGDMPS_1,&
-      UEbegb,DUE1d,VV36b,DUE1b,MIMUNDOB,DUE1c,DUE2a,YCUE1B,&
+      UEbegB,DUE1d,VV36B,DUE1b,MIMUNDOB,DUE1c,DUE2a,YCUE1B,&
       DUE2b,PH31B,DUE2d,PH32B,DUE2d,PH33B,DUE2d,PH34B,DUE2e,XCUE2B,DUE2cb,&
-    QUE1B_full,DUE3ab,BPMUE1B,DUE3bb,TRUE1B,DUE3c,DBKXDMPS,DUE3c,PCTCXB,&
-      DPCVVa,FSPEPX3,DPCVVb,VVTCXb,DVVTCX,MTCX01b,&
-    2*TCX01B,DTCX12,MTCXb,DTCX12,&
-    2*TCX02B,DTCXSP,SPTCXB,DUE4b,&
+    QUE1B_full,DUE3ab,BPMUE1B,DUE3bb,TRUE1B,DUE3c,DBKXDMPS,DUE3c,DUE3d,&
+      PCTCXB,DPCBVVB,VVTCXB,DVVBTCXB,MTCX01B,TCX01B_full,DTCXBSPB,SPTCXB,&
+      DUE4B,&
     QUE2B_full,DUE5ab,BPMUE2B,DUE5bb,BTMQUEB,DUE5cb,PCPM0B,DUE5f,BTM0B,&
-      DUE5d,DUE5eB,MDLWALLb,DDLWALLB,UEendb,DLstartb,DSB0a,YCD3B,DSB0b,&
-      XCD3B,DSB0c,VV37b,DSB0d,DSB0e,&
+      DUE5d,DUE5eB,MDLWALLB,DDLWALLB,UEendB,DLstartB,DSB0a,YCD3B,DSB0b,&
+      XCD3B,DSB0c,VV37B,DSB0d,DSB0e,&
     ENDDMPS_1)
 
   SXRUND : LINE=(SXRXX,SXR,UNDEXITb)
@@ -1763,7 +1760,7 @@
 ! HXR undulator Beam Loss Monitors (placeholders)
 ! ------------------------------------------------------------------------------
 
-  BLMH13  : MARK
+  MBLMH13 : MARK
   MBLMH14 : MARK
   MBLMH15 : MARK
   MBLMH16 : MARK
@@ -1863,8 +1860,11 @@
   BCXHS4 : SBEN, TYPE="0.315D14-C", HGAP=GB4/2, L=LB4, ANGLE=+AB4, &
                  E1=+AB4, FINT=FB4, E2=0, FINTX=FB4
 
-  LHssB2Bo := 0.939 !outer bend center-to-center (PRD Table 3)
-  LHssB2Bi := 0.936 !inner bend center-to-center (PRD Table 3)
+ !LHssB2Bo := 0.939 !outer bend center-to-center (PRD Table 3)
+ !LHssB2Bi := 0.936 !inner bend center-to-center (PRD Table 3)
+
+  LHssB2Bo := 0.957   !outer bend center-to-center (PRD Table 3)
+  LHssB2Bi := 0.936   !inner bend center-to-center (PRD Table 3)
 
   D1      : DRIF, L=(LHssB2Bo-ZB4)/COS(AB4)
   DCH     : DRIF, L=(LHssB2Bi-ZB4)/2
@@ -2172,7 +2172,7 @@
   DQHX49      : DRIF, L=LQu
   DQHX50      : DRIF, L=LQu
 
-  HXBRK13 : LINE=(DU3hCB1a,BLMH13,DU3hCB1b,QHXh13_full,&
+  HXBRK13 : LINE=(DU3hCB1a,MBLMH13,DU3hCB1b,QHXh13_full,&
                   DU4hCB1,RFBHX13,DU5hCB1,DPSHX13,DU6h,DU7h)
   HXBRK14 : LINE=(DU3h,MBLMH14,DU3h,QHXh14_full,DU4h,RFBHX14,DU5h,&
                   PSHXh14_full,DU6h,VVHXU14,DU7h)
@@ -2302,6 +2302,9 @@
 ! HXR undulator exit section
 ! ------------------------------------------------------------------------------
 
+  TCX01 : LCAV, FREQ=XbandF, TYPE="TRANS_DEFL", L=1.0/2 !horizontal deflection
+  TCX02 : LCAV, FREQ=XbandF, TYPE="TRANS_DEFL", L=1.0/2 !horizontal deflection
+
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
@@ -2311,57 +2314,58 @@
   QUE1 : QUAD, TYPE="3.25Q20", L=LQD/2, K1=KQUE1, APER=rQD
   QUE2 : QUAD, TYPE="3.25Q20", L=LQD/2, K1=KQUE2, APER=rQD
 
-  TCX01 : LCAV, FREQ=XbandF, TYPE="TRANS_DEFL", L=1.0/2 !horizontal deflection
-  TCX02 : LCAV, FREQ=XbandF, TYPE="TRANS_DEFL", L=1.0/2 !horizontal deflection
+  dzHXTES := 0.749541186639E-6 !set MDLWALL at 685 m exactly to align with HXR XTES system
 
+  DUE2c    : DRIF, L=DUE2cb[L]+(LQR-LQD)/2 !0.555
+  DUE3a    : DRIF, L=0.375504 +(LQP-LQD)/2 +0.11496 -0.063643
+  DUE3b    : DRIF, L=1.2630495 -0.11496 +0.063643
   DBKXDMPH : DRIF, L=LBKXDMP !placeholder for x-kicker in HXR dumpline
-
-  DUE2c  : DRIF, L=DUE2cb[L]+(LQR-LQD)/2 !0.555
-  DUE3a  : DRIF, L=0.375504 +(LQP-LQD)/2 +0.11496 -0.063643
-  DUE3b  : DRIF, L=1.2630495 -0.11496 +0.063643
-  DUE4   : DRIF, L=DUE4b[L] +(LQR-LQD)/2 !0.394
-  DUE5a  : DRIF, L=0.477799 +(LQP-LQD)/2 +0.012675 -0.063653
-  DUE5b  : DRIF, L=0.264 -0.012675 +0.063653
-  DUE5c  : DRIF, L=0.2674
-
-  XCUE2  : HKIC,TYPE="class-4"
-  XCD3   : HKIC,TYPE="class-5"
-
-  YCUE1  : VKIC,TYPE="class-4"
-  YCD3   : VKIC,TYPE="class-5"
+  DPCVV    : DRIF, L=0.397
+  DVVTCX   : DRIF, L=0.32
+  DTCX12   : DRIF, L=0.373/2
+  DTCXSP   : DRIF, L=0.381
+  DUE4     : DRIF, L=0.394 !DUE4b[L] +(LQR-LQD)/2
+  DUE5a    : DRIF, L=0.477799 +(LQP-LQD)/2 +0.012675 -0.063653
+  DUE5b    : DRIF, L=0.264 -0.012675 +0.063653
+  DUE5c    : DRIF, L=0.2674
+  DUE5e    : DRIF, L=0.252825-DUE5d[L]-DUE5f[L]-dzHXTES
+  DDLWALL  : DRIF, L=0.250825+dzHXTES !length of dumpline thermal barrier wall
 
   BPMUE1 : MONI, TYPE="Stripline-13" !RFBUE1 : MONI, TYPE="@2,CavityS-1"
   BPMUE2 : MONI, TYPE="Stripline-13" !RFBUE2 : MONI, TYPE="@2,CavityS-1"
- !RFBUE3 : MONI, TYPE="@2,CavityS-1"
 
- !IMUNDO : IMON, TYPE="BCS toroid" !BCS toroid
- !IMBCS3 : IMON, TYPE="BCS toroid" !BCS toroid before dump bend (comparator with IMBCS4)
+  XCUE2 : HKIC,TYPE="class-4"
+  XCD3  : HKIC,TYPE="class-5"
 
-  MIMUNDO : MARK
-  MIMBCS3 : MARK
+  YCUE1 : VKIC,TYPE="class-4"
+  YCD3  : VKIC,TYPE="class-5"
 
+  PCTCX : ECOL, XSIZE=4.5E-3, YSIZE=4.5E-3 !XTCAV photon collimator (9 mm aperture)
+  PCPM0 : ECOL, L=LPCPM, XSIZE=17.5E-3, YSIZE=17.5E-3
+
+  PH31   : INST, TYPE="2805 MHz" !post-undulator phase measurement RF cavity (existing LCLS device)
+  PH32   : INST, TYPE="2805 MHz" !post-undulator phase measurement RF cavity (existing LCLS device)
+  PH33   : INST, TYPE="2604 MHz" !post-undulator phase measurement RF cavity (high rate)
+  PH34   : INST, TYPE="2604 MHz" !post-undulator phase measurement RF cavity (high rate)
   TRUE1  : INST, TYPE="@5" !Be foil inserter (THz) -- existing LCLS device
   SPTCX  : INST !XTCAV spoiler
   BTMQUE : INST !Burn-Through-Monitor
   BTM0   : INST !Burn-Through-Monitor behind the PCPM0
 
-  PCTCX : ECOL, XSIZE=4.5E-3, YSIZE=4.5E-3 !XTCAV photon collimator (9 mm aperture)
-  PCPM0 : ECOL, L=LPCPM, XSIZE=17.5E-3, YSIZE=17.5E-3
-
-  PH31 : INST, TYPE="2805 MHz" !post-undulator phase measurement RF cavity (existing LCLS device)
-  PH32 : INST, TYPE="2805 MHz" !post-undulator phase measurement RF cavity (existing LCLS device)
-  PH33 : INST, TYPE="2604 MHz" !post-undulator phase measurement RF cavity (high rate)
-  PH34 : INST, TYPE="2604 MHz" !post-undulator phase measurement RF cavity (high rate)
-
   UEbeg   : MARK
-  UEend   : MARK
-  VVTCX   : MARK !XTCAV vacuum valve
   VV36    : MARK !treaty-point vacuum valve just downbeam of undulator
-  VV37    : MARK !vac. valve in dumpline
+  MIMUNDO : MARK
+  VVTCX   : MARK !XTCAV vacuum valve
   MTCX01  : MARK !entrance to TCX01 (for ELEGANT WATCH point)
   MTCX    : MARK !centerline between TCX01 and TCX02 (for matching)
-  DLSTART : MARK !start of dumpline
+  MIMBCS3 : MARK
   MDLWALL : MARK !front face of dumpline thermal barrier wall
+  UEend   : MARK
+  DLstart : MARK !start of dumpline
+  VV37    : MARK !vac. valve in dumpline
+
+  TCX01_full : LINE=(TCX01,TCX01)
+  TCX02_full : LINE=(TCX02,TCX02)
 
   QUE1_full : LINE=(QUE1,QUE1)
   QUE2_full : LINE=(QUE2,QUE2)
@@ -2371,8 +2375,8 @@
       DUE2b,PH31,DUE2d,PH32,DUE2d,PH33,DUE2d,PH34,DUE2e,XCUE2,DUE2c,&
     QUE1_full,DUE3a,BPMUE1,DUE3b,TRUE1,DUE3c,DBKXDMPH,DUE3c,PCTCX,&
       DPCVV,VVTCX,DVVTCX,MTCX01,&
-    2*TCX01,DTCX12,MTCX,DTCX12,&
-    2*TCX02,DTCXSP,SPTCX,DUE4,&
+      TCX01_full,DTCX12,MTCX,DTCX12,&
+      TCX02_full,DTCXSP,SPTCX,DUE4,&
     QUE2_full,DUE5a,BPMUE2,DUE5b,BTMQUE,DUE5c,PCPM0,DUE5f,BTM0,&
       DUE5d,MIMBCS3,DUE5e,MDLWALL,DDLWALL,UEend,DLstart,DSB0a,YCD3,DSB0b,&
       XCD3,DSB0c,VV37,DSB0d,DSB0e,&
