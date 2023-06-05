@@ -34,7 +34,7 @@ jobs:
           export LCLS_LATTICE=$(pwd)
           python python/scripts/export/export_lattice.py --source $(pwd) --dest $DEST
       - name: Push lcls lattice
-        uses: cpina/github-action-push-to-another-repository@v1.4.1
+        uses: cpina/github-action-push-to-another-repository@v1.7.2
         env:
           SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
         with:
@@ -47,7 +47,7 @@ jobs:
           commit-message: ${{ github.event.head_commit.message }}
 
       - name: Push test directory to lcls-lattice-data
-        uses: cpina/github-action-push-to-another-repository@v1.4.1
+        uses: cpina/github-action-push-to-another-repository@v1.7.2
         env:
           SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
         with:
