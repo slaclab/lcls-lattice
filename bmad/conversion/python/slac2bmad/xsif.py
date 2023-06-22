@@ -70,8 +70,8 @@ FULLNAMES = {
 def expand_names(line):
     for k, v in FULLNAMES.items():
         # Skip ones that are fine
-        if v in line.lower():
-            continue
+        # if v in line.lower():
+        #     continue
         line = re.sub(k,v,line)
     return line
 
