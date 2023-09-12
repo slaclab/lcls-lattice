@@ -474,6 +474,26 @@
 ! ==============================================================================
 ! for testing the online Matlab model
 ! ------------------------------------------------------------------------------
+    !FOO
+    BEAM, ENERGY=E0
+    USE, SC_DIAG0
+    TWISS, COUPLE, SAVE, BETA0=TWSS0, TAPE="my_DIAG0_twiss.tape"
+    ARCHIVE, TABLE=TWISS, FILENAME="my_DIAG0_twiss.archive"
+    BEAM, ENERGY=Ei
+
+    USE, SC_DIAG0i
+    TWISS, SAVE, BETA0=TWSSi, TAPE="my_DIAG0i_twiss.tape"
+    ARCHIVE, TABLE=TWISS, FILENAME="my_DIAG0i_twiss.archive"
+
+    BEAM, ENERGY=Ei
+    USE, SC_SXRi
+    TWISS, SAVE, BETA0=TWSSi, TAPE="my_SC_SXRi_twiss.tape"
+    ARCHIVE, TABLE=TWISS, FILENAME="my_SC_SXRi_twiss.archive"
+
+    BEAM, ENERGY=E0
+    USE, SC_SXR
+    TWISS, SAVE, BETA0=TWSS0, TAPE="my_SC_SXR_twiss.tape"
+    ARCHIVE, TABLE=TWISS, FILENAME="my_SC_SXR_twiss.archive"
 
   COMMENT
     BEAM, ENERGY=E0
