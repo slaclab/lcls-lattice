@@ -404,8 +404,8 @@ dusegs18b: drift, l = ldusegs-dusegs18a[l]-2*wigxlh[l]
 
 !Old split line:  WIGXLh_full : LINE=(WIGXLh,WIGXLh)
 
-wigxlh_full: line = (wigxlh)
-wigxlh[L] = 2*wigxlh[L]
+wigxlh_full: line = (wigxlh,wigxlh)
+!wigxlh[L] = 2*wigxlh[L] !mpe broke because tt?? terms
   DUSEGS18    : LINE=(DUSEGS18a,WIGXLh_full,DUSEGS18b)
 
 ! ------------------------------------------------------------------------------
@@ -1739,7 +1739,7 @@ due1ab2: drift, l = due1ab[l]-due1ab1[l]
 ! SXR undulator exit section
 ! ------------------------------------------------------------------------------
 
-TCX01B: pipe, L = 0.5, type ="@1,TRANS_DEFL", descrip = "deferred LCAVITY" !horiz. deflection
+TCX01B: pipe, L = 0.75, type ="@1,TRANS_DEFL", descrip = "deferred LCAVITY" !horiz. deflection
 !old: tcx01b: lcavity, rf_frequency = xbandf * 1e6, type = "TRANS_DEFL", l = 1.5/2
 
 ! note: the below K-values are for SC beam; the settings for Cu beam are
