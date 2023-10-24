@@ -1,10 +1,15 @@
 
-! *** OPTICS=AD_ACCEL-13MAR23 ***
+! *** OPTICS=AD_ACCEL-17OCT23 ***
 
 ! LCLS2sc linacs: L0, L1, L2 L3
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 29-SEP-2023, M. Woodley
+!  * use relocated endpoints of L0B, L1B, L2B, L3B, and L4B, as MSC's and add
+!    vacuum valves there per S. Saraf
+!  * add additional vacuum components (pumps and gauges) per D. White
 ! ------------------------------------------------------------------------------
 ! 01-SEP-2022, M. Woodley
 !  * add MARKERs at locations of Vertical Transfer Lines (VTL) per S. Kaminski
@@ -155,9 +160,9 @@ ccav22cp = 0.11262          !support post to cavity #2 center
 ccavla = ccavl/2-ccav22cp !cavity #2 length u/s of support post
 ccavlb = ccavl-ccavla     !cavity #2 length d/s of support post
 
-fracl0 = 3.18748889257 !Ei=100 MeV
+fracl0 = 0.528534685179 !Ei=90 MeV
 ampll1 = 231.0 !MV
-fracl1 = 0.999806824006 !E1=250 MeV
+fracl1 = 1.047533331879 !E1=250 MeV
 gradl1 = fracl1*ampll1/(2*8*lcavl) !MV/m (2 8-cavity CM's)
 phasl1 = -24.9 !degrees
 ahcav = 60.0 !MV
@@ -1031,14 +1036,14 @@ kqcmfodo3 = 0.185334132537 !L3: 30 degrees/cell
 
 ! L0
 
-kqcm01 = 0.378216482077
+kqcm01 = 0
 
 qcm01: quadrupole, type = "cryo SPQA127", l = lcmq/2, aperture = rcmq, k1 = kqcm01
 
 ! L1
 
-qcm02: quadrupole, type = "cryo SPQA135", l = lcmq/2, aperture = rcmq, k1 = -0.378467749242 !-KQCMfodo1
-qcm03: quadrupole, type = "cryo SPQA136", l = lcmq/2, aperture = rcmq, k1 = 0.232219173255 ! KQCMfodo1
+qcm02: quadrupole, type = "cryo SPQA135", l = lcmq/2, aperture = rcmq, k1 = -0.387958527193 !-KQCMfodo1
+qcm03: quadrupole, type = "cryo SPQA136", l = lcmq/2, aperture = rcmq, k1 = 0.224684003394 ! KQCMfodo1
 
 ! L2
 
@@ -1065,18 +1070,18 @@ qcm20: quadrupole, type = "cryo SPQA125", l = lcmq/2, aperture = rcmq, k1 = -0.1
 qcm21: quadrupole, type = "cryo SPQA124", l = lcmq/2, aperture = rcmq, k1 = kqcmfodo3
 qcm22: quadrupole, type = "cryo SPQA119", l = lcmq/2, aperture = rcmq, k1 = -kqcmfodo3
 qcm23: quadrupole, type = "cryo SPQA121", l = lcmq/2, aperture = rcmq, k1 = kqcmfodo3
-qcm24: quadrupole, type = "cryo SPQA123", l = lcmq/2, aperture = rcmq, k1 = -0.190366144886 !-KQCMfodo3
-qcm25: quadrupole, type = "cryo SPQA114", l = lcmq/2, aperture = rcmq, k1 = 0.181617589167 ! KQCMfodo3
-qcm26: quadrupole, type = "cryo SPQA002", l = lcmq/2, aperture = rcmq, k1 = -0.18147160521  !-KQCMfodo3
-qcm27: quadrupole, type = "cryo SPQA003", l = lcmq/2, aperture = rcmq, k1 = 0.190315103489 ! KQCMfodo3
+qcm24: quadrupole, type = "cryo SPQA123", l = lcmq/2, aperture = rcmq, k1 = -0.190366144879 !-KQCMfodo3
+qcm25: quadrupole, type = "cryo SPQA114", l = lcmq/2, aperture = rcmq, k1 = 0.18161758917  ! KQCMfodo3
+qcm26: quadrupole, type = "cryo SPQA002", l = lcmq/2, aperture = rcmq, k1 = -0.181471605207 !-KQCMfodo3
+qcm27: quadrupole, type = "cryo SPQA003", l = lcmq/2, aperture = rcmq, k1 = 0.1903151035   ! KQCMfodo3
 qcm28: quadrupole, type = "cryo SPQA102", l = lcmq/2, aperture = rcmq, k1 = -kqcmfodo3
-qcm29: quadrupole, type = "cryo SPQA134", l = lcmq/2, aperture = rcmq, k1 = 0.187347901751 ! KQCMfodo3
-qcm30: quadrupole, type = "cryo SPQA128", l = lcmq/2, aperture = rcmq, k1 = -0.19294890558  !-KQCMfodo3
-qcm31: quadrupole, type = "cryo SPQA133", l = lcmq/2, aperture = rcmq, k1 = 0.206295071286 ! KQCMfodo3
-qcm32: quadrupole, type = "cryo SPQA129", l = lcmq/2, aperture = rcmq, k1 = -0.242884734391 !-KQCMfodo3
-qcm33: quadrupole, type = "cryo SPQA106", l = lcmq/2, aperture = rcmq, k1 = 0.218939160866 ! KQCMfodo3
+qcm29: quadrupole, type = "cryo SPQA134", l = lcmq/2, aperture = rcmq, k1 = 0.187348431168 ! KQCMfodo3
+qcm30: quadrupole, type = "cryo SPQA128", l = lcmq/2, aperture = rcmq, k1 = -0.193144859907 !-KQCMfodo3
+qcm31: quadrupole, type = "cryo SPQA133", l = lcmq/2, aperture = rcmq, k1 = 0.206526028074 ! KQCMfodo3
+qcm32: quadrupole, type = "cryo SPQA129", l = lcmq/2, aperture = rcmq, k1 = -0.242966195459 !-KQCMfodo3
+qcm33: quadrupole, type = "cryo SPQA106", l = lcmq/2, aperture = rcmq, k1 = 0.218979971843 ! KQCMfodo3
 qcm34: quadrupole, type = "cryo SPQA118", l = lcmq/2, aperture = rcmq, k1 = 0            !-KQCMfodo3
-qcm35: quadrupole, type = "cryo SPQA110", l = lcmq/2, aperture = rcmq, k1 = -0.255031930982 ! KQCMfodo3
+qcm35: quadrupole, type = "cryo SPQA110", l = lcmq/2, aperture = rcmq, k1 = -0.255198006456 ! KQCMfodo3
 
 ! ==============================================================================
 ! DRIF
@@ -1167,31 +1172,40 @@ dcmhcmh2: drift, l = lhhom2hgv
 ! end caps, stay-clears, and L3 vacuum break
 ! ------------------------------------------------------------------------------
 
+! use new endpoints of L0B, L1B, L2B, L3B, and EXT, as MSC's; add vacuum valves
+! there per S. Saraf (dZ's are relative to 13MAR23 locations)
+
+ !dZMSC0d  = -0.250200 !relocate MSC0d  (ENDL0B/BEGHTR_1)
+ !dZMSC1u  = -0.000590 !relocate MSC1u  (ENDCOL0/BEGL1B)
+ !dZMSC1d  = -0.013570 !relocate MSC1d  (ENDL1B/BEGBC1B)
+ !dZMSC2u  =  0.022998 !relocate MSC2u  (ENDCOL1/BEGL2B
+ !dZMSC2d  = -0.039882 !relocate MSC2d  (ENDL2B/BEGBC2B)
+ !dZMSC3u  =  0.039750 !relocate MSC3u  (ENDEMIT2/BEGL3B)
+ !dZMSC3d  =  0.322740 !relocate MSC3d  (ENDL3B/BEGEXT)
+ !dZENDEXT = -0.233300 !relocate ENDEXT (ENDEXT/BEGDOG)
+
 ! end cap and feed cap dimensions, mechanical stay-clear, and differential
 ! vacuum pumping stay-clear (mostly from drawing SD-375-000-99-02)
 
-dcap0u: drift, l = 0.49294 !EC-U to CSP01 = 6.965000 !0.49044
-dcap0d: drift, l = 1.89015 !CSP01 to FC-1 = 7.328290 !1.88765
-dmsc0d: drift, l = 1.829
-dpsc1u: drift, l = 2.52295
-dmsc1u: drift, l = 1.829
-dcap1u: drift, l = 0.87294 !FC-2 to CSP02 = 7.345000 !0.87044
-dcap1d: drift, l = 1.75429 !CSPH2 to FC-3 = 6.333200
-dmsc1d: drift, l = 1.829
-dpsc1d: drift, l = 1.91205                           !1.91297
-dpsc2u: drift, l = 2.1388
-dmsc2u: drift, l = 1.829
-dcap2u: drift, l = 0.87294 !FC-4 to CSP04 = 7.345000 !0.87044
-dcap2d: drift, l = 1.58968 !CSP15 to FC-5 = 7.193590
-dmsc2d: drift, l = 1.829
-dpsc2d: drift, l = 1.91806
-dpsc3u: drift, l = 2.32295
-dmsc3u: drift, l = 1.829
-dcap3u: drift, l = 0.87294 !FC-6 to CSP16 = 7.345000 !0.87044
+dcap0u: drift, l = 0.49294  !EC1 to CSP01   =  6.965000
+dcap0d: drift, l = 1.89015  !CSP01 to FC1   =  7.328290
+dmsc0d: drift, l = 1.5788   !CSP01 to MSC0d =  8.907090
+dmsc1u: drift, l = 1.82959  !MSC1u to CSP02 =  9.174590
+dcap1u: drift, l = 0.87294  !FC2 to CSP02   =  7.345000
+dcap1d: drift, l = 1.75429  !CSPH2 to FC3   =  6.333200
+dmsc1d: drift, l = 1.81543  !CSPH2 to MSC1d =  8.148630
+dmsc2u: drift, l = 1.806002 !MSC2u to CSP04 =  9.151002
+dcap2u: drift, l = 0.87294  !FC4 to CSP04   =  7.345000
+dcap2d: drift, l = 1.58968  !CSP15 to FC5   =  7.193590
+dmsc2d: drift, l = 1.789118 !CSP15 to MSC2d =  8.982708
+dmsc3u: drift, l = 1.78925  !MSC3u to CSP16 =  9.134250
+dcap3u: drift, l = 0.87294  !FC6 to CSP16   =  7.345000
+dcap3d: drift, l = 1.72438  !CSP35 to EC2   =  7.328290
+dmsc3d: drift, l = 1.78674  !CSP35 to MSC3d =  9.115030
+
+! standard vacuum break
+
 dbreak: drift, l = 2.54931
-dcap3d: drift, l = 1.72438 !CSP35 to EC-D = 7.328290
-dmsc3d: drift, l = 1.464
-dpsc3d: drift, l = 2.67004
 
 ! beamline flanges
 
@@ -1206,11 +1220,12 @@ dmsc2ua: drift, l = dmsc2u[l]-dmsc2ub[l]
 dmsc2da: drift, l = lblf
 dmsc2db: drift, l = 0.764218
 dmsc2dc: drift, l = dmsc2d[l]-dmsc2da[l]-dmsc2db[l]
-dmsc3ua: drift, l = 0.96875
-dmsc3ub: drift, l = lblf-dmsc3ua[l]
-dmsc3uc: drift, l = dmsc3u[l]-dmsc3ua[l]-dmsc3ub[l]
+dmsc3ua: drift, l = 0.929
+dmsc3uc: drift, l = lblf
+dmsc3ub: drift, l = dmsc3u[l]-dmsc3ua[l]-dmsc3uc[l]
 dmsc3da: drift, l = lblf
-dmsc3db: drift, l = dmsc3d[l]-dmsc3da[l]
+dmsc3db: drift, l = 1.25884
+dmsc3dc: drift, l = dmsc3d[l]-dmsc3da[l]-dmsc3db[l]
 
 ! split L0 downstream endcap drift for ASTRA treaty point (15 m from cathode)
 
@@ -1224,8 +1239,7 @@ dcap0db: drift, l = dcap0d[l]-dcmcm1[l]-dcap0da[l]
 dmsc0da: drift, l = lblf
 dmsc0db: drift, l = 1.231893
 dmsc0dc: drift, l = 0.1016
-dmsc0dd: drift, l = 0.156107
-dmsc0de: drift, l = dmsc0d[l]-dmsc0da[l]-dmsc0db[l]-dmsc0dc[l]-dmsc0dd[l]
+dmsc0dd: drift, l = dmsc0d[l]-dmsc0da[l]-dmsc0db[l]-dmsc0dc[l]
 
 ! miscellaneous definitions
 
@@ -1244,43 +1258,43 @@ ldcmfodo = lcryol+lgv2gv-lcmq
 ! BPMs
 ! ------------------------------------------------------------------------------
 
-cmb01: monitor, type = "cryo Button-1" !F1.3-19
-cmb02: monitor, type = "cryo Button-1" !J1.3-21
-cmb03: monitor, type = "cryo Button-1" !J1.3-20
-cmbh1: monitor, type = "cryo Button-1" !F3.9-01
-cmbh2: monitor, type = "cryo Button-1" !F3.9-02
-cmb04: monitor, type = "cryo Button-1" !F1.3-07
-cmb05: monitor, type = "cryo Button-1" !J1.3-04
-cmb06: monitor, type = "cryo Button-1" !F1.3-08
-cmb07: monitor, type = "cryo Button-1" !J1.3-10
-cmb08: monitor, type = "cryo Button-1" !F1.3-04
-cmb09: monitor, type = "cryo Button-1" !J1.3-08
-cmb10: monitor, type = "cryo Button-1" !F1.3-10
-cmb11: monitor, type = "cryo Button-1" !F1.3-09
-cmb12: monitor, type = "cryo Button-1" !J1.3-13
-cmb13: monitor, type = "cryo Button-1" !F1.3-11
-cmb14: monitor, type = "cryo Button-1" !J1.3-14
-cmb15: monitor, type = "cryo Button-1" !F1.3-01
-cmb16: monitor, type = "cryo Button-1" !F1.3-13
-cmb17: monitor, type = "cryo Button-1" !J1.3-12
-cmb18: monitor, type = "cryo Button-1" !J1.3-06
-cmb19: monitor, type = "cryo Button-1" !F1.3-17
-cmb20: monitor, type = "cryo Button-1" !F1.3-18
-cmb21: monitor, type = "cryo Button-1" !J1.3-15
-cmb22: monitor, type = "cryo Button-1" !F1.3-14
-cmb23: monitor, type = "cryo Button-1" !F1.3-15
-cmb24: monitor, type = "cryo Button-1" !F1.3-16
-cmb25: monitor, type = "cryo Button-1" !J1.3-17
-cmb26: monitor, type = "cryo Button-1" !J1.3-01
-cmb27: monitor, type = "cryo Button-1" !F1.3-02
-cmb28: monitor, type = "cryo Button-1" !J1.3-03
-cmb29: monitor, type = "cryo Button-1" !J1.3-18
-cmb30: monitor, type = "cryo Button-1" !J1.3-16
-cmb31: monitor, type = "cryo Button-1" !J1.3-19
-cmb32: monitor, type = "cryo Button-1" !F1.3-03
-cmb33: monitor, type = "cryo Button-1" !J1.3-05
-cmb34: monitor, type = "cryo Button-1" !J1.3-09
-cmb35: monitor, type = "cryo Button-1" !J1.3-07
+cmb01: monitor, type = "cryo F1.3-19"
+cmb02: monitor, type = "cryo J1.3-21"
+cmb03: monitor, type = "cryo J1.3-20"
+cmbh1: monitor, type = "cryo F3.9-01"
+cmbh2: monitor, type = "cryo F3.9-02"
+cmb04: monitor, type = "cryo F1.3-07"
+cmb05: monitor, type = "cryo J1.3-04"
+cmb06: monitor, type = "cryo F1.3-08"
+cmb07: monitor, type = "cryo J1.3-10"
+cmb08: monitor, type = "cryo F1.3-04"
+cmb09: monitor, type = "cryo J1.3-08"
+cmb10: monitor, type = "cryo F1.3-10"
+cmb11: monitor, type = "cryo F1.3-09"
+cmb12: monitor, type = "cryo J1.3-13"
+cmb13: monitor, type = "cryo F1.3-11"
+cmb14: monitor, type = "cryo J1.3-14"
+cmb15: monitor, type = "cryo F1.3-01"
+cmb16: monitor, type = "cryo F1.3-13"
+cmb17: monitor, type = "cryo J1.3-12"
+cmb18: monitor, type = "cryo J1.3-06"
+cmb19: monitor, type = "cryo F1.3-17"
+cmb20: monitor, type = "cryo F1.3-18"
+cmb21: monitor, type = "cryo J1.3-15"
+cmb22: monitor, type = "cryo F1.3-14"
+cmb23: monitor, type = "cryo F1.3-15"
+cmb24: monitor, type = "cryo F1.3-16"
+cmb25: monitor, type = "cryo J1.3-17"
+cmb26: monitor, type = "cryo J1.3-01"
+cmb27: monitor, type = "cryo F1.3-02"
+cmb28: monitor, type = "cryo J1.3-03"
+cmb29: monitor, type = "cryo J1.3-18"
+cmb30: monitor, type = "cryo J1.3-16"
+cmb31: monitor, type = "cryo J1.3-19"
+cmb32: monitor, type = "cryo F1.3-03"
+cmb33: monitor, type = "cryo J1.3-05"
+cmb34: monitor, type = "cryo J1.3-09"
+cmb35: monitor, type = "cryo J1.3-07"
 
 RFB2C00: pipe, L = 0.0, type ="@2,CavityS-1", descrip = "deferred MONITOR"
 !old: rfb2c00: monitor, type = "@2,CavityS-1"
@@ -1484,40 +1498,41 @@ cm35end: marker
 beam0: marker !initial beam specified here
 homcm: marker !cryomodule HOM absorber
 astra: marker !simulated Twiss from C. Papadopoulos here
-vg0h00: marker
-vp0h00: marker
-vv0h00: marker
 
-ecu: marker !u/s flange face
-fc1: marker !d/s flange face
-blf1: marker !beamline flange
-msc0d: marker !u/s flange face
-psc1u: marker !u/s flange face
-msc1u: marker !u/s flange face
-blf2: marker !beamline flange
-fc2: marker !u/s flange face
-fc3: marker !d/s flange face
-blf3: marker !beamline flange
-msc1d: marker !d/s flange face
-psc1d: marker !d/s flange face
-psc2u: marker !u/s flange face
-msc2u: marker !u/s flange face
-blf4: marker !beamline flange
-fc4: marker !u/s flange face
-fc5: marker !d/s flange face
-blf5: marker !beamline flange
-vtl1: instrument !Vertical Transfer Line
-msc2d: marker !d/s flange face
-psc2d: marker !d/s flange face
-psc3u: marker !u/s flange face
-msc3u: marker !u/s flange face
-vtl2: instrument !Vertical Transfer Line
-blf6: marker !beamline flange
-fc6: marker !u/s flange face
-ecd: marker !d/s flange face
-blfd: marker !beamline flange
-msc3d: marker !d/s flange face
-psc3d: marker !d/s flange face
+ec1: marker                      !u/s flange face
+fc1: marker                      !d/s flange face
+blf1: marker                      !beamline flange
+vgl0bd: marker, type = "gauges"
+vpl0bd: marker, type = "differential"
+msc0d: marker                      !u/s flange face
+vvl0bd: instrument, type = "gate valve"   !VVPG:L0B:0199
+vvl1bu: instrument, type = "gate valve"   !VVPG:L1B:0201
+msc1u: marker                      !u/s flange face
+blf2: marker                      !beamline flange
+fc2: marker                      !u/s flange face
+fc3: marker                      !d/s flange face
+blf3: marker                      !beamline flange
+msc1d: marker                      !d/s flange face
+vvl1bd: instrument, type = "gate valve"   !VVPG:L1B:H295
+vvl2bu: instrument, type = "gate valve"   !VVPG:L2B:0401
+msc2u: marker                      !u/s flange face
+blf4: marker                      !beamline flange
+fc4: marker                      !u/s flange face
+fc5: marker                      !d/s flange face
+blf5: marker                      !beamline flange
+vtl1: instrument                      !Vertical Transfer Line
+msc2d: marker                      !d/s flange face
+vvl2bd: instrument, type = "gate valve"   !VVPG:L2B:1593
+vvl3bu: instrument, type = "gate valve"   !VVPG:L3B:1601
+msc3u: marker                      !u/s flange face
+vtl2: instrument                      !Vertical Transfer Line
+blf6: marker                      !beamline flange
+fc6: marker                      !u/s flange face
+ec2: marker                      !d/s flange face
+blf7: marker                      !beamline flange
+vgl3bd: marker, type = "gauges"
+msc3d: marker                      !d/s flange face
+vvl3bd: instrument, type = "gate valve"   !VVPG:L3B:3594
 
 ! ==============================================================================
 ! BEAMLINE
@@ -2511,23 +2526,25 @@ ycm35[ref] = qcm35
   CM35 : LINE=(CM35BEG,DCM1,CAVL351_full,DCM2,CAVL352_full,DCM2,CAVL353_full,DCM2,CAVL354_full,DCM2,CAVL355_full,DCM2,
          CAVL356_full,DCM2,CAVL357_full,DCM2,CAVL358_full,DCM3,CMB35,DCM4,QCM35_full,DCM5,CM35END)
 
-  L0 : LINE=(BEGL0B,ECU,DCAP0u,CM01,DCMCM1,HOMCM,DCAP0da,ASTRA,DCAP0db,FC1,DMSC0da,BLF1,DMSC0db,VG0H00,DMSC0dc,VP0H00,
-         DMSC0dd,VV0H00,DMSC0de,MSC0d,ENDL0B)
+! linacs
 
-  L1 : LINE=(BEGL1B,PSC1u,DPSC1u,MSC1u,DMSC1ua,BLF2,DMSC1ub,FC2,DCAP1u,CM02,DCMCM1,HOMCM,DCMCM2,CM03,DCMCMH1,HOMCM,
-         DCMCMH2,CMH1,DCMHCMH1,HOMCM,DCMHCMH2,CMH2,DCAP1d,FC3,DMSC1da,BLF3,DMSC1db,MSC1d,DPSC1d,PSC1d,ENDL1B)
+  L0 : LINE=(BEGL0B,EC1,DCAP0u,CM01,DCMCM1,HOMCM,DCAP0da,ASTRA,DCAP0db,FC1,DMSC0da,BLF1,DMSC0db,VGL0Bd,DMSC0dc,VPL0Bd,
+         DMSC0dd,MSC0d,VVL0Bd,ENDL0B)
 
-  L2 : LINE=(BEGL2B,PSC2u,DPSC2u,MSC2u,DMSC2ua,BLF4,DMSC2ub,FC4,DCAP2u,CM04,DCMCM1,HOMCM,DCMCM2,CM05,DCMCM1,HOMCM,
-         DCMCM2,CM06,DCMCM1,HOMCM,DCMCM2,CM07,DCMCM1,HOMCM,DCMCM2,CM08,DCMCM1,HOMCM,DCMCM2,CM09,DCMCM1,HOMCM,DCMCM2,CM10,DCMCM1,
-         HOMCM,DCMCM2,CM11,DCMCM1,HOMCM,DCMCM2,CM12,DCMCM1,HOMCM,DCMCM2,CM13,DCMCM1,HOMCM,DCMCM2,CM14,DCMCM1,HOMCM,DCMCM2,CM15,
-         DCMCM1,HOMCM,DCAP2d,FC5,DMSC2da,BLF5,DMSC2db,VTL1,DMSC2dc,MSC2d,RFB2C00,DPSC2d,PSC2d,ENDL2B)
+  L1 : LINE=(BEGL1B,VVL1Bu,MSC1u,DMSC1ua,BLF2,DMSC1ub,FC2,DCAP1u,CM02,DCMCM1,HOMCM,DCMCM2,CM03,DCMCMH1,HOMCM,DCMCMH2,
+         CMH1,DCMHCMH1,HOMCM,DCMHCMH2,CMH2,DCAP1d,FC3,DMSC1da,BLF3,DMSC1db,MSC1d,VVL1Bd,ENDL1B)
 
-  L3 : LINE=(BEGL3B,PSC3u,DPSC3u,MSC3u,DMSC3ua,VTL2,DMSC3ub,BLF6,DMSC3uc,FC6,DCAP3u,CM16,DCMCM1,HOMCM,DCMCM2,CM17,
-         DCMCM1,HOMCM,DCMCM2,CM18,DCMCM1,HOMCM,DCMCM2,CM19,DCMCM1,HOMCM,DCMCM2,CM20,DCMCM1,HOMCM,DCMCM2,CM21,DCMCM1,HOMCM,DCMCM2,
-         CM22,DCMCM1,HOMCM,DCMCM2,CM23,DCMCM1,HOMCM,DCMCM2,CM24,DCMCM1,HOMCM,DCMCM2,CM25,DCMCM1,HOMCM,DCMCM2,DBREAK,CM26,DCMCM1,
-         HOMCM,DCMCM2,CM27,DCMCM1,HOMCM,DCMCM2,CM28,DCMCM1,HOMCM,DCMCM2,CM29,DCMCM1,HOMCM,DCMCM2,CM30,DCMCM1,HOMCM,DCMCM2,CM31,
-         DCMCM1,HOMCM,DCMCM2,CM32,DCMCM1,HOMCM,DCMCM2,CM33,DCMCM1,HOMCM,DCMCM2,CM34,DCMCM1,HOMCM,DCMCM2,CM35,DCMCM1,HOMCM,DCAP3d,
-         ECD,DMSC3da,BLFD,DMSC3db,MSC3d,DPSC3d,PSC3d,ENDL3B)
+  L2 : LINE=(BEGL2B,VVL2Bu,MSC2u,DMSC2ua,BLF4,DMSC2ub,FC4,DCAP2u,CM04,DCMCM1,HOMCM,DCMCM2,CM05,DCMCM1,HOMCM,DCMCM2,CM06,
+         DCMCM1,HOMCM,DCMCM2,CM07,DCMCM1,HOMCM,DCMCM2,CM08,DCMCM1,HOMCM,DCMCM2,CM09,DCMCM1,HOMCM,DCMCM2,CM10,DCMCM1,HOMCM,DCMCM2,
+         CM11,DCMCM1,HOMCM,DCMCM2,CM12,DCMCM1,HOMCM,DCMCM2,CM13,DCMCM1,HOMCM,DCMCM2,CM14,DCMCM1,HOMCM,DCMCM2,CM15,DCMCM1,HOMCM,
+         DCAP2d,FC5,DMSC2da,BLF5,DMSC2db,VTL1,DMSC2dc,MSC2d,VVL2Bd,ENDL2B)
+
+  L3 : LINE=(BEGL3B,VVL3Bu,MSC3u,DMSC3ua,VTL2,DMSC3ub,BLF6,DMSC3uc,FC6,DCAP3u,CM16,DCMCM1,HOMCM,DCMCM2,CM17,DCMCM1,
+         HOMCM,DCMCM2,CM18,DCMCM1,HOMCM,DCMCM2,CM19,DCMCM1,HOMCM,DCMCM2,CM20,DCMCM1,HOMCM,DCMCM2,CM21,DCMCM1,HOMCM,DCMCM2,CM22,
+         DCMCM1,HOMCM,DCMCM2,CM23,DCMCM1,HOMCM,DCMCM2,CM24,DCMCM1,HOMCM,DCMCM2,CM25,DCMCM1,HOMCM,DCMCM2,DBREAK,CM26,DCMCM1,HOMCM,
+         DCMCM2,CM27,DCMCM1,HOMCM,DCMCM2,CM28,DCMCM1,HOMCM,DCMCM2,CM29,DCMCM1,HOMCM,DCMCM2,CM30,DCMCM1,HOMCM,DCMCM2,CM31,DCMCM1,
+         HOMCM,DCMCM2,CM32,DCMCM1,HOMCM,DCMCM2,CM33,DCMCM1,HOMCM,DCMCM2,CM34,DCMCM1,HOMCM,DCMCM2,CM35,DCMCM1,HOMCM,DCAP3d,EC2,
+         DMSC3da,BLF7,DMSC3db,VGL3Bd,DMSC3dc,MSC3d,VVL3Bd,ENDL3B)
 
 ! ==============================================================================
 ! coasting FODO

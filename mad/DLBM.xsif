@@ -1,10 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-13MAR23 ***
+! *** OPTICS=AD_ACCEL-17OCT23 ***
 
 ! LCLS2sc sector 7 dogleg plus match to bypass line
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 19-SEP-2023, M. Woodley
+!  * add XCBP10 upstream of sector 10 shield wall per C. Yi and L. Alsberg
 ! ------------------------------------------------------------------------------
 ! 03-FEB-2023, M. Woodley
 !  * relocate YCL2P per M. Gaydosh
@@ -115,6 +118,14 @@
 ! 14-JAN-2014, M. Woodley
 !  * add BC3
 ! ------------------------------------------------------------------------------
+
+! match into bypass dogleg FODO cell (at center of QDOG1)
+! LINE=(QDOG1,DBD1,QDOG2,QDOG2,DBD1,QDOG1)
+
+  BXDLm := 13.103975995473
+  AXDLm := -1.328121315284
+  BYDLm := 15.962707890974
+  AYDLm :=  1.529775364964
 
   dZdog := 77.99997504 !Z-extent of dogleg (BRB1 entrance to BRB2 exit)
 
@@ -365,9 +376,10 @@
   NQBD  := 8                    !number of dogleg quads
   LTOTA := 76.022947763944      !path length from BRB1-exit to BRB2-entrance
   LDBD  := (LTOTA+LBR)/(NQBD/2) !FODO cell half length
-  dLDBD := -0.1248168861E-4     !adjustment for dispersion correction
+  dLDBD := -0.12481688608E-4    !adjustment for dispersion correction
   LDBDh := LDBD/2+dLDBD         !FODO cell half length
 
+  DBDm0 : DRIF, L=0.2333 !drift between VVEXTD and CCDLU
   DBDm1 : DRIF, L=0.5 !drift between CCDLU and BRB1
   DBD   : DRIF, L=LTOTA
   DBD0  : DRIF, L=(LDBDh-LBR-LQR)/2-4*dLDBD
@@ -477,6 +489,8 @@
   DBPb1   : DRIF, L=DBPb[L]+0.38327
   DBPc1   : DRIF, L=DBPc[L]-0.38327
   DBPd1   : DRIF, L=21.516667
+  DBPd1a  : DRIF, L=3.950667 !30*in2m
+  DBPd1b  : DRIF, L=DBPd1[L]-DBPd1a[L]
   S10WALL : DRIF, L=1.848
   DBPd2   : DRIF, L=DBPd[L]-DBPd1[L]-S10WALL[L]
 
@@ -514,6 +528,7 @@
   XCL1P  : HKIC, TYPE="type-4"
   XCL3P  : HKIC, TYPE="type-4"
   XCL5P  : HKIC, TYPE="type-4"
+  XCBP10 : HKIC, TYPE="type-4"
   XCBP11 : HKIC, TYPE="type-4"
 
 ! ==============================================================================
@@ -695,15 +710,15 @@
       QL4P_full,DL4Pa,BPML4P,DL4Pb,YCL4P,DL4Pc,&
       QL5P_full,DBPa,BPML5P,DBPb,XCL5P,DBPc,&
         DBPsa,BPN09END,BPN10BEG,DBPsb,&
-      QBP10_full,DBPa,BPMBP10,DBPb,YCBP10,DBPd1,S10WALL,DBPd2,&
-        RFBWSBP1,DBPe,WSBP1,DBPf,&
+      QBP10_full,DBPa,BPMBP10,DBPb,YCBP10,DBPd1a,XCBP10,DBPd1b,&
+        S10WALL,DBPd2,RFBWSBP1,DBPe,WSBP1,DBPf,&
         DBPsa,BPN10END,BPN11BEG,DBPsb,&
       QBP11_full,DBPa,BPMBP11,DBPb1,XCBP11,DBPc1,&
         DBPsa,BPN11END,BPN12BEG,DBPsb,&
       QBP12_full,DBPa,BPMBP12,DBPb,YCBP12,DBPd)
  !ENDCOMMENT
 
-  DLBM : LINE=(BEGDOG,CCDLU,DBDm1,DLBP,MTCH1,ENDDOG)
+  DLBM : LINE=(BEGDOG,DBDm0,CCDLU,DBDm1,DLBP,MTCH1,ENDDOG)
 
   Bfodo : LINE=(QBPF,DBP,DBP,QBPD,QBPD,DBP,DBP,QBPF)
 

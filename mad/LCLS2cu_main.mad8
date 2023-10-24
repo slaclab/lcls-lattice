@@ -1,6 +1,6 @@
-  TITLE, "AD_ACCEL (March 13, 2023)" ! copper linac
+  TITLE, "AD_ACCEL (October 17, 2023)" ! copper linac
 
-! *** OPTICS=AD_ACCEL-13MAR23 ***
+! *** OPTICS=AD_ACCEL-17OCT23 ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY
   ASSIGN, ECHO="LCLS2cu.echo"
@@ -122,8 +122,8 @@
 
   SETHXRSS  := 0 !ON/OFF switch for HXR self-seeding chicane
   SETSXRSS  := 0 !ON/OFF switch for SXR self-seeding chicane
-  SETCBXFEL := 0 !ON/OFF switch for CBXFEL chicanes
   SETPEPX   := 0 !ON/OFF switch for PEPPEx chicane
+  SETCBXFEL := 0 !ON/OFF switch for CBXFEL chicanes
 
 ! ------------------------------------------------------------------------------
 ! integrated gradients for undulator quadrupoles
@@ -736,3 +736,137 @@
 
   STOP
 
+! ------------------------------------------------------------------------------
+! LCLS2cu_main working stuff
+! ------------------------------------------------------------------------------
+
+  comment !use with undhBBA.m (non-BBA)
+    BEAM, ENERGY=Ef
+    SET, SETCUS, CUSOFF ; SET, SETAL, ALOFF
+    SETK2cuH
+    USE, (LTUH,HXRUND,DUMPLINE), RANGE=MM1/#E
+    PRINT, FULL
+    TWISS, BETA0=TWSSmh, SAVE=TWISS, TAPE="twiss.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      STYLE=100, SPLINE, RANGE=QHXh44[1]/DUMPFACE, &
+      TITLE="HXR undulator to Dump, w/o coupling", FILE="match"
+   !TWISS, BETA0=TWSSmh, SAVE=TWISS, COUPLE
+   !PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+   !  STYLE=100, SPLINE, RANGE=QHXh44[1]/DUMPFACE, &
+   !  TITLE="HXR undulator to Dump, with coupling", FILE="match"
+  endcomment
+
+  comment !use with undhBBA.m (BBA)
+    BEAM, ENERGY=Ef
+    SET, SETCUS, CUSOFF ; SET, SETAL, ALOFF
+    SETK2cuH
+    SET, kQHX46, kQDHX !for BBA
+    SET, kQHX47, kQFHX !for BBA
+    USE, (LTUH,HXRUND,DUMPLINE), RANGE=MM1/#E
+    PRINT, FULL
+    TWISS, BETA0=TWSSmh, SAVE=TWISS, TAPE="BBAtwiss.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      STYLE=100, SPLINE, RANGE=QHXh44[1]/DUMPFACE, &
+      TITLE="HXR undulator to Dump (BBA), w/o coupling", FILE="BBAmatch"
+   !TWISS, BETA0=TWSSmh, SAVE=TWISS, COUPLE
+   !PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+   !  STYLE=100, SPLINE, RANGE=QHXh44[1]/DUMPFACE, &
+   !  TITLE="HXR undulator to Dump, with coupling", FILE="BBAmatch"
+  endcomment
+
+! ------------------------------------------------------------------------------
+
+  comment !match HXRSS chicane to R56= 15.0 um
+    BEAM, ENERGY=Ef
+    VALUE, Ef,Eu
+    SET, SETHXRSS, 1
+    USE, HCHICANE
+    VALUE, AB4,BLB4
+    MATCH, BETX=1, BETY=1
+      VARY, AB4, STEP=1.E-6, LOWER=0
+      RMATRIX, #S/#E, RM(5,6)=15.0E-6, WEIGHT(5,6)=1
+      LMDIF, TOL=1.E-20
+      MIGRAD, TOL=1.E-20
+    ENDMATCH
+    VALUE, AB4,BLB4
+    PRINT, FULL
+    SURVEY
+  endcomment
+
+! ------------------------------------------------------------------------------
+
+  COMMENT
+    SETK2cuH
+    CALL, FILENAME="patch.mad8"
+   !VALUE, Ef,Eu,Brhou/Cb
+    GLmaxQUM := 100 !BMAX = 100 kG @ 120 A (bipolar)
+    KmaxQUM  := GLmaxQUM/LQA/(Cb*Eu)
+
+    BEAM, ENERGY=Ef
+    SET, SETSP, SETSPh ; SET, SETAL, ALOFF
+    USE, (LTUH,HXRUND), RANGE=MM1/#E
+   !VALUE, KQUM1,KQUM2,KQUM3,KQUM4
+    MATCH, BETA0=TWSSmh
+      VARY, KQUM1, STEP=1.E-6, LOWER=0, UPPER= KmaxQUM
+      VARY, KQUM2, STEP=1.E-6, UPPER=0, LOWER=-KmaxQUM
+      VARY, KQUM3, STEP=1.E-6, LOWER=0, UPPER= KmaxQUM
+      VARY, KQUM4, STEP=1.E-6, UPPER=0, LOWER=-KmaxQUM
+      comment !match periodic betas in HXR
+        WEIGHT, DX=0, DPX=0, DY=0, DPY=0, X=0, PX=0, Y=0, PY=0, T=0, PT=0
+        WEIGHT, BETX=1.E-5, BETY=1.E-5, ALFX=0, ALFY=0
+        COUPLE, MUQh[1]/MUQh[3]
+        COUPLE, MUQh[2]/MUQh[4]
+        COUPLE, MUQh[1]/MUQh[5]
+        COUPLE, MUQh[2]/MUQh[6]
+        COUPLE, MUQh[1]/MUQh[7]
+        COUPLE, MUQh[2]/MUQh[8]
+        COUPLE, MUQh[1]/MUQh[9]
+        COUPLE, MUQh[2]/MUQh[10]
+        COUPLE, MUQh[1]/MUQh[11]
+        COUPLE, MUQh[2]/MUQh[12]
+        COUPLE, MUQh[1]/MUQh[13]
+        COUPLE, MUQh[2]/MUQh[14]
+        COUPLE, MUQh[1]/MUQh[15]
+        COUPLE, MUQh[2]/MUQh[16]
+        COUPLE, MUQh[1]/MUQh[17]
+        COUPLE, MUQh[2]/MUQh[18]
+        COUPLE, MUQh[1]/MUQh[19]
+        COUPLE, MUQh[2]/MUQh[20]
+        COUPLE, MUQh[1]/MUQh[21]
+        COUPLE, MUQh[2]/MUQh[22]
+        COUPLE, MUQh[1]/MUQh[23]
+        COUPLE, MUQh[2]/MUQh[24]
+        COUPLE, MUQh[1]/MUQh[25]
+        COUPLE, MUQh[2]/MUQh[26]
+        COUPLE, MUQh[1]/MUQh[27]
+        COUPLE, MUQh[2]/MUQh[28]
+        COUPLE, MUQh[1]/MUQh[29]
+        COUPLE, MUQh[2]/MUQh[30]
+        COUPLE, MUQh[1]/MUQh[31]
+        COUPLE, MUQh[2]/MUQh[32]
+        COUPLE, MUQh[1]/MUQh[33]
+       !COUPLE, MUQh[2]/MUQh[34] !KQDHXM
+        WEIGHT, BETX=1.E-6, BETY=1.E-6
+        CONSTR, QUM2[1], BETX<50, BETY<70
+        CONSTR, QUM3[1], BETX<50, BETY<50
+        CONSTR, QUM4[1], BETX<50, BETY<50
+      endcomment
+     !comment !match at start of HXR cell 24
+        CONSTR, DU7H[6], BETX=BXHXRm, ALFX=AXHXRm, BETY=BYHXRm, ALFY=AYHXRm
+     !endcomment
+     !LMDIF, TOL=1.E-20, CALLS=10000
+     !MIGRAD, TOL=1.E-20, CALLS=10000
+    ENDMATCH
+    VALUE, KQUM1,KQUM2,KQUM3,KQUM4
+    PRINT, FULL
+    SAVEBETA, TWm, DU7H[6]
+    TWISS, COUPLE, BETA0=TWSSmh, SAVE, TAPE="twiss.tape"
+    SHOW, TWm
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=WS31/DU7H[29], &
+      STYLE=100, SPLINE=.T., FILE="Escale"
+    STOP
+  ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+  STOP

@@ -1,10 +1,15 @@
 
-! *** OPTICS=AD_ACCEL-13MAR23 ***
+! *** OPTICS=AD_ACCEL-17OCT23 ***
 
 ! LCLS2sc 3-way spreader system
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 12-SEP-2023, M. Woodley
+!  * relocate some spreader BPMs per G. Gassner (|dZ| > 10 mm)
+!    (Final Magnet Results Organzized per BeamlineR3.xlsx)
+!  * don't relocate QSP11H (dZ=-10.088mm) or QSP8S (dZ=-13.672mm) ... symmetry
 ! ------------------------------------------------------------------------------
 ! 29-AUG-2022, M. Woodley
 !  * defer (level 0) XCSP5d and YCSP6d ... these have not been installed
@@ -728,12 +733,12 @@ ldspbpm2 = 0.5342
 ldspbk = 0.3
 
 ldspbk0h = ldspbk
-ldspbk1h = ldspbk/cos(abkysp1h)
-ldspbk2h = ldspbk/cos(abkysp12h)
-ldspbk3h = ldspbk/cos(abkysph)
-ldspbk4h = ldspbk/cos(abkysph)
-ldspbk5h = 15.1  /cos(abkysph)
-ldspbk5ha = 2.267/cos(abkysph)
+ldspbk1h = ldspbk   /cos(abkysp1h)
+ldspbk2h = ldspbk   /cos(abkysp12h)
+ldspbk3h = ldspbk   /cos(abkysph)
+ldspbk4h = ldspbk   /cos(abkysph)
+ldspbk5h = 15.1     /cos(abkysph)
+ldspbk5ha = 2.204627/cos(abkysph)
 ldspbk5hb = ldspbk5h-ldspbk5ha
 
 dspbk0h: drift, l = ldspbk0h
@@ -894,13 +899,13 @@ dsp17ha: drift, l = ldsp17ha
 dsp17hb: drift, l = ldsp17hb
 
 ldspq1 = 45.126
-ldspq1a = 23.0
+ldspq1a = 22.923172 !23.0
 ldspq1c = ldspcor1
 ldspq1b = ldspq1-ldspq1a-ldspq1c
 dldspq2 = 0.0
 ldspq2 = 1.8 +dldspq2
 ldspq2a = 0.5913
-ldspq2c = 0.4781
+ldspq2c = 0.511861 !0.4781
 ldspq2b = ldspq2-ldspq2a-ldspq2c
 ldspq3 = 16.124 -dldspq2
 ldspq3a = 0.4285
@@ -916,12 +921,12 @@ dspq3a: drift, l = ldspq3a
 dspq3b: drift, l = ldspq3b
 
 ldspbk0s = ldspbk
-ldspbk1s = ldspbk/cos(abkysp1s)
-ldspbk2s = ldspbk/cos(abkysp12s)
-ldspbk3s = ldspbk/cos(abkysps)
-ldspbk4s = ldspbk/cos(abkysps)
-ldspbk5s = 15.1  /cos(abkysps)
-ldspbk5sa = 2.267/cos(abkysps)
+ldspbk1s = ldspbk    /cos(abkysp1s)
+ldspbk2s = ldspbk    /cos(abkysp12s)
+ldspbk3s = ldspbk    /cos(abkysps)
+ldspbk4s = ldspbk    /cos(abkysps)
+ldspbk5s = 15.1      /cos(abkysps)
+ldspbk5sa = 2.2261635/cos(abkysps)
 ldspbk5sb = ldspbk5s-ldspbk5sa
 
 dspbk0s: drift, l = ldspbk0s
@@ -1050,7 +1055,7 @@ dldsp3d = 0.0
 ldsp3d = 3.317 +dldsp3d
 ldsp3da = ldspbpm1
 ldsp3db = 0.6234
-ldsp3dd = 0.4781+0.3048 !=0.7829
+ldsp3dd = 0.812098 !0.4781+0.3048 !=0.7829
 ldsp3dc = ldsp3d-ldsp3da-ldsp3db-ldsp3dd
 ldsp4d = 4.5085 -dldsp3d
 ldsp4da = 0.4285
@@ -1059,7 +1064,7 @@ ldsp2dc2 = 76.149-ldsp2da1-ldsp2da2-ldsp2db-ldsp2dc1-ldsp2dd-ldsp3d-ldsp4d
 ldsp5d = 73.0 !distance between two bends
 ldsp5da = 6.2732486
 ldsp5db = 45.575+1.0-ldsp5da-lbyspd/2
-ldsp5dd = 0.2298134+0.609623481 !=0.839436881
+ldsp5dd = 0.790152 !0.2298134+0.609623481 !=0.839436881
 ldsp5dc = ldsp5d-ldsp5da-ldsp5db-ldsp5dd
 dldsp6d = 0.0 !adjust Z at muon wall
 ldsp6d = 143.648999999997-0.4 +18.115253 -0.761425 +dldsp6d

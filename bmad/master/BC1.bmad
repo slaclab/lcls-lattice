@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-13MAR23 ***
+! *** OPTICS=AD_ACCEL-17OCT23 ***
 
 ! LCLS2sc bunch compressor chicane #1
 
@@ -152,7 +152,7 @@ bcx14: sbend, type = "1.69D6.28T", hgap = gb1/2, l = lb1, angle = +ab1, e1 = +ab
 
 ! L1 to BC1 chicane
 
-kq1c01 = 0.970715924074
+kq1c01 = 0.970751295076
 
 q1c01: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kq1c01
 
@@ -178,11 +178,11 @@ qdcoll1: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = -kqcoll1
 
 ! COL1 collimation section
 
-kqc101 = -0.469119554298
-kqc102 = 2.153825172491
+kqc101 = -0.493721584935
+kqc102 = 2.095915870562
 kqc103 = 0.0
-kqc104 = -1.22065558752
-kqc105 = -1.553140255506
+kqc104 = -0.999554967738
+kqc105 = -1.704550883751
 kqc106 = kqcoll1
 kqc107 = -kqcoll1
 kqc108 = kqcoll1
@@ -210,9 +210,11 @@ qc112: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc112
 
 ! L1 to BC1 chicane
 
-d1c00: drift, l = 0.144
+d1c00: drift, l = 2.06962
 d1c01: drift, l = 0.478
 
+d1c00a: drift, l = 1.92562
+d1c00b: drift, l = d1c00[l]-d1c00a[l]
 d1c01a: drift, l = 0.15
 d1c01b: drift, l = d1c01[l]-d1c01a[l]
 
@@ -244,21 +246,26 @@ dc1oe: drift, l = zdc1oe/cos(ab1)-lqsb/2, type = "CSR"
 dc1of: drift, l = zdc1of/cos(ab1)-lqc/2, type = "CSR"
 dc1og: drift, l = zdc1og/cos(ab1)-lqc/2, type = "CSR"
 
+! BC1 chicane to COL1
+
+dc100: drift, l = 0.637
+
+dc100a: drift, l = 0.3
+dc100b: drift, l = 0.1
+dc100c: drift, l = dc100[l]-dc100a[l]-dc100b[l]
+
 ! collimation FODO
 
 dcoll1: drift, l = 4.0-lqx
 
 ! COL1 collimation section
 
-dc100: drift, l = 0.637
 dc101: drift, l = 7.95
 dc102: drift, l = 0.8
 dc103: drift, l = 2.75
 dc104: drift, l = 4.316831888391
+dc112: drift, l = 2.545948 !0.38415+2.161798
 
-dc100a: drift, l = 0.3
-dc100b: drift, l = 0.1
-dc100c: drift, l = dc100[l]-dc100a[l]-dc100b[l]
 dc101a: drift, l = 0.214288
 dc101b: drift, l = 0.169862
 dc101c: drift, l = 0.25
@@ -294,6 +301,7 @@ dc110d: drift, l = dcoll1[l]/2
 dc111a: drift, l = 0.38415
 dc111b: drift, l = dcoll1[l]-dc111a[l]
 dc112a: drift, l = 0.38415
+dc112b: drift, l = dc112[l]-dc112a[l]
 
 ! ==============================================================================
 ! BPMs
@@ -538,20 +546,24 @@ bpmc112[ref] = qc112
 
   SC1C00 : LINE=(XC1C00,YC1C00)
 
-  BC1i0 : LINE=(D1C00,Q1C01,Q1C01,D1C01a,D1C01b)
+  BC1i0 : LINE=(BEGBC1B,D1C00,Q1C01,Q1C01,D1C01)
 
-  BC1i : LINE=(SC1C00,D1C00,Q1C01_full,D1C01a,RFB1C01,D1C01b)
+  BC1i : LINE=(BEGBC1B,D1C00a,SC1C00,D1C00b,Q1C01_full,D1C01a,RFB1C01,D1C01b)
 
   BC1c0 : LINE=(BC1BcBEG,BCX11a,BCX11b,DC1o,BCX12a,BCX12b,DC1ih,BC1BcMID,DC1ih,BCX13a,BCX13b,DC1o,BCX14a,BCX14b,BC1BcEND)
 
   BC1c : LINE=(BC1BcBEG,BCX11_full,DC1oa,CQ11B_full,DC1ob,YCM12B,DC1oc,BCX12_full,DC1ia,BPM11B,DC1ib,CE11B,DC1ic,OTR11B,
          DC1id,WS11B,DC1ie,BCX13_full,DC1od,SQ13B_full,DC1oe,XCM12B,DC1of,CQ12B_full,DC1og,BCX14_full,CNTBC1,BC1BcEND)
 
-  BC1 : LINE=(BEGBC1B,BC1i,BC1c)
+  BC1o0 : LINE=(DC100,ENDBC1B)
+
+  BC1o : LINE=(DC100a,BZ11B,DC100b,BZC1,DC100c,ENDBC1B)
+
+  BC1 : LINE=(BC1i,BC1c,BC1o)
 
 !=!  COMMENT !simplified
 !=!  COMMENT !simplified
-!=!    COL1 : LINE=(DC100,ENDBC1B,BEGCOL1,&
+!=!    COL1 : LINE=(BEGCOL1,&
 !=!      QC101,QC101,DC101,&
 !=!      QC102,QC102,DC102,&
 !=!      QC103,QC103,DC103,&
@@ -563,17 +575,17 @@ bpmc112[ref] = qc112
 !=!      QC109,QC109,DColl1,&
 !=!      QC110,QC110,DColl1,&
 !=!      QC111,QC111,DColl1,&
-!=!      QC112,QC112,DC112a,&
+!=!      QC112,QC112,DC112,&
 !=!      ENDCOL1)
 !=!  ENDCOMMENT
 
  !COMMENT !complete
-    COL1 : LINE=(DC100a,BZ11B,DC100b,BZC1,DC100c,ENDBC1B,BEGCOL1,QC101_full,DC101a,IM11B,DC101b,XCC101,DC101c,YCC101,
-         DC101d,QC102_full,DC102,QC103_full,DC103,QC104_full,DC104a,XCC104,DC104b,RFBC104,DC104c,WSC104,DC104d,CYC11,DC104e,
-         QC105_full,DC105a,YCC105,DC105b,CXC11,DC105c,QC106_full,DC106a,XCC106,DC106b,RFBC106,DC106c,WSC106,DC106d,CYC12,DC106e,
-         QC107_full,DC107a,YCC107,DC107b,CXC12,DC107c,QC108_full,DC108a,XCC108,DC108b,RFBC108,DC108c,WSC108,DC108d,CYC13,DC108e,
-         QC109_full,DC109a,YCC109,DC109b,CXC13,DC109c,QC110_full,DC110a,XCC110,DC110b,RFBC110,DC110c,WSC110,DC110d,QC111_full,
-         DC111a,YCC111,DC111b,QC112_full,DC112a,XCC112,ENDCOL1)
+    COL1 : LINE=(BEGCOL1,QC101_full,DC101a,IM11B,DC101b,XCC101,DC101c,YCC101,DC101d,QC102_full,DC102,QC103_full,DC103,
+         QC104_full,DC104a,XCC104,DC104b,RFBC104,DC104c,WSC104,DC104d,CYC11,DC104e,QC105_full,DC105a,YCC105,DC105b,CXC11,DC105c,
+         QC106_full,DC106a,XCC106,DC106b,RFBC106,DC106c,WSC106,DC106d,CYC12,DC106e,QC107_full,DC107a,YCC107,DC107b,CXC12,DC107c,
+         QC108_full,DC108a,XCC108,DC108b,RFBC108,DC108c,WSC108,DC108d,CYC13,DC108e,QC109_full,DC109a,YCC109,DC109b,CXC13,DC109c,
+         QC110_full,DC110a,XCC110,DC110b,RFBC110,DC110c,WSC110,DC110d,QC111_full,DC111a,YCC111,DC111b,QC112_full,DC112a,XCC112,
+         DC112b,ENDCOL1)
  !ENDCOMMENT
 
   C1fodo : LINE=(QFColl1,DColl1,QDColl1,QDColl1,DColl1,QFColl1)
