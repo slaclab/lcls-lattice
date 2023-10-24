@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-13MAR23 ***
+! *** OPTICS=AD_ACCEL-17OCT23 ***
 
 ! LCLS2sc bunch compressor chicane #2
 
@@ -156,7 +156,7 @@ bcx24: sbend, type = "1D19.7", hgap = gb2/2, l = lb2, angle = +ab2, e1 = +ab2, f
 
 ! L2 to BC2 chicane
 
-kq2c01 = 0.509097598693
+kq2c01 = 0.509097598692
 
 q2c01: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kq2c01
 
@@ -170,10 +170,10 @@ cq22b: quadrupole, type = "1.69Q3.4", l = lqc/2, aperture = rqc, k1 = kcq22
 
 ! match into L3
 
-kqe201 = -1.301446405825
-kqe202 = 1.989952600916
-kqe203 = -1.800052158459
-kqe204 = 1.645853896024
+kqe201 = -1.301446405823
+kqe202 = 1.989952600904
+kqe203 = -1.800052158496
+kqe204 = 1.645853895994
 
 qe201: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqe201
 qe202: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqe202
@@ -186,12 +186,13 @@ qe204: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqe204
 
 ! L2 to BC2 chicane
 
-d2c00: drift, l = 1.150310011609
+d2c00: drift, l = 3.108252011609
 d2c01: drift, l = 0.5
 
-d2c00b: drift, l = 0.338951
-d2c00c: drift, l = 0.321049
-d2c00a: drift, l = d2c00[l]-d2c00b[l]-d2c00c[l]
+d2c00a: drift, l = 0.039882
+d2c00c: drift, l = 0.338951
+d2c00d: drift, l = 0.321049
+d2c00b: drift, l = d2c00[l]-d2c00a[l]-d2c00c[l]-d2c00d[l]
 d2c01a: drift, l = 0.133
 d2c01b: drift, l = d2c01[l]-d2c01a[l]
 
@@ -219,20 +220,24 @@ dc2ie: drift, l = 0.4245, type = "CSR"       !0.35
 dc2oc: drift, l = zdc2oc/cos(ab2)-lqc/2, type = "CSR"
 dc2od: drift, l = zdc2od/cos(ab2)-lqc/2, type = "CSR"
 
+! BC2 chicane to EMIT2
+
+d2c02: drift, l = 1.050338
+
+d2c02a: drift, l = 0.687372
+d2c02b: drift, l = d2c02[l]-d2c02a[l]
+
 ! match into L3
 
-lemit2 = 28.859648
+lemit2 = 28.859648+2.3627
 
-de200: drift, l = 1.050338
 de201: drift, l = 4.906343360384
 de202a: drift, l = 10.974020455558
 de203: drift, l = 3.0
-de204: drift, l = 0.670516558157
-de202b: drift, l = lemit2-4*lqx-de200[l]-de201[l]-de202a[l]-de203[l]-de204[l]
+de204: drift, l = 3.033216558157 !0.670516558157
+de202b: drift, l = lemit2-4*lqx-d2c02[l]-de201[l]-de202a[l]-de203[l]-de204[l]
 de202: drift, l = de202a[l]+de202b[l]
 
-de200a: drift, l = 0.687372
-de200b: drift, l = de200[l]-de200a[l]
 de201a: drift, l = 0.321044
 de201b: drift, l = 0.328618
 de201c: drift, l = de201[l]-de201a[l]-de201b[l]
@@ -375,19 +380,23 @@ qe204[L] = 2*qe204[L]
 bpme204[superimpose] = T
 bpme204[ref] = qe204
 
-  BC2i0 : LINE=(D2C00,Q2C01,Q2C01,D2C01)
+  BC2i0 : LINE=(BEGBC2B,D2C00,Q2C01,Q2C01,D2C01)
 
-  BC2i : LINE=(D2C00a,XC2C00,D2C00b,YC2C00,D2C00c,Q2C01_full,D2C01a,RFB2C01,D2C01b)
+  BC2i : LINE=(BEGBC2B,D2C00a,RFB2C00,D2C00b,XC2C00,D2C00c,YC2C00,D2C00d,Q2C01_full,D2C01a,RFB2C01,D2C01b)
 
   BC2c0 : LINE=(BC2BcBEG,BCX21a,BCX21b,DC2o,BCX22a,BCX22b,DC2ih,BC2BcMID,DC2ih,BCX23a,BCX23b,DC2o,BCX24a,BCX24b,BC2BcEND)
 
   BC2c : LINE=(BC2BcBEG,BCX21_full,DC2oa,CQ21B_full,DC2ob,BCX22_full,DC2ia,BPM21B,DC2ib,CE21B,DC2ic,OTR21B,DC2id,WS21B,
          DC2ie,BCX23_full,DC2oc,CQ22B_full,DC2od,BCX24_full,CNTBC2,BC2BcEND)
 
-  BC2 : LINE=(BEGBC2B,BC2i,BC2c)
+  BC2o0 : LINE=(D2C02,ENDBC2B)
 
-  EMIT2 : LINE=(DE200a,BZ21B,DE200b,ENDBC2B,BEGEMIT2,QE201_full,DE201a,YCE201,DE201b,IM21B,DE201c,QE202_full,DE202a1,
-         XCE202,DE202a2,WSEMIT2,DE202b,QE203_full,DE203a,YCE203,DE203b,QE204_full,DE204a,XCE204,DE204b,ENDEMIT2)
+  BC2o : LINE=(D2C02a,BZ21B,D2C02b,ENDBC2B)
+
+  BC2 : LINE=(BC2i,BC2c,BC2o)
+
+  EMIT2 : LINE=(BEGEMIT2,QE201_full,DE201a,YCE201,DE201b,IM21B,DE201c,QE202_full,DE202a1,XCE202,DE202a2,WSEMIT2,DE202b,
+         QE203_full,DE203a,YCE203,DE203b,QE204_full,DE204a,XCE204,DE204b,ENDEMIT2)
 
 ! ------------------------------------------------------------------------------
 

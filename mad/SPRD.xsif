@@ -1,10 +1,15 @@
 
-! *** OPTICS=AD_ACCEL-13MAR23 ***
+! *** OPTICS=AD_ACCEL-17OCT23 ***
 
 ! LCLS2sc 3-way spreader system
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 12-SEP-2023, M. Woodley
+!  * relocate some spreader BPMs per G. Gassner (|dZ| > 10 mm)
+!    (Final Magnet Results Organzized per BeamlineR3.xlsx)
+!  * don't relocate QSP11H (dZ=-10.088mm) or QSP8S (dZ=-13.672mm) ... symmetry
 ! ------------------------------------------------------------------------------
 ! 29-AUG-2022, M. Woodley
 !  * defer (level 0) XCSP5d and YCSP6d ... these have not been installed
@@ -742,12 +747,12 @@
   LDSPBK   := 0.3
 
   LDSPBK0h  := LDSPBK
-  LDSPBK1h  := LDSPBK/COS(ABKYSP1h)
-  LDSPBK2h  := LDSPBK/COS(ABKYSP12h)
-  LDSPBK3h  := LDSPBK/COS(ABKYSPh)
-  LDSPBK4h  := LDSPBK/COS(ABKYSPh)
-  LDSPBK5h  := 15.1  /COS(ABKYSPh)
-  LDSPBK5ha :=  2.267/COS(ABKYSPh)
+  LDSPBK1h  := LDSPBK   /COS(ABKYSP1h)
+  LDSPBK2h  := LDSPBK   /COS(ABKYSP12h)
+  LDSPBK3h  := LDSPBK   /COS(ABKYSPh)
+  LDSPBK4h  := LDSPBK   /COS(ABKYSPh)
+  LDSPBK5h  := 15.1     /COS(ABKYSPh)
+  LDSPBK5ha :=  2.204627/COS(ABKYSPh)
   LDSPBK5hb := LDSPBK5h-LDSPBK5ha
 
   DSPBK0h  : DRIF, L=LDSPBK0h
@@ -909,13 +914,13 @@
   DSP17hb : DRIF, L=LDSP17hb
 
   LDSPQ1  := 45.126
-  LDSPQ1a := 23.0
+  LDSPQ1a := 22.923172 !23.0
   LDSPQ1c := LDSPCOR1
   LDSPQ1b := LDSPQ1-LDSPQ1a-LDSPQ1c
  dLDSPQ2  := 0.0
   LDSPQ2  := 1.8 +dLDSPQ2
   LDSPQ2a := 0.5913
-  LDSPQ2c := 0.4781
+  LDSPQ2c := 0.511861 !0.4781
   LDSPQ2b := LDSPQ2-LDSPQ2a-LDSPQ2c
   LDSPQ3  := 16.124 -dLDSPQ2 
   LDSPQ3a := 0.4285
@@ -931,12 +936,12 @@
   DSPQ3b : DRIFT, L=LDSPQ3b
 
   LDSPBK0s  := LDSPBK
-  LDSPBK1s  := LDSPBK/COS(ABKYSP1s)
-  LDSPBK2s  := LDSPBK/COS(ABKYSP12s)
-  LDSPBK3s  := LDSPBK/COS(ABKYSPs)
-  LDSPBK4s  := LDSPBK/COS(ABKYSPs)
-  LDSPBK5s  := 15.1  /COS(ABKYSPs)
-  LDSPBK5sa :=  2.267/COS(ABKYSPs)
+  LDSPBK1s  := LDSPBK    /COS(ABKYSP1s)
+  LDSPBK2s  := LDSPBK    /COS(ABKYSP12s)
+  LDSPBK3s  := LDSPBK    /COS(ABKYSPs)
+  LDSPBK4s  := LDSPBK    /COS(ABKYSPs)
+  LDSPBK5s  := 15.1      /COS(ABKYSPs)
+  LDSPBK5sa :=  2.2261635/COS(ABKYSPs)
   LDSPBK5sb := LDSPBK5s-LDSPBK5sa
 
   DSPBK0s  : DRIF, L=LDSPBK0s
@@ -1065,7 +1070,7 @@
   LDSP3d   := 3.317 +dLDSP3d
   LDSP3da  := LDSPBPM1
   LDSP3db  := 0.6234
-  LDSP3dd  := 0.4781+0.3048 !=0.7829
+  LDSP3dd  := 0.812098 !0.4781+0.3048 !=0.7829
   LDSP3dc  := LDSP3d-LDSP3da-LDSP3db-LDSP3dd
   LDSP4d   := 4.5085 -dLDSP3d
   LDSP4da  := 0.4285
@@ -1074,7 +1079,7 @@
   LDSP5d   := 73.0 !distance between two bends
   LDSP5da  := 6.2732486
   LDSP5db  := 45.575+1.0-LDSP5da-LBYSPd/2
-  LDSP5dd  := 0.2298134+0.609623481 !=0.839436881
+  LDSP5dd  := 0.790152 !0.2298134+0.609623481 !=0.839436881
   LDSP5dc  := LDSP5d-LDSP5da-LDSP5db-LDSP5dd
  dLDSP6d   := 0.0 !adjust Z at muon wall
   LDSP6d   := 143.648999999997-0.4 +18.115253 -0.761425 +dLDSP6d

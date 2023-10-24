@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-13MAR23 ***
+! *** OPTICS=LCLS2sc27NOV18 ***
 
 ! SC_DIAG0 path configurations
 
@@ -7,16 +7,18 @@
   SETCUS    := 0
   SETAL     := 0
   SETDA     := 0
-  SETXLEAP2 := 0 !set to 1 to turn ON XLEAP-II components
   SETHXRSS  := 0 !set to 1 to turn ON HXR self-seeding chicane
   SETSXRSS  := 0 !set to 1 to turn ON SXR self-seeding chicane
-  SETCBXFEL := 0 !set to 1 to turn ON CBXFEL chicane(s)
-  SETPEPX   := 0 !set to 1 to turn ON PEPPEx chicane
+  SETXLEAP2 := 0 !set to 1 to turn ON XLEAP-II components
 
-  IntgSX := 30.0 !kG
-  IntgHX := 30.0 !kG
+  IntgSX := 20.0 !kG
+  IntgHX := 12.0 !kG
+  EfSC   :=  4.0 !GeV
+  EuSC   :=  4.0 !GeV
 
   CALL, FILENAME="LCLS2sc_master.xsif" !calls other xsif files
+
+  SC_DIAG0i : LINE=(LCLS2scI,HTR,DIAG0)
 
   COMMENT !to generate SURVEY
     USE, SC_DIAG0 !start at gun

@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-13MAR23 ***
+! *** OPTICS=AD_ACCEL-17OCT23 ***
 
 ! LCLS2sc linac extension: end of L3 to start of bypass dogleg
 
@@ -60,8 +60,8 @@
 ! QUAD
 ! ------------------------------------------------------------------------------
 
-  KQX01 :=  1.086454324744
-  KQX02 := -0.972260677485
+  KQX01 :=  1.086863111799
+  KQX02 := -0.972355220833
 
   QX01 : QUAD, TYPE="1.085Q4.31", L=LQE/2, APER=rQE, K1=KQX01
   QX02 : QUAD, TYPE="1.085Q4.31", L=LQE/2, APER=rQE, K1=KQX02
@@ -75,17 +75,22 @@
 ! DRIF
 ! ------------------------------------------------------------------------------
 
-  LLDX := 21.0-2*LQE !21 m particle-free before CCDLU
+  LLDX := 21.0-2*LQE+2.3473 !21 m particle-free before CCDLU
 
-  DX00 : DRIF, L=5.8
+  DX00 : DRIF, L=8.1473
   DX02 : DRIF, L=5.8
   DX01 : DRIF, L=LLDX-DX00[L]-DX02[L]
 
+  DX00a : DRIF, L=0.364
+  DX00b : DRIF, L=0.48
+  DX00c : DRIF, L=1.01
+  DX00d : DRIF, L=DX00[L]-DX00a[L]-DX00b[L]-DX00c[L]
   DX01a : DRIF, L=0.4-LQE/2
   DX01c : DRIF, L=0.2
   DX01b : DRIF, L=DX01[L]-DX01a[L]-DX01c[L]
   DX02a : DRIF, L=0.31-LQE/2
-  DX02b : DRIF, L=DX02[L]-DX02a[L]
+  DX02b : DRIF, L=5.2101 !DX02[L]-DX02a[L]-DX02c[L]
+  DX02c : DRIF, L=0.1
 
 ! ==============================================================================
 ! BPMs
@@ -109,6 +114,16 @@
   YCX02 : VKIC, TYPE="class-4"
 
 ! ==============================================================================
+! MARK, etc.
+! ------------------------------------------------------------------------------
+
+  VPEXT1 : MARK
+  VPEXT2 : MARK
+  FSEXT  : MARK
+  VGEXTd : MARK
+  VVEXTd : INST, TYPE="gate valve"
+  
+! ==============================================================================
 ! BEAMLINE
 ! ------------------------------------------------------------------------------
 
@@ -123,9 +138,9 @@
 
   EXT : LINE=(&
     BEGEXT,&
-    DX00,&
+    DX00a,VPEXT1,DX00b,VPEXT2,DX00c,FSEXT,DX00d,&
     QX01_full,DX01a,XCX01,DX01b,RFBX02,DX01c,&
-    QX02_full,DX02a,YCX02,DX02b,&
+    QX02_full,DX02a,YCX02,DX02b,VGEXTd,DX02c,VVEXTd,&
     ENDEXT)
 
 ! ------------------------------------------------------------------------------

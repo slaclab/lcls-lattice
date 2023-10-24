@@ -1,10 +1,27 @@
 
-! *** OPTICS=AD_ACCEL-13MAR23 ***
+! *** OPTICS=AD_ACCEL-17OCT23 ***
 
 ! LCLS2sc DASEL
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 07-JUN-2023, M. Woodley
+!  * tweak LDDAS14ac/LDDAS17a to locate PRDAS14/PRDAS17 per A. Ibrahimov
+!  * include Yuri's changes from FEB/MAR 2022
+! ------------------------------------------------------------------------------
+! 29-MAR-2022, Y. Nosochkov
+!  * rematch quadrupoles with the QDAS17 constrained to the same strength
+!    as in QDAS14-16
+! 04-FEB-2022, Y. Nosochkov
+!  * rematch S30XL and A-line quadrupoles in order to fit BSC within the
+!    existing magnet aperture downstream of S30XL
+!  * move PRDAS14 to location u/s of QDAS14 and PRDAS17 closer
+!    to QDAS16 for better phase advance between S30XL profile monitors
+!    and BPMs (PRDAS14 location is adjusted by L. Borzenets)
+! ------------------------------------------------------------------------------
+! 10-APR-2020, M. Woodley
+!  * relocate PRDAS14 and PRDAS17 per A. Ibrahimov
 ! ------------------------------------------------------------------------------
 ! 26-MAR-2020, M. Woodley
 !  * DASEL is being funded off-project ... undefer everything
@@ -212,17 +229,17 @@ brdas2: sbend, type = "1.0D38.37", l = lbrdas2, angle = abrdas2, e1 = abrdas2/2,
 
 ! quads
 
-kqdas1 = -0.453695580774
-kqdas2 = 0.456501974891
-kqdas11 = -0.29960177747
-kqdas12 = 0.324000602479
-kqdas13 = -0.68249002529
-kqdas14 = 0.519096986888
-kqdas17 = -0.577539463501
-kqdas18 = 0.540526371867
-kqdas19 = -0.314095531193
+kqdas1 = -0.459243934125
+kqdas2 = 0.458012606781
+kqdas11 = -0.259299027489
+kqdas12 = 0.320954266045
+kqdas13 = -0.671883770242
+kqdas14 = 0.557491671133
+kqdas18 = 0.443755133992
+kqdas19 = -0.325825809844
 kqdas15 = -kqdas14
 kqdas16 = kqdas14
+kqdas17 = -kqdas14
 
 qdas1a: quadrupole, type = "2Q4W", l = lqm/2, k1 = kqdas1, aperture = rqm
 qdas1b: quadrupole, type = "2Q4W", l = lqm/2, k1 = kqdas1, aperture = rqm
@@ -243,11 +260,11 @@ qdas19: quadrupole, type = "2Q4W", l = lqm/2, k1 = kqdas19, aperture = rqm
 
 lpcblrdas = 0.0 !thickness of PCBLRDAS -- to be determined !!!!!
 
-zddasbk = 0.3      !Z-space between consecutive kickers
-zddasblx = 18.75 +3.685 !Z-space between the last kicker and the septum
-zddasblxa = 5.145    !set for y=5mm at BPM
+zddasbk = 0.3         !Z-space between consecutive kickers
+zddasblx = 18.75+3.685 !Z-space between the last kicker and the septum
+zddasblxa = 5.145       !set for y=5mm at BPM
 zddasblxb = zddasblx-zddasblxa
-zddasblxb2 = 0.0      !distance from PCBLRDAS to BLRDAS to be determined !!!!!
+zddasblxb2 = 0.0         !distance from PCBLRDAS to BLRDAS to be determined !!!!!
 zddasblxb1 = zddasblxb-zddasblxb2-lpcblrdas
 
 lddasbk1 = zddasbk   /cos(abkrdas1)
@@ -273,51 +290,52 @@ ddasblxb2: drift, l = lddasblxb2
 ldumpdas = 0.2032 !dump length = 8" = slug length of PEP2 inj. stoppper
 
 lddasqq = 0.1357
-lddas1 = 23.2085 -0.761426-0.000133
+lddas1 = 23.2085-0.761426-0.000133
 lddas2a = 0.5
-lddas2b = 0.5 +0.761426-0.025296+0.000133-0.000004
-lddas3 = 0.5 +0.025296+0.000004
+lddas2b = 0.5+0.761426-0.025296+0.000133-0.000004
+lddas3 = 0.5+0.025296+0.000004
 dlddas4 = 0.0
-lddas4 = 1.9 +dlddas4
+lddas4 = 1.9+dlddas4
 dlddas5 = 0.765561526879e-2
-lddas5 = 56.315-(lblsp+lbsp)/2-4*lqm-2*lddasqq -lddas1-lddas2a-lddas2b-lddas3-lddas4 +dlddas5
+lddas5 = 56.315-(lblsp+lbsp)/2-4*lqm-2*lddasqq -lddas1-lddas2a-lddas2b-lddas3-lddas4+dlddas5
 lddas5b = 12.05*0.0254 !=0.30607 per C. Clarke
 lddas5c = 1.0
 lddas5a = lddas5-lddas5b-lddas5c
 
+!  * tweak LDDAS14ac/LDDAS17a to locate PRDAS14/PRDAS17 per A. Ibrahimov
+
 dlddas11 = 0.0
-lddas11 = 5.5-(lbsp+lqm)/2 +dlddas11 -0.7
-lddas11a = 0.5 +0.300006+0.000003
+lddas11 = 5.5-(lbsp+lqm)/2+dlddas11-0.7
+lddas11a = 0.5+0.300006+0.000003
 lddas11b = lddas11-lddas11a
 dlddas12 = 0.0
-lddas12 = 14.1 +dlddas12 +0.7
+lddas12 = 14.1+dlddas12+0.7
 lddas12a = 1.5
 lddas12b = 9.877925-lddas12a-ldumpdas/2
 lddas12c = lddas12-lddas12a-lddas12b-ldumpdas
-lddas13 = 18.128190337721 +0.5
+lddas13 = 18.128190337721+0.5
  !LDDAS13a := 2.97
  !LDDAS13b := LDDAS13-LDDAS13a
-lddas14 = 18.128190337721 -0.5+0.79997
+lddas14 = 18.128190337721-0.5+0.79997
 lddas14b = 0.5
 lddas14a = lddas14-lddas14b
-lddas14aa = 14.473260664942 -0.5  !set Z=3050.512000 m at WOODDOOR
-lddas14ab = lddas14a-lddas14aa
-lddas17 = 18.128190337721 -0.79997
-lddas17b = 0.5
+lddas14ac = 8.0+2.982395+0.0007 !mdw adjustment
+lddas14aa = 14.473260664942-0.5-lddas14ac !set Z=3050.512000 m at WOODDOOR
+lddas14ab = lddas14a-lddas14aa-lddas14ac
+lddas17 = 18.128190337721-0.79997
+lddas17a = 0.5-0.000121 !mdw adjustment
 lddas17c = 0.5
-lddas17a = lddas17-lddas17b-lddas17c
+lddas17b = lddas17-lddas17a-lddas17c
 lddas18 = 15.540177251451
 dlddas19 = 0.0
-lddas19 = 9.24017725092-lddasqq-lqm +dlddas19
+lddas19 = 9.24017725092-lddasqq-lqm+dlddas19
 dlddas20 = 0.0
-lddas20 = 22.55-(lbsp+lqm)/2 +dlddas20
-lddas20a = 0.5 -0.05163
+lddas20 = 22.55-(lbsp+lqm)/2+dlddas20
+lddas20a = 0.5-0.05163
 lddas20b = lddas20-lddas20a
 dlddas = 0.0
-lddas = (158.566506190974298-10*lqm-lbsp-lddasqq-lddas11-lddas12 -lddas13-lddas14-lddas17-lddas18-lddas19-lddas20)/2 +dlddas
+lddas = (158.566506190974298-10*lqm-lbsp-lddasqq-lddas11-lddas12 -lddas13-lddas14-lddas17-lddas18-lddas19-lddas20)/2+dlddas
 lddas15 = lddas
-lddas15a = lddas/2 -0.79997
-lddas15b = lddas15-lddas15a
 lddas16 = lddas
 
 ddasqq: drift, l = lddasqq
@@ -338,9 +356,9 @@ ddas13: drift, l = lddas13
 ddas14a: drift, l = lddas14a
 ddas14aa: drift, l = lddas14aa
 ddas14ab: drift, l = lddas14ab
+ddas14ac: drift, l = lddas14ac
 ddas14b: drift, l = lddas14b
-ddas15a: drift, l = lddas15a
-ddas15b: drift, l = lddas15b
+ddas15: drift, l = lddas15
 ddas16: drift, l = lddas16
 ddas17a: drift, l = lddas17a
 ddas17b: drift, l = lddas17b
@@ -435,14 +453,14 @@ enddasel: marker
 
 !=!  COMMENT !causes redefinitions when using SETK2scDA
 !=!  COMMENT !causes redefinitions when using SETK2scDA
-!=!  KQ10 :=  0.04034296448
-!=!  KQ11 := -0.03865438496
-!=!  KQ19 :=  0.030550055348
-!=!  KQ20 := -0.125475886882E-2
-!=!  KQ27 := -0.074785603391
-!=!  KQ28 :=  0.041188876983
-!=!  KQ30 := -0.029276530035
-!=!  KQ38 :=  0.034027229146
+!=!    KQ10 :=  0.040946131243
+!=!    KQ11 := -0.038135136057
+!=!    KQ19 :=  0.030837113549
+!=!    KQ20 :=  0.146624351215E-2
+!=!    KQ27 := -0.083919622056
+!=!    KQ28 :=  0.03548040664
+!=!    KQ30 := -0.028849559713
+!=!    KQ38 :=  0.034487458519
 !=!  ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
@@ -595,53 +613,10 @@ dumpdas[L] = 2*dumpdas[L]
          QDAS2b_full,DDAS5a  ,IMDAS1  ,DDAS5b  ,IMDAS2 ,DDAS5c ,BRDAS1_full,RODAS2  ,DDAS11a ,RODAS11P,RCDAS11 ,RODAS11M,DDAS11b,
          QDAS11_full,DDAS12a ,PRDAS12 ,DDAS12b ,DUMPDAS_full)
 
-  DASELSB : LINE=(DDAS12c ,QDAS12_full ,DDAS13  ,QDAS13_full ,DDAS14aa,WOODDOOR,DDAS14ab,XCDAS14,DDAS14b,QDAS14_full ,
-         DDAS15a ,PRDAS14 ,DDAS15b ,QDAS15_full ,DDAS16  ,QDAS16_full ,DDAS17a ,PRDAS17 ,DDAS17b ,YCDAS17,DDAS17c,QDAS17_full ,
-         DDAS18  ,QDAS18a_full,DDASQQ  ,QDAS18b_full,DDAS19  ,QDAS19_full ,DDAS20a ,BPMDAS19,DDAS20b ,RODAS3 ,BRDAS2_full)
-
-! ------------------------------------------------------------------------------
-
-! stage-A and stage-B with dump in BSY (alternative design)
-
-!=!COMMENT
-!=!COMMENT
-!=!  DDAS12bc  : DRIF, L=LDDAS12b+LDDAS12c+LDUMPDAS
-!=!  DDAS14ab1 : DRIF, L=2.688023-LDUMPDAS/2
-!=!  DDAS14ab2 : DRIF, L=LDDAS14ab-DDAS14ab1[L]-LDUMPDAS
-!=!
-!=!
-!=!  DASELSA : LINE=(&
-!=!    BKRDAS1_full,DDASBK1 ,&
-!=!    BKRDAS2_full,DDASBK2 ,&
-!=!    BKRDAS3_full,DDASBK3h,DDASBK3h,&
-!=!    BKRDAS4_full,DDASBK4 ,&
-!=!    BKRDAS5_full,DDASBK5 ,&
-!=!    BKRDAS6_full,DDASBLXa,BPMDAS  ,DDASBLXb1,PCBLRDAS,DDASBLXb2,&
-!=!    BLRDAS_full ,RODAS1  ,DDAS1   ,&
-!=!                 XCDAS1  ,DDAS2a  ,&
-!=!                 YCDAS1  ,DDAS2b  ,&
-!=!                 BPMDAS1 ,DDAS3   ,&
-!=!    QDAS1b_full ,DDASQQ  ,&
-!=!    QDAS1a_full ,DDAS4   ,&
-!=!    QDAS2a_full ,DDASQQ  ,&
-!=!    QDAS2b_full ,DDAS5a  ,IMDAS1  ,DDAS5b  ,IMDAS2 ,DDAS5c ,&
-!=!    BRDAS1_full ,RODAS2  ,DDAS11a ,&
-!=!                 RODAS11P,RCDAS11 ,RODAS11M,DDAS11b,&
-!=!    QDAS11_full ,DDAS12a ,PRDAS12 ,DDAS12bc,&
-!=!    QDAS12_full ,DDAS13  ,&
-!=!    QDAS13_full ,DDAS14aa,WOODDOOR,DDAS14ab1,DUMPDAS,DUMPDAS)
-!=!
-!=!  DASELSB : LINE=(&
-!=!                 DDAS14ab2,XCDAS14,DDAS14b ,&
-!=!    QDAS14_full ,DDAS15a ,PRDAS14 ,DDAS15b ,&
-!=!    QDAS15_full ,DDAS16  ,&
-!=!    QDAS16_full ,DDAS17a ,PRDAS17 ,DDAS17b ,YCDAS17,DDAS17c,&
-!=!    QDAS17_full ,DDAS18  ,&
-!=!    QDAS18a_full,DDASQQ  ,&
-!=!    QDAS18b_full,DDAS19  ,&
-!=!    QDAS19_full ,DDAS20a ,BPMDAS19,DDAS20b ,RODAS3 ,&
-!=!    BRDAS2_full)
-!=!ENDCOMMENT
+  DASELSB : LINE=(DDAS12c ,QDAS12_full ,DDAS13  ,QDAS13_full ,DDAS14aa,PRDAS14,DDAS14ac,WOODDOOR,DDAS14ab,XCDAS14 ,
+         DDAS14b,QDAS14_full ,DDAS15  ,QDAS15_full ,DDAS16  ,QDAS16_full ,DDAS17a ,PRDAS17 ,DDAS17b ,YCDAS17,DDAS17c,
+         QDAS17_full ,DDAS18  ,QDAS18a_full,DDASQQ  ,QDAS18b_full,DDAS19  ,QDAS19_full ,DDAS20a ,BPMDAS19,DDAS20b ,RODAS3 ,
+         BRDAS2_full)
 
 ! ------------------------------------------------------------------------------
 

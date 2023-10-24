@@ -1,8 +1,11 @@
 
-! *** OPTICS=AD_ACCEL-13MAR23 ***
+! *** OPTICS=AD_ACCEL-17OCT23 ***
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 04-OCT-2023, M. Woodley
+!  * lower Ei (energy after CM01) to 90 MeV per F. Zhou and Y. Ding
 ! ------------------------------------------------------------------------------
 ! 16-JAN-2021, M. Woodley
 !  * new standard configuration per Y. Ding
@@ -11,6 +14,9 @@
 ! ------------------------------------------------------------------------------
 ! constants and global parameters
 ! ------------------------------------------------------------------------------
+
+setpepx = 0
+setcbxfel=0
 
 ! constants
 
@@ -22,12 +28,12 @@ in2m = 0.0254          !m/inch
 ! energy profile
 
 e0 = mc2+0.750e-3 !NGLS/APEX gun energy (GeV) ... 750 kV gun
-ei = 0.1          !energy at end of L0B (GeV)
-e1 = 0.25         !BC1 energy (GeV)
-e2 = 1.5          !BC2 energy (GeV)
-ef = 4.0          !final beam energy (GeV)
-eu = 4.0          !energy in undulator (GeV)
-emax = 10.0         !maximum beam energy
+ei = 0.090       !energy at end of L0B (GeV)
+e1 = 0.250       !BC1 energy (GeV)
+e2 = 1.500       !BC2 energy (GeV)
+ef = 4.000       !final beam energy (GeV)
+eu = 4.000       !energy in undulator (GeV)
+emax = 10.000       !maximum beam energy
 
 brho0 = cb*e0
 brhoi = cb*ei
@@ -51,16 +57,16 @@ r56ccdld = 9.99e-5
 
 ! Twiss at gun
 
-bx0 = 24.132987592581
-ax0 = 12.721498354446
-by0 = 24.1032534071
-ay0 = 12.70542401701
+bx0 = 26.477864273474
+ax0 = 14.164100457582
+by0 = 26.444176998257
+ay0 = 14.145835881151
 
 ! Twiss at S= 15.0 m (ASTRA MARKER)
 
-bxa = 13.32559426069
-axa = -2.125811087319
-bya = 13.315541277703
+bxa = 13.325594260675
+axa = -2.125811087318
+bya = 13.315541277701
 aya = -2.123153832086
 
 ! Twiss at BEAM0 MARKER (specified)
@@ -122,21 +128,22 @@ ygun = -0.99     !beam axis (w.r.t. original linac axis)
 zgun = -10.044667 !10.0 m d/s of location of CID gun
 z0beg = -7.992090 !start of L0 (12.0 m d/s of location of CID gun)
 zi = 3.914190 !BEAM0 point (~3.9 m into LI01)
-za = zgun+15.0 !ASTRA treaty point (~4.8 m into LI01)
-z0end = 8.130200 !end of L0 (~8.0 m into LI01)
+za = zgun+15.0 !ASTRA treaty point (~5.0 m into LI01)
+z0end = 7.880000 !end of L0 (~7.9 m into LI01)
 zhtr = 18.202600 !start of laser heater chicane (~18.2 m into LI01)
 zdg0 = 32.183970 !start of DIAG0 (~32.2 m into LI01)
-z1beg = 73.383640 !start of L1 (~73.4 m into LI01)
+z1beg = 75.906000 !start of L1 (~75.9 m into LI01)
 z1loc = 104.194330 !center of CAVC011 (should be 104.0 m)
-z1end = 121.344620 !end of L1 (~19.7 m into LI02)
-z2beg = 174.885202 !start of L2 (~73.3 m into LI02)
-z2end = 331.562942 !end of L2 (~26.8 m into LI04)
-z3beg = 385.847300 !start of L3 (~81.0 m into LI04)
-z3end = 643.543300 !end of L3 (~33.9 m into LI07)
-zdog = 667.043300 !entrance first dogleg bend (~57.4 m into LI07)
-xbyp = -0.650494 !BEGBYP X is |Xbyp| to the south of linac axis
-ybyp = 0.649478 !BEGBYP Y is Ybyp above linac axis
-zbyp = 1202.631303 !BEGBYP Z (~85.0 m into LI12)
+z1end = 119.419000 !end of L1 (~17.8 m into LI02)
+z2beg = 177.047000 !start of L2 (~75.4 m into LI02)
+z2end = 329.605000 !end of L2 (~24.8 m into LI04)
+z3beg = 388.210000 !start of L3 (~83.4 m into LI04)
+z3end = 641.196000 !end of L3 (~31.6 m into LI07)
+zdog0 = 954.347000 !sector 10 adit "crotch" (~39.9 m into LI10)
+zdog = 664.310000 !entrance first dogleg bend, BRB1 (~43.1 m into LI10)
+xbyp = -0.650494 !QBP13 X is |Xbyp| to the south of linac axis
+ybyp = 0.649478 !QBP13 Y is Ybyp above linac axis
+zbyp = 1254.531303 !QBP13 centerline (~35.3 m into LI13)
 
 ! ------------------------------------------------------------------------------
 ! twiss parameter definitions (for matching, etc.)
@@ -158,14 +165,6 @@ bxcmfodo2 = 61.483042301615 !L2: 30 degrees per cell
 bycmfodo2 = 36.259471142003 !L2: 30 degrees per cell
 bxcmfodo3 = 61.483042301615 !L3: 30 degrees per cell
 bycmfodo3 = 36.259471142003 !L3: 30 degrees per cell
-
-! match into bypass dogleg FODO cell (at center of QDOG1)
-! LINE=(QDOG1,DBD1,QDOG2,QDOG2,DBD1,QDOG1)
-
-bxdlm = 13.103975995473
-axdlm = -1.328121315284
-bydlm = 15.962707890972
-aydlm = 1.529775364964
 
 ! matched Twiss at SXR LTU emittance diagnostic wire scanners
 ! (at elements WS31b, WS32b, WS33b, and WS34b)
@@ -218,6 +217,9 @@ call, file = DIAG0.bmad !must come before INJ.xsif
 call, file = INJ.bmad
 call, file = BC1.bmad
 call, file = BC2.bmad
+ !CALL, FILENAME="INJsim.xsif"
+ !CALL, FILENAME="BC1sim.xsif"
+ !CALL, FILENAME="BC2sim.xsif"
 call, file = EXT.bmad
 call, file = DLBM.bmad
 call, file = SPRD.bmad
@@ -225,13 +227,14 @@ call, file = CUSXR.bmad
 call, file = ALINE.bmad
 call, file = BYP.bmad
 call, file = LTU.bmad
-call, file = UND.bmad
+call, file = UND.bmad  !startup configuration
+ !CALL, FILENAME="UND0.xsif" !final configuration
 call, file = SFT.bmad
 call, file = SXTES.bmad
 call, file = DASEL.bmad
 
   LCLS2scI : LINE=(BEAM0,DCM4b,QCM01_full,DCM5,CM01END,DCMCM1,HOMCM,DCAP0da,ASTRA,DCAP0db,FC1,DMSC0da,BLF1,DMSC0db,
-         VG0H00,DMSC0dc,VP0H00,DMSC0dd,VV0H00,DMSC0de,MSC0d,ENDL0B)
+         VGL0Bd,DMSC0dc,VPL0Bd,DMSC0dd,MSC0d,VVL0Bd,ENDL0B)
   LCLS2scC : LINE=(HTR,COL0,L1,BC1,COL1,L2,BC2,EMIT2,L3,EXT,DLBM)
 
 ! new BSY area definitions
