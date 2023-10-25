@@ -11,11 +11,20 @@ jobs:
     runs-on: ubuntu-latest
     name: Sync tag to lcls-lattice data
     steps:
+      - name: Setup SSH keys and known_hosts
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add - <<< "${{ secrets.SSH_DEPLOY_KEY }}"
+
       - name: Create lcls-lattice-data tag
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
           git config --global user.email ${{ secrets.LCLS_LATTICE_DATA_USER_EMAIL }}
           git config --global user.name slaclab
-          git clone --single-branch --branch main "https://slaclab:${{ secrets.SSH_DEPLOY_KEY }}@github.com/slaclab/lcls-lattice-data.git"
-          cd lcls-lattice-data 
-          git tag  -a ${{ github.ref_name }} -m "Syncing with lcls-lattice tag ${{ github.ref_name }}"
-          git push origin ${{ github.ref_name }}
+          git clone --single-branch --branch main "git@github.com:slaclab/lcls-lattice-data.git"
+          #cd lcls-lattice-data 
+          #git tag  -a ${{ github.ref_name }} -m "Syncing with lcls-lattice tag ${{ github.ref_name }}"
+          #git push origin ${{ github.ref_name }}
