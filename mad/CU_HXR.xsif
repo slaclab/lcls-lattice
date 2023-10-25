@@ -1,5 +1,5 @@
 
-! *** OPTICS=LCLS2sc27NOV18 ***
+! *** OPTICS=AD_ACCEL-17OCT23 ***
 
 ! CU_HXR path configurations
 
@@ -7,36 +7,31 @@
   SETCUS    := 0
   SETAL     := 0
   SETDA     := 0
+  SETXLEAP2 := 0 !set to 1 to turn ON XLEAP-II components
   SETHXRSS  := 0 !set to 1 to turn ON HXR self-seeding chicane
   SETSXRSS  := 0 !set to 1 to turn ON SXR self-seeding chicane
-  SETXLEAP2 := 0 !set to 1 to turn ON XLEAP-II components
+  SETCBXFEL := 0 !set to 1 to turn ON CBXFEL chicanes
+  SETPEPX   := 0 !set to 1 to turn ON PEPPEx chicane
 
-  IntgSX := 20.0   !kG (30.0)
-  IntgHX := 40.0   !kG
-  EBC2Cu :=  4.300 !GeV
-  EfCu   := 13.640 !GeV
-  EuCu   := 13.640 !GeV
+  IntgSX := 30.0 !kG
+  IntgHX := 30.0 !kG
 
   CALL, FILENAME="LCLS2cu_master.xsif" !calls other xsif files
 
-  Q50Q3,  K1= 0.385752335743
-  Q4,     K1=-0.220385532634
-  Q5,     K1= 0.172839699359
-  Q6,     K1=-0.115520035877
-  QA0,    K1= 0.115396472684
-  QVM1,   K1=-0.337436663026
-  QVM2,   K1= 0.236576383993
-  QVM3,   K1= 0.71515053765
-  QVM4,   K1=-0.681649920856
-  QUM1,   K1= 0.265384062224 ! 0.265843852443
-  QUM2,   K1=-0.236197967124 !-0.23723331482
-  QUM3,   K1= 0.165786910657 ! 0.165420280362
-  QUM4,   K1=-0.176289890719 !-0.174981185812
-  QHXH46, K1=-0.456644089634 !-0.462007123826
-  QUE1,   K1=-0.092119193855 !-0.094048953252
-  QUE2,   K1= 0.157955482519 ! 0.160549634478
-  QDMP1,  K1=-0.155219342716 !-0.155211312125
-  QDMP2,  K1=-0.155219342716 !-0.155211312125
+  Q50Q3,  K1= 0.384840836193
+  Q4,     K1=-0.219396715005
+  Q5,     K1= 0.165708852383
+  Q6,     K1=-0.113569101471
+  QA0,    K1= 0.109210100868
+  QUM1,   K1= 0.272741408897
+  QUM2,   K1=-0.270601268265
+  QUM3,   K1= 0.278762678373
+  QUM4,   K1=-0.247470889897
+  QHXH46, K1=-1.734624260269
+  QUE1,   K1= 0.169109252491
+  QUE2,   K1=-0.137840816238
+  QDMP1,  K1=-0.155212710055
+  QDMP2,  K1=-0.155212710055
 
   COMMENT !to generate SURVEY
     USE, CU_HXR !start at gun
@@ -49,5 +44,11 @@
     ! initial energy: E00
     ! initial Twiss : CBETX, CALFX, CBETY, CALFY
  !ENDCOMMENT
+
+  COMMENT !to generate TWISS
+    USE, CU_HXRi !start at OTR2
+    ! initial energy: Ei
+    ! initial Twiss : BXi, AXi, BYi, AYi
+  ENDCOMMENT
 
   RETURN

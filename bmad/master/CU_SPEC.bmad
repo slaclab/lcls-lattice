@@ -3,7 +3,7 @@
 !-
 
 
-! *** OPTICS=LCLS2sc27NOV18 ***
+! *** OPTICS=AD_ACCEL-17OCT23 ***
 
 ! CU_SPEC path configurations
 
@@ -11,15 +11,14 @@ setsp = 0
 setcus = 0
 setal = 0
 setda = 0
+setxleap2 = 0 !set to 1 to turn ON XLEAP-II components
 sethxrss = 0 !set to 1 to turn ON HXR self-seeding chicane
 setsxrss = 0 !set to 1 to turn ON SXR self-seeding chicane
-setxleap2 = 0 !set to 1 to turn ON XLEAP-II components
+setcbxfel = 0 !set to 1 to turn ON CBXFEL chicanes
+setpepx = 0 !set to 1 to turn ON PEPPEx chicane
 
-intgsx = 20.0   !kG (30.0)
-intghx = 40.0   !kG
-ebc2cu = 4.300 !GeV
-efcu = 13.640 !GeV
-eucu = 13.640 !GeV
+intgsx = 30.0 !kG
+intghx = 30.0 !kG
 
 call, file = LCLS2cu_master.bmad !calls other xsif files
 
@@ -35,4 +34,11 @@ use, cu_spec !start at gun
     ! initial energy: E00
     ! initial Twiss : CBETX, CALFX, CBETY, CALFY
  !ENDCOMMENT
+
+!=!  COMMENT !to generate TWISS
+!=!  COMMENT !to generate TWISS
+!=!    USE, CU_SPECi !start at OTR2
+!=!    ! initial energy: Ei
+!=!    ! initial Twiss : BXi, AXi, BYi, AYi
+!=!  ENDCOMMENT
 

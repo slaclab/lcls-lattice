@@ -3,7 +3,7 @@
 !-
 
 
-! *** OPTICS=LCLS2sc27NOV18 ***
+! *** OPTICS=AD_ACCEL-17OCT23 ***
 
 ! SC_DASEL path configurations
 
@@ -11,27 +11,25 @@ setsp = 0
 setcus = 0
 setal = 0
 setda = 1
+setxleap2 = 0 !set to 1 to turn ON XLEAP-II components
 sethxrss = 0 !set to 1 to turn ON HXR self-seeding chicane
 setsxrss = 0 !set to 1 to turn ON SXR self-seeding chicane
-setxleap2 = 0 !set to 1 to turn ON XLEAP-II components
+setcbxfel = 0 !set to 1 to turn ON CBXFEL chicane(s)
+setpepx = 0 !set to 1 to turn ON PEPPEx chicane
 
-intgsx = 20.0 !kG
-intghx = 12.0 !kG
-efsc = 4.0 !GeV
-eusc = 4.0 !GeV
+intgsx = 30.0 !kG
+intghx = 30.0 !kG
 
 call, file = LCLS2sc_master.bmad !calls other xsif files
 
-!  SC_DASELi : LINE=(LCLS2scI,LCLS2scC,LCLS2scDA)
-
-q10[k1] = 0.040388112814
-q11[k1] = -0.038712955409
-q19[k1] = 0.03054367869
-q20[k1] = -0.125186988934E-2
-q27[k1] = -0.074602195497
-q28[k1] = 0.041232949479
-q30[k1] = -0.029290738963
-q38[k1] = 0.034019960625
+q10[k1] = 0.04034296448
+q11[k1] = -0.03865438496
+q19[k1] = 0.030550055348
+q20[k1] = -0.125475886882E-2
+q27[k1] = -0.074785603391
+q28[k1] = 0.041188876983
+q30[k1] = -0.029276530035
+q38[k1] = 0.034027229146
 
 !=!  COMMENT !to generate SURVEY
 !=!  COMMENT !to generate SURVEY
@@ -41,9 +39,9 @@ q38[k1] = 0.034019960625
 !=!  ENDCOMMENT
 
  !COMMENT !to generate TWISS
-rodas11p[tilt] = 0
-rodas19p[tilt] = 0
-!use, sc_daseli !start at BEAM0
+   !RODAS11P, ANGLE=0
+   !RODAS19P, ANGLE=0
+use, sc_daseli !start at BEAM0
     ! initial energy: Ei
     ! initial Twiss : BXi, AXi, BYi, AYi
  !ENDCOMMENT
