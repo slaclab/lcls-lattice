@@ -2,6 +2,8 @@ name: tag-lcls-lattice-data
 
 on:
   push:
+    tags:
+      - '*'
 
 jobs:
   build:
@@ -25,4 +27,4 @@ jobs:
           git clone --single-branch --branch main "git@github.com:slaclab/lcls-lattice-data.git"
           cd lcls-lattice-data 
           git tag  -a ${{ github.ref_name }} -m "Syncing with lcls-lattice tag ${{ github.ref_name }}"
-          #git push origin ${{ github.ref_name }}
+          git push origin ${{ github.ref_name }}
