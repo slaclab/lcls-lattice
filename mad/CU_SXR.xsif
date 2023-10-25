@@ -1,5 +1,5 @@
 
-! *** OPTICS=LCLS2sc27NOV18 ***
+! *** OPTICS=AD_ACCEL-17OCT23 ***
 
 ! CU_SXR path configurations
 
@@ -7,34 +7,35 @@
   SETCUS    := 1
   SETAL     := 0
   SETDA     := 0
+  SETXLEAP2 := 0 !set to 1 to turn ON XLEAP-II components
   SETHXRSS  := 0 !set to 1 to turn ON HXR self-seeding chicane
   SETSXRSS  := 0 !set to 1 to turn ON SXR self-seeding chicane
-  SETXLEAP2 := 0 !set to 1 to turn ON XLEAP-II components
+  SETCBXFEL := 0 !set to 1 to turn ON CBXFEL chicanes
+  SETPEPX   := 0 !set to 1 to turn ON PEPPEx chicane
 
-  IntgSX := 20.0   !kG (30.0)
-  IntgHX := 40.0   !kG
-  EBC2Cu :=  3.000 !GeV
-  EfCu   :=  4.000 !GeV
-  EuCu   :=  4.000 !GeV
+  IntgSX := 30.0 !kG
+  IntgHX := 30.0 !kG
 
   CALL, FILENAME="LCLS2cu_master.xsif" !calls other xsif files
 
-  QM22,    K1=-0.589570998224
-  Q24901A, K1= 1.082580150374
-  Q24901B, K1= 1.082580150374
-  Q25201,  K1= 0.688761727353
-  Q25301,  K1=-0.476435254001
-  Q25401,  K1= 0.428715988011
-  Q25501,  K1=-0.39999856091
-  QBP33,   K1=-0.644563496901
-  QBP34,   K1= 0.595165383865
-  QDBL1,   K1=-1.066849469579
-  QDBL2,   K1= 0.618084331747
-  QDL11,   K1= 0.358720317054
-  QSXh16,  K1= 0.58425577059
-  QSXh19,  K1=-0.916613463141
-  QSXh21,  K1= 1.112461107836
-  QSXh24,  K1=-1.11933302972
+  QBP33,  K1=-0.644549451693
+  QBP34,  K1= 0.595248248123
+  QDBL1,  K1=-1.067412487101
+  QDBL2,  K1= 0.618987949218
+  QDL11,  K1= 0.358732502069
+  QUM1B,  K1= 0.311729673613
+  QUM2B,  K1=-0.13
+  QUM3B,  K1= 0.384569277452
+  QUM4B,  K1=-0.61774146348
+  QSXH16, K1= 0.677894017174
+  QSXH19, K1=-0.893321229694
+  QSXH21, K1= 0.901518123026
+  QSXH24, K1=-0.825282828044
+  QSXH47, K1=-1.843482712046
+  QUE1B,  K1= 0.325725075565
+  QUE2B,  K1=-0.144356640751
+  QDMP1B, K1=-0.154946553294
+  QDMP2B, K1=-0.154946553294
 
   COMMENT !to generate SURVEY
     USE, CU_SXR !start at gun
@@ -47,5 +48,11 @@
     ! initial energy: E00
     ! initial Twiss : CBETX, CALFX, CBETY, CALFY
  !ENDCOMMENT
+
+  COMMENT !to generate TWISS
+    USE, CU_SXRi !start at gun
+    ! initial energy: Ei
+    ! initial Twiss : BXi, AXi, BYi, AYi
+  ENDCOMMENT
 
   RETURN
