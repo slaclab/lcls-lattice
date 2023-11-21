@@ -20,5 +20,12 @@
 6. Within jupyter nodebook cd to bmad/conversion/device_mapping and open device_mapping.ipynb
   - Run all cells.
   - This generates the lcls-lattice/bmad/master/*_devicenames.bmad files
-
+7. Rematch sc_* lines.
+  - Check Twiss at BEAM0 MARKER in mad files
+  - See sc_*/scripts directories.
+  - Update $LCLS_LATTICE/bmad/master/gunb/beginning_BEGGUNB.bmad
+  - scripts/match_COL1.tao
+  - scripts/match_EMIT2.tao
+  - Adjustments should be necessary at QE201-4, Q0H01-8, and QHD01-4.
+  - Also QC001-12,QCM02-3
 
