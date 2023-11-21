@@ -48,7 +48,7 @@ beam_init%position_file = 'cathode_probe_particles.h5'
 &tao_d2_data
         d2_data%name = 'L0B'
         universe = 1
-        n_d1_data = 2
+        n_d1_data = 3
 /
 &tao_d1_data
         ix_d1_data = 1
@@ -68,6 +68,23 @@ beam_init%position_file = 'cathode_probe_particles.h5'
     datum( 5) =  'eta.x'      '' '' 'BEAM0'   'target'  0    1e1
     datum( 6) =  'etap.x'     '' '' 'BEAM0'   'target'  0    1e1
 /  
+&tao_d1_data
+        ix_d1_data = 3
+        default_weight = 1
+        default_data_type = 'orbit.e_tot'
+        d1_data%name = 'lcavs'
+        datum(1:)%ele_name = 'CAVL011','CAVL012','CAVL013','CAVL014',
+                             'CAVL015','CAVL016','CAVL017','CAVL018'
+        datum(1)%meas = 7.8326998E+06
+        datum(2)%meas = 9.3734519E+06
+        datum(3)%meas = 1.9187411E+07
+        datum(4)%meas = 2.1175165E+07
+        datum(5)%meas = 3.8401701E+07
+        datum(6)%meas = 5.5628237E+07
+        datum(7)%meas = 7.2850673E+07
+        datum(8)%meas = 9.0000000E+07
+/
+
 
 !---------------------------------------------------------------------------------------
 ! HTR
@@ -172,6 +189,13 @@ beam_init%position_file = 'cathode_probe_particles.h5'
     default_step = 1e-4
     default_attribute = 'K1'
     search_for_lat_eles = 'quad::Q0H*'
+/
+
+&tao_var
+    v1_var%name = 'cav'
+    default_step = 100
+    default_attribute = 'gradient'
+    search_for_lat_eles = 'lcavity::cavl0*'
 /
 
 
