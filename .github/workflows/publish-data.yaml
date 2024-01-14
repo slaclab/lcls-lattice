@@ -32,6 +32,7 @@ jobs:
           conda install -c conda-forge pytao bmad
           mkdir $DEST
           export LCLS_LATTICE=$(pwd)
+          python python/scripts/export/export_impact.py  --source $(pwd) --dest $DEST
           python python/scripts/export/export_lattice.py --source $(pwd) --dest $DEST
       - name: Push lcls lattice
         uses: cpina/github-action-push-to-another-repository@v1.7.2
