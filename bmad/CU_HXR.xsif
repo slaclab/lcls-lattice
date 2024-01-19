@@ -1,0 +1,54 @@
+
+! *** OPTICS=AD_ACCEL-17JAN24 ***
+
+! CU_HXR path configurations
+
+  SETSP     := 0
+  SETCUS    := 0
+  SETAL     := 0
+  SETDA     := 0
+  SETXLEAP2 := 0 !set to 1 to turn ON XLEAP-II components
+  SETHXRSS  := 0 !set to 1 to turn ON HXR self-seeding chicane
+  SETSXRSS  := 0 !set to 1 to turn ON SXR self-seeding chicane
+  SETCBXFEL := 0 !set to 1 to turn ON CBXFEL chicanes
+  SETPEPX   := 0 !set to 1 to turn ON PEPPEx chicane
+
+  IntgSX := 30.0 !kG
+  IntgHX := 30.0 !kG
+
+  CALL, FILENAME="LCLS2cu_master.xsif" !calls other xsif files
+
+  Q50Q3,  K1= 0.384840836193
+  Q4,     K1=-0.219396715005
+  Q5,     K1= 0.165708852383
+  Q6,     K1=-0.113569101471
+  QA0,    K1= 0.109210100868
+  QUM1,   K1= 0.272741408897
+  QUM2,   K1=-0.270601268265
+  QUM3,   K1= 0.278762678373
+  QUM4,   K1=-0.247470889897
+  QHXH46, K1=-1.734624260269
+  QUE1,   K1= 0.169109252491
+  QUE2,   K1=-0.137840816238
+  QDMP1,  K1=-0.155212710055
+  QDMP2,  K1=-0.155212710055
+
+  COMMENT !to generate SURVEY
+    USE, CU_HXR !start at gun
+    ! initial energy: E00
+    ! initial SURVEY: Xi, 0, Zi, ADLi, 0, 0
+  ENDCOMMENT
+
+ !COMMENT !to generate TWISS
+    USE, CU_HXR !start at gun
+    ! initial energy: E00
+    ! initial Twiss : CBETX, CALFX, CBETY, CALFY
+ !ENDCOMMENT
+
+  COMMENT !to generate TWISS
+    USE, CU_HXRi !start at OTR2
+    ! initial energy: Ei
+    ! initial Twiss : BXi, AXi, BYi, AYi
+  ENDCOMMENT
+
+  RETURN

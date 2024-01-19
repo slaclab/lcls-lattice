@@ -1,10 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-17OCT23 ***
+! *** OPTICS=AD_ACCEL-17JAN24 ***
 
 ! LCLS2sc undulator and undulator extension
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 12-JAN-2024, M. Woodley
+!  * adjust complement and locations of CBXFEL components per SLAC-I-120-022-R2
 ! ------------------------------------------------------------------------------
 ! 02-MAR-2023, M. Woodley
 !  * reomve FSPEPX1 and FSPEPX3 (PEPPEx Phase 2) per X. Permanyer
@@ -1760,7 +1763,7 @@
 ! HXR undulator Beam Loss Monitors (placeholders)
 ! ------------------------------------------------------------------------------
 
-  MBLMH13 : MARK
+ !MBLMH13 : MARK
   MBLMH14 : MARK
   MBLMH15 : MARK
   MBLMH16 : MARK
@@ -1981,22 +1984,20 @@
 
   D0CB1    : DRIF, L=0.264603-(DU1H[L]+DU2H[L]+ZB6/2) !0.26456
   D1CB1    : DRIF, L=(ZB2Bo-ZB6)/COS(AB6)
-  D1CB1a   : DRIF, L=(0.656172-ZB6/2)/COS(AB6)
-  D1CB1b   : DRIF, L=0.05/COS(AB6)
-  D1CB1c   : DRIF, L=0.0559/COS(AB6)
-  D1CB1d   : DRIF, L=D1CB1[L]-D1CB1a[L]-D1CB1b[L]-D1CB1c[L]
+  D1CB1a   : DRIF, L=(0.656216-ZB6/2)/COS(AB6)
+  D1CB1b   : DRIF, L=0.1059/COS(AB6)
+  D1CB1c   : DRIF, L=D1CB1[L]-D1CB1a[L]-D1CB1b[L]
   DCHCB1   : DRIF, L=(ZB2Bi-ZB6)/2
   D2CB     : DRIF, L=D1CB1[L]
   D3CB1    : DRIF, L=Zuseg-(D0CB1[L]+ZB6/2+ZB2Bo+ZB2Bi+ZB2Bo+ZB6/2)
-  DU3hCB1a : DRIF, L=DU3h[L]+0.030605
-  DU3hCB1b : DRIF, L=DU3h[L]+0.102823 ! 0.102780
+  DU3hCB1  : DRIF, L=2*DU3h[L]+0.133428 ! 0.102780
   DU4hCB1  : DRIF, L=DU4h[L]-0.000176 !-0.025003
   DU5hCB1  : DRIF, L=DU5h[L]-0.133252 !-0.108382
 
   D0CB2    : DRIF, L=0.264610-(DU1H[L]+DU2H[L]+ZB6/2) !0.26456
   D1CB2    : DRIF, L=D1CB1[L]
-  D1CB2a   : DRIF, L=(0.605982-ZB6/2)/COS(AB6)
-  D1CB2b   : DRIF, L=0.050190/COS(AB6)
+  D1CB2a   : DRIF, L=(0.605122666708-ZB6/2)/COS(AB6)
+  D1CB2b   : DRIF, L=0.05019/COS(AB6)
   D1CB2c   : DRIF, L=D1CB2[L]-D1CB2a[L]-D1CB2b[L]
   DCHCB2   : DRIF, L=DCHCB1[L]
   D3CB2    : DRIF, L=Zuseg-(D0CB2[L]+ZB6/2+ZB2Bo+ZB2Bi+ZB2Bo+ZB6/2)
@@ -2006,8 +2007,7 @@
 
   HXRCB1BEG : MARK
   MCBX4     : INST !X-ray diamond crystal mirror
-  YAGCBX42  : PROF !YAG scintillator screen
-  BODCBX40  : PROF !Beam Overlap Diagnostic
+  BODCBX42  : PROF !Beam Overlap Diagnostic
   CENTER1   : MARK
   HXRCB1END : MARK
 
@@ -2028,7 +2028,7 @@
   BCXCBX24_full : LINE=(BCXCBX24a,BCXCBX24b)
 
   CBCHICANE1 : LINE=(HXRCB1BEG,D0CB1,&
-    BCXCBX11_full,D1CB1a,MCBX4,D1CB1b,YAGCBX42,D1CB1c,BODCBX40,D1CB1d,&
+    BCXCBX11_full,D1CB1a,MCBX4,D1CB1b,BODCBX42,D1CB1c,&
     BCXCBX12_full,DCHCB1,CENTER1,DCHCB1,&
     BCXCBX13_full,D2CB,&
     BCXCBX14_full,D3CB1,HXRCB1END)
@@ -2038,6 +2038,8 @@
     BCXCBX22_full,DCHCB2,CENTER2,DCHCB2,&
     BCXCBX23_full,D2CB,&
     BCXCBX24_full,D3CB2,HXRCB2END)
+
+! ------------------------------------------------------------------------------
 
 ! DBFEL (install later)
 
@@ -2172,8 +2174,11 @@
   DQHX49      : DRIF, L=LQu
   DQHX50      : DRIF, L=LQu
 
-  HXBRK13 : LINE=(DU3hCB1a,MBLMH13,DU3hCB1b,QHXh13_full,&
+ !HXBRK13 : LINE=(DU3hCB1a,MBLMH13,DU3hCB1b,QHXh13_full,&
+ !                DU4hCB1,RFBHX13,DU5hCB1,DPSHX13,DU6h,DU7h)
+  HXBRK13 : LINE=(DU3hCB1,QHXh13_full,&
                   DU4hCB1,RFBHX13,DU5hCB1,DPSHX13,DU6h,DU7h)
+
   HXBRK14 : LINE=(DU3h,MBLMH14,DU3h,QHXh14_full,DU4h,RFBHX14,DU5h,&
                   PSHXh14_full,DU6h,VVHXU14,DU7h)
   HXBRK15 : LINE=(DU3h,MBLMH15,DU3h,QHXh15_full,DU4h,RFBHX15,DU5h,&
