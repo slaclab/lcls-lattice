@@ -1,8 +1,9 @@
 1. Obtain updated release from CVS, either by mounting a CVS repo, or checking out CVS locally.
-2. Create a local branch of lcls-lattice to stage the update.
+  - `cvs update` from local CVS/optics directory
+3. Create a local branch of lcls-lattice to stage the update.
   - git co master
   - git co -b DDMMYY_conversion
-3. Copy files from CVS into lcls-lattice/mad
+3. Copy files from CVS into lcls-lattice/mad (omit mad/CVS, bmad/CVS directory from copy)
   - copy CVS/optics/etc/lattice/lcls/mad/* lcls-lattice/mad
   - copy CVS/optics/etc/lattice/lcls/bmad/* lcls-lattice/mad
   - copy CVS/optics/script/elementdevices.dat lcls-lattice/mad
