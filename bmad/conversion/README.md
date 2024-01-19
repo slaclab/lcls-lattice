@@ -23,6 +23,7 @@
   - This generates the lcls-lattice/bmad/master/*_devicenames.bmad files
 7. Rematch sc_* lines.
   - Check Twiss at BEAM0 MARKER in mad files
+    - BXi, AXi, BYi, AYi in LCLS2sc_beamd.mad8
   - See sc_*/scripts directories.
   - Update $LCLS_LATTICE/bmad/master/gunb/beginning_BEGGUNB.bmad
   - scripts/match_COL1.tao
