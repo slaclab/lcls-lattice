@@ -1,10 +1,14 @@
 
-! *** OPTICS=AD_ACCEL-17OCT23 ***
+! *** OPTICS=AD_ACCEL-17JAN24 ***
 
 ! LCLS2sc post laser heater diagnostic beamline
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 27-NOV-2022, M. Woodley
+!  * STCAV installation (replace TCXDG0 and TCYDG0)
+!  * move QDG007 4.4 cm downstream (TCXDG0cl to QDG007cl = 31.309")
 ! ------------------------------------------------------------------------------
 ! 09-SEP-2022, M. Woodley
 !  * redefine (deferred) OTRDG01 and OTRDG03
@@ -133,9 +137,9 @@ kqbd0 = -7.825140556488    !-13.410702917581
 ! (NOTE: TCYDG0 might be installed as an uprgade at a later time)
 
 TCYDG0: pipe, L = 0.8, type ="@4,TRANS_YDEF", descrip = "deferred LCAVITY" !Y-deflector (split)
-!old: tcydg0: lcavity, type = "@4,TRANS_YDEF", rf_frequency = 2856 * 1e6, l = 0.8/2
+!old: tcydg0: lcavity, type = "@4,STCAV_Y", rf_frequency = 2856 * 1e6, l = 20*in2m/2
 TCXDG0: pipe, L = 0.8, type ="@0,TRANS_XDEF", descrip = "deferred LCAVITY" !X-deflector (split)
-!old: tcxdg0: lcavity, type = "@0,TRANS_XDEF", rf_frequency = 2856 * 1e6, l = 0.8/2
+!old: tcxdg0: lcavity, type = "STCAV_X", rf_frequency = 2856 * 1e6, l = 20*in2m/2
 
 ! ==============================================================================
 ! SBEN
@@ -236,14 +240,14 @@ bydg0: sbend, type = "BXS", hgap = gbdmp0/2, l = lbdmp0, angle = abdmp0, e1 = eb
 ! QUAD
 ! ------------------------------------------------------------------------------
 
-kqdg004 = 8.65061788321  !  8.650617883208
-kqdg005 = -12.059982684959 !-12.05998268496
-kqdg006 = 6.896965013904 !  6.896965013903
-kqdg007 = -4.414274650314 ! -4.414274650315
-kqdg008 = 11.243156019147 ! 11.243156019147
-kqdg009 = -11.689200167844 !-11.689200167844
-kqdg010 = 13.02067678689  ! 13.02067678689
-kqdg011 = -10.983650981419 !-10.983650981418
+kqdg004 = 8.771677622156 !  8.650617883208
+kqdg005 = -12.05318929963  !-12.05998268496
+kqdg006 = 6.830639733081 !  6.896965013903
+kqdg007 = -4.543712509866 ! -4.414274650315
+kqdg008 = 11.377027435394 ! 11.243156019147
+kqdg009 = -11.53922964265  !-11.689200167844
+kqdg010 = 13.016651548829 ! 13.02067678689
+kqdg011 = -10.983650981643 !-10.983650981418
 
 qdg001: quadrupole, type = "1.51Q7.00", l = lqs/2, aperture = rqs, k1 = kqbf0
 qdg002: quadrupole, type = "1.51Q7.00", l = lqs/2, aperture = rqs, k1 = kqbd0
@@ -328,13 +332,11 @@ dqb04a: drift, l = dqb04[l]-dqb04b[l]
 
 ! diagnostic line
 
-dzqdg007 = 0 !0.044
-
 ddg003: drift, l = 0.374418820858 !0.375213145904
 ddg004: drift, l = 0.541
 ddg005: drift, l = 0.592
-ddg006: drift, l = 2.492+dzqdg007
-ddg007: drift, l = 0.592-dzqdg007
+ddg006: drift, l = 2.536 !2.492
+ddg007: drift, l = 0.548 !0.592
 ddg008: drift, l = 0.592
 ddg009: drift, l = 2.962
 ddg010: drift, l = 0.592
@@ -345,7 +347,7 @@ ddg004a: drift, l = ddg004[l]/2
 ddg004b: drift, l = ddg004[l]-ddg004a[l]
 ddg005a: drift, l = ddg005[l]/2
 ddg005b: drift, l = ddg005[l]-ddg005a[l]
-ddg006a: drift, l = 0.296
+ddg006a: drift, l = 0.7327514 !0.296
 ddg006b: drift, l = 0.12714
 ddg006c: drift, l = 0.17286
 ddg006d: drift, l = ddg006[l]-ddg006a[l]-2*tcydg0[l]-ddg006b[l]-ddg006c[l] -2*tcxdg0[l]
@@ -401,7 +403,7 @@ xcdg005: hkicker, type = "class-1a"
 XCDGTCY: pipe, L = 0.0, type ="@4,class-1t", descrip = "deferred HKICKER"
 !old: xcdgtcy: hkicker, type = "@4,class-1t"
 XCDGTCX: pipe, L = 0.0, type ="@0,class-1t", descrip = "deferred HKICKER"
-!old: xcdgtcx: hkicker, type = "@0,class-1t"
+!old: xcdgtcx: hkicker, type = "class-1t"
 xcdg008: hkicker, type = "class-1a"
 xcdg010: hkicker, type = "class-1a"
 
@@ -416,7 +418,7 @@ ycdg005: vkicker, type = "class-1a"
 YCDGTCY: pipe, L = 0.0, type ="@4,class-1t", descrip = "deferred VKICKER"
 !old: ycdgtcy: vkicker, type = "@4,class-1t"
 YCDGTCX: pipe, L = 0.0, type ="@0,class-1t", descrip = "deferred VKICKER"
-!old: ycdgtcx: vkicker, type = "@0,class-1t"
+!old: ycdgtcx: vkicker, type = "class-1t"
 ycdg008: vkicker, type = "class-1a"
 ycdg010: vkicker, type = "class-1a"
 
