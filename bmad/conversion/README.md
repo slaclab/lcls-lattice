@@ -36,6 +36,8 @@
   - scripts/match_EMIT2.tao
   - Adjustments should be necessary at QE201-4, Q0H01-8, and QHD01-4.
   - Also QC001-12,QCM02-3
+8. Submit PR to github.
+9. Generate new lcls-lattice release.
 
 | Bmad line | mad8s Twiss file | Bmad <-> mad8s Places to Check |
 |-|-|-|
