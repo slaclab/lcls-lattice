@@ -1,6 +1,6 @@
-  TITLE, "AD_ACCEL (October 17, 2023)" ! superconducting linac
+  TITLE, "AD_ACCEL (January 17, 2024)" !superconducting linac
 
-! *** OPTICS=AD_ACCEL-17OCT23 ***
+! *** OPTICS=AD_ACCEL-17JAN24 ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY, DOUBLE
   ASSIGN, ECHO="LCLS2sc.echo"
@@ -461,20 +461,6 @@
     SET, KQ0H04, -6.042774733767
   ENDSUBROUTINE
 
-! move QDG007 4.4 cm downstream
-
-  MOVEQDG007 : SUBROUTINE
-    SET, dZQDG007,  0.044
-    SET, KQDG004,   8.771677622158
-    SET, KQDG005, -12.053189299631
-    SET, KQDG006,   6.830639733081  
-    SET, KQDG007,  -4.543712509866
-    SET, KQDG008,  11.377027435394
-    SET, KQDG009, -11.539229642651
-    SET, KQDG010,  13.016906079571
-    SET, KQDG011, -10.983650981415
-  ENDSUBROUTINE
-
 ! ==============================================================================
 ! for testing the online Matlab model
 ! ------------------------------------------------------------------------------
@@ -532,6 +518,8 @@
 
 ! ------------------------------------------------------------------------------
 
+ !CALL, FILENAME="LCLS2sc_LHmodes.mad8" !laser heater operating modes
+
  !CALL, FILENAME="LCLS2sc_beams.mad8" !alternate beams & configurations
  !CALL, FILENAME="LCLS2sc_match.mad8"
  !CALL, FILENAME="LCLS2sc_XLEAP.mad8"
@@ -559,9 +547,6 @@
     PRINT, FULL
     TWISS, SAVE, BETA0=TWSSi, TAPE="LCLS2scS_twiss.tape", &
       RTAPE="LCLS2scS_rmat.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=X,Y, &
-      STYLE=100, SPLINE, RANGE=BEGLTUS/DUMPFACEB, FILE="LCLS2scS", &
-      TITLE="SC-linac to SXR dump"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, VMAX=5, &
       STYLE=100, SPLINE, RANGE=BEAM0/DUMPFACEB, FILE="LCLS2scS", &
       TITLE="SC-linac to SXR dump"
@@ -983,257 +968,3 @@
 
   STOP
 
-! ------------------------------------------------------------------------------
-! LCLS2sc_main working stuff
-! ------------------------------------------------------------------------------
-
-  comment
-    BEAM, ENERGY=Ef
-    SET, SETSP, SETSPh ; SET, SETAL, ALOFF
-    USE, BSYLCLS2scH
-   !VALUE, DMUON1[L],DMUON2[L]
-   !VALUE, DMUON3[L],DMUON4[L]
-   !VALUE, D0CB[L]+(DU1H[L]+DU2H[L]+ZB6/2)
-   !VALUE, ZB1toVV+ZB6/2
-   !VALUE, ZB3toVG+ZB6/2
-   !VALUE, ZVVtoB4+ZB6/2
-   !VALUE, DU3hCBb[L]-DU3h[L],DU4hCB[L]-DU4h[L]
-   !VALUE, DU4hCB[L]-DU4h[L],DU5hCB[L]-DU5h[L]
-   !VALUE, D0CB2[L]+(DU1H[L]+DU2H[L]+ZB6/2)
-    MATCH, SURVEY, XS=Xf, YS=Yf, ZS=Zf, THETAS=THETAf, PHIS=PHIf, PSIS=PSIf
-      VARY, dZmdw, STEP=1.E-6
-      WEIGHT, ZS=1
-     !CONSTR, VV999,     ZS=511.930000+2.791885
-     !CONSTR, RFBHX12,   ZS=511.930000+2.97665+LRFBub/2
-     !CONSTR, BCXCBX11a, ZS=511.930000+3.42959
-     !CONSTR, VVCBX11,   ZS=511.930000+3.69228
-     !CONSTR, VGCBX1,    ZS=511.930000+5.61694
-     !CONSTR, VVCBX12,   ZS=511.930000+6.16336
-     !CONSTR, QHXH13[1], ZS=511.930000+6.85541
-     !CONSTR, RFBHX13,   ZS=511.930000+6.98524+LRFBub/2
-     !CONSTR, BCXCBX21a, ZS=511.930000+35.53093
-     !LMDIF, TOL=1.E-20
-     !MIGRAD, TOL=1.E-20
-    ENDMATCH
-   !VALUE, DMUON1[L],DMUON2[L]
-   !VALUE, DMUON3[L],DMUON4[L]
-   !VALUE, D0CB[L]+(DU1H[L]+DU2H[L]+ZB6/2)
-   !VALUE, ZB1toVV+ZB6/2
-   !VALUE, ZB3toVG+ZB6/2
-   !VALUE, ZVVtoB4+ZB6/2
-   !VALUE, DU3hCBb[L]-DU3h[L],DU4hCB[L]-DU4h[L]
-   !VALUE, DU4hCB[L]-DU4h[L],DU5hCB[L]-DU5h[L]
-   !VALUE, D0CB2[L]+(DU1H[L]+DU2H[L]+ZB6/2)
-    PRINT, FULL
-    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
-      TAPE="survey.tape"
-  endcomment
-
-  comment !use with undhBBA.m (non-BBA)
-    BEAM, ENERGY=Ef
-    SET, SETSP, SETSPh ; SET, SETAL, ALOFF
-    USE, (LTUH,HXRUND,DUMPLINE), RANGE=MM1/#E
-    PRINT, FULL
-    TWISS, BETA0=TWSSmh, SAVE=TWISS, TAPE="twiss.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      STYLE=100, SPLINE, RANGE=QHXh44[1]/DUMPFACE, &
-      TITLE="HXR undulator to Dump, w/o coupling", FILE="match"
-   !TWISS, BETA0=TWSSmh, SAVE=TWISS, COUPLE
-   !PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-   !  STYLE=100, SPLINE, RANGE=QHXh44[1]/DUMPFACE, &
-   !  TITLE="HXR undulator to Dump, with coupling", FILE="match"
-  endcomment
-
-  comment !use with undhBBA.m (BBA)
-    BEAM, ENERGY=Ef
-    SET, SETSP, SETSPh ; SET, SETAL, ALOFF
-    SET, kQHX46, kQDHX !for BBA
-    SET, kQHX47, kQFHX !for BBA
-    USE, (LTUH,HXRUND,DUMPLINE), RANGE=MM1/#E
-    PRINT, FULL
-    TWISS, BETA0=TWSSmh, SAVE=TWISS, TAPE="BBAtwiss.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      STYLE=100, SPLINE, RANGE=QHXh44[1]/DUMPFACE, &
-      TITLE="HXR undulator to Dump (BBA), w/o coupling", FILE="BBAmatch"
-   !TWISS, BETA0=TWSSmh, SAVE=TWISS, COUPLE
-   !PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-   !  STYLE=100, SPLINE, RANGE=QHXh44[1]/DUMPFACE, &
-   !  TITLE="HXR undulator to Dump, with coupling", FILE="BBAmatch"
-  endcomment
-
-! ------------------------------------------------------------------------------
-
-  comment
-    BEAM, ENERGY=Ef
-    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
-    USE, BSYLCLS2scS
-    VALUE, DUSEGS50f[L]
-    MATCH, SURVEY, XS=Xf, YS=Yf, ZS=Zf, THETAS=THETAf, PHIS=PHIf, PSIS=PSIf
-      VARY, DUSEGS50f[L], STEP=1.E-6
-      WEIGHT, ZS=1
-      CONSTR, GJPEPX, ZS=668.030492
-      LMDIF, TOL=1.E-20
-      MIGRAD, TOL=1.E-20
-    ENDMATCH
-    VALUE, DUSEGS50f[L]
-    PRINT, FULL
-    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
-      TAPE="survey.tape"
-    STOP
-  endcomment
-
-  comment !match SXRSS chicane to dX= 17.0 mm
-    BEAM, ENERGY=Ef
-    VALUE, Ef,Eu
-    SET, SETSXRSS, 1
-    USE, SCHICANE
-    VALUE, AB5,BLB5
-    MATCH, BETX=1, BETY=1, SURVEY
-      VARY, AB5, STEP=1.E-6, UPPER=0
-      WEIGHT, XS=1
-      CONSTR, CNTRS, XS=+17.0E-3
-      LMDIF, TOL=1.E-20
-      MIGRAD, TOL=1.E-20
-    ENDMATCH
-    VALUE, AB5,BLB5
-    PRINT, FULL
-    SURVEY
-  endcomment
-
-  comment
-    BEAM, ENERGY=E0
-    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
-    USE, SC_SXR
-    VALUE, DWSDUMPa1[L]
-    MATCH, SURVEY, XS=Xgun, YS=Ygun, ZS=Zgun
-      VARY, DWSDUMPa1[L], STEP=1.E-6
-      WEIGHT, ZS=1
-      CONSTR, PCEBDB, ZS=0.3048*12340.17
-      LMDIF, TOL=1.E-20
-      MIGRAD, TOL=1.E-20
-    ENDMATCH
-    VALUE, DWSDUMPa1[L]
-    BEAM, ENERGY=E0
-    USE, SC_SXR
-    PRINT, FULL
-    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="survey.tape"
-  endcomment
-
-! ------------------------------------------------------------------------------
-
-  SET, AB5, 0 !SXRSS off
-  BEAM, ENERGY=4.0
-  USE, SXCEL35
-  PRINT, FULL
-  SURVEY, TAPE="LCLS2scS_survey4.tape"
-
-  SET, AB5, -1.279114e-02 !bend angle (rad) for BL= 2.56 kG-m (9 A) @ 6 GeV
-  BEAM, ENERGY=6.0
-  USE, SXCEL35
-  PRINT, FULL
-  SURVEY, TAPE="LCLS2scS_survey6.tape"
-
-  SET, AB5, -8.527430e-03 !bend angle (rad) for BL= 2.56 kG-m (9 A) @ 9 GeV
-  BEAM, ENERGY=9.0
-  USE, SXCEL35
-  PRINT, FULL
-  SURVEY, TAPE="LCLS2scS_survey9.tape"
-
-! ------------------------------------------------------------------------------
-
-  comment !LCLS2scD
-    BEAM, ENERGY=E0
-    SET, SETSP, SETSPd ; SET, SETDA, DAOFF
-    USE, SC_BSYD
-    VALUE, LDSPBK5ha
-   !VALUE, LDSPQ1a
-   !VALUE, LDSPQ2c
-   !VALUE, LDSPBK5sa
-   !VALUE, LDSP3dd
-   !VALUE, LDSP5dd
-    MATCH, SURVEY, XS=Xgun, YS=Ygun, ZS=Zgun
-      VARY, LDSPBK5ha, STEP=1.E-6
-     !VARY, LDSPQ1a,   STEP=1.E-6
-     !VARY, LDSPQ2c,   STEP=1.E-6
-     !VARY, LDSPBK5sa, STEP=1.E-6
-     !VARY, LDSP3dd,   STEP=1.E-6
-     !VARY, LDSP5dd,   STEP=1.E-6
-      WEIGHT, ZS=1
-      CONSTR, BPMSPH,  ZS=2789.98063   !2790.043003
-     !CONSTR, BPMSP1,  ZS=2826.799175  !2826.876003
-     !CONSTR, BPMSP2,  ZS=2850.553142  !2850.586903
-     !CONSTR, BPMSPS,  ZS=2877.1781665 !2877.219003
-     !CONSTR, BPMSP2D, ZS=2962.143405  !2962.172603
-     !CONSTR, BPMSP3D, ZS=3040.93406   !3040.884777
-     !LMDIF, TOL=1.E-20
-     !MIGRAD, TOL=1.E-20
-    ENDMATCH
-    VALUE, LDSPBK5ha
-   !VALUE, LDSPQ1a
-   !VALUE, LDSPQ2c
-   !VALUE, LDSPBK5sa
-   !VALUE, LDSP3dd
-   !VALUE, LDSP5dd
-    PRINT, FULL
-    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="survey.tape"
-  endcomment
-
-! ------------------------------------------------------------------------------
-
-  COMMENT
-    ASSIGN, PRINT="LCLS2scD.print"
-    BEAM, ENERGY=E0
-    SET, SETSP, SETSPd ; SET, SETDA, DAOFF
-    USE, SC_BSYD
-    PRINT, FULL
-    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scD_survey.tape"
-    BEAM, ENERGY=Ei
-   !SETQCM01on
-    USE, SC_BSYDi
-    PRINT, FULL
-    TWISS, SAVE, BETA0=TWSSi, TAPE="LCLS2scD_twiss.tape" !, &
-   !  RTAPE="LCLS2scD_rmat.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, VMAX=5.0, &
-      STYLE=100, SPLINE, RANGE=#S/ENDEXT, FILE="LCLS2scD", &
-      TITLE="SC-linac to EXT"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, VMIN=0, &
-      STYLE=100, SPLINE, RANGE=#S/ENDCOL0, FILE="LCLS2scD", &
-      TITLE="HTR/COL0"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, VMIN=0, &
-      STYLE=100, SPLINE, RANGE=BEGEXT/OTR31, FILE="LCLS2scD", &
-      TITLE="EXT/DOG"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=#S/DUMPBSY, FILE="LCLS2scD", &
-      TITLE="SC-linac to BSY dump"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE, RANGE=#S/DUMPBSY, FILE="LCLS2scD", &
-      TITLE="SC-linac to BSY dump"
-  ENDCOMMENT
-
-! ------------------------------------------------------------------------------
-
-  COMMENT
-    ASSIGN, PRINT="DIAG0.print"
-    BEAM, ENERGY=Ei
-   !SETQCM01on
-    USE, (LCLS2scI,HTR)
-    SAVEBETA, TWSSm, #E
-    TWISS, COUPLE, BETA0=TWSSi
-    BEAM, ENERGY=TWSSm[ENERGY]
-   !MMQDG007
-    USE, DIAG0
-    PRINT, FULL
-    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zdg0, TAPE="survey.tape"
-    TWISS, COUPLE, SAVE, TAPE="twiss.tape", RTAPE="rmat.tape", &
-      BETX=TWSSm[BETX], ALFX=TWSSm[ALFX], BETY=TWSSm[BETY], ALFY=TWSSm[ALFY]
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=#S/#E, FILE="plot", &
-      TITLE="DIAG0"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, -SPLINE, RANGE=#S/#E, FILE="plot", &
-      TITLE="DIAG0"
-  ENDCOMMENT
-
-! ------------------------------------------------------------------------------
-
-  STOP

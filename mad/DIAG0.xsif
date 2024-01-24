@@ -1,10 +1,14 @@
 
-! *** OPTICS=AD_ACCEL-17OCT23 ***
+! *** OPTICS=AD_ACCEL-17JAN24 ***
 
 ! LCLS2sc post laser heater diagnostic beamline
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 27-NOV-2022, M. Woodley
+!  * STCAV installation (replace TCXDG0 and TCYDG0)
+!  * move QDG007 4.4 cm downstream (TCXDG0cl to QDG007cl = 31.309")
 ! ------------------------------------------------------------------------------
 ! 09-SEP-2022, M. Woodley
 !  * redefine (deferred) OTRDG01 and OTRDG03
@@ -132,8 +136,8 @@
 ! transverse deflecting cavities
 ! (NOTE: TCYDG0 might be installed as an uprgade at a later time)
 
-  TCYDG0 : LCAV, TYPE="@4,TRANS_YDEF", FREQ=2856, L=0.8/2 !Y-deflector (split)
-  TCXDG0 : LCAV, TYPE="@0,TRANS_XDEF", FREQ=2856, L=0.8/2 !X-deflector (split)
+  TCYDG0 : LCAV, TYPE="@4,STCAV_Y", FREQ=2856, L=20*in2m/2 !Y-deflector (split)
+  TCXDG0 : LCAV, TYPE="STCAV_X",    FREQ=2856, L=20*in2m/2 !X-deflector (split)
 
 ! ==============================================================================
 ! SBEN
@@ -240,14 +244,14 @@
 ! QUAD
 ! ------------------------------------------------------------------------------
 
-  KQDG004 :=   8.65061788321  !  8.650617883208
-  KQDG005 := -12.059982684959 !-12.05998268496
-  KQDG006 :=   6.896965013904 !  6.896965013903  
-  KQDG007 :=  -4.414274650314 ! -4.414274650315
-  KQDG008 :=  11.243156019147 ! 11.243156019147
-  KQDG009 := -11.689200167844 !-11.689200167844
-  KQDG010 :=  13.02067678689  ! 13.02067678689
-  KQDG011 := -10.983650981419 !-10.983650981418
+  KQDG004 :=   8.771677622156 !  8.650617883208
+  KQDG005 := -12.05318929963  !-12.05998268496
+  KQDG006 :=   6.830639733081 !  6.896965013903  
+  KQDG007 :=  -4.543712509866 ! -4.414274650315
+  KQDG008 :=  11.377027435394 ! 11.243156019147
+  KQDG009 := -11.53922964265  !-11.689200167844
+  KQDG010 :=  13.016651548829 ! 13.02067678689
+  KQDG011 := -10.983650981643 !-10.983650981418
 
   QDG001 : QUAD, TYPE="1.51Q7.00", L=LQs/2, APER=rQs, K1=KQBF0
   QDG002 : QUAD, TYPE="1.51Q7.00", L=LQs/2, APER=rQs, K1=KQBD0
@@ -331,13 +335,11 @@
 
 ! diagnostic line
 
-  dZQDG007 := 0 !0.044
-
   DDG003 : DRIF, L=0.374418820858 !0.375213145904
   DDG004 : DRIF, L=0.541
   DDG005 : DRIF, L=0.592
-  DDG006 : DRIF, L=2.492+dZQDG007
-  DDG007 : DRIF, L=0.592-dZQDG007
+  DDG006 : DRIF, L=2.536 !2.492
+  DDG007 : DRIF, L=0.548 !0.592
   DDG008 : DRIF, L=0.592
   DDG009 : DRIF, L=2.962
   DDG010 : DRIF, L=0.592
@@ -348,7 +350,7 @@
   DDG004b : DRIF, L=DDG004[L]-DDG004a[L]
   DDG005a : DRIF, L=DDG005[L]/2
   DDG005b : DRIF, L=DDG005[L]-DDG005a[L]
-  DDG006a : DRIF, L=0.296
+  DDG006a : DRIF, L=0.7327514 !0.296
   DDG006b : DRIF, L=0.12714
   DDG006c : DRIF, L=0.17286
   DDG006d : DRIF, L=DDG006[L]-DDG006a[L]-2*TCYDG0[L]-DDG006b[L]-DDG006c[L] &
@@ -401,7 +403,7 @@
   XCDG003 : HKIC, TYPE="class-1a"
   XCDG005 : HKIC, TYPE="class-1a"
   XCDGTCY : HKIC, TYPE="@4,class-1t"
-  XCDGTCX : HKIC, TYPE="@0,class-1t"
+  XCDGTCX : HKIC, TYPE="class-1t"
   XCDG008 : HKIC, TYPE="class-1a"
   XCDG010 : HKIC, TYPE="class-1a"
 
@@ -414,7 +416,7 @@
   YCDG003 : VKIC, TYPE="class-1a"
   YCDG005 : VKIC, TYPE="class-1a"
   YCDGTCY : VKIC, TYPE="@4,class-1t"
-  YCDGTCX : VKIC, TYPE="@0,class-1t"
+  YCDGTCX : VKIC, TYPE="class-1t"
   YCDG008 : VKIC, TYPE="class-1a"
   YCDG010 : VKIC, TYPE="class-1a"
 

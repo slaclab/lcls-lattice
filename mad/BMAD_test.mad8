@@ -118,7 +118,7 @@
 
 ! ------------------------------------------------------------------------------
 
-  COMMENT !DIAG0 diagnostic line
+  !COMMENT !DIAG0 diagnostic line
     CALL, FILENAME="SC_DIAG0.xsif"
     BEAM, ENERGY=E0
     USE, SC_DIAG0
@@ -135,8 +135,19 @@
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
       STYLE=100, SPLINE, FILE="test", RANGE=BEAM0/ENDDIAG0, &
       TITLE="BEAMPATH=SC_DIAG0"
-  ENDCOMMENT
+  !ENDCOMMENT
 
+! ------------------------------------------------------------------------------
+
+  !COMMENT !DIAG0 diagnostic line
+    CALL, FILENAME="SC_DIAG0.xsif"
+    BEAM, ENERGY=Ei
+    USE, SC_DIAG0i
+    PRINT, FULL
+    OPTION, DOUBLE
+    TWISS, SAVE, BETX=BXi, ALFX=AXi, BETY=BYi, ALFY=AYi
+    ARCHIVE, TABLE=TWISS, FILENAME='DIAG0.twiss'
+  !ENDCOMMENT
 ! ------------------------------------------------------------------------------
 
   COMMENT !DASEL line

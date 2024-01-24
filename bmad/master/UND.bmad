@@ -1,10 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-17OCT23 ***
+! *** OPTICS=AD_ACCEL-17JAN24 ***
 
 ! LCLS2sc undulator and undulator extension
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 12-JAN-2024, M. Woodley
+!  * adjust complement and locations of CBXFEL components per SLAC-I-120-022-R2
 ! ------------------------------------------------------------------------------
 ! 02-MAR-2023, M. Woodley
 !  * reomve FSPEPX1 and FSPEPX3 (PEPPEx Phase 2) per X. Permanyer
@@ -2585,7 +2588,7 @@ dvvhxu: drift, l = 0
 ! HXR undulator Beam Loss Monitors (placeholders)
 ! ------------------------------------------------------------------------------
 
-mblmh13: marker
+ !MBLMH13 : MARK
 mblmh14: marker
 mblmh15: marker
 mblmh16: marker
@@ -2782,22 +2785,20 @@ zb2bi = 0.535763      !inner bend center-to-center
 
 d0cb1: drift, l = 0.264603-(du1h[l]+du2h[l]+zb6/2) !0.26456
 d1cb1: drift, l = (zb2bo-zb6)/cos(ab6)
-d1cb1a: drift, l = (0.656172-zb6/2)/cos(ab6)
-d1cb1b: drift, l = 0.05/cos(ab6)
-d1cb1c: drift, l = 0.0559/cos(ab6)
-d1cb1d: drift, l = d1cb1[l]-d1cb1a[l]-d1cb1b[l]-d1cb1c[l]
+d1cb1a: drift, l = (0.656216-zb6/2)/cos(ab6)
+d1cb1b: drift, l = 0.1059/cos(ab6)
+d1cb1c: drift, l = d1cb1[l]-d1cb1a[l]-d1cb1b[l]
 dchcb1: drift, l = (zb2bi-zb6)/2
 d2cb: drift, l = d1cb1[l]
 d3cb1: drift, l = zuseg-(d0cb1[l]+zb6/2+zb2bo+zb2bi+zb2bo+zb6/2)
-du3hcb1a: drift, l = du3h[l]+0.030605
-du3hcb1b: drift, l = du3h[l]+0.102823 ! 0.102780
+du3hcb1: drift, l = 2*du3h[l]+0.133428 ! 0.102780
 du4hcb1: drift, l = du4h[l]-0.000176 !-0.025003
 du5hcb1: drift, l = du5h[l]-0.133252 !-0.108382
 
 d0cb2: drift, l = 0.264610-(du1h[l]+du2h[l]+zb6/2) !0.26456
 d1cb2: drift, l = d1cb1[l]
-d1cb2a: drift, l = (0.605982-zb6/2)/cos(ab6)
-d1cb2b: drift, l = 0.050190/cos(ab6)
+d1cb2a: drift, l = (0.605122666708-zb6/2)/cos(ab6)
+d1cb2b: drift, l = 0.05019/cos(ab6)
 d1cb2c: drift, l = d1cb2[l]-d1cb2a[l]-d1cb2b[l]
 dchcb2: drift, l = dchcb1[l]
 d3cb2: drift, l = zuseg-(d0cb2[l]+zb6/2+zb2bo+zb2bi+zb2bo+zb6/2)
@@ -2807,8 +2808,7 @@ du5hcb2: drift, l = du5h[l]-0.133259 !-0.108382
 
 hxrcb1beg: marker
 mcbx4: instrument !X-ray diamond crystal mirror
-yagcbx42: monitor !YAG scintillator screen
-bodcbx40: monitor !Beam Overlap Diagnostic
+bodcbx42: monitor !Beam Overlap Diagnostic
 center1: marker
 hxrcb1end: marker
 
@@ -2860,11 +2860,13 @@ bcxcbx23_full: line = (bcxcbx23)
 
 bcxcbx24_full: line = (bcxcbx24)
 
-  CBCHICANE1 : LINE=(HXRCB1BEG,D0CB1,BCXCBX11_full,D1CB1a,MCBX4,D1CB1b,YAGCBX42,D1CB1c,BODCBX40,D1CB1d,BCXCBX12_full,
-         DCHCB1,CENTER1,DCHCB1,BCXCBX13_full,D2CB,BCXCBX14_full,D3CB1,HXRCB1END)
+  CBCHICANE1 : LINE=(HXRCB1BEG,D0CB1,BCXCBX11_full,D1CB1a,MCBX4,D1CB1b,BODCBX42,D1CB1c,BCXCBX12_full,DCHCB1,CENTER1,
+         DCHCB1,BCXCBX13_full,D2CB,BCXCBX14_full,D3CB1,HXRCB1END)
 
   CBCHICANE2 : LINE=(HXRCB2BEG,D0CB2,BCXCBX21_full,D1CB2a,DSSCBX11,D1CB2b,MCBX1,D1CB2c,BCXCBX22_full,DCHCB2,CENTER2,
          DCHCB2,BCXCBX23_full,D2CB,BCXCBX24_full,D3CB2,HXRCB2END)
+
+! ------------------------------------------------------------------------------
 
 ! DBFEL (install later)
 
@@ -3672,7 +3674,10 @@ dqhx48: drift, l = lqu
 dqhx49: drift, l = lqu
 dqhx50: drift, l = lqu
 
-  HXBRK13 : LINE=(DU3hCB1a,MBLMH13,DU3hCB1b,QHXh13_full,DU4hCB1,RFBHX13,DU5hCB1,DPSHX13,DU6h,DU7h)
+ !HXBRK13 : LINE=(DU3hCB1a,MBLMH13,DU3hCB1b,QHXh13_full,&
+ !                DU4hCB1,RFBHX13,DU5hCB1,DPSHX13,DU6h,DU7h)
+  HXBRK13 : LINE=(DU3hCB1,QHXh13_full,DU4hCB1,RFBHX13,DU5hCB1,DPSHX13,DU6h,DU7h)
+
   HXBRK14 : LINE=(DU3h,MBLMH14,DU3h,QHXh14_full,DU4h,RFBHX14,DU5h,PSHXh14_full,DU6h,VVHXU14,DU7h)
   HXBRK15 : LINE=(DU3h,MBLMH15,DU3h,QHXh15_full,DU4h,RFBHX15,DU5h,PSHXh15_full,DU6h,DVVHXU,DU7h)
   HXBRK16 : LINE=(DU3h,MBLMH16,DU3h,QHXh16_full,DU4h,RFBHX16,DU5h,PSHXh16_full,DU6h,DVVHXU,DU7h)
