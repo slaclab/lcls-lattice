@@ -2,7 +2,7 @@
 
 ! *** OPTICS=AD_ACCEL-17OCT23 ***
 
-  OPTION, -ECHO, INFO, WARN, VERIFY
+  OPTION, -ECHO, INFO, WARN, VERIFY, DOUBLE
   ASSIGN, ECHO="test.echo"
   ASSIGN, PRINT="test.print"
 
@@ -94,7 +94,7 @@
 
 ! ------------------------------------------------------------------------------
 
-  COMMENT !BSY dump line
+  !COMMENT !BSY dump line
     CALL, FILENAME="SC_BSYD.xsif"
     BEAM, ENERGY=E0
     USE, SC_BSYD
@@ -105,6 +105,7 @@
     PRINT, FULL
     TWISS, SAVE, BETX=BXi, ALFX=AXi, BETY=BYi, ALFY=AYi, &
       TAPE="test_twiss.tape" !, RTAPE="test_rmat.tape"
+    ARCHIVE, TABLE=twiss, FILENAME='BSYD.twiss'
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
       STYLE=100, SPLINE, FILE="test", RANGE=BEAM0/DUMPBSY, &
       TITLE="BEAMPATH=SC_BSYD"
@@ -114,7 +115,7 @@
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
       STYLE=100, SPLINE, FILE="test", RANGE=BEAM0/DUMPBSY, &
       TITLE="BEAMPATH=SC_BSYD"
-  ENDCOMMENT
+  !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
 
@@ -129,6 +130,7 @@
     PRINT, FULL
     TWISS, SAVE, BETX=BXi, ALFX=AXi, BETY=BYi, ALFY=AYi, &
       TAPE="test_twiss.tape" !, RTAPE="test_rmat.tape"
+    ARCHIVE, TABLE=twiss, filename='twiss.archive'
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
       STYLE=100, SPLINE, FILE="test", RANGE=BEAM0/ENDDIAG0, &
       TITLE="BEAMPATH=SC_DIAG0"
@@ -137,17 +139,6 @@
       TITLE="BEAMPATH=SC_DIAG0"
   !ENDCOMMENT
 
-! ------------------------------------------------------------------------------
-
-  !COMMENT !DIAG0 diagnostic line
-    CALL, FILENAME="SC_DIAG0.xsif"
-    BEAM, ENERGY=Ei
-    USE, SC_DIAG0i
-    PRINT, FULL
-    OPTION, DOUBLE
-    TWISS, SAVE, BETX=BXi, ALFX=AXi, BETY=BYi, ALFY=AYi
-    ARCHIVE, TABLE=TWISS, FILENAME='DIAG0.twiss'
-  !ENDCOMMENT
 ! ------------------------------------------------------------------------------
 
   COMMENT !DASEL line
