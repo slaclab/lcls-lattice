@@ -4,9 +4,9 @@
   - git checkout master
   - git checkout -b DDMMYYYY_conversion
 3. Copy files from CVS into lcls-lattice/mad (omit mad/CVS, bmad/CVS directory from copy)
-  - copy CVS/optics/etc/lattice/lcls/mad/* lcls-lattice/mad
-  - copy CVS/optics/etc/lattice/lcls/bmad/* lcls-lattice/mad
-  - copy CVS/optics/script/elementdevices.dat lcls-lattice/mad
+  - cp CVS/optics/etc/lattice/lcls/mad/* lcls-lattice/mad
+  - cp CVS/optics/etc/lattice/lcls/bmad/* lcls-lattice/mad  #not a typo: CVS bmad goes into lcls-lattice/mad
+  - cp CVS/optics/script/elementdevices.dat lcls-lattice/mad
 4. Obtain updated lcls_elements.csv
   - Go to [https://oraweb.slac.stanford.edu/apex/slacprod/f?p=116:600](https://oraweb.slac.stanford.edu/apex/slacprod/f?p=116:600)
   - Click on Actions and Download
