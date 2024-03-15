@@ -1,6 +1,6 @@
-  TITLE, "AD_ACCEL (January 17, 2024)" !combine LCLS and LCLS-II
+  TITLE, "AD_ACCEL (October 17, 2023)" !combine LCLS and LCLS-II
 
-! *** OPTICS=AD_ACCEL-17JAN24 ***
+! *** OPTICS=AD_ACCEL-17OCT23 ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY
   ASSIGN, ECHO="test.echo"
@@ -116,49 +116,48 @@
       TITLE="BEAMPATH=SC_BSYD"
   ENDCOMMENT
 
+  !COMMENT !BSYD diagnostic line
+    CALL, FILENAME="SC_BSYD.xsif"
+    BEAM, ENERGY=Ei
+    USE, SC_BSYDi
+    PRINT, FULL
+    OPTION, DOUBLE
+    TWISS, SAVE, BETX=BXi, ALFX=AXi, BETY=BYi, ALFY=AYi
+    ARCHIVE, TABLE=TWISS, FILENAME='SC_BSYDi.twiss'
+  !ENDCOMMENT
+
+  !COMMENT !BSYD diagnostic line
+    TWSS0  : BETA0, ENERGY=E0, BETX=BX0, ALFX=AX0, BETY=BY0, ALFY=AY0
+    BEAM, ENERGY=E0
+    USE, SC_BSYD
+    PRINT, FULL
+    OPTION, DOUBLE
+    !TWISS, SAVE, BETX=BX0, ALFX=AX0, BETY=BY0, ALFY=AY0
+    TWISS, SAVE, COUPLE, BETA0=TWSS0
+    ARCHIVE, TABLE=TWISS, FILENAME='SC_BSYD0.twiss'
+  !ENDCOMMENT
+
 ! ------------------------------------------------------------------------------
 
   COMMENT !DIAG0 diagnostic line
     CALL, FILENAME="SC_DIAG0.xsif"
-    BEAM, ENERGY=E0
-    USE, SC_DIAG0
-    PRINT, FULL
-    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="test_survey.tape"
     BEAM, ENERGY=Ei
     USE, SC_DIAG0i
     PRINT, FULL
-    TWISS, SAVE, BETX=BXi, ALFX=AXi, BETY=BYi, ALFY=AYi, &
-      TAPE="test_twiss.tape" !, RTAPE="test_rmat.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, FILE="test", RANGE=BEAM0/ENDDIAG0, &
-      TITLE="BEAMPATH=SC_DIAG0"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE, FILE="test", RANGE=BEAM0/ENDDIAG0, &
-      TITLE="BEAMPATH=SC_DIAG0"
+    OPTION, DOUBLE
+    TWISS, SAVE, BETX=BXi, ALFX=AXi, BETY=BYi, ALFY=AYi
+    ARCHIVE, TABLE=TWISS, FILENAME='DIAG0.twiss'
   ENDCOMMENT
-
 ! ------------------------------------------------------------------------------
 
-  COMMENT !DASEL line
+  COMMENT !DASEL diagnostic line
     CALL, FILENAME="SC_DASEL.xsif"
-    BEAM, ENERGY=E0
-    USE, SC_DASEL
-    PRINT, FULL
-    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="test_survey.tape"
     BEAM, ENERGY=Ei
     USE, SC_DASELi
     PRINT, FULL
-    TWISS, SAVE, BETX=BXi, ALFX=AXi, BETY=BYi, ALFY=AYi, &
-      TAPE="test_twiss.tape" !, RTAPE="test_rmat.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
-      STYLE=100, SPLINE, FILE="test", RANGE=BEAM0/ENDBSYA_2, &
-      TITLE="BEAMPATH=SC_DASEL"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=RBETX,RBETY, &
-      STYLE=100, SPLINE, FILE="test", RANGE=BEAM0/ENDBSYA_2, &
-      TITLE="BEAMPATH=SC_DASEL"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE, FILE="test", RANGE=BEAM0/ENDBSYA_2, &
-      TITLE="BEAMPATH=SC_DASEL"
+    OPTION, DOUBLE
+    TWISS, SAVE, BETX=BXi, ALFX=AXi, BETY=BYi, ALFY=AYi
+    ARCHIVE, TABLE=TWISS, FILENAME='SC_DASEL.twiss'
   ENDCOMMENT
 
 ! ==============================================================================
