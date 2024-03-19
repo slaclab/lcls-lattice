@@ -19,6 +19,9 @@
 6. Within jupyter notebook cd to bmad/conversion and open slac_to_bmad.ipynb
   - Check hard-coded paths in slac_to_bmad.ipynb match lcls-lattice repo with conversion branch.
   - Run all cells in slac_to_bmad.ipynb
+7. Correct special cases.
+  - Add this line below the bun1b desplit in INJ.bmad
+      - bun1b[voltage] = 2*bun1b[voltage]
 7. Within jupyter nodebook cd to bmad/conversion/device_mapping and open device_mapping.ipynb
   - Check LCLS_LATTICE environment variable points to conversion branch of lcls-lattice repo.
   - Run all cells.
