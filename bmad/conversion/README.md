@@ -22,11 +22,11 @@
 7. Correct special cases.
   - Add this line below the bun1b desplit in INJ.bmad
       - bun1b[voltage] = 2*bun1b[voltage]
-7. Within jupyter nodebook cd to bmad/conversion/device_mapping and open device_mapping.ipynb
+8. Within jupyter nodebook cd to bmad/conversion/device_mapping and open device_mapping.ipynb
   - Check LCLS_LATTICE environment variable points to conversion branch of lcls-lattice repo.
   - Run all cells.
   - This generates the lcls-lattice/bmad/master/*_devicenames.bmad files
-8. Rematch sc_* lines.
+9. Rematch sc_* lines.
   - Run mad8s to get Twiss
     - `mad8s < LCLS2sc_main.mad8`
      - mad8s Twiss are in the .print files.  The table below shows the .print file for each Bmad beamline.
@@ -39,8 +39,8 @@
   - scripts/match_EMIT2.tao
   - Adjustments should be necessary at QE201-4, Q0H01-8, and QHD01-4.
   - Also QC001-12,QCM02-3
-9. Submit PR to github.
-10. Generate new lcls-lattice release.
+10. Submit PR to github.
+11. Generate new lcls-lattice release.
 
 | Bmad line | mad8s Twiss file | Bmad <-> mad8s Places to Check |
 |-|-|-|
