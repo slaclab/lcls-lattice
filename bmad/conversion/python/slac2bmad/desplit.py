@@ -1,14 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
 def desplit_ele(line, double_length=True, verbose=True):
     """
     De-splits elements. Converts form:

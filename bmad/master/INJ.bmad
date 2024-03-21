@@ -177,8 +177,14 @@ abun = 0.0517  !m
 gbun = 1.8     !MV/m
 pbun = -85     !deg
 
+! bun1b is actually a standing wave, copper cavity.
+! However, it is modeled in mad as a traveling wave cavity.  That will be corrected in due time.
+! In any case, the injector is not well modeled by linear optics anyways, so for now just call bun1b
+! a traveling wave cavity in Bmad too.
 bun1b: lcavity, type = "LBNL", rf_frequency = 1300 * 1e6, l = lbun/2, aperture = abun/2, voltage = gbun*lbun/2 * 1e6,
-          phi0 = pbun/360, num_steps=10
+          phi0 = pbun/360
+!bun1b: lcavity, type = "LBNL", rf_frequency = 1300 * 1e6, l = lbun/2, aperture = abun/2, voltage = gbun*lbun/2 * 1e6,
+!          phi0 = pbun/360, num_steps=1, cavity_type=traveling_wave, fringe_type=none
 
 ! ==============================================================================
 ! SBEN
@@ -381,23 +387,22 @@ r34h = lhunh*sincargh
 
 ! undulator segment modeled as R-matrix to include vertical natural focusing
 
-umhtr: taylor, l = Lhunh, tt11 = 1.0, tt12 = Lhunh, tt21 = 0, tt22 = 1.0, 
-                                tt33 = cos(argh), tt34 = r34h,
-                                tt43 = -sin(argh)*sqrt(kqlh),
-                                tt44 = cos(argh),
-                                tt55 = 1.0, tt66 = 1.0
+!umhtr: taylor, l = Lhunh, tt11 = 1.0, tt12 = Lhunh, tt21 = 0, tt22 = 1.0,
+!                                tt33 = cos(argh), tt34 = r34h,
+!                                tt43 = -sin(argh)*sqrt(kqlh),
+!                                tt44 = cos(argh),
+!                                tt55 = 1.0, tt66 = 1.0
 !------- Laser Heater Undulator for SC Linac -------
-my_umhtr_k = k_und
-!my_umhtr_k = 0.960143
+my_umhtr_k = 0.960143
 
-!umhtr: wiggler, 
-!        type = "laser_heater_undulator",
-!        L_period = 0.054, 
-!        n_period = 10, 
-!        b_max = my_umhtr_k * 2*pi*m_electron / (c_light * 0.054), 
-!        L = 10*0.054 ! Was: 0.506263, 
-!        ds_step = 0.054
-!umhtr[L] = umhtr[L]/2 ! Will be doubled in desplitting process. 
+umhtr: wiggler, 
+        type = "laser_heater_undulator",
+        L_period = 0.054, 
+        n_period = 10, 
+        b_max = my_umhtr_k * 2*pi*m_electron / (c_light * 0.054), 
+        L = 10*0.054 ! Was: 0.506263, 
+        ds_step = 0.054
+umhtr[L] = umhtr[L]/2 ! Will be doubled in desplitting process. 
         
 !--------------------------------- !,                               &
 !umhtr: taylor, type = "LHund", l = lhunh, tt11 = 1.0, tt12 = lhunh, tt21 = 0, tt22 = 1.0, tt33 = cos(lhunh*sqrt(kqlh)),
@@ -497,13 +502,13 @@ dh02a: drift, l = 0.192614-ljaw/2, type = "CSR"
 dh02b: drift, l = 0.298450-ljaw/2, type = "CSR"
 
 ! Shorten so that umhtr has an integer number of poles
-!dh02c: drift, l = 0.2795065 - ( 10*0.054 - 0.506263 ) /2 , type = "CSR" !0.297036 !0.2795065  !wig heater
-dh02c: drift, l = 0.2795065 - ( 9*0.054 - 0.506263 ) /2 , type = "CSR" !0.297036 !0.2795065  !mat heater
+dh02c: drift, l = 0.2795065 - ( 10*0.054 - 0.506263 ) /2 , type = "CSR" !0.297036 !0.2795065  !wig heater
+!dh02c: drift, l = 0.2795065 - ( 9*0.054 - 0.506263 ) /2 , type = "CSR" !0.297036 !0.2795065  !mat heater
 !old: dh02c: drift, l = 0.2795065+dlhun/2, type = "CSR"
 
 ! Shorten so that umhtr has an integer number of poles
-!dh02d: drift, l = 0.2724707 - ( 10*0.054 - 0.506263 ) /2, type = "CSR" !0.2900002 !0.2724707 !wig heater
-dh02d: drift, l = 0.2724707 - ( 9*0.054 - 0.506263 ) /2, type = "CSR" !0.2900002 !0.2724707  !mat heater
+dh02d: drift, l = 0.2724707 - ( 10*0.054 - 0.506263 ) /2, type = "CSR" !0.2900002 !0.2724707 !wig heater
+!dh02d: drift, l = 0.2724707 - ( 9*0.054 - 0.506263 ) /2, type = "CSR" !0.2900002 !0.2724707  !mat heater
 !old: dh02d: drift, l = 0.2724707+dlhun/2, type = "CSR"
 dh02e: drift, l = 0.4599998, type = "CSR"
 dh03: drift, l = zhbbo/cos(abh), type = "CSR"
@@ -767,6 +772,7 @@ endeic: marker
 
 
 !Old split line:  BUN1B_full : LINE=(BUN1B,BUN1B)
+!BUN1B_full : LINE=(BUN1B,BUN1B)
 
 bun1b_full: line = (bun1b)
 bun1b[L] = 2*bun1b[L]
