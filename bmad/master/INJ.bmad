@@ -253,10 +253,10 @@ cq02b: quadrupole, type = "3.37Q1.2", l = lqg/2, aperture = rqg, k1 = 0
 
 ! L0 to WS/OTR (Q0H01-4 match to waists at WS0H04)
 
-kq0h01 = -6.525507740096
-kq0h02 = 6.335021170329
-kq0h03 = -0.947730849941
-kq0h04 = -3.418410369163
+kq0h01 = -6.525507740091
+kq0h02 = 6.335021170323
+kq0h03 = -0.947730849875
+kq0h04 = -3.418410369215
 
 q0h01: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h01
 q0h02: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h02
@@ -267,10 +267,10 @@ q0h04: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h04
 
 !              heater ON        heater OFF        chicane OFF
 !           ---------------   ---------------   ---------------
-kq0h05 = -7.013523766806 ! -7.45131471078  ! -7.50807265704  !
-kq0h06 = 1.45032244233  !  1.8353213811   !  1.870908387668 !
-kq0h07 = 7.87472618921  !  7.794364119491 !  7.804907479859 !
-kq0h08 = -8.293357257823 ! -8.272683907745 ! -8.306722243059 !
+kq0h05 = -7.013523766823 ! -7.451314710799 ! -7.508072657053 !
+kq0h06 = 1.450322442367 !  1.835321381141 !  1.870908387696 !
+kq0h07 = 7.874726189194 !  7.794364119473 !  7.804907479846 !
+kq0h08 = -8.293357257813 ! -8.272683907735 ! -8.306722243052 !
 
 q0h05: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h05
 q0h06: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h06
@@ -281,10 +281,10 @@ q0h08: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h08
 
 !              heater ON        heater OFF        chicane OFF
 !           ---------------   ---------------   ---------------
-kqhd01 = -8.9263060781   ! -8.743988196362 ! -8.746794738551 !
-kqhd02 = 6.460615023279 !  6.400024211102 !  6.401620200767 !
-kqhd03 = -8.534034325807 ! -8.612136538817 ! -8.622952974047 !
-kqhd04 = 6.807615097128 !  6.860670430866 !  6.864937307631 !
+kqhd01 = -8.9263060781   ! -8.743988196277 ! -8.746794738551 !
+kqhd02 = 6.460615023279 !  6.400024211083 !  6.401620200767 !
+kqhd03 = -8.534034325807 ! -8.612136538835 ! -8.622952974047 !
+kqhd04 = 6.807615097128 !  6.860670430867 !  6.864937307631 !
 
 qhd01: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kqhd01
 qhd02: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kqhd02
@@ -302,18 +302,18 @@ qdcoll0: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = -kqcoll0
 
 ! COL0 collimation section
 
-kqc001 = 5.055115116566
+kqc001 = 5.055115116565
 kqc002 = 0.15798374076
-kqc003 = -5.345027237141
-kqc004 = 2.756594856381
+kqc003 = -5.345027237142
+kqc004 = 2.756594856382
 kqc005 = -kqcoll0
 kqc006 = kqcoll0
 kqc007 = -kqcoll0
 kqc008 = kqcoll0
 kqc009 = -kqcoll0
-kqc010 = 0.814554151433
-kqc011 = -1.607627024247
-kqc012 = 1.327290094053
+kqc010 = 0.638287288519
+kqc011 = -1.679681060652
+kqc012 = 1.309219730044
 
 qc001: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc001
 qc002: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc002
@@ -370,7 +370,6 @@ k_und = sqrt(2*(lamr*2*gami^2/lam-1))
 lhun = 9*lam
 lhunh = lhun/2
 kqlh = (k_und*2*pi/lam/sqrt(2)/gami)^2
-
 ! handle K_und->0 by expressing R34 as an approximate SINC function
 
 argh = lhunh*sqrt(kqlh)
@@ -382,7 +381,11 @@ r34h = lhunh*sincargh
 
 ! undulator segment modeled as R-matrix to include vertical natural focusing
 
-
+!umhtr: taylor, l = Lhunh, tt11 = 1.0, tt12 = Lhunh, tt21 = 0, tt22 = 1.0,
+!                                tt33 = cos(argh), tt34 = r34h,
+!                                tt43 = -sin(argh)*sqrt(kqlh),
+!                                tt44 = cos(argh),
+!                                tt55 = 1.0, tt66 = 1.0
 !------- Laser Heater Undulator for SC Linac -------
 my_umhtr_k = 0.960143
 
@@ -393,13 +396,12 @@ umhtr: wiggler,
         b_max = my_umhtr_k * 2*pi*m_electron / (c_light * 0.054), 
         L = 10*0.054 ! Was: 0.506263, 
         ds_step = 0.054
-        
 umhtr[L] = umhtr[L]/2 ! Will be doubled in desplitting process. 
+        
 !--------------------------------- !,                               &
-!old: umhtr: taylor, type = "LHund", l = lhunh, tt11 = 1.0, tt12 = lhunh, tt21 = 0, tt22 = 1.0, tt33 = cos(lhunh*sqrt(kqlh)),
-!old           tt34 = r34h, tt43 = -sin(lhunh*sqrt(kqlh))*sqrt(kqlh), tt44 = cos(lhunh*sqrt(kqlh)), tt55 = 1, tt66 = 1
+!umhtr: taylor, type = "LHund", l = lhunh, tt11 = 1.0, tt12 = lhunh, tt21 = 0, tt22 = 1.0, tt33 = cos(lhunh*sqrt(kqlh)),
+!         tt34 = r34h, tt43 = -sin(lhunh*sqrt(kqlh))*sqrt(kqlh), tt44 = cos(lhunh*sqrt(kqlh)), tt55 = 1, tt66 = 1
    !R56=Lhunh/(gami^2)*(1+(K_und^2)/2)
-
 ! ==============================================================================
 ! DRIF
 ! ------------------------------------------------------------------------------
@@ -494,11 +496,13 @@ dh02a: drift, l = 0.192614-ljaw/2, type = "CSR"
 dh02b: drift, l = 0.298450-ljaw/2, type = "CSR"
 
 ! Shorten so that umhtr has an integer number of poles
-dh02c: drift, l = 0.2795065 - ( 10*0.054 - 0.506263 ) /2 , type = "CSR" !0.297036 !0.2795065
+dh02c: drift, l = 0.2795065 - ( 10*0.054 - 0.506263 ) /2 , type = "CSR" !0.297036 !0.2795065  !wig heater
+!dh02c: drift, l = 0.2795065 - ( 9*0.054 - 0.506263 ) /2 , type = "CSR" !0.297036 !0.2795065  !mat heater
 !old: dh02c: drift, l = 0.2795065+dlhun/2, type = "CSR"
 
 ! Shorten so that umhtr has an integer number of poles
-dh02d: drift, l = 0.2724707 - ( 10*0.054 - 0.506263 ) /2, type = "CSR" !0.2900002 !0.2724707
+dh02d: drift, l = 0.2724707 - ( 10*0.054 - 0.506263 ) /2, type = "CSR" !0.2900002 !0.2724707 !wig heater
+!dh02d: drift, l = 0.2724707 - ( 9*0.054 - 0.506263 ) /2, type = "CSR" !0.2900002 !0.2724707  !mat heater
 !old: dh02d: drift, l = 0.2724707+dlhun/2, type = "CSR"
 dh02e: drift, l = 0.4599998, type = "CSR"
 dh03: drift, l = zhbbo/cos(abh), type = "CSR"
@@ -762,9 +766,11 @@ endeic: marker
 
 
 !Old split line:  BUN1B_full : LINE=(BUN1B,BUN1B)
+!BUN1B_full : LINE=(BUN1B,BUN1B)
 
 bun1b_full: line = (bun1b)
 bun1b[L] = 2*bun1b[L]
+bun1b[voltage] = 2*bun1b[voltage]
 
 
 
@@ -1001,10 +1007,14 @@ sq02b[ref] = sol2b
 
 !Old split line:  UMHTR_full : LINE=(UMHTR,HTRUNDB,UMHTR)
 
-umhtr_full: line = (umhtr)
-umhtr[L] = 2*umhtr[L]
-htrundb[superimpose] = T
-htrundb[ref] = umhtr
+!matrix umhtr
+umhtr_full: line = (umhtr,htrundb,umhtr)
+
+!wiggler umhtr
+!umhtr_full: line = (umhtr)
+!umhtr[L] = 2*umhtr[L]
+!htrundb[superimpose] = T
+!htrundb[ref] = umhtr
 
   SC1B   : LINE=(XC01B,YC01B)
   SC2B   : LINE=(XC02B,YC02B)

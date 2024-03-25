@@ -1,0 +1,2092 @@
+
+! *** OPTICS=AD_ACCEL-17JAN24 ***
+
+! LCLS2sc linacs: L0, L1, L2 L3
+
+! ==============================================================================
+! Modification History
+! ------------------------------------------------------------------------------
+! 29-SEP-2023, M. Woodley
+!  * use relocated endpoints of L0B, L1B, L2B, L3B, and L4B, as MSC's and add
+!    vacuum valves there per S. Saraf
+!  * add additional vacuum components (pumps and gauges) per D. White
+! ------------------------------------------------------------------------------
+! 01-SEP-2022, M. Woodley
+!  * add MARKERs at locations of Vertical Transfer Lines (VTL) per S. Kaminski
+! ------------------------------------------------------------------------------
+! 15-JUL-2022, M. Woodley
+!  * rematch around dead QCM34
+! 11-MAY-2022, M. Woodley
+!  * prepend "cryo " to TYPE attribute for cryomodule quadrupoles per K. Luchini
+! ------------------------------------------------------------------------------
+! 09-NOV-2021, M. Woodley
+!  * set LCAV TYPE attributes to cryomodule designations
+!  * set QUAD TYPE attributes to cryomodule magnet package designations
+! 20-OCT-2021, M. Woodley
+!  * create "_full" definitions for 1.3 GHz and 3.9 GHz cavities to allow Bmad
+!    to use field maps (L= 1.3 m for 1.3 GHz; L= 1.3/3 m for 3.9 GHz)
+! ------------------------------------------------------------------------------
+! 03-MAR-2021, M. Woodley
+!  * use cryomodule designations in TYPE definitions for LCAVs, QUADs, XCORs,
+!    and YCORs (add as comments to BPMs)
+! ------------------------------------------------------------------------------
+! 16-JAN-2021, M. Woodley
+!  * new standard configuration per Y. Ding
+! ------------------------------------------------------------------------------
+! 02-NOV-2018, M. Woodley
+!  * L0 gradients and phases from 100 pC ASTRA run, per C. Mayes
+! ------------------------------------------------------------------------------
+! 01-NOV-2017, M. Woodley
+!  * change L2 phase to -20.0 degrees per P. Emma
+! ------------------------------------------------------------------------------
+! 04-NOV-2016, M. Woodley
+!  * change cryo-quadrupole effective length from 0.29 m to 0.23 m
+!  * change CM03-to-CMH1 interconnect dimensions per A. Dalesandro (FNAL)
+!  * change from gate valve flange face callouts to mating surface callouts for
+!    1.3 GHz cryomodules
+!  * add beamline flanges
+! ------------------------------------------------------------------------------
+! 06-JUN-2016, M. Woodley
+!  * move 1.3 GHz HOMs d/s 27.19 mm per Yun He (FNAL) ... maintain slot length
+! 26-MAY-2016, M. Woodley
+!  * 3.9 GHz layout update (18-May-2016) per Yun He (FNAL)
+!  * put HOMs ("Beam Line Absorbers") back at the d/s end of L0, L2, and L3 per
+!    C. Adolphsen email of 20-May-2016
+! 11-MAY-2016, M. Woodley
+!  * set L0 d/s MSC length to 1.829 m; locations of vacuum components (V*0H00)
+!    per H.Alvarez
+! 28-APR-2016, M. Woodley
+!  * post-to-cap dimensions from SD-375-000-99-R2
+! 22-APR-2016, M. Woodley
+!  * add 1.1 mm to CM03-CMH1 interconnect
+!  * add 3.47 mm to CMH1-CMH2 interconnect
+!  * 3.9 GHz CM cold dimensions per Y. He (20-Apr-2016)
+! 28-MAR-2016, M. Woodley
+!  * add end cap and feed cap MARKers
+! ------------------------------------------------------------------------------
+! 14-MAR-2016, M. Woodley
+!  * 3.9 GHz layout update per Yun He (FNAL)
+! 02-FEB-2016, M. Woodley
+!  * new 1.3 GHz layout per T. Peterson/J. Kaluzny (FNAL) [19-Nov-2015]
+!  * new 3.9 GHz layout per T. Peterson (FNAL) [02-Dec-2015]
+!  * feed cap, end cap, and stay-clear dimensions from drawing SD-375-000-99-R1
+!  * remove last HOM in each linac section (L0/L1/L2/L3)
+!  * adjust Differential Pumping Stay-Clears to restore locations of
+!    LH/BC1/BC2/dogleg
+!  * split 1.3 GHz cavity #5's to insert MARKer for center post
+!  * remove BPM1C00/RFB1C00 (now that there are BPMs in the 3.9 GHz cryomodules)
+! 01-FEB-2016, M. Woodley
+!  * new 100 pC input beams from J. Qiang/C. Mitchell
+! 01-NOV-2015, M. Woodley
+!  * new 100 pC input beam from F. Zhou (Twiss from P. Emma)
+! ------------------------------------------------------------------------------
+! 01-OCT-2015, M. Woodley
+!  * add vacuum components and fixed-aperture collimator in L0 downstream
+!    mechanical-stay-clear space
+!  * fix negative D2C00a drift length error by shortening DPSC2D drift
+!  * add BEAM0 MARKer
+! ------------------------------------------------------------------------------
+! 19-JUN-2015, M. Woodley
+!  * lengthen special L0 u/s end cap, per H.Alvarez ... moves gun u/s
+!  * move ASTRA point to dZ=15.0 m from gun (temporarily)
+!  * use QCM01 for matching
+!  * undefer BPM1C00
+! ------------------------------------------------------------------------------
+! 20-MAR-2015, M. Woodley
+!  * add APER definition for cryo-quads
+! ------------------------------------------------------------------------------
+! 12-DEC-2014, M. Woodley
+!  * new FNAL 1.3 GHz cryomodule layout (F10010875) per M. Carrasco
+!  * new end cap and mechanical stay-clear dimensions per H. Alvarez
+!  * because mechanical stay-clear spaces got ~0.5 m longer, shorten
+!    differential pumping spaces from 3.0 m to ~2.5 m to keep cryomodules in
+!    previous Z-locations (checked with D. Gill)
+!  * keep previous L3 vacuum break length (not designed yet)
+!  * replace RFB1C00 (defer=2) with BPM1C00 (defer=0)
+! ------------------------------------------------------------------------------
+! 15-OCT-2014, M. Woodley
+!  * new FNAL 3.9 GHz cryomodule layout (F10014857) via M. Carrasco ... assume
+!    save interconnect and d/s end cap dimensions as 1.3 GHz cryomodule
+!  * add 3.0 m differential pumping stay-clear after L0
+!  * add RFB0H00 between L0 mechanical stay-clear and differential pumping
+!    stay-clear
+!  * adjust deferment/deprecation levels
+! ------------------------------------------------------------------------------
+! 07-AUG-2014, M. Woodley
+!  * new cryomodule layout per FNAL folks via H. Alvarez
+!  * L1 phase advance per FODO cell lowered to 45 degrees
+!  * cryomodule BPMs will be button-type ... rename RFB* -> BPM*
+!  * shorten 3.9 GHz CMs and remove QUAD/BPM/corrector packages
+! ------------------------------------------------------------------------------
+! 25-APR-2014, M. Woodley
+!  * new cryomodule layout per FNAL folks via H. Alvarez
+!  * add HOM absorber MARKERs (HOMCM*)
+! ------------------------------------------------------------------------------
+! 27-MAR-2014, M. Woodley
+!  * all cryomodules now have standard Q/XC/YC/BPM package
+!  * remove COUPLER MARKer points
+!  * add CM34/CM35 energy feedback phase "kink"
+!  * element names changed to conform to nomenclature PRD
+! ------------------------------------------------------------------------------
+! 19-FEB-2014, M. Woodley
+!  * updated cryomodule layout
+!  * 3.9 GHz linearizer is now 2 standard cryostats with 8 cavities each
+! ------------------------------------------------------------------------------
+! 07-JAN-2014, M. Woodley
+!    Energy profile (CM01 amplitudes and phases) per P. Emma (20-DEC-2013)
+! ------------------------------------------------------------------------------
+! 30-OCT-2013, M. Woodley
+!    LCLS2sc v1.2
+! ------------------------------------------------------------------------------
+
+! ==============================================================================
+! LCAV
+! ------------------------------------------------------------------------------
+! CM01 (L0), CM02 (L1), and CM03 (L1) cavities have individual power sources
+! ------------------------------------------------------------------------------
+
+  Lambda := CLIGHT/1.3E+09 !1.3 GHz wavelength
+
+  LcavL := 9*Lambda/2 !1.3 GHz cavity active length
+  LcavR := 70e-3/2    !1.3 GHz cavity iris radius
+  CcavL := LcavL/3    !3.9 GHz cavity active length
+  CcavR := 30e-3/2    !3.9 GHz cavity iris radius
+
+  Lcav52cp := 0.14035          !cavity #5 center to support post
+  LcavLa   := LcavL/2+Lcav52cp !cavity #5 length u/s of support post
+  LcavLb   := LcavL-LcavLa     !cavity #5 length d/s of support post
+
+  Ccav22cp := 0.11262          !support post to cavity #2 center
+  CcavLa   := CcavL/2-Ccav22cp !cavity #2 length u/s of support post
+  CcavLb   := CcavL-CcavLa     !cavity #2 length d/s of support post
+  
+  FracL0 := 0.528534685179 !Ei=90 MeV
+  AmplL1 := 231.0 !MV
+  FracL1 := 1.047533331879 !E1=250 MeV
+  GradL1 := FracL1*AmplL1/(2*8*LcavL) !MV/m (2 8-cavity CM's)
+  PhasL1 := -24.9 !degrees
+  AHcav  := 60.0 !MV
+  GHcav  := AHcav/(2*8*CcavL) !MV/m (2 8-cavity CM's)
+  PHcav  := -172.5 !degrees
+  AmplL2 := 1479.0 !MV
+  FracL2 := 0.999886211881 !E2=1.500 GeV
+  GradL2 := FracL2*AmplL2/(12*8*LcavL) !MV/m (12 8-cavity CM's)
+  PhasL2 := -32.3 !degrees
+  AmplL3 := 2500.0 !MV
+  FracL3 := 1.0 !Ef=4.000 GeV
+  GradL3 := FracL3*AmplL3/(20*8*LcavL) !MV/m (20 8-cavity CM's)
+  PhasL3 := 0.0
+
+ !VALUE, 100*(1-FracL1),100*(1-FracL2),100*(1-FracL3)
+
+! Cavity gradients (MV/m)
+
+  G011 :=  6.32
+  G012 :=  1.58
+  G013 :=  9.47
+  G014 :=  3.68*FracL0
+  G015 := 16.6
+  G016 := 16.6
+  G017 := 16.6
+  G018 := 16.6
+  
+! Cavity phases (deg)
+
+  P011 :=  -2
+  P012 := -20 
+  P013 :=  +3
+  P014 := -10
+  P015 :=   0
+  P016 :=   0
+  P017 :=  +1.25
+  P018 :=   6
+
+  CAVL011  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-19", &
+                   DELTAE=G011*LcavL, PHI0=P011/360
+  CAVL012  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-19", &
+                   DELTAE=G012*LcavL, PHI0=P012/360
+  CAVL013  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-19", &
+                   DELTAE=G013*LcavL, PHI0=P013/360
+  CAVL014  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-19", &
+                   DELTAE=G014*LcavL, PHI0=P014/360
+  CAVL015a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="F1.3-19", &
+                   DELTAE=G015*LcavLa, PHI0=P015/360
+  CAVL015b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="F1.3-19", &
+                   DELTAE=G015*LcavLb, PHI0=P015/360
+  CAVL016  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-19", &
+                   DELTAE=G016*LcavL, PHI0=P016/360
+  CAVL017  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-19", &
+                   DELTAE=G017*LcavL, PHI0=P017/360
+  CAVL018  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-19", &
+                   DELTAE=G018*LcavL, PHI0=P018/360
+
+! L1
+
+  G021 := GradL1 ; P021 := PhasL1
+  G022 := GradL1 ; P022 := PhasL1
+  G023 := GradL1 ; P023 := PhasL1
+  G024 := GradL1 ; P024 := PhasL1
+  G025 := GradL1 ; P025 := PhasL1
+  G026 := GradL1 ; P026 := PhasL1
+  G027 := GradL1 ; P027 := PhasL1
+  G028 := GradL1 ; P028 := PhasL1
+
+  CAVL021  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-21", &
+                   DELTAE=G021*LcavL, PHI0=P021/360
+  CAVL022  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-21", &
+                   DELTAE=G022*LcavL, PHI0=P022/360
+  CAVL023  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-21", &
+                   DELTAE=G023*LcavL, PHI0=P023/360
+  CAVL024  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-21", &
+                   DELTAE=G024*LcavL, PHI0=P024/360
+  CAVL025a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="J1.3-21", &
+                   DELTAE=G025*LcavLa, PHI0=P025/360
+  CAVL025b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="J1.3-21", &
+                   DELTAE=G025*LcavLb, PHI0=P025/360
+  CAVL026  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-21", &
+                   DELTAE=G026*LcavL, PHI0=P026/360
+  CAVL027  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-21", &
+                   DELTAE=G027*LcavL, PHI0=P027/360
+  CAVL028  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-21", &
+                   DELTAE=G028*LcavL, PHI0=P028/360
+
+  G031 := GradL1 ; P031 := PhasL1
+  G032 := GradL1 ; P032 := PhasL1
+  G033 := GradL1 ; P033 := PhasL1
+  G034 := GradL1 ; P034 := PhasL1
+  G035 := GradL1 ; P035 := PhasL1
+  G036 := GradL1 ; P036 := PhasL1
+  G037 := GradL1 ; P037 := PhasL1
+  G038 := GradL1 ; P038 := PhasL1
+
+  CAVL031  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-20", &
+                   DELTAE=G031*LcavL, PHI0=P031/360
+  CAVL032  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-20", &
+                   DELTAE=G032*LcavL, PHI0=P032/360
+  CAVL033  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-20", &
+                   DELTAE=G033*LcavL, PHI0=P033/360
+  CAVL034  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-20", &
+                   DELTAE=G034*LcavL, PHI0=P034/360
+  CAVL035a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="J1.3-20", &
+                   DELTAE=G035*LcavLa, PHI0=P035/360
+  CAVL035b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="J1.3-20", &
+                   DELTAE=G035*LcavLb, PHI0=P035/360
+  CAVL036  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-20", &
+                   DELTAE=G036*LcavL, PHI0=P036/360
+  CAVL037  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-20", &
+                   DELTAE=G037*LcavL, PHI0=P037/360
+  CAVL038  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-20", &
+                   DELTAE=G038*LcavL, PHI0=P038/360
+
+! 3rd harmonic linearizer
+
+  CAVC011  : LCAV, SWAVE=T, FREQ=3900, L=CcavL, APER=CcavR, TYPE="F3.9-01", &
+                   DELTAE=GHcav*CcavL, PHI0=PHcav/360
+  CAVC012a : LCAV, SWAVE=T, FREQ=3900, L=CcavLa, APER=CcavR, TYPE="F3.9-01", &
+                   DELTAE=GHcav*CcavLa, PHI0=PHcav/360
+  CAVC012b : LCAV, SWAVE=T, FREQ=3900, L=CcavLb, APER=CcavR, TYPE="F3.9-01", &
+                   DELTAE=GHcav*CcavLb, PHI0=PHcav/360
+  CAVC013  : LCAV, SWAVE=T, FREQ=3900, L=CcavL, APER=CcavR, TYPE="F3.9-01", &
+                   DELTAE=GHcav*CcavL, PHI0=PHcav/360
+  CAVC014  : LCAV, SWAVE=T, FREQ=3900, L=CcavL, APER=CcavR, TYPE="F3.9-01", &
+                   DELTAE=GHcav*CcavL, PHI0=PHcav/360
+  CAVC015  : LCAV, SWAVE=T, FREQ=3900, L=CcavL, APER=CcavR, TYPE="F3.9-01", &
+                   DELTAE=GHcav*CcavL, PHI0=PHcav/360
+  CAVC016  : LCAV, SWAVE=T, FREQ=3900, L=CcavL, APER=CcavR, TYPE="F3.9-01", &
+                   DELTAE=GHcav*CcavL, PHI0=PHcav/360
+  CAVC017  : LCAV, SWAVE=T, FREQ=3900, L=CcavL, APER=CcavR, TYPE="F3.9-01", &
+                   DELTAE=GHcav*CcavL, PHI0=PHcav/360
+  CAVC018  : LCAV, SWAVE=T, FREQ=3900, L=CcavL, APER=CcavR, TYPE="F3.9-01", &
+                   DELTAE=GHcav*CcavL, PHI0=PHcav/360
+
+  CAVC021  : LCAV, SWAVE=T, FREQ=3900, L=CcavL, APER=CcavR, TYPE="F3.9-02", &
+                   DELTAE=GHcav*CcavL, PHI0=PHcav/360
+  CAVC022a : LCAV, SWAVE=T, FREQ=3900, L=CcavLa, APER=CcavR, TYPE="F3.9-02", &
+                   DELTAE=GHcav*CcavLa, PHI0=PHcav/360
+  CAVC022b : LCAV, SWAVE=T, FREQ=3900, L=CcavLb, APER=CcavR, TYPE="F3.9-02", &
+                   DELTAE=GHcav*CcavLb, PHI0=PHcav/360
+  CAVC023  : LCAV, SWAVE=T, FREQ=3900, L=CcavL, APER=CcavR, TYPE="F3.9-02", &
+                   DELTAE=GHcav*CcavL, PHI0=PHcav/360
+  CAVC024  : LCAV, SWAVE=T, FREQ=3900, L=CcavL, APER=CcavR, TYPE="F3.9-02", &
+                   DELTAE=GHcav*CcavL, PHI0=PHcav/360
+  CAVC025  : LCAV, SWAVE=T, FREQ=3900, L=CcavL, APER=CcavR, TYPE="F3.9-02", &
+                   DELTAE=GHcav*CcavL, PHI0=PHcav/360
+  CAVC026  : LCAV, SWAVE=T, FREQ=3900, L=CcavL, APER=CcavR, TYPE="F3.9-02", &
+                   DELTAE=GHcav*CcavL, PHI0=PHcav/360
+  CAVC027  : LCAV, SWAVE=T, FREQ=3900, L=CcavL, APER=CcavR, TYPE="F3.9-02", &
+                   DELTAE=GHcav*CcavL, PHI0=PHcav/360
+  CAVC028  : LCAV, SWAVE=T, FREQ=3900, L=CcavL, APER=CcavR, TYPE="F3.9-02", &
+                   DELTAE=GHcav*CcavL, PHI0=PHcav/360
+
+! L2
+
+  CAVL041  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-07", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL042  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-07", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL043  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-07", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL044  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-07", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL045a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="F1.3-07", &
+                   DELTAE=GradL2*LcavLa, PHI0=PhasL2/360
+  CAVL045b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="F1.3-07", &
+                   DELTAE=GradL2*LcavLb, PHI0=PhasL2/360
+  CAVL046  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-07", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL047  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-07", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL048  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-07", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+
+  CAVL051  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-04", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL052  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-04", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL053  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-04", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL054  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-04", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL055a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="J1.3-04", &
+                   DELTAE=GradL2*LcavLa, PHI0=PhasL2/360
+  CAVL055b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="J1.3-04", &
+                   DELTAE=GradL2*LcavLb, PHI0=PhasL2/360
+  CAVL056  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-04", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL057  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-04", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL058  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-04", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+
+  CAVL061  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-08", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL062  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-08", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL063  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-08", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL064  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-08", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL065a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="F1.3-08", &
+                   DELTAE=GradL2*LcavLa, PHI0=PhasL2/360
+  CAVL065b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="F1.3-08", &
+                   DELTAE=GradL2*LcavLb, PHI0=PhasL2/360
+  CAVL066  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-08", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL067  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-08", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL068  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-08", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+
+  CAVL071  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-10", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL072  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-10", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL073  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-10", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL074  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-10", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL075a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="J1.3-10", &
+                   DELTAE=GradL2*LcavLa, PHI0=PhasL2/360
+  CAVL075b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="J1.3-10", &
+                   DELTAE=GradL2*LcavLb, PHI0=PhasL2/360
+  CAVL076  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-10", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL077  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-10", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL078  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-10", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+
+  CAVL081  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-04", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL082  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-04", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL083  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-04", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL084  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-04", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL085a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="F1.3-04", &
+                   DELTAE=GradL2*LcavLa, PHI0=PhasL2/360
+  CAVL085b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="F1.3-04", &
+                   DELTAE=GradL2*LcavLb, PHI0=PhasL2/360
+  CAVL086  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-04", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL087  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-04", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL088  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-04", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+
+  CAVL091  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-08", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL092  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-08", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL093  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-08", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL094  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-08", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL095a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="J1.3-08", &
+                   DELTAE=GradL2*LcavLa, PHI0=PhasL2/360
+  CAVL095b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="J1.3-08", &
+                   DELTAE=GradL2*LcavLb, PHI0=PhasL2/360
+  CAVL096  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-08", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL097  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-08", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL098  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-08", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+
+  CAVL101  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-10", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL102  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-10", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL103  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-10", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL104  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-10", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL105a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="F1.3-10", &
+                   DELTAE=GradL2*LcavLa, PHI0=PhasL2/360
+  CAVL105b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="F1.3-10", &
+                   DELTAE=GradL2*LcavLb, PHI0=PhasL2/360
+  CAVL106  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-10", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL107  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-10", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL108  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-10", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+
+  CAVL111  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-09", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL112  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-09", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL113  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-09", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL114  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-09", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL115a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="F1.3-09", &
+                   DELTAE=GradL2*LcavLa, PHI0=PhasL2/360
+  CAVL115b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="F1.3-09", &
+                   DELTAE=GradL2*LcavLb, PHI0=PhasL2/360
+  CAVL116  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-09", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL117  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-09", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL118  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-09", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+
+  CAVL121  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-13", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL122  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-13", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL123  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-13", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL124  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-13", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL125a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="J1.3-13", &
+                   DELTAE=GradL2*LcavLa, PHI0=PhasL2/360
+  CAVL125b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="J1.3-13", &
+                   DELTAE=GradL2*LcavLb, PHI0=PhasL2/360
+  CAVL126  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-13", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL127  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-13", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL128  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-13", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+
+  CAVL131  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-11", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL132  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-11", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL133  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-11", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL134  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-11", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL135a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="F1.3-11", &
+                   DELTAE=GradL2*LcavLa, PHI0=PhasL2/360
+  CAVL135b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="F1.3-11", &
+                   DELTAE=GradL2*LcavLb, PHI0=PhasL2/360
+  CAVL136  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-11", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL137  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-11", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL138  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-11", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+
+  CAVL141  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-14", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL142  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-14", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL143  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-14", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL144  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-14", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL145a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="J1.3-14", &
+                   DELTAE=GradL2*LcavLa, PHI0=PhasL2/360
+  CAVL145b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="J1.3-14", &
+                   DELTAE=GradL2*LcavLb, PHI0=PhasL2/360
+  CAVL146  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-14", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL147  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-14", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL148  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-14", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+
+  CAVL151  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-01", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL152  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-01", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL153  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-01", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL154  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-01", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL155a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="F1.3-01", &
+                   DELTAE=GradL2*LcavLa, PHI0=PhasL2/360
+  CAVL155b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="F1.3-01", &
+                   DELTAE=GradL2*LcavLb, PHI0=PhasL2/360
+  CAVL156  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-01", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL157  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-01", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL158  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-01", &
+                   DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+
+! L3
+
+  CAVL161  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-13", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL162  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-13", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL163  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-13", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL164  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-13", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL165a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="F1.3-13", &
+                   DELTAE=GradL3*LcavLa, PHI0=PhasL3/360
+  CAVL165b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="F1.3-13", &
+                   DELTAE=GradL3*LcavLb, PHI0=PhasL3/360
+  CAVL166  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-13", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL167  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-13", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL168  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-13", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+
+  CAVL171  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-12", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL172  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-12", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL173  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-12", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL174  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-12", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL175a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="J1.3-12", &
+                   DELTAE=GradL3*LcavLa, PHI0=PhasL3/360
+  CAVL175b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="J1.3-12", &
+                   DELTAE=GradL3*LcavLb, PHI0=PhasL3/360
+  CAVL176  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-12", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL177  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-12", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL178  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-12", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+
+  CAVL181  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-06", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL182  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-06", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL183  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-06", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL184  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-06", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL185a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="J1.3-06", &
+                   DELTAE=GradL3*LcavLa, PHI0=PhasL3/360
+  CAVL185b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="J1.3-06", &
+                   DELTAE=GradL3*LcavLb, PHI0=PhasL3/360
+  CAVL186  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-06", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL187  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-06", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL188  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-06", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+
+  CAVL191  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-17", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL192  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-17", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL193  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-17", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL194  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-17", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL195a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="F1.3-17", &
+                   DELTAE=GradL3*LcavLa, PHI0=PhasL3/360
+  CAVL195b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="F1.3-17", &
+                   DELTAE=GradL3*LcavLb, PHI0=PhasL3/360
+  CAVL196  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-17", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL197  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-17", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL198  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-17", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+
+  CAVL201  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-18", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL202  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-18", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL203  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-18", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL204  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-18", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL205a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="F1.3-18", &
+                   DELTAE=GradL3*LcavLa, PHI0=PhasL3/360
+  CAVL205b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="F1.3-18", &
+                   DELTAE=GradL3*LcavLb, PHI0=PhasL3/360
+  CAVL206  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-18", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL207  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-18", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL208  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-18", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+
+  CAVL211  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-15", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL212  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-15", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL213  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-15", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL214  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-15", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL215a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="J1.3-15", &
+                   DELTAE=GradL3*LcavLa, PHI0=PhasL3/360
+  CAVL215b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="J1.3-15", &
+                   DELTAE=GradL3*LcavLb, PHI0=PhasL3/360
+  CAVL216  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-15", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL217  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-15", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL218  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-15", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+
+  CAVL221  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-14", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL222  : LCAV, SWAVE=T, FREQ=1300, L=LcavL,APER=LcavR, TYPE="F1.3-14", & 
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL223  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-14", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL224  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-14", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL225a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="F1.3-14", &
+                   DELTAE=GradL3*LcavLa, PHI0=PhasL3/360
+  CAVL225b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="F1.3-14", &
+                   DELTAE=GradL3*LcavLb, PHI0=PhasL3/360
+  CAVL226  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-14", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL227  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-14", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL228  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-14", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+
+  CAVL231  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-15", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL232  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-15", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL233  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-15", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL234  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-15", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL235a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="F1.3-15", &
+                   DELTAE=GradL3*LcavLa, PHI0=PhasL3/360
+  CAVL235b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="F1.3-15", &
+                   DELTAE=GradL3*LcavLb, PHI0=PhasL3/360
+  CAVL236  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-15", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL237  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-15", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL238  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-15", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+
+  CAVL241  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-16", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL242  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-16", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL243  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-16", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL244  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-16", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL245a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="F1.3-16", &
+                   DELTAE=GradL3*LcavLa, PHI0=PhasL3/360
+  CAVL245b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="F1.3-16", &
+                   DELTAE=GradL3*LcavLb, PHI0=PhasL3/360
+  CAVL246  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-16", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL247  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-16", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL248  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-16", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+
+  CAVL251  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-17", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL252  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-17", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL253  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-17", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL254  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-17", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL255a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="J1.3-17", &
+                   DELTAE=GradL3*LcavLa, PHI0=PhasL3/360
+  CAVL255b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="J1.3-17", &
+                   DELTAE=GradL3*LcavLb, PHI0=PhasL3/360
+  CAVL256  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-17", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL257  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-17", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL258  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-17", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+
+  CAVL261  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-01", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL262  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-01", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL263  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-01", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL264  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-01", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL265a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="J1.3-01", &
+                   DELTAE=GradL3*LcavLa, PHI0=PhasL3/360
+  CAVL265b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="J1.3-01", &
+                   DELTAE=GradL3*LcavLb, PHI0=PhasL3/360
+  CAVL266  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-01", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL267  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-01", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL268  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-01", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+
+  CAVL271  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-02", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL272  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-02", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL273  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-02", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL274  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-02", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL275a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="F1.3-02", &
+                   DELTAE=GradL3*LcavLa, PHI0=PhasL3/360
+  CAVL275b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="F1.3-02", &
+                   DELTAE=GradL3*LcavLb, PHI0=PhasL3/360
+  CAVL276  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-02", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL277  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-02", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL278  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-02", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+
+  CAVL281  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-03", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL282  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-03", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL283  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-03", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL284  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-03", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL285a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="J1.3-03", &
+                   DELTAE=GradL3*LcavLa, PHI0=PhasL3/360
+  CAVL285b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="J1.3-03", &
+                   DELTAE=GradL3*LcavLb, PHI0=PhasL3/360
+  CAVL286  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-03", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL287  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-03", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL288  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-03", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+
+  CAVL291  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-18", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL292  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-18", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL293  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-18", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL294  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-18", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL295a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="J1.3-18", &
+                   DELTAE=GradL3*LcavLa, PHI0=PhasL3/360
+  CAVL295b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="J1.3-18", &
+                   DELTAE=GradL3*LcavLb, PHI0=PhasL3/360
+  CAVL296  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-18", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL297  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-18", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL298  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-18", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+
+  CAVL301  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-16", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL302  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-16", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL303  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-16", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL304  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-16", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL305a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="J1.3-16", &
+                   DELTAE=GradL3*LcavLa, PHI0=PhasL3/360
+  CAVL305b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="J1.3-16", &
+                   DELTAE=GradL3*LcavLb, PHI0=PhasL3/360
+  CAVL306  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-16", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL307  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-16", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL308  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-16", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+
+  CAVL311  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-19", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL312  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-19", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL313  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-19", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL314  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-19", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL315a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="J1.3-19", &
+                   DELTAE=GradL3*LcavLa, PHI0=PhasL3/360
+  CAVL315b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="J1.3-19", &
+                   DELTAE=GradL3*LcavLb, PHI0=PhasL3/360
+  CAVL316  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-19", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL317  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-19", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL318  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-19", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+
+  CAVL321  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-03", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL322  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-03", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL323  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-03", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL324  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-03", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL325a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="F1.3-03", &
+                   DELTAE=GradL3*LcavLa, PHI0=PhasL3/360
+  CAVL325b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="F1.3-03", &
+                   DELTAE=GradL3*LcavLb, PHI0=PhasL3/360
+  CAVL326  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-03", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL327  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-03", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL328  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-03", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+
+  CAVL331  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-05", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL332  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-05", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL333  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-05", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL334  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-05", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL335a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="J1.3-05", &
+                   DELTAE=GradL3*LcavLa, PHI0=PhasL3/360
+  CAVL335b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="J1.3-05", &
+                   DELTAE=GradL3*LcavLb, PHI0=PhasL3/360
+  CAVL336  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-05", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL337  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-05", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL338  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-05", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+
+  CAVL341  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-09", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL342  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-09", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL343  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-09", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL344  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-09", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL345a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="J1.3-09", &
+                   DELTAE=GradL3*LcavLa, PHI0=PhasL3/360
+  CAVL345b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="J1.3-09", &
+                   DELTAE=GradL3*LcavLb, PHI0=PhasL3/360
+  CAVL346  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-09", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL347  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-09", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL348  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-09", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+
+  CAVL351  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-07", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL352  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-07", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL353  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-07", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL354  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-07", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL355a : LCAV, SWAVE=T, FREQ=1300, L=LcavLa, APER=LcavR, TYPE="J1.3-07", &
+                   DELTAE=GradL3*LcavLa, PHI0=PhasL3/360
+  CAVL355b : LCAV, SWAVE=T, FREQ=1300, L=LcavLb, APER=LcavR, TYPE="J1.3-07", &
+                   DELTAE=GradL3*LcavLb, PHI0=PhasL3/360
+  CAVL356  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-07", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL357  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-07", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL358  : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-07", &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+
+! define unsplit LCAVs for BMAD ... not used by MAD
+
+  CAVL015 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-19", &
+                  DELTAE=G015*LcavL, PHI0=P015/360
+  CAVL025 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-21", &
+                  DELTAE=G025*LcavL, PHI0=P025/360
+  CAVL035 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-20", &
+                  DELTAE=G035*LcavL, PHI0=P035/360
+  CAVC012 : LCAV, SWAVE=T, FREQ=3900, L=CcavL, APER=CcavR, TYPE="F3.9-01", &
+                  DELTAE=GHcav*CcavL, PHI0=PHcav/360
+  CAVC022 : LCAV, SWAVE=T, FREQ=3900, L=CcavL, APER=CcavR, TYPE="F3.9-02", &
+                  DELTAE=GHcav*CcavL, PHI0=PHcav/360
+  CAVL045 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-07", &
+                  DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL055 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-04", &
+                  DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL065 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-08", &
+                  DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL075 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-10", &
+                  DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL085 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-04", & 
+                  DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL095 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-08", &
+                  DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL105 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-10", &
+                  DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL115 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-09", &
+                  DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL125 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-13", &
+                  DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL135 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-11", &
+                  DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL145 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-14", &
+                  DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL155 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-01", &
+                  DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+  CAVL165 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-13", &
+                  DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL175 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-12", &
+                  DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL185 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-06", &
+                  DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL195 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-17", &
+                  DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL205 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-18", &
+                  DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL215 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-15", &
+                  DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL225 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-14", &
+                  DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL235 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-15", &
+                  DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL245 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-16", &
+                  DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL255 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-17", &
+                  DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL265 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-01", &
+                  DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL275 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-02", &
+                  DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL285 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-03", &
+                  DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL295 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-18", &
+                  DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL305 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-16", &
+                  DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL315 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-19", &
+                  DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL325 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="F1.3-03", &
+                  DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL335 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-05", &
+                  DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL345 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-09", &
+                  DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+  CAVL355 : LCAV, SWAVE=T, FREQ=1300, L=LcavL, APER=LcavR, TYPE="J1.3-07", &
+                  DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+
+! ==============================================================================
+! QUAD
+! ------------------------------------------------------------------------------
+
+  Lcmq := 0.23     !cryomodule quadrupole length
+  Rcmq := 0.0762/2 !cryomodule quadrupole pole-tip radius
+
+  KQCMfodo1 := 0.274030631043 !L1: 45 degrees/cell
+  KQCMfodo2 := 0.185334132537 !L2: 30 degrees/cell
+  KQCMfodo3 := 0.185334132537 !L3: 30 degrees/cell
+
+! L0
+
+  KQCM01 := 0
+
+  QCM01 : QUAD, TYPE="cryo SPQA127", L=Lcmq/2, APER=Rcmq, K1= KQCM01
+
+! L1
+
+  QCM02 : QUAD, TYPE="cryo SPQA135", L=Lcmq/2, APER=Rcmq, K1=-0.371162474724 !-KQCMfodo1
+  QCM03 : QUAD, TYPE="cryo SPQA136", L=Lcmq/2, APER=Rcmq, K1= 0.183260435518 ! KQCMfodo1
+
+! L2
+
+  QCM04 : QUAD, TYPE="cryo SPQA109", L=Lcmq/2, APER=Rcmq, K1=-0.330747112683 !-KQCMfodo2
+  QCM05 : QUAD, TYPE="cryo SPQA104", L=Lcmq/2, APER=Rcmq, K1= 0.293388114729 ! KQCMfodo2
+  QCM06 : QUAD, TYPE="cryo SPQA111", L=Lcmq/2, APER=Rcmq, K1=-0.190564659042 !-KQCMfodo2
+  QCM07 : QUAD, TYPE="cryo SPQA116", L=Lcmq/2, APER=Rcmq, K1= 0.169191310238 ! KQCMfodo2
+  QCM08 : QUAD, TYPE="cryo SPQA103", L=Lcmq/2, APER=Rcmq, K1=-0.167359918779 !-KQCMfodo2
+  QCM09 : QUAD, TYPE="cryo SPQA108", L=Lcmq/2, APER=Rcmq, K1= 0.169257413289 ! KQCMfodo2
+  QCM10 : QUAD, TYPE="cryo SPQA113", L=Lcmq/2, APER=Rcmq, K1=-0.169474391715 !-KQCMfodo2
+  QCM11 : QUAD, TYPE="cryo SPQA101", L=Lcmq/2, APER=Rcmq, K1= 0.171565981378 ! KQCMfodo2
+  QCM12 : QUAD, TYPE="cryo SPQA122", L=Lcmq/2, APER=Rcmq, K1=-0.179445853272 !-KQCMfodo2
+  QCM13 : QUAD, TYPE="cryo SPQA115", L=Lcmq/2, APER=Rcmq, K1= 0.062984592201 ! KQCMfodo2
+  QCM14 : QUAD, TYPE="cryo SPQA126", L=Lcmq/2, APER=Rcmq, K1=-0.176070484188 !-KQCMfodo2
+  QCM15 : QUAD, TYPE="cryo SPQA001", L=Lcmq/2, APER=Rcmq, K1= 0.065546232559 ! KQCMfodo2
+
+! L3
+
+  QCM16 : QUAD, TYPE="cryo SPQA117", L=Lcmq/2, APER=Rcmq, K1=-0.316776093965 !-KQCMfodo3
+  QCM17 : QUAD, TYPE="cryo SPQA120", L=Lcmq/2, APER=Rcmq, K1= 0.258334301148 ! KQCMfodo3
+  QCM18 : QUAD, TYPE="cryo SPQA132", L=Lcmq/2, APER=Rcmq, K1=-0.209121652539 !-KQCMfodo3
+  QCM19 : QUAD, TYPE="cryo SPQA130", L=Lcmq/2, APER=Rcmq, K1= 0.191637061169 ! KQCMfodo3
+  QCM20 : QUAD, TYPE="cryo SPQA125", L=Lcmq/2, APER=Rcmq, K1=-0.186184207943 !-KQCMfodo3
+  QCM21 : QUAD, TYPE="cryo SPQA124", L=Lcmq/2, APER=Rcmq, K1= KQCMfodo3
+  QCM22 : QUAD, TYPE="cryo SPQA119", L=Lcmq/2, APER=Rcmq, K1=-KQCMfodo3
+  QCM23 : QUAD, TYPE="cryo SPQA121", L=Lcmq/2, APER=Rcmq, K1= KQCMfodo3
+  QCM24 : QUAD, TYPE="cryo SPQA123", L=Lcmq/2, APER=Rcmq, K1=-0.189977001339 !-KQCMfodo3
+  QCM25 : QUAD, TYPE="cryo SPQA114", L=Lcmq/2, APER=Rcmq, K1= 0.181134456355 ! KQCMfodo3
+  QCM26 : QUAD, TYPE="cryo SPQA002", L=Lcmq/2, APER=Rcmq, K1=-0.181273931155 !-KQCMfodo3
+  QCM27 : QUAD, TYPE="cryo SPQA003", L=Lcmq/2, APER=Rcmq, K1= 0.190442117617 ! KQCMfodo3
+  QCM28 : QUAD, TYPE="cryo SPQA102", L=Lcmq/2, APER=Rcmq, K1=-KQCMfodo3
+  QCM29 : QUAD, TYPE="cryo SPQA134", L=Lcmq/2, APER=Rcmq, K1= 0.187339100679 ! KQCMfodo3
+  QCM30 : QUAD, TYPE="cryo SPQA128", L=Lcmq/2, APER=Rcmq, K1=-0.193079060624 !-KQCMfodo3
+  QCM31 : QUAD, TYPE="cryo SPQA133", L=Lcmq/2, APER=Rcmq, K1= 0.206509055212 ! KQCMfodo3
+  QCM32 : QUAD, TYPE="cryo SPQA129", L=Lcmq/2, APER=Rcmq, K1=-0.242974005492 !-KQCMfodo3
+  QCM33 : QUAD, TYPE="cryo SPQA106", L=Lcmq/2, APER=Rcmq, K1= 0.218130495608 ! KQCMfodo3
+  QCM34 : QUAD, TYPE="cryo SPQA118", L=Lcmq/2, APER=Rcmq, K1= 0.0            !-KQCMfodo3
+  QCM35 : QUAD, TYPE="cryo SPQA110", L=Lcmq/2, APER=Rcmq, K1=-0.255764909225 ! KQCMfodo3
+
+! ==============================================================================
+! DRIF
+! ------------------------------------------------------------------------------
+
+! ------------------------------------------------------------------------------
+! 1.3 GHz cryomodule
+! ------------------------------------------------------------------------------
+
+! from Joshua Kaluzny spreadsheet (2015_11_19)
+
+  Lgv2cav   := 0.79731 !u/s gate valve to cavity #1    !0.79981
+  Lcav2cav  := 1.38360 !intra-CM cavity to cavity
+  Lcav2bpm  := 0.81139 !cavity #8 to BPM
+  Lbpm2quad := 0.26444 !BPM to quadrupole
+  Lquad2gv  := 0.35186 !quadrupole to d/s gate valve   !0.35436
+  Lgv2hom   := 0.16577 !d/s gate valve to HOM absorber !0.16327
+  Lhom2gv   := 0.14442 !HOM absorber to u/s gate valve !0.14192
+
+! derived dimensions
+
+  Lcav2quad := Lcav2bpm+Lbpm2quad     !cavity #8 quadrupole
+  Lcav2gv   := Lcav2quad+Lquad2gv     !cavity #8 to d/s gate valve
+  Lcav2hom  := Lcav2gv+Lgv2hom        !cavity #8 to HOM absorber
+  Lgv2gv    := Lgv2hom+Lhom2gv        !d/s gate valve to u/s gate valve
+  Lcm2cm    := Lcav2gv+Lgv2gv+Lgv2cav !inter-CM cavity-to-cavity
+
+! for Bmad field maps (1.3 GHz field map length is 1.3 m per C. Mayes)
+
+  Lcavmap := (1.3-LcavL)/2 !m
+  
+! cryomodule drifts
+
+  DCAVMAP : DRIF, L=Lcavmap
+  DCM1    : DRIF, L=Lgv2cav-(Lcavmap+LcavL/2)
+  DCM2    : DRIF, L=Lcav2cav-(Lcavmap+LcavL+Lcavmap)
+  DCM3    : DRIF, L=Lcav2bpm-(LcavL/2+Lcavmap)
+  DCM4    : DRIF, L=Lbpm2quad-Lcmq/2
+  DCM5    : DRIF, L=Lquad2gv-Lcmq/2
+  DCMCM1  : DRIF, L=Lgv2hom
+  DCMCM2  : DRIF, L=Lhom2gv
+
+  DCM4b : DRIF, L=0.03
+  DCM4a : DRIF, L=DCM4[L]-DCM4b[L]
+
+! ------------------------------------------------------------------------------
+! 1.3 GHz cryomodule to 3.9 GHz cryomodule
+! ------------------------------------------------------------------------------
+
+  Lhom2Hgv := 0.14282 !HOM absorber to u/s gate valve !0.17021
+
+  DCMCMH1 : DRIF, L=Lgv2hom
+  DCMCMH2 : DRIF, L=Lhom2Hgv
+
+! ------------------------------------------------------------------------------
+! 3.9 GHz cryomodule dimensions
+! ------------------------------------------------------------------------------
+
+! new (18-May-16)
+
+  Lgv2Hcav   := 1.14660 !u/s gate valve to cavity #1
+  LHcav2Hcav := 0.63416 !intra-CMH cavity to cavity
+  LHcav2bpm  := 0.49684 !cavity #8 to BPM
+  LHbpm2gv   := 0.16449 !BPM to d/s gate valve (no magnet package)
+  LHgv2Hhom  := 0.16888 !d/s gate valve to HOM absorber
+  LHhom2Hgv  := 0.13857 !HOM absorber to u/s gate valve
+
+! derived dimensions
+
+  LHcav2gv   := LHcav2bpm+LHbpm2gv !cavity #8 to d/s gate valve
+
+! for Bmad field maps (3.9 GHz field map length is 0.44 m per C. Mayes)
+
+  LHcavmap := (0.44-CcavL)/2 !m 
+
+! cryomodule drifts
+
+  DHCAVMAP : DRIF, L=LHcavmap
+  DCMH0    : DRIF, L=1.14662-(LHcavmap+CcavL/2)
+  DCMH1    : DRIF, L=Lgv2Hcav-(LHcavmap+CcavL/2)
+  DCMH2    : DRIF, L=LHcav2Hcav-(LHcavmap+CcavL+LHcavmap)
+  DCMH3    : DRIF, L=LHcav2bpm-(CcavL/2+LHcavmap)
+  DCMH4    : DRIF, L=LHbpm2gv
+  DCMHCMH1 : DRIF, L=LHgv2Hhom
+  DCMHCMH2 : DRIF, L=LHhom2Hgv
+
+! ------------------------------------------------------------------------------
+! end caps, stay-clears, and L3 vacuum break
+! ------------------------------------------------------------------------------
+
+! use new endpoints of L0B, L1B, L2B, L3B, and EXT, as MSC's; add vacuum valves
+! there per S. Saraf (dZ's are relative to 13MAR23 locations)
+
+ !dZMSC0d  = -0.250200 !relocate MSC0d  (ENDL0B/BEGHTR_1)
+ !dZMSC1u  = -0.000590 !relocate MSC1u  (ENDCOL0/BEGL1B)
+ !dZMSC1d  = -0.013570 !relocate MSC1d  (ENDL1B/BEGBC1B)
+ !dZMSC2u  =  0.022998 !relocate MSC2u  (ENDCOL1/BEGL2B
+ !dZMSC2d  = -0.039882 !relocate MSC2d  (ENDL2B/BEGBC2B)
+ !dZMSC3u  =  0.039750 !relocate MSC3u  (ENDEMIT2/BEGL3B)
+ !dZMSC3d  =  0.322740 !relocate MSC3d  (ENDL3B/BEGEXT)
+ !dZENDEXT = -0.233300 !relocate ENDEXT (ENDEXT/BEGDOG)
+
+! end cap and feed cap dimensions, mechanical stay-clear, and differential
+! vacuum pumping stay-clear (mostly from drawing SD-375-000-99-02)
+
+  DCAP0u   : DRIF, L=0.49294  !EC1 to CSP01   =  6.965000
+  DCAP0d   : DRIF, L=1.89015  !CSP01 to FC1   =  7.328290
+  DMSC0d   : DRIF, L=1.5788   !CSP01 to MSC0d =  8.907090
+  DMSC1u   : DRIF, L=1.82959  !MSC1u to CSP02 =  9.174590
+  DCAP1u   : DRIF, L=0.87294  !FC2 to CSP02   =  7.345000
+  DCAP1d   : DRIF, L=1.75429  !CSPH2 to FC3   =  6.333200
+  DMSC1d   : DRIF, L=1.81543  !CSPH2 to MSC1d =  8.148630
+  DMSC2u   : DRIF, L=1.806002 !MSC2u to CSP04 =  9.151002
+  DCAP2u   : DRIF, L=0.87294  !FC4 to CSP04   =  7.345000
+  DCAP2d   : DRIF, L=1.58968  !CSP15 to FC5   =  7.193590
+  DMSC2d   : DRIF, L=1.789118 !CSP15 to MSC2d =  8.982708
+  DMSC3u   : DRIF, L=1.78925  !MSC3u to CSP16 =  9.134250
+  DCAP3u   : DRIF, L=0.87294  !FC6 to CSP16   =  7.345000
+  DCAP3d   : DRIF, L=1.72438  !CSP35 to EC2   =  7.328290
+  DMSC3d   : DRIF, L=1.78674  !CSP35 to MSC3d =  9.115030
+
+! standard vacuum break
+
+  DBREAK : DRIF, L=2.54931
+
+! beamline flanges
+
+  LBLF := 0.0889 !beamline flange to cap face (m)
+
+  DMSC1ub  : DRIF, L=LBLF
+  DMSC1ua  : DRIF, L=DMSC1u[L]-DMSC1ub[L]
+  DMSC1da  : DRIF, L=LBLF
+  DMSC1db  : DRIF, L=DMSC1d[L]-DMSC1da[L]
+  DMSC2ub  : DRIF, L=LBLF
+  DMSC2ua  : DRIF, L=DMSC2u[L]-DMSC2ub[L]
+  DMSC2da  : DRIF, L=LBLF
+  DMSC2db  : DRIF, L=0.764218
+  DMSC2dc  : DRIF, L=DMSC2d[L]-DMSC2da[L]-DMSC2db[L]
+  DMSC3ua  : DRIF, L=0.929
+  DMSC3uc  : DRIF, L=LBLF
+  DMSC3ub  : DRIF, L=DMSC3u[L]-DMSC3ua[L]-DMSC3uc[L]
+  DMSC3da  : DRIF, L=LBLF
+  DMSC3db  : DRIF, L=1.25884
+  DMSC3dc  : DRIF, L=DMSC3d[L]-DMSC3da[L]-DMSC3db[L]
+
+! split L0 downstream endcap drift for ASTRA treaty point (15 m from cathode)
+
+  Lastra := 0.378513
+
+  DCAP0da : DRIF, L=Lastra
+  DCAP0db : DRIF, L=DCAP0d[L]-DCMCM1[L]-DCAP0da[L]
+
+! vacuum components after L0 endcap
+
+  DMSC0da : DRIF, L=LBLF
+  DMSC0db : DRIF, L=1.231893
+  DMSC0dc : DRIF, L=0.1016
+  DMSC0dd : DRIF, L=DMSC0d[L]-DMSC0da[L]-DMSC0db[L]-DMSC0dc[L]
+
+! miscellaneous definitions
+
+  LcryoL   := DCM1[L]+8*(Lcavmap+LcavL+Lcavmap)+7*DCM2[L]&
+              +DCM3[L]+DCM4[L]+Lcmq+DCM5[L]
+  LcryoC   := DCMH1[L]+8*(LHcavmap+CcavL+LHcavmap)+7*DCMH2[L]&
+              +DCMH3[L]+DCMH4[L]
+  LDCMfodo := LcryoL+Lgv2gv-Lcmq
+
+  COMMENT
+    VALUE, DCM1[L],DCM2[L],DCM3[L],DCM4[L],DCM5[L],DCMCM1[L],DCMCM2[L]
+    VALUE, DCMH1[L],DCMH2[L],DCMH3[L],DCMH4[L]
+    VALUE, LcryoL,LcryoC,LDCMfodo,LDCMfodo+Lcmq
+  ENDCOMMENT
+
+! ==============================================================================
+! BPMs
+! ------------------------------------------------------------------------------
+
+  CMB01 : MONI, TYPE="cryo F1.3-19"
+  CMB02 : MONI, TYPE="cryo J1.3-21"
+  CMB03 : MONI, TYPE="cryo J1.3-20"
+  CMBH1 : MONI, TYPE="cryo F3.9-01"
+  CMBH2 : MONI, TYPE="cryo F3.9-02"
+  CMB04 : MONI, TYPE="cryo F1.3-07"
+  CMB05 : MONI, TYPE="cryo J1.3-04"
+  CMB06 : MONI, TYPE="cryo F1.3-08"
+  CMB07 : MONI, TYPE="cryo J1.3-10"
+  CMB08 : MONI, TYPE="cryo F1.3-04"
+  CMB09 : MONI, TYPE="cryo J1.3-08"
+  CMB10 : MONI, TYPE="cryo F1.3-10"
+  CMB11 : MONI, TYPE="cryo F1.3-09"
+  CMB12 : MONI, TYPE="cryo J1.3-13"
+  CMB13 : MONI, TYPE="cryo F1.3-11"
+  CMB14 : MONI, TYPE="cryo J1.3-14"
+  CMB15 : MONI, TYPE="cryo F1.3-01"
+  CMB16 : MONI, TYPE="cryo F1.3-13"
+  CMB17 : MONI, TYPE="cryo J1.3-12"
+  CMB18 : MONI, TYPE="cryo J1.3-06"
+  CMB19 : MONI, TYPE="cryo F1.3-17"
+  CMB20 : MONI, TYPE="cryo F1.3-18"
+  CMB21 : MONI, TYPE="cryo J1.3-15"
+  CMB22 : MONI, TYPE="cryo F1.3-14"
+  CMB23 : MONI, TYPE="cryo F1.3-15"
+  CMB24 : MONI, TYPE="cryo F1.3-16"
+  CMB25 : MONI, TYPE="cryo J1.3-17"
+  CMB26 : MONI, TYPE="cryo J1.3-01"
+  CMB27 : MONI, TYPE="cryo F1.3-02"
+  CMB28 : MONI, TYPE="cryo J1.3-03"
+  CMB29 : MONI, TYPE="cryo J1.3-18"
+  CMB30 : MONI, TYPE="cryo J1.3-16"
+  CMB31 : MONI, TYPE="cryo J1.3-19"
+  CMB32 : MONI, TYPE="cryo F1.3-03"
+  CMB33 : MONI, TYPE="cryo J1.3-05"
+  CMB34 : MONI, TYPE="cryo J1.3-09"
+  CMB35 : MONI, TYPE="cryo J1.3-07"
+
+  RFB2C00 : MONI, TYPE="@2,CavityS-1"
+
+! ==============================================================================
+! XCORs
+! ------------------------------------------------------------------------------
+
+  XCM01 : HKIC, TYPE="cryo F1.3-19"
+  XCM02 : HKIC, TYPE="cryo J1.3-21"
+  XCM03 : HKIC, TYPE="cryo J1.3-20"
+  XCM04 : HKIC, TYPE="cryo F1.3-07"
+  XCM05 : HKIC, TYPE="cryo J1.3-04"
+  XCM06 : HKIC, TYPE="cryo F1.3-08"
+  XCM07 : HKIC, TYPE="cryo J1.3-10"
+  XCM08 : HKIC, TYPE="cryo F1.3-04"
+  XCM09 : HKIC, TYPE="cryo J1.3-08"
+  XCM10 : HKIC, TYPE="cryo F1.3-10"
+  XCM11 : HKIC, TYPE="cryo F1.3-09"
+  XCM12 : HKIC, TYPE="cryo J1.3-13"
+  XCM13 : HKIC, TYPE="cryo F1.3-11"
+  XCM14 : HKIC, TYPE="cryo J1.3-14"
+  XCM15 : HKIC, TYPE="cryo F1.3-01"
+  XCM16 : HKIC, TYPE="cryo F1.3-13"
+  XCM17 : HKIC, TYPE="cryo J1.3-12"
+  XCM18 : HKIC, TYPE="cryo J1.3-06"
+  XCM19 : HKIC, TYPE="cryo F1.3-17"
+  XCM20 : HKIC, TYPE="cryo F1.3-18"
+  XCM21 : HKIC, TYPE="cryo J1.3-15"
+  XCM22 : HKIC, TYPE="cryo F1.3-14"
+  XCM23 : HKIC, TYPE="cryo F1.3-15"
+  XCM24 : HKIC, TYPE="cryo F1.3-16"
+  XCM25 : HKIC, TYPE="cryo J1.3-17"
+  XCM26 : HKIC, TYPE="cryo J1.3-01"
+  XCM27 : HKIC, TYPE="cryo F1.3-02"
+  XCM28 : HKIC, TYPE="cryo J1.3-03"
+  XCM29 : HKIC, TYPE="cryo J1.3-18"
+  XCM30 : HKIC, TYPE="cryo J1.3-16"
+  XCM31 : HKIC, TYPE="cryo J1.3-19"
+  XCM32 : HKIC, TYPE="cryo F1.3-03"
+  XCM33 : HKIC, TYPE="cryo J1.3-05"
+  XCM34 : HKIC, TYPE="cryo J1.3-09"
+  XCM35 : HKIC, TYPE="cryo J1.3-07"
+
+! ==============================================================================
+! YCORs
+! ------------------------------------------------------------------------------
+
+  YCM01 : VKIC, TYPE="cryo F1.3-19"
+  YCM02 : VKIC, TYPE="cryo J1.3-21"
+  YCM03 : VKIC, TYPE="cryo J1.3-20"
+  YCM04 : VKIC, TYPE="cryo F1.3-07"
+  YCM05 : VKIC, TYPE="cryo J1.3-04"
+  YCM06 : VKIC, TYPE="cryo F1.3-08"
+  YCM07 : VKIC, TYPE="cryo J1.3-10"
+  YCM08 : VKIC, TYPE="cryo F1.3-04"
+  YCM09 : VKIC, TYPE="cryo J1.3-08"
+  YCM10 : VKIC, TYPE="cryo F1.3-10"
+  YCM11 : VKIC, TYPE="cryo F1.3-09"
+  YCM12 : VKIC, TYPE="cryo J1.3-13"
+  YCM13 : VKIC, TYPE="cryo F1.3-11"
+  YCM14 : VKIC, TYPE="cryo J1.3-14"
+  YCM15 : VKIC, TYPE="cryo F1.3-01"
+  YCM16 : VKIC, TYPE="cryo F1.3-13"
+  YCM17 : VKIC, TYPE="cryo J1.3-12"
+  YCM18 : VKIC, TYPE="cryo J1.3-06"
+  YCM19 : VKIC, TYPE="cryo F1.3-17"
+  YCM20 : VKIC, TYPE="cryo F1.3-18"
+  YCM21 : VKIC, TYPE="cryo J1.3-15"
+  YCM22 : VKIC, TYPE="cryo F1.3-14"
+  YCM23 : VKIC, TYPE="cryo F1.3-15"
+  YCM24 : VKIC, TYPE="cryo F1.3-16"
+  YCM25 : VKIC, TYPE="cryo J1.3-17"
+  YCM26 : VKIC, TYPE="cryo J1.3-01"
+  YCM27 : VKIC, TYPE="cryo F1.3-02"
+  YCM28 : VKIC, TYPE="cryo J1.3-03"
+  YCM29 : VKIC, TYPE="cryo J1.3-18"
+  YCM30 : VKIC, TYPE="cryo J1.3-16"
+  YCM31 : VKIC, TYPE="cryo J1.3-19"
+  YCM32 : VKIC, TYPE="cryo F1.3-03"
+  YCM33 : VKIC, TYPE="cryo J1.3-05"
+  YCM34 : VKIC, TYPE="cryo J1.3-09"
+  YCM35 : VKIC, TYPE="cryo J1.3-07"
+
+! ==============================================================================
+! MARK, etc.
+! ------------------------------------------------------------------------------
+
+  CM01BEG : MARK ; CSP01 : INST ; CM01END : MARK
+  CM02BEG : MARK ; CSP02 : INST ; CM02END : MARK
+  CM03BEG : MARK ; CSP03 : INST ; CM03END : MARK
+  CMH1BEG : MARK ; CSPH1 : INST ; CMH1END : MARK
+  CMH2BEG : MARK ; CSPH2 : INST ; CMH2END : MARK
+  CM04BEG : MARK ; CSP04 : INST ; CM04END : MARK
+  CM05BEG : MARK ; CSP05 : INST ; CM05END : MARK
+  CM06BEG : MARK ; CSP06 : INST ; CM06END : MARK
+  CM07BEG : MARK ; CSP07 : INST ; CM07END : MARK
+  CM08BEG : MARK ; CSP08 : INST ; CM08END : MARK
+  CM09BEG : MARK ; CSP09 : INST ; CM09END : MARK
+  CM10BEG : MARK ; CSP10 : INST ; CM10END : MARK
+  CM11BEG : MARK ; CSP11 : INST ; CM11END : MARK
+  CM12BEG : MARK ; CSP12 : INST ; CM12END : MARK
+  CM13BEG : MARK ; CSP13 : INST ; CM13END : MARK
+  CM14BEG : MARK ; CSP14 : INST ; CM14END : MARK
+  CM15BEG : MARK ; CSP15 : INST ; CM15END : MARK
+  CM16BEG : MARK ; CSP16 : INST ; CM16END : MARK
+  CM17BEG : MARK ; CSP17 : INST ; CM17END : MARK
+  CM18BEG : MARK ; CSP18 : INST ; CM18END : MARK
+  CM19BEG : MARK ; CSP19 : INST ; CM19END : MARK
+  CM20BEG : MARK ; CSP20 : INST ; CM20END : MARK
+  CM21BEG : MARK ; CSP21 : INST ; CM21END : MARK
+  CM22BEG : MARK ; CSP22 : INST ; CM22END : MARK
+  CM23BEG : MARK ; CSP23 : INST ; CM23END : MARK
+  CM24BEG : MARK ; CSP24 : INST ; CM24END : MARK
+  CM25BEG : MARK ; CSP25 : INST ; CM25END : MARK
+  CM26BEG : MARK ; CSP26 : INST ; CM26END : MARK
+  CM27BEG : MARK ; CSP27 : INST ; CM27END : MARK
+  CM28BEG : MARK ; CSP28 : INST ; CM28END : MARK
+  CM29BEG : MARK ; CSP29 : INST ; CM29END : MARK
+  CM30BEG : MARK ; CSP30 : INST ; CM30END : MARK
+  CM31BEG : MARK ; CSP31 : INST ; CM31END : MARK
+  CM32BEG : MARK ; CSP32 : INST ; CM32END : MARK
+  CM33BEG : MARK ; CSP33 : INST ; CM33END : MARK
+  CM34BEG : MARK ; CSP34 : INST ; CM34END : MARK
+  CM35BEG : MARK ; CSP35 : INST ; CM35END : MARK
+
+  BEAM0  : MARK !initial beam specified here
+  HOMCM  : MARK !cryomodule HOM absorber
+  ASTRA  : MARK !simulated Twiss from C. Papadopoulos here
+
+  EC1    : MARK                      !u/s flange face
+  FC1    : MARK                      !d/s flange face
+  BLF1   : MARK                      !beamline flange
+  VGL0Bd : MARK, TYPE="gauges"
+  VPL0Bd : MARK, TYPE="differential"
+  MSC0d  : MARK                      !u/s flange face
+  VVL0Bd : INST, TYPE="gate valve"   !VVPG:L0B:0199
+  VVL1Bu : INST, TYPE="gate valve"   !VVPG:L1B:0201
+  MSC1u  : MARK                      !u/s flange face
+  BLF2   : MARK                      !beamline flange
+  FC2    : MARK                      !u/s flange face
+  FC3    : MARK                      !d/s flange face
+  BLF3   : MARK                      !beamline flange
+  MSC1d  : MARK                      !d/s flange face
+  VVL1Bd : INST, TYPE="gate valve"   !VVPG:L1B:H295
+  VVL2Bu : INST, TYPE="gate valve"   !VVPG:L2B:0401
+  MSC2u  : MARK                      !u/s flange face
+  BLF4   : MARK                      !beamline flange
+  FC4    : MARK                      !u/s flange face
+  FC5    : MARK                      !d/s flange face
+  BLF5   : MARK                      !beamline flange
+  VTL1   : INST                      !Vertical Transfer Line
+  MSC2d  : MARK                      !d/s flange face
+  VVL2Bd : INST, TYPE="gate valve"   !VVPG:L2B:1593
+  VVL3Bu : INST, TYPE="gate valve"   !VVPG:L3B:1601
+  MSC3u  : MARK                      !u/s flange face
+  VTL2   : INST                      !Vertical Transfer Line
+  BLF6   : MARK                      !beamline flange
+  FC6    : MARK                      !u/s flange face
+  EC2    : MARK                      !d/s flange face
+  BLF7   : MARK                      !beamline flange
+  VGL3Bd : MARK, TYPE="gauges"
+  MSC3d  : MARK                      !d/s flange face
+  VVL3Bd : INST, TYPE="gate valve"   !VVPG:L3B:3594
+
+! ==============================================================================
+! BEAMLINE
+! ------------------------------------------------------------------------------
+
+  CAVL011_full : LINE=(DCAVMAP,CAVL011,DCAVMAP)
+  CAVL012_full : LINE=(DCAVMAP,CAVL012,DCAVMAP)
+  CAVL013_full : LINE=(DCAVMAP,CAVL013,DCAVMAP)
+  CAVL014_full : LINE=(DCAVMAP,CAVL014,DCAVMAP)
+  CAVL015_full : LINE=(DCAVMAP,CAVL015a,CSP01,CAVL015b,DCAVMAP)
+  CAVL016_full : LINE=(DCAVMAP,CAVL016,DCAVMAP)
+  CAVL017_full : LINE=(DCAVMAP,CAVL017,DCAVMAP)
+  CAVL018_full : LINE=(DCAVMAP,CAVL018,DCAVMAP)
+
+  CAVL021_full : LINE=(DCAVMAP,CAVL021,DCAVMAP)
+  CAVL022_full : LINE=(DCAVMAP,CAVL022,DCAVMAP)
+  CAVL023_full : LINE=(DCAVMAP,CAVL023,DCAVMAP)
+  CAVL024_full : LINE=(DCAVMAP,CAVL024,DCAVMAP)
+  CAVL025_full : LINE=(DCAVMAP,CAVL025a,CSP02,CAVL025b,DCAVMAP)
+  CAVL026_full : LINE=(DCAVMAP,CAVL026,DCAVMAP)
+  CAVL027_full : LINE=(DCAVMAP,CAVL027,DCAVMAP)
+  CAVL028_full : LINE=(DCAVMAP,CAVL028,DCAVMAP)
+
+  CAVC011_full : LINE=(DHCAVMAP,CAVC011,DHCAVMAP)
+  CAVC012_full : LINE=(DHCAVMAP,CAVC012a,CSPH1,CAVC012b,DHCAVMAP)
+  CAVC013_full : LINE=(DHCAVMAP,CAVC013,DHCAVMAP)
+  CAVC014_full : LINE=(DHCAVMAP,CAVC014,DHCAVMAP)
+  CAVC015_full : LINE=(DHCAVMAP,CAVC015,DHCAVMAP)
+  CAVC016_full : LINE=(DHCAVMAP,CAVC016,DHCAVMAP)
+  CAVC017_full : LINE=(DHCAVMAP,CAVC017,DHCAVMAP)
+  CAVC018_full : LINE=(DHCAVMAP,CAVC018,DHCAVMAP)
+
+  CAVC021_full : LINE=(DHCAVMAP,CAVC021,DHCAVMAP)
+  CAVC022_full : LINE=(DHCAVMAP,CAVC022a,CSPH2,CAVC022b,DHCAVMAP)
+  CAVC023_full : LINE=(DHCAVMAP,CAVC023,DHCAVMAP)
+  CAVC024_full : LINE=(DHCAVMAP,CAVC024,DHCAVMAP)
+  CAVC025_full : LINE=(DHCAVMAP,CAVC025,DHCAVMAP)
+  CAVC026_full : LINE=(DHCAVMAP,CAVC026,DHCAVMAP)
+  CAVC027_full : LINE=(DHCAVMAP,CAVC027,DHCAVMAP)
+  CAVC028_full : LINE=(DHCAVMAP,CAVC028,DHCAVMAP)
+
+  CAVL031_full : LINE=(DCAVMAP,CAVL031,DCAVMAP)
+  CAVL032_full : LINE=(DCAVMAP,CAVL032,DCAVMAP)
+  CAVL033_full : LINE=(DCAVMAP,CAVL033,DCAVMAP)
+  CAVL034_full : LINE=(DCAVMAP,CAVL034,DCAVMAP)
+  CAVL035_full : LINE=(DCAVMAP,CAVL035a,CSP03,CAVL035b,DCAVMAP)
+  CAVL036_full : LINE=(DCAVMAP,CAVL036,DCAVMAP)
+  CAVL037_full : LINE=(DCAVMAP,CAVL037,DCAVMAP)
+  CAVL038_full : LINE=(DCAVMAP,CAVL038,DCAVMAP)
+
+  CAVL041_full : LINE=(DCAVMAP,CAVL041,DCAVMAP)
+  CAVL042_full : LINE=(DCAVMAP,CAVL042,DCAVMAP)
+  CAVL043_full : LINE=(DCAVMAP,CAVL043,DCAVMAP)
+  CAVL044_full : LINE=(DCAVMAP,CAVL044,DCAVMAP)
+  CAVL045_full : LINE=(DCAVMAP,CAVL045a,CSP04,CAVL045b,DCAVMAP)
+  CAVL046_full : LINE=(DCAVMAP,CAVL046,DCAVMAP)
+  CAVL047_full : LINE=(DCAVMAP,CAVL047,DCAVMAP)
+  CAVL048_full : LINE=(DCAVMAP,CAVL048,DCAVMAP)
+
+  CAVL051_full : LINE=(DCAVMAP,CAVL051,DCAVMAP)
+  CAVL052_full : LINE=(DCAVMAP,CAVL052,DCAVMAP)
+  CAVL053_full : LINE=(DCAVMAP,CAVL053,DCAVMAP)
+  CAVL054_full : LINE=(DCAVMAP,CAVL054,DCAVMAP)
+  CAVL055_full : LINE=(DCAVMAP,CAVL055a,CSP05,CAVL055b,DCAVMAP)
+  CAVL056_full : LINE=(DCAVMAP,CAVL056,DCAVMAP)
+  CAVL057_full : LINE=(DCAVMAP,CAVL057,DCAVMAP)
+  CAVL058_full : LINE=(DCAVMAP,CAVL058,DCAVMAP)
+
+  CAVL061_full : LINE=(DCAVMAP,CAVL061,DCAVMAP)
+  CAVL062_full : LINE=(DCAVMAP,CAVL062,DCAVMAP)
+  CAVL063_full : LINE=(DCAVMAP,CAVL063,DCAVMAP)
+  CAVL064_full : LINE=(DCAVMAP,CAVL064,DCAVMAP)
+  CAVL065_full : LINE=(DCAVMAP,CAVL065a,CSP06,CAVL065b,DCAVMAP)
+  CAVL066_full : LINE=(DCAVMAP,CAVL066,DCAVMAP)
+  CAVL067_full : LINE=(DCAVMAP,CAVL067,DCAVMAP)
+  CAVL068_full : LINE=(DCAVMAP,CAVL068,DCAVMAP)
+
+  CAVL071_full : LINE=(DCAVMAP,CAVL071,DCAVMAP)
+  CAVL072_full : LINE=(DCAVMAP,CAVL072,DCAVMAP)
+  CAVL073_full : LINE=(DCAVMAP,CAVL073,DCAVMAP)
+  CAVL074_full : LINE=(DCAVMAP,CAVL074,DCAVMAP)
+  CAVL075_full : LINE=(DCAVMAP,CAVL075a,CSP07,CAVL075b,DCAVMAP)
+  CAVL076_full : LINE=(DCAVMAP,CAVL076,DCAVMAP)
+  CAVL077_full : LINE=(DCAVMAP,CAVL077,DCAVMAP)
+  CAVL078_full : LINE=(DCAVMAP,CAVL078,DCAVMAP)
+
+  CAVL081_full : LINE=(DCAVMAP,CAVL081,DCAVMAP)
+  CAVL082_full : LINE=(DCAVMAP,CAVL082,DCAVMAP)
+  CAVL083_full : LINE=(DCAVMAP,CAVL083,DCAVMAP)
+  CAVL084_full : LINE=(DCAVMAP,CAVL084,DCAVMAP)
+  CAVL085_full : LINE=(DCAVMAP,CAVL085a,CSP08,CAVL085b,DCAVMAP)
+  CAVL086_full : LINE=(DCAVMAP,CAVL086,DCAVMAP)
+  CAVL087_full : LINE=(DCAVMAP,CAVL087,DCAVMAP)
+  CAVL088_full : LINE=(DCAVMAP,CAVL088,DCAVMAP)
+
+  CAVL091_full : LINE=(DCAVMAP,CAVL091,DCAVMAP)
+  CAVL092_full : LINE=(DCAVMAP,CAVL092,DCAVMAP)
+  CAVL093_full : LINE=(DCAVMAP,CAVL093,DCAVMAP)
+  CAVL094_full : LINE=(DCAVMAP,CAVL094,DCAVMAP)
+  CAVL095_full : LINE=(DCAVMAP,CAVL095a,CSP09,CAVL095b,DCAVMAP)
+  CAVL096_full : LINE=(DCAVMAP,CAVL096,DCAVMAP)
+  CAVL097_full : LINE=(DCAVMAP,CAVL097,DCAVMAP)
+  CAVL098_full : LINE=(DCAVMAP,CAVL098,DCAVMAP)
+
+  CAVL101_full : LINE=(DCAVMAP,CAVL101,DCAVMAP)
+  CAVL102_full : LINE=(DCAVMAP,CAVL102,DCAVMAP)
+  CAVL103_full : LINE=(DCAVMAP,CAVL103,DCAVMAP)
+  CAVL104_full : LINE=(DCAVMAP,CAVL104,DCAVMAP)
+  CAVL105_full : LINE=(DCAVMAP,CAVL105a,CSP10,CAVL105b,DCAVMAP)
+  CAVL106_full : LINE=(DCAVMAP,CAVL106,DCAVMAP)
+  CAVL107_full : LINE=(DCAVMAP,CAVL107,DCAVMAP)
+  CAVL108_full : LINE=(DCAVMAP,CAVL108,DCAVMAP)
+
+  CAVL111_full : LINE=(DCAVMAP,CAVL111,DCAVMAP)
+  CAVL112_full : LINE=(DCAVMAP,CAVL112,DCAVMAP)
+  CAVL113_full : LINE=(DCAVMAP,CAVL113,DCAVMAP)
+  CAVL114_full : LINE=(DCAVMAP,CAVL114,DCAVMAP)
+  CAVL115_full : LINE=(DCAVMAP,CAVL115a,CSP11,CAVL115b,DCAVMAP)
+  CAVL116_full : LINE=(DCAVMAP,CAVL116,DCAVMAP)
+  CAVL117_full : LINE=(DCAVMAP,CAVL117,DCAVMAP)
+  CAVL118_full : LINE=(DCAVMAP,CAVL118,DCAVMAP)
+
+  CAVL121_full : LINE=(DCAVMAP,CAVL121,DCAVMAP)
+  CAVL122_full : LINE=(DCAVMAP,CAVL122,DCAVMAP)
+  CAVL123_full : LINE=(DCAVMAP,CAVL123,DCAVMAP)
+  CAVL124_full : LINE=(DCAVMAP,CAVL124,DCAVMAP)
+  CAVL125_full : LINE=(DCAVMAP,CAVL125a,CSP12,CAVL125b,DCAVMAP)
+  CAVL126_full : LINE=(DCAVMAP,CAVL126,DCAVMAP)
+  CAVL127_full : LINE=(DCAVMAP,CAVL127,DCAVMAP)
+  CAVL128_full : LINE=(DCAVMAP,CAVL128,DCAVMAP)
+
+  CAVL131_full : LINE=(DCAVMAP,CAVL131,DCAVMAP)
+  CAVL132_full : LINE=(DCAVMAP,CAVL132,DCAVMAP)
+  CAVL133_full : LINE=(DCAVMAP,CAVL133,DCAVMAP)
+  CAVL134_full : LINE=(DCAVMAP,CAVL134,DCAVMAP)
+  CAVL135_full : LINE=(DCAVMAP,CAVL135a,CSP13,CAVL135b,DCAVMAP)
+  CAVL136_full : LINE=(DCAVMAP,CAVL136,DCAVMAP)
+  CAVL137_full : LINE=(DCAVMAP,CAVL137,DCAVMAP)
+  CAVL138_full : LINE=(DCAVMAP,CAVL138,DCAVMAP)
+
+  CAVL141_full : LINE=(DCAVMAP,CAVL141,DCAVMAP)
+  CAVL142_full : LINE=(DCAVMAP,CAVL142,DCAVMAP)
+  CAVL143_full : LINE=(DCAVMAP,CAVL143,DCAVMAP)
+  CAVL144_full : LINE=(DCAVMAP,CAVL144,DCAVMAP)
+  CAVL145_full : LINE=(DCAVMAP,CAVL145a,CSP14,CAVL145b,DCAVMAP)
+  CAVL146_full : LINE=(DCAVMAP,CAVL146,DCAVMAP)
+  CAVL147_full : LINE=(DCAVMAP,CAVL147,DCAVMAP)
+  CAVL148_full : LINE=(DCAVMAP,CAVL148,DCAVMAP)
+
+  CAVL151_full : LINE=(DCAVMAP,CAVL151,DCAVMAP)
+  CAVL152_full : LINE=(DCAVMAP,CAVL152,DCAVMAP)
+  CAVL153_full : LINE=(DCAVMAP,CAVL153,DCAVMAP)
+  CAVL154_full : LINE=(DCAVMAP,CAVL154,DCAVMAP)
+  CAVL155_full : LINE=(DCAVMAP,CAVL155a,CSP15,CAVL155b,DCAVMAP)
+  CAVL156_full : LINE=(DCAVMAP,CAVL156,DCAVMAP)
+  CAVL157_full : LINE=(DCAVMAP,CAVL157,DCAVMAP)
+  CAVL158_full : LINE=(DCAVMAP,CAVL158,DCAVMAP)
+
+  CAVL161_full : LINE=(DCAVMAP,CAVL161,DCAVMAP)
+  CAVL162_full : LINE=(DCAVMAP,CAVL162,DCAVMAP)
+  CAVL163_full : LINE=(DCAVMAP,CAVL163,DCAVMAP)
+  CAVL164_full : LINE=(DCAVMAP,CAVL164,DCAVMAP)
+  CAVL165_full : LINE=(DCAVMAP,CAVL165a,CSP16,CAVL165b,DCAVMAP)
+  CAVL166_full : LINE=(DCAVMAP,CAVL166,DCAVMAP)
+  CAVL167_full : LINE=(DCAVMAP,CAVL167,DCAVMAP)
+  CAVL168_full : LINE=(DCAVMAP,CAVL168,DCAVMAP)
+
+  CAVL171_full : LINE=(DCAVMAP,CAVL171,DCAVMAP)
+  CAVL172_full : LINE=(DCAVMAP,CAVL172,DCAVMAP)
+  CAVL173_full : LINE=(DCAVMAP,CAVL173,DCAVMAP)
+  CAVL174_full : LINE=(DCAVMAP,CAVL174,DCAVMAP)
+  CAVL175_full : LINE=(DCAVMAP,CAVL175a,CSP17,CAVL175b,DCAVMAP)
+  CAVL176_full : LINE=(DCAVMAP,CAVL176,DCAVMAP)
+  CAVL177_full : LINE=(DCAVMAP,CAVL177,DCAVMAP)
+  CAVL178_full : LINE=(DCAVMAP,CAVL178,DCAVMAP)
+
+  CAVL181_full : LINE=(DCAVMAP,CAVL181,DCAVMAP)
+  CAVL182_full : LINE=(DCAVMAP,CAVL182,DCAVMAP)
+  CAVL183_full : LINE=(DCAVMAP,CAVL183,DCAVMAP)
+  CAVL184_full : LINE=(DCAVMAP,CAVL184,DCAVMAP)
+  CAVL185_full : LINE=(DCAVMAP,CAVL185a,CSP18,CAVL185b,DCAVMAP)
+  CAVL186_full : LINE=(DCAVMAP,CAVL186,DCAVMAP)
+  CAVL187_full : LINE=(DCAVMAP,CAVL187,DCAVMAP)
+  CAVL188_full : LINE=(DCAVMAP,CAVL188,DCAVMAP)
+
+  CAVL191_full : LINE=(DCAVMAP,CAVL191,DCAVMAP)
+  CAVL192_full : LINE=(DCAVMAP,CAVL192,DCAVMAP)
+  CAVL193_full : LINE=(DCAVMAP,CAVL193,DCAVMAP)
+  CAVL194_full : LINE=(DCAVMAP,CAVL194,DCAVMAP)
+  CAVL195_full : LINE=(DCAVMAP,CAVL195a,CSP19,CAVL195b,DCAVMAP)
+  CAVL196_full : LINE=(DCAVMAP,CAVL196,DCAVMAP)
+  CAVL197_full : LINE=(DCAVMAP,CAVL197,DCAVMAP)
+  CAVL198_full : LINE=(DCAVMAP,CAVL198,DCAVMAP)
+
+  CAVL201_full : LINE=(DCAVMAP,CAVL201,DCAVMAP)
+  CAVL202_full : LINE=(DCAVMAP,CAVL202,DCAVMAP)
+  CAVL203_full : LINE=(DCAVMAP,CAVL203,DCAVMAP)
+  CAVL204_full : LINE=(DCAVMAP,CAVL204,DCAVMAP)
+  CAVL205_full : LINE=(DCAVMAP,CAVL205a,CSP20,CAVL205b,DCAVMAP)
+  CAVL206_full : LINE=(DCAVMAP,CAVL206,DCAVMAP)
+  CAVL207_full : LINE=(DCAVMAP,CAVL207,DCAVMAP)
+  CAVL208_full : LINE=(DCAVMAP,CAVL208,DCAVMAP)
+
+  CAVL211_full : LINE=(DCAVMAP,CAVL211,DCAVMAP)
+  CAVL212_full : LINE=(DCAVMAP,CAVL212,DCAVMAP)
+  CAVL213_full : LINE=(DCAVMAP,CAVL213,DCAVMAP)
+  CAVL214_full : LINE=(DCAVMAP,CAVL214,DCAVMAP)
+  CAVL215_full : LINE=(DCAVMAP,CAVL215a,CSP21,CAVL215b,DCAVMAP)
+  CAVL216_full : LINE=(DCAVMAP,CAVL216,DCAVMAP)
+  CAVL217_full : LINE=(DCAVMAP,CAVL217,DCAVMAP)
+  CAVL218_full : LINE=(DCAVMAP,CAVL218,DCAVMAP)
+
+  CAVL221_full : LINE=(DCAVMAP,CAVL221,DCAVMAP)
+  CAVL222_full : LINE=(DCAVMAP,CAVL222,DCAVMAP)
+  CAVL223_full : LINE=(DCAVMAP,CAVL223,DCAVMAP)
+  CAVL224_full : LINE=(DCAVMAP,CAVL224,DCAVMAP)
+  CAVL225_full : LINE=(DCAVMAP,CAVL225a,CSP22,CAVL225b,DCAVMAP)
+  CAVL226_full : LINE=(DCAVMAP,CAVL226,DCAVMAP)
+  CAVL227_full : LINE=(DCAVMAP,CAVL227,DCAVMAP)
+  CAVL228_full : LINE=(DCAVMAP,CAVL228,DCAVMAP)
+
+  CAVL231_full : LINE=(DCAVMAP,CAVL231,DCAVMAP)
+  CAVL232_full : LINE=(DCAVMAP,CAVL232,DCAVMAP)
+  CAVL233_full : LINE=(DCAVMAP,CAVL233,DCAVMAP)
+  CAVL234_full : LINE=(DCAVMAP,CAVL234,DCAVMAP)
+  CAVL235_full : LINE=(DCAVMAP,CAVL235a,CSP23,CAVL235b,DCAVMAP)
+  CAVL236_full : LINE=(DCAVMAP,CAVL236,DCAVMAP)
+  CAVL237_full : LINE=(DCAVMAP,CAVL237,DCAVMAP)
+  CAVL238_full : LINE=(DCAVMAP,CAVL238,DCAVMAP)
+
+  CAVL241_full : LINE=(DCAVMAP,CAVL241,DCAVMAP)
+  CAVL242_full : LINE=(DCAVMAP,CAVL242,DCAVMAP)
+  CAVL243_full : LINE=(DCAVMAP,CAVL243,DCAVMAP)
+  CAVL244_full : LINE=(DCAVMAP,CAVL244,DCAVMAP)
+  CAVL245_full : LINE=(DCAVMAP,CAVL245a,CSP24,CAVL245b,DCAVMAP)
+  CAVL246_full : LINE=(DCAVMAP,CAVL246,DCAVMAP)
+  CAVL247_full : LINE=(DCAVMAP,CAVL247,DCAVMAP)
+  CAVL248_full : LINE=(DCAVMAP,CAVL248,DCAVMAP)
+
+  CAVL251_full : LINE=(DCAVMAP,CAVL251,DCAVMAP)
+  CAVL252_full : LINE=(DCAVMAP,CAVL252,DCAVMAP)
+  CAVL253_full : LINE=(DCAVMAP,CAVL253,DCAVMAP)
+  CAVL254_full : LINE=(DCAVMAP,CAVL254,DCAVMAP)
+  CAVL255_full : LINE=(DCAVMAP,CAVL255a,CSP25,CAVL255b,DCAVMAP)
+  CAVL256_full : LINE=(DCAVMAP,CAVL256,DCAVMAP)
+  CAVL257_full : LINE=(DCAVMAP,CAVL257,DCAVMAP)
+  CAVL258_full : LINE=(DCAVMAP,CAVL258,DCAVMAP)
+
+  CAVL261_full : LINE=(DCAVMAP,CAVL261,DCAVMAP)
+  CAVL262_full : LINE=(DCAVMAP,CAVL262,DCAVMAP)
+  CAVL263_full : LINE=(DCAVMAP,CAVL263,DCAVMAP)
+  CAVL264_full : LINE=(DCAVMAP,CAVL264,DCAVMAP)
+  CAVL265_full : LINE=(DCAVMAP,CAVL265a,CSP26,CAVL265b,DCAVMAP)
+  CAVL266_full : LINE=(DCAVMAP,CAVL266,DCAVMAP)
+  CAVL267_full : LINE=(DCAVMAP,CAVL267,DCAVMAP)
+  CAVL268_full : LINE=(DCAVMAP,CAVL268,DCAVMAP)
+
+  CAVL271_full : LINE=(DCAVMAP,CAVL271,DCAVMAP)
+  CAVL272_full : LINE=(DCAVMAP,CAVL272,DCAVMAP)
+  CAVL273_full : LINE=(DCAVMAP,CAVL273,DCAVMAP)
+  CAVL274_full : LINE=(DCAVMAP,CAVL274,DCAVMAP)
+  CAVL275_full : LINE=(DCAVMAP,CAVL275a,CSP27,CAVL275b,DCAVMAP)
+  CAVL276_full : LINE=(DCAVMAP,CAVL276,DCAVMAP)
+  CAVL277_full : LINE=(DCAVMAP,CAVL277,DCAVMAP)
+  CAVL278_full : LINE=(DCAVMAP,CAVL278,DCAVMAP)
+
+  CAVL281_full : LINE=(DCAVMAP,CAVL281,DCAVMAP)
+  CAVL282_full : LINE=(DCAVMAP,CAVL282,DCAVMAP)
+  CAVL283_full : LINE=(DCAVMAP,CAVL283,DCAVMAP)
+  CAVL284_full : LINE=(DCAVMAP,CAVL284,DCAVMAP)
+  CAVL285_full : LINE=(DCAVMAP,CAVL285a,CSP28,CAVL285b,DCAVMAP)
+  CAVL286_full : LINE=(DCAVMAP,CAVL286,DCAVMAP)
+  CAVL287_full : LINE=(DCAVMAP,CAVL287,DCAVMAP)
+  CAVL288_full : LINE=(DCAVMAP,CAVL288,DCAVMAP)
+
+  CAVL291_full : LINE=(DCAVMAP,CAVL291,DCAVMAP)
+  CAVL292_full : LINE=(DCAVMAP,CAVL292,DCAVMAP)
+  CAVL293_full : LINE=(DCAVMAP,CAVL293,DCAVMAP)
+  CAVL294_full : LINE=(DCAVMAP,CAVL294,DCAVMAP)
+  CAVL295_full : LINE=(DCAVMAP,CAVL295a,CSP29,CAVL295b,DCAVMAP)
+  CAVL296_full : LINE=(DCAVMAP,CAVL296,DCAVMAP)
+  CAVL297_full : LINE=(DCAVMAP,CAVL297,DCAVMAP)
+  CAVL298_full : LINE=(DCAVMAP,CAVL298,DCAVMAP)
+
+  CAVL301_full : LINE=(DCAVMAP,CAVL301,DCAVMAP)
+  CAVL302_full : LINE=(DCAVMAP,CAVL302,DCAVMAP)
+  CAVL303_full : LINE=(DCAVMAP,CAVL303,DCAVMAP)
+  CAVL304_full : LINE=(DCAVMAP,CAVL304,DCAVMAP)
+  CAVL305_full : LINE=(DCAVMAP,CAVL305a,CSP30,CAVL305b,DCAVMAP)
+  CAVL306_full : LINE=(DCAVMAP,CAVL306,DCAVMAP)
+  CAVL307_full : LINE=(DCAVMAP,CAVL307,DCAVMAP)
+  CAVL308_full : LINE=(DCAVMAP,CAVL308,DCAVMAP)
+
+  CAVL311_full : LINE=(DCAVMAP,CAVL311,DCAVMAP)
+  CAVL312_full : LINE=(DCAVMAP,CAVL312,DCAVMAP)
+  CAVL313_full : LINE=(DCAVMAP,CAVL313,DCAVMAP)
+  CAVL314_full : LINE=(DCAVMAP,CAVL314,DCAVMAP)
+  CAVL315_full : LINE=(DCAVMAP,CAVL315a,CSP31,CAVL315b,DCAVMAP)
+  CAVL316_full : LINE=(DCAVMAP,CAVL316,DCAVMAP)
+  CAVL317_full : LINE=(DCAVMAP,CAVL317,DCAVMAP)
+  CAVL318_full : LINE=(DCAVMAP,CAVL318,DCAVMAP)
+
+  CAVL321_full : LINE=(DCAVMAP,CAVL321,DCAVMAP)
+  CAVL322_full : LINE=(DCAVMAP,CAVL322,DCAVMAP)
+  CAVL323_full : LINE=(DCAVMAP,CAVL323,DCAVMAP)
+  CAVL324_full : LINE=(DCAVMAP,CAVL324,DCAVMAP)
+  CAVL325_full : LINE=(DCAVMAP,CAVL325a,CSP32,CAVL325b,DCAVMAP)
+  CAVL326_full : LINE=(DCAVMAP,CAVL326,DCAVMAP)
+  CAVL327_full : LINE=(DCAVMAP,CAVL327,DCAVMAP)
+  CAVL328_full : LINE=(DCAVMAP,CAVL328,DCAVMAP)
+
+  CAVL331_full : LINE=(DCAVMAP,CAVL331,DCAVMAP)
+  CAVL332_full : LINE=(DCAVMAP,CAVL332,DCAVMAP)
+  CAVL333_full : LINE=(DCAVMAP,CAVL333,DCAVMAP)
+  CAVL334_full : LINE=(DCAVMAP,CAVL334,DCAVMAP)
+  CAVL335_full : LINE=(DCAVMAP,CAVL335a,CSP33,CAVL335b,DCAVMAP)
+  CAVL336_full : LINE=(DCAVMAP,CAVL336,DCAVMAP)
+  CAVL337_full : LINE=(DCAVMAP,CAVL337,DCAVMAP)
+  CAVL338_full : LINE=(DCAVMAP,CAVL338,DCAVMAP)
+
+  CAVL341_full : LINE=(DCAVMAP,CAVL341,DCAVMAP)
+  CAVL342_full : LINE=(DCAVMAP,CAVL342,DCAVMAP)
+  CAVL343_full : LINE=(DCAVMAP,CAVL343,DCAVMAP)
+  CAVL344_full : LINE=(DCAVMAP,CAVL344,DCAVMAP)
+  CAVL345_full : LINE=(DCAVMAP,CAVL345a,CSP34,CAVL345b,DCAVMAP)
+  CAVL346_full : LINE=(DCAVMAP,CAVL346,DCAVMAP)
+  CAVL347_full : LINE=(DCAVMAP,CAVL347,DCAVMAP)
+  CAVL348_full : LINE=(DCAVMAP,CAVL348,DCAVMAP)
+
+  CAVL351_full : LINE=(DCAVMAP,CAVL351,DCAVMAP)
+  CAVL352_full : LINE=(DCAVMAP,CAVL352,DCAVMAP)
+  CAVL353_full : LINE=(DCAVMAP,CAVL353,DCAVMAP)
+  CAVL354_full : LINE=(DCAVMAP,CAVL354,DCAVMAP)
+  CAVL355_full : LINE=(DCAVMAP,CAVL355a,CSP35,CAVL355b,DCAVMAP)
+  CAVL356_full : LINE=(DCAVMAP,CAVL356,DCAVMAP)
+  CAVL357_full : LINE=(DCAVMAP,CAVL357,DCAVMAP)
+  CAVL358_full : LINE=(DCAVMAP,CAVL358,DCAVMAP)
+
+  QCM01_full : LINE=(QCM01,XCM01,YCM01,QCM01)
+  QCM02_full : LINE=(QCM02,XCM02,YCM02,QCM02)
+  QCM03_full : LINE=(QCM03,XCM03,YCM03,QCM03)
+  QCM04_full : LINE=(QCM04,XCM04,YCM04,QCM04)
+  QCM05_full : LINE=(QCM05,XCM05,YCM05,QCM05)
+  QCM06_full : LINE=(QCM06,XCM06,YCM06,QCM06)
+  QCM07_full : LINE=(QCM07,XCM07,YCM07,QCM07)
+  QCM08_full : LINE=(QCM08,XCM08,YCM08,QCM08)
+  QCM09_full : LINE=(QCM09,XCM09,YCM09,QCM09)
+  QCM10_full : LINE=(QCM10,XCM10,YCM10,QCM10)
+  QCM11_full : LINE=(QCM11,XCM11,YCM11,QCM11)
+  QCM12_full : LINE=(QCM12,XCM12,YCM12,QCM12)
+  QCM13_full : LINE=(QCM13,XCM13,YCM13,QCM13)
+  QCM14_full : LINE=(QCM14,XCM14,YCM14,QCM14)
+  QCM15_full : LINE=(QCM15,XCM15,YCM15,QCM15)
+  QCM16_full : LINE=(QCM16,XCM16,YCM16,QCM16)
+  QCM17_full : LINE=(QCM17,XCM17,YCM17,QCM17)
+  QCM18_full : LINE=(QCM18,XCM18,YCM18,QCM18)
+  QCM19_full : LINE=(QCM19,XCM19,YCM19,QCM19)
+  QCM20_full : LINE=(QCM20,XCM20,YCM20,QCM20)
+  QCM21_full : LINE=(QCM21,XCM21,YCM21,QCM21)
+  QCM22_full : LINE=(QCM22,XCM22,YCM22,QCM22)
+  QCM23_full : LINE=(QCM23,XCM23,YCM23,QCM23)
+  QCM24_full : LINE=(QCM24,XCM24,YCM24,QCM24)
+  QCM25_full : LINE=(QCM25,XCM25,YCM25,QCM25)
+  QCM26_full : LINE=(QCM26,XCM26,YCM26,QCM26)
+  QCM27_full : LINE=(QCM27,XCM27,YCM27,QCM27)
+  QCM28_full : LINE=(QCM28,XCM28,YCM28,QCM28)
+  QCM29_full : LINE=(QCM29,XCM29,YCM29,QCM29)
+  QCM30_full : LINE=(QCM30,XCM30,YCM30,QCM30)
+  QCM31_full : LINE=(QCM31,XCM31,YCM31,QCM31)
+  QCM32_full : LINE=(QCM32,XCM32,YCM32,QCM32)
+  QCM33_full : LINE=(QCM33,XCM33,YCM33,QCM33)
+  QCM34_full : LINE=(QCM34,XCM34,YCM34,QCM34)
+  QCM35_full : LINE=(QCM35,XCM35,YCM35,QCM35)
+
+! L0
+
+  CM01 : LINE=(CM01BEG,DCM1,&
+    CAVL011_full,DCM2,CAVL012_full,DCM2,CAVL013_full,DCM2,CAVL014_full,DCM2,&
+    CAVL015_full,DCM2,CAVL016_full,DCM2,CAVL017_full,DCM2,CAVL018_full,DCM3,&
+    CMB01,DCM4a,BEAM0,DCM4b,QCM01_full,DCM5,CM01END)
+
+! L1
+
+  CM02 : LINE=(CM02BEG,DCM1,&
+    CAVL021_full,DCM2,CAVL022_full,DCM2,CAVL023_full,DCM2,CAVL024_full,DCM2,&
+    CAVL025_full,DCM2,CAVL026_full,DCM2,CAVL027_full,DCM2,CAVL028_full,DCM3,&
+    CMB02,DCM4,QCM02_full,DCM5,CM02END)
+
+  CM03 : LINE=(CM03BEG,DCM1,&
+    CAVL031_full,DCM2,CAVL032_full,DCM2,CAVL033_full,DCM2,CAVL034_full,DCM2,&
+    CAVL035_full,DCM2,CAVL036_full,DCM2,CAVL037_full,DCM2,CAVL038_full,DCM3,&
+    CMB03,DCM4,QCM03_full,DCM5,CM03END)
+
+  CMH1 : LINE=(CMH1BEG,DCMH0,&
+    CAVC011_full,DCMH2,CAVC012_full,DCMH2,CAVC013_full,DCMH2,&
+    CAVC014_full,DCMH2,CAVC015_full,DCMH2,CAVC016_full,DCMH2,&
+    CAVC017_full,DCMH2,CAVC018_full,DCMH3,CMBH1,DCMH4,&
+    CMH1END)
+
+  CMH2 : LINE=(CMH2BEG,DCMH1,&
+    CAVC021_full,DCMH2,CAVC022_full,DCMH2,CAVC023_full,DCMH2,&
+    CAVC024_full,DCMH2,CAVC025_full,DCMH2,CAVC026_full,DCMH2,&
+    CAVC027_full,DCMH2,CAVC028_full,DCMH3,CMBH2,DCMH4,&
+    CMH2END)
+
+! L2
+
+  CM04 : LINE=(CM04BEG,DCM1,&
+    CAVL041_full,DCM2,CAVL042_full,DCM2,CAVL043_full,DCM2,CAVL044_full,DCM2,&
+    CAVL045_full,DCM2,CAVL046_full,DCM2,CAVL047_full,DCM2,CAVL048_full,DCM3,&
+    CMB04,DCM4,QCM04_full,DCM5,CM04END)
+
+  CM05 : LINE=(CM05BEG,DCM1,&
+    CAVL051_full,DCM2,CAVL052_full,DCM2,CAVL053_full,DCM2,CAVL054_full,DCM2,&
+    CAVL055_full,DCM2,CAVL056_full,DCM2,CAVL057_full,DCM2,CAVL058_full,DCM3,&
+    CMB05,DCM4,QCM05_full,DCM5,CM05END)
+
+  CM06 : LINE=(CM06BEG,DCM1,&
+    CAVL061_full,DCM2,CAVL062_full,DCM2,CAVL063_full,DCM2,CAVL064_full,DCM2,&
+    CAVL065_full,DCM2,CAVL066_full,DCM2,CAVL067_full,DCM2,CAVL068_full,DCM3,&
+    CMB06,DCM4,QCM06_full,DCM5,CM06END)
+
+  CM07 : LINE=(CM07BEG,DCM1,&
+    CAVL071_full,DCM2,CAVL072_full,DCM2,CAVL073_full,DCM2,CAVL074_full,DCM2,&
+    CAVL075_full,DCM2,CAVL076_full,DCM2,CAVL077_full,DCM2,CAVL078_full,DCM3,&
+    CMB07,DCM4,QCM07_full,DCM5,CM07END)
+
+  CM08 : LINE=(CM08BEG,DCM1,&
+    CAVL081_full,DCM2,CAVL082_full,DCM2,CAVL083_full,DCM2,CAVL084_full,DCM2,&
+    CAVL085_full,DCM2,CAVL086_full,DCM2,CAVL087_full,DCM2,CAVL088_full,DCM3,&
+    CMB08,DCM4,QCM08_full,DCM5,CM08END)
+
+  CM09 : LINE=(CM09BEG,DCM1,&
+    CAVL091_full,DCM2,CAVL092_full,DCM2,CAVL093_full,DCM2,CAVL094_full,DCM2,&
+    CAVL095_full,DCM2,CAVL096_full,DCM2,CAVL097_full,DCM2,CAVL098_full,DCM3,&
+    CMB09,DCM4,QCM09_full,DCM5,CM09END)
+
+  CM10 : LINE=(CM10BEG,DCM1,&
+    CAVL101_full,DCM2,CAVL102_full,DCM2,CAVL103_full,DCM2,CAVL104_full,DCM2,&
+    CAVL105_full,DCM2,CAVL106_full,DCM2,CAVL107_full,DCM2,CAVL108_full,DCM3,&
+    CMB10,DCM4,QCM10_full,DCM5,CM10END)
+
+  CM11 : LINE=(CM11BEG,DCM1,&
+    CAVL111_full,DCM2,CAVL112_full,DCM2,CAVL113_full,DCM2,CAVL114_full,DCM2,&
+    CAVL115_full,DCM2,CAVL116_full,DCM2,CAVL117_full,DCM2,CAVL118_full,DCM3,&
+    CMB11,DCM4,QCM11_full,DCM5,CM11END)
+
+  CM12 : LINE=(CM12BEG,DCM1,&
+    CAVL121_full,DCM2,CAVL122_full,DCM2,CAVL123_full,DCM2,CAVL124_full,DCM2,&
+    CAVL125_full,DCM2,CAVL126_full,DCM2,CAVL127_full,DCM2,CAVL128_full,DCM3,&
+    CMB12,DCM4,QCM12_full,DCM5,CM12END)
+
+  CM13 : LINE=(CM13BEG,DCM1,&
+    CAVL131_full,DCM2,CAVL132_full,DCM2,CAVL133_full,DCM2,CAVL134_full,DCM2,&
+    CAVL135_full,DCM2,CAVL136_full,DCM2,CAVL137_full,DCM2,CAVL138_full,DCM3,&
+    CMB13,DCM4,QCM13_full,DCM5,CM13END)
+
+  CM14 : LINE=(CM14BEG,DCM1,&
+    CAVL141_full,DCM2,CAVL142_full,DCM2,CAVL143_full,DCM2,CAVL144_full,DCM2,&
+    CAVL145_full,DCM2,CAVL146_full,DCM2,CAVL147_full,DCM2,CAVL148_full,DCM3,&
+    CMB14,DCM4,QCM14_full,DCM5,CM14END)
+
+  CM15 : LINE=(CM15BEG,DCM1,&
+    CAVL151_full,DCM2,CAVL152_full,DCM2,CAVL153_full,DCM2,CAVL154_full,DCM2,&
+    CAVL155_full,DCM2,CAVL156_full,DCM2,CAVL157_full,DCM2,CAVL158_full,DCM3,&
+    CMB15,DCM4,QCM15_full,DCM5,CM15END)
+
+! L3
+
+  CM16 : LINE=(CM16BEG,DCM1,&
+    CAVL161_full,DCM2,CAVL162_full,DCM2,CAVL163_full,DCM2,CAVL164_full,DCM2,&
+    CAVL165_full,DCM2,CAVL166_full,DCM2,CAVL167_full,DCM2,CAVL168_full,DCM3,&
+    CMB16,DCM4,QCM16_full,DCM5,CM16END)
+
+  CM17 : LINE=(CM17BEG,DCM1,&
+    CAVL171_full,DCM2,CAVL172_full,DCM2,CAVL173_full,DCM2,CAVL174_full,DCM2,&
+    CAVL175_full,DCM2,CAVL176_full,DCM2,CAVL177_full,DCM2,CAVL178_full,DCM3,&
+    CMB17,DCM4,QCM17_full,DCM5,CM17END)
+
+  CM18 : LINE=(CM18BEG,DCM1,&
+    CAVL181_full,DCM2,CAVL182_full,DCM2,CAVL183_full,DCM2,CAVL184_full,DCM2,&
+    CAVL185_full,DCM2,CAVL186_full,DCM2,CAVL187_full,DCM2,CAVL188_full,DCM3,&
+    CMB18,DCM4,QCM18_full,DCM5,CM18END)
+
+  CM19 : LINE=(CM19BEG,DCM1,&
+    CAVL191_full,DCM2,CAVL192_full,DCM2,CAVL193_full,DCM2,CAVL194_full,DCM2,&
+    CAVL195_full,DCM2,CAVL196_full,DCM2,CAVL197_full,DCM2,CAVL198_full,DCM3,&
+    CMB19,DCM4,QCM19_full,DCM5,CM19END)
+
+  CM20 : LINE=(CM20BEG,DCM1,&
+    CAVL201_full,DCM2,CAVL202_full,DCM2,CAVL203_full,DCM2,CAVL204_full,DCM2,&
+    CAVL205_full,DCM2,CAVL206_full,DCM2,CAVL207_full,DCM2,CAVL208_full,DCM3,&
+    CMB20,DCM4,QCM20_full,DCM5,CM20END)
+
+  CM21 : LINE=(CM21BEG,DCM1,&
+    CAVL211_full,DCM2,CAVL212_full,DCM2,CAVL213_full,DCM2,CAVL214_full,DCM2,&
+    CAVL215_full,DCM2,CAVL216_full,DCM2,CAVL217_full,DCM2,CAVL218_full,DCM3,&
+    CMB21,DCM4,QCM21_full,DCM5,CM21END)
+
+  CM22 : LINE=(CM22BEG,DCM1,&
+    CAVL221_full,DCM2,CAVL222_full,DCM2,CAVL223_full,DCM2,CAVL224_full,DCM2,&
+    CAVL225_full,DCM2,CAVL226_full,DCM2,CAVL227_full,DCM2,CAVL228_full,DCM3,&
+    CMB22,DCM4,QCM22_full,DCM5,CM22END)
+
+  CM23 : LINE=(CM23BEG,DCM1,&
+    CAVL231_full,DCM2,CAVL232_full,DCM2,CAVL233_full,DCM2,CAVL234_full,DCM2,&
+    CAVL235_full,DCM2,CAVL236_full,DCM2,CAVL237_full,DCM2,CAVL238_full,DCM3,&
+    CMB23,DCM4,QCM23_full,DCM5,CM23END)
+
+  CM24 : LINE=(CM24BEG,DCM1,&
+    CAVL241_full,DCM2,CAVL242_full,DCM2,CAVL243_full,DCM2,CAVL244_full,DCM2,&
+    CAVL245_full,DCM2,CAVL246_full,DCM2,CAVL247_full,DCM2,CAVL248_full,DCM3,&
+    CMB24,DCM4,QCM24_full,DCM5,CM24END)
+
+  CM25 : LINE=(CM25BEG,DCM1,&
+    CAVL251_full,DCM2,CAVL252_full,DCM2,CAVL253_full,DCM2,CAVL254_full,DCM2,&
+    CAVL255_full,DCM2,CAVL256_full,DCM2,CAVL257_full,DCM2,CAVL258_full,DCM3,&
+    CMB25,DCM4,QCM25_full,DCM5,CM25END)
+
+  CM26 : LINE=(CM26BEG,DCM1,&
+    CAVL261_full,DCM2,CAVL262_full,DCM2,CAVL263_full,DCM2,CAVL264_full,DCM2,&
+    CAVL265_full,DCM2,CAVL266_full,DCM2,CAVL267_full,DCM2,CAVL268_full,DCM3,&
+    CMB26,DCM4,QCM26_full,DCM5,CM26END)
+
+  CM27 : LINE=(CM27BEG,DCM1,&
+    CAVL271_full,DCM2,CAVL272_full,DCM2,CAVL273_full,DCM2,CAVL274_full,DCM2,&
+    CAVL275_full,DCM2,CAVL276_full,DCM2,CAVL277_full,DCM2,CAVL278_full,DCM3,&
+    CMB27,DCM4,QCM27_full,DCM5,CM27END)
+
+  CM28 : LINE=(CM28BEG,DCM1,&
+    CAVL281_full,DCM2,CAVL282_full,DCM2,CAVL283_full,DCM2,CAVL284_full,DCM2,&
+    CAVL285_full,DCM2,CAVL286_full,DCM2,CAVL287_full,DCM2,CAVL288_full,DCM3,&
+    CMB28,DCM4,QCM28_full,DCM5,CM28END)
+
+  CM29 : LINE=(CM29BEG,DCM1,&
+    CAVL291_full,DCM2,CAVL292_full,DCM2,CAVL293_full,DCM2,CAVL294_full,DCM2,&
+    CAVL295_full,DCM2,CAVL296_full,DCM2,CAVL297_full,DCM2,CAVL298_full,DCM3,&
+    CMB29,DCM4,QCM29_full,DCM5,CM29END)
+
+  CM30 : LINE=(CM30BEG,DCM1,&
+    CAVL301_full,DCM2,CAVL302_full,DCM2,CAVL303_full,DCM2,CAVL304_full,DCM2,&
+    CAVL305_full,DCM2,CAVL306_full,DCM2,CAVL307_full,DCM2,CAVL308_full,DCM3,&
+    CMB30,DCM4,QCM30_full,DCM5,CM30END)
+
+  CM31 : LINE=(CM31BEG,DCM1,&
+    CAVL311_full,DCM2,CAVL312_full,DCM2,CAVL313_full,DCM2,CAVL314_full,DCM2,&
+    CAVL315_full,DCM2,CAVL316_full,DCM2,CAVL317_full,DCM2,CAVL318_full,DCM3,&
+    CMB31,DCM4,QCM31_full,DCM5,CM31END)
+
+  CM32 : LINE=(CM32BEG,DCM1,&
+    CAVL321_full,DCM2,CAVL322_full,DCM2,CAVL323_full,DCM2,CAVL324_full,DCM2,&
+    CAVL325_full,DCM2,CAVL326_full,DCM2,CAVL327_full,DCM2,CAVL328_full,DCM3,&
+    CMB32,DCM4,QCM32_full,DCM5,CM32END)
+
+  CM33 : LINE=(CM33BEG,DCM1,&
+    CAVL331_full,DCM2,CAVL332_full,DCM2,CAVL333_full,DCM2,CAVL334_full,DCM2,&
+    CAVL335_full,DCM2,CAVL336_full,DCM2,CAVL337_full,DCM2,CAVL338_full,DCM3,&
+    CMB33,DCM4,QCM33_full,DCM5,CM33END)
+
+  CM34 : LINE=(CM34BEG,DCM1,&
+    CAVL341_full,DCM2,CAVL342_full,DCM2,CAVL343_full,DCM2,CAVL344_full,DCM2,&
+    CAVL345_full,DCM2,CAVL346_full,DCM2,CAVL347_full,DCM2,CAVL348_full,DCM3,&
+    CMB34,DCM4,QCM34_full,DCM5,CM34END)
+
+  CM35 : LINE=(CM35BEG,DCM1,&
+    CAVL351_full,DCM2,CAVL352_full,DCM2,CAVL353_full,DCM2,CAVL354_full,DCM2,&
+    CAVL355_full,DCM2,CAVL356_full,DCM2,CAVL357_full,DCM2,CAVL358_full,DCM3,&
+    CMB35,DCM4,QCM35_full,DCM5,CM35END)
+
+! linacs
+
+  L0 : LINE=(BEGL0B,EC1,DCAP0u,&
+    CM01,DCMCM1,HOMCM,DCAP0da,ASTRA,DCAP0db,FC1,&
+    DMSC0da,BLF1,DMSC0db,VGL0Bd,DMSC0dc,VPL0Bd,DMSC0dd,MSC0d,VVL0Bd,&
+    ENDL0B)
+
+  L1 : LINE=(BEGL1B,&
+    VVL1Bu,MSC1u,DMSC1ua,BLF2,DMSC1ub,FC2,DCAP1u,&
+    CM02,DCMCM1,HOMCM,DCMCM2,&
+    CM03,DCMCMH1,HOMCM,DCMCMH2,&
+    CMH1,DCMHCMH1,HOMCM,DCMHCMH2,&
+    CMH2,DCAP1d,FC3,&
+    DMSC1da,BLF3,DMSC1db,MSC1d,VVL1Bd,&
+    ENDL1B)
+
+  L2 : LINE=(BEGL2B,&
+    VVL2Bu,MSC2u,DMSC2ua,BLF4,DMSC2ub,FC4,DCAP2u,&
+    CM04,DCMCM1,HOMCM,DCMCM2,&
+    CM05,DCMCM1,HOMCM,DCMCM2,&
+    CM06,DCMCM1,HOMCM,DCMCM2,&
+    CM07,DCMCM1,HOMCM,DCMCM2,&
+    CM08,DCMCM1,HOMCM,DCMCM2,&
+    CM09,DCMCM1,HOMCM,DCMCM2,&
+    CM10,DCMCM1,HOMCM,DCMCM2,&
+    CM11,DCMCM1,HOMCM,DCMCM2,&
+    CM12,DCMCM1,HOMCM,DCMCM2,&
+    CM13,DCMCM1,HOMCM,DCMCM2,&
+    CM14,DCMCM1,HOMCM,DCMCM2,&
+    CM15,DCMCM1,HOMCM,DCAP2d,FC5,&
+    DMSC2da,BLF5,DMSC2db,VTL1,DMSC2dc,MSC2d,VVL2Bd,&
+    ENDL2B)
+
+  L3 : LINE=(BEGL3B,&
+    VVL3Bu,MSC3u,DMSC3ua,VTL2,DMSC3ub,BLF6,DMSC3uc,FC6,DCAP3u,&
+    CM16,DCMCM1,HOMCM,DCMCM2,&
+    CM17,DCMCM1,HOMCM,DCMCM2,&
+    CM18,DCMCM1,HOMCM,DCMCM2,&
+    CM19,DCMCM1,HOMCM,DCMCM2,&
+    CM20,DCMCM1,HOMCM,DCMCM2,&
+    CM21,DCMCM1,HOMCM,DCMCM2,&
+    CM22,DCMCM1,HOMCM,DCMCM2,&
+    CM23,DCMCM1,HOMCM,DCMCM2,&
+    CM24,DCMCM1,HOMCM,DCMCM2,&
+    CM25,DCMCM1,HOMCM,DCMCM2,DBREAK,&
+    CM26,DCMCM1,HOMCM,DCMCM2,&
+    CM27,DCMCM1,HOMCM,DCMCM2,&
+    CM28,DCMCM1,HOMCM,DCMCM2,&
+    CM29,DCMCM1,HOMCM,DCMCM2,&
+    CM30,DCMCM1,HOMCM,DCMCM2,&
+    CM31,DCMCM1,HOMCM,DCMCM2,&
+    CM32,DCMCM1,HOMCM,DCMCM2,&
+    CM33,DCMCM1,HOMCM,DCMCM2,&
+    CM34,DCMCM1,HOMCM,DCMCM2,&
+    CM35,DCMCM1,HOMCM,DCAP3d,EC2,&
+    DMSC3da,BLF7,DMSC3db,VGL3Bd,DMSC3dc,MSC3d,VVL3Bd,&
+    ENDL3B)
+
+! ==============================================================================
+! coasting FODO
+! ------------------------------------------------------------------------------
+
+  QFCMfodo1 : QUAD, L=Lcmq/2, APER=Rcmq, K1= KQCMfodo1 !L1 QF
+  QDCMfodo1 : QUAD, L=Lcmq/2, APER=Rcmq, K1=-KQCMfodo1 !L1 QD
+  QFCMfodo2 : QUAD, L=Lcmq/2, APER=Rcmq, K1= KQCMfodo2 !L2 QF
+  QDCMfodo2 : QUAD, L=Lcmq/2, APER=Rcmq, K1=-KQCMfodo2 !L2 QD
+  QFCMfodo3 : QUAD, L=Lcmq/2, APER=Rcmq, K1= KQCMfodo3 !L3 QF
+  QDCMfodo3 : QUAD, L=Lcmq/2, APER=Rcmq, K1=-KQCMfodo3 !L3 QD
+
+  DCMfodo : DRIF, L=LDCMfodo
+
+  CMfodo1 : LINE=(QFCMfodo1,DCMfodo,QDCMfodo1,QDCMfodo1,DCMfodo,QFCMfodo1)
+  CMfodo2 : LINE=(QFCMfodo2,DCMfodo,QDCMfodo2,QDCMfodo2,DCMfodo,QFCMfodo2)
+  CMfodo3 : LINE=(QFCMfodo3,DCMfodo,QDCMfodo3,QDCMfodo3,DCMfodo,QFCMfodo3)
+
+! ------------------------------------------------------------------------------
+
+  RETURN
