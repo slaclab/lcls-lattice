@@ -21,6 +21,14 @@ jobs:
       - name: Install dependencies
         run: |
           mamba install pytest pytao bmad
+
+      - name: Fetch executables for testing
+        uses: slaclab/accel-test-exec-fetcher@v1.0
+
+      # This step can be removed, just ensuring it is working properly
+      - name: Check mad8s version
+        run: mad8s --version
+        shell: bash
           
       - name: Run tests
         shell: bash -l {0}
