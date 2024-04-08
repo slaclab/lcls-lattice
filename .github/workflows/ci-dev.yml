@@ -31,12 +31,11 @@ jobs:
         shell: bash -l {0}
         run: |
           conda activate base
+          echo $GITHUB_WORKSPACE
           export LCLS_LATTICE=$GITHUB_WORKSPACE
           #pytest python/tests/ -v        
-          ln -s $LCLS_LATTICE/mad/dict dict
-          pwd
-          ls -ls
+          ln -s mad/dict dict
           test -f dict
-          mad8s < $LCLS_LATTICE/mad/CI-Testing.mad8
+          mad8s < mad/CI-Testing.mad8
           test -f SC_BSYD_GUN_CI.twiss 
         
