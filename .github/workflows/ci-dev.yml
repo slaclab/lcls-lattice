@@ -33,8 +33,10 @@ jobs:
           conda activate base
           export LCLS_LATTICE=$GITHUB_WORKSPACE
           #pytest python/tests/ -v        
-          pwd
           ln -s $LCLS_LATTICE/mad/dict dict
-          mad8s << $LCLS_LATTICE/mad/CI-Testing.mad8
+          pwd
+          ls -ls
+          test -f dict
+          mad8s < $LCLS_LATTICE/mad/CI-Testing.mad8
           test -f SC_BSYD_GUN_CI.twiss 
         
