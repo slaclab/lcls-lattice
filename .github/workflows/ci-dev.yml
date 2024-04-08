@@ -35,7 +35,13 @@ jobs:
           export LCLS_LATTICE=$GITHUB_WORKSPACE
           #pytest python/tests/ -v        
           ln -s mad/dict dict
+          echo "testing dict"
           test -f dict
+          echo $?
+          echo "running mad8s"
           mad8s < mad/CI-Testing.mad8
+          echo $?
+          echo "testing .twiss"
           test -f SC_BSYD_GUN_CI.twiss 
+          echo $?
         
