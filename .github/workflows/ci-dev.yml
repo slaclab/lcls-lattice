@@ -34,11 +34,19 @@ jobs:
           export LCLS_LATTICE=$GITHUB_WORKSPACE
           #pytest python/tests/ -v    
           echo $LCLS_LATTICE
-          cd mad
+          cd $LCLS_LATTICE/mad
           echo "running mad8s"
-          mad8s < CI-Testing.mad8
+          ../mad8s < CI-Testing.mad8
           echo $?
-          echo "testing .twiss"
+          echo "testing is .twiss created"
           test -f SC_BSYD_GUN_CI.twiss 
           echo $?
+
+          cd $LCLS_LATTICE/bmad/models
+          echo "running lc_unit_test_bmad"
+          ../../lc_unit_test_bmad sc_bsyd.lat.bmad
+          echo "testing is Bmad twiss.out created"
+          test -f twiss.out
+          echo $?
+
         
