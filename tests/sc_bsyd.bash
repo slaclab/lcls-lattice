@@ -11,4 +11,5 @@ echo "running lc_unit_test_bmad"
 echo "testing if Bmad twiss.out created"
 test -f twiss.out
 
+cd $LCLS_LATTICE
 tests/unit_tests.py
