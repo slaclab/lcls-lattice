@@ -23,12 +23,12 @@ MODELS = [
 
 @pytest.mark.parametrize("model", MODELS)
 def test_exec_mad8s(model):
-  mad8s_commands = open(LCLS_LATTICE+'/mad/'+model.upper()+'_CI-Testing.mad8')
+  mad8s_commands = open(LCLS_LATTICE+'/mad/'+model.upper()+'_CI_Testing.mad8')
   mad8s_result = run(['../mad8s'],cwd=LCLS_LATTICE+'/mad', stdin=mad8s_commands, capture_output=True, text=True)
   assert os.path.exists(LCLS_LATTICE+'/mad/'+model.upper()+'_GUN_CI.twiss')
 
 @pytest.mark.parametrize("model", MODELS)
-def test_exec_mad8s(model):
+def test_exec_bmad(model):
   bmad_result = run(['../../../lc_unit_test_bmad',model+'.lat.bmad'],cwd=LCLS_LATTICE+'/bmad/models/'+model, capture_output=True, text=True)
   assert os.path.exists(LCLS_LATTICE+'/bmad/models/'+model+'/twiss.out')
 
