@@ -21,16 +21,16 @@ MODELS = [
 # 'sc_inj',
 ]
 
-@pytest.mark.parametrize("model", MODELS)
-def test_exec_mad8s(model):
-  mad8s_commands = open(LCLS_LATTICE+'/mad/'+model.upper()+'_CI_Testing.mad8')
-  mad8s_result = run(['../mad8s'],cwd=LCLS_LATTICE+'/mad', stdin=mad8s_commands, capture_output=True, text=True)
-  assert os.path.exists(LCLS_LATTICE+'/mad/'+model.upper()+'_GUN_CI.twiss')
+@pytest.fixture(scope='module',autouse=True)
+def exec_mad8s():
+  for model in MODELS:
+    mad8s_commands = open(LCLS_LATTICE+'/mad/'+model.upper()+'_CI_Testing.mad8')
+    run(['../mad8s'],cwd=LCLS_LATTICE+'/mad', stdin=mad8s_commands, capture_output=True, text=True)
 
-@pytest.mark.parametrize("model", MODELS)
-def test_exec_bmad(model):
-  bmad_result = run(['../../../lc_unit_test_bmad',model+'.lat.bmad'],cwd=LCLS_LATTICE+'/bmad/models/'+model, capture_output=True, text=True)
-  assert os.path.exists(LCLS_LATTICE+'/bmad/models/'+model+'/twiss.out')
+@pytest.fixture(scope='module',autouse=True)
+def exec_bmad():
+  for model in MODELS:
+    bmad_result = run(['../../../lc_unit_test_bmad',model+'.lat.bmad'],cwd=LCLS_LATTICE+'/bmad/models/'+model, capture_output=True, text=True)
 
 def parse_file(file_name):
   data_lines = []
@@ -43,11 +43,17 @@ def parse_file(file_name):
 comments = ['!','*','@','$','#']
 
 @pytest.mark.parametrize("model", MODELS)
+def test_bmad_ran(model):
+  assert os.path.exists(LCLS_LATTICE+'/bmad/models/'+model+'/twiss.out')
+
+@pytest.mark.parametrize("model", MODELS)
+def test_mad8s_ran(model):
+  assert os.path.exists(LCLS_LATTICE+'/mad/'+model.upper()+'_GUN_CI.twiss')
+
+@pytest.mark.parametrize("model", MODELS)
 def test_bmad_mad8s_agreement(model):
   # test 1
   # Compare beta_x as the end of both the mad and bmad sc_bsyd (cathode to dump) line
-  tests_pass = True
-
   eps = 1e-5
 
   bmad_data = parse_file(LCLS_LATTICE+'/bmad/models/'+model+'/twiss.out')
@@ -57,7 +63,6 @@ def test_bmad_mad8s_agreement(model):
   mad8_beta_x = float(mad8_data[-1][2])
 
   test = abs((bmad_beta_x-mad8_beta_x) / (bmad_beta_x+mad8_beta_x) / 2) 
-  print(test<eps)
   assert test < eps
 
 # test 2
@@ -65,6 +70,3 @@ def test_bmad_mad8s_agreement(model):
 
 #   under development
 
-#test_exec_mad8s()
-#test_exec_mad8s()
-#test_bmad_mad8s_agreement()
