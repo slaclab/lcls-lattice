@@ -61,7 +61,7 @@ def test_mad8s_ran(model):
 @pytest.mark.parametrize("model", MODELS)
 def test_bmad_mad8s_agreement(model):
   # test 1
-  # Compare beta_x as the end of both the mad and bmad sc_bsyd (cathode to dump) line
+  # Compare beta_x and beta_y as the end of both the mad and bmad (cathode to dump) lines
   eps = 1e-5
 
   bmad_data = parse_file(LCLS_LATTICE+'/bmad/models/'+model+'/twiss.out')
@@ -69,12 +69,11 @@ def test_bmad_mad8s_agreement(model):
     
   bmad_beta_x = float(bmad_data[-1][3])
   mad8_beta_x = float(mad8_data[-1][2])
+  bmad_beta_y = float(bmad_data[-1][12])
+  mad8_beta_y = float(mad8_data[-1][5])
 
-  test = abs((bmad_beta_x-mad8_beta_x) / (bmad_beta_x+mad8_beta_x) / 2) 
-  assert test < eps
+  test_x = abs((bmad_beta_x-mad8_beta_x) / (bmad_beta_x+mad8_beta_x) / 2) 
+  test_y = abs((bmad_beta_y-mad8_beta_y) / (bmad_beta_y+mad8_beta_y) / 2) 
+  assert test_x < eps and test_y < eps
 
-# test 2
-# Compare beta_x as the end of both the mad and bmad sc_hxr (cathode to dump) line
-
-#   under development
 
