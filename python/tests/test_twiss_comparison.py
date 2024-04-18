@@ -31,14 +31,14 @@ def exec_mad8s():
     pytest.skip('unsupported platform')
   for model in MODELS:
     mad8s_commands = open(LCLS_LATTICE+'/mad/'+model.upper()+'_CI_Testing.mad8')
-    run(['../mad8s'],cwd=LCLS_LATTICE+'/mad', stdin=mad8s_commands, capture_output=True, text=True)
+    run([LCLS_LATTICE+'/mad8s'],cwd=LCLS_LATTICE+'/mad', stdin=mad8s_commands, capture_output=True, text=True)
 
 @pytest.fixture(scope='module',autouse=True)
 def exec_bmad():
   if not supported:
     pytest.skip('unsupported platform')
   for model in MODELS:
-    bmad_result = run(['../../../lc_unit_test_bmad',model+'.lat.bmad'],cwd=LCLS_LATTICE+'/bmad/models/'+model, capture_output=True, text=True)
+    bmad_result = run([LCLS_LATTICE+'/lc_unit_test_bmad',model+'.lat.bmad'],cwd=LCLS_LATTICE+'/bmad/models/'+model, capture_output=True, text=True)
 
 def parse_file(file_name):
   data_lines = []

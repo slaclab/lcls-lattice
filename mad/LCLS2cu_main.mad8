@@ -1,6 +1,6 @@
-  TITLE, "AD_ACCEL (January 17, 2024)" !copper linac
+  TITLE, "AD_ACCEL (April 11, 2024)" !copper linac
 
-! *** OPTICS=AD_ACCEL-17JAN24 ***
+! *** OPTICS=AD_ACCEL-11APR24s ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY
   ASSIGN, ECHO="LCLS2cu.echo"
@@ -106,24 +106,26 @@
 ! ------------------------------------------------------------------------------
 ! GSPEC  : 6 MeV spectrometer
 ! SPEC   : 135 MeV spectrometer
-! BSYA_1 : A-line kickers to A-line merge
-! BSYA_2 : A-line merge to Beam Dump East
 ! ==============================================================================
 
 ! ------------------------------------------------------------------------------
-! deflector switch definitions
+! switch definitions
 ! ------------------------------------------------------------------------------
 
-  SETSP     := 0 !deflector switch for HXR/SXR/BSYD spreader
-  SETCUS    := 0 !deflector switch for HXR/CUSXR
-  SETAL     := 0 !deflector switch for HXR/Aline
-  SETDA     := 0 !deflector switch for BSYD/DASEL
-  SETXLEAP2 := 0 !selector switch for XLEAP-II components
+! deflector switches
+
+  SETSP  := 0 !deflector switch for HXR/SXR/BSYD spreader
+  SETCUS := 0 !deflector switch for HXR/CUSXR
+  SETDA  := 0 !deflector switch for BSYD/DASEL
+
+! other switches
 
   SETHXRSS  := 0 !ON/OFF switch for HXR self-seeding chicane
   SETSXRSS  := 0 !ON/OFF switch for SXR self-seeding chicane
   SETPEPX   := 0 !ON/OFF switch for PEPPEx chicane
-  SETCBXFEL := 0 !ON/OFF switch for CBXFEL chicanes
+  SETCBXFEL := 0 !ON/OFF switch for CBXFEL chicane(s)
+  SETXL2WIG := 0 !ON/OFF switch for XLEAP-II wiggler
+  SETXL2SS  := 0 !ON/OFF switch for XLEAP-II self-seeding chicane
 
 ! ------------------------------------------------------------------------------
 ! integrated gradients for undulator quadrupoles
@@ -237,30 +239,35 @@
     SET, KQUM2B,                  -0.13
     SET, KQUM3B,                   0.384569277452
     SET, KQUM4B,                  -0.61774146348
-    SET, KQSX16,  0.677696586055 ! 0.677894017174
-    SET, KQSX19, -0.894080323674 !-0.893321229694
-    SET, KQSX21,  0.902720730991 ! 0.901518123026
-    SET, KQSX24, -0.825788398259 !-0.825282828044
+    SET, KQSX16,  0.675278050651 ! 0.677894017174
+    SET, KQSX19, -0.886396866772 !-0.893321229694
+    SET, KQSX21,  0.900083625923 ! 0.901518123026
+    SET, KQSX24, -0.835734567482 !-0.825282828044
     SET, KQDSXM,                  -1.843482712046
     SET, KQUE1B,                   0.325725075565
     SET, KQUE2B,                  -0.144356640751
     SET, KQDMPB,                  -0.154946553294
   ENDSUBROUTINE
 
-  SETK2cuA : SUBROUTINE !for LCLS2cuA
+! upgrade SXR cells 23-25 (matched) ... use instead of SETK2cuS
 
-  ! set quad strengths for 8 GeV Cu-linac beam to Aline
-
-    SET, KQ50Q3,  0.384840836193 !from SETK2cuH
-    SET, KQ4,    -0.219396715005 !from SETK2cuH
-    SET, KQ10,    0.042155252569
-    SET, KQ11,   -0.037534648193
-    SET, KQ19,    0.028451022652
-    SET, KQ20,    0.013158276826
-    SET, KQ27,   -0.05915714658
-    SET, KQ28,    0.0
-    SET, KQ30,   -0.030016910355
-    SET, KQ38,    0.035190121249
+  SETupgrade : SUBROUTINE !use instead of SETK2cuS
+    SET, KQBP33, -0.645066535808
+    SET, KQBP34,  0.592977153135
+    SET, KQDBL1, -1.045760158543
+    SET, KQDBL2,  0.585600770813
+    SET, KQDL11,  0.358732502069
+    SET, KQUM1b,  0.233548659657
+    SET, KQUM2b, -0.061468904836
+    SET, KQUM3b,  0.685786320722
+    SET, KQUM4b, -0.894612519595
+    SET, KQSX16,  0.57258532825 
+    SET, KQSX19, -0.971622259502
+    SET, KQSX21,  1.13139585643 
+    SET, kQDSXm, -1.843482712046
+    SET, KQUE1B,  0.325725075565
+    SET, KQUE2B, -0.144356640751
+    SET, KQDMPB, -0.154946553294
   ENDSUBROUTINE
 
 ! ==============================================================================
@@ -270,45 +277,34 @@
   COMMENT !for testing the online Matlab model
     BEAM, ENERGY=E00
     USE, CU_GSPEC
-    TWISS, BETA0=TWSSC, TAPE="LCLS2cuGSPEC_twiss.tape", &
+    TWISS, COUPLE, BETA0=TWSSC, TAPE="LCLS2cuGSPEC_twiss.tape", &
       RTAPE="LCLS2cuGSPEC_rmat.tape"
 
     BEAM, ENERGY=E00
     USE, CU_SPEC
-    TWISS, BETA0=TWSSC, TAPE="LCLS2cuSPEC_twiss.tape", &
+    TWISS, COUPLE, BETA0=TWSSC, TAPE="LCLS2cuSPEC_twiss.tape", &
       RTAPE="LCLS2cuSPEC_rmat.tape"
     BEAM, ENERGY=Ei
     USE, CU_SPECi
     TWISS, BETA0=TWSSi, TAPE="LCLS2cuSPECi_twiss.tape", &
       RTAPE="LCLS2cuSPECi_rmat.tape"
 
-    SET, SETCUS, CUSOFF ; SET, SETAL, ALOFF
+    SET, SETCUS, CUSOFF
     SETK2cuH
     BEAM, ENERGY=E00
     USE, CU_HXR
-    TWISS, BETA0=TWSSC, TAPE="LCLS2cuH_twiss.tape", &
+    TWISS, COUPLE, BETA0=TWSSC, TAPE="LCLS2cuH_twiss.tape", &
       RTAPE="LCLS2cuH_rmat.tape"
     BEAM, ENERGY=Ei
     USE, CU_HXRi
     TWISS, BETA0=TWSSi, TAPE="LCLS2cuHi_twiss.tape", &
       RTAPE="LCLS2cuHi_rmat.tape"
 
-    SET, SETCUS, CUSOFF ; SET, SETAL, ALON
-    SETK2cuA
-    BEAM, ENERGY=E00
-    USE, CU_ALINE
-    TWISS, BETA0=TWSSC, TAPE="LCLS2cuA_twiss.tape", &
-      RTAPE="LCLS2cuA_rmat.tape"
-    BEAM, ENERGY=Ei
-    USE, CU_ALINEi
-    TWISS, BETA0=TWSSi, TAPE="LCLS2cuAi_twiss.tape", &
-      RTAPE="LCLS2cuAi_rmat.tape"
-
     SET, SETCUS, CUSON !pulsed
     SETK2cuS
     BEAM, ENERGY=E00
     USE, CU_SXR
-    TWISS, BETA0=TWSSC, TAPE="LCLS2cuS_twiss.tape", &
+    TWISS, COUPLE, BETA0=TWSSC, TAPE="LCLS2cuS_twiss.tape", &
       RTAPE="LCLS2cuS_rmat.tape"
     BEAM, ENERGY=Ei
     USE, CU_SXRi
@@ -328,10 +324,13 @@
 
 ! ------------------------------------------------------------------------------
 
+ !CALL, FILENAME="upgrade/MSXRXXcu.mad8"
+ !SETupgrade
+
  !CALL, FILENAME="LCLS2cu_match.mad8"
+ !CALL, FILENAME="LCLS2cu_makeSymbols.mad8"
+ !CALL, FILENAME="LCLS2cu_makeElegant.mad8" !use LCLS_L*e.xsif
  !CALL, FILENAME="LCLS2cu_XLEAP.mad8"
- !CALL, FILENAME="RDB/LCLS2cu_makeSymbols.mad8"
- !CALL, FILENAME="elegant/LCLS2cu_makeElegant.mad8" !use LCLS_L*e.xsif
 
  !STOP
 
@@ -344,7 +343,7 @@
  !COMMENT
     ASSIGN, PRINT="LCLS2cuH.print"
     BEAM, ENERGY=E00
-    SET, SETCUS, CUSOFF ; SET, SETAL, ALOFF
+    SET, SETCUS, CUSOFF
     SETK2cuH
     USE, CU_HXR
    !SAVELINE, NAME="CU_HXR", FILENAME="LCLS2cuH.saveline"
@@ -375,7 +374,7 @@
   COMMENT
     ASSIGN, PRINT="LCLS2cuHS.print"
     BEAM, ENERGY=E00
-    SET, SETCUS, CUSOFF ; SET, SETAL, ALOFF
+    SET, SETCUS, CUSOFF
     SETK2cuH
     USE, CU_SFTH
     PRINT, FULL
@@ -389,7 +388,7 @@
  !COMMENT
     ASSIGN, PRINT="LCLS2cuHXTES.print"
     BEAM, ENERGY=E00
-    SET, SETCUS, CUSOFF ; SET, SETAL, ALOFF
+    SET, SETCUS, CUSOFF
     SETK2cuH
     USE, CU_HXTES
     PRINT, FULL
@@ -403,7 +402,7 @@
  !COMMENT
     ASSIGN, PRINT="LCLS2cuHTXI.print"
     BEAM, ENERGY=E00
-    SET, SETCUS, CUSOFF ; SET, SETAL, ALOFF
+    SET, SETCUS, CUSOFF
     SETK2cuH
     USE, CU_HTXI
     PRINT, FULL
@@ -439,32 +438,6 @@
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
       STYLE=100, SPLINE, RANGE=VBOUTB/DU7S[31], FILE="LCLS2cuS", &
       TITLE="UNDS (Cu beam, 8 GeV)"
- !ENDCOMMENT
-
-! ------------------------------------------------------------------------------
-
-! A-line
-
- !COMMENT
-    ASSIGN, PRINT="LCLS2cuA.print"
-    BEAM, ENERGY=E00
-    SET, SETCUS, CUSOFF ; SET, SETAL, ALON
-    SETK2cuA
-    USE, CU_ALINE
-   !SAVELINE, NAME="CU_ALINE", FILENAME="LCLS2cuA.saveline"
-    PRINT, FULL
-    SURVEY, THETA0=ADL1, X0=Xi, Z0=Zi, TAPE="LCLS2cuA_survey.tape"
-    TWISS, SAVE, BETA0=TWSSC, TAPE="LCLS2cuA_twiss.tape" !, &
-   !  RTAPE="LCLS2cuA_rmat.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
-      STYLE=100, SPLINE, RANGE=BEGDL1_1/ENDBSYA_2, FILE="LCLS2cuA", &
-      TITLE="Cu-linac to A-line"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=rBETX,rBETY, &
-      STYLE=100, SPLINE, RANGE=BEGDL1_1/ENDBSYA_2, FILE="LCLS2cuA", &
-      TITLE="Cu-linac to A-line"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE, RANGE=BEGDL1_1/ENDBSYA_2, FILE="LCLS2cuA", &
-      TITLE="Cu-linac to A-line"
  !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
@@ -512,7 +485,7 @@
  !COMMENT
     ASSIGN, PRINT="BSY-LCLS2cuH.print"
     BEAM, ENERGY=Ef
-    SET, SETCUS, CUSOFF ; SET, SETAL, ALOFF
+    SET, SETCUS, CUSOFF
     SETK2cuH
     USE, BSYLTUH
     PRINT, FULL
@@ -527,7 +500,7 @@
   !COMMENT
     ASSIGN, PRINT="BSY-LCLS2cuHS.print"
     BEAM, ENERGY=Ef
-    SET, SETCUS, CUSOFF ; SET, SETAL, ALOFF
+    SET, SETCUS, CUSOFF
     SETK2cuH
     USE, BSYLTUHS
     PRINT, FULL
@@ -542,7 +515,8 @@
  !COMMENT
     ASSIGN, PRINT="BSY-LCLS2cuHXTES.print"
     BEAM, ENERGY=Ef
-    SET, SETCUS, CUSOFF ; SET, SETAL, ALOFF
+    SET, SETCUS, CUSOFF
+    SETK2cuH
     USE, BSYLTUHXTES
     PRINT, FULL
     SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
@@ -556,7 +530,8 @@
  !COMMENT
     ASSIGN, PRINT="BSY-LCLS2cuHTXI.print"
     BEAM, ENERGY=Ef
-    SET, SETCUS, CUSOFF ; SET, SETAL, ALOFF
+    SET, SETCUS, CUSOFF
+    SETK2cuH
     USE, BSYLTUHTXI
     PRINT, FULL
     SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
@@ -573,26 +548,11 @@
     SET, SETCUS, CUSON   !pulsed
    !SET, SETCUS, CUSONDC !DC
    !VALUE, PULSED,DCMODE
-    SETK2cuS
+   !SETK2cuS
     USE, BSYLTUS
     PRINT, FULL
     SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
       TAPE="BSY-LCLS2cuS_survey.tape"
- !ENDCOMMENT
-
-! ------------------------------------------------------------------------------
-
-! A-line
-
- !COMMENT
-    ASSIGN, PRINT="BSY-LCLS2cuA.print"
-    BEAM, ENERGY=Ef
-    SET, SETCUS, CUSOFF ; SET, SETAL, ALON
-    SETK2cuA
-    USE, BSYALINE
-    PRINT, FULL
-    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
-      TAPE="BSY-LCLS2cuA_survey.tape"
  !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
@@ -603,7 +563,7 @@
   COMMENT
     ASSIGN, PRINT="BSYA-LCLS1cuA.print"
     BEAM, ENERGY=Ef
-    SET, SETCUS, CUSOFF ; SET, SETAL, ALON
+    SET, SETCUS, CUSOFF
     SETK2cuA
     USE, S100ALINE
     PRINT, FULL
@@ -620,7 +580,7 @@
   ! Cathode to HXR Main Dump
 
     BEAM, ENERGY=E00
-    SET, SETCUS, CUSOFF ; SET, SETAL, ALOFF
+    SET, SETCUS, CUSOFF
     SETK2cuH
     USE, CU_HXR
     PRINT, FULL
@@ -712,17 +672,6 @@
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
       COLOUR=100, SPLINE, RANGE=BEGDMPS_1/DUMPFACEb, FILE="LCLS2cu_color", &
       TITLE="Cu_linac: SXR Post-indulator to dump"
-
-  ! Cathode to A-line
-
-    BEAM, ENERGY=E00
-    SET, SETCUS, CUSOFF ; SET, SETAL, ALON
-    SETK2cuA
-    USE, CU_ALINE
-    TWISS, SAVE, BETA0=TWSSC
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=rBETX,rBETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGCLTH_0/ENDBSYA_2, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: BSY to A-line"
  !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
@@ -732,3 +681,4 @@
 ! ------------------------------------------------------------------------------
 
   STOP
+

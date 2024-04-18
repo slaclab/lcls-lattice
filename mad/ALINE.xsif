@@ -1,10 +1,15 @@
 
-! *** OPTICS=AD_ACCEL-17JAN24 ***
+! *** OPTICS=AD_ACCEL-11APR24s ***
 
 ! LCLS2sc A-line
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 31-MAR-2024, M. Woodley
+!  * remove SCAPM2 (XCAPM2,YCAPM2)
+!  * add YCDAS19 0.397 m d/s of XCDAS19
+!  * comment ALINEa and ALINEb LINE's as decommissioned (DASEL uses ALINEc)
 ! ------------------------------------------------------------------------------
 ! 26-MAR-2019, M. Woodley
 !  * split BSYA area into two subareas, BSYA_1 and BSYA_2
@@ -89,6 +94,8 @@
 ! ------------------------------------------------------------------------------
 
 ! NOTE: ABRDAS2 and TBRDAS2 are defined in common.xsif
+
+  SETAL := 0 !turns off decommissioned kickers
 
 ! ==============================================================================
 ! dipoles
@@ -510,8 +517,9 @@
   LDBRDAS2 := LBSP*COS(ABRDAS2*SIN(TBRDAS2)/2)*COS(ABRDAS2*COS(TBRDAS2)/2)/ &
               COS(ABRDAS2*COS(TBRDAS2))
   LDA04b   := 0.5
-  LDA04c   := 19.829173726034 !!!
-  LDA04a   := LDA04-LDBRDAS2-LDA04b-LDA04c
+  LDA04c   := 0.397
+  LDA04d   := 19.829173726034-0.397 !!!
+  LDA04a   := LDA04-LDBRDAS2-LDA04b-LDA04c-LDA04d
   LDA05    := 0.5
   LDA06    := 0.5
 
@@ -522,10 +530,11 @@
   DA03a    : DRIF, L=DA03[L]-DA03b[L]
   DBRDAS2a : DRIF, L=LDBRDAS2/2
   DBRDAS2b : DRIF, L=LDBRDAS2/2
-  DRCDAS19 : DRIF, L=0.0
+  DXCDAS19 : DRIF, L=0.0
   DA04a    : DRIF, L=LDA04a
   DA04b    : DRIF, L=LDA04b
   DA04c    : DRIF, L=LDA04c
+  DA04d    : DRIF, L=LDA04d
   DA05     : DRIF, L=LDA05
   DA06     : DRIF, L=LDA06
   DAMQ10   : DRIF, L=0.9875
@@ -574,16 +583,15 @@
 ! XCORs and YCORs
 ! ------------------------------------------------------------------------------
 
-  XCAPM2 : HKIC, TYPE="unknown" !type to be determined
   A28X   : HKIC
   A32X   : HKIC
 
-  YCAPM2 : VKIC, TYPE="unknown" !type to be determined
-  YCBSYA : VKIC, TYPE="1D2"
-  A10Y   : VKIC
-  A18Y   : VKIC
-  A29Y   : VKIC
-  A33Y   : VKIC
+  YCBSYA  : VKIC, TYPE="1D2"
+  YCDAS19 : VKIC, TYPE="class-4"
+  A10Y    : VKIC
+  A18Y    : VKIC
+  A29Y    : VKIC
+  A33Y    : VKIC
 
 ! ==============================================================================
 ! BPMs
@@ -718,8 +726,6 @@
   Q3S_full    : LINE=(Q3S,Q3S)
   Q4S_full    : LINE=(Q4S,Q4S)
 
-  SCAPM2 : LINE=(XCAPM2,YCAPM2)
-
   LD105 : LINE=(&
     D105a,PC10,D105b,IV10,D105c,FV10,D105d,BPM10A,D105e,I10,D105f,PR10,D105g,&
     A10Y,D105h,I11,D105i)
@@ -738,7 +744,7 @@
   LD124 : LINE=(&
     D124a,A32X,D124b,A33Y,D124c,BPM31,D124d,BPM32,D124e,PR33,D124f,C37,D124g)
 
-! shared line with BSY
+! shared line with BSY (decommissioned)
 
   ALINEa : LINE=(BEGBSYA_1,RWWAKE3A,&
     BKRAPM1_full,DAPM1,PCAPM1,DAPM1,&
@@ -746,14 +752,17 @@
     BKRAPM3_full,DAPM3,PCAPM3,DAPM3,&
     BKRAPM4_full,DAPM4,PCAPM4,DA01,DA02)
 
-! separate line from BSY
+! separate line from BSY (decommissioned)
 
   ALINEb : LINE=(PCBSYA,DA03a,YCBSYA,DA03b,YAGAPM,DA04a,&
-    DBRDAS2a,DBRDAS2b,DA04b,DRCDAS19,ENDBSYA_1)
+    DBRDAS2a,DBRDAS2b,DA04b,DXCDAS19,ENDBSYA_1)
 
-  ALINEc : LINE=(BEGBSYA_2,&
-    DA04c,PRBRAM1,DA05,TGTBRAM1,DA06,&
-    BRAM1_full,ROLL2,DAMQ10,&
+! continuation of DASEL line
+
+  ALINEc : LINE=(&
+    DA04c,YCDAS19,DA04d,PRBRAM1,DA05,TGTBRAM1,DA06,&
+    BRAM1_full,ROLL2,ENDDASEL,&
+    BEGBSYA_2,DAMQ10,&
     Q10_full,LD105,&
     Q11_full,D106,&
     BEGB,&

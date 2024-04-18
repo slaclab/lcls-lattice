@@ -1,10 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-17JAN24 ***
+! *** OPTICS=AD_ACCEL-11APR24s ***
 
 ! LCLS2sc undulator and undulator extension
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 31-MAR-2024, M. Woodley
+!  * remove WIGXLh from SXR cell 18 (move to LTUS)
 ! ------------------------------------------------------------------------------
 ! 12-JAN-2024, M. Woodley
 !  * adjust complement and locations of CBXFEL components per SLAC-I-120-022-R2
@@ -366,52 +369,6 @@ du7s: drift, l = ldu7s
 due1ab: drift, l = 0.9-lrfbub -0.057
 due1e: drift, l = 0.057
 
-! ==============================================================================
-! XLEAP-II devices
-! ==============================================================================
-
-! ------------------------------------------------------------------------------
-! original XLEAP wiggler
-! ------------------------------------------------------------------------------
-
-! wiggler is modeled as R-matrix to include natural vertical focusing;
-! it is nominally OFF (opened to full gap, with Kwig~2); at minimum gap, Kwig=50
-
-kwig = 34                                        !wiggler parameter [m^-1]
-lamw = 0.34                                      !wiggler period [m]
-lwigh = 2.38/2                                    !wiggler half-length [m]
-gamw = eu/mc2                                    !Lorentz energy factor in wiggler [ ]
-kqwig = setxleap2*(2*pi*kwig/lamw/sqrt(2)/gamw)^2 !natural vertical focusing "k" [m^-2]
-
-! handle Kwig->0 by expressing R34 as an approximate SINC function
-
-argw = lwigh*sqrt(kqwig)
-argw2 = argw*argw
-argw4 = argw2*argw2
-argw6 = argw4*argw2
-sincargw = 1-argw2/6+argw4/120-argw6/5040 !~sinc(ARGw)=sin(ARGw)/ARGw
-r34w = lwigh*sincargw
-
-wigxlh: taylor, type = "variable gap", l = lwigh, tt11 = 1.0, tt12 = lwigh, tt21 = 0, tt22 = 1.0, tt33 = cos(argw),
-          tt34 = r34w, tt43 = -sin(argw)*sqrt(kqwig), tt44 = cos(argw)
-
- !VALUE, WIGXLh[R11],WIGXLh[R12],WIGXLh[R21],WIGXLh[R22]
- !VALUE, WIGXLh[R33],WIGXLh[R34],WIGXLh[R43],WIGXLh[R44]
-
-dusegs18a: drift, l = (ldusegs-2*wigxlh[l])/2
-dusegs18b: drift, l = ldusegs-dusegs18a[l]-2*wigxlh[l]
- !VALUE, DUSEGS18a[L],DUSEGS18b[L]
- !VALUE, DUSEGS18a[L]+2*WIGXLh[L]+DUSEGS18b[L],LDUSEGS
-
-
-
-!Old split line:  WIGXLh_full : LINE=(WIGXLh,WIGXLh)
-wigxlh_full: line = (wigxlh,wigxlh)
-
-!wigxlh_full: line = (wigxlh)
-!wigxlh[L] = 2*wigxlh[L]
-  DUSEGS18    : LINE=(DUSEGS18a,WIGXLh_full,DUSEGS18b)
-
 ! ------------------------------------------------------------------------------
 ! SXR extension quads
 ! ------------------------------------------------------------------------------
@@ -541,6 +498,7 @@ dpssx25: drift, l = lpssx
   SXBRK25 : LINE=(DU3s,DPSSX25,DU4s,DU5s,DQSX25     ,DU6s,RFBSX25,DU7s)
 
 dusegs17: drift, l = ldusegs
+dusegs18: drift, l = ldusegs
 dusegs19: drift, l = ldusegs
 dusegs20: drift, l = ldusegs
 dusegs21: drift, l = ldusegs
@@ -550,7 +508,7 @@ dusegs24: drift, l = ldusegs
 dusegs25: drift, l = ldusegs
 
   SXCEL17 : LINE=(DU1s,DU2s,DUSEGS17,SXBRK17)
-  SXCEL18 : LINE=(DU1s,DU2s,DUSEGS18,SXBRK18) !XLEAP wiggler
+  SXCEL18 : LINE=(DU1s,DU2s,DUSEGS18,SXBRK18)
   SXCEL19 : LINE=(DU1s,DU2s,DUSEGS19,SXBRK19) !Q+RFBPM
   SXCEL20 : LINE=(DU1s,DU2s,DUSEGS20,SXBRK20)
   SXCEL21 : LINE=(DU1s,DU2s,DUSEGS21,SXBRK21) !Q+RFBPM
@@ -1744,7 +1702,7 @@ due1ab2: drift, l = due1ab[l]-due1ab1[l]
 ! ------------------------------------------------------------------------------
 
 TCX01B: pipe, L = 0.75, type ="@1,TRANS_DEFL", descrip = "deferred LCAVITY" !horiz. deflection
-!old: tcx01b: lcavity, rf_frequency = xbandf * 1e6, type = "TRANS_DEFL", l = 1.5/2
+!old: tcx01b: lcavity, rf_frequency = xbandf * 1e6, type = "TRANS_DEFL", l = 1.5/2, cavity_type = traveling_wave
 
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
@@ -3763,8 +3721,8 @@ dqhx50: drift, l = lqu
 ! HXR undulator exit section
 ! ------------------------------------------------------------------------------
 
-tcx01: lcavity, rf_frequency = xbandf * 1e6, type = "TRANS_DEFL", l = 1.0/2 !horizontal deflection
-tcx02: lcavity, rf_frequency = xbandf * 1e6, type = "TRANS_DEFL", l = 1.0/2 !horizontal deflection
+tcx01: lcavity, rf_frequency = xbandf * 1e6, type = "TRANS_DEFL", l = 1.0/2, cavity_type = traveling_wave !horizontal deflection
+tcx02: lcavity, rf_frequency = xbandf * 1e6, type = "TRANS_DEFL", l = 1.0/2, cavity_type = traveling_wave !horizontal deflection
 
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file

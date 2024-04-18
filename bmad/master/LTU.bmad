@@ -1,10 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-17JAN24 ***
+! *** OPTICS=AD_ACCEL-11APR24s ***
 
 ! LCLS2sc LTU and dump
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 31-MAR-2024, M. Woodley
+!  * replace UMXL2h with WIGXLh
 ! ------------------------------------------------------------------------------
 ! 07-SEP-2022, M. Woodley
 !  * redefine YAGDL18
@@ -1541,7 +1544,6 @@ lundh = lund/2     !wiggler half-length [m]
 !=!      R43 = -sin(Lundh*sqrt(kqund))*sqrt(kqund), &
 !=!      R44 = cos(Lundh*sqrt(kqund))
 !=!    UMXL1h : UMXLh
-!=!    UMXL2h : UMXLh
 !=!    UMXL3h : UMXLh
 !=!    UMXL4h : UMXLh
 !=!  endcomment
@@ -1567,10 +1569,10 @@ r44xl1 = 1.0
 !------- XLEAP-II wigglers -------
 umxl0h: wiggler, 
         type = "LCLS-I",
-        L_period = 0.55, 
+        L_period = 0.555, 
         n_period = 6, 
         b_max = 0, ! = K * 2*pi*m_electron / (c_light * 0.55), 
-        L = 6*0.55
+        L = 6*0.555
         !ds_step = 0.55*10
                 
 umxl0h[L] = umxl0h[L]/2 ! Will be doubled in desplitting process. 
@@ -1579,20 +1581,6 @@ umxl0h[L] = umxl0h[L]/2 ! Will be doubled in desplitting process.
 umxl1h: umxl0h
 !old: umxl1h: taylor, type = "LCLS-I", l = lundh, tt11 = r11xl1, tt12 = r12xl1, tt21 = r21xl1, tt22 = r22xl1, tt33 = r33xl1,
 !old           tt34 = r34xl1, tt43 = r43xl1, tt44 = r44xl1
-
-r11xl2 = 1.0
-r12xl2 = lundh
-r21xl2 = 0.0
-r22xl2 = 1.0
-r33xl2 = 1.0
-r34xl2 = lundh
-r43xl2 = 0.0
-r44xl2 = 1.0
-
-
-umxl2h: umxl0h
-!old: umxl2h: taylor, type = "LCLS-I", l = lundh, tt11 = r11xl2, tt12 = r12xl2, tt21 = r21xl2, tt22 = r22xl2, tt33 = r33xl2,
-!old           tt34 = r34xl2, tt43 = r43xl2, tt44 = r44xl2
 
 r11xl3 = 1.0
 r12xl3 = lundh
@@ -1631,12 +1619,6 @@ umxl1h_full: line = (umxl1h)
 umxl1h[L] = 2*umxl1h[L]
 
 
-!Old split line:  UMXL2h_full : LINE=(UMXL2h,UMXL2h)
-
-umxl2h_full: line = (umxl2h)
-umxl2h[L] = 2*umxl2h[L]
-
-
 !Old split line:  UMXL3h_full : LINE=(UMXL3h,UMXL3h)
 
 umxl3h_full: line = (umxl3h)
@@ -1647,6 +1629,41 @@ umxl3h[L] = 2*umxl3h[L]
 
 umxl4h_full: line = (umxl4h)
 umxl4h[L] = 2*umxl4h[L]
+
+! ------------------------------------------------------------------------------
+! original XLEAP wiggler
+! ------------------------------------------------------------------------------
+
+! wiggler is modeled as R-matrix to include natural vertical focusing;
+! it is nominally OFF (opened to full gap, with Kwig~2); at minimum gap, Kwig=50
+
+kwig = 34                                        !wiggler parameter [m^-1]
+lamw = 0.34                                      !wiggler period [m]
+lwigh = 2.38/2                                    !wiggler half-length [m]
+gamw = eu/mc2                                    !Lorentz energy factor in wiggler [ ]
+kqwig = setxl2wig*(2*pi*kwig/lamw/sqrt(2)/gamw)^2 !natural vertical focusing "k" [m^-2]
+
+! handle Kwig->0 by expressing R34 as an approximate SINC function
+
+argw = lwigh*sqrt(kqwig)
+argw2 = argw*argw
+argw4 = argw2*argw2
+argw6 = argw4*argw2
+sincargw = 1-argw2/6+argw4/120-argw6/5040 !~sinc(ARGw)=sin(ARGw)/ARGw
+r34w = lwigh*sincargw
+
+wigxlh: taylor, type = "variable gap", l = lwigh, tt11 = 1.0, tt12 = lwigh, tt21 = 0, tt22 = 1.0, tt33 = cos(argw),
+          tt34 = r34w, tt43 = -sin(argw)*sqrt(kqwig), tt44 = cos(argw)
+
+ !VALUE, WIGXLh[R11],WIGXLh[R12],WIGXLh[R21],WIGXLh[R22]
+ !VALUE, WIGXLh[R33],WIGXLh[R34],WIGXLh[R43],WIGXLh[R44]
+
+
+
+wigxlh_full : line=(wigxlh,wigxlh)
+
+!wigxlh_full: line = (wigxlh)
+!wigxlh[L] = 2*wigxlh[L]
 
 ! ------------------------------------------------------------------------------
 ! new XLEAP-II quadrupoles (to mitigate focusing of wigglers)
@@ -1673,13 +1690,12 @@ qfxl2[L] = 2*qfxl2[L]
 
 ! wiggler pairs
 
+duqxl1: drift, l = 0.2166+0.1777551
+duqxl1w: drift, l = 0.2166+0.475-0.1777551
+duqxl2: drift, l = 0.2166
 
-! Extend to account for real WIGGLER elements for XLEAP
-duqxl: drift, L = 0.2166 + 0.03
-!old: duqxl: drift, l = 0.2166
-
-  UMXLpair1 : LINE=(UMXL1h_full,DUQXL,QFXL1_full,DUQXL,UMXL2h_full)
-  UMXLpair2 : LINE=(UMXL3h_full,DUQXL,QFXL2_full,DUQXL,UMXL4h_full)
+  UMXLpair1 : LINE=(UMXL1h_full,DUQXL1,QFXL1_full,DUQXL1W,WIGXLh_full)
+  UMXLpair2 : LINE=(UMXL3h_full,DUQXL2,QFXL2_full,DUQXL2,UMXL4h_full)
 
 ! ------------------------------------------------------------------------------
 ! original XLEAP self-seeding chicane (normally OFF)
@@ -1710,7 +1726,7 @@ gbxl = 0.011
 zbxl = 0.364
 fbxl = 0.5
 abxl0 = 0.0174 !R56=0.56 mm
-abxl = abxl0*setxleap2
+abxl = abxl0*setxl2ss
 bbxl = brhof*sin(abxl)/zbxl
 abxl_2 = abxl*abxl
 abxl_4 = abxl_2*abxl_2
@@ -1788,7 +1804,7 @@ bcxxl4_full: line = (bcxxl4)
 dxlua1: drift, l = 0.404978
 dxlua2: drift, l = 0.395986
 dumxl12u: drift, l = 0.566965333333
-dumxl12d: drift, l = 1.422304333333
+dumxl12d: drift, l = 1.422304333333+0.475
 dxluc: drift, l = 3.5
 dxlud1: drift, l = 0.323714
 dxlud2: drift, l = 0.393700
@@ -2620,13 +2636,17 @@ bpmbsyqa0[ref] = qa0
   SPhAL : LINE=(DBSY52d,Q50Q3_full,DBSY53a,BPMBSYQ3,RFBBSYQ3,DBSY53b,DBSY53c,XCBSYQ3,DBSY53d,YCBSYQ4,DBSY53f,Q4_full,
          DBSY53ga,PCBSY3,DBSY53gb,MRGALINE)
 
-  SPhBSYa : LINE=(SPhAL,ALINEa)
-
   SPhBSYb : LINE=(PCBSYH,DBSY53h,Q5_full,DBSY54a,XCBSYQ5,DBSY54b,DBSY54c,Q6_full,DRFB,RFBBSYQ6,DBSY55a,YCBSYQ6,DBSY55b,
          PC90,DBSY55c,PCBSY4,DBSY55d,PC119,DBSY55e,D2,DM3,ST60,DM4a,DM60,DM4b,CC31,DM4c,CXQ6,DM4da,PCBSY5,DM4db,XCA0,DXCA0,YCA0,
          DYCA0,ST61,DM5,QA0_full,DM6,DMONI,DMONI,MUWALL,DWALLa,DUMPBSYh,DWALLb,BSYend,RWWAKE3H)
 
-  SPhBSY : LINE=(SPhBSYa,SPhBSYb,ENDSPH)
+! ------------------------------------------------------------------------------
+! BSY to ALINE (from Cu linac or SC linac) is decommissioned
+! ------------------------------------------------------------------------------
+
+ !SPhBSYa : LINE=(SPhAL,ALINEa)
+
+ !SPhBSY : LINE=(SPhBSYa,SPhBSYb,ENDSPH)
 
 ! ------------------------------------------------------------------------------
 ! BSY1 upstream of the HXR merge bend
@@ -3879,11 +3899,10 @@ qdmp2[L] = 2*qdmp2[L]
 ! for matching phase advance between XLEAP-II wiggler pairs
 
   EDSYSB_XL2 : LINE=(DBMARK36b,WS31B,D40cm,DE3mab,DE3mbb,XCE31B,DQEA,QE31B_full,DXLUa1,YCXL1,DXLUa2,XCXL1,DUMXL12u,
-         UMXL1h,UMXL1h,DUQXL,QFXL1,QFXL1,DUQXL,UMXL2h,UMXL2h,MXL2a,DUMXL12d,PC12B,BTM12B,DBTM2YC,YCE32B,DQEAa,QE32B_full,DRFB,
-         RFBE32B,DQEBy1,DCY32B,DQEBy2,WS32B,D40cm,DE3m80cmb,XCE33B,DQEAb,QE33B_full,DQEC,DE3m40cm,YCE34B,DQEA,QE32B_full,DRFB,
-         RFBE34B,DQEC1,WS33B,D40cm,DE3m80cm,XCE35B,DQEAc,QE33B_full,DXLUc,BCXLSS,DXLUd1,YCXL2,DXLUd2,XCXL2,DUMXL34u,MXL2b,UMXL3h,
-         UMXL3h,DUQXL,QFXL2,QFXL2,DUQXL,UMXL4h,UMXL4h,DUMXL34d,YCE36B,DQEA,QE36B_full,DRFB,RFBE36B,DQEBy1,DCY36B,DQEBy2,WS34B,
-         D40cm)
+         UMXLpair1,MXL2a,DUMXL12d,PC12B,BTM12B,DBTM2YC,YCE32B,DQEAa,QE32B_full,DRFB,RFBE32B,DQEBy1,DCY32B,DQEBy2,WS32B,D40cm,
+         DE3m80cmb,XCE33B,DQEAb,QE33B_full,DQEC,DE3m40cm,YCE34B,DQEA,QE32B_full,DRFB,RFBE34B,DQEC1,WS33B,D40cm,DE3m80cm,XCE35B,
+         DQEAc,QE33B_full,DXLUc,BCXLSS,DXLUd1,YCXL2,DXLUd2,XCXL2,DUMXL34u,MXL2b,UMXLpair2,DUMXL34d,YCE36B,DQEA,QE36B_full,DRFB,
+         RFBE36B,DQEBy1,DCY36B,DQEBy2,WS34B,D40cm)
 
   LTUsc_XL2 : LINE=(MM1b,DL2sc,VBSYSb,MM2b,EDMCHb,EDSYSb_XL2,UNMCHb)
 

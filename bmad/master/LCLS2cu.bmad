@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-17JAN24 ***
+! *** OPTICS=AD_ACCEL-11APR24s ***
 
 ! LCLS2cu various parts upstream of BSY
 
@@ -119,38 +119,40 @@ gfac3 = 161*p25*dlwl10+12*p50*dlwl10+3*p25*dlwl9+4*p25*dlwl7
 gradl3 = 15.833405341033 !16.7 !LI25_LI26
  !VALUE, gradL3
 
-l1x___1: lcavity, type = "X1_Xband", rf_frequency = xbandf * 1e6, l = dlwlx/2, voltage = del1x/2 * 1e6, phi0 = phil1x
-l1x___2: lcavity, type = "X1_Xband", rf_frequency = xbandf * 1e6, l = dlwlx/2, voltage = del1x/2 * 1e6, phi0 = phil1x
+l1x___1: lcavity, type = "X1_Xband", rf_frequency = xbandf * 1e6, l = dlwlx/2, voltage = del1x/2 * 1e6, phi0 = phil1x,
+          cavity_type = traveling_wave
+l1x___2: lcavity, type = "X1_Xband", rf_frequency = xbandf * 1e6, l = dlwlx/2, voltage = del1x/2 * 1e6, phi0 = phil1x,
+          cavity_type = traveling_wave
 
 ! L0 sections
 
 l0a___1: lcavity, type = "DUALFEED", rf_frequency = sbandf * 1e6, l = 0.0586460, voltage = gradl0a*0.0586460 * 1e6,
-          phi0 = phil0
+          phi0 = phil0, cavity_type = traveling_wave
 l0a___2: lcavity, type = "DUALFEED", rf_frequency = sbandf * 1e6, l = 0.1993540, voltage = gradl0a*0.1993540 * 1e6,
-          phi0 = phil0
+          phi0 = phil0, cavity_type = traveling_wave
 l0a___3: lcavity, type = "DUALFEED", rf_frequency = sbandf * 1e6, l = 0.6493198, voltage = gradl0a*0.6493198 * 1e6,
-          phi0 = phil0
+          phi0 = phil0, cavity_type = traveling_wave
 l0a___4: lcavity, type = "DUALFEED", rf_frequency = sbandf * 1e6, l = 0.6403022, voltage = gradl0a*0.6403022 * 1e6,
-          phi0 = phil0
+          phi0 = phil0, cavity_type = traveling_wave
 l0a___5: lcavity, type = "DUALFEED", rf_frequency = sbandf * 1e6, l = 1.1518464, voltage = gradl0a*1.1518464 * 1e6,
-          phi0 = phil0
+          phi0 = phil0, cavity_type = traveling_wave
 l0a___6: lcavity, type = "DUALFEED", rf_frequency = sbandf * 1e6, l = 0.3348566, voltage = gradl0a*0.3348566 * 1e6,
-          phi0 = phil0
+          phi0 = phil0, cavity_type = traveling_wave
 l0a___7: lcavity, type = "DUALFEED", rf_frequency = sbandf * 1e6, l = 0.0609190, voltage = gradl0a*0.0609190 * 1e6,
-          phi0 = phil0
+          phi0 = phil0, cavity_type = traveling_wave
 
 l0b___1: lcavity, type = "DUALFEED", rf_frequency = sbandf * 1e6, l = 0.0586460, voltage = gradl0b*0.0586460 * 1e6,
-          phi0 = phil0
+          phi0 = phil0, cavity_type = traveling_wave
 l0b___2: lcavity, type = "DUALFEED", rf_frequency = sbandf * 1e6, l = 0.3371281, voltage = gradl0b*0.3371281 * 1e6,
-          phi0 = phil0
+          phi0 = phil0, cavity_type = traveling_wave
 l0b___3: lcavity, type = "DUALFEED", rf_frequency = sbandf * 1e6, l = 1.1518479, voltage = gradl0b*1.1518479 * 1e6,
-          phi0 = phil0
+          phi0 = phil0, cavity_type = traveling_wave
 l0b___4: lcavity, type = "DUALFEED", rf_frequency = sbandf * 1e6, l = 1.1515630, voltage = gradl0b*1.1515630 * 1e6,
-          phi0 = phil0
+          phi0 = phil0, cavity_type = traveling_wave
 l0b___5: lcavity, type = "DUALFEED", rf_frequency = sbandf * 1e6, l = 0.3351400, voltage = gradl0b*0.3351400 * 1e6,
-          phi0 = phil0
+          phi0 = phil0, cavity_type = traveling_wave
 l0b___6: lcavity, type = "DUALFEED", rf_frequency = sbandf * 1e6, l = 0.0609190, voltage = gradl0b*0.0609190 * 1e6,
-          phi0 = phil0
+          phi0 = phil0, cavity_type = traveling_wave
 
 flnga1: marker !upstream   face of L0a entrance flange
 flnga2: marker !downstream face of L0a exit flange
@@ -161,8 +163,8 @@ flngb2: marker !downstream face of L0b exit flange
 
  !TCAV0 : DRIF, L=0.6680236/2  !flange-to-flange (then split in two)
  !TCAV3 : DRIF, L=2.438/2
-tcav0: lcavity, type = "TRANS_DEFL", rf_frequency = 2856 * 1e6, l = 0.6680236/2 !flange-to-flange (then split in two)
-tcav3: lcavity, type = "TRANS_DEFL", rf_frequency = 2856 * 1e6, l = 2.438/2
+tcav0: lcavity, type = "TRANS_DEFL", rf_frequency = 2856 * 1e6, l = 0.6680236/2, cavity_type = traveling_wave !flange-to-flange (then split in two)
+tcav3: lcavity, type = "TRANS_DEFL", rf_frequency = 2856 * 1e6, l = 2.438/2, cavity_type = traveling_wave
 
 ! decommissioned kicker magnet
 

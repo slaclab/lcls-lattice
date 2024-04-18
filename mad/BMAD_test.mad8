@@ -1,6 +1,6 @@
-  TITLE, "AD_ACCEL (January 17, 2024)" !combine LCLS and LCLS-II
+  TITLE, "AD_ACCEL (April 11, 2024)" !combine LCLS and LCLS-II
 
-! *** OPTICS=AD_ACCEL-17JAN24 ***
+! *** OPTICS=AD_ACCEL-11APR24s ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY
   ASSIGN, ECHO="test.echo"
@@ -166,7 +166,6 @@
  !CU_HXR   : copper linac to e- HXR dump
  !CU_SFTH  : copper linac to e- HXR safety dump
  !CU_SXR   : copper linac to e- SXR dump
- !CU_ALINE : copper linac to End Station A
  !CU_GPSEC : copper linac to gun spectrometer
  !CU_SPEC  : copper linac to 135 MeV spectrometer
 
@@ -237,29 +236,6 @@
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
       STYLE=100, SPLINE, FILE="test", RANGE=#S/DUMPFACEB, &
       TITLE="BEAMPATH=CU_SXR"
-  ENDCOMMENT
-
-! ------------------------------------------------------------------------------
-
-  COMMENT !A-line
-    CALL, FILENAME="CU_ALINE.xsif"
-    BEAM, ENERGY=E00
-    USE, CU_ALINE
-    PRINT, FULL
-    SURVEY, X0=Xi, Y0=0, Z0=Zi, THETA0=ADL1, TAPE="test_survey.tape"
-    BEAM, ENERGY=Ei
-    USE, CU_ALINEi
-    TWISS, SAVE, BETX=BXi, ALFX=AXi, BETY=BYi, ALFY=AYi, &
-      TAPE="test_twiss.tape" !, RTAPE="test_rmat.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
-      STYLE=100, SPLINE, FILE="test", RANGE=#S/ENDBSYA_2, &
-      TITLE="BEAMPATH=CU_ALINE"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=RBETX,RBETY, &
-      STYLE=100, SPLINE, FILE="test", RANGE=#S/ENDBSYA_2, &
-      TITLE="BEAMPATH=CU_ALINE"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE, FILE="test", RANGE=#S/ENDBSYA_2, &
-      TITLE="BEAMPATH=CU_ALINE"
   ENDCOMMENT
 
 ! ------------------------------------------------------------------------------

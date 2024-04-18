@@ -1,10 +1,15 @@
 
-! *** OPTICS=AD_ACCEL-17JAN24 ***
+! *** OPTICS=AD_ACCEL-11APR24s ***
 
 ! LCLS2sc DASEL
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 27-MAR-2024, M. Woodley
+!  * change RCDAS11 to XCDAS11; move 0.118 m d/s; remove R0DAS11P and R0DAS11M
+!  * add YCDAS11 0.397 m d/s of XCDAS11
+!  * change RCDAS19 to XCDAS19; remove RODAS19P and RODAS19M
 ! ------------------------------------------------------------------------------
 ! 07-JUN-2023, M. Woodley
 !  * tweak LDDAS14ac/LDDAS17a to locate PRDAS14/PRDAS17 per A. Ibrahimov
@@ -306,8 +311,9 @@ lddas5a = lddas5-lddas5b-lddas5c
 
 dlddas11 = 0.0
 lddas11 = 5.5-(lbsp+lqm)/2+dlddas11-0.7
-lddas11a = 0.5+0.300006+0.000003
-lddas11b = lddas11-lddas11a
+lddas11a = 0.5+0.300006+0.000003+0.118
+lddas11b = 0.397
+lddas11c = lddas11-lddas11a-lddas11b
 dlddas12 = 0.0
 lddas12 = 14.1+dlddas12+0.7
 lddas12a = 1.5
@@ -349,6 +355,7 @@ ddas5b: drift, l = lddas5b
 ddas5c: drift, l = lddas5c
 ddas11a: drift, l = lddas11a
 ddas11b: drift, l = lddas11b
+ddas11c: drift, l = lddas11c
 ddas12a: drift, l = lddas12a
 ddas12b: drift, l = lddas12b
 ddas12c: drift, l = lddas12c
@@ -385,25 +392,17 @@ bpmdas1: monitor, type = "Stripline-5" !MPS BPM
 bpmdas19: monitor, type = "Stripline-5" !MPS BPM
 
 ! steering correctors
-! Notes: trims on all bends are used as correctors as well,
-!        rolled correctors are rolled 90 deg relative to rolled bends
+! Notes: trims on all bends are used as correctors as well
 
 xcdas1: hkicker, type = "class-4"
+xcdas11: hkicker, type = "class-4"
 xcdas14: hkicker, type = "class-4"
+xcdas19: hkicker, type = "class-4"
 
 ycdas1: vkicker, type = "class-4"
+ycdas11: vkicker, type = "class-4"
 ycdas17: vkicker, type = "class-4"
-
-rcdas11: hkicker, type = "class-4"
-rcdas19: hkicker, type = "class-4"
-
-rollrc = +1 !+1 for survey to show RC roll angle, but zero for twiss
-
-rodas11p: patch, tilt = (tbrdas1-pi/2) *rollrc
-rodas11m: patch, tilt = -rodas11p[tilt]
-
-rodas19p: patch, tilt = (tbrdas2-pi/2) *rollrc
-rodas19m: patch, tilt = -rodas19p[tilt]
+ !YCDAS19 : defined in Aline.xsif
 
 ! profile monitors
 
@@ -439,11 +438,6 @@ pcblrdas: rcollimator, type = "VCOLL", l = lpcblrdas/cos(abkrdas), y_limit = 5.5
 
 dumpdas: instrument, type = "400W-dump", l = ldumpdas/2 !half-dump
  !DUMPDAS : MONI, TYPE="400W-dump", L=LDUMPDAS/2 !half-dump
-
-! markers
-
-begdasel: marker
-enddasel: marker
 
 ! ------------------------------------------------------------------------------
 ! A-line adjustments
@@ -610,7 +604,7 @@ dumpdas[L] = 2*dumpdas[L]
   DASELSA : LINE=(BKRDAS1_full,DDASBK1 ,BKRDAS2_full,DDASBK2 ,BKRDAS3_full,DDASBK3h,DDASBK3h,BKRDAS4_full,DDASBK4 ,
          BKRDAS5_full,DDASBK5 ,BKRDAS6_full,DDASBLXa,BPMDAS  ,DDASBLXb1,PCBLRDAS,DDASBLXb2,BLRDAS_full ,RODAS1  ,DDAS1   ,
          XCDAS1  ,DDAS2a  ,YCDAS1  ,DDAS2b  ,BPMDAS1 ,DDAS3   ,QDAS1b_full,DDASQQ  ,QDAS1a_full,DDAS4   ,QDAS2a_full,DDASQQ  ,
-         QDAS2b_full,DDAS5a  ,IMDAS1  ,DDAS5b  ,IMDAS2 ,DDAS5c ,BRDAS1_full,RODAS2  ,DDAS11a ,RODAS11P,RCDAS11 ,RODAS11M,DDAS11b,
+         QDAS2b_full,DDAS5a  ,IMDAS1  ,DDAS5b  ,IMDAS2 ,DDAS5c  ,BRDAS1_full,RODAS2  ,DDAS11a ,XCDAS11 ,DDAS11b,YCDAS11 ,DDAS11c,
          QDAS11_full,DDAS12a ,PRDAS12 ,DDAS12b ,DUMPDAS_full)
 
   DASELSB : LINE=(DDAS12c ,QDAS12_full ,DDAS13  ,QDAS13_full ,DDAS14aa,PRDAS14,DDAS14ac,WOODDOOR,DDAS14ab,XCDAS14 ,
@@ -622,7 +616,7 @@ dumpdas[L] = 2*dumpdas[L]
 
   DASEL  : LINE=(DASELSA,DASELSB)
 
-  DASELA : LINE=(BEGDASEL,DASEL,DA04b,RODAS19P,RCDAS19,RODAS19M,ENDDASEL,ALINEc)
+  DASELA : LINE=(BEGDASEL,DASEL,DA04b,XCDAS19,ALINEc)
 
   SPDASELA : LINE=(SPRDkh,SPRDks,SPRDda,DASELA)
 

@@ -1,2 +1,3 @@
-This folder will contain BMAD files for LCLS (AD_ACCEL).
-Questions should be directed to Chris Mayes (cmayes@SLAC.Stanford.EDU).
+This folder contains LCLS (AD_ACCEL) MAD files for use in generation of the
+online Bmad model.
+Questions should be directed to Mike Ehrlichman (mpe@SLAC.Stanford.EDU).
