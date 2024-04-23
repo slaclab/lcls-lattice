@@ -1,6 +1,6 @@
-  TITLE, "AD_ACCEL (January 17, 2024)" !superconducting linac
+  TITLE, "AD_ACCEL (April 11, 2024)" !superconducting linac
 
-! *** OPTICS=AD_ACCEL-17JAN24 ***
+! *** OPTICS=AD_ACCEL-11APR24s ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY, DOUBLE
   ASSIGN, ECHO="LCLS2sc.echo"
@@ -295,7 +295,7 @@
 ! SC linac to other areas
 ! ------------------------------------------------------------------------------
 ! DIAG0  : post laser heater diagnostics line
-! DASEL  : DASEL kickers to A-line merge ... deferred
+! DASEL  : DASEL kickers to A-line merge
 ! ==============================================================================
 
 ! ==============================================================================
@@ -371,16 +371,16 @@
 
   SETSP  := 0 !deflector switch for HXR/SXR/BSYD spreader
   SETCUS := 0 !deflector switch for HXR/CUSXR
-  SETAL  := 0 !deflector switch for HXR/Aline
   SETDA  := 0 !deflector switch for BSYD/DASEL
 
 ! other switches
 
   SETHXRSS  := 0 !ON/OFF switch for HXR self-seeding chicane
   SETSXRSS  := 0 !ON/OFF switch for SXR self-seeding chicane
-  SETXLEAP2 := 0 !ON/OFF switch for XLEAP-II chicane
   SETPEPX   := 0 !ON/OFF switch for PEPPEx chicane
-  SETCBXFEL := 0 !ON/OFF switch for CBXFEL chicanes
+  SETCBXFEL := 0 !ON/OFF switch for CBXFEL chicane(s)
+  SETXL2WIG := 0 !ON/OFF switch for XLEAP-II wiggler
+  SETXL2SS  := 0 !ON/OFF switch for XLEAP-II self-seeding chicane
 
 ! ------------------------------------------------------------------------------
 ! integrated gradients for undulator quadrupoles
@@ -425,19 +425,6 @@
 ! SUBROUTINEs
 ! ------------------------------------------------------------------------------
 
-! quad settings for LCLS -> A-line (default ... see ALINE.xsif)
-
-  SETK2scA : SUBROUTINE !for LCLS2scA
-    SET, KQ10,  0.04078118414
-    SET, KQ11, -0.035978491015
-    SET, KQ19,  0.0288935235
-    SET, KQ20,  0.011673337852
-    SET, KQ27, -0.069796542848
-    SET, KQ28,  0.029206357304
-    SET, KQ30, -0.029497355276
-    SET, KQ38,  0.034805766493
-  ENDSUBROUTINE
-
 ! quad settings in S30XL (DASEL)
 
   SETK2scDA : SUBROUTINE !for LCLS2scDA	(Y. Nosochkov, FEB/MAR 2022)
@@ -459,6 +446,22 @@
     SET, KQ0H02,  5.905989161645
     SET, KQ0H03,  2.403934435238
     SET, KQ0H04, -6.042774733767
+  ENDSUBROUTINE
+
+! upgrade SXR cells 23-25 (matched)
+
+  SETupgrade : SUBROUTINE
+    SET, KQUM1b,  0.257626451638
+    SET, KQUM2b, -0.13
+    SET, KQUM3b,  0.514468267514
+    SET, KQUM4b, -0.666826745628
+    SET, KQSX16,  0.717707146511
+    SET, KQSX19, -1.370040512645
+    SET, KQSX21,  1.464777265446
+    SET, kQDSXm, -2.295714281502
+    SET, KQUE1B,  0.28964739003   
+    SET, KQUE2B, -0.00606676202205
+    SET, KQDMPB, -0.154946553294
   ENDSUBROUTINE
 
 ! ==============================================================================
@@ -485,7 +488,7 @@
     TWISS, BETA0=TWSSi, TAPE="LCLS2scSi_twiss.tape", &
       RTAPE="LCLS2scSi_rmat.tape"
 
-    SET, SETSP, SETSPh ; SET, SETAL, ALOFF
+    SET, SETSP, SETSPh
     BEAM, ENERGY=E0
     USE, SC_HXR
     TWISS, COUPLE, BETA0=TWSS0, TAPE="LCLS2scH_twiss.tape", &
@@ -505,6 +508,17 @@
     TWISS, BETA0=TWSSi, TAPE="LCLS2scDi_twiss.tape", &
       RTAPE="LCLS2scDi_rmat.tape"
 
+    SET, SETSP, SETSPd ; SET, SETDA, DAON
+    SETK2scDA
+    BEAM, ENERGY=E0
+    USE, SC_DASEL
+    TWISS, COUPLE, BETA0=TWSS0, TAPE="LCLS2scDA_twiss.tape", &
+      RTAPE="LCLS2scDA_rmat.tape"
+    BEAM, ENERGY=Ei
+    USE, SC_DASELi
+    TWISS, BETA0=TWSSi, TAPE="LCLS2scDAi_twiss.tape", &
+      RTAPE="LCLS2scDAi_rmat.tape"
+
     STOP
   ENDCOMMENT
 
@@ -518,13 +532,16 @@
 
 ! ------------------------------------------------------------------------------
 
+ !CALL, FILENAME="upgrade/MSXRXXsc.mad8"
+ !SETupgrade
+
  !CALL, FILENAME="LCLS2sc_LHmodes.mad8" !laser heater operating modes
 
  !CALL, FILENAME="LCLS2sc_beams.mad8" !alternate beams & configurations
- CALL, FILENAME="LCLS2sc_match.mad8"
+ !CALL, FILENAME="LCLS2sc_match.mad8"
+ !CALL, FILENAME="LCLS2sc_makeSymbols.mad8"
+ !CALL, FILENAME="LCLS2sc_makeElegant.mad8"
  !CALL, FILENAME="LCLS2sc_XLEAP.mad8"
- !CALL, FILENAME="RDB/LCLS2sc_makeSymbols.mad8"
- !CALL, FILENAME="elegant/LCLS2sc_makeElegant.mad8"
 
  !STOP
 
@@ -620,7 +637,7 @@
  !COMMENT
     ASSIGN, PRINT="LCLS2scH.print"
     BEAM, ENERGY=E0
-    SET, SETSP, SETSPh ; SET, SETAL, ALOFF
+    SET, SETSP, SETSPh
     USE, SC_HXR
    !SAVELINE, NAME="SC_HXR", FILENAME="LCLS2scH.saveline"
     PRINT, FULL
@@ -698,19 +715,18 @@
 
 ! ------------------------------------------------------------------------------
 
-! S30XL (a.k.a. DASEL; funded off-project)
+! DASEL (a.k.a. S30XL or LESA; funded off-project)
 
  !COMMENT
     ASSIGN, PRINT="LCLS2scDA.print"
     BEAM, ENERGY=E0
-    SET, SETSP, SETSPd ; SET, SETDA, DAON ; SET, ROLLRC, +1
+    SET, SETSP, SETSPd ; SET, SETDA, DAON
     SETK2scDA
     USE, SC_DASEL
    !SAVELINE, NAME="SC_DASEL", FILENAME="LCLS2scDA.saveline"
     PRINT, FULL
     SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scDA_survey.tape"
     BEAM, ENERGY=Ei
-    SET, ROLLRC, 0
     USE, SC_DASELi
     PRINT, FULL
     TWISS, SAVE, BETA0=TWSSi, TAPE="LCLS2scDA_twiss.tape" !, &
@@ -724,7 +740,6 @@
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
       STYLE=100, SPLINE, RANGE=BEAM0/ENDBSYA_2, FILE="LCLS2scDA", &
       TITLE="SC-linac to DASEL"
-    SET, ROLLRC, +1
  !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
@@ -806,7 +821,7 @@
  !COMMENT
     ASSIGN, PRINT="BSY-LCLS2scH.print"
     BEAM, ENERGY=Ef
-    SET, SETSP, SETSPh ; SET, SETAL, ALOFF
+    SET, SETSP, SETSPh
     USE, BSYLCLS2scH
     PRINT, FULL
     SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
@@ -829,12 +844,12 @@
 
 ! ------------------------------------------------------------------------------
 
-! S30XL (a.k.a. DASEL)
+! DASEL (a.k.a. S30XL, LESA)
 
  !COMMENT
     ASSIGN, PRINT="BSY-LCLS2scDA.print"
     BEAM, ENERGY=Ef
-    SET, SETSP, SETSPd ; SET, SETDA, DAON ; SET, ROLLRC, +1
+    SET, SETSP, SETSPd ; SET, SETDA, DAON
     SETK2scDA
     USE, BSYLCLS2scDA
     PRINT, FULL
@@ -918,7 +933,7 @@
   ! Spreader to HXR Main Dump
 
     BEAM, ENERGY=Ei
-    SET, SETSP, SETSPh ; SET, SETAL, ALOFF
+    SET, SETSP, SETSPh
     USE, SC_HXRi
     TWISS, SAVE, BETA0=TWSSi
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
@@ -950,14 +965,13 @@
   ! DASEL (deferred)
 
     BEAM, ENERGY=Ei
-    SET, SETSP, SETSPd ; SET, SETDA, DAON ; SET, ROLLRC, 0
+    SET, SETSP, SETSPd ; SET, SETDA, DAON
     SETK2scDA
     USE, SC_DASELi
     TWISS, SAVE, BETA0=TWSSi
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=rBETX,rBETY, VAXIS2=DX,DY, &
       COLOUR=100, SPLINE, RANGE=BEGDASEL/ENDBSYA_2, FILE="LCLS2sc_color", &
       TITLE="DASEL to A-line"
-    SET, ROLLRC, +1
  !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
@@ -967,3 +981,4 @@
 ! ------------------------------------------------------------------------------
 
   STOP
+

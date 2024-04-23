@@ -69,7 +69,9 @@
 # Auth: 03-Apr-2014, Greg White (SLAC)
 #       
 # Mod:
-# 20-Aug-2019, Greg Whote (SLAC)
+# 13-Mar-2024, Mark Woodley (SLAC)
+#    Use MAD8.53 (includes standing-wave LCAVITY support)
+# 20-Aug-2019, Greg White (SLAC)
 #    Replace use of temp file elementdevices_lcls2.dat with newly generated
 #    elementdevices.dat, which now has all devices in combined SC and CU 
 #    machine.
@@ -104,7 +106,7 @@ endif
 # You can override this from the command line if you want a different 
 # executable. Eg make MAD8=<pathtomymad8>
 # 
-MAD8=/afs/slac/g/ilc/codes/mad8.52/mad
+MAD8=/afs/slac/g/ilc/codes/mad8.53/mad
 
 # Where do we install the mad outputs, all associated files.
 #
@@ -113,14 +115,14 @@ INSTALLROOT=/afs/slac/www/grp/ad/model/output/lcls/mad
 # Define macros that evaluate to lists of files, mainly for help installing
 #
 MODELLATS:=*.ps *.print *.tape *.echo
-OPTICS:=LCLS2scH.ps LCLS2scS.ps LCLS2sc_color.ps LCLS2scD.ps DIAG0.ps LCLS2scDA.ps LCLS2cuH.ps LCLS2cuS.ps LCLS2cuA.ps LCLS2cu_color.ps 
+OPTICS:=LCLS2scH.ps LCLS2scS.ps LCLS2sc_color.ps LCLS2scD.ps DIAG0.ps LCLS2scDA.ps LCLS2cuH.ps LCLS2cuS.ps LCLS2cu_color.ps 
 OPTICSPDFS=$(patsubst %.ps, %.pdf, $(OPTICS)) 
 OPTICSICONS=$(patsubst %.ps, %_opticsicon.png, $(OPTICS)) 
 
 # The list of .dot files given here drives which _map.pdf and
 # _lines.dat files will be produced.
 #
-DOTS:=LCLS2scS.dot LCLS2scH.dot LCLS2scD.dot DIAG0.dot LCLS2scDA.dot LCLS2cuH.dot LCLS2cuS.dot LCLS2cuA.dot
+DOTS:=LCLS2scS.dot LCLS2scH.dot LCLS2scD.dot DIAG0.dot LCLS2scDA.dot LCLS2cuH.dot LCLS2cuS.dot
 MAPS=$(patsubst %.dot, %_map.pdf, $(DOTS))
 MAPICONS=$(patsubst %.dot, %_mapicon.png, $(DOTS))
 LINES=$(patsubst %.dot, %_lines.dat, $(DOTS))
@@ -168,12 +170,10 @@ sc_misc  : LCLS2sc_color.ps LCLS2sc.print
 # cu (warm copper linac) beampaths:
 #   CU_HXR   = GUN - copper linac - LTUH - HXR 
 #   CU_SXR   = GUN - copper linac - LTUS - SXR
-#   CU_ALINE = GUN - copper linac - Aline
 #
-cu       : CU_HXR CU_SXR CU_ALINE cu_misc
+cu       : CU_HXR CU_SXR cu_misc
 CU_HXR   : LCLS2cuH.ps LCLS2cuH.print LCLS2cuH_twiss.tape LCLS2cuH_survey.tape
 CU_SXR   : LCLS2cuS.ps LCLS2cuS.print LCLS2cuS_twiss.tape LCLS2cuS_survey.tape
-CU_ALINE : LCLS2cuA.ps  LCLS2cuA.print LCLS2cuA_twiss.tape LCLS2cuA_survey.tape
 cu_misc  : LCLS2cu_color.ps LCLS2cu.print 
 
 # Special target to make everything - all MAD8 output, control system support
@@ -257,8 +257,6 @@ LCLS2scDA_mapicon.png : LCLS2scDA_map.pdf
 	convert -scale '3x1%' $? $@ 
 DIAG0_mapicon.png : DIAG0_map.pdf
 	convert -scale '1x1%' $? $@ 
-LCLS2cuA_mapicon.png : LCLS2cuA_map.pdf
-	convert -scale '3x1%' $? $@ 
 LCLS2cuH_mapicon.png : LCLS2cuH_map.pdf
 	convert -scale '12x0.5%' $? $@ 
 LCLS2cuS_mapicon.png : LCLS2cuS_map.pdf
@@ -286,8 +284,6 @@ LCLS2cuH_opticsicon.png : LCLS2cuH.ps
 	convert -rotate 90 -scale 200x140 'LCLS2cuH.ps[1]' $@
 LCLS2cuS_opticsicon.png : LCLS2cuS.ps
 	convert -rotate 90 -scale 200x140 'LCLS2cuS.ps[1]' $@
-LCLS2cuA_opticsicon.png : LCLS2cuA.ps
-	convert -rotate 90 -scale 200x140 'LCLS2cuA.ps[1]' $@
 
 
 

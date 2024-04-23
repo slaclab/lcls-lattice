@@ -4,18 +4,22 @@ README of LCLS optics files
 This README describes how to deal with the source file management of the LCLS facility
 MAD decks through CVS, how to release changes, and how to update the relevant wb pages.
 
-Auth: Greg White, 8-Apr-2014.
-Mod:  Mark Woodley, 24-Apr-2019: Initial LCLS facility release.
+Auth: Greg White,    8-Apr-2014.
+Mod:  Mark Woodley, 12-Apr-2024: Use MAD version 8.53.
+      Mark Woodley, 24-Apr-2019: Initial LCLS facility release.
 =======================================================================================
 
 0. Prerequisites. 
 
-   mad8: You will need the mad version 8 executable. If on AFS you can use 
-   Mark's script which detects architecture etc, it's in 
-   /afs/slac.stanford.edu/u/ad/mdw/mad8.52/mad. "mad8" must be either a 
-   command on your system, or you must set the MAD8 macro when running make below. Eg
+   mad8: You will need the latest MAD version 8 (SLAC) executable. If on AFS you should
+   use Mike Ehrlichman's version which supports standing-wave LCAVITY elements. It's in 
 
-   make MAD8=/afs/slac.stanford.edu/u/ad/mdw/mad8.52/mad all
+   /afs/slac.stanford.edu/g/ilc/codes/mad8.53/mad.
+
+   "mad" must be either a command on your system, or you must set the MAD8 macro when
+   running make below. Eg
+
+   make MAD8=/afs/slac.stanford.edu/g/ilc/codes/mad8.53/mad all
 
 
 1. Acquire the LCLS lattice files by CVS
@@ -27,15 +31,15 @@ Mod:  Mark Woodley, 24-Apr-2019: Initial LCLS facility release.
    You must tell your CVS the location of the CVS repository (where our lattice files
    are). You can do that in 2 ways. First, by using -d on every cvs command. Eg
 
-      cvs -d :ext:YOURUSERNAME@noric.slac.stanford.edu:/afs/slac/g/lcls/cvs co optics/etc
+      cvs -d :ext:YOURUSERNAME@centos7.slac.stanford.edu:/afs/slac/g/lcls/cvs co optics/etc
 
    Alternatively, set the CVSROOT environment variable. For
    instance if using a bourne shell variant like bash this would be:
 
    Using bourne or bash shell:
-      $ export CVSROOT=":ext:<YOURUSERNAME>@noric.slac.stanford.edu:/afs/slac/g/lcls/cvs"   
+      $ export CVSROOT=":ext:<YOURUSERNAME>@centos7.slac.stanford.edu:/afs/slac/g/lcls/cvs"   
    Using csh or tcsh shell:
-      $ setenv CVSROOT ":ext:<YOURUSERNAME>@noric.slac.stanford.edu:/afs/slac/g/lcls/cvs"
+      $ setenv CVSROOT ":ext:<YOURUSERNAME>@centos7.slac.stanford.edu:/afs/slac/g/lcls/cvs"
 
       where <YOURUSERNAME> is your login id on the remote computer.
     
@@ -48,10 +52,11 @@ Mod:  Mark Woodley, 24-Apr-2019: Initial LCLS facility release.
 
    Having acquired the lattice files, such as with CVS above, then
    cd to the directory containing your mad8 input files. These are probably
-   named *.mad8 and *.xsif. Then execute the mad8 command on the mad8 file, e.g.:
+   named *.mad8 and *.xsif. Then execute the mad8 command on the mad8 files, e.g.:
 
       $ cd optics/etc/lattice/lcls/mad
-      $ mad8 LCLS2sc_main.mad8
+      $ mad LCLS2cu_main.mad8
+      $ mad LCLS2sc_main.mad8
 
 3. Alternatively you can use "make" for running lattice. 
  
@@ -83,7 +88,7 @@ Mod:  Mark Woodley, 24-Apr-2019: Initial LCLS facility release.
        $ make install        - Copies the lattice files output from mad8, to a directory
                                named after today's date; e.g. to 
                                   /afs/slac/www/grp/ad/model/output/lcls/mad/<today>/ 
-       $ make INSTALLDIR=23JAN19 install
+       $ make INSTALLDIR=11APR24s install
                              - Copies the lattice files output from mad8, to the
                                named directory inder INSTALLROOT (see defintion
                                below; e.g. to :

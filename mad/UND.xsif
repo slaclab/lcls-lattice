@@ -1,10 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-17JAN24 ***
+! *** OPTICS=AD_ACCEL-11APR24s ***
 
 ! LCLS2sc undulator and undulator extension
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 31-MAR-2024, M. Woodley
+!  * remove WIGXLh from SXR cell 18 (move to LTUS)
 ! ------------------------------------------------------------------------------
 ! 12-JAN-2024, M. Woodley
 !  * adjust complement and locations of CBXFEL components per SLAC-I-120-022-R2
@@ -360,54 +363,6 @@
   DUE1ab : DRIF, L=0.9-LRFBub -0.057
   DUE1e  : DRIF, L=0.057
 
-! ==============================================================================
-! XLEAP-II devices
-! ==============================================================================
-
-! ------------------------------------------------------------------------------
-! original XLEAP wiggler
-! ------------------------------------------------------------------------------
-
-! wiggler is modeled as R-matrix to include natural vertical focusing;
-! it is nominally OFF (opened to full gap, with Kwig~2); at minimum gap, Kwig=50
-
-  Kwig  := 34                                        !wiggler parameter [m^-1]
-  lamw  := 0.34                                      !wiggler period [m]
-  Lwigh := 2.38/2                                    !wiggler half-length [m]
-  gamw  := Eu/mc2                                    !Lorentz energy factor in wiggler [ ]
-  kqwig := SETXLEAP2*(2*pi*Kwig/lamw/sqrt(2)/gamw)^2 !natural vertical focusing "k" [m^-2]
-
-! handle Kwig->0 by expressing R34 as an approximate SINC function
-
-  ARGw     := Lwigh*sqrt(kqwig)
-  ARGw2    := ARGw*ARGw
-  ARGw4    := ARGw2*ARGw2
-  ARGw6    := ARGw4*ARGw2
-  SINCARGw := 1-ARGw2/6+ARGw4/120-ARGw6/5040 !~sinc(ARGw)=sin(ARGw)/ARGw
-  R34w     := Lwigh*SINCARGw
-
-  WIGXLh : MATR, TYPE="variable gap", &
-    L       = Lwigh, &
-    RM(1,1) = 1.0, &
-    RM(1,2) = Lwigh, &
-    RM(2,1) = 0.0, &
-    RM(2,2) = 1.0, &
-    RM(3,3) = cos(ARGw), &
-    RM(3,4) = R34w, &
-    RM(4,3) = -sin(ARGw)*sqrt(kqwig), &
-    RM(4,4) = cos(ARGw)
-
- !VALUE, WIGXLh[RM(1,1)],WIGXLh[RM(1,2)],WIGXLh[RM(2,1)],WIGXLh[RM(2,2)]
- !VALUE, WIGXLh[RM(3,3)],WIGXLh[RM(3,4)],WIGXLh[RM(4,3)],WIGXLh[RM(4,4)]
-
-  DUSEGS18a : DRIF, L=(LDUSEGS-2*WIGXLh[L])/2
-  DUSEGS18b : DRIF, L=LDUSEGS-DUSEGS18a[L]-2*WIGXLh[L]
- !VALUE, DUSEGS18a[L],DUSEGS18b[L]
- !VALUE, DUSEGS18a[L]+2*WIGXLh[L]+DUSEGS18b[L],LDUSEGS
-
-  WIGXLh_full : LINE=(WIGXLh,WIGXLh)
-  DUSEGS18    : LINE=(DUSEGS18a,WIGXLh_full,DUSEGS18b)
-
 ! ------------------------------------------------------------------------------
 ! SXR extension quads
 ! ------------------------------------------------------------------------------
@@ -501,6 +456,7 @@
   SXBRK25 : LINE=(DU3s,DPSSX25,DU4s,DU5s,DQSX25     ,DU6s,RFBSX25,DU7s)
 
   DUSEGS17 : DRIF, L=LDUSEGS
+  DUSEGS18 : DRIF, L=LDUSEGS
   DUSEGS19 : DRIF, L=LDUSEGS
   DUSEGS20 : DRIF, L=LDUSEGS
   DUSEGS21 : DRIF, L=LDUSEGS
@@ -510,7 +466,7 @@
   DUSEGS25 : DRIF, L=LDUSEGS
 
   SXCEL17 : LINE=(DU1s,DU2s,DUSEGS17,SXBRK17)
-  SXCEL18 : LINE=(DU1s,DU2s,DUSEGS18,SXBRK18) !XLEAP wiggler
+  SXCEL18 : LINE=(DU1s,DU2s,DUSEGS18,SXBRK18)
   SXCEL19 : LINE=(DU1s,DU2s,DUSEGS19,SXBRK19) !Q+RFBPM
   SXCEL20 : LINE=(DU1s,DU2s,DUSEGS20,SXBRK20)
   SXCEL21 : LINE=(DU1s,DU2s,DUSEGS21,SXBRK21) !Q+RFBPM
