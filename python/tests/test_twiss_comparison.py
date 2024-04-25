@@ -17,7 +17,7 @@ MODELS = [
 ('sc_hxr', 1e-5),
 ('cu_sxr', 1e-2),
 ('cu_hxr', 1e-2),
-# 'cu_spec',
+('cu_spec', 1e-2),
 # 'sc_diag0',
 # 'cu_inj',
 # 'sc_dasel',
