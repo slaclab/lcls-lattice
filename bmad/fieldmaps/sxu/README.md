@@ -13,4 +13,4 @@ Tao> set plot_page size=2000 600
 Tao> set plot_page n_curve_pts=10000
 Tao> place r12 b_field
 ```
-![SXU_001](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![SXU_001](https://github.com/slaclab/lcls-lattice/blob/add_SXU_field_map/bmad/fieldmaps/sxu/SXU_001_tao.png?raw=true)
