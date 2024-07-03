@@ -4,9 +4,11 @@ import numpy as np
 import scipy
 
 file = 'terms.out'
-z0 = 0.0
-l = 4.48 #0.9 #0.7402
-nz=20000
+z0 = 0.0  # initial z0 for evaluating map
+l = 4.48 # length over which to evaluate the map
+nz = 20000 # number of points at which to evaluate the map.
+           # needs to be large to get I1 and I2 right
+E = 98e6 # beam energy for calcuating exit x and x'
 
 n = 0
 with open(file,'r') as f:
@@ -37,11 +39,11 @@ I1y_cumulative = scipy.integrate.cumulative_simpson(By,x=zlst,initial=0)
 I1y = I1y_cumulative[-1]
 I2y = scipy.integrate.simpson(I1y_cumulative,x=zlst)
 
-q = 1.602e-19
-me = 9.109e-31
-E = 98e6
-gamma = E / 0.511e6
-c = 299792458
+q = scipy.constants.value('electron volt')
+me = scipy.constants.value('electron mass')
+me_eV = scipy.constants.value('electron mass energy equivalent in MeV')*1e6
+c = scipy.constants.value('speed of light in vacuum')
+gamma = E / me_eV
 x  =  q/gamma/me/c * I2y
 xp = -q/gamma/me/c * I1y
 
