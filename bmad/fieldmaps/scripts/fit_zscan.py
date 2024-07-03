@@ -7,7 +7,11 @@ import numpy as np
 import scipy
 import pickle
 
-n_keep=200
+n_keep = 200
+in_file = 'zscan.dat'
+out_file = 'terms.out'
+zi = 0.21
+zf = 4.69
 
 def read_data(file):
   nz = 0
@@ -32,8 +36,8 @@ def read_data(file):
 
 def write_terms(Xk):
   field_length = zdat[-1] - zdat[0]
-  with open("terms.out",'w') as f:
-    f.write("umhtr_map: wiggler, l={}, tracking_method=runge_kutta, num_step=500,\n".format(field_length))
+  with open(out_file,'w') as f:
+    f.write("und_map: wiggler, l={}, tracking_method=runge_kutta, num_step=500,\n".format(field_length))
     f.write("field_calc=fieldmap,\n")
     f.write("cartesian_map = { field_scale = 1.0,\n")
     n_written = 0
@@ -68,10 +72,8 @@ comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
 nworkers = comm.Get_size()
 
-zdat, Bydat = read_data('zscan.dat')
+zdat, Bydat = read_data(in_file)
 
-zi = 0.21
-zf = 4.69
 ixi = np.argmax(zdat>=zi)
 ixf = np.argmax(zdat>=zf)
 zdat = zdat[ixi:ixf+1]

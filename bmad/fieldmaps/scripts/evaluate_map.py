@@ -3,8 +3,10 @@
 import numpy as np
 import scipy
 
-#file = '50mm/umhtr_new_terms600.map'
-file = 'SXU_001_map.out'
+file = 'terms.out'
+z0 = 0.0
+l = 4.48 #0.9 #0.7402
+nz=20000
 
 n = 0
 with open(file,'r') as f:
@@ -22,9 +24,6 @@ with open(file,'r') as f:
       A[i], k[i] = data[0], data[2]
       i = i + 1
 
-z0 = 0.0
-l = 4.48 #0.9 #0.7402
-nz=20000
 dz = l/(nz-1)
 zlst = [z0+dz*i for i in range(nz)]
 By=np.zeros(nz)
