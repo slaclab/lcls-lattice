@@ -1,7 +1,6 @@
 #!/bin/env python3
 
 from mpi4py import MPI
-import re
 import numpy as np
 #import matplotlib.pyplot as plt
 import scipy
