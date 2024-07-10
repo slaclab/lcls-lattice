@@ -1,3 +1,5 @@
+# Field maps for the SXU undulators
+
 SXU_001_map.out is a Bmad cartesian map fitted to on-axis hall probe measurements available here:
 [https://www-group.slac.stanford.edu/met/MagMeas/MAGDATA/LCLS-II/Undulator/SXU_001/DATASET0007/Final Results_1/Z Scans_before_tuning/On Axis/001gap007.200x+00.00y+00.00/zscan.dat](url)
 
@@ -7,10 +9,14 @@ The residual is defined as the 2-norm of the difference between the evaluated ma
 The fitting script is located in this repo at lcls-lattice/bmad/fieldmaps/scripts/fit_zscan.py
 
 und.bmad is a simple bmad lattice that uses SXU_001_map.out.  For example, the map could be examined in tao using
+
+
 ```
 tao -lat und.bmad
 Tao> set plot_page size=2000 600
 Tao> set plot_page n_curve_pts=10000
 Tao> place r12 b_field
 ```
+
+
 ![SXU_001](https://github.com/slaclab/lcls-lattice/blob/add_SXU_field_map/bmad/fieldmaps/sxu/SXU_001_tao.png?raw=true)
