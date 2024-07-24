@@ -1,14 +1,18 @@
 
-! *** OPTICS=AD_ACCEL-11APR24s ***
+! *** OPTICS=AD_ACCEL-2024nexts ***
 
 ! LCLS2sc linacs: L0, L1, L2 L3
 
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
+! 11-APR-2024, M. Woodley
+!  * add SWAVE attribute to 1.3 GHz and 3.9 GHz cavities
+! ------------------------------------------------------------------------------
 ! 29-SEP-2023, M. Woodley
 !  * use relocated endpoints of L0B, L1B, L2B, L3B, and L4B, as MSC's and add
 !    vacuum valves there per S. Saraf
+!  * add VV (INST) at end of EXT ... move ENDEXT to VV
 !  * add additional vacuum components (pumps and gauges) per D. White
 ! ------------------------------------------------------------------------------
 ! 01-SEP-2022, M. Woodley
@@ -1059,13 +1063,13 @@
   QCM26 : QUAD, TYPE="cryo SPQA002", L=Lcmq/2, APER=Rcmq, K1=-0.181273931155 !-KQCMfodo3
   QCM27 : QUAD, TYPE="cryo SPQA003", L=Lcmq/2, APER=Rcmq, K1= 0.190442117617 ! KQCMfodo3
   QCM28 : QUAD, TYPE="cryo SPQA102", L=Lcmq/2, APER=Rcmq, K1=-KQCMfodo3
-  QCM29 : QUAD, TYPE="cryo SPQA134", L=Lcmq/2, APER=Rcmq, K1= 0.187339100679 ! KQCMfodo3
-  QCM30 : QUAD, TYPE="cryo SPQA128", L=Lcmq/2, APER=Rcmq, K1=-0.193079060624 !-KQCMfodo3
-  QCM31 : QUAD, TYPE="cryo SPQA133", L=Lcmq/2, APER=Rcmq, K1= 0.206509055212 ! KQCMfodo3
-  QCM32 : QUAD, TYPE="cryo SPQA129", L=Lcmq/2, APER=Rcmq, K1=-0.242974005492 !-KQCMfodo3
-  QCM33 : QUAD, TYPE="cryo SPQA106", L=Lcmq/2, APER=Rcmq, K1= 0.218130495608 ! KQCMfodo3
+  QCM29 : QUAD, TYPE="cryo SPQA134", L=Lcmq/2, APER=Rcmq, K1= 0.187317700796 ! KQCMfodo3
+  QCM30 : QUAD, TYPE="cryo SPQA128", L=Lcmq/2, APER=Rcmq, K1=-0.193175371697 !-KQCMfodo3
+  QCM31 : QUAD, TYPE="cryo SPQA133", L=Lcmq/2, APER=Rcmq, K1= 0.206701028403 ! KQCMfodo3
+  QCM32 : QUAD, TYPE="cryo SPQA129", L=Lcmq/2, APER=Rcmq, K1=-0.243595071644 !-KQCMfodo3
+  QCM33 : QUAD, TYPE="cryo SPQA106", L=Lcmq/2, APER=Rcmq, K1= 0.218848494346 ! KQCMfodo3
   QCM34 : QUAD, TYPE="cryo SPQA118", L=Lcmq/2, APER=Rcmq, K1= 0.0            !-KQCMfodo3
-  QCM35 : QUAD, TYPE="cryo SPQA110", L=Lcmq/2, APER=Rcmq, K1=-0.255764909225 ! KQCMfodo3
+  QCM35 : QUAD, TYPE="cryo SPQA110", L=Lcmq/2, APER=Rcmq, K1=-0.255171499273 ! KQCMfodo3
 
 ! ==============================================================================
 ! DRIF
@@ -1185,7 +1189,7 @@
   DMSC3u   : DRIF, L=1.78925  !MSC3u to CSP16 =  9.134250
   DCAP3u   : DRIF, L=0.87294  !FC6 to CSP16   =  7.345000
   DCAP3d   : DRIF, L=1.72438  !CSP35 to EC2   =  7.328290
-  DMSC3d   : DRIF, L=1.78674  !CSP35 to MSC3d =  9.115030
+  DMSC3d   : DRIF, L=1.91074  !CSP35 to MSC3d =  9.239030
 
 ! standard vacuum break
 
@@ -1448,6 +1452,8 @@
 ! BEAMLINE
 ! ------------------------------------------------------------------------------
 
+! L0
+
   CAVL011_full : LINE=(DCAVMAP,CAVL011,DCAVMAP)
   CAVL012_full : LINE=(DCAVMAP,CAVL012,DCAVMAP)
   CAVL013_full : LINE=(DCAVMAP,CAVL013,DCAVMAP)
@@ -1457,6 +1463,8 @@
   CAVL017_full : LINE=(DCAVMAP,CAVL017,DCAVMAP)
   CAVL018_full : LINE=(DCAVMAP,CAVL018,DCAVMAP)
 
+! L1
+
   CAVL021_full : LINE=(DCAVMAP,CAVL021,DCAVMAP)
   CAVL022_full : LINE=(DCAVMAP,CAVL022,DCAVMAP)
   CAVL023_full : LINE=(DCAVMAP,CAVL023,DCAVMAP)
@@ -1465,6 +1473,15 @@
   CAVL026_full : LINE=(DCAVMAP,CAVL026,DCAVMAP)
   CAVL027_full : LINE=(DCAVMAP,CAVL027,DCAVMAP)
   CAVL028_full : LINE=(DCAVMAP,CAVL028,DCAVMAP)
+
+  CAVL031_full : LINE=(DCAVMAP,CAVL031,DCAVMAP)
+  CAVL032_full : LINE=(DCAVMAP,CAVL032,DCAVMAP)
+  CAVL033_full : LINE=(DCAVMAP,CAVL033,DCAVMAP)
+  CAVL034_full : LINE=(DCAVMAP,CAVL034,DCAVMAP)
+  CAVL035_full : LINE=(DCAVMAP,CAVL035a,CSP03,CAVL035b,DCAVMAP)
+  CAVL036_full : LINE=(DCAVMAP,CAVL036,DCAVMAP)
+  CAVL037_full : LINE=(DCAVMAP,CAVL037,DCAVMAP)
+  CAVL038_full : LINE=(DCAVMAP,CAVL038,DCAVMAP)
 
   CAVC011_full : LINE=(DHCAVMAP,CAVC011,DHCAVMAP)
   CAVC012_full : LINE=(DHCAVMAP,CAVC012a,CSPH1,CAVC012b,DHCAVMAP)
@@ -1484,14 +1501,7 @@
   CAVC027_full : LINE=(DHCAVMAP,CAVC027,DHCAVMAP)
   CAVC028_full : LINE=(DHCAVMAP,CAVC028,DHCAVMAP)
 
-  CAVL031_full : LINE=(DCAVMAP,CAVL031,DCAVMAP)
-  CAVL032_full : LINE=(DCAVMAP,CAVL032,DCAVMAP)
-  CAVL033_full : LINE=(DCAVMAP,CAVL033,DCAVMAP)
-  CAVL034_full : LINE=(DCAVMAP,CAVL034,DCAVMAP)
-  CAVL035_full : LINE=(DCAVMAP,CAVL035a,CSP03,CAVL035b,DCAVMAP)
-  CAVL036_full : LINE=(DCAVMAP,CAVL036,DCAVMAP)
-  CAVL037_full : LINE=(DCAVMAP,CAVL037,DCAVMAP)
-  CAVL038_full : LINE=(DCAVMAP,CAVL038,DCAVMAP)
+! L2
 
   CAVL041_full : LINE=(DCAVMAP,CAVL041,DCAVMAP)
   CAVL042_full : LINE=(DCAVMAP,CAVL042,DCAVMAP)
@@ -1600,6 +1610,8 @@
   CAVL156_full : LINE=(DCAVMAP,CAVL156,DCAVMAP)
   CAVL157_full : LINE=(DCAVMAP,CAVL157,DCAVMAP)
   CAVL158_full : LINE=(DCAVMAP,CAVL158,DCAVMAP)
+
+! L3
 
   CAVL161_full : LINE=(DCAVMAP,CAVL161,DCAVMAP)
   CAVL162_full : LINE=(DCAVMAP,CAVL162,DCAVMAP)

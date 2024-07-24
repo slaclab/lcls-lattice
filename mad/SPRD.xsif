@@ -1,10 +1,17 @@
 
-! *** OPTICS=AD_ACCEL-11APR24s ***
+! *** OPTICS=AD_ACCEL-2024nexts ***
 
 ! LCLS2sc 3-way spreader system
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 25-JAN-2024, M. Woodley
+!  * remove (deferred) rastering in BSY dump line
+!    > rename BKXRASD to XCSP5D (already installed type-4)
+!    > rename BKYRASD to YCSP6D (already installed type-4)
+!    > remove deferred type-5 correctors XCSP5D and YCSP6D
+!    > remove DC spreader option
 ! ------------------------------------------------------------------------------
 ! 12-SEP-2023, M. Woodley
 !  * relocate some spreader BPMs per G. Gassner (|dZ| > 10 mm)
@@ -1088,22 +1095,16 @@
   LDSP6dc  := 1.0
   LDSP6dd  := 0.3048
   LDSP6de  := 1.1952
-  LDSP6dg  := 0.5
+  LDSP6dg  := 1.0
   LDSP6dh  := 0.5
-  LDSP6di  := 0.5
-  LDSP6dj  := 37.0 +18.0 -0.761425
+  LDSP6di  := 37.0 +18.0 -0.761425
   LDSP6df  := LDSP6d-LDSP6da-LDSP6db-LDSP6dc-LDSP6dd-LDSP6de-LDSP6dg-LDSP6dh &
-             -LDSP6di-LDSP6dj
+             -LDSP6di
   LDSP6dfa := 4.287828
-  LDSP6dfc := 0.5
-  LDSP6dfd := 1.0
-  LDSP6dfb := LDSP6df-LDSP6dfa-LDSP6dfc-LDSP6dfd
-
-  LDSP7d   := 20.0818610101+0.4+0.803391932471 -18.115253 +0.761425
-  LDSP7db  := 1.5
-  LDSP7da  := LDSP7d-LDSP7db
-  LDSP7daa := 0.5-3.0*in2m
-  LDSP7dab := LDSP7da-LDSP7daa
+  LDSP6dfb := LDSP6df-LDSP6dfa
+  LDSP7d   := 3.931424942571
+  LDSP7da  := 0.4238
+  LDSP7db  := LDSP7d-LDSP7da
 
   DSP2da1 : DRIF, L=LDSP2da1
   DSP2da2 : DRIF, L=LDSP2da2
@@ -1132,29 +1133,15 @@
   DSP6df  : DRIF, L=LDSP6df
   DSP6dfa : DRIF, L=LDSP6dfa
   DSP6dfb : DRIF, L=LDSP6dfb
-  DSP6dfc : DRIF, L=LDSP6dfc
-  DSP6dfd : DRIF, L=LDSP6dfd
   DSP6dg  : DRIF, L=LDSP6dg
   DSP6dh  : DRIF, L=LDSP6dh
   DSP6di  : DRIF, L=LDSP6di
-  DSP6dj  : DRIF, L=LDSP6dj
-  DSP7daa : DRIF, L=LDSP7daa
-  DSP7dab : DRIF, L=LDSP7dab
+  DSP6dia : DRIF, L=14.358367 !14.23155
+  DSP6dib : DRIF, L=LDSP6di-DSP6dia[L]
+  DSP7da  : DRIF, L=LDSP7da 
   DSP7db  : DRIF, L=LDSP7db
   DWALLad : DRIF, L=1.840975                     !distance from face of muon wall to BSY dump
   DDUMPBSY: DRIF, L=61.120*in2m, TYPE="BCS dump" !length of BSY dump (per A. Ibrahimov)
-
-! markers
-
-  CNTSP1S  : MARK, TYPE="CENTER"
-  CNTSP2S  : MARK, TYPE="CENTER"
-  CNTSP1H  : MARK, TYPE="CENTER"
-  CNTSP2H  : MARK, TYPE="CENTER"
-  CNTSP3H  : MARK, TYPE="CENTER"
-  CNTSP1D  : MARK, TYPE="CENTER"
-  RWWAKE3D : MARK, TYPE="WAKE" !SPRDD/BSY beampipe wake applied here
-  MUWALLd  : MARK !front face of muon wall for dump beam
-  DUMPBSY  : INST, TYPE="DUMPBSY" !front face of BSY dump
 
 ! monitors
 
@@ -1192,7 +1179,7 @@
   BPMSP2d  : MONI, TYPE="Stripline-5"
   BPMSP3d  : MONI, TYPE="Stripline-8" !has been already ordered (should have been Stripline-11)
   BPMSP4d  : MONI, TYPE="Stripline-5"
-  BPMSP5d  : MONI, TYPE="Stripline-14" !large aperture BPM for raster
+  BPMSP5d  : MONI, TYPE="Stripline-14" !large aperture BPM
 
   MRFBSP1d : MARK !MONI, TYPE="CavityS-1" !make RF-bpm if spreader is RF
   MRFBSP2d : MARK !MONI, TYPE="CavityS-1" !make RF-bpm if spreader is RF
@@ -1230,19 +1217,11 @@
 
   XCSP1d  : HKIC, TYPE="class-4"
   XCSP3d  : HKIC, TYPE="class-4"
-  XCSP5d  : HKIC, TYPE="@0,class-5" !not installed
+  XCSP5d  : HKIC, TYPE="class-5" !not installed
 
   YCSP2d  : VKIC, TYPE="class-4"
   YCSP4d  : VKIC, TYPE="class-4"
-  YCSP6d  : VKIC, TYPE="@0,class-5" !not installed
-
-! NOTE: the raster magnets operating at ~60 Hz with 90 deg phase between each
-!       other have been de-scoped from the LCLS-II project ... BKXRASd and
-!       BKYRASd are normal (class-4) correctors which were installed instead
-!       of XCSP5d and YCSP6d
-
-  BKXRASd : HKIC, TYPE="class-4"
-  BKYRASd : VKIC, TYPE="class-4"
+  YCSP6d  : VKIC, TYPE="class-5" !not installed
 
 ! SROT to remove rotation angle
 
@@ -1274,6 +1253,18 @@
   WSSP1d : WIRE, TYPE="fast" !to measure beam size and energy before BSY dump
 
   OTRSPDMP : PROF, TYPE="@0,OTR" !OTR screen before BSY dump
+
+! markers
+
+  CNTSP1S  : MARK, TYPE="CENTER"
+  CNTSP2S  : MARK, TYPE="CENTER"
+  CNTSP1H  : MARK, TYPE="CENTER"
+  CNTSP2H  : MARK, TYPE="CENTER"
+  CNTSP3H  : MARK, TYPE="CENTER"
+  CNTSP1D  : MARK, TYPE="CENTER"
+  RWWAKE3D : MARK, TYPE="WAKE" !SPRDD/BSY beampipe wake applied here
+  MUWALLd  : MARK !front face of muon wall for dump beam
+  DUMPBSY  : INST, TYPE="DUMPBSY" !front face of BSY dump
 
 ! beamlines
 
@@ -1433,11 +1424,9 @@
     BYSP2d_full,CNTSP1D,DSP6da,XCSP3d,DSP6db,YCSP4d,DSP6dc,DSP6dd,&
       DSP6de,DSP6dfa,WOODDOOR)
 
-  SPRDdd : LINE=(DSP6dfb,XCSP5d,DSP6dfc,YCSP6d,DSP6dfd,BPMSP4d,DSP6dg,&
-      DSP6dh,RWWAKE3D,&
-    BKXRASd,DSP6di,&
-    BKYRASd,DSP6dj,BPMSP5d,DSP7daa,OTRSPDMP,DSP7dab,&
-      DSP7db,MUWALLd,DWALLad,DUMPBSY,DDUMPBSY,BTMSPDMP)
+  SPRDdd : LINE=(DSP6dfb,BPMSP4d,DSP6dg,RWWAKE3D,&
+    XCSP5d,DSP6dh,YCSP6d,DSP6di,BPMSP5d,DSP7da,OTRSPDMP,DSP7db,&
+    MUWALLd,DWALLad,DUMPBSY,DDUMPBSY,BTMSPDMP)
 
   SPRDd : LINE=(SPRDkh,SPRDks,SPRDda,SPRDdb,SPRDdc,SPRDdd)
 

@@ -1,0 +1,818 @@
+
+! *** OPTICS=AD_ACCEL-2024nexts ***
+
+! generate input files for ELEGANT
+
+! ==============================================================================
+! Instructions for generating ELEGANT input file
+! ------------------------------------------------------------------------------
+! 1) insert the following line into your MAD deck:
+!      CALL, FILENAME="makeElegant.mad8"
+! 2) run MAD
+! 3) create an SBEN definition file (for generating an ELEGANT lte-file with
+!    CSR) ... there should be one line per bend (name, bunch length, FINT)
+! 4) run mad2lte with survey.tape as input
+! 5) if your beamline contains MATRIX elements, create Elegant MATRIX files
+! ------------------------------------------------------------------------------
+
+! L1 LCAVs
+! (NOTE: add "STANDING_WAVE=1, BODY_FOCUS_MODEL=SRS" to RFCW elements)
+
+  CAVL_1 : LCAV, FREQ=1300, L=LcavL, APER=LcavR, &
+                 DELTAE=GradL1*LcavL, PHI0=PhasL1/360
+  CAVC_1 : LCAV, FREQ=3900, L=CcavL, APER=CcavR, &
+                 DELTAE=GHcav*CcavL,  PHI0=PHcav/360
+
+  CAVL021,         TYPE="CAVL_1"
+  CAVL022,         TYPE="CAVL_1"
+  CAVL023,         TYPE="CAVL_1"
+  CAVL024,         TYPE="CAVL_1"
+  CAVL025,         TYPE="CAVL_1"
+  CAVL025_full : LINE=(DCAVMAP,CAVL025,DCAVMAP)
+  CAVL026,         TYPE="CAVL_1"
+  CAVL027,         TYPE="CAVL_1"
+  CAVL028,         TYPE="CAVL_1"
+  CAVL031,         TYPE="CAVL_1"
+  CAVL032,         TYPE="CAVL_1"
+  CAVL033,         TYPE="CAVL_1"
+  CAVL034,         TYPE="CAVL_1"
+  CAVL035,         TYPE="CAVL_1"
+  CAVL035_full : LINE=(DCAVMAP,CAVL035,DCAVMAP)
+  CAVL036,         TYPE="CAVL_1"
+  CAVL037,         TYPE="CAVL_1"
+  CAVL038,         TYPE="CAVL_1"
+  CAVC011,         TYPE="CAVC_1"
+  CAVC012,         TYPE="CAVC_1"
+  CAVC012_full : LINE=(DHCAVMAP,CAVC012,DHCAVMAP)
+  CAVC013,         TYPE="CAVC_1"
+  CAVC014,         TYPE="CAVC_1"
+  CAVC015,         TYPE="CAVC_1"
+  CAVC016,         TYPE="CAVC_1"
+  CAVC017,         TYPE="CAVC_1"
+  CAVC018,         TYPE="CAVC_1"
+  CAVC021,         TYPE="CAVC_1"
+  CAVC022,         TYPE="CAVC_1"
+  CAVC022_full : LINE=(DHCAVMAP,CAVC022,DHCAVMAP)
+  CAVC023,         TYPE="CAVC_1"
+  CAVC024,         TYPE="CAVC_1"
+  CAVC025,         TYPE="CAVC_1"
+  CAVC026,         TYPE="CAVC_1"
+  CAVC027,         TYPE="CAVC_1"
+  CAVC028,         TYPE="CAVC_1"
+
+! L2 LCAVs
+
+  CAVL_2 : LCAV, FREQ=1300, L=LcavL, APER=LcavR, &
+                 DELTAE=GradL2*LcavL, PHI0=PhasL2/360
+
+  CAVL041,         TYPE="CAVL_2"
+  CAVL042,         TYPE="CAVL_2"
+  CAVL043,         TYPE="CAVL_2"
+  CAVL044,         TYPE="CAVL_2"
+  CAVL045,         TYPE="CAVL_2"
+  CAVL045_full : LINE=(DCAVMAP,CAVL045,DCAVMAP)
+  CAVL046,         TYPE="CAVL_2"
+  CAVL047,         TYPE="CAVL_2"
+  CAVL048,         TYPE="CAVL_2"
+  CAVL051,         TYPE="CAVL_2"
+  CAVL052,         TYPE="CAVL_2"
+  CAVL053,         TYPE="CAVL_2"
+  CAVL054,         TYPE="CAVL_2"
+  CAVL055,         TYPE="CAVL_2"
+  CAVL055_full : LINE=(DCAVMAP,CAVL055,DCAVMAP)
+  CAVL056,         TYPE="CAVL_2"
+  CAVL057,         TYPE="CAVL_2"
+  CAVL058,         TYPE="CAVL_2"
+  CAVL061,         TYPE="CAVL_2"
+  CAVL062,         TYPE="CAVL_2"
+  CAVL063,         TYPE="CAVL_2"
+  CAVL064,         TYPE="CAVL_2"
+  CAVL065,         TYPE="CAVL_2"
+  CAVL065_full : LINE=(DCAVMAP,CAVL065,DCAVMAP)
+  CAVL066,         TYPE="CAVL_2"
+  CAVL067,         TYPE="CAVL_2"
+  CAVL068,         TYPE="CAVL_2"
+  CAVL071,         TYPE="CAVL_2"
+  CAVL072,         TYPE="CAVL_2"
+  CAVL073,         TYPE="CAVL_2"
+  CAVL074,         TYPE="CAVL_2"
+  CAVL075,         TYPE="CAVL_2"
+  CAVL075_full : LINE=(DCAVMAP,CAVL075,DCAVMAP)
+  CAVL076,         TYPE="CAVL_2"
+  CAVL077,         TYPE="CAVL_2"
+  CAVL078,         TYPE="CAVL_2"
+  CAVL081,         TYPE="CAVL_2"
+  CAVL082,         TYPE="CAVL_2"
+  CAVL083,         TYPE="CAVL_2"
+  CAVL084,         TYPE="CAVL_2"
+  CAVL085,         TYPE="CAVL_2"
+  CAVL085_full : LINE=(DCAVMAP,CAVL085,DCAVMAP)
+  CAVL086,         TYPE="CAVL_2"
+  CAVL087,         TYPE="CAVL_2"
+  CAVL088,         TYPE="CAVL_2"
+  CAVL091,         TYPE="CAVL_2"
+  CAVL092,         TYPE="CAVL_2"
+  CAVL093,         TYPE="CAVL_2"
+  CAVL094,         TYPE="CAVL_2"
+  CAVL095,         TYPE="CAVL_2"
+  CAVL095_full : LINE=(DCAVMAP,CAVL095,DCAVMAP)
+  CAVL096,         TYPE="CAVL_2"
+  CAVL097,         TYPE="CAVL_2"
+  CAVL098,         TYPE="CAVL_2"
+  CAVL101,         TYPE="CAVL_2"
+  CAVL102,         TYPE="CAVL_2"
+  CAVL103,         TYPE="CAVL_2"
+  CAVL104,         TYPE="CAVL_2"
+  CAVL105,         TYPE="CAVL_2"
+  CAVL105_full : LINE=(DCAVMAP,CAVL105,DCAVMAP)
+  CAVL106,         TYPE="CAVL_2"
+  CAVL107,         TYPE="CAVL_2"
+  CAVL108,         TYPE="CAVL_2"
+  CAVL111,         TYPE="CAVL_2"
+  CAVL112,         TYPE="CAVL_2"
+  CAVL113,         TYPE="CAVL_2"
+  CAVL114,         TYPE="CAVL_2"
+  CAVL115,         TYPE="CAVL_2"
+  CAVL115_full : LINE=(DCAVMAP,CAVL115,DCAVMAP)
+  CAVL116,         TYPE="CAVL_2"
+  CAVL117,         TYPE="CAVL_2"
+  CAVL118,         TYPE="CAVL_2"
+  CAVL121,         TYPE="CAVL_2"
+  CAVL122,         TYPE="CAVL_2"
+  CAVL123,         TYPE="CAVL_2"
+  CAVL124,         TYPE="CAVL_2"
+  CAVL125,         TYPE="CAVL_2"
+  CAVL125_full : LINE=(DCAVMAP,CAVL125,DCAVMAP)
+  CAVL126,         TYPE="CAVL_2"
+  CAVL127,         TYPE="CAVL_2"
+  CAVL128,         TYPE="CAVL_2"
+  CAVL131,         TYPE="CAVL_2"
+  CAVL132,         TYPE="CAVL_2"
+  CAVL133,         TYPE="CAVL_2"
+  CAVL134,         TYPE="CAVL_2"
+  CAVL135,         TYPE="CAVL_2"
+  CAVL135_full : LINE=(DCAVMAP,CAVL135,DCAVMAP)
+  CAVL136,         TYPE="CAVL_2"
+  CAVL137,         TYPE="CAVL_2"
+  CAVL138,         TYPE="CAVL_2"
+  CAVL141,         TYPE="CAVL_2"
+  CAVL142,         TYPE="CAVL_2"
+  CAVL143,         TYPE="CAVL_2"
+  CAVL144,         TYPE="CAVL_2"
+  CAVL145,         TYPE="CAVL_2"
+  CAVL145_full : LINE=(DCAVMAP,CAVL145,DCAVMAP)
+  CAVL146,         TYPE="CAVL_2"
+  CAVL147,         TYPE="CAVL_2"
+  CAVL148,         TYPE="CAVL_2"
+  CAVL151,         TYPE="CAVL_2"
+  CAVL152,         TYPE="CAVL_2"
+  CAVL153,         TYPE="CAVL_2"
+  CAVL154,         TYPE="CAVL_2"
+  CAVL155,         TYPE="CAVL_2"
+  CAVL155_full : LINE=(DCAVMAP,CAVL155,DCAVMAP)
+  CAVL156,         TYPE="CAVL_2"
+  CAVL157,         TYPE="CAVL_2"
+  CAVL158,         TYPE="CAVL_2"
+
+! L3 LCAVs
+
+  CAVL_3   : LCAV, FREQ=1300, L=LcavL, APER=LcavR, &
+                   DELTAE=GradL3*LcavL, PHI0=PhasL3/360
+
+  CAVL161,         TYPE="CAVL_3"
+  CAVL162,         TYPE="CAVL_3"
+  CAVL163,         TYPE="CAVL_3"
+  CAVL164,         TYPE="CAVL_3"
+  CAVL165,         TYPE="CAVL_3"
+  CAVL165_full : LINE=(DCAVMAP,CAVL165,DCAVMAP)
+  CAVL166,         TYPE="CAVL_3"
+  CAVL167,         TYPE="CAVL_3"
+  CAVL168,         TYPE="CAVL_3"
+  CAVL171,         TYPE="CAVL_3"
+  CAVL172,         TYPE="CAVL_3"
+  CAVL173,         TYPE="CAVL_3"
+  CAVL174,         TYPE="CAVL_3"
+  CAVL175,         TYPE="CAVL_3"
+  CAVL175_full : LINE=(DCAVMAP,CAVL175,DCAVMAP)
+  CAVL176,         TYPE="CAVL_3"
+  CAVL177,         TYPE="CAVL_3"
+  CAVL178,         TYPE="CAVL_3"
+  CAVL181,         TYPE="CAVL_3"
+  CAVL182,         TYPE="CAVL_3"
+  CAVL183,         TYPE="CAVL_3"
+  CAVL184,         TYPE="CAVL_3"
+  CAVL185,         TYPE="CAVL_3"
+  CAVL185_full : LINE=(DCAVMAP,CAVL185,DCAVMAP)
+  CAVL186,         TYPE="CAVL_3"
+  CAVL187,         TYPE="CAVL_3"
+  CAVL188,         TYPE="CAVL_3"
+  CAVL191,         TYPE="CAVL_3"
+  CAVL192,         TYPE="CAVL_3"
+  CAVL193,         TYPE="CAVL_3"
+  CAVL194,         TYPE="CAVL_3"
+  CAVL195,         TYPE="CAVL_3"
+  CAVL195_full : LINE=(DCAVMAP,CAVL195,DCAVMAP)
+  CAVL196,         TYPE="CAVL_3"
+  CAVL197,         TYPE="CAVL_3"
+  CAVL198,         TYPE="CAVL_3"
+  CAVL201,         TYPE="CAVL_3"
+  CAVL202,         TYPE="CAVL_3"
+  CAVL203,         TYPE="CAVL_3"
+  CAVL204,         TYPE="CAVL_3"
+  CAVL205,         TYPE="CAVL_3"
+  CAVL205_full : LINE=(DCAVMAP,CAVL205,DCAVMAP)
+  CAVL206,         TYPE="CAVL_3"
+  CAVL207,         TYPE="CAVL_3"
+  CAVL208,         TYPE="CAVL_3"
+  CAVL211,         TYPE="CAVL_3"
+  CAVL212,         TYPE="CAVL_3"
+  CAVL213,         TYPE="CAVL_3"
+  CAVL214,         TYPE="CAVL_3"
+  CAVL215,         TYPE="CAVL_3"
+  CAVL215_full : LINE=(DCAVMAP,CAVL215,DCAVMAP)
+  CAVL216,         TYPE="CAVL_3"
+  CAVL217,         TYPE="CAVL_3"
+  CAVL218,         TYPE="CAVL_3"
+  CAVL221,         TYPE="CAVL_3"
+  CAVL222,         TYPE="CAVL_3"
+  CAVL223,         TYPE="CAVL_3"
+  CAVL224,         TYPE="CAVL_3"
+  CAVL225,         TYPE="CAVL_3"
+  CAVL225_full : LINE=(DCAVMAP,CAVL225,DCAVMAP)
+  CAVL226,         TYPE="CAVL_3"
+  CAVL227,         TYPE="CAVL_3"
+  CAVL228,         TYPE="CAVL_3"
+  CAVL231,         TYPE="CAVL_3"
+  CAVL232,         TYPE="CAVL_3"
+  CAVL233,         TYPE="CAVL_3"
+  CAVL234,         TYPE="CAVL_3"
+  CAVL235,         TYPE="CAVL_3"
+  CAVL235_full : LINE=(DCAVMAP,CAVL235,DCAVMAP)
+  CAVL236,         TYPE="CAVL_3"
+  CAVL237,         TYPE="CAVL_3"
+  CAVL238,         TYPE="CAVL_3"
+  CAVL241,         TYPE="CAVL_3"
+  CAVL242,         TYPE="CAVL_3"
+  CAVL243,         TYPE="CAVL_3"
+  CAVL244,         TYPE="CAVL_3"
+  CAVL245,         TYPE="CAVL_3"
+  CAVL245_full : LINE=(DCAVMAP,CAVL245,DCAVMAP)
+  CAVL246,         TYPE="CAVL_3"
+  CAVL247,         TYPE="CAVL_3"
+  CAVL248,         TYPE="CAVL_3"
+  CAVL251,         TYPE="CAVL_3"
+  CAVL252,         TYPE="CAVL_3"
+  CAVL253,         TYPE="CAVL_3"
+  CAVL254,         TYPE="CAVL_3"
+  CAVL255,         TYPE="CAVL_3"
+  CAVL255_full : LINE=(DCAVMAP,CAVL255,DCAVMAP)
+  CAVL256,         TYPE="CAVL_3"
+  CAVL257,         TYPE="CAVL_3"
+  CAVL258,         TYPE="CAVL_3"
+  CAVL261,         TYPE="CAVL_3"
+  CAVL262,         TYPE="CAVL_3"
+  CAVL263,         TYPE="CAVL_3"
+  CAVL264,         TYPE="CAVL_3"
+  CAVL265,         TYPE="CAVL_3"
+  CAVL265_full : LINE=(DCAVMAP,CAVL265,DCAVMAP)
+  CAVL266,         TYPE="CAVL_3"
+  CAVL267,         TYPE="CAVL_3"
+  CAVL268,         TYPE="CAVL_3"
+  CAVL271,         TYPE="CAVL_3"
+  CAVL272,         TYPE="CAVL_3"
+  CAVL273,         TYPE="CAVL_3"
+  CAVL274,         TYPE="CAVL_3"
+  CAVL275,         TYPE="CAVL_3"
+  CAVL275_full : LINE=(DCAVMAP,CAVL275,DCAVMAP)
+  CAVL276,         TYPE="CAVL_3"
+  CAVL277,         TYPE="CAVL_3"
+  CAVL278,         TYPE="CAVL_3"
+  CAVL281,         TYPE="CAVL_3"
+  CAVL282,         TYPE="CAVL_3"
+  CAVL283,         TYPE="CAVL_3"
+  CAVL284,         TYPE="CAVL_3"
+  CAVL285,         TYPE="CAVL_3"
+  CAVL285_full : LINE=(DCAVMAP,CAVL285,DCAVMAP)
+  CAVL286,         TYPE="CAVL_3"
+  CAVL287,         TYPE="CAVL_3"
+  CAVL288,         TYPE="CAVL_3"
+  CAVL291,         TYPE="CAVL_3"
+  CAVL292,         TYPE="CAVL_3"
+  CAVL293,         TYPE="CAVL_3"
+  CAVL294,         TYPE="CAVL_3"
+  CAVL295,         TYPE="CAVL_3"
+  CAVL295_full : LINE=(DCAVMAP,CAVL295,DCAVMAP)
+  CAVL296,         TYPE="CAVL_3"
+  CAVL297,         TYPE="CAVL_3"
+  CAVL298,         TYPE="CAVL_3"
+  CAVL301,         TYPE="CAVL_3"
+  CAVL302,         TYPE="CAVL_3"
+  CAVL303,         TYPE="CAVL_3"
+  CAVL304,         TYPE="CAVL_3"
+  CAVL305,         TYPE="CAVL_3"
+  CAVL305_full : LINE=(DCAVMAP,CAVL305,DCAVMAP)
+  CAVL306,         TYPE="CAVL_3"
+  CAVL307,         TYPE="CAVL_3"
+  CAVL308,         TYPE="CAVL_3"
+  CAVL311,         TYPE="CAVL_3"
+  CAVL312,         TYPE="CAVL_3"
+  CAVL313,         TYPE="CAVL_3"
+  CAVL314,         TYPE="CAVL_3"
+  CAVL315,         TYPE="CAVL_3"
+  CAVL315_full : LINE=(DCAVMAP,CAVL315,DCAVMAP)
+  CAVL316,         TYPE="CAVL_3"
+  CAVL317,         TYPE="CAVL_3"
+  CAVL318,         TYPE="CAVL_3"
+  CAVL321,         TYPE="CAVL_3"
+  CAVL322,         TYPE="CAVL_3"
+  CAVL323,         TYPE="CAVL_3"
+  CAVL324,         TYPE="CAVL_3"
+  CAVL325,         TYPE="CAVL_3"
+  CAVL325_full : LINE=(DCAVMAP,CAVL325,DCAVMAP)
+  CAVL326,         TYPE="CAVL_3"
+  CAVL327,         TYPE="CAVL_3"
+  CAVL328,         TYPE="CAVL_3"
+  CAVL331,         TYPE="CAVL_3"
+  CAVL332,         TYPE="CAVL_3"
+  CAVL333,         TYPE="CAVL_3"
+  CAVL334,         TYPE="CAVL_3"
+  CAVL335,         TYPE="CAVL_3"
+  CAVL335_full : LINE=(DCAVMAP,CAVL335,DCAVMAP)
+  CAVL336,         TYPE="CAVL_3"
+  CAVL337,         TYPE="CAVL_3"
+  CAVL338,         TYPE="CAVL_3"
+  CAVL341,         TYPE="CAVL_3"
+  CAVL342,         TYPE="CAVL_3"
+  CAVL343,         TYPE="CAVL_3"
+  CAVL344,         TYPE="CAVL_3"
+  CAVL345,         TYPE="CAVL_3"
+  CAVL345_full : LINE=(DCAVMAP,CAVL345,DCAVMAP)
+  CAVL346,         TYPE="CAVL_3"
+  CAVL347,         TYPE="CAVL_3"
+  CAVL348,         TYPE="CAVL_3"
+  CAVL351,         TYPE="CAVL_3"
+  CAVL352,         TYPE="CAVL_3"
+  CAVL353,         TYPE="CAVL_3"
+  CAVL354,         TYPE="CAVL_3"
+  CAVL355,         TYPE="CAVL_3"
+  CAVL355_full : LINE=(DCAVMAP,CAVL355,DCAVMAP)
+  CAVL356,         TYPE="CAVL_3"
+  CAVL357,         TYPE="CAVL_3"
+  CAVL358,         TYPE="CAVL_3"
+
+! set TCAV TYPEs
+
+  TCX01B, TYPE="RFDF"
+  TCX01,  TYPE="RFDF"
+  TCX02,  TYPE="RFDF"
+  TCYDG0, TYPE="RFDF"
+  TCXDG0, TYPE="RFDF"
+
+! ------------------------------------------------------------------------------
+! output MULT definitions; convert to MATRs
+! ------------------------------------------------------------------------------
+
+  BEAM, ENERGY=Ei
+  USE, (DYQDG001) !*LIN.01*
+  MATCH, BETX=1, BETY=1
+    RMATRIX, #S/#E, RM(6,6)=1
+  ENDMATCH
+  DYQDG001 : MATR, L=0, TYPE="DYQDG001"
+
+  BEAM, ENERGY=Ei
+  USE, (DYQDG003) !*LIN.02*
+  MATCH, BETX=1, BETY=1
+    RMATRIX, #S/#E, RM(6,6)=1
+  ENDMATCH
+  DYQDG003 : MATR, L=0, TYPE="DYQDG003"
+
+! ------------------------------------------------------------------------------
+! output MATR definitions; set TYPE attributes
+! ------------------------------------------------------------------------------
+
+  VALUE, UMHTR[L]
+  BEAM, ENERGY=Ei
+  USE, (UMHTR) !*LIN.03*
+  MATCH, BETX=1, BETY=1
+    RMATRIX, #S/#E, RM(6,6)=1
+  ENDMATCH
+  UMHTR, TYPE="UMHTR"
+
+  VALUE, UMASXh[L]
+  BEAM, ENERGY=Ef
+  USE, (UMASXh) !*LIN.04*
+  MATCH, BETX=1, BETY=1
+    RMATRIX, #S/#E, RM(6,6)=1
+  ENDMATCH
+  UMASXh26, TYPE="UMASX"
+  UMASXh27, TYPE="UMASX"
+  UMASXh28, TYPE="UMASX"
+  UMASXh29, TYPE="UMASX"
+  UMASXh30, TYPE="UMASX"
+  UMASXh31, TYPE="UMASX"
+  UMASXh32, TYPE="UMASX"
+  UMASXh33, TYPE="UMASX"
+  UMASXh34, TYPE="UMASX"
+
+  UMASXh36, TYPE="UMASX"
+  UMASXh37, TYPE="UMASX"
+  UMASXh38, TYPE="UMASX"
+  UMASXh39, TYPE="UMASX"
+  UMASXh40, TYPE="UMASX"
+  UMASXh41, TYPE="UMASX"
+  UMASXh42, TYPE="UMASX"
+  UMASXh43, TYPE="UMASX"
+  UMASXh44, TYPE="UMASX"
+  UMASXh45, TYPE="UMASX"
+  UMASXh46, TYPE="UMASX"
+  UMASXh47, TYPE="UMASX"
+
+  VALUE, PSSXh[L]
+  BEAM, ENERGY=Ef
+  USE, (PSSXh) !*LIN.05*
+  MATCH, BETX=1, BETY=1
+    RMATRIX, #S/#E, RM(6,6)=1
+  ENDMATCH
+  PSSXh26, TYPE="PSSX"
+  PSSXh27, TYPE="PSSX"
+  PSSXh28, TYPE="PSSX"
+  PSSXh29, TYPE="PSSX"
+  PSSXh30, TYPE="PSSX"
+  PSSXh31, TYPE="PSSX"
+  PSSXh32, TYPE="PSSX"
+  PSSXh33, TYPE="PSSX"
+  PSSXh34, TYPE="PSSX"
+
+  PSSXh36, TYPE="PSSX"
+  PSSXh37, TYPE="PSSX"
+  PSSXh38, TYPE="PSSX"
+  PSSXh39, TYPE="PSSX"
+  PSSXh40, TYPE="PSSX"
+  PSSXh41, TYPE="PSSX"
+  PSSXh42, TYPE="PSSX"
+  PSSXh43, TYPE="PSSX"
+  PSSXh44, TYPE="PSSX"
+  PSSXh45, TYPE="PSSX"
+  PSSXh46, TYPE="PSSX"
+
+  VALUE, UMAHXh[L]
+  BEAM, ENERGY=Ef
+  USE, (UMAHXh) !*LIN.06*
+  MATCH, BETX=1, BETY=1
+    RMATRIX, #S/#E, RM(6,6)=1
+  ENDMATCH
+
+  UMAHXh14, TYPE="UMAHX"
+  UMAHXh15, TYPE="UMAHX"
+  UMAHXh16, TYPE="UMAHX"
+  UMAHXh17, TYPE="UMAHX"
+  UMAHXh18, TYPE="UMAHX"
+  UMAHXh19, TYPE="UMAHX"
+  UMAHXh20, TYPE="UMAHX"
+
+  UMAHXh22, TYPE="UMAHX"
+  UMAHXh23, TYPE="UMAHX"
+  UMAHXh24, TYPE="UMAHX"
+  UMAHXh25, TYPE="UMAHX"
+  UMAHXh26, TYPE="UMAHX"
+  UMAHXh27, TYPE="UMAHX"
+
+  UMAHXh29, TYPE="UMAHX"
+  UMAHXh30, TYPE="UMAHX"
+  UMAHXh31, TYPE="UMAHX"
+  UMAHXh32, TYPE="UMAHX"
+  UMAHXh33, TYPE="UMAHX"
+  UMAHXh34, TYPE="UMAHX"
+  UMAHXh35, TYPE="UMAHX"
+  UMAHXh36, TYPE="UMAHX"
+  UMAHXh37, TYPE="UMAHX"
+  UMAHXh38, TYPE="UMAHX"
+  UMAHXh39, TYPE="UMAHX"
+  UMAHXh40, TYPE="UMAHX"
+  UMAHXh41, TYPE="UMAHX"
+  UMAHXh42, TYPE="UMAHX"
+  UMAHXh43, TYPE="UMAHX"
+  UMAHXh44, TYPE="UMAHX"
+  UMAHXh45, TYPE="UMAHX"
+  UMAHXh46, TYPE="UMAHX"
+  UMAHXh47, TYPE="UMAHX"
+
+  VALUE, PSHXh[L]
+  BEAM, ENERGY=Ef
+  USE, (PSHXh) !*LIN.07*
+  MATCH, BETX=1, BETY=1
+    RMATRIX, #S/#E, RM(6,6)=1
+  ENDMATCH
+
+  PSHXh14, TYPE="PSHX"
+  PSHXh15, TYPE="PSHX"
+  PSHXh16, TYPE="PSHX"
+  PSHXh17, TYPE="PSHX"
+  PSHXh18, TYPE="PSHX"
+  PSHXh19, TYPE="PSHX"
+  PSHXh20, TYPE="PSHX"
+
+  PSHXh22, TYPE="PSHX"
+  PSHXh23, TYPE="PSHX"
+  PSHXh24, TYPE="PSHX"
+  PSHXh25, TYPE="PSHX"
+  PSHXh26, TYPE="PSHX"
+  PSHXh27, TYPE="PSHX"
+
+  PSHXh29, TYPE="PSHX"
+  PSHXh30, TYPE="PSHX"
+  PSHXh31, TYPE="PSHX"
+  PSHXh32, TYPE="PSHX"
+  PSHXh33, TYPE="PSHX"
+  PSHXh34, TYPE="PSHX"
+  PSHXh35, TYPE="PSHX"
+  PSHXh36, TYPE="PSHX"
+  PSHXh37, TYPE="PSHX"
+  PSHXh38, TYPE="PSHX"
+  PSHXh39, TYPE="PSHX"
+  PSHXh40, TYPE="PSHX"
+  PSHXh41, TYPE="PSHX"
+  PSHXh42, TYPE="PSHX"
+  PSHXh43, TYPE="PSHX"
+  PSHXh44, TYPE="PSHX"
+  PSHXh45, TYPE="PSHX"
+  PSHXh46, TYPE="PSHX"
+
+! ------------------------------------------------------------------------------
+! output SBEN FINT values (to use in CSR SBEN values file)
+! ------------------------------------------------------------------------------
+
+  VALUE, Ei/EMASS !p_central
+
+  VALUE, BCXH1A[FINT]
+  VALUE, BCXH2A[FINT]
+  VALUE, BCXH3A[FINT]
+  VALUE, BCXH4A[FINT]
+  VALUE, BCX11A[FINT]
+  VALUE, BCX12A[FINT]
+  VALUE, BCX13A[FINT]
+  VALUE, BCX14A[FINT]
+  VALUE, BCX21A[FINT]
+  VALUE, BCX22A[FINT]
+  VALUE, BCX23A[FINT]
+  VALUE, BCX24A[FINT]
+  VALUE, BCXDLU1A[FINT]
+  VALUE, BCXDLU2A[FINT]
+  VALUE, BCXDLU3A[FINT]
+  VALUE, BCXDLU4A[FINT]
+  VALUE, BRB1A[FINT]
+  VALUE, BRB2A[FINT]
+  VALUE, BCXDLD1A[FINT]
+  VALUE, BCXDLD2A[FINT]
+  VALUE, BCXDLD3A[FINT]
+  VALUE, BCXDLD4A[FINT]
+
+  VALUE, BKYSP0SA[FINT]
+  VALUE, BKYSP1SA[FINT]
+  VALUE, BKYSP2SA[FINT]
+  VALUE, BKYSP3SA[FINT]
+  VALUE, BKYSP4SA[FINT]
+  VALUE, BKYSP5SA[FINT]
+  VALUE, BLXSPSA[FINT]
+  VALUE, BYSP1SA[FINT]
+  VALUE, BYSP2SA[FINT]
+  VALUE, BXSP1SA[FINT]
+  VALUE, BXSP2SA[FINT]
+  VALUE, BXSP3SA[FINT]
+  VALUE, BCX31B11[FINT]
+  VALUE, BCX31B21[FINT]
+  VALUE, BCX31B31[FINT]
+  VALUE, BCX31B41[FINT]
+  VALUE, BX31B1[FINT]
+  VALUE, BYKIK1S1[FINT]
+  VALUE, BYKIK2S1[FINT]
+  VALUE, BX32B1[FINT]
+  VALUE, BCX32B11[FINT]
+  VALUE, BCX32B21[FINT]
+  VALUE, BCX32B31[FINT]
+  VALUE, BCX32B41[FINT]
+  VALUE, BY1B1[FINT]
+  VALUE, BY2B1[FINT]
+  VALUE, BCXXL11[FINT]
+  VALUE, BCXXL21[FINT]
+  VALUE, BCXXL31[FINT]
+  VALUE, BCXXL41[FINT]
+  VALUE, BCXSS1A[FINT]
+  VALUE, BCXSS2A[FINT]
+  VALUE, BCXSS3A[FINT]
+  VALUE, BCXSS4A[FINT]
+  VALUE, BYDSS1[FINT]
+  VALUE, BYD1B1[FINT]
+  VALUE, BYD2B1[FINT]
+  VALUE, BYD3B1[FINT]  
+
+  VALUE, BKYSP0HA[FINT]
+  VALUE, BKYSP1HA[FINT]
+  VALUE, BKYSP2HA[FINT]
+  VALUE, BKYSP3HA[FINT]
+  VALUE, BKYSP4HA[FINT]
+  VALUE, BKYSP5HA[FINT]
+  VALUE, BLXSPHA[FINT]
+  VALUE, BYSP1HA[FINT]
+  VALUE, BYSP2HA[FINT]
+  VALUE, BRSP1HA[FINT]
+  VALUE, BRSP2HA[FINT]
+  VALUE, BXSP1HA[FINT]
+  VALUE, BCX3111[FINT]
+  VALUE, BCX3121[FINT]
+  VALUE, BCX3131[FINT]
+  VALUE, BCX3141[FINT]
+  VALUE, BY11[FINT]
+  VALUE, BY21[FINT]
+  VALUE, BX311[FINT]
+  VALUE, WIG1H1[FINT]
+  VALUE, WIG2H1[FINT]
+  VALUE, WIG3H1[FINT]
+  VALUE, BX321[FINT]
+  VALUE, BCX3211[FINT]
+  VALUE, BCX3221[FINT]
+  VALUE, BCX3231[FINT]
+  VALUE, BCX3241[FINT]
+  VALUE, BYKIK11[FINT]
+  VALUE, BYKIK21[FINT]
+  VALUE, BCX3511[FINT]
+  VALUE, BCX3521[FINT]
+  VALUE, BCX3531[FINT]
+  VALUE, BCX3541[FINT]
+  VALUE, BX351[FINT]
+  VALUE, BX361[FINT]
+  VALUE, BCX3611[FINT]
+  VALUE, BCX3621[FINT]
+  VALUE, BCX3631[FINT]
+  VALUE, BCX3641[FINT]
+  VALUE, BCXCBX11A[FINT]        
+  VALUE, BCXCBX12A[FINT]        
+  VALUE, BCXCBX13A[FINT]        
+  VALUE, BCXCBX14A[FINT]        
+  VALUE, BCXCBX21A[FINT]        
+  VALUE, BCXCBX22A[FINT]        
+  VALUE, BCXCBX23A[FINT]        
+  VALUE, BCXCBX24A[FINT]        
+  VALUE, BCXHS1A[FINT]
+  VALUE, BCXHS2A[FINT]
+  VALUE, BCXHS3A[FINT]
+  VALUE, BCXHS4A[FINT]
+  VALUE, BYDSH1[FINT]
+  VALUE, BYD11[FINT]
+  VALUE, BYD21[FINT]
+  VALUE, BYD31[FINT]
+
+  VALUE, BYSP1DA[FINT]
+  VALUE, BYSP2DA[FINT]
+
+  VALUE, BKRDG0A[FINT]
+  VALUE, BLRDG0A[FINT]
+  VALUE, BXDG0A[FINT]
+  VALUE, BYDG0A[FINT]
+
+  VALUE, BKRDAS1A[FINT]
+  VALUE, BKRDAS2A[FINT]
+  VALUE, BKRDAS3A[FINT]
+  VALUE, BKRDAS4A[FINT]
+  VALUE, BKRDAS5A[FINT]
+  VALUE, BKRDAS6A[FINT]
+  VALUE, BLRDASA[FINT]
+  VALUE, BRDAS1A[FINT]
+  VALUE, BRDAS2A[FINT]
+  VALUE, BRAM1A[FINT]
+  VALUE, B11A[FINT]
+  VALUE, B12A[FINT]
+  VALUE, B13A[FINT]
+  VALUE, B14A[FINT]
+  VALUE, B15A[FINT]
+  VALUE, B16A[FINT]
+  VALUE, B21A[FINT]
+  VALUE, B22A[FINT]
+  VALUE, B23A[FINT]
+  VALUE, B24A[FINT]
+  VALUE, B25A[FINT]
+  VALUE, B26A[FINT]
+
+! ------------------------------------------------------------------------------
+! special MARKER elements
+! ------------------------------------------------------------------------------
+
+! scS
+
+  L0ZWAKE : MARK, TYPE="WAKE"
+  BEAM1   : MARK, TYPE="WATCH"
+
+  BEAM0,    TYPE="WATCH"
+  LHBEGB,   TYPE="WATCH"
+  LHENDB,   TYPE="WATCH"
+  BEGL1B,   TYPE="WATCH"
+  ENDL1B,   TYPE="WATCH"
+  BC1BCBEG, TYPE="WATCH"
+  BC1BCEND, TYPE="WATCH"
+  BEGL2B,   TYPE="WATCH"
+  ENDL2B,   TYPE="WATCH"
+  BC2BCBEG, TYPE="WATCH"
+  BC2BCEND, TYPE="WATCH"
+  BEGL3B,   TYPE="WATCH"
+  ENDL3B,   TYPE="WATCH"
+  CCDLUBEG, TYPE="WATCH"
+  CCDLDEND, TYPE="WATCH"
+  SXRSTART, TYPE="WATCH"
+  MTCX01B,  TYPE="WATCH"
+  OTRDMPB,  TYPE="WATCH"
+
+! scH
+
+  HXRSTART, TYPE="WATCH"
+  MTCX01,   TYPE="WATCH"
+  OTRDMP,   TYPE="WATCH"
+
+! scD
+
+  DUMPBSY,  TYPE="WATCH"
+
+! DIAG0
+
+  BEGDIAG0, TYPE="WATCH"
+  OTRDG02,  TYPE="WATCH"
+  OTRDG04,  TYPE="WATCH"
+  ENDDIAG0, TYPE="WATCH"
+
+! ------------------------------------------------------------------------------
+! generate TWISS and SURVEY tape-files
+! ------------------------------------------------------------------------------
+
+! NOTE: DIAG0 Twiss will be incorrect becaues we changed DYQDG00* from MULTs to MATRs
+
+  BEAM, ENERGY=Ei
+  USE, SC_DIAG0i
+  TWISS, BETA0=TWSSi, TAPE="DIAG0_twiss.tape"
+  SURVEY, X0=Xgun, Y0=Ygun, Z0=Zi, TAPE="DIAG0_survey.tape"
+
+  BEAM, ENERGY=Ei
+  SET, SETSP, SETSPh
+  USE, SC_HXRi
+  TWISS, BETA0=TWSSi, TAPE="LCLS2scH_twiss.tape"
+  SURVEY, X0=Xgun, Y0=Ygun, Z0=Zi, TAPE="LCLS2scH_survey.tape"
+
+  BEAM, ENERGY=Ei
+  SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
+  USE, SC_SXRi
+  TWISS, BETA0=TWSSi, TAPE="LCLS2scS_twiss.tape"
+  SURVEY, X0=Xgun, Y0=Ygun, Z0=Zi, TAPE="LCLS2scS_survey.tape"
+
+  BEAM, ENERGY=Ei
+  SET, SETSP, SETSPd ; SET, SETDA, DAOFF
+  USE, SC_BSYDi
+  TWISS, BETA0=TWSSi, TAPE="LCLS2scD_twiss.tape"
+  SURVEY, X0=Xgun, Y0=Ygun, Z0=Zi, TAPE="LCLS2scD_survey.tape"
+
+  BEAM, ENERGY=Ei
+  SET, SETSP, SETSPd ; SET, SETDA, DAON
+  USE, SC_DASELi
+  TWISS, BETA0=TWSSi, TAPE="LCLS2scDA_twiss.tape"
+  SURVEY, X0=Xgun, Y0=Ygun, Z0=Zi, TAPE="LCLS2scDA_survey.tape"
+
+! ------------------------------------------------------------------------------
+
+! XLEAP-II optics
+
+  CALL, FILENAME="LCLS2sc_XLEAP.mad8"
+
+! ------------------------------------------------------------------------------
+
+  VALUE, UMXL1h[L]
+  BEAM, ENERGY=Ef
+  USE, (UMXL1h) !*LIN.08*
+  MATCH, BETX=1, BETY=1
+    RMATRIX, #S/#E, RM(6,6)=1
+  ENDMATCH
+  UMXL1h, TYPE="UMXL1"
+
+  VALUE, UMXL3h[L]
+  BEAM, ENERGY=Ef
+  USE, (UMXL3h) !*LIN.09*
+  MATCH, BETX=1, BETY=1
+    RMATRIX, #S/#E, RM(6,6)=1
+  ENDMATCH
+  UMXL3h, TYPE="UMXL3"
+
+  VALUE, UMXL4h[L]
+  BEAM, ENERGY=Ef
+  USE, (UMXL4h) !*LIN.10*
+  MATCH, BETX=1, BETY=1
+    RMATRIX, #S/#E, RM(6,6)=1
+  ENDMATCH
+  UMXL4h, TYPE="UMXL4"
+
+  VALUE, WIGXLh[L]
+  BEAM, ENERGY=Ef
+  USE, (WIGXLh) !*LIN.11*
+  MATCH, BETX=1, BETY=1
+    RMATRIX, #S/#E, RM(6,6)=1
+  ENDMATCH
+  WIGXLh, TYPE="WIGXL"
+
+! ------------------------------------------------------------------------------
+
+  STOP

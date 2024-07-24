@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-11APR24s ***
+! *** OPTICS=AD_ACCEL-2024nexts ***
 
 ! XLEAP-II optics
 
@@ -10,9 +10,14 @@
 !  * remove UMXL2; move WIGXLH from SXR cell 18 to UMXL2 location
 ! ------------------------------------------------------------------------------
 
-  KmaxQA := 150.00/(Brhof*LQA) !max |K1| @ Ef for 1.26Q12
-  KmaxQE := 100.00/(Brhof*LQE) !max |K1| @ Ef for 1.085Q4.31
-  KmaxQx :=  20.00/(Brhof*LQx) !max |K1| @ Ef for 1.26Q3.5
+  KmaxQA    := 150.00/(Brhof*LQA) !max |K1| @ Ef for 1.26Q12    (165 A bipolar )
+  KmaxQE200 := 102.00/(Brhof*LQE) !max |K1| @ Ef for 1.085Q4.31 (200 A bipolar )
+  KmaxQE120 :=  67.00/(Brhof*LQE) !max |K1| @ Ef for 1.085Q4.31 (120 A bipolar )
+  KmaxQx    :=  20.00/(Brhof*LQx) !max |K1| @ Ef for 1.26Q3.5   ( 12 A bipolar )
+  KmaxQE110 :=  60.00/(Brhof*LQE) !max |K1| @ Ef for 1.085Q4.31 (110 A unipolar)
+  KmaxQu    :=  40.00/(Brhof*LQu) !max |K1| @ Ef for 0.433Q3.1  (  6 A bipolar )
+
+ !VALUE, Ef,KmaxQA,KmaxQE200,KmaxQE120,KmaxQx,KmaxQE110,KmaxQu
 
 ! ------------------------------------------------------------------------------
 
@@ -87,19 +92,19 @@
     USE, SC_SXRi
     VALUE, KQVM3B,KQVM4B,KQEM1B,KQEM2B,KQEM3B,KQEM4B,KQE31B,KQFXL1
     MATCH, BETA0=TWSSi
-      VARY, KQVM3B, STEP=1.E-6, LOWER=-KmaxQA, UPPER=+KmaxQA
-      VARY, KQVM4B, STEP=1.E-6, LOWER=-KmaxQA, UPPER=+KmaxQA
-      VARY, KQEM1B, STEP=1.E-6, LOWER=-KmaxQE, UPPER=+KmaxQE
-      VARY, KQEM2B, STEP=1.E-6, LOWER=-KmaxQE, UPPER=+KmaxQE
-      VARY, KQEM3B, STEP=1.E-6, LOWER=-KmaxQE, UPPER=+KmaxQE
-      VARY, KQEM4B, STEP=1.E-6, LOWER=-KmaxQE, UPPER=+KmaxQE
-      VARY, KQE31B, STEP=1.E-6, LOWER=-0.95*KmaxQx, UPPER=+0.95*KmaxQx
-      VARY, KQFXL1, STEP=1.E-6, LOWER=0, UPPER=+KmaxQE
+      VARY, KQVM3B, STEP=1.E-6, LOWER=-KmaxQA,    UPPER=+KmaxQA
+      VARY, KQVM4B, STEP=1.E-6, LOWER=-KmaxQA,    UPPER=+KmaxQA
+      VARY, KQEM1B, STEP=1.E-6, LOWER=-KmaxQE200, UPPER=+KmaxQE200
+      VARY, KQEM2B, STEP=1.E-6, LOWER=-KmaxQE200, UPPER=+KmaxQE200
+      VARY, KQEM3B, STEP=1.E-6, LOWER=-KmaxQE120, UPPER=+KmaxQE120
+      VARY, KQEM4B, STEP=1.E-6, LOWER=-KmaxQE120, UPPER=+KmaxQE120
+      VARY, KQE31B, STEP=1.E-6, LOWER=-KmaxQx,    UPPER=+KmaxQx
+      VARY, KQFXL1, STEP=1.E-6, LOWER= 0,         UPPER=+KmaxQE110
       CONSTR, QEM2B[1], BETY<90
       CONSTR, QEM3B[1], BETX<90
       CONSTR, QFXL1[1], BETX<90
       WEIGHT, DX=0, DPX=0, DY=0, DPY=0
-      CONSTR, QE32B[1], LINE=ECELLb2
+      CONSTR, QE32B[1], LINE=(QE32B,DQEC,DQEC,QE33B,QE33B,DQEC,DQEC,QE32B)
       CONSTR, #E, X=0, PX=0, Y=0, PY=0
       LMDIF, TOL=1.E-20
       MIGRAD, TOL=1.E-20
@@ -119,33 +124,34 @@
     USE, SC_SXRi
     VALUE, KQFXL2,KQE36B,KQUM1B,KQUM2B,KQUM3B,KQUM4B
     MATCH, BETA0=TWSSi
-      VARY, KQUM1B, STEP=1.E-6, LOWER=-KmaxQE, UPPER=+KmaxQE
-      VARY, KQUM2B, STEP=1.E-6, LOWER=-KmaxQE, UPPER=+KmaxQE
-      VARY, KQUM3B, STEP=1.E-6, LOWER=-KmaxQE, UPPER=+KmaxQE
-      VARY, KQUM4B, STEP=1.E-6, LOWER=-KmaxQE, UPPER=+KmaxQE
-     !VARY, KQE36B, STEP=1.E-6, LOWER=-KmaxQx, UPPER=+KmaxQx
-      WEIGHT, X=0, PX=0, BETX=1, ALFX=0, DX=0, DPX=0, &
-              Y=0, PY=0, BETY=1, ALFY=0, DY=0, DPY=0, &
-              T=0, PT=0
-      COUPLE, MUQS[1]/MUQS[3]
-      COUPLE, MUQS[2]/MUQS[4]
-      COUPLE, MUQS[1]/MUQS[5]
-      COUPLE, MUQS[2]/MUQS[6]
-      COUPLE, MUQS[1]/MUQS[7]
-      COUPLE, MUQS[2]/MUQS[8]
-      COUPLE, MUQS[1]/MUQS[9]
-      COUPLE, MUQS[2]/MUQS[10]
-      COUPLE, MUQS[1]/MUQS[11]
-      COUPLE, MUQS[2]/MUQS[12]
-      COUPLE, MUQS[1]/MUQS[13]
-      COUPLE, MUQS[2]/MUQS[14]
-      COUPLE, MUQS[1]/MUQS[15]
-      COUPLE, MUQS[2]/MUQS[16]
-      COUPLE, MUQS[1]/MUQS[17]
-      COUPLE, MUQS[2]/MUQS[18]
-      COUPLE, MUQS[1]/MUQS[19]
-      COUPLE, MUQS[2]/MUQS[20]
-      COUPLE, MUQS[1]/MUQS[21]
+      VARY, KQFXL2, STEP=1.E-6, LOWER= 0,         UPPER=+KmaxQE110
+      VARY, KQE36B, STEP=1.E-6, LOWER=-KmaxQx,    UPPER= 0
+      VARY, KQUM1B, STEP=1.E-6, LOWER=-KmaxQE120, UPPER=+KmaxQE120
+      VARY, KQUM2B, STEP=1.E-6, LOWER=-KmaxQE120, UPPER=+KmaxQE120
+      VARY, KQUM3B, STEP=1.E-6, LOWER=-KmaxQE120, UPPER=+KmaxQE120
+      VARY, KQUM4B, STEP=1.E-6, LOWER=-KmaxQE120, UPPER=+KmaxQE120
+      WEIGHT, DX=0, DPX=0, DY=0, DPY=0, X=0, PX=0, Y=0, PY=0, T=0, PT=0
+      WEIGHT, BETX=1.E-5, BETY=1.E-5, ALFX=0, ALFY=0
+    ! periodic betas in cells 26-46
+      COUPLE, MUQS[11]/MUQS[13]
+      COUPLE, MUQS[12]/MUQS[14]
+      COUPLE, MUQS[11]/MUQS[15]
+      COUPLE, MUQS[12]/MUQS[16]
+      COUPLE, MUQS[11]/MUQS[17]
+      COUPLE, MUQS[12]/MUQS[18]
+      COUPLE, MUQS[11]/MUQS[19]
+      COUPLE, MUQS[12]/MUQS[20]
+      COUPLE, MUQS[11]/MUQS[21]
+      COUPLE, MUQS[12]/MUQS[22]
+      COUPLE, MUQS[11]/MUQS[23]
+      COUPLE, MUQS[12]/MUQS[24]
+      COUPLE, MUQS[11]/MUQS[25]
+      COUPLE, MUQS[12]/MUQS[26]
+      COUPLE, MUQS[11]/MUQS[27]
+      COUPLE, MUQS[12]/MUQS[28]
+      COUPLE, MUQS[11]/MUQS[29]
+      COUPLE, MUQS[12]/MUQS[30]
+      COUPLE, MUQS[11]/MUQS[31]
       LMDIF, TOL=1.E-20
       MIGRAD, TOL=1.E-20
     ENDMATCH
@@ -160,14 +166,14 @@
 
 ! ------------------------------------------------------------------------------
 
-! to run XLEAP-II optics, uncomment the SUBROUTINE(s) with the desired
+! to run XLEAP-II optics, use SETXL_4GeV; uncomment blocks with the desired
 ! undulator(s) turned on (UMXL1 and/or UMXL3&UMXL4); within the selected
-! SUBROUTINE(s), turn on WIGXL and/or BCXLSS chicane
+! block(s), turn on WIGXL and/or BCXLSS chicane
 
   SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
   SETXL_4GeV
 
- !MXL01
+  MXL01
  !MXL02
 
  !COMMENT !SXR from SC linac (XLEAP-II)
@@ -175,6 +181,7 @@
     BEAM, ENERGY=Ei
     USE, SC_SXRi
     PRINT, FULL
+    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zi, TAPE="LCLS2scS-XL2_survey.tape"
     TWISS, BETA0=TWSSi, SAVE, TAPE="LCLS2scS-XL2_twiss.tape" !, &
    !  RTAPE="LCLS2scS-XL2_rmat.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &

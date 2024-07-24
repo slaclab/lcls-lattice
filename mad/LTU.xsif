@@ -1,11 +1,15 @@
 
-! *** OPTICS=AD_ACCEL-11APR24s ***
+! *** OPTICS=AD_ACCEL-2024nexts ***
 
 ! LCLS2sc LTU and dump
 
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
+! 02-MAY-2024, M. Woodley
+!  * fix negative drifts in CBXFEL chicanes
+!  * rename BODCBX42 -> YAGCBX42
+!  * add BODCBX40
 ! 31-MAR-2024, M. Woodley
 !  * replace UMXL2h with WIGXLh
 ! ------------------------------------------------------------------------------
@@ -1470,9 +1474,9 @@
       RM(4,4) = R44XL4
  !endcomment
 
-  UMXL1h_full : LINE=(UMXL1h,UMXL1h)
-  UMXL3h_full : LINE=(UMXL3h,UMXL3h)
-  UMXL4h_full : LINE=(UMXL4h,UMXL4h)
+  UMXL1_full : LINE=(UMXL1h,UMXL1h)
+  UMXL3_full : LINE=(UMXL3h,UMXL3h)
+  UMXL4_full : LINE=(UMXL4h,UMXL4h)
 
 ! ------------------------------------------------------------------------------
 ! original XLEAP wiggler
@@ -1510,7 +1514,7 @@
  !VALUE, WIGXLh[RM(1,1)],WIGXLh[RM(1,2)],WIGXLh[RM(2,1)],WIGXLh[RM(2,2)]
  !VALUE, WIGXLh[RM(3,3)],WIGXLh[RM(3,4)],WIGXLh[RM(4,3)],WIGXLh[RM(4,4)]
 
-  WIGXLh_full : LINE=(WIGXLh,WIGXLh)
+  WIGXL_full : LINE=(WIGXLh,WIGXLh)
 
 ! ------------------------------------------------------------------------------
 ! new XLEAP-II quadrupoles (to mitigate focusing of wigglers)
@@ -1531,8 +1535,8 @@
   DUQXL1W : DRIF, L=0.2166+0.475-0.1777551
   DUQXL2  : DRIF, L=0.2166
 
-  UMXLpair1 : LINE=(UMXL1h_full,DUQXL1,QFXL1_full,DUQXL1W,WIGXLh_full)
-  UMXLpair2 : LINE=(UMXL3h_full,DUQXL2,QFXL2_full,DUQXL2,UMXL4h_full)
+  UMXLpair1 : LINE=(UMXL1_full,DUQXL1,QFXL1_full,DUQXL1W,WIGXL_full)
+  UMXLpair2 : LINE=(UMXL3_full,DUQXL2,QFXL2_full,DUQXL2,UMXL4_full)
 
 ! ------------------------------------------------------------------------------
 ! original XLEAP self-seeding chicane (normally OFF)
@@ -1699,10 +1703,10 @@
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 !       in the "LCLS2cu_main.mad8" file
 
-  KQUM1B :=  0.293411239505
-  KQUM2B := -0.13
-  KQUM3B :=  0.382165430892
-  KQUM4B := -0.474867155145
+  KQUM1B :=  0.637833458
+  KQUM2B := -0.701933264437
+  KQUM3B :=  1.340639100267
+  KQUM4B := -1.264921945749
 
   QUM1B : QUAD, TYPE="1.085Q4.31", L=LQE/2, K1=KQUM1b, APER=rQE
   QUM2B : QUAD, TYPE="1.085Q4.31", L=LQE/2, K1=KQUM2b, APER=rQE
@@ -1798,7 +1802,7 @@
 ! SXR dumpline
 ! ------------------------------------------------------------------------------
 
-  KQDMPB := -0.154946553294 !-0.156309918216
+  KQDMPB := -0.154946553294
 
   QDmp1B : QUAD, TYPE="3.94Q17", L=LQP/2, K1=KQDmpb, APER=rQP
   QDmp2B : QUAD, TYPE="3.94Q17", L=LQP/2, K1=KQDmpb, APER=rQP
@@ -2326,7 +2330,7 @@
     BSYend,RWWAKE3H)
 
 ! ------------------------------------------------------------------------------
-! BSY to ALINE (from Cu linac or SC linac) is decommissioned
+! BSY to ALINE (from Cu linac or SC linac) has been decommissioned
 ! ------------------------------------------------------------------------------
 
  !SPhBSYa : LINE=(SPhAL,ALINEa)
@@ -3291,23 +3295,6 @@
       PCEBD,DWSDUMPa2,RFBDD,DWSDUMPb,WSDUMP,DWSDUMPc,&
       RODMP2H,DUMPFACE,DDUMP,DMPend,BTMDUMP,DBMARK38,&
     ENDDMPH_2)
-
-! ------------------------------------------------------------------------------
-
-! for matching phase advance between XLEAP-II wiggler pairs
-
-  EDSYSB_XL2 : LINE=(DBMARK36b,WS31B,D40cm,DE3mab,DE3mbb,XCE31B,DQEA,&
-    QE31B_full,DXLUa1,YCXL1,DXLUa2,XCXL1,DUMXL12u,&
-    UMXLpair1,MXL2a,DUMXL12d,PC12B,BTM12B,DBTM2YC,YCE32B,DQEAa,&
-    QE32B_full,DRFB,RFBE32B,DQEBy1,DCY32B,DQEBy2,WS32B,D40cm,DE3m80cmb,&
-      XCE33B,DQEAb,&
-    QE33B_full,DQEC,DE3m40cm,YCE34B,DQEA,&
-    QE32B_full,DRFB,RFBE34B,DQEC1,WS33B,D40cm,DE3m80cm,XCE35B,DQEAc,&
-    QE33B_full,DXLUc,BCXLSS,DXLUd1,YCXL2,DXLUd2,XCXL2,DUMXL34u,MXL2b,&
-    UMXLpair2,DUMXL34d,YCE36B,DQEA,&
-    QE36B_full,DRFB,RFBE36B,DQEBy1,DCY36B,DQEBy2,WS34B,D40cm)
-
-  LTUsc_XL2 : LINE=(MM1b,DL2sc,VBSYSb,MM2b,EDMCHb,EDSYSb_XL2,UNMCHb)
 
 ! ------------------------------------------------------------------------------
 

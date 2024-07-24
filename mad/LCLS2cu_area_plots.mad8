@@ -1,12 +1,30 @@
 
-! *** OPTICS=AD_ACCEL-2019next ***
+! *** OPTICS=AD_ACCEL-2024nexts ***
 
   ASSIGN, PRINT="LCLS2cu_areas.print"
 
 ! ------------------------------------------------------------------------------
 
   BEAM, ENERGY=E00
-  SET, SETCUS, CUSOFF ; SET, SETAL, ALOFF
+  USE, CU_GSPEC
+  TWISS, COUPLE, BETA0=TWSSC, SAVE
+  PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+    COLOUR=100, SPLINE, RANGE=BEGGSPEC/ENDGSPEC, FILE="LCLS2cu_areas", &
+    TITLE="GSPEC"
+
+! ------------------------------------------------------------------------------
+
+  BEAM, ENERGY=E00
+  USE, CU_SPEC
+  TWISS, COUPLE, BETA0=TWSSC, SAVE
+  PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+    COLOUR=100, SPLINE, RANGE=BEGSPEC/ENDSPEC, FILE="LCLS2cu_areas", &
+    TITLE="SPEC"
+
+! ------------------------------------------------------------------------------
+
+  BEAM, ENERGY=E00
+  SET, SETCUS, CUSOFF
   SETK2cuH
   USE, CU_HXR
   TWISS, BETA0=TWSSC, SAVE
@@ -77,11 +95,8 @@
 ! ------------------------------------------------------------------------------
 
   BEAM, ENERGY=E00
-  SET, SETCUS, CUSON ; SET, SETAL, ALOFF
-  SET, EBC2, 3.0 ; SET, Ef, 4.0 ; SET, Eu, 4.0
-  SETcu4GeV
+  SET, SETCUS, CUSON
   SETK2cuS
- !SETK2cuXL2 !turns on XLEAP2 components and optics
   USE, CU_SXR
   TWISS, BETA0=TWSSC, SAVE
   PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
@@ -108,41 +123,6 @@
   PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
     COLOUR=100, SPLINE, RANGE=BEGDMPS_1/ENDDMPS_2, FILE="LCLS2cu_areas", &
     TITLE="DMPS" !UES+DMPS
-  SET, EBC2, EBC2Cu ; SET, Ef, EfCu ; SET, Eu, EuCu
-
-! ------------------------------------------------------------------------------
-
-  BEAM, ENERGY=E00
-  SET, SETCUS, CUSOFF ; SET, SETAL, ALON
-  SETK2cuA
-  USE, CU_ALINE
-  TWISS, BETA0=TWSSC, SAVE
-  PLOT, TABLE=TWISS, HAXIS=S, VAXIS=RBETX,RBETY, &
-    COLOUR=100, SPLINE, RANGE=BEGBSYA_1/ENDBSYA_2, FILE="LCLS2cu_areas", &
-    TITLE="BSYA"
-  PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-    COLOUR=100, SPLINE, RANGE=BEGBSYA_1/ENDBSYA_2, FILE="LCLS2cu_areas", &
-    TITLE="BSYA"
-
-! ------------------------------------------------------------------------------
-
-  BEAM, ENERGY=E00
-  SET, SETCUS, CUSOFF ; SET, SETAL, ALOFF
-  USE, CU_GSPEC
-  TWISS, BETA0=TWSSC, SAVE
-  PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-    COLOUR=100, SPLINE, RANGE=BEGGSPEC/ENDGSPEC, FILE="LCLS2cu_areas", &
-    TITLE="GSPEC"
-
-! ------------------------------------------------------------------------------
-
-  BEAM, ENERGY=E00
-  SET, SETCUS, CUSOFF ; SET, SETAL, ALOFF
-  USE, CU_SPEC
-  TWISS, BETA0=TWSSC, SAVE
-  PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-    COLOUR=100, SPLINE, RANGE=BEGSPEC/ENDSPEC, FILE="LCLS2cu_areas", &
-    TITLE="SPEC"
 
 ! ------------------------------------------------------------------------------
 
