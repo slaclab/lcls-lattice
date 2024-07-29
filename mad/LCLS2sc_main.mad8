@@ -1,6 +1,6 @@
-  TITLE, "AD_ACCEL (2024nexts)" !superconducting linac
+  TITLE, "AD_ACCEL (September 1, 2024)" !superconducting linac
 
-! *** OPTICS=AD_ACCEL-2024nexts ***
+! *** OPTICS=AD_ACCEL-01SEP24s ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY, DOUBLE
   ASSIGN, ECHO="LCLS2sc.echo"
@@ -503,46 +503,13 @@
 
 ! ------------------------------------------------------------------------------
 
- !CALL, FILENAME="upgrade/20240901/MSXRXXsc.mad8"
-
-! ------------------------------------------------------------------------------
-
- !CALL, FILENAME="LCLS2sc_LHmodes.mad8" !laser heater operating modes
-
  !CALL, FILENAME="LCLS2sc_beams.mad8" !alternate beams & configurations
  !CALL, FILENAME="LCLS2sc_match.mad8"
- !CALL, FILENAME="LCLS2sc_makeSymbols.mad8"
+  CALL, FILENAME="LCLS2sc_makeSymbols.mad8"
  !CALL, FILENAME="LCLS2sc_makeElegant.mad8"
- !CALL, FILENAME="LCLS2sc_XLEAP.mad8"
+  CALL, FILENAME="LCLS2sc_XLEAP.mad8"
 
  !STOP
-
-! ------------------------------------------------------------------------------
-
- !COMMENT
-    BEAM, ENERGY=Ei
-    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
-    USE, SC_SXRi
-    PRINT, FULL
-    TWISS, SAVE, BETA0=TWSSi, TAPE="twissSC.tape", RTAPE="rmatSC.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=BEGBSYS/MBLMS48, FILE="plotSC", &
-      TITLE="SC-linac: BSYS to SXR"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE, RANGE=BEGBSYS/MBLMS48, FILE="plotSC", &
-      TITLE="SC-linac: BSYS to SXR"
- !ENDCOMMENT
-
- !COMMENT
-    BEAM, ENERGY=Ef
-    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
-    USE, BSYLCLS2scS
-    PRINT, FULL
-    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
-      TAPE="surveySC.tape"
- !ENDCOMMENT
-
-  STOP
 
 ! ------------------------------------------------------------------------------
 ! SURVEY in linac coordinates

@@ -1,6 +1,6 @@
-  TITLE, "AD_ACCEL (2024nexts)" !copper linac
+  TITLE, "AD_ACCEL (September 1, 2024)" !copper linac
 
-! *** OPTICS=AD_ACCEL-2024nexts ***
+! *** OPTICS=AD_ACCEL-01SEP24s ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY
   ASSIGN, ECHO="LCLS2cu.echo"
@@ -217,10 +217,10 @@
     SET, KQUM2,  -0.270601268265
     SET, KQUM3,   0.278762678373
     SET, KQUM4,  -0.247470889897
-   !SET, kQHX46, -1.734624260269
-   !SET, KQUE1,   0.169109252491
-   !SET, KQUE2,  -0.137840816238
-   !SET, KQDMP,  -0.155212710055
+    SET, kQHX46, -1.734624260269
+    SET, KQUE1,   0.169109252491
+    SET, KQUE2,  -0.137840816238
+    SET, KQDMP,  -0.155212710055
   ENDSUBROUTINE
 
   SETK2cuS : SUBROUTINE !for LCLS2cuS
@@ -229,10 +229,18 @@
     SET, KQDBL1, -1.045760158543
     SET, KQDBL2,  0.585600770813
     SET, KQDL11,  0.358732502069
-    SET, KQUM1B,  0.895254724596
-    SET, KQUM2B, -0.824480934596
-    SET, KQUM3B,  0.662181824932
-    SET, KQUM4B, -0.666367410592
+    SET, KQUM1B,  0.311729673613 ! 0.311729673688 !
+    SET, KQUM2B, -0.13           !-0.13           !
+    SET, KQUM3B,  0.384569277452 ! 0.384569277501 !
+    SET, KQUM4B, -0.61774146348  !-0.617741463489 !
+    SET, KQSX16,  0.675278050651 ! 0.675278050607 !
+    SET, KQSX19, -0.886396866772 !-0.886396866633 !
+    SET, KQSX21,  0.900083625923 ! 0.900083626034 !
+    SET, KQSX24, -0.835734567482 !-0.835734567482 !
+    SET, kQDSXm, -1.843482712046
+    SET, KQUE1B,  0.325725075565
+    SET, KQUE2B, -0.144356640751
+    SET, KQDMPB, -0.154946553294
   ENDSUBROUTINE
 
 ! ==============================================================================
@@ -289,42 +297,10 @@
 
 ! ------------------------------------------------------------------------------
 
-  SETK2cuS
- !CALL, FILENAME="upgrade/20240901/MSXRXXcu.mad8"
-
-! ------------------------------------------------------------------------------
-
  !CALL, FILENAME="LCLS2cu_match.mad8"
- !CALL, FILENAME="LCLS2cu_makeSymbols.mad8"
+  CALL, FILENAME="LCLS2cu_makeSymbols.mad8"
  !CALL, FILENAME="LCLS2cu_makeElegant.mad8" !use LCLS_L*e.xsif
  !CALL, FILENAME="LCLS2cu_XLEAP.mad8"
-
- !STOP
-
-! ------------------------------------------------------------------------------
-
- !COMMENT
-    BEAM, ENERGY=E00
-    SET, SETCUS, CUSON
-    USE, CU_SXR
-    PRINT, FULL
-    TWISS, SAVE, BETA0=TWSSC, TAPE="twissCu.tape", RTAPE="rmatCu.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=BEGBSYS/MBLMS48, FILE="plotCu", &
-      TITLE="Cu-linac: BSYS to SXR"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE, RANGE=BEGBSYS/MBLMS48, FILE="plotCu", &
-      TITLE="Cu-linac: BSYS to SXR"
- !ENDCOMMENT
-
- !COMMENT
-    BEAM, ENERGY=Ef
-    SET, SETCUS, CUSON
-    USE, BSYLTUS
-    PRINT, FULL
-    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
-      TAPE="surveyCu.tape"
- !ENDCOMMENT
 
   STOP
 

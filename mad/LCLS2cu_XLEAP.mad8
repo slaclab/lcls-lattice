@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-2024nexts ***
+! *** OPTICS=AD_ACCEL-01SEP24s ***
 
 ! XLEAP-II optics
 
@@ -188,7 +188,7 @@
  !COMMENT !SXR from Cu linac (XLEAP-II)
     ASSIGN, PRINT="LCLS2cuS-XL2.print"
     BEAM, ENERGY=Ei
-    USE, LCLS2cuSe
+    USE, CU_SXRi
     PRINT, FULL
     SURVEY, X0=XWS02, Z0=ZWS02, THETA0=ADL1, TAPE="LCLS2cuS-XL2_survey.tape"
     TWISS, SAVE, BETA0=TWSSi, TAPE="LCLS2cuS-XL2_twiss.tape" !, &
@@ -199,9 +199,11 @@
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
       STYLE=100, SPLINE, RANGE=MBLMS48/#E, FILE="LCLS2cuS-XL2", &
       TITLE="XLEAP-II (from Cu linac): DMPS"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=DBMARK36B/MBLMS48, FILE="LCLS2cuS-XL2", &
+      TITLE="XLEAP-II (from Cu linac): DMPS"
  !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
 
   STOP
-  

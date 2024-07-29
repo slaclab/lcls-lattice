@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL_HE-2024nexts ***
+! *** OPTICS=AD_ACCEL-01SEP24s ***
 
 ! ==============================================================================
 ! Color Twiss plots (beam from LCLS-II gun)
@@ -119,43 +119,6 @@
     COLOUR=100, SPLINE, RANGE=BEGDASEL/ENDBSYA_2, FILE="LCLS2sc_color", &
     TITLE="DASEL to A-line"
   ENDCOMMENT
-
-! ==============================================================================
-! Color Twiss plots (beam from LEI gun)
-! ------------------------------------------------------------------------------
-
-! Cathode to BEAM0LEI
-
-  BEAM, ENERGY=E0LEI
-  USE, (GUNLEI,L0LEI)
-  PRINT, FULL
-  TWISS, SAVE, COUPLE, BETA0=TWSS0LEI
-  PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, VMAX=0.12, &
-    COLOUR=100, -SPLINE, RANGE=#S/BEAM0LEI, FILE="LCLS2sc_color", &
-    TITLE="GUNLEI + L0LEI"
-  PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, & !VMIN=0, VMAX=20, &
-    COLOUR=100, SPLINE, RANGE=#S/BEAM0LEI, FILE="LCLS2sc_color", &
-    TITLE="GUNLEI + L0LEI"
-
-! DIAGIS
-
-  BEAM, ENERGY=Ei
- !SETK2scDGI !for mux=1.75*2pi from TCXDGI to OTRDGI1
-  USE, SC_DIAGISi
-  TWISS, SAVE, BETA0=TWSSiLEI
-  PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-    COLOUR=100, SPLINE, RANGE=BEGLEI_1/ENDDIAGI_2, FILE="LCLS2sc_color", &
-    TITLE="BEAM0LEI to DIAGI spectrometer"
-
-! DIAG02
-
-  BEAM, ENERGY=Ei
-  SETK2scLEI
-  USE, SC_DIAG02i
-  TWISS, SAVE, BETA0=TWSSiLEI
-  PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-    COLOUR=100, SPLINE, RANGE=BEGLEI_1/#E, FILE="LCLS2sc_color", &
-    TITLE="BEAM0LEI to DIAG0"
 
 ! ------------------------------------------------------------------------------
 
