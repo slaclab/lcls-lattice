@@ -1,6 +1,6 @@
-  TITLE, "AD_ACCEL (September 1, 2024)" !copper linac
+  TITLE, "AD_ACCEL (preRelease)" !copper linac
 
-! *** OPTICS=AD_ACCEL-01SEP24s ***
+! *** OPTICS=AD_ACCEL-preRelease ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY
   ASSIGN, ECHO="LCLS2cu.echo"
@@ -250,12 +250,12 @@
   COMMENT
     BEAM, ENERGY=E00
     USE, CU_GSPEC
-    TWISS, COUPLE, BETA0=TWSSC, TAPE="LCLS2cuGSPEC_twiss.tape", &
+    TWISS, BETA0=TWSSC, TAPE="LCLS2cuGSPEC_twiss.tape", &
       RTAPE="LCLS2cuGSPEC_rmat.tape"
 
     BEAM, ENERGY=E00
     USE, CU_SPEC
-    TWISS, COUPLE, BETA0=TWSSC, TAPE="LCLS2cuSPEC_twiss.tape", &
+    TWISS, BETA0=TWSSC, TAPE="LCLS2cuSPEC_twiss.tape", &
       RTAPE="LCLS2cuSPEC_rmat.tape"
     BEAM, ENERGY=Ei
     USE, CU_SPECi
@@ -266,7 +266,7 @@
     SETK2cuH
     BEAM, ENERGY=E00
     USE, CU_HXR
-    TWISS, COUPLE, BETA0=TWSSC, TAPE="LCLS2cuH_twiss.tape", &
+    TWISS, BETA0=TWSSC, TAPE="LCLS2cuH_twiss.tape", &
       RTAPE="LCLS2cuH_rmat.tape"
     BEAM, ENERGY=Ei
     USE, CU_HXRi
@@ -277,7 +277,7 @@
     SETK2cuS
     BEAM, ENERGY=E00
     USE, CU_SXR
-    TWISS, COUPLE, BETA0=TWSSC, TAPE="LCLS2cuS_twiss.tape", &
+    TWISS, BETA0=TWSSC, TAPE="LCLS2cuS_twiss.tape", &
       RTAPE="LCLS2cuS_rmat.tape"
     BEAM, ENERGY=Ei
     USE, CU_SXRi
@@ -298,11 +298,11 @@
 ! ------------------------------------------------------------------------------
 
  !CALL, FILENAME="LCLS2cu_match.mad8"
-  CALL, FILENAME="LCLS2cu_makeSymbols.mad8"
+ !CALL, FILENAME="LCLS2cu_makeSymbols.mad8"
  !CALL, FILENAME="LCLS2cu_makeElegant.mad8" !use LCLS_L*e.xsif
- !CALL, FILENAME="LCLS2cu_XLEAP.mad8"
+ !CALL, FILENAME="LCLS2cu_XLEAP.mad8" !run by itself
 
-  STOP
+ !STOP
 
 ! ------------------------------------------------------------------------------
 
@@ -324,7 +324,7 @@
    !SAVELINE, NAME="CU_HXR", FILENAME="LCLS2cuH.saveline"
     PRINT, FULL
     SURVEY, THETA0=ADL1, X0=Xi, Z0=Zi, TAPE="LCLS2cuH_survey.tape"
-    SAVEBETA, TWm, OTR2
+    SAVEBETA, TWm, WS02
     TWISS, SAVE, BETA0=TWSSC, TAPE="LCLS2cuH_twiss.tape" !, &
    !  RTAPE="LCLS2cuH_rmat.tape"
     SHOW, TWm
@@ -531,116 +531,6 @@
  !ENDCOMMENT
 
 ! ==============================================================================
-
-! Twiss plots
-
-  COMMENT
-    ASSIGN, PRINT="LCLS2cu.print"
-
-  ! Cathode to HXR Main Dump
-
-    BEAM, ENERGY=E00
-    SET, SETCUS, CUSOFF
-    SETK2cuH
-    USE, CU_HXR
-    PRINT, FULL
-    TWISS, SAVE, BETA0=TWSSC
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
-      COLOUR=100, RANGE=BEGDL1_1/DUMPFACE, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: DL1 to HXR dump"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      COLOUR=100, SPLINE, RANGE=BEGDL1_1/DUMPFACE, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: DL1 to HXR dump"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGDL1_1/DUMPFACE, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: DL1 to HXR dump"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      COLOUR=100, RANGE=BEGGUN/ENDL0, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: Gun + L0 linac"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX, &
-      COLOUR=100, SPLINE, RANGE=LHbeg/LHend, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: Laser Heater chicane"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX, &
-      COLOUR=100, SPLINE, RANGE=L0bBEG/ENDDL1_2, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: L0b + DL1 dogleg"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      COLOUR=100, SPLINE, RANGE=BEGL1/ENDL1, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: L1 linac"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX, &
-      COLOUR=100, SPLINE, RANGE=BEGBC1/ENDBC1, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: BC1 chicane"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      COLOUR=100, SPLINE, RANGE=BEGL2/ENDL2, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: L2 linac"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX, &
-      COLOUR=100, SPLINE, RANGE=BEGBC2/ENDBC2, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: BC2 chicane"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      COLOUR=100, SPLINE, RANGE=BEGL3/ENDL3, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: L3 linac"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      COLOUR=100, SPLINE, RANGE=BEGCLTH_0/ENDBSYH_2, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: BSY to LTUH"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGLTUH/ENDLTUH, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: LTUH"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      COLOUR=100, SPLINE, RANGE=BEGUNDH/ENDUNDH, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: HXR Undulator"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGDMPH_1/DUMPFACE, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: HXR Post-undulator to dump"
-
-  ! Cathode to SXR Main Dump
-
-    BEAM, ENERGY=E00
-    SET, SETCUS, CUSON   !pulsed
-   !SET, SETCUS, CUSONDC !DC
-   !VALUE, PULSED,DCMODE
-    SETK2cuS
-    USE, CU_SXR
-   !SAVELINE, NAME="CU_SXR", FILENAME="LCLS2cuS.saveline"
-    PRINT, FULL
-    TWISS, SAVE, BETA0=TWSSC
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
-      COLOUR=100, SPLINE, RANGE=BEGDL1_1/DUMPFACEB, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: DL1 to SXR dump"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      COLOUR=100, SPLINE, RANGE=BEGDL1_1/DUMPFACEB, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: DL1 to SXR dump"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGDL1_1/DUMPFACEB, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: DL1 to SXR dump"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGCLTH_0/ENDBSYS, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: BSY to LTUS"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGLTUS/ENDLTUS, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: LTUS"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      COLOUR=100, SPLINE, RANGE=BEGUNDS/ENDUNDS, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: SXR Undulator"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGDMPS_1/DUMPFACEb, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: SXR Post-indulator to dump"
-
-  ! Cathode to HXR Safety Dump
-
-    BEAM, ENERGY=E00
-    SET, SETCUS, CUSOFF
-    SETK2cuH
-    USE, CU_SFTH
-    TWISS, SAVE, BETA0=TWSSC
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGSFTH_1/SFTDUMP, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: HXR safety dump"
-  ENDCOMMENT
-
-! ------------------------------------------------------------------------------
-
- !CALL, FILENAME="LCLS2cu_area_plots.mad8"
-
-! ------------------------------------------------------------------------------
 
   STOP
 

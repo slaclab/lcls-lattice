@@ -1,11 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-01SEP24s ***
+! *** OPTICS=AD_ACCEL-preRelease ***
 
 ! LCLS2sc 3-way spreader system
 
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
+! 08-AUG-2024, M. Woodley
+!  * add YCSP0D and XCSP0D ("Bypass#3") per T. Smith
 ! 25-JAN-2024, M. Woodley
 !  * remove (deferred) rastering in BSY dump line
 !    > rename BKXRASD to XCSP5D (already installed type-4)
@@ -770,6 +772,8 @@
   DSPBK5ha : DRIF, L=LDSPBK5ha
   DSPBK5hb : DRIF, L=LDSPBK5hb
 
+  dLmdw := 0
+
  dLDSP2h   := 0.0
   LDSP2h   := 43.284 +dLDSP2h
   LDSP2hb  := 10.0
@@ -839,7 +843,7 @@
   LDSP13hc := 0.749 +(LQN-LQA)/2
   LDSP13ha := LDSP13h-LDSP13hb-LDSP13hc
   LDSP14h  := LDSP5h
-  LDSP14ha := 13.863119 +(LQN-LQA)/2
+  LDSP14ha := 13.863119 +(LQN-LQA)/2 +dLmdw
   LDSP14hb := LDSP14h-LDSP14ha
   LDSP15h  := LDSP4h
   LDSP15ha := 0.5
@@ -1143,6 +1147,14 @@
   DWALLad : DRIF, L=1.840975                     !distance from face of muon wall to BSY dump
   DDUMPBSY: DRIF, L=61.120*in2m, TYPE="BCS dump" !length of BSY dump (per A. Ibrahimov)
 
+  LDSP2da1a := 12.033697
+  LDSP2da1b := 0.2286
+  LDSP2da1c := LDSP2da1-LDSP2da1a-LDSP2da1b
+
+  DSP2da1a : DRIF, L= LDSP2da1a
+  DSP2da1b : DRIF, L= LDSP2da1b
+  DSP2da1c : DRIF, L= LDSP2da1c
+
 ! monitors
 
   BPMSPh   : MONI, TYPE="Stripline-5"
@@ -1215,13 +1227,16 @@
   YCSP6s  : VKIC, TYPE="class-4"
   YCSP8s  : VKIC, TYPE="class-4"
 
+  XCSP0d  : HKIC, TYPE="Bypass#3"
+  YCSP0d  : VKIC, TYPE="Bypass#3"
+
   XCSP1d  : HKIC, TYPE="class-4"
   XCSP3d  : HKIC, TYPE="class-4"
-  XCSP5d  : HKIC, TYPE="class-5" !not installed
+  XCSP5d  : HKIC, TYPE="class-4"
 
   YCSP2d  : VKIC, TYPE="class-4"
   YCSP4d  : VKIC, TYPE="class-4"
-  YCSP6d  : VKIC, TYPE="class-5" !not installed
+  YCSP6d  : VKIC, TYPE="class-4"
 
 ! SROT to remove rotation angle
 
@@ -1406,7 +1421,8 @@
 
   SPRDs : LINE=(SPRDsa,SPRDsb)
 
-  SPRDda : LINE=(DSP2da1,MRFBSP1d,DSP2da2,BPMSP1d,DSP2db)
+  SPRDda : LINE=(DSP2da1a,YCSP0D,DSP2da1b,XCSP0D,DSP2da1c,MRFBSP1d,&
+    DSP2da2,BPMSP1d,DSP2db)
 
   SPRDdb : LINE=(DSP2dc1)
 

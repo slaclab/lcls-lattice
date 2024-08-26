@@ -1,6 +1,6 @@
-  TITLE, "AD_ACCEL (September 1, 2024)" !superconducting linac
+  TITLE, "AD_ACCEL (preRelease)" !superconducting linac
 
-! *** OPTICS=AD_ACCEL-01SEP24s ***
+! *** OPTICS=AD_ACCEL-preRelease ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY, DOUBLE
   ASSIGN, ECHO="LCLS2sc.echo"
@@ -480,7 +480,6 @@
       RTAPE="LCLS2scDi_rmat.tape"
 
     SET, SETSP, SETSPd ; SET, SETDA, DAON
-    SETK2scDA
     BEAM, ENERGY=E0
     USE, SC_DASEL
     TWISS, COUPLE, BETA0=TWSS0, TAPE="LCLS2scDA_twiss.tape", &
@@ -505,11 +504,16 @@
 
  !CALL, FILENAME="LCLS2sc_beams.mad8" !alternate beams & configurations
  !CALL, FILENAME="LCLS2sc_match.mad8"
-  CALL, FILENAME="LCLS2sc_makeSymbols.mad8"
+ !CALL, FILENAME="LCLS2sc_makeSymbols.mad8"
  !CALL, FILENAME="LCLS2sc_makeElegant.mad8"
-  CALL, FILENAME="LCLS2sc_XLEAP.mad8"
+ !CALL, FILENAME="LCLS2sc_XLEAP.mad8" !run by itself
 
  !STOP
+
+! ------------------------------------------------------------------------------
+
+ !CALL "LCLS2sc_color_plots.mad8" !run by itself (ends with STOP)
+ !CALL "LCLS2sc_area_plots.mad8"  !run by itself (ends with STOP)
 
 ! ------------------------------------------------------------------------------
 ! SURVEY in linac coordinates
@@ -822,132 +826,6 @@
  !ENDCOMMENT
 
 ! ==============================================================================
-
-! Twiss plots
-
-  COMMENT
-    ASSIGN, PRINT="LCLS2sc.print"
-
-  ! Cathode to BEAM0
-
-    BEAM, ENERGY=E0
-    USE, (GUN,L0)
-    PRINT, FULL
-    TWISS, COUPLE, SAVE, COUPLE, BETA0=TWSS0
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, VMAX=0.12, &
-      COLOUR=100, -SPLINE, RANGE=CATHODEB/ENDL0B, FILE="LCLS2sc_color", &
-      TITLE="GUNB + L0B"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, VMIN=0, VMAX=20, &
-      COLOUR=100, -SPLINE, RANGE=CATHODEB/ENDL0B, FILE="LCLS2sc_color", &
-      TITLE="GUNB + L0B"
-
-  ! DIAG0
-
-    BEAM, ENERGY=Ei
-    USE, SC_DIAG0i
-    TWISS, SAVE, BETA0=TWSSi
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGDIAG0/ENDDIAG0, FILE="LCLS2sc_color", &
-      TITLE="DIAG0"
-
-  ! BEAM0 to HXR Main Dump
-
-    BEAM, ENERGY=Ei
-    SET, SETSP, SETSPh
-    USE, SC_HXRi
-    TWISS, SAVE, BETA0=TWSSi
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, &
-      COLOUR=100, SPLINE, RANGE=BEAM0/ENDHTR, FILE="LCLS2sc_color", &
-      TITLE="Laser Heater + Coll0"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEAM0/ENDHTR, FILE="LCLS2sc_color", &
-      TITLE="Laser Heater + Coll0"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, &
-      COLOUR=100, SPLINE, RANGE=BEGL1B/ENDCOL1, FILE="LCLS2sc_color", &
-      TITLE="L1B + BC1B + Coll1"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGL1B/ENDCOL1, FILE="LCLS2sc_color", &
-      TITLE="L1B + BC1B + Coll1"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, &
-      COLOUR=100, SPLINE, RANGE=BEGL2B/WSEMIT2, FILE="LCLS2sc_color", &
-      TITLE="L2B + BC2B + EMIT2"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGL2B/WSEMIT2, FILE="LCLS2sc_color", &
-      TITLE="L2B + BC2B + EMIT2"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, VMAX=5, &
-      COLOUR=100, SPLINE, RANGE=BEGL3B/ENDEXT, FILE="LCLS2sc_color", &
-      TITLE="L3B + Extension"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      COLOUR=100, SPLINE, RANGE=BEGL3B/ENDEXT, FILE="LCLS2sc_color", &
-      TITLE="L3B + Extension"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGDOG/MQBP13, FILE="LCLS2sc_color", &
-      TITLE="Dogleg + Match to Bypass + NIT Extension"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      COLOUR=100, SPLINE, RANGE=MQBP13/ENDSPD_1, FILE="LCLS2sc_color", &
-      TITLE="Bypass Line to Spreader"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGSPH/ENDLTUH, FILE="LCLS2sc_color", &
-      TITLE="SPH + BSYH + LTUH"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      COLOUR=100, SPLINE, RANGE=BEGUNDH/ENDUNDH, FILE="LCLS2sc_color", &
-      TITLE="HXR Undulator"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGDMPH_1/DUMPFACE, FILE="LCLS2sc_color", &
-      TITLE="HXR Undulator End to Dump"
-
-  ! Spreader to SXR Main Dump
-
-    BEAM, ENERGY=Ei
-    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
-    USE, SC_SXRi
-    TWISS, SAVE, BETA0=TWSSi
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGSPS/ENDLTUS, FILE="LCLS2sc_color", &
-      TITLE="SPS + SLTS + BSYS + LTUS"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      COLOUR=100, SPLINE, RANGE=BEGUNDS/ENDUNDS, FILE="LCLS2sc_color", &
-      TITLE="SXR Undulator"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGDMPS_1/DUMPFACEB, FILE="LCLS2sc_color", &
-      TITLE="SXR Undulator End to Dump"
-
-  ! SXR Safety Dump
-
-    BEAM, ENERGY=Ei
-    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
-    USE, SC_SFTSi
-    TWISS, SAVE, BETA0=TWSSi
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGSFTS_1/SFTDMPB, FILE="LCLS2sc_color", &
-      TITLE="SXR Safety Dump"
-
-  ! Spreader to BSY Dump
-
-    BEAM, ENERGY=Ei
-    SET, SETSP, SETSPd ; SET, SETDA, DAOFF
-    USE, SC_BSYDi
-    TWISS, SAVE, BETA0=TWSSi
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGSPD_1/DUMPBSY, FILE="LCLS2sc_color", &
-      TITLE="SPD + SLTD"
-
-  ! DASEL (a.k.a.S30XL, LESA ... off-project)
-
-    BEAM, ENERGY=Ei
-    SET, SETSP, SETSPd ; SET, SETDA, DAON
-    USE, SC_DASELi
-    TWISS, SAVE, BETA0=TWSSi
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=rBETX,rBETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGDASEL/ENDBSYA_2, FILE="LCLS2sc_color", &
-      TITLE="DASEL to A-line"
-  ENDCOMMENT
-
-! ------------------------------------------------------------------------------
-
- !CALL "LCLS2sc_area_plots.mad8"
-
-! ------------------------------------------------------------------------------
 
   STOP
 

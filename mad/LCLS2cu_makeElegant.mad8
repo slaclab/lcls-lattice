@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-01SEP24s ***
+! *** OPTICS=AD_ACCEL-preRelease ***
 
 ! generate input files for ELEGANT
 
@@ -35,17 +35,9 @@
 ! output MATR definitions; set TYPE attributes
 ! ------------------------------------------------------------------------------
 
-  VALUE, LH_UND[L]
-  BEAM, ENERGY=Ei
-  USE, (LH_UND) !*LIN.01*
-  MATCH, BETX=1, BETY=1
-    RMATRIX, #S/#E, RM(6,6)=1
-  ENDMATCH
-  LH_UND, TYPE="LH_UND"
-
   VALUE, UMAHXh[L]
   BEAM, ENERGY=Ef
-  USE, (UMAHXh) !*LIN.02*
+  USE, (UMAHXh) !*LIN.01*
   MATCH, BETX=1, BETY=1
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
@@ -87,7 +79,7 @@
 
   VALUE, PSHXh[L]
   BEAM, ENERGY=Ef
-  USE, (PSHXh) !*LIN.03*
+  USE, (PSHXh) !*LIN.02*
   MATCH, BETX=1, BETY=1
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
@@ -128,7 +120,7 @@
 
   VALUE, UMASXh[L]
   BEAM, ENERGY=Ef
-  USE, (UMASXh) !*LIN.09*
+  USE, (UMASXh) !*LIN.03*
   MATCH, BETX=1, BETY=1
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
@@ -157,7 +149,7 @@
 
   VALUE, PSSXh[L]
   BEAM, ENERGY=Ef
-  USE, (PSSXh) !*LIN.10*
+  USE, (PSSXh) !*LIN.04*
   MATCH, BETX=1, BETY=1
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
@@ -373,43 +365,50 @@
   TWISS, BETA0=TWSSi, TAPE="LCLS2cuS_twiss.tape"
   SURVEY, X0=XWS02, Z0=ZWS02, THETA0=ADL1, TAPE="LCLS2cuS_survey.tape"
 
+! ------------------------------------------------------------------------------
+
 ! XLEAP-II optics (Yuri Nosochkov; see LCLS2cu_XLEAP.mad8)
 
-  CALL, FILENAME="LCLS2cu_XLEAP.mad8"
+ !CALL, FILENAME="LCLS2cu_XLEAP.mad8"
+
+ !VALUE, R11XL1,R12XL1,R21XL1,R22XL1
+ !VALUE, R33XL1,R34XL1,R43XL1,R44XL1
+ !VALUE, R11XL3,R12XL3,R21XL3,R22XL3
+ !VALUE, R33XL3,R34XL3,R43XL3,R44XL3
+ !VALUE, R11XL4,R12XL4,R21XL4,R22XL4
+ !VALUE, R33XL4,R34XL4,R43XL4,R44XL4
+ !VALUE, WIGXLh[RM(1,1)],WIGXLh[RM(1,2)],WIGXLh[RM(2,1)],WIGXLh[RM(2,2)]
+ !VALUE, WIGXLh[RM(3,3)],WIGXLh[RM(3,4)],WIGXLh[RM(4,3)],WIGXLh[RM(4,4)]
 
 ! ------------------------------------------------------------------------------
 
   VALUE, UMXL1h[L]
   BEAM, ENERGY=Ef
-  USE, (UMXL1h) !*LIN.13*
+  USE, (UMXL1h) !*LIN.06* (*LIN.05 if LCLS2cu_XLEAP.mad8 not CALLed)
   MATCH, BETX=1, BETY=1
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
-  UMXL1h, TYPE="UMXL1"
 
   VALUE, UMXL3h[L]
   BEAM, ENERGY=Ef
-  USE, (UMXL3h) !*LIN.15*
+  USE, (UMXL3h) !*LIN.07* (*LIN.06 if LCLS2cu_XLEAP.mad8 not CALLed)
   MATCH, BETX=1, BETY=1
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
-  UMXL3h, TYPE="UMXL3"
 
   VALUE, UMXL4h[L]
   BEAM, ENERGY=Ef
-  USE, (UMXL4h) !*LIN.16*
+  USE, (UMXL4h) !*LIN.08* (*LIN.07 if LCLS2cu_XLEAP.mad8 not CALLed)
   MATCH, BETX=1, BETY=1
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
-  UMXL4h, TYPE="UMXL4"
 
   VALUE, WIGXLh[L]
   BEAM, ENERGY=Ef
-  USE, (WIGXLh) !*LIN.17*
+  USE, (WIGXLh) !*LIN.09* (*LIN.08 if LCLS2cu_XLEAP.mad8 not CALLed)
   MATCH, BETX=1, BETY=1
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
-  WIGXLh, TYPE="WIGXL"
 
 ! ------------------------------------------------------------------------------
 

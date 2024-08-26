@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-01SEP24s ***
+! *** OPTICS=AD_ACCEL-preRelease ***
 
 ! generate input files for ELEGANT
 
@@ -538,6 +538,11 @@
   PSHXh45, TYPE="PSHX"
   PSHXh46, TYPE="PSHX"
 
+  UMXL1h, TYPE="UMXL1"
+  UMXL3h, TYPE="UMXL3"
+  UMXL4h, TYPE="UMXL4"
+  WIGXLh, TYPE="WIGXL"
+
 ! ------------------------------------------------------------------------------
 ! output SBEN FINT values (to use in CSR SBEN values file)
 ! ------------------------------------------------------------------------------
@@ -769,7 +774,7 @@
 
   BEAM, ENERGY=Ei
   SET, SETSP, SETSPd ; SET, SETDA, DAON
-  USE, SC_DASELi
+  USE, SC_DASELi, RANGE=#S/ENDBSYA_2
   TWISS, BETA0=TWSSi, TAPE="LCLS2scDA_twiss.tape"
   SURVEY, X0=Xgun, Y0=Ygun, Z0=Zi, TAPE="LCLS2scDA_survey.tape"
 
@@ -777,42 +782,47 @@
 
 ! XLEAP-II optics
 
-  CALL, FILENAME="LCLS2sc_XLEAP.mad8"
+ !CALL, FILENAME="LCLS2sc_XLEAP.mad8"
+
+ !VALUE, R11XL1,R12XL1,R21XL1,R22XL1
+ !VALUE, R33XL1,R34XL1,R43XL1,R44XL1
+ !VALUE, R11XL3,R12XL3,R21XL3,R22XL3
+ !VALUE, R33XL3,R34XL3,R43XL3,R44XL3
+ !VALUE, R11XL4,R12XL4,R21XL4,R22XL4
+ !VALUE, R33XL4,R34XL4,R43XL4,R44XL4
+ !VALUE, WIGXLh[RM(1,1)],WIGXLh[RM(1,2)],WIGXLh[RM(2,1)],WIGXLh[RM(2,2)]
+ !VALUE, WIGXLh[RM(3,3)],WIGXLh[RM(3,4)],WIGXLh[RM(4,3)],WIGXLh[RM(4,4)]
 
 ! ------------------------------------------------------------------------------
 
   VALUE, UMXL1h[L]
   BEAM, ENERGY=Ef
-  USE, (UMXL1h) !*LIN.08*
+  USE, (UMXL1h) !*LIN.09* (*LIN.08 if LCLS2cu_XLEAP.mad8 not CALLed)
   MATCH, BETX=1, BETY=1
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
-  UMXL1h, TYPE="UMXL1"
 
   VALUE, UMXL3h[L]
   BEAM, ENERGY=Ef
-  USE, (UMXL3h) !*LIN.09*
+  USE, (UMXL3h) !*LIN.10* (*LIN.09 if LCLS2cu_XLEAP.mad8 not CALLed)
   MATCH, BETX=1, BETY=1
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
-  UMXL3h, TYPE="UMXL3"
 
   VALUE, UMXL4h[L]
   BEAM, ENERGY=Ef
-  USE, (UMXL4h) !*LIN.10*
+  USE, (UMXL4h) !*LIN.11* (*LIN.10 if LCLS2cu_XLEAP.mad8 not CALLed)
   MATCH, BETX=1, BETY=1
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
-  UMXL4h, TYPE="UMXL4"
 
   VALUE, WIGXLh[L]
   BEAM, ENERGY=Ef
-  USE, (WIGXLh) !*LIN.11*
+  USE, (WIGXLh) !*LIN.12* (*LIN.11 if LCLS2cu_XLEAP.mad8 not CALLed)
   MATCH, BETX=1, BETY=1
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
-  WIGXLh, TYPE="WIGXL"
 
 ! ------------------------------------------------------------------------------
 
-  STOP
+  RETYRN

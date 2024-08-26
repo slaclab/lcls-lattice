@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-01SEP24s ***
+! *** OPTICS=AD_ACCEL-preRelease ***
 
 ! LCLS2sc undulator
 
@@ -7,12 +7,10 @@
 ! Modification History
 ! ------------------------------------------------------------------------------
 ! 01-SEP-2024, M. Woodley
-!  * add quadrupole and RFBPM to SXR cells 17,18,20,22,23
-!  * add VV to SXR cell 20
-!  * change quadrupole polarity in SXR cells 21,24
-!  * add quadrupole to SXR cell 25
-!  * include upgrade definitions ... comment out LCLS-II definitions and
-!    uncomment LCLS-II-HE definitions as cells are upgraded
+!  * add quadrupole (not powered) and RFBPM to SXR cells 22 and 23
+!  * VVs are in SXR cells 21, 28, 34, 35, 38, and 44 per X. Permanyer
+!  * include long-period undulator definitions ... comment out short-period
+!    definitions and uncomment long-period definitions as cells are upgraded
 ! ------------------------------------------------------------------------------
 ! 13-APR-2024, M. Woodley
 !  * rename BODCBX42 -> YAGCBX42
@@ -425,22 +423,6 @@
   UMASXh46_ : UMASXh_
   UMASXh47_ : UMASXh_
 
-! ------------------------------------------------------------------------------
-! SXR undulator cell drifts
-! - DTSXU_ = SXU undulator segment small terminations modeled as drift
-! ------------------------------------------------------------------------------
-
-  LDU3s_ := 0.25-LPSSXh_-0.04-0.005
-  LDU4s_ := (0.25-LPSSXh_-0.5*LQu)/2+0.04+0.005
-  LDU5s_ := (0.25-LPSSXh_-0.5*LQu)/2
-
-  DTSXU_   : DRIF, L=LSXUe_
-  DU3s_    : DRIF, L=LDU3s_
-  DU4s_    : DRIF, L=LDU4s_
-  DU5s_    : DRIF, L=LDU5s_
-  DU4sb_   : DRIF, L=DU4s_[L]-DU4sa[L]
-  DU3sb_   : DRIF, L=DU3s_[L]-DU3sa[L]
-
 ! ##############################################################################
 ! SXR: short-period undulator and phase shifter definitions (LCLS-II)
 ! ##############################################################################
@@ -574,7 +556,7 @@
   UMASXh47 : UMASXh
 
 ! ------------------------------------------------------------------------------
-! SXR Undulator cell drifts
+! SXR short-period uUndulator cell drifts
 ! NOTE: some definitions are also used in long-period undulator cells
 ! ------------------------------------------------------------------------------
 ! - DTSXU = SXU undulator segment small terminations modeled as drift
@@ -602,8 +584,26 @@
   DUE1ab : DRIF, L=0.9-LRFBub -0.057
   DUE1e  : DRIF, L=0.057
 
- !DU0sa  : DRIF, L=0.790882 !0.7908811950945
- !DU0sb  : DRIF, L=DU0s[L]-DU0sa[L]-LRFBub
+  DU3sa : DRIF, L=0.114
+  DU3sb : DRIF, L=DU3s[L]-DU3sa[L]
+  DU4sa : DRIF, L=0.117258
+  DU4sb : DRIF, L=DU4s[L]-DU4sa[L]
+
+! ------------------------------------------------------------------------------
+! SXR long-period undulator cell drifts
+! - DTSXU_ = SXU undulator segment small terminations modeled as drift
+! ------------------------------------------------------------------------------
+
+  LDU3s_ := 0.25-LPSSXh_-0.04-0.005
+  LDU4s_ := (0.25-LPSSXh_-0.5*LQu)/2+0.04+0.005
+  LDU5s_ := (0.25-LPSSXh_-0.5*LQu)/2
+
+  DTSXU_   : DRIF, L=LSXUe_
+  DU3s_    : DRIF, L=LDU3s_
+  DU4s_    : DRIF, L=LDU4s_
+  DU5s_    : DRIF, L=LDU5s_
+  DU4sb_   : DRIF, L=DU4s_[L]-DU4sa[L]
+  DU3sb_   : DRIF, L=DU3s_[L]-DU3sa[L]
 
 ! ******************************************************************************
 ! SXR: common definitions
@@ -704,6 +704,8 @@
 
   KQSX16 :=  0.365159074386
   KQSX19 := -0.922576339501
+  KQSX22 :=  0              !not powered
+  KQSX23 :=  0              !not powered
   KQSX21 :=  1.238335418988
   KQSX24 := -1.251292803834
 
@@ -713,8 +715,8 @@
   QSXh19 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=KQSX19, APER=rQu
   QSXh20 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFSX,  APER=rQu
   QSXh21 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=KQSX21, APER=rQu
-  QSXh22 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFSX,  APER=rQu
-  QSXh23 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDSX,  APER=rQu
+  QSXh22 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=KQSX22, APER=rQu
+  QSXh23 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=KQSX23, APER=rQu
   QSXh24 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=KQSX24, APER=rQu
   QSXh25 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDSX,  APER=rQu
   QSXh26 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFSX,  APER=rQu
@@ -1208,13 +1210,11 @@
 
 ! SXRSS-II BOD's
 
-  DU4sa : DRIF, L=0.117258
   BOD10 : PROF, TYPE="YAG" !Beam Overlap Device
-  DU4sb : DRIF, L=DU4s[L]-DU4sa[L]
   DU7sa : DRIF, L=0.078508
   BOD12 : PROF, TYPE="YAG" !Beam Overlap Device
   DU7sb : DRIF, L=DU7s[L]-DU7sa[L]
-
+  
 ! PEPPEx components
 
   PEPXANG := 0.105263157895E-2 !offset beam toward aisle (south)
@@ -1222,9 +1222,7 @@
  !DU7sc     : DRIF, L=0.184
  !FSPEPX1   : INST, TYPE="fast shutter"
  !DU7sd     : DRIF, L=DU7s[L]-DU7sc[L]
-  DU3sa     : DRIF, L=0.114
   XCPEPX1   : HKIC, TYPE="2.19 Gap Type 4", KICK=-PEPXANG*SETPEPX
-  DU3sb     : DRIF, L=DU3s[L]-DU3sa[L]
   DU7se     : DRIF, L=0.074
   VGPEPX1   : MARK, TYPE="vacuum gauges"
   VGCCPEPX1 : INST, TYPE="cold cathode"
@@ -1255,31 +1253,12 @@
 
 ! post-SDT
 
-  COMMENT
-    SXBRK17 : LINE=(DU3s,DPSSX17,DU4s,DU5s,QSXh17_full,DU6s,&
-                    RFBSX17,DU7s)
-    SXBRK18 : LINE=(DU3s,DPSSX18,DU4s,DU5s,QSXh18_full,DU6s,&
-                    RFBSX18,DU7s)
-    SXBRK20 : LINE=(DU3s,DPSSX20,DU4s,DU5s,QSXh20_full,DU6s,&
-                    FBSX20,DU7s)
-    SXBRK22 : LINE=(DU3s,DPSSX22,DU4s,DU5s,QSXh22_full,DU6s,&
-                    RFBSX22,DU7s)
-    SXBRK23 : LINE=(DU3s,DPSSX23,DU4s,DU5s,QSXh23_full,DU6s,&
-                    RFBSX23,DU7s)
-    SXBRK25 : LINE=(DU3s,DPSSX25,DU4s,DU5s,QSXh25_full,DU6s,&
-                    RFBSX25,DU7s)
-  ENDCOMMENT
-
   DQSX17  : DRIF, L=LQu
   DRFBS17 : DRIF, L=LRFBub
   DQSX18  : DRIF, L=LQu
   DRFBS18 : DRIF, L=LRFBub
   DQSX20  : DRIF, L=LQu
   DRFBS20 : DRIF, L=LRFBub
-  DQSX22  : DRIF, L=LQu
-  DRFBS22 : DRIF, L=LRFBub
-  DQSX23  : DRIF, L=LQu
-  DRFBS23 : DRIF, L=LRFBub
   DQSX25  : DRIF, L=LQu
   DRFBS25 : DRIF, L=LRFBub
 
@@ -1293,10 +1272,10 @@
                   DRFBS20,DU7s)
   SXBRK21 : LINE=(DU3s,DPSSX21,DU4s,VVSXU21,DU5s,QSXh21_full,DU6s,&
                   RFBSX21,DU7s)
-  SXBRK22 : LINE=(DU3s,DPSSX22,DU4s,DU5s,DQSX22,DU6s,&
-                  DRFBS22,DU7s)
-  SXBRK23 : LINE=(DU3s,DPSSX23,DU4s,DU5s,DQSX23,DU6s,&
-                  DRFBS23,DU7s)
+  SXBRK22 : LINE=(DU3s,DPSSX22,DU4s,DU5s,QSXh22_full,DU6s,&
+                  RFBSX22,DU7s)
+  SXBRK23 : LINE=(DU3s,DPSSX23,DU4s,DU5s,QSXh23_full,DU6s,&
+                  RFBSX23,DU7s)
   SXBRK24 : LINE=(DU3s,DPSSX24,DU4s,DU5s,QSXh24_full,DU6s,&
                   RFBSX24,DU7s)
   SXBRK25 : LINE=(DU3s,DPSSX25,DU4s,DU5s,DQSX25,DU6s,&
@@ -1465,8 +1444,8 @@
   SXCEL19 : LINE=(SXR19BEG,DU1s,        DU2s,DUSEGS19,SXBRK19,SXR19END) !Q+RFBPM
   SXCEL20 : LINE=(SXR20BEG,DU1s,        DU2s,DUSEGS20,SXBRK20,SXR20END)
   SXCEL21 : LINE=(SXR21BEG,DU1s,        DU2s,DUSEGS21,SXBRK21,SXR21END) !Q+RFBPM
-  SXCEL22 : LINE=(SXR22BEG,DU1s,        DU2s,DUSEGS22,SXBRK22,SXR22END)
-  SXCEL23 : LINE=(SXR23BEG,DU1s,        DU2s,DUSEGS23,SXBRK23,SXR23END)
+  SXCEL22 : LINE=(SXR22BEG,DU1s,        DU2s,DUSEGS22,SXBRK22,SXR22END) !Q(unpowered)+RFBPM
+  SXCEL23 : LINE=(SXR23BEG,DU1s,        DU2s,DUSEGS23,SXBRK23,SXR23END) !Q(unpowered)+RFBPM
   SXCEL24 : LINE=(SXR24BEG,DU1s,        DU2s,DUSEGS24,SXBRK24,SXR24END) !Q+RFBPM
   SXCEL25 : LINE=(SXR25BEG,DU1s,        DU2s,DUSEGS25,SXBRK25,SXR25END) !RFBPM
   SXCEL26 : LINE=(SXR26BEG,DU1s,MBLMS26,DU2s,USEGSX26,SXBRK26,SXR26END)
