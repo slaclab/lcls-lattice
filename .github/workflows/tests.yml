@@ -37,8 +37,12 @@ jobs:
         uses: slaclab/accel_unit_test_execs@v1.2
 
       - name: Check mad8s version
-        run: mad8s --version
-        shell: bash
+        shell: bash -l {0}
+        run: |
+          echo -e '# testing if mad8s is functional' >> "$GITHUB_STEP_SUMMARY"
+          set -o pipefail
+          cd mad
+          ../mad8s <<< "STOP" | grep -qvz Error
 
       - name: Run unit tests
         shell: bash -l {0}
