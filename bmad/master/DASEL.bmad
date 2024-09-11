@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-11APR24s ***
+! *** OPTICS=AD_ACCEL-02SEP2024s ***
 
 ! LCLS2sc DASEL
 
@@ -199,10 +199,6 @@ brdas1a: sbend, type = "1.0D38.37", l = lbrdas1/2, angle = abrdas1/2, e1 = abrda
           hgap = gbsp/2, ref_tilt = tbrdas1
 brdas1b: sbend, type = "1.0D38.37", l = lbrdas1/2, angle = abrdas1/2, e1 = 0, e2 = abrdas1/2, fint = 0, fintx = 0.5,
           hgap = gbsp/2, ref_tilt = tbrdas1
-
-! Note: BRDAS2 is a merge DC-bend which is either turned ON to operate
-!       DASEL beam in A-line, or turned OFF to operate beam in A-line from
-!       BSY pulsed magnets
 
 lbrdas2 = lbsp*abrdas2/(2*sin(abrdas2/2)) !BRDAS2 path length (m)
 
@@ -440,24 +436,6 @@ dumpdas: instrument, type = "400W-dump", l = ldumpdas/2 !half-dump
  !DUMPDAS : MONI, TYPE="400W-dump", L=LDUMPDAS/2 !half-dump
 
 ! ------------------------------------------------------------------------------
-! A-line adjustments
-! ------------------------------------------------------------------------------
-
-! quad strengths (also copy to SETK2scDA subroutine)
-
-!=!  COMMENT !causes redefinitions when using SETK2scDA
-!=!  COMMENT !causes redefinitions when using SETK2scDA
-!=!    KQ10 :=  0.040946131243
-!=!    KQ11 := -0.038135136057
-!=!    KQ19 :=  0.030837113549
-!=!    KQ20 :=  0.146624351215E-2
-!=!    KQ27 := -0.083919622056
-!=!    KQ28 :=  0.03548040664
-!=!    KQ30 := -0.028849559713
-!=!    KQ38 :=  0.034487458519
-!=!  ENDCOMMENT
-
-! ------------------------------------------------------------------------------
 
 ! beamlines
 
@@ -616,7 +594,7 @@ dumpdas[L] = 2*dumpdas[L]
 
   DASEL  : LINE=(DASELSA,DASELSB)
 
-  DASELA : LINE=(BEGDASEL,DASEL,DA04b,XCDAS19,ALINEc)
+  DASELA : LINE=(BEGDASEL,DASEL,DA04b,XCDAS19,ALINE)
 
   SPDASELA : LINE=(SPRDkh,SPRDks,SPRDda,DASELA)
 

@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-11APR24s ***
+! *** OPTICS=AD_ACCEL-02SEP2024s ***
 
 ! ==============================================================================
 ! Modification History
@@ -14,7 +14,7 @@
 !  * new standard configuration per Y. Ding
 ! ------------------------------------------------------------------------------
 
-! ------------------------------------------------------------------------------
+! ==============================================================================
 ! constants and global parameters
 ! ------------------------------------------------------------------------------
 
@@ -44,14 +44,14 @@ brhou = cb*eu
 
 ! compression
 
-r56htr = 0.0035 !DXmax = 75 cm
+r56htr = 0.003552 !DXmax = 75 cm
 r56bc1 = 0.053
 r56bc2 = 0.045
 
 r56ccdlu = 9.99e-5
 r56ccdld = 9.99e-5
 
-! ------------------------------------------------------------------------------
+! ==============================================================================
 ! input beam definition: F. Zhou (100 pC)
 ! ------------------------------------------------------------------------------
 
@@ -84,7 +84,16 @@ bmax = 50
 
 b0h04w = 5.0
 
-! approximate beam parameters
+! "treaty" Twiss at center of laser heater undulator (at element HTRUNDB)
+
+bxlh = 10.0
+axlh = 0
+bylh = 10.0
+aylh = 0
+
+! ------------------------------------------------------------------------------
+
+! beam parameters
 
 qbnch = 100.0e-12 !C
 emitxn = 0.35e-06  !m
@@ -92,7 +101,7 @@ emityn = 0.35e-06  !m
 sig_z = 1.0e-03   !m
 sig_dp = 0.03e-02  !1
 
-! ------------------------------------------------------------------------------
+! ==============================================================================
 ! input beam definition (at BEAM0)
 ! ------------------------------------------------------------------------------
 
@@ -119,7 +128,7 @@ c43 = sig43/sqrt(sig33*sig44)
  !SIGT = sig_z
  !SIGPT= sig_dp
 
-! ------------------------------------------------------------------------------
+! ==============================================================================
 ! survey (Z values are w.r.t. start of LI01 where Z=0)
 ! ------------------------------------------------------------------------------
 
@@ -144,16 +153,9 @@ xbyp = -0.650494 !QBP13 X is |Xbyp| to the south of linac axis
 ybyp = 0.649478 !QBP13 Y is Ybyp above linac axis
 zbyp = 1254.531303 !QBP13 centerline (~35.3 m into LI13)
 
-! ------------------------------------------------------------------------------
+! ==============================================================================
 ! twiss parameter definitions (for matching, etc.)
 ! ------------------------------------------------------------------------------
-
-! "treaty" Twiss at center of laser heater undulator (at element HTRUNDB)
-
-bxlh = 10.0
-axlh = 0
-bylh = 10.0
-aylh = 0
 
 ! matched Twiss at start of coasting linac FODOs
 ! (see CM.xsif for CMfodo1, CMfodo2, and CMfodo3 definitions)
@@ -197,15 +199,6 @@ malfxh = 3.141736059434
 mbetyh = 92.803659415654
 malfyh = 3.519158552438
 
-! Twiss at start of HXR cell #24 (for matching without full complement of undulators)
-! (full complement of undulators; Yuri match)
-
-enhxrm = 4.0
-bxhxrm = 12.974739845251
-axhxrm = 1.498073135623
-byhxrm = 6.123426356819
-ayhxrm = -0.747453073035
-
 ! ------------------------------------------------------------------------------
 ! load lattice definitions
 ! ------------------------------------------------------------------------------
@@ -224,8 +217,6 @@ call, file = ALINE.bmad
 call, file = BYP.bmad
 call, file = LTU.bmad
 call, file = UND.bmad
- !CALL, FILENAME="upgrade/SXRupgrade.xsif"
- !CALL, FILENAME="upgrade/UND.xsif"
 call, file = SFT.bmad
 call, file = SXTES.bmad
 call, file = DASEL.bmad
@@ -240,38 +231,36 @@ call, file = BSYsc.bmad
 
 ! beam path definitions
 
+ !SC_DIAG0 : superconducting linac to DIAG0
+ !SC_HXR   : superconducting linac to e- HXR dump
  !SC_SXR   : superconducting linac to e- SXR dump
  !SC_SFTS  : superconducting linac to e- SXR safety dump
  !SC_S2_X  : superconducting linac to SXR XTES "2.X" line
  !SC_STXI  : superconducting linac to SXR XTES TXI line
  !SC_STMO  : superconducting linac to SXR XTES TMO line
- !SC_HXR   : superconducting linac to e- HXR dump
  !SC_BSYD  : superconducting linac to BSY dump
- !SC_DIAG0 : superconducting linac to DIAG0
  !SC_DASEL : superconducting linac to End Station A (DASEL)
- !SC_EIC   : superconducting linac Early Injector Commissioning
 
+  SC_DIAG0 : LINE=(GUN,L0,HTR,DIAG0)
+  SC_HXR   : LINE=(GUN,L0,LCLS2scC,LCLS2scH)
   SC_SXR   : LINE=(GUN,L0,LCLS2scC,LCLS2scS)
   SC_SFTS  : LINE=(GUN,L0,LCLS2scC,LCLS2scSS)
   SC_S2_X  : LINE=(GUN,L0,LCLS2scC,LCLS2scS2_X)
   SC_STXI  : LINE=(GUN,L0,LCLS2scC,LCLS2scSTXI)
   SC_STMO  : LINE=(GUN,L0,LCLS2scC,LCLS2scSTMO)
-  SC_HXR   : LINE=(GUN,L0,LCLS2scC,LCLS2scH)
   SC_BSYD  : LINE=(GUN,L0,LCLS2scC,LCLS2scD)
-  SC_DIAG0 : LINE=(GUN,L0,HTR,DIAG0)
   SC_DASEL : LINE=(GUN,L0,LCLS2scC,LCLS2scDA)
-  SC_EIC   : LINE=(EIC)
 
 ! for Twiss starting at BEAM0
 
+  SC_DIAG0i : LINE=(LCLS2scI,HTR,DIAG0)
+  SC_HXRi   : LINE=(LCLS2scI,LCLS2scC,LCLS2scH)
   SC_SXRi   : LINE=(LCLS2scI,LCLS2scC,LCLS2scS)
   SC_SFTSi  : LINE=(LCLS2scI,LCLS2scC,LCLS2scSS)
   SC_S2_Xi  : LINE=(LCLS2scI,LCLS2scC,LCLS2scS2_X)
   SC_STXIi  : LINE=(LCLS2scI,LCLS2scC,LCLS2scSTXI)
   SC_STMOi  : LINE=(LCLS2scI,LCLS2scC,LCLS2scSTMO)
-  SC_HXRi   : LINE=(LCLS2scI,LCLS2scC,LCLS2scH)
   SC_BSYDi  : LINE=(LCLS2scI,LCLS2scC,LCLS2scD)
-  SC_DIAG0i : LINE=(LCLS2scI,HTR,DIAG0)
   SC_DASELi : LINE=(LCLS2scI,LCLS2scC,LCLS2scDA)
 
 ! ------------------------------------------------------------------------------
@@ -279,6 +268,8 @@ call, file = BSYsc.bmad
 ! ------------------------------------------------------------------------------
 
 xf = xoff
+ !Yf     :=  1.899339708765 !1.897939159495 -0.3*SIN(2*AVB)
+ !Zf     := -267.7180471454 !-267.4180504124 -0.3*COS(2*AVB)
 yf = 1.899339708719 !1.897939159495 -0.3*SIN(2*AVB)
 zf = -267.7180471432 !-267.4180504124 -0.3*COS(2*AVB)
 thetaf = 0
