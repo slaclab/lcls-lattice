@@ -1,9 +1,8 @@
 &tao_start
   n_universes = 1
   !plot_file   ='$LCLS_LATTICE/bmad/tao/tao_plot.init '
-  plot_file   ='tao_plot.init '
-  !startup_file='$LCLS_LATTICE/bmad/tao/tao.startup'
-  startup_file='tao.startup'
+  plot_file   ='tao_plot.init'
+  startup_file='$LCLS_LATTICE/bmad/tao/tao.startup'
 /
 
 
@@ -97,7 +96,6 @@ beam_init%center(6) = 0.0
         universe = 1
         n_d1_data = 1
 /
-
 &tao_d1_data
         ix_d1_data = 1
         default_weight = 1
@@ -305,6 +303,39 @@ beam_init%center(6) = 0.0
 /
 
 
+  &tao_d2_data
+       d2_data%name = 'LHU'
+       universe = 1
+       n_d1_data = 1
+  /
+  &tao_d1_data
+       ix_d1_data = 1
+       default_weight = 1
+       d1_data%name = 'HTRUND'
+       datum( 1) =  'beta.a'     '' '' 'HTRUND'   'target' 9 !1.2000000E+01 
+       datum( 2) =  'alpha.a'    '' '' 'HTRUND'   'target' 5.6946905E-01
+       datum( 3) =  'beta.b'     '' '' 'HTRUND'   'target' 9 !1.1980742E+01
+       datum( 4) =  'alpha.b'    '' '' 'HTRUND'   'target' 6.0472241E-01
+  /
+  &tao_d2_data
+          d2_data%name = 'OTR1'
+          universe = 1
+          n_d1_data = 1
+  /
+  
+  &tao_d1_data
+          ix_d1_data = 1
+          default_weight = 1
+          d1_data%name = 'begtwiss'
+          datum( 1) =  'beta.a'     '' '' 'OTR1'   'target'  1.11011741290   1e1
+          datum( 2) =  'alpha.a'    '' '' 'OTR1'   'target'  -0.0687705252746 1e2
+          datum( 3) =  'beta.b'     '' '' 'OTR1'   'target'  1.11011741095     1e1
+          datum( 4) =  'alpha.b'    '' '' 'OTR1'   'target'  -0.0687705247416 1e2
+          datum( 5) =  'eta.x'      '' '' 'OTR1'   'target'   0  1e1
+          datum( 6) =  'etap.x'     '' '' 'OTR1'   'target'   0   1e2
+  / 
+
+
 
 !-----------------------------------------
 ! BPM Orbit
@@ -444,6 +475,12 @@ beam_init%center(6) = 0.0
 	var(1:)%ele_name =  'O_BC1', 'O_BC2'
 /
 
+&tao_var
+    v1_var%name = 'L0'
+	default_step = 1e-4
+	default_attribute = 'voltage'
+	var(1:)%ele_name =  'L0A', 'L0B'
+/
 
 &tao_var
     v1_var%name = 'linac_fudge'
@@ -454,9 +491,9 @@ beam_init%center(6) = 0.0
 
 &tao_var
     v1_var%name = 'q_LTUS'
-        default_step = 1e-4
-        default_attribute = 'K1'
-        var(1:)%ele_name = 'QBP33', 'QBP34', 'QDBL1', 'QDBL2', 'QDL11'
+    default_step = 1e-4
+    default_attribute = 'K1'
+    var(1:)%ele_name = 'QBP33', 'QBP34', 'QDBL1', 'QDBL2', 'QDL11'
 /
 
 
