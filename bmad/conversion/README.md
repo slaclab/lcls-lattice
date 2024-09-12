@@ -1,13 +1,5 @@
-1. Obtain updated release from CVS, either by mounting a CVS repo, or checking out CVS locally.
-  - `cvs update` from local CVS/optics directory
-2. Create a local branch of lcls-lattice to stage the update.
-  - git checkout master
-  - git checkout -b DDMMYYYY_conversion
-3. Copy files from CVS into lcls-lattice/mad (omit mad/CVS, bmad/CVS directory from copy)
-  - cp CVS/optics/etc/lattice/lcls/mad/* lcls-lattice/mad
-  - cp CVS/optics/etc/lattice/lcls/bmad/* lcls-lattice/mad  #not a typo: CVS bmad goes into lcls-lattice/mad
-  - cp CVS/optics/script/elementdevices.dat lcls-lattice/mad
-4. Obtain updated lcls_elements.csv
+1. Once Mark Woodley has uploaded the pre-release to github lcls-lattice repo, checkout that release.
+2. Obtain updated lcls_elements.csv
   - Go to [https://oraweb.slac.stanford.edu/apex/slacprod/f?p=116:600](https://oraweb.slac.stanford.edu/apex/slacprod/f?p=116:600)
   - Click on Actions and Download
   - Save file to lcls-lattice/bmad/conversion/from_oracle
