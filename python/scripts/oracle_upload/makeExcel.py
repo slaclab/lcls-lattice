@@ -495,9 +495,12 @@ for m in range(0, len(idm), 2):
     n1 = idm[m]
     n2 = idm[m+1]
     name = N[n1].strip()
-    id_ = strmatch(name,C)[-1]
-    undk = float(C[id_+6])
-    undl = float(C[id_+12])
+    Ktxt = f'"{name}_K"'
+    Ltxt = f'"{name}_L"'
+    idK = strmatch(Ktxt,C)[0]
+    idL = strmatch(Ltxt,C)[0]
+    undk = float(C[idK+2])
+    undl = float(C[idL+2])
     P2[n1, :] = [undl, undk]
     P2[n2, :] = [undl, undk]
 
@@ -3154,7 +3157,6 @@ with open(outdir+'/'+fname, 'wt') as fid:
     fid.write('ELEMENT,Area2,Undulator Cell,Sector\n')
     for nf in range(1,len(froot)+1):
         id = [i for i,x in enumerate(ip) if x[0]==nf]
-        print(f'FOO {len(id)=}')
         for n in id:
             idk = ip[n][1]
             if keyw[idk] == 'MARK' or keyw[idk] == 'SROT':
