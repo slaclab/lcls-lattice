@@ -6,8 +6,9 @@ import re
 import math
 from pathlib import Path
 
+script_dir = Path(__file__).parent.resolve()
+
 optics='02SEP2024s'
-mdir='~/AD_ACCEL/11APR24s'
 vfile=['LCLS2sc_value.echo','LCLS2cu_value.echo']
 
 outdir='oracle_upload'
@@ -236,7 +237,6 @@ nf = 0
 for n in range(len(seq)):
     if seq[n]['froot'] != nf:
         nf = seq[n]['froot']
-        #fname = '{}{}_survey.tape'.format(mdir,froot[nf])
         fname = '{}_survey.tape'.format(froot[nf-1])
         print('Opening file {}'.format(fname))
         titl, tK, tN, tL, tP, tA, tT, tE, tFDN, tcoor, tS = xtffs2mat(fname)
@@ -279,7 +279,6 @@ def strmatch(n_str,N_lst,exact=False):
 
 if cBSY:
     for n in range(len(other1)):
-        #fname = f"{mdir}{other1[n]['froot']}_survey.tape"
         fname = f"{other1[n]['froot']}_survey.tape"
         print('Opening file {}'.format(fname))
         titl, tK, tN, tL, tP, tA, tT, tE, tFDN, tcoor, tS = xtffs2mat(fname)
@@ -304,7 +303,6 @@ K2, N2, L2, P2, S2, coor2, idf2, FDN2 = [], [], [], [], [], [], [], []
 
 if cUND:
     for n in range(len(other2)):
-        #fname = f"{mdir}{other2[n]['froot']}_survey.tape"
         fname = f"{other2[n]['froot']}_survey.tape"
         print('Opening file {}'.format(fname))
         titl, tK, tN, tL, tP, tA, tT, tE, tFDN, tcoor, tS = xtffs2mat(fname)
@@ -467,7 +465,6 @@ KSname = [
 
 C = []
 for n in range(len(vfile)):
-    #fname = mdir + vfile[n]
     fname = vfile[n]
     with open(fname, 'r') as f:
         C.extend(f.read().split())
@@ -611,7 +608,7 @@ def assign_ucell(N, FDN, coor, idf):
     # NOTE: coordinates are assumed to be in MAD (not SYMBOLS) order
 
     debug = False
-    filename = 'sectors.xlsx'
+    filename = f'{script_dir}/sectors.xlsx'
 
     wb= pyxl.load_workbook(filename,data_only=True)
 
@@ -661,7 +658,7 @@ def notnone(val):
         return val
 
 def read_sector():
-    filename = 'sectors.xlsx'
+    filename = f'{script_dir}/sectors.xlsx'
     wb= pyxl.load_workbook(filename,data_only=True)
 
     # read worksheet 1 (scS)
@@ -2063,7 +2060,7 @@ import scipy.io as sio
 
 def fix_power_fraction(lcav):
     #fname = r'V:\LCLS\Users\Woodley\AD_ACCEL\20190613_13JUN19\RDB\RDBdata'
-    fname = 'RDBdata.mat'
+    fname = f'{script_dir}/RDBdata.mat'
     old = sio.loadmat(fname)['LCAV']
     
     name = [x['name'] for x in old[0]]
