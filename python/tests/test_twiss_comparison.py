@@ -50,6 +50,7 @@ def exec_bmad():
   for model in MODELS:
     bmad_result = run([LCLS_LATTICE+'/lc_unit_test_bmad',model+'.lat.bmad'],
                       cwd=LCLS_LATTICE+'/bmad/models/'+model, capture_output=True, text=True)
+    print(bmad_result)
 
 def parse_file(file_name):
   data_lines = []
