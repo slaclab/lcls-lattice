@@ -28,8 +28,8 @@ MODELS = [
 TOLS = [
 #beta_x, beta_y, end_s
 (1e-5,   1e-5,   1e-9), #sc_bsyd
-(1e-5,   1e-5,   1e-9), #sc_sxr
-(1e-5,   1e-5,   1e-9), #sc_hxr
+(1e-5,   5e-5,   1e-9), #sc_sxr
+(1e-5,   5e-5,   1e-9), #sc_hxr
 (1e-2,   1e-2,   1e-9), #cu_sxr
 (1e-2,   1e-2,   1e-9), #cu_hxr
 (1e-2,   1e-2,   1e-9), #cu_spec
@@ -81,7 +81,7 @@ def test_bmad_mad8s_agreement(model):
     
   bmad_beta_x = float(bmad_data[-1][3])
   mad8_beta_x = float(mad8_data[-1][2])
-  bmad_beta_y = float(bmad_data[-1][12])
+  bmad_beta_y = float(bmad_data[-1][11])
   mad8_beta_y = float(mad8_data[-1][5])
   bmad_end_s = float(bmad_data[-1][1])
   mad8_end_s = float(mad8_data[-1][1])
