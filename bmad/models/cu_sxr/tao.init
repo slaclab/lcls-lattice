@@ -322,7 +322,6 @@ beam_init%center(6) = 0.0
           universe = 1
           n_d1_data = 1
   /
-  
   &tao_d1_data
           ix_d1_data = 1
           default_weight = 1
@@ -335,6 +334,52 @@ beam_init%center(6) = 0.0
           datum( 6) =  'etap.x'     '' '' 'OTR1'   'target'   0   1e2
   / 
 
+  &tao_d2_data
+          d2_data%name = 'OTR4'
+          universe = 1
+          n_d1_data = 1
+  /
+  &tao_d1_data
+          ix_d1_data = 1
+          default_weight = 1
+          d1_data%name = 'begtwiss'
+          datum( 1) =  'beta.a'     '' '' 'OTR4'   'target'  1.11011741290   1e1
+          datum( 2) =  'alpha.a'    '' '' 'OTR4'   'target'  -0.0687705252746 1e2
+          datum( 3) =  'beta.b'     '' '' 'OTR4'   'target'  1.11011741095     1e1
+          datum( 4) =  'alpha.b'    '' '' 'OTR4'   'target'  -0.0687705247416 1e2
+          datum( 5) =  'eta.x'      '' '' 'OTR4'   'target'   0  1e1
+          datum( 6) =  'etap.x'     '' '' 'OTR4'   'target'   0   1e2
+  / 
+
+  &tao_d2_data
+          d2_data%name = 'ENDDL1_2'
+          universe = 1
+          n_d1_data = 1
+  /
+  &tao_d1_data
+          ix_d1_data = 1
+          default_weight = 1
+          d1_data%name = 'begtwiss'
+          datum( 1) =  'beta.a'     '' '' 'ENDDL1_2'   'target'  0   1e1
+          datum( 2) =  'alpha.a'    '' '' 'ENDDL1_2'   'target'  0   1e2
+          datum( 3) =  'beta.b'     '' '' 'ENDDL1_2'   'target'  0   1e1
+          datum( 4) =  'alpha.b'    '' '' 'ENDDL1_2'   'target'  0   1e2
+          datum( 5) =  'eta.x'      '' '' 'ENDDL1_2'   'target'  0   1e1
+          datum( 6) =  'etap.x'     '' '' 'ENDDL1_2'   'target'  0   1e2
+  / 
+
+  &tao_d2_data
+          d2_data%name = 'global'
+          universe = 1
+          n_d1_data = 1
+  /
+  &tao_d1_data
+          ix_d1_data = 1
+          default_weight = 1
+          d1_data%name = 'beta'
+          datum( 1) =  'beta.a'   ''  'YAG03'  'OTR4'   'max'  30   1
+          datum( 2) =  'beta.b'   ''  'YAG03'  'OTR4'   'max'  30   1
+  / 
 
 
 !-----------------------------------------
@@ -431,6 +476,20 @@ beam_init%center(6) = 0.0
 	default_step = 1e-4
 	default_attribute = 'K1'
 	var(1:)%ele_name = 'QA01','QA02', 'QE01', 'QE02', 'QE03', 'QE04'
+/
+
+&tao_var
+    v1_var%name = 'q_OTR4_match'
+	default_step = 1e-4
+	default_attribute = 'K1'
+	var(1:)%ele_name = 'QM01','QM02'
+/
+
+&tao_var
+    v1_var%name = 'q_ENDDL1_match'
+	default_step = 1e-4
+	default_attribute = 'K1'
+	var(1:)%ele_name = 'QB','QM03', 'QM04'
 /
 
 &tao_var
