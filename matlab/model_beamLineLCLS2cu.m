@@ -1,7 +1,7 @@
 function beamLine=model_beamLineLCLS2cu()
 %
 % -----------------------------------------------------------------------------
-% *** OPTICS=AD_ACCEL-02SEP2024s ***
+% *** OPTICS=AD_ACCEL-preRelease ***
 % -----------------------------------------------------------------------------
 %
 % Returns Matlab model beam lines that correspond to defined AD_ACCEL
