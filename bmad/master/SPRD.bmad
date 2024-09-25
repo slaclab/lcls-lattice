@@ -1,10 +1,19 @@
 
-! *** OPTICS=AD_ACCEL-11APR24s ***
+! *** OPTICS=AD_ACCEL-02SEP2024s ***
 
 ! LCLS2sc 3-way spreader system
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 08-AUG-2024, M. Woodley
+!  * add YCSP0D and XCSP0D ("Bypass#3") per T. Smith
+! 25-JAN-2024, M. Woodley
+!  * remove (deferred) rastering in BSY dump line
+!    > rename BKXRASD to XCSP5D (already installed type-4)
+!    > rename BKYRASD to YCSP6D (already installed type-4)
+!    > remove deferred type-5 correctors XCSP5D and YCSP6D
+!    > remove DC spreader option
 ! ------------------------------------------------------------------------------
 ! 12-SEP-2023, M. Woodley
 !  * relocate some spreader BPMs per G. Gassner (|dZ| > 10 mm)
@@ -749,6 +758,8 @@ dspbk4h: drift, l = ldspbk4h
 dspbk5ha: drift, l = ldspbk5ha
 dspbk5hb: drift, l = ldspbk5hb
 
+dlmdw = 0
+
 dldsp2h = 0.0
 ldsp2h = 43.284 +dldsp2h
 ldsp2hb = 10.0
@@ -817,7 +828,7 @@ ldsp13hb = 0.778
 ldsp13hc = 0.749 +(lqn-lqa)/2
 ldsp13ha = ldsp13h-ldsp13hb-ldsp13hc
 ldsp14h = ldsp5h
-ldsp14ha = 13.863119 +(lqn-lqa)/2
+ldsp14ha = 13.863119 +(lqn-lqa)/2 +dlmdw
 ldsp14hb = ldsp14h-ldsp14ha
 ldsp15h = ldsp4h
 ldsp15ha = 0.5
@@ -1073,21 +1084,15 @@ ldsp6db = 0.5
 ldsp6dc = 1.0
 ldsp6dd = 0.3048
 ldsp6de = 1.1952
-ldsp6dg = 0.5
+ldsp6dg = 1.0
 ldsp6dh = 0.5
-ldsp6di = 0.5
-ldsp6dj = 37.0 +18.0 -0.761425
-ldsp6df = ldsp6d-ldsp6da-ldsp6db-ldsp6dc-ldsp6dd-ldsp6de-ldsp6dg-ldsp6dh -ldsp6di-ldsp6dj
+ldsp6di = 37.0 +18.0 -0.761425
+ldsp6df = ldsp6d-ldsp6da-ldsp6db-ldsp6dc-ldsp6dd-ldsp6de-ldsp6dg-ldsp6dh -ldsp6di
 ldsp6dfa = 4.287828
-ldsp6dfc = 0.5
-ldsp6dfd = 1.0
-ldsp6dfb = ldsp6df-ldsp6dfa-ldsp6dfc-ldsp6dfd
-
-ldsp7d = 20.0818610101+0.4+0.803391932471 -18.115253 +0.761425
-ldsp7db = 1.5
-ldsp7da = ldsp7d-ldsp7db
-ldsp7daa = 0.5-3.0*in2m
-ldsp7dab = ldsp7da-ldsp7daa
+ldsp6dfb = ldsp6df-ldsp6dfa
+ldsp7d = 3.931424942571
+ldsp7da = 0.4238
+ldsp7db = ldsp7d-ldsp7da
 
 dsp2da1: drift, l = ldsp2da1
 dsp2da2: drift, l = ldsp2da2
@@ -1116,29 +1121,23 @@ dsp6de: drift, l = ldsp6de
 dsp6df: drift, l = ldsp6df
 dsp6dfa: drift, l = ldsp6dfa
 dsp6dfb: drift, l = ldsp6dfb
-dsp6dfc: drift, l = ldsp6dfc
-dsp6dfd: drift, l = ldsp6dfd
 dsp6dg: drift, l = ldsp6dg
 dsp6dh: drift, l = ldsp6dh
 dsp6di: drift, l = ldsp6di
-dsp6dj: drift, l = ldsp6dj
-dsp7daa: drift, l = ldsp7daa
-dsp7dab: drift, l = ldsp7dab
+dsp6dia: drift, l = 14.358367 !14.23155
+dsp6dib: drift, l = ldsp6di-dsp6dia[l]
+dsp7da: drift, l = ldsp7da
 dsp7db: drift, l = ldsp7db
 dwallad: drift, l = 1.840975                     !distance from face of muon wall to BSY dump
 ddumpbsy: drift, l = 61.120*in2m, type = "BCS dump" !length of BSY dump (per A. Ibrahimov)
 
-! markers
+ldsp2da1a = 12.033697
+ldsp2da1b = 0.2286
+ldsp2da1c = ldsp2da1-ldsp2da1a-ldsp2da1b
 
-cntsp1s: marker, type = "CENTER"
-cntsp2s: marker, type = "CENTER"
-cntsp1h: marker, type = "CENTER"
-cntsp2h: marker, type = "CENTER"
-cntsp3h: marker, type = "CENTER"
-cntsp1d: marker, type = "CENTER"
-rwwake3d: marker, type = "WAKE" !SPRDD/BSY beampipe wake applied here
-muwalld: marker !front face of muon wall for dump beam
-dumpbsy: instrument, type = "DUMPBSY" !front face of BSY dump
+dsp2da1a: drift, l = ldsp2da1a
+dsp2da1b: drift, l = ldsp2da1b
+dsp2da1c: drift, l = ldsp2da1c
 
 ! monitors
 
@@ -1176,7 +1175,7 @@ bpmsp1d: monitor, type = "Stripline-5"
 bpmsp2d: monitor, type = "Stripline-5"
 bpmsp3d: monitor, type = "Stripline-8" !has been already ordered (should have been Stripline-11)
 bpmsp4d: monitor, type = "Stripline-5"
-bpmsp5d: monitor, type = "Stripline-14" !large aperture BPM for raster
+bpmsp5d: monitor, type = "Stripline-14" !large aperture BPM
 
 mrfbsp1d: marker !MONI, TYPE="CavityS-1" !make RF-bpm if spreader is RF
 mrfbsp2d: marker !MONI, TYPE="CavityS-1" !make RF-bpm if spreader is RF
@@ -1212,23 +1211,18 @@ ycsp4s: vkicker, type = "class-4"
 ycsp6s: vkicker, type = "class-4"
 ycsp8s: vkicker, type = "class-4"
 
+xcsp0d: hkicker, type = "Bypass#3"
+ycsp0d: vkicker, type = "Bypass#3"
+
 xcsp1d: hkicker, type = "class-4"
 xcsp3d: hkicker, type = "class-4"
-XCSP5D: pipe, L = 0.0, type ="@0,class-5", descrip = "deferred HKICKER" !not installed
-!old: xcsp5d: hkicker, type = "@0,class-5"
+XCSP5D: pipe, L = 0.0, type ="@0,class-5", descrip = "deferred HKICKER"
+!old: xcsp5d: hkicker, type = "class-4"
 
 ycsp2d: vkicker, type = "class-4"
 ycsp4d: vkicker, type = "class-4"
-YCSP6D: pipe, L = 0.0, type ="@0,class-5", descrip = "deferred VKICKER" !not installed
-!old: ycsp6d: vkicker, type = "@0,class-5"
-
-! NOTE: the raster magnets operating at ~60 Hz with 90 deg phase between each
-!       other have been de-scoped from the LCLS-II project ... BKXRASd and
-!       BKYRASd are normal (class-4) correctors which were installed instead
-!       of XCSP5d and YCSP6d
-
-bkxrasd: hkicker, type = "class-4"
-bkyrasd: vkicker, type = "class-4"
+YCSP6D: pipe, L = 0.0, type ="@0,class-5", descrip = "deferred VKICKER"
+!old: ycsp6d: vkicker, type = "class-4"
 
 ! SROT to remove rotation angle
 
@@ -1267,6 +1261,18 @@ wssp1d: marker, type = "fast" !to measure beam size and energy before BSY dump
 
 OTRSPDMP: pipe, L = 0.0, type ="@0,OTR", descrip = "deferred MONITOR" !OTR screen before BSY dump
 !old: otrspdmp: monitor, type = "@0,OTR"
+
+! markers
+
+cntsp1s: marker, type = "CENTER"
+cntsp2s: marker, type = "CENTER"
+cntsp1h: marker, type = "CENTER"
+cntsp2h: marker, type = "CENTER"
+cntsp3h: marker, type = "CENTER"
+cntsp1d: marker, type = "CENTER"
+rwwake3d: marker, type = "WAKE" !SPRDD/BSY beampipe wake applied here
+muwalld: marker !front face of muon wall for dump beam
+dumpbsy: instrument, type = "DUMPBSY" !front face of BSY dump
 
 ! beamlines
 
@@ -1609,7 +1615,7 @@ ssp2s[L] = 2*ssp2s[L]
 
   SPRDs : LINE=(SPRDsa,SPRDsb)
 
-  SPRDda : LINE=(DSP2da1,MRFBSP1d,DSP2da2,BPMSP1d,DSP2db)
+  SPRDda : LINE=(DSP2da1a,YCSP0D,DSP2da1b,XCSP0D,DSP2da1c,MRFBSP1d,DSP2da2,BPMSP1d,DSP2db)
 
   SPRDdb : LINE=(DSP2dc1)
 
@@ -1641,8 +1647,8 @@ qsp2d[L] = 2*qsp2d[L]
          YCSP2d,DSP4db,BYSP1d_full,DSP5da,DSP5db,WSSP1d,DSP5dc1,IMBCSd1,DSP5dc2,IMBCSd2,DSP5dc3,BPMSP3d,DSP5dd,BYSP2d_full,
          CNTSP1D,DSP6da,XCSP3d,DSP6db,YCSP4d,DSP6dc,DSP6dd,DSP6de,DSP6dfa,WOODDOOR)
 
-  SPRDdd : LINE=(DSP6dfb,XCSP5d,DSP6dfc,YCSP6d,DSP6dfd,BPMSP4d,DSP6dg,DSP6dh,RWWAKE3D,BKXRASd,DSP6di,BKYRASd,DSP6dj,
-         BPMSP5d,DSP7daa,OTRSPDMP,DSP7dab,DSP7db,MUWALLd,DWALLad,DUMPBSY,DDUMPBSY,BTMSPDMP)
+  SPRDdd : LINE=(DSP6dfb,BPMSP4d,DSP6dg,RWWAKE3D,XCSP5d,DSP6dh,YCSP6d,DSP6di,BPMSP5d,DSP7da,OTRSPDMP,DSP7db,MUWALLd,
+         DWALLad,DUMPBSY,DDUMPBSY,BTMSPDMP)
 
   SPRDd : LINE=(SPRDkh,SPRDks,SPRDda,SPRDdb,SPRDdc,SPRDdd)
 

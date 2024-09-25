@@ -1,11 +1,15 @@
 
-! *** OPTICS=AD_ACCEL-11APR24s ***
+! *** OPTICS=AD_ACCEL-02SEP2024s ***
 
 ! LCLS2sc LTU and dump
 
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
+! 02-MAY-2024, M. Woodley
+!  * fix negative drifts in CBXFEL chicanes
+!  * rename BODCBX42 -> YAGCBX42
+!  * add BODCBX40
 ! 31-MAR-2024, M. Woodley
 !  * replace UMXL2h with WIGXLh
 ! ------------------------------------------------------------------------------
@@ -1552,9 +1556,8 @@ lundh = lund/2     !wiggler half-length [m]
 
   ! half-wiggler modeled as an R-matrix which includes vertical focusing
   ! and horizontal defocusing per Ago Martinelli (see wigXL2.m);
-  ! (see SUBROUTINE SETK2XL2 in LCLS2sc_main.mad8)
 
-  ! define XLEAP-II wigglers (as DRIFTs ... turn on with SETK2XL2)
+  ! define XLEAP-II wigglers (as DRIFTs)
 
 r11xl1 = 1.0
 r12xl1 = lundh
@@ -1611,24 +1614,9 @@ umxl4h: umxl0h
 !old           tt34 = r34xl4, tt43 = r43xl4, tt44 = r44xl4
  !endcomment
 
-
-
-!Old split line:  UMXL1h_full : LINE=(UMXL1h,UMXL1h)
-
-umxl1h_full: line = (umxl1h)
-umxl1h[L] = 2*umxl1h[L]
-
-
-!Old split line:  UMXL3h_full : LINE=(UMXL3h,UMXL3h)
-
-umxl3h_full: line = (umxl3h)
-umxl3h[L] = 2*umxl3h[L]
-
-
-!Old split line:  UMXL4h_full : LINE=(UMXL4h,UMXL4h)
-
-umxl4h_full: line = (umxl4h)
-umxl4h[L] = 2*umxl4h[L]
+  UMXL1_full : LINE=(UMXL1h,UMXL1h)
+  UMXL3_full : LINE=(UMXL3h,UMXL3h)
+  UMXL4_full : LINE=(UMXL4h,UMXL4h)
 
 ! ------------------------------------------------------------------------------
 ! original XLEAP wiggler
@@ -1658,12 +1646,7 @@ wigxlh: taylor, type = "variable gap", l = lwigh, tt11 = 1.0, tt12 = lwigh, tt21
  !VALUE, WIGXLh[R11],WIGXLh[R12],WIGXLh[R21],WIGXLh[R22]
  !VALUE, WIGXLh[R33],WIGXLh[R34],WIGXLh[R43],WIGXLh[R44]
 
-
-
-wigxlh_full : line=(wigxlh,wigxlh)
-
-!wigxlh_full: line = (wigxlh)
-!wigxlh[L] = 2*wigxlh[L]
+  WIGXL_full : LINE=(WIGXLh,WIGXLh)
 
 ! ------------------------------------------------------------------------------
 ! new XLEAP-II quadrupoles (to mitigate focusing of wigglers)
@@ -1694,8 +1677,8 @@ duqxl1: drift, l = 0.2166+0.1777551
 duqxl1w: drift, l = 0.2166+0.475-0.1777551
 duqxl2: drift, l = 0.2166
 
-  UMXLpair1 : LINE=(UMXL1h_full,DUQXL1,QFXL1_full,DUQXL1W,WIGXLh_full)
-  UMXLpair2 : LINE=(UMXL3h_full,DUQXL2,QFXL2_full,DUQXL2,UMXL4h_full)
+  UMXLpair1 : LINE=(UMXL1_full,DUQXL1,QFXL1_full,DUQXL1W,WIGXL_full)
+  UMXLpair2 : LINE=(UMXL3_full,DUQXL2,QFXL2_full,DUQXL2,UMXL4_full)
 
 ! ------------------------------------------------------------------------------
 ! original XLEAP self-seeding chicane (normally OFF)
@@ -1921,9 +1904,6 @@ bpme36b[ref] = qe36b
 ! SXR undulator match
 ! ------------------------------------------------------------------------------
 
-! note: the below K-values come from Y. Nosochkov's UNDS_KQ5_US.xsif file,
-!       for E= 4.0 GeV and KSXU= 5.0 (IntgSX= 30.0 kG)
-
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 !       in the "LCLS2cu_main.mad8" file
 
@@ -2049,7 +2029,7 @@ bpmum4b[ref] = qum4b
 ! SXR dumpline
 ! ------------------------------------------------------------------------------
 
-kqdmpb = -0.154946553294 !-0.156309918216
+kqdmpb = -0.154946553294
 
 qdmp1b: quadrupole, type = "3.94Q17", l = lqp/2, k1 = kqdmpb, aperture = rqp
 qdmp2b: quadrupole, type = "3.94Q17", l = lqp/2, k1 = kqdmpb, aperture = rqp
@@ -2165,8 +2145,7 @@ rodmp2s: patch, tilt = arodmp2s
 
 
 
-!Old split line:  BYDSS_full : LINE=(BYDSS1,BYDSS2)
-
+!BYDSS_full : LINE=(BYDSS1,BYDSS2)
 bydss_full: line = (bydss)
 
 
@@ -2641,7 +2620,7 @@ bpmbsyqa0[ref] = qa0
          DYCA0,ST61,DM5,QA0_full,DM6,DMONI,DMONI,MUWALL,DWALLa,DUMPBSYh,DWALLb,BSYend,RWWAKE3H)
 
 ! ------------------------------------------------------------------------------
-! BSY to ALINE (from Cu linac or SC linac) is decommissioned
+! BSY to ALINE (from Cu linac or SC linac) has been decommissioned
 ! ------------------------------------------------------------------------------
 
  !SPhBSYa : LINE=(SPhAL,ALINEa)
@@ -2652,10 +2631,10 @@ bpmbsyqa0[ref] = qa0
 ! BSY1 upstream of the HXR merge bend
 ! ------------------------------------------------------------------------------
 
-kq30701 = -0.39623102008
-kq30801 = 0.480592172677
-kq50q1 = -0.231522298209
-kq50q2 = 0.102074330212
+kq30701 = -0.396231018339 !-0.39623102008  !-0.396305842423 !
+kq30801 = 0.480592172519 ! 0.480592172677 ! 0.480095248389 !
+kq50q1 = -0.231522300458 !-0.231522298209 !-0.231122399508 !
+kq50q2 = 0.102074332053 ! 0.102074330212 ! 0.10177159732  !
 
 q50q1: quadrupole, type = "2Q10", l = lqr/2, k1 = kq50q1, aperture = rqr
 q50q2: quadrupole, type = "50Q2", l = 0.162151, k1 = kq50q2, aperture = 0.010325
@@ -3893,18 +3872,6 @@ qdmp2[L] = 2*qdmp2[L]
          DD1c,MIMBCS4,DD1d,YCDD,DD1e,PCPM2L,BTM2L,DD1f,QDmp1_full,DD12a,BPMQD,DD12b,MQDMP,DD12c,QDmp2_full,DD2a,XCDD,DD2b,DD2c,
          DD3a,BPMDD,DD3b,OTRDMP,DWSDUMPa1,PCEBD,DWSDUMPa2,RFBDD,DWSDUMPb,WSDUMP,DWSDUMPc,RODMP2H,DUMPFACE,DDUMP,DMPend,BTMDUMP,
          DBMARK38,ENDDMPH_2)
-
-! ------------------------------------------------------------------------------
-
-! for matching phase advance between XLEAP-II wiggler pairs
-
-  EDSYSB_XL2 : LINE=(DBMARK36b,WS31B,D40cm,DE3mab,DE3mbb,XCE31B,DQEA,QE31B_full,DXLUa1,YCXL1,DXLUa2,XCXL1,DUMXL12u,
-         UMXLpair1,MXL2a,DUMXL12d,PC12B,BTM12B,DBTM2YC,YCE32B,DQEAa,QE32B_full,DRFB,RFBE32B,DQEBy1,DCY32B,DQEBy2,WS32B,D40cm,
-         DE3m80cmb,XCE33B,DQEAb,QE33B_full,DQEC,DE3m40cm,YCE34B,DQEA,QE32B_full,DRFB,RFBE34B,DQEC1,WS33B,D40cm,DE3m80cm,XCE35B,
-         DQEAc,QE33B_full,DXLUc,BCXLSS,DXLUd1,YCXL2,DXLUd2,XCXL2,DUMXL34u,MXL2b,UMXLpair2,DUMXL34d,YCE36B,DQEA,QE36B_full,DRFB,
-         RFBE36B,DQEBy1,DCY36B,DQEBy2,WS34B,D40cm)
-
-  LTUsc_XL2 : LINE=(MM1b,DL2sc,VBSYSb,MM2b,EDMCHb,EDSYSb_XL2,UNMCHb)
 
 ! ------------------------------------------------------------------------------
 

@@ -1,12 +1,12 @@
 
-! *** OPTICS=AD_ACCEL-12JAN22 ***
+! *** OPTICS=AD_ACCEL-02SEP2024s ***
 
 ! Edit "search_path =" in run_setup to point to the locations of your
 ! wakefield definition files and input particle distribution files
 
 &run_setup
- lattice = LCLS2cuA.lte,
- rootname = LCLS2cuA,
+ lattice = LCLS2scDA.lte,
+ rootname = LCLS2scDA,
  use_beamline = myline,
  output = %s.out,
  centroid = %s.cen,
@@ -19,7 +19,7 @@
  concat_order = 0,
  print_statistics = 0,
  random_number_seed = 9876543210,
- p_central_mev = 135,
+ p_central_mev = 90,
  tracking_updates = 1,
  search_path = "D:\AD_ACCEL\wakes,D:\AD_ACCEL\beams"
 &end
@@ -30,27 +30,27 @@
  reset_rf_for_each_step = 1
 &end
 
-&floor_coordinates !initial coordinates at WS02
+&floor_coordinates !initial coordinates at BEAM0
  filename = %s.flr,
- X0 = 2.370017058026,
- Z0 = 2.029449371971E3,
- theta0 = -0.610865238198
+ X0 = 0.28,
+ Y0 = -0.99,
+ Z0 = 3.91419
 &end
 
-&twiss_output !initial Twiss at WS02
+&twiss_output !initial Twiss at BEAM0
  filename = %s.twi,
  matched = 0,
- beta_x = 1.113007678792,
- alpha_x = 0.068235445385,
- beta_y = 1.112536784011,
- alpha_y = 0.066915836699,
+ beta_x = 9.3480,
+ alpha_x = -1.6946,
+ beta_y = 9.3429,
+ alpha_y = -1.6925,
  concat_order = 3
 &end
 
-&sdds_beam !initial beam WS02
- input = WS02_250pC_rescaleto540um_solGTF1M_flat.out,
+&sdds_beam !initial beam at BEAM0
+ input = FZ_100pC_10NOV17.sdds,
  input_type = "elegant",
- sample_interval = 40,
+ sample_interval = 10,
  p_lower = 0,
  p_upper = 1e10,
  reuse_bunch = 0,

@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-11APR24s ***
+! *** OPTICS=AD_ACCEL-02SEP2024s ***
 
 ! LCLS2sc A-line
 
@@ -266,19 +266,16 @@ rq20 = 8.25*0.0254/2
 lsq = 0.55
 rsq = 0.08/2
 
-! * the K-values below are for SC beam; also copy these settings
-!   to SETK2scA in "LCLS2sc_main.mad8"
-! * settings for Cu beam are in SETK2cuA in "LCLS2cu_main.mad8"
-! * settings for DASEL are in SETK2scDA in "LCLS2sc_main.mad8"
+! the K-values below are for DASEL (the only connection to ALINE)
 
-kq10 = 0.04078118414  ! 0.040732418682
-kq11 = -0.035978491015 !-0.035470391686
-kq19 = 0.0288935235   ! 0.028832646424
-kq20 = 0.011673337852 ! 0.011866327361
-kq27 = -0.069796542848 !-0.068187477866
-kq28 = 0.029206357304 ! 0.029868541394
-kq30 = -0.029497355276 !-0.029618830812
-kq38 = 0.034805766493 ! 0.034798028844
+kq10 = 0.040946131243
+kq11 = -0.038135136057
+kq19 = 0.030837113549
+kq20 = 0.146624351215e-2
+kq27 = -0.083919622056
+kq28 = 0.03548040664
+kq30 = -0.028849559713
+kq38 = 0.034487458519
 
 q10: quadrupole, l = lq8cm/2, aperture = rq8cm, k1 = kq10, type = "Aline_Q8cm"
 q11: quadrupole, l = lq8cm/2, aperture = rq8cm, k1 = kq11, type = "Aline_Q8cm"
@@ -637,6 +634,8 @@ fv28: marker
 ! points of interest
 ! ------------------------------------------------------------------------------
 
+begbsya_1: marker !start of (obsolete) BSYA_1 (ALINEa+ALINEb)
+endbsya_1: marker !end of (obsolete) BSYA_1 (ALINEa+ALINEb)
 begb: marker !start of A-line bending
 st22: marker !beam stopper
 marc: marker !match point
@@ -863,7 +862,8 @@ q4s[L] = 2*q4s[L]
   ESAs : LINE=(D201,BXD1S_full,D202,BXD2S_full,D203,BXD3S_full,D204,Q1S_full,D205,Q2S_full,D206,Q3S_full,D207,Q4S_full,
          D208,ESAE,D209,BMDE)
 
-  ALINE : LINE=(ALINEa,ALINEb,ALINEc,ESAs)
+ !ALINE : LINE=(ALINEa,ALINEb,ALINEc,ESAs) !ALINEa and ALINEb are decommissioned
+  ALINE : LINE=(ALINEc,ESAs)
 
 ! ------------------------------------------------------------------------------
 
