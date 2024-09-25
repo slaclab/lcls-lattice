@@ -1,21 +1,13 @@
-1. Obtain updated release from CVS, either by mounting a CVS repo, or checking out CVS locally.
-  - `cvs update` from local CVS/optics directory
-2. Create a local branch of lcls-lattice to stage the update.
-  - git checkout master
-  - git checkout -b DDMMYYYY_conversion
-3. Copy files from CVS into lcls-lattice/mad (omit mad/CVS, bmad/CVS directory from copy)
-  - cp CVS/optics/etc/lattice/lcls/mad/* lcls-lattice/mad
-  - cp CVS/optics/etc/lattice/lcls/bmad/* lcls-lattice/mad  #not a typo: CVS bmad goes into lcls-lattice/mad
-  - cp CVS/optics/script/elementdevices.dat lcls-lattice/mad
-4. Obtain updated lcls_elements.csv
+1. Once Mark Woodley has uploaded the pre-release to github lcls-lattice repo, checkout that release.
+2. Obtain updated lcls_elements.csv
   - Go to [https://oraweb.slac.stanford.edu/apex/slacprod/f?p=116:600](https://oraweb.slac.stanford.edu/apex/slacprod/f?p=116:600)
   - Click on Actions and Download
   - Save file to lcls-lattice/bmad/conversion/from_oracle
-5. Open a command prompt for jupyter notebook
+3. Setup terminal environment for jupyter notebook
   - check that $LCLS_LATTICE is set to the location of the DDMMYY_conversion branch of lcls-lattice.
   - check that the Bmad environment is setup (consider whether the lcls-live bmad / tao is better)
     - i.e. cd to the bmad repo and run `. util/dist_source_me`
-  - Start a jupyter notebook session in lcls-lattice directory
+4. Start a jupyter notebook session in lcls-lattice directory
 6. Within jupyter notebook cd to bmad/conversion and open slac_to_bmad.ipynb
   - Check hard-coded paths in slac_to_bmad.ipynb match lcls-lattice repo with conversion branch.
   - Run all cells in slac_to_bmad.ipynb

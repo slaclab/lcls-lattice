@@ -1,6 +1,6 @@
-  TITLE, "AD_ACCEL (April 11, 2024)" !copper linac
+  TITLE, "AD_ACCEL: copper linac"
 
-! *** OPTICS=AD_ACCEL-11APR24s ***
+! *** OPTICS=AD_ACCEL-02SEP2024s ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY
   ASSIGN, ECHO="LCLS2cu.echo"
@@ -106,6 +106,7 @@
 ! ------------------------------------------------------------------------------
 ! GSPEC  : 6 MeV spectrometer
 ! SPEC   : 135 MeV spectrometer
+! BSYA_2 : DASEL/A-line merge to End Station A
 ! ==============================================================================
 
 ! ------------------------------------------------------------------------------
@@ -168,7 +169,7 @@
 
   TWSSC : BETA0, ENERGY=E00, BETX=CBETX, ALFX=CALFX, BETY=CBETY, ALFY=CALFY
 
-! Twiss at OTR2
+! Twiss at WS02
 
   TWSSi : BETA0, ENERGY=Ei, BETX=BXi, ALFX=AXi, BETY=BYi, ALFY=AYi
 
@@ -205,11 +206,11 @@
 
   ! set quad strengths for 8 GeV Cu-linac beam to DMPH
 
-    SET, KQ50Q3,  0.384840836193
-    SET, KQ4,    -0.219396715005
-    SET, KQ5,     0.165708852383
-    SET, KQ6,    -0.113569101471
-    SET, KQA0,    0.109210100868
+    SET, KQ50Q3,  0.384840836193 ! 0.384840836193
+    SET, KQ4,    -0.219396715399 !-0.219396715005
+    SET, KQ5,     0.165708853516 ! 0.165708852383
+    SET, KQ6,    -0.113569101753 !-0.113569101471
+    SET, KQA0,    0.109210101838 ! 0.109210100868
   !               Yuri (8.0/2.0)
   !              ---------------
     SET, KQUM1,   0.272741408897
@@ -223,47 +224,19 @@
   ENDSUBROUTINE
 
   SETK2cuS : SUBROUTINE !for LCLS2cuS
-
-  ! set quad strengths for 8 GeV Cu-linac beam to DMPS
-
-  !                Mark rematch     Yuri rematch       22JAN21
-  !              ---------------  ---------------  ---------------
-    SET, KQBP33, -0.645066535808 !-0.64483675561  !-0.644549451693
-    SET, KQBP34,  0.592977153135 ! 0.594232917856 ! 0.595248248123
-    SET, KQDBL1, -1.045760158543 !-1.056286788769 !-1.067412487101
-    SET, KQDBL2,  0.585600770813 ! 0.600969748735 ! 0.618987949218
-    SET, KQDL11,  0.358732502069
-  !                Mark rematch    Yuri (8.0/5.0)
-  !              ---------------  ---------------
-    SET, KQUM1B,                   0.311729673613
-    SET, KQUM2B,                  -0.13
-    SET, KQUM3B,                   0.384569277452
-    SET, KQUM4B,                  -0.61774146348
-    SET, KQSX16,  0.675278050651 ! 0.677894017174
-    SET, KQSX19, -0.886396866772 !-0.893321229694
-    SET, KQSX21,  0.900083625923 ! 0.901518123026
-    SET, KQSX24, -0.835734567482 !-0.825282828044
-    SET, KQDSXM,                  -1.843482712046
-    SET, KQUE1B,                   0.325725075565
-    SET, KQUE2B,                  -0.144356640751
-    SET, KQDMPB,                  -0.154946553294
-  ENDSUBROUTINE
-
-! upgrade SXR cells 23-25 (matched) ... use instead of SETK2cuS
-
-  SETupgrade : SUBROUTINE !use instead of SETK2cuS
     SET, KQBP33, -0.645066535808
     SET, KQBP34,  0.592977153135
     SET, KQDBL1, -1.045760158543
     SET, KQDBL2,  0.585600770813
     SET, KQDL11,  0.358732502069
-    SET, KQUM1b,  0.233548659657
-    SET, KQUM2b, -0.061468904836
-    SET, KQUM3b,  0.685786320722
-    SET, KQUM4b, -0.894612519595
-    SET, KQSX16,  0.57258532825 
-    SET, KQSX19, -0.971622259502
-    SET, KQSX21,  1.13139585643 
+    SET, KQUM1B,  0.311729673613 ! 0.311729673688 !
+    SET, KQUM2B, -0.13           !-0.13           !
+    SET, KQUM3B,  0.384569277452 ! 0.384569277501 !
+    SET, KQUM4B, -0.61774146348  !-0.617741463489 !
+    SET, KQSX16,  0.675278050651 ! 0.675278050607 !
+    SET, KQSX19, -0.886396866772 !-0.886396866633 !
+    SET, KQSX21,  0.900083625923 ! 0.900083626034 !
+    SET, KQSX24, -0.835734567482 !-0.835734567482 !
     SET, kQDSXm, -1.843482712046
     SET, KQUE1B,  0.325725075565
     SET, KQUE2B, -0.144356640751
@@ -274,15 +247,15 @@
 ! for testing the online Matlab model
 ! ------------------------------------------------------------------------------
 
-  COMMENT !for testing the online Matlab model
+  COMMENT
     BEAM, ENERGY=E00
     USE, CU_GSPEC
-    TWISS, COUPLE, BETA0=TWSSC, TAPE="LCLS2cuGSPEC_twiss.tape", &
+    TWISS, BETA0=TWSSC, TAPE="LCLS2cuGSPEC_twiss.tape", &
       RTAPE="LCLS2cuGSPEC_rmat.tape"
 
     BEAM, ENERGY=E00
     USE, CU_SPEC
-    TWISS, COUPLE, BETA0=TWSSC, TAPE="LCLS2cuSPEC_twiss.tape", &
+    TWISS, BETA0=TWSSC, TAPE="LCLS2cuSPEC_twiss.tape", &
       RTAPE="LCLS2cuSPEC_rmat.tape"
     BEAM, ENERGY=Ei
     USE, CU_SPECi
@@ -293,7 +266,7 @@
     SETK2cuH
     BEAM, ENERGY=E00
     USE, CU_HXR
-    TWISS, COUPLE, BETA0=TWSSC, TAPE="LCLS2cuH_twiss.tape", &
+    TWISS, BETA0=TWSSC, TAPE="LCLS2cuH_twiss.tape", &
       RTAPE="LCLS2cuH_rmat.tape"
     BEAM, ENERGY=Ei
     USE, CU_HXRi
@@ -304,7 +277,7 @@
     SETK2cuS
     BEAM, ENERGY=E00
     USE, CU_SXR
-    TWISS, COUPLE, BETA0=TWSSC, TAPE="LCLS2cuS_twiss.tape", &
+    TWISS, BETA0=TWSSC, TAPE="LCLS2cuS_twiss.tape", &
       RTAPE="LCLS2cuS_rmat.tape"
     BEAM, ENERGY=Ei
     USE, CU_SXRi
@@ -324,15 +297,17 @@
 
 ! ------------------------------------------------------------------------------
 
- !CALL, FILENAME="upgrade/MSXRXXcu.mad8"
- !SETupgrade
-
  !CALL, FILENAME="LCLS2cu_match.mad8"
  !CALL, FILENAME="LCLS2cu_makeSymbols.mad8"
  !CALL, FILENAME="LCLS2cu_makeElegant.mad8" !use LCLS_L*e.xsif
- !CALL, FILENAME="LCLS2cu_XLEAP.mad8"
+ !CALL, FILENAME="LCLS2cu_XLEAP.mad8" !run by itself
 
  !STOP
+
+! ------------------------------------------------------------------------------
+
+ !CALL "LCLS2cu_color_plots.mad8" !run by itself (ends with STOP)
+ !CALL "LCLS2cu_area_plots.mad8"  !run by itself (ends with STOP)
 
 ! ------------------------------------------------------------------------------
 ! SURVEY in linac coordinates
@@ -349,7 +324,7 @@
    !SAVELINE, NAME="CU_HXR", FILENAME="LCLS2cuH.saveline"
     PRINT, FULL
     SURVEY, THETA0=ADL1, X0=Xi, Z0=Zi, TAPE="LCLS2cuH_survey.tape"
-    SAVEBETA, TWm, OTR2
+    SAVEBETA, TWm, WS02
     TWISS, SAVE, BETA0=TWSSC, TAPE="LCLS2cuH_twiss.tape" !, &
    !  RTAPE="LCLS2cuH_rmat.tape"
     SHOW, TWm
@@ -363,8 +338,75 @@
       STYLE=100, SPLINE, RANGE=BEGDL1_1/DUMPFACE, FILE="LCLS2cuH", &
       TITLE="Cu-linac to HXR dump"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=WS31/DU7H[25], FILE="LCLS2cuH", &
+      STYLE=100, SPLINE, RANGE=MM2/HXR46END, FILE="LCLS2cuH", &
       TITLE="UNDH (Cu beam, 8 GeV)"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! SXR
+
+ !COMMENT
+    ASSIGN, PRINT="LCLS2cuS.print"
+    BEAM, ENERGY=E00
+    SET, SETCUS, CUSON   !pulsed
+   !SET, SETCUS, CUSONDC !DC
+   !VALUE, PULSED,DCMODE
+    SETK2cuS
+    USE, CU_SXR
+   !SAVELINE, NAME="CU_SXR", FILENAME="LCLS2cuS.saveline"
+    PRINT, FULL
+    SURVEY, THETA0=ADL1, X0=Xi, Z0=Zi, TAPE="LCLS2cuS_survey.tape"
+    TWISS, SAVE, BETA0=TWSSC, TAPE="LCLS2cuS_twiss.tape" !, &
+   !  RTAPE="LCLS2cuS_rmat.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
+      STYLE=100, SPLINE, RANGE=BEGDL1_1/DUMPFACEB, FILE="LCLS2cuS", &
+      TITLE="Cu-linac to SXR dump"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=BEGDL1_1/DUMPFACEB, FILE="LCLS2cuS", &
+      TITLE="Cu-linac to SXR dump"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      STYLE=100, SPLINE, RANGE=BEGDL1_1/DUMPFACEB, FILE="LCLS2cuS", &
+      TITLE="Cu-linac to SXR dump"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=VBOUTB/SXR46END, FILE="LCLS2cuS", &
+      TITLE="UNDS (Cu beam, 8 GeV)"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! 6 MeV gun spectrometer
+
+ !COMMENT
+    ASSIGN, PRINT="LCLS2cuGSPEC.print"
+    BEAM, ENERGY=E00
+    USE, CU_GSPEC
+   !SAVELINE, NAME="CU_GSPEC", FILENAME="LCLS2cuGSPEC.saveline"
+    PRINT, FULL
+    SURVEY, THETA0=ADL1, X0=Xi, Z0=Zi, TAPE="LCLS2cuGSPEC_survey.tape"
+    TWISS, SAVE, BETA0=TWSSC, TAPE="LCLS2cuGSPEC_twiss.tape" !, &
+   !  RTAPE="LCLS2cuGSPEC_rmat.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX, &
+      STYLE=100, SPLINE, RANGE=BEGGUN/ENDGSPEC, FILE="LCLS2cuGSPEC", &
+      TITLE="Cathode to 6-MeV Gun Spectrometer"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! 135 MeV spectrometer
+
+ !COMMENT
+    ASSIGN, PRINT="LCLS2cuSPEC.print"
+    BEAM, ENERGY=E00
+    USE, CU_SPEC
+   !SAVELINE, NAME="CU_SPEC", FILENAME="LCLS2cuSPEC.saveline"
+    PRINT, FULL
+    SURVEY, THETA0=ADL1, X0=Xi, Z0=Zi, TAPE="LCLS2cuSPEC_survey.tape"
+    TWISS, SAVE, BETA0=TWSSC, TAPE="LCLS2cuSPEC_twiss.tape" !, &
+   !  RTAPE="LCLS2cuSPEC_rmat.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX, &
+      STYLE=100, SPLINE, RANGE=BEGGUN/ENDSPEC, FILE="LCLS2cuSPEC", &
+      TITLE="Cathode to 135-MeV Spectrometer"
  !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
@@ -410,73 +452,6 @@
  !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
-
-! SXR
-
- !COMMENT
-    ASSIGN, PRINT="LCLS2cuS.print"
-    BEAM, ENERGY=E00
-    SET, SETCUS, CUSON   !pulsed
-   !SET, SETCUS, CUSONDC !DC
-   !VALUE, PULSED,DCMODE
-    SETK2cuS
-    USE, CU_SXR
-   !SAVELINE, NAME="CU_SXR", FILENAME="LCLS2cuS.saveline"
-    PRINT, FULL
-    SURVEY, THETA0=ADL1, X0=Xi, Z0=Zi, TAPE="LCLS2cuS_survey.tape"
-    TWISS, SAVE, BETA0=TWSSC, TAPE="LCLS2cuS_twiss.tape" !, &
-   !  RTAPE="LCLS2cuS_rmat.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
-      STYLE=100, SPLINE, RANGE=BEGDL1_1/DUMPFACEB, FILE="LCLS2cuS", &
-      TITLE="Cu-linac to SXR dump"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=BEGDL1_1/DUMPFACEB, FILE="LCLS2cuS", &
-      TITLE="Cu-linac to SXR dump"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE, RANGE=BEGDL1_1/DUMPFACEB, FILE="LCLS2cuS", &
-      TITLE="Cu-linac to SXR dump"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=VBOUTB/DU7S[31], FILE="LCLS2cuS", &
-      TITLE="UNDS (Cu beam, 8 GeV)"
- !ENDCOMMENT
-
-! ------------------------------------------------------------------------------
-
-! 6 MeV gun spectrometer
-
-  COMMENT
-    ASSIGN, PRINT="LCLS2cuGSPEC.print"
-    BEAM, ENERGY=E00
-    USE, CU_GSPEC
-   !SAVELINE, NAME="CU_GSPEC", FILENAME="LCLS2cuGSPEC.saveline"
-    PRINT, FULL
-    SURVEY, THETA0=ADL1, X0=Xi, Z0=Zi, TAPE="LCLS2cuGSPEC_survey.tape"
-    TWISS, SAVE, BETA0=TWSSC, TAPE="LCLS2cuGSPEC_twiss.tape" !, &
-   !  RTAPE="LCLS2cuGSPEC_rmat.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX, &
-      STYLE=100, SPLINE, RANGE=BEGGUN/ENDGSPEC, FILE="LCLS2cuGSPEC", &
-      TITLE="Cathode to 6-MeV Gun Spectrometer"
-  ENDCOMMENT
-
-! ------------------------------------------------------------------------------
-
-! 135 MeV spectrometer
-
-  COMMENT
-    ASSIGN, PRINT="LCLS2cuSPEC.print"
-    BEAM, ENERGY=E00
-    USE, CU_SPEC
-   !SAVELINE, NAME="CU_SPEC", FILENAME="LCLS2cuSPEC.saveline"
-    PRINT, FULL
-    SURVEY, THETA0=ADL1, X0=Xi, Z0=Zi, TAPE="LCLS2cuSPEC_survey.tape"
-    TWISS, SAVE, BETA0=TWSSC, TAPE="LCLS2cuSPEC_twiss.tape" !, &
-   !  RTAPE="LCLS2cuSPEC_rmat.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX, &
-      STYLE=100, SPLINE, RANGE=BEGGUN/ENDSPEC, FILE="LCLS2cuSPEC", &
-      TITLE="Cathode to 135-MeV Spectrometer"
-  ENDCOMMENT
-
-! ------------------------------------------------------------------------------
 ! SURVEY in BSY coordinates (from end of L3)
 ! ------------------------------------------------------------------------------
 
@@ -491,6 +466,23 @@
     PRINT, FULL
     SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
       TAPE="BSY-LCLS2cuH_survey.tape"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! SXR
+
+ !COMMENT
+    ASSIGN, PRINT="BSY-LCLS2cuS.print"
+    BEAM, ENERGY=Ef
+    SET, SETCUS, CUSON   !pulsed
+   !SET, SETCUS, CUSONDC !DC
+   !VALUE, PULSED,DCMODE
+   !SETK2cuS
+    USE, BSYLTUS
+    PRINT, FULL
+    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
+      TAPE="BSY-LCLS2cuS_survey.tape"
  !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
@@ -538,147 +530,141 @@
       TAPE="BSY-LCLS2cuHTXI_survey.tape"
  !ENDCOMMENT
 
-! ------------------------------------------------------------------------------
-
-! SXR
-
- !COMMENT
-    ASSIGN, PRINT="BSY-LCLS2cuS.print"
-    BEAM, ENERGY=Ef
-    SET, SETCUS, CUSON   !pulsed
-   !SET, SETCUS, CUSONDC !DC
-   !VALUE, PULSED,DCMODE
-   !SETK2cuS
-    USE, BSYLTUS
-    PRINT, FULL
-    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
-      TAPE="BSY-LCLS2cuS_survey.tape"
- !ENDCOMMENT
-
-! ------------------------------------------------------------------------------
-
-! S100 to A-line ("A-line BSY" coordinates from Transport deck)
-! Note: the "A-line BSY" coordinates differ from the LCLS BSY coordinates
-
-  COMMENT
-    ASSIGN, PRINT="BSYA-LCLS1cuA.print"
-    BEAM, ENERGY=Ef
-    SET, SETCUS, CUSOFF
-    SETK2cuA
-    USE, S100ALINE
-    PRINT, FULL
-    SURVEY, Y0=77.643643677513, PHI0=-0.00475999999158308164
-  ENDCOMMENT
-
 ! ==============================================================================
 
-! Twiss plots
+  STOP
 
- !COMMENT
-    ASSIGN, PRINT="LCLS2cu.print"
+! ------------------------------------------------------------------------------
+! LCLS2cu_main working stuff
+! ------------------------------------------------------------------------------
 
-  ! Cathode to HXR Main Dump
-
-    BEAM, ENERGY=E00
+  comment !use with undhBBA.m (non-BBA)
+    BEAM, ENERGY=Ef
     SET, SETCUS, CUSOFF
     SETK2cuH
-    USE, CU_HXR
+    USE, (LTUH,HXRUND,DUMPLINE), RANGE=MM1/#E
     PRINT, FULL
-    TWISS, SAVE, BETA0=TWSSC
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
-      COLOUR=100, RANGE=BEGDL1_1/DUMPFACE, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: DL1 to HXR dump"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      COLOUR=100, SPLINE, RANGE=BEGDL1_1/DUMPFACE, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: DL1 to HXR dump"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGDL1_1/DUMPFACE, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: DL1 to HXR dump"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      COLOUR=100, RANGE=BEGGUN/ENDL0, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: Gun + L0 linac"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX, &
-      COLOUR=100, SPLINE, RANGE=LHbeg/LHend, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: Laser Heater chicane"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX, &
-      COLOUR=100, SPLINE, RANGE=L0bBEG/ENDDL1_2, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: L0b + DL1 dogleg"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      COLOUR=100, SPLINE, RANGE=BEGL1/ENDL1, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: L1 linac"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX, &
-      COLOUR=100, SPLINE, RANGE=BEGBC1/ENDBC1, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: BC1 chicane"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      COLOUR=100, SPLINE, RANGE=BEGL2/ENDL2, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: L2 linac"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX, &
-      COLOUR=100, SPLINE, RANGE=BEGBC2/ENDBC2, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: BC2 chicane"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      COLOUR=100, SPLINE, RANGE=BEGL3/ENDL3, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: L3 linac"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      COLOUR=100, SPLINE, RANGE=BEGCLTH_0/ENDBSYH_2, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: BSY to LTUH"
+    TWISS, BETA0=TWSSmh, SAVE=TWISS, TAPE="twiss.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGLTUH/ENDLTUH, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: LTUH"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      COLOUR=100, SPLINE, RANGE=BEGUNDH/ENDUNDH, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: HXR Undulator"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGDMPH_1/DUMPFACE, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: HXR Post-undulator to dump"
+      STYLE=100, SPLINE, RANGE=QHXh44[1]/DUMPFACE, &
+      TITLE="HXR undulator to Dump, w/o coupling", FILE="match"
+   !TWISS, BETA0=TWSSmh, SAVE=TWISS, COUPLE
+   !PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+   !  STYLE=100, SPLINE, RANGE=QHXh44[1]/DUMPFACE, &
+   !  TITLE="HXR undulator to Dump, with coupling", FILE="match"
+  endcomment
 
-  ! Cathode to HXR Safety Dump
-
-    BEAM, ENERGY=E00
-    USE, CU_SFTH
-    TWISS, SAVE, BETA0=TWSSC
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGSFTH_1/SFTDUMP, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: HXR safety dump"
-
-  ! Cathode to SXR Main Dump
-
-    BEAM, ENERGY=E00
-    SET, SETCUS, CUSON   !pulsed
-   !SET, SETCUS, CUSONDC !DC
-   !VALUE, PULSED,DCMODE
-    SETK2cuS
-    USE, CU_SXR
-   !SAVELINE, NAME="CU_SXR", FILENAME="LCLS2cuS.saveline"
+  comment !use with undhBBA.m (BBA)
+    BEAM, ENERGY=Ef
+    SET, SETCUS, CUSOFF
+    SETK2cuH
+    SET, kQHX46, kQDHX !for BBA
+    SET, kQHX47, kQFHX !for BBA
+    USE, (LTUH,HXRUND,DUMPLINE), RANGE=MM1/#E
     PRINT, FULL
-    TWISS, SAVE, BETA0=TWSSC
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
-      COLOUR=100, SPLINE, RANGE=BEGDL1_1/DUMPFACEB, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: DL1 to SXR dump"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      COLOUR=100, SPLINE, RANGE=BEGDL1_1/DUMPFACEB, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: DL1 to SXR dump"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGDL1_1/DUMPFACEB, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: DL1 to SXR dump"
+    TWISS, BETA0=TWSSmh, SAVE=TWISS, TAPE="BBAtwiss.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGCLTH_0/ENDBSYS, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: BSY to LTUS"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGLTUS/ENDLTUS, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: LTUS"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      COLOUR=100, SPLINE, RANGE=BEGUNDS/ENDUNDS, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: SXR Undulator"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      COLOUR=100, SPLINE, RANGE=BEGDMPS_1/DUMPFACEb, FILE="LCLS2cu_color", &
-      TITLE="Cu_linac: SXR Post-indulator to dump"
- !ENDCOMMENT
+      STYLE=100, SPLINE, RANGE=QHXh44[1]/DUMPFACE, &
+      TITLE="HXR undulator to Dump (BBA), w/o coupling", FILE="BBAmatch"
+   !TWISS, BETA0=TWSSmh, SAVE=TWISS, COUPLE
+   !PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+   !  STYLE=100, SPLINE, RANGE=QHXh44[1]/DUMPFACE, &
+   !  TITLE="HXR undulator to Dump, with coupling", FILE="BBAmatch"
+  endcomment
 
 ! ------------------------------------------------------------------------------
 
- !CALL, FILENAME="LCLS2cu_area_plots.mad8"
+  comment !match HXRSS chicane to R56= 15.0 um
+    BEAM, ENERGY=Ef
+    VALUE, Ef,Eu
+    SET, SETHXRSS, 1
+    USE, HCHICANE
+    VALUE, AB4,BLB4
+    MATCH, BETX=1, BETY=1
+      VARY, AB4, STEP=1.E-6, LOWER=0
+      RMATRIX, #S/#E, RM(5,6)=15.0E-6, WEIGHT(5,6)=1
+      LMDIF, TOL=1.E-20
+      MIGRAD, TOL=1.E-20
+    ENDMATCH
+    VALUE, AB4,BLB4
+    PRINT, FULL
+    SURVEY
+  endcomment
+
+! ------------------------------------------------------------------------------
+
+  COMMENT
+    SETK2cuH
+    CALL, FILENAME="patch.mad8"
+   !VALUE, Ef,Eu,Brhou/Cb
+    GLmaxQUM := 100 !BMAX = 100 kG @ 120 A (bipolar)
+    KmaxQUM  := GLmaxQUM/LQA/(Cb*Eu)
+
+    BEAM, ENERGY=Ef
+    SET, SETSP, SETSPh
+    USE, (LTUH,HXRUND), RANGE=MM1/#E
+   !VALUE, KQUM1,KQUM2,KQUM3,KQUM4
+    MATCH, BETA0=TWSSmh
+      VARY, KQUM1, STEP=1.E-6, LOWER=0, UPPER= KmaxQUM
+      VARY, KQUM2, STEP=1.E-6, UPPER=0, LOWER=-KmaxQUM
+      VARY, KQUM3, STEP=1.E-6, LOWER=0, UPPER= KmaxQUM
+      VARY, KQUM4, STEP=1.E-6, UPPER=0, LOWER=-KmaxQUM
+      comment !match periodic betas in HXR
+        WEIGHT, DX=0, DPX=0, DY=0, DPY=0, X=0, PX=0, Y=0, PY=0, T=0, PT=0
+        WEIGHT, BETX=1.E-5, BETY=1.E-5, ALFX=0, ALFY=0
+        COUPLE, MUQh[1]/MUQh[3]
+        COUPLE, MUQh[2]/MUQh[4]
+        COUPLE, MUQh[1]/MUQh[5]
+        COUPLE, MUQh[2]/MUQh[6]
+        COUPLE, MUQh[1]/MUQh[7]
+        COUPLE, MUQh[2]/MUQh[8]
+        COUPLE, MUQh[1]/MUQh[9]
+        COUPLE, MUQh[2]/MUQh[10]
+        COUPLE, MUQh[1]/MUQh[11]
+        COUPLE, MUQh[2]/MUQh[12]
+        COUPLE, MUQh[1]/MUQh[13]
+        COUPLE, MUQh[2]/MUQh[14]
+        COUPLE, MUQh[1]/MUQh[15]
+        COUPLE, MUQh[2]/MUQh[16]
+        COUPLE, MUQh[1]/MUQh[17]
+        COUPLE, MUQh[2]/MUQh[18]
+        COUPLE, MUQh[1]/MUQh[19]
+        COUPLE, MUQh[2]/MUQh[20]
+        COUPLE, MUQh[1]/MUQh[21]
+        COUPLE, MUQh[2]/MUQh[22]
+        COUPLE, MUQh[1]/MUQh[23]
+        COUPLE, MUQh[2]/MUQh[24]
+        COUPLE, MUQh[1]/MUQh[25]
+        COUPLE, MUQh[2]/MUQh[26]
+        COUPLE, MUQh[1]/MUQh[27]
+        COUPLE, MUQh[2]/MUQh[28]
+        COUPLE, MUQh[1]/MUQh[29]
+        COUPLE, MUQh[2]/MUQh[30]
+        COUPLE, MUQh[1]/MUQh[31]
+        COUPLE, MUQh[2]/MUQh[32]
+        COUPLE, MUQh[1]/MUQh[33]
+       !COUPLE, MUQh[2]/MUQh[34] !KQDHXM
+        WEIGHT, BETX=1.E-6, BETY=1.E-6
+        CONSTR, QUM2[1], BETX<50, BETY<70
+        CONSTR, QUM3[1], BETX<50, BETY<50
+        CONSTR, QUM4[1], BETX<50, BETY<50
+      endcomment
+     !comment !match at start of HXR cell 24
+        CONSTR, DU7H[6], BETX=BXHXRm, ALFX=AXHXRm, BETY=BYHXRm, ALFY=AYHXRm
+     !endcomment
+     !LMDIF, TOL=1.E-20, CALLS=10000
+     !MIGRAD, TOL=1.E-20, CALLS=10000
+    ENDMATCH
+    VALUE, KQUM1,KQUM2,KQUM3,KQUM4
+    PRINT, FULL
+    SAVEBETA, TWm, DU7H[6]
+    TWISS, COUPLE, BETA0=TWSSmh, SAVE, TAPE="twiss.tape"
+    SHOW, TWm
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=WS31/DU7H[29], &
+      STYLE=100, SPLINE=.T., FILE="Escale"
+    STOP
+  ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
 
   STOP
-
