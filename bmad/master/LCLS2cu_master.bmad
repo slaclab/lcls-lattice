@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-11APR24s ***
+! *** OPTICS=AD_ACCEL-02SEP2024s ***
 
 ! ------------------------------------------------------------------------------
 ! constants and global parameters
@@ -69,29 +69,30 @@ calfx = -3.081460679784
 cbety = 0.39093003939
 calfy = 0.551431596242e-2
 
-! Twiss at OTR2
+! Twiss at WS02
 
-!           uncoupled         coupled
-bxi = 1.11308102615  ! 1.110117412898
-axi = -0.068940358788 !-0.068770525275
-byi = 1.113021659127 ! 1.110117410955
-ayi = -0.070294897537 !-0.068770524742
+!          uncoupled        coupled
+!        --------------  --------------
+bxi = 1.112974241083 !1.110117412898
+axi = 0.068237677519 !0.068770525274
+byi = 1.112508206187 !1.110117411152
+ayi = 0.066916206364 !0.068770526037
 
 ! Twiss at the beginning of L3 linac
 
 enbegl3 = 5.0
-bxbegl3 = 11.063556098243
-axbegl3 = -0.949687069393
-bybegl3 = 70.645797110388
-aybegl3 = 2.189962742976
+bxbegl3 = 11.063556098154 !11.063556098243
+axbegl3 = -0.94968706938  !-0.949687069393
+bybegl3 = 70.645797110343 !70.645797110388
+aybegl3 = 2.189962742982 ! 2.189962742976
 
 ! Twiss at the end of L3 linac (L3END)
 
 enendl3 = 8.0
-bxendl3 = 33.223271647948
-axendl3 = 1.179788571613
-byendl3 = 62.179034958633
-ayendl3 = -1.656755986913
+bxendl3 = 33.223271647513 !33.223271647948
+axendl3 = 1.179788571596 ! 1.179788571613
+byendl3 = 62.179034958969 !62.179034958633
+ayendl3 = -1.656755986924 !-1.656755986913
 
 ! initial Twiss at BEGCLTS (see CUSXR.xsif)
 
@@ -111,19 +112,10 @@ ayedh = 1.084608326581
 
 ! match into SXR dogleg (@ MM1B)
 
-mbetxs = 14.225768169159
-malfxs = -0.494962167072
-mbetys = 41.657375271635
-malfys = 2.281685862975
-
-! Twiss at start of HXR cell #24
-! (full complement of undulators; Yuri match; TWISS, COUPLE, BETA0=TWSSmh)
-
-enhxrm = 8.0
-bxhxrm = 20.490094388158
-axhxrm = 1.140342746628
-byhxrm = 15.097163649464
-ayhxrm = -0.86968583842
+mbetxs = 14.122413294533 !14.225768169159
+malfxs = -0.492130310227 !-0.494962167072
+mbetys = 41.689113504311 !41.657375271635
+malfys = 2.280526644358 ! 2.281685862975
 
 ! for matching ...
 
@@ -209,8 +201,6 @@ call, file = ALINE.bmad
 call, file = BYP.bmad
 call, file = LTU.bmad
 call, file = UND.bmad
- !CALL, FILENAME="upgrade/SXRupgrade.xsif"
- !CALL, FILENAME="upgrade/UND.xsif"
 call, file = SFT.bmad
 call, file = HXTES.bmad
 call, file = LCLS2cu.bmad
@@ -235,11 +225,11 @@ call, file = BSYcu.bmad
 
  !CU_GSPEC : copper linac to gun spectrometer
  !CU_SPEC  : copper linac to 135 MeV spectrometer
- !CU_SXR   : copper linac to e- SXR dump
  !CU_HXR   : copper linac to e- HXR dump
  !CU_SFTH  : copper linac to e- HXR safety dump
  !CU_HXTES : copper linac to HXR XTES system (photon)
  !CU_HTXI  : copper linac to HXR TXI system (photon)
+ !CU_SXR   : copper linac to e- SXR dump
 
   CU_GSPEC : LINE=(GUNBXG,GSPEC)
   CU_SPEC  : LINE=(GUNL0a,L0aL0b,DL1_1,SPECBL)
@@ -249,18 +239,18 @@ call, file = BSYcu.bmad
   CU_HXTES : LINE=(GUNL0a,L0aL0b,LCLS2cuHXTES)
   CU_HTXI  : LINE=(GUNL0a,L0aL0b,LCLS2cuHTXI)
 
-! for Twiss starting at OTR2
+! for Twiss starting at WS02
 
-  LCLS2cuI  : LINE=(OTR2,DE06d,BPM10,DE06e,WS03,DE05,OTR3,DE07,QM01_full,DE08,SC8,DE08a,VV04,DE08b,QM02_full,DE09,
-         DBMARK82,ENDDL1_1)
+  LCLS2cuI  : LINE=(WS02,DE05a,MRK0,DE05a,OTR2,DE06d,BPM10,DE06e,WS03,DE05,OTR3,DE07,QM01_full,DE08,SC8,DE08a,VV04,
+         DE08b,QM02_full,DE09,DBMARK82,ENDDL1_1)
   LCLS2cuCI : LINE=(DL1_2,L1,BC1,L2,BC2,L3)
 
   CU_SPECi  : LINE=(LCLS2cuI,SPECBL)
-  CU_SXRi   : LINE=(LCLS2cuI,LCLS2cuCI,BSYLTUS)
   CU_HXRi   : LINE=(LCLS2cuI,LCLS2cuCI,BSYLTUH)
   CU_SFTHi  : LINE=(LCLS2cuI,LCLS2cuCI,BSYLTUHS)
   CU_HXTESi : LINE=(LCLS2cuI,LCLS2cuCI,BSYLTUHXTES)
   CU_HTXIi  : LINE=(LCLS2cuI,LCLS2cuCI,BSYLTUHTXI)
+  CU_SXRi   : LINE=(LCLS2cuI,LCLS2cuCI,BSYLTUS)
 
 ! ------------------------------------------------------------------------------
 ! initial SURVEY coordinates
@@ -276,6 +266,14 @@ xi = xll+loadlock[l]*sin(adl1) !subtract from upbeam side of loadlock to get to 
 zi = zll+loadlock[l]*cos(adl1) !subtract from upbeam side of loadlock to get to cathode [m]
 
  !VALUE, ADL1,Xi,Zi
+
+! set initial linac survey coordinates at WS02
+! (NOTE: start beamline at WS02 because ELEGANT input beam is defined there)
+! (NOTE: pitch is not included here for simplicity - for linac coordinates,
+!        read in pitched plane of linac)
+
+xws02 = 2.370017058026   !X [m]
+zws02 = 2.029449371971e3 !Z [m]
 
 ! initial BSY survey coordinates at BSYbeg
 

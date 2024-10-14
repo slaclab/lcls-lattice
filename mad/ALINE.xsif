@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-11APR24s ***
+! *** OPTICS=AD_ACCEL-02SEP2024s ***
 
 ! LCLS2sc A-line
 
@@ -303,19 +303,16 @@
   LSQ   := 0.55
   rSQ   := 0.08/2
 
-! * the K-values below are for SC beam; also copy these settings 
-!   to SETK2scA in "LCLS2sc_main.mad8"
-! * settings for Cu beam are in SETK2cuA in "LCLS2cu_main.mad8"
-! * settings for DASEL are in SETK2scDA in "LCLS2sc_main.mad8"
+! the K-values below are for DASEL (the only connection to ALINE)
 
-  KQ10 :=  0.04078118414  ! 0.040732418682
-  KQ11 := -0.035978491015 !-0.035470391686
-  KQ19 :=  0.0288935235   ! 0.028832646424
-  KQ20 :=  0.011673337852 ! 0.011866327361
-  KQ27 := -0.069796542848 !-0.068187477866
-  KQ28 :=  0.029206357304 ! 0.029868541394
-  KQ30 := -0.029497355276 !-0.029618830812
-  KQ38 :=  0.034805766493 ! 0.034798028844
+  KQ10 :=  0.040946131243
+  KQ11 := -0.038135136057
+  KQ19 :=  0.030837113549
+  KQ20 :=  0.146624351215E-2
+  KQ27 := -0.083919622056
+  KQ28 :=  0.03548040664
+  KQ30 := -0.028849559713
+  KQ38 :=  0.034487458519
 
   Q10 : QUAD, L=LQ8cm/2, APER=rQ8cm, K1=KQ10, TYPE="Aline_Q8cm"
   Q11 : QUAD, L=LQ8cm/2, APER=rQ8cm, K1=KQ11, TYPE="Aline_Q8cm"
@@ -676,14 +673,16 @@
 ! points of interest
 ! ------------------------------------------------------------------------------
 
-  BEGB   : MARK !start of A-line bending
-  ST22   : MARK !beam stopper
-  MARC   : MARK !match point
-  ENDB   : MARK !end of A-line bending (final emittance)
-  ST29   : MARK !beam stopper
-  ALWALL : MARK !upstream face of wall that separates A-line tunnel from alcove
-  ESAE   : MARK !east wall of ESA
-  BMDE   : MARK !Beam Dump East
+  BEGBSYA_1 : MARK !start of (obsolete) BSYA_1 (ALINEa+ALINEb)
+  ENDBSYA_1 : MARK !end of (obsolete) BSYA_1 (ALINEa+ALINEb)
+  BEGB      : MARK !start of A-line bending
+  ST22      : MARK !beam stopper
+  MARC      : MARK !match point
+  ENDB      : MARK !end of A-line bending (final emittance)
+  ST29      : MARK !beam stopper
+  ALWALL    : MARK !upstream face of wall that separates A-line tunnel from alcove
+  ESAE      : MARK !east wall of ESA
+  BMDE      : MARK !Beam Dump East
 
   RWWAKE3A : MARK, TYPE="WAKE" !CLTH/BSYH beampipe wake applied here
 
@@ -798,7 +797,8 @@
     Q4S_full,D208,&
     ESAE,D209,BMDE)
 
-  ALINE : LINE=(ALINEa,ALINEb,ALINEc,ESAs)
+ !ALINE : LINE=(ALINEa,ALINEb,ALINEc,ESAs) !ALINEa and ALINEb are decommissioned
+  ALINE : LINE=(ALINEc,ESAs)
 
 ! ------------------------------------------------------------------------------
 

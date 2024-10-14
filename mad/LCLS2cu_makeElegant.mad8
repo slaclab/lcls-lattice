@@ -1,0 +1,415 @@
+
+! *** OPTICS=AD_ACCEL-02SEP2024s ***
+
+! generate input files for ELEGANT
+
+! ==============================================================================
+! Instructions for generating ELEGANT input file
+! ------------------------------------------------------------------------------
+! 1) replace the following line in MAD deck:
+!      CALL, FILENAME="LCLS_L1.xsif"
+!      CALL, FILENAME="LCLS_L1.xsif"
+!      CALL, FILENAME="LCLS_L1.xsif"
+!    with:
+!      CALL, FILENAME="LCLS_L1e.xsif"
+!      CALL, FILENAME="LCLS_L1e.xsif"
+!      CALL, FILENAME="LCLS_L1e.xsif"
+! 2) insert the following line into your MAD deck:
+!      CALL, FILENAME="elegant/makeElegant.mad8"
+! 3) run MAD
+! 4) create an SBEN definition file (for generating an ELEGANT lte-file with
+!    CSR) ... there should be one line per bend (name, bunch length, FINT)
+! 5) run mad2lte with survey.tape as input
+! 6) if your beamline contains MATRIX elements, create Elegant MATRIX files
+! ------------------------------------------------------------------------------
+
+! set TCAV TYPE (add frequency where not already defined)
+
+  TCAV0,  TYPE="RFDF", FREQ=SbandF
+  TCAV3,  TYPE="RFDF", FREQ=SbandF
+  TCX01,  TYPE="RFDF"
+  TCX02,  TYPE="RFDF"
+  TCX01B, TYPE="RFDF"
+
+! ------------------------------------------------------------------------------
+! output MATR definitions; set TYPE attributes
+! ------------------------------------------------------------------------------
+
+  VALUE, UMAHXh[L]
+  BEAM, ENERGY=Ef
+  USE, (UMAHXh) !*LIN.01*
+  MATCH, BETX=1, BETY=1
+    RMATRIX, #S/#E, RM(6,6)=1
+  ENDMATCH
+
+  UMAHXh14, TYPE="UMAHX"
+  UMAHXh15, TYPE="UMAHX"
+  UMAHXh16, TYPE="UMAHX"
+  UMAHXh17, TYPE="UMAHX"
+  UMAHXh18, TYPE="UMAHX"
+  UMAHXh19, TYPE="UMAHX"
+  UMAHXh20, TYPE="UMAHX"
+
+  UMAHXh22, TYPE="UMAHX"
+  UMAHXh23, TYPE="UMAHX"
+  UMAHXh24, TYPE="UMAHX"
+  UMAHXh25, TYPE="UMAHX"
+  UMAHXh26, TYPE="UMAHX"
+  UMAHXh27, TYPE="UMAHX"
+
+  UMAHXh29, TYPE="UMAHX"
+  UMAHXh30, TYPE="UMAHX"
+  UMAHXh31, TYPE="UMAHX"
+  UMAHXh32, TYPE="UMAHX"
+  UMAHXh33, TYPE="UMAHX"
+  UMAHXh34, TYPE="UMAHX"
+  UMAHXh35, TYPE="UMAHX"
+  UMAHXh36, TYPE="UMAHX"
+  UMAHXh37, TYPE="UMAHX"
+  UMAHXh38, TYPE="UMAHX"
+  UMAHXh39, TYPE="UMAHX"
+  UMAHXh40, TYPE="UMAHX"
+  UMAHXh41, TYPE="UMAHX"
+  UMAHXh42, TYPE="UMAHX"
+  UMAHXh43, TYPE="UMAHX"
+  UMAHXh44, TYPE="UMAHX"
+  UMAHXh45, TYPE="UMAHX"
+  UMAHXh46, TYPE="UMAHX"
+  UMAHXh47, TYPE="UMAHX"
+
+  VALUE, PSHXh[L]
+  BEAM, ENERGY=Ef
+  USE, (PSHXh) !*LIN.02*
+  MATCH, BETX=1, BETY=1
+    RMATRIX, #S/#E, RM(6,6)=1
+  ENDMATCH
+
+  PSHXh14, TYPE="PSHX"
+  PSHXh15, TYPE="PSHX"
+  PSHXh16, TYPE="PSHX"
+  PSHXh17, TYPE="PSHX"
+  PSHXh18, TYPE="PSHX"
+  PSHXh19, TYPE="PSHX"
+  PSHXh20, TYPE="PSHX"
+
+  PSHXh22, TYPE="PSHX"
+  PSHXh23, TYPE="PSHX"
+  PSHXh24, TYPE="PSHX"
+  PSHXh25, TYPE="PSHX"
+  PSHXh26, TYPE="PSHX"
+  PSHXh27, TYPE="PSHX"
+
+  PSHXh29, TYPE="PSHX"
+  PSHXh30, TYPE="PSHX"
+  PSHXh31, TYPE="PSHX"
+  PSHXh32, TYPE="PSHX"
+  PSHXh33, TYPE="PSHX"
+  PSHXh34, TYPE="PSHX"
+  PSHXh35, TYPE="PSHX"
+  PSHXh36, TYPE="PSHX"
+  PSHXh37, TYPE="PSHX"
+  PSHXh38, TYPE="PSHX"
+  PSHXh39, TYPE="PSHX"
+  PSHXh40, TYPE="PSHX"
+  PSHXh41, TYPE="PSHX"
+  PSHXh42, TYPE="PSHX"
+  PSHXh43, TYPE="PSHX"
+  PSHXh44, TYPE="PSHX"
+  PSHXh45, TYPE="PSHX"
+  PSHXh46, TYPE="PSHX"
+
+  VALUE, UMASXh[L]
+  BEAM, ENERGY=Ef
+  USE, (UMASXh) !*LIN.03*
+  MATCH, BETX=1, BETY=1
+    RMATRIX, #S/#E, RM(6,6)=1
+  ENDMATCH
+  UMASXh26, TYPE="UMASX"
+  UMASXh27, TYPE="UMASX"
+  UMASXh28, TYPE="UMASX"
+  UMASXh29, TYPE="UMASX"
+  UMASXh30, TYPE="UMASX"
+  UMASXh31, TYPE="UMASX"
+  UMASXh32, TYPE="UMASX"
+  UMASXh33, TYPE="UMASX"
+  UMASXh34, TYPE="UMASX"
+
+  UMASXh36, TYPE="UMASX"
+  UMASXh37, TYPE="UMASX"
+  UMASXh38, TYPE="UMASX"
+  UMASXh39, TYPE="UMASX"
+  UMASXh40, TYPE="UMASX"
+  UMASXh41, TYPE="UMASX"
+  UMASXh42, TYPE="UMASX"
+  UMASXh43, TYPE="UMASX"
+  UMASXh44, TYPE="UMASX"
+  UMASXh45, TYPE="UMASX"
+  UMASXh46, TYPE="UMASX"
+  UMASXh47, TYPE="UMASX"
+
+  VALUE, PSSXh[L]
+  BEAM, ENERGY=Ef
+  USE, (PSSXh) !*LIN.04*
+  MATCH, BETX=1, BETY=1
+    RMATRIX, #S/#E, RM(6,6)=1
+  ENDMATCH
+  PSSXh26, TYPE="PSSX"
+  PSSXh27, TYPE="PSSX"
+  PSSXh28, TYPE="PSSX"
+  PSSXh29, TYPE="PSSX"
+  PSSXh30, TYPE="PSSX"
+  PSSXh31, TYPE="PSSX"
+  PSSXh32, TYPE="PSSX"
+  PSSXh33, TYPE="PSSX"
+  PSSXh34, TYPE="PSSX"
+
+  PSSXh36, TYPE="PSSX"
+  PSSXh37, TYPE="PSSX"
+  PSSXh38, TYPE="PSSX"
+  PSSXh39, TYPE="PSSX"
+  PSSXh40, TYPE="PSSX"
+  PSSXh41, TYPE="PSSX"
+  PSSXh42, TYPE="PSSX"
+  PSSXh43, TYPE="PSSX"
+  PSSXh44, TYPE="PSSX"
+  PSSXh45, TYPE="PSSX"
+  PSSXh46, TYPE="PSSX"
+
+  UMXL1h, TYPE="UMXL1"
+  UMXL3h, TYPE="UMXL3"
+  UMXL4h, TYPE="UMXL4"
+  WIGXLh, TYPE="WIGXL"
+
+! ------------------------------------------------------------------------------
+! output SBEN FINT values (to use in CSR SBEN values file)
+! ------------------------------------------------------------------------------
+
+  VALUE, Ei/EMASS !p_central
+
+  VALUE, BX01A[FINT]
+  VALUE, BX02A[FINT]
+  VALUE, BX11A[FINT]
+  VALUE, BX12A[FINT]
+  VALUE, BX13A[FINT]
+  VALUE, BX14A[FINT]
+  VALUE, BX21A[FINT]
+  VALUE, BX22A[FINT]
+  VALUE, BX23A[FINT]
+  VALUE, BX24A[FINT]
+  VALUE, BXKIKA[FINT]
+
+  VALUE, BCX3111[FINT]
+  VALUE, BCX3121[FINT]
+  VALUE, BCX3131[FINT]
+  VALUE, BCX3141[FINT]
+  VALUE, BY11[FINT]
+  VALUE, BY21[FINT]
+  VALUE, BX311[FINT]
+  VALUE, WIG1H1[FINT]
+  VALUE, WIG2H1[FINT]
+  VALUE, WIG3H1[FINT]
+  VALUE, BX321[FINT]
+  VALUE, BCX3211[FINT]
+  VALUE, BCX3221[FINT]
+  VALUE, BCX3231[FINT]
+  VALUE, BCX3241[FINT]
+  VALUE, BYKIK11[FINT]
+  VALUE, BYKIK21[FINT]
+  VALUE, BCX3511[FINT]
+  VALUE, BCX3521[FINT]
+  VALUE, BCX3531[FINT]
+  VALUE, BCX3541[FINT]
+  VALUE, BX351[FINT]
+  VALUE, BX361[FINT]
+  VALUE, BCX3611[FINT]
+  VALUE, BCX3621[FINT]
+  VALUE, BCX3631[FINT]
+  VALUE, BCX3641[FINT]
+  VALUE, BCXCBX11A[FINT]        
+  VALUE, BCXCBX12A[FINT]        
+  VALUE, BCXCBX13A[FINT]        
+  VALUE, BCXCBX14A[FINT]        
+  VALUE, BCXCBX21A[FINT]        
+  VALUE, BCXCBX22A[FINT]        
+  VALUE, BCXCBX23A[FINT]        
+  VALUE, BCXCBX24A[FINT]        
+  VALUE, BCXHS1A[FINT]
+  VALUE, BCXHS2A[FINT]
+  VALUE, BCXHS3A[FINT]
+  VALUE, BCXHS4A[FINT]
+  VALUE, BYDSH1[FINT]
+  VALUE, BYD11[FINT]
+  VALUE, BYD21[FINT]
+  VALUE, BYD31[FINT]
+
+  VALUE, BRCUSDC1A[FINT]
+  VALUE, BKRCUSA[FINT]
+  VALUE, BRCUSDC2A[FINT]
+  VALUE, BLRCUSA[FINT]
+  VALUE, BYCUS1A[FINT]
+  VALUE, BYCUS2A[FINT]
+  VALUE, BRCUS1A[FINT]
+  VALUE, BCX31B11[FINT]
+  VALUE, BCX31B21[FINT]
+  VALUE, BCX31B31[FINT]
+  VALUE, BCX31B41[FINT]
+  VALUE, BX31B1[FINT]
+  VALUE, BYKIK1S1[FINT]
+  VALUE, BYKIK2S1[FINT]
+  VALUE, BX32B1[FINT]
+  VALUE, BCX32B11[FINT]
+  VALUE, BCX32B21[FINT]
+  VALUE, BCX32B31[FINT]
+  VALUE, BCX32B41[FINT]
+  VALUE, BY1B1[FINT]
+  VALUE, BY2B1[FINT]
+  VALUE, BCXXL11[FINT]
+  VALUE, BCXXL21[FINT]
+  VALUE, BCXXL31[FINT]
+  VALUE, BCXXL41[FINT]
+  VALUE, BCXSS1A[FINT]
+  VALUE, BCXSS2A[FINT]
+  VALUE, BCXSS3A[FINT]
+  VALUE, BCXSS4A[FINT]
+  VALUE, BYDSS1[FINT]
+  VALUE, BYD1B1[FINT]
+  VALUE, BYD2B1[FINT]
+  VALUE, BYD3B1[FINT]  
+
+! ------------------------------------------------------------------------------
+! special MARKER elements
+! ------------------------------------------------------------------------------
+
+! cuH
+
+  OTR2,     TYPE="WATCH"
+  WS03,     TYPE="WATCH"
+  OTR3,     TYPE="WATCH"
+  OTR4,     TYPE="WATCH"
+  WS04,     TYPE="WATCH"
+  XBEG,     TYPE="WATCH"
+  XEND,     TYPE="WATCH"
+  BEGBC1,   TYPE="WATCH"
+  ENDBC1,   TYPE="WATCH"
+  BEGBC2,   TYPE="WATCH"
+  ENDBC2,   TYPE="WATCH"
+  ENDL3,    TYPE="WATCH"
+  HXRSTART, TYPE="WATCH"
+  MTCX01,   TYPE="WATCH"
+  OTRDMP,   TYPE="WATCH"
+
+! cuS
+
+  SXRSTART, TYPE="WATCH"
+  MTCX01B,  TYPE="WATCH"
+  OTRDMPB,  TYPE="WATCH"
+
+! ------------------------------------------------------------------------------
+! create ELEGANT beamlines (start at WS02)
+! ------------------------------------------------------------------------------
+
+  BEGDL1_1e : MARK
+  ENDDL1_1e : MARK
+
+  DL1_1e : LINE=(BEGDL1_1e,&
+    WS02,DE05a,MRK0,DE05a,OTR2,DE06d,BPM10,DE06e,WS03,DE05,OTR3,DE07,&
+    QM01,BPM11,QM01,DE08,SC8,DE08a,VV04,DE08b,&
+    QM02,BPM12,QM02,DE09,DBMARK82,&
+    ENDDL1_1e)
+
+  LCLS2cuCe : LINE=(DL1_1e,DL1_2,L1,BC1,L2,BC2,L3)
+  LCLS2cuHe : LINE=(LCLS2cuCe,BSYLTUH)
+  LCLS2cuSe : LINE=(LCLS2cuCe,BSYLTUS)
+
+! ------------------------------------------------------------------------------
+! initial SURVEY coordinates (WS02) ... see also LCLS2cu_master.xsif
+! ------------------------------------------------------------------------------
+
+  MGEO : SUBROUTINE
+    BEAM, ENERGY=Ei
+    USE, CU_HXRi
+    VALUE, XWS02,ZWS02
+    MATCH, SURVEY, XS=XWS02, ZS=ZWS02, THETAS=ADL1
+      VARY, XWS02, STEP=1.E-6
+      VARY, ZWS02, STEP=1.E-6
+      WEIGHT, XS=1, ZS=1
+      CONSTR, ENDDL1_2, XS=0, ZS=2035.035130
+      LMDIF, TOL=1.E-20
+      MIGRAD, TOL=1.E-20
+    ENDMATCH
+    VALUE, XWS02,ZWS02
+    PRINT, FULL
+    SURVEY, X0=XWS02, Z0=ZWS02, THETA0=ADL1
+  ENDSUBROUTINE
+
+ !MGEO
+ !STOP
+
+! ------------------------------------------------------------------------------
+! generate TWISS and SURVEY tape-files
+! ------------------------------------------------------------------------------
+
+  TITLE, "AD_ACCEL: copper linac to HXR"
+  BEAM, ENERGY=Ei
+  SET, SETCUS, CUSOFF
+  SETK2cuH
+  USE, LCLS2cuHe
+  TWISS, BETA0=TWSSi, TAPE="LCLS2cuH_twiss.tape"
+  SURVEY, X0=XWS02, Z0=ZWS02, THETA0=ADL1, TAPE="LCLS2cuH_survey.tape"
+
+  TITLE, "AD_ACCEL: copper linac to SXR"
+  BEAM, ENERGY=Ei
+  SET, SETCUS, CUSON
+  SETK2cuS
+  USE, LCLS2cuSe
+  TWISS, BETA0=TWSSi, TAPE="LCLS2cuS_twiss.tape"
+  SURVEY, X0=XWS02, Z0=ZWS02, THETA0=ADL1, TAPE="LCLS2cuS_survey.tape"
+
+! ------------------------------------------------------------------------------
+
+! XLEAP-II optics (Yuri Nosochkov; see LCLS2cu_XLEAP.mad8)
+
+ !CALL, FILENAME="LCLS2cu_XLEAP.mad8"
+
+ !VALUE, R11XL1,R12XL1,R21XL1,R22XL1
+ !VALUE, R33XL1,R34XL1,R43XL1,R44XL1
+ !VALUE, R11XL3,R12XL3,R21XL3,R22XL3
+ !VALUE, R33XL3,R34XL3,R43XL3,R44XL3
+ !VALUE, R11XL4,R12XL4,R21XL4,R22XL4
+ !VALUE, R33XL4,R34XL4,R43XL4,R44XL4
+ !VALUE, WIGXLh[RM(1,1)],WIGXLh[RM(1,2)],WIGXLh[RM(2,1)],WIGXLh[RM(2,2)]
+ !VALUE, WIGXLh[RM(3,3)],WIGXLh[RM(3,4)],WIGXLh[RM(4,3)],WIGXLh[RM(4,4)]
+
+! ------------------------------------------------------------------------------
+
+  VALUE, UMXL1h[L]
+  BEAM, ENERGY=Ef
+  USE, (UMXL1h) !*LIN.05* (*LIN.06 if LCLS2cu_XLEAP.mad8 is CALLed)
+  MATCH, BETX=1, BETY=1
+    RMATRIX, #S/#E, RM(6,6)=1
+  ENDMATCH
+
+  VALUE, UMXL3h[L]
+  BEAM, ENERGY=Ef
+  USE, (UMXL3h) !*LIN.06* (*LIN.07 if LCLS2cu_XLEAP.mad8 is CALLed)
+  MATCH, BETX=1, BETY=1
+    RMATRIX, #S/#E, RM(6,6)=1
+  ENDMATCH
+
+  VALUE, UMXL4h[L]
+  BEAM, ENERGY=Ef
+  USE, (UMXL4h) !*LIN.07* (*LIN.08 if LCLS2cu_XLEAP.mad8 is CALLed)
+  MATCH, BETX=1, BETY=1
+    RMATRIX, #S/#E, RM(6,6)=1
+  ENDMATCH
+
+  VALUE, WIGXLh[L]
+  BEAM, ENERGY=Ef
+  USE, (WIGXLh) !*LIN.08* (*LIN.09 if LCLS2cu_XLEAP.mad8 is CALLed)
+  MATCH, BETX=1, BETY=1
+    RMATRIX, #S/#E, RM(6,6)=1
+  ENDMATCH
+
+! ------------------------------------------------------------------------------
+
+  RETURN
