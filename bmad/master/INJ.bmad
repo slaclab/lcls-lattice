@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-11APR24s ***
+! *** OPTICS=AD_ACCEL-02SEP2024s ***
 
 ! LCLS2sc injector: gun to start of L1 linac
 
@@ -273,7 +273,7 @@ q0h04: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h04
 kq0h05 = -7.013523766823 ! -7.451314710799 ! -7.508072657053 !
 kq0h06 = 1.450322442367 !  1.835321381141 !  1.870908387696 !
 kq0h07 = 7.874726189194 !  7.794364119473 !  7.804907479846 !
-kq0h08 = -8.293357257813 ! -8.272683907735 ! -8.306722243052 !
+kq0h08 = -8.293357257814 ! -8.272683907735 ! -8.306722243052 !
 
 q0h05: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h05
 q0h06: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h06
@@ -305,11 +305,11 @@ qdcoll0: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = -kqcoll0
 
 ! COL0 collimation section
 
-kqc001 = 5.135316216763 ! 5.055115116565
+kqc001 = 5.135316216765 ! 5.055115116565
 kqc002 = 0.0            ! 0.15798374076
-kqc003 = -5.295950232242 !-5.345027237142
-kqc004 = 2.772436085369 ! 2.756594856382
-kqc005 = -1.796082149751 !-KQColl0
+kqc003 = -5.29595023224  !-5.345027237142
+kqc004 = 2.772436085366 ! 2.756594856382
+kqc005 = -1.79608214975  !-KQColl0
 kqc006 = kqcoll0
 kqc007 = -kqcoll0
 kqc008 = kqcoll0
@@ -387,19 +387,19 @@ r34h = lhunh*sincargh
 
 
 !------- Laser Heater Undulator for SC Linac -------
-!my_umhtr_k = 0.960143
-!umhtr: wiggler, 
-!        type = "laser_heater_undulator",
-!        L_period = 0.054, 
-!        n_period = 10, 
-!        b_max = my_umhtr_k * 2*pi*m_electron / (c_light * 0.054), 
-!        L = 10*0.054 ! Was: 0.506263, 
-!        ds_step = 0.054
-        
-!umhtr[L] = umhtr[L]/2 ! Will be doubled in desplitting process. 
+! my_umhtr_k = 0.960143
+! umhtr: wiggler, 
+!         type = "laser_heater_undulator",
+!         L_period = 0.054, 
+!         n_period = 10, 
+!         b_max = my_umhtr_k * 2*pi*m_electron / (c_light * 0.054), 
+!         L = 10*0.054 ! Was: 0.506263, 
+!         ds_step = 0.054
+!         
+! umhtr[L] = umhtr[L]/2 ! Will be doubled in desplitting process. 
 !--------------------------------- !,                               &
-umhtr: taylor, type = "LHund", l = lhunh, tt11 = 1.0, tt12 = lhunh, tt21 = 0, tt22 = 1.0, tt33 = cos(argh),
-         tt34 = r34h, tt43 = -sin(argh)*sqrt(kqlh), tt44 = cos(argh), tt55 = 1, tt66 = 1
+umhtr: taylor, type = "LHund", l = lhunh, tt11 = 1.0, tt12 = lhunh, tt21 = 0, tt22 = 1.0, tt33 = cos(lhunh*sqrt(kqlh)),
+         tt34 = r34h, tt43 = -sin(lhunh*sqrt(kqlh))*sqrt(kqlh), tt44 = cos(lhunh*sqrt(kqlh)), tt55 = 1, tt66 = 1
    !R56=Lhunh/(gami^2)*(1+(K_und^2)/2)
 
 ! ==============================================================================
@@ -496,12 +496,12 @@ dh02a: drift, l = 0.192614-ljaw/2, type = "CSR"
 dh02b: drift, l = 0.298450-ljaw/2, type = "CSR"
 
 ! Shorten so that umhtr has an integer number of poles
-!wig dh02c: drift, l = 0.2795065 - ( 10*0.054 - 0.506263 ) /2 , type = "CSR" !0.297036 !0.2795065
+!
 dh02c: drift, l = 0.2795065 - ( 9*0.054 - 0.506263 ) /2 , type = "CSR" !0.297036 !0.2795065
 !old: dh02c: drift, l = 0.2795065+dlhun/2, type = "CSR"
 
 ! Shorten so that umhtr has an integer number of poles
-!wig dh02d: drift, l = 0.2724707 - ( 10*0.054 - 0.506263 ) /2, type = "CSR" !0.2900002 !0.2724707
+!
 dh02d: drift, l = 0.2724707 - ( 9*0.054 - 0.506263 ) /2, type = "CSR" !0.2900002 !0.2724707
 !old: dh02d: drift, l = 0.2724707+dlhun/2, type = "CSR"
 dh02e: drift, l = 0.4599998, type = "CSR"
@@ -772,7 +772,6 @@ bun1b[L] = 2*bun1b[L]
 bun1b[voltage] = 2*bun1b[voltage]
 
 
-
 !Old split line:  BCXH1_full : LINE=(BCXH1a,BCXH1b)
 
 bcxh1_full: line = (bcxh1)
@@ -1004,7 +1003,7 @@ sq02b[ref] = sol2b
 
 
 
-umhtr_full : LINE=(umhtr,htrundb,umhtr)
+UMHTR_full : LINE=(UMHTR,HTRUNDB,UMHTR)
 
 !umhtr_full: line = (umhtr)
 !umhtr[L] = 2*umhtr[L]
@@ -1038,7 +1037,7 @@ umhtr_full : LINE=(umhtr,htrundb,umhtr)
 !=!  ENDCOMMENT
 
  !COMMENT !complete
-    LSRHTR : LINE=(LHBEGB,BCXH1_full,Dh01a,BPMH1,Dh01b,MIRLHu,Dh01c,BCXH2_full,Dh02a,CEHTR,Dh02b,YAGH1,Dh02c,umhtr_full,
+    LSRHTR : LINE=(LHBEGB,BCXH1_full,Dh01a,BPMH1,Dh01b,MIRLHu,Dh01c,BCXH2_full,Dh02a,CEHTR,Dh02b,YAGH1,Dh02c,UMHTR_full,
          Dh02d,YAGH2,Dh02e,BCXH3_full,Dh03a,MIRLHd,Dh03b,BPMH2,Dh03c,BCXH4_full,CNTHTR,LHENDB)
  !ENDCOMMENT
 

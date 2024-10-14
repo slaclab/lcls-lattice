@@ -1,0 +1,164 @@
+
+! *** OPTICS=AD_ACCEL-02SEP2024s ***
+
+================================================================================
+
+Re-matching (FINT changes): scS (4 GeV)
+* CCDLU: match to dogleg with QCM54-55 and QX01-02
+* CCDLD: match to bypass line with QL1-4P
+* BYSP1S,BYSP2S,CC31B: match to DL2 dogleg with QBP33-34 and QDBL1-2
+* CC32B: match to emittance FODO with QEM1-4B
+
+Re-matching (FINT changes): scH (4 GeV)
+* BYSP1H,BYSP2H,CC31: match to DL2 dogleg with QVM1-4
+* CC32,CC35,CC36: match to emittance FODO with QEM1-4
+
+Re-matching (FINT changes): cuH (13.64 GeV; after scS/scH rematch)
+* rematch to DL2 dogleg with QVM1-4 (MBSY2)
+* rematch to undulator with QUM1-4 (MUNDh); rematch dumpline (MDUMPh3)
+
+Re-matching (FINT changes): cuS (4 GeV; after scS/scH rematch)
+* BYCUS1,BYCUS2: MCULTUs2,MSXRXX
+
+================================================================================
+
+SC: IntgSX= 30.0 kG; IntgHX= 30.0 kG
+* scS : EBC1=0.250, EBC2=1.500, Ef=4.0, Eu=4.0
+* scH : EBC1=0.250, EBC2=1.500, Ef=4.0, Eu=4.0
+
+Cu: IntgSX= 30.0 kG; IntgHX= 30.0 kG
+* cuH : EBC1=0.220, EBC2=5.000, Ef=8.0, Eu=8.0
+* cuS : EBC1=0.220, EBC2=5.000, Ef=8.0, Eu=8.0
+
+================================================================================
+
+Notes:
+* use Yuri's scalable matching solutions (15SEP21; symmetric SPRD)
+  > UNDH_KQ4_USDS.xsif
+  > UNDS_KQ5_US.xsif
+  > UNDS_BDES_DS_fit.xlsx
+
+================================================================================
+
+MAD deck changes
+
+general
+
+LCLS2sc_main.mad8
+
+LCLS2sc_beams.mad8
+
+LCLS2sc_match.mad8
+
+LCLS2sc_XLEAP.mad8
+
+LCLS2sc_master.mad8
+
+common.xsif
+
+CM_SWAVE.xsif
+- set up L0 cavities per Feng ... later?
+
+INJ.xsif
+
+DIAG0.xsif
+
+BC1.xsif
+
+BC2.xsif
+
+EXT.xsif
+
+DLBM.xsif
+
+BYP.xsif
+
+SPRD.xsif
+
+LTU.xsif (NOTE: all SBEN halves are: <name>1 and <name>2)
+
+UND.xsif
+
+SFT.xsif
+
+BSYsc.xsif
+
+SXTES.xsif
+
+DASEL.xsif
+
+ALINE.xsif
+
+--------------------------------------------------------------------------------
+BMAD-only files
+--------------------------------------------------------------------------------
+
+SC_SXR.xsif
+
+SC_SFTS.xsif
+
+SC_HXR.xsif
+
+SC_BSYD.xsif
+
+SC_DIAG0.xsif
+
+SC_DASEL.xsif
+
+================================================================================
+
+LCLS2cu_main.mad8
+
+LCLS2cu_match.mad8
+
+LCLS2cu_XLEAP.mad8
+
+LCLS2cu_master.mad8
+
+LCLS2cu_makeSymbols.mad8
+
+LCLS-L1.xsif, LCLS-L1e.xsif
+
+LCLS-L2.xsif, LCLS-L2e.xsif
+
+LCLS-L3.xsif, LCLS-L3e.xsif
+
+LCLS2cu.xsif
+* set phase advance between pairs of ultra-fast kickers to 270 degrees
+
+CUSXR.xsif
+
+BSYcu.xsif
+
+HXTES.xsif
+
+ALINE.xsif
+
+--------------------------------------------------------------------------------
+BMAD-only files
+--------------------------------------------------------------------------------
+
+CU_HXR.xsif
+
+CU_SFTH.xsif
+
+CU_SXR.xsif
+
+CU_GSPEC.xsif
+
+CU_SPEC.xsif
+
+================================================================================
+
+Oracle upload
+
+*** Append FACET2 stuff to paths file and extras file ***
+
+* set Oracle PRIM name to "BEND" for ultra-fast kickers per K. Luchini
+* set Oracle PRIM name to "INST" for area and Sector begin and end MARKER's
+
+================================================================================
+
+PRDs/ESDs/IDCs
+- Steering Correctors PRD (both LCLS-II and LCLS-II-HE) mis-define "Bypass#2"
+  corrector type (blue coil); add "Bypass#3" (white coil)
