@@ -320,6 +320,19 @@ if cUND:
         idf2.extend([other2[n]['froot0']] * len_id)
         FDN2.extend(tFDN[id_range])
 
+def FixUpgradeNames(N):
+  # Device names in upgraded SXR cells have "_" appended ... remove it
+  for i in range(len(N)):
+    if N[i].endswith('_'):
+      N[i] = N[i][:-1]
+
+# Fix device names in upgraded SXR cells
+N = FixUpgradeNames(N)
+if cBSY:
+  N1 = FixUpgradeNames(N1)
+if cUND:
+  N2 = FixUpgradeNames(N2)
+
 # initialize some sequence data
 
 for s in seq:
