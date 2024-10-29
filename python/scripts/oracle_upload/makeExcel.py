@@ -374,24 +374,27 @@ def fix_dump_coords(N, P, coor):
     # set roll angle for SXR dump line components
     id1=N.index('RODMP1S')
     id2=N.index('RODMP2S')-1
-    id_slice=slice(id1,id2+1)
     ARODMP1S=P[id1][4]
-    coor[id_slice][5]=ARODMP1S
+    for i in range(id1,id2+1):
+      coor[i][5]=ARODMP1S
+
     id1=id2+1
     id2=N.index('ENDDMPS_2')
-    id_slice=slice(id1,id2+1)
-    coor[id_slice][5]=0
+    for i in range(id1,id2+1):
+      coor[i][5]=0
 
     # set roll angle for HXR dump line components
     id1=N.index('RODMP1H')
     id2=N.index('RODMP2H')-1
-    id_slice=slice(id1,id2+1)
     ARODMP1H=P[id1][4];
-    coor[id_slice][5]=ARODMP1H
+    for i in range(id1,id2+1):
+      coor[i][5]=ARODMP1H
+
     id1=id2+1;
     id2=N.index('ENDDMPH_2')
-    id_slice=slice(id1,id2+1)
-    coor[id_slice][5]=0
+    for i in range(id1,id2+1):
+      coor[i][5]=0
+
     return coor
 
 def fix_aline_coords(N, P, coor):
@@ -399,9 +402,9 @@ def fix_aline_coords(N, P, coor):
     # set roll angle for A-line components
     id1 = N.index('ROLL2')
     id2 = N.index('ENDBSYA_2')
-    id_slice = slice(id1, id2 + 1)
     AROLL2 = P[id1][4]
-    coor[id_slice][5] = AROLL2
+    for i in range(id1,id2+1):
+      coor[i][5] = AROLL2
 
     # The following block is commented out in the original code
     '''
@@ -703,7 +706,6 @@ def read_sector():
     sect_cu[11]['froot'].extend([14]) # BSY (cuH+cuS)
 
     return sect_sc, sect_cu
-
 
 def set_sector(N, FDN, coor, idf, nf, sector):
     if nf not in sector['froot']:
@@ -1154,14 +1156,14 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                 chicane1 = (e1 == 0) & (e2 != 0)
                 chicane2 = (e1 != 0) & (e2 == 0)
                 if chicane1 | chicane2:
-                    zleng = leng * np.sinc(ang)  # m
+                    zleng = leng * np.sinc(ang/np.pi)  # m
                     coorm[:3] = np.mean([coori[:3], cooro[:3]], axis=0)
                     if chicane1:
                         coorm[3:6] = np.copy(coori[3:6])
                     else:
                         coorm[3:6] = np.copy(cooro[3:6])
                 else:
-                    zleng = leng * np.sinc(ang / 2)  # m
+                    zleng = leng * np.sinc(ang / 2 / np.pi)  # m
                     coorm[:3] = (coori[:3] + cooro[:3] + 2 * coorc[:3]) / 4
                     coorm[3:6] = np.copy(coorc[3:6])
             pname = area[ida[id1]]['parent']
@@ -2064,7 +2066,7 @@ def fix_power_fraction(lcav):
     old = sio.loadmat(fname)['LCAV']
     
     name = [x['name'] for x in old[0]]
-    powr = [x['power'][0] for x in old[0]]
+    powr = [float(x['power'][0][0]) for x in old[0]]
     
     for cav in lcav:
         if np.isnan(cav['power']):
@@ -2074,6 +2076,7 @@ def fix_power_fraction(lcav):
             cav['power'] = powr[id[0]]
     
     return lcav
+
 
 # fix LCAV power fraction values (for deactivated klystrons)
 LCAV = fix_power_fraction(LCAV)
@@ -2322,7 +2325,7 @@ def FixMagnetCoords(SBEN, QUAD, INST, K, N, L, P, coor, cflag):
     if cflag is None:  # only linac coordinates
         name = ['QDG001', 'QDG003']
         for n in range(len(name)):
-            id = strmatch(name[n], N)[0]
+            id = strmatch(name[n], N)
             KL = np.sum(P[id, 1] * L[id])
             id = strmatch(f'DY{name[n]}', N)[0]
             kick = P[id, 0]
