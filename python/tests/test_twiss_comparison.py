@@ -3,6 +3,7 @@
 import pytest
 from subprocess import run, Popen, PIPE, STDOUT
 import os, platform
+from ..script/unit_test/py_lc_unit_test.py import get_end_twiss
 
 my_env = os.environ.copy()
 LCLS_LATTICE=my_env['LCLS_LATTICE']
