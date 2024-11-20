@@ -23,10 +23,11 @@ runs:
     - name: Setup Mambaforge
       uses: conda-incubator/setup-miniconda@v3
       with:
-        #miniforge-variant: Mambaforge
+        miniforge-version: latest
         activate-environment: ${{ inputs.env_name }}
         use-mamba: true
         channels: conda-forge
+        conda-remove-defaults: true
     - name: Update Python version in environment.yml
       shell: bash -l {0}
       run: |
