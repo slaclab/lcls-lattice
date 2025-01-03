@@ -6,6 +6,8 @@
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
+! 04-DEC-2024, M. Woodley
+!  * relocate RFBSX14 per X. Permanyer
 ! 18-SEP-2024, M. Woodley
 !  * add RFBSX14 at end of LTUS (LCLS-II-HE location)
 ! ------------------------------------------------------------------------------
@@ -744,8 +746,8 @@
 ! note: the K-values below are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-  KQDBL1 := -0.050357323411
-  KQDBL2 := -0.559361105837
+  KQDBL1 := -0.050357218829 !-0.050357323411
+  KQDBL2 := -0.559361220066 !-0.559361105837
 
   QDBL1 : QUAD, TYPE="1.085Q4.31", L=LQE/2, K1=KQDBL1, APER=rQE
   QDBL2 : QUAD, TYPE="1.085Q4.31", L=LQE/2, K1=KQDBL2, APER=rQE
@@ -1247,7 +1249,7 @@
   KQE33B := +KQED2b
   KQE34B := -KQED2b
   KQE35B := +KQED2b
-  KQE36B := -0.299668483334 !-KQED2b
+  KQE36B := -KQED2b
 
   QE31B : QUAD, TYPE="1.26Q3.5", L=LQx/2, K1=KQE31B, APER=rQx
   QE32B : QUAD, TYPE="1.26Q3.5", L=LQx/2, K1=KQE32B, APER=rQx
@@ -1674,10 +1676,20 @@
   QE35B_full  : LINE=(QE35B,BPME35B,QE35B)
   QE36B_full  : LINE=(QE36B,BPME36B,QE36B)
 
+  comment
   EDMCHb : LINE=(D25cmb,D25cmc,DMM1m90cmBa,PC10B,BTM10B,DMM1m90cmBb,&
       XCEM1B,DEM1A,&
     QEM1B_full,DEM1Bab,DEM1Bbb,&
     QEM2B_full,DEM2B,YCEM2B,DMM3m80cm1,DMM3m80cm2,XCEM3B,DEM3A,&
+    QEM3B_full,DEM3Bb,&
+    QEM3VB_full,DMM4m90cmba,PC11B,BTM11B,DMM4m90cmbb,YCEM4B,DEM4A,&
+    QEM4B_full,DRFB,RFBEM4B,DMM5ab,DMM5bb)
+  endcomment
+
+  EDMCHb : LINE=(D25cmb,D25cmc,DMM1m90cmBa,PC10B,BTM10B,DMM1m90cmBb,&
+      XCEM1B,DEM1A,&
+    QEM1B_full,DEM1Bab,DEM1Bbb,&
+    QEM2B_full,DEM2B,YCEM2B,DMM3m80cmx,XCEM3B,DEM3A,&
     QEM3B_full,DEM3Bb,&
     QEM3VB_full,DMM4m90cmba,PC11B,BTM11B,DMM4m90cmbb,YCEM4B,DEM4A,&
     QEM4B_full,DRFB,RFBEM4B,DMM5ab,DMM5bb)
@@ -1702,10 +1714,10 @@
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 !       in the "LCLS2cu_main.mad8" file
 
-  KQUM1B :=  0.294677523654 ! 0.293411239505
-  KQUM2B :=  0.0
-  KQUM3B := -1.257334395604 !-0.13
-  KQUM4B :=  1.253205016412 ! 0.293411239505
+  KQUM1B :=  0.56524630382  ! 0.293411239505
+  KQUM2B := -0.788487862673 !-0.13          
+  KQUM3B :=  1.170176607675 ! 0.382165430892
+  KQUM4B := -1.159524006363 !-0.474867155145
 
   QUM1B : QUAD, TYPE="1.085Q4.31", L=LQE/2, K1=KQUM1b, APER=rQE
   QUM2B : QUAD, TYPE="1.085Q4.31", L=LQE/2, K1=KQUM2b, APER=rQE
@@ -1746,7 +1758,7 @@
   DMUON1b    : DRIF, L=0.154859 +0.05 -0.060429 +0.117
   DMUON3b    : DRIF, L=0.310592 -0.05 -0.117
 
-  DW2TDUNDb1 : DRIF, L=1.161413258227 !drift from BTH/UH wall-2 to RFBSX14
+  DW2TDUNDb1 : DRIF, L=1.185 !drift from BTH/UH wall-2 to RFBSX14
   DW2TDUNDb2 : DRIF, L=DW2TDUNDb[L]-DW2TDUNDb1[L]-LRFBub !drift from RFBSX14 to TDUNDB u/s flange
 
   BPMUM1B : MONI, TYPE="Stripline-2"
@@ -1806,7 +1818,7 @@
 ! SXR dumpline
 ! ------------------------------------------------------------------------------
 
-  KQDMPB := -0.154946553294
+  KQDMPB := -0.1512233441 !-0.154946553294
 
   QDmp1B : QUAD, TYPE="3.94Q17", L=LQP/2, K1=KQDmpb, APER=rQP
   QDmp2B : QUAD, TYPE="3.94Q17", L=LQP/2, K1=KQDmpb, APER=rQP

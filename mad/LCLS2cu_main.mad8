@@ -1,4 +1,4 @@
-  TITLE, "AD_ACCEL: copper linac (preRelease)"
+  TITLE, "AD_ACCEL: copper linac"
 
 ! *** OPTICS=AD_ACCEL-preRelease ***
 
@@ -191,10 +191,6 @@
 
   TWSSmh : BETA0, ENERGY=Ef, BETX=MBETXh, ALFX=MALFXh, BETY=MBETYh, ALFY=MALFYh
 
-! periodic Twiss in SXR dogleg cells (at QDL12 center)
-
-  TWSSms : BETA0, ENERGY=Ef, BETX=MBETXs, ALFX=MALFXs, BETY=MBETYs, ALFY=MALFYs
-
 ! ==============================================================================
 ! SUBROUTINEs
 ! ------------------------------------------------------------------------------
@@ -225,20 +221,20 @@
   ENDSUBROUTINE
 
   SETK2cuS : SUBROUTINE !for LCLS2cuS
-    SET, KQBP33, -0.645066535808
-    SET, KQBP34,  0.592977153135
-    SET, KQDBL1, -1.045760158543
-    SET, KQDBL2,  0.585600770813
-    SET, KQDL11,  0.358732502069
-    SET, KQE36b, -KQED2b
-    SET, KQUM1b,  0.705672979777
-    SET, KQUM2b, -0.689822354902
-    SET, KQUM3b, -0.628387960798
-    SET, KQUM4b,  0.904848659627
-    SET, kQDSXm, -1.843482712046
-    SET, KQUE1B,  0.325725075565
-    SET, KQUE2B, -0.144356640751
-    SET, KQDMPB, -0.154946553294
+    SET, KQBP33, -0.645066535687 !-0.645066535808
+    SET, KQBP34,  0.592977154201 ! 0.592977153135
+    SET, KQDBL1, -1.045760166433 !-1.045760158543
+    SET, KQDBL2,  0.585600783129 ! 0.585600770813
+    SET, KQDL11,  0.358732502315 ! 0.358732502069
+    SET, kQUM1b,  0.602895770439
+    SET, kQUM2b, -0.879738222928
+    SET, kQUM3b,  0.887977607619
+    SET, kQUM4b, -0.532287273458
+    SET, kQSX16,  0.450053621047
+    SET, kQSX47, -1.5985        
+    SET, KQUE1B,  0.252994187762
+    SET, KQUE2B,  0.0           
+    SET, KQDMPB, -0.152466855014
   ENDSUBROUTINE
 
 ! ==============================================================================
@@ -317,7 +313,7 @@
     ASSIGN, PRINT="LCLS2cuH.print"
     BEAM, ENERGY=E00
     SET, SETCUS, CUSOFF
-    SETK2cuH ; VALUE, -KQED2b,QE36b[K1]
+    SETK2cuH
     USE, CU_HXR
    !SAVELINE, NAME="CU_HXR", FILENAME="LCLS2cuH.saveline"
     PRINT, FULL
@@ -338,6 +334,7 @@
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
       STYLE=100, SPLINE, RANGE=MM2/HXR46END, FILE="LCLS2cuH", &
       TITLE="UNDH (Cu beam, 8 GeV)"
+    TWISS, CHROM, SAVE, BETA0=TWSSC, TAPE="LCLS2cuH_chrom.tape"
  !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
@@ -350,7 +347,7 @@
     SET, SETCUS, CUSON   !pulsed
    !SET, SETCUS, CUSONDC !DC
    !VALUE, PULSED,DCMODE
-    SETK2cuS ; VALUE, -KQED2b,QE36b[K1]
+    SETK2cuS
     USE, CU_SXR
    !SAVELINE, NAME="CU_SXR", FILENAME="LCLS2cuS.saveline"
     PRINT, FULL
@@ -534,6 +531,31 @@
 
 ! ------------------------------------------------------------------------------
 ! LCLS2cu_main working stuff
+! ------------------------------------------------------------------------------
+
+  comment !SXR FODO (8 GeV, |GLq|=30 kG, VGHPU39, K=5.5, PSPI=1800)
+    BEAM, ENERGY=Ef
+    USE, (SXCEL26,SXCEL27,SXCEL28,SXCEL29, &
+          SXCEL30,SXCEL31,SXCEL32,SXCEL33)
+    SAVEBETA, TWm, #S
+    TWISS, SAVE, TAPE="SXR_twiss.tape", RTAPE="SXR_rmat.tape"
+    SHOW, TWm
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=#S/#E, FILE="SXR_CELL", &
+      TITLE="LCLS-II SXR FODO (30 kG; E=8, KSXU=5.5, PIPSSX=1800)"
+  endcomment
+
+  comment !HXR FODO (8 GeV, |GLq|=30 kG, HGVPU, K=2, PSPI=490)
+    BEAM, ENERGY=Ef
+    USE, (HXCEL14,HXCEL15,HXCEL16,HXCEL17,HXCEL18,HXCEL19)
+    SAVEBETA, TWm, #S
+    TWISS, SAVE, TAPE="HXR_twiss.tape", RTAPE="HXR_rmat.tape"
+    SHOW, TWm
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=#S/#E, FILE="HXR_CELL", &
+      TITLE="LCLS-II HXR FODO (30 kG; E=8, KHXU=2, PIPSHX=490)"
+  endcomment
+
 ! ------------------------------------------------------------------------------
 
   comment !use with undhBBA.m (non-BBA)
