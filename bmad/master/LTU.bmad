@@ -1,10 +1,15 @@
 
-! *** OPTICS=AD_ACCEL-02SEP2024s ***
+! *** OPTICS=AD_ACCEL-01JAN2025s ***
 
 ! LCLS2sc LTU and dump
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 04-DEC-2024, M. Woodley
+!  * relocate RFBSX14 per X. Permanyer
+! 18-SEP-2024, M. Woodley
+!  * add RFBSX14 at end of LTUS (LCLS-II-HE location)
 ! ------------------------------------------------------------------------------
 ! 02-MAY-2024, M. Woodley
 !  * fix negative drifts in CBXFEL chicanes
@@ -759,8 +764,8 @@ dwigsb: drift, l = dwigs[l]-dwigsa[l]-lplate
 ! note: the K-values below are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-kqdbl1 = -0.050357323411
-kqdbl2 = -0.559361105837
+kqdbl1 = -0.050357218829 !-0.050357323411
+kqdbl2 = -0.559361220066 !-0.559361105837
 
 qdbl1: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqdbl1, aperture = rqe
 qdbl2: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqdbl2, aperture = rqe
@@ -1577,7 +1582,7 @@ umxl0h: wiggler,
         b_max = 0, ! = K * 2*pi*m_electron / (c_light * 0.55), 
         L = 6*0.555
         !ds_step = 0.55*10
-                
+
 umxl0h[L] = umxl0h[L]/2 ! Will be doubled in desplitting process. 
 !---------------------------------
 
@@ -1888,9 +1893,20 @@ qe36b[L] = 2*qe36b[L]
 bpme36b[superimpose] = T
 bpme36b[ref] = qe36b
 
+!=!  comment
+!=!  comment
+!=!  EDMCHb : LINE=(D25cmb,D25cmc,DMM1m90cmBa,PC10B,BTM10B,DMM1m90cmBb,&
+!=!      XCEM1B,DEM1A,&
+!=!    QEM1B_full,DEM1Bab,DEM1Bbb,&
+!=!    QEM2B_full,DEM2B,YCEM2B,DMM3m80cm1,DMM3m80cm2,XCEM3B,DEM3A,&
+!=!    QEM3B_full,DEM3Bb,&
+!=!    QEM3VB_full,DMM4m90cmba,PC11B,BTM11B,DMM4m90cmbb,YCEM4B,DEM4A,&
+!=!    QEM4B_full,DRFB,RFBEM4B,DMM5ab,DMM5bb)
+!=!  endcomment
+
   EDMCHb : LINE=(D25cmb,D25cmc,DMM1m90cmBa,PC10B,BTM10B,DMM1m90cmBb,XCEM1B,DEM1A,QEM1B_full,DEM1Bab,DEM1Bbb,QEM2B_full,
-         DEM2B,YCEM2B,DMM3m80cm1,DMM3m80cm2,XCEM3B,DEM3A,QEM3B_full,DEM3Bb,QEM3VB_full,DMM4m90cmba,PC11B,BTM11B,DMM4m90cmbb,
-         YCEM4B,DEM4A,QEM4B_full,DRFB,RFBEM4B,DMM5ab,DMM5bb)
+         DEM2B,YCEM2B,DMM3m80cmx,XCEM3B,DEM3A,QEM3B_full,DEM3Bb,QEM3VB_full,DMM4m90cmba,PC11B,BTM11B,DMM4m90cmbb,YCEM4B,DEM4A,
+         QEM4B_full,DRFB,RFBEM4B,DMM5ab,DMM5bb)
 
   EDSYSB : LINE=(DBMARK36b,WS31B,D40cm,DE3mab,DE3mbb,XCE31B,DQEA,QE31B_full,DXLUa1,YCXL1,DXLUa2,XCXL1,DUMXL12u,
          UMXLpair1,MXL2a,DUMXL12d,PC12B,BTM12B,DBTM2YC,YCE32B,DQEAa,QE32B_full,DRFB,RFBE32B,DQEBy1,DCY32B,DQEBy2,WS32B,D40cm,
@@ -1907,10 +1923,10 @@ bpme36b[ref] = qe36b
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 !       in the "LCLS2cu_main.mad8" file
 
-kqum1b = 0.293411239505
-kqum2b = -0.13
-kqum3b = 0.382165430892
-kqum4b = -0.474867155145
+kqum1b = 0.568578046239 ! 0.293411239505
+kqum2b = -0.796802792396 !-0.13
+kqum3b = 1.172578401021 ! 0.382165430892
+kqum4b = -1.160480624219 !-0.474867155145
 
 qum1b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqum1b, aperture = rqe
 qum2b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqum2b, aperture = rqe
@@ -1951,10 +1967,15 @@ dpcmuon: drift, l = 0.031498
 dmuon1b: drift, l = 0.154859 +0.05 -0.060429 +0.117
 dmuon3b: drift, l = 0.310592 -0.05 -0.117
 
+dw2tdundb1: drift, l = 1.185 !drift from BTH/UH wall-2 to RFBSX14
+dw2tdundb2: drift, l = dw2tdundb[l]-dw2tdundb1[l]-lrfbub !drift from RFBSX14 to TDUNDB u/s flange
+
 bpmum1b: monitor, type = "Stripline-2"
 bpmum2b: monitor, type = "Stripline-2"
 bpmum3b: monitor, type = "Stripline-2"
 bpmum4b: monitor, type = "Stripline-2"
+
+rfbsx14: monitor, l = lrfbub, type = "CavityX-1" !for SXR undulator BBA
 
 xcum1b: hkicker, type = "class-4f" !fast-feedback (loop-5)
 xcum3b: hkicker, type = "class-4f" !fast-feedback (loop-5)
@@ -2017,7 +2038,8 @@ bpmum4b[ref] = qum4b
 
   UNMCHb : LINE=(DU1m80cm,DCX37,D32cmcB,DUM1A,QUM1B_full,DUM1B,XCUM1B,D32cm,DU2m120cmB,DCY38,D32cma,YCUM2B,DUM2A,
          QUM2B_full,DUM2B,DU3m80cmB,XCUM3B,DUM3A,QUM3B_full,DUM3B,D40cma,DU4m120cmB,YCUM4B,DUM4A,QUM4B_full,DUM4B,DU5m80cmB,
-         D40cmW,MUHWALL1b,DUHWALL1,DUHVEST,MUHWALL2b,DUHWALL2,DW2TDUNDb,DTDUND1,TDUNDB,DTDUND2,DPCMUON,PCMUONb,DMUON1b,VV999b)
+         D40cmW,MUHWALL1b,DUHWALL1,DUHVEST,MUHWALL2b,DUHWALL2,DW2TDUNDb1,RFBSX14,DW2TDUNDb2,DTDUND1,TDUNDB,DTDUND2,DPCMUON,
+         PCMUONb,DMUON1b,VV999b)
 
   LTUsc : LINE=(MM1b,DL2sc,VBSYSb,MM2b,EDMCHb,EDSYSb,UNMCHb)
 
@@ -2029,7 +2051,7 @@ bpmum4b[ref] = qum4b
 ! SXR dumpline
 ! ------------------------------------------------------------------------------
 
-kqdmpb = -0.154946553294
+kqdmpb = -0.15111165919 !-0.154946553294
 
 qdmp1b: quadrupole, type = "3.94Q17", l = lqp/2, k1 = kqdmpb, aperture = rqp
 qdmp2b: quadrupole, type = "3.94Q17", l = lqp/2, k1 = kqdmpb, aperture = rqp
@@ -2145,7 +2167,8 @@ rodmp2s: patch, tilt = arodmp2s
 
 
 
-!BYDSS_full : LINE=(BYDSS1,BYDSS2)
+!Old split line:  BYDSS_full : LINE=(BYDSS1,BYDSS2)
+
 bydss_full: line = (bydss)
 
 

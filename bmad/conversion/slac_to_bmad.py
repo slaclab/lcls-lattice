@@ -13,15 +13,45 @@ def _():
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md("""##SLAC XSIF to Bmad convesion""")
+    mo.md("""#SLAC XSIF to Bmad convesion""")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""## Check Environment""")
     return
 
 
 @app.cell
 def _():
+    import os
+    from subprocess import run
+
+    LCLS_LATTICE_ENV = os.environ['LCLS_LATTICE']
+    assert LCLS_LATTICE_ENV != ''
+    lcls_lat_check_1 = run(f'ls {LCLS_LATTICE_ENV}/bmad/conversion',shell=True,capture_output=True)
+    assert lcls_lat_check_1.returncode == 0
+
+    BMAD_ENV = os.environ['ACC_ROOT_DIR']
+    assert BMAD_ENV != ''
+    bmad_env_check_1 = run(f'ls {BMAD_ENV}/util/dist_source_me',shell=True,capture_output=True)
+    assert bmad_env_check_1.returncode == 0
+    return (
+        BMAD_ENV,
+        LCLS_LATTICE_ENV,
+        bmad_env_check_1,
+        lcls_lat_check_1,
+        os,
+        run,
+    )
+
+
+@app.cell
+def _(LCLS_LATTICE_ENV):
     # Patch in the slac2bmad package
     import sys
-    sys.path.append('python')
+    sys.path.append(f'{LCLS_LATTICE_ENV}/bmad/conversion/python')
 
     from slac2bmad.xsif import prepare_xsif, remove_comment_blocks, replace_set, replace_set_commands, fix_matrix, expand_names, fix_names, unfold_comments, fold_comments
     from slac2bmad.desplit import desplit_eles, desplit_ele
@@ -31,9 +61,7 @@ def _():
     from glob import glob
     import shutil
 
-    from subprocess import run
     import json
-    import os
     return (
         desplit_ele,
         desplit_eles,
@@ -44,38 +72,16 @@ def _():
         fold_comments,
         glob,
         json,
-        os,
         prepare_xsif,
         remove_comment_blocks,
         replace_element,
         replace_eles,
         replace_set,
         replace_set_commands,
-        run,
         shutil,
         sys,
         unfold_comments,
     )
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""## Check Environment""")
-    return
-
-
-@app.cell
-def _(os, run):
-    LCLS_LATTICE_ENV = os.environ['LCLS_LATTICE']
-    assert LCLS_LATTICE_ENV != ''
-    lcls_lat_check_1 = run(f'ls {LCLS_LATTICE_ENV}/bmad/conversion',shell=True,capture_output=True)
-    assert lcls_lat_check_1.returncode == 0
-
-    BMAD_ENV = os.environ['ACC_ROOT_DIR']
-    assert BMAD_ENV != ''
-    bmad_env_check_1 = run(f'ls {BMAD_ENV}/util/dist_source_me',shell=True,capture_output=True)
-    assert bmad_env_check_1.returncode == 0
-    return BMAD_ENV, LCLS_LATTICE_ENV, bmad_env_check_1, lcls_lat_check_1
 
 
 @app.cell(hide_code=True)
