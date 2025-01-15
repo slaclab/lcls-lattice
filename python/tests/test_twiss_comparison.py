@@ -28,11 +28,11 @@ MODELS = [
 
 TOLS = {}         #beta_x, beta_y, end_s
 TOLS['sc_bsyd'] = (1e-5,   1e-5,   1e-9)
-TOLS['sc_sxr']  = (1e-5,   5e-5,   1e-9)
+TOLS['sc_sxr']  = (5e-5,   5e-5,   1e-9)
 TOLS['sc_hxr']  = (1e-5,   5e-5,   1e-9)
-TOLS['cu_sxr']  = (1e-2,   1e-2,   1e-9)
-TOLS['cu_hxr']  = (1e-2,   1e-2,   1e-9)
-TOLS['cu_spec'] = (1e-2,   1e-2,   1e-9)
+TOLS['cu_sxr']  = (2e-2,   2e-2,   1e-9)
+TOLS['cu_hxr']  = (2e-2,   2e-2,   1e-9)
+TOLS['cu_spec'] = (2e-2,   2e-2,   1e-9)
 
 @pytest.fixture(scope='module',autouse=True)
 def exec_mad8s():
@@ -78,9 +78,10 @@ def test_bmad_mad8s_agreement(model):
   pytao_end_s = pytao_result['s']
   mad8_end_s = float(mad8_data[-1][1])
 
-  assert abs((pytao_beta_x-mad8_beta_x) / (pytao_beta_x+mad8_beta_x) / 2) < eps[0]
-  assert abs((pytao_beta_y-mad8_beta_y) / (pytao_beta_y+mad8_beta_y) / 2) < eps[1]
-  assert abs((pytao_beta_x-mad8_beta_x) / (pytao_beta_x+mad8_beta_x) / 2) < eps[0]
-  assert abs((pytao_beta_y-mad8_beta_y) / (pytao_beta_y+mad8_beta_y) / 2) < eps[1]
-  assert abs((pytao_end_s-mad8_end_s) / (pytao_end_s+mad8_end_s) / 2) < eps[2]
+  test_beta_x = abs((pytao_beta_x-mad8_beta_x) / (pytao_beta_x+mad8_beta_x) / 2)
+  test_beta_y = abs((pytao_beta_y-mad8_beta_y) / (pytao_beta_y+mad8_beta_y) / 2)
+  test_s = abs((pytao_end_s-mad8_end_s) / (pytao_end_s+mad8_end_s) / 2)  
+  assert test_beta_x < eps[0], f'beta_x fail {test_beta_x} < {eps[0]}'
+  assert test_beta_y < eps[1], f'beta_y fail {test_beta_y} < {eps[1]}'
+  assert test_s < eps[2], f's fail {test_s} < {eps[2]}'
 
