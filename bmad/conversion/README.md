@@ -33,6 +33,7 @@
   - Also QC001-12,QCM02-3
 10. Submit PR to github.
 11. Generate new lcls-lattice release.
+12. Update `/sdf/group/ad/sw/scm/repos/optics/lcls-lattice` on s3df.
 
 | Bmad line | mad8s Twiss file | Bmad <-> mad8s Places to Check |
 |-|-|-|
