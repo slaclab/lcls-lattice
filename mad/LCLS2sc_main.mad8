@@ -507,7 +507,49 @@
  !CALL, FILENAME="LCLS2sc_makeElegant.mad8"
  !CALL, FILENAME="LCLS2sc_XLEAP.mad8" !run by itself
 
- !STOP
+  BEAM, ENERGY=Ei
+  SET, SETSP, SETSPd ; SET, SETDA, DAON
+  USE, SC_DASELi
+  SAVEBETA, TWm, BEGDASEL
+  TWISS, BETA0=TWSSi
+  SHOW, TWm
+
+ !comment
+    BEAM, ENERGY=TWm[ENERGY]
+    USE, DASELA
+    PRINT, FULL
+    TWISS, SAVE, TAPE="twiss.tape", &
+      BETX=TWm[BETX], ALFX=TWm[ALFX], BETY=TWm[BETY], ALFY=TWm[ALFY]
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=X,Y, &
+      STYLE=100, SPLINE, RANGE=#S/D121, FILE="plot", &
+      TITLE="DASEL"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=#S/D121, FILE="plot", &
+      TITLE="DASEL"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      STYLE=100, SPLINE, RANGE=#S/D121, FILE="plot", &
+      TITLE="DASEL"
+ !endcomment
+
+  comment
+    CALL, FILENAME="ALINE_patch.mad8"
+    BEAM, ENERGY=TWm[ENERGY]
+    USE, DASELA
+    PRINT, FULL
+    TWISS, SAVE, TAPE="twiss.tape", &
+      BETX=TWm[BETX], ALFX=TWm[ALFX], BETY=TWm[BETY], ALFY=TWm[ALFY]
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=X,Y, &
+      STYLE=100, SPLINE, RANGE=#S/D121, FILE="plot", &
+      TITLE="DASEL"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=#S/D121, FILE="plot", &
+      TITLE="DASEL"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      STYLE=100, SPLINE, RANGE=#S/D121, FILE="plot", &
+      TITLE="DASEL"
+  endcomment
+
+  STOP
 
 ! ------------------------------------------------------------------------------
 
