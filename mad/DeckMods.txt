@@ -1,5 +1,12 @@
 
-! *** OPTICS=AD_ACCEL-02SEP2024s ***
+! *** OPTICS=AD_ACCEL-01JAN2025s ***
+
+================================================================================
+
+NOTE: there are three power supply strings which power two R56 chicanes each
+      (BCXDLU+BCXDLD, BCX31B+BCX32B, and BCX35+BCX36); the #2 bend of 2nd
+      chicane on each string has no trim winding, so need average polynomial
+      for BCXDLU2/BCXDLD2, BCX31B2/BCX32B2, and BCX352/BCX362!
 
 ================================================================================
 
@@ -33,7 +40,7 @@ Cu: IntgSX= 30.0 kG; IntgHX= 30.0 kG
 ================================================================================
 
 Notes:
-* use Yuri's scalable matching solutions (15SEP21; symmetric SPRD)
+* use Yuri's scalable matching solutions
   > UNDH_KQ4_USDS.xsif
   > UNDS_KQ5_US.xsif
   > UNDS_BDES_DS_fit.xlsx
@@ -58,6 +65,7 @@ common.xsif
 
 CM_SWAVE.xsif
 - set up L0 cavities per Feng ... later?
+* relocate VVL3BU and VTL2 per vacuum drawing revisions
 
 INJ.xsif
 
@@ -76,8 +84,13 @@ BYP.xsif
 SPRD.xsif
 
 LTU.xsif (NOTE: all SBEN halves are: <name>1 and <name>2)
+* add RFBSX14 (u/s of TDUNDB) and RFBSX15 (d/s of TDUNDB)
 
 UND.xsif
+* add quadrupole and RFBPM to SXR cells 17, 18, 20, and 25 (complete SXR FODO
+  lattice in cells 17-47, plus variable quadrupole in partial cell 16)
+* add operational long-period undulator and phase shifter to SXR cells 22 and 23
+* turn on long-period undulators and phase shifters in SXR cells 24 and 25
 
 SFT.xsif
 
@@ -124,7 +137,6 @@ LCLS-L2.xsif, LCLS-L2e.xsif
 LCLS-L3.xsif, LCLS-L3e.xsif
 
 LCLS2cu.xsif
-* set phase advance between pairs of ultra-fast kickers to 270 degrees
 
 CUSXR.xsif
 
@@ -160,5 +172,3 @@ Oracle upload
 ================================================================================
 
 PRDs/ESDs/IDCs
-- Steering Correctors PRD (both LCLS-II and LCLS-II-HE) mis-define "Bypass#2"
-  corrector type (blue coil); add "Bypass#3" (white coil)

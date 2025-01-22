@@ -1,6 +1,6 @@
   TITLE, "AD_ACCEL: superconducting linac"
 
-! *** OPTICS=AD_ACCEL-02SEP2024s ***
+! *** OPTICS=AD_ACCEL-01JAN2025s ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY, DOUBLE
   ASSIGN, ECHO="LCLS2sc.echo"
@@ -413,7 +413,6 @@
   TWSS0  : BETA0, ENERGY=E0, BETX=BX0, ALFX=AX0, BETY=BY0, ALFY=AY0
   TWSSa  : BETA0, ENERGY=Ei, BETX=BXa, ALFX=AXa, BETY=BYa, ALFY=AYa
   TWSSi  : BETA0, ENERGY=Ei, BETX=BXi, ALFX=AXi, BETY=BYi, ALFY=AYi
-  TWSSms : BETA0, ENERGY=Ef, BETX=MBETXs, ALFX=MALFXs, BETY=MBETYs, ALFY=MALFYs
   TWSSmh : BETA0, ENERGY=Ef, BETX=MBETXh, ALFX=MALFXh, BETY=MBETYh, ALFY=MALFYh
   TWSSP  : BETA0, BETX=TBXSP, BETY=TBYSP, ALFX=TAXSP, ALFY=TAYSP
 
@@ -504,7 +503,7 @@
 
  !CALL, FILENAME="LCLS2sc_beams.mad8" !alternate beams & configurations
  !CALL, FILENAME="LCLS2sc_match.mad8"
- !CALL, FILENAME="LCLS2sc_makeSymbols.mad8"
+ CALL, FILENAME="LCLS2sc_makeSymbols.mad8"
  !CALL, FILENAME="LCLS2sc_makeElegant.mad8"
  !CALL, FILENAME="LCLS2sc_XLEAP.mad8" !run by itself
 
@@ -831,6 +830,31 @@
 
 ! ------------------------------------------------------------------------------
 ! LCLS2sc_main working stuff
+! ------------------------------------------------------------------------------
+
+  comment !SXR FODO (4 GeV, |GLq|=30 kG, VGHPU39, K=5.5, PSPI=1800)
+    BEAM, ENERGY=Ef
+    USE, (SXCEL26,SXCEL27,SXCEL28,SXCEL29, &
+          SXCEL30,SXCEL31,SXCEL32,SXCEL33)
+    SAVEBETA, TWm, #S
+    TWISS, SAVE, TAPE="SXR_twiss.tape", RTAPE="SXR_rmat.tape"
+    SHOW, TWm
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=#S/#E, FILE="SXR_CELL", &
+      TITLE="LCLS-II SXR FODO (30 kG; E=4, KSXU=5.5, PIPSSX=1800)"
+  endcomment
+
+  comment !HXR FODO (4 GeV, |GLq|=30 kG, HGVPU, K=2, PSPI=490)
+    BEAM, ENERGY=Ef
+    USE, (HXCEL14,HXCEL15,HXCEL16,HXCEL17,HXCEL18,HXCEL19)
+    SAVEBETA, TWm, #S
+    TWISS, SAVE, TAPE="HXR_twiss.tape", RTAPE="HXR_rmat.tape"
+    SHOW, TWm
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=#S/#E, FILE="HXR_CELL", &
+      TITLE="LCLS-II HXR FODO (30 kG; E=4, KHXU=2, PIPSHX=490)"
+  endcomment
+
 ! ------------------------------------------------------------------------------
 
   comment

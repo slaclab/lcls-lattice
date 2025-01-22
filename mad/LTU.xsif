@@ -1,10 +1,15 @@
 
-! *** OPTICS=AD_ACCEL-02SEP2024s ***
+! *** OPTICS=AD_ACCEL-01JAN2025s ***
 
 ! LCLS2sc LTU and dump
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 04-DEC-2024, M. Woodley
+!  * relocate RFBSX14 per X. Permanyer
+! 18-SEP-2024, M. Woodley
+!  * add RFBSX14 at end of LTUS (LCLS-II-HE location)
 ! ------------------------------------------------------------------------------
 ! 02-MAY-2024, M. Woodley
 !  * fix negative drifts in CBXFEL chicanes
@@ -741,8 +746,8 @@
 ! note: the K-values below are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-  KQDBL1 := -0.050357323411
-  KQDBL2 := -0.559361105837
+  KQDBL1 := -0.050357218829 !-0.050357323411
+  KQDBL2 := -0.559361220066 !-0.559361105837
 
   QDBL1 : QUAD, TYPE="1.085Q4.31", L=LQE/2, K1=KQDBL1, APER=rQE
   QDBL2 : QUAD, TYPE="1.085Q4.31", L=LQE/2, K1=KQDBL2, APER=rQE
@@ -1671,10 +1676,20 @@
   QE35B_full  : LINE=(QE35B,BPME35B,QE35B)
   QE36B_full  : LINE=(QE36B,BPME36B,QE36B)
 
+  comment
   EDMCHb : LINE=(D25cmb,D25cmc,DMM1m90cmBa,PC10B,BTM10B,DMM1m90cmBb,&
       XCEM1B,DEM1A,&
     QEM1B_full,DEM1Bab,DEM1Bbb,&
     QEM2B_full,DEM2B,YCEM2B,DMM3m80cm1,DMM3m80cm2,XCEM3B,DEM3A,&
+    QEM3B_full,DEM3Bb,&
+    QEM3VB_full,DMM4m90cmba,PC11B,BTM11B,DMM4m90cmbb,YCEM4B,DEM4A,&
+    QEM4B_full,DRFB,RFBEM4B,DMM5ab,DMM5bb)
+  endcomment
+
+  EDMCHb : LINE=(D25cmb,D25cmc,DMM1m90cmBa,PC10B,BTM10B,DMM1m90cmBb,&
+      XCEM1B,DEM1A,&
+    QEM1B_full,DEM1Bab,DEM1Bbb,&
+    QEM2B_full,DEM2B,YCEM2B,DMM3m80cmx,XCEM3B,DEM3A,&
     QEM3B_full,DEM3Bb,&
     QEM3VB_full,DMM4m90cmba,PC11B,BTM11B,DMM4m90cmbb,YCEM4B,DEM4A,&
     QEM4B_full,DRFB,RFBEM4B,DMM5ab,DMM5bb)
@@ -1699,10 +1714,10 @@
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 !       in the "LCLS2cu_main.mad8" file
 
-  KQUM1B :=  0.293411239505
-  KQUM2B := -0.13          
-  KQUM3B :=  0.382165430892
-  KQUM4B := -0.474867155145
+  KQUM1B :=  0.568578046239 ! 0.293411239505
+  KQUM2B := -0.796802792396 !-0.13          
+  KQUM3B :=  1.172578401021 ! 0.382165430892
+  KQUM4B := -1.160480624219 !-0.474867155145
 
   QUM1B : QUAD, TYPE="1.085Q4.31", L=LQE/2, K1=KQUM1b, APER=rQE
   QUM2B : QUAD, TYPE="1.085Q4.31", L=LQE/2, K1=KQUM2b, APER=rQE
@@ -1743,10 +1758,15 @@
   DMUON1b    : DRIF, L=0.154859 +0.05 -0.060429 +0.117
   DMUON3b    : DRIF, L=0.310592 -0.05 -0.117
 
+  DW2TDUNDb1 : DRIF, L=1.185 !drift from BTH/UH wall-2 to RFBSX14
+  DW2TDUNDb2 : DRIF, L=DW2TDUNDb[L]-DW2TDUNDb1[L]-LRFBub !drift from RFBSX14 to TDUNDB u/s flange
+
   BPMUM1B : MONI, TYPE="Stripline-2"
   BPMUM2B : MONI, TYPE="Stripline-2"
   BPMUM3B : MONI, TYPE="Stripline-2"
   BPMUM4B : MONI, TYPE="Stripline-2"
+
+  RFBSX14 : MONI, L=LRFBub, TYPE="CavityX-1" !for SXR undulator BBA
 
   XCUM1B : HKIC,TYPE="class-4f" !fast-feedback (loop-5)
   XCUM3B : HKIC,TYPE="class-4f" !fast-feedback (loop-5)
@@ -1783,9 +1803,9 @@
     QUM1B_full,DUM1B,XCUM1B,D32cm,DU2m120cmB,DCY38,D32cma,YCUM2B,DUM2A,&
     QUM2B_full,DUM2B,DU3m80cmB,XCUM3B,DUM3A,&
     QUM3B_full,DUM3B,D40cma,DU4m120cmB,YCUM4B,DUM4A,&
-    QUM4B_full,DUM4B,DU5m80cmB,D40cmW,MUHWALL1b,DUHWALL1,DUHVEST,MUHWALL2b,&
-      DUHWALL2,DW2TDUNDb,DTDUND1,TDUNDB,DTDUND2,DPCMUON,PCMUONb,DMUON1b,&
-      VV999b)
+    QUM4B_full,DUM4B,DU5m80cmB,D40cmW,MUHWALL1b,DUHWALL1,DUHVEST,&
+      MUHWALL2b,DUHWALL2,DW2TDUNDb1,RFBSX14,DW2TDUNDb2,DTDUND1,TDUNDB,&
+      DTDUND2,DPCMUON,PCMUONb,DMUON1b,VV999b)
 
   LTUsc : LINE=(MM1b,DL2sc,VBSYSb,MM2b,EDMCHb,EDSYSb,UNMCHb)
 
@@ -1798,7 +1818,7 @@
 ! SXR dumpline
 ! ------------------------------------------------------------------------------
 
-  KQDMPB := -0.154946553294
+  KQDMPB := -0.15111165919 !-0.154946553294
 
   QDmp1B : QUAD, TYPE="3.94Q17", L=LQP/2, K1=KQDmpb, APER=rQP
   QDmp2B : QUAD, TYPE="3.94Q17", L=LQP/2, K1=KQDmpb, APER=rQP
