@@ -721,42 +721,44 @@ def read_sector():
     return sect_sc, sect_cu
 
 def set_sector(N, FDN, coor, idf, nf, sector):
-    if nf not in sector['froot']:
-        return FDN
-    Z = [x[2] for x in coor]
-
-    id_ = [i for i,x in enumerate(idf) if x == nf]
-    if sector['Nbeg'] == '':
-        jd2 = [i for i,x in enumerate(Z) if x > sector['Zbeg']]
-        inter1 = intersection(id_,jd2)
-        if inter1 == []:
-            return FDN
-        else:
-            inter1 = inter1[0]
-    else:
-        jd2 = strmatch(sector['Nbeg'],N,True)
-        inter1 = intersection(id_,jd2)
-        if inter1 != []:
-            inter1 = inter1[0]
-
-    if sector['Nend'] == '':
-        jd2 = [i for i,x in enumerate(Z) if x < sector['Zend']]
-        inter2 = intersection(id_,jd2)
-        if inter2 == []:
-            return FDN
-        else:
-            inter2 = inter2[-1]
-    else:
-        jd2 = strmatch(sector['Nend'],N,True)
-        inter2 = intersection(id_,jd2)
-        if inter2 != []:
-            inter2 = inter2[0]
-    if inter1 != [] and inter2 != []:
-        for n in range(inter1, inter2 + 1):
-            if FDN[n].strip() == '':
-                FDN[n] = sector['name']
-
+  if nf not in sector['froot']:
     return FDN
+  Z = [x[2] for x in coor]
+
+  id_ = [i for i,x in enumerate(idf) if x == nf]
+
+  if sector['Nbeg'] == '':
+    jd2 = [i for i,x in enumerate(Z) if x > sector['Zbeg']]
+    inter1 = intersection(id_,jd2)
+    if inter1 == []:
+      return FDN
+    else:
+      inter1 = inter1[0]
+  else:
+    jd2 = strmatch(sector['Nbeg'],N,True)
+    inter1 = intersection(id_,jd2)
+    if inter1 != []:
+      inter1 = inter1[0]
+
+  if sector['Nend'] == '':
+    jd2 = [i for i,x in enumerate(Z) if x < sector['Zend']]
+    inter2 = intersection(id_,jd2)
+    if inter2 == []:
+      return FDN
+    else:
+      inter2 = inter2[-1]
+  else:
+    jd2 = strmatch(sector['Nend'],N,True)
+    inter2 = intersection(id_,jd2)
+    if inter2 != []:
+      inter2 = inter2[0]
+
+  if inter1 != [] and inter2 != []:
+    for n in range(inter1, inter2 + 1):
+      if FDN[n].strip() == '':
+        FDN[n] = sector['name']
+
+  return FDN
 
 
 def assign_sector(N, FDN, coor, idf, N1, FDN1, coor1, idf1):
@@ -3096,7 +3098,7 @@ if cUND:
                 elif keyw[idk, :] == 'SEXT':
                     s[5] = TEMP['leng']
                     s[6] = TEMP['bore']
-                    s[9] = TEMP['k2']
+                    s[8] = TEMP['k2']
                     s[10] = TEMP['tilt']
                     s[32] = TEMP['GpL']
                     s[33] = TEMP['Gp']

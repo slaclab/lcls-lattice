@@ -76,8 +76,12 @@ def test_bmad_mad8s_agreement(model):
   mad8_beta_x = float(mad8_data[-1][2])
   pytao_beta_y = pytao_result['beta_b']
   mad8_beta_y = float(mad8_data[-1][5])
-  pytao_end_s = pytao_result['s']
+  pytao_end_s = pytao_result['s'][0]
   mad8_end_s = float(mad8_data[-1][1])
+  print()
+  print(f'{model}')
+  print(f'{pytao_beta_x:.4f}   {pytao_beta_y:.4f}   {pytao_end_s:.4f}')
+  print(f'{mad8_beta_x:.4f}   {mad8_beta_y:.4f}   {mad8_end_s:.4f}')
 
 
   test_beta_x = abs((pytao_beta_x-mad8_beta_x) / (pytao_beta_x+mad8_beta_x) / 2)
