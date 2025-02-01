@@ -327,11 +327,11 @@ def FixUpgradeNames(N):
       N[i] = N[i][:-1]
 
 # Fix device names in upgraded SXR cells
-N = FixUpgradeNames(N)
+FixUpgradeNames(N)
 if cBSY:
-  N1 = FixUpgradeNames(N1)
+  FixUpgradeNames(N1)
 if cUND:
-  N2 = FixUpgradeNames(N2)
+  FixUpgradeNames(N2)
 
 # initialize some sequence data
 
