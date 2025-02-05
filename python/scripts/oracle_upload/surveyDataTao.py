@@ -8,41 +8,41 @@ import numpy as np
 survey = []
 kws = {}
 kws['Beginning_Ele']   = {'madk':'MARK',
-                      'params':[0,0,0,0,'x1_limit',0,0,0,0,0]} 
+                      'params':[0,0,0,0,'X1_LIMIT',0,0,0,0,0]} 
 kws['Multipole']   = {'madk':'MULT',
-                      'params':['l','k0l','k1l','k2l','x1_limit','t0','k3l','t1','t2','t3']} 
+                      'params':['L','K0L','K1L','K2L','X1_LIMIT','T0','K3L','T1','T2','T3']} 
 kws['Solenoid']    = {'madk':'SOLE',
-                      'params':['l',0,0,0,'x1_limit',0,'ks',0,0,0]}
+                      'params':['L',0,0,0,'X1_LIMIT',0,'KS',0,0,0]}
 kws['Lcavity']     = {'madk':'LCAV',
-                      'params':['l',0,0,0,'x1_limit',0,'rf_frequency','voltage','phi0',0]}
+                      'params':['L',0,0,0,'X1_LIMIT',0,'RF_FREQUENCY','VOLTAGE','PHI0',0]}
 kws['Instrument']  = {'madk':'INST',
-                      'params':['l',0,0,0,'x1_limit',0,0,0,0,0]}
+                      'params':['L',0,0,0,'X1_LIMIT',0,0,0,0,0]}
 kws['ECollimator'] = {'madk':'ECOL',
-                      'params':['l',0,0,0,'x1_limit',0,0,0,0,0]}
+                      'params':['L',0,0,0,'X1_LIMIT',0,0,0,0,0]}
 kws['RCollimator'] = {'madk':'ECOL',
-                      'params':['l',0,0,0,'x1_limit',0,0,0,0,0]}
+                      'params':['L',0,0,0,'X1_LIMIT',0,0,0,0,0]}
 kws['Monitor']     = {'madk':'MONI',
-                      'params':['l',0,0,0,'x1_limit',0,0,0,0,0]}
+                      'params':['L',0,0,0,'X1_LIMIT',0,0,0,0,0]}
 kws['HKicker']     = {'madk':'HKIC',
-                      'params':['l',0,0,0,'x1_limit','kick',0,0,0,0]}
+                      'params':['L',0,0,0,'X1_LIMIT','KICK',0,0,0,0]}
 kws['VKicker']     = {'madk':'VKIC',
-                      'params':['l',0,0,0,'x1_limit',0,'kick',0,0,0]}
+                      'params':['L',0,0,0,'X1_LIMIT',0,'KICK',0,0,0]}
 kws['Quadrupole']  = {'madk':'QUAD',
-                      'params':['l',0,'k1',0,'x1_limit','tilt',0,0,0,0]}
+                      'params':['L',0,'K1',0,'X1_LIMIT','TILT',0,0,0,0]}
 kws['Sextupole']   = {'madk':'SEXT',
-                      'params':['l',0,0,'k2','x1_limit','tilt',0,0,0,0]}
+                      'params':['L',0,0,'K2','X1_LIMIT','TILT',0,0,0,0]}
 kws['RBend']       = {'madk':'RBEN',
-                      'params':['l','angle','k1','k2','x1_limit','ref_tilt','e1','e2','h1','h2']}
+                      'params':['L','ANGLE','K1','K2','X1_LIMIT','REF_TILT','E1','E2','H1','H2']}
 kws['SBend']       = {'madk':'SBEN',
-                      'params':['l','angle','k1','k2','x1_limit','ref_tilt','e1','e2','h1','h2']}
+                      'params':['L','ANGLE','K1','K2','X1_LIMIT','REF_TILT','E1','E2','H1','H2']}
 kws['Taylor']      = {'madk':'MATR',
-                      'params':['l',0,0,0,'x1_limit',0,0,0,0,0]}
+                      'params':['L',0,0,0,'X1_LIMIT',0,0,0,0,0]}
 kws['Wiggler']     = {'madk':'MATR',
-                      'params':['l',0,0,0,'x1_limit',0,0,0,0,0]}
+                      'params':['L',0,0,0,'X1_LIMIT',0,0,0,0,0]}
 kws['Marker']      = {'madk':'MARK',
-                      'params':['l',0,0,0,'x1_limit',0,0,0,0,0]}
+                      'params':[0,0,0,0,0,0,0,0,0,0]}
 kws['Drift']       = {'madk':'DRIF',
-                      'params':['l',0,0,0,'x1_limit',0,0,0,0,0]}
+                      'params':['L',0,0,0,'X1_LIMIT',0,0,0,0,0]}
 
 skips = ['Patch','Pipe']
 for skip in skips:
@@ -63,14 +63,19 @@ for model in MODELS:
   print()
   print()
   tao = Tao(init_file=INITFILE[model], noplot=True)
-  names = tao.lat_list("*", "ele.name")
+  ix_eles = tao.lat_list('*', 'ele.ix_ele')
   suml = 0
-  for ix,name in enumerate(names): 
-    key = tao.lat_list(ix,"ele.key")
-    if key[0] not in kws.keys():
-      print(f'missing: {name}: {key[0]}')
+  for ix in ix_eles[1:]:
+    ele_info = tao.ele_head(ix)
+    ele_info.update(tao.ele_gen_attribs(ix))
+    #for k,v in ele_info.items():
+    #  print(f'{k}:   {v}')
+    name = ele_info['name']
+    key = ele_info['key']
+    if key not in kws.keys():
+      print(f'missing: {name}: {key}')
       sys.exit(1)
-    template = kws[key[0]]
+    template = kws[key]
     if 'skip' in template:
       continue
     else:
@@ -83,11 +88,11 @@ for model in MODELS:
     if params[0] == 0:
       line = line + f'{0:12.6f}'
     else:
-      result = tao.lat_list(ix,'ele.'+params[0])
-      if len(result) == 0:
-        print(f'lat_list returned empty list for key {key} param {params[0]}')
-        sys.exit(1)
-      val = float(result[0])
+      print(f'{ix} {name} {key}')
+      val = ele_info[params[0]]
+      #if len(val) == 0:
+      #  print(f'lat_list returned empty list for key {key} param {params[0]}')
+      #  sys.exit(1)
       suml += val
       line = line + f'{val:12.6f}'
     for n,param in enumerate(params[1:]):
@@ -96,11 +101,11 @@ for model in MODELS:
       if param == 0:
         line = line + f'{0:16.9E}'
       else:
-        result = tao.lat_list(ix,'ele.'+param)
-        if len(result) == 0:
-          print(f'lat_list returned empty list for key {key} param {param}')
-          sys.exit(1)
-        val = float(result[0])
+        print(f'{ix} {name} {key} {param}')
+        val = ele_info[param]
+        #if len(val) == 0:
+        #  print(f'lat_list returned empty list for key {key} param {param}')
+        #  sys.exit(1)
         line = line + f'{val:16.9E}'
     floor = tao.ele_floor(ix)['Reference']
     x,y,z,theta,phi,psi = map(float,floor)
