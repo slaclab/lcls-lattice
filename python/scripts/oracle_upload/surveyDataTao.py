@@ -8,41 +8,41 @@ import numpy as np
 survey = []
 kws = {}
 kws['Beginning_Ele']   = {'madk':'MARK',
-                      'params':[0,0,0,0,0,0,0,0,0]}  #Skew quads
+                      'params':[0,0,0,0,'x1_limit',0,0,0,0,0]} 
 kws['Multipole']   = {'madk':'MULT',
-                      'params':['l','k0l','k1l','k2l','t0','k3l','t1','t2','t3']}  #Skew quads
+                      'params':['l','k0l','k1l','k2l','x1_limit','t0','k3l','t1','t2','t3']} 
 kws['Solenoid']    = {'madk':'SOLE',
-                      'params':['l',0,0,0,0,'ks',0,0,0]}
+                      'params':['l',0,0,0,'x1_limit',0,'ks',0,0,0]}
 kws['Lcavity']     = {'madk':'LCAV',
-                      'params':['l',0,0,0,0,'rf_frequency','voltage','phi0',0]}
+                      'params':['l',0,0,0,'x1_limit',0,'rf_frequency','voltage','phi0',0]}
 kws['Instrument']  = {'madk':'INST',
-                      'params':['l',0,0,0,0,0,0,0,0]}
+                      'params':['l',0,0,0,'x1_limit',0,0,0,0,0]}
 kws['ECollimator'] = {'madk':'ECOL',
-                      'params':['l',0,0,0,0,0,0,0,0]}
+                      'params':['l',0,0,0,'x1_limit',0,0,0,0,0]}
 kws['RCollimator'] = {'madk':'ECOL',
-                      'params':['l',0,0,0,0,0,0,0,0]}
+                      'params':['l',0,0,0,'x1_limit',0,0,0,0,0]}
 kws['Monitor']     = {'madk':'MONI',
-                      'params':['l',0,0,0,0,0,0,0,0]}
+                      'params':['l',0,0,0,'x1_limit',0,0,0,0,0]}
 kws['HKicker']     = {'madk':'HKIC',
-                      'params':['l',0,0,0,'kick',0,0,0,0]}
+                      'params':['l',0,0,0,'x1_limit','kick',0,0,0,0]}
 kws['VKicker']     = {'madk':'VKIC',
-                      'params':['l',0,0,0,0,'kick',0,0,0]}
+                      'params':['l',0,0,0,'x1_limit',0,'kick',0,0,0]}
 kws['Quadrupole']  = {'madk':'QUAD',
-                      'params':['l',0,'k1',0,'tilt',0,0,0,0]}
+                      'params':['l',0,'k1',0,'x1_limit','tilt',0,0,0,0]}
 kws['Sextupole']   = {'madk':'SEXT',
-                      'params':['l',0,0,'k2','tilt',0,0,0,0]}
+                      'params':['l',0,0,'k2','x1_limit','tilt',0,0,0,0]}
 kws['RBend']       = {'madk':'RBEN',
-                      'params':['l','angle','k1','k2','ref_tilt','e1','e2','h1','h2']}
+                      'params':['l','angle','k1','k2','x1_limit','ref_tilt','e1','e2','h1','h2']}
 kws['SBend']       = {'madk':'SBEN',
-                      'params':['l','angle','k1','k2','ref_tilt','e1','e2','h1','h2']}
+                      'params':['l','angle','k1','k2','x1_limit','ref_tilt','e1','e2','h1','h2']}
 kws['Taylor']      = {'madk':'MATR',
-                      'params':['l',0,0,0,0,0,0,0,0]}
+                      'params':['l',0,0,0,'x1_limit',0,0,0,0,0]}
 kws['Wiggler']     = {'madk':'MATR',
-                      'params':['l',0,0,0,0,0,0,0,0]}
+                      'params':['l',0,0,0,'x1_limit',0,0,0,0,0]}
 kws['Marker']      = {'madk':'MARK',
-                      'params':['l',0,0,0,0,0,0,0,0]}
+                      'params':['l',0,0,0,'x1_limit',0,0,0,0,0]}
 kws['Drift']       = {'madk':'DRIF',
-                      'params':['l',0,0,0,0,0,0,0,0]}
+                      'params':['l',0,0,0,'x1_limit',0,0,0,0,0]}
 
 skips = ['Patch','Pipe']
 for skip in skips:
@@ -91,7 +91,7 @@ for model in MODELS:
       suml += val
       line = line + f'{val:12.6f}'
     for n,param in enumerate(params[1:]):
-      if n==3:
+      if n==4:
         line = line + "\n"
       if param == 0:
         line = line + f'{0:16.9E}'
