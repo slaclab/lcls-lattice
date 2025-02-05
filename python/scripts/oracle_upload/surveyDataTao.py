@@ -7,6 +7,8 @@ import numpy as np
 
 survey = []
 kws = {}
+kws['Beginning_Ele']   = {'madk':'MARK',
+                      'params':[0,0,0,0,0,0,0,0,0]}  #Skew quads
 kws['Multipole']   = {'madk':'MULT',
                       'params':['l','k0l','k1l','k2l','t0','k3l','t1','t2','t3']}  #Skew quads
 kws['Solenoid']    = {'madk':'SOLE',
@@ -42,7 +44,7 @@ kws['Marker']      = {'madk':'MARK',
 kws['Drift']       = {'madk':'DRIF',
                       'params':['l',0,0,0,0,0,0,0,0]}
 
-skips = ['Patch','Pipe','Beginning_Ele']
+skips = ['Patch','Pipe']
 for skip in skips:
   kws[skip] = {'skip':True}
 
@@ -58,11 +60,12 @@ INITFILE = {model:f'{LCLS_LATTICE_ENV}/bmad/models/{model}/tao.init' for model i
 
 
 for model in MODELS:
+  print()
+  print()
   tao = Tao(init_file=INITFILE[model], noplot=True)
   names = tao.lat_list("*", "ele.name")
-  for ix,name in enumerate(names):
-    print()
-    print()
+  suml = 0
+  for ix,name in enumerate(names): 
     key = tao.lat_list(ix,"ele.key")
     if key[0] not in kws.keys():
       print(f'missing: {name}: {key[0]}')
@@ -74,7 +77,8 @@ for model in MODELS:
       madk = template['madk']
       params = template['params']
 
-    line = f'{madk:4s}{name.upper():16s}'
+    name_use = name.split('#',1)[0].upper()
+    line = f'{madk:4s}{name_use:16s}'
 
     if params[0] == 0:
       line = line + f'{0:12.6f}'
@@ -83,7 +87,8 @@ for model in MODELS:
       if len(result) == 0:
         print(f'lat_list returned empty list for key {key} param {params[0]}')
         sys.exit(1)
-      val = float(result)
+      val = float(result[0])
+      suml += val
       line = line + f'{val:12.6f}'
     for n,param in enumerate(params[1:]):
       if n==3:
@@ -95,8 +100,12 @@ for model in MODELS:
         if len(result) == 0:
           print(f'lat_list returned empty list for key {key} param {param}')
           sys.exit(1)
-        val = loat(result)
+        val = float(result[0])
         line = line + f'{val:16.9E}'
+    floor = tao.ele_floor(ix)['Reference']
+    x,y,z,theta,phi,psi = map(float,floor)
+    line = line + "\n" + f'{x:16.9E}{y:16.9E}{z:16.9E}{suml:16.9E}' + "\n"
+    line = line + f'{theta:16.9E}{phi:16.9E}{psi:16.9E}'
       
     print(line)
 
