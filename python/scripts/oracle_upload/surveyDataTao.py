@@ -68,8 +68,19 @@ for model in MODELS:
   for ix in ix_eles[1:]:
     ele_info = tao.ele_head(ix)
     ele_info.update(tao.ele_gen_attribs(ix))
-    #for k,v in ele_info.items():
-    #  print(f'{k}:   {v}')
+
+    #shoehorn multipoles into the ele_info struct
+    multipoles = tao.ele_multipoles(ix)['data']
+    ele_info.update({f'K{x}L':0.0 for x in range(5)})
+    ele_info.update({f'T{x}':0.0 for x in range(5)})
+    for multipole in multipoles:
+      k = f'K{multipole["index"]}L'
+      v = multipole['KnL']
+      ele_info.update({k:v})
+      k = f'T{multipole["index"]}'
+      v = multipole['Tn']
+      ele_info.update({k:v})
+
     name = ele_info['name']
     key = ele_info['key']
     if key not in kws.keys():
@@ -88,7 +99,6 @@ for model in MODELS:
     if params[0] == 0:
       line = line + f'{0:12.6f}'
     else:
-      print(f'{ix} {name} {key}')
       val = ele_info[params[0]]
       #if len(val) == 0:
       #  print(f'lat_list returned empty list for key {key} param {params[0]}')
@@ -101,7 +111,6 @@ for model in MODELS:
       if param == 0:
         line = line + f'{0:16.9E}'
       else:
-        print(f'{ix} {name} {key} {param}')
         val = ele_info[param]
         #if len(val) == 0:
         #  print(f'lat_list returned empty list for key {key} param {param}')
