@@ -18,10 +18,12 @@ kws['Lcavity']         = {'madk':'LCAV',
 kws['Instrument']      = {'madk':'INST',
                           'params':['L',0,0,0,'X1_LIMIT',0,0,0,0,0]}
 kws['ECollimator']     = {'madk':'ECOL',
-                          'params':['L',0,0,0,'X1_LIMIT',0,0,0,0,0]}
-kws['RCollimator']     = {'madk':'ECOL',
-                          'params':['L',0,0,0,'X1_LIMIT',0,0,0,0,0]}
+                          'params':['L',0,0,0,0,'X1_LIMIT','Y1_LIMIT',0,0,0]}
+kws['RCollimator']     = {'madk':'RCOL',
+                          'params':['L',0,0,0,0,'X1_LIMIT','Y1_LIMIT',0,0,0]}
 kws['Monitor']         = {'madk':'MONI',
+                          'params':['L',0,0,0,'X1_LIMIT',0,0,0,0,0]}
+kws['Pipe']            = {'madk':'MONI',
                           'params':['L',0,0,0,'X1_LIMIT',0,0,0,0,0]}
 kws['HKicker']         = {'madk':'HKIC',
                           'params':['L',0,0,0,'X1_LIMIT','KICK',0,0,0,0]}
@@ -32,9 +34,9 @@ kws['Quadrupole']      = {'madk':'QUAD',
 kws['Sextupole']       = {'madk':'SEXT',
                           'params':['L',0,0,'K2','X1_LIMIT','TILT',0,0,0,0]}
 kws['RBend']           = {'madk':'RBEN',
-                          'params':['L','ANGLE','K1','K2','X1_LIMIT','REF_TILT','E1','E2','H1','H2']}
+                          'params':['L','ANGLE','K1','K2','HGAP','REF_TILT','E1','E2','H1','H2']}
 kws['SBend']           = {'madk':'SBEN',
-                          'params':['L','ANGLE','K1','K2','X1_LIMIT','REF_TILT','E1','E2','H1','H2']}
+                          'params':['L','ANGLE','K1','K2','HGAP','REF_TILT','E1','E2','H1','H2']}
 kws['Taylor']          = {'madk':'MATR',
                           'params':['L',0,0,0,'X1_LIMIT',0,0,0,0,0]}
 kws['Wiggler']         = {'madk':'MATR',
@@ -43,15 +45,14 @@ kws['Marker']          = {'madk':'MARK',
                           'params':[0,0,0,0,0,0,0,0,0,0]}
 kws['Drift']           = {'madk':'DRIF',
                           'params':['L',0,0,0,'X1_LIMIT',0,0,0,0,0]}
-                          'params':['L',0,0,0,'X1_LIMIT',0,0,0,0,0]}
 
-skips = ['Patch','Pipe']
+skips = ['Patch']
 for skip in skips:
   kws[skip] = {'skip':True}
 
 LCLS_LATTICE_ENV = os.getenv('LCLS_LATTICE')
 if LCLS_LATTICE_ENV is None:
-  print('Error:  LCLC_LATTICE is not set')
+  print('Error:  LCLS_LATTICE is not set')
   sys.exit(1)
 
 BDIR = f'{LCLS_LATTICE_ENV}/bmad/'
@@ -59,6 +60,12 @@ BDIR = f'{LCLS_LATTICE_ENV}/bmad/'
 MODELS=['sc_sxr'] #FOO
 INITFILE = {model:f'{LCLS_LATTICE_ENV}/bmad/models/{model}/tao.init' for model in MODELS}
 
+def my_lat_list(ix, p):
+  if p == 0:
+    return 0
+  else:
+    ret = tao.lat_list(ix, f'ele.{p}')[0]
+    return ret
 
 for model in MODELS:
   print()
@@ -67,23 +74,8 @@ for model in MODELS:
   ix_eles = tao.lat_list('*', 'ele.ix_ele')
   suml = 0
   for ix in ix_eles[:-1]:
-    ele_info = tao.ele_head(ix)
-    ele_info.update(tao.ele_gen_attribs(ix))
-
-    #shoehorn multipoles into the ele_info struct
-    multipoles = tao.ele_multipoles(ix)['data']
-    ele_info.update({f'K{x}L':0.0 for x in range(5)})
-    ele_info.update({f'T{x}':0.0 for x in range(5)})
-    for multipole in multipoles:
-      k = f'K{multipole["index"]}L'
-      v = multipole['KnL']
-      ele_info.update({k:v})
-      k = f'T{multipole["index"]}'
-      v = multipole['Tn']
-      ele_info.update({k:v})
-
-    name = ele_info['name']
-    key = ele_info['key']
+    name = tao.lat_list(ix,'ele.name')[0]
+    key = tao.lat_list(ix,'ele.key')[0]
     if key not in kws.keys():
       print(f'missing: {name}: {key}')
       sys.exit(1)
@@ -95,32 +87,25 @@ for model in MODELS:
       params = template['params']
 
     if name == 'BEGINNING':
-      name = 'initial'
+      name = 'INITIAL'
     name_use = name.split('#',1)[0].upper()
     line = f'{madk:4s}{name_use:16s}'
 
-    if params[0] == 0:
-      line = line + f'{0:12.6f}'
-    else:
-      val = ele_info[params[0]]
-      #if len(val) == 0:
-      #  print(f'lat_list returned empty list for key {key} param {params[0]}')
-      #  sys.exit(1)
-      suml += val
-      line = line + f'{val:12.6f}'
-    for n,param in enumerate(params[1:]):
-      if n==4:
+    val = my_lat_list(ix,params[0])
+    suml += val
+    line = line + f'{val:12.6f}'
+
+    vals = [my_lat_list(ix,p) for p in params[1:]]
+    for n,val in enumerate(vals,1):
+      if n==5:
         line = line + "\n"
-      if param == 0:
-        line = line + f'{0:16.9E}'
-      else:
-        val = ele_info[param]
-        if key == 'Lcavity' and (param == 'RF_FREQUENCY' or param == 'VOLTAGE'):
-          val = val / 1e6
-        #if len(val) == 0:
-        #  print(f'lat_list returned empty list for key {key} param {param}')
-        #  sys.exit(1)
-        line = line + f'{val:16.9E}'
+      if key == 'Lcavity' and (params[n] == 'RF_FREQUENCY' or params[n] == 'VOLTAGE'):
+        val = val / 1e6
+      #if len(val) == 0:
+      #  print(f'lat_list returned empty list for key {key} param {param}')
+      #  sys.exit(1)
+      line = line + f'{val:16.9E}'
+
     floor = tao.ele_floor(ix)['Reference']
     x,y,z,theta,phi,psi = map(float,floor)
     line = line + "\n" + f'{x:16.9E}{y:16.9E}{z:16.9E}{suml:16.9E}' + "\n"
