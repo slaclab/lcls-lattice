@@ -1,10 +1,20 @@
 
-! *** OPTICS=AD_ACCEL-01JAN2025s ***
+! *** OPTICS=AD_ACCEL-18FEB2025s ***
 
 ! LCLS2sc undulator
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 07-FEB-2025, M. Woodley
+!  * remove MBLMS MARKERs from all even-numbered SXR cells (16-46)
+!  * remove MBLMH MARKERs from all odd-numbered HXR cells (15-47)
+!  * add a long-period undulator plus phase shifter in SXR cell 21
+!  * NOTE: replacement of undulator in SXR cell 47 put off until later
+! 18-JAN-2025, M. Woodley
+!  * fix lengths of DU3S_ and DU4S_ (long-period phase shifters)
+! 17-JAN-2025, M. Woodley
+!  * replace short-period undulator in SXR cell 47 with a long-period undulator
 ! ------------------------------------------------------------------------------
 ! 23-DEC-2024, M. Woodley
 !  * per H.-D. Nuhn:
@@ -312,223 +322,13 @@
  !Eu   :  definition moved to LCLS2sc_master.xsif and LCLS2cu_master.xsif
   gamu := Eu/mc2 !Lorentz energy factor in undulator [ ]
 
-! ##############################################################################
-! SXR: long-period undulator and phase shifter definitions (LCLS-II-HE)
-! ##############################################################################
-
 ! ------------------------------------------------------------------------------
-! PPM phase shifter
-! - Author: Heinz-Dieter Nuhn, Stanford Linear Accelerator Center
-! - Last edited September 06, 2017
-! - 10.0 mm miminum Undulator Gap
+! SXR definitions
 ! ------------------------------------------------------------------------------
-! - LPSSX_  = SXR Phase Shifter length
-! - luPSSX_ = SXR Phase Shifter period
-! - PIPSSX_ = SXR Phase Shifter phase integral
-! - KPSSX_  = SXR Phase Shifter Undulator parameter (rms); range 1.34-3.59
-! - kQPSSX_ = natural SXR Phase Shifter undulator focusing "k" in y-plane
-! ------------------------------------------------------------------------------
-
-  LPSSX_  := 0.1073                               !m
-  luPSSX_ := 0.0975                               !m
-  LPSSXh_ := LPSSX_/2
-  PIPSSX_ := 1800 !5700                           !T^2mm^3
-  KPSSX_  := 1.E-9*CLIGHT/mc2*SQRT(2.E-9*PIPSSX_/luPSSX_)
-  kQPSSX_ := (KPSSX_*2*pi/luPSSX_/sqrt(2)/gamu)^2 !m^-2
-
-  PSSXh_ : MATR, TYPE="PS97.5", L=LPSSXh_,        &
-    RM(1,1) = 1.0,                                       &
-    RM(1,2) = LPSSXh_,                                   &
-    RM(2,1) = 0.0,                                       &
-    RM(2,2) = 1.0,                                       &
-    RM(3,3) =  cos(LPSSXh_*sqrt(kQPSSX_)),               &
-    RM(3,4) =  sin(LPSSXh_*sqrt(kQPSSX_))/sqrt(kQPSSX_), &
-    RM(4,3) = -sin(LPSSXh_*sqrt(kQPSSX_))*sqrt(kQPSSX_), &
-    RM(4,4) =  cos(LPSSXh_*sqrt(kQPSSX_)),               &
-    RM(5,5) = 1.0,                                       &
-    RM(6,6) = 1.0
-
-! define non-functional long-period phase shifter (place holder)
-
-  PSSXh_0 : MATR, TYPE="PS97.5", L=LPSSXh_, &
-    RM(1,1) = 1.0, RM(1,2) = LPSSXh_, RM(2,1) = 0.0, RM(2,2) = 1.0, &
-    RM(3,3) = 1.0, RM(3,4) = LPSSXh_, RM(4,3) = 0.0, RM(4,4) = 1.0, &
-    RM(5,5) = 1.0, RM(6,6) = 1.0
-
-  PSSXh17_ : PSSXh_
-  PSSXh18_ : PSSXh_
-  PSSXh19_ : PSSXh_
-  PSSXh20_ : PSSXh_
-  PSSXh21_ : PSSXh_
-  PSSXh22_ : PSSXh_
-  PSSXh23_ : PSSXh_
-  PSSXh24_ : PSSXh_
-  PSSXh25_ : PSSXh_
-  PSSXh26_ : PSSXh_
-  PSSXh27_ : PSSXh_
-  PSSXh28_ : PSSXh_
-  PSSXh29_ : PSSXh_
-  DPSSX30_ : DRIF, L=LPSSX_
-  PSSXh31_ : PSSXh_
-  PSSXh32_ : PSSXh_
-  PSSXh33_ : PSSXh_
-  PSSXh34_ : PSSXh_
-  PSSXh35_ : PSSXh_
-  PSSXh36_ : PSSXh_
-  PSSXh37_ : PSSXh_
-  PSSXh38_ : PSSXh_
-  PSSXh39_ : PSSXh_
-  PSSXh40_ : PSSXh_
-  PSSXh41_ : PSSXh_
-  PSSXh42_ : PSSXh_
-  PSSXh43_ : PSSXh_
-  PSSXh44_ : PSSXh_
-  PSSXh45_ : PSSXh_
-  PSSXh46_ : PSSXh_
-
-! ------------------------------------------------------------------------------
-! undulator segment
-! - Author: Heinz-Dieter Nuhn, Stanford Linear Accelerator Center
-! - Last edited June 22, 2020 (LCLS-II-HE)
-! - 7.2 mm miminum Undulator Gap; only constant break length each
-! - include natural vertical focusing over all but edge terminations
-! ------------------------------------------------------------------------------
-! - LDUSEGS_ = SXR Undulator segment length
-! - luSXU_   = SXR Undulator period
-! - NpSXU_   = SXR Undulator period count
-! - LSXUCR_  = SXR Undulator magnetic length
-! - LSXUe_   = SXR Undulator spacing between magnet array and strongback end
-! - KSXU_    = SXR Undulator parameter (rms); range 2-5.5
-! - kQSX_    = natural SXR undulator focusing "k" in y-plane
-! ------------------------------------------------------------------------------
-
-  LDUSEGS_ := 3.4
-  luSXU_   := 0.056                              !m
-  NpSXU_   := 60
-  LSXUCR_  := luSXU_*NpSXU_                      !m
-  LSXUe_   := (LDUSEGS_-LSXUCR_)/2               !m
-  LSXUh_   := LSXUCR_/2
-  KSXU_    := 4.5 !8.3
-  kQSX_    := (KSXU_*2*pi/luSXU_/sqrt(2)/gamu)^2 !m^-2
-
-  UMASXh_ : MATR, TYPE="VGHPU56", L=LSXUh_,         &
-    RM(1,1) = 1.0,                                  &
-    RM(1,2) = LSXUh_,                               &
-    RM(2,1) = 0.0,                                  &
-    RM(2,2) = 1.0,                                  &
-    RM(3,3) =  cos(LSXUh_*sqrt(kQSX_)),             &
-    RM(3,4) =  sin(LSXUh_*sqrt(kQSX_))/sqrt(kQSX_), &
-    RM(4,3) = -sin(LSXUh_*sqrt(kQSX_))*sqrt(kQSX_), &
-    RM(4,4) =  cos(LSXUh_*sqrt(kQSX_)),             &
-    RM(5,5) = 1.0,                                  &
-    RM(6,6) = 1.0
-
-! define non-functional long-period undulator (place holder)
-
-  UMASXh_0 : MATR, TYPE="VGHPU56", L=LSXUh_, &
-    RM(1,1) = 1.0, RM(1,2) = LSXUh_, RM(2,1) = 0.0, RM(2,2) = 1.0, &
-    RM(3,3) = 1.0, RM(3,4) = LSXUh_, RM(4,3) = 0.0, RM(4,4) = 1.0, &
-    RM(5,5) = 1.0, RM(6,6) = 1.0
-
-  UMASXh17_ : UMASXh_
-  UMASXh18_ : UMASXh_
-  UMASXh19_ : UMASXh_
-  UMASXh20_ : UMASXh_
-  UMASXh21_ : UMASXh_
-  UMASXh22_ : UMASXh_
-  UMASXh23_ : UMASXh_
-  UMASXh24_ : UMASXh_
-  UMASXh25_ : UMASXh_
-  UMASXh26_ : UMASXh_
-  UMASXh27_ : UMASXh_
-  UMASXh28_ : UMASXh_
-  UMASXh29_ : UMASXh_
-! ------30
-  UMASXh31_ : UMASXh_
-  UMASXh32_ : UMASXh_
-  UMASXh33_ : UMASXh_
-  UMASXh34_ : UMASXh_
-  UMASXh35_ : UMASXh_
-  UMASXh36_ : UMASXh_
-  UMASXh37_ : UMASXh_
-  UMASXh38_ : UMASXh_
-  UMASXh39_ : UMASXh_
-  UMASXh40_ : UMASXh_
-  UMASXh41_ : UMASXh_
-  UMASXh42_ : UMASXh_
-  UMASXh43_ : UMASXh_
-  UMASXh44_ : UMASXh_
-  UMASXh45_ : UMASXh_
-  UMASXh46_ : UMASXh_
-  UMASXh47_ : UMASXh_
 
 ! ##############################################################################
 ! SXR: short-period undulator and phase shifter definitions (LCLS-II)
 ! ##############################################################################
-
-! ------------------------------------------------------------------------------
-! PPM phase shifter
-! - Author: Heinz-Dieter Nuhn, Stanford Linear Accelerator Center
-! - Last edited September 06, 2017
-! - 10.0 mm miminum Undulator Gap
-! ------------------------------------------------------------------------------
-! - LPSSX  = SXR Phase Shifter length
-! - luPSSX = SXR Phase Shifter period
-! - PIPSSX = SXR Phase Shifter phase integral
-! - KPSSX  = SXR Phase Shifter Undulator parameter (rms); range 1.34-3.59
-! - kQPSSX = natural SXR Phase Shifter undulator focusing "k" in y-plane
-! ------------------------------------------------------------------------------
-
-  LPSSX  := 0.0825                             !m
-  luPSSX := 0.075                              !m
-  LPSSXh := LPSSX/2
-  PIPSSX := 1800 !3814                         !T^2mm^3 (180-3814)
-  KPSSX  := 1.E-9*CLIGHT/mc2*SQRT(2.E-9*PIPSSX/luPSSX)
-  kQPSSX := (KPSSX*2*pi/luPSSX/sqrt(2)/gamu)^2 !m^-2
-
-  PSSXh : MATR, TYPE="PS75", L=LPSSXh,       &
-    RM(1,1) = 1.0,                                    &
-    RM(1,2) = LPSSXh,                                 &
-    RM(2,1) = 0.0,                                    &
-    RM(2,2) = 1.0,                                    &
-    RM(3,3) =  cos(LPSSXh*sqrt(kQPSSX)),              &
-    RM(3,4) =  sin(LPSSXh*sqrt(kQPSSX))/sqrt(kQPSSX), &
-    RM(4,3) = -sin(LPSSXh*sqrt(kQPSSX))*sqrt(kQPSSX), &
-    RM(4,4) =  cos(LPSSXh*sqrt(kQPSSX)),              &
-    RM(5,5) = 1.0,                                    &
-    RM(6,6) = 1.0
-
-  DPSSX17 : DRIF, L=LPSSX
-  DPSSX18 : DRIF, L=LPSSX
-  DPSSX19 : DRIF, L=LPSSX
-  DPSSX20 : DRIF, L=LPSSX
-  DPSSX21 : DRIF, L=LPSSX
-
-  PSSXh26 : PSSXh
-  PSSXh27 : PSSXh
-  PSSXh28 : PSSXh
-  PSSXh29 : PSSXh
-  PSSXh30 : PSSXh
-  PSSXh31 : PSSXh
-  PSSXh32 : PSSXh
-  PSSXh33 : PSSXh
-  PSSXh34 : PSSXh
-  DPSSX35 : DRIF, L=LPSSX
-  PSSXh36 : PSSXh
-  PSSXh37 : PSSXh
-  PSSXh38 : PSSXh
-  PSSXh39 : PSSXh
-  PSSXh40 : PSSXh
-  PSSXh41 : PSSXh
-  PSSXh42 : PSSXh
-  PSSXh43 : PSSXh
-  PSSXh44 : PSSXh
-  PSSXh45 : PSSXh
-  PSSXh46 : PSSXh
-  DPSSX47 : DRIF, L=LPSSX
-  DPSSX48 : DRIF, L=LPSSX
-  DPSSX49 : DRIF, L=LPSSX
-  DPSSX50 : DRIF, L=LPSSX
 
 ! ------------------------------------------------------------------------------
 ! undulator segment
@@ -568,32 +368,40 @@
     RM(5,5) = 1.0,                               &
     RM(6,6) = 1.0
 
-  UMASXh26 : UMASXh
-  UMASXh27 : UMASXh
-  UMASXh28 : UMASXh
-  UMASXh29 : UMASXh
-  UMASXh30 : UMASXh
-  UMASXh31 : UMASXh
-  UMASXh32 : UMASXh
-  UMASXh33 : UMASXh
-  UMASXh34 : UMASXh
-! ------35
-  UMASXh36 : UMASXh
-  UMASXh37 : UMASXh
-  UMASXh38 : UMASXh
-  UMASXh39 : UMASXh
-  UMASXh40 : UMASXh
-  UMASXh41 : UMASXh
-  UMASXh42 : UMASXh
-  UMASXh43 : UMASXh
-  UMASXh44 : UMASXh
-  UMASXh45 : UMASXh
-  UMASXh46 : UMASXh
-  UMASXh47 : UMASXh
+! ------------------------------------------------------------------------------
+! PPM phase shifter
+! - Author: Heinz-Dieter Nuhn, Stanford Linear Accelerator Center
+! - Last edited September 06, 2017
+! - 10.0 mm miminum Undulator Gap
+! ------------------------------------------------------------------------------
+! - LPSSX  = SXR Phase Shifter length
+! - luPSSX = SXR Phase Shifter period
+! - PIPSSX = SXR Phase Shifter phase integral
+! - KPSSX  = SXR Phase Shifter Undulator parameter (rms); range 1.34-3.59
+! - kQPSSX = natural SXR Phase Shifter undulator focusing "k" in y-plane
+! ------------------------------------------------------------------------------
+
+  LPSSX  := 0.0825                             !m
+  luPSSX := 0.075                              !m
+  LPSSXh := LPSSX/2
+  PIPSSX := 1800 !3814                         !T^2mm^3 (180-3814)
+  KPSSX  := 1.E-9*CLIGHT/mc2*SQRT(2.E-9*PIPSSX/luPSSX)
+  kQPSSX := (KPSSX*2*pi/luPSSX/sqrt(2)/gamu)^2 !m^-2
+
+  PSSXh : MATR, TYPE="PS75", L=LPSSXh,       &
+    RM(1,1) = 1.0,                                    &
+    RM(1,2) = LPSSXh,                                 &
+    RM(2,1) = 0.0,                                    &
+    RM(2,2) = 1.0,                                    &
+    RM(3,3) =  cos(LPSSXh*sqrt(kQPSSX)),              &
+    RM(3,4) =  sin(LPSSXh*sqrt(kQPSSX))/sqrt(kQPSSX), &
+    RM(4,3) = -sin(LPSSXh*sqrt(kQPSSX))*sqrt(kQPSSX), &
+    RM(4,4) =  cos(LPSSXh*sqrt(kQPSSX)),              &
+    RM(5,5) = 1.0,                                    &
+    RM(6,6) = 1.0
 
 ! ------------------------------------------------------------------------------
-! SXR short-period uUndulator cell drifts
-! NOTE: some definitions are also used in long-period undulator cells
+! FODO cell drifts
 ! ------------------------------------------------------------------------------
 ! - DTSXU = SXU undulator segment small terminations modeled as drift
 ! ------------------------------------------------------------------------------
@@ -628,14 +436,88 @@
   DU4sa : DRIF, L=0.117258
   DU4sb : DRIF, L=DU4s[L]-DU4sa[L]
 
+! ##############################################################################
+! SXR: long-period undulator and phase shifter definitions (LCLS-II-HE)
+! ##############################################################################
+
 ! ------------------------------------------------------------------------------
-! SXR long-period undulator cell drifts
+! undulator segment
+! - Author: Heinz-Dieter Nuhn, Stanford Linear Accelerator Center
+! - Last edited June 22, 2020 (LCLS-II-HE)
+! - 7.2 mm miminum Undulator Gap; only constant break length each
+! - include natural vertical focusing over all but edge terminations
+! ------------------------------------------------------------------------------
+! - LDUSEGS_ = SXR Undulator segment length
+! - luSXU_   = SXR Undulator period
+! - NpSXU_   = SXR Undulator period count
+! - LSXUCR_  = SXR Undulator magnetic length
+! - LSXUe_   = SXR Undulator spacing between magnet array and strongback end
+! - KSXU_    = SXR Undulator parameter (rms); range 2-5.5
+! - kQSX_    = natural SXR undulator focusing "k" in y-plane
+! ------------------------------------------------------------------------------
+
+  LDUSEGS_ := 3.4
+  luSXU_   := 0.056                              !m
+  NpSXU_   := 60
+  LSXUCR_  := luSXU_*NpSXU_                      !m
+  LSXUe_   := (LDUSEGS_-LSXUCR_)/2               !m
+  LSXUh_   := LSXUCR_/2
+  KSXU_    := 4.5 !8.3
+  kQSX_    := (KSXU_*2*pi/luSXU_/sqrt(2)/gamu)^2 !m^-2
+
+  UMASXh_ : MATR, TYPE="VGHPU56", L=LSXUh_,         &
+    RM(1,1) = 1.0,                                  &
+    RM(1,2) = LSXUh_,                               &
+    RM(2,1) = 0.0,                                  &
+    RM(2,2) = 1.0,                                  &
+    RM(3,3) =  cos(LSXUh_*sqrt(kQSX_)),             &
+    RM(3,4) =  sin(LSXUh_*sqrt(kQSX_))/sqrt(kQSX_), &
+    RM(4,3) = -sin(LSXUh_*sqrt(kQSX_))*sqrt(kQSX_), &
+    RM(4,4) =  cos(LSXUh_*sqrt(kQSX_)),             &
+    RM(5,5) = 1.0,                                  &
+    RM(6,6) = 1.0
+
+! ------------------------------------------------------------------------------
+! PPM phase shifter
+! - Author: Heinz-Dieter Nuhn, Stanford Linear Accelerator Center
+! - Last edited September 06, 2017
+! - 10.0 mm miminum Undulator Gap
+! ------------------------------------------------------------------------------
+! - LPSSX_  = SXR Phase Shifter length
+! - luPSSX_ = SXR Phase Shifter period
+! - PIPSSX_ = SXR Phase Shifter phase integral
+! - KPSSX_  = SXR Phase Shifter Undulator parameter (rms); range 1.34-3.59
+! - kQPSSX_ = natural SXR Phase Shifter undulator focusing "k" in y-plane
+! ------------------------------------------------------------------------------
+
+  LPSSX_  := 0.1073                               !m
+  luPSSX_ := 0.0975                               !m
+  LPSSXh_ := LPSSX_/2
+  PIPSSX_ := 1800 !5700                           !T^2mm^3
+  KPSSX_  := 1.E-9*CLIGHT/mc2*SQRT(2.E-9*PIPSSX_/luPSSX_)
+  kQPSSX_ := (KPSSX_*2*pi/luPSSX_/sqrt(2)/gamu)^2 !m^-2
+
+  PSSXh_ : MATR, TYPE="PS97.5", L=LPSSXh_,        &
+    RM(1,1) = 1.0,                                       &
+    RM(1,2) = LPSSXh_,                                   &
+    RM(2,1) = 0.0,                                       &
+    RM(2,2) = 1.0,                                       &
+    RM(3,3) =  cos(LPSSXh_*sqrt(kQPSSX_)),               &
+    RM(3,4) =  sin(LPSSXh_*sqrt(kQPSSX_))/sqrt(kQPSSX_), &
+    RM(4,3) = -sin(LPSSXh_*sqrt(kQPSSX_))*sqrt(kQPSSX_), &
+    RM(4,4) =  cos(LPSSXh_*sqrt(kQPSSX_)),               &
+    RM(5,5) = 1.0,                                       &
+    RM(6,6) = 1.0
+
+! ------------------------------------------------------------------------------
+! FODO cell drifts
+! ------------------------------------------------------------------------------
 ! - DTSXU_ = SXU undulator segment small terminations modeled as drift
 ! ------------------------------------------------------------------------------
 
-  LDU3s_ := 0.25-LPSSXh_-0.04-0.005-0.010996
-  LDU4s_ := (0.25-LPSSXh_-0.5*LQu)/2+0.04+0.005+0.010996
-  LDU5s_ := (0.25-LPSSXh_-0.5*LQu)/2
+  LDU3s_ := 0.25-LPSSXh_-0.04-0.005
+  LDU4s_ := (0.25-LPSSXh_-0.5*LQu)/2+0.04+0.005-0.0062
+  LDU5s_ := (0.25-LPSSXh_-0.5*LQu)/2+0.0062
 
   DTSXU_   : DRIF, L=LSXUe_
   DU3s_    : DRIF, L=LDU3s_
@@ -644,19 +526,15 @@
   DU4sb_   : DRIF, L=DU4s_[L]-DU4sa[L]
   DU3sb_   : DRIF, L=DU3s_[L]-DU3sa[L]
 
-! ******************************************************************************
+! ##############################################################################
 ! SXR: common definitions
-! ******************************************************************************
+! NOTE: not all definitions are used until SXR upgrade is complete
+! ##############################################################################
 
 ! ------------------------------------------------------------------------------
 ! SXR undulator X-steering coils in undulator segments
-! NOTE: not all definitions are used
 ! ------------------------------------------------------------------------------
 
-  XCSU17 : INST, TYPE="type-V"
-  XCSU18 : INST, TYPE="type-V"
-  XCSU19 : INST, TYPE="type-V"
-  XCSU20 : INST, TYPE="type-V"
   XCSU21 : INST, TYPE="type-V"
   XCSU22 : INST, TYPE="type-V"
   XCSU23 : INST, TYPE="type-V"
@@ -671,7 +549,7 @@
   XCSU32 : INST, TYPE="type-V"
   XCSU33 : INST, TYPE="type-V"
   XCSU34 : INST, TYPE="type-V"
-  XCSU35 : INST, TYPE="type-V"
+! ----35
   XCSU36 : INST, TYPE="type-V"
   XCSU37 : INST, TYPE="type-V"
   XCSU38 : INST, TYPE="type-V"
@@ -687,13 +565,8 @@
 
 ! ------------------------------------------------------------------------------
 ! SXR undulator Y-steering coils in undulator segments
-! NOTE: not all definitions are used
 ! ------------------------------------------------------------------------------
 
-  YCSU17 : INST, TYPE="type-V"
-  YCSU18 : INST, TYPE="type-V"
-  YCSU19 : INST, TYPE="type-V"
-  YCSU20 : INST, TYPE="type-V"
   YCSU21 : INST, TYPE="type-V"
   YCSU22 : INST, TYPE="type-V"
   YCSU23 : INST, TYPE="type-V"
@@ -708,7 +581,7 @@
   YCSU32 : INST, TYPE="type-V"
   YCSU33 : INST, TYPE="type-V"
   YCSU34 : INST, TYPE="type-V"
-  YCSU35 : INST, TYPE="type-V"
+! ----35
   YCSU36 : INST, TYPE="type-V"
   YCSU37 : INST, TYPE="type-V"
   YCSU38 : INST, TYPE="type-V"
@@ -721,7 +594,7 @@
   YCSU45 : INST, TYPE="type-V"
   YCSU46 : INST, TYPE="type-V"
   YCSU47 : INST, TYPE="type-V"
-  
+
 ! ------------------------------------------------------------------------------
 ! SXR undulator quadrupoles
 ! ------------------------------------------------------------------------------
@@ -896,37 +769,21 @@
 ! ------------------------------------------------------------------------------
 
   MBLMS17 : MARK
-  MBLMS18 : MARK
   MBLMS19 : MARK
-  MBLMS20 : MARK
   MBLMS21 : MARK
-  MBLMS22 : MARK
   MBLMS23 : MARK
-  MBLMS24 : MARK
   MBLMS25 : MARK
-  MBLMS26 : MARK
   MBLMS27 : MARK
-  MBLMS28 : MARK
   MBLMS29 : MARK
-  MBLMS30 : MARK
   MBLMS31 : MARK
-  MBLMS32 : MARK
   MBLMS33 : MARK
-  MBLMS34 : MARK
-  MBLMS35 : MARK
-  MBLMS36 : MARK
+! -----35
   MBLMS37 : MARK
-  MBLMS38 : MARK
   MBLMS39 : MARK
-  MBLMS40 : MARK
   MBLMS41 : MARK
-  MBLMS42 : MARK
   MBLMS43 : MARK
-  MBLMS44 : MARK
   MBLMS45 : MARK
-  MBLMS46 : MARK
   MBLMS47 : MARK
-  MBLMS48 : MARK
 
 ! ------------------------------------------------------------------------------
 ! SXR undulator inline valves, VAT Series 48
@@ -1064,76 +921,46 @@
     BCXSS4_full,DMONOS,SXRSSEND)
 
 ! ------------------------------------------------------------------------------
-! complete SXR undulator phase shifters defined as LINEs
+! complete SXR undulator segments
 ! ------------------------------------------------------------------------------
 
-! LCLS-II
-
-  PSSXh26_full : LINE=(PSSXh26,MPHS,PSSXh26)
-  PSSXh27_full : LINE=(PSSXh27,MPHS,PSSXh27)
-  PSSXh28_full : LINE=(PSSXh28,MPHS,PSSXh28)
-  PSSXh29_full : LINE=(PSSXh29,MPHS,PSSXh29)
-  PSSXh30_full : LINE=(PSSXh30,MPHS,PSSXh30)
-  PSSXh31_full : LINE=(PSSXh31,MPHS,PSSXh31)
-  PSSXh32_full : LINE=(PSSXh32,MPHS,PSSXh32)
-  PSSXh33_full : LINE=(PSSXh33,MPHS,PSSXh33)
-  PSSXh34_full : LINE=(PSSXh34,MPHS,PSSXh34)
-  PSSXh36_full : LINE=(PSSXh36,MPHS,PSSXh36)
-  PSSXh37_full : LINE=(PSSXh37,MPHS,PSSXh37)
-  PSSXh38_full : LINE=(PSSXh38,MPHS,PSSXh38)
-  PSSXh39_full : LINE=(PSSXh39,MPHS,PSSXh39)
-  PSSXh40_full : LINE=(PSSXh40,MPHS,PSSXh40)
-  PSSXh41_full : LINE=(PSSXh41,MPHS,PSSXh41)
-  PSSXh42_full : LINE=(PSSXh42,MPHS,PSSXh42)
-  PSSXh43_full : LINE=(PSSXh43,MPHS,PSSXh43)
-  PSSXh44_full : LINE=(PSSXh44,MPHS,PSSXh44)
-  PSSXh45_full : LINE=(PSSXh45,MPHS,PSSXh45)
-  PSSXh46_full : LINE=(PSSXh46,MPHS,PSSXh46)
-
-! LCLC-II-HE
-
- !PSSXh17_full : LINE=(PSSXh17_,MPHS,PSSXh17_)
- !PSSXh18_full : LINE=(PSSXh18_,MPHS,PSSXh18_)
- !PSSXh19_full : LINE=(PSSXh19_,MPHS,PSSXh19_)
- !PSSXh20_full : LINE=(PSSXh20_,MPHS,PSSXh20_)
- !PSSXh21_full : LINE=(PSSXh21_,MPHS,PSSXh21_)
-  PSSXh22_full : LINE=(PSSXh22_,MPHS,PSSXh22_)
-  PSSXh23_full : LINE=(PSSXh23_,MPHS,PSSXh23_)
-  PSSXh24_full : LINE=(PSSXh24_,MPHS,PSSXh24_)
-  PSSXh25_full : LINE=(PSSXh25_,MPHS,PSSXh25_)
- !PSSXh26_full : LINE=(PSSXh26_,MPHS,PSSXh26_)
- !PSSXh27_full : LINE=(PSSXh27_,MPHS,PSSXh27_)
- !PSSXh28_full : LINE=(PSSXh28_,MPHS,PSSXh28_)
- !PSSXh29_full : LINE=(PSSXh29_,MPHS,PSSXh29_)
- !PSSXh30_full : LINE=(PSSXh30_,MPHS,PSSXh30_)
- !PSSXh31_full : LINE=(PSSXh31_,MPHS,PSSXh31_)
- !PSSXh32_full : LINE=(PSSXh32_,MPHS,PSSXh32_)
- !PSSXh33_full : LINE=(PSSXh33_,MPHS,PSSXh33_)
- !PSSXh34_full : LINE=(PSSXh34_,MPHS,PSSXh34_)
- !PSSXh36_full : LINE=(PSSXh36_,MPHS,PSSXh36_)
- !PSSXh37_full : LINE=(PSSXh37_,MPHS,PSSXh37_)
- !PSSXh38_full : LINE=(PSSXh38_,MPHS,PSSXh38_)
- !PSSXh39_full : LINE=(PSSXh39_,MPHS,PSSXh39_)
- !PSSXh40_full : LINE=(PSSXh40_,MPHS,PSSXh40_)
- !PSSXh41_full : LINE=(PSSXh41_,MPHS,PSSXh41_)
- !PSSXh42_full : LINE=(PSSXh42_,MPHS,PSSXh42_)
- !PSSXh43_full : LINE=(PSSXh43_,MPHS,PSSXh43_)
- !PSSXh44_full : LINE=(PSSXh44_,MPHS,PSSXh44_)
- !PSSXh45_full : LINE=(PSSXh45_,MPHS,PSSXh45_)
- !PSSXh46_full : LINE=(PSSXh46_,MPHS,PSSXh46_)
-
-! ------------------------------------------------------------------------------
-! complete SXR undulator segments defined as LINEs
-! ------------------------------------------------------------------------------
-
-! post 2024 winter shutdown (as of January 2025)
+  UMASXh21 : UMASXh_
+  UMASXh22 : UMASXh_
+  UMASXh23 : UMASXh_
+  UMASXh24 : UMASXh_
+  UMASXh25 : UMASXh_
+  UMASXh26 : UMASXh
+  UMASXh27 : UMASXh
+  UMASXh28 : UMASXh
+  UMASXh29 : UMASXh
+  UMASXh30 : UMASXh
+  UMASXh31 : UMASXh
+  UMASXh32 : UMASXh
+  UMASXh33 : UMASXh
+  UMASXh34 : UMASXh
+! ------35
+  UMASXh36 : UMASXh
+  UMASXh37 : UMASXh
+  UMASXh38 : UMASXh
+  UMASXh39 : UMASXh
+  UMASXh40 : UMASXh
+  UMASXh41 : UMASXh
+  UMASXh42 : UMASXh
+  UMASXh43 : UMASXh
+  UMASXh44 : UMASXh
+  UMASXh45 : UMASXh
+  UMASXh46 : UMASXh
+  UMASXh47 : UMASXh
 
   DUSEGS17 : DRIF, L=LDUSEGS
   DUSEGS18 : DRIF, L=LDUSEGS
   DUSEGS19 : DRIF, L=LDUSEGS
   DUSEGS20 : DRIF, L=LDUSEGS
-  DUSEGS21 : DRIF, L=LDUSEGS
-
+  USEGSX21 : LINE=(DTSXU_,UMASXh21,XCSU21,YCSU21,UMASXh21,DTSXU_)
+  USEGSX22 : LINE=(DTSXU_,UMASXh22,XCSU22,YCSU22,UMASXh22,DTSXU_)
+  USEGSX23 : LINE=(DTSXU_,UMASXh23,XCSU23,YCSU23,UMASXh23,DTSXU_)
+  USEGSX24 : LINE=(DTSXU_,UMASXh24,XCSU24,YCSU24,UMASXh24,DTSXU_)
+  USEGSX25 : LINE=(DTSXU_,UMASXh25,XCSU25,YCSU25,UMASXh25,DTSXU_)
   USEGSX26 : LINE=(DTSXU,UMASXh26,XCSU26,YCSU26,UMASXh26,DTSXU)
   USEGSX27 : LINE=(DTSXU,UMASXh27,XCSU27,YCSU27,UMASXh27,DTSXU)
   USEGSX28 : LINE=(DTSXU,UMASXh28,XCSU28,YCSU28,UMASXh28,DTSXU)
@@ -1160,42 +987,73 @@
   DUSEGS49 : DRIF, L=LDUSEGS
   DUSEGS50 : DRIF, L=LDUSEGS
 
-! upgrade
+! ------------------------------------------------------------------------------
+! complete SXR undulator phase shifters
+! ------------------------------------------------------------------------------
 
- !USEGSX17 : LINE=(DTSXU_,UMASXh17_,XCSU17,YCSU17,UMASXh17_,DTSXU_)
- !USEGSX18 : LINE=(DTSXU_,UMASXh18_,XCSU18,YCSU18,UMASXh18_,DTSXU_)
- !USEGSX19 : LINE=(DTSXU_,UMASXh19_,XCSU19,YCSU19,UMASXh19_,DTSXU_)
- !USEGSX20 : LINE=(DTSXU_,UMASXh20_,XCSU20,YCSU20,UMASXh20_,DTSXU_)
- !USEGSX21 : LINE=(DTSXU_,UMASXh21_,XCSU21,YCSU21,UMASXh21_,DTSXU_)
-  USEGSX22 : LINE=(DTSXU_,UMASXh22_,XCSU22,YCSU22,UMASXh22_,DTSXU_)
-  USEGSX23 : LINE=(DTSXU_,UMASXh23_,XCSU23,YCSU23,UMASXh23_,DTSXU_)
-  USEGSX24 : LINE=(DTSXU_,UMASXh24_,XCSU24,YCSU24,UMASXh24_,DTSXU_)
-  USEGSX25 : LINE=(DTSXU_,UMASXh25_,XCSU25,YCSU25,UMASXh25_,DTSXU_)
- !USEGSX26 : LINE=(DTSXU_,UMASXh26_,XCSU26,YCSU26,UMASXh26_,DTSXU_)
- !USEGSX27 : LINE=(DTSXU_,UMASXh27_,XCSU27,YCSU27,UMASXh27_,DTSXU_)
- !USEGSX28 : LINE=(DTSXU_,UMASXh28_,XCSU28,YCSU28,UMASXh28_,DTSXU_)
- !USEGSX29 : LINE=(DTSXU_,UMASXh29_,XCSU29,YCSU29,UMASXh29_,DTSXU_)
- !DUSEGS30 : LINE=(SCHICANE)
- !USEGSX31 : LINE=(DTSXU_,UMASXh31_,XCSU31,YCSU31,UMASXh31_,DTSXU_)
- !USEGSX32 : LINE=(DTSXU_,UMASXh32_,XCSU32,YCSU32,UMASXh32_,DTSXU_)
- !USEGSX33 : LINE=(DTSXU_,UMASXh33_,XCSU33,YCSU33,UMASXh33_,DTSXU_)
- !USEGSX34 : LINE=(DTSXU_,UMASXh34_,XCSU34,YCSU34,UMASXh34_,DTSXU_)
- !USEGSX35 : LINE=(DTSXU_,UMASXh35_,XCSU34,YCSU34,UMASXh35_,DTSXU_)
- !USEGSX36 : LINE=(DTSXU_,UMASXh36_,XCSU36,YCSU36,UMASXh36_,DTSXU_)
- !USEGSX37 : LINE=(DTSXU_,UMASXh37_,XCSU37,YCSU37,UMASXh37_,DTSXU_)
- !USEGSX38 : LINE=(DTSXU_,UMASXh38_,XCSU38,YCSU38,UMASXh38_,DTSXU_)
- !USEGSX39 : LINE=(DTSXU_,UMASXh39_,XCSU39,YCSU39,UMASXh39_,DTSXU_)
- !USEGSX40 : LINE=(DTSXU_,UMASXh40_,XCSU40,YCSU40,UMASXh40_,DTSXU_)
- !USEGSX41 : LINE=(DTSXU_,UMASXh41_,XCSU41,YCSU41,UMASXh41_,DTSXU_)
- !USEGSX42 : LINE=(DTSXU_,UMASXh42_,XCSU42,YCSU42,UMASXh42_,DTSXU_)
- !USEGSX43 : LINE=(DTSXU_,UMASXh43_,XCSU43,YCSU43,UMASXh43_,DTSXU_)
- !USEGSX44 : LINE=(DTSXU_,UMASXh44_,XCSU44,YCSU44,UMASXh44_,DTSXU_)
- !USEGSX45 : LINE=(DTSXU_,UMASXh45_,XCSU45,YCSU45,UMASXh45_,DTSXU_)
- !USEGSX46 : LINE=(DTSXU_,UMASXh46_,XCSU46,YCSU46,UMASXh46_,DTSXU_)
- !USEGSX47 : LINE=(DTSXU_,UMASXh47_,XCSU47,YCSU47,UMASXh47_,DTSXU_)
+  DPSSX17 : DRIF, L=LPSSX
+  DPSSX18 : DRIF, L=LPSSX
+  DPSSX19 : DRIF, L=LPSSX
+  DPSSX20 : DRIF, L=LPSSX
+  PSSXh21 : PSSXh_
+  PSSXh22 : PSSXh_
+  PSSXh23 : PSSXh_
+  PSSXh24 : PSSXh_
+  PSSXh25 : PSSXh_
+  PSSXh26 : PSSXh
+  PSSXh27 : PSSXh
+  PSSXh28 : PSSXh
+  PSSXh29 : PSSXh
+  PSSXh30 : PSSXh
+  PSSXh31 : PSSXh
+  PSSXh32 : PSSXh
+  PSSXh33 : PSSXh
+  PSSXh34 : PSSXh
+  DPSSX35 : DRIF, L=LPSSX
+  PSSXh36 : PSSXh
+  PSSXh37 : PSSXh
+  PSSXh38 : PSSXh
+  PSSXh39 : PSSXh
+  PSSXh40 : PSSXh
+  PSSXh41 : PSSXh
+  PSSXh42 : PSSXh
+  PSSXh43 : PSSXh
+  PSSXh44 : PSSXh
+  PSSXh45 : PSSXh
+  PSSXh46 : PSSXh
+  DPSSX47 : DRIF, L=LPSSX
+  DPSSX48 : DRIF, L=LPSSX
+  DPSSX49 : DRIF, L=LPSSX
+  DPSSX50 : DRIF, L=LPSSX
+
+  PSSXh21_full : LINE=(PSSXh21,MPHS,PSSXh21)
+  PSSXh22_full : LINE=(PSSXh22,MPHS,PSSXh22)
+  PSSXh23_full : LINE=(PSSXh23,MPHS,PSSXh23)
+  PSSXh24_full : LINE=(PSSXh24,MPHS,PSSXh24)
+  PSSXh25_full : LINE=(PSSXh25,MPHS,PSSXh25)
+  PSSXh26_full : LINE=(PSSXh26,MPHS,PSSXh26)
+  PSSXh27_full : LINE=(PSSXh27,MPHS,PSSXh27)
+  PSSXh28_full : LINE=(PSSXh28,MPHS,PSSXh28)
+  PSSXh29_full : LINE=(PSSXh29,MPHS,PSSXh29)
+  PSSXh30_full : LINE=(PSSXh30,MPHS,PSSXh30)
+  PSSXh31_full : LINE=(PSSXh31,MPHS,PSSXh31)
+  PSSXh32_full : LINE=(PSSXh32,MPHS,PSSXh32)
+  PSSXh33_full : LINE=(PSSXh33,MPHS,PSSXh33)
+  PSSXh34_full : LINE=(PSSXh34,MPHS,PSSXh34)
+  PSSXh36_full : LINE=(PSSXh36,MPHS,PSSXh36)
+  PSSXh37_full : LINE=(PSSXh37,MPHS,PSSXh37)
+  PSSXh38_full : LINE=(PSSXh38,MPHS,PSSXh38)
+  PSSXh39_full : LINE=(PSSXh39,MPHS,PSSXh39)
+  PSSXh40_full : LINE=(PSSXh40,MPHS,PSSXh40)
+  PSSXh41_full : LINE=(PSSXh41,MPHS,PSSXh41)
+  PSSXh42_full : LINE=(PSSXh42,MPHS,PSSXh42)
+  PSSXh43_full : LINE=(PSSXh43,MPHS,PSSXh43)
+  PSSXh44_full : LINE=(PSSXh44,MPHS,PSSXh44)
+  PSSXh45_full : LINE=(PSSXh45,MPHS,PSSXh45)
+  PSSXh46_full : LINE=(PSSXh46,MPHS,PSSXh46)
 
 ! ------------------------------------------------------------------------------
-! SXR undulator quadrupoles
+! complete SXR undulator quadrupoles
 ! ------------------------------------------------------------------------------
 
   QSXh16_full : LINE=(QSXh16,XCSX16,MUQS,YCSX16,QSXh16)
@@ -1235,7 +1093,7 @@
   DQSX50      : DRIF, L=LQu
 
 ! ------------------------------------------------------------------------------
-! miscellaneous SXR cell stuff
+! miscellaneous SXR stuff
 ! ------------------------------------------------------------------------------
 
 ! SXRSS-II BOD's
@@ -1278,7 +1136,7 @@
   DUE1ab2   : DRIF, L=DUE1ab[L]-DUE1ab1[L]
 
 ! ------------------------------------------------------------------------------
-! SXR cell interspace definitions
+! SXR FODO cell interspace definitions
 ! ------------------------------------------------------------------------------
 
   SXBRK17 : LINE=(DU3s,DPSSX17,DU4s,DU5s,QSXh17_full,DU6s,&
@@ -1289,9 +1147,16 @@
                   RFBSX19,DU7s)
   SXBRK20 : LINE=(DU3s,DPSSX20,DU4s,DU5s,QSXh20_full,DU6s,&
                   RFBSX20,DU7s)
-  SXBRK21 : LINE=(DU3s,DPSSX21,DU4s,VVSXU21,DU5s,QSXh21_full,DU6s,&
+  SXBRK21 : LINE=(DU3s_,PSSXh21_full,DU4s_,VVSXU21,DU5s_,QSXh21_full,DU6s,&
                   RFBSX21,DU7s)
-
+  SXBRK22 : LINE=(DU3s_,PSSXh22_full,DU4s_,DU5s_,QSXh22_full,DU6s,&
+                  RFBSX22,DU7s)
+  SXBRK23 : LINE=(DU3s_,PSSXh23_full,DU4s_,DU5s_,QSXh23_full,DU6s,&
+                  RFBSX23,DU7s)
+  SXBRK24 : LINE=(DU3s_,PSSXh24_full,DU4s_,DU5s_,QSXh24_full,DU6s,&
+                  RFBSX24,DU7s)
+  SXBRK25 : LINE=(DU3s_,PSSXh25_full,DU4s_,DU5s_,QSXh25_full,DU6s,&
+                  RFBSX25,DU7s)
   SXBRK26 : LINE=(DU3s,PSSXh26_full,DU4s,DU5s,QSXh26_full,DU6s,&
                   RFBSX26,DU7s)
   SXBRK27 : LINE=(DU3s,PSSXh27_full,DU4s,DU5s,QSXh27_full,DU6s,&
@@ -1334,88 +1199,17 @@
                   RFBSX45,DU7s)
   SXBRK46 : LINE=(DU3s,PSSXh46_full,DU4s,DU5s,QSXh46_full,DU6s,&
                   RFBSX46,DU7s)
-  SXBRK47 : LINE=(DU3s,DPSSX47,DU4s,DU5s,QSXh47_full,DU6s,&
+  SXBRK47 : LINE=(DU3s,DPSSX47     ,DU4s,DU5s,QSXh47_full,DU6s,&
                   RFBSX47,DU7s)
-  SXBRK48 : LINE=(DU3s,DPSSX48,DU4s,DU5s,DQSX48,DU6s,&
+  SXBRK48 : LINE=(DU3s,DPSSX48     ,DU4s,DU5s,DQSX48     ,DU6s,&
                   DRFBS48,DU7s)
   SXBRK49 : LINE=(DU3sa,XCPEPX1,DU3sb,DPSSX49,DU4s,DU5s,DQSX49,DU6s,&
                   DRFBS49,DU7se,VGPEPX1,VGCCPEPX1,VGPRPEPX1,DU7sf)
-  SXBRK50 : LINE=(DU3s,DPSSX50,DU4s,DU5s,DQSX50,DU6s,&
+  SXBRK50 : LINE=(DU3s,DPSSX50     ,DU4s,DU5s,DQSX50     ,DU6s,&
                   DRFBS50,DU7s)
 
-! upgrade
-
- !SXBRK17 : LINE=(DU3s_,PSSXh17_full,DU4s_,DU5s_,QSXh17_full,DU6s,&
- !                RFBSX17,DU7s)
- !SXBRK18 : LINE=(DU3s_,PSSXh18_full,DU4s_,DU5s_,QSXh18_full,DU6s,&
- !                RFBSX18,DU7s)
- !SXBRK19 : LINE=(DU3s_,PSSXh19_full,DU4s_,DU5s_,QSXh19_full,DU6s,&
- !                RFBSX19,DU7s)
- !SXBRK20 : LINE=(DU3s_,PSSXh20_full,DU4s_,DU5s_,QSXh20_full,DU6s,&
- !                RFBSX20,DU7s)
- !SXBRK21 : LINE=(DU3s_,PSSXh21_full,DU4s_,VVSXU21,DU5s_,QSXh21_full,DU6s,&
- !                RFBSX21,DU7s)
-  SXBRK22 : LINE=(DU3s_,PSSXh22_full,DU4s_,DU5s_,QSXh22_full,DU6s,&
-                  RFBSX22,DU7s)
-  SXBRK23 : LINE=(DU3s_,PSSXh23_full,DU4s_,DU5s_,QSXh23_full,DU6s,&
-                  RFBSX23,DU7s)
-  SXBRK24 : LINE=(DU3s_,PSSXh24_full,DU4s_,DU5s_,QSXh24_full,DU6s,&
-                  RFBSX24,DU7s)
-  SXBRK25 : LINE=(DU3s_,PSSXh25_full,DU4s_,DU5s_,QSXh25_full,DU6s,&
-                  RFBSX25,DU7s)
- !SXBRK26 : LINE=(DU3s_,PSSXh26_full,DU4s_,DU5s_,QSXh26_full,DU6s,&
- !                RFBSX26,DU7s)
- !SXBRK27 : LINE=(DU3s_,PSSXh27_full,DU4s_,DU5s_,QSXh27_full,DU6s,&
- !                RFBSX27,DU7s)
- !SXBRK28 : LINE=(DU3s_,PSSXh28_full,DU4s_,DU5s_,QSXh28_full,DU6s,&
- !                RFBSX28,DU7s)
- !SXBRK29 : LINE=(DU3s_,PSSXh29_full,DU4s_,VVSXU29,DU5s_,QSXh29_full,DU6s,&
- !                RFBSX29,DU7s)
- !SXBRK30 : LINE=(DU3s_,DPSSX30_,DU4sa,BOD30,DU4sb_,VVSXU30,DU5s_,&
- !                QSXh30_full,DU6s,RFBSX30,DU7s)
- !SXBRK31 : LINE=(DU3s_,PSSXh31_full,DU4s_,DU5s_,QSXh31_full,DU6s,&
- !                RFBSX31,DU7s)
- !SXBRK32 : LINE=(DU3s_,PSSXh32_full,DU4s_,DU5s_,QSXh32_full,DU6s,&
- !                RFBSX32,DU7sa,BOD32,DU7Sb)
- !SXBRK33 : LINE=(DU3s_,PSSXh33_full,DU4s_,DU5s_,QSXh33_full,DU6s,&
- !                RFBSX33,DU7s)
- !SXBRK34 : LINE=(DU3s_,PSSXh34_full,DU4s_,VVSXU34,DU5s_,QSXh34_full,DU6s,&
- !                RFBSX34,DU7s)
- !SXBRK35 : LINE=(DU3s_,PSSXh35_full,DU4s_,DU5s_,QSXh35_full,DU6s,&
- !                RFBSX35,DU7s)
- !SXBRK36 : LINE=(DU3s_,PSSXh36_full,DU4s_,DU5s_,QSXh36_full,DU6s,&
- !                RFBSX36,DU7s)
- !SXBRK37 : LINE=(DU3s_,PSSXh37_full,DU4s_,DU5s_,QSXh37_full,DU6s,&
- !                RFBSX37,DU7s)
- !SXBRK38 : LINE=(DU3s_,PSSXh38_full,DU4s_,VVSXU38,DU5s_,QSXh38_full,DU6s,&
- !                RFBSX38,DU7s)
- !SXBRK39 : LINE=(DU3s_,PSSXh39_full,DU4s_,DU5s_,QSXh39_full,DU6s,&
- !                RFBSX39,DU7s)
- !SXBRK40 : LINE=(DU3s_,PSSXh40_full,DU4s_,DU5s_,QSXh40_full,DU6s,&
- !                RFBSX40,DU7s)
- !SXBRK41 : LINE=(DU3s_,PSSXh41_full,DU4s_,DU5s_,QSXh41_full,DU6s,&
- !                RFBSX41,DU7s)
- !SXBRK42 : LINE=(DU3s_,PSSXh42_full,DU4s_,DU5s_,QSXh42_full,DU6s,&
- !                RFBSX42,DU7s)
- !SXBRK43 : LINE=(DU3s_,PSSXh43_full,DU4s_,DU5s_,QSXh43_full,DU6s,&
- !                RFBSX43,DU7s)
- !SXBRK44 : LINE=(DU3s_,PSSXh44_full,DU4s_,VVSXU44,DU5s_,QSXh44_full,DU6s,&
- !                RFBSX44,DU7s)
- !SXBRK45 : LINE=(DU3s_,PSSXh45_full,DU4s_,DU5s_,QSXh45_full,DU6s,&
- !                RFBSX45,DU7s)
- !SXBRK46 : LINE=(DU3s_,PSSXh46_full,DU4s_,DU5s_,QSXh46_full,DU6s,&
- !                RFBSX46,DU7s)
- !SXBRK47 : LINE=(DU3s_,DPSSX47_,DU4s_,DU5s_,QSXh47_full,DU6s,&
- !                RFBSX47,DU7s)
- !SXBRK48 : LINE=(DU3s_,DPSSX48_,DU4s_,DU5s_,DQSX48,DU6s,&
- !                DRFBS48,DU7s)
- !SXBRK49 : LINE=(DU3sa,XCPEPX1,DU3sb_,DPSSX49_,DU4s_,DU5s_,DQSX49,DU6s,&
- !                DRFBS49,DU7se,VGPEPX1,VGCCPEPX1,VGPRPEPX1,DU7sf)
- !SXBRK50 : LINE=(DU3s_,DPSSX50_,DU4s_,DU5s_,DQSX50,DU6s,&
- !                DRFBS50,DU7s)
-
 ! ------------------------------------------------------------------------------
-! SXR cell definitions
+! SXR cell boundary definitions
 ! ------------------------------------------------------------------------------
 
   SXR17BEG : MARK ; SXR17END : MARK
@@ -1453,80 +1247,50 @@
   SXR49BEG : MARK ; SXR49END : MARK
   SXR50BEG : MARK ; SXR50END : MARK
 
-! post-SDT
+! ------------------------------------------------------------------------------
+! SXR cell definitions
+! ------------------------------------------------------------------------------
 
-  SXCEL17 : LINE=(SXR17BEG,DU1s,        DU2s,DUSEGS17,SXBRK17,SXR17END)
-  SXCEL18 : LINE=(SXR18BEG,DU1s,        DU2s,DUSEGS18,SXBRK18,SXR18END)
-  SXCEL19 : LINE=(SXR19BEG,DU1s,        DU2s,DUSEGS19,SXBRK19,SXR19END)
-  SXCEL20 : LINE=(SXR20BEG,DU1s,        DU2s,DUSEGS20,SXBRK20,SXR20END)
-  SXCEL21 : LINE=(SXR21BEG,DU1s,        DU2s,DUSEGS21,SXBRK21,SXR21END)
-
-  SXCEL26 : LINE=(SXR26BEG,DU1s,MBLMS26,DU2s,USEGSX26,SXBRK26,SXR26END)
-  SXCEL27 : LINE=(SXR27BEG,DU1s,MBLMS27,DU2s,USEGSX27,SXBRK27,SXR27END)
-  SXCEL28 : LINE=(SXR28BEG,DU1s,MBLMS28,DU2s,USEGSX28,SXBRK28,SXR28END)
-  SXCEL29 : LINE=(SXR29BEG,DU1s,MBLMS29,DU2s,USEGSX29,SXBRK29,SXR29END)
-  SXCEL30 : LINE=(SXR30BEG,DU1s,MBLMS30,DU2s,USEGSX30,SXBRK30,SXR30END)
-  SXCEL31 : LINE=(SXR31BEG,DU1s,MBLMS31,DU2s,USEGSX31,SXBRK31,SXR31END)
-  SXCEL32 : LINE=(SXR32BEG,DU1s,MBLMS32,DU2s,USEGSX32,SXBRK32,SXR32END)
-  SXCEL33 : LINE=(SXR33BEG,DU1s,MBLMS33,DU2s,USEGSX33,SXBRK33,SXR33END)
-  SXCEL34 : LINE=(SXR34BEG,DU1s,MBLMS34,DU2s,USEGSX34,SXBRK34,SXR34END)
-  SXCEL35 : LINE=(SXR35BEG,DU1s,MBLMS35,DU2s,DUSEGS35,SXBRK35,SXR35END) !SXRSS+Q+RFBPM
-  SXCEL36 : LINE=(SXR36BEG,DU1s,MBLMS36,DU2s,USEGSX36,SXBRK36,SXR36END)
-  SXCEL37 : LINE=(SXR37BEG,DU1s,MBLMS37,DU2s,USEGSX37,SXBRK37,SXR37END)
-  SXCEL38 : LINE=(SXR38BEG,DU1s,MBLMS38,DU2s,USEGSX38,SXBRK38,SXR38END)
-  SXCEL39 : LINE=(SXR39BEG,DU1s,MBLMS39,DU2s,USEGSX39,SXBRK39,SXR39END)
-  SXCEL40 : LINE=(SXR40BEG,DU1s,MBLMS40,DU2s,USEGSX40,SXBRK40,SXR40END)
-  SXCEL41 : LINE=(SXR41BEG,DU1s,MBLMS41,DU2s,USEGSX41,SXBRK41,SXR41END)
-  SXCEL42 : LINE=(SXR42BEG,DU1s,MBLMS42,DU2s,USEGSX42,SXBRK42,SXR42END)
-  SXCEL43 : LINE=(SXR43BEG,DU1s,MBLMS43,DU2s,USEGSX43,SXBRK43,SXR43END)
-  SXCEL44 : LINE=(SXR44BEG,DU1s,MBLMS44,DU2s,USEGSX44,SXBRK44,SXR44END)
-  SXCEL45 : LINE=(SXR45BEG,DU1s,MBLMS45,DU2s,USEGSX45,SXBRK45,SXR45END)
-  SXCEL46 : LINE=(SXR46BEG,DU1s,MBLMS46,DU2s,USEGSX46,SXBRK46,SXR46END)
-  SXCEL47 : LINE=(SXR47BEG,DU1s,MBLMS47,DU2s,USEGSX47,SXBRK47,SXR47END)
-  SXCEL48 : LINE=(SXR48BEG,DU1s,MBLMS48,DU2s,DUSEGS48,SXBRK48,SXR48END) !empty
-  SXCEL49 : LINE=(SXR49BEG,DU1s,DU2s,DUSEGS49,SXBRK49,SXR49END)         !empty
+  SXCEL17 : LINE=(SXR17BEG,DU1s,        DU2s,DUSEGS17,SXBRK17,SXR17END) !Q+RFBPM
+  SXCEL18 : LINE=(SXR18BEG,DU1s,        DU2s,DUSEGS18,SXBRK18,SXR18END) !Q+RFBPM
+  SXCEL19 : LINE=(SXR19BEG,DU1s,        DU2s,DUSEGS19,SXBRK19,SXR19END) !Q+RFBPM
+  SXCEL20 : LINE=(SXR20BEG,DU1s,        DU2s,DUSEGS20,SXBRK20,SXR20END) !Q+RFBPM
+  SXCEL21 : LINE=(SXR21BEG,DU1s,MBLMS21,DU2s,USEGSX21,SXBRK21,SXR21END) !long
+  SXCEL22 : LINE=(SXR22BEG,DU1s,        DU2s,USEGSX22,SXBRK22,SXR22END) !long
+  SXCEL23 : LINE=(SXR23BEG,DU1s,MBLMS23,DU2s,USEGSX23,SXBRK23,SXR23END) !long
+  SXCEL24 : LINE=(SXR24BEG,DU1s,        DU2s,USEGSX24,SXBRK24,SXR24END) !long
+  SXCEL25 : LINE=(SXR25BEG,DU1s,MBLMS25,DU2s,USEGSX25,SXBRK25,SXR25END) !long
+  SXCEL26 : LINE=(SXR26BEG,DU1s,        DU2s,USEGSX26,SXBRK26,SXR26END) !short
+  SXCEL27 : LINE=(SXR27BEG,DU1s,MBLMS27,DU2s,USEGSX27,SXBRK27,SXR27END) !short
+  SXCEL28 : LINE=(SXR28BEG,DU1s,        DU2s,USEGSX28,SXBRK28,SXR28END) !short
+  SXCEL29 : LINE=(SXR29BEG,DU1s,MBLMS29,DU2s,USEGSX29,SXBRK29,SXR29END) !short
+  SXCEL30 : LINE=(SXR30BEG,DU1s,        DU2s,USEGSX30,SXBRK30,SXR30END) !short
+  SXCEL31 : LINE=(SXR31BEG,DU1s,MBLMS31,DU2s,USEGSX31,SXBRK31,SXR31END) !short
+  SXCEL32 : LINE=(SXR32BEG,DU1s,        DU2s,USEGSX32,SXBRK32,SXR32END) !short
+  SXCEL33 : LINE=(SXR33BEG,DU1s,MBLMS33,DU2s,USEGSX33,SXBRK33,SXR33END) !short
+  SXCEL34 : LINE=(SXR34BEG,DU1s,        DU2s,USEGSX34,SXBRK34,SXR34END) !short
+  SXCEL35 : LINE=(SXR35BEG,DU1s,        DU2s,DUSEGS35,SXBRK35,SXR35END) !SXRSS+Q+RFBPM
+  SXCEL36 : LINE=(SXR36BEG,DU1s,        DU2s,USEGSX36,SXBRK36,SXR36END) !short
+  SXCEL37 : LINE=(SXR37BEG,DU1s,MBLMS37,DU2s,USEGSX37,SXBRK37,SXR37END) !short
+  SXCEL38 : LINE=(SXR38BEG,DU1s,        DU2s,USEGSX38,SXBRK38,SXR38END) !short
+  SXCEL39 : LINE=(SXR39BEG,DU1s,MBLMS39,DU2s,USEGSX39,SXBRK39,SXR39END) !short
+  SXCEL40 : LINE=(SXR40BEG,DU1s,        DU2s,USEGSX40,SXBRK40,SXR40END) !short
+  SXCEL41 : LINE=(SXR41BEG,DU1s,MBLMS41,DU2s,USEGSX41,SXBRK41,SXR41END) !short
+  SXCEL42 : LINE=(SXR42BEG,DU1s,        DU2s,USEGSX42,SXBRK42,SXR42END) !short
+  SXCEL43 : LINE=(SXR43BEG,DU1s,MBLMS43,DU2s,USEGSX43,SXBRK43,SXR43END) !short
+  SXCEL44 : LINE=(SXR44BEG,DU1s,        DU2s,USEGSX44,SXBRK44,SXR44END) !short
+  SXCEL45 : LINE=(SXR45BEG,DU1s,MBLMS45,DU2s,USEGSX45,SXBRK45,SXR45END) !short
+  SXCEL46 : LINE=(SXR46BEG,DU1s,        DU2s,USEGSX46,SXBRK46,SXR46END) !short
+  SXCEL47 : LINE=(SXR47BEG,DU1s,MBLMS47,DU2s,USEGSX47,SXBRK47,SXR47END) !short
+  SXCEL48 : LINE=(SXR48BEG,DU1s,        DU2s,DUSEGS48,SXBRK48,SXR48END) !empty
+  SXCEL49 : LINE=(SXR49BEG,DU1s,        DU2s,DUSEGS49,SXBRK49,SXR49END) !empty
   SXCEL50 : LINE=(SXR50BEG,DU1s,DU2s,DUSEGS50a,XCPEPX2,DUSEGS50b,&
     ZPPEPX,DUSEGS50c,VPPEPX1,DUSEGS50d,XCPEPX3,DUSEGS50e,XCPEPX4,&
     DUSEGS50f,GJPEPX,DUSEGS50g,SXBRK50,SXR50END)                        !PEPPEx stuff
 
-! upgrade
-
- !SXCEL17 : LINE=(SXR17BEG,DU1s,MBLMS17,DU2s,USEGSX17,SXBRK17,SXR17END)
- !SXCEL18 : LINE=(SXR18BEG,DU1s,MBLMS18,DU2s,USEGSX18,SXBRK18,SXR18END)
- !SXCEL19 : LINE=(SXR19BEG,DU1s,MBLMS19,DU2s,USEGSX19,SXBRK19,SXR19END)
- !SXCEL20 : LINE=(SXR20BEG,DU1s,MBLMS20,DU2s,USEGSX20,SXBRK20,SXR20END)
- !SXCEL21 : LINE=(SXR21BEG,DU1s,MBLMS21,DU2s,USEGSX21,SXBRK21,SXR21END)
-  SXCEL22 : LINE=(SXR22BEG,DU1s,MBLMS22,DU2s,USEGSX22,SXBRK22,SXR22END)
-  SXCEL23 : LINE=(SXR23BEG,DU1s,MBLMS23,DU2s,USEGSX23,SXBRK23,SXR23END)
-  SXCEL24 : LINE=(SXR24BEG,DU1s,MBLMS24,DU2s,USEGSX24,SXBRK24,SXR24END)
-  SXCEL25 : LINE=(SXR25BEG,DU1s,MBLMS25,DU2s,USEGSX25,SXBRK25,SXR25END)
- !SXCEL26 : LINE=(SXR26BEG,DU1s,MBLMS26,DU2s,USEGSX26,SXBRK26,SXR26END)
- !SXCEL27 : LINE=(SXR27BEG,DU1s,MBLMS27,DU2s,USEGSX27,SXBRK27,SXR27END)
- !SXCEL28 : LINE=(SXR28BEG,DU1s,MBLMS28,DU2s,USEGSX28,SXBRK28,SXR28END)
- !SXCEL29 : LINE=(SXR29BEG,DU1s,MBLMS29,DU2s,USEGSX29,SXBRK29,SXR29END)
- !SXCEL30 : LINE=(SXR30BEG,DU1s,MBLMS30,DU2s,DUSEGS30,SXBRK30,SXR30END) !SXRSS+Q+RFBPM
- !SXCEL31 : LINE=(SXR31BEG,DU1s,MBLMS31,DU2s,USEGSX31,SXBRK31,SXR31END)
- !SXCEL32 : LINE=(SXR32BEG,DU1s,MBLMS32,DU2s,USEGSX32,SXBRK32,SXR32END)
- !SXCEL33 : LINE=(SXR33BEG,DU1s,MBLMS33,DU2s,USEGSX33,SXBRK33,SXR33END)
- !SXCEL34 : LINE=(SXR34BEG,DU1s,MBLMS34,DU2s,USEGSX34,SXBRK34,SXR34END)
- !SXCEL35 : LINE=(SXR35BEG,DU1s,MBLMS35,DU2s,USEGSX35,SXBRK35,SXR35END)
- !SXCEL36 : LINE=(SXR36BEG,DU1s,MBLMS36,DU2s,USEGSX36,SXBRK36,SXR36END)
- !SXCEL37 : LINE=(SXR37BEG,DU1s,MBLMS37,DU2s,USEGSX37,SXBRK37,SXR37END)
- !SXCEL38 : LINE=(SXR38BEG,DU1s,MBLMS38,DU2s,USEGSX38,SXBRK38,SXR38END)
- !SXCEL39 : LINE=(SXR39BEG,DU1s,MBLMS39,DU2s,USEGSX39,SXBRK39,SXR39END)
- !SXCEL40 : LINE=(SXR40BEG,DU1s,MBLMS40,DU2s,USEGSX40,SXBRK40,SXR40END)
- !SXCEL41 : LINE=(SXR41BEG,DU1s,MBLMS41,DU2s,USEGSX41,SXBRK41,SXR41END)
- !SXCEL42 : LINE=(SXR42BEG,DU1s,MBLMS42,DU2s,USEGSX42,SXBRK42,SXR42END)
- !SXCEL43 : LINE=(SXR43BEG,DU1s,MBLMS43,DU2s,USEGSX43,SXBRK43,SXR43END)
- !SXCEL44 : LINE=(SXR44BEG,DU1s,MBLMS44,DU2s,USEGSX44,SXBRK44,SXR44END)
- !SXCEL45 : LINE=(SXR45BEG,DU1s,MBLMS45,DU2s,USEGSX45,SXBRK45,SXR45END)
- !SXCEL46 : LINE=(SXR46BEG,DU1s,MBLMS46,DU2s,USEGSX46,SXBRK46,SXR46END)
- !SXCEL47 : LINE=(SXR47BEG,DU1s,MBLMS47,DU2s,USEGSX47,SXBRK47,SXR47END)
- !SXCEL48 : LINE=(SXR48BEG,DU1s,MBLMS48,DU2s,DUSEGS48,SXBRK48,SXR48END) !empty
- !SXCEL49 : LINE=(SXR49BEG,DU1s,DU2s,DUSEGS49,SXBRK49,SXR49END)         !empty
- !SXCEL50 : LINE=(SXR50BEG,DU1s,DU2s,DUSEGS50a,XCPEPX2,DUSEGS50b,&
- !  ZPPEPX,DUSEGS50c,VPPEPX1,DUSEGS50d,XCPEPX3,DUSEGS50e,XCPEPX4,&
- !  DUSEGS50f,GJPEPX,DUSEGS50g,SXBRK50,SXR50END)                        !PEPPEx stuff
+! ------------------------------------------------------------------------------
+! SXR definitions
+! ------------------------------------------------------------------------------
 
   SXRCL    : LINE=(&
     SXCEL17,SXCEL18,SXCEL19,SXCEL20,SXCEL21,SXCEL22,SXCEL23,SXCEL24,&
@@ -2145,41 +1909,23 @@
 ! HXR undulator Beam Loss Monitors (placeholders)
 ! ------------------------------------------------------------------------------
 
- !MBLMH13 : MARK
   MBLMH14 : MARK
-  MBLMH15 : MARK
   MBLMH16 : MARK
-  MBLMH17 : MARK
   MBLMH18 : MARK
-  MBLMH19 : MARK
   MBLMH20 : MARK
-  MBLMH21 : MARK
   MBLMH22 : MARK
-  MBLMH23 : MARK
   MBLMH24 : MARK
-  MBLMH25 : MARK
   MBLMH26 : MARK
-  MBLMH27 : MARK
-  MBLMH28 : MARK
-  MBLMH29 : MARK
+! -----28
   MBLMH30 : MARK
-  MBLMH31 : MARK
   MBLMH32 : MARK
-  MBLMH33 : MARK
   MBLMH34 : MARK
-  MBLMH35 : MARK
   MBLMH36 : MARK
-  MBLMH37 : MARK
   MBLMH38 : MARK
-  MBLMH39 : MARK
   MBLMH40 : MARK
-  MBLMH41 : MARK
   MBLMH42 : MARK
-  MBLMH43 : MARK
   MBLMH44 : MARK
-  MBLMH45 : MARK
   MBLMH46 : MARK
-  MBLMH47 : MARK
 
 ! ------------------------------------------------------------------------------
 ! HXRSS self-seeding chicane (LCLSII-3.2-PR-0102-R1)
@@ -2566,15 +2312,15 @@
                   DU4hCB1,RFBHX13,DU5hCB1,DU7h)
   HXBRK14 : LINE=(DU3h,MBLMH14,DU3h,QHXh14_full,DU4h,RFBHX14,DU5h,&
                   PSHXh14_full,DU6h,VVHXU14,DU7h)
-  HXBRK15 : LINE=(DU3h,MBLMH15,DU3h,QHXh15_full,DU4h,RFBHX15,DU5h,&
+  HXBRK15 : LINE=(DU3h,        DU3h,QHXh15_full,DU4h,RFBHX15,DU5h,&
                   PSHXh15_full,DU6h,DVVHXU,DU7h)
   HXBRK16 : LINE=(DU3h,MBLMH16,DU3h,QHXh16_full,DU4h,RFBHX16,DU5h,&
                   PSHXh16_full,DU6h,DVVHXU,DU7h)
-  HXBRK17 : LINE=(DU3h,MBLMH17,DU3h,QHXh17_full,DU4h,RFBHX17,DU5h,&
+  HXBRK17 : LINE=(DU3h,        DU3h,QHXh17_full,DU4h,RFBHX17,DU5h,&
                   PSHXh17_full,DU6h,VVHXU17,DU7h)
   HXBRK18 : LINE=(DU3h,MBLMH18,DU3h,QHXh18_full,DU4h,RFBHX18,DU5h,&
                   PSHXh18_full,DU6h,DVVHXU,DU7h)
-  HXBRK19 : LINE=(DU3h,MBLMH19,DU3h,QHXh19_full,DU4h,RFBHX19,DU5h,&
+  HXBRK19 : LINE=(DU3h,        DU3h,QHXh19_full,DU4h,RFBHX19,DU5h,&
                   PSHXh19_full,DU6h,DVVHXU,DU7h)
   HXBRK20 : LINE=(DU3h,MBLMH20,DU3h,QHXh20_full,DU4h,RFBHX20,DU5h,&
                   PSHXh20_full,DU6h,VVHXU20,DU7h)
@@ -2582,55 +2328,55 @@
                   DU4hCB2,RFBHX21,DU5hCB2,DU7h)
   HXBRK22 : LINE=(DU3h,MBLMH22,DU3h,QHXh22_full,DU4h,RFBHX22,DU5h,&
                   PSHXh22_full,DU6h,VVHXU22,DU7h)
-  HXBRK23 : LINE=(DU3h,MBLMH23,DU3h,QHXh23_full,DU4h,RFBHX23,DU5h,&
+  HXBRK23 : LINE=(DU3h,        DU3h,QHXh23_full,DU4h,RFBHX23,DU5h,&
                   PSHXh23_full,DU6h,DVVHXU,DU7h)
   HXBRK24 : LINE=(DU3h,MBLMH24,DU3h,QHXh24_full,DU4h,RFBHX24,DU5h,&
                   PSHXh24_full,DU6h,VVHXU24,DU7h)
-  HXBRK25 : LINE=(DU3h,MBLMH25,DU3h,QHXh25_full,DU4h,RFBHX25,DU5h,&
+  HXBRK25 : LINE=(DU3h,        DU3h,QHXh25_full,DU4h,RFBHX25,DU5h,&
                   PSHXh25_full,DU6h,DVVHXU,DU7h)
   HXBRK26 : LINE=(DU3h,MBLMH26,DU3h,QHXh26_full,DU4h,RFBHX26,DU5h,&
                   PSHXh26_full,DU6h,DVVHXU,DU7h)
-  HXBRK27 : LINE=(DU3h,MBLMH27,DU3h,QHXh27_full,DU4h,RFBHX27,DU5h,&
+  HXBRK27 : LINE=(DU3h,        DU3h,QHXh27_full,DU4h,RFBHX27,DU5h,&
                   PSHXh27_full,DU6h,VVHXU27,DU7h)
-  HXBRK28 : LINE=(DU3h,MBLMH28,DU3h,QHXh28_full,DU4h,RFBHX28,DU5h,&
+  HXBRK28 : LINE=(DU3h,        DU3h,QHXh28_full,DU4h,RFBHX28,DU5h,&
                   DPSHX28     ,DU6h        ,DU7h)
-  HXBRK29 : LINE=(DU3h,MBLMH29,DU3h,QHXh29_full,DU4h,RFBHX29,DU5h,&
+  HXBRK29 : LINE=(DU3h,        DU3h,QHXh29_full,DU4h,RFBHX29,DU5h,&
                   PSHXh29_full,DU6h,VVHXU29,DU7h)
   HXBRK30 : LINE=(DU3h,MBLMH30,DU3h,QHXh30_full,DU4h,RFBHX30,DU5h,&
                   PSHXh30_full,DU6h,DVVHXU,DU7h)
-  HXBRK31 : LINE=(DU3h,MBLMH31,DU3h,QHXh31_full,DU4h,RFBHX31,DU5h,&
+  HXBRK31 : LINE=(DU3h,        DU3h,QHXh31_full,DU4h,RFBHX31,DU5h,&
                   PSHXh31_full,DU6h,DVVHXU,DU7h)
   HXBRK32 : LINE=(DU3h,MBLMH32,DU3h,QHXh32_full,DU4h,RFBHX32,DU5h,&
                   PSHXh32_full,DU6h,VVHXU32,DU7h)
-  HXBRK33 : LINE=(DU3h,MBLMH33,DU3h,QHXh33_full,DU4h,RFBHX33,DU5h,&
+  HXBRK33 : LINE=(DU3h,        DU3h,QHXh33_full,DU4h,RFBHX33,DU5h,&
                   PSHXh33_full,DU6h,DVVHXU,DU7h)
   HXBRK34 : LINE=(DU3h,MBLMH34,DU3h,QHXh34_full,DU4h,RFBHX34,DU5h,&
                   PSHXh34_full,DU6h,DVVHXU,DU7h)
-  HXBRK35 : LINE=(DU3h,MBLMH35,DU3h,QHXh35_full,DU4h,RFBHX35,DU5h,&
+  HXBRK35 : LINE=(DU3h,        DU3h,QHXh35_full,DU4h,RFBHX35,DU5h,&
                   PSHXh35_full,DU6h,VVHXU35,DU7h)
   HXBRK36 : LINE=(DU3h,MBLMH36,DU3h,QHXh36_full,DU4h,RFBHX36,DU5h,&
                   PSHXh36_full,DU6h,DVVHXU,DU7h)
-  HXBRK37 : LINE=(DU3h,MBLMH37,DU3h,QHXh37_full,DU4h,RFBHX37,DU5h,&
+  HXBRK37 : LINE=(DU3h,        DU3h,QHXh37_full,DU4h,RFBHX37,DU5h,&
                   PSHXh37_full,DU6h,VVHXU37,DU7h)
   HXBRK38 : LINE=(DU3h,MBLMH38,DU3h,QHXh38_full,DU4h,RFBHX38,DU5h,&
                   PSHXh38_full,DU6h,DVVHXU,DU7h)
-  HXBRK39 : LINE=(DU3h,MBLMH39,DU3h,QHXh39_full,DU4h,RFBHX39,DU5h,&
+  HXBRK39 : LINE=(DU3h,        DU3h,QHXh39_full,DU4h,RFBHX39,DU5h,&
                   PSHXh39_full,DU6h,DVVHXU,DU7h)
   HXBRK40 : LINE=(DU3h,MBLMH40,DU3h,QHXh40_full,DU4h,RFBHX40,DU5h,&
                   PSHXh40_full,DU6h,VVHXU40,DU7h)
-  HXBRK41 : LINE=(DU3h,MBLMH41,DU3h,QHXh41_full,DU4h,RFBHX41,DU5h,&
+  HXBRK41 : LINE=(DU3h,        DU3h,QHXh41_full,DU4h,RFBHX41,DU5h,&
                   PSHXh41_full,DU6h,DVVHXU,DU7h)
   HXBRK42 : LINE=(DU3h,MBLMH42,DU3h,QHXh42_full,DU4h,RFBHX42,DU5h,&
                   PSHXh42_full,DU6h,DVVHXU,DU7h)
-  HXBRK43 : LINE=(DU3h,MBLMH43,DU3h,QHXh43_full,DU4h,RFBHX43,DU5h,&
+  HXBRK43 : LINE=(DU3h,        DU3h,QHXh43_full,DU4h,RFBHX43,DU5h,&
                   PSHXh43_full,DU6h,VVHXU43,DU7h)
   HXBRK44 : LINE=(DU3h,MBLMH44,DU3h,QHXh44_full,DU4h,RFBHX44,DU5h,&
                   PSHXh44_full,DU6h,DVVHXU,DU7h)
-  HXBRK45 : LINE=(DU3h,MBLMH45,DU3h,QHXh45_full,DU4h,RFBHX45,DU5h,&
+  HXBRK45 : LINE=(DU3h,        DU3h,QHXh45_full,DU4h,RFBHX45,DU5h,&
                   PSHXh45_full,DU6h,VVHXU45,DU7h)
   HXBRK46 : LINE=(DU3h,MBLMH46,DU3h,QHXh46_full,DU4h,RFBHX46,DU5h,&
                   PSHXh46_full,DU6h,DVVHXU,DU7h)
-  HXBRK47 : LINE=(DU3h,MBLMH47,DU3h,QHXh47_full,DU4h,RFBHX47,DU5h,&
+  HXBRK47 : LINE=(DU3h,        DU3h,QHXh47_full,DU4h,RFBHX47,DU5h,&
                   DPSHX47     ,DU6h,DVVHXU,DU7h)
   HXBRK48 : LINE=(DU3h        ,DU3h,DQHX48     ,DU4h,DRFBH48,DU5h,&
                   DPSHX48     ,DU6h        ,DU7h)
@@ -2741,7 +2487,7 @@
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-  KQUE1 :=  0.178908931125
+  KQUE1 :=  0.177882363971 ! 0.178908931125
   KQUE2 := -0.136231234699
 
   QUE1 : QUAD, TYPE="3.25Q20", L=LQD/2, K1=KQUE1, APER=rQD

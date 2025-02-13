@@ -1,6 +1,6 @@
   TITLE, "AD_ACCEL: copper linac"
 
-! *** OPTICS=AD_ACCEL-01JAN2025s ***
+! *** OPTICS=AD_ACCEL-18FEB2025s ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY
   ASSIGN, ECHO="LCLS2cu.echo"
@@ -197,6 +197,7 @@
 
 ! special redefinitions for Cu-linac (high energy) beam passing through lattice
 ! defined for SC-linac (low energy) beam
+! (NOTE: these quad strengths are also used in CU_HXR.xsif!)
 
   SETK2cuH : SUBROUTINE !for LCLS2cuH
 
@@ -219,6 +220,10 @@
     SET, KQUE2,  -0.137840816238
     SET, KQDMP,  -0.155212710055
   ENDSUBROUTINE
+
+! special redefinitions for Cu-linac (high energy) beam passing through lattice
+! defined for SC-linac (low energy) beam
+! (NOTE: these quad strengths are also used in CU_SXR.xsif!)
 
   SETK2cuS : SUBROUTINE !for LCLS2cuS
     SET, KQBP33, -0.645066535687 !-0.645066535808
@@ -292,7 +297,7 @@
 ! ------------------------------------------------------------------------------
 
  !CALL, FILENAME="LCLS2cu_match.mad8"
- CALL, FILENAME="LCLS2cu_makeSymbols.mad8"
+ !CALL, FILENAME="LCLS2cu_makeSymbols.mad8"
  !CALL, FILENAME="LCLS2cu_makeElegant.mad8" !use LCLS_L*e.xsif
  !CALL, FILENAME="LCLS2cu_XLEAP.mad8" !run by itself
 
@@ -352,7 +357,7 @@
    !SAVELINE, NAME="CU_SXR", FILENAME="LCLS2cuS.saveline"
     PRINT, FULL
     SURVEY, THETA0=ADL1, X0=Xi, Z0=Zi, TAPE="LCLS2cuS_survey.tape"
-    TWISS, SAVE, BETA0=TWSSC, TAPE="LCLS2cuS_twiss.tape" !, &
+    TWISS, COUPLE, SAVE, BETA0=TWSSC, TAPE="LCLS2cuS_twiss.tape" !, &
    !  RTAPE="LCLS2cuS_rmat.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
       STYLE=100, SPLINE, RANGE=BEGDL1_1/DUMPFACEB, FILE="LCLS2cuS", &
