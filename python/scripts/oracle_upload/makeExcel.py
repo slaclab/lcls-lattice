@@ -3186,6 +3186,29 @@ with open(outdir+'/'+fname, 'wt') as fid:
 # ------------------------------------------------------------------------------
 
 # save RDBdata
+sio.savemat(outdir+'/makeExcel.dump.mat', 
+mdict={
+"K":K,
+"N":N,
+"L":L,
+"P":P,
+"A":A,
+"T":T,
+"E":E,
+"FDN":FDN,
+"coor":coor,
+"S":S,
+"idf":idf,
+"ids":ids,
+"idd":idd,
+"K1":K,
+"N1":N,
+"L1":L,
+"P1":P,
+"S1":E,
+"coor1":coor,
+"FDN1":FDN,
+})
 
 print(f'Be sure to add FACET2 elements to {fname}!\n')
 
