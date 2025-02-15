@@ -8,7 +8,7 @@ from pathlib import Path
 
 script_dir = Path(__file__).parent.resolve()
 
-optics='02SEP2024s'
+optics='18FEB2025s'
 vfile=['LCLS2sc_value.echo','LCLS2cu_value.echo']
 
 outdir='oracle_upload'
@@ -2077,7 +2077,8 @@ import scipy.io as sio
 
 def fix_power_fraction(lcav):
     #fname = r'V:\LCLS\Users\Woodley\AD_ACCEL\20190613_13JUN19\RDB\RDBdata'
-    fname = f'{script_dir}/RDBdata.mat'
+    #fname = f'{script_dir}/RDBdata.mat'
+    fname = f'{script_dir}/LCAVITY_PowerFraction.mat'
     old = sio.loadmat(fname)['LCAV']
     
     name = [x['name'] for x in old[0]]
@@ -3186,7 +3187,28 @@ with open(outdir+'/'+fname, 'wt') as fid:
 # ------------------------------------------------------------------------------
 
 # save RDBdata
+sio.savemat(outdir+'/makeExcel.dump.mat', 
+mdict={
+"K":K,
+"N":N,
+"L":L,
+"P":P,
+"A":A,
+"T":T,
+"E":E,
+"FDN":FDN,
+"coor":coor,
+"S":S,
+"idf":idf,
+"ids":ids,
+"idd":idd,
+"K1":K,
+"N1":N,
+"L1":L,
+"P1":P,
+"S1":E,
+"coor1":coor,
+"FDN1":FDN,
+})
 
 print(f'Be sure to add FACET2 elements to {fname}!\n')
-
-
