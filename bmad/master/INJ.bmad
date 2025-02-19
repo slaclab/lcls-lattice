@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-01JAN2025s ***
+! *** OPTICS=AD_ACCEL-18FEB2025s ***
 
 ! LCLS2sc injector: gun to start of L1 linac
 
@@ -387,17 +387,17 @@ r34h = lhunh*sincargh
 
 
 !------- Laser Heater Undulator for SC Linac -------
-! my_umhtr_k = 0.960143
-! 
-! umhtr: wiggler, 
-!         type = "laser_heater_undulator",
-!         L_period = 0.054, 
-!         n_period = 10, 
-!         b_max = my_umhtr_k * 2*pi*m_electron / (c_light * 0.054), 
-!         L = 10*0.054 ! Was: 0.506263, 
-!         ds_step = 0.054
-! 
-! umhtr[L] = umhtr[L]/2 ! Will be doubled in desplitting process. 
+my_umhtr_k = 0.960143
+
+!umhtr: wiggler, 
+!        type = "laser_heater_undulator",
+!        L_period = 0.054, 
+!        n_period = 10, 
+!        b_max = my_umhtr_k * 2*pi*m_electron / (c_light * 0.054), 
+!        L = 10*0.054 ! Was: 0.506263, 
+!        ds_step = 0.054
+!
+!umhtr[L] = umhtr[L]/2 ! Will be doubled in desplitting process. 
 !--------------------------------- !,                               &
 umhtr: taylor, type = "UMLHB", l = lhunh, tt11 = 1.0, tt12 = lhunh, tt21 = 0, tt22 = 1.0, tt33 = cos(lhunh*sqrt(kqlh)),
          tt34 = r34h, tt43 = -sin(lhunh*sqrt(kqlh))*sqrt(kqlh), tt44 = cos(lhunh*sqrt(kqlh)), tt55 = 1, tt66 = 1
@@ -619,20 +619,13 @@ bpmc010: monitor, type = "Stripline-1"
 bpmc011: monitor, type = "Stripline-1"
 bpmc012: monitor, type = "Stripline-1"
 
-RFB0H00: pipe, L = 0.0, type ="@2,CavityS-1", descrip = "deferred MONITOR"
-!old: rfb0h00: monitor, type = "@2,CavityS-1"
-RFB0H04: pipe, L = 0.0, type ="@2,CavityS-1", descrip = "deferred MONITOR"
-!old: rfb0h04: monitor, type = "@2,CavityS-1"
-RFB0H08: pipe, L = 0.0, type ="@2,CavityS-1", descrip = "deferred MONITOR"
-!old: rfb0h08: monitor, type = "@2,CavityS-1"
-RFBHD00: pipe, L = 0.0, type ="@2,CavityS-1", descrip = "deferred MONITOR"
-!old: rfbhd00: monitor, type = "@2,CavityS-1"
-RFBHD04: pipe, L = 0.0, type ="@2,CavityS-1", descrip = "deferred MONITOR"
-!old: rfbhd04: monitor, type = "@2,CavityS-1"
-RFBC006: pipe, L = 0.0, type ="@2,CavityS-1", descrip = "deferred MONITOR"
-!old: rfbc006: monitor, type = "@2,CavityS-1"
-RFBC011: pipe, L = 0.0, type ="@4,CavityS-1", descrip = "deferred MONITOR"
-!old: rfbc011: monitor, type = "@4,CavityS-1"
+rfb0h00: monitor, type = "@2,CavityS-1"
+rfb0h04: monitor, type = "@2,CavityS-1"
+rfb0h08: monitor, type = "@2,CavityS-1"
+rfbhd00: monitor, type = "@2,CavityS-1"
+rfbhd04: monitor, type = "@2,CavityS-1"
+rfbc006: monitor, type = "@2,CavityS-1"
+rfbc011: monitor, type = "@4,CavityS-1"
 
 ! ==============================================================================
 ! XCORs
@@ -694,10 +687,8 @@ pc0h00: ecollimator, l = ljaw, x_limit = 6.0e-3, y_limit = 6.0e-3, type = "tungs
 cehtr: rcollimator, l = ljaw, x_limit = 3.0e-3, type = "HCOLL"    !X momentum collimator
 cyc01: rcollimator, l = ljaw, y_limit = 4.4e-3, type = "VCOLL"    !Y betatron collimator
 cxc01: rcollimator, l = ljaw, x_limit = 4.4e-3, type = "HCOLL"    !X betatron collimator
-CYC02: pipe, L = 0.06, type ="@4,VCOLL", descrip = "deferred RCOLLIMATOR" !Y betatron collimator
-!old: cyc02: rcollimator, l = ljaw, y_limit = 4.4e-3, type = "@4,VCOLL"
-CXC02: pipe, L = 0.06, type ="@4,HCOLL", descrip = "deferred RCOLLIMATOR" !X betatron collimator
-!old: cxc02: rcollimator, l = ljaw, x_limit = 4.4e-3, type = "@4,HCOLL"
+cyc02: rcollimator, l = ljaw, y_limit = 4.4e-3, type = "@4,VCOLL" !Y betatron collimator
+cxc02: rcollimator, l = ljaw, x_limit = 4.4e-3, type = "@4,HCOLL" !X betatron collimator
 cyc03: rcollimator, l = ljaw, y_limit = 4.4e-3, type = "VCOLL"    !Y betatron collimator
 cxc03: rcollimator, l = ljaw, x_limit = 4.4e-3, type = "HCOLL"    !X betatron collimator
 
@@ -713,8 +704,7 @@ yagh1: monitor, type = "YAG INJ"
 yagh2: monitor, type = "YAG INJ"
 imbcsi1: marker, type = "BCS ACM"
 imbcsi2: marker, type = "BCS ACM"
-WSC006: pipe, L = 0.0, type ="@4,fast", descrip = "deferred MARKER"
-!old: wsc006: marker, type = "@4,fast"
+wsc006: marker, type = "@4,fast"
 
 fc00eic: instrument, type = "Faraday cup"
 
@@ -769,6 +759,7 @@ endeic: marker
 bun1b_full: line = (bun1b)
 bun1b[L] = 2*bun1b[L]
 bun1b[voltage] = 2*bun1b[voltage]
+
 
 
 !Old split line:  BCXH1_full : LINE=(BCXH1a,BCXH1b)
@@ -1004,10 +995,10 @@ sq02b[ref] = sol2b
 
 UMHTR_full : LINE=(UMHTR,HTRUNDB,UMHTR)
 
-! umhtr_full: line = (umhtr)
-! umhtr[L] = 2*umhtr[L]
-! htrundb[superimpose] = T
-! htrundb[ref] = umhtr
+!umhtr_full: line = (umhtr)
+!umhtr[L] = 2*umhtr[L]
+!htrundb[superimpose] = T
+!htrundb[ref] = umhtr
 
   SC1B   : LINE=(XC01B,YC01B)
   SC2B   : LINE=(XC02B,YC02B)

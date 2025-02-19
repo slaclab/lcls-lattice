@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.10.9"
+__generated_with = "0.11.6"
 app = marimo.App(width="medium")
 
 
@@ -92,7 +92,7 @@ def _(mo):
 
 @app.cell
 def _():
-    INCLUDE_DEFERRED = True # Set to False before running `deferred.ipynb`
+    INCLUDE_DEFERRED = False
     return (INCLUDE_DEFERRED,)
 
 
@@ -289,6 +289,12 @@ def _():
 
 
 @app.cell
+def _(os):
+    os.getcwd()
+    return
+
+
+@app.cell
 def _(INCLUDE_DEFERRED, json):
     # CU only replacements
 
@@ -321,13 +327,13 @@ def _(INCLUDE_DEFERRED, json):
     """
 
     # Add these replacements
-    CU_LINAC_REPLACEMENTS = json.load(open('replacements/good_cu_linac_replacements.json'))
+    CU_LINAC_REPLACEMENTS = json.load(open('bmad/conversion/replacements/good_cu_linac_replacements.json'))
     for name, replace in CU_LINAC_REPLACEMENTS.items():
         CU_NEWELES[name.lower()+'_full'] = replace
 
     # Add deferred elements    
     if INCLUDE_DEFERRED:
-        CU_NEWELES.update(json.load(open('replacements/deferred_cu_replacements.json')))
+        CU_NEWELES.update(json.load(open('bmad/conversion/replacements/deferred_cu_replacements.json')))
 
     print(CU_NEWELES.keys())
     return CU_LINAC_REPLACEMENTS, CU_NEWELES, name, replace
@@ -374,7 +380,7 @@ def _(INCLUDE_DEFERRED, json):
 
     # Add deferred elements 
     if INCLUDE_DEFERRED:
-        SC_NEWELES.update(json.load(open('replacements/deferred_sc_replacements.json')))
+        SC_NEWELES.update(json.load(open('bmad/conversion/replacements/deferred_sc_replacements.json')))
 
     print(SC_NEWELES.keys())
     return (SC_NEWELES,)
@@ -437,8 +443,8 @@ def _(run):
 
 @app.cell
 def _(os):
-    CU_MASTERS = [f for f in os.listdir('../../mad') if f.startswith('CU_') and f.endswith('xsif')]
-    SC_MASTERS = [f for f in os.listdir('../../mad') if f.startswith('SC_') and f.endswith('xsif')]
+    CU_MASTERS = [f for f in os.listdir('mad') if f.startswith('CU_') and f.endswith('xsif')]
+    SC_MASTERS = [f for f in os.listdir('mad') if f.startswith('SC_') and f.endswith('xsif')]
     CU_MASTERS, SC_MASTERS
     return CU_MASTERS, SC_MASTERS
 
@@ -518,6 +524,11 @@ def _(SC_MASTERS, process_master):
 def _(TEMPDIR, WORKDIR, run):
     run(f'rm -r {TEMPDIR}',shell=True)
     run(f'rm -r {WORKDIR}',shell=True)
+    return
+
+
+@app.cell
+def _():
     return
 
 

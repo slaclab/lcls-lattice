@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-01JAN2025s ***
+! *** OPTICS=AD_ACCEL-18FEB2025s ***
 
 ! LCLS2cu various parts upstream of BSY
 
@@ -176,8 +176,7 @@ bxkikb: sbend, type = "@9,1.92K41.2", l = lkik/2, hgap = gkik
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-BXKIK: pipe, L = 1.0601, type ="@9,1.92K41.2", descrip = "deferred SBEND"
-!old: bxkik: sbend, type = "@9,1.92K41.2", l = lkik, hgap = gkik
+bxkik: sbend, type = "@9,1.92K41.2", l = lkik, hgap = gkik
 
 ! ==============================================================================
 ! BENDs
@@ -845,12 +844,12 @@ dh01: drift, l = (0.155-dlbh)/cos(abh1), type = "CSR"
 dh02a: drift, l = 0.06717020-dlbh/2, type = "CSR"
 
 ! Shorten so that lh_und has an integer number of poles
-!dh03a: drift, l = 0.09290825 - ( 10*0.054 - 0.506263 ) /2, type = "CSR"
-dh03a: drift, l = 0.09290825, type = "CSR"
+dh03a: drift, l = 0.09290825 - ( 10*0.054 - 0.506263 ) /2, type = "CSR"
+!old: dh03a: drift, l = 0.09290825, type = "CSR"
 
 ! Shorten so that lh_und has an integer number of poles
-!dh03b: drift, l = 0.08401830- ( 10*0.054 - 0.506263 ) /2, type = "CSR"
-dh03b: drift, l = 0.08401830, type = "CSR"
+dh03b: drift, l = 0.08401830- ( 10*0.054 - 0.506263 ) /2, type = "CSR"
+!old: dh03b: drift, l = 0.08401830, type = "CSR"
 dh02b: drift, l = 0.09503020-dlbh/2, type = "CSR"
 dh06: drift, l = 0.13010070-dlbh/2, type = "CSR"
 
@@ -895,19 +894,19 @@ r34h = lhunh*sincargh
 
 
 !------- Laser Heater Undulator for Copper Linac -------
-!   my_lh_und_k = 1.38523
-!   lh_und: wiggler,
-!           type = "laser_heater_undulator",
-!           L_period = 0.054,
-!           n_period = 10,
-!           b_max = my_lh_und_k * 2*pi*m_electron / (c_light * 0.054),
-!            L = 10*0.054 ! Was: 0.506263,
-!           ds_step = 0.054
-!   
-!   lh_und[L] = lh_und[L]/2 ! Will be doubled in desplitting process.
+my_lh_und_k = 1.38523
+lh_und: wiggler,
+        type = "laser_heater_undulator",
+        L_period = 0.054,
+        n_period = 10,
+        b_max = my_lh_und_k * 2*pi*m_electron / (c_light * 0.054),
+         L = 10*0.054 ! Was: 0.506263,
+        ds_step = 0.054
+
+lh_und[L] = lh_und[L]/2 ! Will be doubled in desplitting process.
 !--------------------------------- !,          &
-lh_und: taylor, type = "LHund", l = lhunh, tt11 = 1.0, tt12 = lhunh, tt21 = 0, tt22 = 1.0, tt33 = cos(lhunh*sqrt(kqlh)),
-         tt34 = r34h, tt43 = -sin(lhunh*sqrt(kqlh))*sqrt(kqlh), tt44 = cos(lhunh*sqrt(kqlh))
+!old: lh_und: taylor, type = "LHund", l = lhunh, tt11 = 1.0, tt12 = lhunh, tt21 = 0, tt22 = 1.0, tt33 = cos(lhunh*sqrt(kqlh)),
+!old           tt34 = r34h, tt43 = -sin(lhunh*sqrt(kqlh))*sqrt(kqlh), tt44 = cos(lhunh*sqrt(kqlh))
    !R56 =  Lhunh/(gami^2)*(1+(K_und^2)/2)
 
  !VALUE, gami,kqlh,K_und
@@ -1861,12 +1860,12 @@ sq01[ref] = sol1
 
 
 
-LH_UND_full : LINE=(LH_UND,HTRUND,LH_UND)
+!Old split line:  LH_UND_full : LINE=(LH_UND,HTRUND,LH_UND)
 
-!lh_und_full: line = (lh_und)
-!lh_und[L] = 2*lh_und[L]
-!htrund[superimpose] = T
-!htrund[ref] = lh_und
+lh_und_full: line = (lh_und)
+lh_und[L] = 2*lh_und[L]
+htrund[superimpose] = T
+htrund[ref] = lh_und
 
   GUNBXG : LINE=(DL00,LOADLOCK,BEGGUN,SOL1BK,DBMARK80,CATHODE,DL01a,SOL1_full,DL01a1,VV01,DL01a2,AM00,DL01a3,AM01,
          DL01a4,YAG01,DL01a5,FC01,DL01b,IM01,DL01c,SC1,DL01h,BPM2,DL01d,DBMARK81,ENDGUN)

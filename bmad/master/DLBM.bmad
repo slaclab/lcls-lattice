@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-01JAN2025s ***
+! *** OPTICS=AD_ACCEL-18FEB2025s ***
 
 ! LCLS2sc sector 7 dogleg plus match to bypass line
 
@@ -336,10 +336,8 @@ ksdog2 = 22.656285406772 !-20.61
 tsdog1 = -13.252537412109 !-0.2331*DEGRAD
 tsdog2 = 16.730337124259 ! 0.3342*DEGRAD
 
-SDOG1: pipe, L = 0.05, type ="@1,1.38S3.00", descrip = "deferred SEXTUPOLE"
-!old: sdog1: sextupole, tilt = raddeg*tsdog1, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdog1
-SDOG2: pipe, L = 0.05, type ="@1,1.38S3.00", descrip = "deferred SEXTUPOLE"
-!old: sdog2: sextupole, tilt = raddeg*tsdog2, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdog2
+sdog1: sextupole, tilt = raddeg*tsdog1, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdog1
+sdog2: sextupole, tilt = raddeg*tsdog2, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdog2
 
 !=!  COMMENT
 !=!  COMMENT
@@ -511,8 +509,7 @@ bpmbp10: monitor, type = "Stripline-5"
 bpmbp11: monitor, type = "Stripline-5"
 bpmbp12: monitor, type = "Stripline-5"
 
-RFBWSBP1: pipe, L = 0.0, type ="@2,CavityS-1", descrip = "deferred MONITOR"
-!old: rfbwsbp1: monitor, type = "@2,CavityS-1"
+rfbwsbp1: monitor, type = "@2,CavityS-1"
 
 ! ==============================================================================
 ! XCORs
@@ -555,16 +552,13 @@ cedog: rcollimator, l = ljaw, y_limit = 8.6e-3, type = "VCOLL"
 ! beam profile measurement
 
 otrdog: monitor, type = "OTR"
-WSDOG: pipe, L = 0.0, type ="@3,fast", descrip = "deferred MARKER"
-!old: wsdog: marker, type = "@3,fast"
+wsdog: marker, type = "@3,fast"
 wsbp1: marker, type = "fast"
 
 ! combination OTR/YAG !PSI type
 
-OTR31: pipe, L = 0.0, type ="@3,OTR", descrip = "deferred MONITOR"
-!old: otr31: monitor, type = "@3,OTR"
-OTR31_YAG: pipe, L = 0.0, type ="@3,YAG", descrip = "deferred MONITOR"
-!old: otr31_yag: monitor, type = "@3,YAG"
+otr31: monitor, type = "@3,OTR"
+otr31_yag: monitor, type = "@3,YAG"
   OTR31_full : LINE=(OTR31,OTR31_YAG)
 
 ! markers
