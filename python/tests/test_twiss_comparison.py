@@ -19,20 +19,21 @@ MODELS = [
 'cu_sxr',
 'cu_hxr',
 'cu_spec',
+'sc_dasel',
 # 'sc_diag0',
 # 'cu_inj',
-# 'sc_dasel',
  #'cu_linac',
 # 'sc_inj',
 ]
 
 TOLS = {}         #beta_x, beta_y, end_s
-TOLS['sc_bsyd'] = (1e-5,   1e-5,   1e-9)
-TOLS['sc_sxr']  = (5e-5,   5e-5,   1e-9)
-TOLS['sc_hxr']  = (1e-5,   5e-5,   1e-9)
-TOLS['cu_sxr']  = (2e-2,   2e-2,   1e-9)
-TOLS['cu_hxr']  = (2e-2,   2e-2,   1e-9)
-TOLS['cu_spec'] = (2e-2,   2e-2,   1e-9)
+TOLS['sc_bsyd']  = (1e-5,   1e-5,   1e-9)
+TOLS['sc_sxr']   = (5e-5,   5e-5,   1e-9)
+TOLS['sc_hxr']   = (1e-5,   5e-5,   1e-9)
+TOLS['sc_dasel'] = (1e-5,   5e-5,   1e-9)
+TOLS['cu_sxr']   = (2e-2,   2e-2,   1e-9)
+TOLS['cu_hxr']   = (2e-2,   2e-2,   1e-9)
+TOLS['cu_spec']  = (2e-2,   2e-2,   1e-9)
 
 @pytest.fixture(scope='module',autouse=True)
 def exec_mad8s():
