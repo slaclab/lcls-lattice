@@ -24,6 +24,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+        with:
+          ssh-key ${{secrets.SELF_SSH_DEPLOY_KEY}}
       - uses: ./.github/actions/conda-setup
         with:
           python-version: ${{ matrix.python-version }}
@@ -42,8 +44,9 @@ jobs:
 
       - name: Add plots and commit to branch
         run: |
+          mv beta_*.png docs/plots
           git config --global user.name 'Github Action'
           git config --global user.email 'mpe@slac.stanford.edu'
-          git add beta_*.png
+          git add docs/plots/beta_*.png
           git commit -m "Adding Twiss plots for each lattice"
           git push
