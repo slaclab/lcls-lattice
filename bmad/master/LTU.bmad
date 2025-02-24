@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-01JAN2025s ***
+! *** OPTICS=AD_ACCEL-18FEB2025s ***
 
 ! LCLS2sc LTU and dump
 
@@ -794,10 +794,8 @@ qdl22: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqdl22, aperture = rqe
 ksdl1 = -8.734519131209
 ksdl2 = -24.395452957066
 
-SDL1: pipe, L = 0.05, type ="@1,1.38S3.00", descrip = "deferred SEXTUPOLE"
-!old: sdl1: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdl1
-SDL2: pipe, L = 0.05, type ="@1,1.38S3.00", descrip = "deferred SEXTUPOLE"
-!old: sdl2: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdl2
+sdl1: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdl1
+sdl2: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdl2
 
 !=!  COMMENT
 !=!  COMMENT
@@ -1034,10 +1032,8 @@ cydl16: rcollimator, type = "VCOLL", l = ljaw, y_limit = 1.1e-3, x_limit = 20.e-
 ! muon collimators after SBD TDKIKS in-line dump
 pctdkik1s: ecollimator, type = "BCS PC", l = lpctdkik, x_limit = 11.1125e-3, y_limit = 11.1125e-3
 pctdkik2s: ecollimator, type = "BCS PC", l = lpctdkik, x_limit = 11.1125e-3, y_limit = 11.1125e-3
-PCTDKIK3S: pipe, L = 0.8128, type ="@5,BCS PC", descrip = "deferred ECOLLIMATOR"
-!old: pctdkik3s: ecollimator, type = "@5,BCS PC", l = lpctdkik, x_limit = 11.1125e-3, y_limit = 11.1125e-3
-PCTDKIK4S: pipe, L = 0.8128, type ="@5,BCS PC", descrip = "deferred ECOLLIMATOR"
-!old: pctdkik4s: ecollimator, type = "@5,BCS PC", l = lpctdkik, x_limit = 11.1125e-3, y_limit = 11.1125e-3
+pctdkik3s: ecollimator, type = "@5,BCS PC", l = lpctdkik, x_limit = 11.1125e-3, y_limit = 11.1125e-3
+pctdkik4s: ecollimator, type = "@5,BCS PC", l = lpctdkik, x_limit = 11.1125e-3, y_limit = 11.1125e-3
 
 ! combination YAG/OTR !PAL type
 
@@ -1463,20 +1459,16 @@ bpmem1b: monitor, type = "Stripline-2"
 bpmem2b: monitor, type = "Stripline-2"
 bpmem3b: monitor, type = "Stripline-2"
 bpmem4b: monitor, type = "Stripline-2"
-RFBEM4B: pipe, L = 0.0, type ="@2,CavityS-1", descrip = "deferred MONITOR"
-!old: rfbem4b: monitor, type = "@2,CavityS-1"
+rfbem4b: monitor, type = "@2,CavityS-1"
 bpme31b: monitor, type = "Stripline-1"
 bpme32b: monitor, type = "Stripline-1" !type to be checked
-RFBE32B: pipe, L = 0.0, type ="@2,CavityS-1", descrip = "deferred MONITOR"
-!old: rfbe32b: monitor, type = "@2,CavityS-1"
+rfbe32b: monitor, type = "@2,CavityS-1"
 bpme33b: monitor, type = "Stripline-1"
 bpme34b: monitor, type = "Stripline-1" !type to be checked
-RFBE34B: pipe, L = 0.0, type ="@2,CavityS-1", descrip = "deferred MONITOR"
-!old: rfbe34b: monitor, type = "@2,CavityS-1"
+rfbe34b: monitor, type = "@2,CavityS-1"
 bpme35b: monitor, type = "Stripline-1"
 bpme36b: monitor, type = "Stripline-1" !type to be checked
-RFBE36B: pipe, L = 0.0, type ="@2,CavityS-1", descrip = "deferred MONITOR"
-!old: rfbe36b: monitor, type = "@2,CavityS-1"
+rfbe36b: monitor, type = "@2,CavityS-1"
 
 xcem1b: hkicker, type = "class-4"
 xcem3b: hkicker, type = "class-4"
@@ -2136,8 +2128,7 @@ ddump: drift, l = 61.120*in2m !length of EBD dump (per A. Ibrahimov)
 
 bpmqdb: monitor, type = "Stripline-11" !RFBQDB : MONI, TYPE="@2,CavityL-1"
 bpmddb: monitor, type = "Stripline-8"
-RFBDDB: pipe, L = 0.0, type ="@2,CavityL-1", descrip = "deferred MONITOR"
-!old: rfbddb: monitor, type = "@2,CavityL-1"
+rfbddb: monitor, type = "@2,CavityL-1"
 
 xcddb: hkicker, type = "class-5"
 
@@ -2145,8 +2136,7 @@ ycddb: vkicker, type = "class-5"
 
 otrdmpb: monitor, type = "OTR" !Dump screen
 
-WSDUMPB: pipe, L = 0.0, type ="@3,special", descrip = "deferred MARKER"
-!old: wsdumpb: marker, type = "@3,special"
+wsdumpb: marker, type = "@3,special"
 
 mimbcs4b: marker
 
@@ -2167,7 +2157,7 @@ rodmp2s: patch, tilt = arodmp2s
 
 
 
-!BYDSS_full : LINE=(BYDSS1,BYDSS2)
+!Old split line:  BYDSS_full : LINE=(BYDSS1,BYDSS2)
 
 bydss_full: line = (bydss)
 
@@ -2253,18 +2243,14 @@ bcx3142: sbend, type = "@2,0.788D11.50", l = lbx31s, angle = +abx31s, e2 = 0, hg
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-BCX311: pipe, L = 0.35, type ="@2,0.788D11.50", descrip = "deferred SBEND"
-!old: bcx311: sbend, type = "@2,0.788D11.50", hgap = gbcc/2, l = lbx31, angle = +abx31, e1 = 0, fint = fbcc, e2 = +abx31,
-!old           fintx = fbcc
-BCX312: pipe, L = 0.35, type ="@2,0.788D11.50", descrip = "deferred SBEND"
-!old: bcx312: sbend, type = "@2,0.788D11.50", hgap = gbcc/2, l = lbx31, angle = -abx31, e1 = -abx31, fint = fbcc, e2 = 0,
-!old           fintx = fbcc
-BCX313: pipe, L = 0.35, type ="@2,0.788D11.50", descrip = "deferred SBEND"
-!old: bcx313: sbend, type = "@2,0.788D11.50", hgap = gbcc/2, l = lbx31, angle = -abx31, e1 = 0, fint = fbcc, e2 = -abx31,
-!old           fintx = fbcc
-BCX314: pipe, L = 0.35, type ="@2,0.788D11.50", descrip = "deferred SBEND"
-!old: bcx314: sbend, type = "@2,0.788D11.50", hgap = gbcc/2, l = lbx31, angle = +abx31, e1 = +abx31, fint = fbcc, e2 = 0,
-!old           fintx = fbcc
+bcx311: sbend, type = "@2,0.788D11.50", hgap = gbcc/2, l = lbx31, angle = +abx31, e1 = 0, fint = fbcc, e2 = +abx31,
+          fintx = fbcc
+bcx312: sbend, type = "@2,0.788D11.50", hgap = gbcc/2, l = lbx31, angle = -abx31, e1 = -abx31, fint = fbcc, e2 = 0,
+          fintx = fbcc
+bcx313: sbend, type = "@2,0.788D11.50", hgap = gbcc/2, l = lbx31, angle = -abx31, e1 = 0, fint = fbcc, e2 = -abx31,
+          fintx = fbcc
+bcx314: sbend, type = "@2,0.788D11.50", hgap = gbcc/2, l = lbx31, angle = +abx31, e1 = +abx31, fint = fbcc, e2 = 0,
+          fintx = fbcc
 
 dcc31o: drift, l = zdcc/cos(abx31), type = "CSR"
 dcc31i: drift, l = zdcc, type = "CSR"
@@ -2526,8 +2512,7 @@ pc119: ecollimator, l = lpc119, x_limit = 10.2e-3, y_limit = 10.2e-3 !existing p
 
 ! 2" ID BSY collimator -- part of 2-hole copper collimator d/s of A-line pulsed magnets
 
-PCBSYH: pipe, L = 0.45, type ="@1,MPS PC", descrip = "deferred ECOLLIMATOR" !installed, then removed
-!old: pcbsyh: ecollimator, type = "@1,MPS PC", l = 0.45, x_limit = 25.4e-3, y_limit = 25.4e-3
+pcbsyh: ecollimator, type = "@1,MPS PC", l = 0.45, x_limit = 25.4e-3, y_limit = 25.4e-3 !installed, then removed
 
 dm3: drift, l = 0.8438 !0.2196
 dm4a: drift, l = 0.4410 !0.2114
@@ -2568,13 +2553,11 @@ dbsy55d: drift, l = 6.466828 !6.473178
 dbsy55e: drift, l = 21.826764-drfb[l]-dbsy55a[l]-dbsy55b[l]-lpc90 -dbsy55c[l]-lplate-dbsy55d[l]-lpc119 -zq6 !21.432164
 
 bpmbsyq3: monitor, type = "Stripline-6" !per C. Iverson
-RFBBSYQ3: pipe, L = 0.0, type ="@2,CavityS-1", descrip = "deferred MONITOR"
-!old: rfbbsyq3: monitor, type = "@2,CavityS-1"
+rfbbsyq3: monitor, type = "@2,CavityS-1"
 bpmbsyq4: monitor, type = "Stripline-7"
 bpmbsyq5: monitor, type = "Stripline-7" !per C. Iverson
 bpmbsyq6: monitor, type = "Stripline-7" !per C. Iverson
-RFBBSYQ6: pipe, L = 0.0, type ="@2,CavityS-1", descrip = "deferred MONITOR"
-!old: rfbbsyq6: monitor, type = "@2,CavityS-1"
+rfbbsyq6: monitor, type = "@2,CavityS-1"
 bpmbsyqa0: monitor, type = "Stripline-7" !per C. Iverson
 
 xcbsyq3: hkicker, type = "class-4" !barcode=4602
@@ -3097,8 +3080,7 @@ d38d: drift, l = (d34b[l]+ddl10um25cm[l]+ddl10v[l]+dx38a[l]+dx38b[l])- (d38a[l]+
 d38da: drift, l = 7.151036
 d38db: drift, l = d38d[l]-d38da[l]-lplate
 
-RFBDL1: pipe, L = 0.0, type ="@2,CavityL-1", descrip = "deferred MONITOR"
-!old: rfbdl1: monitor, type = "@2,CavityL-1"
+rfbdl1: monitor, type = "@2,CavityL-1"
 bpmdl2: monitor, type = "Stripline-10"
 bpmdl3: monitor, type = "Stripline-10"
 bpmdl4: monitor, type = "Stripline-10"
@@ -3219,22 +3201,18 @@ wig3h2: sbend, type = "@3,SLC wiggler", l = lwg1h, hgap = gwig/2, angle = awg1h,
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-WIG1H: pipe, L = 0.244, type ="@3,SLC wiggler", descrip = "deferred SBEND"
-!old: wig1h: sbend, type = "@3,SLC wiggler", hgap = gwig/2, l = lwgh, angle = +awgh, e1 = 0, fint = 0.5, e2 = +awgh,
-!old           fintx = 0.5, ref_tilt = pi/2
-WIG2H: pipe, L = 0.488, type ="@3,SLC wiggler", descrip = "deferred SBEND"
-!old: wig2h: sbend, type = "@3,SLC wiggler", hgap = gwig/2, l = 2*lwgh, angle = -2*awgh, e1 = -awgh, fint = 0.5, e2 = -awgh,
-!old           fintx = 0.5, ref_tilt = pi/2
-WIG3H: pipe, L = 0.244, type ="@3,SLC wiggler", descrip = "deferred SBEND"
-!old: wig3h: sbend, type = "@3,SLC wiggler", hgap = gwig/2, l = lwgh, angle = +awgh, e1 = +awgh, fint = 0.5, e2 = 0,
-!old           fintx = 0.5, ref_tilt = pi/2
+wig1h: sbend, type = "@3,SLC wiggler", hgap = gwig/2, l = lwgh, angle = +awgh, e1 = 0, fint = 0.5, e2 = +awgh,
+          fintx = 0.5, ref_tilt = pi/2
+wig2h: sbend, type = "@3,SLC wiggler", hgap = gwig/2, l = 2*lwgh, angle = -2*awgh, e1 = -awgh, fint = 0.5, e2 = -awgh,
+          fintx = 0.5, ref_tilt = pi/2
+wig3h: sbend, type = "@3,SLC wiggler", hgap = gwig/2, l = lwgh, angle = +awgh, e1 = +awgh, fint = 0.5, e2 = 0,
+          fintx = 0.5, ref_tilt = pi/2
 
 ldwgh = zdwg/cos(awgh)
 
 dwgh: drift, l = ldwgh
 
-YCWIGH: pipe, L = 0.0, type ="@3,wiggler trim", descrip = "deferred VKICKER"
-!old: ycwigh: vkicker, type = "@3,wiggler trim"
+ycwigh: vkicker, type = "@3,wiggler trim"
 
 
 
@@ -3500,20 +3478,16 @@ bpmem1: monitor, type = "Stripline-10"
 bpmem2: monitor, type = "Stripline-10"
 bpmem3: monitor, type = "Stripline-10"
 bpmem4: monitor, type = "Stripline-10" !existing LCLS device
-RFBEM4: pipe, L = 0.0, type ="@2,CavityS-1", descrip = "deferred MONITOR"
-!old: rfbem4: monitor, type = "@2,CavityS-1"
+rfbem4: monitor, type = "@2,CavityS-1"
 bpme31: monitor, type = "Stripline-1"
 bpme32: monitor, type = "Stripline-1" !existing LCLS device
-RFBE32: pipe, L = 0.0, type ="@2,CavityS-1", descrip = "deferred MONITOR"
-!old: rfbe32: monitor, type = "@2,CavityS-1"
+rfbe32: monitor, type = "@2,CavityS-1"
 bpme33: monitor, type = "Stripline-1"
 bpme34: monitor, type = "Stripline-1" !existing LCLS device
-RFBE34: pipe, L = 0.0, type ="@2,CavityS-1", descrip = "deferred MONITOR"
-!old: rfbe34: monitor, type = "@2,CavityS-1"
+rfbe34: monitor, type = "@2,CavityS-1"
 bpme35: monitor, type = "Stripline-1"
 bpme36: monitor, type = "Stripline-1" !existing LCLS device
-RFBE36: pipe, L = 0.0, type ="@2,CavityS-1", descrip = "deferred MONITOR"
-!old: rfbe36: monitor, type = "@2,CavityS-1"
+rfbe36: monitor, type = "@2,CavityS-1"
 
 xcem2: hkicker, type = "class-4"
 xcem4: hkicker, type = "class-4"
@@ -3824,8 +3798,7 @@ dd1d: drift, l = ldmp1-(dd1a[l]+pcpm1l[l]+dd1b[l]+dd1c[l]+dd1e[l]+pcpm2l[l]+dd1f
 
 bpmqd: monitor, type = "Stripline-11" !RFBQD : MONI, TYPE="@2,CavityL-1"
 bpmdd: monitor, type = "Stripline-8"
-RFBDD: pipe, L = 0.0, type ="@2,CavityL-1", descrip = "deferred MONITOR"
-!old: rfbdd: monitor, type = "@2,CavityL-1"
+rfbdd: monitor, type = "@2,CavityL-1"
 
 xcdd: hkicker, type = "class-5"
 
@@ -3833,8 +3806,7 @@ ycdd: vkicker, type = "class-5"
 
 otrdmp: monitor, type = "OTR" !Dump screen
 
-WSDUMP: pipe, L = 0.0, type ="@3,special", descrip = "deferred MARKER"
-!old: wsdump: marker, type = "@3,special"
+wsdump: marker, type = "@3,special"
 
  !IMDUMP  : MARKER, TYPE="BCS toroid" !BCS toroid in dumpline after Y-bends
  !IMBCS4  : MARKER, TYPE="BCS toroid" !BCS comparator toroid (ACM) in dumpline after Y-bends

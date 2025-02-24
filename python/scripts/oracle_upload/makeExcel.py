@@ -8,7 +8,7 @@ from pathlib import Path
 
 script_dir = Path(__file__).parent.resolve()
 
-optics='02SEP2024s'
+optics='18FEB2025s'
 vfile=['LCLS2sc_value.echo','LCLS2cu_value.echo']
 
 outdir='oracle_upload'
@@ -327,11 +327,11 @@ def FixUpgradeNames(N):
       N[i] = N[i][:-1]
 
 # Fix device names in upgraded SXR cells
-N = FixUpgradeNames(N)
+FixUpgradeNames(N)
 if cBSY:
-  N1 = FixUpgradeNames(N1)
+  FixUpgradeNames(N1)
 if cUND:
-  N2 = FixUpgradeNames(N2)
+  FixUpgradeNames(N2)
 
 # initialize some sequence data
 
@@ -721,42 +721,44 @@ def read_sector():
     return sect_sc, sect_cu
 
 def set_sector(N, FDN, coor, idf, nf, sector):
-    if nf not in sector['froot']:
-        return FDN
-    Z = [x[2] for x in coor]
-
-    id_ = [i for i,x in enumerate(idf) if x == nf]
-    if sector['Nbeg'] == '':
-        jd2 = [i for i,x in enumerate(Z) if x > sector['Zbeg']]
-        inter1 = intersection(id_,jd2)
-        if inter1 == []:
-            return FDN
-        else:
-            inter1 = inter1[0]
-    else:
-        jd2 = strmatch(sector['Nbeg'],N,True)
-        inter1 = intersection(id_,jd2)
-        if inter1 != []:
-            inter1 = inter1[0]
-
-    if sector['Nend'] == '':
-        jd2 = [i for i,x in enumerate(Z) if x < sector['Zend']]
-        inter2 = intersection(id_,jd2)
-        if inter2 == []:
-            return FDN
-        else:
-            inter2 = inter2[-1]
-    else:
-        jd2 = strmatch(sector['Nend'],N,True)
-        inter2 = intersection(id_,jd2)
-        if inter2 != []:
-            inter2 = inter2[0]
-    if inter1 != [] and inter2 != []:
-        for n in range(inter1, inter2 + 1):
-            if FDN[n].strip() == '':
-                FDN[n] = sector['name']
-
+  if nf not in sector['froot']:
     return FDN
+  Z = [x[2] for x in coor]
+
+  id_ = [i for i,x in enumerate(idf) if x == nf]
+
+  if sector['Nbeg'] == '':
+    jd2 = [i for i,x in enumerate(Z) if x > sector['Zbeg']]
+    inter1 = intersection(id_,jd2)
+    if inter1 == []:
+      return FDN
+    else:
+      inter1 = inter1[0]
+  else:
+    jd2 = strmatch(sector['Nbeg'],N,True)
+    inter1 = intersection(id_,jd2)
+    if inter1 != []:
+      inter1 = inter1[0]
+
+  if sector['Nend'] == '':
+    jd2 = [i for i,x in enumerate(Z) if x < sector['Zend']]
+    inter2 = intersection(id_,jd2)
+    if inter2 == []:
+      return FDN
+    else:
+      inter2 = inter2[-1]
+  else:
+    jd2 = strmatch(sector['Nend'],N,True)
+    inter2 = intersection(id_,jd2)
+    if inter2 != []:
+      inter2 = inter2[0]
+
+  if inter1 != [] and inter2 != []:
+    for n in range(inter1, inter2 + 1):
+      if FDN[n].strip() == '':
+        FDN[n] = sector['name']
+
+  return FDN
 
 
 def assign_sector(N, FDN, coor, idf, N1, FDN1, coor1, idf1):
@@ -2075,7 +2077,8 @@ import scipy.io as sio
 
 def fix_power_fraction(lcav):
     #fname = r'V:\LCLS\Users\Woodley\AD_ACCEL\20190613_13JUN19\RDB\RDBdata'
-    fname = f'{script_dir}/RDBdata.mat'
+    #fname = f'{script_dir}/RDBdata.mat'
+    fname = f'{script_dir}/LCAVITY_PowerFraction.mat'
     old = sio.loadmat(fname)['LCAV']
     
     name = [x['name'] for x in old[0]]
@@ -3096,7 +3099,7 @@ if cUND:
                 elif keyw[idk, :] == 'SEXT':
                     s[5] = TEMP['leng']
                     s[6] = TEMP['bore']
-                    s[9] = TEMP['k2']
+                    s[8] = TEMP['k2']
                     s[10] = TEMP['tilt']
                     s[32] = TEMP['GpL']
                     s[33] = TEMP['Gp']
@@ -3184,7 +3187,28 @@ with open(outdir+'/'+fname, 'wt') as fid:
 # ------------------------------------------------------------------------------
 
 # save RDBdata
+sio.savemat(outdir+'/makeExcel.dump.mat', 
+mdict={
+"K":K,
+"N":N,
+"L":L,
+"P":P,
+"A":A,
+"T":T,
+"E":E,
+"FDN":FDN,
+"coor":coor,
+"S":S,
+"idf":idf,
+"ids":ids,
+"idd":idd,
+"K1":K,
+"N1":N,
+"L1":L,
+"P1":P,
+"S1":E,
+"coor1":coor,
+"FDN1":FDN,
+})
 
 print(f'Be sure to add FACET2 elements to {fname}!\n')
-
-

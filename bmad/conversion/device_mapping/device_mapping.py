@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.10.9"
+__generated_with = "0.11.6"
 app = marimo.App(width="medium")
 
 
@@ -32,7 +32,7 @@ def _():
     lcls_lat_check_1 = run(f'ls {LCLS_LATTICE_ENV}/bmad/conversion',shell=True,capture_output=True)
     assert lcls_lat_check_1.returncode == 0
 
-    FACET2_LATTICE_ENV = os.environ['FACET2_LATTICE']
+    FACET2_LATTICE_ENV = '/home/mpe/DATA/new_repo/facet2-lattice'  #os.environ['FACET2_LATTICE']
     assert FACET2_LATTICE_ENV != ''
     facet2_lat_check_1 = run(f'ls {FACET2_LATTICE_ENV}/bmad/conversion',shell=True,capture_output=True)
     assert facet2_lat_check_1.returncode == 0
@@ -51,6 +51,12 @@ def _():
         os,
         run,
     )
+
+
+@app.cell
+def _(LCLS_LATTICE_ENV):
+    LCLS_LATTICE_ENV
+    return
 
 
 @app.cell
@@ -164,12 +170,12 @@ def _(DEVICE, INITFILE, MASTER, Tao):
         my_names = remove_superslaves(unames)
         lines = ['! ---------',
                  '! Device mapping derived from '+MASTER
-                 
+
                 ]
         for name in my_names:
             if name in DEVICE:
                 line = name+'[alias]='+ DEVICE[name]
-                
+
             else:
                 #continue
                 line = '! No device listed for: '+name
@@ -234,6 +240,7 @@ def _(mo):
 
 @app.cell
 def _(FDIR, ele_names, os, write_devicenames):
+    os.environ['FACET2_LATTICE'] = '/home/mpe/DATA/new_repo/facet2-lattice/'
     if os.path.exists(FDIR):
         F2_FILE = f'{FDIR}/master/FACET2e_devicenames.bmad'
         _models = ['f2_elec']
@@ -242,9 +249,14 @@ def _(FDIR, ele_names, os, write_devicenames):
             print(_m)
             _names += ele_names(_m)
         _unames = sorted(list(set(_names)))
-        
+
         write_devicenames(_unames, F2_FILE)
     return (F2_FILE,)
+
+
+@app.cell
+def _():
+    return
 
 
 @app.cell

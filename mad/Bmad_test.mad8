@@ -1,6 +1,6 @@
-  TITLE, "AD_ACCEL" !combine LCLS and LCLS-II
+  TITLE, "AD_ACCEL: superconducting linac"
 
-! *** OPTICS=AD_ACCEL-01JAN2025s ***
+! *** OPTICS=AD_ACCEL-18FEB2025s ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY
   ASSIGN, ECHO="test.echo"
@@ -22,6 +22,23 @@
 
 ! ------------------------------------------------------------------------------
 
+  COMMENT !CATHODEB to BEAM0
+    CALL, FILENAME="SC_SXR.xsif"
+    BEAM, ENERGY=E0
+    USE, SC_SXR
+    PRINT, FULL
+    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="test_survey.tape"
+    TWISS, COUPLE, SAVE, BETX=BX0, ALFX=AX0, BETY=BY0, ALFY=AY0
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, &
+      STYLE=100, SPLINE, RANGE=#S/BEAM0, FILE="test", &
+      TITLE="SC-linac: CATHODEB to BEAM0"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=#S/BEAM0, FILE="test", &
+      TITLE="SC-linac: CATHODEB to BEAM0"
+  ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
   COMMENT !SXR line
     CALL, FILENAME="SC_SXR.xsif"
     BEAM, ENERGY=E0
@@ -35,13 +52,16 @@
       TAPE="test_twiss.tape" !, RTAPE="test_rmat.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
       STYLE=100, SPLINE, FILE="test", RANGE=BEAM0/DUMPFACEB, &
-      TITLE="BEAMPATH=SC_SXR"
+      TITLE="BEAMPATH=SC_SXRi"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
       STYLE=100, SPLINE, FILE="test", RANGE=BEAM0/DUMPFACEB, &
-      TITLE="BEAMPATH=SC_SXR"
+      TITLE="BEAMPATH=SC_SXRi"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
       STYLE=100, SPLINE, FILE="test", RANGE=BEAM0/DUMPFACEB, &
-      TITLE="BEAMPATH=SC_SXR"
+      TITLE="BEAMPATH=SC_SXRi"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=WS31B/SXR47END, FILE="test", &
+      TITLE="UNDS (SC beam, 4 GeV)"
   ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
@@ -59,13 +79,13 @@
       TAPE="test_twiss.tape" !, RTAPE="test_rmat.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
       STYLE=100, SPLINE, FILE="test", RANGE=BEAM0/SFTDMPB, &
-      TITLE="BEAMPATH=SC_SFTS"
+      TITLE="BEAMPATH=SC_SFTSi"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
       STYLE=100, SPLINE, FILE="test", RANGE=BEAM0/SFTDMPB, &
-      TITLE="BEAMPATH=SC_SFTS"
+      TITLE="BEAMPATH=SC_SFTSi"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
       STYLE=100, SPLINE, FILE="test", RANGE=BEAM0/SFTDMPB, &
-      TITLE="BEAMPATH=SC_SFTS"
+      TITLE="BEAMPATH=SC_SFTSi"
   ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
@@ -83,13 +103,16 @@
       TAPE="test_twiss.tape" !, RTAPE="test_rmat.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
       STYLE=100, SPLINE, FILE="test", RANGE=BEAM0/DUMPFACE, &
-      TITLE="BEAMPATH=SC_HXR"
+      TITLE="BEAMPATH=SC_HXRi"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
       STYLE=100, SPLINE, FILE="test", RANGE=BEAM0/DUMPFACE, &
-      TITLE="BEAMPATH=SC_HXR"
+      TITLE="BEAMPATH=SC_HXRi"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
       STYLE=100, SPLINE, FILE="test", RANGE=BEAM0/DUMPFACE, &
-      TITLE="BEAMPATH=SC_HXR"
+      TITLE="BEAMPATH=SC_HXRi"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=WS31/HXR47END, FILE="test", &
+      TITLE="UNDH (SC beam, 4 GeV)"
   ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
@@ -107,13 +130,13 @@
       TAPE="test_twiss.tape" !, RTAPE="test_rmat.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
       STYLE=100, SPLINE, FILE="test", RANGE=BEAM0/DUMPBSY, &
-      TITLE="BEAMPATH=SC_BSYD"
+      TITLE="BEAMPATH=SC_BSYDi"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
       STYLE=100, SPLINE, FILE="test", RANGE=BEAM0/DUMPBSY, &
-      TITLE="BEAMPATH=SC_BSYD"
+      TITLE="BEAMPATH=SC_BSYDi"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
       STYLE=100, SPLINE, FILE="test", RANGE=BEAM0/DUMPBSY, &
-      TITLE="BEAMPATH=SC_BSYD"
+      TITLE="BEAMPATH=SC_BSYDi"
   ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
@@ -131,15 +154,15 @@
       TAPE="test_twiss.tape" !, RTAPE="test_rmat.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
       STYLE=100, SPLINE, FILE="test", RANGE=BEAM0/ENDDIAG0, &
-      TITLE="BEAMPATH=SC_DIAG0"
+      TITLE="BEAMPATH=SC_DIAG0i"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
       STYLE=100, SPLINE, FILE="test", RANGE=BEAM0/ENDDIAG0, &
-      TITLE="BEAMPATH=SC_DIAG0"
+      TITLE="BEAMPATH=SC_DIAG0i"
   ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
 
-  COMMENT !DASEL line
+  COMMENT !DASEL line (aka S30XL, LESA)
     CALL, FILENAME="SC_DASEL.xsif"
     BEAM, ENERGY=E0
     USE, SC_DASEL
@@ -152,13 +175,13 @@
       TAPE="test_twiss.tape" !, RTAPE="test_rmat.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
       STYLE=100, SPLINE, FILE="test", RANGE=BEAM0/ENDBSYA_2, &
-      TITLE="BEAMPATH=SC_DASEL"
+      TITLE="BEAMPATH=SC_DASELi"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=RBETX,RBETY, &
       STYLE=100, SPLINE, FILE="test", RANGE=BEAM0/ENDBSYA_2, &
-      TITLE="BEAMPATH=SC_DASEL"
+      TITLE="BEAMPATH=SC_DASELi"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
       STYLE=100, SPLINE, FILE="test", RANGE=BEAM0/ENDBSYA_2, &
-      TITLE="BEAMPATH=SC_DASEL"
+      TITLE="BEAMPATH=SC_DASELi"
   ENDCOMMENT
 
 ! ==============================================================================
@@ -168,6 +191,29 @@
  !CU_SXR   : copper linac to e- SXR dump
  !CU_GPSEC : copper linac to gun spectrometer
  !CU_SPEC  : copper linac to 135 MeV spectrometer
+
+! ------------------------------------------------------------------------------
+
+  COMMENT !CATHODE to WS02
+    CALL, FILENAME="CU_HXR.xsif"
+    BEAM, ENERGY=E00
+    USE, CU_HXR
+    PRINT, FULL
+    SURVEY, X0=Xi, Y0=0, Z0=Zi, THETA0=ADL1, TAPE="test_survey.tape"
+    SAVEBETA, TWm, WS02
+    TWISS, SAVE, BETX=CBETX, ALFX=CALFX, BETY=CBETY, ALFY=CALFY, &
+      TAPE="test_twiss.tape" !, RTAPE="test_rmat.tape"
+    SHOW, TWm
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
+      STYLE=100, SPLINE, FILE="test", RANGE=#S/WS02, &
+      TITLE="Cu-linac: CATHODE to WS02"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, FILE="test", RANGE=#S/WS02, &
+      TITLE="Cu-linac: CATHODE to WS02"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      STYLE=100, SPLINE, FILE="test", RANGE=#S/WS02, &
+      TITLE="Cu-linac: CATHODE to WS02"
+  ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
 
@@ -183,13 +229,16 @@
       TAPE="test_twiss.tape" !, RTAPE="test_rmat.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
       STYLE=100, SPLINE, FILE="test", RANGE=#S/DUMPFACE, &
-      TITLE="BEAMPATH=CU_HXR"
+      TITLE="BEAMPATH=CU_HXRi"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
       STYLE=100, SPLINE, FILE="test", RANGE=#S/DUMPFACE, &
-      TITLE="BEAMPATH=CU_HXR"
+      TITLE="BEAMPATH=CU_HXRi"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
       STYLE=100, SPLINE, FILE="test", RANGE=#S/DUMPFACE, &
-      TITLE="BEAMPATH=CU_HXR"
+      TITLE="BEAMPATH=CU_HXRi"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=WS31/HXR47END, FILE="test", &
+      TITLE="UNDH (Cu beam, 8 GeV)"
   ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
@@ -206,13 +255,13 @@
       TAPE="test_twiss.tape" !, RTAPE="test_rmat.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
       STYLE=100, SPLINE, FILE="test", RANGE=#S/SFTDMP, &
-      TITLE="BEAMPATH=CU_SFTH"
+      TITLE="BEAMPATH=CU_SFTHi"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
       STYLE=100, SPLINE, FILE="test", RANGE=#S/SFTDMP, &
-      TITLE="BEAMPATH=CU_SFTH"
+      TITLE="BEAMPATH=CU_SFTHi"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
       STYLE=100, SPLINE, FILE="test", RANGE=#S/SFTDMP, &
-      TITLE="BEAMPATH=CU_SFTH"
+      TITLE="BEAMPATH=CU_SFTHi"
   ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
@@ -229,13 +278,16 @@
       TAPE="test_twiss.tape" !, RTAPE="test_rmat.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
       STYLE=100, SPLINE, FILE="test", RANGE=#S/DUMPFACEB, &
-      TITLE="BEAMPATH=CU_SXR"
+      TITLE="BEAMPATH=CU_SXRi"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
       STYLE=100, SPLINE, FILE="test", RANGE=#S/DUMPFACEB, &
-      TITLE="BEAMPATH=CU_SXR"
+      TITLE="BEAMPATH=CU_SXRi"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
       STYLE=100, SPLINE, FILE="test", RANGE=#S/DUMPFACEB, &
-      TITLE="BEAMPATH=CU_SXR"
+      TITLE="BEAMPATH=CU_SXRi"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=WS31B/SXR47END, FILE="test", &
+      TITLE="UNDS (Cu beam, 8 GeV)"
   ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
@@ -246,14 +298,13 @@
     USE, CU_GSPEC
     PRINT, FULL
     SURVEY, X0=Xi, Y0=0, Z0=Zi, THETA0=ADL1, TAPE="test_survey.tape"
-    BEAM, ENERGY=E00
     TWISS, SAVE, BETX=CBETX, ALFX=CALFX, BETY=CBETY, ALFY=CALFY, &
       TAPE="test_twiss.tape" !, RTAPE="test_rmat.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, FILE="test", RANGE=CATHODE/DBMARK97, &
+      STYLE=100, SPLINE, FILE="test", RANGE=CATHODE/#E, &
       TITLE="BEAMPATH=CU_GSPEC"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE, FILE="test", RANGE=CATHODE/DBMARK97, &
+      STYLE=100, SPLINE, FILE="test", RANGE=CATHODE/#E, &
       TITLE="BEAMPATH=CU_GSPEC"
   ENDCOMMENT
 
@@ -271,13 +322,13 @@
       TAPE="test_twiss.tape" !, RTAPE="test_rmat.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
       STYLE=100, SPLINE, FILE="test", RANGE=#S/DBMARK98, &
-      TITLE="BEAMPATH=CU_SPEC"
+      TITLE="BEAMPATH=CU_SPECi"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
       STYLE=100, SPLINE, FILE="test", RANGE=#S/DBMARK98, &
-      TITLE="BEAMPATH=CU_SPEC"
+      TITLE="BEAMPATH=CU_SPECi"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
       STYLE=100, SPLINE, FILE="test", RANGE=#S/DBMARK98, &
-      TITLE="BEAMPATH=CU_SPEC"
+      TITLE="BEAMPATH=CU_SPECi"
   ENDCOMMENT
 
 ! ==============================================================================
