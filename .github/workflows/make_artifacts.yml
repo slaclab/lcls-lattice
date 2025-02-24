@@ -40,8 +40,14 @@ jobs:
           echo -e '## Plotting results\n\n```' >> "$GITHUB_STEP_SUMMARY"
           python/scripts/make_plots.py 2>&1 | tee -a "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
-          mv beta_*.png docs/plots >> "$GITHUB_STEP_SUMMARY"
+          #mv beta_*.png docs/plots >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: optics
+          path: |
+            docs/plots
 #      - name: Add plots and commit to branch
 #        run: |
 #          git config --global user.name 'Github Action'
