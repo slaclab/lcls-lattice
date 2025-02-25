@@ -12,8 +12,6 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
-      matrix:
-        python-version: ["3.12"]
 
     name: Make Artifacts
 
@@ -27,8 +25,7 @@ jobs:
           ssh-key: ${{secrets.SELF_SSH_DEPLOY_KEY}}
       - uses: ./.github/actions/conda-setup
         with:
-          python-version: ${{ matrix.python-version }}
-          extras: "dev"
+          python-version: "3.12"
       - name: Test environment conda package list
         shell: bash -l {0}
         run: |
@@ -48,5 +45,4 @@ jobs:
           git config --global user.email 'mpe@slac.stanford.edu'
           git add docs/plots/beta_*.png
           ( git commit -m "Adding Twiss plots for each lattice [skip ci]" && git push || true )
-        #continue-on-error: true
 
