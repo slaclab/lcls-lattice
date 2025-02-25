@@ -45,6 +45,6 @@ for model in MODELS:
     plt.ylabel('β$_{x,y}$ (m)')
   plt.legend()
   plt.xlabel('location (m)')
-  plt.title(model)
-  plt.savefig(f'beta_{model}.png',dpi=300,bbox_inches='tight')
+  plt.title(model+' (bmad)')
+  plt.savefig(f'beta_{model}_bmad.png',dpi=300,bbox_inches='tight')
   plt.clf()
