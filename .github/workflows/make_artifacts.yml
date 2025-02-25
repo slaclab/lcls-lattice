@@ -35,7 +35,6 @@ jobs:
           conda list
 
       - name: Run plot generation script
-        shell: bash -l {0}
         run: |
           echo -e '## Plotting results\n\n```' >> "$GITHUB_STEP_SUMMARY"
           python/scripts/make_plots.py 2>&1 | tee -a "$GITHUB_STEP_SUMMARY"
@@ -44,12 +43,11 @@ jobs:
           ls -ls docs/plots >> "$GITHUB_STEP_SUMMARY"
 
       - name: Add plots and commit to branch
+        shell: bash -l {0}
         run: |
+          set -e
           git config --global user.name 'Github Action' >> "$GITHUB_STEP_SUMMARY"
           git config --global user.email 'mpe@slac.stanford.edu' >> "$GITHUB_STEP_SUMMARY"
-          echo -e '# git add\n```' >> "$GITHUB_STEP_SUMMARY"
-          git add -uv >> "$GITHUB_STEP_SUMMARY"
-          echo -e '# git commit\n```' >> "$GITHUB_STEP_SUMMARY"
-          git commit -m "Adding Twiss plots for each lattice [skip ci]" >> "$GITHUB_STEP_SUMMARY"
-          git push >> "$GITHUB_STEP_SUMMARY"
+          git add docs/plots >> "$GITHUB_STEP_SUMMARY"
+          git commit -m "Adding Twiss plots for each lattice [skip ci]" && git push >> "$GITHUB_STEP_SUMMARY"
 
