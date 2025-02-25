@@ -3,9 +3,6 @@ name: Make Optics Plots
 on:
   pull_request:
   push:
-  release:
-    types:
-      - published
 
 jobs:
   build:
@@ -23,9 +20,11 @@ jobs:
         with:
           fetch-depth: 0
           ssh-key: ${{secrets.SELF_SSH_DEPLOY_KEY}}
+
       - uses: ./.github/actions/conda-setup
         with:
           python-version: "3.12"
+
       - name: Test environment conda package list
         shell: bash -l {0}
         run: |
@@ -34,9 +33,7 @@ jobs:
       - name: Run plot generation script
         shell: bash -l {0}
         run: |
-          echo -e '## Plotting results\n\n```' >> "$GITHUB_STEP_SUMMARY"
-          python/scripts/make_plots.py 2>&1 | tee -a "$GITHUB_STEP_SUMMARY"
-          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          python/scripts/make_plots.py
           mv beta_*.png docs/plots >> "$GITHUB_STEP_SUMMARY"
 
       - name: Add plots and commit to branch
