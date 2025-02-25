@@ -41,9 +41,6 @@ jobs:
           python/scripts/make_plots.py 2>&1 | tee -a "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
           mv beta_*.png docs/plots >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Add plots and commit to branch
-        run: |
           git config --global user.name 'Github Action'
           git config --global user.email 'mpe@slac.stanford.edu'
           git add -f docs/plots/beta_*.png
@@ -52,3 +49,5 @@ jobs:
           git diff environment.yml
           git push
 
+      #- name: Add plots and commit to branch
+      #  run: |
