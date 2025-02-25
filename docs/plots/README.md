@@ -1,3 +1,12 @@
+[Cu HXR](#cu-hxr)\
+[Cu spec](#cu-spec)\
+[Cu SXR](#cu-sxr)\
+[SC BSYD](#sc-bsyd)\
+[SC DASEL](#sc-dasel)\
+[SC HXR](#sc-hxr)\
+[SC SXR](#sc-sxr)\
+[SC DIAG0](#sc-diag0)
+
 # Cu HXR
 ![cu hxr](beta_cu_hxr_bmad.png)
 ![cu hxr](beta_cu_hxr_mad8.png)
