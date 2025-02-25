@@ -4,6 +4,7 @@ from subprocess import run
 import os, platform
 from pytao import Tao
 import matplotlib.pyplot as plt
+import numpy as np
 
 my_env = os.environ.copy()
 LCLS_LATTICE=my_env['LCLS_LATTICE']
@@ -19,9 +20,9 @@ MODELS = [
 'cu_sxr',
 'cu_hxr',
 'cu_spec',
-# 'sc_diag0',
+'sc_dasel',
+'sc_diag0',
 # 'cu_inj',
-# 'sc_dasel',
  #'cu_linac',
 # 'sc_inj',
 ]
@@ -49,13 +50,14 @@ for model in MODELS:
   mad8_data = parse_file(LCLS_LATTICE+'/mad/'+model.upper()+'_GUN_CI.twiss')
     
   twiss = {}
+  twiss['name'] = [float(x[2]) for x in mad8_data]
   twiss['betax'] = [float(x[2]) for x in mad8_data]
   twiss['betay'] = [float(x[5]) for x in mad8_data]
   twiss['s']     = [float(x[1]) for x in mad8_data]
 
   plt.figure(figsize=(10,3))
   if model == 'sc_dasel':
-    ix = twiss['name'].index('ENDBSYA_2')+1
+    ix = next(x[0] for x in enumerate(twiss['s']) if x[1] > 3382.0)
     plt.plot(twiss['s'][:ix],np.sqrt(twiss['betax'][:ix]), label='√β$_x$')
     plt.plot(twiss['s'][:ix],np.sqrt(twiss['betay'][:ix]), label='√β$_y$')
     plt.ylabel('√β$_{x,y}$ (m)')
