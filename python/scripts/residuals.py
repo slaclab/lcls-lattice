@@ -74,6 +74,6 @@ for model in MODELS:
   plt.legend()
   plt.xlabel('location (m)')
   plt.title(model+' (bmad-mad8)/(bmad+mad8)')
-  plt.savefig(f'residual_{model}_bmad.png',dpi=300,bbox_inches='tight')
+  plt.savefig(f'residual_{model}.png',dpi=300,bbox_inches='tight')
   plt.clf()
 
