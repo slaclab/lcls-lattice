@@ -48,6 +48,12 @@ jobs:
           cd ..
           python/scripts/make_mad_plots.py
           mv beta_*.png docs/plots
+      
+      - name: Make residual plots
+        shell: bash -l {0}
+        run: |
+          python/scripts/residuals.py
+          mv beta_*.png docs/plots
 
       - name: Add plots and commit to branch
         run: |
