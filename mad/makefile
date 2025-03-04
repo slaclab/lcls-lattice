@@ -106,11 +106,13 @@ endif
 # You can override this from the command line if you want a different 
 # executable. Eg make MAD8=<pathtomymad8>
 # 
-MAD8=/afs/slac/g/ilc/codes/mad8.53/mad
+#MAD8=/afs/slac/g/ilc/codes/mad8.53/mad
+MAD8=/sdf/group/ad/sw/beta/bin/mad8s
 
 # Where do we install the mad outputs, all associated files.
 #
-INSTALLROOT=/afs/slac/www/grp/ad/model/output/lcls/mad
+#INSTALLROOT=/afs/slac/www/grp/ad/model/output/lcls/mad
+INSTALLROOT=/sdf/group/ad/sw/scm/repos/optics/lcls-lattice/mad/make_release/output
 
 # Define macros that evaluate to lists of files, mainly for help installing
 #
