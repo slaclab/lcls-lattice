@@ -7,7 +7,7 @@ the plot page) is broken up.
   plot_page%plot_display_type = 'X'       ! 'X' or 'TK'
 ! plot_page%size = 1600 , 800 
 !plot_page%size = 1200, 800
-plot_page%size = 800, 400
+plot_page%size = 900, 450
   plot_page%text_height = 12.0 
   plot_page%border = 0, 0, 0, 0, '%PAGE'  
   !plot_page%n_curve_pts = 20
@@ -78,11 +78,18 @@ plot_page%size = 800, 400
   region(21)%name = 'h5'
   region(21)%location = 0.8, 1.0,0.3, 0.45
 
+  region(22)%name = 'left'
+  region(22)%location = 0.0, 0.5, 0.0, 1.0
+  region(23)%name = 'right'
+  region(23)%location = 0.5, 1.0, 0.0, 1.0
 
-  place(1) = 'floor', 'floor'     !'abs_dispersion'
-  place(2) = 'top', 'beta'
-  place(3) = 'middle', 'eta'
-  place(4) = 'bottom', 'layout'
+
+  !place(1) = 'floor', 'floor'     !'abs_dispersion'
+  !place(2) = 'top', 'beta'
+  !place(3) = 'middle', 'eta'
+  !place(4) = 'bottom', 'layout'
+  place(1) = 'left' 'xy'
+  place(2) = 'right' 'xz'
 
 /
 
@@ -1586,7 +1593,7 @@ plot_page%size = 800, 400
 
 &tao_template_plot
   plot%name = 'xy'
-  plot%x%label = 'X (\gmm)'
+  plot%x%label = 'X (mm)'
   plot%n_graph = 1
 /
 
@@ -1594,16 +1601,53 @@ plot_page%size = 800, 400
   graph%name = 'xy'
   graph_index = 1
 
-  graph%margin =  0.15, 0.05, 0.05, 0.0, '%BOX'
-  graph%y%label = 'Y (\gmm)'
+  graph%margin =  0.15, 0.15, 0.15, 0.15, '%BOX'
+  graph%y%label = 'Y (mm)'
   graph%y%label_offset=.1
   graph%type = 'phase_space'
+  graph%x_axis_scale_factor = 1e3
+  graph%y%max =  10
+  graph%y%min = -10
+  graph%x%max =  10
+  graph%x%min = -10
   !!not needed: graph%n_curve = 1
 
   curve(1)%data_source = 'beam_tracking'
   curve(1)%data_type = 'y'
   curve(1)%data_type_x = 'x'
-  curve(1)%y_axis_scale_factor = 1e6
+  curve(1)%y_axis_scale_factor = 1e3
+  curve(1)%symbol%type = 1
+  curve(1)%ele_ref_name = "END"
+  curve(1)%legend_text = '\gb\dx\u'
+
+/
+!!------------  xz ------------
+
+&tao_template_plot
+  plot%name = 'xz'
+  plot%x%label = 'X (mm)'
+  plot%n_graph = 1
+/
+
+&tao_template_graph
+  graph%name = 'xz'
+  graph_index = 1
+
+  graph%margin =  0.15, 0.15, 0.15, 0.15, '%BOX'
+  graph%y%label = 'Z (mm)'
+  graph%y%label_offset=.1
+  graph%type = 'phase_space'
+  graph%x_axis_scale_factor = 1e3
+  graph%y%max =  10
+  graph%y%min = -10
+  graph%x%max =  10
+  graph%x%min = -10
+  !!not needed: graph%n_curve = 1
+
+  curve(1)%data_source = 'beam_tracking'
+  curve(1)%data_type = 'z'
+  curve(1)%data_type_x = 'x'
+  curve(1)%y_axis_scale_factor = 1e3
   curve(1)%symbol%type = 1
   curve(1)%ele_ref_name = "END"
   curve(1)%legend_text = '\gb\dx\u'
