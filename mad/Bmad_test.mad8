@@ -1,6 +1,6 @@
   TITLE, "AD_ACCEL: superconducting linac"
 
-! *** OPTICS=AD_ACCEL-18FEB2025s ***
+! *** OPTICS=AD_ACCEL-preRelease ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY
   ASSIGN, ECHO="test.echo"
@@ -162,7 +162,7 @@
 
 ! ------------------------------------------------------------------------------
 
-  COMMENT !DASEL line (aka S30XL, LESA)
+ !COMMENT !DASEL line (aka S30XL, LESA)
     CALL, FILENAME="SC_DASEL.xsif"
     BEAM, ENERGY=E0
     USE, SC_DASEL
@@ -173,16 +173,16 @@
     PRINT, FULL
     TWISS, SAVE, BETX=BXi, ALFX=AXi, BETY=BYi, ALFY=AYi, &
       TAPE="test_twiss.tape" !, RTAPE="test_rmat.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
-      STYLE=100, SPLINE, FILE="test", RANGE=BEAM0/ENDBSYA_2, &
-      TITLE="BEAMPATH=SC_DASELi"
+   !PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
+   !  STYLE=100, SPLINE, FILE="test", RANGE=BEAM0/ENDBSYA_2, &
+   !  TITLE="BEAMPATH=SC_DASELi"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=RBETX,RBETY, &
       STYLE=100, SPLINE, FILE="test", RANGE=BEAM0/ENDBSYA_2, &
       TITLE="BEAMPATH=SC_DASELi"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE, FILE="test", RANGE=BEAM0/ENDBSYA_2, &
-      TITLE="BEAMPATH=SC_DASELi"
-  ENDCOMMENT
+   !PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+   !  STYLE=100, SPLINE, FILE="test", RANGE=BEAM0/ENDBSYA_2, &
+   !  TITLE="BEAMPATH=SC_DASELi"
+ !ENDCOMMENT
 
 ! ==============================================================================
 
