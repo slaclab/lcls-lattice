@@ -6,6 +6,9 @@
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
+! 10-MAR-2025, M. Woodley
+!  * cleanup (remove BSY-to-Aline stuff)
+! ------------------------------------------------------------------------------
 ! 04-DEC-2024, M. Woodley
 !  * relocate RFBSX14 per X. Permanyer
 ! 18-SEP-2024, M. Woodley
@@ -2226,135 +2229,7 @@
     CC36END)
 
 ! ------------------------------------------------------------------------------
-! HXR BSY downstream of the merge bend
-! ------------------------------------------------------------------------------
-
-! note: the K-values below are for SC beam; the settings for Cu beam are
-! in the "LCLS2cu_main.mad8" file
-
-  KQ50Q3 :=  0.426937957729 
-  KQ4    := -0.219608310249
-  KQ5    :=  0.11024564993
-  KQ6    := -0.109735122471
-  KQA0   :=  0.096565286297
-
-  Q50Q3 : QUAD, TYPE="50Q3"      , L=0.143254, K1=KQ50Q3, APER=0.010325
-  Q4    : QUAD, TYPE="0.91Q17.72", L=LQF/2   , K1=KQ4,    APER=rQF
-  Q5    : QUAD, TYPE="0.91Q17.72", L=LQF/2   , K1=KQ5,    APER=rQF
-  Q6    : QUAD, TYPE="0.91Q17.72", L=LQF/2   , K1=KQ6,    APER=rQF
-  QA0   : QUAD, TYPE="0.91Q17.72", L=LQF/2   , K1=KQA0,   APER=rQF
-
-  CXQ6   : RCOL, TYPE="HCOLL", L=Ljaw, XSIZE=1.7E-3, YSIZE=20.E-3
-
-  PCBSY3 : INST, TYPE="BCS plate", L=Lplate !shielding plate
-  PCBSY4 : INST, TYPE="BCS plate", L=Lplate !shielding plate
-  PCBSY5 : INST, TYPE="BCS plate", L=Lplate !shielding plate
-
-  LPC90  := 0.453644
-  LPC119 := 0.453644
-
-  PC90  : ECOL, L=LPC90 , XSIZE=10.2E-3, YSIZE=10.2E-3 !existing protection collimator in BSY
-  PC119 : ECOL, L=LPC119, XSIZE=10.2E-3, YSIZE=10.2E-3 !existing protection collimator in BSY
-
-! 2" ID BSY collimator -- part of 2-hole copper collimator d/s of A-line pulsed magnets
-
-  PCBSYH : ECOL, TYPE="@1,MPS PC", L=0.45, XSIZE=25.4E-3, YSIZE=25.4E-3 !installed, then removed
-
-  DM3     : DRIF, L=0.8438 !0.2196
-  DM4a    : DRIF, L=0.4410 !0.2114
-  DM4c    : DRIF, L=0.331133-Ljaw/2
-  DM4d    : DRIF, L=1.168867-Ljaw/2
-  DM4da   : DRIF, L=0.27685 !0.2832
-  DM4db   : DRIF, L=DM4d[L]-DM4da[L]-Lplate
-  DM4b    : DRIF, L=8.851641-DM4a[L]-DM4c[L]-DM4d[L]-Ljaw-2.0 +0.282226 !8.622041
-  DXCA0   : DRIF, L=0.31
-  DYCA0   : DRIF, L=0.509021 !0.279421
-  DM5     : DRIF, L=0.790979 !0.561379
-  DM6     : DRIF, L=0.567588
-  DMONI   : DRIF, L=0.009525
-
-  zQ5 := 0.0 !adjust position of Q5
-  zQ6 := 0.0 !adjust position of Q6
-
-  DBSY52d : DRIF, L=0.5
-  DBSY53a : DRIF, L=0.091696
-  DBSY53b : DRIF, L=0.760705-0.15
-  DBSY53c : DRIF, L=0.629945+0.15
-  DBSY53f : DRIF, L=0.5
-  DBSY53d : DRIF, L=4.0-DBSY53a[L]-DBSY53b[L]-DBSY53c[L]-DBSY53f[L]
-  DBSY53g  : DRIF, L=1.2
-  DBSY53ga : DRIF, L=0.91293 !0.91928
-  DBSY53gb : DRIF, L=DBSY53g[L]-DBSY53ga[L]-Lplate
-  DBSY53h  : DRIF, L=34.45562-DBSY53g[L]-ZBKRAPM1-ZBKRAPM2-ZBKRAPM3-ZBKRAPM4 &
-                    -2*LDZAPM1-2*LDZAPM2-2*LDZAPM3-LDZAPM4-LDZA01-LDZA02 &
-                    -PCBSYH[L]-LPCAPM1-LPCAPM2-LPCAPM3-LPCAPM4 +zQ5
-
-  DBSY54a : DRIF, L=0.5
-  DBSY54b : DRIF, L=3.22454 -zQ5
-  DBSY54c : DRIF, L=19.260056-DBSY54a[L]-DBSY54b[L] -zQ5+zQ6
-  DBSY55a : DRIF, L=0.5
-  DBSY55b : DRIF, L=4.226742
-  DBSY55c : DRIF, L=8.016028 -zQ6 !8.022378
-  DBSY55d : DRIF, L=6.466828 !6.473178
-  DBSY55e : DRIF, L=21.826764-DRFB[L]-DBSY55a[L]-DBSY55b[L]-LPC90 &
-                   -DBSY55c[L]-Lplate-DBSY55d[L]-LPC119 -zQ6 !21.432164
-
-  BPMBSYQ3  : MONI, TYPE="Stripline-6" !per C. Iverson
-  RFBBSYQ3  : MONI, TYPE="@2,CavityS-1"
-  BPMBSYQ4  : MONI, TYPE="Stripline-7"
-  BPMBSYQ5  : MONI, TYPE="Stripline-7" !per C. Iverson
-  BPMBSYQ6  : MONI, TYPE="Stripline-7" !per C. Iverson
-  RFBBSYQ6  : MONI, TYPE="@2,CavityS-1"
-  BPMBSYQA0 : MONI, TYPE="Stripline-7" !per C. Iverson
-
-  XCBSYQ3 : HKIC, TYPE="class-4" !barcode=4602
-  XCBSYQ5 : HKIC, TYPE="class-4" !barcode=2100
-  XCA0    : HKIC, TYPE="class-4" !barcode=2195
-
-  YCBSYQ4 : VKIC, TYPE="class-4" !barcode=4603
-  YCBSYQ6 : VKIC, TYPE="class-4" !barcode=2107
-  YCA0    : VKIC, TYPE="class-4" !barcode=2195
-
-  D2      : INST, TYPE="PPS stopper", L=0.43 !stopper
-  ST60    : INST, TYPE="PPS stopper", L=0.76 !backup stopper
-  DM60    : INST, TYPE="PPS BTM"             !"disaster" BTM behind ST60
-  ST61    : INST, TYPE="PPS stopper", L=0.76 !backup stopper
-
-  BSYend   : MARK !FFTB side of muon plug wall: Z=3224.022426 (Z'=176.020508 m, X'=0.0 m, Y'=-0.821761 m)
-  DUMPBSYh : MARK !front face of BSY dump for HXR beam
-  MUWALL   : MARK !front face of muon wall for HXR beam
-  MRGALINE : MARK !merge point with A-line
-  RWWAKE3H : MARK, TYPE="WAKE" !BSY/SPRDH beampipe wake applied here
-
-  Q50Q3_full : LINE=(Q50Q3,Q50Q3)
-  Q4_full    : LINE=(Q4,BPMBSYQ4,Q4)
-  Q5_full    : LINE=(Q5,BPMBSYQ5,Q5)
-  Q6_full    : LINE=(Q6,BPMBSYQ6,Q6)
-  QA0_full   : LINE=(QA0,BPMBSYQA0,QA0)
-
-  SPhAL : LINE=(DBSY52d,&
-    Q50Q3_full,DBSY53a,BPMBSYQ3,RFBBSYQ3,DBSY53b,DBSY53c,XCBSYQ3,DBSY53d,&
-      YCBSYQ4,DBSY53f,&
-    Q4_full,DBSY53ga,PCBSY3,DBSY53gb,MRGALINE)
-
-  SPhBSYb : LINE=(PCBSYH,DBSY53h,&
-    Q5_full,DBSY54a,XCBSYQ5,DBSY54b,DBSY54c,&
-    Q6_full,DRFB,RFBBSYQ6,DBSY55a,YCBSYQ6,DBSY55b,PC90,DBSY55c,PCBSY4,&
-      DBSY55d,PC119,DBSY55e,D2,DM3,ST60,DM4a,DM60,DM4b,&
-    CC31,DM4c,CXQ6,DM4da,PCBSY5,DM4db,XCA0,DXCA0,YCA0,DYCA0,ST61,DM5,&
-    QA0_full,DM6,DMONI,DMONI,MUWALL,DWALLa,DUMPBSYh,DWALLb,&
-    BSYend,RWWAKE3H)
-
-! ------------------------------------------------------------------------------
-! BSY to ALINE (from Cu linac or SC linac) has been decommissioned
-! ------------------------------------------------------------------------------
-
- !SPhBSYa : LINE=(SPhAL,ALINEa)
-
- !SPhBSY : LINE=(SPhBSYa,SPhBSYb,ENDSPH)
-
-! ------------------------------------------------------------------------------
-! BSY1 upstream of the HXR merge bend
+! BSY upstream of the scH merge bend (BXSP1H)
 ! ------------------------------------------------------------------------------
 
   KQ30701 := -0.396231018339 !-0.39623102008  !-0.396305842423 !
@@ -2443,6 +2318,166 @@
  !S100BSY1 : LINE=(S100SXR,KCUSXRa,DBSY52c,BXSP1Ha,BXSP1Hb)
  !BSY1 : LINE=(BSYS100,S100BSY1)
  !BSY : LINE=(BSYbeg,BSY1,BSY1END,SPhBSY)
+
+! ------------------------------------------------------------------------------
+! BSY downstream of scH merge bend (BXSP1H)
+! ------------------------------------------------------------------------------
+
+! note: the K-values below are for SC beam; the settings for Cu beam are
+! in the "LCLS2cu_main.mad8" file
+
+  KQ50Q3 :=  0.426937957729 
+  KQ4    := -0.219608310249
+  KQ5    :=  0.11024564993
+  KQ6    := -0.109735122471
+  KQA0   :=  0.096565286297
+
+  Q50Q3 : QUAD, TYPE="50Q3"      , L=0.143254, K1=KQ50Q3, APER=0.010325
+  Q4    : QUAD, TYPE="0.91Q17.72", L=LQF/2   , K1=KQ4,    APER=rQF
+  Q5    : QUAD, TYPE="0.91Q17.72", L=LQF/2   , K1=KQ5,    APER=rQF
+  Q6    : QUAD, TYPE="0.91Q17.72", L=LQF/2   , K1=KQ6,    APER=rQF
+  QA0   : QUAD, TYPE="0.91Q17.72", L=LQF/2   , K1=KQA0,   APER=rQF
+
+! PM projections onto BSY beamline
+
+  SBKRAPM  :=  1.055 !PM effective straight length (m)
+  ABKRAPM0 := -0.276615046502E-2 !PM bend angle (PM's have been decommissioned)
+  ZBKRAPM1 :=  SBKRAPM*COS(ABKRAPM0*1/2)
+  ZBKRAPM2 :=  SBKRAPM*COS(ABKRAPM0*3/2)
+  ZBKRAPM3 :=  SBKRAPM*COS(ABKRAPM0*5/2)
+  ZBKRAPM4 :=  SBKRAPM*COS(ABKRAPM0*7/2)
+
+! PM drifts projected onto BSY beamline
+
+  LDAPM   :=  0.5951 !space between two PMs along (decommissioned) A-line trajectory
+  LPCAPM  :=  0.1824 !length of PM collimator along BSY beamline
+  LDZAPM1 := (LDAPM*COS(1*ABKRAPM0)-LPCAPM)/2
+  LDZAPM2 := (LDAPM*COS(2*ABKRAPM0)-LPCAPM)/2
+  LDZAPM3 := (LDAPM*COS(3*ABKRAPM0)-LPCAPM)/2
+  LDZAPM4 := (LDAPM*COS(4*ABKRAPM0)-LPCAPM)/2
+  LDA01   :=  0.1971765
+  LDA02   :=  4.371494-LDA01-1.35/COS(4*ABKRAPM0)
+  LDZA01  :=  LDA01*COS(4*ABKRAPM0)
+  LDZA02  :=  LDA02*COS(4*ABKRAPM0)
+  LPCBSYH :=  0.45
+  LPC90   :=  0.453644
+  LPC119  :=  0.453644
+
+  zQ5 := 0.0 !adjust position of Q5
+  zQ6 := 0.0 !adjust position of Q6
+
+  DBSY52d   : DRIF, L= 0.5
+  DBSY53a   : DRIF, L= 0.091696
+  DBSY53b   : DRIF, L= 0.610705
+  DBSY53c   : DRIF, L= 0.779945
+  DBSY53f   : DRIF, L= 0.5
+  DBSY53d   : DRIF, L= 4.0-DBSY53a[L]-DBSY53b[L]-DBSY53c[L]-DBSY53f[L]
+  DBSY53g   : DRIF, L= 1.2
+  DBSY53ga  : DRIF, L= 0.91293
+  DBSY53gb  : DRIF, L= DBSY53g[L]-DBSY53ga[L]-Lplate
+  DBKRAPM1a : DRIF, L= ZBKRAPM1/2
+  DBKRAPM1b : DRIF, L= ZBKRAPM1/2
+  DZAPM1    : DRIF, L= LDZAPM1
+  DBKRAPM2a : DRIF, L= ZBKRAPM2/2
+  DBKRAPM2b : DRIF, L= ZBKRAPM2/2
+  DZAPM2a   : DRIF, L= LDZAPM2/2
+  DSCAPM2   : DRIF, L= 0.0
+  DZAPM2b   : DRIF, L= LDZAPM2/2
+  DZAPM2    : DRIF, L= LDZAPM2
+  DBKRAPM3a : DRIF, L= ZBKRAPM3/2
+  DBKRAPM3b : DRIF, L= ZBKRAPM3/2
+  DZAPM3    : DRIF, L= LDZAPM3
+  DBKRAPM4a : DRIF, L= ZBKRAPM4/2
+  DBKRAPM4b : DRIF, L= ZBKRAPM4/2
+  DZAPM4    : DRIF, L= LDZAPM4
+  DZA01     : DRIF, L= LDZA01
+  DZA02     : DRIF, L= LDZA02
+  DBSY53h   : DRIF, L=34.45562-DBSY53g[L]-ZBKRAPM1-ZBKRAPM2-ZBKRAPM3-ZBKRAPM4 &
+                      -2*LDZAPM1-2*LDZAPM2-2*LDZAPM3-LDZAPM4-LDZA01-LDZA02 &
+                      -LPCBSYH-4*LPCAPM +zQ5
+  DBSY54a   : DRIF, L= 0.5
+  DBSY54b   : DRIF, L= 3.22454 -zQ5
+  DBSY54c   : DRIF, L=19.260056-DBSY54a[L]-DBSY54b[L] -zQ5+zQ6
+  DBSY55a   : DRIF, L= 0.5
+  DBSY55b   : DRIF, L= 4.226742
+  DBSY55c   : DRIF, L= 8.016028 -zQ6
+  DBSY55d   : DRIF, L= 6.466828
+  DBSY55e   : DRIF, L=21.826764-DRFB[L]-DBSY55a[L]-DBSY55b[L]-LPC90 &
+                      -DBSY55c[L]-Lplate-DBSY55d[L]-LPC119 -zQ6
+  DM3       : DRIF, L= 0.8438
+  DM4a      : DRIF, L= 0.441
+  DM4c      : DRIF, L= 0.331133-Ljaw/2
+  DM4d      : DRIF, L= 1.168867-Ljaw/2
+  DM4da     : DRIF, L= 0.27685
+  DM4db     : DRIF, L= DM4d[L]-DM4da[L]-Lplate
+  DM4b      : DRIF, L= 8.851641-DM4a[L]-DM4c[L]-DM4d[L]-Ljaw-1.717774
+  DXCA0     : DRIF, L= 0.31
+  DYCA0     : DRIF, L= 0.509021
+  DM5       : DRIF, L= 0.790979
+  DM6       : DRIF, L= 0.567588
+  DMONI     : DRIF, L= 0.009525
+
+  BPMBSYQ3  : MONI, TYPE="Stripline-6" !per C. Iverson
+  RFBBSYQ3  : MONI, TYPE="@2,CavityS-1"
+  BPMBSYQ4  : MONI, TYPE="Stripline-7"
+  BPMBSYQ5  : MONI, TYPE="Stripline-7" !per C. Iverson
+  BPMBSYQ6  : MONI, TYPE="Stripline-7" !per C. Iverson
+  RFBBSYQ6  : MONI, TYPE="@2,CavityS-1"
+  BPMBSYQA0 : MONI, TYPE="Stripline-7" !per C. Iverson
+
+  XCBSYQ3 : HKIC, TYPE="class-4" !barcode=4602
+  XCBSYQ5 : HKIC, TYPE="class-4" !barcode=2100
+  XCA0    : HKIC, TYPE="class-4" !barcode=2195
+
+  YCBSYQ4 : VKIC, TYPE="class-4" !barcode=4603
+  YCBSYQ6 : VKIC, TYPE="class-4" !barcode=2107
+  YCA0    : VKIC, TYPE="class-4" !barcode=2195
+
+  PCBSY3 : INST, TYPE="BCS plate",   L=Lplate !shielding plate
+  PCBSY4 : INST, TYPE="BCS plate",   L=Lplate !shielding plate
+  D2     : INST, TYPE="PPS stopper", L=0.43   !stopper
+  ST60   : INST, TYPE="PPS stopper", L=0.76   !backup stopper
+  DM60   : INST, TYPE="PPS BTM"               !"disaster" BTM behind ST60
+  PCBSY5 : INST, TYPE="BCS plate",   L=Lplate !shielding plate
+  ST61   : INST, TYPE="PPS stopper", L=0.76   !backup stopper
+
+  PCAPM1 : ECOL, TYPE="MPS PC",    L=LPCAPM, XSIZE=44.45E-3, YSIZE=6.35E-3
+  PCAPM2 : ECOL, TYPE="MPS PC",    L=LPCAPM, XSIZE=44.45E-3, YSIZE=6.35E-3
+  PCAPM3 : ECOL, TYPE="MPS PC",    L=LPCAPM, XSIZE=44.45E-3, YSIZE=6.35E-3
+  PCAPM4 : ECOL, TYPE="MPS PC",    L=LPCAPM, XSIZE=44.45E-3, YSIZE=6.35E-3
+  PCBSYH : ECOL, TYPE="@1,MPS PC", L=0.45,   XSIZE=25.4E-3,  YSIZE=25.4E-3 !installed, then removed
+  PC90   : ECOL,                   L=LPC90,  XSIZE=10.2E-3,  YSIZE=10.2E-3 !existing protection collimator in BSY
+  PC119  : ECOL,                   L=LPC119, XSIZE=10.2E-3,  YSIZE=10.2E-3 !existing protection collimator in BSY
+
+  CXQ6 : RCOL, TYPE="HCOLL", L=Ljaw, XSIZE=1.7E-3, YSIZE=20.E-3
+
+  MUWALL   : MARK !front face of muon wall for HXR beam
+  DUMPBSYh : MARK !front face of BSY dump for HXR beam
+  BSYend   : MARK !LTUH side of muon plug wall: Z=3224.022426 (Z'=176.020508 m, X'=0.0 m, Y'=-0.821761 m)
+  RWWAKE3H : MARK, TYPE="WAKE" !BSY/SPRDH beampipe wake applied here
+
+  Q50Q3_full : LINE=(Q50Q3,Q50Q3)
+  Q4_full    : LINE=(Q4,BPMBSYQ4,Q4)
+  Q5_full    : LINE=(Q5,BPMBSYQ5,Q5)
+  Q6_full    : LINE=(Q6,BPMBSYQ6,Q6)
+  QA0_full   : LINE=(QA0,BPMBSYQA0,QA0)
+
+  BSYH : LINE=(BEGBSYH,DBSY52d,&
+    Q50Q3_full,DBSY53a,BPMBSYQ3,RFBBSYQ3,DBSY53b,DBSY53c,XCBSYQ3,DBSY53d,&
+      YCBSYQ4,DBSY53f,&
+    Q4_full,DBSY53ga,PCBSY3,DBSY53gb,&
+    DBKRAPM1a,DBKRAPM1b,DZAPM1,PCAPM1,DZAPM1,&
+    DBKRAPM2a,DBKRAPM2b,DZAPM2a,DSCAPM2,DZAPM2b,PCAPM2,DZAPM2,&
+    DBKRAPM3a,DBKRAPM3b,DZAPM3,PCAPM3,DZAPM3,&
+    DBKRAPM4a,DBKRAPM4b,DZAPM4,PCAPM4,DZA01,DZA02,&
+    PCBSYH,DBSY53h,&
+    Q5_full,DBSY54a,XCBSYQ5,DBSY54b,DBSY54c,&
+    Q6_full,DRFB,RFBBSYQ6,DBSY55a,YCBSYQ6,DBSY55b,PC90,DBSY55c,PCBSY4,&
+      DBSY55d,PC119,DBSY55e,D2,DM3,ST60,DM4a,DM60,DM4b,&
+    CC31,DM4c,CXQ6,DM4da,PCBSY5,DM4db,XCA0,DXCA0,YCA0,DYCA0,ST61,DM5,&
+    QA0_full,DM6,DMONI,DMONI,MUWALL,DWALLa,DUMPBSYh,DWALLb,&
+    BSYend,RWWAKE3H,&
+    ENDBSYH)
 
 ! ------------------------------------------------------------------------------
 ! HXR VBEND

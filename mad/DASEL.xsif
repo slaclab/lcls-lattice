@@ -350,6 +350,9 @@
               -LDDAS13-LDDAS14-LDDAS17-LDDAS18-LDDAS19-LDDAS20)/2+dLDDAS
   LDDAS15  := LDDAS
   LDDAS16  := LDDAS
+  LDDAS21a := 0.397
+  LDDAS21b := 19.829173726034-0.397
+  LDDAS22  := 0.5
 
   DDASQQ   : DRIF, L=LDDASQQ
   DDAS1    : DRIF, L=LDDAS1
@@ -381,6 +384,9 @@
   DDAS19   : DRIF, L=LDDAS19
   DDAS20a  : DRIF, L=LDDAS20a
   DDAS20b  : DRIF, L=LDDAS20b
+  DDAS21a  : DRIF, L=LDDAS21a
+  DDAS21b  : DRIF, L=LDDAS21b
+  DDAS22   : DRIF, L=LDDAS22
 
 ! roll angles
 
@@ -409,13 +415,15 @@
   YCDAS1  : VKIC, TYPE="class-4"
   YCDAS11 : VKIC, TYPE="class-4"
   YCDAS17 : VKIC, TYPE="class-4"
- !YCDAS19 : defined in Aline.xsif
+  YCDAS19 : VKIC, TYPE="class-4"
 
 ! profile monitors
 
-  PRDAS12 : PROF, TYPE="YAG" !two YAG crystals 50 um thick and 1 mm thick)
-  PRDAS14 : PROF, TYPE="PHOSPHOR"
-  PRDAS17 : PROF, TYPE="PHOSPHOR"
+  PRDAS12  : PROF, TYPE="YAG" !two YAG crystals 50 um thick and 1 mm thick)
+  PRDAS14  : PROF, TYPE="PHOSPHOR"
+  PRDAS17  : PROF, TYPE="PHOSPHOR"
+  PRBRAM1  : PROF, TYPE="unknown" !profile monitor, type to be determined
+  TGTBRAM1 : INST, TYPE="Cu"      !secondary production Cu target
 
 ! ACMs
 
@@ -480,7 +488,7 @@
 
 ! stage-A and stage-B with dump in sector-30
 
-  DASELSA : LINE=(&
+  SPA : LINE=(BEGSPA,&
     BKRDAS1_full,DDASBK1 ,&
     BKRDAS2_full,DDASBK2 ,&
     BKRDAS3_full,DDASBK3h,DDASBK3h,&
@@ -496,29 +504,21 @@
     QDAS2a_full,DDASQQ  ,&
     QDAS2b_full,DDAS5a  ,IMDAS1  ,DDAS5b  ,IMDAS2 ,DDAS5c  ,&
     BRDAS1_full,RODAS2  ,DDAS11a ,XCDAS11 ,DDAS11b,YCDAS11 ,DDAS11c,&
-    QDAS11_full,DDAS12a ,PRDAS12 ,DDAS12b ,DUMPDAS_full)
-
-  DASELSB : LINE=(&
-                 DDAS12c ,&
-    QDAS12_full ,DDAS13  ,&
-    QDAS13_full ,DDAS14aa,PRDAS14,DDAS14ac,WOODDOOR,DDAS14ab,&
-                          XCDAS14 ,DDAS14b,&
-    QDAS14_full ,DDAS15  ,&
-    QDAS15_full ,DDAS16  ,&
-    QDAS16_full ,DDAS17a ,PRDAS17 ,DDAS17b ,YCDAS17,DDAS17c,&
-    QDAS17_full ,DDAS18  ,&
-    QDAS18a_full,DDASQQ  ,&
-    QDAS18b_full,DDAS19  ,&
-    QDAS19_full ,DDAS20a ,BPMDAS19,DDAS20b ,RODAS3 ,&
-    BRDAS2_full)
-
-! ------------------------------------------------------------------------------
-
-  DASEL  : LINE=(DASELSA,DASELSB)
-
-  DASELA : LINE=(BEGDASEL,DASEL,DA04b,XCDAS19,ALINE)
-
-  SPDASELA : LINE=(SPRDkh,SPRDks,SPRDda,DASELA)
+    QDAS11_full,DDAS12a ,PRDAS12 ,DDAS12b ,DUMPDAS_full    ,DDAS12c,&
+    QDAS12_full,DDAS13  ,&
+    QDAS13_full,DDAS14aa,PRDAS14,DDAS14ac,WOODDOOR,&
+    ENDSPA)
+    
+  SLTA : LINE=(BEGSLTA  ,DDAS14ab,XCDAS14,DDAS14b,&
+    QDAS14_full ,DDAS15 ,&
+    QDAS15_full ,DDAS16 ,&
+    QDAS16_full ,DDAS17a,PRDAS17 ,DDAS17b,YCDAS17,DDAS17c,&
+    QDAS17_full ,DDAS18 ,&
+    QDAS18a_full,DDASQQ ,&
+    QDAS18b_full,DDAS19 ,&
+    QDAS19_full ,DDAS20a,BPMDAS19,DDAS20b,RODAS3 ,&
+    BRDAS2_full ,DDAS21a,YCDAS19 ,DDAS21b,PRBRAM1,DDAS22 ,TGTBRAM1,&
+    ENDSLTA)
 
 ! ------------------------------------------------------------------------------
 
