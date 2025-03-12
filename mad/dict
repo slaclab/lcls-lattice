@@ -129,14 +129,16 @@ sbend:        keyword, pr=5, sp=3, &
               fcsr     = (r(1), =0.0), &
               bv       = (l(1), =.true.), &
               gmin     = (r(1), =0.0), &
-              gmax     = (r(1), =0.0)
+              gmax     = (r(1), =0.0), &
+              fdn      = (n(1), ='BEND')
 
 matrix:       keyword, pr=5, sp=4, &
               type     = (n(1), ='MATRIX'), &
               l        = (r(1), =0.0), &
               kick     = (r(6), =6\*0.0) &
               rm       = (r(6,6), =36\*0.0), &
-              tm       = (r(6,6,6), =216\*0.0)
+              tm       = (r(6,6,6), =216\*0.0), &
+              fdn      = (n(1), ='USEG')
 
 quadrupole:   keyword, pr=5, sp=5, &
               type     = (n(1), ='QUADRUPOLE'), &
@@ -145,7 +147,8 @@ quadrupole:   keyword, pr=5, sp=5, &
               tilt     = (r(1), =pi/4), &
               aperture = (r(1), =0.0), &
               gmin     = (r(1), =0.0), &
-              gmax     = (r(1), =0.0)
+              gmax     = (r(1), =0.0), &
+              fdn      = (n(1), ='QUAD')
 
 sextupole:    keyword, pr=5, sp=6, &
               type     = (n(1), ='SEXTUPOLE'), &
@@ -154,7 +157,8 @@ sextupole:    keyword, pr=5, sp=6, &
               tilt     = (r(1), =pi/6), &
               aperture = (r(1), =0.0), &
               gmin     = (r(1), =0.0), &
-              gmax     = (r(1), =0.0)
+              gmax     = (r(1), =0.0), &
+              fdn      = (n(1), ='SEXT')
 
 octupole:     keyword, pr=5, sp=7, &
               type     = (n(1), ='OCTUPOLE'), &
@@ -199,7 +203,8 @@ solenoid:     keyword, pr=5, sp=9, &
               ks       = (r(1), =0.0), &
               aperture = (r(1), =0.0), &
               gmin     = (r(1), =0.0), &
-              gmax     = (r(1), =0.0)
+              gmax     = (r(1), =0.0), &
+              fdn      = (n(1), ='SOLE')
 
 rfcavity:     keyword, pr=5, sp=10, &
               type     = (n(1), ='RFCAVITY'), &
@@ -230,7 +235,8 @@ elseparator:  keyword, pr=5, sp=11, &
 srotation:    keyword, pr=5, sp=12, &
               type     = (n(1), ='SROTATION'), &
               ' '      = (r(1), =0.0), &
-              angle    = (r(1), =0.0)
+              angle    = (r(1), =0.0), &
+              fdn      = (n(1), ='MARK')
 
 yrotation:    keyword, pr=5, sp=13, &
               type     = (n(1), ='YROTATION'), &
@@ -244,7 +250,8 @@ hkicker:      keyword, pr=5, sp=14, &
               bv       = (l(1), =.true.), &
               lrad     = (r(1), =0.0), &
               gmin     = (r(1), =0.0), &
-              gmax     = (r(1), =0.0)
+              gmax     = (r(1), =0.0), &
+              fdn      = (n(1), ='XCOR')
 
 kicker:       keyword, pr=5, sp=15, &
               type     = (n(1), ='KICKER'), &
@@ -263,7 +270,8 @@ vkicker:      keyword, pr=5, sp=16, &
               bv       = (l(1), =.true.), &
               lrad     = (r(1), =0.0), &
               gmin     = (r(1), =0.0), &
-              gmax     = (r(1), =0.0)
+              gmax     = (r(1), =0.0), &
+              fdn      = (n(1), ='YCOR')
 
 hmonitor:     keyword, pr=5, sp=17, &
               type     = (n(1), ='HMONITOR'), &
@@ -271,7 +279,8 @@ hmonitor:     keyword, pr=5, sp=17, &
 
 monitor:      keyword, pr=5, sp=18, &
               type     = (n(1), ='MONITOR'), &
-              l        = (r(1), =0.0)
+              l        = (r(1), =0.0), &
+              fdn      = (n(1), ='BPM ')
 
 vmonitor:     keyword, pr=5, sp=19, &
               type     = (n(1), ='VMONITOR'), &
@@ -281,13 +290,15 @@ ecollimator:  keyword, pr=5, sp=20, &
               type     = (n(1), ='ECOLLIMATOR'), &
               l        = (r(1), =0.0), &
               xsize    = (r(1), =0.0), &
-              ysize    = (r(1), =0.0)
+              ysize    = (r(1), =0.0), &
+              fdn      = (n(1), ='PC  ')
 
 rcollimator:  keyword, pr=5, sp=21, &
               type     = (n(1), ='RCOLLIMATOR'), &
               l        = (r(1), =0.0), &
               xsize    = (r(1), =0.0), &
-              ysize    = (r(1), =0.0)
+              ysize    = (r(1), =0.0), &
+              fdn      = (n(1), ='COLL')
 
 beambeam:     keyword, pr=5, sp=22, &
               type     = (n(1), ='BEAMBEAM'), &
@@ -323,11 +334,13 @@ lump:         keyword, pr=5, sp=23, &
 
 instrument:   keyword, pr=5, sp=24, &
               type     = (n(1), ='INSTRUMENT'), &
-              l        = (r(1), =0.0)
+              l        = (r(1), =0.0), &
+              fdn      = (n(1), ='INST')
 
 marker:       keyword, pr=5, sp=25, &
               type     = (n(1), ='MARKER'), &
-              ' '      = (r(1), =0.0)
+              ' '      = (r(1), =0.0), &
+              fdn      = (n(1), ='MARK')
 
 gbend:        keyword, pr=5, sp=26, &
               type     = (n(1), ='GBEND'), &
@@ -364,15 +377,18 @@ lcavity:      keyword, pr=5, sp=27, &
               binmax   = (r(1), =0.0), &
               lfile    = (s(1), =" "), &
               tfile    = (s(1), =" "), &
-              swave    = (l(1), =.false.)
+              swave    = (l(1), =.false.), &
+              fdn      = (n(1), ='LCAV')
 
 profile   :   keyword, pr=5, sp=28, &
               type     = (n(1), ='PROFILE'), &
-              l        = (r(1), =0.0)
+              l        = (r(1), =0.0), &
+              fdn      = (n(1), ='PROF')
 
 wire      :   keyword, pr=5, sp=29, &
               type     = (n(1), ='WIRE'), &
-              l        = (r(1), =0.0)
+              l        = (r(1), =0.0), &
+              fdn      = (n(1), ='WIRE')
 
 slmonitor :   keyword, pr=5, sp=30, &
               type     = (n(1), ='SLMONITOR'), &
@@ -380,11 +396,13 @@ slmonitor :   keyword, pr=5, sp=30, &
 
 blmonitor :   keyword, pr=5, sp=31, &
               type     = (n(1), ='BLMONITOR'), &
-              l        = (r(1), =0.0)
+              l        = (r(1), =0.0), &
+              fdn      = (n(1), ='BLMO')
 
 imonitor  :   keyword, pr=5, sp=32, &
               type     = (n(1), ='IMONITOR'), &
-              l        = (r(1), =0.0)
+              l        = (r(1), =0.0), &
+              fdn      = (n(1), ='IMON')
 
 ! pr=6, line and list definitions.
 
