@@ -918,23 +918,22 @@ Ebend = []  # ['BRB', 'BXSP', 'BYSP', 'BRSP', 'BYSP', 'BX3', 'BY1', 'BY2', 'BYD'
 # SBEN (unsplit):
 # - idf,id,sequence,area,xkey,prim,name,type,dist(m),energy(GeV)
 # - zleng(m),leng(m),gap(m),fint(1),tilt(deg),ang(deg),e1(deg),e2(deg),
-#   BL(kG-m),B(T),k1(1/m^2),GL(kG),G(T/m),scale(name,value),polarity
+#   BL(kG-m),B(T),k1(1/m^2),GL(kG),G(T/m)
 # - sdsp(m),suml(m),coord(m,rad),mcoord(m,rad)
 # - suml1(m),coord1(m,rad),mcoord1(m,rad),suml2(m),coord2(m,rad),mcoord2(m,rad)
 # QUAD (unsplit):
 # - idf,id,sequence,area,xkey,prim,name,type,dist(m),energy(GeV)
-# - leng(m),bore(m),tilt(deg),k1(1/m^2),GL(kG),G(T/m),scale(name,value),polarity
+# - leng(m),bore(m),tilt(deg),k1(1/m^2),GL(kG),G(T/m)
 # - sdsp(m),suml(m),coord(m,rad),mcoord(m,rad)
 # - suml1(m),coord1(m,rad),suml2(m),coord2(m,rad)
 # SEXT (unsplit):
 # - idf,id,sequence,area,xkey,prim,name,type,dist(m),energy(GeV)
-# - leng(m),bore(m),tilt(deg),k2(1/m^3),G'L(kG/m),G'(T/m^2),scale(name,value),
-#   polarity
+# - leng(m),bore(m),tilt(deg),k2(1/m^3),G'L(kG/m),G'(T/m^2)
 # - sdsp(m),suml(m),coord(m,rad)
 # - suml1(m),coord1(m,rad),suml2(m),coord2(m,rad)
 # SOLE (unsplit):
 # - idf,id,sequence,area,xkey,prim,name,type,dist(m),energy(GeV)
-# - leng(m),bore(m),ks(1/m),BL(kG-m),B(T),scale(name,value),polarity
+# - leng(m),bore(m),ks(1/m),BL(kG-m),B(T)
 # - sdsp(m),suml(m),coord(m,rad)
 # - suml1(m),coord1(m,rad),suml2(m),coord2(m,rad)
 # MATR (unsplit):
@@ -1149,13 +1148,6 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                 k1 = 0
             G = brho * k1  # T/m
             GL = G * leng  # T
-            if mname[:3] in Ebend:
-                sname = 'GeV2T'
-                sval = brho * abs(ang) / (leng * energy)
-            else:
-                sname = 'kG2T_Bdl2B'
-                sval = 1 / (leng * T2kG)
-            polarity = -np.sign(ang + np.finfo(float).eps)  # add eps so that sign=1 when ang=0
             coori = np.copy(coor[idi, :])  # m,rad
             coorc = np.copy(coor[id1, :])  # m,rad
             cooro = np.copy(coor[ido, :])  # m,rad
@@ -1215,9 +1207,6 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                 'k1': k1,
                 'GL': T2kG * GL,  # kG
                 'G': charge * G,
-                'sname': sname,
-                'sval': sval,
-                'polarity': polarity,
                 'sdsp': sdsp,
                 'suml': suml,
                 **{f'c{k+1}': coorc[k] for k in range(6)},
@@ -1331,14 +1320,9 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
             if leng == 0:
                 G = 0  # T/m
                 GL = brho * k1  # T
-                sname = 'kG2T'
-                sval = 1 / T2kG
             else:
                 G = brho * k1  # T/m
                 GL = G * leng  # T
-                sname = 'kG2T_Gdl2G'
-                sval = 1 / (leng * T2kG)
-            polarity = -np.sign(k1 + np.finfo(float).eps)  # add eps so that sign=1 when k1=0
             coorc = np.copy(coor[id1, :])  # m,rad
             QUAD.append({
                 'idf': idf[id1],
@@ -1360,9 +1344,6 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                 'k1': k1,
                 'GL': T2kG * GL,  # kG
                 'G': charge * G,
-                'sname': sname,
-                'sval': sval,
-                'polarity': polarity,
                 'sdsp': sdsp,
                 'suml': suml,
                 **{f'c{k+1}': coorc[k] for k in range(6)},
@@ -1422,13 +1403,6 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
             brho = np.sqrt(EeV ** 2 - Er ** 2) / clight  # T-m
             Gp = brho * k2  # T/m
             GpL = Gp * leng  # T
-            if leng == 0:
-                sname = 'kG2T'
-                sval = 1 / T2kG
-            else:
-                sname = 'kG2T_Gpdl2Gp'
-                sval = 1 / (leng * T2kG)
-            polarity = -np.sign(k2 + np.finfo(float).eps)  # add eps so that sign=1 when k2=0
             coorc = np.copy(coor[id1, :])  # m,rad
             SEXT.append({
                 'idf': idf[id1],
@@ -1450,9 +1424,6 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                 'k2': k2,
                 'GpL': T2kG * GpL,  # kG/m
                 'Gp': charge * Gp,
-                'sname': sname,
-                'sval': sval,
-                'polarity': polarity,
                 'sdsp': sdsp,
                 'suml': suml,
                 **{f'c{k+1}': coorc[k] for k in range(6)}
@@ -1511,13 +1482,6 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
             brho = np.sqrt(EeV**2 - Er**2) / clight  # T-m
             B = brho * ks  # T
             BL = B * leng  # T-m
-            if leng == 0:
-                sname = 'kG2T'
-                sval = 1 / T2kG
-            else:
-                sname = 'kG2T_Bdl2B'
-                sval = 1 / (leng * T2kG)
-            polarity = -np.sign(ks + np.finfo(float).eps)  # add eps so that sign=1 when ks=0
             coorc = np.mean(coor[ide], axis=0)  # m, rad
             SOLE.append({
                 'idf': idf[id1],
@@ -1538,9 +1502,6 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                 'ks': ks,
                 'BL': T2kG * BL,  # kG-m
                 'B': charge * B,
-                'sname': sname,
-                'sval': sval,
-                'polarity': polarity,
                 'sdsp': sdsp,
                 'suml': suml,
                 **{f'c{k+1}': coorc[k] for k in range(6)}
@@ -2431,181 +2392,9 @@ def fix_mark_prim(mark):
 MARK = fix_mark_prim(MARK)
 
 # ------------------------------------------------------------------------------
-
-# Worksheets
-# ==========
-# one sheet per keyword
-# one sheet for segments
-# one sheet for sequences
-# one sheet for deferred devices
-
-# common worksheet header
-
-head1 = ['MAD #', 'Sequence', 'Area', 'Sector', 'Undulator Cell', 'XAL Keyword',
-         'DB Keyword', 'MAD Name', 'Engineering Type', 'SeqDist', 'Energy']
-head2 = ['Display S', 'SumL (linac)', 'X Coor (linac)', 'Y Coor (linac)',
-         'Z Coor (linac)', 'X Angle (linac)', 'Y Angle (linac)', 'Z Angle (linac)']
-head3 = ['SumL (BSY)', 'X Coor (BSY)', 'Y Coor (BSY)', 'Z Coor (BSY)',
-         'X Angle (BSY)', 'Y Angle (BSY)', 'Z Angle (BSY)']
-head4 = ['SumL (UND)', 'X Coor (UND)', 'Y Coor (UND)', 'Z Coor (UND)',
-         'X Angle (UND)', 'Y Angle (UND)', 'Z Angle (UND)']
-foot1 = head1
-foot2 = ['Display S', 'SumL (linac)', 'MAD Z (linac)', 'MAD X (linac)',
-         'MAD Y (linac)', 'MAD Psi (linac)', 'MAD Phi (linac)', 'MAD Theta (linac)']
-foot3 = ['SumL (BSY)', 'MAD Z (BSY)', 'MAD X (BSY)', 'MAD Y (BSY)',
-         'MAD Psi (BSY)', 'MAD Phi (BSY)', 'MAD Theta (BSY)']
-foot4 = ['SumL (UND)', 'MAD Z (UND)', 'MAD X (UND)', 'MAD Y (UND)',
-         'MAD Psi (UND)', 'MAD Phi (UND)', 'MAD Theta (UND)']
-unit1 = ['', '', '', '', '', '',
-         '', '', '', 'm', 'GeV']
-unit2 = ['m', 'm', 'm', 'm', 'm', 'rad', 'rad', 'rad']
-unit3 = ['m', 'm', 'm', 'm', 'rad', 'rad', 'rad']
-unit4 = ['m', 'm', 'm', 'm', 'rad', 'rad', 'rad']
-
-
 # Precision for coordinate output
 prec = 1e-6
-
-wb = pyxl.Workbook()
-for keywn in keyw:
-    thead2, tfoot2, tunit2 = head2.copy(), foot2.copy(), unit2.copy()
-    thead3, tfoot3, tunit3 = head3.copy(), foot3.copy(), unit3.copy()
-    thead4, tfoot4, tunit4 = head4.copy(), foot4.copy(), unit4.copy()
-    
-    if keywn == 'LCAV':
-        khead = ['Length', 'Frequency', 'Amplitude', 'Phase', 'Gradient', 'Power']
-        kunit = ['m', 'MHz', 'MeV', 'degree', 'MeV/m', 'fraction']
-    elif keywn == 'SBEN':
-        khead = ['Z Length', 'Effective Length', 'Gap', 'Field Integral', 'Tilt',
-                 'Angle', 'E1', 'E2', 'BL', 'B', 'K1', 'GL', 'G',
-                 'XAL Scale Name', 'XAL Scale Value', 'XAL Polarity']
-        kunit = ['m', 'm', 'm', '', 'degree',
-                 'degree', 'degree', 'degree', 'kG-m', 'T', '1/m^2', 'kG', 'T/m',
-                 '', '', '']
-        thead2.extend(['Magnet X Coor (linac)', 'Magnet Y Coor (linac)',
-                       'Magnet Z Coor (linac)', 'Magnet X Angle (linac)',
-                       'Magnet Y Angle (linac)', 'Magnet Z Angle (linac)'])
-        tfoot2.extend(['Magnet MAD Z (linac)', 'Magnet MAD X (linac)',
-                       'Magnet MAD Y (linac)', 'Magnet MAD Psi (linac)',
-                       'Magnet MAD Phi (linac)', 'Magnet MAD Theta (linac)'])
-        tunit2.extend(['m', 'm', 'm', 'rad', 'rad', 'rad'])
-        # Similar extensions for thead3, tfoot3, tunit3, thead4, tfoot4, tunit4
-    # ... (similar cases for other keywords)
-    
-    kfoot = khead.copy()
-    
-    # Write to Excel file
-    ws = wb.create_sheet(keywn)
-    data = head1+khead+thead2+thead3+thead4
-    for col, value in enumerate(data,start=1):
-        ws.cell(row=1,column=col,value=value)
-    data = unit1+kunit+tunit2+tunit3+tunit4
-    for col, value in enumerate(data,start=1):
-        ws.cell(row=2,column=col,value=value)
-    
-    # Process TEMP data
-    M = []
-    TEMP=globals()[keywn]
-    for TEMPm in TEMP:
-        for j in range(1, 7):
-            TEMPm[f'c{j}'] = np.round(TEMPm[f'c{j}'], decimals=int(-np.log10(prec)))
-            TEMPm[f'c1{j}'] = np.round(TEMPm[f'c1{j}'], decimals=int(-np.log10(prec)))
-            TEMPm[f'c2{j}'] = np.round(TEMPm[f'c2{j}'], decimals=int(-np.log10(prec)))
-            if TEMPm['prim'] == 'BEND' and TEMPm['type'] != '0.79K11.8':
-                TEMPm[f'm{j}'] = np.round(TEMPm[f'm{j}'], decimals=int(-np.log10(prec)))
-                TEMPm[f'm1{j}'] = np.round(TEMPm[f'm1{j}'], decimals=int(-np.log10(prec)))
-                TEMPm[f'm2{j}'] = np.round(TEMPm[f'm2{j}'], decimals=int(-np.log10(prec)))
-            elif TEMPm['prim'] == 'QUAD':
-                TEMPm[f'm{j}'] = np.round(TEMPm[f'm{j}'], decimals=int(-np.log10(prec)))
-            elif TEMPm['prim'] == 'INST':
-                if TEMPm['xkey'] != 'MARK':
-                    TEMPm[f'm{j}'] = np.round(TEMPm[f'm{j}'], decimals=int(-np.log10(prec)))
-                    TEMPm[f'm1{j}'] = np.round(TEMPm[f'm1{j}'], decimals=int(-np.log10(prec)))
-                    TEMPm[f'm2{j}'] = np.round(TEMPm[f'm2{j}'], decimals=int(-np.log10(prec)))
-        
-        if addEICdevices and TEMPm['name'] == 'FC00EIC':
-            TEMPm['seq'] = 'CATHODE TO FC00EIC'
-        
-        if not (noXTES_TEMPs and TEMPm['idf'] in [3, 4, 5, 12, 13] and TEMPm['name'].startswith('TEMP')):
-            TEMPwr = {k: v for k, v in TEMPm.items() if k not in ['idf', 'area']}
-            M.append(list(TEMPwr.values()))
-    
-    M.append(foot1 + kfoot + tfoot2 + tfoot3 + tfoot4)
-    M.append(unit1 + kunit + tunit2 + tunit3 + tunit4)
-
-    for i,datarow in enumerate(M,3):
-        for j,data in enumerate(datarow,1):
-            if j == 1 and isinstance(data,int):
-                data = data + 1
-            if isinstance(data,list):
-                if data != []:
-                    ws.cell(row=i,column=j,value=data)
-            elif isinstance(data,np.ndarray):
-                if data.size > 0:
-                    ws.cell(row=i,column=j,value=data[0])
-            else:
-                ws.cell(row=i,column=j,value=data)
-
-
-
-# ------------------------------------------------------------------------------
-# Write Sequences Worksheet ...
-
-# Sequences header
-
-head = ['Sequence', 'Previous Sequence', 'Begin Element', 'End Element', 'Length']
-unit = ['', '', '', '', 'm']
-
-ws_seq = wb.create_sheet('Sequences')
-
-for i,data in enumerate(head,1):
-    ws_seq.cell(row=1,column=i,value=data)
-for i,data in enumerate(unit,1):
-    ws_seq.cell(row=2,column=i,value=data)
-
-# Sequences Worksheet
-
-M = []
-for s in seq:
-    temp = {
-        'name': s['name'],
-        'prev': '',
-        'beg': s['beg'],
-        'end': s['end'],
-        'leng': s['length']
-    }
-    m = s['prev']
-    if m > 0:
-        temp['prev'] = seq[m-1]['name']
-    M.append(list(temp.values()))
-
-for i,row in enumerate(M,3):
-    for j,data in enumerate(row,1):
-        ws_seq.cell(row=i,column=j,value=data)
-
-# ------------------------------------------------------------------------------
-# Deferred devices header
-
-head = ['MAD #', 'Area Name', 'Area Id', 'DB Keyword', 'MAD Name', 'Z',
-        'Engineering Type', 'Level']
-
-ws_def = wb.create_sheet('Deferred')
-for i,data in enumerate(head,1):
-    ws_def.cell(row=1,column=i,value=data)
-
-# Deferred devices Worksheet
-
-M = [list(DEPR[n].values()) for n in range(nDEPR)]
-for i,row in enumerate(M,2):
-    for j,data in enumerate(row,1):
-        if j == 1 and isinstance(data,int):
-            data = data + 1
-        ws_def.cell(row=i,column=j,value=data)
-
 Path(outdir).mkdir(parents=True,exist_ok=True)
-wb.save(outdir+'/'+xfile)
-# ------------------------------------------------------------------------------
-# Write SYMBOLS txt-files ...
 
 # set up pointers
 
@@ -2757,9 +2546,6 @@ with open(outdir+'/'+fname, 'wt') as fid:
                 s[31] = TEMP['B']
                 s[32] = TEMP['GL']
                 s[33] = TEMP['G']
-                s[34] = TEMP['sname']
-                s[35] = TEMP['sval']
-                s[36] = TEMP['polarity']
                 s[37] = roundoff(TEMP['m1'], prec)
                 s[38] = roundoff(TEMP['m2'], prec)
                 s[39] = roundoff(TEMP['m3'], prec)
@@ -2773,9 +2559,6 @@ with open(outdir+'/'+fname, 'wt') as fid:
                 s[10] = TEMP['tilt']
                 s[32] = TEMP['GL']
                 s[33] = TEMP['G']
-                s[34] = TEMP['sname']
-                s[35] = TEMP['sval']
-                s[36] = TEMP['polarity']
                 s[37] = roundoff(TEMP['m1'], prec)
                 s[38] = roundoff(TEMP['m2'], prec)
                 s[39] = roundoff(TEMP['m3'], prec)
@@ -2789,17 +2572,11 @@ with open(outdir+'/'+fname, 'wt') as fid:
                 s[10] = TEMP['tilt']
                 s[32] = TEMP['GpL']
                 s[33] = TEMP['Gp']
-                s[34] = TEMP['sname']
-                s[35] = TEMP['sval']
-                s[36] = TEMP['polarity']
             elif keyw[idk] == 'SOLE':
                 s[5] = TEMP['leng']
                 s[6] = TEMP['bore']
                 s[30] = TEMP['BL']
                 s[31] = TEMP['B']
-                s[34] = TEMP['sname']
-                s[35] = TEMP['sval']
-                s[36] = TEMP['polarity']
                 s[43] = TEMP['ks']
             elif keyw[idk] == 'MATR':
                 s[5] = TEMP['leng']
@@ -2923,9 +2700,6 @@ if cBSY:
                     s[31] = TEMP['B']
                     s[32] = TEMP['GL']
                     s[33] = TEMP['G']
-                    s[34] = TEMP['sname']
-                    s[35] = TEMP['sval']
-                    s[36] = TEMP['polarity']
                     s[37] = roundoff(TEMP['m11'], prec)
                     s[38] = roundoff(TEMP['m12'], prec)
                     s[39] = roundoff(TEMP['m13'], prec)
@@ -2939,9 +2713,6 @@ if cBSY:
                     s[10] = TEMP['tilt']
                     s[32] = TEMP['GL']
                     s[33] = TEMP['G']
-                    s[34] = TEMP['sname']
-                    s[35] = TEMP['sval']
-                    s[36] = TEMP['polarity']
                 elif keyw[idk] == 'SEXT':
                     s[5]  = TEMP['leng']
                     s[6]  = TEMP['bore']
@@ -2949,17 +2720,11 @@ if cBSY:
                     s[10] = TEMP['tilt']
                     s[32] = TEMP['GpL']
                     s[33] = TEMP['Gp']
-                    s[34] = TEMP['sname']
-                    s[35] = TEMP['sval']
-                    s[36] = TEMP['polarity']
                 elif keyw[idk] == 'SOLE':
                     s[5]  = TEMP['leng']
                     s[6]  = TEMP['bore']
                     s[30] = TEMP['BL']
                     s[31] = TEMP['B']
-                    s[34] = TEMP['sname']
-                    s[35] = TEMP['sval']
-                    s[36] = TEMP['polarity']
                     s[43] = TEMP['ks']
                 elif keyw[idk] == 'MATR':
                     s[5]  = TEMP['leng']
@@ -3077,9 +2842,6 @@ if cUND:
                     s[31] = TEMP['B']
                     s[32] = TEMP['GL']
                     s[33] = TEMP['G']
-                    s[34] = TEMP['sname']
-                    s[35] = TEMP['sval']
-                    s[36] = TEMP['polarity']
                     s[37] = roundoff(TEMP['m21'], prec)
                     s[38] = roundoff(TEMP['m22'], prec)
                     s[39] = roundoff(TEMP['m23'], prec)
@@ -3093,9 +2855,6 @@ if cUND:
                     s[10] = TEMP['tilt']
                     s[32] = TEMP['GL']
                     s[33] = TEMP['G']
-                    s[34] = TEMP['sname']
-                    s[35] = TEMP['sval']
-                    s[36] = TEMP['polarity']
                 elif keyw[idk, :] == 'SEXT':
                     s[5] = TEMP['leng']
                     s[6] = TEMP['bore']
@@ -3103,17 +2862,11 @@ if cUND:
                     s[10] = TEMP['tilt']
                     s[32] = TEMP['GpL']
                     s[33] = TEMP['Gp']
-                    s[34] = TEMP['sname']
-                    s[35] = TEMP['sval']
-                    s[36] = TEMP['polarity']
                 elif keyw[idk, :] == 'SOLE':
                     s[5] = TEMP['leng']
                     s[6] = TEMP['bore']
                     s[30] = TEMP['BL']
                     s[31] = TEMP['B']
-                    s[34] = TEMP['sname']
-                    s[35] = TEMP['sval']
-                    s[36] = TEMP['polarity']
                     s[43] = TEMP['ks']
                 elif keyw[idk, :] == 'MATR':
                     s[5] = TEMP['leng']
