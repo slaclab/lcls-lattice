@@ -54,7 +54,7 @@ def xtffs2mat(fname):
                     line = line.ljust(105)
                     p.extend([float(line[0:16].strip()), float(line[16:32].strip()), float(line[32:48].strip()),
                               float(line[48:64].strip()), float(line[64:80].strip())])
-                    FDN.append(line[81:105].strip())
+                    FDN.append(line[81:97].strip())
                 elif _ == 2:
                     x, y, z = map(float, [line[0:16].strip(), line[16:32].strip(), line[32:48].strip()])
                     S.append(float(line[48:64].strip()))

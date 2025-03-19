@@ -333,6 +333,9 @@ if cBSY:
 if cUND:
   FixUpgradeNames(N2)
 
+
+print(FDN) #FOO
+
 # initialize some sequence data
 
 for s in seq:
@@ -374,10 +377,6 @@ for a in area:
         a['parent']='SPD'
     else:
         a['parent']=a['name']
-
-# Convert lists to numpy arrays if needed
-# K1, N1, L1, P1, S1, coor1, idf1, FDN1 = map(np.array, [K1, N1, L1, P1, S1, coor1, idf1, FDN1])
-# K2, N2, P2, S2, coor2, idf2, FDN2 = map(np.array, [K2, N2, P2, S2, coor2, idf2, FDN2])
 
 # special handling for rolled dump lines and A-line
 
@@ -620,11 +619,13 @@ for n in name:
         K[i] = 'QUAD'
         P[i][3] = P[i][5]  # T1 -> TILT
 
-def assign_ucell(N, FDN, coor, idf):
+def assign_ucell(N, coor, idf):
     # NOTE: coordinates are assumed to be in MAD (not SYMBOLS) order
 
     debug = False
     filename = f'{script_dir}/sectors.xlsx'
+
+    UCELL = ['' for x in N]
 
     wb= pyxl.load_workbook(filename,data_only=True)
 
@@ -656,16 +657,12 @@ def assign_ucell(N, FDN, coor, idf):
         id2 = [i for i,x in enumerate(coor3) if x < cell['Zend']]
         inter2 = [v for v in id1 if v in id2][-1]
         for jd in range(inter1,inter2+1):
-            if not FDN[jd]:
-                FDN[jd] = cell['name']
+          UCELL[jd] = cell['name']
 
-    return FDN
+    return UCELL
 
-# Assign undulator cell names (use empty FDN2 array)
-FDN2 = FDN1.copy()
-FDN2 = assign_ucell(N1, FDN2, coor1, idf1)
-
-# Assign sector names (use empty FDN and FDN1 arrays)
+# Assign undulator cell names
+UCELL = assign_ucell(N1, coor1, idf1)
 
 def notnone(val):
     if val is None:
@@ -720,48 +717,43 @@ def read_sector():
 
     return sect_sc, sect_cu
 
-def set_sector(N, FDN, coor, idf, nf, sector):
-  if nf not in sector['froot']:
-    return FDN
-  Z = [x[2] for x in coor]
+def set_sector(N, SECTORS, coor, idf, nf, sector):
+    if nf not in sector['froot']:
+        return
+    Z = [x[2] for x in coor]
 
-  id_ = [i for i,x in enumerate(idf) if x == nf]
-
-  if sector['Nbeg'] == '':
-    jd2 = [i for i,x in enumerate(Z) if x > sector['Zbeg']]
-    inter1 = intersection(id_,jd2)
-    if inter1 == []:
-      return FDN
+    id_ = [i for i,x in enumerate(idf) if x == nf]
+    if sector['Nbeg'] == '':
+        jd2 = [i for i,x in enumerate(Z) if x > sector['Zbeg']]
+        inter1 = intersection(id_,jd2)
+        if inter1 == []:
+            return
+        else:
+            inter1 = inter1[0]
     else:
-      inter1 = inter1[0]
-  else:
-    jd2 = strmatch(sector['Nbeg'],N,True)
-    inter1 = intersection(id_,jd2)
-    if inter1 != []:
-      inter1 = inter1[0]
+        jd2 = strmatch(sector['Nbeg'],N,True)
+        inter1 = intersection(id_,jd2)
+        if inter1 != []:
+            inter1 = inter1[0]
 
-  if sector['Nend'] == '':
-    jd2 = [i for i,x in enumerate(Z) if x < sector['Zend']]
-    inter2 = intersection(id_,jd2)
-    if inter2 == []:
-      return FDN
+    if sector['Nend'] == '':
+        jd2 = [i for i,x in enumerate(Z) if x < sector['Zend']]
+        inter2 = intersection(id_,jd2)
+        if inter2 == []:
+            return
+        else:
+            inter2 = inter2[-1]
     else:
-      inter2 = inter2[-1]
-  else:
-    jd2 = strmatch(sector['Nend'],N,True)
-    inter2 = intersection(id_,jd2)
-    if inter2 != []:
-      inter2 = inter2[0]
+        jd2 = strmatch(sector['Nend'],N,True)
+        inter2 = intersection(id_,jd2)
+        if inter2 != []:
+            inter2 = inter2[0]
+    if inter1 != [] and inter2 != []:
+        for n in range(inter1, inter2 + 1):
+            if SECTORS[n].strip() == '':
+                SECTORS[n] = sector['name']
 
-  if inter1 != [] and inter2 != []:
-    for n in range(inter1, inter2 + 1):
-      if FDN[n].strip() == '':
-        FDN[n] = sector['name']
-
-  return FDN
-
-
-def assign_sector(N, FDN, coor, idf, N1, FDN1, coor1, idf1):
+def assign_sector(N, coor, idf, N1, coor1, idf1):
     # NOTE: coordinates are assumed to be in MAD (not SYMBOLS) order
 
     sect_SC, sect_CU = read_sector()
@@ -776,6 +768,9 @@ def assign_sector(N, FDN, coor, idf, N1, FDN1, coor1, idf1):
     # nf= 7: LCLS2scD
     # nf= 8: DIAG0
     # nf= 9: LCLS2scDA (DASEL)
+
+    SECTORS = ['' for x in N]
+    SECTORS1 = ['' for x in N]
 
     for nf in range(1, 10):  # idf values
         if nf in [3, 4, 5]:
@@ -802,9 +797,9 @@ def assign_sector(N, FDN, coor, idf, N1, FDN1, coor1, idf1):
                 sector['Nend'] = 'ENDBSYA_2'
 
             if sector['BSY']:
-                FDN1 = set_sector(N1, FDN1, coor1, idf1, nf, sector)
+                set_sector(N1, SECTORS1, coor1, idf1, nf, sector)
             else:
-                FDN = set_sector(N, FDN, coor, idf, nf, sector)
+                set_sector(N, SECTORS, coor, idf, nf, sector)
 
     # copper linac LINEs
     # nf=10: LCLS2cuH
@@ -829,28 +824,28 @@ def assign_sector(N, FDN, coor, idf, N1, FDN1, coor1, idf1):
                 sector['Nbeg'] = 'BEGSPEC'
                 sector['Nend'] = 'ENDSPEC'
             if sector['BSY']:
-                FDN1 = set_sector(N1, FDN1, coor1, idf1, nf, sector)
+                set_sector(N1, SECTORS1, coor1, idf1, nf, sector)
             else:
-                FDN = set_sector(N, FDN, coor, idf, nf, sector)
+                set_sector(N, SECTORS, coor, idf, nf, sector)
 
     # handle SXTES lines separately
     sector = sect_SC[-4]  # XTESS(2_X)
-    FDN1 = set_sector(N1, FDN1, coor1, idf1, 3, sector)
+    set_sector(N1, SECTORS1, coor1, idf1, 3, sector)
     sector = sect_SC[-3]  # XTESS(TXI)
-    FDN1 = set_sector(N1, FDN1, coor1, idf1, 4, sector)
+    set_sector(N1, SECTORS1, coor1, idf1, 4, sector)
     sector = sect_SC[-2]  # XTESS(TMO)
-    FDN1 = set_sector(N1, FDN1, coor1, idf1, 5, sector)
+    set_sector(N1, SECTORS1, coor1, idf1, 5, sector)
 
     # handle HXTES lines separately
     sector = sect_CU[-2]  # XTESH(XTES)
-    FDN1 = set_sector(N1, FDN1, coor1, idf1, 12, sector)
+    set_sector(N1, SECTORS1, coor1, idf1, 12, sector)
     sector = sect_CU[-1]  # XTESH(TXI)
-    FDN1 = set_sector(N1, FDN1, coor1, idf1, 13, sector)
+    set_sector(N1, SECTORS1, coor1, idf1, 13, sector)
 
-    return FDN, FDN1
+    return SECTORS, SECTORS1
 
-FDN, FDN1 = assign_sector(N, FDN, coor, idf, N1, FDN1, coor1, idf1)
-
+# Assign sector names
+SECTORS, SECTORS1 = assign_sector(N, coor, idf, N1, coor1, idf1)
 
 # MAD SURVEY coordinates  [x,y,z,theta,phi   ,psi]
 # correspond to SolidEdge [z,x,y,roll ,-pitch,yaw]
@@ -1054,7 +1049,7 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                 'seq': seq[ids[id1]]['name'],
                 'area': area[ida[id1]]['name'],
                 'parent': area[ida[id1]]['parent'],
-                'sector': FDN[id1].strip(),
+                'sector': SECTORS[id1].strip(),
                 'ucell': [],
                 'xkey': kxn,
                 'prim': kon,
@@ -1092,8 +1087,8 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                     for k in range(6):
                         LCAV[-1][f'c1{k+1}'] = coorc1[k]
                     if not LCAV[-1]['sector']:
-                        LCAV[-1]['sector'] = FDN1[id1].strip()
-                    LCAV[-1]['ucell'] = FDN2[id1].strip()
+                        LCAV[-1]['sector'] = SECTORS1[id1].strip()
+                    LCAV[-1]['ucell'] = UCELL[id1].strip()
 
             # UND coordinates
 
@@ -1194,7 +1189,7 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                 'seq': seq[ids[id1]]['name'],
                 'area': area[ida[id1]]['name'],
                 'parent': pname,
-                'sector': FDN[id1].strip(),
+                'sector': SECTORS[id1].strip(),
                 'ucell': [],
                 'xkey': f'X{kxn}' if tilt == 0 else f'Y{kxn}' if abs(np.cos(tilt)) < 1e-9 else f'R{kxn}',
                 'prim': 'KICK' if mname.startswith('BK') or 'KIK' in mname else 'SEPT' if mname.startswith('BL') else kon,
@@ -1265,8 +1260,8 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                         SBEN[-1][f'c1{k+1}'] = coorc1[k]
                         SBEN[-1][f'm1{k+1}'] = coorm1[k]
                     if not SBEN[-1]['sector']:
-                        SBEN[-1]['sector'] = FDN1[id1].strip()
-                    SBEN[-1]['ucell'] = FDN2[id1].strip()
+                        SBEN[-1]['sector'] = SECTORS1[id1].strip()
+                    SBEN[-1]['ucell'] = UCELL[id1].strip()
 
             # UND coordinates
 
@@ -1346,7 +1341,7 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                 'seq': seq[ids[id1]]['name'],
                 'area': area[ida[id1]]['name'],
                 'parent': area[ida[id1]]['parent'],
-                'sector': FDN[id1].strip(),
+                'sector': SECTORS[id1].strip(),
                 'ucell': [],
                 'xkey': kxn,
                 'prim': kon,
@@ -1384,8 +1379,8 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                     for k in range(6):
                         QUAD[-1][f'c1{k+1}'] = coorc1[k]
                     if not QUAD[-1]['sector']:
-                        QUAD[-1]['sector'] = FDN1[id1].strip()
-                    QUAD[-1]['ucell'] = FDN2[id1].strip()
+                        QUAD[-1]['sector'] = SECTORS1[id1].strip()
+                    QUAD[-1]['ucell'] = UCELL[id1].strip()
 
             # UND coordinates
 
@@ -1436,7 +1431,7 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                 'seq': seq[ids[id1]]['name'],
                 'area': area[ida[id1]]['name'],
                 'parent': area[ida[id1]]['parent'],
-                'sector': FDN[id1].strip(),
+                'sector': SECTORS[id1].strip(),
                 'ucell': [],
                 'xkey': kxn,
                 'prim': kon,
@@ -1473,8 +1468,8 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                     for k in range(6):
                         SEXT[-1][f'c1{k+1}'] = coorc1[k]
                     if not SEXT[-1]['sector']:
-                        SEXT[-1]['sector'] = FDN1[id1].strip()
-                    SEXT[-1]['ucell'] = FDN2[id1].strip()
+                        SEXT[-1]['sector'] = SECTORS1[id1].strip()
+                    SEXT[-1]['ucell'] = UCELL[id1].strip()
 
             # UND coordinates
 
@@ -1525,7 +1520,7 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                 'seq': seq[ids[id1]]['name'],
                 'area': area[ida[id1]]['name'],
                 'parent': area[ida[id1]]['parent'],
-                'sector': FDN[id1].strip(),
+                'sector': SECTORS[id1].strip(),
                 'ucell': [],
                 'xkey': kxn,
                 'prim': kon,
@@ -1562,8 +1557,8 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                     for k in range(6):
                         SOLE[-1][f'c1{k+1}'] = coorc1[k]
                     if not SOLE[-1]['sector']:
-                        SOLE[-1]['sector'] = FDN1[id1].strip()
-                    SOLE[-1]['ucell'] = FDN2[id1].strip()
+                        SOLE[-1]['sector'] = SECTORS1[id1].strip()
+                    SOLE[-1]['ucell'] = UCELL[id1].strip()
 
             # UND coordinates
 
@@ -1601,7 +1596,7 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                 'seq': seq[ids[id1]]['name'],
                 'area': area[ida[id1]]['name'],
                 'parent': area[ida[id1]]['parent'],
-                'sector': FDN[id1].strip(),
+                'sector': SECTORS[id1].strip(),
                 'ucell': [],
                 'xkey': kxn,
                 'prim': kon,
@@ -1632,8 +1627,8 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                     for k in range(6):
                         MATR[-1][f'c1{k+1}'] = coorc1[k]
                     if not MATR[-1]['sector']:
-                        MATR[-1]['sector'] = FDN1[id1].strip()
-                    MATR[-1]['ucell'] = FDN2[id1].strip()
+                        MATR[-1]['sector'] = SECTORS1[id1].strip()
+                    MATR[-1]['ucell'] = UCELL[id1].strip()
 
             # UND coordinates
 
@@ -1670,7 +1665,7 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                 'seq': seq[ids[id]]['name'],
                 'area': area[ida[id]]['name'],
                 'parent': area[ida[id]]['parent'],
-                'sector': FDN[id].strip(),
+                'sector': SECTORS[id].strip(),
                 'ucell': [],
                 'xkey': kxn,
                 'prim': kon,
@@ -1701,8 +1696,8 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                     for k in range(6):
                         RCOL[-1][f'c1{k+1}'] = coorc1[k]
                     if not RCOL[-1]['sector']:
-                        RCOL[-1]['sector'] = FDN1[id[0]].strip()
-                    RCOL[-1]['ucell'] = FDN2[id[0]].strip()
+                        RCOL[-1]['sector'] = SECTORS1[id[0]].strip()
+                    RCOL[-1]['ucell'] = UCELL[id[0]].strip()
 
             # UND coordinates
 
@@ -1739,7 +1734,7 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                 'seq': seq[ids[id]]['name'],
                 'area': area[ida[id]]['name'],
                 'parent': area[ida[id]]['parent'],
-                'sector': FDN[id].strip(),
+                'sector': SECTORS[id].strip(),
                 'ucell': [],
                 'xkey': kxn,
                 'prim': kon,
@@ -1770,8 +1765,8 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                     for k in range(6):
                         ECOL[-1][f'c1{k+1}'] = coorc1[k]
                     if not ECOL[-1]['sector']:
-                        ECOL[-1]['sector'] = FDN1[id[0]].strip()
-                    ECOL[-1]['ucell'] = FDN2[id[0]].strip()
+                        ECOL[-1]['sector'] = SECTORS1[id[0]].strip()
+                    ECOL[-1]['ucell'] = UCELL[id[0]].strip()
 
             # UND coordinates
 
@@ -1809,7 +1804,7 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                 'seq': seq[ids[id]]['name'],
                 'area': area[ida[id]]['name'],
                 'parent': area[ida[id]]['parent'],
-                'sector': FDN[id].strip(),
+                'sector': SECTORS[id].strip(),
                 'ucell': [],
                 'xkey': kxn,
                 'prim': kon,
@@ -1839,8 +1834,8 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                     for k in range(6):
                         SROT[-1][f'c1{k+1}'] = coorc1[k]
                     if not SROT[-1]['sector']:
-                        SROT[-1]['sector'] = FDN1[id[0]].strip()
-                    SROT[-1]['ucell'] = FDN2[id[0]].strip()
+                        SROT[-1]['sector'] = SECTORS1[id[0]].strip()
+                    SROT[-1]['ucell'] = UCELL[id[0]].strip()
 
             # UND coordinates
 
@@ -1886,7 +1881,7 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                 'seq': seq[ids[id[0]]]['name'],
                 'area': area[ida[id[0]]]['name'],
                 'parent': area[ida[id[0]]]['parent'],
-                'sector': FDN[id[0]].strip(),
+                'sector': SECTORS[id[0]].strip(),
                 'ucell': [],
                 'xkey': kxn,
                 'prim': kon_use,
@@ -1917,8 +1912,8 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                     for k in range(6):
                         INST[-1][f'c1{k+1}'] = coorc1[k]
                     if not INST[-1]['sector']:
-                        INST[-1]['sector'] = FDN1[id[0]].strip()
-                    INST[-1]['ucell'] = FDN2[id[0]].strip()
+                        INST[-1]['sector'] = SECTORS1[id[0]].strip()
+                    INST[-1]['ucell'] = UCELL[id[0]].strip()
 
             # UND coordinates
 
@@ -1962,7 +1957,7 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                 'seq': seq[ids[id[0]]]['name'],
                 'area': area[ida[id[0]]]['name'],
                 'parent': area[ida[id[0]]]['parent'],
-                'sector': FDN[id[0]].strip(),
+                'sector': SECTORS[id[0]].strip(),
                 'ucell': [],
                 'xkey': kxn,
                 'prim': kon_use,
@@ -1991,8 +1986,8 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                     for k in range(6):
                         MISC[f'c1{k+1}'] = coorc1[k]
                     if not MISC['sector']:
-                        MISC['sector'] = FDN1[id[0]].strip()
-                    MISC['ucell'] = FDN2[id[0]].strip()
+                        MISC['sector'] = SECTORS1[id[0]].strip()
+                    MISC['ucell'] = UCELL[id[0]].strip()
 
             MISC['suml2'] = []
             for k in range(6):
@@ -2029,7 +2024,7 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                 'seq': seq[ids[id]]['name'],
                 'area': area[ida[id]]['name'],
                 'parent': area[ida[id]]['parent'],
-                'sector': FDN[id].strip(),
+                'sector': SECTORS[id].strip(),
                 'ucell': [],
                 'xkey': kxn,
                 'prim': kon,
@@ -2056,8 +2051,8 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                     for k in range(6):
                         MARK[-1][f'c1{k+1}'] = coorc1[k]
                     if not MARK[-1]['sector']:
-                        MARK[-1]['sector'] = FDN1[id[0]].strip()
-                    MARK[-1]['ucell'] = FDN2[id[0]].strip()
+                        MARK[-1]['sector'] = SECTORS1[id[0]].strip()
+                    MARK[-1]['ucell'] = UCELL[id[0]].strip()
 
             # UND coordinates
 
@@ -2842,6 +2837,7 @@ with open(outdir+'/'+fname, 'wt') as fid:
                 fid.write(f"{s[Ncol - 1]}\n")
             else:
                 fid.write(f"{madval(s[Ncol - 1])}\n")
+
     
     fid.write(f'{foot}\n')
     fid.write(f'{unit}\n')
@@ -3006,6 +3002,8 @@ if cBSY:
                     fid.write(f'{s[Ncol - 1]}\n')
                 else:
                     fid.write(f'{madval(s[Ncol - 1])}\n')
+
+              
         fid.write(f'{foot}\n')
         fid.write(f'{unit}\n')
 
@@ -3196,7 +3194,7 @@ mdict={
 "A":A,
 "T":T,
 "E":E,
-"FDN":FDN,
+"SECTORS":SECTORS,
 "coor":coor,
 "S":S,
 "idf":idf,
@@ -3208,7 +3206,7 @@ mdict={
 "P1":P,
 "S1":E,
 "coor1":coor,
-"FDN1":FDN,
+"SECTORS1":SECTORS1,
 })
 
 print(f'Be sure to add FACET2 elements to {fname}!\n')
