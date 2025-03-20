@@ -333,9 +333,6 @@ if cBSY:
 if cUND:
   FixUpgradeNames(N2)
 
-
-print(FDN) #FOO
-
 # initialize some sequence data
 
 for s in seq:
@@ -599,15 +596,15 @@ for name, aname in zip(name_all,aname_all):
             if aname == area[ida[jd[m]]]['name']:
                 N1[jd2[m]] = name + '?'
 
-# Change keyword for XTES mirrors from MULT to INST
-name = ['MR1K1_BEND', 'SP1K1_MONO', 'MR3K1_GRATING',
-        'MR1K3_TXI', 'MR2K3_TXI', 'MR1K4_SOMS',
-        'MR1L0_HOMS_XTES', 'MR2L0_HOMS', 'MR1L0_HOMS_TXI', 'MR1L1_TXI']
-
-for n in name:
-    id_ = strmatch(n,N,True)
-    for i in id_:
-        K[i] = 'INST'
+# # Change keyword for XTES mirrors from MULT to INST
+# name = ['MR1K1_BEND', 'SP1K1_MONO', 'MR3K1_GRATING',
+#         'MR1K3_TXI', 'MR2K3_TXI', 'MR1K4_SOMS',
+#         'MR1L0_HOMS_XTES', 'MR2L0_HOMS', 'MR1L0_HOMS_TXI', 'MR1L1_TXI']
+# 
+# for n in name:
+#     id_ = strmatch(n,N,True)
+#     for i in id_:
+#         K[i] = 'INST'
 
 # Change keyword for GUN/GUNB solenoid correction quads from MULT to QUAD;
 # copy T1 into TILT slot
@@ -616,7 +613,7 @@ name = ['CQ01', 'SQ01', 'CQ01B', 'SQ01B', 'SQ02B']
 for n in name:
     id_ = strmatch(n,N,True)
     for i in id_:
-        K[i] = 'QUAD'
+        #K[i] = 'QUAD'
         P[i][3] = P[i][5]  # T1 -> TILT
 
 def assign_ucell(N, coor, idf):
@@ -872,19 +869,21 @@ tkeyw = sorted(list(set(K)))
 MADK = [
     'LCAV', 'SBEN', 'QUAD', 'SEXT', 'SOLE', 'MATR', 'RCOL', 'ECOL', 'SROT',
     'HKIC', 'VKIC', 'MONI', 'WIRE', 'PROF', 'IMON', 'BLMO', 'INST',
-    'MARK'
+    'MARK', 'MULT'
 ]
 OUTK = [
     'LCAV', 'BEND', 'QUAD', 'SEXT', 'SOLE', 'USEG', 'COLL', 'PC  ', 'MARK',
     'XCOR', 'YCOR', 'BPM ', 'WIRE', 'PROF', 'IMON', 'BLMO', 'INST',
-    'MARK'
+    'MARK', 'MULT'
 ]
 XALK = [
     'BNCH', 'BEND', 'QUAD', 'SEXT', 'SOLE', 'USEG', 'COLL', 'ECOL', 'SROT',
     'XCOR', 'YCOR', 'BPM ', 'WIRE', 'PROF', 'TORO', 'BLMO', 'INST',
-    'MARK'
+    'MARK', 'MULT'
 ]
 idmisc = list(range(9, 16))  # non-magnet elements that might have nonzero lengths
+
+#FOO FLAG key*, etc in following block for removal.
 keyw = []
 keyo = []
 keyx = []
@@ -898,6 +897,7 @@ for n in range(len(MADK)):
         if n in idmisc:
             jdmisc.append(len(keyw) - 1)
 idmisc=jdmisc
+
 
 # hard-wired list of bends that have energy polynomials in the database
 Ebend = []  # ['BRB', 'BXSP', 'BYSP', 'BRSP', 'BYSP', 'BX3', 'BY1', 'BY2', 'BYD']
@@ -1052,7 +1052,7 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                 'sector': SECTORS[id1].strip(),
                 'ucell': [],
                 'xkey': kxn,
-                'prim': kon,
+                'prim': FDN[id1],
                 'name': mname,
                 'type': T[id1].strip(),
                 'dist': dist,
@@ -1192,7 +1192,8 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                 'sector': SECTORS[id1].strip(),
                 'ucell': [],
                 'xkey': f'X{kxn}' if tilt == 0 else f'Y{kxn}' if abs(np.cos(tilt)) < 1e-9 else f'R{kxn}',
-                'prim': 'KICK' if mname.startswith('BK') or 'KIK' in mname else 'SEPT' if mname.startswith('BL') else kon,
+                #'prim': 'KICK' if mname.startswith('BK') or 'KIK' in mname else 'SEPT' if mname.startswith('BL') else kon,
+                'prim': FDN[id1],
                 'name': mname,
                 'type': T[id1].strip(),
                 'dist': dist,
@@ -1344,7 +1345,7 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                 'sector': SECTORS[id1].strip(),
                 'ucell': [],
                 'xkey': kxn,
-                'prim': kon,
+                'prim': FDN[id1],
                 'name': mname,
                 'type': T[id1].strip(),
                 'dist': dist,
@@ -1434,7 +1435,7 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                 'sector': SECTORS[id1].strip(),
                 'ucell': [],
                 'xkey': kxn,
-                'prim': kon,
+                'prim': FDN[id1],
                 'name': mname,
                 'type': T[id1].strip(),
                 'dist': dist,
@@ -1523,7 +1524,7 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                 'sector': SECTORS[id1].strip(),
                 'ucell': [],
                 'xkey': kxn,
-                'prim': kon,
+                'prim': FDN[id1],
                 'name': mname,
                 'type': T[id1].strip(),
                 'dist': dist,
@@ -1599,7 +1600,7 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                 'sector': SECTORS[id1].strip(),
                 'ucell': [],
                 'xkey': kxn,
-                'prim': kon,
+                'prim': FDN[id1],
                 'name': mname,
                 'type': T[id1].strip(),
                 'dist': dist,
@@ -1668,7 +1669,7 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                 'sector': SECTORS[id].strip(),
                 'ucell': [],
                 'xkey': kxn,
-                'prim': kon,
+                'prim': FDN[id],
                 'name': mname,
                 'type': T[id].strip(),
                 'dist': dist,
@@ -1737,7 +1738,7 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                 'sector': SECTORS[id].strip(),
                 'ucell': [],
                 'xkey': kxn,
-                'prim': kon,
+                'prim': FDN[id],
                 'name': mname,
                 'type': T[id].strip(),
                 'dist': dist,
@@ -1807,7 +1808,7 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                 'sector': SECTORS[id].strip(),
                 'ucell': [],
                 'xkey': kxn,
-                'prim': kon,
+                'prim': FDN[id],
                 'name': mname,
                 'type': T[id].strip(),
                 'dist': dist,
@@ -1852,6 +1853,105 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                     for k in range(6):
                         SROT[-1][f'c2{k+1}'] = coorc2[k]
 
+    elif kwn == 'MULT':
+        name = list(dict.fromkeys([N[i] for i in id]))
+        MULT = []
+        for mname in name:
+            id = strmatch(mname,N,True)
+            if id[0] == 1:
+                idi = 1
+            else:
+                idi = id[0] - 1  # beam in
+            ide = [idi, id[-1]]  # [entrance, exit]
+            sdsp = np.mean(Sd[ide])  # m (beam center)
+            suml = np.mean(S[ide])  # m (beam center)
+            dist = suml - seq[ids[id[0]]]['suml']  # m (sequence start to beam center)
+            energy = E[id[0]]  # GeV
+            leng = np.sum(L[id])  # m
+            k1 = P[id[0], 1]  # 1/m^2
+            if abs(k1) < kmin:
+                k1 = 0
+            EeV = 1e9 * energy  # eV
+            tilt = P[id[0], 3]  # rad
+            brho = np.sqrt(EeV ** 2 - Er ** 2) / clight  # T-m
+            if leng == 0:
+                G = 0  # T/m
+                GL = brho * k1  # T
+                sname = 'kG2T'
+                sval = 1 / T2kG
+            else:
+                G = brho * k1  # T/m
+                GL = G * leng  # T
+                sname = 'kG2T_Gdl2G'
+                sval = 1 / (leng * T2kG)
+            polarity = -np.sign(k1 + np.finfo(float).eps)  # add eps so that sign=1 when k1=0
+            coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
+            t = T[id[0]].strip()
+            aper = 2 * A[id[0]]  # m
+            MULT.append({
+                'idf': idf[id[0]],
+                'id': idd[id[0]],
+                'seq': seq[ids[id[0]]]['name'],
+                'area': area[ida[id[0]]]['name'],
+                'parent': area[ida[id[0]]]['parent'],
+                'sector': SECTORS[id[0]].strip(),
+                'ucell': [],
+                'xkey': kxn,
+                'prim': FDN[id[0]],
+                'bore': aper,
+                'k1': k1,
+                'tilt': np.rad2deg(tilt),  # deg
+                'G': charge * G,
+                'GL': T2kG * GL,  # kG
+                'polarity': polarity,
+                'name': mname,
+                'sname': sname,
+                'sval': sval,
+                'type': T[id[0]].strip(),
+                'dist': dist,
+                'energy': energy,
+                'leng': leng,
+                'sdsp': sdsp,
+                'suml': suml,
+                **{f'c{k+1}': coorc[k] for k in range(6)},
+                **{f'm{k+1}': [] for k in range(6)}
+            })
+
+            # BSY coordinates
+
+            MULT[-1]['suml1'] = []
+            for k in range(6):
+                MULT[-1][f'c1{k+1}'] = []
+                MULT[-1][f'm1{k+1}'] = []
+            if cBSY:
+                id = strmatch(mname,N1,True)
+                if len(id) > 0:
+                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
+                    suml1 = np.mean(S1[ide])  # m (beam center)
+                    coorc1 = np.mean(coor1[ide], axis=0)  # m, rad (beam center)
+                    MULT[-1]['suml1'] = suml1
+                    for k in range(6):
+                        MULT[-1][f'c1{k+1}'] = coorc1[k]
+                    if not MULT[-1]['sector']:
+                        MULT[-1]['sector'] = SECTORS1[id[0]].strip()
+                    MULT[-1]['ucell'] = UCELL[id[0]].strip()
+
+            # UND coordinates
+
+            MULT[-1]['suml2'] = []
+            for k in range(6):
+                MULT[-1][f'c2{k+1}'] = []
+                MULT[-1][f'm2{k+1}'] = []  # for MULT
+            if cUND:
+                id = strmatch(mname,N2,True)
+                if len(id) > 0:
+                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
+                    suml2 = np.mean(S2[ide])  # m (beam center)
+                    coorc2 = np.mean(coor2[ide], axis=0)  # m, rad (beam center)
+                    MULT[-1]['suml2'] = suml2
+                    for k in range(6):
+                        MULT[-1][f'c2{k+1}'] = coorc2[k]
+
     elif kwn == 'INST':
         name = list(dict.fromkeys([N[i] for i in id]))
         INST = []
@@ -1869,12 +1969,6 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
             leng = np.sum(L[id])  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             t = T[id[0]].strip()
-            if t == 'type-V':
-                kon_use = 'EFC'
-            elif t == '0.79K11.8':
-                kon_use = 'BEND'
-            else:
-                kon_use = kon
             INST.append({
                 'idf': idf[id[0]],
                 'id': idd[id[0]],
@@ -1884,7 +1978,7 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                 'sector': SECTORS[id[0]].strip(),
                 'ucell': [],
                 'xkey': kxn,
-                'prim': kon_use,
+                'prim': FDN[id[0]],
                 'name': mname,
                 'type': T[id[0]].strip(),
                 'dist': dist,
@@ -1947,10 +2041,6 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
             leng = np.sum(L[id])  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             t = T[id[0]].strip()
-            if t == 'type-V':
-                kon_use = 'EFC'
-            else:
-                kon_use = kon
             MISC = {
                 'idf': idf[id[0]],
                 'id': idd[id[0]],
@@ -1960,7 +2050,7 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                 'sector': SECTORS[id[0]].strip(),
                 'ucell': [],
                 'xkey': kxn,
-                'prim': kon_use,
+                'prim': FDN[id[0]],
                 'name': mname,
                 'type': T[id[0]].strip(),
                 'dist': dist,
@@ -2027,7 +2117,7 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                 'sector': SECTORS[id].strip(),
                 'ucell': [],
                 'xkey': kxn,
-                'prim': kon,
+                'prim': FDN[id],
                 'name': mname,
                 'type': T[id].strip(),
                 'dist': dist,
@@ -2403,27 +2493,27 @@ if cUND:
 
 # ------------------------------------------------------------------------------
 
-def fix_mark_prim(mark):
-    # change MARK().prim from MARK to INST for MARKERs that define the beginning
-    # and end of Areas, Sectors, and Bypass Line Sectors ... per K. Luchini
-    mname = [m['name'] for m in mark]
-    idabeg = [i for i, name in enumerate(mname) if name.startswith('BEG')]
-    idaend = [i for i, name in enumerate(mname) if name.startswith('END')]
-    idsbeg = [i for i, name in enumerate(mname) if name.startswith('LI') and name.endswith('BEG')]
-    idsend = [i for i, name in enumerate(mname) if name.startswith('LI') and name.endswith('END')]
-    idbbeg = [i for i, name in enumerate(mname) if name.startswith('BPN') and name.endswith('BEG')]
-    idbend = [i for i, name in enumerate(mname) if name.startswith('BPN') and name.endswith('END')]
-    id = idabeg + idaend + idsbeg + idsend + idbbeg + idbend
-
-    for n in id:
-        prim = mark[n]['prim']
-        mark[n]['prim'] = 'INST'
-
-    return mark
+# def fix_mark_prim(mark):
+#     # change MARK().prim from MARK to INST for MARKERs that define the beginning
+#     # and end of Areas, Sectors, and Bypass Line Sectors ... per K. Luchini
+#     mname = [m['name'] for m in mark]
+#     idabeg = [i for i, name in enumerate(mname) if name.startswith('BEG')]
+#     idaend = [i for i, name in enumerate(mname) if name.startswith('END')]
+#     idsbeg = [i for i, name in enumerate(mname) if name.startswith('LI') and name.endswith('BEG')]
+#     idsend = [i for i, name in enumerate(mname) if name.startswith('LI') and name.endswith('END')]
+#     idbbeg = [i for i, name in enumerate(mname) if name.startswith('BPN') and name.endswith('BEG')]
+#     idbend = [i for i, name in enumerate(mname) if name.startswith('BPN') and name.endswith('END')]
+#     id = idabeg + idaend + idsbeg + idsend + idbbeg + idbend
+# 
+#     for n in id:
+#         prim = mark[n]['prim']
+#         mark[n]['prim'] = 'INST'
+# 
+#     return mark
 
 
 # change MARK().prim='MARK' to MARK().prim='INST' for selected MARKer elements
-MARK = fix_mark_prim(MARK)
+# MARK = fix_mark_prim(MARK)
 
 # ------------------------------------------------------------------------------
 
@@ -2707,14 +2797,7 @@ with open(outdir+'/'+fname, 'wt') as fid:
             # common data
             s[0] = TEMP['id']
             s[1] = TEMP['parent']
-            if TEMP['prim'] == 'EFC':
-                s[2] = 'EFC'
-            elif TEMP['type'] == '0.79K11.8':
-                s[2] = 'BEND'
-            elif TEMP['xkey'] == 'MARK' and TEMP['prim'] == 'INST':
-                s[2] = 'INST'
-            else:
-                s[2] = keyo[idk]
+            s[2] = TEMP['prim']
             s[3] = TEMP['name']
             s[4] = TEMP['type']
             s[15] = TEMP['energy']
@@ -2820,6 +2903,20 @@ with open(outdir+'/'+fname, 'wt') as fid:
                     s[40] = roundoff(TEMP['m4'], prec)
                     s[41] = roundoff(TEMP['m5'], prec)
                     s[42] = roundoff(TEMP['m6'], prec)
+            elif keyw[idk] == 'MULT':
+                if TEMP['prim'] == 'MULT':
+                    continue
+                s[5] = TEMP['leng']
+                if TEMP['prim'] != 'INST':
+                    s[6] = TEMP['bore']
+                if TEMP['prim'] == 'QUAD':
+                    s[8] = TEMP['k1']
+                    s[10] = TEMP['tilt']
+                    s[32] = TEMP['GL']
+                    s[33] = TEMP['G']
+                    s[34] = TEMP['sname']
+                    s[35] = TEMP['sval']
+                    s[36] = TEMP['polarity']
             elif keyw[idk] in [keyw[i] for i in idmisc]:
                 s[5] = TEMP['leng']
 
@@ -2873,14 +2970,7 @@ if cBSY:
                 s = [None] * Ncol
                 s[0] = TEMP['id']
                 s[1] = TEMP['parent']
-                if TEMP['prim'] == 'EFC':
-                    s[2] = 'EFC'
-                elif TEMP['type'] == '0.79K11.8':
-                    s[2] = 'BEND'
-                elif TEMP['xkey'] == 'MARK' and TEMP['prim'] == 'INST':
-                    s[2] = 'INST'
-                else:
-                    s[2] = keyo[idk]
+                s[2] = TEMP['prim']
                 s[3] =  TEMP['name']
                 s[4] =  TEMP['type']
                 s[15] = TEMP['energy']
@@ -2983,6 +3073,19 @@ if cBSY:
                         s[40] = roundoff(TEMP['m14'], prec)
                         s[41] = roundoff(TEMP['m15'], prec)
                         s[42] = roundoff(TEMP['m16'], prec)
+                elif keyw[idk] == 'MULT':
+                    if TEMP['prim'] == 'MULT':
+                        continue
+                    s[5] = TEMP['leng']
+                    s[6] = TEMP['bore']
+                    if TEMP['prim'] == 'QUAD':
+                        s[8] = TEMP['k1']
+                        s[10] = TEMP['tilt']
+                        s[32] = TEMP['GL']
+                        s[33] = TEMP['G']
+                        s[34] = TEMP['sname']
+                        s[35] = TEMP['sval']
+                        s[36] = TEMP['polarity']
                 elif keyw[idk] in [keyw[i] for i in idmisc]:
                     s[5] = TEMP['leng']
 
@@ -3029,14 +3132,7 @@ if cUND:
 
                 s[0] = TEMP['id']
                 s[1] = TEMP['parent']
-                if TEMP['prim'] == 'EFC':
-                    s[2] = 'EFC'
-                elif TEMP['type'] == '0.79K11.8':
-                    s[2] = 'BEND'
-                elif TEMP['xkey'] == 'MARK' and TEMP['prim'] == 'INST':
-                    s[2] = 'INST'
-                else:
-                    s[2] = keyo[idk, :]
+                s[2] = TEMP['prim']
                 s[3] = TEMP['name']
                 s[4] = TEMP['type']
                 s[15] = TEMP['energy']
@@ -3139,6 +3235,19 @@ if cUND:
                         s[40] = roundoff(TEMP['m24'], prec)
                         s[41] = roundoff(TEMP['m25'], prec)
                         s[42] = roundoff(TEMP['m26'], prec)
+                elif keyw[idk, :] == 'MULT':
+                    if TEMP['prim'] == 'MULT':
+                        continue
+                    s[5] = TEMP['leng']
+                    s[6] = TEMP['bore']
+                    if TEMP['prim'] == 'QUAD':
+                        s[8] = TEMP['k1']
+                        s[10] = TEMP['tilt']
+                        s[32] = TEMP['GL']
+                        s[33] = TEMP['G']
+                        s[34] = TEMP['sname']
+                        s[35] = TEMP['sval']
+                        s[36] = TEMP['polarity']
                 elif keyw[idk, :] in keyw[idmisc, :]:
                     s[5] = TEMP['leng']
 
