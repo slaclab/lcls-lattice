@@ -14,7 +14,6 @@ vfile=['LCLS2sc_value.echo','LCLS2cu_value.echo']
 outdir='oracle_upload'
 xfile='AD_ACCEL-'+optics+'.xls'
 noXTES_TEMPs=True; # skip elements named TEMP* in XTES systems
-addEICdevices=False; # add temporary Early Injector Commissioning devices
 
 print(' ')
 print('   ===============================================')
@@ -2191,11 +2190,6 @@ def add_eic(inst):
     inst.append(temp)
     return inst
 
-# add special Early Injector Commissioning components
-if addEICdevices:
-    INST = AddEIC(INST)
-    nINST = len(INST)
-
 # deferred devices
 
 DEPR = []
@@ -2571,116 +2565,6 @@ for keywn in keyw:
     
     kfoot = khead.copy()
     
-    # Write to Excel file
-    ws = wb.create_sheet(keywn)
-    data = head1+khead+thead2+thead3+thead4
-    for col, value in enumerate(data,start=1):
-        ws.cell(row=1,column=col,value=value)
-    data = unit1+kunit+tunit2+tunit3+tunit4
-    for col, value in enumerate(data,start=1):
-        ws.cell(row=2,column=col,value=value)
-    
-    # Process TEMP data
-    M = []
-    TEMP=globals()[keywn]
-    for TEMPm in TEMP:
-        for j in range(1, 7):
-            TEMPm[f'c{j}'] = np.round(TEMPm[f'c{j}'], decimals=int(-np.log10(prec)))
-            TEMPm[f'c1{j}'] = np.round(TEMPm[f'c1{j}'], decimals=int(-np.log10(prec)))
-            TEMPm[f'c2{j}'] = np.round(TEMPm[f'c2{j}'], decimals=int(-np.log10(prec)))
-            if TEMPm['prim'] == 'BEND' and TEMPm['type'] != '0.79K11.8':
-                TEMPm[f'm{j}'] = np.round(TEMPm[f'm{j}'], decimals=int(-np.log10(prec)))
-                TEMPm[f'm1{j}'] = np.round(TEMPm[f'm1{j}'], decimals=int(-np.log10(prec)))
-                TEMPm[f'm2{j}'] = np.round(TEMPm[f'm2{j}'], decimals=int(-np.log10(prec)))
-            elif TEMPm['prim'] == 'QUAD':
-                TEMPm[f'm{j}'] = np.round(TEMPm[f'm{j}'], decimals=int(-np.log10(prec)))
-            elif TEMPm['prim'] == 'INST':
-                if TEMPm['xkey'] != 'MARK':
-                    TEMPm[f'm{j}'] = np.round(TEMPm[f'm{j}'], decimals=int(-np.log10(prec)))
-                    TEMPm[f'm1{j}'] = np.round(TEMPm[f'm1{j}'], decimals=int(-np.log10(prec)))
-                    TEMPm[f'm2{j}'] = np.round(TEMPm[f'm2{j}'], decimals=int(-np.log10(prec)))
-        
-        if addEICdevices and TEMPm['name'] == 'FC00EIC':
-            TEMPm['seq'] = 'CATHODE TO FC00EIC'
-        
-        if not (noXTES_TEMPs and TEMPm['idf'] in [3, 4, 5, 12, 13] and TEMPm['name'].startswith('TEMP')):
-            TEMPwr = {k: v for k, v in TEMPm.items() if k not in ['idf', 'area']}
-            M.append(list(TEMPwr.values()))
-    
-    M.append(foot1 + kfoot + tfoot2 + tfoot3 + tfoot4)
-    M.append(unit1 + kunit + tunit2 + tunit3 + tunit4)
-
-    for i,datarow in enumerate(M,3):
-        for j,data in enumerate(datarow,1):
-            if j == 1 and isinstance(data,int):
-                data = data + 1
-            if isinstance(data,list):
-                if data != []:
-                    ws.cell(row=i,column=j,value=data)
-            elif isinstance(data,np.ndarray):
-                if data.size > 0:
-                    ws.cell(row=i,column=j,value=data[0])
-            else:
-                ws.cell(row=i,column=j,value=data)
-
-
-
-# ------------------------------------------------------------------------------
-# Write Sequences Worksheet ...
-
-# Sequences header
-
-head = ['Sequence', 'Previous Sequence', 'Begin Element', 'End Element', 'Length']
-unit = ['', '', '', '', 'm']
-
-ws_seq = wb.create_sheet('Sequences')
-
-for i,data in enumerate(head,1):
-    ws_seq.cell(row=1,column=i,value=data)
-for i,data in enumerate(unit,1):
-    ws_seq.cell(row=2,column=i,value=data)
-
-# Sequences Worksheet
-
-M = []
-for s in seq:
-    temp = {
-        'name': s['name'],
-        'prev': '',
-        'beg': s['beg'],
-        'end': s['end'],
-        'leng': s['length']
-    }
-    m = s['prev']
-    if m > 0:
-        temp['prev'] = seq[m-1]['name']
-    M.append(list(temp.values()))
-
-for i,row in enumerate(M,3):
-    for j,data in enumerate(row,1):
-        ws_seq.cell(row=i,column=j,value=data)
-
-# ------------------------------------------------------------------------------
-# Deferred devices header
-
-head = ['MAD #', 'Area Name', 'Area Id', 'DB Keyword', 'MAD Name', 'Z',
-        'Engineering Type', 'Level']
-
-ws_def = wb.create_sheet('Deferred')
-for i,data in enumerate(head,1):
-    ws_def.cell(row=1,column=i,value=data)
-
-# Deferred devices Worksheet
-
-M = [list(DEPR[n].values()) for n in range(nDEPR)]
-for i,row in enumerate(M,2):
-    for j,data in enumerate(row,1):
-        if j == 1 and isinstance(data,int):
-            data = data + 1
-        ws_def.cell(row=i,column=j,value=data)
-
-Path(outdir).mkdir(parents=True,exist_ok=True)
-wb.save(outdir+'/'+xfile)
 # ------------------------------------------------------------------------------
 # Write SYMBOLS txt-files ...
 
@@ -2775,15 +2659,14 @@ fname = f'AD_ACCEL-{optics}.txt'
 with open(outdir+'/'+fname, 'wt') as fid:
     fid.write(f'{head}\n')
     fid.write(f'{unit}\n')
-
+#FOO
     for nf in range(1, len(froot) + 1):
         id = [i for i,x in enumerate(ip) if x[0]==nf]
         for n in id:
             idk = ip[n][1]
             idn = ip[n][2]
             TEMP = globals()[keyw[idk]][idn]
-            if addEICdevices and TEMP['name'] == 'FC00EIC':
-                TEMP['seq'] = 'CATHODE TO FC00EIC'
+
             s = [None] * Ncol
 
             # common data
@@ -2913,19 +2796,14 @@ with open(outdir+'/'+fname, 'wt') as fid:
                 s[5] = TEMP['leng']
 
             fid.write(f"{s[0]+1},")
-            for k in range(1, Ncol - 1):
+            for k in range(1, Ncol):
                 if s[k] is None:
-                    fid.write(",")
-                elif isinstance(s[k], np.ndarray):
                     fid.write(",")
                 elif isinstance(s[k], str):
                     fid.write(f"{s[k]},")
                 else:
                     fid.write(f"{madval(s[k])},")
-            if isinstance(s[Ncol - 1], str):
-                fid.write(f"{s[Ncol - 1]}\n")
-            else:
-                fid.write(f"{madval(s[Ncol - 1])}\n")
+            fid.write("\n")
 
     
     fid.write(f'{foot}\n')
@@ -3082,21 +2960,14 @@ if cBSY:
                     s[5] = TEMP['leng']
 
                 fid.write(f'{s[0]+1},')
-                for k in range(1, Ncol - 1):
+                for k in range(1, Ncol):
                     if s[k] is None:
                         fid.write(',')
-                    elif isinstance(s[k], np.ndarray):
-                        fid.write(",")
-                    elif isinstance(s[k], list) and s[k] == []:
-                        fid.write(",")
                     elif isinstance(s[k], str):
                         fid.write(f'{s[k]},')
                     else:
                         fid.write(f'{madval(s[k])},')
-                if isinstance(s[Ncol - 1], str):
-                    fid.write(f'{s[Ncol - 1]}\n')
-                else:
-                    fid.write(f'{madval(s[Ncol - 1])}\n')
+                fid.write("\n")
 
               
         fid.write(f'{foot}\n')
@@ -3247,10 +3118,6 @@ if cUND:
                 for k in range(1, Ncol - 1):
                     if s[k] is None:
                         fid.write(',')
-                    elif isinstance(s[k], np.ndarray):
-                        fid.write(",")
-                    elif isinstance(s[k], list) and s[k] == []:
-                        fid.write(",")
                     elif isinstance(s[k], str):
                         fid.write(f'{s[k]},')
                     else:
