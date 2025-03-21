@@ -871,11 +871,6 @@ MADK = [
     'HKIC', 'VKIC', 'MONI', 'WIRE', 'PROF', 'IMON', 'BLMO', 'INST',
     'MARK', 'MULT'
 ]
-OUTK = [
-    'LCAV', 'BEND', 'QUAD', 'SEXT', 'SOLE', 'USEG', 'COLL', 'PC  ', 'MARK',
-    'XCOR', 'YCOR', 'BPM ', 'WIRE', 'PROF', 'IMON', 'BLMO', 'INST',
-    'MARK', 'MULT'
-]
 XALK = [
     'BNCH', 'BEND', 'QUAD', 'SEXT', 'SOLE', 'USEG', 'COLL', 'ECOL', 'SROT',
     'XCOR', 'YCOR', 'BPM ', 'WIRE', 'PROF', 'TORO', 'BLMO', 'INST',
@@ -885,14 +880,12 @@ idmisc = list(range(9, 16))  # non-magnet elements that might have nonzero lengt
 
 #FOO FLAG key*, etc in following block for removal.
 keyw = []
-keyo = []
 keyx = []
 jdmisc = []
 for n in range(len(MADK)):
     id_ = strmatch(MADK[n], tkeyw)
     if len(id_) > 0:
         keyw.append(MADK[n])
-        keyo.append(OUTK[n])
         keyx.append(XALK[n])
         if n in idmisc:
             jdmisc.append(len(keyw) - 1)
@@ -1002,7 +995,7 @@ coor1 = np.array(coor1)
 coor2 = np.array(coor2)
 seq = np.array(seq)
 A = np.array(A)
-for kwn,kxn,kon in zip(keyw,keyx,keyo):
+for kwn,kxn in zip(keyw,keyx):
     id = strmatch(kwn,K)
     if kwn == 'LCAV':
         # create list of unique names that will allow unsplitting
@@ -1192,7 +1185,6 @@ for kwn,kxn,kon in zip(keyw,keyx,keyo):
                 'sector': SECTORS[id1].strip(),
                 'ucell': [],
                 'xkey': f'X{kxn}' if tilt == 0 else f'Y{kxn}' if abs(np.cos(tilt)) < 1e-9 else f'R{kxn}',
-                #'prim': 'KICK' if mname.startswith('BK') or 'KIK' in mname else 'SEPT' if mname.startswith('BL') else kon,
                 'prim': FDN[id1],
                 'name': mname,
                 'type': T[id1].strip(),
@@ -3286,6 +3278,8 @@ with open(outdir+'/'+fname, 'wt') as fid:
                 continue
             idn = ip[n][2]
             TEMP = globals()[keyw[idk]][idn]
+            if TEMP['prim'] == 'MULT':
+                continue
             TEMPucell = TEMP['ucell']
             TEMPucell = '' if isinstance(TEMPucell,list) else TEMPucell
             fid.write(f"{TEMP['name']},{TEMP['area']},{TEMPucell},{TEMP['sector']}\n")
