@@ -6,6 +6,60 @@ import re
 import math
 from pathlib import Path
 
+
+#------------------------------------------
+# utility functions.  To be moved to module
+#------------------------------------------
+
+def intersection(x,y):
+    return [v for v in x if v in y]
+
+def strmatch(n_str,N_lst,exact=False):
+    if exact:
+        return [ix for ix,n_ in enumerate(N_lst) if n_.strip() == n_str.strip()]
+    else:
+        return [ix for ix,n_ in enumerate(N_lst) if n_.startswith(n_str)]
+
+def notnone(val):
+    if val is None:
+        return ''
+    else:
+        return val
+
+def madval(rval):
+    if rval == 0:
+        return '0.0'
+    else:
+        aval = abs(rval)
+        if 0.01 < aval < 100:
+            iexp = 0.0
+        else:
+            iexp = int(math.log10(aval))
+            rval = rval * 10**(-iexp)
+        
+        s = f'{rval:.12f}'
+        s = s.rstrip('0')
+        
+        if s.endswith('.'):
+            s = s + '0'
+        
+        if iexp != 0:
+            s += f'E{iexp}'
+        
+        return s.strip()
+
+def roundoff(val, prec=None):
+    if isinstance(val,list):
+        return None
+    if prec is None:
+        return val
+    else:
+        return prec * np.round(val / prec)
+
+#------------------------------------------
+#------------------------------------------
+#------------------------------------------
+
 script_dir = Path(__file__).parent.resolve()
 
 optics='18FEB2025s'
@@ -60,65 +114,65 @@ froot = [
 # XAL sequences: SC linac
 # SXR line
 seq = []
-seq.append({'froot': 1, 'name': 'CATHODE TO DIAG0', 'beg': 'BEGGUNB', 'end': 'ENDHTR', 'offset': [0, 0], 'prev': 0, 'suml': 0, 'length': 0})
-seq.append({'froot': 1, 'name': 'COL0 TO COL1', 'beg': 'BEGCOL0', 'end': 'ENDBC1B', 'offset': [0, 0], 'prev': 1, 'suml': 0, 'length': 0})
-seq.append({'froot': 1, 'name': 'COL1 TO EMIT2', 'beg': 'BEGCOL1', 'end': 'ENDBC2B', 'offset': [0, 0], 'prev': 2, 'suml': 0, 'length': 0})
-seq.append({'froot': 1, 'name': 'EMIT2 TO DOGLEG', 'beg': 'BEGEMIT2', 'end': 'ENDEXT', 'offset': [0, 0], 'prev': 3, 'suml': 0, 'length': 0})
-seq.append({'froot': 1, 'name': 'DOGLEG TO BYPASS', 'beg': 'BEGDOG', 'end': 'ENDDOG', 'offset': [0, 0], 'prev': 4, 'suml': 0, 'length': 0})
-seq.append({'froot': 1, 'name': 'BYPASS TO BKYSP0H', 'beg': 'BEGBYP', 'end': 'ENDBYP', 'offset': [0, 0], 'prev': 5, 'suml': 0, 'length': 0})
-seq.append({'froot': 1, 'name': 'BKYSP0H TO BKYSP0S', 'beg': 'BEGSPD_1', 'end': 'ENDSPD_1', 'offset': [0, 0], 'prev': 6, 'suml': 0, 'length': 0})
-seq.append({'froot': 1, 'name': 'BKYSP0S TO BSYBEG', 'beg': 'BEGSPS', 'end': 'ENDSPS', 'offset': [0, 0], 'prev': 7, 'suml': 0, 'length': 0})
-seq.append({'froot': 1, 'name': 'BSYBEG TO BRCUS1', 'beg': 'BEGSLTS', 'end': 'ENDSLTS', 'offset': [0, 0], 'prev': 8, 'suml': 0, 'length': 0})
-seq.append({'froot': 1, 'name': 'BRCUS1 TO BSYEND', 'beg': 'BEGBSYS', 'end': 'ENDBSYS', 'offset': [0, 0], 'prev': 9, 'suml': 0, 'length': 0})
-seq.append({'froot': 1, 'name': 'BSYEND TO SXRSTART', 'beg': 'BEGLTUS', 'end': 'ENDLTUS', 'offset': [0, 0], 'prev': 10, 'suml': 0, 'length': 0})
-seq.append({'froot': 1, 'name': 'SXRSTART TO BYD1B', 'beg': 'BEGUNDS', 'end': 'ENDDMPS_1', 'offset': [0, 0], 'prev': 11, 'suml': 0, 'length': 0})
-seq.append({'froot': 1, 'name': 'BYD1B TO DUMPB', 'beg': 'BEGDMPS_2', 'end': 'ENDDMPS_2', 'offset': [0, 0], 'prev': 12, 'suml': 0, 'length': 0})
+seq.append({'froot': 1, 'name': 'CATHODE TO DIAG0', 'beg': 'BEGGUNB', 'end': 'ENDHTR', 'offset': [0, 0], 'prev': 0})
+seq.append({'froot': 1, 'name': 'COL0 TO COL1', 'beg': 'BEGCOL0', 'end': 'ENDBC1B', 'offset': [0, 0], 'prev': 1})
+seq.append({'froot': 1, 'name': 'COL1 TO EMIT2', 'beg': 'BEGCOL1', 'end': 'ENDBC2B', 'offset': [0, 0], 'prev': 2})
+seq.append({'froot': 1, 'name': 'EMIT2 TO DOGLEG', 'beg': 'BEGEMIT2', 'end': 'ENDEXT', 'offset': [0, 0], 'prev': 3})
+seq.append({'froot': 1, 'name': 'DOGLEG TO BYPASS', 'beg': 'BEGDOG', 'end': 'ENDDOG', 'offset': [0, 0], 'prev': 4})
+seq.append({'froot': 1, 'name': 'BYPASS TO BKYSP0H', 'beg': 'BEGBYP', 'end': 'ENDBYP', 'offset': [0, 0], 'prev': 5})
+seq.append({'froot': 1, 'name': 'BKYSP0H TO BKYSP0S', 'beg': 'BEGSPD_1', 'end': 'ENDSPD_1', 'offset': [0, 0], 'prev': 6})
+seq.append({'froot': 1, 'name': 'BKYSP0S TO BSYBEG', 'beg': 'BEGSPS', 'end': 'ENDSPS', 'offset': [0, 0], 'prev': 7})
+seq.append({'froot': 1, 'name': 'BSYBEG TO BRCUS1', 'beg': 'BEGSLTS', 'end': 'ENDSLTS', 'offset': [0, 0], 'prev': 8})
+seq.append({'froot': 1, 'name': 'BRCUS1 TO BSYEND', 'beg': 'BEGBSYS', 'end': 'ENDBSYS', 'offset': [0, 0], 'prev': 9})
+seq.append({'froot': 1, 'name': 'BSYEND TO SXRSTART', 'beg': 'BEGLTUS', 'end': 'ENDLTUS', 'offset': [0, 0], 'prev': 10})
+seq.append({'froot': 1, 'name': 'SXRSTART TO BYD1B', 'beg': 'BEGUNDS', 'end': 'ENDDMPS_1', 'offset': [0, 0], 'prev': 11})
+seq.append({'froot': 1, 'name': 'BYD1B TO DUMPB', 'beg': 'BEGDMPS_2', 'end': 'ENDDMPS_2', 'offset': [0, 0], 'prev': 12})
 # SXR safety dump line
-seq.append({ 'froot': 2, 'name': 'BYD1B TO SFTDUMPB', 'beg': 'BEGSFTS_1', 'end': 'ENDSFTS_2', 'offset': [0, 0], 'prev': 13, 'suml': 0, 'length': 0 })
+seq.append({ 'froot': 2, 'name': 'BYD1B TO SFTDUMPB', 'beg': 'BEGSFTS_1', 'end': 'ENDSFTS_2', 'offset': [0, 0], 'prev': 13 })
 # SXR XTES systems
-seq.append({ 'froot': 3, 'name': 'SXR 2.X', 'beg': 'BEGSXTES_1', 'end': 'ENDSXTES_2', 'offset': [0, 0], 'prev': 0, 'suml': 0, 'length': 0 })
-seq.append({ 'froot': 4, 'name': 'SXR TXI', 'beg': 'BEGSXTES_3', 'end': 'ENDSXTES_3', 'offset': [0, 0], 'prev': 0, 'suml': 0, 'length': 0 })
-seq.append({ 'froot': 5, 'name': 'SXR TMO', 'beg': 'BEGSXTES_4', 'end': 'ENDSXTES_4', 'offset': [0, 0], 'prev': 0, 'suml': 0, 'length': 0 })
+seq.append({ 'froot': 3, 'name': 'SXR 2.X', 'beg': 'BEGSXTES_1', 'end': 'ENDSXTES_2', 'offset': [0, 0], 'prev': 0 })
+seq.append({ 'froot': 4, 'name': 'SXR TXI', 'beg': 'BEGSXTES_3', 'end': 'ENDSXTES_3', 'offset': [0, 0], 'prev': 0 })
+seq.append({ 'froot': 5, 'name': 'SXR TMO', 'beg': 'BEGSXTES_4', 'end': 'ENDSXTES_4', 'offset': [0, 0], 'prev': 0 })
 # HXR cross-connect
-seq.append({ 'froot': 6, 'name': 'BKYSP0H TO BSYBEG', 'beg': 'BEGSPH', 'end': 'ENDSPH', 'offset': [0, 0], 'prev': 6, 'suml': 0, 'length': 0 })
-seq.append({ 'froot': 6, 'name': 'BSYBEG TO BXSP1H', 'beg': 'BEGSLTH', 'end': 'ENDSLTH', 'offset': [0, 0], 'prev': 18, 'suml': 0, 'length': 0 })
+seq.append({ 'froot': 6, 'name': 'BKYSP0H TO BSYBEG', 'beg': 'BEGSPH', 'end': 'ENDSPH', 'offset': [0, 0], 'prev': 6 })
+seq.append({ 'froot': 6, 'name': 'BSYBEG TO BXSP1H', 'beg': 'BEGSLTH', 'end': 'ENDSLTH', 'offset': [0, 0], 'prev': 18 })
 # BSY dump line
-seq.append({ 'froot': 7, 'name': 'BKYSP0S TO BKRDAS1', 'beg': 'BEGSPD_2', 'end': 'ENDSPD_2', 'offset': [0, 0], 'prev': 7, 'suml': 0, 'length': 0 })
-seq.append({ 'froot': 7, 'name': 'BKRDAS1 TO BSYBEG', 'beg': 'BEGSPD_3', 'end': 'ENDSPD_3', 'offset': [0, 0], 'prev': 20, 'suml': 0, 'length': 0 })
-seq.append({ 'froot': 7, 'name': 'BSYBEG TO BSYDUMP', 'beg': 'BEGSLTD', 'end': 'ENDSLTD', 'offset': [0, 0], 'prev': 21, 'suml': 0, 'length': 0 })
+seq.append({ 'froot': 7, 'name': 'BKYSP0S TO BKRDAS1', 'beg': 'BEGSPD_2', 'end': 'ENDSPD_2', 'offset': [0, 0], 'prev': 7 })
+seq.append({ 'froot': 7, 'name': 'BKRDAS1 TO BSYBEG', 'beg': 'BEGSPD_3', 'end': 'ENDSPD_3', 'offset': [0, 0], 'prev': 20 })
+seq.append({ 'froot': 7, 'name': 'BSYBEG TO BSYDUMP', 'beg': 'BEGSLTD', 'end': 'ENDSLTD', 'offset': [0, 0], 'prev': 21 })
 # DIAG0 line
-seq.append({ 'froot': 8, 'name': 'DIAG0 TO FCDG0DU', 'beg': 'BEGDIAG0', 'end': 'ENDDIAG0', 'offset': [0, 0], 'prev': 1, 'suml': 0, 'length': 0 })
+seq.append({ 'froot': 8, 'name': 'DIAG0 TO FCDG0DU', 'beg': 'BEGDIAG0', 'end': 'ENDDIAG0', 'offset': [0, 0], 'prev': 1 })
 # DASEL
-seq.append({ 'froot': 9, 'name': 'DASEL', 'beg': 'BEGDASEL', 'end': 'ENDDASEL', 'offset': [0, 0], 'prev': 20, 'suml': 0, 'length': 0 })
-seq.append({ 'froot': 9, 'name': 'ALINE', 'beg': 'BEGBSYA_2', 'end': 'ENDBSYA_2', 'offset': [0, 0], 'prev': 24, 'suml': 0, 'length': 0 })
+seq.append({ 'froot': 9, 'name': 'DASEL', 'beg': 'BEGDASEL', 'end': 'ENDDASEL', 'offset': [0, 0], 'prev': 20 })
+seq.append({ 'froot': 9, 'name': 'ALINE', 'beg': 'BEGBSYA_2', 'end': 'ENDBSYA_2', 'offset': [0, 0], 'prev': 24 })
 # XAL sequences: Cu linac
 # HXR line
-seq.append({ 'froot': 10, 'name': 'CATHODE TO BXG', 'beg': 'BEGGUN', 'end': 'ENDGUN', 'offset': [0, 0], 'prev': 0, 'suml': 0, 'length': 0 })
-seq.append({ 'froot': 10, 'name': 'BXG TO BX01', 'beg': 'BEGL0', 'end': 'ENDDL1_1', 'offset': [0, 0], 'prev': 26, 'suml': 0, 'length': 0 })
-seq.append({ 'froot': 10, 'name': 'BX01 TO BX02', 'beg': 'BEGDL1_2', 'end': 'DBMARK83', 'offset': [0, -1], 'prev': 27, 'suml': 0, 'length': 0 })
-seq.append({ 'froot': 10, 'name': 'BX02 TO QM15', 'beg': 'DBMARK83', 'end': 'DBMARK28', 'offset': [0, -1], 'prev': 28, 'suml': 0, 'length': 0 })
-seq.append({ 'froot': 10, 'name': 'QM15 TO FV2', 'beg': 'DBMARK28', 'end': 'ENDL3', 'offset': [0, 0], 'prev': 29, 'suml': 0, 'length': 0 })
-seq.append({ 'froot': 10, 'name': 'FV2 TO BSYBEG', 'beg': 'BEGCLTH_0', 'end': 'ENDCLTH_0', 'offset': [0, 0], 'prev': 30, 'suml': 0, 'length': 0 })
-seq.append({ 'froot': 10, 'name': 'BSYBEG TO BKRCUS', 'beg': 'BEGCLTH_1', 'end': 'ENDCLTH_1', 'offset': [0, 0], 'prev': 31, 'suml': 0, 'length': 0 })
-seq.append({ 'froot': 10, 'name': 'BKRCUS TO BXSP1H', 'beg': 'BEGCLTH_2', 'end': 'ENDCLTH_2', 'offset': [0, 0], 'prev': 32, 'suml': 0, 'length': 0 })
-seq.append({ 'froot': 10, 'name': 'BXSP1H TO BKRAPM1', 'beg': 'BEGBSYH_1', 'end': 'ENDBSYH_1', 'offset': [0, 0], 'prev': 33, 'suml': 0, 'length': 0 })
-seq.append({ 'froot': 10, 'name': 'BKRAPM1 TO BSYEND', 'beg': 'BEGBSYH_2', 'end': 'ENDBSYH_2', 'offset': [0, 0], 'prev': 34, 'suml': 0, 'length': 0 })
-seq.append({ 'froot': 10, 'name': 'BSYEND TO BX31', 'beg': 'BEGLTUH', 'end': 'DBMARK34', 'offset': [0, -1], 'prev': 35, 'suml': 0, 'length': 0 })
-seq.append({ 'froot': 10, 'name': 'BX31 TO WS31', 'beg': 'DBMARK34', 'end': 'DBMARK36', 'offset': [0, 0], 'prev': 36, 'suml': 0, 'length': 0 })
-seq.append({ 'froot': 10, 'name': 'WS31 TO HXRSTART', 'beg': 'DBMARK36', 'end': 'ENDLTUH', 'offset': [1, 0], 'prev': 37, 'suml': 0, 'length': 0 })
-seq.append({ 'froot': 10, 'name': 'HXRSTART TO BYD1', 'beg': 'BEGUNDH', 'end': 'ENDDMPH_1', 'offset': [0, 0], 'prev': 38, 'suml': 0, 'length': 0 })
-seq.append({ 'froot': 10, 'name': 'BYD1 TO DUMP', 'beg': 'BEGDMPH_2', 'end': 'ENDDMPH_2', 'offset': [0, 0], 'prev': 39, 'suml': 0, 'length': 0 })
+seq.append({ 'froot': 10, 'name': 'CATHODE TO BXG', 'beg': 'BEGGUN', 'end': 'ENDGUN', 'offset': [0, 0], 'prev': 0 })
+seq.append({ 'froot': 10, 'name': 'BXG TO BX01', 'beg': 'BEGL0', 'end': 'ENDDL1_1', 'offset': [0, 0], 'prev': 26 })
+seq.append({ 'froot': 10, 'name': 'BX01 TO BX02', 'beg': 'BEGDL1_2', 'end': 'DBMARK83', 'offset': [0, -1], 'prev': 27 })
+seq.append({ 'froot': 10, 'name': 'BX02 TO QM15', 'beg': 'DBMARK83', 'end': 'DBMARK28', 'offset': [0, -1], 'prev': 28 })
+seq.append({ 'froot': 10, 'name': 'QM15 TO FV2', 'beg': 'DBMARK28', 'end': 'ENDL3', 'offset': [0, 0], 'prev': 29 })
+seq.append({ 'froot': 10, 'name': 'FV2 TO BSYBEG', 'beg': 'BEGCLTH_0', 'end': 'ENDCLTH_0', 'offset': [0, 0], 'prev': 30 })
+seq.append({ 'froot': 10, 'name': 'BSYBEG TO BKRCUS', 'beg': 'BEGCLTH_1', 'end': 'ENDCLTH_1', 'offset': [0, 0], 'prev': 31 })
+seq.append({ 'froot': 10, 'name': 'BKRCUS TO BXSP1H', 'beg': 'BEGCLTH_2', 'end': 'ENDCLTH_2', 'offset': [0, 0], 'prev': 32 })
+seq.append({ 'froot': 10, 'name': 'BXSP1H TO BKRAPM1', 'beg': 'BEGBSYH_1', 'end': 'ENDBSYH_1', 'offset': [0, 0], 'prev': 33 })
+seq.append({ 'froot': 10, 'name': 'BKRAPM1 TO BSYEND', 'beg': 'BEGBSYH_2', 'end': 'ENDBSYH_2', 'offset': [0, 0], 'prev': 34 })
+seq.append({ 'froot': 10, 'name': 'BSYEND TO BX31', 'beg': 'BEGLTUH', 'end': 'DBMARK34', 'offset': [0, -1], 'prev': 35 })
+seq.append({ 'froot': 10, 'name': 'BX31 TO WS31', 'beg': 'DBMARK34', 'end': 'DBMARK36', 'offset': [0, 0], 'prev': 36 })
+seq.append({ 'froot': 10, 'name': 'WS31 TO HXRSTART', 'beg': 'DBMARK36', 'end': 'ENDLTUH', 'offset': [1, 0], 'prev': 37 })
+seq.append({ 'froot': 10, 'name': 'HXRSTART TO BYD1', 'beg': 'BEGUNDH', 'end': 'ENDDMPH_1', 'offset': [0, 0], 'prev': 38 })
+seq.append({ 'froot': 10, 'name': 'BYD1 TO DUMP', 'beg': 'BEGDMPH_2', 'end': 'ENDDMPH_2', 'offset': [0, 0], 'prev': 39 })
 # HXR safety dump line
-seq.append({ 'froot': 11, 'name': 'BYD1 TO SFTDUMP', 'beg': 'BEGSFTH_1', 'end': 'ENDSFTH_2', 'offset': [0, 0], 'prev': 39, 'suml': 0, 'length': 0 })
+seq.append({ 'froot': 11, 'name': 'BYD1 TO SFTDUMP', 'beg': 'BEGSFTH_1', 'end': 'ENDSFTH_2', 'offset': [0, 0], 'prev': 39 })
 # HXR XTES systems
-seq.append({ 'froot': 12, 'name': 'HXR XTES', 'beg': 'BEGHXTES_1', 'end': 'ENDHXTES_2', 'offset': [0, 0], 'prev': 0, 'suml': 0, 'length': 0 }) 
-seq.append({ 'froot': 13, 'name': 'HXR TXI', 'beg': 'BEGHXTES_3', 'end': 'ENDHXTES_3', 'offset': [0, 0], 'prev': 0, 'suml': 0, 'length': 0 })
+seq.append({ 'froot': 12, 'name': 'HXR XTES', 'beg': 'BEGHXTES_1', 'end': 'ENDHXTES_2', 'offset': [0, 0], 'prev': 0 }) 
+seq.append({ 'froot': 13, 'name': 'HXR TXI', 'beg': 'BEGHXTES_3', 'end': 'ENDHXTES_3', 'offset': [0, 0], 'prev': 0 })
 # SXR cross-connect
-seq.append({ 'froot': 14, 'name': 'BKRCUS TO BRCUS1', 'beg': 'BEGCLTS', 'end': 'ENDCLTS', 'offset': [0, 0], 'prev': 32, 'suml': 0, 'length': 0 })
+seq.append({ 'froot': 14, 'name': 'BKRCUS TO BRCUS1', 'beg': 'BEGCLTS', 'end': 'ENDCLTS', 'offset': [0, 0], 'prev': 32 })
 # gun spectrometer
-seq.append({ 'froot': 15, 'name': 'BXG TO GUN SPECT DUMP', 'beg': 'BEGGSPEC', 'end': 'ENDGSPEC', 'offset': [0, 0], 'prev': 26, 'suml': 0, 'length': 0 })
+seq.append({ 'froot': 15, 'name': 'BXG TO GUN SPECT DUMP', 'beg': 'BEGGSPEC', 'end': 'ENDGSPEC', 'offset': [0, 0], 'prev': 26 })
 # 135 MeV spectrometer
-seq.append({ 'froot': 16, 'name': 'BX01 TO 135-MEV SPECT DUMP', 'beg': 'BEGSPEC', 'end': 'ENDSPEC', 'offset': [0, 0], 'prev': 27, 'suml': 0, 'length': 0 })
+seq.append({ 'froot': 16, 'name': 'BX01 TO 135-MEV SPECT DUMP', 'beg': 'BEGSPEC', 'end': 'ENDSPEC', 'offset': [0, 0], 'prev': 27 })
 
 # ------------------------------------------------------------------------------
 # machine areas
@@ -267,15 +321,6 @@ Sd = [x[2] for x in coor]
 # get BSY coordinates
 K1, N1, L1, P1, S1, coor1, idf1, FDN1 = [], [], [], [], [], [], [], []
 
-def intersection(x,y):
-    return [v for v in x if v in y]
-
-def strmatch(n_str,N_lst,exact=False):
-    if exact:
-        return [ix for ix,n_ in enumerate(N_lst) if n_.strip() == n_str.strip()]
-    else:
-        return [ix for ix,n_ in enumerate(N_lst) if n_.startswith(n_str)]
-
 if cBSY:
     for n in range(len(other1)):
         fname = f"{other1[n]['froot']}_survey.tape"
@@ -332,13 +377,10 @@ if cBSY:
 if cUND:
   FixUpgradeNames(N2)
 
-# initialize some sequence data
-
+# initialize the suml key in the seq dictionary
 for s in seq:
     id1 = N.index(s['beg']) + s['offset'][0]
-    id2 = N.index(s['end']) + s['offset'][1]
     s['suml'] = S[id1]
-    s['length']=S[id2]-S[id1]
 
 # assign machine areas
 
@@ -595,24 +637,12 @@ for name, aname in zip(name_all,aname_all):
             if aname == area[ida[jd[m]]]['name']:
                 N1[jd2[m]] = name + '?'
 
-# # Change keyword for XTES mirrors from MULT to INST
-# name = ['MR1K1_BEND', 'SP1K1_MONO', 'MR3K1_GRATING',
-#         'MR1K3_TXI', 'MR2K3_TXI', 'MR1K4_SOMS',
-#         'MR1L0_HOMS_XTES', 'MR2L0_HOMS', 'MR1L0_HOMS_TXI', 'MR1L1_TXI']
-# 
-# for n in name:
-#     id_ = strmatch(n,N,True)
-#     for i in id_:
-#         K[i] = 'INST'
-
 # Change keyword for GUN/GUNB solenoid correction quads from MULT to QUAD;
 # copy T1 into TILT slot
 name = ['CQ01', 'SQ01', 'CQ01B', 'SQ01B', 'SQ02B']
-
 for n in name:
     id_ = strmatch(n,N,True)
     for i in id_:
-        #K[i] = 'QUAD'
         P[i][3] = P[i][5]  # T1 -> TILT
 
 def assign_ucell(N, coor, idf):
@@ -659,12 +689,6 @@ def assign_ucell(N, coor, idf):
 
 # Assign undulator cell names
 UCELL = assign_ucell(N1, coor1, idf1)
-
-def notnone(val):
-    if val is None:
-        return ''
-    else:
-        return val
 
 def read_sector():
     filename = f'{script_dir}/sectors.xlsx'
@@ -875,9 +899,13 @@ XALK = [
     'XCOR', 'YCOR', 'BPM ', 'WIRE', 'PROF', 'TORO', 'BLMO', 'INST',
     'MARK', 'MULT'
 ]
-idmisc = list(range(9, 16))  # non-magnet elements that might have nonzero lengths
+
+# idmisc are 'HKIC', 'VKIC', 'MONI', 'WIRE', 'PROF', 'IMON', 'BLMO'
+# non-magnet elements that might have nonzero lengths
+idmisc = list(range(9, 16)) 
 
 #FOO FLAG key*, etc in following block for removal.
+# this prunes from MADK those keyword not in the survey files.
 keyw = []
 keyx = []
 jdmisc = []
@@ -1062,7 +1090,6 @@ for kwn,kxn in zip(keyw,keyx):
 
             # BSY coordinates
 
-            LCAV[-1]['suml1'] = []
             for k in range(6):
                 LCAV[-1][f'c1{k+1}'] = []
             if cBSY:
@@ -1212,7 +1239,6 @@ for kwn,kxn in zip(keyw,keyx):
             })
             # BSY coordinates
 
-            SBEN[-1]['suml1'] = []
             for k in range(6):
                 SBEN[-1][f'c1{k+1}'] = []
                 SBEN[-1][f'm1{k+1}'] = []
@@ -1358,7 +1384,6 @@ for kwn,kxn in zip(keyw,keyx):
 
             # BSY coordinates
 
-            QUAD[-1]['suml1'] = []
             for k in range(6):
                 QUAD[-1][f'c1{k+1}'] = []
             if cBSY:
@@ -1447,7 +1472,6 @@ for kwn,kxn in zip(keyw,keyx):
 
             # BSY coordinates
 
-            SEXT[-1]['suml1'] = []
             for k in range(6):
                 SEXT[-1][f'c1{k+1}'] = []
             if cBSY:
@@ -1535,7 +1559,6 @@ for kwn,kxn in zip(keyw,keyx):
 
             # BSY coordinates
 
-            SOLE[-1]['suml1'] = []
             for k in range(6):
                 SOLE[-1][f'c1{k+1}'] = []
             if cBSY:
@@ -1606,7 +1629,6 @@ for kwn,kxn in zip(keyw,keyx):
 
             # BSY coordinates
 
-            MATR[-1]['suml1'] = []
             for k in range(6):
                 MATR[-1][f'c1{k+1}'] = []
             if cBSY:
@@ -1675,7 +1697,6 @@ for kwn,kxn in zip(keyw,keyx):
 
             # BSY coordinates
 
-            RCOL[-1]['suml1'] = []
             for k in range(6):
                 RCOL[-1][f'c1{k+1}'] = []
             if cBSY:
@@ -1744,7 +1765,6 @@ for kwn,kxn in zip(keyw,keyx):
 
             # BSY coordinates
 
-            ECOL[-1]['suml1'] = []
             for k in range(6):
                 ECOL[-1][f'c1{k+1}'] = []
             if cBSY:
@@ -1813,7 +1833,6 @@ for kwn,kxn in zip(keyw,keyx):
 
             # BSY coordinates
 
-            SROT[-1]['suml1'] = []
             for k in range(6):
                 SROT[-1][f'c1{k+1}'] = []
             if cBSY:
@@ -1910,7 +1929,6 @@ for kwn,kxn in zip(keyw,keyx):
 
             # BSY coordinates
 
-            MULT[-1]['suml1'] = []
             for k in range(6):
                 MULT[-1][f'c1{k+1}'] = []
                 MULT[-1][f'm1{k+1}'] = []
@@ -1983,7 +2001,6 @@ for kwn,kxn in zip(keyw,keyx):
 
             # BSY coordinates
 
-            INST[-1]['suml1'] = []
             for k in range(6):
                 INST[-1][f'c1{k+1}'] = []
                 INST[-1][f'm1{k+1}'] = []
@@ -2054,7 +2071,6 @@ for kwn,kxn in zip(keyw,keyx):
 
             # BSY coordinates
 
-            MISC['suml1'] = []
             for k in range(6):
                 MISC[f'c1{k+1}'] = []
             if cBSY:
@@ -2120,7 +2136,6 @@ for kwn,kxn in zip(keyw,keyx):
 
             # BSY coordinates
 
-            MARK[-1]['suml1'] = []
             for k in range(6):
                 MARK[-1][f'c1{k+1}'] = []
             if cBSY:
@@ -2196,10 +2211,15 @@ DEPR = []
 nDEPR = 0
 pname = [x['parent'] for x in area]
 
-for k_str in keyw:
-    k = globals()[k_str]
-    for m in range(len(k)):
-        t = k[m]['type']
+KEYLIST = [
+    LCAV, SBEN, QUAD, SEXT, SOLE, MATR, RCOL, ECOL, SROT,
+    HKIC, VKIC, MONI, WIRE, PROF, IMON, BLMO, INST,
+    MARK, MULT
+]
+
+for KEY in KEYLIST:
+    for m in range(len(KEY)):
+        t = KEY[m]['type']
         if t and t[0] == '@':
             deplev = int(t[1])
             if len(t) > 2:
@@ -2207,25 +2227,25 @@ for k_str in keyw:
             else:
                 t = ''
             nDEPR += 1
-            id = strmatch(k[m]['parent'],pname)
-            if k == 'SBEN':
-                z_use = k[m]['m1']
+            id = strmatch(KEY[m]['parent'],pname)
+            if KEY == 'SBEN':
+                z_use = KEY[m]['m1']
             else:
-                z_use = k[m]['c1']
+                z_use = KEY[m]['c1']
             DEPR.append({
-                'id':k[m]['id'],
-                'parent':k[m]['parent'],
+                'id':KEY[m]['id'],
+                'parent':KEY[m]['parent'],
                 'ida': id[0]+1,
-                'prim': k[m]['prim'],
-                'name': k[m]['name'],
+                'prim': KEY[m]['prim'],
+                'name': KEY[m]['name'],
                 'z': z_use,
                 'type': t,
                 'level': deplev,
                 })
 
-            k[m]['parent'] = '*' + k[m]['parent']
-            k[m]['area'] = '*' + k[m]['area']
-            k[m]['type'] = t
+            KEY[m]['parent'] = '*' + KEY[m]['parent']
+            KEY[m]['area'] = '*' + KEY[m]['area']
+            KEY[m]['type'] = t
 
 # ------------------------------------------------------------------------------
 # Fix magnet coordinates ...
@@ -2572,13 +2592,11 @@ for keywn in keyw:
 
 seqname = [x['name'] for x in seq]
 ip = []
-for n in range(len(keyw)):
-    TEMP = globals()[keyw[n]]
-    for m in range(len(TEMP)):
-        id = strmatch(TEMP[m]['seq'],seqname,True)[0]
-        ip.append([seq[id]['froot'], n, m, TEMP[m]['id']])
+for n,KEY in enumerate(KEYLIST):
+    for m in range(len(KEY)):
+        id = strmatch(KEY[m]['seq'],seqname,True)[0]
+        ip.append([seq[id]['froot'], n, m, KEY[m]['id']])
 ip = sorted(ip, key=lambda x: (x[0], x[3]))
-
 
 # SYMBOLS text-file headers and footers
 
@@ -2625,46 +2643,17 @@ Ncol = head.count(',') + 1
 
 # SYMBOLS text-file (linac coordinates)
 
-def madval(rval):
-    if rval == 0:
-        return '0.0'
-    else:
-        aval = abs(rval)
-        if 0.01 < aval < 100:
-            iexp = 0.0
-        else:
-            iexp = int(math.log10(aval))
-            rval = rval * 10**(-iexp)
-        
-        s = f'{rval:.12f}'
-        s = s.rstrip('0')
-        
-        if s.endswith('.'):
-            s = s + '0'
-        
-        if iexp != 0:
-            s += f'E{iexp}'
-        
-        return s.strip()
-
-def roundoff(val, prec=None):
-    if isinstance(val,list):
-        return None
-    if prec is None:
-        return val
-    else:
-        return prec * np.round(val / prec)
-
 fname = f'AD_ACCEL-{optics}.txt'
 with open(outdir+'/'+fname, 'wt') as fid:
     fid.write(f'{head}\n')
     fid.write(f'{unit}\n')
-#FOO
     for nf in range(1, len(froot) + 1):
         id = [i for i,x in enumerate(ip) if x[0]==nf]
+
         for n in id:
             idk = ip[n][1]
             idn = ip[n][2]
+            #FOO CONTINUE WORK FROM HERE
             TEMP = globals()[keyw[idk]][idn]
 
             s = [None] * Ncol
@@ -2771,13 +2760,12 @@ with open(outdir+'/'+fname, 'wt') as fid:
                 s[7] = TEMP['ang']
             elif keyw[idk] == 'INST':
                 s[5] = TEMP['leng']
-                if TEMP['xkey'] != 'MARK':
-                    s[37] = roundoff(TEMP['m1'], prec)
-                    s[38] = roundoff(TEMP['m2'], prec)
-                    s[39] = roundoff(TEMP['m3'], prec)
-                    s[40] = roundoff(TEMP['m4'], prec)
-                    s[41] = roundoff(TEMP['m5'], prec)
-                    s[42] = roundoff(TEMP['m6'], prec)
+                s[37] = roundoff(TEMP['m1'], prec)
+                s[38] = roundoff(TEMP['m2'], prec)
+                s[39] = roundoff(TEMP['m3'], prec)
+                s[40] = roundoff(TEMP['m4'], prec)
+                s[41] = roundoff(TEMP['m5'], prec)
+                s[42] = roundoff(TEMP['m6'], prec)
             elif keyw[idk] == 'MULT':
                 if TEMP['prim'] == 'MULT':
                     continue
@@ -2825,19 +2813,13 @@ if cBSY:
                 idn = ip[ni][2]
                 TEMP = globals()[keyw[idk]][idn]
 
-                if isinstance(TEMP['suml1'],list) and TEMP['suml1'] == []:
+                if 'suml1' not in TEMP:
+                    # use suml1 as a proxy to see if element is in BSY
                     continue
 
-                # skip elements named TEMP* in XTES systems
-
-                if noXTES_TEMPs:
-                    if nf in [11,12]:
-                        if 'TEMP' in TEMP['name']:
-                            continue
+                s = [None] * Ncol
 
                 # common data
-
-                s = [None] * Ncol
                 s[0] = TEMP['id']
                 s[1] = TEMP['parent']
                 s[2] = TEMP['prim']
@@ -2934,20 +2916,18 @@ if cBSY:
                     s[7] = TEMP['ang']
                 elif keyw[idk] == 'INST':
                     s[5] = TEMP['leng']
-                    if TEMP['xkey'] == 'MARK':
-                        pass  # MARKer (MARK().prim changed to INST)
-                    else:
-                        s[37] = roundoff(TEMP['m11'], prec)
-                        s[38] = roundoff(TEMP['m12'], prec)
-                        s[39] = roundoff(TEMP['m13'], prec)
-                        s[40] = roundoff(TEMP['m14'], prec)
-                        s[41] = roundoff(TEMP['m15'], prec)
-                        s[42] = roundoff(TEMP['m16'], prec)
+                    s[37] = roundoff(TEMP['m11'], prec)
+                    s[38] = roundoff(TEMP['m12'], prec)
+                    s[39] = roundoff(TEMP['m13'], prec)
+                    s[40] = roundoff(TEMP['m14'], prec)
+                    s[41] = roundoff(TEMP['m15'], prec)
+                    s[42] = roundoff(TEMP['m16'], prec)
                 elif keyw[idk] == 'MULT':
                     if TEMP['prim'] == 'MULT':
                         continue
                     s[5] = TEMP['leng']
-                    s[6] = TEMP['bore']
+                    if TEMP['prim'] != 'INST':
+                        s[6] = TEMP['bore']
                     if TEMP['prim'] == 'QUAD':
                         s[8] = TEMP['k1']
                         s[10] = TEMP['tilt']
@@ -3089,17 +3069,15 @@ if cUND:
                     s[7] = TEMP['ang']
                 elif keyw[idk, :] == 'INST':
                     s[5] = TEMP['leng']
-                    if TEMP['xkey'] == 'MARK':
-                        pass  # MARKer (MARK().prim changed to INST)
-                    else:
-                        s[37] = roundoff(TEMP['m21'], prec)
-                        s[38] = roundoff(TEMP['m22'], prec)
-                        s[39] = roundoff(TEMP['m23'], prec)
-                        s[40] = roundoff(TEMP['m24'], prec)
-                        s[41] = roundoff(TEMP['m25'], prec)
-                        s[42] = roundoff(TEMP['m26'], prec)
+                    s[37] = roundoff(TEMP['m21'], prec)
+                    s[38] = roundoff(TEMP['m22'], prec)
+                    s[39] = roundoff(TEMP['m23'], prec)
+                    s[40] = roundoff(TEMP['m24'], prec)
+                    s[41] = roundoff(TEMP['m25'], prec)
+                    s[42] = roundoff(TEMP['m26'], prec)
                 elif keyw[idk, :] == 'MULT':
                     if TEMP['prim'] == 'MULT':
+                        # only write out those multipoles that have a non-MULT database name
                         continue
                     s[5] = TEMP['leng']
                     s[6] = TEMP['bore']
