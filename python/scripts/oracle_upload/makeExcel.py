@@ -900,9 +900,12 @@ XALK = [
     'MARK', 'MULT'
 ]
 
-# idmisc are 'HKIC', 'VKIC', 'MONI', 'WIRE', 'PROF', 'IMON', 'BLMO'
-# non-magnet elements that might have nonzero lengths
-idmisc = list(range(9, 16)) 
+#FOO  #Format of ELES:
+#FOO  # ELES['madk_i'] = [{dict of 1st ele of type madk_i}, {dict of 2nd ele of type madk_i}, ...]
+#FOO  ELES = {}
+#FOO  for key in MADK:
+#FOO    ELES[key] = []
+
 
 #FOO FLAG key*, etc in following block for removal.
 # this prunes from MADK those keyword not in the survey files.
@@ -914,9 +917,6 @@ for n in range(len(MADK)):
     if len(id_) > 0:
         keyw.append(MADK[n])
         keyx.append(XALK[n])
-        if n in idmisc:
-            jdmisc.append(len(keyw) - 1)
-idmisc=jdmisc
 
 
 # hard-wired list of bends that have energy polynomials in the database
@@ -2033,8 +2033,9 @@ for kwn,kxn in zip(keyw,keyx):
                     for k in range(6):
                         INST[-1][f'c2{k+1}'] = coorc2[k]
 
-    elif kwn in [keyw[i] for i in idmisc]: #MISC
+    elif kwn == 'HKIC':
         name = list(dict.fromkeys([N[i] for i in id]))
+        HKIC = []
         for mname in name:
             id = strmatch(mname,N,True)
             if id[0] == 1:
@@ -2049,7 +2050,7 @@ for kwn,kxn in zip(keyw,keyx):
             leng = np.sum(L[id])  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             t = T[id[0]].strip()
-            MISC = {
+            HKIC.append({
                 'idf': idf[id[0]],
                 'id': idd[id[0]],
                 'seq': seq[ids[id[0]]]['name'],
@@ -2067,44 +2068,434 @@ for kwn,kxn in zip(keyw,keyx):
                 'sdsp': sdsp,
                 'suml': suml,
                 **{f'c{k+1}': coorc[k] for k in range(6)}
-            }
+            })
 
             # BSY coordinates
 
             for k in range(6):
-                MISC[f'c1{k+1}'] = []
+                HKIC[-1][f'c1{k+1}'] = []
             if cBSY:
                 id = strmatch(mname,N1,True)
                 if len(id) > 0:
                     ide = [id[0] - 1, id[-1]]  # [entrance, exit]
                     suml1 = np.mean(S1[ide])  # m (beam center)
                     coorc1 = np.mean(coor1[ide], axis=0)  # m, rad (beam center)
-                    MISC['suml1'] = suml1
+                    HKIC[-1]['suml1'] = suml1
                     for k in range(6):
-                        MISC[f'c1{k+1}'] = coorc1[k]
-                    if not MISC['sector']:
-                        MISC['sector'] = SECTORS1[id[0]].strip()
-                    MISC['ucell'] = UCELL[id[0]].strip()
+                        HKIC[-1][f'c1{k+1}'] = coorc1[k]
+                    if not HKIC[-1]['sector']:
+                        HKIC[-1]['sector'] = SECTORS1[id[0]].strip()
+                    HKIC[-1]['ucell'] = UCELL[id[0]].strip()
 
-            MISC['suml2'] = []
+            HKIC[-1]['suml2'] = []
             for k in range(6):
-                MISC[f'c2{k+1}'] = []
+                HKIC[-1][f'c2{k+1}'] = []
             if cUND:
                 id = strmatch(mname,N2,True)
                 if len(id) > 0:
                     ide = [id[0] - 1, id[-1]]  # [entrance, exit]
                     suml2 = np.mean(S2[ide])  # m (beam center)
                     coorc2 = np.mean(coor2[ide], axis=0)  # m, rad (beam center)
-                    MISC['suml2'] = suml2
+                    HKIC[-1]['suml2'] = suml2
                     for k in range(6):
-                        MISC[f'c2{k+1}'] = coorc2[k]
+                        HKIC[-1][f'c2{k+1}'] = coorc2[k]
 
-            globals()[f'n{kwn}'] += 1
-            if f'{kwn}' in globals():
-                globals()[f'{kwn}'].append(MISC)
+    elif kwn == 'VKIC':
+        name = list(dict.fromkeys([N[i] for i in id]))
+        VKIC = []
+        for mname in name:
+            id = strmatch(mname,N,True)
+            if id[0] == 1:
+                idi = 1
             else:
-                globals()[f'{kwn}'] = [MISC]
+                idi = id[0] - 1  # beam in
+            ide = [idi, id[-1]]  # [entrance, exit]
+            sdsp = np.mean(Sd[ide])  # m (beam center)
+            suml = np.mean(S[ide])  # m (beam center)
+            dist = suml - seq[ids[id[0]]]['suml']  # m (sequence start to beam center)
+            energy = E[id[0]]  # GeV
+            leng = np.sum(L[id])  # m
+            coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
+            t = T[id[0]].strip()
+            VKIC.append({
+                'idf': idf[id[0]],
+                'id': idd[id[0]],
+                'seq': seq[ids[id[0]]]['name'],
+                'area': area[ida[id[0]]]['name'],
+                'parent': area[ida[id[0]]]['parent'],
+                'sector': SECTORS[id[0]].strip(),
+                'ucell': [],
+                'xkey': kxn,
+                'prim': FDN[id[0]],
+                'name': mname,
+                'type': T[id[0]].strip(),
+                'dist': dist,
+                'energy': energy,
+                'leng': leng,
+                'sdsp': sdsp,
+                'suml': suml,
+                **{f'c{k+1}': coorc[k] for k in range(6)}
+            })
 
+            # BSY coordinates
+
+            for k in range(6):
+                VKIC[-1][f'c1{k+1}'] = []
+            if cBSY:
+                id = strmatch(mname,N1,True)
+                if len(id) > 0:
+                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
+                    suml1 = np.mean(S1[ide])  # m (beam center)
+                    coorc1 = np.mean(coor1[ide], axis=0)  # m, rad (beam center)
+                    VKIC[-1]['suml1'] = suml1
+                    for k in range(6):
+                        VKIC[-1][f'c1{k+1}'] = coorc1[k]
+                    if not VKIC[-1]['sector']:
+                        VKIC[-1]['sector'] = SECTORS1[id[0]].strip()
+                    VKIC[-1]['ucell'] = UCELL[id[0]].strip()
+
+            VKIC[-1]['suml2'] = []
+            for k in range(6):
+                VKIC[-1][f'c2{k+1}'] = []
+            if cUND:
+                id = strmatch(mname,N2,True)
+                if len(id) > 0:
+                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
+                    suml2 = np.mean(S2[ide])  # m (beam center)
+                    coorc2 = np.mean(coor2[ide], axis=0)  # m, rad (beam center)
+                    VKIC[-1]['suml2'] = suml2
+                    for k in range(6):
+                        VKIC[-1][f'c2{k+1}'] = coorc2[k]
+    elif kwn == 'MONI':
+        name = list(dict.fromkeys([N[i] for i in id]))
+        MONI = []
+        for mname in name:
+            id = strmatch(mname,N,True)
+            if id[0] == 1:
+                idi = 1
+            else:
+                idi = id[0] - 1  # beam in
+            ide = [idi, id[-1]]  # [entrance, exit]
+            sdsp = np.mean(Sd[ide])  # m (beam center)
+            suml = np.mean(S[ide])  # m (beam center)
+            dist = suml - seq[ids[id[0]]]['suml']  # m (sequence start to beam center)
+            energy = E[id[0]]  # GeV
+            leng = np.sum(L[id])  # m
+            coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
+            t = T[id[0]].strip()
+            MONI.append({
+                'idf': idf[id[0]],
+                'id': idd[id[0]],
+                'seq': seq[ids[id[0]]]['name'],
+                'area': area[ida[id[0]]]['name'],
+                'parent': area[ida[id[0]]]['parent'],
+                'sector': SECTORS[id[0]].strip(),
+                'ucell': [],
+                'xkey': kxn,
+                'prim': FDN[id[0]],
+                'name': mname,
+                'type': T[id[0]].strip(),
+                'dist': dist,
+                'energy': energy,
+                'leng': leng,
+                'sdsp': sdsp,
+                'suml': suml,
+                **{f'c{k+1}': coorc[k] for k in range(6)}
+            })
+
+            # BSY coordinates
+
+            for k in range(6):
+                MONI[-1][f'c1{k+1}'] = []
+            if cBSY:
+                id = strmatch(mname,N1,True)
+                if len(id) > 0:
+                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
+                    suml1 = np.mean(S1[ide])  # m (beam center)
+                    coorc1 = np.mean(coor1[ide], axis=0)  # m, rad (beam center)
+                    MONI[-1]['suml1'] = suml1
+                    for k in range(6):
+                        MONI[-1][f'c1{k+1}'] = coorc1[k]
+                    if not MONI[-1]['sector']:
+                        MONI[-1]['sector'] = SECTORS1[id[0]].strip()
+                    MONI[-1]['ucell'] = UCELL[id[0]].strip()
+
+            MONI[-1]['suml2'] = []
+            for k in range(6):
+                MONI[-1][f'c2{k+1}'] = []
+            if cUND:
+                id = strmatch(mname,N2,True)
+                if len(id) > 0:
+                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
+                    suml2 = np.mean(S2[ide])  # m (beam center)
+                    coorc2 = np.mean(coor2[ide], axis=0)  # m, rad (beam center)
+                    MONI[-1]['suml2'] = suml2
+                    for k in range(6):
+                        MONI[-1][f'c2{k+1}'] = coorc2[k]
+    elif kwn == 'WIRE':
+        name = list(dict.fromkeys([N[i] for i in id]))
+        WIRE = []
+        for mname in name:
+            id = strmatch(mname,N,True)
+            if id[0] == 1:
+                idi = 1
+            else:
+                idi = id[0] - 1  # beam in
+            ide = [idi, id[-1]]  # [entrance, exit]
+            sdsp = np.mean(Sd[ide])  # m (beam center)
+            suml = np.mean(S[ide])  # m (beam center)
+            dist = suml - seq[ids[id[0]]]['suml']  # m (sequence start to beam center)
+            energy = E[id[0]]  # GeV
+            leng = np.sum(L[id])  # m
+            coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
+            t = T[id[0]].strip()
+            WIRE.append({
+                'idf': idf[id[0]],
+                'id': idd[id[0]],
+                'seq': seq[ids[id[0]]]['name'],
+                'area': area[ida[id[0]]]['name'],
+                'parent': area[ida[id[0]]]['parent'],
+                'sector': SECTORS[id[0]].strip(),
+                'ucell': [],
+                'xkey': kxn,
+                'prim': FDN[id[0]],
+                'name': mname,
+                'type': T[id[0]].strip(),
+                'dist': dist,
+                'energy': energy,
+                'leng': leng,
+                'sdsp': sdsp,
+                'suml': suml,
+                **{f'c{k+1}': coorc[k] for k in range(6)}
+            })
+
+            # BSY coordinates
+
+            for k in range(6):
+                WIRE[-1][f'c1{k+1}'] = []
+            if cBSY:
+                id = strmatch(mname,N1,True)
+                if len(id) > 0:
+                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
+                    suml1 = np.mean(S1[ide])  # m (beam center)
+                    coorc1 = np.mean(coor1[ide], axis=0)  # m, rad (beam center)
+                    WIRE[-1]['suml1'] = suml1
+                    for k in range(6):
+                        WIRE[-1][f'c1{k+1}'] = coorc1[k]
+                    if not WIRE[-1]['sector']:
+                        WIRE[-1]['sector'] = SECTORS1[id[0]].strip()
+                    WIRE[-1]['ucell'] = UCELL[id[0]].strip()
+
+            WIRE[-1]['suml2'] = []
+            for k in range(6):
+                WIRE[-1][f'c2{k+1}'] = []
+            if cUND:
+                id = strmatch(mname,N2,True)
+                if len(id) > 0:
+                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
+                    suml2 = np.mean(S2[ide])  # m (beam center)
+                    coorc2 = np.mean(coor2[ide], axis=0)  # m, rad (beam center)
+                    WIRE[-1]['suml2'] = suml2
+                    for k in range(6):
+                        WIRE[-1][f'c2{k+1}'] = coorc2[k]
+    elif kwn == 'PROF':
+        name = list(dict.fromkeys([N[i] for i in id]))
+        PROF = []
+        for mname in name:
+            id = strmatch(mname,N,True)
+            if id[0] == 1:
+                idi = 1
+            else:
+                idi = id[0] - 1  # beam in
+            ide = [idi, id[-1]]  # [entrance, exit]
+            sdsp = np.mean(Sd[ide])  # m (beam center)
+            suml = np.mean(S[ide])  # m (beam center)
+            dist = suml - seq[ids[id[0]]]['suml']  # m (sequence start to beam center)
+            energy = E[id[0]]  # GeV
+            leng = np.sum(L[id])  # m
+            coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
+            t = T[id[0]].strip()
+            PROF.append({
+                'idf': idf[id[0]],
+                'id': idd[id[0]],
+                'seq': seq[ids[id[0]]]['name'],
+                'area': area[ida[id[0]]]['name'],
+                'parent': area[ida[id[0]]]['parent'],
+                'sector': SECTORS[id[0]].strip(),
+                'ucell': [],
+                'xkey': kxn,
+                'prim': FDN[id[0]],
+                'name': mname,
+                'type': T[id[0]].strip(),
+                'dist': dist,
+                'energy': energy,
+                'leng': leng,
+                'sdsp': sdsp,
+                'suml': suml,
+                **{f'c{k+1}': coorc[k] for k in range(6)}
+            })
+
+            # BSY coordinates
+
+            for k in range(6):
+                PROF[-1][f'c1{k+1}'] = []
+            if cBSY:
+                id = strmatch(mname,N1,True)
+                if len(id) > 0:
+                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
+                    suml1 = np.mean(S1[ide])  # m (beam center)
+                    coorc1 = np.mean(coor1[ide], axis=0)  # m, rad (beam center)
+                    PROF[-1]['suml1'] = suml1
+                    for k in range(6):
+                        PROF[-1][f'c1{k+1}'] = coorc1[k]
+                    if not PROF[-1]['sector']:
+                        PROF[-1]['sector'] = SECTORS1[id[0]].strip()
+                    PROF[-1]['ucell'] = UCELL[id[0]].strip()
+
+            PROF[-1]['suml2'] = []
+            for k in range(6):
+                PROF[-1][f'c2{k+1}'] = []
+            if cUND:
+                id = strmatch(mname,N2,True)
+                if len(id) > 0:
+                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
+                    suml2 = np.mean(S2[ide])  # m (beam center)
+                    coorc2 = np.mean(coor2[ide], axis=0)  # m, rad (beam center)
+                    PROF[-1]['suml2'] = suml2
+                    for k in range(6):
+                        PROF[-1][f'c2{k+1}'] = coorc2[k]
+    elif kwn == 'IMON':
+        name = list(dict.fromkeys([N[i] for i in id]))
+        IMON = []
+        for mname in name:
+            id = strmatch(mname,N,True)
+            if id[0] == 1:
+                idi = 1
+            else:
+                idi = id[0] - 1  # beam in
+            ide = [idi, id[-1]]  # [entrance, exit]
+            sdsp = np.mean(Sd[ide])  # m (beam center)
+            suml = np.mean(S[ide])  # m (beam center)
+            dist = suml - seq[ids[id[0]]]['suml']  # m (sequence start to beam center)
+            energy = E[id[0]]  # GeV
+            leng = np.sum(L[id])  # m
+            coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
+            t = T[id[0]].strip()
+            IMON.append({
+                'idf': idf[id[0]],
+                'id': idd[id[0]],
+                'seq': seq[ids[id[0]]]['name'],
+                'area': area[ida[id[0]]]['name'],
+                'parent': area[ida[id[0]]]['parent'],
+                'sector': SECTORS[id[0]].strip(),
+                'ucell': [],
+                'xkey': kxn,
+                'prim': FDN[id[0]],
+                'name': mname,
+                'type': T[id[0]].strip(),
+                'dist': dist,
+                'energy': energy,
+                'leng': leng,
+                'sdsp': sdsp,
+                'suml': suml,
+                **{f'c{k+1}': coorc[k] for k in range(6)}
+            })
+
+            # BSY coordinates
+
+            for k in range(6):
+                IMON[-1][f'c1{k+1}'] = []
+            if cBSY:
+                id = strmatch(mname,N1,True)
+                if len(id) > 0:
+                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
+                    suml1 = np.mean(S1[ide])  # m (beam center)
+                    coorc1 = np.mean(coor1[ide], axis=0)  # m, rad (beam center)
+                    IMON[-1]['suml1'] = suml1
+                    for k in range(6):
+                        IMON[-1][f'c1{k+1}'] = coorc1[k]
+                    if not IMON[-1]['sector']:
+                        IMON[-1]['sector'] = SECTORS1[id[0]].strip()
+                    IMON[-1]['ucell'] = UCELL[id[0]].strip()
+
+            IMON[-1]['suml2'] = []
+            for k in range(6):
+                IMON[-1][f'c2{k+1}'] = []
+            if cUND:
+                id = strmatch(mname,N2,True)
+                if len(id) > 0:
+                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
+                    suml2 = np.mean(S2[ide])  # m (beam center)
+                    coorc2 = np.mean(coor2[ide], axis=0)  # m, rad (beam center)
+                    IMON[-1]['suml2'] = suml2
+                    for k in range(6):
+                        IMON[-1][f'c2{k+1}'] = coorc2[k]
+    elif kwn == 'BLMO':
+        name = list(dict.fromkeys([N[i] for i in id]))
+        BLMO = []
+        for mname in name:
+            id = strmatch(mname,N,True)
+            if id[0] == 1:
+                idi = 1
+            else:
+                idi = id[0] - 1  # beam in
+            ide = [idi, id[-1]]  # [entrance, exit]
+            sdsp = np.mean(Sd[ide])  # m (beam center)
+            suml = np.mean(S[ide])  # m (beam center)
+            dist = suml - seq[ids[id[0]]]['suml']  # m (sequence start to beam center)
+            energy = E[id[0]]  # GeV
+            leng = np.sum(L[id])  # m
+            coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
+            t = T[id[0]].strip()
+            BLMO.append({
+                'idf': idf[id[0]],
+                'id': idd[id[0]],
+                'seq': seq[ids[id[0]]]['name'],
+                'area': area[ida[id[0]]]['name'],
+                'parent': area[ida[id[0]]]['parent'],
+                'sector': SECTORS[id[0]].strip(),
+                'ucell': [],
+                'xkey': kxn,
+                'prim': FDN[id[0]],
+                'name': mname,
+                'type': T[id[0]].strip(),
+                'dist': dist,
+                'energy': energy,
+                'leng': leng,
+                'sdsp': sdsp,
+                'suml': suml,
+                **{f'c{k+1}': coorc[k] for k in range(6)}
+            })
+
+            # BSY coordinates
+
+            for k in range(6):
+                BLMO[-1][f'c1{k+1}'] = []
+            if cBSY:
+                id = strmatch(mname,N1,True)
+                if len(id) > 0:
+                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
+                    suml1 = np.mean(S1[ide])  # m (beam center)
+                    coorc1 = np.mean(coor1[ide], axis=0)  # m, rad (beam center)
+                    BLMO[-1]['suml1'] = suml1
+                    for k in range(6):
+                        BLMO[-1][f'c1{k+1}'] = coorc1[k]
+                    if not BLMO[-1]['sector']:
+                        BLMO[-1]['sector'] = SECTORS1[id[0]].strip()
+                    BLMO[-1]['ucell'] = UCELL[id[0]].strip()
+
+            BLMO[-1]['suml2'] = []
+            for k in range(6):
+                BLMO[-1][f'c2{k+1}'] = []
+            if cUND:
+                id = strmatch(mname,N2,True)
+                if len(id) > 0:
+                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
+                    suml2 = np.mean(S2[ide])  # m (beam center)
+                    coorc2 = np.mean(coor2[ide], axis=0)  # m, rad (beam center)
+                    BLMO[-1]['suml2'] = suml2
+                    for k in range(6):
+                        BLMO[-1][f'c2{k+1}'] = coorc2[k]
     elif kwn == 'MARK':
         name = [N[i] for i in id]
         MARK = []
@@ -2653,8 +3044,7 @@ with open(outdir+'/'+fname, 'wt') as fid:
         for n in id:
             idk = ip[n][1]
             idn = ip[n][2]
-            #FOO CONTINUE WORK FROM HERE
-            TEMP = globals()[keyw[idk]][idn]
+            TEMP = KEYLIST[idk][idn]
 
             s = [None] * Ncol
 
@@ -2780,7 +3170,19 @@ with open(outdir+'/'+fname, 'wt') as fid:
                     s[34] = TEMP['sname']
                     s[35] = TEMP['sval']
                     s[36] = TEMP['polarity']
-            elif keyw[idk] in [keyw[i] for i in idmisc]:
+            elif keyw[idk] == 'HKIC':
+                s[5] = TEMP['leng']
+            elif keyw[idk] == 'VKIC':
+                s[5] = TEMP['leng']
+            elif keyw[idk] == 'MONI':
+                s[5] = TEMP['leng']
+            elif keyw[idk] == 'WIRE':
+                s[5] = TEMP['leng']
+            elif keyw[idk] == 'PROF':
+                s[5] = TEMP['leng']
+            elif keyw[idk] == 'IMON':
+                s[5] = TEMP['leng']
+            elif keyw[idk] == 'BLMO':
                 s[5] = TEMP['leng']
 
             fid.write(f"{s[0]+1},")
@@ -2811,7 +3213,7 @@ if cBSY:
             for ni in id:
                 idk = ip[ni][1]
                 idn = ip[ni][2]
-                TEMP = globals()[keyw[idk]][idn]
+                TEMP = KEYLIST[idk][idn]
 
                 if 'suml1' not in TEMP:
                     # use suml1 as a proxy to see if element is in BSY
@@ -2936,7 +3338,19 @@ if cBSY:
                         s[34] = TEMP['sname']
                         s[35] = TEMP['sval']
                         s[36] = TEMP['polarity']
-                elif keyw[idk] in [keyw[i] for i in idmisc]:
+                elif keyw[idk] == 'HKIC':
+                    s[5] = TEMP['leng']
+                elif keyw[idk] == 'VKIC':
+                    s[5] = TEMP['leng']
+                elif keyw[idk] == 'MONI':
+                    s[5] = TEMP['leng']
+                elif keyw[idk] == 'WIRE':
+                    s[5] = TEMP['leng']
+                elif keyw[idk] == 'PROF':
+                    s[5] = TEMP['leng']
+                elif keyw[idk] == 'IMON':
+                    s[5] = TEMP['leng']
+                elif keyw[idk] == 'BLMO':
                     s[5] = TEMP['leng']
 
                 fid.write(f'{s[0]+1},')
@@ -2966,7 +3380,8 @@ if cUND:
             for ni in id:
                 idk = ip[ni, 1]
                 idn = ip[ni, 2]
-                TEMP = globals()[keyw[idk]][idn]
+                TEMP = KEYLIST[idk][idn]
+
                 if TEMP['suml2'] is None:
                     continue
 
@@ -3089,7 +3504,19 @@ if cUND:
                         s[34] = TEMP['sname']
                         s[35] = TEMP['sval']
                         s[36] = TEMP['polarity']
-                elif keyw[idk, :] in keyw[idmisc, :]:
+                elif keyw[idk, :] == 'HKIC':
+                    s[5] = TEMP['leng']
+                elif keyw[idk, :] == 'VKIC':
+                    s[5] = TEMP['leng']
+                elif keyw[idk, :] == 'MONI':
+                    s[5] = TEMP['leng']
+                elif keyw[idk, :] == 'WIRE':
+                    s[5] = TEMP['leng']
+                elif keyw[idk, :] == 'PROF':
+                    s[5] = TEMP['leng']
+                elif keyw[idk, :] == 'IMON':
+                    s[5] = TEMP['leng']
+                elif keyw[idk, :] == 'BLMO':
                     s[5] = TEMP['leng']
 
                 fid.write(f'{s[0]+1},')
@@ -3122,7 +3549,7 @@ with open(outdir+'/'+fname, 'wt') as fid:
             if keyw[idk] == 'MARK' or keyw[idk] == 'SROT':
                 continue
             idn = ip[n][2]
-            TEMP = globals()[keyw[idk]][idn]
+            TEMP = KEYLIST[idk][idn]
             if TEMP['prim'] == 'MULT':
                 continue
             TEMPucell = TEMP['ucell']
