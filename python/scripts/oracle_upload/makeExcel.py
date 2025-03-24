@@ -254,6 +254,26 @@ area.append({'name': 'GSPEC', 'beg': 'BEGGSPEC', 'end': 'ENDGSPEC', 'offset': [0
 area.append({'name': 'SPEC', 'beg': 'BEGSPEC', 'end': 'ENDSPEC', 'offset': [0, 0]})
 
 # ------------------------------------------------------------------------------
+# nominal coordinate system
+nominal1 = []
+nominal1.append({"froot0":1})
+nominal1.append({"froot0":2})
+nominal1.append({"froot0":3})
+nominal1.append({"froot0":4})
+nominal1.append({"froot0":5})
+nominal1.append({"froot0":6})
+nominal1.append({"froot0":7})
+nominal1.append({"froot0":8})
+nominal1.append({"froot0":9})
+nominal1.append({"froot0":10})
+nominal1.append({"froot0":11})
+nominal1.append({"froot0":12})
+nominal1.append({"froot0":13})
+nominal1.append({"froot0":14})
+nominal1.append({"froot0":15})
+nominal1.append({"froot0":16})
+
+# ------------------------------------------------------------------------------
 # special coordinate system regions
 other1 = []
 other1.append({"froot0": 1, "froot": "BSY-LCLS2scS", "beg": "BEGSPD_1", "end": "ENDDMPS_2", "offset": np.array([0, 0])})
@@ -2514,6 +2534,7 @@ for kwn,kxn in zip(keyw,keyx):
                 'parent': area[ida[id]]['parent'],
                 'sector': SECTORS[id].strip(),
                 'ucell': [],
+                'leng': None,
                 'xkey': kxn,
                 'prim': FDN[id],
                 'name': mname,
@@ -3034,190 +3055,18 @@ Ncol = head.count(',') + 1
 
 # SYMBOLS text-file (linac coordinates)
 
-fname = f'AD_ACCEL-{optics}.txt'
-with open(outdir+'/'+fname, 'wt') as fid:
-    fid.write(f'{head}\n')
-    fid.write(f'{unit}\n')
-    for nf in range(1, len(froot) + 1):
-        id = [i for i,x in enumerate(ip) if x[0]==nf]
-
-        for n in id:
-            idk = ip[n][1]
-            idn = ip[n][2]
-            TEMP = KEYLIST[idk][idn]
-
-            s = [None] * Ncol
-
-            # common data
-            s[0] = TEMP['id']
-            s[1] = TEMP['parent']
-            s[2] = TEMP['prim']
-            s[3] = TEMP['name']
-            s[4] = TEMP['type']
-            s[15] = TEMP['energy']
-            s[16] = TEMP['suml']
-            s[17] = roundoff(TEMP['c1'], prec)
-            s[18] = roundoff(TEMP['c2'], prec)
-            s[19] = roundoff(TEMP['c3'], prec)
-            s[20] = roundoff(TEMP['c4'], prec)
-            s[21] = roundoff(TEMP['c5'], prec)
-            s[22] = roundoff(TEMP['c6'], prec)
-            s[48] = TEMP['seq']
-            s[49] = TEMP['dist']
-            s[50] = TEMP['xkey']
-            s[51] = TEMP['sdsp']
-
-            # keyword data
-            if keyw[idk] == 'LCAV':
-                s[5] = TEMP['leng']
-                s[23] = TEMP['freq']
-                s[24] = TEMP['ampl']
-                s[25] = TEMP['phase']
-                s[26] = TEMP['grad']
-                s[27] = TEMP['power']
-            elif keyw[idk] == 'SBEN':
-                s[5] = TEMP['leng']
-                s[6] = TEMP['gap']
-                s[7] = TEMP['ang']
-                s[8] = TEMP['k1']
-                s[10] = TEMP['tilt']
-                s[11] = TEMP['e1']
-                s[12] = TEMP['e2']
-                s[28] = TEMP['zleng']
-                s[29] = TEMP['fint']
-                s[30] = TEMP['BL']
-                s[31] = TEMP['B']
-                s[32] = TEMP['GL']
-                s[33] = TEMP['G']
-                s[34] = TEMP['sname']
-                s[35] = TEMP['sval']
-                s[36] = TEMP['polarity']
-                s[37] = roundoff(TEMP['m1'], prec)
-                s[38] = roundoff(TEMP['m2'], prec)
-                s[39] = roundoff(TEMP['m3'], prec)
-                s[40] = roundoff(TEMP['m4'], prec)
-                s[41] = roundoff(TEMP['m5'], prec)
-                s[42] = roundoff(TEMP['m6'], prec)
-            elif keyw[idk] == 'QUAD':
-                s[5] = TEMP['leng']
-                s[6] = TEMP['bore']
-                s[8] = TEMP['k1']
-                s[10] = TEMP['tilt']
-                s[32] = TEMP['GL']
-                s[33] = TEMP['G']
-                s[34] = TEMP['sname']
-                s[35] = TEMP['sval']
-                s[36] = TEMP['polarity']
-                s[37] = roundoff(TEMP['m1'], prec)
-                s[38] = roundoff(TEMP['m2'], prec)
-                s[39] = roundoff(TEMP['m3'], prec)
-                s[40] = roundoff(TEMP['m4'], prec)
-                s[41] = roundoff(TEMP['m5'], prec)
-                s[42] = roundoff(TEMP['m6'], prec)
-            elif keyw[idk] == 'SEXT':
-                s[5] = TEMP['leng']
-                s[6] = TEMP['bore']
-                s[9] = TEMP['k2']
-                s[10] = TEMP['tilt']
-                s[32] = TEMP['GpL']
-                s[33] = TEMP['Gp']
-                s[34] = TEMP['sname']
-                s[35] = TEMP['sval']
-                s[36] = TEMP['polarity']
-            elif keyw[idk] == 'SOLE':
-                s[5] = TEMP['leng']
-                s[6] = TEMP['bore']
-                s[30] = TEMP['BL']
-                s[31] = TEMP['B']
-                s[34] = TEMP['sname']
-                s[35] = TEMP['sval']
-                s[36] = TEMP['polarity']
-                s[43] = TEMP['ks']
-            elif keyw[idk] == 'MATR':
-                s[5] = TEMP['leng']
-                s[44] = TEMP['lambda']
-                s[45] = TEMP['k']
-            elif keyw[idk] == 'RCOL':
-                s[5] = TEMP['leng']
-                s[46] = TEMP['xgap']
-                s[47] = TEMP['ygap']
-            elif keyw[idk] == 'ECOL':
-                s[5] = TEMP['leng']
-                s[46] = TEMP['xbore']
-                s[47] = TEMP['ybore']
-            elif keyw[idk] == 'SROT':
-                s[5] = TEMP['leng']
-                s[7] = TEMP['ang']
-            elif keyw[idk] == 'INST':
-                s[5] = TEMP['leng']
-                s[37] = roundoff(TEMP['m1'], prec)
-                s[38] = roundoff(TEMP['m2'], prec)
-                s[39] = roundoff(TEMP['m3'], prec)
-                s[40] = roundoff(TEMP['m4'], prec)
-                s[41] = roundoff(TEMP['m5'], prec)
-                s[42] = roundoff(TEMP['m6'], prec)
-            elif keyw[idk] == 'MULT':
-                if TEMP['prim'] == 'MULT':
-                    continue
-                s[5] = TEMP['leng']
-                if TEMP['prim'] != 'INST':
-                    s[6] = TEMP['bore']
-                if TEMP['prim'] == 'QUAD':
-                    s[8] = TEMP['k1']
-                    s[10] = TEMP['tilt']
-                    s[32] = TEMP['GL']
-                    s[33] = TEMP['G']
-                    s[34] = TEMP['sname']
-                    s[35] = TEMP['sval']
-                    s[36] = TEMP['polarity']
-            elif keyw[idk] == 'HKIC':
-                s[5] = TEMP['leng']
-            elif keyw[idk] == 'VKIC':
-                s[5] = TEMP['leng']
-            elif keyw[idk] == 'MONI':
-                s[5] = TEMP['leng']
-            elif keyw[idk] == 'WIRE':
-                s[5] = TEMP['leng']
-            elif keyw[idk] == 'PROF':
-                s[5] = TEMP['leng']
-            elif keyw[idk] == 'IMON':
-                s[5] = TEMP['leng']
-            elif keyw[idk] == 'BLMO':
-                s[5] = TEMP['leng']
-
-            fid.write(f"{s[0]+1},")
-            for k in range(1, Ncol):
-                if s[k] is None:
-                    fid.write(",")
-                elif isinstance(s[k], str):
-                    fid.write(f"{s[k]},")
-                else:
-                    fid.write(f"{madval(s[k])},")
-            fid.write("\n")
-
-    
-    fid.write(f'{foot}\n')
-    fid.write(f'{unit}\n')
-
-# SYMBOLS text-file (BSY coordinates)
-
-if cBSY:
-    fname = f'BSY-AD_ACCEL-{optics}.txt'
+def arrange_output(coord_system, system_name, filename):
     with open(outdir+'/'+fname, 'wt') as fid:
         fid.write(f'{head}\n')
         fid.write(f'{unit}\n')
-        for other in other1:
-            nf = other['froot0']
+        for entry in coord_system:
+            nf = entry['froot0']
             id = [i for i,x in enumerate(ip) if x[0]==nf]
 
-            for ni in id:
-                idk = ip[ni][1]
-                idn = ip[ni][2]
+            for n in id:
+                idk = ip[n][1]
+                idn = ip[n][2]
                 TEMP = KEYLIST[idk][idn]
-
-                if 'suml1' not in TEMP:
-                    # use suml1 as a proxy to see if element is in BSY
-                    continue
 
                 s = [None] * Ncol
 
@@ -3225,198 +3074,54 @@ if cBSY:
                 s[0] = TEMP['id']
                 s[1] = TEMP['parent']
                 s[2] = TEMP['prim']
-                s[3] =  TEMP['name']
-                s[4] =  TEMP['type']
+                s[3] = TEMP['name']
+                s[4] = TEMP['type']
+                s[5] = TEMP['leng']
                 s[15] = TEMP['energy']
-                s[16] = TEMP['suml1']
-                s[17] = roundoff(TEMP['c11'], prec)
-                s[18] = roundoff(TEMP['c12'], prec)
-                s[19] = roundoff(TEMP['c13'], prec)
-                s[20] = roundoff(TEMP['c14'], prec)
-                s[21] = roundoff(TEMP['c15'], prec)
-                s[22] = roundoff(TEMP['c16'], prec)
                 s[48] = TEMP['seq']
                 s[49] = TEMP['dist']
                 s[50] = TEMP['xkey']
                 s[51] = TEMP['sdsp']
 
-                # keyword data
+                if system_name == 'NOMINAL':
+                    s[16] = TEMP['suml']
+                    s[17] = roundoff(TEMP['c1'], prec)
+                    s[18] = roundoff(TEMP['c2'], prec)
+                    s[19] = roundoff(TEMP['c3'], prec)
+                    s[20] = roundoff(TEMP['c4'], prec)
+                    s[21] = roundoff(TEMP['c5'], prec)
+                    s[22] = roundoff(TEMP['c6'], prec)
+                elif system_name == 'OTHER1':
+                    if 'suml1' not in TEMP:
+                        # use suml1 as a proxy to see if element is in BSY
+                        continue
+                    s[16] = TEMP['suml1']
+                    s[17] = roundoff(TEMP['c11'], prec)
+                    s[18] = roundoff(TEMP['c12'], prec)
+                    s[19] = roundoff(TEMP['c13'], prec)
+                    s[20] = roundoff(TEMP['c14'], prec)
+                    s[21] = roundoff(TEMP['c15'], prec)
+                    s[22] = roundoff(TEMP['c16'], prec)
+                elif system_name == 'OTHER2':
+                    if 'suml2' not in TEMP:
+                        # use suml2 as a proxy to see if element is in UND
+                        continue
+                    s[16] = TEMP['suml2']
+                    s[17] = roundoff(TEMP['c21'], prec)
+                    s[18] = roundoff(TEMP['c22'], prec)
+                    s[19] = roundoff(TEMP['c23'], prec)
+                    s[20] = roundoff(TEMP['c24'], prec)
+                    s[21] = roundoff(TEMP['c25'], prec)
+                    s[22] = roundoff(TEMP['c26'], prec)
 
+                # keyword data
                 if keyw[idk] == 'LCAV':
-                    s[5]  = TEMP['leng']
                     s[23] = TEMP['freq']
                     s[24] = TEMP['ampl']
                     s[25] = TEMP['phase']
                     s[26] = TEMP['grad']
                     s[27] = TEMP['power']
                 elif keyw[idk] == 'SBEN':
-                    s[5]  = TEMP['leng']
-                    s[6]  = TEMP['gap']
-                    s[7]  = TEMP['ang']
-                    s[8]  = TEMP['k1']
-                    s[10] = TEMP['tilt']
-                    s[11] = TEMP['e1']
-                    s[12] = TEMP['e2']
-                    s[28] = TEMP['zleng']
-                    s[29] = TEMP['fint']
-                    s[30] = TEMP['BL']
-                    s[31] = TEMP['B']
-                    s[32] = TEMP['GL']
-                    s[33] = TEMP['G']
-                    s[34] = TEMP['sname']
-                    s[35] = TEMP['sval']
-                    s[36] = TEMP['polarity']
-                    s[37] = roundoff(TEMP['m11'], prec)
-                    s[38] = roundoff(TEMP['m12'], prec)
-                    s[39] = roundoff(TEMP['m13'], prec)
-                    s[40] = roundoff(TEMP['m14'], prec)
-                    s[41] = roundoff(TEMP['m15'], prec)
-                    s[42] = roundoff(TEMP['m16'], prec)
-                elif keyw[idk] == 'QUAD':
-                    s[5]  = TEMP['leng']
-                    s[6]  = TEMP['bore']
-                    s[8]  = TEMP['k1']
-                    s[10] = TEMP['tilt']
-                    s[32] = TEMP['GL']
-                    s[33] = TEMP['G']
-                    s[34] = TEMP['sname']
-                    s[35] = TEMP['sval']
-                    s[36] = TEMP['polarity']
-                elif keyw[idk] == 'SEXT':
-                    s[5]  = TEMP['leng']
-                    s[6]  = TEMP['bore']
-                    s[9]  = TEMP['k2']
-                    s[10] = TEMP['tilt']
-                    s[32] = TEMP['GpL']
-                    s[33] = TEMP['Gp']
-                    s[34] = TEMP['sname']
-                    s[35] = TEMP['sval']
-                    s[36] = TEMP['polarity']
-                elif keyw[idk] == 'SOLE':
-                    s[5]  = TEMP['leng']
-                    s[6]  = TEMP['bore']
-                    s[30] = TEMP['BL']
-                    s[31] = TEMP['B']
-                    s[34] = TEMP['sname']
-                    s[35] = TEMP['sval']
-                    s[36] = TEMP['polarity']
-                    s[43] = TEMP['ks']
-                elif keyw[idk] == 'MATR':
-                    s[5]  = TEMP['leng']
-                    s[44] = TEMP['lambda']
-                    s[45] = TEMP['k']
-                elif keyw[idk] == 'RCOL':
-                    s[5]  = TEMP['leng']
-                    s[46] = TEMP['xgap']
-                    s[47] = TEMP['ygap']
-                elif keyw[idk] == 'ECOL':
-                    s[5]  = TEMP['leng']
-                    s[46] = TEMP['xbore']
-                    s[47] = TEMP['ybore']
-                elif keyw[idk] == 'SROT':
-                    s[5] = TEMP['leng']
-                    s[7] = TEMP['ang']
-                elif keyw[idk] == 'INST':
-                    s[5] = TEMP['leng']
-                    s[37] = roundoff(TEMP['m11'], prec)
-                    s[38] = roundoff(TEMP['m12'], prec)
-                    s[39] = roundoff(TEMP['m13'], prec)
-                    s[40] = roundoff(TEMP['m14'], prec)
-                    s[41] = roundoff(TEMP['m15'], prec)
-                    s[42] = roundoff(TEMP['m16'], prec)
-                elif keyw[idk] == 'MULT':
-                    if TEMP['prim'] == 'MULT':
-                        continue
-                    s[5] = TEMP['leng']
-                    if TEMP['prim'] != 'INST':
-                        s[6] = TEMP['bore']
-                    if TEMP['prim'] == 'QUAD':
-                        s[8] = TEMP['k1']
-                        s[10] = TEMP['tilt']
-                        s[32] = TEMP['GL']
-                        s[33] = TEMP['G']
-                        s[34] = TEMP['sname']
-                        s[35] = TEMP['sval']
-                        s[36] = TEMP['polarity']
-                elif keyw[idk] == 'HKIC':
-                    s[5] = TEMP['leng']
-                elif keyw[idk] == 'VKIC':
-                    s[5] = TEMP['leng']
-                elif keyw[idk] == 'MONI':
-                    s[5] = TEMP['leng']
-                elif keyw[idk] == 'WIRE':
-                    s[5] = TEMP['leng']
-                elif keyw[idk] == 'PROF':
-                    s[5] = TEMP['leng']
-                elif keyw[idk] == 'IMON':
-                    s[5] = TEMP['leng']
-                elif keyw[idk] == 'BLMO':
-                    s[5] = TEMP['leng']
-
-                fid.write(f'{s[0]+1},')
-                for k in range(1, Ncol):
-                    if s[k] is None:
-                        fid.write(',')
-                    elif isinstance(s[k], str):
-                        fid.write(f'{s[k]},')
-                    else:
-                        fid.write(f'{madval(s[k])},')
-                fid.write("\n")
-
-              
-        fid.write(f'{foot}\n')
-        fid.write(f'{unit}\n')
-
-# SYMBOLS text-files (UND coordinates)
-
-if cUND:
-    fname = f'UND-AD_ACCEL-{optics}.txt'
-    with open(outdir+'/'+fname, 'wt') as fid:
-        fid.write(f'{head}\n')
-        fid.write(f'{unit}\n')
-        for other in other2:
-            nf = other['froot0']
-            id = [i for i,x in enumerate(ip) if x[0]==nf]
-            for ni in id:
-                idk = ip[ni, 1]
-                idn = ip[ni, 2]
-                TEMP = KEYLIST[idk][idn]
-
-                if TEMP['suml2'] is None:
-                    continue
-
-                # common data
-                s = [None] * Ncol
-
-                s[0] = TEMP['id']
-                s[1] = TEMP['parent']
-                s[2] = TEMP['prim']
-                s[3] = TEMP['name']
-                s[4] = TEMP['type']
-                s[15] = TEMP['energy']
-                s[16] = TEMP['suml2']
-                s[17] = roundoff(TEMP['c21'], prec)
-                s[18] = roundoff(TEMP['c22'], prec)
-                s[19] = roundoff(TEMP['c23'], prec)
-                s[20] = roundoff(TEMP['c24'], prec)
-                s[21] = roundoff(TEMP['c25'], prec)
-                s[22] = roundoff(TEMP['c26'], prec)
-                s[48] = TEMP['seq']
-                s[49] = TEMP['dist']
-                s[50] = TEMP['xkey']
-                s[51] = TEMP['sdsp']
-
-                # keyword data
-
-                if keyw[idk, :] == 'LCAV':
-                    s[5] = TEMP['leng']
-                    s[23] = TEMP['freq']
-                    s[24] = TEMP['ampl']
-                    s[25] = TEMP['phase']
-                    s[26] = TEMP['grad']
-                    s[27] = TEMP['power']
-                elif keyw[idk, :] == 'SBEN':
-                    s[5] = TEMP['leng']
                     s[6] = TEMP['gap']
                     s[7] = TEMP['ang']
                     s[8] = TEMP['k1']
@@ -3432,14 +3137,29 @@ if cUND:
                     s[34] = TEMP['sname']
                     s[35] = TEMP['sval']
                     s[36] = TEMP['polarity']
-                    s[37] = roundoff(TEMP['m21'], prec)
-                    s[38] = roundoff(TEMP['m22'], prec)
-                    s[39] = roundoff(TEMP['m23'], prec)
-                    s[40] = roundoff(TEMP['m24'], prec)
-                    s[41] = roundoff(TEMP['m25'], prec)
-                    s[42] = roundoff(TEMP['m26'], prec)
-                elif keyw[idk, :] == 'QUAD':
-                    s[5] = TEMP['leng']
+
+                    if system_name == 'NOMINAL':
+                        s[37] = roundoff(TEMP['m1'], prec)
+                        s[38] = roundoff(TEMP['m2'], prec)
+                        s[39] = roundoff(TEMP['m3'], prec)
+                        s[40] = roundoff(TEMP['m4'], prec)
+                        s[41] = roundoff(TEMP['m5'], prec)
+                        s[42] = roundoff(TEMP['m6'], prec)
+                    elif system_name == 'OTHER1':
+                        s[37] = roundoff(TEMP['m11'], prec)
+                        s[38] = roundoff(TEMP['m12'], prec)
+                        s[39] = roundoff(TEMP['m13'], prec)
+                        s[40] = roundoff(TEMP['m14'], prec)
+                        s[41] = roundoff(TEMP['m15'], prec)
+                        s[42] = roundoff(TEMP['m16'], prec)
+                    elif system_name == 'OTHER2':
+                        s[37] = roundoff(TEMP['m21'], prec)
+                        s[38] = roundoff(TEMP['m22'], prec)
+                        s[39] = roundoff(TEMP['m23'], prec)
+                        s[40] = roundoff(TEMP['m24'], prec)
+                        s[41] = roundoff(TEMP['m25'], prec)
+                        s[42] = roundoff(TEMP['m26'], prec)
+                elif keyw[idk] == 'QUAD':
                     s[6] = TEMP['bore']
                     s[8] = TEMP['k1']
                     s[10] = TEMP['tilt']
@@ -3448,18 +3168,24 @@ if cUND:
                     s[34] = TEMP['sname']
                     s[35] = TEMP['sval']
                     s[36] = TEMP['polarity']
-                elif keyw[idk, :] == 'SEXT':
-                    s[5] = TEMP['leng']
+
+                    if system_name == 'NOMINAL':
+                        s[37] = roundoff(TEMP['m1'], prec)
+                        s[38] = roundoff(TEMP['m2'], prec)
+                        s[39] = roundoff(TEMP['m3'], prec)
+                        s[40] = roundoff(TEMP['m4'], prec)
+                        s[41] = roundoff(TEMP['m5'], prec)
+                        s[42] = roundoff(TEMP['m6'], prec)
+                elif keyw[idk] == 'SEXT':
                     s[6] = TEMP['bore']
-                    s[8] = TEMP['k2']
+                    s[9] = TEMP['k2']
                     s[10] = TEMP['tilt']
                     s[32] = TEMP['GpL']
                     s[33] = TEMP['Gp']
                     s[34] = TEMP['sname']
                     s[35] = TEMP['sval']
                     s[36] = TEMP['polarity']
-                elif keyw[idk, :] == 'SOLE':
-                    s[5] = TEMP['leng']
+                elif keyw[idk] == 'SOLE':
                     s[6] = TEMP['bore']
                     s[30] = TEMP['BL']
                     s[31] = TEMP['B']
@@ -3467,35 +3193,44 @@ if cUND:
                     s[35] = TEMP['sval']
                     s[36] = TEMP['polarity']
                     s[43] = TEMP['ks']
-                elif keyw[idk, :] == 'MATR':
-                    s[5] = TEMP['leng']
-                    s[44] = TEMP['lambda_']
+                elif keyw[idk] == 'MATR':
+                    s[44] = TEMP['lambda']
                     s[45] = TEMP['k']
-                elif keyw[idk, :] == 'RCOL':
-                    s[5] = TEMP['leng']
+                elif keyw[idk] == 'RCOL':
                     s[46] = TEMP['xgap']
                     s[47] = TEMP['ygap']
-                elif keyw[idk, :] == 'ECOL':
-                    s[5] = TEMP['leng']
+                elif keyw[idk] == 'ECOL':
                     s[46] = TEMP['xbore']
                     s[47] = TEMP['ybore']
-                elif keyw[idk, :] == 'SROT':
-                    s[5] = TEMP['leng']
+                elif keyw[idk] == 'SROT':
                     s[7] = TEMP['ang']
-                elif keyw[idk, :] == 'INST':
-                    s[5] = TEMP['leng']
-                    s[37] = roundoff(TEMP['m21'], prec)
-                    s[38] = roundoff(TEMP['m22'], prec)
-                    s[39] = roundoff(TEMP['m23'], prec)
-                    s[40] = roundoff(TEMP['m24'], prec)
-                    s[41] = roundoff(TEMP['m25'], prec)
-                    s[42] = roundoff(TEMP['m26'], prec)
-                elif keyw[idk, :] == 'MULT':
+                elif keyw[idk] == 'INST':
+                    if system_name == 'NOMINAL':
+                        s[37] = roundoff(TEMP['m1'], prec)
+                        s[38] = roundoff(TEMP['m2'], prec)
+                        s[39] = roundoff(TEMP['m3'], prec)
+                        s[40] = roundoff(TEMP['m4'], prec)
+                        s[41] = roundoff(TEMP['m5'], prec)
+                        s[42] = roundoff(TEMP['m6'], prec)
+                    elif system_name == 'OTHER1':
+                        s[37] = roundoff(TEMP['m11'], prec)
+                        s[38] = roundoff(TEMP['m12'], prec)
+                        s[39] = roundoff(TEMP['m13'], prec)
+                        s[40] = roundoff(TEMP['m14'], prec)
+                        s[41] = roundoff(TEMP['m15'], prec)
+                        s[42] = roundoff(TEMP['m16'], prec)
+                    elif system_name == 'OTHER2':
+                        s[37] = roundoff(TEMP['m21'], prec)
+                        s[38] = roundoff(TEMP['m22'], prec)
+                        s[39] = roundoff(TEMP['m23'], prec)
+                        s[40] = roundoff(TEMP['m24'], prec)
+                        s[41] = roundoff(TEMP['m25'], prec)
+                        s[42] = roundoff(TEMP['m26'], prec)
+                elif keyw[idk] == 'MULT':
                     if TEMP['prim'] == 'MULT':
-                        # only write out those multipoles that have a non-MULT database name
                         continue
-                    s[5] = TEMP['leng']
-                    s[6] = TEMP['bore']
+                    if TEMP['prim'] != 'INST':
+                        s[6] = TEMP['bore']
                     if TEMP['prim'] == 'QUAD':
                         s[8] = TEMP['k1']
                         s[10] = TEMP['tilt']
@@ -3504,39 +3239,31 @@ if cUND:
                         s[34] = TEMP['sname']
                         s[35] = TEMP['sval']
                         s[36] = TEMP['polarity']
-                elif keyw[idk, :] == 'HKIC':
-                    s[5] = TEMP['leng']
-                elif keyw[idk, :] == 'VKIC':
-                    s[5] = TEMP['leng']
-                elif keyw[idk, :] == 'MONI':
-                    s[5] = TEMP['leng']
-                elif keyw[idk, :] == 'WIRE':
-                    s[5] = TEMP['leng']
-                elif keyw[idk, :] == 'PROF':
-                    s[5] = TEMP['leng']
-                elif keyw[idk, :] == 'IMON':
-                    s[5] = TEMP['leng']
-                elif keyw[idk, :] == 'BLMO':
-                    s[5] = TEMP['leng']
 
-                fid.write(f'{s[0]+1},')
-                for k in range(1, Ncol - 1):
+                fid.write(f"{s[0]+1},")
+                for k in range(1, Ncol):
                     if s[k] is None:
-                        fid.write(',')
+                        fid.write(",")
                     elif isinstance(s[k], str):
-                        fid.write(f'{s[k]},')
+                        fid.write(f"{s[k]},")
                     else:
-                        fid.write(f'{madval(s[k])},')
-                if isinstance(s[Ncol - 1], str):
-                    fid.write(f'{s[Ncol - 1]}\n')
-                else:
-                    fid.write(f'{madval(s[Ncol - 1])}\n')
+                        fid.write(f"{madval(s[k])},")
+                fid.write("\n")
         fid.write(f'{foot}\n')
         fid.write(f'{unit}\n')
 
+
+fname = f'AD_ACCEL-{optics}.txt'
+arrange_output(nominal1,'NOMINAL',fname)
+if cBSY:
+    fname = f'BSY-AD_ACCEL-{optics}.txt'
+    arrange_output(other1,'OTHER1',fname)
+if cUND:
+    fname = f'UND-AD_ACCEL-{optics}.txt'
+    arrange_output(other2,'OTHER2',fname)
+
 # ------------------------------------------------------------------------------
 # Write extra SYMBOLS txt-file ...
-
 # Element name, area name, undulator cell, sector
 
 fname = f'AD_ACCEL-extra-{optics}.txt'
