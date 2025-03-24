@@ -920,12 +920,6 @@ XALK = [
     'MARK', 'MULT'
 ]
 
-#FOO  #Format of ELES:
-#FOO  # ELES['madk_i'] = [{dict of 1st ele of type madk_i}, {dict of 2nd ele of type madk_i}, ...]
-#FOO  ELES = {}
-#FOO  for key in MADK:
-#FOO    ELES[key] = []
-
 
 #FOO FLAG key*, etc in following block for removal.
 # this prunes from MADK those keyword not in the survey files.
@@ -2662,7 +2656,6 @@ for KEY in KEYLIST:
 # ------------------------------------------------------------------------------
 # Fix magnet coordinates ...
 # ------------------------------------------------------------------------------
-
 def FixMagnetCoords(SBEN, QUAD, INST, K, N, L, P, coor, cflag):
     # Set special magnet coordinates for:
     # - R56 compensation chicanes
@@ -2909,106 +2902,11 @@ if cBSY:
 if cUND:
     SBEN, QUAD, INST = FixMagnetCoords(SBEN, QUAD, INST, K2, N2, L2, P2, coor2, 2)
 
-# ------------------------------------------------------------------------------
-
-# def fix_mark_prim(mark):
-#     # change MARK().prim from MARK to INST for MARKERs that define the beginning
-#     # and end of Areas, Sectors, and Bypass Line Sectors ... per K. Luchini
-#     mname = [m['name'] for m in mark]
-#     idabeg = [i for i, name in enumerate(mname) if name.startswith('BEG')]
-#     idaend = [i for i, name in enumerate(mname) if name.startswith('END')]
-#     idsbeg = [i for i, name in enumerate(mname) if name.startswith('LI') and name.endswith('BEG')]
-#     idsend = [i for i, name in enumerate(mname) if name.startswith('LI') and name.endswith('END')]
-#     idbbeg = [i for i, name in enumerate(mname) if name.startswith('BPN') and name.endswith('BEG')]
-#     idbend = [i for i, name in enumerate(mname) if name.startswith('BPN') and name.endswith('END')]
-#     id = idabeg + idaend + idsbeg + idsend + idbbeg + idbend
-# 
-#     for n in id:
-#         prim = mark[n]['prim']
-#         mark[n]['prim'] = 'INST'
-# 
-#     return mark
-
-
-# change MARK().prim='MARK' to MARK().prim='INST' for selected MARKer elements
-# MARK = fix_mark_prim(MARK)
-
-# ------------------------------------------------------------------------------
-
-# Worksheets
-# ==========
-# one sheet per keyword
-# one sheet for segments
-# one sheet for sequences
-# one sheet for deferred devices
-
-# common worksheet header
-
-head1 = ['MAD #', 'Sequence', 'Area', 'Sector', 'Undulator Cell', 'XAL Keyword',
-         'DB Keyword', 'MAD Name', 'Engineering Type', 'SeqDist', 'Energy']
-head2 = ['Display S', 'SumL (linac)', 'X Coor (linac)', 'Y Coor (linac)',
-         'Z Coor (linac)', 'X Angle (linac)', 'Y Angle (linac)', 'Z Angle (linac)']
-head3 = ['SumL (BSY)', 'X Coor (BSY)', 'Y Coor (BSY)', 'Z Coor (BSY)',
-         'X Angle (BSY)', 'Y Angle (BSY)', 'Z Angle (BSY)']
-head4 = ['SumL (UND)', 'X Coor (UND)', 'Y Coor (UND)', 'Z Coor (UND)',
-         'X Angle (UND)', 'Y Angle (UND)', 'Z Angle (UND)']
-foot1 = head1
-foot2 = ['Display S', 'SumL (linac)', 'MAD Z (linac)', 'MAD X (linac)',
-         'MAD Y (linac)', 'MAD Psi (linac)', 'MAD Phi (linac)', 'MAD Theta (linac)']
-foot3 = ['SumL (BSY)', 'MAD Z (BSY)', 'MAD X (BSY)', 'MAD Y (BSY)',
-         'MAD Psi (BSY)', 'MAD Phi (BSY)', 'MAD Theta (BSY)']
-foot4 = ['SumL (UND)', 'MAD Z (UND)', 'MAD X (UND)', 'MAD Y (UND)',
-         'MAD Psi (UND)', 'MAD Phi (UND)', 'MAD Theta (UND)']
-unit1 = ['', '', '', '', '', '',
-         '', '', '', 'm', 'GeV']
-unit2 = ['m', 'm', 'm', 'm', 'm', 'rad', 'rad', 'rad']
-unit3 = ['m', 'm', 'm', 'm', 'rad', 'rad', 'rad']
-unit4 = ['m', 'm', 'm', 'm', 'rad', 'rad', 'rad']
-
-
 # Precision for coordinate output
 prec = 1e-6
 
-wb = pyxl.Workbook()
-for keywn in keyw:
-    thead2, tfoot2, tunit2 = head2.copy(), foot2.copy(), unit2.copy()
-    thead3, tfoot3, tunit3 = head3.copy(), foot3.copy(), unit3.copy()
-    thead4, tfoot4, tunit4 = head4.copy(), foot4.copy(), unit4.copy()
-    
-    if keywn == 'LCAV':
-        khead = ['Length', 'Frequency', 'Amplitude', 'Phase', 'Gradient', 'Power']
-        kunit = ['m', 'MHz', 'MeV', 'degree', 'MeV/m', 'fraction']
-    elif keywn == 'SBEN':
-        khead = ['Z Length', 'Effective Length', 'Gap', 'Field Integral', 'Tilt',
-                 'Angle', 'E1', 'E2', 'BL', 'B', 'K1', 'GL', 'G',
-                 'XAL Scale Name', 'XAL Scale Value', 'XAL Polarity']
-        kunit = ['m', 'm', 'm', '', 'degree',
-                 'degree', 'degree', 'degree', 'kG-m', 'T', '1/m^2', 'kG', 'T/m',
-                 '', '', '']
-        thead2.extend(['Magnet X Coor (linac)', 'Magnet Y Coor (linac)',
-                       'Magnet Z Coor (linac)', 'Magnet X Angle (linac)',
-                       'Magnet Y Angle (linac)', 'Magnet Z Angle (linac)'])
-        tfoot2.extend(['Magnet MAD Z (linac)', 'Magnet MAD X (linac)',
-                       'Magnet MAD Y (linac)', 'Magnet MAD Psi (linac)',
-                       'Magnet MAD Phi (linac)', 'Magnet MAD Theta (linac)'])
-        tunit2.extend(['m', 'm', 'm', 'rad', 'rad', 'rad'])
-        # Similar extensions for thead3, tfoot3, tunit3, thead4, tfoot4, tunit4
-    # ... (similar cases for other keywords)
-    
-    kfoot = khead.copy()
-    
 # ------------------------------------------------------------------------------
 # Write SYMBOLS txt-files ...
-
-# set up pointers
-
-seqname = [x['name'] for x in seq]
-ip = []
-for n,KEY in enumerate(KEYLIST):
-    for m in range(len(KEY)):
-        id = strmatch(KEY[m]['seq'],seqname,True)[0]
-        ip.append([seq[id]['froot'], n, m, KEY[m]['id']])
-ip = sorted(ip, key=lambda x: (x[0], x[3]))
 
 # SYMBOLS text-file headers and footers
 
@@ -3054,6 +2952,15 @@ unit = (',,,,,m,'
 Ncol = head.count(',') + 1
 
 # SYMBOLS text-file (linac coordinates)
+
+# set up pointers
+# ip is effectively a way to sort the eles on two keys:  file-root and ordinal position in file
+# this effectively preserves the survey file ordering in the txt output files.
+ip = []
+for n,KEY in enumerate(KEYLIST):
+    for m in range(len(KEY)):
+        ip.append([KEY[m]["idf"], n, m, KEY[m]['id']])
+ip = sorted(ip, key=lambda x: (x[0], x[3]))
 
 def arrange_output(coord_system, system_name, filename):
     with open(outdir+'/'+fname, 'wt') as fid:
