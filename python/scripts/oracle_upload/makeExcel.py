@@ -1036,6 +1036,7 @@ coor1 = np.array(coor1)
 coor2 = np.array(coor2)
 seq = np.array(seq)
 A = np.array(A)
+
 for kwn,kxn in zip(keyw,keyx):
     id = strmatch(kwn,K)
     if kwn == 'LCAV':
@@ -2570,28 +2571,29 @@ for kwn,kxn in zip(keyw,keyx):
                     for k in range(6):
                         MARK[-1][f'c2{k+1}'] = coorc2[k]
 
-import scipy.io as sio
 
 def fix_power_fraction(lcav):
+    # fix LCAV power fraction values (for deactivated klystrons)
     #fname = r'V:\LCLS\Users\Woodley\AD_ACCEL\20190613_13JUN19\RDB\RDBdata'
     #fname = f'{script_dir}/RDBdata.mat'
-    fname = f'{script_dir}/LCAVITY_PowerFraction.mat'
-    old = sio.loadmat(fname)['LCAV']
+    #fname = f'{script_dir}/LCAVITY_PowerFraction.mat'
+    #old = sio.loadmat(fname)['LCAV']
+    #with open('power_fractions.dat','w') as f:
+    #  for n,p in zip(name,powr):
+    #      f.write(f'{n[0]}:{p}\n')
     
-    name = [x['name'] for x in old[0]]
-    powr = [float(x['power'][0][0]) for x in old[0]]
+    with open('power_fractions.dat','r') as f:
+        pfs = {
+          key.strip(): float(value.strip())
+          for line in f if line.strip()
+          for key, value in [line.split(':', 1)]
+        	}
     
     for cav in lcav:
         if np.isnan(cav['power']):
-            id = [i for i, x in enumerate(name) if x == cav['name']]
-            if len(id) != 1:
-                raise ValueError(f"{cav['name']} not found!")
-            cav['power'] = powr[id[0]]
+            cav['power'] = pfs[cav['name']]
     
     return lcav
-
-
-# fix LCAV power fraction values (for deactivated klystrons)
 LCAV = fix_power_fraction(LCAV)
 
 KEYLIST = [
@@ -3165,6 +3167,7 @@ with open(outdir+'/'+fname, 'wt') as fid:
 # ------------------------------------------------------------------------------
 
 # save RDBdata
+import scipy.io as sio
 sio.savemat(outdir+'/makeExcel.dump.mat', 
 mdict={
 "K":K,
