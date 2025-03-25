@@ -254,24 +254,24 @@ area.append({'name': 'GSPEC', 'beg': 'BEGGSPEC', 'end': 'ENDGSPEC', 'offset': [0
 area.append({'name': 'SPEC', 'beg': 'BEGSPEC', 'end': 'ENDSPEC', 'offset': [0, 0]})
 
 # ------------------------------------------------------------------------------
-# nominal coordinate system
-nominal1 = []
-nominal1.append({"froot0":1})
-nominal1.append({"froot0":2})
-nominal1.append({"froot0":3})
-nominal1.append({"froot0":4})
-nominal1.append({"froot0":5})
-nominal1.append({"froot0":6})
-nominal1.append({"froot0":7})
-nominal1.append({"froot0":8})
-nominal1.append({"froot0":9})
-nominal1.append({"froot0":10})
-nominal1.append({"froot0":11})
-nominal1.append({"froot0":12})
-nominal1.append({"froot0":13})
-nominal1.append({"froot0":14})
-nominal1.append({"froot0":15})
-nominal1.append({"froot0":16})
+# linac coordinate system
+linac1 = []
+linac1.append({"froot0":1})
+linac1.append({"froot0":2})
+linac1.append({"froot0":3})
+linac1.append({"froot0":4})
+linac1.append({"froot0":5})
+linac1.append({"froot0":6})
+linac1.append({"froot0":7})
+linac1.append({"froot0":8})
+linac1.append({"froot0":9})
+linac1.append({"froot0":10})
+linac1.append({"froot0":11})
+linac1.append({"froot0":12})
+linac1.append({"froot0":13})
+linac1.append({"froot0":14})
+linac1.append({"froot0":15})
+linac1.append({"froot0":16})
 
 # ------------------------------------------------------------------------------
 # special coordinate system regions
@@ -2594,38 +2594,19 @@ def fix_power_fraction(lcav):
 # fix LCAV power fraction values (for deactivated klystrons)
 LCAV = fix_power_fraction(LCAV)
 
-def add_eic(inst):
-    # Add EIC Faraday cup
-    name = [x['name'] for x in inst]
-    id = name.index('CATHODEB')
-    temp = inst[id].copy()
-    temp.id = 59
-    temp.seq = 'CATHODE TO DIAG0'
-    temp.area = 'EIC'
-    temp.name = 'FC00EIC'
-    temp.type = 'Faraday cup'
-    temp.dist = 3.0
-    temp.sdsp = -7.044667
-    temp.suml = 3.0
-    temp.c1 = -7.044667
-    inst.append(temp)
-    return inst
-
-# deferred devices
-
-DEPR = []
-nDEPR = 0
-pname = [x['parent'] for x in area]
-
 KEYLIST = [
     LCAV, SBEN, QUAD, SEXT, SOLE, MATR, RCOL, ECOL, SROT,
     HKIC, VKIC, MONI, WIRE, PROF, IMON, BLMO, INST,
     MARK, MULT
 ]
 
+# deferred devices
+DEPR = []
+nDEPR = 0
+pname = [x['parent'] for x in area]
 for KEY in KEYLIST:
-    for m in range(len(KEY)):
-        t = KEY[m]['type']
+    for ele in KEY:
+        t = ele['type']
         if t and t[0] == '@':
             deplev = int(t[1])
             if len(t) > 2:
@@ -2633,30 +2614,37 @@ for KEY in KEYLIST:
             else:
                 t = ''
             nDEPR += 1
-            id = strmatch(KEY[m]['parent'],pname)
+            id = strmatch(ele['parent'],pname)
             if KEY == 'SBEN':
-                z_use = KEY[m]['m1']
+                z_use = ele['m1']
             else:
-                z_use = KEY[m]['c1']
+                z_use = ele['c1']
             DEPR.append({
-                'id':KEY[m]['id'],
-                'parent':KEY[m]['parent'],
+                'id':ele['id'],
+                'parent':ele['parent'],
                 'ida': id[0]+1,
-                'prim': KEY[m]['prim'],
-                'name': KEY[m]['name'],
+                'prim': ele['prim'],
+                'name': ele['name'],
                 'z': z_use,
                 'type': t,
                 'level': deplev,
                 })
 
-            KEY[m]['parent'] = '*' + KEY[m]['parent']
-            KEY[m]['area'] = '*' + KEY[m]['area']
-            KEY[m]['type'] = t
+            ele['parent'] = '*' + ele['parent']
+            ele['area'] = '*' + ele['area']
+            ele['type'] = t
 
 # ------------------------------------------------------------------------------
 # Fix magnet coordinates ...
 # ------------------------------------------------------------------------------
-def FixMagnetCoords(SBEN, QUAD, INST, K, N, L, P, coor, cflag):
+def rotation_mat(yaw,pitch,roll):
+    O1 = np.array([[np.cos(yaw), 0, np.sin(yaw)], [0, 1, 0], [-np.sin(yaw), 0, np.cos(yaw)]])
+    O2 = np.array([[1, 0, 0], [0, np.cos(pitch), np.sin(pitch)], [0, -np.sin(pitch), np.cos(pitch)]])
+    O3 = np.array([[np.cos(roll), -np.sin(roll), 0], [np.sin(roll), np.cos(roll), 0], [0, 0, 1]])
+    O = O1 @ O2 @ O3
+    return O
+
+def FixMagnetCoords(K, N, L, P, coor, cflag):
     # Set special magnet coordinates for:
     # - R56 compensation chicanes
     # - self-seeding chicanes and Cavity-Based-XFEL (CBXFEL) chicanes
@@ -2675,8 +2663,6 @@ def FixMagnetCoords(SBEN, QUAD, INST, K, N, L, P, coor, cflag):
         n1 = 0  # all chicanes have linac coordinates
     else:
         n1 = 2  # CCDLU and CCDLD chicanes do not have BSY or UND coordinates
-    Xgun = 0.28
-    Ygun = -0.99
     Bname = [i['name'] for i in SBEN]
     Qname = [i['name'] for i in QUAD]
     Iname = [i['name'] for i in INST]
@@ -2694,18 +2680,15 @@ def FixMagnetCoords(SBEN, QUAD, INST, K, N, L, P, coor, cflag):
         idb = intersection(id,jd1)[::2]
         ang = P[idb[0], 0]
         X, Y, Z, yaw, pitch, roll = coor[id, 1], coor[id, 2], coor[id, 0], coor[id1, 5], -coor[id1, 4], coor[id1, 3]
-        O1 = np.array([[np.cos(yaw), 0, np.sin(yaw)], [0, 1, 0], [-np.sin(yaw), 0, np.cos(yaw)]])
-        O2 = np.array([[1, 0, 0], [0, np.cos(pitch), np.sin(pitch)], [0, -np.sin(pitch), np.cos(pitch)]])
-        O3 = np.array([[np.cos(roll), -np.sin(roll), 0], [np.sin(roll), np.cos(roll), 0], [0, 0, 1]])
-        O = O1 @ O2 @ O3
+        O = rotation_mat(yaw,pitch,roll)
         t = np.linalg.solve(O, np.array([X, Y, Z]))  # remove yaw, pitch, and roll
         Xr, Yr, Zr = t[0], t[1], t[2]
         dX = -off * np.sign(ang + np.finfo(float).eps)  # offset in chicane direction
         Xr = Xr[0] + dX * np.ones_like(Xr)
         t = O @ np.array([Xr, Yr, Zr])  # restore roll, pitch, and yaw
         Xm, Ym, Zm = t[0], t[1], t[2]
-        for m in range(len(idb)):
-            name = N[idb[m]].strip()[:-1] #remove last character
+        for idb1 in idb:
+            name = N[idb1].strip()[:-1] #remove last character
             jdb = strmatch(name,[N[i] for i in id])[0]
             jd = strmatch(name,Bname)[0]
             SBEN[jd][f'm{cflag or ""}2'] = Xm[jdb]
@@ -2714,7 +2697,7 @@ def FixMagnetCoords(SBEN, QUAD, INST, K, N, L, P, coor, cflag):
 
     # self-seeding chicane bends and Cavity-Based-XFEL bends
 
-    name = ['BCXHS1', 'BCXHS2', 'BCXHS3', 'BCXHS4',  # HXRSS self-seeding chicane
+    names = ['BCXHS1', 'BCXHS2', 'BCXHS3', 'BCXHS4',  # HXRSS self-seeding chicane
             'BCXSS1', 'BCXSS2', 'BCXSS3', 'BCXSS4',  # SXRSS self-seeding chicane
             'BCXXL1', 'BCXXL2', 'BCXXL3', 'BCXXL4',  # XLEAP-II self-seeding chicane
             'BCXCBX11', 'BCXCBX12', 'BCXCBX13', 'BCXCBX14',  # CBXFEL chicane #1
@@ -2724,31 +2707,30 @@ def FixMagnetCoords(SBEN, QUAD, INST, K, N, L, P, coor, cflag):
                           -5, -12, -12, -5,  # XLEAP-II
                           +1, +9.7, +9.7, +1,  # CBXFEL #1
                           +1, +9.7, +9.7, +1])  # CBXFEL #2
-    for n in range(len(name)):
-        id = strmatch(name[n],Bname,True)[0]
+    for name,dX1 in zip(names,dX):
+        id = strmatch(name,Bname,True)[0]
         X0 = SBEN[id][f'm{cflag or ""}2']
-        X = X0 + dX[n]
+        X = X0 + dX1
         SBEN[id][f'm{cflag or ""}2'] = X
 
     # safety dump bends (permanent magnet dipoles)
 
-    name = ['BXPM1B', 'BXPM1', 'BXPM2']
-    for n in range(len(name)):
-        if n == 0:  # SXR
-            Xm = 1.25
-        else:  # HXR
-            Xm = -1.215
-        id1 = strmatch(f"{name[n]}1",N)[0] #center
+    names = ['BXPM1B', 'BXPM1', 'BXPM2']
+    Xm = [1.25, -1.215, -1.215]
+    for name,Xm1 in zip(names,Xm):
+        id1 = strmatch(f"{name}1",N)[0] #center
         id0 = id1 - 1  # entrance
-        if n != 2:
-            pitch = -coor[id0, 4]
-            z0 = coor[id0, 0]
-            y0 = coor[id0, 2]
+        # FOO For BXPM2, pitch, z0, and y0 are not well defined.
+        # Flag for investigation
+        if name != 'BXPM2':
+          pitch = -coor[id0, 4]
+          z0 = coor[id0, 0]
+          y0 = coor[id0, 2]
         z1 = coor[id1, 0]
         Ym = y0 + np.tan(pitch) * (z1 - z0)
         yaw = 0
-        id = strmatch(name[n],Bname,True)[0]
-        SBEN[id][f'm{cflag or ""}2'] = Xm
+        id = strmatch(name,Bname,True)[0]
+        SBEN[id][f'm{cflag or ""}2'] = Xm1
         SBEN[id][f'm{cflag or ""}3'] = Ym
         SBEN[id][f'm{cflag or ""}6'] = yaw
         SBEN[id][f'm{cflag or ""}5'] = -pitch
@@ -2756,23 +2738,20 @@ def FixMagnetCoords(SBEN, QUAD, INST, K, N, L, P, coor, cflag):
     # Lambertson septa
     # coor=[z,x,y,roll,-pitch,yaw] (SYMBOLS coordinates)
 
-    name = ['BLRDG0', 'BLXSPS', 'BLXSPH', 'BLRDAS', 'BLRCUS']
+    names = ['BLRDG0', 'BLXSPS', 'BLXSPH', 'BLRDAS', 'BLRCUS']
     r = 0.010  # radius of field-free channel
     off = -0.004  # beam is 6 mm from top of field-free channel
-    for n in range(len(name)):
+    for n,name in enumerate(names):
         if n <= 1 and cflag is not None:
             continue  # no BSY or UND coords for BLRDG0 or BLRL3X
-        id = strmatch(name[n],Bname,True)[0]
+        id = strmatch(name,Bname,True)[0]
         Xm0 = SBEN[id][f'm{cflag or ""}2']
         Ym0 = SBEN[id][f'm{cflag or ""}3']
         Zm0 = SBEN[id][f'm{cflag or ""}1']
         yaw = SBEN[id][f'm{cflag or ""}6']
         pitch = -SBEN[id][f'm{cflag or ""}5']
         roll = (np.pi / 180) * SBEN[id]['tilt']
-        O1 = np.array([[np.cos(yaw), 0, np.sin(yaw)], [0, 1, 0], [-np.sin(yaw), 0, np.cos(yaw)]])
-        O2 = np.array([[1, 0, 0], [0, np.cos(pitch), np.sin(pitch)], [0, -np.sin(pitch), np.cos(pitch)]])
-        O3 = np.array([[np.cos(roll), -np.sin(roll), 0], [np.sin(roll), np.cos(roll), 0], [0, 0, 1]])
-        O = O1 @ O2 @ O3
+        O = rotation_mat(yaw,pitch,roll)
         t = np.linalg.solve(O, np.array([Xm0, Ym0, Zm0]))  # remove roll, pitch, and yaw
         Xr, Yr, Zr = t[0], t[1], t[2]
         Yr = Yr + off  # apply vertical offset
@@ -2849,10 +2828,7 @@ def FixMagnetCoords(SBEN, QUAD, INST, K, N, L, P, coor, cflag):
             yaw = QUAD[id]['c6']
             pitch = -QUAD[id]['c5']
             roll = QUAD[id]['c4']
-            O1 = np.array([[np.cos(yaw), 0, np.sin(yaw)], [0, 1, 0], [-np.sin(yaw), 0, np.cos(yaw)]])
-            O2 = np.array([[1, 0, 0], [0, np.cos(pitch), np.sin(pitch)], [0, -np.sin(pitch), np.cos(pitch)]])
-            O3 = np.array([[np.cos(roll), -np.sin(roll), 0], [np.sin(roll), np.cos(roll), 0], [0, 0, 1]])
-            O = O1 @ O2 @ O3
+            O = rotation_mat(yaw,pitch,roll)
             t = np.linalg.solve(O, np.array([Xm0, Ym0, Zm0]))  # remove roll, pitch, and yaw
             Xr, Yr, Zr = t[0], t[1], t[2]
             Yr = Yr + off  # apply vertical offset
@@ -2878,10 +2854,7 @@ def FixMagnetCoords(SBEN, QUAD, INST, K, N, L, P, coor, cflag):
         yaw = INST[id][f'c{cflag or ""}6']
         pitch = -INST[id][f'c{cflag or ""}5']
         roll = INST[id][f'c{cflag or ""}4']
-        O1 = np.array([[np.cos(yaw), 0, np.sin(yaw)], [0, 1, 0], [-np.sin(yaw), 0, np.cos(yaw)]])
-        O2 = np.array([[1, 0, 0], [0, np.cos(pitch), np.sin(pitch)], [0, -np.sin(pitch), np.cos(pitch)]])
-        O3 = np.array([[np.cos(roll), -np.sin(roll), 0], [np.sin(roll), np.cos(roll), 0], [0, 0, 1]])
-        O = O1 @ O2 @ O3
+        O = rotation_mat(yaw,pitch,roll)
         t = np.linalg.solve(O, np.array([X0, Y0, Z0]))  # remove roll, pitch, and yaw
         Xr, Yr, Zr = t[0], t[1], t[2]
         Xr = Xr + dX[n]  # apply horizontal offset
@@ -2894,13 +2867,11 @@ def FixMagnetCoords(SBEN, QUAD, INST, K, N, L, P, coor, cflag):
         INST[id][f'm{cflag or ""}5'] = -pitch
         INST[id][f'm{cflag or ""}4'] = roll
 
-    return SBEN, QUAD,INST
-
-SBEN, QUAD, INST = FixMagnetCoords(SBEN, QUAD, INST, K, N, L, P, coor, None)
+FixMagnetCoords(K, N, L, P, coor, None)
 if cBSY:
-    SBEN, QUAD, INST = FixMagnetCoords(SBEN, QUAD, INST, K1, N1, L1, P1, coor1, 1)
+    FixMagnetCoords(K1, N1, L1, P1, coor1, 1)
 if cUND:
-    SBEN, QUAD, INST = FixMagnetCoords(SBEN, QUAD, INST, K2, N2, L2, P2, coor2, 2)
+    FixMagnetCoords(K2, N2, L2, P2, coor2, 2)
 
 # Precision for coordinate output
 prec = 1e-6
@@ -2958,8 +2929,8 @@ Ncol = head.count(',') + 1
 # this effectively preserves the survey file ordering in the txt output files.
 ip = []
 for n,KEY in enumerate(KEYLIST):
-    for m in range(len(KEY)):
-        ip.append([KEY[m]["idf"], n, m, KEY[m]['id']])
+    for m,ele in enumerate(KEY):
+        ip.append([ele['idf'], n, m, ele['id']])
 ip = sorted(ip, key=lambda x: (x[0], x[3]))
 
 def arrange_output(coord_system, system_name, filename):
@@ -2990,7 +2961,7 @@ def arrange_output(coord_system, system_name, filename):
                 s[50] = TEMP['xkey']
                 s[51] = TEMP['sdsp']
 
-                if system_name == 'NOMINAL':
+                if system_name == 'LINAC':
                     s[16] = TEMP['suml']
                     s[17] = roundoff(TEMP['c1'], prec)
                     s[18] = roundoff(TEMP['c2'], prec)
@@ -3045,7 +3016,7 @@ def arrange_output(coord_system, system_name, filename):
                     s[35] = TEMP['sval']
                     s[36] = TEMP['polarity']
 
-                    if system_name == 'NOMINAL':
+                    if system_name == 'LINAC':
                         s[37] = roundoff(TEMP['m1'], prec)
                         s[38] = roundoff(TEMP['m2'], prec)
                         s[39] = roundoff(TEMP['m3'], prec)
@@ -3076,7 +3047,7 @@ def arrange_output(coord_system, system_name, filename):
                     s[35] = TEMP['sval']
                     s[36] = TEMP['polarity']
 
-                    if system_name == 'NOMINAL':
+                    if system_name == 'LINAC':
                         s[37] = roundoff(TEMP['m1'], prec)
                         s[38] = roundoff(TEMP['m2'], prec)
                         s[39] = roundoff(TEMP['m3'], prec)
@@ -3112,7 +3083,7 @@ def arrange_output(coord_system, system_name, filename):
                 elif keyw[idk] == 'SROT':
                     s[7] = TEMP['ang']
                 elif keyw[idk] == 'INST':
-                    if system_name == 'NOMINAL':
+                    if system_name == 'LINAC':
                         s[37] = roundoff(TEMP['m1'], prec)
                         s[38] = roundoff(TEMP['m2'], prec)
                         s[39] = roundoff(TEMP['m3'], prec)
@@ -3161,7 +3132,7 @@ def arrange_output(coord_system, system_name, filename):
 
 
 fname = f'AD_ACCEL-{optics}.txt'
-arrange_output(nominal1,'NOMINAL',fname)
+arrange_output(linac1,'LINAC',fname)
 if cBSY:
     fname = f'BSY-AD_ACCEL-{optics}.txt'
     arrange_output(other1,'OTHER1',fname)
