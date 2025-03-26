@@ -296,71 +296,49 @@ cBSY=len(other1)>0
 cUND=len(other2)>0
 
 from xtffs2mat import xtffs2mat
+from xtffs2mat_obj import xtffs2mat_obj
 
 # ------------------------------------------------------------------------------
 # read the MAD output files
-stepnum += 1
-print('   {}) Read MAD output files ...'.format(stepnum))
+# ------------------------------------------------------------------------------
 
-K, N, L, P, A, T, E, FDN, coor, S = [], [], [], [], [], [], [], [], [], []
 idf, ids, idd = [], [], []  # idf: which MAD output file an element came from
                             # ids: which XAL sequence an element belongs to
                             # idd: ordinal position in MAD output file
-nf = 0
-for n in range(len(seq)):
-    if seq[n]['froot'] != nf:
-        nf = seq[n]['froot']
-        fname = '{}_survey.tape'.format(froot[nf-1])
-        print('Opening file {}'.format(fname))
-        titl, tK, tN, tL, tP, tA, tT, tE, tFDN, tcoor, tS = xtffs2mat(fname)
 
-    id1 = tN.index(seq[n]['beg']) + seq[n]['offset'][0]
-    id2 = tN.index(seq[n]['end']) + seq[n]['offset'][1]
-    id_range = slice(id1, id2 + 1)
-    
-    K.extend(tK[id_range])
-    len_id = len(tK[id_range])
-    N.extend(tN[id_range])
-    L.extend(tL[id_range])
-    P.extend(tP[id_range])
-    A.extend(tA[id_range])
-    T.extend(tT[id_range])
-    E.extend(tE[id_range])
-    FDN.extend(tFDN[id_range])
-    coor.extend(tcoor[id_range])
-    S.extend(tS[id_range])
-    idf.extend([nf] * len_id)
-    ids.extend([n] * len_id)
-    idd.extend(list(range(id1,id2+1)))
+raw_file_data = []
+for file_root in froot:
+    print(f'Opening file {fname}')
+    fname = '{}_survey.tape'.format(froot[nf-1])
+    raw_file_data.append(xtffs2mat_obj(fname))
 
-Nelem, Nc = len(N), len(N[0])
+seq_data = []
+for n,seq1 in enumerate(seq):
+    raw_data = raw_file_data[seq1['froot']]
 
-# set "display S" to linac Z-coordinate
-Sd = [x[2] for x in coor]
+    id1 = raw_data.N.index(seq1['beg']) + seq1['offset'][0]
+    id2 = raw_data.N.index(seq1['end']) + seq1['offset'][1]
+
+    seq_data.append(raw_data(slice(id1,id2+1)))
 
 # get BSY coordinates
 K1, N1, L1, P1, S1, coor1, idf1, FDN1 = [], [], [], [], [], [], [], []
 
 if cBSY:
-    for n in range(len(other1)):
+    raw_file_data = []
+    for file_root in froot:
+        print(f'Opening file {fname}')
         fname = f"{other1[n]['froot']}_survey.tape"
-        print('Opening file {}'.format(fname))
-        titl, tK, tN, tL, tP, tA, tT, tE, tFDN, tcoor, tS = xtffs2mat(fname)
+        raw_file_data.append(xtffs2mat_obj(fname))
 
-        id1 = strmatch(other1[n]['beg'],tN,True)[0] + other1[n]['offset'][0]
-        id2 = strmatch(other1[n]['end'],tN,True)[0] + other1[n]['offset'][1]
-        id_range = slice(id1, id2 + 1)
-        
-        K1.extend(tK[id_range])
-        len_id = len(tK[id_range])
-        N1.extend(tN[id_range])
-        L1.extend(tL[id_range])
-        P1.extend(tP[id_range])
-        S1.extend(tS[id_range])
-        coor1.extend(tcoor[id_range])
-        idf1.extend([other1[n]['froot0']] * len_id)
-        FDN1.extend(tFDN[id_range])
+    bsy_seq_data = []
+    for n,seq1 in enumerate(other1):
+        raw_data = raw_file_data[seq1['froot']]
 
+        id1 = raw_data.N.index(other1['beg']) + other1['offset'][0]
+        id2 = raw_data.N.index(other1['end']) + other1['offset'][1]
+
+        seq_data.append(raw_data(slice(id1,id2+1)))
 
 # get UND coordinates
 K2, N2, L2, P2, S2, coor2, idf2, FDN2 = [], [], [], [], [], [], [], []
@@ -542,6 +520,7 @@ for n in range(len(vfile)):
     with open(fname, 'r') as f:
         C.extend(f.read().split())
 
+#Nelem, Nc = len(N), len(N[0])
 P2 = np.zeros((Nelem, 2))
 
 idb = [i for i,x in enumerate(K) if x == 'SBEN']
