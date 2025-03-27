@@ -11,6 +11,12 @@ from pathlib import Path
 # utility functions.  To be moved to module
 #------------------------------------------
 
+def safe_index(lst, target):
+    for i, val in enumerate(lst):
+        if val == target:
+            return i
+    return None
+
 def intersection(x,y):
     return [v for v in x if v in y]
 
@@ -178,80 +184,80 @@ seq.append({ 'froot': 15, 'name': 'BX01 TO 135-MEV SPECT DUMP', 'beg': 'BEGSPEC'
 # machine areas
 # scS
 area = []
-area.append({'name': 'GUNB', 'beg': 'BEGGUNB', 'end': 'ENDGUNB', 'offset': [0, 0]})
-area.append({'name': 'L0B', 'beg': 'BEGL0B', 'end': 'ENDL0B', 'offset': [0, 0]})
-area.append({'name': 'HTR', 'beg': 'BEGHTR', 'end': 'ENDHTR', 'offset': [0, 0]})
-area.append({'name': 'COL0', 'beg': 'BEGCOL0', 'end': 'ENDCOL0', 'offset': [0, 0]})
-area.append({'name': 'L1B', 'beg': 'BEGL1B', 'end': 'ENDL1B', 'offset': [0, 0]})
-area.append({'name': 'BC1B', 'beg': 'BEGBC1B', 'end': 'ENDBC1B', 'offset': [0, 0]})
-area.append({'name': 'COL1', 'beg': 'BEGCOL1', 'end': 'ENDCOL1', 'offset': [0, 0]})
-area.append({'name': 'L2B', 'beg': 'BEGL2B', 'end': 'ENDL2B', 'offset': [0, 0]})
-area.append({'name': 'BC2B', 'beg': 'BEGBC2B', 'end': 'ENDBC2B', 'offset': [0, 0]})
-area.append({'name': 'EMIT2', 'beg': 'BEGEMIT2', 'end': 'ENDEMIT2', 'offset': [0, 0]})
-area.append({'name': 'L3B', 'beg': 'BEGL3B', 'end': 'ENDL3B', 'offset': [0, 0]})
-area.append({'name': 'EXT', 'beg': 'BEGEXT', 'end': 'ENDEXT', 'offset': [0, 0]})
-area.append({'name': 'DOG', 'beg': 'BEGDOG', 'end': 'ENDDOG', 'offset': [0, 0]})
-area.append({'name': 'BYP', 'beg': 'BEGBYP', 'end': 'ENDBYP', 'offset': [0, 0]})
-area.append({'name': 'SPD_1', 'beg': 'BEGSPD_1', 'end': 'ENDSPD_1', 'offset': [0, 0]})
-area.append({'name': 'SPS', 'beg': 'BEGSPS', 'end': 'ENDSPS', 'offset': [0, 0]})
-area.append({'name': 'SLTS', 'beg': 'BEGSLTS', 'end': 'ENDSLTS', 'offset': [0, 0]})
-area.append({'name': 'BSYS', 'beg': 'BEGBSYS', 'end': 'ENDBSYS', 'offset': [0, 0]})
-area.append({'name': 'LTUS', 'beg': 'BEGLTUS', 'end': 'ENDLTUS', 'offset': [0, 0]})
-area.append({'name': 'UNDS', 'beg': 'BEGUNDS', 'end': 'ENDUNDS', 'offset': [0, 0]})
-area.append({'name': 'DMPS_1', 'beg': 'BEGDMPS_1', 'end': 'ENDDMPS_1', 'offset': [0, 0]})
-area.append({'name': 'DMPS_2', 'beg': 'BEGDMPS_2', 'end': 'ENDDMPS_2', 'offset': [0, 0]})
+area.append({'name': 'GUNB', 'beg': 'BEGGUNB', 'end': 'ENDGUNB', 'offset': [0, 0], 'parent': 'GUNB'})
+area.append({'name': 'L0B', 'beg': 'BEGL0B', 'end': 'ENDL0B', 'offset': [0, 0], 'parent': 'L0B'})
+area.append({'name': 'HTR', 'beg': 'BEGHTR', 'end': 'ENDHTR', 'offset': [0, 0], 'parent': 'HTR'})
+area.append({'name': 'COL0', 'beg': 'BEGCOL0', 'end': 'ENDCOL0', 'offset': [0, 0], 'parent': 'COL0'})
+area.append({'name': 'L1B', 'beg': 'BEGL1B', 'end': 'ENDL1B', 'offset': [0, 0], 'parent': 'L1B'})
+area.append({'name': 'BC1B', 'beg': 'BEGBC1B', 'end': 'ENDBC1B', 'offset': [0, 0], 'parent': 'BC1B'})
+area.append({'name': 'COL1', 'beg': 'BEGCOL1', 'end': 'ENDCOL1', 'offset': [0, 0], 'parent': 'COL1'})
+area.append({'name': 'L2B', 'beg': 'BEGL2B', 'end': 'ENDL2B', 'offset': [0, 0], 'parent': 'L2B'})
+area.append({'name': 'BC2B', 'beg': 'BEGBC2B', 'end': 'ENDBC2B', 'offset': [0, 0], 'parent': 'BC2B'})
+area.append({'name': 'EMIT2', 'beg': 'BEGEMIT2', 'end': 'ENDEMIT2', 'offset': [0, 0], 'parent': 'EMIT2'})
+area.append({'name': 'L3B', 'beg': 'BEGL3B', 'end': 'ENDL3B', 'offset': [0, 0], 'parent': 'L3B'})
+area.append({'name': 'EXT', 'beg': 'BEGEXT', 'end': 'ENDEXT', 'offset': [0, 0], 'parent': 'EXT'})
+area.append({'name': 'DOG', 'beg': 'BEGDOG', 'end': 'ENDDOG', 'offset': [0, 0], 'parent': 'DOG'})
+area.append({'name': 'BYP', 'beg': 'BEGBYP', 'end': 'ENDBYP', 'offset': [0, 0], 'parent': 'BYP'})
+area.append({'name': 'SPD_1', 'beg': 'BEGSPD_1', 'end': 'ENDSPD_1', 'offset': [0, 0], 'parent': 'SPD'})
+area.append({'name': 'SPS', 'beg': 'BEGSPS', 'end': 'ENDSPS', 'offset': [0, 0], 'parent': 'SPS'})
+area.append({'name': 'SLTS', 'beg': 'BEGSLTS', 'end': 'ENDSLTS', 'offset': [0, 0], 'parent': 'SLTS'})
+area.append({'name': 'BSYS', 'beg': 'BEGBSYS', 'end': 'ENDBSYS', 'offset': [0, 0], 'parent': 'BSYS'})
+area.append({'name': 'LTUS', 'beg': 'BEGLTUS', 'end': 'ENDLTUS', 'offset': [0, 0], 'parent': 'LTUS'})
+area.append({'name': 'UNDS', 'beg': 'BEGUNDS', 'end': 'ENDUNDS', 'offset': [0, 0], 'parent': 'UNDS'})
+area.append({'name': 'DMPS_1', 'beg': 'BEGDMPS_1', 'end': 'ENDDMPS_1', 'offset': [0, 0], 'parent': 'DMPS'})
+area.append({'name': 'DMPS_2', 'beg': 'BEGDMPS_2', 'end': 'ENDDMPS_2', 'offset': [0, 0], 'parent': 'DMPS'})
 # scSS
-area.append({'name': 'SFTS_1', 'beg': 'BEGSFTS_1', 'end': 'ENDSFTS_1', 'offset': [0, 0]})
-area.append({'name': 'SFTS_2', 'beg': 'BEGSFTS_2', 'end': 'ENDSFTS_2', 'offset': [0, 0]})
+area.append({'name': 'SFTS_1', 'beg': 'BEGSFTS_1', 'end': 'ENDSFTS_1', 'offset': [0, 0], 'parent': 'SFTS'})
+area.append({'name': 'SFTS_2', 'beg': 'BEGSFTS_2', 'end': 'ENDSFTS_2', 'offset': [0, 0], 'parent': 'SFTS'})
 # scSXTES/scS2_X/scSTXI/scSTMO
-area.append({'name': 'SXTES_1', 'beg': 'BEGSXTES_1', 'end': 'ENDSXTES_1', 'offset': [0, 0]})  # common line
-area.append({'name': 'SXTES_2', 'beg': 'BEGSXTES_2', 'end': 'ENDSXTES_2', 'offset': [0, 0]})  # "2.X" line
-area.append({'name': 'SXTES_3', 'beg': 'BEGSXTES_3', 'end': 'ENDSXTES_3', 'offset': [0, 0]})  # TXI line
-area.append({'name': 'SXTES_4', 'beg': 'BEGSXTES_4', 'end': 'ENDSXTES_4', 'offset': [0, 0]})  # TMO line
+area.append({'name': 'SXTES_1', 'beg': 'BEGSXTES_1', 'end': 'ENDSXTES_1', 'offset': [0, 0], 'parent': 'SXTES'})  # common line
+area.append({'name': 'SXTES_2', 'beg': 'BEGSXTES_2', 'end': 'ENDSXTES_2', 'offset': [0, 0], 'parent': 'SXTES'})  # "2.X" line
+area.append({'name': 'SXTES_3', 'beg': 'BEGSXTES_3', 'end': 'ENDSXTES_3', 'offset': [0, 0], 'parent': 'SXTES'})  # TXI line
+area.append({'name': 'SXTES_4', 'beg': 'BEGSXTES_4', 'end': 'ENDSXTES_4', 'offset': [0, 0], 'parent': 'SXTES'})  # TMO line
 # scH
-area.append({'name': 'SPH', 'beg': 'BEGSPH', 'end': 'ENDSPH', 'offset': [0, 0]})
-area.append({'name': 'SLTH', 'beg': 'BEGSLTH', 'end': 'ENDSLTH', 'offset': [0, 0]})
+area.append({'name': 'SPH', 'beg': 'BEGSPH', 'end': 'ENDSPH', 'offset': [0, 0], 'parent': 'SPH'})
+area.append({'name': 'SLTH', 'beg': 'BEGSLTH', 'end': 'ENDSLTH', 'offset': [0, 0], 'parent': 'SLTH'})
 # scD
-area.append({'name': 'SPD_2', 'beg': 'BEGSPD_2', 'end': 'ENDSPD_2', 'offset': [0, 0]})
-area.append({'name': 'SPD_3', 'beg': 'BEGSPD_3', 'end': 'ENDSPD_3', 'offset': [0, 0]})
-area.append({'name': 'SLTD', 'beg': 'BEGSLTD', 'end': 'ENDSLTD', 'offset': [0, 0]})
+area.append({'name': 'SPD_2', 'beg': 'BEGSPD_2', 'end': 'ENDSPD_2', 'offset': [0, 0], 'parent': 'SPD'})
+area.append({'name': 'SPD_3', 'beg': 'BEGSPD_3', 'end': 'ENDSPD_3', 'offset': [0, 0], 'parent': 'SPD'})
+area.append({'name': 'SLTD', 'beg': 'BEGSLTD', 'end': 'ENDSLTD', 'offset': [0, 0], 'parent': 'SLTD'})
 # DIAG0
-area.append({'name': 'DIAG0', 'beg': 'BEGDIAG0', 'end': 'ENDDIAG0', 'offset': [0, 0]})
+area.append({'name': 'DIAG0', 'beg': 'BEGDIAG0', 'end': 'ENDDIAG0', 'offset': [0, 0], 'parent': 'DIAG0'})
 # DASEL
-area.append({'name': 'DASEL', 'beg': 'BEGDASEL', 'end': 'ENDDASEL', 'offset': [0, 0]})
-area.append({'name': 'ALINE', 'beg': 'BEGBSYA_2', 'end': 'ENDBSYA_2', 'offset': [0, 0]})
+area.append({'name': 'DASEL', 'beg': 'BEGDASEL', 'end': 'ENDDASEL', 'offset': [0, 0], 'parent': 'DASEL'})
+area.append({'name': 'ALINE', 'beg': 'BEGBSYA_2', 'end': 'ENDBSYA_2', 'offset': [0, 0], 'parent': 'ALINE'})
 # cuH
-area.append({'name': 'GUN', 'beg': 'BEGGUN', 'end': 'ENDGUN', 'offset': [0, 0]})
-area.append({'name': 'L0', 'beg': 'BEGL0', 'end': 'ENDL0', 'offset': [0, 0]})
-area.append({'name': 'DL1_1', 'beg': 'BEGDL1_1', 'end': 'ENDDL1_1', 'offset': [0, 0]})
-area.append({'name': 'DL1_2', 'beg': 'BEGDL1_2', 'end': 'ENDDL1_2', 'offset': [0, 0]})
-area.append({'name': 'L1', 'beg': 'BEGL1', 'end': 'ENDL1', 'offset': [0, 0]})
-area.append({'name': 'BC1', 'beg': 'BEGBC1', 'end': 'ENDBC1', 'offset': [0, 0]})
-area.append({'name': 'L2', 'beg': 'BEGL2', 'end': 'ENDL2', 'offset': [0, 0]})
-area.append({'name': 'BC2', 'beg': 'BEGBC2', 'end': 'ENDBC2', 'offset': [0, 0]})
-area.append({'name': 'L3', 'beg': 'BEGL3', 'end': 'ENDL3', 'offset': [0, 0]})
-area.append({'name': 'CLTH_0', 'beg': 'BEGCLTH_0', 'end': 'ENDCLTH_0', 'offset': [0, 0]})
-area.append({'name': 'CLTH_1', 'beg': 'BEGCLTH_1', 'end': 'ENDCLTH_1', 'offset': [0, 0]})
-area.append({'name': 'CLTH_2', 'beg': 'BEGCLTH_2', 'end': 'ENDCLTH_2', 'offset': [0, 0]})
-area.append({'name': 'BSYH_1', 'beg': 'BEGBSYH_1', 'end': 'ENDBSYH_1', 'offset': [0, 0]})
-area.append({'name': 'BSYH_2', 'beg': 'BEGBSYH_2', 'end': 'ENDBSYH_2', 'offset': [0, 0]})
-area.append({'name': 'LTUH', 'beg': 'BEGLTUH', 'end': 'ENDLTUH', 'offset': [0, 0]})
-area.append({'name': 'UNDH', 'beg': 'BEGUNDH', 'end': 'ENDUNDH', 'offset': [0, 0]})
-area.append({'name': 'DMPH_1', 'beg': 'BEGDMPH_1', 'end': 'ENDDMPH_1', 'offset': [0, 0]})
-area.append({'name': 'DMPH_2', 'beg': 'BEGDMPH_2', 'end': 'ENDDMPH_2', 'offset': [0, 0]})
+area.append({'name': 'GUN', 'beg': 'BEGGUN', 'end': 'ENDGUN', 'offset': [0, 0], 'parent': 'GUN'})
+area.append({'name': 'L0', 'beg': 'BEGL0', 'end': 'ENDL0', 'offset': [0, 0], 'parent': 'L0'})
+area.append({'name': 'DL1_1', 'beg': 'BEGDL1_1', 'end': 'ENDDL1_1', 'offset': [0, 0], 'parent': 'DL1'})
+area.append({'name': 'DL1_2', 'beg': 'BEGDL1_2', 'end': 'ENDDL1_2', 'offset': [0, 0], 'parent': 'DL1'})
+area.append({'name': 'L1', 'beg': 'BEGL1', 'end': 'ENDL1', 'offset': [0, 0], 'parent': 'L1'})
+area.append({'name': 'BC1', 'beg': 'BEGBC1', 'end': 'ENDBC1', 'offset': [0, 0], 'parent': 'BC1'})
+area.append({'name': 'L2', 'beg': 'BEGL2', 'end': 'ENDL2', 'offset': [0, 0], 'parent': 'L2'})
+area.append({'name': 'BC2', 'beg': 'BEGBC2', 'end': 'ENDBC2', 'offset': [0, 0], 'parent': 'BC2'})
+area.append({'name': 'L3', 'beg': 'BEGL3', 'end': 'ENDL3', 'offset': [0, 0], 'parent': 'L3'})
+area.append({'name': 'CLTH_0', 'beg': 'BEGCLTH_0', 'end': 'ENDCLTH_0', 'offset': [0, 0], 'parent': 'CLTH'})
+area.append({'name': 'CLTH_1', 'beg': 'BEGCLTH_1', 'end': 'ENDCLTH_1', 'offset': [0, 0], 'parent': 'CLTH'})
+area.append({'name': 'CLTH_2', 'beg': 'BEGCLTH_2', 'end': 'ENDCLTH_2', 'offset': [0, 0], 'parent': 'CLTH'})
+area.append({'name': 'BSYH_1', 'beg': 'BEGBSYH_1', 'end': 'ENDBSYH_1', 'offset': [0, 0], 'parent': 'BSYH'})
+area.append({'name': 'BSYH_2', 'beg': 'BEGBSYH_2', 'end': 'ENDBSYH_2', 'offset': [0, 0], 'parent': 'BSYH'})
+area.append({'name': 'LTUH', 'beg': 'BEGLTUH', 'end': 'ENDLTUH', 'offset': [0, 0], 'parent': 'LTUH'})
+area.append({'name': 'UNDH', 'beg': 'BEGUNDH', 'end': 'ENDUNDH', 'offset': [0, 0], 'parent': 'UNDH'})
+area.append({'name': 'DMPH_1', 'beg': 'BEGDMPH_1', 'end': 'ENDDMPH_1', 'offset': [0, 0], 'parent': 'DMPH'})
+area.append({'name': 'DMPH_2', 'beg': 'BEGDMPH_2', 'end': 'ENDDMPH_2', 'offset': [0, 0], 'parent': 'DMPH'})
 # cuHS
-area.append({'name': 'SFTH_1', 'beg': 'BEGSFTH_1', 'end': 'ENDSFTH_1', 'offset': [0, 0]})
-area.append({'name': 'SFTH_2', 'beg': 'BEGSFTH_2', 'end': 'ENDSFTH_2', 'offset': [0, 0]})
+area.append({'name': 'SFTH_1', 'beg': 'BEGSFTH_1', 'end': 'ENDSFTH_1', 'offset': [0, 0], 'parent': 'SFTH'})
+area.append({'name': 'SFTH_2', 'beg': 'BEGSFTH_2', 'end': 'ENDSFTH_2', 'offset': [0, 0], 'parent': 'SFTH'})
 # cuHXTES/cuHTXI
-area.append({'name': 'HXTES_1', 'beg': 'BEGHXTES_1', 'end': 'ENDHXTES_1', 'offset': [0, 0]})  # common line
-area.append({'name': 'HXTES_2', 'beg': 'BEGHXTES_2', 'end': 'ENDHXTES_2', 'offset': [0, 0]})  # XTES line
-area.append({'name': 'HXTES_3', 'beg': 'BEGHXTES_3', 'end': 'ENDHXTES_3', 'offset': [0, 0]})  # TXI line
+area.append({'name': 'HXTES_1', 'beg': 'BEGHXTES_1', 'end': 'ENDHXTES_1', 'offset': [0, 0], 'parent': 'HXTES'})  # common line
+area.append({'name': 'HXTES_2', 'beg': 'BEGHXTES_2', 'end': 'ENDHXTES_2', 'offset': [0, 0], 'parent': 'HXTES'})  # XTES line
+area.append({'name': 'HXTES_3', 'beg': 'BEGHXTES_3', 'end': 'ENDHXTES_3', 'offset': [0, 0], 'parent': 'HXTES'})  # TXI line
 # cuS
-area.append({'name': 'CLTS', 'beg': 'BEGCLTS', 'end': 'ENDCLTS', 'offset': [0, 0]})
+area.append({'name': 'CLTS', 'beg': 'BEGCLTS', 'end': 'ENDCLTS', 'offset': [0, 0], 'parent': 'CLTS'})
 # cuGSPEC
-area.append({'name': 'GSPEC', 'beg': 'BEGGSPEC', 'end': 'ENDGSPEC', 'offset': [0, 0]})
+area.append({'name': 'GSPEC', 'beg': 'BEGGSPEC', 'end': 'ENDGSPEC', 'offset': [0, 0], 'parent': 'GSPEC'})
 # cuSPEC
-area.append({'name': 'SPEC', 'beg': 'BEGSPEC', 'end': 'ENDSPEC', 'offset': [0, 0]})
+area.append({'name': 'SPEC', 'beg': 'BEGSPEC', 'end': 'ENDSPEC', 'offset': [0, 0], 'parent': 'SPEC'})
 
 # ------------------------------------------------------------------------------
 # linac coordinate system
@@ -380,40 +386,28 @@ for ix,seq1 in enumerate(seq):
 
 # assign machine areas
 
-ida=[]
-for ix,a in enumerate(area):
-    id1 = N.index(a['beg']) + a['offset'][0]
-    id2 = N.index(a['end']) + a['offset'][1]
-    ida.extend([ix]*(id2-id1+1))
+for area1 in area:
+    for seq1 in seq:
+        names = [x.name for x in seq1['eles']]
+        id1 = safe_index(names, area1['beg'])
+        if id1 is not None:
+          id1 += area1['offset'][0]
+        if id2 is not None:
+          id2 += area1['offset'][1]
+        id2 = safe_index(names, area1['end']) 
+        if id1 is not None and id2 is not None:
+          for ele_ix in range(id1,id2+1):
+            seq1['eles'][ele_ix].area = area1['name']
+        elif id1 is not None and id2 is None:
+          for ele_ix in range(id1,len(seq1['eles'])):
+            seq1['eles'][ele_ix].area = area1['name']
+        elif id1 is None and id2 is not None:
+          for ele_ix in range(0,id2+1):
+            seq1['eles'][ele_ix].area = area1['name']
+        #ida.extend([ix]*(id2-id1+1))
+
 stop
-# assign area "parent" names
-
-for a in area:
-    if a['name'] in ['DMPS_1','DMPS_2']:
-        a['parent']='DMPS'
-    elif a['name'] in ['SFTS_1','SFTS_2']:
-        a['parent']='SFTS'
-    elif a['name'] in ['SXTES_1','SXTES_2','SXTES_3','SXTES_4']:
-        a['parent']='SXTES'
-    elif a['name'] in ['DL1_1','DL1_2']:
-        a['parent']='DL1'
-    elif a['name'] in ['CLTH_0','CLTH_1','CLTH_2']:
-        a['parent']='CLTH'
-    elif a['name'] in ['BSYH_1','BSYH_2']:
-        a['parent']='BSYH'
-    elif a['name'] in ['DMPH_1','DMPH_2']:
-        a['parent']='DMPH'
-    elif a['name'] in ['SFTH_1','SFTH_2']:
-        a['parent']='SFTH'
-    elif a['name'] in ['HXTES_1','HXTES_2','HXTES_3']:
-        a['parent']='HXTES'
-    elif a['name'] in ['SPD_1','SPD_2','SPD_3']:
-        a['parent']='SPD'
-    else:
-        a['parent']=a['name']
-
 # special handling for rolled dump lines and A-line
-
 def fix_dump_coords(N, P, coor):
     # Implementation of FixDumpCoords function
 
@@ -488,6 +482,7 @@ def fix_sxtes_coords(N, coor):
     return coor
 
 coor = fix_dump_coords(N, P, coor)
+stop
 coor = fix_aline_coords(N, P, coor)
 
 if cBSY:
