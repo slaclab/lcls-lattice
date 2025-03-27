@@ -90,89 +90,89 @@ T2kG=10             # kG per Tesla
 
 # file name roots
 
+        #linac            BSY                   UND
 froot = [
-    'LCLS2scS',     #  1
-    'LCLS2scSS',    #  2
-    'LCLS2scS2_X',  #  3
-    'LCLS2scSTXI',  #  4
-    'LCLS2scSTMO',  #  5
-    'LCLS2scH',     #  6
-    'LCLS2scD',     #  7
-    'DIAG0',        #  8
-    'LCLS2scDA',    #  9 (DASEL)
-    'LCLS2cuH',     # 10
-    'LCLS2cuHS',    # 11
-    'LCLS2cuHXTES', # 12
-    'LCLS2cuHTXI',  # 13
-    'LCLS2cuS',     # 14
-    'LCLS2cuGSPEC', # 15
-    'LCLS2cuSPEC',  # 16
+        ['LCLS2scS',      "BSY-LCLS2scS"      , None],   #  0
+        ['LCLS2scSS',     "BSY-LCLS2scSS"     , None],   #  1
+        ['LCLS2scS2_X',   "BSY-LCLS2scS2_X"   , None],   #  2
+        ['LCLS2scSTXI',   "BSY-LCLS2scSTXI"   , None],   #  3
+        ['LCLS2scSTMO',   "BSY-LCLS2scSTMO"   , None],   #  4
+        ['LCLS2scH',      "BSY-LCLS2scH"      , None],   #  5
+        ['LCLS2scD',      "BSY-LCLS2scD"      , None],   #  6
+        ['DIAG0',         None                , None],   #  7
+        ['LCLS2scDA',     "BSY-LCLS2scDA"     , None],   #  8 (DASEL)
+        ['LCLS2cuH',      "BSY-LCLS2cuH"      , None],   #  9
+        ['LCLS2cuHS',     "BSY-LCLS2cuHS"     , None],   # 10
+        ['LCLS2cuHXTES',  "BSY-LCLS2cuHXTES"  , None],   # 11
+        ['LCLS2cuHTXI',   "BSY-LCLS2cuHTXI"   , None],   # 12
+        ['LCLS2cuS',      "BSY-LCLS2cuS"      , None],   # 13
+        ['LCLS2cuGSPEC',  None                , None],   # 14
+        ['LCLS2cuSPEC',   None                , None]    # 15
 ]
 
-
 # ------------------------------------------------------------------------------
-# XAL sequences: SC linac
+# Sequences: SC linac
 # SXR line
 seq = []
-seq.append({'froot': 1, 'name': 'CATHODE TO DIAG0', 'beg': 'BEGGUNB', 'end': 'ENDHTR', 'offset': [0, 0], 'prev': 0})
-seq.append({'froot': 1, 'name': 'COL0 TO COL1', 'beg': 'BEGCOL0', 'end': 'ENDBC1B', 'offset': [0, 0], 'prev': 1})
-seq.append({'froot': 1, 'name': 'COL1 TO EMIT2', 'beg': 'BEGCOL1', 'end': 'ENDBC2B', 'offset': [0, 0], 'prev': 2})
-seq.append({'froot': 1, 'name': 'EMIT2 TO DOGLEG', 'beg': 'BEGEMIT2', 'end': 'ENDEXT', 'offset': [0, 0], 'prev': 3})
-seq.append({'froot': 1, 'name': 'DOGLEG TO BYPASS', 'beg': 'BEGDOG', 'end': 'ENDDOG', 'offset': [0, 0], 'prev': 4})
-seq.append({'froot': 1, 'name': 'BYPASS TO BKYSP0H', 'beg': 'BEGBYP', 'end': 'ENDBYP', 'offset': [0, 0], 'prev': 5})
-seq.append({'froot': 1, 'name': 'BKYSP0H TO BKYSP0S', 'beg': 'BEGSPD_1', 'end': 'ENDSPD_1', 'offset': [0, 0], 'prev': 6})
-seq.append({'froot': 1, 'name': 'BKYSP0S TO BSYBEG', 'beg': 'BEGSPS', 'end': 'ENDSPS', 'offset': [0, 0], 'prev': 7})
-seq.append({'froot': 1, 'name': 'BSYBEG TO BRCUS1', 'beg': 'BEGSLTS', 'end': 'ENDSLTS', 'offset': [0, 0], 'prev': 8})
-seq.append({'froot': 1, 'name': 'BRCUS1 TO BSYEND', 'beg': 'BEGBSYS', 'end': 'ENDBSYS', 'offset': [0, 0], 'prev': 9})
-seq.append({'froot': 1, 'name': 'BSYEND TO SXRSTART', 'beg': 'BEGLTUS', 'end': 'ENDLTUS', 'offset': [0, 0], 'prev': 10})
-seq.append({'froot': 1, 'name': 'SXRSTART TO BYD1B', 'beg': 'BEGUNDS', 'end': 'ENDDMPS_1', 'offset': [0, 0], 'prev': 11})
-seq.append({'froot': 1, 'name': 'BYD1B TO DUMPB', 'beg': 'BEGDMPS_2', 'end': 'ENDDMPS_2', 'offset': [0, 0], 'prev': 12})
+seq.append({'froot': 0, 'name': 'CATHODE TO DIAG0', 'beg': 'BEGGUNB', 'end': 'ENDHTR', 'offset': [0, 0]})       #0
+seq.append({'froot': 0, 'name': 'COL0 TO COL1', 'beg': 'BEGCOL0', 'end': 'ENDBC1B', 'offset': [0, 0]})          #1
+seq.append({'froot': 0, 'name': 'COL1 TO EMIT2', 'beg': 'BEGCOL1', 'end': 'ENDBC2B', 'offset': [0, 0]})         #2
+seq.append({'froot': 0, 'name': 'EMIT2 TO DOGLEG', 'beg': 'BEGEMIT2', 'end': 'ENDEXT', 'offset': [0, 0]})       #3
+seq.append({'froot': 0, 'name': 'DOGLEG TO BYPASS', 'beg': 'BEGDOG', 'end': 'ENDDOG', 'offset': [0, 0]})        #4
+seq.append({'froot': 0, 'name': 'BYPASS TO BKYSP0H', 'beg': 'BEGBYP', 'end': 'ENDBYP', 'offset': [0, 0]})       #5
+seq.append({'froot': 0, 'name': 'BKYSP0H TO BKYSP0S', 'beg': 'BEGSPD_1', 'end': 'ENDSPD_1', 'offset': [0, 0]})  #6
+seq.append({'froot': 0, 'name': 'BKYSP0S TO BSYBEG', 'beg': 'BEGSPS', 'end': 'ENDSPS', 'offset': [0, 0]})       #7
+seq.append({'froot': 0, 'name': 'BSYBEG TO BRCUS1', 'beg': 'BEGSLTS', 'end': 'ENDSLTS', 'offset': [0, 0]})      #8
+seq.append({'froot': 0, 'name': 'BRCUS1 TO BSYEND', 'beg': 'BEGBSYS', 'end': 'ENDBSYS', 'offset': [0, 0]})      #9
+seq.append({'froot': 0, 'name': 'BSYEND TO SXRSTART', 'beg': 'BEGLTUS', 'end': 'ENDLTUS', 'offset': [0, 0]})    #10
+seq.append({'froot': 0, 'name': 'SXRSTART TO BYD1B', 'beg': 'BEGUNDS', 'end': 'ENDDMPS_1', 'offset': [0, 0]})   #11
+seq.append({'froot': 0, 'name': 'BYD1B TO DUMPB', 'beg': 'BEGDMPS_2', 'end': 'ENDDMPS_2', 'offset': [0, 0]})    #12
 # SXR safety dump line
-seq.append({ 'froot': 2, 'name': 'BYD1B TO SFTDUMPB', 'beg': 'BEGSFTS_1', 'end': 'ENDSFTS_2', 'offset': [0, 0], 'prev': 13 })
+seq.append({ 'froot': 1, 'name': 'BYD1B TO SFTDUMPB', 'beg': 'BEGSFTS_1', 'end': 'ENDSFTS_2', 'offset': [0, 0]})  #13
 # SXR XTES systems
-seq.append({ 'froot': 3, 'name': 'SXR 2.X', 'beg': 'BEGSXTES_1', 'end': 'ENDSXTES_2', 'offset': [0, 0], 'prev': 0 })
-seq.append({ 'froot': 4, 'name': 'SXR TXI', 'beg': 'BEGSXTES_3', 'end': 'ENDSXTES_3', 'offset': [0, 0], 'prev': 0 })
-seq.append({ 'froot': 5, 'name': 'SXR TMO', 'beg': 'BEGSXTES_4', 'end': 'ENDSXTES_4', 'offset': [0, 0], 'prev': 0 })
+seq.append({ 'froot': 2, 'name': 'SXR 2.X', 'beg': 'BEGSXTES_1', 'end': 'ENDSXTES_2', 'offset': [0, 0]})    #14
+seq.append({ 'froot': 3, 'name': 'SXR TXI', 'beg': 'BEGSXTES_3', 'end': 'ENDSXTES_3', 'offset': [0, 0]})    #15
+seq.append({ 'froot': 4, 'name': 'SXR TMO', 'beg': 'BEGSXTES_4', 'end': 'ENDSXTES_4', 'offset': [0, 0]})    #16
 # HXR cross-connect
-seq.append({ 'froot': 6, 'name': 'BKYSP0H TO BSYBEG', 'beg': 'BEGSPH', 'end': 'ENDSPH', 'offset': [0, 0], 'prev': 6 })
-seq.append({ 'froot': 6, 'name': 'BSYBEG TO BXSP1H', 'beg': 'BEGSLTH', 'end': 'ENDSLTH', 'offset': [0, 0], 'prev': 18 })
+seq.append({ 'froot': 5, 'name': 'BKYSP0H TO BSYBEG', 'beg': 'BEGSPH', 'end': 'ENDSPH', 'offset': [0, 0]})   #17
+seq.append({ 'froot': 5, 'name': 'BSYBEG TO BXSP1H', 'beg': 'BEGSLTH', 'end': 'ENDSLTH', 'offset': [0, 0]})  #18
 # BSY dump line
-seq.append({ 'froot': 7, 'name': 'BKYSP0S TO BKRDAS1', 'beg': 'BEGSPD_2', 'end': 'ENDSPD_2', 'offset': [0, 0], 'prev': 7 })
-seq.append({ 'froot': 7, 'name': 'BKRDAS1 TO BSYBEG', 'beg': 'BEGSPD_3', 'end': 'ENDSPD_3', 'offset': [0, 0], 'prev': 20 })
-seq.append({ 'froot': 7, 'name': 'BSYBEG TO BSYDUMP', 'beg': 'BEGSLTD', 'end': 'ENDSLTD', 'offset': [0, 0], 'prev': 21 })
+seq.append({ 'froot': 6, 'name': 'BKYSP0S TO BKRDAS1', 'beg': 'BEGSPD_2', 'end': 'ENDSPD_2', 'offset': [0, 0]})  #19
+seq.append({ 'froot': 6, 'name': 'BKRDAS1 TO BSYBEG', 'beg': 'BEGSPD_3', 'end': 'ENDSPD_3', 'offset': [0, 0]})   #20
+seq.append({ 'froot': 6, 'name': 'BSYBEG TO BSYDUMP', 'beg': 'BEGSLTD', 'end': 'ENDSLTD', 'offset': [0, 0]})     #21
 # DIAG0 line
-seq.append({ 'froot': 8, 'name': 'DIAG0 TO FCDG0DU', 'beg': 'BEGDIAG0', 'end': 'ENDDIAG0', 'offset': [0, 0], 'prev': 1 })
+seq.append({ 'froot': 7, 'name': 'DIAG0 TO FCDG0DU', 'beg': 'BEGDIAG0', 'end': 'ENDDIAG0', 'offset': [0, 0]})    #22
 # DASEL
-seq.append({ 'froot': 9, 'name': 'DASEL', 'beg': 'BEGDASEL', 'end': 'ENDDASEL', 'offset': [0, 0], 'prev': 20 })
-seq.append({ 'froot': 9, 'name': 'ALINE', 'beg': 'BEGBSYA_2', 'end': 'ENDBSYA_2', 'offset': [0, 0], 'prev': 24 })
+seq.append({ 'froot': 8, 'name': 'DASEL', 'beg': 'BEGDASEL', 'end': 'ENDDASEL', 'offset': [0, 0]})       #23
+seq.append({ 'froot': 8, 'name': 'ALINE', 'beg': 'BEGBSYA_2', 'end': 'ENDBSYA_2', 'offset': [0, 0]})     #24
 # XAL sequences: Cu linac
 # HXR line
-seq.append({ 'froot': 10, 'name': 'CATHODE TO BXG', 'beg': 'BEGGUN', 'end': 'ENDGUN', 'offset': [0, 0], 'prev': 0 })
-seq.append({ 'froot': 10, 'name': 'BXG TO BX01', 'beg': 'BEGL0', 'end': 'ENDDL1_1', 'offset': [0, 0], 'prev': 26 })
-seq.append({ 'froot': 10, 'name': 'BX01 TO BX02', 'beg': 'BEGDL1_2', 'end': 'DBMARK83', 'offset': [0, -1], 'prev': 27 })
-seq.append({ 'froot': 10, 'name': 'BX02 TO QM15', 'beg': 'DBMARK83', 'end': 'DBMARK28', 'offset': [0, -1], 'prev': 28 })
-seq.append({ 'froot': 10, 'name': 'QM15 TO FV2', 'beg': 'DBMARK28', 'end': 'ENDL3', 'offset': [0, 0], 'prev': 29 })
-seq.append({ 'froot': 10, 'name': 'FV2 TO BSYBEG', 'beg': 'BEGCLTH_0', 'end': 'ENDCLTH_0', 'offset': [0, 0], 'prev': 30 })
-seq.append({ 'froot': 10, 'name': 'BSYBEG TO BKRCUS', 'beg': 'BEGCLTH_1', 'end': 'ENDCLTH_1', 'offset': [0, 0], 'prev': 31 })
-seq.append({ 'froot': 10, 'name': 'BKRCUS TO BXSP1H', 'beg': 'BEGCLTH_2', 'end': 'ENDCLTH_2', 'offset': [0, 0], 'prev': 32 })
-seq.append({ 'froot': 10, 'name': 'BXSP1H TO BKRAPM1', 'beg': 'BEGBSYH_1', 'end': 'ENDBSYH_1', 'offset': [0, 0], 'prev': 33 })
-seq.append({ 'froot': 10, 'name': 'BKRAPM1 TO BSYEND', 'beg': 'BEGBSYH_2', 'end': 'ENDBSYH_2', 'offset': [0, 0], 'prev': 34 })
-seq.append({ 'froot': 10, 'name': 'BSYEND TO BX31', 'beg': 'BEGLTUH', 'end': 'DBMARK34', 'offset': [0, -1], 'prev': 35 })
-seq.append({ 'froot': 10, 'name': 'BX31 TO WS31', 'beg': 'DBMARK34', 'end': 'DBMARK36', 'offset': [0, 0], 'prev': 36 })
-seq.append({ 'froot': 10, 'name': 'WS31 TO HXRSTART', 'beg': 'DBMARK36', 'end': 'ENDLTUH', 'offset': [1, 0], 'prev': 37 })
-seq.append({ 'froot': 10, 'name': 'HXRSTART TO BYD1', 'beg': 'BEGUNDH', 'end': 'ENDDMPH_1', 'offset': [0, 0], 'prev': 38 })
-seq.append({ 'froot': 10, 'name': 'BYD1 TO DUMP', 'beg': 'BEGDMPH_2', 'end': 'ENDDMPH_2', 'offset': [0, 0], 'prev': 39 })
+seq.append({ 'froot': 9, 'name': 'CATHODE TO BXG', 'beg': 'BEGGUN', 'end': 'ENDGUN', 'offset': [0, 0]})     #25
+seq.append({ 'froot': 9, 'name': 'BXG TO BX01', 'beg': 'BEGL0', 'end': 'ENDDL1_1', 'offset': [0, 0]})       #26
+seq.append({ 'froot': 9, 'name': 'BX01 TO BX02', 'beg': 'BEGDL1_2', 'end': 'DBMARK83', 'offset': [0, -1]})   #27
+seq.append({ 'froot': 9, 'name': 'BX02 TO QM15', 'beg': 'DBMARK83', 'end': 'DBMARK28', 'offset': [0, -1]})   #28
+seq.append({ 'froot': 9, 'name': 'QM15 TO FV2', 'beg': 'DBMARK28', 'end': 'ENDL3', 'offset': [0, 0]})         #29
+seq.append({ 'froot': 9, 'name': 'FV2 TO BSYBEG', 'beg': 'BEGCLTH_0', 'end': 'ENDCLTH_0', 'offset': [0, 0]})    #30
+seq.append({ 'froot': 9, 'name': 'BSYBEG TO BKRCUS', 'beg': 'BEGCLTH_1', 'end': 'ENDCLTH_1', 'offset': [0, 0]})   #31
+seq.append({ 'froot': 9, 'name': 'BKRCUS TO BXSP1H', 'beg': 'BEGCLTH_2', 'end': 'ENDCLTH_2', 'offset': [0, 0]})   #32
+seq.append({ 'froot': 9, 'name': 'BXSP1H TO BKRAPM1', 'beg': 'BEGBSYH_1', 'end': 'ENDBSYH_1', 'offset': [0, 0]})  #33
+seq.append({ 'froot': 9, 'name': 'BKRAPM1 TO BSYEND', 'beg': 'BEGBSYH_2', 'end': 'ENDBSYH_2', 'offset': [0, 0]})  #34
+seq.append({ 'froot': 9, 'name': 'BSYEND TO BX31', 'beg': 'BEGLTUH', 'end': 'DBMARK34', 'offset': [0, -1]})     #35
+seq.append({ 'froot': 9, 'name': 'BX31 TO WS31', 'beg': 'DBMARK34', 'end': 'DBMARK36', 'offset': [0, 0]})       #36
+seq.append({ 'froot': 9, 'name': 'WS31 TO HXRSTART', 'beg': 'DBMARK36', 'end': 'ENDLTUH', 'offset': [1, 0]})    #37
+seq.append({ 'froot': 9, 'name': 'HXRSTART TO BYD1', 'beg': 'BEGUNDH', 'end': 'ENDDMPH_1', 'offset': [0, 0]})   #38
+seq.append({ 'froot': 9, 'name': 'BYD1 TO DUMP', 'beg': 'BEGDMPH_2', 'end': 'ENDDMPH_2', 'offset': [0, 0]})     #39
 # HXR safety dump line
-seq.append({ 'froot': 11, 'name': 'BYD1 TO SFTDUMP', 'beg': 'BEGSFTH_1', 'end': 'ENDSFTH_2', 'offset': [0, 0], 'prev': 39 })
+seq.append({ 'froot': 10, 'name': 'BYD1 TO SFTDUMP', 'beg': 'BEGSFTH_1', 'end': 'ENDSFTH_2', 'offset': [0, 0]})  #40
 # HXR XTES systems
-seq.append({ 'froot': 12, 'name': 'HXR XTES', 'beg': 'BEGHXTES_1', 'end': 'ENDHXTES_2', 'offset': [0, 0], 'prev': 0 }) 
-seq.append({ 'froot': 13, 'name': 'HXR TXI', 'beg': 'BEGHXTES_3', 'end': 'ENDHXTES_3', 'offset': [0, 0], 'prev': 0 })
+seq.append({ 'froot': 11, 'name': 'HXR XTES', 'beg': 'BEGHXTES_1', 'end': 'ENDHXTES_2', 'offset': [0, 0]})     #41
+seq.append({ 'froot': 12, 'name': 'HXR TXI', 'beg': 'BEGHXTES_3', 'end': 'ENDHXTES_3', 'offset': [0, 0]})      #42
 # SXR cross-connect
-seq.append({ 'froot': 14, 'name': 'BKRCUS TO BRCUS1', 'beg': 'BEGCLTS', 'end': 'ENDCLTS', 'offset': [0, 0], 'prev': 32 })
+seq.append({ 'froot': 13, 'name': 'BKRCUS TO BRCUS1', 'beg': 'BEGCLTS', 'end': 'ENDCLTS', 'offset': [0, 0]})   #43
 # gun spectrometer
-seq.append({ 'froot': 15, 'name': 'BXG TO GUN SPECT DUMP', 'beg': 'BEGGSPEC', 'end': 'ENDGSPEC', 'offset': [0, 0], 'prev': 26 })
+seq.append({ 'froot': 14, 'name': 'BXG TO GUN SPECT DUMP', 'beg': 'BEGGSPEC', 'end': 'ENDGSPEC', 'offset': [0, 0]})   #44
 # 135 MeV spectrometer
-seq.append({ 'froot': 16, 'name': 'BX01 TO 135-MEV SPECT DUMP', 'beg': 'BEGSPEC', 'end': 'ENDSPEC', 'offset': [0, 0], 'prev': 27 })
+seq.append({ 'froot': 15, 'name': 'BX01 TO 135-MEV SPECT DUMP', 'beg': 'BEGSPEC', 'end': 'ENDSPEC', 'offset': [0, 0]})   #45
 
 # ------------------------------------------------------------------------------
 # machine areas
@@ -276,19 +276,19 @@ linac1.append({"froot0":16})
 # ------------------------------------------------------------------------------
 # special coordinate system regions
 other1 = []
-other1.append({"froot0": 1, "froot": "BSY-LCLS2scS", "beg": "BEGSPD_1", "end": "ENDDMPS_2", "offset": np.array([0, 0])})
-other1.append({"froot0": 2, "froot": "BSY-LCLS2scSS", "beg": "BEGSFTS_1", "end": "ENDSFTS_2", "offset": np.array([0, 0])})
-other1.append({"froot0": 3, "froot": "BSY-LCLS2scS2_X", "beg": "BEGSXTES_1", "end": "ENDSXTES_2", "offset": np.array([0, 0])})
-other1.append({"froot0": 4, "froot": "BSY-LCLS2scSTXI", "beg": "BEGSXTES_3", "end": "ENDSXTES_3", "offset": np.array([0, 0])})
-other1.append({"froot0": 5, "froot": "BSY-LCLS2scSTMO", "beg": "BEGSXTES_4", "end": "ENDSXTES_4", "offset": np.array([0, 0])})
-other1.append({"froot0": 6, "froot": "BSY-LCLS2scH", "beg": "BEGSPH", "end": "ENDSLTH", "offset": np.array([0, 0])})
-other1.append({"froot0": 7, "froot": "BSY-LCLS2scD", "beg": "BEGSPD_2", "end": "ENDSLTD", "offset": np.array([0, 0])})
-other1.append({"froot0": 9, "froot": "BSY-LCLS2scDA", "beg": "BEGDASEL", "end": "ENDBSYA_2", "offset": np.array([0, 0])})
-other1.append({"froot0": 10, "froot": "BSY-LCLS2cuH", "beg": "BEGCLTH_0", "end": "ENDDMPH_2", "offset": np.array([0, 0])})
-other1.append({"froot0": 11, "froot": "BSY-LCLS2cuHS", "beg": "BEGSFTH_1", "end": "ENDSFTH_2", "offset": np.array([0, 0])})
-other1.append({"froot0": 12, "froot": "BSY-LCLS2cuHXTES", "beg": "BEGHXTES_1", "end": "ENDHXTES_2", "offset": np.array([0, 0])})
-other1.append({"froot0": 13, "froot": "BSY-LCLS2cuHTXI", "beg": "BEGHXTES_3", "end": "ENDHXTES_3", "offset": np.array([0, 0])})
-other1.append({"froot0": 14, "froot": "BSY-LCLS2cuS", "beg": "BEGCLTS", "end": "ENDCLTS", "offset": np.array([0, 0])})
+other1.append({"froot": 0,  "beg": "BEGSPD_1",   "end": "ENDDMPS_2",  "offset": np.array([0, 0])})
+other1.append({"froot": 1,  "beg": "BEGSFTS_1",  "end": "ENDSFTS_2",  "offset": np.array([0, 0])})
+other1.append({"froot": 2,  "beg": "BEGSXTES_1", "end": "ENDSXTES_2", "offset": np.array([0, 0])})
+other1.append({"froot": 3,  "beg": "BEGSXTES_3", "end": "ENDSXTES_3", "offset": np.array([0, 0])})
+other1.append({"froot": 4,  "beg": "BEGSXTES_4", "end": "ENDSXTES_4", "offset": np.array([0, 0])})
+other1.append({"froot": 5,  "beg": "BEGSPH",     "end": "ENDSLTH",    "offset": np.array([0, 0])})
+other1.append({"froot": 6,  "beg": "BEGSPD_2",   "end": "ENDSLTD",    "offset": np.array([0, 0])})
+other1.append({"froot": 8,  "beg": "BEGDASEL",   "end": "ENDBSYA_2",  "offset": np.array([0, 0])})
+other1.append({"froot": 9,  "beg": "BEGCLTH_0",  "end": "ENDDMPH_2",  "offset": np.array([0, 0])})
+other1.append({"froot": 10, "beg": "BEGSFTH_1",  "end": "ENDSFTH_2",  "offset": np.array([0, 0])})
+other1.append({"froot": 11, "beg": "BEGHXTES_1", "end": "ENDHXTES_2", "offset": np.array([0, 0])})
+other1.append({"froot": 12, "beg": "BEGHXTES_3", "end": "ENDHXTES_3", "offset": np.array([0, 0])})
+other1.append({"froot": 13, "beg": "BEGCLTS",    "end": "ENDCLTS",    "offset": np.array([0, 0])})
 
 other2=[]
 
@@ -307,78 +307,76 @@ idf, ids, idd = [], [], []  # idf: which MAD output file an element came from
                             # idd: ordinal position in MAD output file
 
 raw_file_data = []
-for file_root in froot:
+for froot_ix,file_root in enumerate([x[0] for x in froot]):
+    fname = f'{file_root}_survey.tape'
     print(f'Opening file {fname}')
-    fname = '{}_survey.tape'.format(froot[nf-1])
-    raw_file_data.append(xtffs2mat_obj(fname))
+    raw_file_data.append(xtffs2mat_obj(fname,froot_ix))
 
-seq_data = []
-for n,seq1 in enumerate(seq):
+for ix,seq1 in enumerate(seq):
     raw_data = raw_file_data[seq1['froot']]
 
-    id1 = raw_data.N.index(seq1['beg']) + seq1['offset'][0]
-    id2 = raw_data.N.index(seq1['end']) + seq1['offset'][1]
+    names = [x.name for x in raw_data]
+    id1 = names.index(seq1['beg']) + seq1['offset'][0]
+    id2 = names.index(seq1['end']) + seq1['offset'][1]
 
-    seq_data.append(raw_data(slice(id1,id2+1)))
+    seq1['eles'] = raw_data[slice(id1,id2+1)]
+    names = [x.name for x in seq1['eles']]
 
-# get BSY coordinates
-K1, N1, L1, P1, S1, coor1, idf1, FDN1 = [], [], [], [], [], [], [], []
-
+# get BSY lines
 if cBSY:
     raw_file_data = []
-    for file_root in froot:
-        print(f'Opening file {fname}')
-        fname = f"{other1[n]['froot']}_survey.tape"
-        raw_file_data.append(xtffs2mat_obj(fname))
+    for froot_ix,file_root in enumerate([x[1] for x in froot]):
+        if file_root != None:
+            fname = f'{file_root}_survey.tape'
+            print(f'Opening file {fname}')
+            raw_file_data.append(xtffs2mat_obj(fname,froot_ix))
+        else:
+            raw_file_data.append(None)
 
-    bsy_seq_data = []
-    for n,seq1 in enumerate(other1):
+    for ix,seq1 in enumerate(other1):
+        raw_data = raw_file_data[seq1['froot']]
+
+        names = [x.name for x in raw_data]
+        id1 = names.index(seq1['beg']) + seq1['offset'][0]
+        id2 = names.index(seq1['end']) + seq1['offset'][1]
+
+        seq1['eles'] = raw_data[slice(id1,id2+1)]
+# get UND lines
+if cUND:
+    raw_file_data = []
+    for froot_ix,file_root in enumerate([x[2] for x in froot]):
+        if file_root != None:
+            fname = f'{file_root}_survey.tape'
+            print(f'Opening file {fname}')
+            raw_file_data.append(xtffs2mat_obj(fname))
+        else:
+            raw_file_data.append(None)
+
+    for n,seq1 in enumerate(other2):
         raw_data = raw_file_data[seq1['froot']]
 
         id1 = raw_data.N.index(other1['beg']) + other1['offset'][0]
         id2 = raw_data.N.index(other1['end']) + other1['offset'][1]
 
-        seq_data.append(raw_data(slice(id1,id2+1)))
+        seq1['eles'] = raw_data[slice(id1,id2+1)]
 
-# get UND coordinates
-K2, N2, L2, P2, S2, coor2, idf2, FDN2 = [], [], [], [], [], [], [], []
-
-if cUND:
-    for n in range(len(other2)):
-        fname = f"{other2[n]['froot']}_survey.tape"
-        print('Opening file {}'.format(fname))
-        titl, tK, tN, tL, tP, tA, tT, tE, tFDN, tcoor, tS = xtffs2mat(fname)
-        
-        id1 = tN.index(other2[n]['beg']) + other2[n]['offset'][0]
-        id2 = tN.index(other2[n]['end']) + other2[n]['offset'][1]
-        id_range = slice(id1, id2 + 1)
-        
-        K2.extend(tK[id_range])
-        len_id = len(tK[id_range])
-        N2.extend(tN[id_range])
-        P2.extend(tP[id_range])
-        S2.extend(tS[id_range])
-        coor2.extend(tcoor[id_range])
-        idf2.extend([other2[n]['froot0']] * len_id)
-        FDN2.extend(tFDN[id_range])
-
-def FixUpgradeNames(N):
-  # Device names in upgraded SXR cells have "_" appended ... remove it
-  for i in range(len(N)):
-    if N[i].endswith('_'):
-      N[i] = N[i][:-1]
+def FixUpgradeNames(seq_data):
+    # Device names in upgraded SXR cells have "_" appended ... remove it
+    for seq1 in seq_data:
+        for ele in seq1['eles']:
+            if ele.name.endswith('_'):
+                ele.name = ele.name[:-1]
 
 # Fix device names in upgraded SXR cells
-FixUpgradeNames(N)
+FixUpgradeNames(seq)
 if cBSY:
-  FixUpgradeNames(N1)
+  FixUpgradeNames(other1)
 if cUND:
-  FixUpgradeNames(N2)
+  FixUpgradeNames(other2)
 
 # initialize the suml key in the seq dictionary
-for s in seq:
-    id1 = N.index(s['beg']) + s['offset'][0]
-    s['suml'] = S[id1]
+for ix,seq1 in enumerate(seq):
+    seq1['suml'] = seq1['eles'][0].suml
 
 # assign machine areas
 
@@ -387,7 +385,7 @@ for ix,a in enumerate(area):
     id1 = N.index(a['beg']) + a['offset'][0]
     id2 = N.index(a['end']) + a['offset'][1]
     ida.extend([ix]*(id2-id1+1))
-
+stop
 # assign area "parent" names
 
 for a in area:
@@ -2911,20 +2909,19 @@ Ncol = head.count(',') + 1
 ip = []
 for n,KEY in enumerate(KEYLIST):
     for m,ele in enumerate(KEY):
-        ip.append([ele['idf'], n, m, ele['id']])
-ip = sorted(ip, key=lambda x: (x[0], x[3]))
+        ip.append([ele['idf'], ele['id'], n, m])
+ip = sorted(ip, key=lambda x: (x[0], x[1]))
 
 def arrange_output(coord_system, system_name, filename):
     with open(outdir+'/'+fname, 'wt') as fid:
         fid.write(f'{head}\n')
         fid.write(f'{unit}\n')
         for entry in coord_system:
-            nf = entry['froot0']
-            id = [i for i,x in enumerate(ip) if x[0]==nf]
+            id = [i for i,x in enumerate(ip) if x[0]==entry['froot0']]
 
             for n in id:
-                idk = ip[n][1]
-                idn = ip[n][2]
+                idk = ip[n][2]
+                idn = ip[n][3]
                 TEMP = KEYLIST[idk][idn]
 
                 s = [None] * Ncol
@@ -3131,10 +3128,10 @@ with open(outdir+'/'+fname, 'wt') as fid:
     for nf in range(1,len(froot)+1):
         id = [i for i,x in enumerate(ip) if x[0]==nf]
         for n in id:
-            idk = ip[n][1]
+            idk = ip[n][2]
             if keyw[idk] == 'MARK' or keyw[idk] == 'SROT':
                 continue
-            idn = ip[n][2]
+            idn = ip[n][3]
             TEMP = KEYLIST[idk][idn]
             if TEMP['prim'] == 'MULT':
                 continue
