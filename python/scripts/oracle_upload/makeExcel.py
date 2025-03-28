@@ -548,13 +548,15 @@ nfixs = [['', 'MUQS', 'MPHS'],
         ['HOMCM', '', '']]
 ioffs = [[-3, -1, -1], [-2, -1, -1], [-3, -1, -1]]
 
-for nfix in nfixs:
-    for name in nfix:
+for nfix,ioff in zip(nfixs,ioffs):
+    for fix_name,offset in zip(nfix,ioff):
         if not name:
             continue
         for seq1 in seq:
             names = [x.name for x in seq1['eles']]
-            ids = strmatch('SBEN',keys,True)
+            ids = strmatch(fix_name,names)
+            if len(id) == 0:
+                continue
 
 for nr in range(len(nfix)):
     for nc in range(len(nfix[0])):
