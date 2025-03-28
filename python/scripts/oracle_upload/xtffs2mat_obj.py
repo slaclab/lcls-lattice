@@ -3,7 +3,7 @@
 import numpy as np
 
 class EleData:
-    def __init__(self,fname,froot_ix,file_ord,key,name,length,params,aper,ele_type,energy,fdn,suml,coor):
+    def __init__(self,fname,froot_ix,file_ord,key,name,length,raw_params,aper,ele_type,energy,fdn,suml,coor):
         """
         file_index: integer.  index of file the element came from
         file_ord: integer.  ordinal position in MAD output file
@@ -24,7 +24,8 @@ class EleData:
         self.key = key                     # K
         self.name = name                   # N
         self.length = length               # L
-        self.params = params               # P
+        self.raw_params = raw_params       # P
+        self.params = {}
         self.aper = aper                   # A
         self.ele_type = ele_type           # T
         self.energy = energy               # E

@@ -406,96 +406,95 @@ for area1 in area:
             seq1['eles'][ele_ix].area = area1['name']
         #ida.extend([ix]*(id2-id1+1))
 
-stop
 # special handling for rolled dump lines and A-line
-def fix_dump_coords(N, P, coor):
-    # Implementation of FixDumpCoords function
+def fix_dump_coords(seq):
+    for seq1 in seq:
+        names = [x.name for x in seq1['eles']]
 
-    # set roll angle for SXR dump line components
-    id1=N.index('RODMP1S')
-    id2=N.index('RODMP2S')-1
-    ARODMP1S=P[id1][4]
-    for i in range(id1,id2+1):
-      coor[i][5]=ARODMP1S
+        # set roll angle for SXR dump line components
+        id1 = safe_index(names, 'RODMP1S')
+        id2 = safe_index(names, 'RODMP2S')
+        if id1 is not None and id2 is not None:
+            ARODMP1S=seq1['eles'][id1].raw_params[4]
+            for i in range(id1,id2-1+1):  #Want the ele just before RODMP2S
+                seq1['eles'][i].coor[5]=ARODMP1S
 
-    id1=id2+1
-    id2=N.index('ENDDMPS_2')
-    for i in range(id1,id2+1):
-      coor[i][5]=0
+        # set roll angle for SXR dump line components
+        id1 = safe_index(names, 'RODMP2S')
+        id2 = safe_index(names, 'ENDDMPS_2') 
+        if id1 is not None and id2 is not None:
+            for i in range(id1,id2+1):
+                seq1['eles'][i].coor[5]=0.0
 
-    # set roll angle for HXR dump line components
-    id1=N.index('RODMP1H')
-    id2=N.index('RODMP2H')-1
-    ARODMP1H=P[id1][4];
-    for i in range(id1,id2+1):
-      coor[i][5]=ARODMP1H
+        # set roll angle for HXR dump line components
+        id1 = safe_index(names, 'RODMP1H')
+        id2 = safe_index(names, 'RODMP2H') 
+        if id1 is not None and id2 is not None:
+            ARODMP1H=seq1['eles'][id1].raw_params[4]
+            for i in range(id1,id2-1+1):  #Want the ele just before RODMP2H
+                seq1['eles'][i].coor[5]=ARODMP1H
 
-    id1=id2+1;
-    id2=N.index('ENDDMPH_2')
-    for i in range(id1,id2+1):
-      coor[i][5]=0
+        id1 = safe_index(names, 'RODMP2H')
+        id2 = safe_index(names, 'ENDBSYA_2') 
+        if id1 is not None and id2 is not None:
+            ARODMP1H=seq1['eles'][id1].raw_params[4]
+            for i in range(id1,id2+1):
+                seq1['eles'][i].coor[5]=0.0
 
-    return coor
-
-def fix_aline_coords(N, P, coor):
+def fix_aline_coords(seq):
     # Implementation of FixAlineCoords function
     # set roll angle for A-line components
-    id1 = N.index('ROLL2')
-    id2 = N.index('ENDBSYA_2')
-    AROLL2 = P[id1][4]
-    for i in range(id1,id2+1):
-      coor[i][5] = AROLL2
+    for seq1 in seq:
+        names = [x.name for x in seq1['eles']]
 
-    # The following block is commented out in the original code
-    '''
-    id1 = N.index('BEGBSYA_1')
-    id2 = N.index('ROLL2') - 1
-    id_slice = slice(id1, id2 + 1)
-    coor[id_slice, 5] = 0  # remove residual "creeping" roll
-    '''
-    return coor
+        # set roll angle for SXR dump line components
+        id1 = safe_index(names, 'ROLL2')
+        id2 = safe_index(names, 'ENDBSYA_2')
+        if id1 is not None and id2 is not None:
+            AROLL2=seq1['eles'][id1].raw_params[4]
+            for i in range(id1,id2+1):
+                seq1['eles'][i].coor[5]=AROLL2
 
-def fix_sxtes_coords(N, coor):
+def fix_sxtes_coords(seq):
     # Implementation of FixSXTESCoords function
     # fix BSY coordinates for selected SXTES system devices per P. Stephens
-    name = [
+    fix_names = [
         'MR1K3_VGC_1', 'ND1S', 'SP1K1_MONO_VGC_1',  # 2.2 line
         'IM1K3_PPM', 'BT1K3_AIR',  # TXI line
         'BT2K0_PLEG_TMO', 'LUSI'  # TMO line
     ]
-    coor_id = [
+    coor_ids = [
         1, 1, 1,
         0, 0,
         -1, 0
     ]
-    coor_val = [
+    coor_vals = [
         -0.8826040, -2.0921000, -0.7249275,
         1.0694435, 1.0480923,
         1.2500000, -1.2194000
     ]
-
-    for n in range(len(name)):
-        if coor_id[n] == -1:
+    for fix_name, coor_id, coor_val in zip(fix_names,coor_ids,coor_vals):
+        if coor_id == -1:
             continue
-        id_matches = N.index(name[n])
-        coor[id_matches][coor_id[n]] = coor_val[n]
-    return coor
+        for seq1 in seq:
+            names = [x.name for x in seq1['eles']]
+            id_ = safe_index(names,fix_names)
+            if id_ is not None:
+                seq1['eles'][id_].coor[coor_id] = coor_val
 
-coor = fix_dump_coords(N, P, coor)
-stop
-coor = fix_aline_coords(N, P, coor)
+fix_dump_coords(seq)
+fix_aline_coords(seq)
 
 if cBSY:
-    coor1 = fix_dump_coords(N1, P1, coor1)
-    coor1 = fix_aline_coords(N1, P1, coor1)
-    coor1 = fix_sxtes_coords(N1, coor1)
+    fix_dump_coords(other1)
+    fix_aline_coords(other1)
+    fix_sxtes_coords(other1)
 
 if cUND:
-    coor2 = fix_dump_coords(N2, P2, coor2)
-    coor2 = fix_aline_coords(N2, P2, coor2)
+    fix_dump_coords(other2)
+    fix_aline_coords(other2)
 
 # kicker/septum groups
-
 KSname = [
     'BKRDG0', 'BLRDG0',
     'BKYSP0H', 'BKYSP1H', 'BKYSP2H', 'BKYSP3H', 'BKYSP4H', 'BKYSP5H', 'BLXSPH',
@@ -507,51 +506,55 @@ KSname = [
 # read FINT values for SBENs and undulator parameters from a special echo-file
 # generated via MAD VALUE commands
 
-C = []
-for n in range(len(vfile)):
-    fname = vfile[n]
+FINT = {}
+UNDPARM_K = {}
+UNDPARM_L = {}
+for fname in vfile:
     with open(fname, 'r') as f:
-        C.extend(f.read().split())
+        for line in f:
+          if line.startswith("Value of expression"):
+            data = line.split()
+            if 'FINT' in data[3]:
+                name = data[3].strip('"').replace('[',' ').replace(']','').split()[0]
+                FINT[name] = float(data[5])
+                if name[-1] == 'A':
+                    FINT[name[:-1]+'B'] = float(data[5])
+                elif name[-1] == '1':
+                    FINT[name[:-1]+'2'] = float(data[5])
+            else:
+              name = data[3].strip('"')
+              if name[-2:] == '_L':
+                UNDPARM_L[name[:-2]] = float(data[5])
+              elif name[-2:] == '_K':
+                UNDPARM_K[name[:-2]] = float(data[5])
 
-#Nelem, Nc = len(N), len(N[0])
-P2 = np.zeros((Nelem, 2))
-
-idb = [i for i,x in enumerate(K) if x == 'SBEN']
-for m in range(0, len(idb), 2):
-    na = idb[m]
-    nb = idb[m+1]
-    name = N[na].strip()
-    name = name.split('.')[0]  # remove decoration, if any
-    id_ = strmatch(name,C)[0]
-    #id_ = [i for i, x in enumerate(C) if name in x][0]
-    #if not id_:
-    #    raise ValueError(f'No FINT for {name}')
-    #elif len(id_) > 1:
-    #    print('oops')
-    fint = float(C[id_+6])
-    P2[na][0] = fint
-    P2[nb][0] = fint
-
-idm = [i for i,x in enumerate(K) if x == 'MATR']
-for m in range(0, len(idm), 2):
-    n1 = idm[m]
-    n2 = idm[m+1]
-    name = N[n1].strip()
-    Ktxt = f'"{name}_K"'
-    Ltxt = f'"{name}_L"'
-    idK = strmatch(Ktxt,C)[0]
-    idL = strmatch(Ltxt,C)[0]
-    undk = float(C[idK+2])
-    undl = float(C[idL+2])
-    P2[n1, :] = [undl, undk]
-    P2[n2, :] = [undl, undk]
-
+for seq1 in seq:
+    keys = [x.key for x in seq1['eles']]
+    ids = strmatch('SBEN',keys,True)
+    for id_ in ids:
+        name = seq1['eles'][id_].name
+        seq1['eles'][id_].params['fint'] = FINT[name]
+  
+    ids = strmatch('MATR',keys,True)
+    for id_ in ids:
+        name = seq1['eles'][id_].name
+        seq1['eles'][id_].params['undl'] = UNDPARM_L[name]
+        seq1['eles'][id_].params['undk'] = UNDPARM_K[name]
+  
 # make unique names
 
-nfix = [['', 'MUQS', 'MPHS'],
+nfixs = [['', 'MUQS', 'MPHS'],
         ['', 'MUQH', 'MPHH'],
         ['HOMCM', '', '']]
-ioff = [[-3, -1, -1], [-2, -1, -1], [-3, -1, -1]]
+ioffs = [[-3, -1, -1], [-2, -1, -1], [-3, -1, -1]]
+
+for nfix in nfixs:
+    for name in nfix:
+        if not name:
+            continue
+        for seq1 in seq:
+            names = [x.name for x in seq1['eles']]
+            ids = strmatch('SBEN',keys,True)
 
 for nr in range(len(nfix)):
     for nc in range(len(nfix[0])):
@@ -569,6 +572,7 @@ for nr in range(len(nfix)):
                 N[id[m]] = N[id[m]][:lc] + '.' + cname[-2:]
             else:
                 N[id[m]] = N[id[m]][:lc] + '.' + N[id[m]-2][2:4]
+
         if cBSY:
             id = strmatch(nfix[nr][nc], N1)
             if len(id) == 0:
@@ -578,6 +582,7 @@ for nr in range(len(nfix)):
             for m in range(len(id)):
                 cname = N1[id[m] + ioff[nr][nc]].strip()
                 N1[id[m]] = N1[id[m]][:lc] + '.' + cname[-2:]
+
         if cUND:
             id = strmatch(nfix[nr][nc], N2)
             if len(id) == 0:
@@ -587,6 +592,8 @@ for nr in range(len(nfix)):
             for m in range(len(id)):
                 cname = N2[id[m] + ioff[nr][nc]].strip()
                 N2[id[m]] = N2[id[m]][:lc] + '.' + cname[-2:]
+
+STOP
 
 # Find indices of 'WOODDOOR' in N
 jd = [i for i,x in enumerate(N) if x == 'WOODDOOR']
