@@ -404,7 +404,42 @@ for area1 in area:
         elif id1 is None and id2 is not None:
           for ele_ix in range(0,id2+1):
             seq1['eles'][ele_ix].area = area1['name']
-        #ida.extend([ix]*(id2-id1+1))
+    if cBSY:
+      for seq1 in other1:
+          names = [x.name for x in seq1['eles']]
+          id1 = safe_index(names, area1['beg'])
+          if id1 is not None:
+            id1 += area1['offset'][0]
+          if id2 is not None:
+            id2 += area1['offset'][1]
+          id2 = safe_index(names, area1['end']) 
+          if id1 is not None and id2 is not None:
+            for ele_ix in range(id1,id2+1):
+              seq1['eles'][ele_ix].area = area1['name']
+          elif id1 is not None and id2 is None:
+            for ele_ix in range(id1,len(seq1['eles'])):
+              seq1['eles'][ele_ix].area = area1['name']
+          elif id1 is None and id2 is not None:
+            for ele_ix in range(0,id2+1):
+              seq1['eles'][ele_ix].area = area1['name']
+    if cUND:
+      for seq1 in other2:
+          names = [x.name for x in seq1['eles']]
+          id1 = safe_index(names, area1['beg'])
+          if id1 is not None:
+            id1 += area1['offset'][0]
+          if id2 is not None:
+            id2 += area1['offset'][1]
+          id2 = safe_index(names, area1['end']) 
+          if id1 is not None and id2 is not None:
+            for ele_ix in range(id1,id2+1):
+              seq1['eles'][ele_ix].area = area1['name']
+          elif id1 is not None and id2 is None:
+            for ele_ix in range(id1,len(seq1['eles'])):
+              seq1['eles'][ele_ix].area = area1['name']
+          elif id1 is None and id2 is not None:
+            for ele_ix in range(0,id2+1):
+              seq1['eles'][ele_ix].area = area1['name']
 
 # special handling for rolled dump lines and A-line
 def fix_dump_coords(seq):
@@ -541,110 +576,45 @@ for seq1 in seq:
         seq1['eles'][id_].params['undl'] = UNDPARM_L[name]
         seq1['eles'][id_].params['undk'] = UNDPARM_K[name]
   
-# make unique names
-
-nfixs = [['', 'MUQS', 'MPHS'],
-        ['', 'MUQH', 'MPHH'],
-        ['HOMCM', '', '']]
-ioffs = [[-3, -1, -1], [-2, -1, -1], [-3, -1, -1]]
-
-for nfix,ioff in zip(nfixs,ioffs):
-    for fix_name,offset in zip(nfix,ioff):
-        if not name:
-            continue
-        for seq1 in seq:
-            names = [x.name for x in seq1['eles']]
-            ids = strmatch(fix_name,names)
-            if len(id) == 0:
-                continue
-
-for nr in range(len(nfix)):
-    for nc in range(len(nfix[0])):
-        if not nfix[nr][nc]:
-            continue
-        id = strmatch(nfix[nr][nc], N)
-        if len(id) == 0:
-            continue
-        if nr < 2 and nc == 0:
-            id = id[::2]
-        lc = len(nfix[nr][nc])
-        for m in range(len(id)):
-            if nr < 2:
-                cname = N[id[m] + ioff[nr][nc]].strip()
-                N[id[m]] = N[id[m]][:lc] + '.' + cname[-2:]
-            else:
-                N[id[m]] = N[id[m]][:lc] + '.' + N[id[m]-2][2:4]
-
-        if cBSY:
-            id = strmatch(nfix[nr][nc], N1)
-            if len(id) == 0:
-                continue
-            if nr < 2 and nc == 0:
-                id = id[::2]
-            for m in range(len(id)):
-                cname = N1[id[m] + ioff[nr][nc]].strip()
-                N1[id[m]] = N1[id[m]][:lc] + '.' + cname[-2:]
-
-        if cUND:
-            id = strmatch(nfix[nr][nc], N2)
-            if len(id) == 0:
-                continue
-            if nr < 2 and nc == 0:
-                id = id[::2]
-            for m in range(len(id)):
-                cname = N2[id[m] + ioff[nr][nc]].strip()
-                N2[id[m]] = N2[id[m]][:lc] + '.' + cname[-2:]
-
-STOP
-
-# Find indices of 'WOODDOOR' in N
-jd = [i for i,x in enumerate(N) if x == 'WOODDOOR']
-for j in jd:
-    cname = 'WOODDOOR.{}'.format(area[ida[j]]['name'])
-    N[j] = cname
-
-if cBSY:
-    id_ = strmatch('WOODDOOR',N)
-    jd = strmatch('WOODDOOR',N1)
-    for i,j in zip(id_,jd):
-        N1[j] = N[i]
-
-if cUND:
-    id_ = strmatch('WOODDOOR',N)
-    jd = strmatch('WOODDOOR',N2)
-    for i,j in zip(id_,jd):
-        N2[j] = N[i]
-
-
 # Shared devices (devices which see both kicked and unkicked beams)
-aname_all = ['DIAG0', 'SPH', 'SPS', 'DASEL', 'CLTS']
-name_all = ['BPMDG000', 'BPMSPH', 'BPMSPS', 'BPMDAS', 'BPMCUS']
+area_name_all = ['DIAG0', 'SPH', 'SPS', 'DASEL', 'CLTS']
+ele_name_all = ['BPMDG000', 'BPMSPH', 'BPMSPS', 'BPMDAS', 'BPMCUS']
 
-for name, aname in zip(name_all,aname_all):
-    jd = strmatch(name,N,True)
-    for m in range(len(jd)):
-        if aname == area[ida[jd[m]]]['name']:
-            N[jd[m]] = name + '?'
+for ele_name, area_name in zip(ele_name_all,area_name_all):
+    for seq1 in seq:
+        names = [x.name for x in seq1['eles']]
+        ids = strmatch(ele_name,names,True)
+
+        for ele in [seq1['eles'][x] for x in ids]:
+            if ele.area == area_name:
+                ele.name = ele.name + '?'
 
     if cBSY:
-        jd1 = strmatch(name,N1,True)
-        for m in range(len(jd1)):
-            if aname == area[ida[jd[m]]]['name']:
-                N1[jd1[m]] = name + '?'
+      for seq1 in other1:
+          names = [x.name for x in seq1['eles']]
+          ids = strmatch(ele_name,names,True)
+
+          for ele in [seq1['eles'][x] for x in ids]:
+              if ele.area == area_name:
+                  ele.name = ele.name + '?'
 
     if cUND:
-        jd2 = strmatch(name,N2,True)
-        for m in range(len(jd2)):
-            if aname == area[ida[jd[m]]]['name']:
-                N1[jd2[m]] = name + '?'
+      for seq1 in other2:
+          names = [x.name for x in seq1['eles']]
+          ids = strmatch(ele_name,names,True)
 
-# Change keyword for GUN/GUNB solenoid correction quads from MULT to QUAD;
+          for ele in [seq1['eles'][x] for x in ids]:
+              if ele.area == area_name:
+                  ele.name = ele.name + '?'
+
 # copy T1 into TILT slot
-name = ['CQ01', 'SQ01', 'CQ01B', 'SQ01B', 'SQ02B']
-for n in name:
-    id_ = strmatch(n,N,True)
-    for i in id_:
-        P[i][3] = P[i][5]  # T1 -> TILT
+ele_names = ['CQ01', 'SQ01', 'CQ01B', 'SQ01B', 'SQ02B']
+for ele_name in ele_names:
+    for eles in [x['eles'] for x in seq]:
+        names = [x.name for x in eles]
+        ids = strmatch(ele_name,names,True)
+        for id_ in ids:
+            eles[id_].raw_params[3] = eles[id_].raw_params[5]
 
 def assign_ucell(N, coor, idf):
     # NOTE: coordinates are assumed to be in MAD (not SYMBOLS) order
@@ -867,6 +837,8 @@ def assign_sector(N, coor, idf, N1, coor1, idf1):
 
 # Assign sector names
 SECTORS, SECTORS1 = assign_sector(N, coor, idf, N1, coor1, idf1)
+
+STOP
 
 # MAD SURVEY coordinates  [x,y,z,theta,phi   ,psi]
 # correspond to SolidEdge [z,x,y,roll ,-pitch,yaw]
@@ -2703,7 +2675,6 @@ def FixMagnetCoords(K, N, L, P, coor, cflag):
     for name,Xm1 in zip(names,Xm):
         id1 = strmatch(f"{name}1",N)[0] #center
         id0 = id1 - 1  # entrance
-        # FOO For BXPM2, pitch, z0, and y0 are not well defined.
         # Flag for investigation
         if name != 'BXPM2':
           pitch = -coor[id0, 4]
