@@ -616,13 +616,12 @@ for ele_name in ele_names:
         for id_ in ids:
             eles[id_].raw_params[3] = eles[id_].raw_params[5]
 
-def assign_ucell(N, coor, idf):
+#def assign_ucell(N, coor, idf):
+def assign_ucell(seq):
     # NOTE: coordinates are assumed to be in MAD (not SYMBOLS) order
-
-    debug = False
     filename = f'{script_dir}/sectors.xlsx'
 
-    UCELL = ['' for x in N]
+    #UCELL = ['' for x in N]
 
     wb= pyxl.load_workbook(filename,data_only=True)
 
@@ -644,22 +643,27 @@ def assign_ucell(N, coor, idf):
     wb.close()
     # Combine data from both sheets
     
-    coor3 = [c[2] for c in coor]
     for cell in ucell:
-        id1 = [i for i,x in enumerate(idf) if x==cell['froot']]
-
-        id2 = [i for i,x in enumerate(coor3) if x > cell['Zbeg']]
-        inter1 = intersection(id1,id2)[0]
-
-        id2 = [i for i,x in enumerate(coor3) if x < cell['Zend']]
-        inter2 = [v for v in id1 if v in id2][-1]
-        for jd in range(inter1,inter2+1):
-          UCELL[jd] = cell['name']
-
-    return UCELL
+        for eles in [x['eles'] for x in seq]:
+            froots = [x.froot_ix for x in eles]
+            id1 = [i for i,x in enumerate(froots) if x == cell['froot']]
+            id2 = [i for i,x in enumerate(eles) if x.coor[2] > cell['Zbeg']]
+            inter1 = intersection(id1,id2)
+            if inter1:
+              inter1 = inter1[0]
+            else:
+              continue
+            id3 = [i for i,x in enumerate(eles) if x.coor[2] < cell['Zend']]
+            inter2 = intersection(id1,id3)
+            if inter2:
+              inter2 = inter2[-1]
+            else:
+              continue
+            for jd in range(inter1,inter2+1):
+                eles[jd].params['ucell'] = cell['name']
 
 # Assign undulator cell names
-UCELL = assign_ucell(N1, coor1, idf1)
+assign_ucell(other1)
 
 def read_sector():
     filename = f'{script_dir}/sectors.xlsx'
@@ -748,6 +752,7 @@ def assign_sector(N, coor, idf, N1, coor1, idf1):
     # NOTE: coordinates are assumed to be in MAD (not SYMBOLS) order
 
     sect_SC, sect_CU = read_sector()
+    stop
 
     # superconducting linac LINEs
     # nf= 1: LCLS2scS
@@ -836,8 +841,8 @@ def assign_sector(N, coor, idf, N1, coor1, idf1):
     return SECTORS, SECTORS1
 
 # Assign sector names
-SECTORS, SECTORS1 = assign_sector(N, coor, idf, N1, coor1, idf1)
-
+assign_sector(seq)
+assign_sector(other1)
 STOP
 
 # MAD SURVEY coordinates  [x,y,z,theta,phi   ,psi]
