@@ -5,7 +5,7 @@ import numpy as np
 class EleData:
     def __init__(self,fname,froot_ix,file_ord,key,name,length,raw_params,aper,ele_type,energy,fdn,suml,coor):
         """
-        file_index: integer.  index of file the element came from
+        froot_ix: integer.  index of file the element came from
         file_ord: integer.  ordinal position in MAD output file
         K (list): Element keyword
         N (list): Element name

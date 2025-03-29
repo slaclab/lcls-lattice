@@ -674,9 +674,10 @@ def read_sector():
     data = sheet['A4':'J58']
     sect_sc = []
     for row in data:
+        print([int(x) for x in str(row[1].value).split(',')])
         sect_sc.append({
             'name': row[0].value,
-            'froot': [row[1].value],
+            'froot': [int(x)-1 for x in str(row[1].value).split(',')],
             'BSY': row[2].value,
             'Zbeg': row[4].value,
             'Zend': row[5].value,
@@ -691,7 +692,7 @@ def read_sector():
     for row in data:
         sect_cu.append({
             'name': row[0].value,
-            'froot': [row[1].value],
+            'froot': [int(x)-1 for x in str(row[1].value).split(',')],
             'BSY': row[2].value,
             'Zbeg': row[4].value,
             'Zend': row[5].value,
@@ -699,20 +700,23 @@ def read_sector():
             'Nend': notnone(row[9].value)
         })
 
-    # assign multiple lines to some sectors
-    sect_sc[1]['froot'].extend([8])     # S01 (scS+DIAG0)
-    sect_sc[28]['froot'].extend([6])     # S28 (scS+scH)
-    sect_sc[29]['froot'].extend([6, 7, 9]) # S29 (scS+scH,scD,scDA)
-    sect_sc[30]['froot'].extend([6, 7, 9]) # S30 (scS+scH,scD,scDA)
-    sect_sc[31]['froot'].extend([6, 7, 9]) # BSY (scS+scH,scD,scDA)
+    #  # assign multiple lines to some sectors
+    #  sect_sc[1]['froot'].extend([7])     # S01 (scS+DIAG0)
+    #  sect_sc[28]['froot'].extend([5])     # S28 (scS+scH)
+    #  sect_sc[29]['froot'].extend([5, 6, 8]) # S29 (scS+scH,scD,scDA)
+    #  sect_sc[30]['froot'].extend([5, 6, 8]) # S30 (scS+scH,scD,scDA)
+    #  sect_sc[31]['froot'].extend([5, 6, 8]) # BSY (scS+scH,scD,scDA)
 
-    sect_cu[0]['froot'].extend([15]) # S20 (cuH+cuGSPEC)
-    sect_cu[1]['froot'].extend([16]) # S21 (cuH+cuSPEC)
-    sect_cu[11]['froot'].extend([14]) # BSY (cuH+cuS)
+    #  sect_cu[0]['froot'].extend([14]) # S20 (cuH+cuGSPEC)
+    #  sect_cu[1]['froot'].extend([15]) # S21 (cuH+cuSPEC)
+    #  sect_cu[11]['froot'].extend([13]) # BSY (cuH+cuS)
 
     return sect_sc, sect_cu
 
-def set_sector(N, SECTORS, coor, idf, nf, sector):
+FOOA, FOOB = read_sector()
+stop
+
+def set_sector(seq, sector):
     if nf not in sector['froot']:
         return
     Z = [x[2] for x in coor]
@@ -743,52 +747,50 @@ def set_sector(N, SECTORS, coor, idf, nf, sector):
         inter2 = intersection(id_,jd2)
         if inter2 != []:
             inter2 = inter2[0]
+
     if inter1 != [] and inter2 != []:
         for n in range(inter1, inter2 + 1):
             if SECTORS[n].strip() == '':
                 SECTORS[n] = sector['name']
 
-def assign_sector(N, coor, idf, N1, coor1, idf1):
+#def assign_sector(N, coor, idf, N1, coor1, idf1):
+def assign_sector(seq, other1):
     # NOTE: coordinates are assumed to be in MAD (not SYMBOLS) order
 
     sect_SC, sect_CU = read_sector()
-    stop
 
     # superconducting linac LINEs
-    # nf= 1: LCLS2scS
-    # nf= 2: LCLS2scSS
-    # nf= 3: LCLS2scS2_X
-    # nf= 4: LCLS2scSTXI
-    # nf= 5: LCLS2scSTMO
-    # nf= 6: LCLS2scH
-    # nf= 7: LCLS2scD
-    # nf= 8: DIAG0
-    # nf= 9: LCLS2scDA (DASEL)
+    # nf= 0: LCLS2scS
+    # nf= 1: LCLS2scSS
+    # nf= 2: LCLS2scS2_X
+    # nf= 3: LCLS2scSTXI
+    # nf= 4: LCLS2scSTMO
+    # nf= 5: LCLS2scH
+    # nf= 6: LCLS2scD
+    # nf= 7: DIAG0
+    # nf= 8: LCLS2scDA (DASEL)
 
-    SECTORS = ['' for x in N]
-    SECTORS1 = ['' for x in N]
-
-    for nf in range(1, 10):  # idf values
-        if nf in [3, 4, 5]:
+    for nf in range(9):  # idf values
+        if nf in [2, 3, 4]:
             continue  # do SXTES/2_X/TXI/TMO separately
         for ns, sector in enumerate(sect_SC, 1):
-            if nf == 6 and ns == 31:
+            if nf == 5 and ns == 31:
                 sector['Nend'] = 'ENDSPH'
-            if nf == 6 and ns == 32:
+            if nf == 5 and ns == 32:
                 sector['Nbeg'] = 'BEGSLTH'
                 sector['Nend'] = 'ENDSLTH'
-            if nf == 7 and ns == 31:
+            if nf == 6 and ns == 31:
                 sector['Nend'] = 'ENDSPD_3'
-            if nf == 7 and ns == 32:
+            if nf == 6 and ns == 32:
                 sector['Nbeg'] = 'BEGSLTD'
                 sector['Nend'] = 'ENDSLTD'
-            if nf == 9 and ns == 31:
+            if nf == 8 and ns == 31:
                 sector['Nbeg'] = 'BEGDASEL'
                 sector['Nend'] = ''
-            if nf == 9 and ns == 32:
+            if nf == 8 and ns == 32:
                 sector['Nbeg'] = ''
                 sector['Nend'] = ''
-            if nf == 9 and ns == 55:
+            if nf == 8 and ns == 55:
                 sector['Nbeg'] = ''
                 sector['Nend'] = 'ENDBSYA_2'
 
@@ -841,8 +843,7 @@ def assign_sector(N, coor, idf, N1, coor1, idf1):
     return SECTORS, SECTORS1
 
 # Assign sector names
-assign_sector(seq)
-assign_sector(other1)
+assign_sector(seq, other1)
 STOP
 
 # MAD SURVEY coordinates  [x,y,z,theta,phi   ,psi]
