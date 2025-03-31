@@ -674,10 +674,10 @@ def read_sector():
     data = sheet['A4':'J58']
     sect_sc = []
     for row in data:
-        print([int(x) for x in str(row[1].value).split(',')])
         sect_sc.append({
             'name': row[0].value,
-            'froot': [int(x)-1 for x in str(row[1].value).split(',')],
+            #'froot': [int(x)-1 for x in str(row[1].value).split(',')],
+            'froot': row[1].value,
             'BSY': row[2].value,
             'Zbeg': row[4].value,
             'Zend': row[5].value,
@@ -692,7 +692,8 @@ def read_sector():
     for row in data:
         sect_cu.append({
             'name': row[0].value,
-            'froot': [int(x)-1 for x in str(row[1].value).split(',')],
+            #'froot': [int(x)-1 for x in str(row[1].value).split(',')],
+            'froot': row[1].value,
             'BSY': row[2].value,
             'Zbeg': row[4].value,
             'Zend': row[5].value,
@@ -713,51 +714,48 @@ def read_sector():
 
     return sect_sc, sect_cu
 
-FOOA, FOOB = read_sector()
-stop
-
 def set_sector(seq, sector):
-    if nf not in sector['froot']:
-        return
-    Z = [x[2] for x in coor]
+    for seq_eles in [x['eles'] for x in seq]:
+        names = [x.name for x in seq1['eles']]
 
-    id_ = [i for i,x in enumerate(idf) if x == nf]
-    if sector['Nbeg'] == '':
-        jd2 = [i for i,x in enumerate(Z) if x > sector['Zbeg']]
-        inter1 = intersection(id_,jd2)
-        if inter1 == []:
-            return
+        Z = [x.coor[2] for x in seq_eles]
+
+        if sector['Nbeg'] == '':
+            jd2 = [i for i,x in enumerate(Z) if x > sector['Zbeg']]
+            inter1 = intersection(id_,jd2)
+            if inter1 == []:
+                return
+            else:
+                inter1 = inter1[0]
         else:
-            inter1 = inter1[0]
-    else:
-        jd2 = strmatch(sector['Nbeg'],N,True)
-        inter1 = intersection(id_,jd2)
-        if inter1 != []:
-            inter1 = inter1[0]
+            jd2 = strmatch(sector['Nbeg'],N,True)
+            inter1 = intersection(id_,jd2)
+            if inter1 != []:
+                inter1 = inter1[0]
 
-    if sector['Nend'] == '':
-        jd2 = [i for i,x in enumerate(Z) if x < sector['Zend']]
-        inter2 = intersection(id_,jd2)
-        if inter2 == []:
-            return
+        if sector['Nend'] == '':
+            jd2 = [i for i,x in enumerate(Z) if x < sector['Zend']]
+            inter2 = intersection(id_,jd2)
+            if inter2 == []:
+                return
+            else:
+                inter2 = inter2[-1]
         else:
-            inter2 = inter2[-1]
-    else:
-        jd2 = strmatch(sector['Nend'],N,True)
-        inter2 = intersection(id_,jd2)
-        if inter2 != []:
-            inter2 = inter2[0]
+            jd2 = strmatch(sector['Nend'],N,True)
+            inter2 = intersection(id_,jd2)
+            if inter2 != []:
+                inter2 = inter2[0]
 
-    if inter1 != [] and inter2 != []:
-        for n in range(inter1, inter2 + 1):
-            if SECTORS[n].strip() == '':
-                SECTORS[n] = sector['name']
+        if inter1 != [] and inter2 != []:
+            for n in range(inter1, inter2 + 1):
+                if SECTORS[n].strip() == '':
+                    SECTORS[n] = sector['name']
 
 #def assign_sector(N, coor, idf, N1, coor1, idf1):
 def assign_sector(seq, other1):
     # NOTE: coordinates are assumed to be in MAD (not SYMBOLS) order
 
-    sect_SC, sect_CU = read_sector()
+    sect_SC, sect_Cu = read_sector()
 
     # superconducting linac LINEs
     # nf= 0: LCLS2scS
@@ -770,30 +768,14 @@ def assign_sector(seq, other1):
     # nf= 7: DIAG0
     # nf= 8: LCLS2scDA (DASEL)
 
-    for nf in range(9):  # idf values
-        if nf in [2, 3, 4]:
-            continue  # do SXTES/2_X/TXI/TMO separately
-        for ns, sector in enumerate(sect_SC, 1):
-            if nf == 5 and ns == 31:
-                sector['Nend'] = 'ENDSPH'
-            if nf == 5 and ns == 32:
-                sector['Nbeg'] = 'BEGSLTH'
-                sector['Nend'] = 'ENDSLTH'
-            if nf == 6 and ns == 31:
-                sector['Nend'] = 'ENDSPD_3'
-            if nf == 6 and ns == 32:
-                sector['Nbeg'] = 'BEGSLTD'
-                sector['Nend'] = 'ENDSLTD'
-            if nf == 8 and ns == 31:
-                sector['Nbeg'] = 'BEGDASEL'
-                sector['Nend'] = ''
-            if nf == 8 and ns == 32:
-                sector['Nbeg'] = ''
-                sector['Nend'] = ''
-            if nf == 8 and ns == 55:
-                sector['Nbeg'] = ''
-                sector['Nend'] = 'ENDBSYA_2'
+    #froot and sector numbers from read_sector() are ordered starting with 1.
+    for sector in sect_SC:
+        set_sector(seq, sector)
+    for sector in sect_Cu
+        set_sector(seq, other1)
 
+    for nf in range(9):  # idf values
+        for ns, sector in enumerate(sect_SC, 1):
             if sector['BSY']:
                 set_sector(N1, SECTORS1, coor1, idf1, nf, sector)
             else:
@@ -812,33 +794,10 @@ def assign_sector(seq, other1):
         if nf in [12, 13]:
             continue  # do HXTES/TXI separately
         for ns, sector in enumerate(sect_CU, 1):
-            if nf == 14 and ns == 12:
-                sector['Nbeg'] = 'BEGCLTS'
-                sector['Nend'] = 'ENDCLTS'
-            if nf == 15 and ns == 1:
-                sector['Nbeg'] = 'BEGGSPEC'
-                sector['Nend'] = 'ENDGSPEC'
-            if nf == 16 and ns == 2:
-                sector['Nbeg'] = 'BEGSPEC'
-                sector['Nend'] = 'ENDSPEC'
             if sector['BSY']:
                 set_sector(N1, SECTORS1, coor1, idf1, nf, sector)
             else:
                 set_sector(N, SECTORS, coor, idf, nf, sector)
-
-    # handle SXTES lines separately
-    sector = sect_SC[-4]  # XTESS(2_X)
-    set_sector(N1, SECTORS1, coor1, idf1, 3, sector)
-    sector = sect_SC[-3]  # XTESS(TXI)
-    set_sector(N1, SECTORS1, coor1, idf1, 4, sector)
-    sector = sect_SC[-2]  # XTESS(TMO)
-    set_sector(N1, SECTORS1, coor1, idf1, 5, sector)
-
-    # handle HXTES lines separately
-    sector = sect_CU[-2]  # XTESH(XTES)
-    set_sector(N1, SECTORS1, coor1, idf1, 12, sector)
-    sector = sect_CU[-1]  # XTESH(TXI)
-    set_sector(N1, SECTORS1, coor1, idf1, 13, sector)
 
     return SECTORS, SECTORS1
 
