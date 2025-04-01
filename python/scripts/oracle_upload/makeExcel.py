@@ -676,7 +676,6 @@ def read_sector():
     for row in data:
         sect_sc.append({
             'name': row[0].value,
-            #'froot': [int(x)-1 for x in str(row[1].value).split(',')],
             'froot': row[1].value,
             'BSY': row[2].value,
             'Zbeg': row[4].value,
@@ -692,7 +691,6 @@ def read_sector():
     for row in data:
         sect_cu.append({
             'name': row[0].value,
-            #'froot': [int(x)-1 for x in str(row[1].value).split(',')],
             'froot': row[1].value,
             'BSY': row[2].value,
             'Zbeg': row[4].value,
@@ -701,109 +699,51 @@ def read_sector():
             'Nend': notnone(row[9].value)
         })
 
-    #  # assign multiple lines to some sectors
-    #  sect_sc[1]['froot'].extend([7])     # S01 (scS+DIAG0)
-    #  sect_sc[28]['froot'].extend([5])     # S28 (scS+scH)
-    #  sect_sc[29]['froot'].extend([5, 6, 8]) # S29 (scS+scH,scD,scDA)
-    #  sect_sc[30]['froot'].extend([5, 6, 8]) # S30 (scS+scH,scD,scDA)
-    #  sect_sc[31]['froot'].extend([5, 6, 8]) # BSY (scS+scH,scD,scDA)
-
-    #  sect_cu[0]['froot'].extend([14]) # S20 (cuH+cuGSPEC)
-    #  sect_cu[1]['froot'].extend([15]) # S21 (cuH+cuSPEC)
-    #  sect_cu[11]['froot'].extend([13]) # BSY (cuH+cuS)
-
     return sect_sc, sect_cu
 
 def set_sector(seq, sector):
     for seq_eles in [x['eles'] for x in seq]:
-        names = [x.name for x in seq1['eles']]
-
+    
+        names = [x.name for x in seq_eles]
         Z = [x.coor[2] for x in seq_eles]
 
         if sector['Nbeg'] == '':
-            jd2 = [i for i,x in enumerate(Z) if x > sector['Zbeg']]
-            inter1 = intersection(id_,jd2)
-            if inter1 == []:
+            jd1 = [i for i,x in enumerate(Z) if x > sector['Zbeg']]
+            if jd1 == []:
                 return
-            else:
-                inter1 = inter1[0]
         else:
-            jd2 = strmatch(sector['Nbeg'],N,True)
-            inter1 = intersection(id_,jd2)
-            if inter1 != []:
-                inter1 = inter1[0]
+            jd1 = strmatch(sector['Nbeg'],names,True)
+            if jd1 == []:
+                return
 
         if sector['Nend'] == '':
             jd2 = [i for i,x in enumerate(Z) if x < sector['Zend']]
-            inter2 = intersection(id_,jd2)
-            if inter2 == []:
-                return
-            else:
-                inter2 = inter2[-1]
         else:
-            jd2 = strmatch(sector['Nend'],N,True)
-            inter2 = intersection(id_,jd2)
-            if inter2 != []:
-                inter2 = inter2[0]
+            jd2 = strmatch(sector['Nend'],names,True)
 
-        if inter1 != [] and inter2 != []:
-            for n in range(inter1, inter2 + 1):
-                if SECTORS[n].strip() == '':
-                    SECTORS[n] = sector['name']
+        inter = intersection(jd1,jd2)
+        for ix in inter:
+            seq_eles[ix].sector = sector['name']
 
-#def assign_sector(N, coor, idf, N1, coor1, idf1):
 def assign_sector(seq, other1):
     # NOTE: coordinates are assumed to be in MAD (not SYMBOLS) order
 
     sect_SC, sect_Cu = read_sector()
 
-    # superconducting linac LINEs
-    # nf= 0: LCLS2scS
-    # nf= 1: LCLS2scSS
-    # nf= 2: LCLS2scS2_X
-    # nf= 3: LCLS2scSTXI
-    # nf= 4: LCLS2scSTMO
-    # nf= 5: LCLS2scH
-    # nf= 6: LCLS2scD
-    # nf= 7: DIAG0
-    # nf= 8: LCLS2scDA (DASEL)
-
     #froot and sector numbers from read_sector() are ordered starting with 1.
     for sector in sect_SC:
-        set_sector(seq, sector)
-    for sector in sect_Cu
-        set_sector(seq, other1)
-
-    for nf in range(9):  # idf values
-        for ns, sector in enumerate(sect_SC, 1):
-            if sector['BSY']:
-                set_sector(N1, SECTORS1, coor1, idf1, nf, sector)
-            else:
-                set_sector(N, SECTORS, coor, idf, nf, sector)
-
-    # copper linac LINEs
-    # nf=10: LCLS2cuH
-    # nf=11: LCLS2cuHS
-    # nf=12: LCLS2cuHXTES
-    # nf=13: LCLS2cuHTXI
-    # nf=14: LCLS2cuS
-    # nf=15: LCLS2cuGSPEC
-    # nf=16: LCLS2cuSPEC
-
-    for nf in range(10, 17):  # idf values
-        if nf in [12, 13]:
-            continue  # do HXTES/TXI separately
-        for ns, sector in enumerate(sect_CU, 1):
-            if sector['BSY']:
-                set_sector(N1, SECTORS1, coor1, idf1, nf, sector)
-            else:
-                set_sector(N, SECTORS, coor, idf, nf, sector)
-
-    return SECTORS, SECTORS1
+        if sector['BSY'] == 0:
+            set_sector(seq, sector)
+        else:
+            set_sector(other1, sector)
+    for sector in sect_Cu:
+        if sector['BSY'] == 0:
+            set_sector(seq, sector)
+        else:
+            set_sector(other1, sector)
 
 # Assign sector names
 assign_sector(seq, other1)
-STOP
 
 # MAD SURVEY coordinates  [x,y,z,theta,phi   ,psi]
 # correspond to SolidEdge [z,x,y,roll ,-pitch,yaw]
@@ -823,8 +763,10 @@ if cUND:
     coor2 = coor2[:, ic]
     coor2[:, 4] = -coor2[:, 4]
 
-# generate ordered list of MAD keywords
 
+STOP
+
+# generate ordered list of MAD keywords
 tkeyw = sorted(list(set(K)))
 
 MADK = [
