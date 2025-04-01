@@ -702,8 +702,10 @@ def read_sector():
     return sect_sc, sect_cu
 
 def set_sector(seq, sector):
+    #froot and sector numbers from read_sector() are ordered starting with 1.
+    if seq[0]['eles'][0].froot_ix+1 == sector['froot']:
+        return
     for seq_eles in [x['eles'] for x in seq]:
-    
         names = [x.name for x in seq_eles]
         Z = [x.coor[2] for x in seq_eles]
 
@@ -726,11 +728,8 @@ def set_sector(seq, sector):
             seq_eles[ix].sector = sector['name']
 
 def assign_sector(seq, other1):
-    # NOTE: coordinates are assumed to be in MAD (not SYMBOLS) order
-
     sect_SC, sect_Cu = read_sector()
 
-    #froot and sector numbers from read_sector() are ordered starting with 1.
     for sector in sect_SC:
         if sector['BSY'] == 0:
             set_sector(seq, sector)
@@ -749,20 +748,15 @@ assign_sector(seq, other1)
 # correspond to SolidEdge [z,x,y,roll ,-pitch,yaw]
 
 ic = [2, 0, 1, 5, 4, 3]
-coor = np.array(coor)
-coor = coor[:, ic]
-coor[:, 4] = -coor[:, 4]
-
+for seq1 in seq:
+    for ele in seq1['eles']:
+        ele.dbcoor = ele.coor[ic]
+        ele.dbcoor[4] = -1*ele.coor[4]
 if cBSY:
-    coor1 = np.array(coor1)
-    coor1 = coor1[:, ic]
-    coor1[:, 4] = -coor1[:, 4]
-
-if cUND:
-    coor2 = np.array(coor2)
-    coor2 = coor2[:, ic]
-    coor2[:, 4] = -coor2[:, 4]
-
+    for seq1 in other1:
+        for ele in seq1['eles']:
+            ele.dbcoor = ele.coor[ic]
+            ele.dbcoor[4] = -1*ele.coor[4]
 
 STOP
 
