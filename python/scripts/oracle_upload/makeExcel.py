@@ -859,12 +859,9 @@ XALK = {
 
 for seq_eles in [x['eles'] for x in main_seq]:
     neles = len(seq_eles)
-    ix = -1
-    while ix < neles:
-        ele = seq_eles[ix]
-#DEL for kwn in MADK:
-        kwn = ele.key
-    #DEL id = strmatch(kwn,K)
+    ix = 0
+    for kwn,klst in MADK.items():
+        id = strmatch(kwn,K)
         if kwn == 'LCAV':
             # create list of unique names that will allow unsplitting
             name = slicer(N,id)
@@ -876,7 +873,7 @@ for seq_eles in [x['eles'] for x in main_seq]:
             name = list(dict.fromkeys(name))
             LCAV = []
             nLCAV = 0
-
+    
             for mname in name:
                 if mname.startswith('TCX'):
                     id = strmatch(mname,N,True)
@@ -928,9 +925,9 @@ for seq_eles in [x['eles'] for x in main_seq]:
                     'suml': suml,
                     **{f'c{k+1}': coorc[k] for k in range(6)}
                 })
-
+    
                 # BSY coordinates
-
+    
                 for k in range(6):
                     LCAV[-1][f'c1{k+1}'] = []
                 if cBSY:
@@ -949,9 +946,9 @@ for seq_eles in [x['eles'] for x in main_seq]:
                         if not LCAV[-1]['sector']:
                             LCAV[-1]['sector'] = SECTORS1[id1].strip()
                         LCAV[-1]['ucell'] = UCELL[id1].strip()
-
+    
                 # UND coordinates
-
+    
                 LCAV[-1]['suml2'] = []
                 for k in range(6):
                     LCAV[-1][f'c2{k+1}'] = []
@@ -1075,7 +1072,7 @@ for seq_eles in [x['eles'] for x in main_seq]:
                     **{f'm{k+1}': coorm[k] for k in range(6)}
                 })
                 # BSY coordinates
-
+    
                 for k in range(6):
                     SBEN[-1][f'c1{k+1}'] = []
                     SBEN[-1][f'm1{k+1}'] = []
@@ -1117,9 +1114,9 @@ for seq_eles in [x['eles'] for x in main_seq]:
                         if not SBEN[-1]['sector']:
                             SBEN[-1]['sector'] = SECTORS1[id1].strip()
                         SBEN[-1]['ucell'] = UCELL[id1].strip()
-
+    
                 # UND coordinates
-
+    
                 SBEN[-1]['suml2'] = []
                 for k in range(6):
                     SBEN[-1][f'c2{k+1}'] = []
@@ -1159,7 +1156,7 @@ for seq_eles in [x['eles'] for x in main_seq]:
                         for k in range(6):
                             SBEN[-1][f'c2{k+1}'] = coorc2[k]
                             SBEN[-1][f'm2{k+1}'] = coorm2[k]
-
+    
         elif kwn == 'QUAD':
             name = list(dict.fromkeys([N[i] for i in id]))
             QUAD = []
@@ -1218,9 +1215,9 @@ for seq_eles in [x['eles'] for x in main_seq]:
                     **{f'c{k+1}': coorc[k] for k in range(6)},
                     **{f'm{k+1}': [] for k in range(6)}
                 })
-
+    
                 # BSY coordinates
-
+    
                 for k in range(6):
                     QUAD[-1][f'c1{k+1}'] = []
                 if cBSY:
@@ -1235,9 +1232,9 @@ for seq_eles in [x['eles'] for x in main_seq]:
                         if not QUAD[-1]['sector']:
                             QUAD[-1]['sector'] = SECTORS1[id1].strip()
                         QUAD[-1]['ucell'] = UCELL[id1].strip()
-
+    
                 # UND coordinates
-
+    
                 QUAD[-1]['suml2'] = []
                 for k in range(6):
                     QUAD[-1][f'c2{k+1}'] = []
@@ -1250,7 +1247,7 @@ for seq_eles in [x['eles'] for x in main_seq]:
                         QUAD[-1]['suml2'] = suml2
                         for k in range(6):
                             QUAD[-1][f'c2{k+1}'] = coorc2[k]
-
+    
         elif kwn == 'SEXT':
             name = list(dict.fromkeys([N[i] for i in id]))
             SEXT = []
@@ -1306,9 +1303,9 @@ for seq_eles in [x['eles'] for x in main_seq]:
                     'suml': suml,
                     **{f'c{k+1}': coorc[k] for k in range(6)}
                 })
-
+    
                 # BSY coordinates
-
+    
                 for k in range(6):
                     SEXT[-1][f'c1{k+1}'] = []
                 if cBSY:
@@ -1323,9 +1320,9 @@ for seq_eles in [x['eles'] for x in main_seq]:
                         if not SEXT[-1]['sector']:
                             SEXT[-1]['sector'] = SECTORS1[id1].strip()
                         SEXT[-1]['ucell'] = UCELL[id1].strip()
-
+    
                 # UND coordinates
-
+    
                 SEXT[-1]['suml2'] = []
                 for k in range(6):
                     SEXT[-1][f'c2{k+1}'] = []
@@ -1338,7 +1335,7 @@ for seq_eles in [x['eles'] for x in main_seq]:
                         SEXT[-1]['suml2'] = suml2
                         for k in range(6):
                             SEXT[-1][f'c2{k+1}'] = coorc2[k]
-
+    
         elif kwn == 'SOLE':
             name = list(dict.fromkeys([N[i] for i in id]))
             SOLE = []
@@ -1393,9 +1390,9 @@ for seq_eles in [x['eles'] for x in main_seq]:
                     'suml': suml,
                     **{f'c{k+1}': coorc[k] for k in range(6)}
                 })
-
+    
                 # BSY coordinates
-
+    
                 for k in range(6):
                     SOLE[-1][f'c1{k+1}'] = []
                 if cBSY:
@@ -1411,9 +1408,9 @@ for seq_eles in [x['eles'] for x in main_seq]:
                         if not SOLE[-1]['sector']:
                             SOLE[-1]['sector'] = SECTORS1[id1].strip()
                         SOLE[-1]['ucell'] = UCELL[id1].strip()
-
+    
                 # UND coordinates
-
+    
                 SOLE[-1]['suml2'] = []
                 for k in range(6):
                     SOLE[-1][f'c2{k+1}'] = []
@@ -1427,7 +1424,7 @@ for seq_eles in [x['eles'] for x in main_seq]:
                         SOLE[-1]['suml2'] = suml2
                         for k in range(6):
                             SOLE[-1][f'c2{k+1}'] = coorc2[k]
-
+    
         elif kwn == 'MATR':
             name = list(dict.fromkeys([N[i] for i in id]))
             MATR = []
@@ -1463,9 +1460,9 @@ for seq_eles in [x['eles'] for x in main_seq]:
                     'suml': suml,
                     **{f'c{k+1}': coorc[k] for k in range(6)}
                 })
-
+    
                 # BSY coordinates
-
+    
                 for k in range(6):
                     MATR[-1][f'c1{k+1}'] = []
                 if cBSY:
@@ -1480,9 +1477,9 @@ for seq_eles in [x['eles'] for x in main_seq]:
                         if not MATR[-1]['sector']:
                             MATR[-1]['sector'] = SECTORS1[id1].strip()
                         MATR[-1]['ucell'] = UCELL[id1].strip()
-
+    
                 # UND coordinates
-
+    
                 MATR[-1]['suml2'] = []
                 for k in range(6):
                     MATR[-1][f'c2{k+1}'] = []
@@ -1495,7 +1492,7 @@ for seq_eles in [x['eles'] for x in main_seq]:
                         MATR[-1]['suml2'] = suml2
                         for k in range(6):
                             MATR[-1][f'c2{k+1}'] = coorc2[k]
-
+    
         elif kwn == 'RCOL':
             name = [N[i] for i in id] # RCOLs are not split
             RCOL = []
@@ -1531,9 +1528,9 @@ for seq_eles in [x['eles'] for x in main_seq]:
                     'suml': suml,
                     **{f'c{k+1}': coorc[k] for k in range(6)}
                 })
-
+    
                 # BSY coordinates
-
+    
                 for k in range(6):
                     RCOL[-1][f'c1{k+1}'] = []
                 if cBSY:
@@ -1548,9 +1545,9 @@ for seq_eles in [x['eles'] for x in main_seq]:
                         if not RCOL[-1]['sector']:
                             RCOL[-1]['sector'] = SECTORS1[id[0]].strip()
                         RCOL[-1]['ucell'] = UCELL[id[0]].strip()
-
+    
                 # UND coordinates
-
+    
                 RCOL[-1]['suml2'] = []
                 for k in range(6):
                     RCOL[-1][f'c2{k+1}'] = []
@@ -1563,7 +1560,7 @@ for seq_eles in [x['eles'] for x in main_seq]:
                         RCOL[-1]['suml2'] = suml2
                         for k in range(6):
                             RCOL[-1][f'c2{k+1}'] = coorc2[k]
-
+    
         elif kwn == 'ECOL':
             name = [N[i] for i in id]  # ECOLs are not split
             ECOL = []
@@ -1599,9 +1596,9 @@ for seq_eles in [x['eles'] for x in main_seq]:
                     'suml': suml,
                     **{f'c{k+1}': coorc[k] for k in range(6)}
                 })
-
+    
                 # BSY coordinates
-
+    
                 for k in range(6):
                     ECOL[-1][f'c1{k+1}'] = []
                 if cBSY:
@@ -1616,9 +1613,9 @@ for seq_eles in [x['eles'] for x in main_seq]:
                         if not ECOL[-1]['sector']:
                             ECOL[-1]['sector'] = SECTORS1[id[0]].strip()
                         ECOL[-1]['ucell'] = UCELL[id[0]].strip()
-
+    
                 # UND coordinates
-
+    
                 ECOL[-1]['suml2'] = []
                 for k in range(6):
                     ECOL[-1][f'c2{k+1}'] = []
@@ -1631,7 +1628,7 @@ for seq_eles in [x['eles'] for x in main_seq]:
                         ECOL[-1]['suml2'] = suml2
                         for k in range(6):
                             ECOL[-1][f'c2{k+1}'] = coorc2[k]
-
+    
         elif kwn == 'SROT':
             name = [N[i] for i in id]  # SROTs are not split
             SROT = []
@@ -1667,9 +1664,9 @@ for seq_eles in [x['eles'] for x in main_seq]:
                     'suml': suml,
                     **{f'c{k+1}': coorc[k] for k in range(6)}
                 })
-
+    
                 # BSY coordinates
-
+    
                 for k in range(6):
                     SROT[-1][f'c1{k+1}'] = []
                 if cBSY:
@@ -1684,9 +1681,9 @@ for seq_eles in [x['eles'] for x in main_seq]:
                         if not SROT[-1]['sector']:
                             SROT[-1]['sector'] = SECTORS1[id[0]].strip()
                         SROT[-1]['ucell'] = UCELL[id[0]].strip()
-
+    
                 # UND coordinates
-
+    
                 SROT[-1]['suml2'] = []
                 for k in range(6):
                     SROT[-1][f'c2{k+1}'] = []
@@ -1699,7 +1696,7 @@ for seq_eles in [x['eles'] for x in main_seq]:
                         SROT[-1]['suml2'] = suml2
                         for k in range(6):
                             SROT[-1][f'c2{k+1}'] = coorc2[k]
-
+    
         elif kwn == 'MULT':
             name = list(dict.fromkeys([N[i] for i in id]))
             MULT = []
@@ -1763,9 +1760,9 @@ for seq_eles in [x['eles'] for x in main_seq]:
                     **{f'c{k+1}': coorc[k] for k in range(6)},
                     **{f'm{k+1}': [] for k in range(6)}
                 })
-
+    
                 # BSY coordinates
-
+    
                 for k in range(6):
                     MULT[-1][f'c1{k+1}'] = []
                     MULT[-1][f'm1{k+1}'] = []
@@ -1781,9 +1778,9 @@ for seq_eles in [x['eles'] for x in main_seq]:
                         if not MULT[-1]['sector']:
                             MULT[-1]['sector'] = SECTORS1[id[0]].strip()
                         MULT[-1]['ucell'] = UCELL[id[0]].strip()
-
+    
                 # UND coordinates
-
+    
                 MULT[-1]['suml2'] = []
                 for k in range(6):
                     MULT[-1][f'c2{k+1}'] = []
@@ -1797,7 +1794,7 @@ for seq_eles in [x['eles'] for x in main_seq]:
                         MULT[-1]['suml2'] = suml2
                         for k in range(6):
                             MULT[-1][f'c2{k+1}'] = coorc2[k]
-
+    
         elif kwn == 'INST':
             name = list(dict.fromkeys([N[i] for i in id]))
             INST = []
@@ -1835,9 +1832,9 @@ for seq_eles in [x['eles'] for x in main_seq]:
                     **{f'c{k+1}': coorc[k] for k in range(6)},
                     **{f'm{k+1}': [] for k in range(6)}
                 })
-
+    
                 # BSY coordinates
-
+    
                 for k in range(6):
                     INST[-1][f'c1{k+1}'] = []
                     INST[-1][f'm1{k+1}'] = []
@@ -1853,9 +1850,9 @@ for seq_eles in [x['eles'] for x in main_seq]:
                         if not INST[-1]['sector']:
                             INST[-1]['sector'] = SECTORS1[id[0]].strip()
                         INST[-1]['ucell'] = UCELL[id[0]].strip()
-
+    
                 # UND coordinates
-
+    
                 INST[-1]['suml2'] = []
                 for k in range(6):
                     INST[-1][f'c2{k+1}'] = []
@@ -1869,7 +1866,7 @@ for seq_eles in [x['eles'] for x in main_seq]:
                         INST[-1]['suml2'] = suml2
                         for k in range(6):
                             INST[-1][f'c2{k+1}'] = coorc2[k]
-
+    
         elif kwn == 'HKIC':
             name = list(dict.fromkeys([N[i] for i in id]))
             HKIC = []
@@ -1906,9 +1903,9 @@ for seq_eles in [x['eles'] for x in main_seq]:
                     'suml': suml,
                     **{f'c{k+1}': coorc[k] for k in range(6)}
                 })
-
+    
                 # BSY coordinates
-
+    
                 for k in range(6):
                     HKIC[-1][f'c1{k+1}'] = []
                 if cBSY:
@@ -1923,7 +1920,7 @@ for seq_eles in [x['eles'] for x in main_seq]:
                         if not HKIC[-1]['sector']:
                             HKIC[-1]['sector'] = SECTORS1[id[0]].strip()
                         HKIC[-1]['ucell'] = UCELL[id[0]].strip()
-
+    
                 HKIC[-1]['suml2'] = []
                 for k in range(6):
                     HKIC[-1][f'c2{k+1}'] = []
@@ -1936,7 +1933,7 @@ for seq_eles in [x['eles'] for x in main_seq]:
                         HKIC[-1]['suml2'] = suml2
                         for k in range(6):
                             HKIC[-1][f'c2{k+1}'] = coorc2[k]
-
+    
         elif kwn == 'VKIC':
             name = list(dict.fromkeys([N[i] for i in id]))
             VKIC = []
@@ -1973,9 +1970,9 @@ for seq_eles in [x['eles'] for x in main_seq]:
                     'suml': suml,
                     **{f'c{k+1}': coorc[k] for k in range(6)}
                 })
-
+    
                 # BSY coordinates
-
+    
                 for k in range(6):
                     VKIC[-1][f'c1{k+1}'] = []
                 if cBSY:
@@ -1990,7 +1987,7 @@ for seq_eles in [x['eles'] for x in main_seq]:
                         if not VKIC[-1]['sector']:
                             VKIC[-1]['sector'] = SECTORS1[id[0]].strip()
                         VKIC[-1]['ucell'] = UCELL[id[0]].strip()
-
+    
                 VKIC[-1]['suml2'] = []
                 for k in range(6):
                     VKIC[-1][f'c2{k+1}'] = []
@@ -2039,9 +2036,9 @@ for seq_eles in [x['eles'] for x in main_seq]:
                     'suml': suml,
                     **{f'c{k+1}': coorc[k] for k in range(6)}
                 })
-
+    
                 # BSY coordinates
-
+    
                 for k in range(6):
                     MONI[-1][f'c1{k+1}'] = []
                 if cBSY:
@@ -2056,7 +2053,7 @@ for seq_eles in [x['eles'] for x in main_seq]:
                         if not MONI[-1]['sector']:
                             MONI[-1]['sector'] = SECTORS1[id[0]].strip()
                         MONI[-1]['ucell'] = UCELL[id[0]].strip()
-
+    
                 MONI[-1]['suml2'] = []
                 for k in range(6):
                     MONI[-1][f'c2{k+1}'] = []
@@ -2105,9 +2102,9 @@ for seq_eles in [x['eles'] for x in main_seq]:
                     'suml': suml,
                     **{f'c{k+1}': coorc[k] for k in range(6)}
                 })
-
+    
                 # BSY coordinates
-
+    
                 for k in range(6):
                     WIRE[-1][f'c1{k+1}'] = []
                 if cBSY:
@@ -2122,7 +2119,7 @@ for seq_eles in [x['eles'] for x in main_seq]:
                         if not WIRE[-1]['sector']:
                             WIRE[-1]['sector'] = SECTORS1[id[0]].strip()
                         WIRE[-1]['ucell'] = UCELL[id[0]].strip()
-
+    
                 WIRE[-1]['suml2'] = []
                 for k in range(6):
                     WIRE[-1][f'c2{k+1}'] = []
@@ -2171,9 +2168,9 @@ for seq_eles in [x['eles'] for x in main_seq]:
                     'suml': suml,
                     **{f'c{k+1}': coorc[k] for k in range(6)}
                 })
-
+    
                 # BSY coordinates
-
+    
                 for k in range(6):
                     PROF[-1][f'c1{k+1}'] = []
                 if cBSY:
@@ -2188,7 +2185,7 @@ for seq_eles in [x['eles'] for x in main_seq]:
                         if not PROF[-1]['sector']:
                             PROF[-1]['sector'] = SECTORS1[id[0]].strip()
                         PROF[-1]['ucell'] = UCELL[id[0]].strip()
-
+    
                 PROF[-1]['suml2'] = []
                 for k in range(6):
                     PROF[-1][f'c2{k+1}'] = []
@@ -2237,9 +2234,9 @@ for seq_eles in [x['eles'] for x in main_seq]:
                     'suml': suml,
                     **{f'c{k+1}': coorc[k] for k in range(6)}
                 })
-
+    
                 # BSY coordinates
-
+    
                 for k in range(6):
                     IMON[-1][f'c1{k+1}'] = []
                 if cBSY:
@@ -2254,7 +2251,7 @@ for seq_eles in [x['eles'] for x in main_seq]:
                         if not IMON[-1]['sector']:
                             IMON[-1]['sector'] = SECTORS1[id[0]].strip()
                         IMON[-1]['ucell'] = UCELL[id[0]].strip()
-
+    
                 IMON[-1]['suml2'] = []
                 for k in range(6):
                     IMON[-1][f'c2{k+1}'] = []
@@ -2303,9 +2300,9 @@ for seq_eles in [x['eles'] for x in main_seq]:
                     'suml': suml,
                     **{f'c{k+1}': coorc[k] for k in range(6)}
                 })
-
+    
                 # BSY coordinates
-
+    
                 for k in range(6):
                     BLMO[-1][f'c1{k+1}'] = []
                 if cBSY:
@@ -2320,7 +2317,7 @@ for seq_eles in [x['eles'] for x in main_seq]:
                         if not BLMO[-1]['sector']:
                             BLMO[-1]['sector'] = SECTORS1[id[0]].strip()
                         BLMO[-1]['ucell'] = UCELL[id[0]].strip()
-
+    
                 BLMO[-1]['suml2'] = []
                 for k in range(6):
                     BLMO[-1][f'c2{k+1}'] = []
@@ -2362,9 +2359,9 @@ for seq_eles in [x['eles'] for x in main_seq]:
                     'suml': suml,
                     **{f'c{k+1}': coorc[k] for k in range(6)}
                 })
-
+    
                 # BSY coordinates
-
+    
                 for k in range(6):
                     MARK[-1][f'c1{k+1}'] = []
                 if cBSY:
@@ -2378,9 +2375,9 @@ for seq_eles in [x['eles'] for x in main_seq]:
                         if not MARK[-1]['sector']:
                             MARK[-1]['sector'] = SECTORS1[id[0]].strip()
                         MARK[-1]['ucell'] = UCELL[id[0]].strip()
-
+    
                 # UND coordinates
-
+    
                 MARK[-1]['suml2'] = []
                 for k in range(6):
                     MARK[-1][f'c2{k+1}'] = []
