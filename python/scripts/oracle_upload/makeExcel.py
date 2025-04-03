@@ -857,44 +857,48 @@ XALK = {
  'BLMO': 'BLMO', 'INST': 'INST', 'MARK': 'MARK', 'MULT': 'MULT'
 }
 
-for seq_eles in [x['eles'] for x in main_seq]:
+def get_atte_lst(eles,ix_lst,att):
+    return [getattr(eles[ix],att) for ix in ix_lst]
+
+for seq in main_seq:
+    seq_eles = seq['eles']
     neles = len(seq_eles)
-    ix = 0
     for kwn,klst in MADK.items():
-        id = strmatch(kwn,K)
+        kids = strmatch(kwn,[x.key for x in seq_eles])
+        knames = [seq_eles[x].name for x in kids]
         if kwn == 'LCAV':
             # create list of unique names that will allow unsplitting
-            name = slicer(N,id)
-            for i in range(len(name)):
-                if name[i][0:4] in ['CAVL', 'CAVC']:  # unique in 7 characters
-                    name[i] = name[i][0:7]
+            uniq_names = knames.copy()
+            for i in range(len(uniq_names)):
+                if uniq_names[i][:4] in ['CAVL', 'CAVC']:  # unique in 7 characters
+                    uniq_names[i] = uniq_names[i][:7]
                 else:  # unique in 6 characters
-                    name[i] = name[i][0:6]
-            name = list(dict.fromkeys(name))
-            LCAV = []
-            nLCAV = 0
+                    uniq_names[i] = uniq_names[i][:6]
+            uniq_names = list(dict.fromkeys(uniq_names))
     
-            for mname in name:
-                if mname.startswith('TCX'):
-                    id = strmatch(mname,N,True)
+            for uniq_name in uniq_names:
+                if uniq_name.startswith('TCX'):
+                    ids = strmatch(uniq_name,names,True)
                 else:
-                    id = strmatch(mname,N)
-                id1 = id[0]  # first segment
-                ide = [id1-1, id[-1]]  # [entrance, exit]
-                sdsp = np.mean(Sd[ide])  # m (beam center)
-                suml = np.mean(S[ide])  # m (beam center)
-                dist = suml - seq[ids[id1]]['suml']  # m (sequence start to beam center)
-                energy = np.mean(E[ide])  # GeV (beam center)
+                    ids = strmatch(name,N)
+                id1 = ids[0]  # first segment
+                ide = [id1-1, ids[-1]]  # [entrance, exit]
+                sdsp = my_function(seq_eles, [10,20], '.Sd')
+                seq_eles[[10,20]].Sd
+                sdsp = (seq_eles[id1-1].Sd + seq_eles[ids[-1]].Sd)/2.0
+                suml = (seq_eles[id1-1].S + seq_eles[ids[-1]].S)/2.0
+                dist = suml - seq['suml']  # m (sequence start to beam center)
+                energy = (seq_eles[id1-1].energy + seq_eles[ids[-1]])/2.0
                 leng = np.sum(L[id])  # m
                 freq = P[id1, 4]  # MHz
                 ampl = np.sum(P[id, 5])  # MeV
                 phase = P[id1, 6]  # rad/2pi
                 grad = ampl / leng  # MeV/m
-                if re.match(r'K\d\d_\d[ABCD]', mname[0:6]):  # i.e. K27_3D
-                    id = strmatch(mname[0:5],N)
+                if re.match(r'K\d\d_\d[ABCD]', name[0:6]):  # i.e. K27_3D
+                    id = strmatch(name[0:5],N)
                     grad0 = np.min(P[id, 5] / L[id])
                     if grad0 == 0:
-                        power = power_fraction_data[mname]
+                        power = power_fraction_data[name]
                     else:
                         power = 0.25 * round((grad / grad0) ** 2)  # KLYS power fraction (1)
                 else:
@@ -911,7 +915,7 @@ for seq_eles in [x['eles'] for x in main_seq]:
                     'ucell': [],
                     'xkey': XALK[kwn],
                     'prim': FDN[id1],
-                    'name': mname,
+                    'name': name,
                     'type': T[id1].strip(),
                     'dist': dist,
                     'energy': energy,
@@ -931,10 +935,10 @@ for seq_eles in [x['eles'] for x in main_seq]:
                 for k in range(6):
                     LCAV[-1][f'c1{k+1}'] = []
                 if cBSY:
-                    if mname.startswith('TCX'):
-                        id = strmatch(mname,N1,True) # differentiate between TCX01/02 and TCX01B/02B
+                    if name.startswith('TCX'):
+                        id = strmatch(name,N1,True) # differentiate between TCX01/02 and TCX01B/02B
                     else:
-                        id = strmatch(mname,N1)
+                        id = strmatch(name,N1)
                     if len(id) > 0:
                         id1 = id[0]  # first segment
                         ide = [id1 - 1, id[-1]]  # [entrance, exit]
@@ -953,10 +957,10 @@ for seq_eles in [x['eles'] for x in main_seq]:
                 for k in range(6):
                     LCAV[-1][f'c2{k+1}'] = []
                 if cUND:
-                    if mname.startswith('TCX'):
-                        id = strmatch(mname,N2,True) # differentiate between TCX01/02 and TCX01B/02B
+                    if name.startswith('TCX'):
+                        id = strmatch(name,N2,True) # differentiate between TCX01/02 and TCX01B/02B
                     else:
-                        id = strmatch(mname,N2)
+                        id = strmatch(name,N2)
                     if len(id) > 0:
                         ide = [id[0] - 1, id[-1]]  # [entrance, exit]
                         suml2 = np.mean(S2[ide])  # m (beam center)

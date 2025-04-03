@@ -1,38 +1,42 @@
 #!/bin/env python3
 
 import numpy as np
+from dataclass import dataclass
 
+@dataclass
 class EleData:
-    def __init__(self,fname,froot_ix,file_ord,key,name,length,raw_params,aper,ele_type,energy,fdn,suml,coor):
-        """
-        froot_ix: integer.  index of file the element came from
-        file_ord: integer.  ordinal position in MAD output file
-        K (list): Element keyword
-        N (list): Element name
-        L (np.array): Element length
-        P (np.array): Element parameter
-        A (np.array): Aperture
-        T (list): Engineering type
-        E (np.array): Energy
-        FDN (list): NLC Formal Device Name
-        coor (np.array): Survey coordinates (X,Y,Z,yaw,pitch,roll)
-        S (np.array): suml
-        """
-        self.fname = fname
-        self.froot_ix = froot_ix           # idf
-        self.file_ord = file_ord           # idd
-        self.key = key                     # K
-        self.name = name                   # N
-        self.length = length               # L
-        self.raw_params = raw_params       # P
-        self.params = {}
-        self.aper = aper                   # A
-        self.ele_type = ele_type           # T
-        self.energy = energy               # E
-        self.fdn = fdn                     # FDN
-        self.suml = suml                   # S
-        self.coor = coor                   # coor
-        self.Sd = coor[2]                  # Sd "display S"
+    """
+    froot_ix: integer.  index of file the element came from
+    file_ord: integer.  ordinal position in MAD output file
+    K (list): Element keyword
+    N (list): Element name
+    L (np.array): Element length
+    P (np.array): Element parameter
+    A (np.array): Aperture
+    T (list): Engineering type
+    E (np.array): Energy
+    FDN (list): NLC Formal Device Name
+    coor (np.array): Survey coordinates (X,Y,Z,yaw,pitch,roll)
+    S (np.array): suml
+    """
+    fname: str = ""
+    froot_ix: int = -1                  # idf
+    file_ord: int = -1                  # idd
+    key: str = ""                       # K
+    name: str = ""                      # N
+    length: float = 0.0                 # L
+    raw_params: list = []               # P
+    params: list = []
+    aper: float = 0.0                   # A
+    ele_type: str = ""                  # T
+    energy: float = 0.0                 # E
+    fdn: str = ""                       # FDN
+    suml: float = 0.0                   # S
+    coor: float = [0,0,0,0,0,0]         # coor
+
+    def __post_init__(self)
+        self.Sd = self.coor[2]          # Sd "display S"
+
 
 def xtffs2mat_obj(fname,froot_ix):
     """
