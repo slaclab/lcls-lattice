@@ -1,7 +1,7 @@
 &tao_start
   n_universes = 1
-  !plot_file   ='tao_plot.init '
-  plot_file   ='$LCLS_LATTICE/bmad/tao/tao_plot.init '
+  plot_file   ='tao_plot.init'
+  !plot_file   ='$LCLS_LATTICE/bmad/tao/tao_plot.init '
   startup_file='$LCLS_LATTICE/bmad/tao/tao.startup'
 /
 
@@ -185,8 +185,18 @@ beam_init%sig_z = 0.8e-3
         datum( 6) =  'etap.x'     '' '' 'ENDHTR'   'target'     1e2
 /   
 
-
-
+&tao_d2_data
+  d2_data%name = 'mag_kG'
+  universe = 1
+  n_d1_data = 1
+/
+&tao_d1_data
+  ix_d1_data = 1
+  d1_data%name = 'data'
+  default_data_type = 'expression: ele::#[b1_gradient] * ele::#[l] * -0.1'
+  datum(1:12)%ele_name = "Q0H01", "Q0H02", "Q0H03", "Q0H04", "Q0H05", "Q0H06",
+                         "Q0H07", "Q0H08", "QHD01", "QHD02", "QHD03", "QHD04"
+/
 
 
 
@@ -280,6 +290,14 @@ beam_init%sig_z = 0.8e-3
 	default_step = 1e-4
 	default_attribute = 'K1'
 	var(1:)%ele_name = 'QCM01', 'Q0H01', 'Q0H02', 'Q0H03', 'Q0H04'
+/
+
+&tao_var
+    v1_var%name = 'q_HTR'
+    default_step = 1e-4
+    default_attribute = 'K1'
+    var(1:)%ele_name = 'Q0H05', 'Q0H06',
+                       'Q0H07', 'Q0H08', 'QHD01', 'QHD02', 'QHD03', 'QHD04'
 /
 
 
