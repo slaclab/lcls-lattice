@@ -17,7 +17,7 @@ class EleData:
     E (np.array): Energy
     FDN (list): NLC Formal Device Name
     coor (np.array): Survey coordinates (X,Y,Z,yaw,pitch,roll)
-    S (np.array): suml
+    S (np.array): suml:  running sum of element lengths
     """
     fname: str = ""
     froot_ix: int = -1                  # idf
@@ -31,11 +31,11 @@ class EleData:
     ele_type: str = ""                  # T
     energy: float = 0.0                 # E
     fdn: str = ""                       # FDN
-    suml: float = 0.0                   # S
+    suml: float = 0.0                   # S: running sum of element legnths
     coor: float = [0,0,0,0,0,0]         # coor
 
     def __post_init__(self)
-        self.Sd = self.coor[2]          # Sd "display S"
+        self.Sd = self.coor[2]          # Sd (aka "Display S"): floor z from modeling code
 
 
 def xtffs2mat_obj(fname,froot_ix):

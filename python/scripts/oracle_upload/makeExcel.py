@@ -412,13 +412,13 @@ for area1 in area:
         id2 = safe_index(names, area1['end']) 
         if id1 is not None and id2 is not None:
           for ele_ix in range(id1,id2+1):
-            seq1['eles'][ele_ix].area = area1['name']
+            seq1['eles'][ele_ix].area = area1
         elif id1 is not None and id2 is None:
           for ele_ix in range(id1,len(seq1['eles'])):
-            seq1['eles'][ele_ix].area = area1['name']
+            seq1['eles'][ele_ix].area = area1
         elif id1 is None and id2 is not None:
           for ele_ix in range(0,id2+1):
-            seq1['eles'][ele_ix].area = area1['name']
+            seq1['eles'][ele_ix].area = area1
     if cBSY:
       for seq1 in other1_seq:
           names = [x.name for x in seq1['eles']]
@@ -430,13 +430,13 @@ for area1 in area:
           id2 = safe_index(names, area1['end']) 
           if id1 is not None and id2 is not None:
             for ele_ix in range(id1,id2+1):
-              seq1['eles'][ele_ix].area = area1['name']
+              seq1['eles'][ele_ix].area = area1
           elif id1 is not None and id2 is None:
             for ele_ix in range(id1,len(seq1['eles'])):
-              seq1['eles'][ele_ix].area = area1['name']
+              seq1['eles'][ele_ix].area = area1
           elif id1 is None and id2 is not None:
             for ele_ix in range(0,id2+1):
-              seq1['eles'][ele_ix].area = area1['name']
+              seq1['eles'][ele_ix].area = area1
     if cUND:
       for seq1 in other2_seq:
           names = [x.name for x in seq1['eles']]
@@ -448,13 +448,13 @@ for area1 in area:
           id2 = safe_index(names, area1['end']) 
           if id1 is not None and id2 is not None:
             for ele_ix in range(id1,id2+1):
-              seq1['eles'][ele_ix].area = area1['name']
+              seq1['eles'][ele_ix].area = area1
           elif id1 is not None and id2 is None:
             for ele_ix in range(id1,len(seq1['eles'])):
-              seq1['eles'][ele_ix].area = area1['name']
+              seq1['eles'][ele_ix].area = area1
           elif id1 is None and id2 is not None:
             for ele_ix in range(0,id2+1):
-              seq1['eles'][ele_ix].area = area1['name']
+              seq1['eles'][ele_ix].area = area1
 
 # special handling for rolled dump lines and A-line
 def fix_dump_coords(seq):
@@ -857,15 +857,17 @@ XALK = {
  'BLMO': 'BLMO', 'INST': 'INST', 'MARK': 'MARK', 'MULT': 'MULT'
 }
 
-def get_atte_lst(eles,ix_lst,att):
+def get_attr_lst(eles,ix_lst,att):
     return [getattr(eles[ix],att) for ix in ix_lst]
 
 for seq in main_seq:
     seq_eles = seq['eles']
     neles = len(seq_eles)
-    for kwn,klst in MADK.items():
-        kids = strmatch(kwn,[x.key for x in seq_eles])
-        knames = [seq_eles[x].name for x in kids]
+    for kwn in MADK.keys():
+        kixs = strmatch(kwn,[x.key for x in seq_eles])
+        knames = [seq_eles[x].name for x in kixs]
+        # kixs:  all indexes in seq_eles that match kwn
+        # knames:  all names in seq_eles that match kwn
         if kwn == 'LCAV':
             # create list of unique names that will allow unsplitting
             uniq_names = knames.copy()
@@ -874,49 +876,60 @@ for seq in main_seq:
                     uniq_names[i] = uniq_names[i][:7]
                 else:  # unique in 6 characters
                     uniq_names[i] = uniq_names[i][:6]
-            uniq_names = list(dict.fromkeys(uniq_names))
+            uniq_names = list(dict.fromkeys(uniq_names)) # de-dup while preserving order
     
             for uniq_name in uniq_names:
+                #FOO Flag following conditional for removal
                 if uniq_name.startswith('TCX'):
-                    ids = strmatch(uniq_name,names,True)
+                    ids = strmatch(uniq_name,knames,True)
                 else:
-                    ids = strmatch(name,N)
+                    ids = strmatch(uniq_name,knames)
+                #ids:  all elements with sane unique-ified name ... indicating they are 
+                #      seqment of a split element
                 id1 = ids[0]  # first segment
                 ide = [id1-1, ids[-1]]  # [entrance, exit]
-                sdsp = my_function(seq_eles, [10,20], '.Sd')
-                seq_eles[[10,20]].Sd
-                sdsp = (seq_eles[id1-1].Sd + seq_eles[ids[-1]].Sd)/2.0
-                suml = (seq_eles[id1-1].S + seq_eles[ids[-1]].S)/2.0
+                ends = get_attr_lst(seq_eles, [id1-1,ids[-1]], '.Sd')
+
+                # Sd is floor z of element end
+                #   sdsp is element middle in floor z coords
+                # S is running sum of element lengths
+                #   suml is repurposed here to elment middle in running sum coords
+                sdsp = np.mean(seq_eles,ide,'Sd')
+                suml = np.mean(seq_eles,ide,'S')
                 dist = suml - seq['suml']  # m (sequence start to beam center)
-                energy = (seq_eles[id1-1].energy + seq_eles[ids[-1]])/2.0
-                leng = np.sum(L[id])  # m
-                freq = P[id1, 4]  # MHz
-                ampl = np.sum(P[id, 5])  # MeV
-                phase = P[id1, 6]  # rad/2pi
+                energy = np.mean(seq_eles,ide,'energy')
+                leng = np.sum(get_attr_lst(seq_eles,ids,L)
+
+                freq = seq_eles[id1].raw_params[4]
+                ampl = np.sum([x[5] for x in get_attr_lst(seq_eles,ids,'raw_params')])
+                phase = seq_eles[id1].raw_params[6]
                 grad = ampl / leng  # MeV/m
-                if re.match(r'K\d\d_\d[ABCD]', name[0:6]):  # i.e. K27_3D
+                if re.match(r'K\d\d_\d[ABCD]', uniq_name[:6]):  # i.e. K27_3D
                     id = strmatch(name[0:5],N)
-                    grad0 = np.min(P[id, 5] / L[id])
+                    ampls = [x[5] for x in get_attr_lst(seq_eles,ids,'raw_params')]
+                    lengs = get_attr_lst(seq_eles,ids,'length')
+                    grad0 = np.min(ampls / lengs)
                     if grad0 == 0:
                         power = power_fraction_data[name]
                     else:
                         power = 0.25 * round((grad / grad0) ** 2)  # KLYS power fraction (1)
                 else:
                     power = 1
-                coorc = np.mean(coor[ide, :], axis=0)  # m,rad (beam center)
-                nLCAV += 1
-                LCAV.append({
-                    'idf': idf[id1],
-                    'id': idd[id1],
-                    'seq': seq[ids[id1]]['name'],
-                    'area': area[ida[id1]]['name'],
-                    'parent': area[ida[id1]]['parent'],
-                    'sector': SECTORS[id1].strip(),
+                coor_start = seq_eles[ide[0]].coor
+                coor_end = seq_eles[ide[1]].coor
+                coorc = [(a+b)/2 for a,b in zip(coor_start,coor_end)]
+                MADK[kwn].append({
+                    'idf': seq_eles[id1].froot_ix,
+                    'id': seq_eleq[id1].file_ord,
+                    'seq': seq.name,
+                    'area': seq.area['name'],
+                    'parent': seq.area['parent'],
+                    'sector': seq_eles[id1].sector,
                     'ucell': [],
-                    'xkey': XALK[kwn],
-                    'prim': FDN[id1],
-                    'name': name,
-                    'type': T[id1].strip(),
+                    'xkey': 'BNCH',
+                    'prim': seq_eles[id1].fdn,
+                    'name': uniq_name,
+                    'type': seq_eles[id1].ele_type
                     'dist': dist,
                     'energy': energy,
                     'leng': leng,
@@ -933,9 +946,9 @@ for seq in main_seq:
                 # BSY coordinates
     
                 for k in range(6):
-                    LCAV[-1][f'c1{k+1}'] = []
+                    MADK[kwn][-1][f'c1{k+1}'] = []
                 if cBSY:
-                    if name.startswith('TCX'):
+                    if uniq_name.startswith('TCX'):
                         id = strmatch(name,N1,True) # differentiate between TCX01/02 and TCX01B/02B
                     else:
                         id = strmatch(name,N1)
@@ -2634,18 +2647,12 @@ if cUND:
 
 # SYMBOLS text-file headers and footers
 
-head = ('Solid Edge,AREA,KeyW,ELEMENT,Eng_Name,L_EFF,'
-        'APER,ANGLE,K1,K2,TILT,E1,E2,H1,H2,ENERGY,'
-        'SUML,X Coor,Y Coor,Z Coor,X Angle,Y Angle,Z Angle,'
-        'RF_Frequency,RF_Amplitude,RF_Phase,RF_Gradient,RF_Power_Fraction,'
-        'Z_Length,Fringe_Field_Integral,Integrated_Field_BL,Field_B,'
-        'Integrated_Field_Gradient_GL,Field_Gradient_G,'
-        'XAL_Scale_Name,XAL_Scale_Value,XAL_Polarity,'
-        'Magnet_X_Coor,Magnet_Y_Coor,Magnet_Z_Coor,'
-        'Magnet_X_Angle,Magnet_Y_Angle,Magnet_Z_Angle,'
-        'Solenoid_Strength_KS,Undulator_Period_Length,Undulator_Strength_K,'
-        'X_Size,Y_Size,'
-        'Section,Distance_From_Section_Start,XAL_Keyword,S_Display')
+head = ('Solid Edge,AREA,KeyW,ELEMENT,Eng_Name,L_EFF,APER,ANGLE,K1,K2,'
+        'TILT,E1,E2,H1,H2,ENERGY,SUML,X Coor,Y Coor,Z Coor,'
+        'X Angle,Y Angle,Z Angle,RF_Frequency,RF_Amplitude,RF_Phase,RF_Gradient,RF_Power_Fraction,Z_Length,Fringe_Field_Integral,'
+        'Integrated_Field_BL,Field_B,Integrated_Field_Gradient_GL,Field_Gradient_G,XAL_Scale_Name,XAL_Scale_Value,XAL_Polarity,Magnet_X_Coor,Magnet_Y_Coor,Magnet_Z_Coor,'
+        'Magnet_X_Angle,Magnet_Y_Angle,Magnet_Z_Angle,Solenoid_Strength_KS,Undulator_Period_Length,Undulator_Strength_K,X_Size,Y_Size,Section,Distance_From_Section_Start,'
+        'XAL_Keyword,S_Display')
 
 foot = ('MAD #,AREA,KeyW,ELEMENT,Eng_Name,L_EFF,'
         'APER,ANGLE,K1,K2,TILT,E1,E2,H1,H2,ENERGY,'
