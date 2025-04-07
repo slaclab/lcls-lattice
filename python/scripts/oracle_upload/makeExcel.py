@@ -296,25 +296,25 @@ linac1.append({"froot0":16})
 
 # ------------------------------------------------------------------------------
 # special coordinate system regions
-other1_seq = []
-other1_seq.append({"froot": 0,  "beg": "BEGSPD_1",   "end": "ENDDMPS_2",  "offset": np.array([0, 0])})
-other1_seq.append({"froot": 1,  "beg": "BEGSFTS_1",  "end": "ENDSFTS_2",  "offset": np.array([0, 0])})
-other1_seq.append({"froot": 2,  "beg": "BEGSXTES_1", "end": "ENDSXTES_2", "offset": np.array([0, 0])})
-other1_seq.append({"froot": 3,  "beg": "BEGSXTES_3", "end": "ENDSXTES_3", "offset": np.array([0, 0])})
-other1_seq.append({"froot": 4,  "beg": "BEGSXTES_4", "end": "ENDSXTES_4", "offset": np.array([0, 0])})
-other1_seq.append({"froot": 5,  "beg": "BEGSPH",     "end": "ENDSLTH",    "offset": np.array([0, 0])})
-other1_seq.append({"froot": 6,  "beg": "BEGSPD_2",   "end": "ENDSLTD",    "offset": np.array([0, 0])})
-other1_seq.append({"froot": 8,  "beg": "BEGDASEL",   "end": "ENDBSYA_2",  "offset": np.array([0, 0])})
-other1_seq.append({"froot": 9,  "beg": "BEGCLTH_0",  "end": "ENDDMPH_2",  "offset": np.array([0, 0])})
-other1_seq.append({"froot": 10, "beg": "BEGSFTH_1",  "end": "ENDSFTH_2",  "offset": np.array([0, 0])})
-other1_seq.append({"froot": 11, "beg": "BEGHXTES_1", "end": "ENDHXTES_2", "offset": np.array([0, 0])})
-other1_seq.append({"froot": 12, "beg": "BEGHXTES_3", "end": "ENDHXTES_3", "offset": np.array([0, 0])})
-other1_seq.append({"froot": 13, "beg": "BEGCLTS",    "end": "ENDCLTS",    "offset": np.array([0, 0])})
+other1_seqs = []
+other1_seqs.append({"froot": 0,  "beg": "BEGSPD_1",   "end": "ENDDMPS_2",  "offset": np.array([0, 0])})
+other1_seqs.append({"froot": 1,  "beg": "BEGSFTS_1",  "end": "ENDSFTS_2",  "offset": np.array([0, 0])})
+other1_seqs.append({"froot": 2,  "beg": "BEGSXTES_1", "end": "ENDSXTES_2", "offset": np.array([0, 0])})
+other1_seqs.append({"froot": 3,  "beg": "BEGSXTES_3", "end": "ENDSXTES_3", "offset": np.array([0, 0])})
+other1_seqs.append({"froot": 4,  "beg": "BEGSXTES_4", "end": "ENDSXTES_4", "offset": np.array([0, 0])})
+other1_seqs.append({"froot": 5,  "beg": "BEGSPH",     "end": "ENDSLTH",    "offset": np.array([0, 0])})
+other1_seqs.append({"froot": 6,  "beg": "BEGSPD_2",   "end": "ENDSLTD",    "offset": np.array([0, 0])})
+other1_seqs.append({"froot": 8,  "beg": "BEGDASEL",   "end": "ENDBSYA_2",  "offset": np.array([0, 0])})
+other1_seqs.append({"froot": 9,  "beg": "BEGCLTH_0",  "end": "ENDDMPH_2",  "offset": np.array([0, 0])})
+other1_seqs.append({"froot": 10, "beg": "BEGSFTH_1",  "end": "ENDSFTH_2",  "offset": np.array([0, 0])})
+other1_seqs.append({"froot": 11, "beg": "BEGHXTES_1", "end": "ENDHXTES_2", "offset": np.array([0, 0])})
+other1_seqs.append({"froot": 12, "beg": "BEGHXTES_3", "end": "ENDHXTES_3", "offset": np.array([0, 0])})
+other1_seqs.append({"froot": 13, "beg": "BEGCLTS",    "end": "ENDCLTS",    "offset": np.array([0, 0])})
 
-other2_seq=[]
+other2_seqs=[]
 
-cBSY=len(other1_seq)>0
-cUND=len(other2_seq)>0
+cBSY=len(other1_seqs)>0
+cUND=len(other2_seq2)>0
 
 from xtffs2mat import xtffs2mat
 from xtffs2mat_obj import xtffs2mat_obj
@@ -354,14 +354,14 @@ if cBSY:
         else:
             raw_file_data.append(None)
 
-    for ix,seq1 in enumerate(other1_seq):
-        raw_data = raw_file_data[seq1['froot']]
+    for ix,other1_seq in enumerate(other1_seqs):
+        raw_data = raw_file_data[other1_seq['froot']]
 
         names = [x.name for x in raw_data]
-        id1 = names.index(seq1['beg']) + seq1['offset'][0]
-        id2 = names.index(seq1['end']) + seq1['offset'][1]
+        id1 = names.index(other1_seq['beg']) + other1_seq['offset'][0]
+        id2 = names.index(other1_seq['end']) + other1_seq['offset'][1]
 
-        seq1['eles'] = raw_data[slice(id1,id2+1)]
+        other1_seq['eles'] = raw_data[slice(id1,id2+1)]
 # get UND lines
 if cUND:
     raw_file_data = []
@@ -373,11 +373,11 @@ if cUND:
         else:
             raw_file_data.append(None)
 
-    for n,seq1 in enumerate(other2_seq):
+    for n,other2_seq in enumerate(other2_seqs):
         raw_data = raw_file_data[seq1['froot']]
 
-        id1 = raw_data.N.index(other1_seq['beg']) + other1_seq['offset'][0]
-        id2 = raw_data.N.index(other1_seq['end']) + other1_seq['offset'][1]
+        id1 = raw_data.N.index(other2_seq['beg']) + other2_seq['offset'][0]
+        id2 = raw_data.N.index(other2_seq['end']) + other2_seq['offset'][1]
 
         seq1['eles'] = raw_data[slice(id1,id2+1)]
 
@@ -391,7 +391,7 @@ def FixUpgradeNames(seq_data):
 # Fix device names in upgraded SXR cells
 FixUpgradeNames(main_seq)
 if cBSY:
-  FixUpgradeNames(other1_seq)
+  FixUpgradeNames(other1_seqs)
 if cUND:
   FixUpgradeNames(other2_seq)
 
@@ -420,8 +420,8 @@ for area1 in area:
           for ele_ix in range(0,id2+1):
             seq1['eles'][ele_ix].area = area1
     if cBSY:
-      for seq1 in other1_seq:
-          names = [x.name for x in seq1['eles']]
+      for other1_seq in other1_seqs:
+          names = [x.name for x in other1_seq['eles']]
           id1 = safe_index(names, area1['beg'])
           if id1 is not None:
             id1 += area1['offset'][0]
@@ -430,16 +430,16 @@ for area1 in area:
           id2 = safe_index(names, area1['end']) 
           if id1 is not None and id2 is not None:
             for ele_ix in range(id1,id2+1):
-              seq1['eles'][ele_ix].area = area1
+              other1_seq['eles'][ele_ix].area = area1
           elif id1 is not None and id2 is None:
-            for ele_ix in range(id1,len(seq1['eles'])):
-              seq1['eles'][ele_ix].area = area1
+            for ele_ix in range(id1,len(other1_seq['eles'])):
+              other1_seq['eles'][ele_ix].area = area1
           elif id1 is None and id2 is not None:
             for ele_ix in range(0,id2+1):
-              seq1['eles'][ele_ix].area = area1
+              other1_seq['eles'][ele_ix].area = area1
     if cUND:
-      for seq1 in other2_seq:
-          names = [x.name for x in seq1['eles']]
+      for other2_seq in other2_seqs:
+          names = [x.name for x in other2_seq['eles']]
           id1 = safe_index(names, area1['beg'])
           if id1 is not None:
             id1 += area1['offset'][0]
@@ -448,13 +448,13 @@ for area1 in area:
           id2 = safe_index(names, area1['end']) 
           if id1 is not None and id2 is not None:
             for ele_ix in range(id1,id2+1):
-              seq1['eles'][ele_ix].area = area1
+              other2_seq['eles'][ele_ix].area = area1
           elif id1 is not None and id2 is None:
-            for ele_ix in range(id1,len(seq1['eles'])):
-              seq1['eles'][ele_ix].area = area1
+            for ele_ix in range(id1,len(other2_seq['eles'])):
+              other2_seq['eles'][ele_ix].area = area1
           elif id1 is None and id2 is not None:
             for ele_ix in range(0,id2+1):
-              seq1['eles'][ele_ix].area = area1
+              other2_seq['eles'][ele_ix].area = area1
 
 # special handling for rolled dump lines and A-line
 def fix_dump_coords(seq):
@@ -536,9 +536,9 @@ fix_dump_coords(main_seq)
 fix_aline_coords(main_seq)
 
 if cBSY:
-    fix_dump_coords(other1_seq)
-    fix_aline_coords(other1_seq)
-    fix_sxtes_coords(other1_seq)
+    fix_dump_coords(other1_seqs)
+    fix_aline_coords(other1_seqs)
+    fix_sxtes_coords(other1_seqs)
 
 if cUND:
     fix_dump_coords(other2_seq)
@@ -605,20 +605,20 @@ for ele_name, area_name in zip(ele_name_all,area_name_all):
                 ele.name = ele.name + '?'
 
     if cBSY:
-      for seq1 in other1_seq:
-          names = [x.name for x in seq1['eles']]
+      for other1_seq in other1_seqs:
+          names = [x.name for x in other1_seq['eles']]
           ids = strmatch(ele_name,names,True)
 
-          for ele in [seq1['eles'][x] for x in ids]:
+          for ele in [other1_seq['eles'][x] for x in ids]:
               if ele.area == area_name:
                   ele.name = ele.name + '?'
 
     if cUND:
-      for seq1 in other2_seq:
-          names = [x.name for x in seq1['eles']]
+      for other2_seq in other2_seqs:
+          names = [x.name for x in other2_seq['eles']]
           ids = strmatch(ele_name,names,True)
 
-          for ele in [seq1['eles'][x] for x in ids]:
+          for ele in [other2_seq['eles'][x] for x in ids]:
               if ele.area == area_name:
                   ele.name = ele.name + '?'
 
@@ -678,7 +678,7 @@ def assign_ucell(seq):
                 eles[jd].params['ucell'] = cell['name']
 
 # Assign undulator cell names
-assign_ucell(other1_seq)
+assign_ucell(other1_seqs)
 
 def read_sector():
     filename = f'{script_dir}/sectors.xlsx'
@@ -757,7 +757,7 @@ def assign_sector(seq, other1):
             set_sector(other1, sector)
 
 # Assign sector names
-assign_sector(main_seq, other1_seq)
+assign_sector(main_seq, other1_seqs)
 
 # MAD SURVEY coordinates  [x,y,z,theta,phi   ,psi]
 # correspond to SolidEdge [z,x,y,roll ,-pitch,yaw]
@@ -767,8 +767,8 @@ for seq1 in main_seq:
         ele.dbcoor = ele.coor[ic]
         ele.dbcoor[4] = -1*ele.coor[4]
 if cBSY:
-    for seq1 in other1_seq:
-        for ele in seq1['eles']:
+    for other1_seq in other1_seqs:
+        for ele in other1_seq['eles']:
             ele.dbcoor = ele.coor[ic]
             ele.dbcoor[4] = -1*ele.coor[4]
 
@@ -948,39 +948,54 @@ for seq in main_seq:
                 for k in range(6):
                     MADK[kwn][-1][f'c1{k+1}'] = []
                 if cBSY:
-                    if uniq_name.startswith('TCX'):
-                        id = strmatch(name,N1,True) # differentiate between TCX01/02 and TCX01B/02B
-                    else:
-                        id = strmatch(name,N1)
-                    if len(id) > 0:
-                        id1 = id[0]  # first segment
-                        ide = [id1 - 1, id[-1]]  # [entrance, exit]
-                        suml1 = np.mean(S1[ide])  # m (beam center)
-                        coorc1 = np.mean(coor1[ide, :], axis=0)  # m,rad (beam center)
-                        LCAV[-1]['suml1'] = suml1
-                        for k in range(6):
-                            LCAV[-1][f'c1{k+1}'] = coorc1[k]
-                        if not LCAV[-1]['sector']:
-                            LCAV[-1]['sector'] = SECTORS1[id1].strip()
-                        LCAV[-1]['ucell'] = UCELL[id1].strip()
+                    for other1_seq in other1_seqs:
+                        other1_eles = other1_seq['eles']
+                        other1_kixs = strmatch(kwn,[x.key for x in other1_eles])
+                        other1_knames = [other1_eles[x].name for x in other1_kixs]
+                        if uniq_name.startswith('TCX'):
+                            other1_ids = strmatch(uniq_name,other1_knames,True) # differentiate between TCX01/02 and TCX01B/02B
+                        else:
+                            other1_ids = strmatch(uniq_name,other1_knames)
+                        if len(other1_ids) > 0:
+                            id1 = other1_ids[0]  # first segment
+                            ide = [id1 - 1, other1_ids[-1]]  # [entrance, exit]
+                            suml1 = np.mean(other1_eles,ide,'S')
+                            coor_start = other1_eles[ide[0]].coor
+                            coor_end = other1_eles[ide[1]].coor
+                            coorc1 = [(a+b)/2 for a,b in zip(coor_start,coor_end)]
+
+                            MADK[kwn][-1]['suml1'] = suml1
+                            for k in range(6):
+                                MADK[kwn][-1][f'c1{k+1}'] = coorc1[k]
+                            if not LCAV[-1]['sector']:
+                                MADK[kwn]LCAV[-1]['sector'] = other1_eles[id1].sector
+                            MADK[kwn]LCAV[-1]['ucell'] = other1_eles[id1].params['ucell']
     
                 # UND coordinates
     
-                LCAV[-1]['suml2'] = []
+                MADK[kwn][-1]['suml2'] = []
                 for k in range(6):
-                    LCAV[-1][f'c2{k+1}'] = []
+                    MADK[kwn][-1][f'c2{k+1}'] = []
                 if cUND:
-                    if name.startswith('TCX'):
-                        id = strmatch(name,N2,True) # differentiate between TCX01/02 and TCX01B/02B
-                    else:
-                        id = strmatch(name,N2)
-                    if len(id) > 0:
-                        ide = [id[0] - 1, id[-1]]  # [entrance, exit]
-                        suml2 = np.mean(S2[ide])  # m (beam center)
-                        coorc2 = np.mean(coor2[ide, :], axis=0)  # m,rad (beam center)
-                        LCAV[-1]['suml2'] = suml2
-                        for k in range(6):
-                            LCAV[-1][f'c2{k+1}'] = coorc2[k]
+                    for other2_seq in other2_seqs:
+                        other2_eles = other2_seq['eles']
+                        other2_kixs = strmatch(kwn,[x.key for x in other2_eles])
+                        other2_knames = [other2_eles[x].name for x in other2_kixs]
+                        if uniq_name.startswith('TCX'):
+                            other2_ids = strmatch(uniq_name,other2_knames,True) # differentiate between TCX01/02 and TCX01B/02B
+                        else:
+                            other2_ids = strmatch(uniq_name,other2_knames)
+                        if len(other2_ids) > 0:
+                            id1 = other2_ids[0]  # first segment
+                            ide = [id1 - 1, other2_ids[-1]]  # [entrance, exit]
+                            suml2 = np.mean(other2_eles,ide,'S')
+                            coor_start = other2_eles[ide[0]].coor
+                            coor_end = other2_eles[ide[1]].coor
+                            coorc2 = [(a+b)/2 for a,b in zip(coor_start,coor_end)]
+                            MADK[kwn][-1]['suml2'] = suml2
+                            for k in range(6):
+                                MADK[kwn][-1][f'c2{k+1}'] = coorc2[k]
+
         elif kwn == 'SBEN':
             name = [N[i] for i in id]
             SBEN = []
