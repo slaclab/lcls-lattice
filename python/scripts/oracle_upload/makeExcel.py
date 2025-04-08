@@ -545,7 +545,7 @@ if cUND:
     fix_aline_coords(other2_seq)
 
 # kicker/septum groups
-KSname = [
+KSnames = [
     'BKRDG0', 'BLRDG0',
     'BKYSP0H', 'BKYSP1H', 'BKYSP2H', 'BKYSP3H', 'BKYSP4H', 'BKYSP5H', 'BLXSPH',
     'BKYSP0S', 'BKYSP1S', 'BKYSP2S', 'BKYSP3S', 'BKYSP4S', 'BKYSP5S', 'BLXSPS',
@@ -997,38 +997,37 @@ for seq in main_seq:
                                 MADK[kwn][-1][f'c2{k+1}'] = coorc2[k]
 
         elif kwn == 'SBEN':
-            name = [N[i] for i in id]
-            SBEN = []
-            Nelm = len(id) // 2
-            for m in range(Nelm):
-                mname1 = name[2 * m].strip()
-                mname2 = name[2 * m + 1].strip()
-                mname = mname1[:-1]  # remove last character from name
-                id = [strmatch(mname1,N,True),strmatch(mname2,N,True)]
-                id1 = id[0][0]  # first piece (beam center)
-                idi = id1 - 1  # beam in
-                ido = id[1][-1]  # beam out
-                sdsp = Sd[id1]  # m
-                suml = S[id1]  # m
-                dist = suml - seq[ids[id1]]['suml']  # m
-                energy = E[id1]  # GeV
-                leng = np.sum(L[id])  # m
-                gap = 2 * A[id1]  # m
-                fint = P2[id1, 0]  # m
-                tilt = P[id1, 3]  # rad
-                ang = np.sum(P[id, 0])  # rad
+            # Assumed that all SBEN are split in 2.  Name differentiated by either an A/B or 1/2.
+            # kixs: indexes in seq_eles that are SBEN
+            # knames: names of those SBEN elements
+            for m in range(0, len(kixs), 2):
+                id1 = kixs[m]
+                id2 = kixs[m+1]
+                mname1 = knames[id1]
+                mname2 = knames[id2]
+                mname = mname1[:-1]
+                ids = [id1,id2]
+                sdsp = seq_eles[id1].Sd  # m
+                suml = seq_eles[id1].S  # m
+                dist = suml - seq['suml']  # m
+                energy = seq_eles[id1].energy  # GeV
+                leng = seq_eles[id1].length + seq_eles[id2].length  # m
+                gap = 2 * seq_eles[id1].aper  # m
+                fint = seq_eles[id1].params['fint']  # m
+                tilt = seq_eles[id1].raw_params[3]  # rad
+                ang = seq_eles[id1].raw_params[0] + seq_eles[id2].raw_params[1] #rad
                 if abs(ang) < amin:
                     ang = 0
                     e1 = 0
                     e2 = 0
                 else:
-                    e1 = P[id1, 4]  # rad
-                    e2 = P[ido, 5]  # rad
+                    e1 = seq_eles[id1].raw_params[4]  # rad
+                    e2 = seq_eles[id2].raw_params[5]  # rad
                 EeV = 1e9 * energy  # eV
                 brho = np.sqrt(EeV ** 2 - Er ** 2) / clight  # T-m
                 BL = brho * ang  # T-m
                 B = BL / leng  # T
-                k1 = P[id1, 1]  # 1/m^2
+                k1 = seq_eles[id1].raw_params[1]  # 1/m^2
                 if abs(k1) < kmin:
                     k1 = 0
                 G = brho * k1  # T/m
@@ -1036,11 +1035,11 @@ for seq in main_seq:
                 sname = 'kG2T_Bdl2B'
                 sval = 1 / (leng * T2kG)
                 polarity = -np.sign(ang + np.finfo(float).eps)  # add eps so that sign=1 when ang=0
-                coori = np.copy(coor[idi, :])  # m,rad
-                coorc = np.copy(coor[id1, :])  # m,rad
-                cooro = np.copy(coor[ido, :])  # m,rad
+                coori = np.copy(seq_eles[id1-1].coor)  # m,rad
+                coorc = np.copy(seq_eles[id1].coor)  # m,rad
+                cooro = np.copy(seq_eles[id2].coor)  # m,rad
                 coorm = np.zeros(coorc.shape)  # m,rad (magnet steel center)
-                if mname in KSname:
+                if mname in KSnames:
                     jd = strmatch(f'D{mname}',N)
                     if len(jd) != 2:
                         raise ValueError(f'{mname} not split?')
@@ -1119,7 +1118,7 @@ for seq in main_seq:
                         coorc1 = np.copy(coor1[id1, :])  # m,rad
                         cooro1 = np.copy(coor1[ido, :])  # m,rad
                         coorm1 = np.zeros(coorc1.shape)  # m,rad (magnet steel center)
-                        if mname in KSname:
+                        if mname in KSnames:
                             jd = strmatch(f'D{mname}',N1)
                             coorm1 = np.copy(coor1[jd[0], :])
                             coorm1[3] = 0
@@ -1164,7 +1163,7 @@ for seq in main_seq:
                         coorc2 = coor2[id1, :]  # m,rad
                         cooro2 = coor2[ido, :]  # m,rad
                         coorm2 = np.zeros(coorc2.shape)  # m,rad (magnet steel center)
-                        if mname in KSname:
+                        if mname in KSnames:
                             jd = strmatch(f'D{mname}',N2)
                             coorm2 = coor2[jd[0], :]
                             coorm2[3] = 0
