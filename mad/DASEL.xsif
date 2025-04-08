@@ -6,6 +6,10 @@
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
+! 14-MAR-2025, M. Woodley
+!  * split DASEL area into two areas: SPA and SLTA; SLTA area ends at entrance
+!    to BRAM1
+! ------------------------------------------------------------------------------
 ! 27-MAR-2024, M. Woodley
 !  * change RCDAS11 to XCDAS11; move 0.118 m d/s; remove R0DAS11P and R0DAS11M
 !  * add YCDAS11 0.397 m d/s of XCDAS11
@@ -350,9 +354,12 @@
               -LDDAS13-LDDAS14-LDDAS17-LDDAS18-LDDAS19-LDDAS20)/2+dLDDAS
   LDDAS15  := LDDAS
   LDDAS16  := LDDAS
-  LDDAS21a := 0.397
-  LDDAS21b := 19.829173726034-0.397
+
+  LDDAS21a := 0.5
+  LDDAS21b := 0.397
+  LDDAS21c := 19.829173726034-0.397
   LDDAS22  := 0.5
+  LDDAS23  := 0.5
 
   DDASQQ   : DRIF, L=LDDASQQ
   DDAS1    : DRIF, L=LDDAS1
@@ -386,7 +393,9 @@
   DDAS20b  : DRIF, L=LDDAS20b
   DDAS21a  : DRIF, L=LDDAS21a
   DDAS21b  : DRIF, L=LDDAS21b
+  DDAS21c  : DRIF, L=LDDAS21c
   DDAS22   : DRIF, L=LDDAS22
+  DDAS23   : DRIF, L=LDDAS23
 
 ! roll angles
 
@@ -429,6 +438,10 @@
 
   IMDAS1 : IMON, TYPE="BCS ACM"
   IMDAS2 : IMON, TYPE="BCS ACM"
+
+! BSY wooden door
+
+  WOODDOOR_SPA : MARK
 
 ! collimator in front of BLRDAS septum
 ! * this collimator should be attached to or be very close to the entrance
@@ -506,7 +519,7 @@
     BRDAS1_full,RODAS2  ,DDAS11a ,XCDAS11 ,DDAS11b,YCDAS11 ,DDAS11c,&
     QDAS11_full,DDAS12a ,PRDAS12 ,DDAS12b ,DUMPDAS_full    ,DDAS12c,&
     QDAS12_full,DDAS13  ,&
-    QDAS13_full,DDAS14aa,PRDAS14,DDAS14ac,WOODDOOR,&
+    QDAS13_full,DDAS14aa,PRDAS14,DDAS14ac,WOODDOOR_SPA,&
     ENDSPA)
     
   SLTA : LINE=(BEGSLTA  ,DDAS14ab,XCDAS14,DDAS14b,&
@@ -516,8 +529,9 @@
     QDAS17_full ,DDAS18 ,&
     QDAS18a_full,DDASQQ ,&
     QDAS18b_full,DDAS19 ,&
-    QDAS19_full ,DDAS20a,BPMDAS19,DDAS20b,RODAS3 ,&
-    BRDAS2_full ,DDAS21a,YCDAS19 ,DDAS21b,PRBRAM1,DDAS22 ,TGTBRAM1,&
+    QDAS19_full ,DDAS20a,BPMDAS19,DDAS20b,RODAS3,&
+    BRDAS2_full ,DDAS21a,XCDAS19,DDAS21b,YCDAS19,DDAS21c,PRBRAM1,DDAS22,&
+      TGTBRAM1,DDAS23,&
     ENDSLTA)
 
 ! ------------------------------------------------------------------------------

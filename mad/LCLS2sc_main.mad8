@@ -505,7 +505,7 @@
  !CALL, FILENAME="LCLS2sc_match.mad8"
  !CALL, FILENAME="LCLS2sc_makeSymbols.mad8"
  !CALL, FILENAME="LCLS2sc_makeElegant.mad8"
- !CALL, FILENAME="LCLS2sc_XLEAP.mad8" !run by itself
+  CALL, FILENAME="LCLS2sc_XLEAP.mad8" !run by itself
 
 ! ------------------------------------------------------------------------------
 
@@ -513,7 +513,9 @@
  !CALL, FILENAME="/mnt/d/S30XL/ALINE_actual.mad8"
  !CALL, FILENAME="/mnt/d/AD_ACCEL/dataAnalysis/emittance/patch.mad8"
 
- !STOP
+! ------------------------------------------------------------------------------
+
+  STOP
 
 ! ------------------------------------------------------------------------------
 
@@ -836,6 +838,43 @@
 
 ! ------------------------------------------------------------------------------
 ! LCLS2sc_main working stuff
+! ------------------------------------------------------------------------------
+
+! @BEAM0:
+! - BETX=9.898319949733, ALFX=-1.895312604539, BmagX= 1.0064
+! - BETY=3.357019824994, ALFY=-0.391485396868, BmagY= 1.6365
+
+  comment !Mike Ehrlichman's match at 75 MeV
+    SET, KQ0H01,  -5.8768  !-6.525507740091
+    SET, KQ0H02,   6.2879  ! 6.335021170323
+    SET, KQ0H03,  -0.85925 !-0.947730849876
+    SET, KQ0H04,   1.0748  !-3.418410369214
+    SET, KQ0H05,  -4.8180  !-7.013523766823
+    SET, KQ0H06,   0.0     ! 1.450322442367
+    SET, KQ0H07,  10.093   ! 7.874726189194
+    SET, KQ0H08, -11.482   !-8.293357257814
+    SET, KQHD01, -12.998   !-8.9263060781  
+    SET, KQHD02,   7.6508  ! 6.460615023279
+    SET, KQHD03,  -8.1152  !-8.534034325807
+    SET, KQHD04,   6.1453  ! 6.807615097128
+    BEAM, ENERGY=Ei
+    USE, SC_DIAG0i
+    VALUE, BXi,AXi,BYi,AYi
+    MATCH, BETA0=TWSSi
+      VARY, BXi, STEP=1.E-6, LOWER=0
+      VARY, AXi, STEP=1.E-6
+      VARY, BYi, STEP=1.E-6, LOWER=0
+      VARY, AYi, STEP=1.E-6
+      CONSTR, HTRUNDB, BETX=BXlh, ALFX=AXlh, BETY=BYlh, ALFY=AYlh
+      LMDIF, TOL=1.E-20, CALLS=10000
+      MIGRAD, TOL=1.E-20, CALLS=10000
+    ENDMATCH
+    VALUE, BXi,AXi,BYi,AYi
+    TWISS, BETA0=TWSSi, SAVE, TAPE="twiss.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=#S/#E, VMIN=0, FILE="match"
+  endcomment
+
 ! ------------------------------------------------------------------------------
 
   comment !SXR FODO (4 GeV, |GLq|=30 kG, VGHPU39, K=5.5, PSPI=1800)

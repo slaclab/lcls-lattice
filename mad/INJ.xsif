@@ -207,7 +207,7 @@
   GBh      := 0.03
   ZBh      := 0.1244
   FBh      := 0.3887
-  ABh      := 0.022113758957 !DXmax=0.075
+  ABh      := 0.022113602317 !DXmax=0.075
   BBh      := Brhoh*SIN(ABh)/ZBh
   ABh_2    := ABh*ABh
   ABh_4    := ABh_2*ABh_2
@@ -268,10 +268,13 @@
 
 ! L0 to WS/OTR (Q0H01-4 match to waists at WS0H04)
 
-  KQ0H01 := -6.525507740091
-  KQ0H02 :=  6.335021170323
-  KQ0H03 := -0.947730849876
-  KQ0H04 := -3.418410369214
+!              heater ON        heater OFF        chicane OFF	
+!           ---------------   ---------------   ---------------   
+  KQ0H01 := -6.537777564736 ! -6.52550777024  ! -6.525507740091 !
+  KQ0H02 :=  6.17752713417  !  6.335021207148 !  6.335021170324 !
+  KQ0H03 :=  0.483905171963 ! -0.947731202989 ! -0.947730849886 !
+  KQ0H04 := -3.971575402157 ! -3.418410103407 ! -3.418410369207 !
+  B0H04w :=  7.710749594202 !  5.0            !  5.0            !
 
   Q0H01 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0H01
   Q0H02 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0H02
@@ -280,12 +283,13 @@
 
 ! WS/OTR to laser heater (Q0H05-8 match to 10x10 m beta waists LHMID)
 
-!              heater ON        heater OFF        chicane OFF
-!           ---------------   ---------------   ---------------   
-  KQ0H05 := -7.013523766823 ! -7.451314710799 ! -7.508072657053 !
-  KQ0H06 :=  1.450322442367 !  1.835321381141 !  1.870908387696 !
-  KQ0H07 :=  7.874726189194 !  7.794364119473 !  7.804907479846 !
-  KQ0H08 := -8.293357257814 ! -8.272683907735 ! -8.306722243052 !
+!              heater ON        heater OFF        chicane OFF	
+!           ---------------   ---------------   ---------------  
+  KQ0H05 := -2.32266979602  ! -7.451315276972 ! -7.508072657056 ! 
+  KQ0H06 :=  0.0            !  1.835321381141 !  1.870908387696 ! 
+  KQ0H07 :=  5.84302489781  !  7.794364472964 !  7.804907479846 ! 
+  KQ0H08 := -5.210258454761 ! -8.272684492892 ! -8.306722243051 ! 
+  BLHUw  :=  7.5            ! 10.0            ! 10.0            !
 
   Q0H05 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0H05
   Q0H06 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0H06
@@ -294,12 +298,12 @@
 
 ! laser heater to diagnostic line
 
-!              heater ON        heater OFF        chicane OFF
-!           ---------------   ---------------   ---------------   
-  KQHD01 := -8.9263060781   ! -8.743988196362 ! -8.746794738551 !
-  KQHD02 :=  6.460615023279 !  6.400024211102 !  6.401620200767 !
-  KQHD03 := -8.534034325807 ! -8.612136538817 ! -8.622952974047 !
-  KQHD04 :=  6.807615097128 !  6.860670430866 !  6.864937307631 !
+!              heater ON         heater OFF        chicane OFF    
+!           ----------------   ---------------   ---------------   
+  KQHD01 := -13.178598580237 ! -8.743988237466 ! -8.746794738551 !
+  KQHD02 :=   7.650668410884 !  6.400024228564 !  6.401620200768 !
+  KQHD03 :=  -7.978934972385 ! -8.612136694917 ! -8.622952974048 !
+  KQHD04 :=   6.238682089532 !  6.860670498454 !  6.864937307631 !
 
   QHD01 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQHD01
   QHD02 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQHD02
@@ -317,18 +321,18 @@
 
 ! COL0 collimation section
 
-  KQC001 :=  5.135316216765 ! 5.055115116565
-  KQC002 :=  0.0            ! 0.15798374076
-  KQC003 := -5.29595023224  !-5.345027237142
-  KQC004 :=  2.772436085366 ! 2.756594856382
-  KQC005 := -1.79608214975  !-KQColl0
+  KQC001 :=  5.135316216759
+  KQC002 :=  0.0
+  KQC003 := -5.295950232123
+  KQC004 :=  2.772436085305
+  KQC005 := -1.796082149685 !-KQColl0
   KQC006 :=  KQColl0
   KQC007 := -KQColl0
   KQC008 :=  KQColl0
   KQC009 := -KQColl0
-  KQC010 :=  0.638287288519
-  KQC011 := -1.679681060652
-  KQC012 :=  1.309219730044
+  KQC010 :=  0.346494139368
+  KQC011 := -1.054136562653
+  KQC012 :=  0.942153662284
 
   QC001 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQC001
   QC002 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQC002
@@ -367,8 +371,9 @@
 ! ------------------------------------------------------------------------------
 
 ! laser heater undulator
-! - modeled as R-matrix to include natura verticall focusing
+! - modeled as R-matrix to include natural vertical focusing
 ! - parameters from LCLS-II Phase 1 undulator
+! - triple heater laser wavelength for 3rd harmonic operation
 
 ! lam   : laser-heater undulator period [m]
 ! lamr  : heater laser wavelength [m]
@@ -379,9 +384,9 @@
 ! kqlh  : natural undulator focusing "k" in y-plane [1/m2]
 
   lam   := 0.054
-  lamr  := 1030E-9
+  lamr  := 3*1030E-9 !3rd harmonic
   gami  := Ei/EMASS
-  K_und := sqrt(2*(lamr*2*gami^2/lam-1))
+  K_und := sqrt(2*(lamr*2*gami^2/lam-1)) !gap= 30.6 mm
   Lhun  := 9*lam
   Lhunh := Lhun/2
   kqlh  := (K_und*2*pi/lam/sqrt(2)/gami)^2
@@ -717,7 +722,7 @@
 
   YAG01B      : PROF, TYPE="YAG" !with or without hole
   YAG01B_COLL : ECOL, TYPE="collimator" !bore: 12mm, 16mm, 20mm, or 24mm
-  YAG01B_FCUP : INST, TYPE="Faraday Cup"
+  YAG01B_FCUP : IMON, TYPE="Faraday Cup"
   YAG01B_full : LINE=(YAG01B,YAG01B_COLL,YAG01B_FCUP)
 
 ! combination OTR/YAG !PAL type
