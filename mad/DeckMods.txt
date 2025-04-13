@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-preRelease ***
+! *** OPTICS=AD_ACCEL-14APR2025s ***
 
 ================================================================================
 
@@ -57,18 +57,23 @@ LCLS2sc_beams.mad8
 
 LCLS2sc_match.mad8
 
+LCLS2sc_makeSymbols.mad8
+
+LCLS2sc_makeElegant.mad8
+
 LCLS2sc_XLEAP.mad8
 
 LCLS2sc_master.xsif
 * lower injection energy from 90 MeV to 75 MeV
 * rematch CATHODEB Twiss for 75 MeV injection energy
 * lower BC1B energy from 250 MeV to 235 MeV
+* call SC_FDN.xsif to define element FDN attribute values
 
 common.xsif
 
 CM_SWAVE.xsif
 - set up L0 cavities per Feng ... later?
-* adjust L0B amplitudes for 75 MeV injection energy
+* adjust L0B amplitudes for 75 MeV injection energy per Y. Ding
 
 INJ.xsif
 
@@ -99,8 +104,13 @@ BSYsc.xsif
 SXTES.xsif
 
 DASEL.xsif
+* split DASEL area into two areas: SPA and SLTA; SPA area ends at BSY wooden
+  door; SLTA area ends at entrance to BRAM1
 
 ALINE.xsif
+* remove BSYA_1 area components (decommissioned)
+* rename BSYA_2 area to BSYA; BSYA area begins at entrance to BRAM1
+* define ESA area; ESA area ends at Beam Dump East
 
 --------------------------------------------------------------------------------
 BMAD-only files
@@ -127,8 +137,12 @@ LCLS2cu_match.mad8
 LCLS2cu_XLEAP.mad8
 
 LCLS2cu_master.mad8
+* call Cu_FDN.xsif to define element FDN attribute values
+* call Cu_FDNe.xsif (instead of Cu_FDN.xsif) when making ELEGANT files
 
 LCLS2cu_makeSymbols.mad8
+
+LCLS2cu_makeElegant.mad8
 
 LCLS-L1.xsif, LCLS-L1e.xsif
 

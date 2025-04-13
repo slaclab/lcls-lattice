@@ -1,6 +1,6 @@
   TITLE, "AD_ACCEL: copper linac"
 
-! *** OPTICS=AD_ACCEL-preRelease ***
+! *** OPTICS=AD_ACCEL-14APR2025s ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY
   ASSIGN, ECHO="LCLS2cu.echo"
@@ -297,16 +297,14 @@
 
  !CALL, FILENAME="LCLS2cu_match.mad8"
  !CALL, FILENAME="LCLS2cu_makeSymbols.mad8"
- !CALL, FILENAME="LCLS2cu_makeElegant.mad8" !use LCLS_L*e.xsif
-  CALL, FILENAME="LCLS2cu_XLEAP.mad8" !run by itself
+ !CALL, FILENAME="LCLS2cu_makeElegant.mad8" !use LCLS_L*e.xsif and Cu_fdne.xsif
+ !CALL, FILENAME="LCLS2cu_XLEAP.mad8" !run by itself
 
- !CALL, FILENAME="patch.mad8"
-
-  STOP
+ !STOP
 
 ! ------------------------------------------------------------------------------
 
- !CALL "LCLS2cu_color_plots.mad8" !run by itself (ends with STOP)
+  CALL "LCLS2cu_color_plots.mad8" !run by itself (ends with STOP)
  !CALL "LCLS2cu_area_plots.mad8"  !run by itself (ends with STOP)
 
 ! ------------------------------------------------------------------------------
@@ -489,16 +487,16 @@
 
 ! HXR safety dump
 
-  !COMMENT
-    ASSIGN, PRINT="BSY-LCLS2cuHS.print"
-    BEAM, ENERGY=Ef
-    SET, SETCUS, CUSOFF
-    SETK2cuH
-    USE, BSYLTUHS
-    PRINT, FULL
-    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
-      TAPE="BSY-LCLS2cuHS_survey.tape"
-  !ENDCOMMENT
+ !COMMENT
+   ASSIGN, PRINT="BSY-LCLS2cuHS.print"
+   BEAM, ENERGY=Ef
+   SET, SETCUS, CUSOFF
+   SETK2cuH
+   USE, BSYLTUHS
+   PRINT, FULL
+   SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
+     TAPE="BSY-LCLS2cuHS_survey.tape"
+ !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
 
