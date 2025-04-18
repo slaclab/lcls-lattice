@@ -34,6 +34,7 @@
 10. Submit PR to github.
 11. Generate new lcls-lattice release.
 12. Update `/sdf/group/ad/sw/scm/repos/optics/lcls-lattice` on s3df.
+13. Update prod using zip of release at `lcls-srv01:/usr/local/lcls/tools/lcls-lattice`
 
 | Bmad line | mad8s Twiss file | Bmad <-> mad8s Places to Check |
 |-|-|-|
