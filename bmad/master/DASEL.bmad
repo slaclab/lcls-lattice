@@ -1,10 +1,14 @@
 
-! *** OPTICS=AD_ACCEL-18FEB2025s ***
+! *** OPTICS=AD_ACCEL-14APR2025s ***
 
 ! LCLS2sc DASEL
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 14-MAR-2025, M. Woodley
+!  * split DASEL area into two areas: SPA and SLTA; SPA area ends at BSY wooden
+!    door; SLTA area ends at entrance to BRAM1
 ! ------------------------------------------------------------------------------
 ! 27-MAR-2024, M. Woodley
 !  * change RCDAS11 to XCDAS11; move 0.118 m d/s; remove R0DAS11P and R0DAS11M
@@ -340,6 +344,12 @@ lddas = (158.566506190974298-10*lqm-lbsp-lddasqq-lddas11-lddas12 -lddas13-lddas1
 lddas15 = lddas
 lddas16 = lddas
 
+lddas21a = 0.5
+lddas21b = 0.397
+lddas21c = 19.829173726034-0.397
+lddas22 = 0.5
+lddas23 = 0.5
+
 ddasqq: drift, l = lddasqq
 ddas1: drift, l = lddas1
 ddas2a: drift, l = lddas2a
@@ -370,6 +380,11 @@ ddas18: drift, l = lddas18
 ddas19: drift, l = lddas19
 ddas20a: drift, l = lddas20a
 ddas20b: drift, l = lddas20b
+ddas21a: drift, l = lddas21a
+ddas21b: drift, l = lddas21b
+ddas21c: drift, l = lddas21c
+ddas22: drift, l = lddas22
+ddas23: drift, l = lddas23
 
 ! roll angles
 
@@ -398,18 +413,24 @@ xcdas19: hkicker, type = "class-4"
 ycdas1: vkicker, type = "class-4"
 ycdas11: vkicker, type = "class-4"
 ycdas17: vkicker, type = "class-4"
- !YCDAS19 : defined in Aline.xsif
+ycdas19: vkicker, type = "class-4"
 
 ! profile monitors
 
 prdas12: monitor, type = "YAG" !two YAG crystals 50 um thick and 1 mm thick)
 prdas14: monitor, type = "PHOSPHOR"
 prdas17: monitor, type = "PHOSPHOR"
+prbram1: monitor, type = "unknown" !profile monitor, type to be determined
+tgtbram1: instrument, type = "Cu"      !secondary production Cu target
 
 ! ACMs
 
 imdas1: marker, type = "BCS ACM"
 imdas2: marker, type = "BCS ACM"
+
+! BSY wooden door
+
+wooddoor_spa: marker
 
 ! collimator in front of BLRDAS septum
 ! * this collimator should be attached to or be very close to the entrance
@@ -439,164 +460,45 @@ dumpdas: instrument, type = "400W-dump", l = ldumpdas/2 !half-dump
 
 ! beamlines
 
-
-
-!Old split line:  BKRDAS1_full : LINE=(BKRDAS1a,BKRDAS1b)
-
-bkrdas1_full: line = (bkrdas1)
-
-
-!Old split line:  BKRDAS2_full : LINE=(BKRDAS2a,BKRDAS2b)
-
-bkrdas2_full: line = (bkrdas2)
-
-
-!Old split line:  BKRDAS3_full : LINE=(BKRDAS3a,BKRDAS3b)
-
-bkrdas3_full: line = (bkrdas3)
-
-
-!Old split line:  BKRDAS4_full : LINE=(BKRDAS4a,BKRDAS4b)
-
-bkrdas4_full: line = (bkrdas4)
-
-
-!Old split line:  BKRDAS5_full : LINE=(BKRDAS5a,BKRDAS5b)
-
-bkrdas5_full: line = (bkrdas5)
-
-
-!Old split line:  BKRDAS6_full : LINE=(BKRDAS6a,BKRDAS6b)
-
-bkrdas6_full: line = (bkrdas6)
-
-
-!Old split line:  BLRDAS_full  : LINE=(BLRDASa,BLRDASb)
-
-blrdas_full: line = (blrdas)
-
-
-!Old split line:  BRDAS1_full  : LINE=(BRDAS1a,BRDAS1b)
-
-brdas1_full: line = (brdas1)
-
-
-!Old split line:  BRDAS2_full  : LINE=(BRDAS2a,BRDAS2b)
-
-brdas2_full: line = (brdas2)
-
-
-
-!Old split line:  QDAS1b_full  : LINE=(QDAS1b,QDAS1b)
-
-qdas1b_full: line = (qdas1b)
-qdas1b[L] = 2*qdas1b[L]
-
-
-!Old split line:  QDAS1a_full  : LINE=(QDAS1a,QDAS1a)
-
-qdas1a_full: line = (qdas1a)
-qdas1a[L] = 2*qdas1a[L]
-
-
-!Old split line:  QDAS2a_full  : LINE=(QDAS2a,QDAS2a)
-
-qdas2a_full: line = (qdas2a)
-qdas2a[L] = 2*qdas2a[L]
-
-
-!Old split line:  QDAS2b_full  : LINE=(QDAS2b,QDAS2b)
-
-qdas2b_full: line = (qdas2b)
-qdas2b[L] = 2*qdas2b[L]
-
-
-!Old split line:  QDAS11_full  : LINE=(QDAS11,QDAS11)
-
-qdas11_full: line = (qdas11)
-qdas11[L] = 2*qdas11[L]
-
-
-!Old split line:  QDAS12_full  : LINE=(QDAS12,QDAS12)
-
-qdas12_full: line = (qdas12)
-qdas12[L] = 2*qdas12[L]
-
-
-!Old split line:  QDAS13_full  : LINE=(QDAS13,QDAS13)
-
-qdas13_full: line = (qdas13)
-qdas13[L] = 2*qdas13[L]
-
-
-!Old split line:  QDAS14_full  : LINE=(QDAS14,QDAS14)
-
-qdas14_full: line = (qdas14)
-qdas14[L] = 2*qdas14[L]
-
-
-!Old split line:  QDAS15_full  : LINE=(QDAS15,QDAS15)
-
-qdas15_full: line = (qdas15)
-qdas15[L] = 2*qdas15[L]
-
-
-!Old split line:  QDAS16_full  : LINE=(QDAS16,QDAS16)
-
-qdas16_full: line = (qdas16)
-qdas16[L] = 2*qdas16[L]
-
-
-!Old split line:  QDAS17_full  : LINE=(QDAS17,QDAS17)
-
-qdas17_full: line = (qdas17)
-qdas17[L] = 2*qdas17[L]
-
-
-!Old split line:  QDAS18a_full : LINE=(QDAS18a,QDAS18a)
-
-qdas18a_full: line = (qdas18a)
-qdas18a[L] = 2*qdas18a[L]
-
-
-!Old split line:  QDAS18b_full : LINE=(QDAS18b,QDAS18b)
-
-qdas18b_full: line = (qdas18b)
-qdas18b[L] = 2*qdas18b[L]
-
-
-!Old split line:  QDAS19_full  : LINE=(QDAS19,QDAS19)
-
-qdas19_full: line = (qdas19)
-qdas19[L] = 2*qdas19[L]
-
-
-
-!Old split line:  DUMPDAS_full : LINE=(DUMPDAS,DUMPDAS)
-
-dumpdas_full: line = (dumpdas)
-dumpdas[L] = 2*dumpdas[L]
+  BKRDAS1_full : LINE=(BKRDAS1a,BKRDAS1b)
+  BKRDAS2_full : LINE=(BKRDAS2a,BKRDAS2b)
+  BKRDAS3_full : LINE=(BKRDAS3a,BKRDAS3b)
+  BKRDAS4_full : LINE=(BKRDAS4a,BKRDAS4b)
+  BKRDAS5_full : LINE=(BKRDAS5a,BKRDAS5b)
+  BKRDAS6_full : LINE=(BKRDAS6a,BKRDAS6b)
+  BLRDAS_full  : LINE=(BLRDASa,BLRDASb)
+  BRDAS1_full  : LINE=(BRDAS1a,BRDAS1b)
+  BRDAS2_full  : LINE=(BRDAS2a,BRDAS2b)
+
+  QDAS1b_full  : LINE=(QDAS1b,QDAS1b)
+  QDAS1a_full  : LINE=(QDAS1a,QDAS1a)
+  QDAS2a_full  : LINE=(QDAS2a,QDAS2a)
+  QDAS2b_full  : LINE=(QDAS2b,QDAS2b)
+  QDAS11_full  : LINE=(QDAS11,QDAS11)
+  QDAS12_full  : LINE=(QDAS12,QDAS12)
+  QDAS13_full  : LINE=(QDAS13,QDAS13)
+  QDAS14_full  : LINE=(QDAS14,QDAS14)
+  QDAS15_full  : LINE=(QDAS15,QDAS15)
+  QDAS16_full  : LINE=(QDAS16,QDAS16)
+  QDAS17_full  : LINE=(QDAS17,QDAS17)
+  QDAS18a_full : LINE=(QDAS18a,QDAS18a)
+  QDAS18b_full : LINE=(QDAS18b,QDAS18b)
+  QDAS19_full  : LINE=(QDAS19,QDAS19)
+
+  DUMPDAS_full : LINE=(DUMPDAS,DUMPDAS)
 
 ! stage-A and stage-B with dump in sector-30
 
-  DASELSA : LINE=(BKRDAS1_full,DDASBK1 ,BKRDAS2_full,DDASBK2 ,BKRDAS3_full,DDASBK3h,DDASBK3h,BKRDAS4_full,DDASBK4 ,
+  SPA : LINE=(BEGSPA,BKRDAS1_full,DDASBK1 ,BKRDAS2_full,DDASBK2 ,BKRDAS3_full,DDASBK3h,DDASBK3h,BKRDAS4_full,DDASBK4 ,
          BKRDAS5_full,DDASBK5 ,BKRDAS6_full,DDASBLXa,BPMDAS  ,DDASBLXb1,PCBLRDAS,DDASBLXb2,BLRDAS_full ,RODAS1  ,DDAS1   ,
          XCDAS1  ,DDAS2a  ,YCDAS1  ,DDAS2b  ,BPMDAS1 ,DDAS3   ,QDAS1b_full,DDASQQ  ,QDAS1a_full,DDAS4   ,QDAS2a_full,DDASQQ  ,
          QDAS2b_full,DDAS5a  ,IMDAS1  ,DDAS5b  ,IMDAS2 ,DDAS5c  ,BRDAS1_full,RODAS2  ,DDAS11a ,XCDAS11 ,DDAS11b,YCDAS11 ,DDAS11c,
-         QDAS11_full,DDAS12a ,PRDAS12 ,DDAS12b ,DUMPDAS_full)
+         QDAS11_full,DDAS12a ,PRDAS12 ,DDAS12b ,DUMPDAS_full    ,DDAS12c,QDAS12_full,DDAS13  ,QDAS13_full,DDAS14aa,PRDAS14,
+         DDAS14ac,WOODDOOR_SPA,ENDSPA)
 
-  DASELSB : LINE=(DDAS12c ,QDAS12_full ,DDAS13  ,QDAS13_full ,DDAS14aa,PRDAS14,DDAS14ac,WOODDOOR,DDAS14ab,XCDAS14 ,
-         DDAS14b,QDAS14_full ,DDAS15  ,QDAS15_full ,DDAS16  ,QDAS16_full ,DDAS17a ,PRDAS17 ,DDAS17b ,YCDAS17,DDAS17c,
-         QDAS17_full ,DDAS18  ,QDAS18a_full,DDASQQ  ,QDAS18b_full,DDAS19  ,QDAS19_full ,DDAS20a ,BPMDAS19,DDAS20b ,RODAS3 ,
-         BRDAS2_full)
-
-! ------------------------------------------------------------------------------
-
-  DASEL  : LINE=(DASELSA,DASELSB)
-
-  DASELA : LINE=(BEGDASEL,DASEL,DA04b,XCDAS19,ALINE)
-
-  SPDASELA : LINE=(SPRDkh,SPRDks,SPRDda,DASELA)
+  SLTA : LINE=(BEGSLTA  ,DDAS14ab,XCDAS14,DDAS14b,QDAS14_full ,DDAS15 ,QDAS15_full ,DDAS16 ,QDAS16_full ,DDAS17a,
+         PRDAS17 ,DDAS17b,YCDAS17,DDAS17c,QDAS17_full ,DDAS18 ,QDAS18a_full,DDASQQ ,QDAS18b_full,DDAS19 ,QDAS19_full ,DDAS20a,
+         BPMDAS19,DDAS20b,RODAS3,BRDAS2_full ,DDAS21a,XCDAS19,DDAS21b,YCDAS19,DDAS21c,PRBRAM1,DDAS22,TGTBRAM1,DDAS23,ENDSLTA)
 
 ! ------------------------------------------------------------------------------
 

@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-18FEB2025s ***
+! *** OPTICS=AD_ACCEL-14APR2025s ***
 
 ! LCLS2sc bunch compressor chicane #2
 
@@ -159,7 +159,7 @@ bcx24: sbend, type = "1D19.7", hgap = gb2/2, l = lb2, angle = +ab2, e1 = +ab2, f
 
 ! L2 to BC2 chicane
 
-kq2c01 = 0.510765604072
+kq2c01 = 0.510742626723
 
 q2c01: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kq2c01
 
@@ -173,10 +173,10 @@ cq22b: quadrupole, type = "1.69Q3.4", l = lqc/2, aperture = rqc, k1 = kcq22
 
 ! match into L3
 
-kqe201 = -1.302488078275
-kqe202 = 1.990167249438
-kqe203 = -1.799697729718
-kqe204 = 1.645068913047
+kqe201 = -1.302578004949
+kqe202 = 1.990185768694
+kqe203 = -2.035694933515
+kqe204 = 1.984107437335
 
 qe201: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqe201
 qe202: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqe202
@@ -307,79 +307,18 @@ bc2bcend: marker
 ! BEAMLINE
 ! ------------------------------------------------------------------------------
 
+  BCX21_full : LINE=(BCX21a,BCX21b)
+  BCX22_full : LINE=(BCX22a,BCX22b)
+  BCX23_full : LINE=(BCX23a,BCX23b)
+  BCX24_full : LINE=(BCX24a,BCX24b)
 
-
-!Old split line:  BCX21_full : LINE=(BCX21a,BCX21b)
-
-bcx21_full: line = (bcx21)
-
-
-!Old split line:  BCX22_full : LINE=(BCX22a,BCX22b)
-
-bcx22_full: line = (bcx22)
-
-
-!Old split line:  BCX23_full : LINE=(BCX23a,BCX23b)
-
-bcx23_full: line = (bcx23)
-
-
-!Old split line:  BCX24_full : LINE=(BCX24a,BCX24b)
-
-bcx24_full: line = (bcx24)
-
-
-
-!Old split line:  Q2C01_full : LINE=(Q2C01,BPM2C01,Q2C01)
-
-q2c01_full: line = (q2c01)
-q2c01[L] = 2*q2c01[L]
-bpm2c01[superimpose] = T
-bpm2c01[ref] = q2c01
-
-
-!Old split line:  CQ21B_full : LINE=(CQ21B,CQ21B)
-
-cq21b_full: line = (cq21b)
-cq21b[L] = 2*cq21b[L]
-
-
-!Old split line:  CQ22B_full : LINE=(CQ22B,CQ22B)
-
-cq22b_full: line = (cq22b)
-cq22b[L] = 2*cq22b[L]
-
-
-!Old split line:  QE201_full : LINE=(QE201,BPME201,QE201)
-
-qe201_full: line = (qe201)
-qe201[L] = 2*qe201[L]
-bpme201[superimpose] = T
-bpme201[ref] = qe201
-
-
-!Old split line:  QE202_full : LINE=(QE202,BPME202,QE202)
-
-qe202_full: line = (qe202)
-qe202[L] = 2*qe202[L]
-bpme202[superimpose] = T
-bpme202[ref] = qe202
-
-
-!Old split line:  QE203_full : LINE=(QE203,BPME203,QE203)
-
-qe203_full: line = (qe203)
-qe203[L] = 2*qe203[L]
-bpme203[superimpose] = T
-bpme203[ref] = qe203
-
-
-!Old split line:  QE204_full : LINE=(QE204,BPME204,QE204)
-
-qe204_full: line = (qe204)
-qe204[L] = 2*qe204[L]
-bpme204[superimpose] = T
-bpme204[ref] = qe204
+  Q2C01_full : LINE=(Q2C01,BPM2C01,Q2C01)
+  CQ21B_full : LINE=(CQ21B,CQ21B)
+  CQ22B_full : LINE=(CQ22B,CQ22B)
+  QE201_full : LINE=(QE201,BPME201,QE201)
+  QE202_full : LINE=(QE202,BPME202,QE202)
+  QE203_full : LINE=(QE203,BPME203,QE203)
+  QE204_full : LINE=(QE204,BPME204,QE204)
 
   BC2i0 : LINE=(BEGBC2B,D2C00,Q2C01,Q2C01,D2C01)
 

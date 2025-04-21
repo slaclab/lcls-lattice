@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-18FEB2025s ***
+! *** OPTICS=AD_ACCEL-14APR2025s ***
 
 ! LCLS2sc linac extension: end of L3 to start of bypass dogleg
 
@@ -66,8 +66,8 @@
 ! QUAD
 ! ------------------------------------------------------------------------------
 
-kqx01 = 1.086471688243
-kqx02 = -0.97402412857
+kqx01 = 1.086585717518
+kqx02 = -0.973239864775
 
 qx01: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqx01
 qx02: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqx02
@@ -134,22 +134,8 @@ vvextd: instrument, type = "gate valve"
 ! BEAMLINE
 ! ------------------------------------------------------------------------------
 
-
-
-!Old split line:  QX01_full : LINE=(QX01,BPMX01,QX01)
-
-qx01_full: line = (qx01)
-qx01[L] = 2*qx01[L]
-bpmx01[superimpose] = T
-bpmx01[ref] = qx01
-
-
-!Old split line:  QX02_full : LINE=(QX02,BPMX02,QX02)
-
-qx02_full: line = (qx02)
-qx02[L] = 2*qx02[L]
-bpmx02[superimpose] = T
-bpmx02[ref] = qx02
+  QX01_full : LINE=(QX01,BPMX01,QX01)
+  QX02_full : LINE=(QX02,BPMX02,QX02)
 
   EXT0 : LINE=(BEGEXT,DX00,QX01,QX01,DX01,QX02,QX02,DX02,ENDEXT)
 

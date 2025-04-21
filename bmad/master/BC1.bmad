@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-18FEB2025s ***
+! *** OPTICS=AD_ACCEL-14APR2025s ***
 
 ! LCLS2sc bunch compressor chicane #1
 
@@ -110,7 +110,7 @@
 gb1 = 0.04328
 zb1 = 0.2032
 fb1 = 0.3893
-ab1 = -0.10092088117 !R56=0.053
+ab1 = -0.100916987733 !R56=0.053
 bb1 = brho1*sin(ab1)/zb1
 ab1_2 = ab1*ab1
 ab1_4 = ab1_2*ab1_2
@@ -152,7 +152,7 @@ bcx14: sbend, type = "1.69D6.28T", hgap = gb1/2, l = lb1, angle = +ab1, e1 = +ab
 
 ! L1 to BC1 chicane
 
-kq1c01 = 0.966019760844
+kq1c01 = 0.964583578003
 
 q1c01: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kq1c01
 
@@ -177,18 +177,18 @@ qdcoll1: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = -kqcoll1
 
 ! COL1 collimation section
 
-kqc101 = -0.515339094345
-kqc102 = 2.054226862445
+kqc101 = -0.253291436015
+kqc102 = 2.152128604228
 kqc103 = 0.0
-kqc104 = -0.849547795073
-kqc105 = -1.814589437453
+kqc104 = -1.217269485938
+kqc105 = -1.49025394442
 kqc106 = kqcoll1
 kqc107 = -kqcoll1
 kqc108 = kqcoll1
 kqc109 = -kqcoll1
-kqc110 = 1.40317309292  ! KQColl1
-kqc111 = -1.796414996251
-kqc112 = 1.304515461383
+kqc110 = 1.391771237954 ! KQColl1
+kqc111 = -1.792321987609
+kqc112 = 1.3045216513
 
 qc101: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc101
 qc102: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc102
@@ -390,149 +390,27 @@ bc1bcend: marker
 ! BEAMLINE
 ! ------------------------------------------------------------------------------
 
+  BCX11_full : LINE=(BCX11a,BCX11b)
+  BCX12_full : LINE=(BCX12a,BCX12b)
+  BCX13_full : LINE=(BCX13a,BCX13b)
+  BCX14_full : LINE=(BCX14a,BCX14b)
 
-
-!Old split line:  BCX11_full : LINE=(BCX11a,BCX11b)
-
-bcx11_full: line = (bcx11)
-
-
-!Old split line:  BCX12_full : LINE=(BCX12a,BCX12b)
-
-bcx12_full: line = (bcx12)
-
-
-!Old split line:  BCX13_full : LINE=(BCX13a,BCX13b)
-
-bcx13_full: line = (bcx13)
-
-
-!Old split line:  BCX14_full : LINE=(BCX14a,BCX14b)
-
-bcx14_full: line = (bcx14)
-
-
-
-!Old split line:  Q1C01_full : LINE=(Q1C01,BPM1C01,Q1C01)
-
-q1c01_full: line = (q1c01)
-q1c01[L] = 2*q1c01[L]
-bpm1c01[superimpose] = T
-bpm1c01[ref] = q1c01
-
-
-!Old split line:  CQ11B_full : LINE=(CQ11B,CQ11B)
-
-cq11b_full: line = (cq11b)
-cq11b[L] = 2*cq11b[L]
-
-
-!Old split line:  SQ13B_full : LINE=(SQ13B,SQ13B)
-
-sq13b_full: line = (sq13b)
-sq13b[L] = 2*sq13b[L]
-
-
-!Old split line:  CQ12B_full : LINE=(CQ12B,CQ12B)
-
-cq12b_full: line = (cq12b)
-cq12b[L] = 2*cq12b[L]
-
-
-!Old split line:  QC101_full : LINE=(QC101,BPMC101,QC101)
-
-qc101_full: line = (qc101)
-qc101[L] = 2*qc101[L]
-bpmc101[superimpose] = T
-bpmc101[ref] = qc101
-
-
-!Old split line:  QC102_full : LINE=(QC102,BPMC102,QC102)
-
-qc102_full: line = (qc102)
-qc102[L] = 2*qc102[L]
-bpmc102[superimpose] = T
-bpmc102[ref] = qc102
-
-
-!Old split line:  QC103_full : LINE=(QC103,BPMC103,QC103)
-
-qc103_full: line = (qc103)
-qc103[L] = 2*qc103[L]
-bpmc103[superimpose] = T
-bpmc103[ref] = qc103
-
-
-!Old split line:  QC104_full : LINE=(QC104,BPMC104,QC104)
-
-qc104_full: line = (qc104)
-qc104[L] = 2*qc104[L]
-bpmc104[superimpose] = T
-bpmc104[ref] = qc104
-
-
-!Old split line:  QC105_full : LINE=(QC105,BPMC105,QC105)
-
-qc105_full: line = (qc105)
-qc105[L] = 2*qc105[L]
-bpmc105[superimpose] = T
-bpmc105[ref] = qc105
-
-
-!Old split line:  QC106_full : LINE=(QC106,BPMC106,QC106)
-
-qc106_full: line = (qc106)
-qc106[L] = 2*qc106[L]
-bpmc106[superimpose] = T
-bpmc106[ref] = qc106
-
-
-!Old split line:  QC107_full : LINE=(QC107,BPMC107,QC107)
-
-qc107_full: line = (qc107)
-qc107[L] = 2*qc107[L]
-bpmc107[superimpose] = T
-bpmc107[ref] = qc107
-
-
-!Old split line:  QC108_full : LINE=(QC108,BPMC108,QC108)
-
-qc108_full: line = (qc108)
-qc108[L] = 2*qc108[L]
-bpmc108[superimpose] = T
-bpmc108[ref] = qc108
-
-
-!Old split line:  QC109_full : LINE=(QC109,BPMC109,QC109)
-
-qc109_full: line = (qc109)
-qc109[L] = 2*qc109[L]
-bpmc109[superimpose] = T
-bpmc109[ref] = qc109
-
-
-!Old split line:  QC110_full : LINE=(QC110,BPMC110,QC110)
-
-qc110_full: line = (qc110)
-qc110[L] = 2*qc110[L]
-bpmc110[superimpose] = T
-bpmc110[ref] = qc110
-
-
-!Old split line:  QC111_full : LINE=(QC111,BPMC111,QC111)
-
-qc111_full: line = (qc111)
-qc111[L] = 2*qc111[L]
-bpmc111[superimpose] = T
-bpmc111[ref] = qc111
-
-
-!Old split line:  QC112_full : LINE=(QC112,BPMC112,QC112)
-
-qc112_full: line = (qc112)
-qc112[L] = 2*qc112[L]
-bpmc112[superimpose] = T
-bpmc112[ref] = qc112
+  Q1C01_full : LINE=(Q1C01,BPM1C01,Q1C01)
+  CQ11B_full : LINE=(CQ11B,CQ11B)
+  SQ13B_full : LINE=(SQ13B,SQ13B)
+  CQ12B_full : LINE=(CQ12B,CQ12B)
+  QC101_full : LINE=(QC101,BPMC101,QC101)
+  QC102_full : LINE=(QC102,BPMC102,QC102)
+  QC103_full : LINE=(QC103,BPMC103,QC103)
+  QC104_full : LINE=(QC104,BPMC104,QC104)
+  QC105_full : LINE=(QC105,BPMC105,QC105)
+  QC106_full : LINE=(QC106,BPMC106,QC106)
+  QC107_full : LINE=(QC107,BPMC107,QC107)
+  QC108_full : LINE=(QC108,BPMC108,QC108)
+  QC109_full : LINE=(QC109,BPMC109,QC109)
+  QC110_full : LINE=(QC110,BPMC110,QC110)
+  QC111_full : LINE=(QC111,BPMC111,QC111)
+  QC112_full : LINE=(QC112,BPMC112,QC112)
 
   SC1C00 : LINE=(XC1C00,YC1C00)
 

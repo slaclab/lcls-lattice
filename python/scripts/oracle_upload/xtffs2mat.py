@@ -38,36 +38,9 @@ def xtffs2mat(fname):
 
             # Initialize lists and arrays
             K, N, L, P, A, T, E, FDN, coor, S = [], [], [], [], [], [], [], [], [], []
-
-            # Read in the INITIAL data
-            for _ in range(4):
-                line = fid.readline()
-                if _ == 0:
-                    K.append(line[0:4].strip())
-                    N.append(line[4:20].strip())
-                    L.append(float(line[20:32].strip()))
-                    p = [float(line[32:48].strip()), float(line[48:64].strip()), float(line[64:80].strip())]
-                    A.append(float(line[80:96].strip()))
-                    T.append(line[97:113].strip())
-                    E.append(float(line[114:130].strip()))
-                elif _ == 1:
-                    line = line.ljust(105)
-                    p.extend([float(line[0:16].strip()), float(line[16:32].strip()), float(line[32:48].strip()),
-                              float(line[48:64].strip()), float(line[64:80].strip())])
-                    FDN.append(line[81:105].strip())
-                elif _ == 2:
-                    x, y, z = map(float, [line[0:16].strip(), line[16:32].strip(), line[32:48].strip()])
-                    S.append(float(line[48:64].strip()))
-                else:
-                    yaw, pitch, roll = map(float, [line[0:16].strip(), line[16:32].strip(), line[32:48].strip()])
-
-            P.append(p)
-            coor.append([x, y, z, yaw, pitch, roll])
-
-            # Read in the data ... break at end of the file
             while True:
                 line = fid.readline()
-                if not line or not line[0].isalpha():
+                if not line.strip():
                     break
 
                 K.append(line[0:4].strip())
@@ -81,7 +54,7 @@ def xtffs2mat(fname):
                 line = fid.readline().ljust(105)
                 p.extend([float(line[0:16].strip()), float(line[16:32].strip()), float(line[32:48].strip()),
                           float(line[48:64].strip()), float(line[64:80].strip())])
-                FDN.append(line[81:105].strip())
+                FDN.append(line[81:97].strip())
 
                 line = fid.readline()
                 x, y, z = map(float, [line[0:16].strip(), line[16:32].strip(), line[32:48].strip()])
