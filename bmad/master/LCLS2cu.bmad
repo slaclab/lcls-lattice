@@ -806,12 +806,12 @@ dh01: drift, l = (0.155-dlbh)/cos(abh1), type = "CSR"
 dh02a: drift, l = 0.06717020-dlbh/2, type = "CSR"
 
 ! Shorten so that lh_und has an integer number of poles
-dh03a: drift, l = 0.09290825 - ( 10*0.054 - 0.506263 ) /2, type = "CSR"
-!old: dh03a: drift, l = 0.09290825, type = "CSR"
+!lh_und dh03a: drift, l = 0.09290825 - ( 10*0.054 - 0.506263 ) /2, type = "CSR"
+dh03a: drift, l = 0.09290825, type = "CSR"
 
 ! Shorten so that lh_und has an integer number of poles
-dh03b: drift, l = 0.08401830- ( 10*0.054 - 0.506263 ) /2, type = "CSR"
-!old: dh03b: drift, l = 0.08401830, type = "CSR"
+!lh_und dh03b: drift, l = 0.08401830- ( 10*0.054 - 0.506263 ) /2, type = "CSR"
+dh03b: drift, l = 0.08401830, type = "CSR"
 dh02b: drift, l = 0.09503020-dlbh/2, type = "CSR"
 dh06: drift, l = 0.13010070-dlbh/2, type = "CSR"
 
@@ -856,19 +856,19 @@ r34h = lhunh*sincargh
 
 
 !------- Laser Heater Undulator for Copper Linac -------
-my_lh_und_k = 1.38523
-lh_und: wiggler,
-        type = "laser_heater_undulator",
-        L_period = 0.054,
-        n_period = 10,
-        b_max = my_lh_und_k * 2*pi*m_electron / (c_light * 0.054),
-         L = 10*0.054 ! Was: 0.506263,
-        ds_step = 0.054
-
-lh_und[L] = lh_und[L]/2 ! Will be doubled in desplitting process.
+!my_lh_und_k = 1.38523
+!lh_und: wiggler,
+!        type = "laser_heater_undulator",
+!        L_period = 0.054,
+!        n_period = 10,
+!        b_max = my_lh_und_k * 2*pi*m_electron / (c_light * 0.054),
+!         L = 10*0.054 ! Was: 0.506263,
+!        ds_step = 0.054
+!
+!lh_und[L] = lh_und[L]/2 ! Will be doubled in desplitting process.
 !--------------------------------- !,          &
-!old: lh_und: taylor, type = "LHund", l = lhunh, tt11 = 1.0, tt12 = lhunh, tt21 = 0, tt22 = 1.0, tt33 = cos(lhunh*sqrt(kqlh)),
-!old           tt34 = r34h, tt43 = -sin(lhunh*sqrt(kqlh))*sqrt(kqlh), tt44 = cos(lhunh*sqrt(kqlh))
+lh_und: taylor, type = "LHund", l = lhunh, tt11 = 1.0, tt12 = lhunh, tt21 = 0, tt22 = 1.0, tt33 = cos(lhunh*sqrt(kqlh)),
+         tt34 = r34h, tt43 = -sin(lhunh*sqrt(kqlh))*sqrt(kqlh), tt44 = cos(lhunh*sqrt(kqlh))
    !R56 =  Lhunh/(gami^2)*(1+(K_und^2)/2)
 
  !VALUE, gami,kqlh,K_und
