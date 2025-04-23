@@ -57,7 +57,7 @@ def replace_eles(lines, replacements=None, verbose=True, shadows=None):
     
     """
     if replacements is None:
-        replacements = []
+        replacements = {}
     newlines = lines
     for k in replacements:
         newlines = replace_element(newlines, k, replacements[k], verbose=verbose, shadows=shadows)
