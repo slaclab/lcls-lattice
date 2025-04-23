@@ -163,8 +163,9 @@ def _(desplit_ele):
     line0 = 'qsx16_full: line = (qsx16, xcsx16, ycsx16, qsx16)'    
     line1 = 'qsx16_full: line = (qsx16,  qsx16a)'  
     line2 = 'qsx16_full: line = (qsx16)'  
-    print(desplit_ele(line0))
-    return line0, line1, line2
+    line3 = 'pssxh999_full: line = (pssxh999a,stuff,pssxh999b)'
+    print(desplit_ele(line3,exclude_strs=['pssxh']))
+    return line0, line1, line2, line3
 
 
 @app.cell
@@ -398,10 +399,10 @@ def _():
 
 
 @app.cell
-def _(CU_NEWELES, SC_NEWELES):
+def _(CU_NEWELES, NEWELES, SC_NEWELES):
     def all_replacements(master_file):
         dat = {}
-        #dat.update(NEWELES)
+        dat.update(NEWELES)
         if master_file.startswith('CU_'):
             print('CU replacements')
             dat.update(CU_NEWELES)
@@ -460,6 +461,10 @@ def _(
     run,
     shutil,
 ):
+    exclude_strs = ['BUN1B','WIGX','UMXL','LH_UND','UMHTR','UMASX','UMAHX','PSSX','PSHX']
+    shadows = ['umasxh','umahxh','pssxh','pshxh','umxl1h','umxl2h','umxl3h','umxl4h',
+               'duqxl','lh_und','dh03a','dh03b','umhtr','dh02c','dh02d']
+
     def process_master(master):
 
         print(f'Converting {master}')
@@ -478,7 +483,7 @@ def _(
         REPLACEMENTS = all_replacements(master)
 
         for f in BMAD_FILES:
-            finalize_bmad(f, replacements=REPLACEMENTS, verbose=False, desplit=False)   
+            finalize_bmad(f, replacements=REPLACEMENTS, verbose=False, exclude_strs=exclude_strs, shadows=shadows)   
 
         print(f'    Copying all to {DEST_DIR}')
         for f in BMAD_FILES:
@@ -486,7 +491,7 @@ def _(
             shutil.copy(f, DEST_DIR)
     run('pwd')    
     process_master('SC_SXR.xsif')
-    return (process_master,)
+    return exclude_strs, process_master, shadows
 
 
 @app.cell

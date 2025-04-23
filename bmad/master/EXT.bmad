@@ -134,8 +134,22 @@ vvextd: instrument, type = "gate valve"
 ! BEAMLINE
 ! ------------------------------------------------------------------------------
 
-  QX01_full : LINE=(QX01,BPMX01,QX01)
-  QX02_full : LINE=(QX02,BPMX02,QX02)
+
+
+!Old split line:  QX01_full : LINE=(QX01,BPMX01,QX01)
+
+qx01_full: line = (qx01)
+qx01[L] = 2*qx01[L]
+bpmx01[superimpose] = T
+bpmx01[ref] = qx01
+
+
+!Old split line:  QX02_full : LINE=(QX02,BPMX02,QX02)
+
+qx02_full: line = (qx02)
+qx02[L] = 2*qx02[L]
+bpmx02[superimpose] = T
+bpmx02[ref] = qx02
 
   EXT0 : LINE=(BEGEXT,DX00,QX01,QX01,DX01,QX02,QX02,DX02,ENDEXT)
 

@@ -249,10 +249,32 @@ crg1: instrument                   !Cerenkov radiator bunch length monitor
 yagg1: monitor, type = "YAG"       !6-MeV spectrometer screen
 fcg1: instrument                   !gun-spec. Faraday cup w/screen
 
-  BXG_full : LINE=(BXGa,BXGb)
 
-  QG02_full : LINE=(QG02,XCG1,YCG1,QG02)
-  QG03_full : LINE=(QG03,XCG2,YCG2,QG03)
+
+!Old split line:  BXG_full : LINE=(BXGa,BXGb)
+
+bxg_full: line = (bxg)
+
+
+
+!Old split line:  QG02_full : LINE=(QG02,XCG1,YCG1,QG02)
+
+qg02_full: line = (qg02)
+qg02[L] = 2*qg02[L]
+xcg1[superimpose] = T
+xcg1[ref] = qg02
+ycg1[superimpose] = T
+ycg1[ref] = qg02
+
+
+!Old split line:  QG03_full : LINE=(QG03,XCG2,YCG2,QG03)
+
+qg03_full: line = (qg03)
+qg03[L] = 2*qg03[L]
+xcg2[superimpose] = T
+xcg2[ref] = qg03
+ycg2[superimpose] = T
+ycg2[ref] = qg03
 
   GSPEC   : LINE=(BEGGSPEC,BXG_full,DGS1,QG02_full,DGS2,BPMG1,DGS3,QG03_full,DGS4,YAGG1,DGS5,CRG1,DGS6,FCG1,DGS7,
          DBMARK97,ENDGSPEC)
@@ -317,10 +339,26 @@ ycs1: vkicker, type = "class-1a"
 xcs2: hkicker, type = "class-1a"
 ycs2: vkicker, type = "class-1a"
 
-  BXS_full : LINE=(BXSa,BXSb)
 
-  QS01_full : LINE=(QS01,BPMS2,QS01)
-  QS02_full : LINE=(QS02,QS02)
+
+!Old split line:  BXS_full : LINE=(BXSa,BXSb)
+
+bxs_full: line = (bxs)
+
+
+
+!Old split line:  QS01_full : LINE=(QS01,BPMS2,QS01)
+
+qs01_full: line = (qs01)
+qs01[L] = 2*qs01[L]
+bpms2[superimpose] = T
+bpms2[ref] = qs01
+
+
+!Old split line:  QS02_full : LINE=(QS02,QS02)
+
+qs02_full: line = (qs02)
+qs02[L] = 2*qs02[L]
 
   SCS1 : LINE=(XCS1,YCS1)
   SCS2 : LINE=(XCS2,YCS2)
@@ -804,13 +842,13 @@ lbh1l = rbh1*abh1l          !"long" half heater-chicane bend path length (m)
 dh00: drift, l = 0.13453045-dlbh/2
 dh01: drift, l = (0.155-dlbh)/cos(abh1), type = "CSR"
 dh02a: drift, l = 0.06717020-dlbh/2, type = "CSR"
-
-! Shorten so that lh_und has an integer number of poles
-!lh_und dh03a: drift, l = 0.09290825 - ( 10*0.054 - 0.506263 ) /2, type = "CSR"
+!new:
+!new: ! Shorten so that lh_und has an integer number of poles
+!new: dh03a: drift, l = 0.09290825 - ( 10*0.054 - 0.506263 ) /2, type = "CSR"
 dh03a: drift, l = 0.09290825, type = "CSR"
-
-! Shorten so that lh_und has an integer number of poles
-!lh_und dh03b: drift, l = 0.08401830- ( 10*0.054 - 0.506263 ) /2, type = "CSR"
+!new:
+!new: ! Shorten so that lh_und has an integer number of poles
+!new: dh03b: drift, l = 0.08401830- ( 10*0.054 - 0.506263 ) /2, type = "CSR"
 dh03b: drift, l = 0.08401830, type = "CSR"
 dh02b: drift, l = 0.09503020-dlbh/2, type = "CSR"
 dh06: drift, l = 0.13010070-dlbh/2, type = "CSR"
@@ -854,21 +892,22 @@ r34h = lhunh*sincargh
 
 ! laser-heater undulator modeled as R-matrix to include vertical natural focusing:
 
-
-!------- Laser Heater Undulator for Copper Linac -------
-!my_lh_und_k = 1.38523
-!lh_und: wiggler,
-!        type = "laser_heater_undulator",
-!        L_period = 0.054,
-!        n_period = 10,
-!        b_max = my_lh_und_k * 2*pi*m_electron / (c_light * 0.054),
-!         L = 10*0.054 ! Was: 0.506263,
-!        ds_step = 0.054
-!
-!lh_und[L] = lh_und[L]/2 ! Will be doubled in desplitting process.
-!--------------------------------- !,          &
+!new: !,          &
+!new: !------- Laser Heater Undulator for Copper Linac -------
+!new: my_lh_und_k = 1.38523
+!new: lh_und: wiggler,
+!new:         type = "laser_heater_undulator",
+!new:         L_period = 0.054,
+!new:         n_period = 10,
+!new:         b_max = my_lh_und_k * 2*pi*m_electron / (c_light * 0.054),
+!new:          L = 10*0.054 ! Was: 0.506263,
+!new:         ds_step = 0.054
+!new:
+!new: lh_und[L] = lh_und[L]/2 ! Will be doubled in desplitting process.
+!new: !---------------------------------
+!new:
 lh_und: taylor, type = "LHund", l = lhunh, tt11 = 1.0, tt12 = lhunh, tt21 = 0, tt22 = 1.0, tt33 = cos(lhunh*sqrt(kqlh)),
-         tt34 = r34h, tt43 = -sin(lhunh*sqrt(kqlh))*sqrt(kqlh), tt44 = cos(lhunh*sqrt(kqlh))
+          tt34 = r34h, tt43 = -sin(lhunh*sqrt(kqlh))*sqrt(kqlh), tt44 = cos(lhunh*sqrt(kqlh))
    !R56 =  Lhunh/(gami^2)*(1+(K_und^2)/2)
 
  !VALUE, gami,kqlh,K_und
@@ -1498,7 +1537,16 @@ L0B_full: line = (L0B)
     OUTCPB[offset] = 3.034325
 !old:   L0b_full   : LINE=(FLNGb1,L0b___1,DLFDb,L0b___2,XC04,YC04,L0b___3,L0bMID,L0b___4,XC05,YC05,L0b___5,OUTCPb,L0b___6,
 !old          FLNGb2)
-  TCAV0_full : LINE=(TCAV0,XC06,YC06,TCAV0)
+
+
+!Old split line:  TCAV0_full : LINE=(TCAV0,XC06,YC06,TCAV0)
+
+tcav0_full: line = (tcav0)
+tcav0[L] = 2*tcav0[L]
+xc06[superimpose] = T
+xc06[ref] = tcav0
+yc06[superimpose] = T
+yc06[ref] = tcav0
 !---------------------
 ! L1X LCAVITY
 L1X: L1X___1, L = 0.5948, voltage = L1X___1[voltage]+L1X___2[voltage]
@@ -1514,52 +1562,302 @@ L1X_full: line = (L1X)
     YC21192[offset] = 0.2974
 !old:   L1X_full   : LINE=(XBEG,L1X___1,XC21191,YC21192,L1X___2,XEND)
 
-  BXH1_full : LINE=(BXH1a,BXH1b)
-  BXH2_full : LINE=(BXH2a,BXH2b)
-  BXH3_full : LINE=(BXH3a,BXH3b)
-  BXH4_full : LINE=(BXH4a,BXH4b)
-  BX01_full : LINE=(BX01a,BX01b)
-  BX02_full : LINE=(BX02a,BX02b)
-  BX11_full : LINE=(BX11a,BX11b)
-  BX12_full : LINE=(BX12a,BX12b)
-  BX13_full : LINE=(BX13a,BX13b)
-  BX14_full : LINE=(BX14a,BX14b)
-  BX21_full : LINE=(BX21a,BX21b)
-  BX22_full : LINE=(BX22a,BX22b)
-  BX23_full : LINE=(BX23a,BX23b)
-  BX24_full : LINE=(BX24a,BX24b)
 
-  QA01_full    : LINE=(QA01,QA01)
-  QA02_full    : LINE=(QA02,BPM5,QA02)
-  QE01_full    : LINE=(QE01,BPM6,QE01)
-  QE02_full    : LINE=(QE02,QE02)
-  QE03_full    : LINE=(QE03,BPM8,QE03)
-  QE04_full    : LINE=(QE04,BPM9,QE04)
-  QM01_full    : LINE=(QM01,BPM11,QM01)
-  QM02_full    : LINE=(QM02,BPM12,QM02)
-  QB_full      : LINE=(QB,BPM13,QB)
-  QM03_full    : LINE=(QM03,BPM14,QM03)
-  QM04_full    : LINE=(QM04,BPM15,QM04)
-  Q21201_full  : LINE=(Q21201,BPM21201,ZLIN02,Q21201)
-  QM11_full    : LINE=(QM11,QM11)
-  CQ11_full    : LINE=(CQ11,CQ11)
-  SQ13_full    : LINE=(SQ13,SQ13)
-  CQ12_full    : LINE=(CQ12,CQ12)
-  QM12_full    : LINE=(QM12,QM12)
-  QM13_full    : LINE=(QM13,BPMM12,QM13)
-  Q21301_full  : LINE=(Q21301,BPM21301,ZLIN03,Q21301)
-  QM14_full    : LINE=(QM14,BPMM14,QM14)
-  QM15_full    : LINE=(QM15,QM15)
-  Q24701A_full : LINE=(Q24701A,ZLIN08,Q24701A)
-  Q24701B_full : LINE=(Q24701B,BPM24701,Q24701B)
-  QM21_full    : LINE=(QM21,QM21)
-  CQ21_full    : LINE=(CQ21,CQ21)
-  CQ22_full    : LINE=(CQ22,CQ22)
-  QM22_full    : LINE=(QM22,QM22)
-  Q24901A_full : LINE=(Q24901A,BPM24901,Q24901A)
-  Q24901B_full : LINE=(Q24901B,Q24901B)
 
-  SOL1_full : LINE=(SOL1,CQ01,XC00,YC00,SQ01,SOL1)
+!Old split line:  BXH1_full : LINE=(BXH1a,BXH1b)
+
+bxh1_full: line = (bxh1)
+
+
+!Old split line:  BXH2_full : LINE=(BXH2a,BXH2b)
+
+bxh2_full: line = (bxh2)
+
+
+!Old split line:  BXH3_full : LINE=(BXH3a,BXH3b)
+
+bxh3_full: line = (bxh3)
+
+
+!Old split line:  BXH4_full : LINE=(BXH4a,BXH4b)
+
+bxh4_full: line = (bxh4)
+
+
+!Old split line:  BX01_full : LINE=(BX01a,BX01b)
+
+bx01_full: line = (bx01)
+
+
+!Old split line:  BX02_full : LINE=(BX02a,BX02b)
+
+bx02_full: line = (bx02)
+
+
+!Old split line:  BX11_full : LINE=(BX11a,BX11b)
+
+bx11_full: line = (bx11)
+
+
+!Old split line:  BX12_full : LINE=(BX12a,BX12b)
+
+bx12_full: line = (bx12)
+
+
+!Old split line:  BX13_full : LINE=(BX13a,BX13b)
+
+bx13_full: line = (bx13)
+
+
+!Old split line:  BX14_full : LINE=(BX14a,BX14b)
+
+bx14_full: line = (bx14)
+
+
+!Old split line:  BX21_full : LINE=(BX21a,BX21b)
+
+bx21_full: line = (bx21)
+
+
+!Old split line:  BX22_full : LINE=(BX22a,BX22b)
+
+bx22_full: line = (bx22)
+
+
+!Old split line:  BX23_full : LINE=(BX23a,BX23b)
+
+bx23_full: line = (bx23)
+
+
+!Old split line:  BX24_full : LINE=(BX24a,BX24b)
+
+bx24_full: line = (bx24)
+
+
+
+!Old split line:  QA01_full    : LINE=(QA01,QA01)
+
+qa01_full: line = (qa01)
+qa01[L] = 2*qa01[L]
+
+
+!Old split line:  QA02_full    : LINE=(QA02,BPM5,QA02)
+
+qa02_full: line = (qa02)
+qa02[L] = 2*qa02[L]
+bpm5[superimpose] = T
+bpm5[ref] = qa02
+
+
+!Old split line:  QE01_full    : LINE=(QE01,BPM6,QE01)
+
+qe01_full: line = (qe01)
+qe01[L] = 2*qe01[L]
+bpm6[superimpose] = T
+bpm6[ref] = qe01
+
+
+!Old split line:  QE02_full    : LINE=(QE02,QE02)
+
+qe02_full: line = (qe02)
+qe02[L] = 2*qe02[L]
+
+
+!Old split line:  QE03_full    : LINE=(QE03,BPM8,QE03)
+
+qe03_full: line = (qe03)
+qe03[L] = 2*qe03[L]
+bpm8[superimpose] = T
+bpm8[ref] = qe03
+
+
+!Old split line:  QE04_full    : LINE=(QE04,BPM9,QE04)
+
+qe04_full: line = (qe04)
+qe04[L] = 2*qe04[L]
+bpm9[superimpose] = T
+bpm9[ref] = qe04
+
+
+!Old split line:  QM01_full    : LINE=(QM01,BPM11,QM01)
+
+qm01_full: line = (qm01)
+qm01[L] = 2*qm01[L]
+bpm11[superimpose] = T
+bpm11[ref] = qm01
+
+
+!Old split line:  QM02_full    : LINE=(QM02,BPM12,QM02)
+
+qm02_full: line = (qm02)
+qm02[L] = 2*qm02[L]
+bpm12[superimpose] = T
+bpm12[ref] = qm02
+
+
+!Old split line:  QB_full      : LINE=(QB,BPM13,QB)
+
+qb_full: line = (qb)
+qb[L] = 2*qb[L]
+bpm13[superimpose] = T
+bpm13[ref] = qb
+
+
+!Old split line:  QM03_full    : LINE=(QM03,BPM14,QM03)
+
+qm03_full: line = (qm03)
+qm03[L] = 2*qm03[L]
+bpm14[superimpose] = T
+bpm14[ref] = qm03
+
+
+!Old split line:  QM04_full    : LINE=(QM04,BPM15,QM04)
+
+qm04_full: line = (qm04)
+qm04[L] = 2*qm04[L]
+bpm15[superimpose] = T
+bpm15[ref] = qm04
+
+
+!Old split line:  Q21201_full  : LINE=(Q21201,BPM21201,ZLIN02,Q21201)
+
+q21201_full: line = (q21201)
+q21201[L] = 2*q21201[L]
+bpm21201[superimpose] = T
+bpm21201[ref] = q21201
+zlin02[superimpose] = T
+zlin02[ref] = q21201
+
+
+!Old split line:  QM11_full    : LINE=(QM11,QM11)
+
+qm11_full: line = (qm11)
+qm11[L] = 2*qm11[L]
+
+
+!Old split line:  CQ11_full    : LINE=(CQ11,CQ11)
+
+cq11_full: line = (cq11)
+cq11[L] = 2*cq11[L]
+
+
+!Old split line:  SQ13_full    : LINE=(SQ13,SQ13)
+
+sq13_full: line = (sq13)
+sq13[L] = 2*sq13[L]
+
+
+!Old split line:  CQ12_full    : LINE=(CQ12,CQ12)
+
+cq12_full: line = (cq12)
+cq12[L] = 2*cq12[L]
+
+
+!Old split line:  QM12_full    : LINE=(QM12,QM12)
+
+qm12_full: line = (qm12)
+qm12[L] = 2*qm12[L]
+
+
+!Old split line:  QM13_full    : LINE=(QM13,BPMM12,QM13)
+
+qm13_full: line = (qm13)
+qm13[L] = 2*qm13[L]
+bpmm12[superimpose] = T
+bpmm12[ref] = qm13
+
+
+!Old split line:  Q21301_full  : LINE=(Q21301,BPM21301,ZLIN03,Q21301)
+
+q21301_full: line = (q21301)
+q21301[L] = 2*q21301[L]
+bpm21301[superimpose] = T
+bpm21301[ref] = q21301
+zlin03[superimpose] = T
+zlin03[ref] = q21301
+
+
+!Old split line:  QM14_full    : LINE=(QM14,BPMM14,QM14)
+
+qm14_full: line = (qm14)
+qm14[L] = 2*qm14[L]
+bpmm14[superimpose] = T
+bpmm14[ref] = qm14
+
+
+!Old split line:  QM15_full    : LINE=(QM15,QM15)
+
+qm15_full: line = (qm15)
+qm15[L] = 2*qm15[L]
+
+
+!Old split line:  Q24701A_full : LINE=(Q24701A,ZLIN08,Q24701A)
+
+q24701a_full: line = (q24701a)
+q24701a[L] = 2*q24701a[L]
+zlin08[superimpose] = T
+zlin08[ref] = q24701a
+
+
+!Old split line:  Q24701B_full : LINE=(Q24701B,BPM24701,Q24701B)
+
+q24701b_full: line = (q24701b)
+q24701b[L] = 2*q24701b[L]
+bpm24701[superimpose] = T
+bpm24701[ref] = q24701b
+
+
+!Old split line:  QM21_full    : LINE=(QM21,QM21)
+
+qm21_full: line = (qm21)
+qm21[L] = 2*qm21[L]
+
+
+!Old split line:  CQ21_full    : LINE=(CQ21,CQ21)
+
+cq21_full: line = (cq21)
+cq21[L] = 2*cq21[L]
+
+
+!Old split line:  CQ22_full    : LINE=(CQ22,CQ22)
+
+cq22_full: line = (cq22)
+cq22[L] = 2*cq22[L]
+
+
+!Old split line:  QM22_full    : LINE=(QM22,QM22)
+
+qm22_full: line = (qm22)
+qm22[L] = 2*qm22[L]
+
+
+!Old split line:  Q24901A_full : LINE=(Q24901A,BPM24901,Q24901A)
+
+q24901a_full: line = (q24901a)
+q24901a[L] = 2*q24901a[L]
+bpm24901[superimpose] = T
+bpm24901[ref] = q24901a
+
+
+!Old split line:  Q24901B_full : LINE=(Q24901B,Q24901B)
+
+q24901b_full: line = (q24901b)
+q24901b[L] = 2*q24901b[L]
+
+
+
+!Old split line:  SOL1_full : LINE=(SOL1,CQ01,XC00,YC00,SQ01,SOL1)
+
+sol1_full: line = (sol1)
+sol1[L] = 2*sol1[L]
+cq01[superimpose] = T
+cq01[ref] = sol1
+xc00[superimpose] = T
+xc00[ref] = sol1
+yc00[superimpose] = T
+yc00[ref] = sol1
+sq01[superimpose] = T
+sq01[ref] = sol1
 
   LH_UND_full : LINE=(LH_UND,HTRUND,LH_UND)
 
