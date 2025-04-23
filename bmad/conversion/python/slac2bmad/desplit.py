@@ -1,5 +1,5 @@
 
-def desplit_ele(line, double_length=True, verbose=True, exclude_strs=[]):
+def desplit_ele(line, double_length=True, verbose=True, exclude_strs=None):
     """
     De-splits elements. Converts form:
     ele_full: line (ele, other...eles, ele) to:
@@ -33,9 +33,10 @@ def desplit_ele(line, double_length=True, verbose=True, exclude_strs=[]):
     ele, line = line.split(':')
     ele = ele.strip()
 
-    for exclude_str in exclude_strs:
-        if ele.startswith(exclude_str.lower()):
-            return original_line
+    if exclude_strs is not None:
+        for exclude_str in exclude_strs:
+            if ele.startswith(exclude_str.lower()):
+                return original_line
 
     name = ele.split('_full')[0]
     eles = [e.strip() for e in (line.split('(')[1].split(')')[0]).split(',')]
@@ -125,5 +126,5 @@ def process_padded_desplit(name, eles, note=""):
 
 
         
-def desplit_eles(lines, verbose=True, exclude_strs=[]):
+def desplit_eles(lines, verbose=True, exclude_strs=None):
     return [desplit_ele(line, verbose=verbose, exclude_strs=exclude_strs) for line in lines]

@@ -483,7 +483,7 @@ def _(
         REPLACEMENTS = all_replacements(master)
 
         for f in BMAD_FILES:
-            finalize_bmad(f, replacements=REPLACEMENTS, verbose=False, exclude_strs=exclude_strs, shadows=shadows)   
+            finalize_bmad(f, replacements=REPLACEMENTS, verbose=False, exclude_strs=exclude_strs, shadows=shadows)  
 
         print(f'    Copying all to {DEST_DIR}')
         for f in BMAD_FILES:

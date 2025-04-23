@@ -1,13 +1,16 @@
 
 
 
-def replace_element(lines, ele_name, new_ele, verbose=True, shadows=[]):
+def replace_element(lines, ele_name, new_ele, verbose=True, shadows=None):
     """
     Searches through lines for:
     ele_name: <some definition>
     , comments it out, and writes new_ele string below the comment. 
     Considers & to continue the line. 
     """
+    if shadows is None:
+        shadows = []
+
     newlines = []
     inele = False
     is_shadow = False
@@ -49,10 +52,12 @@ def replace_element(lines, ele_name, new_ele, verbose=True, shadows=[]):
 
 
 
-def replace_eles(lines, replacements, verbose=True, shadows=[]):
+def replace_eles(lines, replacements=None, verbose=True, shadows=None):
     """
     
     """
+    if replacements is None:
+        replacements = []
     newlines = lines
     for k in replacements:
         newlines = replace_element(newlines, k, replacements[k], verbose=verbose, shadows=shadows)

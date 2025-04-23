@@ -3,7 +3,7 @@ from .desplit import desplit_eles
 from .replace import replace_eles
 
 
-def finalize_bmad(bmad_file, replacements={}, verbose=True, exclude_strs=[], shadows=[]):
+def finalize_bmad(bmad_file, replacements=None, verbose=True, exclude_strs=None, shadows=None):
     with open(bmad_file) as f:
         lines = f.readlines()
     
