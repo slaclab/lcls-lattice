@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-01JAN2025s ***
+! *** OPTICS=AD_ACCEL-14APR2025s ***
 
 ! LCLS2sc post laser heater diagnostic beamline
 
@@ -131,10 +131,8 @@ kqbd0 = -7.825140556488    !-13.410702917581
 ! transverse deflecting cavities
 ! (NOTE: TCYDG0 might be installed as an uprgade at a later time)
 
-TCYDG0: pipe, L = 0.8, type ="@4,TRANS_YDEF", descrip = "deferred LCAVITY" !Y-deflector (split)
-!old: tcydg0: lcavity, type = "@4,STCAV_Y", rf_frequency = 2856 * 1e6, l = 20*in2m/2, cavity_type = traveling_wave
-TCXDG0: pipe, L = 0.8, type ="@0,TRANS_XDEF", descrip = "deferred LCAVITY" !X-deflector (split)
-!old: tcxdg0: lcavity, type = "STCAV_X", rf_frequency = 2856 * 1e6, l = 20*in2m/2, cavity_type = traveling_wave
+tcydg0: lcavity, type = "@4,STCAV_Y", rf_frequency = 2856 * 1e6, l = 20*in2m/2, cavity_type = traveling_wave !Y-deflector (split)
+tcxdg0: lcavity, type = "STCAV_X", rf_frequency = 2856 * 1e6, l = 20*in2m/2, cavity_type = traveling_wave !X-deflector (split)
 
 ! ==============================================================================
 ! SBEN
@@ -235,14 +233,14 @@ bydg0: sbend, type = "BXS", hgap = gbdmp0/2, l = lbdmp0, angle = abdmp0, e1 = eb
 ! QUAD
 ! ------------------------------------------------------------------------------
 
-kqdg004 = 8.771677622156
-kqdg005 = -12.05318929963
-kqdg006 = 6.830639733081
-kqdg007 = -4.543712509866
-kqdg008 = 11.377027435394
-kqdg009 = -11.53922964265
-kqdg010 = 13.01665154883
-kqdg011 = -10.98365098164
+kqdg004 = 8.771677621875
+kqdg005 = -12.053189299491
+kqdg006 = 6.830639733104
+kqdg007 = -4.543712509755
+kqdg008 = 11.377027435309
+kqdg009 = -11.539229642587
+kqdg010 = 13.01665154881
+kqdg011 = -10.983650981721
 
 qdg001: quadrupole, type = "1.51Q7.00", l = lqs/2, aperture = rqs, k1 = kqbf0
 qdg002: quadrupole, type = "1.51Q7.00", l = lqs/2, aperture = rqs, k1 = kqbd0
@@ -379,12 +377,9 @@ bpmdg008: monitor, type = "Stripline-1"
 bpmdg009: monitor, type = "Stripline-1"
 bpmdg011: monitor, type = "Stripline-1"
 
-RFBDG001: pipe, L = 0.0, type ="@2,CavityL-1", descrip = "deferred MONITOR"
-!old: rfbdg001: monitor, type = "@2,CavityL-1"
-RFBDG002: pipe, L = 0.0, type ="@2,CavityS-1", descrip = "deferred MONITOR"
-!old: rfbdg002: monitor, type = "@2,CavityS-1"
-RFBDG003: pipe, L = 0.0, type ="@2,CavityS-1", descrip = "deferred MONITOR"
-!old: rfbdg003: monitor, type = "@2,CavityS-1"
+rfbdg001: monitor, type = "@2,CavityL-1"
+rfbdg002: monitor, type = "@2,CavityS-1"
+rfbdg003: monitor, type = "@2,CavityS-1"
 bpmdg012: monitor, type = "Stripline-11" !RFBDG004 : MONI, TYPE="@2,CavityL-1"
 
 ! ==============================================================================
@@ -395,10 +390,8 @@ xcdg001: hkicker, type = "class-6"
 xcdg002: hkicker, type = "class-6"
 xcdg003: hkicker, type = "class-1a"
 xcdg005: hkicker, type = "class-1a"
-XCDGTCY: pipe, L = 0.0, type ="@4,class-1t", descrip = "deferred HKICKER"
-!old: xcdgtcy: hkicker, type = "@4,class-1t"
-XCDGTCX: pipe, L = 0.0, type ="@0,class-1t", descrip = "deferred HKICKER"
-!old: xcdgtcx: hkicker, type = "class-1t"
+xcdgtcy: hkicker, type = "@4,class-1t"
+xcdgtcx: hkicker, type = "class-1t"
 xcdg008: hkicker, type = "class-1a"
 xcdg010: hkicker, type = "class-1a"
 
@@ -410,10 +403,8 @@ ycdg001: vkicker, type = "class-6"
 ycdg002: vkicker, type = "class-6"
 ycdg003: vkicker, type = "class-1a"
 ycdg005: vkicker, type = "class-1a"
-YCDGTCY: pipe, L = 0.0, type ="@4,class-1t", descrip = "deferred VKICKER"
-!old: ycdgtcy: vkicker, type = "@4,class-1t"
-YCDGTCX: pipe, L = 0.0, type ="@0,class-1t", descrip = "deferred VKICKER"
-!old: ycdgtcx: vkicker, type = "class-1t"
+ycdgtcy: vkicker, type = "@4,class-1t"
+ycdgtcx: vkicker, type = "class-1t"
 ycdg008: vkicker, type = "class-1a"
 ycdg010: vkicker, type = "class-1a"
 
@@ -428,15 +419,11 @@ otrdg04: monitor, type = "OTR INJ"
 
 ! combination OTR/YAG !PSI type
 
-OTRDG01: pipe, L = 0.0, type ="@3,OTR", descrip = "deferred MONITOR"
-!old: otrdg01: monitor, type = "@3,OTR"
-OTRDG01_YAG: pipe, L = 0.0, type ="@3,YAG", descrip = "deferred MONITOR"
-!old: otrdg01_yag: monitor, type = "@3,YAG"
+otrdg01: monitor, type = "@3,OTR"
+otrdg01_yag: monitor, type = "@3,YAG"
   OTRDG01_full : LINE=(OTRDG01,OTRDG01_YAG)
-OTRDG03: pipe, L = 0.0, type ="@3,OTR", descrip = "deferred MONITOR"
-!old: otrdg03: monitor, type = "@3,OTR"
-OTRDG03_YAG: pipe, L = 0.0, type ="@3,YAG", descrip = "deferred MONITOR"
-!old: otrdg03_yag: monitor, type = "@3,YAG"
+otrdg03: monitor, type = "@3,OTR"
+otrdg03_yag: monitor, type = "@3,YAG"
   OTRDG03_full : LINE=(OTRDG03,OTRDG03_YAG)
 
 ! wire scanners

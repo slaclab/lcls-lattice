@@ -1,8 +1,11 @@
 
-! *** OPTICS=AD_ACCEL-01JAN2025s ***
+! *** OPTICS=AD_ACCEL-14APR2025s ***
 
 ! ==============================================================================
-! Modification History
+! Modification History (see also DeckMods.txt ... )
+! ------------------------------------------------------------------------------
+! 22-JAN-2025, M. Woodley
+!  * redefine BEAM0 Twiss per C. Mayes; rematch GUNB Twiss
 ! ------------------------------------------------------------------------------
 ! 22-MAR-2024, M. Woodley
 !  * rematch Twiss at gun ... SWAVE added to BUN1B
@@ -28,8 +31,8 @@ in2m = 0.0254          !m/inch
 ! energy profile
 
 e0 = mc2+0.750e-3 !NGLS/APEX gun energy (GeV) ... 750 kV gun
-ei = 0.090       !energy at end of L0B (GeV)
-e1 = 0.250       !BC1 energy (GeV)
+ei = 0.075       !energy at end of L0B (GeV)
+e1 = 0.235       !BC1 energy (GeV)
 e2 = 1.500       !BC2 energy (GeV)
 ef = 4.000       !final beam energy (GeV)
 eu = 4.000       !energy in undulator (GeV)
@@ -57,10 +60,10 @@ r56ccdld = 9.99e-5
 
 ! Twiss at gun
 
-bx0 = 59.036886248898
-ax0 = 24.689495133727
-by0 = 58.963841213577
-ay0 = 24.659331255375
+bx0 = 52.439198729027
+ax0 = 21.656499467383
+by0 = 52.371634252331
+ay0 = 21.628730937285
 
 ! Twiss at S= 15.0 m (ASTRA MARKER)
 
@@ -69,27 +72,12 @@ axa = -2.125811087318
 bya = 13.315541277698
 aya = -2.123153832086
 
-! Twiss at BEAM0 MARKER (specified)
+! Twiss at BEAM0 MARKER (from C. Mayes)
 
 bxi = 9.3480
 axi = -1.6946
 byi = 9.3429
 ayi = -1.6925
-
-! max beta u/s of WS0H04
-
-bmax = 50
-
-! beta at WS0H04 waist
-
-b0h04w = 5.0
-
-! "treaty" Twiss at center of laser heater undulator (at element HTRUNDB)
-
-bxlh = 10.0
-axlh = 0
-bylh = 10.0
-aylh = 0
 
 ! ------------------------------------------------------------------------------
 
@@ -213,13 +201,17 @@ call, file = SFT.bmad
 call, file = SXTES.bmad
 call, file = DASEL.bmad
 
-  LCLS2scI : LINE=(BEAM0,DCM4b,QCM01_full,DCM5,CM01END,DCMCM1,HOMCM,DCAP0da,ASTRA,DCAP0db,FC1,DMSC0da,BLF1,DMSC0db,
+  LCLS2scI : LINE=(BEAM0,DCM4b,QCM01_full,DCM5,CM01END,DCMCM1,HOMCM01,DCAP0da,ASTRA,DCAP0db,FC1,DMSC0da,BLF1,DMSC0db,
          VGL0Bd,DMSC0dc,VPL0Bd,DMSC0dd,MSC0d,VVL0Bd,ENDL0B)
   LCLS2scC : LINE=(HTR,COL0,L1,BC1,COL1,L2,BC2,EMIT2,L3,EXT,DLBM)
 
 ! new BSY area definitions
 
 call, file = BSYsc.bmad
+
+!=!! SIMPLE --#! FDN definitions
+
+!=!  CALL, FILENAME="SC_FDN.xsif"
 
 ! beam path definitions
 

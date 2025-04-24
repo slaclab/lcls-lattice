@@ -5,7 +5,6 @@
 import re
 import os
 
-
 def remove_comment_blocks(lines, prefix='!=!'):
     """
     Removes comment blocks of the form:
@@ -31,6 +30,19 @@ def remove_comment_blocks(lines, prefix='!=!'):
             out.append(line)
     return out
 
+def remove_fdn_calls(lines, prefix='!=!'):
+    """
+    removes call to fdn file, as this file contains
+    unusual xsif syntax that mad8_to_bmad.py does not parse correctly.
+    """
+    out = []
+    inside = False
+    for line in lines:
+        if 'fdn' in line.lower():
+            out.append(prefix+line)
+        else:
+            out.append(line)
+    return out
 
 def replace_set(line):
     """
@@ -102,7 +114,7 @@ def unfold_comments(lines):
         if ix>-1:
             # There is a comment in this line
             # Get whitespace too
-            m=re.search('\s*'+c+'.*', line)
+            m=re.search('\\s*'+c+'.*', line)
             firstpart = line[0:ix].rstrip()
             if firstpart.strip() =='':
                 # Simple comment with whitespace
@@ -178,6 +190,8 @@ def prepare_xsif(xsif_file, save=True):
     
     # Unfold comments
     lines = unfold_comments(lines)
+
+    lines = remove_fdn_calls(lines)
     
     # Save
     if save:

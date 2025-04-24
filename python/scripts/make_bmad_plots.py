@@ -35,7 +35,7 @@ for model in MODELS:
   twiss = get_twiss_pytao(LCLS_LATTICE+'/bmad/models/'+model+'/'+model+'.lat.bmad')
   plt.figure(figsize=(10,3))
   if model == 'sc_dasel':
-    ix = twiss['name'].index('ENDBSYA_2')+1
+    ix = twiss['name'].index('ENDBSYA')+1
     plt.plot(twiss['s'][:ix],np.sqrt(twiss['betax'][:ix]), label='√β$_x$')
     plt.plot(twiss['s'][:ix],np.sqrt(twiss['betay'][:ix]), label='√β$_y$')
     plt.ylabel('√β$_{x,y}$ (m)')
