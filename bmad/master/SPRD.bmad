@@ -1,10 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-18FEB2025s ***
+! *** OPTICS=AD_ACCEL-14APR2025s ***
 
 ! LCLS2sc 3-way spreader system
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 19-APR-2025, M. Woodley
+!  * relocate (deferred) IMBCSS1/2, IMBCSH1/2, and IMBCSD1/2 per N. Balakrishnan
 ! ------------------------------------------------------------------------------
 ! 05-FEB-2025, M. Woodley
 !  * defer (level=4) YCSP0D and XCSP0D ... not installed
@@ -874,6 +877,9 @@ dsp9hg: drift, l = ldsp9hg
 dsp10ha: drift, l = ldsp10ha
 dsp10hb: drift, l = ldsp10hb
 dsp10hc: drift, l = ldsp10hc
+dsp10hc1: drift, l = 0.727063518229
+dsp10hc2: drift, l = 0.306071799451
+dsp10hc3: drift, l = ldsp10hc-dsp10hc1[l]-dsp10hc2[l]
 dsp10hd: drift, l = ldsp10hd
 dsp11ha: drift, l = ldsp11ha
 dsp11hb: drift, l = ldsp11hb
@@ -881,9 +887,6 @@ dsp11hc: drift, l = ldsp11hc
 dsp12ha: drift, l = ldsp12ha
 dsp12hb: drift, l = ldsp12hb
 dsp12hc: drift, l = ldsp12hc
-dsp12hc1: drift, l = 9.035399208502
-dsp12hc2: drift, l = 0.30541
-dsp12hc3: drift, l = dsp12hc[l]-dsp12hc1[l]-dsp12hc2[l]
 dsp12hd: drift, l = ldsp12hd
 dsp12he: drift, l = ldsp12he
 dsp13ha: drift, l = ldsp13ha
@@ -1046,9 +1049,9 @@ dsp12sca: drift, l = ldsp12sca
 dsp12scb: drift, l = ldsp12scb
 dsp13sa: drift, l = ldsp13sa
 dsp13sb: drift, l = ldsp13sb
-dsp13sb1: drift, l = 9.337992506693
-dsp13sb2: drift, l = 0.30541
-dsp13sb3: drift, l = dsp13sb[l]-dsp13sb1[l]-dsp13sb2[l]
+dsp13sb1: drift, l = 24.621217338532 !9.337992506693
+dsp13sb2: drift, l = 0.30601870107 !0.30541
+dsp13sb3: drift, l = dsp13sb[l]-dsp13sb1[l]-dsp13sb2[l] !7.165028811982
 
 ldsp2da2 = 2.0
 ldsp2da1 = 23.0-4.457-ldsp2da2 !adjusted for DASEL
@@ -1102,8 +1105,8 @@ dsp4db: drift, l = ldsp4db
 dsp5da: drift, l = ldsp5da
 dsp5db: drift, l = ldsp5db
 dsp5dc: drift, l = ldsp5dc
-dsp5dc1: drift, l = 0.694411378263
-dsp5dc2: drift, l = 0.30541
+dsp5dc1: drift, l = 1.329434073671 !0.694411378263
+dsp5dc2: drift, l = 0.306011786418 !0.30541
 dsp5dc3: drift, l = dsp5dc[l]-dsp5dc1[l]-dsp5dc2[l]
 dsp5dd: drift, l = ldsp5dd
 dsp6da: drift, l = ldsp6da
@@ -1245,6 +1248,11 @@ btmspdmp: instrument, type = "PPS BTM" !Burn-Through-Monitor behind BSY dump
 wssp1d: marker, type = "fast" !to measure beam size and energy before BSY dump
 
 otrspdmp: monitor, type = "@0,OTR" !OTR screen before BSY dump
+
+! BSY wooden door
+
+wooddoor_sph: marker
+wooddoor_spd: marker
 
 ! markers
 
@@ -1459,9 +1467,9 @@ ssp2h[L] = 2*ssp2h[L]
          BPMSP1h,DSP3hb,XCSP1h,DSP3hc,DSP3hd,QSP2h_full,DSP4ha,YCSP2h,DSP4hb,IMSP0h,DSP4hc,BRSP1h_full,ROSP2h,DSP5ha,DSP5hb,
          XCSP3h,DSP5hca,SSP2h_full,DSP5hcb,QSP3h_full,DSP6ha,BPMSP3h,DSP6hb,YCSP4h,DSP6hc,QSP4h_full,DSP7ha,BPMSP4h,DSP7hb,
          XCSP5h,DSP7hc,QSP5h_full,DSP8ha,BPMSP5h,DSP8hb,YCSP6h,DSP8hc,QSP6h_full,DSP9ha,BPMSP6h,DSP9hb,DSP9hc,DSP9hd,DSP9he,
-         DSP9hf,DSP9hg,QSP7h_full,DSP10ha,XCSP7h,DSP10hb,DSP10hc,YCSP8h,DSP10hd,QSP8h_full,DSP11ha,BPMSP8h,DSP11hb,DSP11hc,
-         QSP9h_full,DSP12ha,BPMSP9h,DSP12hb,XCSP9h,DSP12hc1,IMBCSh1,DSP12hc2,IMBCSh2,DSP12hc3,BPMSP10h,DSP12hd,YCSP10h,DSP12he,
-         QSP10h_full,DSP13ha,XCSP11h,DSP13hb,BPMSP11h,DSP13hc,QSP11h_full,DSP14ha,WOODDOOR)
+         DSP9hf,DSP9hg,QSP7h_full,DSP10ha,XCSP7h,DSP10hb,DSP10hc1,IMBCSh1,DSP10hc2,IMBCSh2,DSP10hc3,YCSP8h,DSP10hd,QSP8h_full,
+         DSP11ha,BPMSP8h,DSP11hb,DSP11hc,QSP9h_full,DSP12ha,BPMSP9h,DSP12hb,XCSP9h,DSP12hc,BPMSP10h,DSP12hd,YCSP10h,DSP12he,
+         QSP10h_full,DSP13ha,XCSP11h,DSP13hb,BPMSP11h,DSP13hc,QSP11h_full,DSP14ha,WOODDOOR_SPH)
 
 
 
@@ -1629,7 +1637,7 @@ qsp2d[L] = 2*qsp2d[L]
 
   SPRDdc : LINE=(DSP2dc2,XCSP1d,DSP2dd,QSP1d_full,DSP3da,DSP3db,IMSP0d,DSP3dc,MRFBSP2d,BPMSP2d,DSP3dd,QSP2d_full,DSP4da,
          YCSP2d,DSP4db,BYSP1d_full,DSP5da,DSP5db,WSSP1d,DSP5dc1,IMBCSd1,DSP5dc2,IMBCSd2,DSP5dc3,BPMSP3d,DSP5dd,BYSP2d_full,
-         CNTSP1D,DSP6da,XCSP3d,DSP6db,YCSP4d,DSP6dc,DSP6dd,DSP6de,DSP6dfa,WOODDOOR)
+         CNTSP1D,DSP6da,XCSP3d,DSP6db,YCSP4d,DSP6dc,DSP6dd,DSP6de,DSP6dfa,WOODDOOR_SPD)
 
   SPRDdd : LINE=(DSP6dfb,BPMSP4d,DSP6dg,RWWAKE3D,XCSP5d,DSP6dh,YCSP6d,DSP6di,BPMSP5d,DSP7da,OTRSPDMP,DSP7db,MUWALLd,
          DWALLad,DUMPBSY,DDUMPBSY,BTMSPDMP)

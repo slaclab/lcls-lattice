@@ -1,10 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-18FEB2025s ***
+! *** OPTICS=AD_ACCEL-14APR2025s ***
 
 ! LCLS2sc LTU and dump
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 10-MAR-2025, M. Woodley
+!  * cleanup (remove BSY-to-Aline stuff)
 ! ------------------------------------------------------------------------------
 ! 04-DEC-2024, M. Woodley
 !  * relocate RFBSX14 per X. Permanyer
@@ -1565,22 +1568,23 @@ r34xl1 = lundh
 r43xl1 = 0.0
 r44xl1 = 1.0
 
-
-!------- XLEAP-II wigglers -------
-umxl0h: wiggler, 
-        type = "LCLS-I",
-        L_period = 0.555, 
-        n_period = 6, 
-        b_max = 0, ! = K * 2*pi*m_electron / (c_light * 0.55), 
-        L = 6*0.555
-        !ds_step = 0.55*10
-
-umxl0h[L] = umxl0h[L]/2 ! Will be doubled in desplitting process. 
-!---------------------------------
-
-umxl1h: umxl0h
-!old: umxl1h: taylor, type = "LCLS-I", l = lundh, tt11 = r11xl1, tt12 = r12xl1, tt21 = r21xl1, tt22 = r22xl1, tt33 = r33xl1,
-!old           tt34 = r34xl1, tt43 = r43xl1, tt44 = r44xl1
+!new:
+!new: !------- XLEAP-II wigglers -------
+!new: umxl0h: wiggler,
+!new:         type = "LCLS-I",
+!new:         L_period = 0.555,
+!new:         n_period = 6,
+!new:         b_max = 0, ! = K * 2*pi*m_electron / (c_light * 0.55),
+!new:         L = 6*0.555
+!new:         !ds_step = 0.55*10
+!new:
+!new: umxl0h[L] = umxl0h[L]/2 ! Will be doubled in desplitting process.
+!new: !---------------------------------
+!new:
+!new: umxl1h: umxl0h
+!new:
+umxl1h: taylor, type = "LCLS-I", l = lundh, tt11 = r11xl1, tt12 = r12xl1, tt21 = r21xl1, tt22 = r22xl1, tt33 = r33xl1,
+          tt34 = r34xl1, tt43 = r43xl1, tt44 = r44xl1
 
 r11xl3 = 1.0
 r12xl3 = lundh
@@ -1591,10 +1595,10 @@ r34xl3 = lundh
 r43xl3 = 0.0
 r44xl3 = 1.0
 
-
-umxl3h: umxl0h
-!old: umxl3h: taylor, type = "LCLS-I", l = lundh, tt11 = r11xl3, tt12 = r12xl3, tt21 = r21xl3, tt22 = r22xl3, tt33 = r33xl3,
-!old           tt34 = r34xl3, tt43 = r43xl3, tt44 = r44xl3
+!new:
+!new: umxl3h: umxl0h
+umxl3h: taylor, type = "LCLS-I", l = lundh, tt11 = r11xl3, tt12 = r12xl3, tt21 = r21xl3, tt22 = r22xl3, tt33 = r33xl3,
+          tt34 = r34xl3, tt43 = r43xl3, tt44 = r44xl3
 
 r11xl4 = 1.0
 r12xl4 = lundh
@@ -1605,10 +1609,10 @@ r34xl4 = lundh
 r43xl4 = 0.0
 r44xl4 = 1.0
 
-
-umxl4h: umxl0h
-!old: umxl4h: taylor, type = "LCLS-I", l = lundh, tt11 = r11xl4, tt12 = r12xl4, tt21 = r21xl4, tt22 = r22xl4, tt33 = r33xl4,
-!old           tt34 = r34xl4, tt43 = r43xl4, tt44 = r44xl4
+!new:
+!new: umxl4h: umxl0h
+umxl4h: taylor, type = "LCLS-I", l = lundh, tt11 = r11xl4, tt12 = r12xl4, tt21 = r21xl4, tt22 = r22xl4, tt33 = r33xl4,
+          tt34 = r34xl4, tt43 = r43xl4, tt44 = r44xl4
  !endcomment
 
   UMXL1_full : LINE=(UMXL1h,UMXL1h)
@@ -2480,7 +2484,109 @@ bcx364_full: line = (bcx364)
   CC36   : LINE=(CC36BEG,BCX361_full,DCC36o,BCX362_full,DCC36i,BCX363_full,DCC36o,BCX364_full,CC36END)
 
 ! ------------------------------------------------------------------------------
-! HXR BSY downstream of the merge bend
+! BSY upstream of the scH merge bend (BXSP1H)
+! ------------------------------------------------------------------------------
+
+kq30701 = -0.396231018339 !-0.39623102008  !-0.396305842423 !
+kq30801 = 0.480592172519 ! 0.480592172677 ! 0.480095248389 !
+kq50q1 = -0.231522300458 !-0.231522298209 !-0.231122399508 !
+kq50q2 = 0.102074332053 ! 0.102074330212 ! 0.10177159732  !
+
+q50q1: quadrupole, type = "2Q10", l = lqr/2, k1 = kq50q1, aperture = rqr
+q50q2: quadrupole, type = "50Q2", l = 0.162151, k1 = kq50q2, aperture = 0.010325
+
+ldbsy01 = 5.995 !from beginning of BSY to Station 100
+dbsy01a: drift, l = 0.7286
+dbsy01b: drift, l = 0.25005
+dbsy01c: drift, l = 0.25005
+dbsy01d: drift, l = 0.4143
+dbsy01e: drift, l = 2.9046 !0.807+0.6+1.4976
+dbsy01f: drift, l = 0.31575
+dbsy01g: drift, l = 0.31575
+dbsy01h: drift, l = 0.7975
+dbsy01i: drift, l = 0.0184
+
+ldbsy50 = 2.144276 !Station 100 to center of Q50Q1
+dbsy50: drift, l = ldbsy50-lqr/2
+dbsy50a: drift, l = 0.5782
+dbsy50b: drift, l = dbsy50[l]-dbsy50a[l]
+
+dbsy02: drift, l = 0.456124
+dbsy02b: drift, l = 0.2199
+dbsy02a: drift, l = dbsy02[l]-dbsy02b[l]
+
+dbsy51: drift, l = 5.521976
+dbsy51b: drift, l = 0.5
+dbsy51a: drift, l = dbsy51[l]-dbsy51b[l]
+
+dbsy52: drift, l = 54.883314
+dbsy52a: drift, l = 0.079149
+dbsy52b: drift, l = 1.799589 !2.420851
+dbsy52d: drift, l = 0.5
+dbsy52c: drift,
+          l =  &
+         dbsy52[l]-dbsy52a[l]-dbsy52b[l]-lbrcusdc1-dckdc1[l]-lbkrcus-dckdc2[l]-lbrcusdc2-dcusblra[l]-dcusblrb[l]-lblrcus-lbxsph- &
+         dbsy52d[l]
+
+bpmbsyq1: monitor, type = "Stripline-5" !changed from "-6" to fit 2Q10
+bpmbsyq2: monitor, type = "Stripline-6" !per C. Iverson
+
+ycbsyq1: vkicker, type = "class-4" !barcode=4600
+
+xcbsyq2: hkicker, type = "class-4" !barcode=4601
+
+imbsy1: marker, type = "BCS toroid" !Bergoz toroid
+imbsy2: marker, type = "BCS toroid" !Bergoz toroid
+imbsy3: marker, type = "BCS toroid" !Bergoz toroid
+
+imbsy1b: marker, type = "BCS backup toroid" !PEP2 backup toroid for IMBSY1
+imbsy2b: marker, type = "BCS backup toroid" !PEP2 backup toroid for IMBSY2
+imbsy3b: marker, type = "BCS backup toroid" !PEP2 backup toroid for IMBSY3
+
+imbsy34: marker, type = "toroid" !diagnostic toroid - existing LCLS device
+
+lpcbsy = 0.3 !TBD
+
+bsybeg: marker
+fftborgn: marker
+s100: marker !station 100
+zlin15: marker !station-100 (or "S100"): Z=3048.0 (Z'=X'=Y'=0.0 m)
+bsy1beg: marker
+bsy1end: marker
+
+! wooden BSY door (separates LI30 from BSY)
+
+wooddoor: marker
+
+
+
+!Old split line:  Q50Q1_full : LINE=(Q50Q1,Q50Q1)
+
+q50q1_full: line = (q50q1)
+q50q1[L] = 2*q50q1[L]
+
+
+!Old split line:  Q50Q2_full : LINE=(Q50Q2,Q50Q2)
+
+q50q2_full: line = (q50q2)
+q50q2[L] = 2*q50q2[L]
+
+  BSYS100 : LINE=(BSY1BEG,DBSY01a,IMBSY1,DBSY01b,IMBSY2,DBSY01c,IMBSY3,DBSY01d,IMBSY34,DBSY01e,IMBSY1b,DBSY01f,IMBSY2b,
+         DBSY01g,IMBSY3b,DBSY01h,FFTBORGN,DBSY01i)
+
+  S100SXRa : LINE=(S100,ZLIN15,DBSY50a,YCBSYQ1,DBSY50b,Q50Q1_full,DBSY02a,WOODDOOR)
+
+  S100SXRb : LINE=(DBSY02b,BPMBSYQ1,DBSY51a,XCBSYQ2,DBSY51b,Q50Q2_full,DBSY52a,BPMBSYQ2,DBSY52b)
+
+  S100SXR : LINE=(S100SXRa,S100SXRb)
+
+ !BSYSXR : LINE=(BSYbeg,BSYS100,S100SXR)
+ !S100BSY1 : LINE=(S100SXR,KCUSXRa,DBSY52c,BXSP1Ha,BXSP1Hb)
+ !BSY1 : LINE=(BSYS100,S100BSY1)
+ !BSY : LINE=(BSYbeg,BSY1,BSY1END,SPhBSY)
+
+! ------------------------------------------------------------------------------
+! BSY downstream of scH merge bend (BXSP1H)
 ! ------------------------------------------------------------------------------
 
 ! note: the K-values below are for SC beam; the settings for Cu beam are
@@ -2498,59 +2604,82 @@ q5: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kq5, aperture = rqf
 q6: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kq6, aperture = rqf
 qa0: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqa0, aperture = rqf
 
-cxq6: rcollimator, type = "HCOLL", l = ljaw, x_limit = 1.7e-3, y_limit = 20.e-3
+! PM projections onto BSY beamline
 
-pcbsy3: instrument, type = "BCS plate", l = lplate !shielding plate
-pcbsy4: instrument, type = "BCS plate", l = lplate !shielding plate
-pcbsy5: instrument, type = "BCS plate", l = lplate !shielding plate
+sbkrapm = 1.055 !PM effective straight length (m)
+abkrapm0 = -0.276615046502e-2 !PM bend angle (PM's have been decommissioned)
+zbkrapm1 = sbkrapm*cos(abkrapm0*1/2)
+zbkrapm2 = sbkrapm*cos(abkrapm0*3/2)
+zbkrapm3 = sbkrapm*cos(abkrapm0*5/2)
+zbkrapm4 = sbkrapm*cos(abkrapm0*7/2)
 
+! PM drifts projected onto BSY beamline
+
+ldapm = 0.5951 !space between two PMs along (decommissioned) A-line trajectory
+lpcapm = 0.1824 !length of PM collimator along BSY beamline
+ldzapm1 = (ldapm*cos(1*abkrapm0)-lpcapm)/2
+ldzapm2 = (ldapm*cos(2*abkrapm0)-lpcapm)/2
+ldzapm3 = (ldapm*cos(3*abkrapm0)-lpcapm)/2
+ldzapm4 = (ldapm*cos(4*abkrapm0)-lpcapm)/2
+lda01 = 0.1971765
+lda02 = 4.371494-lda01-1.35/cos(4*abkrapm0)
+ldza01 = lda01*cos(4*abkrapm0)
+ldza02 = lda02*cos(4*abkrapm0)
+lpcbsyh = 0.45
 lpc90 = 0.453644
 lpc119 = 0.453644
-
-pc90: ecollimator, l = lpc90, x_limit = 10.2e-3, y_limit = 10.2e-3 !existing protection collimator in BSY
-pc119: ecollimator, l = lpc119, x_limit = 10.2e-3, y_limit = 10.2e-3 !existing protection collimator in BSY
-
-! 2" ID BSY collimator -- part of 2-hole copper collimator d/s of A-line pulsed magnets
-
-pcbsyh: ecollimator, type = "@1,MPS PC", l = 0.45, x_limit = 25.4e-3, y_limit = 25.4e-3 !installed, then removed
-
-dm3: drift, l = 0.8438 !0.2196
-dm4a: drift, l = 0.4410 !0.2114
-dm4c: drift, l = 0.331133-ljaw/2
-dm4d: drift, l = 1.168867-ljaw/2
-dm4da: drift, l = 0.27685 !0.2832
-dm4db: drift, l = dm4d[l]-dm4da[l]-lplate
-dm4b: drift, l = 8.851641-dm4a[l]-dm4c[l]-dm4d[l]-ljaw-2.0 +0.282226 !8.622041
-dxca0: drift, l = 0.31
-dyca0: drift, l = 0.509021 !0.279421
-dm5: drift, l = 0.790979 !0.561379
-dm6: drift, l = 0.567588
-dmoni: drift, l = 0.009525
 
 zq5 = 0.0 !adjust position of Q5
 zq6 = 0.0 !adjust position of Q6
 
-dbsy52d: drift, l = 0.5
 dbsy53a: drift, l = 0.091696
-dbsy53b: drift, l = 0.760705-0.15
-dbsy53c: drift, l = 0.629945+0.15
+dbsy53b: drift, l = 0.610705
+dbsy53c: drift, l = 0.779945
 dbsy53f: drift, l = 0.5
 dbsy53d: drift, l = 4.0-dbsy53a[l]-dbsy53b[l]-dbsy53c[l]-dbsy53f[l]
 dbsy53g: drift, l = 1.2
-dbsy53ga: drift, l = 0.91293 !0.91928
+dbsy53ga: drift, l = 0.91293
 dbsy53gb: drift, l = dbsy53g[l]-dbsy53ga[l]-lplate
+dbkrapm1a: drift, l = zbkrapm1/2
+dbkrapm1b: drift, l = zbkrapm1/2
+dzapm1: drift, l = ldzapm1
+dbkrapm2a: drift, l = zbkrapm2/2
+dbkrapm2b: drift, l = zbkrapm2/2
+dzapm2a: drift, l = ldzapm2/2
+dscapm2: drift, l = 0
+dzapm2b: drift, l = ldzapm2/2
+dzapm2: drift, l = ldzapm2
+dbkrapm3a: drift, l = zbkrapm3/2
+dbkrapm3b: drift, l = zbkrapm3/2
+dzapm3: drift, l = ldzapm3
+dbkrapm4a: drift, l = zbkrapm4/2
+dbkrapm4b: drift, l = zbkrapm4/2
+dzapm4: drift, l = ldzapm4
+dza01: drift, l = ldza01
+dza02: drift, l = ldza02
 dbsy53h: drift,
           l = 34.45562-dbsy53g[l]-zbkrapm1-zbkrapm2-zbkrapm3-zbkrapm4 -2*ldzapm1-2*ldzapm2-2*ldzapm3-ldzapm4-ldza01-ldza02  &
-         -pcbsyh[l]-lpcapm1-lpcapm2-lpcapm3-lpcapm4 +zq5
-
+         -lpcbsyh-4*lpcapm +zq5
 dbsy54a: drift, l = 0.5
 dbsy54b: drift, l = 3.22454 -zq5
 dbsy54c: drift, l = 19.260056-dbsy54a[l]-dbsy54b[l] -zq5+zq6
 dbsy55a: drift, l = 0.5
 dbsy55b: drift, l = 4.226742
-dbsy55c: drift, l = 8.016028 -zq6 !8.022378
-dbsy55d: drift, l = 6.466828 !6.473178
-dbsy55e: drift, l = 21.826764-drfb[l]-dbsy55a[l]-dbsy55b[l]-lpc90 -dbsy55c[l]-lplate-dbsy55d[l]-lpc119 -zq6 !21.432164
+dbsy55c: drift, l = 8.016028 -zq6
+dbsy55d: drift, l = 6.466828
+dbsy55e: drift, l = 21.826764-drfb[l]-dbsy55a[l]-dbsy55b[l]-lpc90 -dbsy55c[l]-lplate-dbsy55d[l]-lpc119 -zq6
+dm3: drift, l = 0.8438
+dm4a: drift, l = 0.441
+dm4c: drift, l = 0.331133-ljaw/2
+dm4d: drift, l = 1.168867-ljaw/2
+dm4da: drift, l = 0.27685
+dm4db: drift, l = dm4d[l]-dm4da[l]-lplate
+dm4b: drift, l = 8.851641-dm4a[l]-dm4c[l]-dm4d[l]-ljaw-1.717774
+dxca0: drift, l = 0.31
+dyca0: drift, l = 0.509021
+dm5: drift, l = 0.790979
+dm6: drift, l = 0.567588
+dmoni: drift, l = 0.009525
 
 bpmbsyq3: monitor, type = "Stripline-6" !per C. Iverson
 rfbbsyq3: monitor, type = "@2,CavityS-1"
@@ -2568,15 +2697,27 @@ ycbsyq4: vkicker, type = "class-4" !barcode=4603
 ycbsyq6: vkicker, type = "class-4" !barcode=2107
 yca0: vkicker, type = "class-4" !barcode=2195
 
-d2: instrument, type = "PPS stopper", l = 0.43 !stopper
-st60: instrument, type = "PPS stopper", l = 0.76 !backup stopper
-dm60: instrument, type = "PPS BTM"             !"disaster" BTM behind ST60
-st61: instrument, type = "PPS stopper", l = 0.76 !backup stopper
+pcbsy3: instrument, type = "BCS plate", l = lplate !shielding plate
+pcbsy4: instrument, type = "BCS plate", l = lplate !shielding plate
+d2: instrument, type = "PPS stopper", l = 0.43   !stopper
+st60: instrument, type = "PPS stopper", l = 0.76   !backup stopper
+dm60: instrument, type = "PPS BTM"               !"disaster" BTM behind ST60
+pcbsy5: instrument, type = "BCS plate", l = lplate !shielding plate
+st61: instrument, type = "PPS stopper", l = 0.76   !backup stopper
 
-bsyend: marker !FFTB side of muon plug wall: Z=3224.022426 (Z'=176.020508 m, X'=0.0 m, Y'=-0.821761 m)
-dumpbsyh: marker !front face of BSY dump for HXR beam
+pcapm1: ecollimator, type = "MPS PC", l = lpcapm, x_limit = 44.45e-3, y_limit = 6.35e-3
+pcapm2: ecollimator, type = "MPS PC", l = lpcapm, x_limit = 44.45e-3, y_limit = 6.35e-3
+pcapm3: ecollimator, type = "MPS PC", l = lpcapm, x_limit = 44.45e-3, y_limit = 6.35e-3
+pcapm4: ecollimator, type = "MPS PC", l = lpcapm, x_limit = 44.45e-3, y_limit = 6.35e-3
+pcbsyh: ecollimator, type = "@1,MPS PC", l = 0.45, x_limit = 25.4e-3, y_limit = 25.4e-3 !installed, then removed
+pc90: ecollimator, l = lpc90, x_limit = 10.2e-3, y_limit = 10.2e-3 !existing protection collimator in BSY
+pc119: ecollimator, l = lpc119, x_limit = 10.2e-3, y_limit = 10.2e-3 !existing protection collimator in BSY
+
+cxq6: rcollimator, type = "HCOLL", l = ljaw, x_limit = 1.7e-3, y_limit = 20.e-3
+
 muwall: marker !front face of muon wall for HXR beam
-mrgaline: marker !merge point with A-line
+dumpbsyh: marker !front face of BSY dump for HXR beam
+bsyend: marker !LTUH side of muon plug wall: Z=3224.022426 (Z'=176.020508 m, X'=0.0 m, Y'=-0.821761 m)
 rwwake3h: marker, type = "WAKE" !BSY/SPRDH beampipe wake applied here
 
 
@@ -2618,117 +2759,12 @@ qa0[L] = 2*qa0[L]
 bpmbsyqa0[superimpose] = T
 bpmbsyqa0[ref] = qa0
 
-  SPhAL : LINE=(DBSY52d,Q50Q3_full,DBSY53a,BPMBSYQ3,RFBBSYQ3,DBSY53b,DBSY53c,XCBSYQ3,DBSY53d,YCBSYQ4,DBSY53f,Q4_full,
-         DBSY53ga,PCBSY3,DBSY53gb,MRGALINE)
-
-  SPhBSYb : LINE=(PCBSYH,DBSY53h,Q5_full,DBSY54a,XCBSYQ5,DBSY54b,DBSY54c,Q6_full,DRFB,RFBBSYQ6,DBSY55a,YCBSYQ6,DBSY55b,
-         PC90,DBSY55c,PCBSY4,DBSY55d,PC119,DBSY55e,D2,DM3,ST60,DM4a,DM60,DM4b,CC31,DM4c,CXQ6,DM4da,PCBSY5,DM4db,XCA0,DXCA0,YCA0,
-         DYCA0,ST61,DM5,QA0_full,DM6,DMONI,DMONI,MUWALL,DWALLa,DUMPBSYh,DWALLb,BSYend,RWWAKE3H)
-
-! ------------------------------------------------------------------------------
-! BSY to ALINE (from Cu linac or SC linac) has been decommissioned
-! ------------------------------------------------------------------------------
-
- !SPhBSYa : LINE=(SPhAL,ALINEa)
-
- !SPhBSY : LINE=(SPhBSYa,SPhBSYb,ENDSPH)
-
-! ------------------------------------------------------------------------------
-! BSY1 upstream of the HXR merge bend
-! ------------------------------------------------------------------------------
-
-kq30701 = -0.396231018339 !-0.39623102008  !-0.396305842423 !
-kq30801 = 0.480592172519 ! 0.480592172677 ! 0.480095248389 !
-kq50q1 = -0.231522300458 !-0.231522298209 !-0.231122399508 !
-kq50q2 = 0.102074332053 ! 0.102074330212 ! 0.10177159732  !
-
-q50q1: quadrupole, type = "2Q10", l = lqr/2, k1 = kq50q1, aperture = rqr
-q50q2: quadrupole, type = "50Q2", l = 0.162151, k1 = kq50q2, aperture = 0.010325
-
-ldbsy01 = 5.995 !from beginning of BSY to Station 100
-dbsy01a: drift, l = 0.7286
-dbsy01b: drift, l = 0.25005
-dbsy01c: drift, l = 0.25005
-dbsy01d: drift, l = 0.4143
-dbsy01e: drift, l = 2.9046 !0.807+0.6+1.4976
-dbsy01f: drift, l = 0.31575
-dbsy01g: drift, l = 0.31575
-dbsy01h: drift, l = 0.7975
-dbsy01i: drift, l = 0.0184
-
-ldbsy50 = 2.144276 !Station 100 to center of Q50Q1
-dbsy50: drift, l = ldbsy50-lqr/2
-dbsy50a: drift, l = 0.5782
-dbsy50b: drift, l = dbsy50[l]-dbsy50a[l]
-
-dbsy02: drift, l = 0.456124
-dbsy02b: drift, l = 0.2199
-dbsy02a: drift, l = dbsy02[l]-dbsy02b[l]
-
-dbsy51: drift, l = 5.521976
-dbsy51b: drift, l = 0.5
-dbsy51a: drift, l = dbsy51[l]-dbsy51b[l]
-
-dbsy52: drift, l = 54.883314
-dbsy52a: drift, l = 0.079149
-dbsy52b: drift, l = 1.799589 !2.420851
-dbsy52c: drift,
-          l =  &
-         dbsy52[l]-dbsy52a[l]-dbsy52b[l]-lbrcusdc1-dckdc1[l]-lbkrcus-dckdc2[l]-lbrcusdc2-dcusblra[l]-dcusblrb[l]-lblrcus-lbxsph- &
-         dbsy52d[l]
-
-bpmbsyq1: monitor, type = "Stripline-5" !changed from "-6" to fit 2Q10
-bpmbsyq2: monitor, type = "Stripline-6" !per C. Iverson
-
-ycbsyq1: vkicker, type = "class-4" !barcode=4600
-
-xcbsyq2: hkicker, type = "class-4" !barcode=4601
-
-imbsy1: marker, type = "BCS toroid" !Bergoz toroid
-imbsy2: marker, type = "BCS toroid" !Bergoz toroid
-imbsy3: marker, type = "BCS toroid" !Bergoz toroid
-
-imbsy1b: marker, type = "BCS backup toroid" !PEP2 backup toroid for IMBSY1
-imbsy2b: marker, type = "BCS backup toroid" !PEP2 backup toroid for IMBSY2
-imbsy3b: marker, type = "BCS backup toroid" !PEP2 backup toroid for IMBSY3
-
-imbsy34: marker, type = "toroid" !diagnostic toroid - existing LCLS device
-
-lpcbsy = 0.3 !TBD
-
-bsybeg: marker
-fftborgn: marker
-s100: marker !station 100
-zlin15: marker !station-100 (or "S100"): Z=3048.0 (Z'=X'=Y'=0.0 m)
-bsy1beg: marker
-bsy1end: marker
-
-
-
-!Old split line:  Q50Q1_full : LINE=(Q50Q1,Q50Q1)
-
-q50q1_full: line = (q50q1)
-q50q1[L] = 2*q50q1[L]
-
-
-!Old split line:  Q50Q2_full : LINE=(Q50Q2,Q50Q2)
-
-q50q2_full: line = (q50q2)
-q50q2[L] = 2*q50q2[L]
-
-  BSYS100 : LINE=(BSY1BEG,DBSY01a,IMBSY1,DBSY01b,IMBSY2,DBSY01c,IMBSY3,DBSY01d,IMBSY34,DBSY01e,IMBSY1b,DBSY01f,IMBSY2b,
-         DBSY01g,IMBSY3b,DBSY01h,FFTBORGN,DBSY01i)
-
-  S100SXRa : LINE=(S100,ZLIN15,DBSY50a,YCBSYQ1,DBSY50b,Q50Q1_full,DBSY02a,WOODDOOR)
-
-  S100SXRb : LINE=(DBSY02b,BPMBSYQ1,DBSY51a,XCBSYQ2,DBSY51b,Q50Q2_full,DBSY52a,BPMBSYQ2,DBSY52b)
-
-  S100SXR : LINE=(S100SXRa,S100SXRb)
-
- !BSYSXR : LINE=(BSYbeg,BSYS100,S100SXR)
- !S100BSY1 : LINE=(S100SXR,KCUSXRa,DBSY52c,BXSP1Ha,BXSP1Hb)
- !BSY1 : LINE=(BSYS100,S100BSY1)
- !BSY : LINE=(BSYbeg,BSY1,BSY1END,SPhBSY)
+  BSYH : LINE=(BEGBSYH,DBSY52d,Q50Q3_full,DBSY53a,BPMBSYQ3,RFBBSYQ3,DBSY53b,DBSY53c,XCBSYQ3,DBSY53d,YCBSYQ4,DBSY53f,
+         Q4_full,DBSY53ga,PCBSY3,DBSY53gb,DBKRAPM1a,DBKRAPM1b,DZAPM1,PCAPM1,DZAPM1,DBKRAPM2a,DBKRAPM2b,DZAPM2a,DSCAPM2,DZAPM2b,
+         PCAPM2,DZAPM2,DBKRAPM3a,DBKRAPM3b,DZAPM3,PCAPM3,DZAPM3,DBKRAPM4a,DBKRAPM4b,DZAPM4,PCAPM4,DZA01,DZA02,PCBSYH,DBSY53h,
+         Q5_full,DBSY54a,XCBSYQ5,DBSY54b,DBSY54c,Q6_full,DRFB,RFBBSYQ6,DBSY55a,YCBSYQ6,DBSY55b,PC90,DBSY55c,PCBSY4,DBSY55d,PC119,
+         DBSY55e,D2,DM3,ST60,DM4a,DM60,DM4b,CC31,DM4c,CXQ6,DM4da,PCBSY5,DM4db,XCA0,DXCA0,YCA0,DYCA0,ST61,DM5,QA0_full,DM6,DMONI,
+         DMONI,MUWALL,DWALLa,DUMPBSYh,DWALLb,BSYend,RWWAKE3H,ENDBSYH)
 
 ! ------------------------------------------------------------------------------
 ! HXR VBEND
