@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.11.6"
+__generated_with = "0.12.2"
 app = marimo.App(width="medium")
 
 
@@ -32,14 +32,25 @@ def _():
     assert LCLS_LATTICE_ENV != ''
     lcls_lat_check_1 = run(f'ls {LCLS_LATTICE_ENV}/bmad/conversion',shell=True,capture_output=True)
     assert lcls_lat_check_1.returncode == 0
+    print(f'{LCLS_LATTICE_ENV=}')
 
     BMAD_ENV = os.environ['ACC_ROOT_DIR']
     assert BMAD_ENV != ''
     bmad_env_check_1 = run(f'ls {BMAD_ENV}/util/dist_source_me',shell=True,capture_output=True)
     assert bmad_env_check_1.returncode == 0
+    print(f'{BMAD_ENV=}')
+
+    WORK_DIR = LCLS_LATTICE_ENV + '/bmad/conversion/work'
+    TEMP_DIR = LCLS_LATTICE_ENV + '/bmad/conversion/temp'
+    DEST_DIR = os.path.expandvars('$LCLS_LATTICE/bmad/master/')
+    print(f'{WORK_DIR=}')
+    print(f'{TEMP_DIR=}')
     return (
         BMAD_ENV,
+        DEST_DIR,
         LCLS_LATTICE_ENV,
+        TEMP_DIR,
+        WORK_DIR,
         bmad_env_check_1,
         lcls_lat_check_1,
         os,
@@ -152,8 +163,9 @@ def _(desplit_ele):
     line0 = 'qsx16_full: line = (qsx16, xcsx16, ycsx16, qsx16)'    
     line1 = 'qsx16_full: line = (qsx16,  qsx16a)'  
     line2 = 'qsx16_full: line = (qsx16)'  
-    print(desplit_ele(line0))
-    return line0, line1, line2
+    line3 = 'pssxh999_full: line = (pssxh999a,stuff,pssxh999b)'
+    print(desplit_ele(line3,exclude_strs=['pssxh']))
+    return line0, line1, line2, line3
 
 
 @app.cell
@@ -289,12 +301,6 @@ def _():
 
 
 @app.cell
-def _(os):
-    os.getcwd()
-    return
-
-
-@app.cell
 def _(INCLUDE_DEFERRED, json):
     # CU only replacements
 
@@ -418,92 +424,74 @@ def _(mo):
 
 
 @app.cell
-def _(run):
-    run('rm -r temp',shell=True)
-    run('mkdir temp',shell=True)
-    run('rm -f *xsif *bmad *digested*',shell=True)
-    run('cp $LCLS_LATTICE/mad/*.xsif .',shell=True)
+def _(TEMP_DIR, run):
+    run(f'rm -rf {TEMP_DIR}',shell=True)
+    run(f'mkdir {TEMP_DIR}',shell=True)
+    #run('rm -f *.xsif *.bmad *.digested*',shell=True)
+    run(f'cp $LCLS_LATTICE/mad/*.xsif {TEMP_DIR}',shell=True)
     return
 
 
 @app.cell
-def _(os, prepare_xsif):
-    XSIF_FILES=[f for f in os.listdir() if f.endswith('.xsif')]
+def _(TEMP_DIR, os, prepare_xsif):
+    XSIF_FILES=[f for f in os.listdir(TEMP_DIR) if f.endswith('.xsif')]
     print(XSIF_FILES)
     for f in XSIF_FILES:
-        prepare_xsif(f, save=False)
+        prepare_xsif(f'{TEMP_DIR}/{f}', save=False)
     return XSIF_FILES, f
-
-
-@app.cell
-def _(run):
-    run('mv *xsif temp/',shell=True)
-    return
 
 
 @app.cell
 def _(os):
     CU_MASTERS = [f for f in os.listdir('mad') if f.startswith('CU_') and f.endswith('xsif')]
     SC_MASTERS = [f for f in os.listdir('mad') if f.startswith('SC_') and f.endswith('xsif')]
-    CU_MASTERS, SC_MASTERS
+    print(CU_MASTERS)
+    print(SC_MASTERS)
     return CU_MASTERS, SC_MASTERS
 
 
 @app.cell
-def _(run):
-    TEMPDIR = './temp/'
-    WORKDIR = './work/'
-    run('pwd')
-    print(f'mkdir {WORKDIR}')
-    run(f'mkdir work',shell=True)
-    return TEMPDIR, WORKDIR
-
-
-@app.cell
-def _(os):
-    DEST = os.path.expandvars('$LCLS_LATTICE/bmad/master/')
-    print(DEST)
-    return (DEST,)
-
-
-@app.cell
 def _(
-    DEST,
-    TEMPDIR,
-    WORKDIR,
+    DEST_DIR,
+    TEMP_DIR,
+    WORK_DIR,
     all_replacements,
     finalize_bmad,
     glob,
     run,
     shutil,
 ):
+    exclude_strs = ['BUN1B','WIGX','UMXL','LH_UND','UMHTR','UMASX','UMAHX','PSSX','PSHX']
+    shadows = ['umasxh','umahxh','pssxh','pshxh','umxl1h','umxl2h','umxl3h','umxl4h',
+               'duqxl','lh_und','dh03a','dh03b','umhtr','dh02c','dh02d']
+
     def process_master(master):
 
         print(f'Converting {master}')
 
-        shutil.copytree(TEMPDIR, WORKDIR, dirs_exist_ok=True)
+        shutil.copytree(TEMP_DIR, WORK_DIR, dirs_exist_ok=True)
 
         # New method
         SCRIPT = f'python $ACC_ROOT_DIR/util_programs/mad_to_bmad/mad8_to_bmad.py --no_prepend_vars -f {master}'
 
-        res = run(SCRIPT, shell=True, cwd=WORKDIR)
+        res = run(SCRIPT, shell=True, cwd=WORK_DIR)
 
         assert res.returncode == 0
 
-        BMAD_FILES=glob(WORKDIR+'/*bmad')
+        BMAD_FILES=glob(WORK_DIR+'/*bmad')
 
         REPLACEMENTS = all_replacements(master)
 
         for f in BMAD_FILES:
-            finalize_bmad(f, replacements=REPLACEMENTS, verbose=False)   
+            finalize_bmad(f, replacements=REPLACEMENTS, verbose=False, exclude_strs=exclude_strs, shadows=shadows)  
 
-        print(f'    Copying all to {DEST}')
+        print(f'    Copying all to {DEST_DIR}')
         for f in BMAD_FILES:
             #print(f'copying {f} to {DEST}')
-            shutil.copy(f, DEST)
+            shutil.copy(f, DEST_DIR)
     run('pwd')    
     process_master('SC_SXR.xsif')
-    return (process_master,)
+    return exclude_strs, process_master, shadows
 
 
 @app.cell
@@ -521,9 +509,9 @@ def _(SC_MASTERS, process_master):
 
 
 @app.cell
-def _(TEMPDIR, WORKDIR, run):
-    run(f'rm -r {TEMPDIR}',shell=True)
-    run(f'rm -r {WORKDIR}',shell=True)
+def _(TEMP_DIR, WORK_DIR, run):
+    run(f'rm -r {TEMP_DIR}',shell=True)
+    run(f'rm -r {WORK_DIR}',shell=True)
     return
 
 

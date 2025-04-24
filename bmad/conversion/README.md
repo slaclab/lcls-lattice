@@ -18,7 +18,8 @@
   - Check LCLS_LATTICE environment variable points to conversion branch of lcls-lattice repo.
   - Run all cells.
   - This generates the lcls-lattice/bmad/master/*_devicenames.bmad files
-9. Rematch sc_* lines.
+10. Update beginning twiss in `bmad/master/gunb/beginning_BEGGUNB.bmad` from BX0, AX0, etc. in `mad/LCLS2sc_master.xsif`
+11. Rematch sc_* lines.
   - Run mad8s to get Twiss
     - `mad8s < LCLS2sc_main.mad8`
      - mad8s Twiss are in the .print files.  The table below shows the .print file for each Bmad beamline.
@@ -31,9 +32,10 @@
   - scripts/match_EMIT2.tao
   - Adjustments should be necessary at QE201-4, Q0H01-8, and QHD01-4.
   - Also QC001-12,QCM02-3
-10. Submit PR to github.
-11. Generate new lcls-lattice release.
-12. Update `/sdf/group/ad/sw/scm/repos/optics/lcls-lattice` on s3df.
+12. Submit PR to github.
+13. Generate new lcls-lattice release.
+14. Update `/sdf/group/ad/sw/scm/repos/optics/lcls-lattice` on s3df.
+15. Update prod using zip of release at `lcls-srv01:/usr/local/lcls/tools/lcls-lattice`
 
 | Bmad line | mad8s Twiss file | Bmad <-> mad8s Places to Check |
 |-|-|-|

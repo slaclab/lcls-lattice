@@ -1,10 +1,15 @@
 
-! *** OPTICS=AD_ACCEL-18FEB2025s ***
+! *** OPTICS=AD_ACCEL-14APR2025s ***
 
 ! LCLS2sc A-line
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 14-MAR-2025, M. Woodley
+!  * remove BSYA_1 area components (decommissioned)
+!  * rename BSYA_2 area to BSYA; BSYA area begins at entrance to BRAM1
+!  * define ESA area
 ! ------------------------------------------------------------------------------
 ! 31-MAR-2024, M. Woodley
 !  * change Aline bend gap from 60 mm to 46 mm
@@ -98,72 +103,9 @@
 
 ! NOTE: ABRDAS2 and TBRDAS2 are defined in common.xsif
 
-setal = 0 !turns off decommissioned kickers
-
 ! ==============================================================================
 ! dipoles
 ! ------------------------------------------------------------------------------
-
-! yawed pulsed magnets
-
-gbkrapm = 35.687e-3      !1.405K40.83 pulsed magnet gap (m)
-sbkrapm = 1.055          !PM eff. straight length (m)
-tbkrapm = 0.014303833885 !PM tilt angle (rad)
-
-abkrapm0 = -0.276615046502e-2
-abkrapm = abkrapm0 *setal     !angle per one PM (rad)
-abkrapmh = abkrapm/2           !PM half-angle
-abkrapmh2 = abkrapmh *abkrapmh
-abkrapmh4 = abkrapmh2*abkrapmh2
-
-lbkrapm = sbkrapm/(1 -abkrapmh2/6 +abkrapmh4/120) !PM path length
-
-bkrapm1a: sbend, type = "1.405K40.83", l = lbkrapm/2, angle = abkrapm/2, e1 = abkrapm/2, e2 = 0, fint = 0.5, fintx = 0,
-          hgap = gbkrapm/2, ref_tilt = tbkrapm
-bkrapm1b: sbend, type = "1.405K40.83", l = lbkrapm/2, angle = abkrapm/2, e2 = abkrapm/2, e1 = 0, fint = 0, fintx = 0.5,
-          hgap = gbkrapm/2, ref_tilt = tbkrapm
-
-bkrapm2a: sbend, type = "1.405K40.83", l = lbkrapm/2, angle = abkrapm/2, e1 = abkrapm/2, e2 = 0, fint = 0.5, fintx = 0,
-          hgap = gbkrapm/2, ref_tilt = tbkrapm
-bkrapm2b: sbend, type = "1.405K40.83", l = lbkrapm/2, angle = abkrapm/2, e2 = abkrapm/2, e1 = 0, fint = 0, fintx = 0.5,
-          hgap = gbkrapm/2, ref_tilt = tbkrapm
-
-bkrapm3a: sbend, type = "1.405K40.83", l = lbkrapm/2, angle = abkrapm/2, e1 = abkrapm/2, e2 = 0, fint = 0.5, fintx = 0,
-          hgap = gbkrapm/2, ref_tilt = tbkrapm
-bkrapm3b: sbend, type = "1.405K40.83", l = lbkrapm/2, angle = abkrapm/2, e2 = abkrapm/2, e1 = 0, fint = 0, fintx = 0.5,
-          hgap = gbkrapm/2, ref_tilt = tbkrapm
-
-bkrapm4a: sbend, type = "1.405K40.83", l = lbkrapm/2, angle = abkrapm/2, e1 = abkrapm/2, e2 = 0, fint = 0.5, fintx = 0,
-          hgap = gbkrapm/2, ref_tilt = tbkrapm
-bkrapm4b: sbend, type = "1.405K40.83", l = lbkrapm/2, angle = abkrapm/2, e2 = abkrapm/2, e1 = 0, fint = 0, fintx = 0.5,
-          hgap = gbkrapm/2, ref_tilt = tbkrapm
-
-! define unsplit SBENs for BMAD ... not used by MAD
-
-bkrapm1: sbend, type = "1.405K40.83", hgap = gbkrapm/2, l = lbkrapm, angle = abkrapm, e1 = abkrapm/2, fint = 0.5,
-          e2 = abkrapm/2, fintx = 0.5, ref_tilt = tbkrapm
-bkrapm2: sbend, type = "1.405K40.83", hgap = gbkrapm/2, l = lbkrapm, angle = abkrapm, e1 = abkrapm/2, fint = 0.5,
-          e2 = abkrapm/2, fintx = 0.5, ref_tilt = tbkrapm
-bkrapm3: sbend, type = "1.405K40.83", hgap = gbkrapm/2, l = lbkrapm, angle = abkrapm, e1 = abkrapm/2, fint = 0.5,
-          e2 = abkrapm/2, fintx = 0.5, ref_tilt = tbkrapm
-bkrapm4: sbend, type = "1.405K40.83", hgap = gbkrapm/2, l = lbkrapm, angle = abkrapm, e1 = abkrapm/2, fint = 0.5,
-          e2 = abkrapm/2, fintx = 0.5, ref_tilt = tbkrapm
-
-! PM projections onto BSY HXR beam
-
-zbkrapm1 = sbkrapm*cos(abkrapm0*1/2)
-zbkrapm2 = sbkrapm*cos(abkrapm0*3/2)
-zbkrapm3 = sbkrapm*cos(abkrapm0*5/2)
-zbkrapm4 = sbkrapm*cos(abkrapm0*7/2)
-
-dbkrapm1a: drift, l = zbkrapm1/2
-dbkrapm1b: drift, l = zbkrapm1/2
-dbkrapm2a: drift, l = zbkrapm2/2
-dbkrapm2b: drift, l = zbkrapm2/2
-dbkrapm3a: drift, l = zbkrapm3/2
-dbkrapm3b: drift, l = zbkrapm3/2
-dbkrapm4a: drift, l = zbkrapm4/2
-dbkrapm4b: drift, l = zbkrapm4/2
 
 ! A-line merge bend
 
@@ -314,6 +256,7 @@ q4s: quadrupole, l = lqsa/2, k1 = kq4sa, aperture = rqsa
 ! drifts
 ! ------------------------------------------------------------------------------
 
+damq10: drift, l = 0.9875
 d105: drift, l = 5.5372
 d106: drift, l = 0.727
 d107: drift, l = 0.7755
@@ -349,54 +292,58 @@ d209: drift, l = 92.118
 
 ! drifts for diagnostic and correction devices
 
-d002a: drift, l = 0.090479
-d002b: drift, l = 1.654993
-d002c: drift, l = 0.0184
-d002d: drift, l = 2.466807
-d002e: drift, l = 0.34925
-d002f: drift, l = 4.3434
-d002g: drift, l = 6.213125
-d002h: drift, l = 0.3429
-d002i: drift, l = 0.447449
-d003a: drift, l = 0.128016
-d003b: drift, l = 1.609344
-d003c: drift, l = 0.331248
-d003d: drift, l = 0.628073
-d003e: drift, l = 0.2286
-d003f: drift, l = 0.4826
-d003g: drift, l = 0.3556
-d003h: drift, l = 0.415546
-d004a: drift, l = 0.204216
-d004b: drift, l = 0.581559
-d005a: drift, l = 0.762
-d005b: drift, l = 2.329
-d005c: drift, l = 5.402548
+!=!  comment
+!=!  comment
+!=!  D002a : DRIF, L=0.090479
+!=!  D002b : DRIF, L=1.654993
+!=!  D002c : DRIF, L=0.0184
+!=!  D002d : DRIF, L=2.466807
+!=!  D002e : DRIF, L=0.34925
+!=!  D002f : DRIF, L=4.3434
+!=!  D002g : DRIF, L=6.213125
+!=!  D002h : DRIF, L=0.3429
+!=!  D002i : DRIF, L=0.447449
+!=!  D003a : DRIF, L=0.128016
+!=!  D003b : DRIF, L=1.609344
+!=!  D003c : DRIF, L=0.331248
+!=!  D003d : DRIF, L=0.628073
+!=!  D003e : DRIF, L=0.2286
+!=!  D003f : DRIF, L=0.4826
+!=!  D003g : DRIF, L=0.3556
+!=!  D003h : DRIF, L=0.415546
+!=!  D004a : DRIF, L=0.204216
+!=!  D004b : DRIF, L=0.581559
+!=!  D005a : DRIF, L=0.762
+!=!  D005b : DRIF, L=2.329
+!=!  D005c : DRIF, L=5.402548
+!=!
+!=!  D101a : DRIF, L=7.405675
+!=!  D101b : DRIF, L=3.2853
+!=!  D101c : DRIF, L=0.635
+!=!  D101d : DRIF, L=0.787
+!=!  D101e : DRIF, L=0.534
+!=!  D101f : DRIF, L=0.813
+!=!  D101g : DRIF, L=0.685
+!=!  D101h : DRIF, L=0.61
+!=!  D101i : DRIF, L=1.27
+!=!  D101j : DRIF, L=1.778
+!=!  D101k : DRIF, L=0.457
+!=!  D101l : DRIF, L=0.153
+!=!  D101m : DRIF, L=0.177
+!=!  D101n : DRIF, L=0.483
+!=!  D101o : DRIF, L=0.483
+!=!  D101p : DRIF, L=0.587
+!=!  PMV   : DRIF, L=0.4
+!=!  D101q : DRIF, L=0.589942
+!=!  D102a : DRIF, L=1.06296
+!=!  PM    : DRIF, L=7.0
+!=!  D102b : DRIF, L=1.06296
+!=!  D103a : DRIF, L=66.20934
+!=!  D103b : DRIF, L=0.615959
+!=!  D103c : DRIF, L=2.850589
+!=!  D103d : DRIF, L=0.15875
+!=!  endcomment
 
-d101a: drift, l = 7.405675
-d101b: drift, l = 3.2853
-d101c: drift, l = 0.635
-d101d: drift, l = 0.787
-d101e: drift, l = 0.534
-d101f: drift, l = 0.813
-d101g: drift, l = 0.685
-d101h: drift, l = 0.61
-d101i: drift, l = 1.27
-d101j: drift, l = 1.778
-d101k: drift, l = 0.457
-d101l: drift, l = 0.153
-d101m: drift, l = 0.177
-d101n: drift, l = 0.483
-d101o: drift, l = 0.483
-d101p: drift, l = 0.587
-pmv: drift, l = 0.4
-d101q: drift, l = 0.589942
-d102a: drift, l = 1.06296
-pm: drift, l = 7.0
-d102b: drift, l = 1.06296
-d103a: drift, l = 66.20934
-d103b: drift, l = 0.615959
-d103c: drift, l = 2.850589
-d103d: drift, l = 0.15875
 d105a: drift, l = 0.808
 d105b: drift, l = 0.38
 d105c: drift, l = 0.478
@@ -452,74 +399,6 @@ d124e: drift, l = 1.041
 d124f: drift, l = 16.5857
 d124g: drift, l = 1.6471
 
-! PM drifts along A-line
-
-zpcapm = 0.1824 !length of PM collimator aligned along BSY HXR beam
-lpcapm1 = zpcapm/cos(1*abkrapm)
-lpcapm2 = zpcapm/cos(2*abkrapm)
-lpcapm3 = zpcapm/cos(3*abkrapm)
-lpcapm4 = zpcapm/cos(4*abkrapm)
-
-ldapm = 0.5951 !space between two PMs along A-line trajectory
-ldapm1 = (ldapm-lpcapm1)/2
-ldapm2 = (ldapm-lpcapm2)/2
-ldapm3 = (ldapm-lpcapm3)/2
-ldapm4 = (ldapm-lpcapm4)/2
-
-dapm1: drift, l = ldapm1
-dapm2: drift, l = ldapm2
-dapm2a: drift, l = ldapm2/2
-dapm2b: drift, l = ldapm2/2
-dapm3: drift, l = ldapm3
-dapm4: drift, l = ldapm4
-
-lda01 = 0.0471765+0.15
-lda02 = 4.371494-lda01-1.35/cos(4*abkrapm0)
-lda03 = 1.3206+1.35/cos(4*abkrapm0)
-lda04 = 47.451381526647
-ldbrdas2 = lbsp*cos(abrdas2*sin(tbrdas2)/2)*cos(abrdas2*cos(tbrdas2)/2)/ cos(abrdas2*cos(tbrdas2))
-lda04b = 0.5
-lda04c = 0.397
-lda04d = 19.829173726034-0.397 !!!
-lda04a = lda04-ldbrdas2-lda04b-lda04c-lda04d
-lda05 = 0.5
-lda06 = 0.5
-
-da01: drift, l = lda01
-da02: drift, l = lda02
-da03: drift, l = lda03
-da03b: drift, l = 0.6
-da03a: drift, l = da03[l]-da03b[l]
-dbrdas2a: drift, l = ldbrdas2/2
-dbrdas2b: drift, l = ldbrdas2/2
-dxcdas19: drift, l = 0
-da04a: drift, l = lda04a
-da04b: drift, l = lda04b
-da04c: drift, l = lda04c
-da04d: drift, l = lda04d
-da05: drift, l = lda05
-da06: drift, l = lda06
-damq10: drift, l = 0.9875
-
-! PM drifts projected onto BSY HXR beamline
-
-ldzapm1 = (ldapm*cos(1*abkrapm0)-zpcapm)/2
-ldzapm2 = (ldapm*cos(2*abkrapm0)-zpcapm)/2
-ldzapm3 = (ldapm*cos(3*abkrapm0)-zpcapm)/2
-ldzapm4 = (ldapm*cos(4*abkrapm0)-zpcapm)/2
-ldza01 = lda01*cos(4*abkrapm0)
-ldza02 = lda02*cos(4*abkrapm0)
-
-dzapm1: drift, l = ldzapm1
-dzapm2: drift, l = ldzapm2
-dzapm2a: drift, l = ldzapm2/2
-dzapm2b: drift, l = ldzapm2/2
-dzapm3: drift, l = ldzapm3
-dzapm4: drift, l = ldzapm4
-dza01: drift, l = ldza01
-dza02: drift, l = ldza02
-dscapm2: drift, l = 0
-
 ! ==============================================================================
 ! coordinate rolls ... bend plane rotated to remove linac slope
 ! ------------------------------------------------------------------------------
@@ -528,15 +407,15 @@ rollon = 1.0
 
 ! original A-line values
 
-  !ROLL1 : SROT, ANGLE= 0.014303845885    * ROLLON
-  !ROLL2 : SROT, ANGLE=-0.393462907527E-2 * ROLLON
-  !ROLL3 : SROT, ANGLE=-0.011395368282    * ROLLON
+ !ROLL1 : SROT, ANGLE= 0.014303845885    * ROLLON
+ !ROLL2 : SROT, ANGLE=-0.393462907527E-2 * ROLLON
+ !ROLL3 : SROT, ANGLE=-0.011395368282    * ROLLON
 
 ! new values
 
-  !ROLL4 : SROT, ANGLE= 0.014303788803    * ROLLON
-  !ROLL2 : SROT, ANGLE=-0.399639784046E-2 * ROLLON
-  !ROLL3 : SROT, ANGLE= 0.0               * ROLLON !no ROLL3 per alignment group
+ !ROLL4 : SROT, ANGLE= 0.014303788803    * ROLLON
+ !ROLL2 : SROT, ANGLE=-0.399639784046E-2 * ROLLON
+ !ROLL3 : SROT, ANGLE= 0.0               * ROLLON !no ROLL3 per alignment group
 
 roll2: patch, tilt = (0.014303788803-0.399639784046e-2) * rollon
 roll3: patch, tilt = 0.0 * rollon !no ROLL3 per alignment group
@@ -548,8 +427,6 @@ roll3: patch, tilt = 0.0 * rollon !no ROLL3 per alignment group
 a28x: hkicker
 a32x: hkicker
 
-ycbsya: vkicker, type = "1D2"
-ycdas19: vkicker, type = "class-4"
 a10y: vkicker
 a18y: vkicker
 a29y: vkicker
@@ -582,12 +459,6 @@ pr20: monitor
 pr28: monitor
 pr33: monitor
 
-! new devices
-
-yagapm: monitor, type = "YAG"     !YAG profile monitor
-prbram1: monitor, type = "unknown" !profile monitor, type to be determined
-tgtbram1: instrument, type = "Cu"      !secondary production Cu target
-
 ! ==============================================================================
 ! toroids and beam charge monitors
 ! ------------------------------------------------------------------------------
@@ -615,15 +486,6 @@ pc26: ecollimator
 pc29: ecollimator
 c37: rcollimator
 
-pcapm1: ecollimator, type = "MPS PC", l = lpcapm1, x_limit = 44.45e-3, y_limit = 6.35e-3
-pcapm2: ecollimator, type = "MPS PC", l = lpcapm2, x_limit = 44.45e-3, y_limit = 6.35e-3
-pcapm3: ecollimator, type = "MPS PC", l = lpcapm3, x_limit = 44.45e-3, y_limit = 6.35e-3
-pcapm4: ecollimator, type = "MPS PC", l = lpcapm4, x_limit = 44.45e-3, y_limit = 6.35e-3
-
-! 1" ID A-line collimator -- part of 2-hole copper collimator d/s of A-line PM
-
-pcbsya: ecollimator, type = "MPS PC", l = 0.45/cos(4*abkrapm0), x_limit = 12.7e-3, y_limit = 12.7e-3
-
 ! ==============================================================================
 ! vacuum components
 ! ------------------------------------------------------------------------------
@@ -637,8 +499,6 @@ fv28: marker
 ! points of interest
 ! ------------------------------------------------------------------------------
 
-begbsya_1: marker !start of (obsolete) BSYA_1 (ALINEa+ALINEb)
-endbsya_1: marker !end of (obsolete) BSYA_1 (ALINEa+ALINEb)
 begb: marker !start of A-line bending
 st22: marker !beam stopper
 marc: marker !match point
@@ -648,32 +508,10 @@ alwall: marker !upstream face of wall that separates A-line tunnel from alcove
 esae: marker !east wall of ESA
 bmde: marker !Beam Dump East
 
-rwwake3a: marker, type = "WAKE" !CLTH/BSYH beampipe wake applied here
-
 ! ==============================================================================
 ! beamlines
 ! ------------------------------------------------------------------------------
 
-
-
-!Old split line:  BKRAPM1_full : LINE=(BKRAPM1a,BKRAPM1b)
-
-bkrapm1_full: line = (bkrapm1)
-
-
-!Old split line:  BKRAPM2_full : LINE=(BKRAPM2a,BKRAPM2b)
-
-bkrapm2_full: line = (bkrapm2)
-
-
-!Old split line:  BKRAPM3_full : LINE=(BKRAPM3a,BKRAPM3b)
-
-bkrapm3_full: line = (bkrapm3)
-
-
-!Old split line:  BKRAPM4_full : LINE=(BKRAPM4a,BKRAPM4b)
-
-bkrapm4_full: line = (bkrapm4)
 
 
 !Old split line:  BRAM1_full   : LINE=(BRAM1a,BRAM1b)
@@ -846,27 +684,19 @@ q4s[L] = 2*q4s[L]
   LD123 : LINE=(D123a,FV28,D123b,BPM28,D123c,I28,D123d,PR28,D123e,A28X,D123f,A29Y,D123g,ST29,D123h,PC29,D123i,I29,D123j)
   LD124 : LINE=(D124a,A32X,D124b,A33Y,D124c,BPM31,D124d,BPM32,D124e,PR33,D124f,C37,D124g)
 
-! shared line with BSY (decommissioned)
+! A-line
 
-  ALINEa : LINE=(BEGBSYA_1,RWWAKE3A,BKRAPM1_full,DAPM1,PCAPM1,DAPM1,BKRAPM2_full,DAPM2a,DSCAPM2,DAPM2b,PCAPM2,DAPM2,
-         BKRAPM3_full,DAPM3,PCAPM3,DAPM3,BKRAPM4_full,DAPM4,PCAPM4,DA01,DA02)
+  BSYA : LINE=(BEGBSYA,BRAM1_full,ROLL2,DAMQ10,Q10_full,LD105,Q11_full,D106,BEGB,B11_full,D107,B12_full,LD108,B13_full,
+         D109,B14_full,LD110,B15_full,D111,B16_full,LD112,Q19_full,LD113,Q20_full,LD114,B21_full,D115,B22_full,LD116,B23_full,
+         D117,B24_full,LD118,B25_full,D119,B26_full,MARC,ROLL3,ENDB,LD120,Q27_full,D121,SQ27p5_full,D122,Q28_full,LD123,Q30_full,
+         LD124,Q38_full,D125,ALWALL,DPR2,ENDBSYA)
 
-! separate line from BSY (decommissioned)
+! End Station A
 
-  ALINEb : LINE=(PCBSYA,DA03a,YCBSYA,DA03b,YAGAPM,DA04a,DBRDAS2a,DBRDAS2b,DA04b,DXCDAS19,ENDBSYA_1)
+  ESA : LINE=(BEGESA,D201,BXD1S_full,D202,BXD2S_full,D203,BXD3S_full,D204,Q1S_full,D205,Q2S_full,D206,Q3S_full,D207,
+         Q4S_full,D208,ESAE,D209,BMDE,ENDESA)
 
-! continuation of DASEL line
-
-  ALINEc : LINE=(DA04c,YCDAS19,DA04d,PRBRAM1,DA05,TGTBRAM1,DA06,BRAM1_full,ROLL2,ENDDASEL,BEGBSYA_2,DAMQ10,Q10_full,
-         LD105,Q11_full,D106,BEGB,B11_full,D107,B12_full,LD108,B13_full,D109,B14_full,LD110,B15_full,D111,B16_full,LD112,
-         Q19_full,LD113,Q20_full,LD114,B21_full,D115,B22_full,LD116,B23_full,D117,B24_full,LD118,B25_full,D119,B26_full,MARC,
-         ROLL3,ENDB,LD120,Q27_full,D121,SQ27p5_full,D122,Q28_full,LD123,Q30_full,LD124,Q38_full,D125,ALWALL,DPR2,ENDBSYA_2)
-
-  ESAs : LINE=(D201,BXD1S_full,D202,BXD2S_full,D203,BXD3S_full,D204,Q1S_full,D205,Q2S_full,D206,Q3S_full,D207,Q4S_full,
-         D208,ESAE,D209,BMDE)
-
- !ALINE : LINE=(ALINEa,ALINEb,ALINEc,ESAs) !ALINEa and ALINEb are decommissioned
-  ALINE : LINE=(ALINEc,ESAs)
+  ALINE : LINE=(BSYA,ESA)
 
 ! ------------------------------------------------------------------------------
 

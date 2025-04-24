@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.11.6"
+__generated_with = "0.12.2"
 app = marimo.App(width="medium")
 
 
@@ -37,15 +37,13 @@ def _():
     facet2_lat_check_1 = run(f'ls {FACET2_LATTICE_ENV}/bmad/conversion',shell=True,capture_output=True)
     assert facet2_lat_check_1.returncode == 0
 
-    BMAD_ENV = os.environ['ACC_ROOT_DIR']
-    assert BMAD_ENV != ''
-    bmad_env_check_1 = run(f'ls {BMAD_ENV}/util/dist_source_me',shell=True,capture_output=True)
-    assert bmad_env_check_1.returncode == 0
+    #BMAD_ENV = os.environ['ACC_ROOT_DIR']
+    #assert BMAD_ENV != ''
+    #bmad_env_check_1 = run(f'ls {BMAD_ENV}/util/dist_source_me',shell=True,capture_output=True)
+    #assert bmad_env_check_1.returncode == 0
     return (
-        BMAD_ENV,
         FACET2_LATTICE_ENV,
         LCLS_LATTICE_ENV,
-        bmad_env_check_1,
         facet2_lat_check_1,
         lcls_lat_check_1,
         os,
@@ -191,6 +189,12 @@ def _(DEVICE, INITFILE, MASTER, Tao):
 def _(mo):
     mo.md("""##Add to CU Master""")
     return
+
+
+@app.cell
+def _(ele_names):
+    foo_names = ele_names('cu_hxr')
+    return (foo_names,)
 
 
 @app.cell
