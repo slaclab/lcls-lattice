@@ -146,7 +146,7 @@ seq.append({ 'froot': 7, 'name': 'BSYBEG TO BSYDUMP', 'beg': 'BEGSLTD', 'end': '
 # DIAG0 line
 seq.append({ 'froot': 8, 'name': 'DIAG0 TO FCDG0DU', 'beg': 'BEGDIAG0', 'end': 'ENDDIAG0', 'offset': [0, 0], 'prev': 1 })
 # DASEL
-seq.append({ 'froot': 9, 'name': 'BKRDAS1 to ESA',        'beg': 'BEGSPA', 'end': 'ENDBSYA', 'offset': [0, 0], 'prev': 20 })
+seq.append({ 'froot': 9, 'name': 'BKRDAS1 TO ESA',        'beg': 'BEGSPA', 'end': 'ENDBSYA', 'offset': [0, 0], 'prev': 20 })
 seq.append({ 'froot': 9, 'name': 'ESA TO BEAM DUMP EAST', 'beg': 'BEGESA', 'end': 'ENDESA', 'offset': [0, 0], 'prev': 24 })
 
 # XAL sequences: Cu linac
@@ -639,7 +639,7 @@ for m in range(0, len(idm), 2):
 
 
 # Shared devices (devices which see both kicked and unkicked beams)
-aname_all = ['DIAG0', 'SPH', 'SPS', 'DASEL', 'CLTS']
+aname_all = ['DIAG0', 'SPH', 'SPS', 'SPA', 'CLTS']
 name_all = ['BPMDG000', 'BPMSPH', 'BPMSPS', 'BPMDAS', 'BPMCUS']
 
 for name, aname in zip(name_all,aname_all):
@@ -914,23 +914,15 @@ MADK = [
     'HKIC', 'VKIC', 'MONI', 'WIRE', 'PROF', 'IMON', 'BLMO', 'INST',
     'MARK', 'MULT'
 ]
-XALK = [
-    'BNCH', 'BEND', 'QUAD', 'SEXT', 'SOLE', 'USEG', 'COLL', 'ECOL', 'SROT',
-    'XCOR', 'YCOR', 'BPM ', 'WIRE', 'PROF', 'TORO', 'BLMO', 'INST',
-    'MARK', 'INST'
-]
-
 
 #FOO FLAG key*, etc in following block for removal.
 # this prunes from MADK those keyword not in the survey files.
 keyw = []
-keyx = []
 jdmisc = []
 for n in range(len(MADK)):
     id_ = strmatch(MADK[n], tkeyw)
     if len(id_) > 0:
         keyw.append(MADK[n])
-        keyx.append(XALK[n])
 
 
 # hard-wired list of bends that have energy polynomials in the database
@@ -1036,7 +1028,7 @@ coor1 = np.array(coor1)
 coor2 = np.array(coor2)
 seq = np.array(seq)
 A = np.array(A)
-for kwn,kxn in zip(keyw,keyx):
+for kwn in keyw:
     id = strmatch(kwn,K)
     if kwn == 'LCAV':
         # create list of unique names that will allow unsplitting
@@ -1085,7 +1077,6 @@ for kwn,kxn in zip(keyw,keyx):
                 'parent': area[ida[id1]]['parent'],
                 'sector': SECTORS[id1].strip(),
                 'ucell': [],
-                'xkey': kxn,
                 'prim': FDN[id1],
                 'name': mname,
                 'type': T[id1].strip(),
@@ -1224,7 +1215,6 @@ for kwn,kxn in zip(keyw,keyx):
                 'parent': pname,
                 'sector': SECTORS[id1].strip(),
                 'ucell': [],
-                'xkey': f'X{kxn}' if tilt == 0 else f'Y{kxn}' if abs(np.cos(tilt)) < 1e-9 else f'R{kxn}',
                 'prim': FDN[id1],
                 'name': mname,
                 'type': T[id1].strip(),
@@ -1375,7 +1365,6 @@ for kwn,kxn in zip(keyw,keyx):
                 'parent': area[ida[id1]]['parent'],
                 'sector': SECTORS[id1].strip(),
                 'ucell': [],
-                'xkey': kxn,
                 'prim': FDN[id1],
                 'name': mname,
                 'type': T[id1].strip(),
@@ -1464,7 +1453,6 @@ for kwn,kxn in zip(keyw,keyx):
                 'parent': area[ida[id1]]['parent'],
                 'sector': SECTORS[id1].strip(),
                 'ucell': [],
-                'xkey': kxn,
                 'prim': FDN[id1],
                 'name': mname,
                 'type': T[id1].strip(),
@@ -1552,7 +1540,6 @@ for kwn,kxn in zip(keyw,keyx):
                 'parent': area[ida[id1]]['parent'],
                 'sector': SECTORS[id1].strip(),
                 'ucell': [],
-                'xkey': kxn,
                 'prim': FDN[id1],
                 'name': mname,
                 'type': T[id1].strip(),
@@ -1627,7 +1614,6 @@ for kwn,kxn in zip(keyw,keyx):
                 'parent': area[ida[id1]]['parent'],
                 'sector': SECTORS[id1].strip(),
                 'ucell': [],
-                'xkey': kxn,
                 'prim': FDN[id1],
                 'name': mname,
                 'type': T[id1].strip(),
@@ -1695,7 +1681,6 @@ for kwn,kxn in zip(keyw,keyx):
                 'parent': area[ida[id]]['parent'],
                 'sector': SECTORS[id].strip(),
                 'ucell': [],
-                'xkey': kxn,
                 'prim': FDN[id],
                 'name': mname,
                 'type': T[id].strip(),
@@ -1763,7 +1748,6 @@ for kwn,kxn in zip(keyw,keyx):
                 'parent': area[ida[id]]['parent'],
                 'sector': SECTORS[id].strip(),
                 'ucell': [],
-                'xkey': kxn,
                 'prim': FDN[id],
                 'name': mname,
                 'type': T[id].strip(),
@@ -1832,7 +1816,6 @@ for kwn,kxn in zip(keyw,keyx):
                 'parent': area[ida[id]]['parent'],
                 'sector': SECTORS[id].strip(),
                 'ucell': [],
-                'xkey': kxn,
                 'prim': FDN[id],
                 'name': mname,
                 'type': T[id].strip(),
@@ -1881,22 +1864,21 @@ for kwn,kxn in zip(keyw,keyx):
         name = list(dict.fromkeys([N[i] for i in id]))
         MULT = []
         for mname in name:
-            id = strmatch(mname,N,True)
-            if id[0] == 1:
+            id = strmatch(mname,N,True)[0]
+            if id == 1:
                 idi = 1
             else:
-                idi = id[0] - 1  # beam in
-            ide = [idi, id[-1]]  # [entrance, exit]
-            sdsp = np.mean(Sd[ide])  # m (beam center)
-            suml = np.mean(S[ide])  # m (beam center)
-            dist = suml - seq[ids[id[0]]]['suml']  # m (sequence start to beam center)
-            energy = E[id[0]]  # GeV
+                idi = id - 1  # beam in
+            sdsp = Sd[id]  # m (beam center)
+            suml = S[id]  # m (beam center)
+            dist = suml - seq[ids[id]]['suml']  # m (sequence start to beam center)
+            energy = E[id]  # GeV
             leng = np.sum(L[id])  # m
-            k1 = P[id[0], 1]  # 1/m^2
+            k1 = P[id, 1]  # 1/m^2
             if abs(k1) < kmin:
                 k1 = 0
             EeV = 1e9 * energy  # eV
-            tilt = P[id[0], 3]  # rad
+            tilt = P[id, 3]  # rad
             brho = np.sqrt(EeV ** 2 - Er ** 2) / clight  # T-m
             if leng == 0:
                 G = 0  # T/m
@@ -1909,19 +1891,19 @@ for kwn,kxn in zip(keyw,keyx):
                 sname = 'kG2T_Gdl2G'
                 sval = 1 / (leng * T2kG)
             polarity = -np.sign(k1 + np.finfo(float).eps)  # add eps so that sign=1 when k1=0
-            coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
-            t = T[id[0]].strip()
-            aper = 2 * A[id[0]]  # m
+            #coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
+            coorc = coor[id,:] # m, rad (beam center)
+            t = T[id].strip()
+            aper = 2 * A[id]  # m
             MULT.append({
-                'idf': idf[id[0]],
-                'id': idd[id[0]],
-                'seq': seq[ids[id[0]]]['name'],
-                'area': area[ida[id[0]]]['name'],
-                'parent': area[ida[id[0]]]['parent'],
-                'sector': SECTORS[id[0]].strip(),
+                'idf': idf[id],
+                'id': idd[id],
+                'seq': seq[ids[id]]['name'],
+                'area': area[ida[id]]['name'],
+                'parent': area[ida[id]]['parent'],
+                'sector': SECTORS[id].strip(),
                 'ucell': [],
-                'xkey': kxn,
-                'prim': FDN[id[0]],
+                'prim': FDN[id],
                 'bore': aper,
                 'k1': k1,
                 'tilt': np.rad2deg(tilt),  # deg
@@ -1931,7 +1913,7 @@ for kwn,kxn in zip(keyw,keyx):
                 'name': mname,
                 'sname': sname,
                 'sval': sval,
-                'type': T[id[0]].strip(),
+                'type': T[id].strip(),
                 'dist': dist,
                 'energy': energy,
                 'leng': leng,
@@ -1949,15 +1931,15 @@ for kwn,kxn in zip(keyw,keyx):
             if cBSY:
                 id = strmatch(mname,N1,True)
                 if len(id) > 0:
-                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
-                    suml1 = np.mean(S1[ide])  # m (beam center)
-                    coorc1 = np.mean(coor1[ide], axis=0)  # m, rad (beam center)
+                    id = id[0]
+                    suml1 = S1[id] 
+                    coorc1 = coor1[id]
                     MULT[-1]['suml1'] = suml1
                     for k in range(6):
                         MULT[-1][f'c1{k+1}'] = coorc1[k]
                     if not MULT[-1]['sector']:
-                        MULT[-1]['sector'] = SECTORS1[id[0]].strip()
-                    MULT[-1]['ucell'] = UCELL[id[0]].strip()
+                        MULT[-1]['sector'] = SECTORS1[id].strip()
+                    MULT[-1]['ucell'] = UCELL[id].strip()
 
             # UND coordinates
 
@@ -1968,9 +1950,9 @@ for kwn,kxn in zip(keyw,keyx):
             if cUND:
                 id = strmatch(mname,N2,True)
                 if len(id) > 0:
-                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
-                    suml2 = np.mean(S2[ide])  # m (beam center)
-                    coorc2 = np.mean(coor2[ide], axis=0)  # m, rad (beam center)
+                    id = id[0]
+                    suml2 = S2[id]
+                    coorc2 = coor2[id]
                     MULT[-1]['suml2'] = suml2
                     for k in range(6):
                         MULT[-1][f'c2{k+1}'] = coorc2[k]
@@ -2000,7 +1982,6 @@ for kwn,kxn in zip(keyw,keyx):
                 'parent': area[ida[id[0]]]['parent'],
                 'sector': SECTORS[id[0]].strip(),
                 'ucell': [],
-                'xkey': kxn,
                 'prim': FDN[id[0]],
                 'name': mname,
                 'type': T[id[0]].strip(),
@@ -2072,7 +2053,6 @@ for kwn,kxn in zip(keyw,keyx):
                 'parent': area[ida[id[0]]]['parent'],
                 'sector': SECTORS[id[0]].strip(),
                 'ucell': [],
-                'xkey': kxn,
                 'prim': FDN[id[0]],
                 'name': mname,
                 'type': T[id[0]].strip(),
@@ -2139,7 +2119,6 @@ for kwn,kxn in zip(keyw,keyx):
                 'parent': area[ida[id[0]]]['parent'],
                 'sector': SECTORS[id[0]].strip(),
                 'ucell': [],
-                'xkey': kxn,
                 'prim': FDN[id[0]],
                 'name': mname,
                 'type': T[id[0]].strip(),
@@ -2205,7 +2184,6 @@ for kwn,kxn in zip(keyw,keyx):
                 'parent': area[ida[id[0]]]['parent'],
                 'sector': SECTORS[id[0]].strip(),
                 'ucell': [],
-                'xkey': kxn,
                 'prim': FDN[id[0]],
                 'name': mname,
                 'type': T[id[0]].strip(),
@@ -2271,7 +2249,6 @@ for kwn,kxn in zip(keyw,keyx):
                 'parent': area[ida[id[0]]]['parent'],
                 'sector': SECTORS[id[0]].strip(),
                 'ucell': [],
-                'xkey': kxn,
                 'prim': FDN[id[0]],
                 'name': mname,
                 'type': T[id[0]].strip(),
@@ -2337,7 +2314,6 @@ for kwn,kxn in zip(keyw,keyx):
                 'parent': area[ida[id[0]]]['parent'],
                 'sector': SECTORS[id[0]].strip(),
                 'ucell': [],
-                'xkey': kxn,
                 'prim': FDN[id[0]],
                 'name': mname,
                 'type': T[id[0]].strip(),
@@ -2403,7 +2379,6 @@ for kwn,kxn in zip(keyw,keyx):
                 'parent': area[ida[id[0]]]['parent'],
                 'sector': SECTORS[id[0]].strip(),
                 'ucell': [],
-                'xkey': kxn,
                 'prim': FDN[id[0]],
                 'name': mname,
                 'type': T[id[0]].strip(),
@@ -2469,7 +2444,6 @@ for kwn,kxn in zip(keyw,keyx):
                 'parent': area[ida[id[0]]]['parent'],
                 'sector': SECTORS[id[0]].strip(),
                 'ucell': [],
-                'xkey': kxn,
                 'prim': FDN[id[0]],
                 'name': mname,
                 'type': T[id[0]].strip(),
@@ -2529,7 +2503,6 @@ for kwn,kxn in zip(keyw,keyx):
                 'sector': SECTORS[id].strip(),
                 'ucell': [],
                 'leng': None,
-                'xkey': kxn,
                 'prim': FDN[id],
                 'name': mname,
                 'type': T[id].strip(),
@@ -2991,7 +2964,6 @@ def arrange_output(coord_system, system_name, filename):
                 s[15] = TEMP['energy']
                 s[48] = TEMP['seq']
                 s[49] = TEMP['dist']
-                s[50] = TEMP['xkey']
                 s[51] = TEMP['sdsp']
 
                 if system_name == 'NOMINAL':
