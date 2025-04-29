@@ -15,6 +15,9 @@ def intersection(x,y):
     return [v for v in x if v in y]
 
 def strmatch(n_str,N_lst,exact=False):
+    if not isinstance(N_lst,list):
+        print('strmatch passed non-list. Stopping')
+        stop
     if exact:
         return [ix for ix,n_ in enumerate(N_lst) if n_.strip() == n_str.strip()]
     else:
@@ -62,7 +65,7 @@ def roundoff(val, prec=None):
 
 script_dir = Path(__file__).parent.resolve()
 
-optics='18FEB2025s'
+optics='14APR2025s'
 vfile=['LCLS2sc_value.echo','LCLS2cu_value.echo']
 
 outdir='oracle_upload'
@@ -143,8 +146,9 @@ seq.append({ 'froot': 7, 'name': 'BSYBEG TO BSYDUMP', 'beg': 'BEGSLTD', 'end': '
 # DIAG0 line
 seq.append({ 'froot': 8, 'name': 'DIAG0 TO FCDG0DU', 'beg': 'BEGDIAG0', 'end': 'ENDDIAG0', 'offset': [0, 0], 'prev': 1 })
 # DASEL
-seq.append({ 'froot': 9, 'name': 'DASEL', 'beg': 'BEGDASEL', 'end': 'ENDDASEL', 'offset': [0, 0], 'prev': 20 })
-seq.append({ 'froot': 9, 'name': 'ALINE', 'beg': 'BEGBSYA_2', 'end': 'ENDBSYA_2', 'offset': [0, 0], 'prev': 24 })
+seq.append({ 'froot': 9, 'name': 'BKRDAS1 to ESA',        'beg': 'BEGSPA', 'end': 'ENDBSYA', 'offset': [0, 0], 'prev': 20 })
+seq.append({ 'froot': 9, 'name': 'ESA TO BEAM DUMP EAST', 'beg': 'BEGESA', 'end': 'ENDESA', 'offset': [0, 0], 'prev': 24 })
+
 # XAL sequences: Cu linac
 # HXR line
 seq.append({ 'froot': 10, 'name': 'CATHODE TO BXG', 'beg': 'BEGGUN', 'end': 'ENDGUN', 'offset': [0, 0], 'prev': 0 })
@@ -155,8 +159,7 @@ seq.append({ 'froot': 10, 'name': 'QM15 TO FV2', 'beg': 'DBMARK28', 'end': 'ENDL
 seq.append({ 'froot': 10, 'name': 'FV2 TO BSYBEG', 'beg': 'BEGCLTH_0', 'end': 'ENDCLTH_0', 'offset': [0, 0], 'prev': 30 })
 seq.append({ 'froot': 10, 'name': 'BSYBEG TO BKRCUS', 'beg': 'BEGCLTH_1', 'end': 'ENDCLTH_1', 'offset': [0, 0], 'prev': 31 })
 seq.append({ 'froot': 10, 'name': 'BKRCUS TO BXSP1H', 'beg': 'BEGCLTH_2', 'end': 'ENDCLTH_2', 'offset': [0, 0], 'prev': 32 })
-seq.append({ 'froot': 10, 'name': 'BXSP1H TO BKRAPM1', 'beg': 'BEGBSYH_1', 'end': 'ENDBSYH_1', 'offset': [0, 0], 'prev': 33 })
-seq.append({ 'froot': 10, 'name': 'BKRAPM1 TO BSYEND', 'beg': 'BEGBSYH_2', 'end': 'ENDBSYH_2', 'offset': [0, 0], 'prev': 34 })
+seq.append({ 'froot': 10, 'name': 'BXSP1H TO BSYEND', 'beg': 'BEGBSYH', 'end': 'ENDBSYH', 'offset': [0, 0], 'prev': 33 })
 seq.append({ 'froot': 10, 'name': 'BSYEND TO BX31', 'beg': 'BEGLTUH', 'end': 'DBMARK34', 'offset': [0, -1], 'prev': 35 })
 seq.append({ 'froot': 10, 'name': 'BX31 TO WS31', 'beg': 'DBMARK34', 'end': 'DBMARK36', 'offset': [0, 0], 'prev': 36 })
 seq.append({ 'froot': 10, 'name': 'WS31 TO HXRSTART', 'beg': 'DBMARK36', 'end': 'ENDLTUH', 'offset': [1, 0], 'prev': 37 })
@@ -218,8 +221,10 @@ area.append({'name': 'SLTD', 'beg': 'BEGSLTD', 'end': 'ENDSLTD', 'offset': [0, 0
 # DIAG0
 area.append({'name': 'DIAG0', 'beg': 'BEGDIAG0', 'end': 'ENDDIAG0', 'offset': [0, 0]})
 # DASEL
-area.append({'name': 'DASEL', 'beg': 'BEGDASEL', 'end': 'ENDDASEL', 'offset': [0, 0]})
-area.append({'name': 'ALINE', 'beg': 'BEGBSYA_2', 'end': 'ENDBSYA_2', 'offset': [0, 0]})
+area.append({'name': 'SPA', 'beg': 'BEGSPA', 'end': 'ENDSPA', 'offset': [0, 0]})
+area.append({'name': 'SLTA', 'beg': 'BEGSLTA', 'end': 'ENDSLTA', 'offset': [0, 0]})
+area.append({'name': 'BSYA', 'beg': 'BEGBSYA', 'end': 'ENDBSYA', 'offset': [0, 0]})
+area.append({'name': 'ESA', 'beg': 'BEGESA', 'end': 'ENDESA', 'offset': [0, 0]})
 # cuH
 area.append({'name': 'GUN', 'beg': 'BEGGUN', 'end': 'ENDGUN', 'offset': [0, 0]})
 area.append({'name': 'L0', 'beg': 'BEGL0', 'end': 'ENDL0', 'offset': [0, 0]})
@@ -233,8 +238,8 @@ area.append({'name': 'L3', 'beg': 'BEGL3', 'end': 'ENDL3', 'offset': [0, 0]})
 area.append({'name': 'CLTH_0', 'beg': 'BEGCLTH_0', 'end': 'ENDCLTH_0', 'offset': [0, 0]})
 area.append({'name': 'CLTH_1', 'beg': 'BEGCLTH_1', 'end': 'ENDCLTH_1', 'offset': [0, 0]})
 area.append({'name': 'CLTH_2', 'beg': 'BEGCLTH_2', 'end': 'ENDCLTH_2', 'offset': [0, 0]})
-area.append({'name': 'BSYH_1', 'beg': 'BEGBSYH_1', 'end': 'ENDBSYH_1', 'offset': [0, 0]})
-area.append({'name': 'BSYH_2', 'beg': 'BEGBSYH_2', 'end': 'ENDBSYH_2', 'offset': [0, 0]})
+area.append({'name': 'BSYH', 'beg': 'BEGBSYH', 'end': 'ENDBSYH', 'offset': [0, 0]})
+
 area.append({'name': 'LTUH', 'beg': 'BEGLTUH', 'end': 'ENDLTUH', 'offset': [0, 0]})
 area.append({'name': 'UNDH', 'beg': 'BEGUNDH', 'end': 'ENDUNDH', 'offset': [0, 0]})
 area.append({'name': 'DMPH_1', 'beg': 'BEGDMPH_1', 'end': 'ENDDMPH_1', 'offset': [0, 0]})
@@ -283,7 +288,7 @@ other1.append({"froot0": 4, "froot": "BSY-LCLS2scSTXI", "beg": "BEGSXTES_3", "en
 other1.append({"froot0": 5, "froot": "BSY-LCLS2scSTMO", "beg": "BEGSXTES_4", "end": "ENDSXTES_4", "offset": np.array([0, 0])})
 other1.append({"froot0": 6, "froot": "BSY-LCLS2scH", "beg": "BEGSPH", "end": "ENDSLTH", "offset": np.array([0, 0])})
 other1.append({"froot0": 7, "froot": "BSY-LCLS2scD", "beg": "BEGSPD_2", "end": "ENDSLTD", "offset": np.array([0, 0])})
-other1.append({"froot0": 9, "froot": "BSY-LCLS2scDA", "beg": "BEGDASEL", "end": "ENDBSYA_2", "offset": np.array([0, 0])})
+other1.append({"froot0": 9, "froot": "BSY-LCLS2scDA", "beg": "BEGSPA", "end": "ENDESA", "offset": np.array([0, 0])})
 other1.append({"froot0": 10, "froot": "BSY-LCLS2cuH", "beg": "BEGCLTH_0", "end": "ENDDMPH_2", "offset": np.array([0, 0])})
 other1.append({"froot0": 11, "froot": "BSY-LCLS2cuHS", "beg": "BEGSFTH_1", "end": "ENDSFTH_2", "offset": np.array([0, 0])})
 other1.append({"froot0": 12, "froot": "BSY-LCLS2cuHXTES", "beg": "BEGHXTES_1", "end": "ENDHXTES_2", "offset": np.array([0, 0])})
@@ -423,8 +428,6 @@ for a in area:
         a['parent']='DL1'
     elif a['name'] in ['CLTH_0','CLTH_1','CLTH_2']:
         a['parent']='CLTH'
-    elif a['name'] in ['BSYH_1','BSYH_2']:
-        a['parent']='BSYH'
     elif a['name'] in ['DMPH_1','DMPH_2']:
         a['parent']='DMPH'
     elif a['name'] in ['SFTH_1','SFTH_2']:
@@ -471,7 +474,7 @@ def fix_aline_coords(N, P, coor):
     # Implementation of FixAlineCoords function
     # set roll angle for A-line components
     id1 = N.index('ROLL2')
-    id2 = N.index('ENDBSYA_2')
+    id2 = N.index('ENDBSYA')
     AROLL2 = P[id1][4]
     for i in range(id1,id2+1):
       coor[i][5] = AROLL2
@@ -574,65 +577,65 @@ for m in range(0, len(idm), 2):
     P2[n1, :] = [undl, undk]
     P2[n2, :] = [undl, undk]
 
-# make unique names
-
-nfix = [['', 'MUQS', 'MPHS'],
-        ['', 'MUQH', 'MPHH'],
-        ['HOMCM', '', '']]
-ioff = [[-3, -1, -1], [-2, -1, -1], [-3, -1, -1]]
-
-for nr in range(len(nfix)):
-    for nc in range(len(nfix[0])):
-        if not nfix[nr][nc]:
-            continue
-        id = strmatch(nfix[nr][nc], N)
-        if len(id) == 0:
-            continue
-        if nr < 2 and nc == 0:
-            id = id[::2]
-        lc = len(nfix[nr][nc])
-        for m in range(len(id)):
-            if nr < 2:
-                cname = N[id[m] + ioff[nr][nc]].strip()
-                N[id[m]] = N[id[m]][:lc] + '.' + cname[-2:]
-            else:
-                N[id[m]] = N[id[m]][:lc] + '.' + N[id[m]-2][2:4]
-        if cBSY:
-            id = strmatch(nfix[nr][nc], N1)
-            if len(id) == 0:
-                continue
-            if nr < 2 and nc == 0:
-                id = id[::2]
-            for m in range(len(id)):
-                cname = N1[id[m] + ioff[nr][nc]].strip()
-                N1[id[m]] = N1[id[m]][:lc] + '.' + cname[-2:]
-        if cUND:
-            id = strmatch(nfix[nr][nc], N2)
-            if len(id) == 0:
-                continue
-            if nr < 2 and nc == 0:
-                id = id[::2]
-            for m in range(len(id)):
-                cname = N2[id[m] + ioff[nr][nc]].strip()
-                N2[id[m]] = N2[id[m]][:lc] + '.' + cname[-2:]
-
-# Find indices of 'WOODDOOR' in N
-jd = [i for i,x in enumerate(N) if x == 'WOODDOOR']
-for j in jd:
-    cname = 'WOODDOOR.{}'.format(area[ida[j]]['name'])
-    N[j] = cname
-
-if cBSY:
-    id_ = strmatch('WOODDOOR',N)
-    jd = strmatch('WOODDOOR',N1)
-    for i,j in zip(id_,jd):
-        N1[j] = N[i]
-
-if cUND:
-    id_ = strmatch('WOODDOOR',N)
-    jd = strmatch('WOODDOOR',N2)
-    for i,j in zip(id_,jd):
-        N2[j] = N[i]
+# # make unique names
+# 
+# nfix = [['', 'MUQS', 'MPHS'],
+#         ['', 'MUQH', 'MPHH'],
+#         ['HOMCM', '', '']]
+# ioff = [[-3, -1, -1], [-2, -1, -1], [-3, -1, -1]]
+# 
+# for nr in range(len(nfix)):
+#     for nc in range(len(nfix[0])):
+#         if not nfix[nr][nc]:
+#             continue
+#         id = strmatch(nfix[nr][nc], N)
+#         if len(id) == 0:
+#             continue
+#         if nr < 2 and nc == 0:
+#             id = id[::2]
+#         lc = len(nfix[nr][nc])
+#         for m in range(len(id)):
+#             if nr < 2:
+#                 cname = N[id[m] + ioff[nr][nc]].strip()
+#                 N[id[m]] = N[id[m]][:lc] + '.' + cname[-2:]
+#             else:
+#                 N[id[m]] = N[id[m]][:lc] + '.' + N[id[m]-2][2:4]
+#         if cBSY:
+#             id = strmatch(nfix[nr][nc], N1)
+#             if len(id) == 0:
+#                 continue
+#             if nr < 2 and nc == 0:
+#                 id = id[::2]
+#             for m in range(len(id)):
+#                 cname = N1[id[m] + ioff[nr][nc]].strip()
+#                 N1[id[m]] = N1[id[m]][:lc] + '.' + cname[-2:]
+#         if cUND:
+#             id = strmatch(nfix[nr][nc], N2)
+#             if len(id) == 0:
+#                 continue
+#             if nr < 2 and nc == 0:
+#                 id = id[::2]
+#             for m in range(len(id)):
+#                 cname = N2[id[m] + ioff[nr][nc]].strip()
+#                 N2[id[m]] = N2[id[m]][:lc] + '.' + cname[-2:]
+# 
+# # Find indices of 'WOODDOOR' in N
+# jd = [i for i,x in enumerate(N) if x == 'WOODDOOR']
+# for j in jd:
+#     cname = 'WOODDOOR.{}'.format(area[ida[j]]['name'])
+#     N[j] = cname
+# 
+# if cBSY:
+#     id_ = strmatch('WOODDOOR',N)
+#     jd = strmatch('WOODDOOR',N1)
+#     for i,j in zip(id_,jd):
+#         N1[j] = N[i]
+# 
+# if cUND:
+#     id_ = strmatch('WOODDOOR',N)
+#     jd = strmatch('WOODDOOR',N2)
+#     for i,j in zip(id_,jd):
+#         N2[j] = N[i]
 
 
 # Shared devices (devices which see both kicked and unkicked beams)
@@ -827,14 +830,11 @@ def assign_sector(N, coor, idf, N1, coor1, idf1):
                 sector['Nbeg'] = 'BEGSLTD'
                 sector['Nend'] = 'ENDSLTD'
             if nf == 9 and ns == 31:
-                sector['Nbeg'] = 'BEGDASEL'
-                sector['Nend'] = ''
+                sector['Nbeg'] = ''
+                sector['Nend'] = 'WOODDOOR_SPA'
             if nf == 9 and ns == 32:
-                sector['Nbeg'] = ''
-                sector['Nend'] = ''
-            if nf == 9 and ns == 55:
-                sector['Nbeg'] = ''
-                sector['Nend'] = 'ENDBSYA_2'
+                sector['Nbeg'] = 'WOODDOOR_SPA'
+                sector['Nend'] = 'BRAM1B'
 
             if sector['BSY']:
                 set_sector(N1, SECTORS1, coor1, idf1, nf, sector)
@@ -917,7 +917,7 @@ MADK = [
 XALK = [
     'BNCH', 'BEND', 'QUAD', 'SEXT', 'SOLE', 'USEG', 'COLL', 'ECOL', 'SROT',
     'XCOR', 'YCOR', 'BPM ', 'WIRE', 'PROF', 'TORO', 'BLMO', 'INST',
-    'MARK', 'MULT'
+    'MARK', 'INST'
 ]
 
 
@@ -1212,7 +1212,7 @@ for kwn,kxn in zip(keyw,keyx):
             pname = area[ida[id1]]['parent']
             if pname in ['DMPS', 'DMPH']:
                 coorm[3] = coorc[3]  # dump line magnet coords set in FixDumpCoords
-            elif pname == 'BSYA_2':
+            elif pname == 'BSYA':
                 coorm[3] = coorc[3]  # dump line magnet coords set in FixAlineCoords
             else:
                 coorm[3] = tilt  # remove "creeping" rolls from non-rolled SBENs
@@ -1283,7 +1283,7 @@ for kwn,kxn in zip(keyw,keyx):
                             coorm1[3:6] = np.copy(coorc1[3:6])
                     if pname in ['DMPS', 'DMPH']:
                         coorm1[3] = coorc1[3]  # dump line magnet coords set in FixDumpCoords
-                    elif pname == 'BSYA_2':
+                    elif pname == 'BSYA':
                         coorm1[3] = coorc1[3]  # dump line magnet coords set in FixAlineCoords
                     else:
                         coorm1[3] = tilt  # remove "creeping" rolls from non-rolled SBENs
@@ -1328,7 +1328,7 @@ for kwn,kxn in zip(keyw,keyx):
                             coorm2[3:6] = coorc2[3:6]
                     if pname in ['DMPS', 'DMPH']:
                         coorm2[3] = coorc2[3]  # dump line magnet coords set in FixDumpCoords
-                    elif pname == 'BSYA_2':
+                    elif pname == 'BSYA':
                         coorm2[3] = coorc2[3]  # dump line magnet coords set in FixAlineCoords
                     else:
                         coorm2[3] = tilt  # remove "creeping" rolls from non-rolled SBENs
@@ -2570,6 +2570,7 @@ for kwn,kxn in zip(keyw,keyx):
                     for k in range(6):
                         MARK[-1][f'c2{k+1}'] = coorc2[k]
 
+
 import scipy.io as sio
 
 def fix_power_fraction(lcav):
@@ -2800,11 +2801,12 @@ def FixMagnetCoords(SBEN, QUAD, INST, K, N, L, P, coor, cflag):
                        'B21', 'B22', 'B23', 'B24', 'B25', 'B26']:  # A-line
             continue  # see FixAlineCoords
         else:
-            if 'BKY' in mname:
+            if strmatch('BKY',[mname]):
                 roll = (np.pi / 180) * (SBEN[n]['tilt'] - 90)  # non-rolled vertical kickers
             else:
                 roll = (np.pi / 180) * SBEN[n]['tilt']  # other bends, kickers, or septa
-        SBEN[n][f'm{cflag or ""}4'] = roll
+        if cflag is not None:
+            SBEN[n][f'm{cflag}4'] = roll
 
     # spreader kickers
     # coor=[z,x,y,roll,-pitch,yaw] (SYMBOLS coordinates)
@@ -2963,7 +2965,9 @@ for n,KEY in enumerate(KEYLIST):
 ip = sorted(ip, key=lambda x: (x[0], x[3]))
 
 def arrange_output(coord_system, system_name, filename):
-    with open(outdir+'/'+fname, 'wt') as fid:
+    filepath = Path(outdir+'/'+fname)
+    filepath.parent.mkdir(parents=True, exist_ok=True)
+    with filepath.open('wt') as fid:
         fid.write(f'{head}\n')
         fid.write(f'{unit}\n')
         for entry in coord_system:
@@ -3139,22 +3143,29 @@ def arrange_output(coord_system, system_name, filename):
                     if TEMP['prim'] != 'INST':
                         s[6] = TEMP['bore']
                     if TEMP['prim'] == 'QUAD':
-                        s[8] = TEMP['k1']
+                        #s[8] = TEMP['k1']
                         s[10] = TEMP['tilt']
                         s[32] = TEMP['GL']
-                        s[33] = TEMP['G']
-                        s[34] = TEMP['sname']
-                        s[35] = TEMP['sval']
-                        s[36] = TEMP['polarity']
+                        #s[33] = TEMP['G']
+                        #s[34] = TEMP['sname']
+                        #s[35] = TEMP['sval']
+                        #s[36] = TEMP['polarity']
 
                 fid.write(f"{s[0]+1},")
-                for k in range(1, Ncol):
+                for k in range(1, Ncol-1):
                     if s[k] is None:
                         fid.write(",")
                     elif isinstance(s[k], str):
                         fid.write(f"{s[k]},")
                     else:
                         fid.write(f"{madval(s[k])},")
+                k=Ncol-1  #No trailing commas
+                if s[k] is None:
+                    pass
+                elif isinstance(s[k], str):
+                    fid.write(f"{s[k]}")
+                else:
+                    fid.write(f"{madval(s[k])}")
                 fid.write("\n")
         fid.write(f'{foot}\n')
         fid.write(f'{unit}\n')
