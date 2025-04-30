@@ -203,6 +203,7 @@ area.append({'name': 'LTUS', 'beg': 'BEGLTUS', 'end': 'ENDLTUS', 'offset': [0, 0
 area.append({'name': 'UNDS', 'beg': 'BEGUNDS', 'end': 'ENDUNDS', 'offset': [0, 0]})
 area.append({'name': 'DMPS_1', 'beg': 'BEGDMPS_1', 'end': 'ENDDMPS_1', 'offset': [0, 0]})
 area.append({'name': 'DMPS_2', 'beg': 'BEGDMPS_2', 'end': 'ENDDMPS_2', 'offset': [0, 0]})
+
 # scSS
 area.append({'name': 'SFTS_1', 'beg': 'BEGSFTS_1', 'end': 'ENDSFTS_1', 'offset': [0, 0]})
 area.append({'name': 'SFTS_2', 'beg': 'BEGSFTS_2', 'end': 'ENDSFTS_2', 'offset': [0, 0]})
@@ -2757,29 +2758,23 @@ def FixMagnetCoords(SBEN, QUAD, INST, K, N, L, P, coor, cflag):
         SBEN[id][f'm{cflag or ""}3'] = Ym
         SBEN[id][f'm{cflag or ""}1'] = Zm
 
-    # set magnet roll for bends, kickers, and septa
+    # set magnet installation roll for bends, kickers, and septa
     # coor=[z,x,y,roll,-pitch,yaw] (SYMBOLS coordinates)
 
-    for n in range(len(Bname)):
-        mname = Bname[n].strip()
-        if mname in ['BKRDG0',  # DIAG0 kicker
-                     'BKRCUS',  # cuS kicker
-                     'BKRDAS1', 'BKRDAS2', 'BKRDAS3', 'BKRDAS4', 'BKRDAS5', 'BKRDAS6',  # DASEL kickers
-                     'WIG1S', 'WIG2S', 'WIG3S', 'WIG1H', 'WIG2H', 'WIG3H']:  # SLC-style wigglers
-            roll = (np.pi / 180) * (SBEN[n]['tilt'] - 90)  # rolled vertical bends and kickers
-        elif mname in ['BYDSS', 'BYD1B', 'BYD2B', 'BYD3B',  # SXR dump line
-                       'BYDSH', 'BYD1', 'BYD2', 'BYD3']:  # HXR dump line
+    for n in range(len(SBEN)):
+        mtype = SBEN[n]['type'].strip()
+        if mtype in ['0.787K35.4','1.378K35.4']:
+            # LCLS-II kickers (built to kick vertically when installed unrolled)
+            roll = (np.pi / 180) * (SBEN[n]['tilt'] - 90)
+        elif mtype in ['1.26D18.43','1.69VD55.1']:
+            # dump line soft bends and permanent magnet vertical bends
             continue  # see FixDumpCoords
-        elif mname in ['B11', 'B12', 'B13', 'B14', 'B15', 'B16',
-                       'B21', 'B22', 'B23', 'B24', 'B25', 'B26']:  # A-line
+        elif mtype in ['Aline_bend']:
+            # A-line bends
             continue  # see FixAlineCoords
         else:
-            if strmatch('BKY',[mname]):
-                roll = (np.pi / 180) * (SBEN[n]['tilt'] - 90)  # non-rolled vertical kickers
-            else:
-                roll = (np.pi / 180) * SBEN[n]['tilt']  # other bends, kickers, or septa
-        if cflag is not None:
-            SBEN[n][f'm{cflag}4'] = roll
+            roll = (np.pi / 180) * SBEN[n]['tilt']  # other bends, kickers, or septa
+        SBEN[n][f'm{cflag or ""}4'] = roll
 
     # spreader kickers
     # coor=[z,x,y,roll,-pitch,yaw] (SYMBOLS coordinates)
@@ -3017,9 +3012,6 @@ def arrange_output(coord_system, system_name, filename):
                     s[31] = TEMP['B']
                     s[32] = TEMP['GL']
                     s[33] = TEMP['G']
-                    s[34] = TEMP['sname']
-                    s[35] = TEMP['sval']
-                    s[36] = TEMP['polarity']
 
                     if system_name == 'NOMINAL':
                         s[37] = roundoff(TEMP['m1'], prec)
@@ -3048,9 +3040,6 @@ def arrange_output(coord_system, system_name, filename):
                     s[10] = TEMP['tilt']
                     s[32] = TEMP['GL']
                     s[33] = TEMP['G']
-                    s[34] = TEMP['sname']
-                    s[35] = TEMP['sval']
-                    s[36] = TEMP['polarity']
 
                     if system_name == 'NOMINAL':
                         s[37] = roundoff(TEMP['m1'], prec)
@@ -3065,16 +3054,10 @@ def arrange_output(coord_system, system_name, filename):
                     s[10] = TEMP['tilt']
                     s[32] = TEMP['GpL']
                     s[33] = TEMP['Gp']
-                    s[34] = TEMP['sname']
-                    s[35] = TEMP['sval']
-                    s[36] = TEMP['polarity']
                 elif keyw[idk] == 'SOLE':
                     s[6] = TEMP['bore']
                     s[30] = TEMP['BL']
                     s[31] = TEMP['B']
-                    s[34] = TEMP['sname']
-                    s[35] = TEMP['sval']
-                    s[36] = TEMP['polarity']
                     s[43] = TEMP['ks']
                 elif keyw[idk] == 'MATR':
                     s[44] = TEMP['lambda']
@@ -3110,18 +3093,16 @@ def arrange_output(coord_system, system_name, filename):
                         s[41] = roundoff(TEMP['m25'], prec)
                         s[42] = roundoff(TEMP['m26'], prec)
                 elif keyw[idk] == 'MULT':
+                    s[6] = TEMP['bore']
                     if TEMP['prim'] == 'MULT':
                         continue
-                    if TEMP['prim'] != 'INST':
-                        s[6] = TEMP['bore']
+                    #if TEMP['prim'] != 'INST':
+                    #    s[6] = TEMP['bore']
                     if TEMP['prim'] == 'QUAD':
                         #s[8] = TEMP['k1']
                         s[10] = TEMP['tilt']
                         s[32] = TEMP['GL']
                         #s[33] = TEMP['G']
-                        #s[34] = TEMP['sname']
-                        #s[35] = TEMP['sval']
-                        #s[36] = TEMP['polarity']
 
                 fid.write(f"{s[0]+1},")
                 for k in range(1, Ncol-1):
