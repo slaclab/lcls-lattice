@@ -164,8 +164,9 @@ main_seq.append({ 'froot': 6, 'name': 'BSYBEG TO BSYDUMP', 'beg': 'BEGSLTD', 'en
 # DIAG0 line
 main_seq.append({ 'froot': 7, 'name': 'DIAG0 TO FCDG0DU', 'beg': 'BEGDIAG0', 'end': 'ENDDIAG0', 'offset': [0, 0]})    #22
 # DASEL
-main_seq.append({ 'froot': 8, 'name': 'DASEL', 'beg': 'BEGDASEL', 'end': 'ENDDASEL', 'offset': [0, 0]})       #23
-main_seq.append({ 'froot': 8, 'name': 'ALINE', 'beg': 'BEGBSYA_2', 'end': 'ENDBSYA_2', 'offset': [0, 0]})     #24
+main_seq.append({ 'froot': 8, 'name': 'BKRDAS1 TO ESA',        'beg': 'BEGSPA', 'end': 'ENDBSYA', 'offset': [0, 0]}) #23
+main_seq.append({ 'froot': 8, 'name': 'ESA TO BEAM DUMP EAST', 'beg': 'BEGESA', 'end': 'ENDESA', 'offset': [0, 0]}) #24
+
 # XAL sequences: Cu linac
 # HXR line
 main_seq.append({ 'froot': 9, 'name': 'CATHODE TO BXG', 'beg': 'BEGGUN', 'end': 'ENDGUN', 'offset': [0, 0]})     #25
@@ -592,7 +593,7 @@ for seq1 in main_seq:
         seq1['eles'][id_].params['undk'] = UNDPARM_K[name]
   
 # Shared devices (devices which see both kicked and unkicked beams)
-area_name_all = ['DIAG0', 'SPH', 'SPS', 'DASEL', 'CLTS']
+area_name_all = ['DIAG0', 'SPH', 'SPS', 'SPA', 'CLTS']
 ele_name_all = ['BPMDG000', 'BPMSPH', 'BPMSPS', 'BPMDAS', 'BPMCUS']
 
 for ele_name, area_name in zip(ele_name_all,area_name_all):
@@ -850,13 +851,6 @@ MADK = [
     'HKIC': [], 'VKIC': [], 'MONI': [], 'WIRE': [], 'PROF': [], 'IMON': [], 'BLMO': [], 'INST': [],
     'MARK': [], 'MULT': []
 ]
-XALK = {
- 'BNCH': 'LCAV', 'BEND': 'SBEN', 'QUAD': 'QUAD', 'SEXT': 'SEXT', 'SOLE': 'SOLE',
- 'USEG': 'MATR', 'COLL': 'RCOL', 'ECOL': 'ECOL', 'SROT': 'SROT', 'XCOR': 'HKIC',
- 'YCOR': 'VKIC', 'BPM ': 'MONI', 'WIRE': 'WIRE', 'PROF': 'PROF', 'TORO': 'IMON',
- 'BLMO': 'BLMO', 'INST': 'INST', 'MARK': 'MARK', 'MULT': 'MULT'
-}
-
 def get_attr_lst(eles,ix_lst,att):
     return [getattr(eles[ix],att) for ix in ix_lst]
 
@@ -926,7 +920,6 @@ for seq in main_seq:
                     'parent': seq.area['parent'],
                     'sector': seq_eles[id1].sector,
                     'ucell': [],
-                    'xkey': 'BNCH',
                     'prim': seq_eles[id1].fdn,
                     'name': uniq_name,
                     'type': seq_eles[id1].ele_type
@@ -1032,8 +1025,6 @@ for seq in main_seq:
                     k1 = 0
                 G = brho * k1  # T/m
                 GL = G * leng  # T
-                sname = 'kG2T_Bdl2B'
-                sval = 1 / (leng * T2kG)
                 polarity = -np.sign(ang + np.finfo(float).eps)  # add eps so that sign=1 when ang=0
                 coori = seq_eles[id1-1].coor  # m,rad
                 coorc = seq_eles[id1].coor  # m,rad
@@ -1075,7 +1066,6 @@ for seq in main_seq:
                     'parent': pname,
                     'sector': SECTORS[id1].strip(),
                     'ucell': [],
-                    'xkey': f'X{XALK[kwn]}' if tilt == 0 else f'Y{XALK[kwn]}' if abs(np.cos(tilt)) < 1e-9 else f'R{XALK[kwn]}',
                     'prim': FDN[id1],
                     'name': mname,
                     'type': T[id1].strip(),
@@ -1094,8 +1084,6 @@ for seq in main_seq:
                     'k1': k1,
                     'GL': T2kG * GL,  # kG
                     'G': charge * G,
-                    'sname': sname,
-                    'sval': sval,
                     'polarity': polarity,
                     'sdsp': sdsp,
                     'suml': suml,
@@ -1209,13 +1197,9 @@ for seq in main_seq:
                 if leng == 0:
                     G = 0  # T/m
                     GL = brho * k1  # T
-                    sname = 'kG2T'
-                    sval = 1 / T2kG
                 else:
                     G = brho * k1  # T/m
                     GL = G * leng  # T
-                    sname = 'kG2T_Gdl2G'
-                    sval = 1 / (leng * T2kG)
                 polarity = -np.sign(k1 + np.finfo(float).eps)  # add eps so that sign=1 when k1=0
                 coorc = np.copy(coor[id1, :])  # m,rad
                 QUAD.append({
@@ -1226,7 +1210,6 @@ for seq in main_seq:
                     'parent': area[ida[id1]]['parent'],
                     'sector': SECTORS[id1].strip(),
                     'ucell': [],
-                    'xkey': XALK[kwn],
                     'prim': FDN[id1],
                     'name': mname,
                     'type': T[id1].strip(),
@@ -1238,8 +1221,6 @@ for seq in main_seq:
                     'k1': k1,
                     'GL': T2kG * GL,  # kG
                     'G': charge * G,
-                    'sname': sname,
-                    'sval': sval,
                     'polarity': polarity,
                     'sdsp': sdsp,
                     'suml': suml,
@@ -1299,12 +1280,6 @@ for seq in main_seq:
                 brho = np.sqrt(EeV ** 2 - Er ** 2) / clight  # T-m
                 Gp = brho * k2  # T/m
                 GpL = Gp * leng  # T
-                if leng == 0:
-                    sname = 'kG2T'
-                    sval = 1 / T2kG
-                else:
-                    sname = 'kG2T_Gpdl2Gp'
-                    sval = 1 / (leng * T2kG)
                 polarity = -np.sign(k2 + np.finfo(float).eps)  # add eps so that sign=1 when k2=0
                 coorc = np.copy(coor[id1, :])  # m,rad
                 SEXT.append({
@@ -1315,7 +1290,6 @@ for seq in main_seq:
                     'parent': area[ida[id1]]['parent'],
                     'sector': SECTORS[id1].strip(),
                     'ucell': [],
-                    'xkey': XALK[kwn],
                     'prim': FDN[id1],
                     'name': mname,
                     'type': T[id1].strip(),
@@ -1327,8 +1301,6 @@ for seq in main_seq:
                     'k2': k2,
                     'GpL': T2kG * GpL,  # kG/m
                     'Gp': charge * Gp,
-                    'sname': sname,
-                    'sval': sval,
                     'polarity': polarity,
                     'sdsp': sdsp,
                     'suml': suml,
@@ -1387,12 +1359,6 @@ for seq in main_seq:
                 brho = np.sqrt(EeV**2 - Er**2) / clight  # T-m
                 B = brho * ks  # T
                 BL = B * leng  # T-m
-                if leng == 0:
-                    sname = 'kG2T'
-                    sval = 1 / T2kG
-                else:
-                    sname = 'kG2T_Bdl2B'
-                    sval = 1 / (leng * T2kG)
                 polarity = -np.sign(ks + np.finfo(float).eps)  # add eps so that sign=1 when ks=0
                 coorc = np.mean(coor[ide], axis=0)  # m, rad
                 SOLE.append({
@@ -1403,7 +1369,6 @@ for seq in main_seq:
                     'parent': area[ida[id1]]['parent'],
                     'sector': SECTORS[id1].strip(),
                     'ucell': [],
-                    'xkey': XALK[kwn],
                     'prim': FDN[id1],
                     'name': mname,
                     'type': T[id1].strip(),
@@ -1414,8 +1379,6 @@ for seq in main_seq:
                     'ks': ks,
                     'BL': T2kG * BL,  # kG-m
                     'B': charge * B,
-                    'sname': sname,
-                    'sval': sval,
                     'polarity': polarity,
                     'sdsp': sdsp,
                     'suml': suml,
@@ -1478,7 +1441,6 @@ for seq in main_seq:
                     'parent': area[ida[id1]]['parent'],
                     'sector': SECTORS[id1].strip(),
                     'ucell': [],
-                    'xkey': XALK[kwn],
                     'prim': FDN[id1],
                     'name': mname,
                     'type': T[id1].strip(),
@@ -1546,7 +1508,6 @@ for seq in main_seq:
                     'parent': area[ida[id]]['parent'],
                     'sector': SECTORS[id].strip(),
                     'ucell': [],
-                    'xkey': XALK[kwn],
                     'prim': FDN[id],
                     'name': mname,
                     'type': T[id].strip(),
@@ -1614,7 +1575,6 @@ for seq in main_seq:
                     'parent': area[ida[id]]['parent'],
                     'sector': SECTORS[id].strip(),
                     'ucell': [],
-                    'xkey': XALK[kwn],
                     'prim': FDN[id],
                     'name': mname,
                     'type': T[id].strip(),
@@ -1683,7 +1643,6 @@ for seq in main_seq:
                     'parent': area[ida[id]]['parent'],
                     'sector': SECTORS[id].strip(),
                     'ucell': [],
-                    'xkey': XALK[kwn],
                     'prim': FDN[id],
                     'name': mname,
                     'type': T[id].strip(),
@@ -1752,13 +1711,9 @@ for seq in main_seq:
                 if leng == 0:
                     G = 0  # T/m
                     GL = brho * k1  # T
-                    sname = 'kG2T'
-                    sval = 1 / T2kG
                 else:
                     G = brho * k1  # T/m
                     GL = G * leng  # T
-                    sname = 'kG2T_Gdl2G'
-                    sval = 1 / (leng * T2kG)
                 polarity = -np.sign(k1 + np.finfo(float).eps)  # add eps so that sign=1 when k1=0
                 coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
                 t = T[id[0]].strip()
@@ -1771,7 +1726,6 @@ for seq in main_seq:
                     'parent': area[ida[id[0]]]['parent'],
                     'sector': SECTORS[id[0]].strip(),
                     'ucell': [],
-                    'xkey': XALK[kwn],
                     'prim': FDN[id[0]],
                     'bore': aper,
                     'k1': k1,
@@ -1780,8 +1734,6 @@ for seq in main_seq:
                     'GL': T2kG * GL,  # kG
                     'polarity': polarity,
                     'name': mname,
-                    'sname': sname,
-                    'sval': sval,
                     'type': T[id[0]].strip(),
                     'dist': dist,
                     'energy': energy,
@@ -1851,7 +1803,6 @@ for seq in main_seq:
                     'parent': area[ida[id[0]]]['parent'],
                     'sector': SECTORS[id[0]].strip(),
                     'ucell': [],
-                    'xkey': XALK[kwn],
                     'prim': FDN[id[0]],
                     'name': mname,
                     'type': T[id[0]].strip(),
@@ -1923,7 +1874,6 @@ for seq in main_seq:
                     'parent': area[ida[id[0]]]['parent'],
                     'sector': SECTORS[id[0]].strip(),
                     'ucell': [],
-                    'xkey': XALK[kwn],
                     'prim': FDN[id[0]],
                     'name': mname,
                     'type': T[id[0]].strip(),
@@ -1990,7 +1940,6 @@ for seq in main_seq:
                     'parent': area[ida[id[0]]]['parent'],
                     'sector': SECTORS[id[0]].strip(),
                     'ucell': [],
-                    'xkey': XALK[kwn],
                     'prim': FDN[id[0]],
                     'name': mname,
                     'type': T[id[0]].strip(),
@@ -2056,7 +2005,6 @@ for seq in main_seq:
                     'parent': area[ida[id[0]]]['parent'],
                     'sector': SECTORS[id[0]].strip(),
                     'ucell': [],
-                    'xkey': XALK[kwn],
                     'prim': FDN[id[0]],
                     'name': mname,
                     'type': T[id[0]].strip(),
@@ -2122,7 +2070,6 @@ for seq in main_seq:
                     'parent': area[ida[id[0]]]['parent'],
                     'sector': SECTORS[id[0]].strip(),
                     'ucell': [],
-                    'xkey': XALK[kwn],
                     'prim': FDN[id[0]],
                     'name': mname,
                     'type': T[id[0]].strip(),
@@ -2188,7 +2135,6 @@ for seq in main_seq:
                     'parent': area[ida[id[0]]]['parent'],
                     'sector': SECTORS[id[0]].strip(),
                     'ucell': [],
-                    'xkey': XALK[kwn],
                     'prim': FDN[id[0]],
                     'name': mname,
                     'type': T[id[0]].strip(),
@@ -2254,7 +2200,6 @@ for seq in main_seq:
                     'parent': area[ida[id[0]]]['parent'],
                     'sector': SECTORS[id[0]].strip(),
                     'ucell': [],
-                    'xkey': XALK[kwn],
                     'prim': FDN[id[0]],
                     'name': mname,
                     'type': T[id[0]].strip(),
@@ -2320,7 +2265,6 @@ for seq in main_seq:
                     'parent': area[ida[id[0]]]['parent'],
                     'sector': SECTORS[id[0]].strip(),
                     'ucell': [],
-                    'xkey': XALK[kwn],
                     'prim': FDN[id[0]],
                     'name': mname,
                     'type': T[id[0]].strip(),
@@ -2380,7 +2324,6 @@ for seq in main_seq:
                     'sector': SECTORS[id].strip(),
                     'ucell': [],
                     'leng': None,
-                    'xkey': XALK[kwn],
                     'prim': FDN[id],
                     'name': mname,
                     'type': T[id].strip(),
@@ -2545,27 +2488,22 @@ def FixMagnetCoords(seq, cflag):
         SBEN[id][f'm{cflag or ""}3'] = Ym
         SBEN[id][f'm{cflag or ""}1'] = Zm
 
-    # set magnet roll for bends, kickers, and septa
+    # set magnet installation roll for bends, kickers, and septa
     # coor=[z,x,y,roll,-pitch,yaw] (SYMBOLS coordinates)
-
-    for n in range(len(Bname)):
-        mname = Bname[n].strip()
-        if mname in ['BKRDG0',  # DIAG0 kicker
-                     'BKRCUS',  # cuS kicker
-                     'BKRDAS1', 'BKRDAS2', 'BKRDAS3', 'BKRDAS4', 'BKRDAS5', 'BKRDAS6',  # DASEL kickers
-                     'WIG1S', 'WIG2S', 'WIG3S', 'WIG1H', 'WIG2H', 'WIG3H']:  # SLC-style wigglers
-            roll = (np.pi / 180) * (SBEN[n]['tilt'] - 90)  # rolled vertical bends and kickers
-        elif mname in ['BYDSS', 'BYD1B', 'BYD2B', 'BYD3B',  # SXR dump line
-                       'BYDSH', 'BYD1', 'BYD2', 'BYD3']:  # HXR dump line
+        
+    for n in range(len(SBEN)):
+        mtype = SBEN[n]['type'].strip()
+        if mtype in ['0.787K35.4','1.378K35.4']:
+            # LCLS-II kickers (built to kick vertically when installed unrolled)
+            roll = (np.pi / 180) * (SBEN[n]['tilt'] - 90)
+        elif mtype in ['1.26D18.43','1.69VD55.1']:
+            # dump line soft bends and permanent magnet vertical bends
             continue  # see FixDumpCoords
-        elif mname in ['B11', 'B12', 'B13', 'B14', 'B15', 'B16',
-                       'B21', 'B22', 'B23', 'B24', 'B25', 'B26']:  # A-line
+        elif mtype in ['Aline_bend']:
+            # A-line bends
             continue  # see FixAlineCoords
         else:
-            if 'BKY' in mname:
-                roll = (np.pi / 180) * (SBEN[n]['tilt'] - 90)  # non-rolled vertical kickers
-            else:
-                roll = (np.pi / 180) * SBEN[n]['tilt']  # other bends, kickers, or septa
+            roll = (np.pi / 180) * SBEN[n]['tilt']  # other bends, kickers, or septa
         SBEN[n][f'm{cflag or ""}4'] = roll
 
     # spreader kickers
@@ -2731,7 +2669,6 @@ def arrange_output(coord_system, system_name, filename):
                 s[15] = TEMP['energy']
                 s[48] = TEMP['seq']
                 s[49] = TEMP['dist']
-                s[50] = TEMP['xkey']
                 s[51] = TEMP['sdsp']
 
                 if system_name == 'LINAC':
@@ -2785,9 +2722,6 @@ def arrange_output(coord_system, system_name, filename):
                     s[31] = TEMP['B']
                     s[32] = TEMP['GL']
                     s[33] = TEMP['G']
-                    s[34] = TEMP['sname']
-                    s[35] = TEMP['sval']
-                    s[36] = TEMP['polarity']
 
                     if system_name == 'LINAC':
                         s[37] = roundoff(TEMP['m1'], prec)
@@ -2816,9 +2750,6 @@ def arrange_output(coord_system, system_name, filename):
                     s[10] = TEMP['tilt']
                     s[32] = TEMP['GL']
                     s[33] = TEMP['G']
-                    s[34] = TEMP['sname']
-                    s[35] = TEMP['sval']
-                    s[36] = TEMP['polarity']
 
                     if system_name == 'LINAC':
                         s[37] = roundoff(TEMP['m1'], prec)
@@ -2833,16 +2764,10 @@ def arrange_output(coord_system, system_name, filename):
                     s[10] = TEMP['tilt']
                     s[32] = TEMP['GpL']
                     s[33] = TEMP['Gp']
-                    s[34] = TEMP['sname']
-                    s[35] = TEMP['sval']
-                    s[36] = TEMP['polarity']
                 elif keyw[idk] == 'SOLE':
                     s[6] = TEMP['bore']
                     s[30] = TEMP['BL']
                     s[31] = TEMP['B']
-                    s[34] = TEMP['sname']
-                    s[35] = TEMP['sval']
-                    s[36] = TEMP['polarity']
                     s[43] = TEMP['ks']
                 elif keyw[idk] == 'MATR':
                     s[44] = TEMP['lambda']
@@ -2878,18 +2803,14 @@ def arrange_output(coord_system, system_name, filename):
                         s[41] = roundoff(TEMP['m25'], prec)
                         s[42] = roundoff(TEMP['m26'], prec)
                 elif keyw[idk] == 'MULT':
+                    s[6] = TEMP['bore']
                     if TEMP['prim'] == 'MULT':
                         continue
-                    if TEMP['prim'] != 'INST':
-                        s[6] = TEMP['bore']
                     if TEMP['prim'] == 'QUAD':
-                        s[8] = TEMP['k1']
+                        #s[8] = TEMP['k1']
                         s[10] = TEMP['tilt']
                         s[32] = TEMP['GL']
-                        s[33] = TEMP['G']
-                        s[34] = TEMP['sname']
-                        s[35] = TEMP['sval']
-                        s[36] = TEMP['polarity']
+                        #s[33] = TEMP['G']
 
                 fid.write(f"{s[0]+1},")
                 for k in range(1, Ncol):
@@ -2936,31 +2857,5 @@ with open(outdir+'/'+fname, 'wt') as fid:
     fid.write('ELEMENT,Area2,Undulator Cell,Sector\n')
 
 # ------------------------------------------------------------------------------
-
-# save RDBdata
-import scipy.io as sio
-sio.savemat(outdir+'/makeExcel.dump.mat', 
-mdict={
-"K":K,
-"N":N,
-"L":L,
-"P":P,
-"A":A,
-"T":T,
-"E":E,
-"SECTORS":SECTORS,
-"coor":coor,
-"S":S,
-"idf":idf,
-"ids":ids,
-"idd":idd,
-"K1":K,
-"N1":N,
-"L1":L,
-"P1":P,
-"S1":E,
-"coor1":coor,
-"SECTORS1":SECTORS1,
-})
 
 print(f'Be sure to add FACET2 elements to {fname}!\n')
