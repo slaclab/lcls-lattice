@@ -39,33 +39,6 @@ import json
 
 INCLUDE_DEFERRED = False
 
-# Test replacements
-#replace_set('SET,  afa, afa, 1a')
-#fix_matrix('RM(3,4)')  
-#expand_names('  afa APER BLMO')
-#fix_names(['sfafasfa safa APER RM(1,2)'])
-
-# Test comment unfolding
-#def test():
-#    L0 = ['123\n', '123    !comment\n', '   \n', '  !simple comment\n', '123!456#789\n']
-#    L1 = unfold_comments(L0)
-#    L2 = fold_comments(L1)
-#    print(L0)
-#    print(L1)
-#    print(L2)
-#test()
-#return (test,)
-
-# Test desplitting
-#line0 = 'qsx16_full: line = (qsx16, xcsx16, ycsx16, qsx16)'    
-#line1 = 'qsx16_full: line = (qsx16,  qsx16a)'  
-#line2 = 'qsx16_full: line = (qsx16)'  
-#line3 = 'pssxh999_full: line = (pssxh999a,stuff,pssxh999b)'
-#print(desplit_ele(line3,exclude_strs=['pssxh']))
-#desplit_ele('WIG2H_full : LINE=(WIG2H1,YCWIGH,WIG2H2)')
-#desplit_eles(['fafaa', line0])
-
-
 NEWELES = {}
 NEWELES['umasxh'] = """
 !------- SXR Undulator -------
@@ -219,6 +192,22 @@ SC_NEWELES['dh02d'] = """
 ! Shorten so that umhtr has an integer number of poles
 dh02d: drift, l = 0.2724707 - ( 10*0.054 - 0.506263 ) /2, type = "CSR" !0.2900002
 """
+SC_NEWELES['qdg001'] = """
+! Replace k0l with quad offset and patch with y_pitch.
+qdg001: quadrupole, type = "1.51Q7.00", l = lqs/2, aperture = rqs, k1 = kqbf0, y_offset=-4.83865231890650768E-003
+"""
+SC_NEWELES['qdg003'] = """
+! Replace k0l with quad offset and patch with y_pitch.
+qdg003: quadrupole, type = "1.51Q7.00", l = lqs/2, aperture = rqs, k1 = kqbf0, y_offset=-2.99813063290814820E-004
+"""
+SC_NEWELES['dyqdg001'] = """
+! Replace k0l with quad offset and patch with y_pitch.
+dyqdg001: patch, y_pitch = 9.49758257820075558E-003
+"""
+SC_NEWELES['dyqdg003'] = """
+! Replace k0l with quad offset and patch with y_pitch.
+dyqdg003: patch, y_pitch = 5.88487966838956720E-004
+"""
 # Not needed. Desplitting handles cavities now.
 # Add these repalcements
 #SC_LINAC_REPLACEMENTS = json.load(open('replacements/good_sc_linac_replacements.json'))
@@ -228,7 +217,7 @@ dh02d: drift, l = 0.2724707 - ( 10*0.054 - 0.506263 ) /2, type = "CSR" !0.290000
 if INCLUDE_DEFERRED:
     SC_NEWELES.update(json.load(open('bmad/conversion/replacements/deferred_sc_replacements.json')))
 
-def all_replacements(master_file):
+def merge_replacements(master_file):
     dat = {}
     dat.update(NEWELES)
     if master_file.startswith('CU_'):
@@ -257,9 +246,6 @@ for f in XSIF_FILES:
 #Identify Cu and SC xsif files
 CU_MASTERS = [f for f in os.listdir('mad') if f.startswith('CU_') and f.endswith('xsif')]
 SC_MASTERS = [f for f in os.listdir('mad') if f.startswith('SC_') and f.endswith('xsif')]
-print(f'{CU_MASTERS=}')
-print(f'{SC_MASTERS=}')
-
 
 exclude_strs = ['BUN1B','WIGX','UMXL','LH_UND','UMHTR','UMASX','UMAHX','PSSX','PSHX']
 shadows = ['umasxh','umahxh','pssxh','pshxh','umxl1h','umxl2h','umxl3h','umxl4h',
@@ -267,28 +253,20 @@ shadows = ['umasxh','umahxh','pssxh','pshxh','umxl1h','umxl2h','umxl3h','umxl4h'
 
 def process_master(master):
     print(f'Converting {master}')
-
     shutil.copytree(TEMP_DIR, WORK_DIR, dirs_exist_ok=True)
 
-    # New method
     SCRIPT = f'python $ACC_ROOT_DIR/util_programs/mad_to_bmad/mad8_to_bmad.py --no_prepend_vars -f {master}'
-
     res = run(SCRIPT, shell=True, cwd=WORK_DIR)
 
     assert res.returncode == 0
 
     BMAD_FILES=glob(WORK_DIR+'/*bmad')
-
-    REPLACEMENTS = all_replacements(master)
-
+    REPLACEMENTS = merge_replacements(master)
     for f in BMAD_FILES:
         finalize_bmad(f, replacements=REPLACEMENTS, verbose=False, exclude_strs=exclude_strs, shadows=shadows)  
 
-    print(f'    Copying all to {DEST_DIR}')
     for f in BMAD_FILES:
-        #print(f'copying {f} to {DEST}')
         shutil.copy(f, DEST_DIR)
-#process_master('SC_SXR.xsif')
 
 for _m in CU_MASTERS:
     process_master(_m)
