@@ -529,6 +529,12 @@ if cUND:
 
 # kicker/septum groups
 
+#KSname = [ #'BKYSP1H', 
+#    'BKYSP2H', 'BKYSP3H', 'BKYSP4H', 'BKYSP5H', 'BLXSPH',
+#    'BKYSP0S', 'BKYSP1S', 'BKYSP2S', 'BKYSP3S', 'BKYSP4S', 'BKYSP5S', 'BLXSPS',
+#    'BKRDAS1', 'BKRDAS2', 'BKRDAS3', 'BKRDAS4', 'BKRDAS5', 'BKRDAS6', 'BLRDAS',
+#    'BKRCUS', 'BLRCUS'
+#]
 KSname = [
     'BKRDG0', 'BLRDG0',
     'BKYSP0H', 'BKYSP1H', 'BKYSP2H', 'BKYSP3H', 'BKYSP4H', 'BKYSP5H', 'BLXSPH',
@@ -1141,9 +1147,9 @@ for kwn in keyw:
             mname2 = name[2 * m + 1].strip()
             mname = mname1[:-1]  # remove last character from name
             id = [strmatch(mname1,N,True),strmatch(mname2,N,True)]
-            id1 = id[0][0]  # first piece (beam center)
-            idi = id1 - 1  # beam in
-            ido = id[1][-1]  # beam out
+            id1 = id[0][0]  # end point of first of 2 halfs of split bend.
+            idi = id1 - 1  # start point of bend
+            ido = id[1][-1]  # exit point of bend
             sdsp = Sd[id1]  # m
             suml = S[id1]  # m
             dist = suml - seq[ids[id1]]['suml']  # m
@@ -1176,28 +1182,34 @@ for kwn in keyw:
                 sname = 'kG2T_Bdl2B'
                 sval = 1 / (leng * T2kG)
             polarity = -np.sign(ang + np.finfo(float).eps)  # add eps so that sign=1 when ang=0
-            coori = np.copy(coor[idi, :])  # m,rad
-            coorc = np.copy(coor[id1, :])  # m,rad
-            cooro = np.copy(coor[ido, :])  # m,rad
+            coori = np.copy(coor[idi, :])  # coordinates at bend entrance
+            coorc = np.copy(coor[id1, :])  # coordinates at end of first half
+            cooro = np.copy(coor[ido, :])  # coordiantes at exit
             coorm = np.zeros(coorc.shape)  # m,rad (magnet steel center)
             if mname in KSname:
                 jd = strmatch(f'D{mname}',N)
                 if len(jd) != 2:
                     raise ValueError(f'{mname} not split?')
                 zleng = np.sum(L[jd])  # m
-                coorm = np.copy(coor[jd[0], :])  
-                coorm[3] = 0
+                coorm = np.copy(coor[jd[0], :]) # coordinates at end of first half of counterpart drift
+                print(f'FOO D_ {mname} {coorm[:3]}')
+                print(f'FOO i  {mname} {coori[:3]}')
+                coorm[1] = coori[1]
+                coorm[2] = coori[2]
             else:
                 chicane1 = (e1 == 0) & (e2 != 0)
                 chicane2 = (e1 != 0) & (e2 == 0)
                 if chicane1 | chicane2:
                     zleng = leng * np.sinc(ang/np.pi)  # m
                     coorm[:3] = np.mean([coori[:3], cooro[:3]], axis=0)
+                    #print(f'FOO A {mname} {coorm[2]}')
                     if chicane1:
                         coorm[3:6] = np.copy(coori[3:6])
                     else:
                         coorm[3:6] = np.copy(cooro[3:6])
+                    #print(f'FOO Y2b {62} {SBEN[62]["name"]} {SBEN[62]["m3"]}')
                 else:
+                    #print(f'FOO B {mname}')
                     zleng = leng * np.sinc(ang / 2 / np.pi)  # m
                     coorm[:3] = (coori[:3] + cooro[:3] + 2 * coorc[:3]) / 4
                     coorm[3:6] = np.copy(coorc[3:6])
@@ -3096,13 +3108,9 @@ def arrange_output(coord_system, system_name, filename):
                     s[6] = TEMP['bore']
                     if TEMP['prim'] == 'MULT':
                         continue
-                    #if TEMP['prim'] != 'INST':
-                    #    s[6] = TEMP['bore']
                     if TEMP['prim'] == 'QUAD':
-                        #s[8] = TEMP['k1']
                         s[10] = TEMP['tilt']
                         s[32] = TEMP['GL']
-                        #s[33] = TEMP['G']
 
                 fid.write(f"{s[0]+1},")
                 for k in range(1, Ncol-1):
@@ -3157,29 +3165,29 @@ with open(outdir+'/'+fname, 'wt') as fid:
 
 # ------------------------------------------------------------------------------
 
-# save RDBdata
-sio.savemat(outdir+'/makeExcel.dump.mat', 
-mdict={
-"K":K,
-"N":N,
-"L":L,
-"P":P,
-"A":A,
-"T":T,
-"E":E,
-"SECTORS":SECTORS,
-"coor":coor,
-"S":S,
-"idf":idf,
-"ids":ids,
-"idd":idd,
-"K1":K,
-"N1":N,
-"L1":L,
-"P1":P,
-"S1":E,
-"coor1":coor,
-"SECTORS1":SECTORS1,
-})
+# # save RDBdata
+# sio.savemat(outdir+'/makeExcel.dump.mat', 
+# mdict={
+# "K":K,
+# "N":N,
+# "L":L,
+# "P":P,
+# "A":A,
+# "T":T,
+# "E":E,
+# "SECTORS":SECTORS,
+# "coor":coor,
+# "S":S,
+# "idf":idf,
+# "ids":ids,
+# "idd":idd,
+# "K1":K,
+# "N1":N,
+# "L1":L,
+# "P1":P,
+# "S1":E,
+# "coor1":coor,
+# "SECTORS1":SECTORS1,
+# })
 
 print(f'Be sure to add FACET2 elements to {fname}!\n')
