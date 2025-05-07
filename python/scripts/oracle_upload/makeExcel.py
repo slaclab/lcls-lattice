@@ -65,7 +65,7 @@ def roundoff(val, prec=None):
 
 script_dir = Path(__file__).parent.resolve()
 
-optics='14APR2025s'
+optics='12MAY2025s'
 vfile=['LCLS2sc_value.echo','LCLS2cu_value.echo']
 
 outdir='oracle_upload'
@@ -676,45 +676,31 @@ for n in name:
         P[i][3] = P[i][5]  # T1 -> TILT
 
 def assign_ucell(N, coor, idf):
-    # NOTE: coordinates are assumed to be in MAD (not SYMBOLS) order
-
-    debug = False
-    filename = f'{script_dir}/sectors.xlsx'
-
     UCELL = ['' for x in N]
 
-    wb= pyxl.load_workbook(filename,data_only=True)
+    # SXR partial cell 16
+    i1 = strmatch('BEGUNDS',N)[0]
+    i2 = strmatch('SXR17BEG',N)[0]-1
+    for i in range(i1,i2+1):
+        UCELL[i]='SXR 16'
+    # SXR cells
+    for nc in range(17,50+1):
+        i1 = strmatch(f'SXR{nc:02}BEG',N)[0]
+        i2 = strmatch(f'SXR{nc:02}END',N)[0]
+        for j in range(i1,i2+1):
+            UCELL[j]=f'SXR {nc:02}'
 
-    # Read SXR sheet
-    sxr_sht = wb.worksheets[2]
-    sxr_data = sxr_sht['A2':'E36']
-    ncell = len(sxr_data)
-    ucell = []
-    for row in sxr_data:
-        ucell.append({'name':row[0].value,'froot':row[1].value,'Zbeg':row[3].value,'Zend':row[4].value})
-
-    # Read HXR sheet
-    hxr_sht = wb.worksheets[3]
-    hxr_data = hxr_sht['A2':'E39']
-    ncell = len(hxr_data)
-    for row in hxr_data:
-        ucell.append({'name':row[0].value,'froot':row[1].value,'Zbeg':row[3].value,'Zend':row[4].value})
-    
-    wb.close()
-    # Combine data from both sheets
-    
-    coor3 = [c[2] for c in coor]
-    for cell in ucell:
-        id1 = [i for i,x in enumerate(idf) if x==cell['froot']]
-
-        id2 = [i for i,x in enumerate(coor3) if x > cell['Zbeg']]
-        inter1 = intersection(id1,id2)[0]
-
-        id2 = [i for i,x in enumerate(coor3) if x < cell['Zend']]
-        inter2 = [v for v in id1 if v in id2][-1]
-        for jd in range(inter1,inter2+1):
-          UCELL[jd] = cell['name']
-
+    # HXR partial cell 12
+    i1 = strmatch('BEGUNDH',N)[0]
+    i2 = strmatch('HXR13BEG',N)[0]-1
+    for i in range(i1,i2+1):
+        UCELL[i]='HXR 12'
+    # SXR cells
+    for nc in range(13,50+1):
+        i1 = strmatch(f'HXR{nc:02}BEG',N)[0]
+        i2 = strmatch(f'HXR{nc:02}END',N)[0]
+        for j in range(i1,i2+1):
+            UCELL[j]=f'HXR {nc:02}'
     return UCELL
 
 # Assign undulator cell names
@@ -726,12 +712,12 @@ def read_sector():
 
     # read worksheet 1 (scS)
     sheet = wb.worksheets[0]
-    data = sheet['A4':'J58']
+    data = sheet['A4':'J72']
     sect_sc = []
     for row in data:
         sect_sc.append({
             'name': row[0].value,
-            'froot': [row[1].value],
+            'froot': row[1].value,
             'BSY': row[2].value,
             'Zbeg': row[4].value,
             'Zend': row[5].value,
@@ -741,12 +727,12 @@ def read_sector():
 
     # read worksheet 2 (cuH)
     sheet = wb.worksheets[1]
-    data = sheet['A4':'J37']
+    data = sheet['A4':'J39']
     sect_cu = []
     for row in data:
         sect_cu.append({
             'name': row[0].value,
-            'froot': [row[1].value],
+            'froot': row[1].value,
             'BSY': row[2].value,
             'Zbeg': row[4].value,
             'Zend': row[5].value,
@@ -754,21 +740,10 @@ def read_sector():
             'Nend': notnone(row[9].value)
         })
 
-    # assign multiple lines to some sectors
-    sect_sc[1]['froot'].extend([8])     # S01 (scS+DIAG0)
-    sect_sc[28]['froot'].extend([6])     # S28 (scS+scH)
-    sect_sc[29]['froot'].extend([6, 7, 9]) # S29 (scS+scH,scD,scDA)
-    sect_sc[30]['froot'].extend([6, 7, 9]) # S30 (scS+scH,scD,scDA)
-    sect_sc[31]['froot'].extend([6, 7, 9]) # BSY (scS+scH,scD,scDA)
-
-    sect_cu[0]['froot'].extend([15]) # S20 (cuH+cuGSPEC)
-    sect_cu[1]['froot'].extend([16]) # S21 (cuH+cuSPEC)
-    sect_cu[11]['froot'].extend([14]) # BSY (cuH+cuS)
-
     return sect_sc, sect_cu
 
 def set_sector(N, SECTORS, coor, idf, nf, sector):
-    if nf not in sector['froot']:
+    if nf != sector['froot']:
         return
     Z = [x[2] for x in coor]
 
@@ -826,23 +801,6 @@ def assign_sector(N, coor, idf, N1, coor1, idf1):
         if nf in [3, 4, 5]:
             continue  # do SXTES/2_X/TXI/TMO separately
         for ns, sector in enumerate(sect_SC, 1):
-            if nf == 6 and ns == 31:
-                sector['Nend'] = 'ENDSPH'
-            if nf == 6 and ns == 32:
-                sector['Nbeg'] = 'BEGSLTH'
-                sector['Nend'] = 'ENDSLTH'
-            if nf == 7 and ns == 31:
-                sector['Nend'] = 'ENDSPD_3'
-            if nf == 7 and ns == 32:
-                sector['Nbeg'] = 'BEGSLTD'
-                sector['Nend'] = 'ENDSLTD'
-            if nf == 9 and ns == 31:
-                sector['Nbeg'] = ''
-                sector['Nend'] = 'WOODDOOR_SPA'
-            if nf == 9 and ns == 32:
-                sector['Nbeg'] = 'WOODDOOR_SPA'
-                sector['Nend'] = 'BRAM1B'
-
             if sector['BSY']:
                 set_sector(N1, SECTORS1, coor1, idf1, nf, sector)
             else:
@@ -861,33 +819,33 @@ def assign_sector(N, coor, idf, N1, coor1, idf1):
         if nf in [12, 13]:
             continue  # do HXTES/TXI separately
         for ns, sector in enumerate(sect_CU, 1):
-            if nf == 14 and ns == 12:
-                sector['Nbeg'] = 'BEGCLTS'
-                sector['Nend'] = 'ENDCLTS'
-            if nf == 15 and ns == 1:
-                sector['Nbeg'] = 'BEGGSPEC'
-                sector['Nend'] = 'ENDGSPEC'
-            if nf == 16 and ns == 2:
-                sector['Nbeg'] = 'BEGSPEC'
-                sector['Nend'] = 'ENDSPEC'
+            #if nf == 14 and ns == 12:
+            #    sector['Nbeg'] = 'BEGCLTS'
+            #    sector['Nend'] = 'ENDCLTS'
+            #if nf == 15 and ns == 1:
+            #    sector['Nbeg'] = 'BEGGSPEC'
+            #    sector['Nend'] = 'ENDGSPEC'
+            #if nf == 16 and ns == 2:
+            #    sector['Nbeg'] = 'BEGSPEC'
+            #    sector['Nend'] = 'ENDSPEC'
             if sector['BSY']:
                 set_sector(N1, SECTORS1, coor1, idf1, nf, sector)
             else:
                 set_sector(N, SECTORS, coor, idf, nf, sector)
 
     # handle SXTES lines separately
-    sector = sect_SC[-4]  # XTESS(2_X)
-    set_sector(N1, SECTORS1, coor1, idf1, 3, sector)
-    sector = sect_SC[-3]  # XTESS(TXI)
-    set_sector(N1, SECTORS1, coor1, idf1, 4, sector)
-    sector = sect_SC[-2]  # XTESS(TMO)
-    set_sector(N1, SECTORS1, coor1, idf1, 5, sector)
+    ix = [x['froot'] for x in sect_SC].index(3) # XTESS(2_x)
+    set_sector(N1, SECTORS1, coor1, idf1, 3, sect_SC[ix])
+    ix = [x['froot'] for x in sect_SC].index(4) # XTESS(TXI)
+    set_sector(N1, SECTORS1, coor1, idf1, 4, sect_SC[ix])
+    ix = [x['froot'] for x in sect_SC].index(5) # XTESS(TMO)
+    set_sector(N1, SECTORS1, coor1, idf1, 5, sect_SC[ix])
 
     # handle HXTES lines separately
-    sector = sect_CU[-2]  # XTESH(XTES)
-    set_sector(N1, SECTORS1, coor1, idf1, 12, sector)
-    sector = sect_CU[-1]  # XTESH(TXI)
-    set_sector(N1, SECTORS1, coor1, idf1, 13, sector)
+    ix = [x['froot'] for x in sect_CU].index(12) # XTESH(HXTES)
+    set_sector(N1, SECTORS1, coor1, idf1, 12, sect_CU[ix])
+    ix = [x['froot'] for x in sect_CU].index(13) # XTESH(TXI)
+    set_sector(N1, SECTORS1, coor1, idf1, 13, sect_CU[ix])
 
     return SECTORS, SECTORS1
 
@@ -3156,8 +3114,6 @@ with open(outdir+'/'+fname, 'wt') as fid:
                 continue
             idn = ip[n][2]
             TEMP = KEYLIST[idk][idn]
-            if TEMP['prim'] == 'MULT':
-                continue
             TEMPucell = TEMP['ucell']
             TEMPucell = '' if isinstance(TEMPucell,list) else TEMPucell
             fid.write(f"{TEMP['name']},{TEMP['area']},{TEMPucell},{TEMP['sector']}\n")

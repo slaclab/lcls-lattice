@@ -1,6 +1,6 @@
   TITLE, "AD_ACCEL: superconducting linac"
 
-! *** OPTICS=AD_ACCEL-14APR2025s ***
+! *** OPTICS=AD_ACCEL-12MAY2025s ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY, DOUBLE
   ASSIGN, ECHO="LCLS2sc.echo"
@@ -434,6 +434,16 @@
     SET, KQ0H04, -6.042774733767
   ENDSUBROUTINE
 
+! use QC002 to match into COL0 FODO (set QC005[K1] to FODO value)
+
+  SETQC002on : SUBROUTINE
+    SET, KQC001,  5.055115117203 ! 5.135316216759 !
+    SET, KQC002,  0.157983739509 ! 0.0            !
+    SET, KQC003, -5.345027236641 !-5.295950232123 !
+    SET, KQC004,  2.756594856447 ! 2.772436085305 !
+    SET, KQC005, -KQColl0        !-1.796082149685 !
+  ENDSUBROUTINE
+
 ! ==============================================================================
 ! for testing the online Matlab model
 ! ------------------------------------------------------------------------------
@@ -508,6 +518,8 @@
  !CALL, FILENAME="LCLS2sc_XLEAP.mad8" !run by itself
 
 ! ------------------------------------------------------------------------------
+
+ !CALL, FILENAME="patch.mad8"
 
  !STOP
 
