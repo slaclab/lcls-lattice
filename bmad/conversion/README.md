@@ -18,10 +18,12 @@
 2. Run `$LCLS_LATTICE/bmad/conversion/device_mapping/device_mapping.py`
 
 # Check into repo
-12. Submit PR to github.
-13. Generate new lcls-lattice release.
-14. Update `/sdf/group/ad/sw/scm/repos/optics/lcls-lattice` on s3df.
-15. Update prod using zip of release at `lcls-srv01:/usr/local/lcls/tools/lcls-lattice`
+1. Trigger the Make Optics Plots action for the pre-release branch.
+   - This updates the plots in `docs/plots/`.  Check these plots for correctness.
+3. Submit PR to github.
+4. Generate new lcls-lattice release.
+5. Update `/sdf/group/ad/sw/scm/repos/optics/lcls-lattice` on s3df.
+6. Update prod using zip of release at `lcls-srv01:/usr/local/lcls/tools/lcls-lattice`
 
 ## Rematch notes.
 * Rematching is usually not needed.  A mismatch between mad8 and Bmad usually means something went wrong in the conversion.
