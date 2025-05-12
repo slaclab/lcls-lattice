@@ -1,3 +1,5 @@
+#!/bin/env python3
+
 import os
 from subprocess import run
 
@@ -35,7 +37,6 @@ for i, val in series.items():
         # Skip klystrons - these are expected to be duplicated
         if not val[0].startswith('K'):
             print(i, val)
-return i, series, val
 
 # dict for lookup
 DEVICE = dict(zip(MADNAMES, DEVICENAMES))
