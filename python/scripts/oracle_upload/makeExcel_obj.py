@@ -1108,6 +1108,12 @@ for seq in main_seq:
                     SBEN[-1][f'c1{k+1}'] = []
                     SBEN[-1][f'm1{k+1}'] = []
                 if cBSY:
+                    for other1_seq in other1_seqs:
+                        other1_eles = other1_seq['eles']
+                        other1_names = [x.name for x in other1_eles]
+                        other1_ids = [strmatch(mname1,other1_names), strmatch(mname2,other1_names)]
+
+                        
                     id = [strmatch(mname1,N1,True),strmatch(mname2,N1,True)]
                     if any(id):
                         id1 = id[0][0]  # first piece (beam center)
