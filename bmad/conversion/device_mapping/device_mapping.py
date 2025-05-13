@@ -8,7 +8,7 @@ assert LCLS_LATTICE_ENV != ''
 lcls_lat_check_1 = run(f'ls {LCLS_LATTICE_ENV}/bmad/conversion',shell=True,capture_output=True)
 assert lcls_lat_check_1.returncode == 0
 
-FACET2_LATTICE_ENV = '/home/mpe/DATA/new_repo/facet2-lattice'  #os.environ['FACET2_LATTICE']
+FACET2_LATTICE_ENV = os.environ['FACET2_LATTICE']
 assert FACET2_LATTICE_ENV != ''
 facet2_lat_check_1 = run(f'ls {FACET2_LATTICE_ENV}/bmad/conversion',shell=True,capture_output=True)
 assert facet2_lat_check_1.returncode == 0
@@ -119,7 +119,7 @@ _unames = sorted(list(set(_names)))
 
 write_devicenames(_unames, SC_FILE)
 
-os.environ['FACET2_LATTICE'] = '/home/mpe/DATA/new_repo/facet2-lattice/'
+#os.environ['FACET2_LATTICE'] = 'path_to_facet2_directory'
 if os.path.exists(FDIR):
     F2_FILE = f'{FDIR}/master/FACET2e_devicenames.bmad'
     _models = ['f2_elec']
