@@ -922,7 +922,7 @@ for seq in main_seq:
                     'ucell': [],
                     'prim': seq_eles[id1].fdn,
                     'name': uniq_name,
-                    'type': seq_eles[id1].ele_type
+                    'type': seq_eles[id1].ele_type,
                     'dist': dist,
                     'energy': energy,
                     'leng': leng,
@@ -1031,12 +1031,23 @@ for seq in main_seq:
                 cooro = seq_eles[id2].coor  # m,rad
                 coorm = np.zeros(coorc.shape)  # m,rad (magnet steel center)
                 if mname in KSnames:
-                    jd = strmatch(f'D{mname}',N)  #FOO, this is the catch!
-                    if len(jd) != 2:
-                        raise ValueError(f'{mname} not split?')
-                    zleng = np.sum(L[jd])  # m
-                    coorm = np.copy(coor[jd[0], :])  
-                    coorm[3] = 0
+                    counterpart_drift_name = f'D{mname}'
+                    nfound = 0
+                    zleng = 0
+                    breakloop = False
+                    for seq_ in main_seq:
+                        for ele in seq_['eles']:
+                            if ele['name'] == counterpart_drift_name:
+                                #Two matches are expected.
+                                nfound += 1
+                                zleng += ele['length']
+                                if nfound == 1:
+                                    #Convention is to use the end of the first element.
+                                    coorm = ele['coor']
+                                if nfound == 2:
+                                    breakloop = True 
+                        if breakloop:
+                            break
                 else:
                     chicane1 = (e1 == 0) & (e2 != 0)
                     chicane2 = (e1 != 0) & (e2 == 0)
@@ -1051,7 +1062,7 @@ for seq in main_seq:
                         zleng = leng * np.sinc(ang / 2 / np.pi)  # m
                         coorm[:3] = (coori[:3] + cooro[:3] + 2 * coorc[:3]) / 4
                         coorm[3:6] = np.copy(coorc[3:6])
-                pname = area[ida[id1]]['parent']
+                pname = seq.area['parent']
                 if pname in ['DMPS', 'DMPH']:
                     coorm[3] = coorc[3]  # dump line magnet coords set in FixDumpCoords
                 elif pname == 'BSYA_2':
@@ -1059,21 +1070,21 @@ for seq in main_seq:
                 else:
                     coorm[3] = tilt  # remove "creeping" rolls from non-rolled SBENs
                 SBEN.append({
-                    'idf': idf[id1],
-                    'id': idd[id1],
-                    'seq': seq[ids[id1]]['name'],
-                    'area': area[ida[id1]]['name'],
-                    'parent': pname,
-                    'sector': SECTORS[id1].strip(),
+                    'idf': seq_eles[id1].froot_ix,
+                    'id': seq_eles[id1].froot_ord,
+                    'seq': seq.name,
+                    'area': seq.area['name'],
+                    'parent': seq.area['parent'],
+                    'sector': seq_eles[id1].sector,
                     'ucell': [],
-                    'prim': FDN[id1],
+                    'prim': seq_eles[id1].fdn,
                     'name': mname,
-                    'type': T[id1].strip(),
+                    'type': seq_eles[id1].ele_type,
                     'dist': dist,
                     'energy': energy,
                     'zleng': zleng,
                     'leng': leng,
-                    'gap': 2 * A[id1],  # m
+                    'gap': seq_eles[id1]['aper'],  # m
                     'fint': fint,
                     'tilt': np.rad2deg(tilt),  # deg
                     'ang': np.rad2deg(ang),  # deg
@@ -1091,6 +1102,7 @@ for seq in main_seq:
                     **{f'm{k+1}': coorm[k] for k in range(6)}
                 })
                 # BSY coordinates
+                #FOO main sequence SBEND done ... on to BSY SBEND
     
                 for k in range(6):
                     SBEN[-1][f'c1{k+1}'] = []
