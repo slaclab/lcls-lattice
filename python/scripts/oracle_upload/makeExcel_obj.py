@@ -1046,6 +1046,7 @@ for seq in main_seq:
                                     coorm = ele['coor']
                                 if nfound == 2:
                                     breakloop = True 
+                                    break
                         if breakloop:
                             break
                 else:
@@ -1102,42 +1103,54 @@ for seq in main_seq:
                     **{f'm{k+1}': coorm[k] for k in range(6)}
                 })
                 # BSY coordinates
-                #FOO main sequence SBEND done ... on to BSY SBEND
-    
+                SBEN[-1]['suml1'] = []
                 for k in range(6):
                     SBEN[-1][f'c1{k+1}'] = []
                     SBEN[-1][f'm1{k+1}'] = []
                 if cBSY:
+                    # find if the two halves of the sbend exist in any BSY sequence.
                     for other1_seq in other1_seqs:
                         other1_eles = other1_seq['eles']
                         other1_names = [x.name for x in other1_eles]
-                        other1_ids = [strmatch(mname1,other1_names), strmatch(mname2,other1_names)]
-
-                        
-                    id = [strmatch(mname1,N1,True),strmatch(mname2,N1,True)]
-                    if any(id):
-                        id1 = id[0][0]  # first piece (beam center)
+                        id_a = strmatch(mname1,other1_names)
+                        id_b = strmatch(mname2,other1_names)
+                        if id_a and id_b:
+                            other1_ids = [id_a, id_b]
+                            break
+                    if any(other1_ids):
+                        if len(other1_ids) != 2:
+                            print('error in sbend bsy processing')
+                            bomb
+                        id1 = other1_ids[0]  # first piece (beam center)
                         idi = id1 - 1  # beam in
-                        ido = id[1][-1]  # beam out
-                        suml1 = S1[id1]  # m
-                        coori1 = np.copy(coor1[idi, :])  # m,rad
-                        coorc1 = np.copy(coor1[id1, :])  # m,rad
-                        cooro1 = np.copy(coor1[ido, :])  # m,rad
-                        coorm1 = np.zeros(coorc1.shape)  # m,rad (magnet steel center)
+                        ido = other1_ids[1]  # beam out
+                        suml1 = other1_eles[id1]['suml']
+                        coori1 = other1_eles[idi]['coor']
+                        coorc1 = other1_eles[id1]['coor']
+                        cooro1 = other1_eles[ido]['coor']
+                        coorm1 = np.zeros_like(coorc1)  # m,rad (magnet steel center)
                         if mname in KSnames:
-                            jd = strmatch(f'D{mname}',N1)
-                            coorm1 = np.copy(coor1[jd[0], :])
-                            coorm1[3] = 0
+                            counterpart_drift_name = f'D{mname}'
+                            breakloop = False
+                            for seq_ in other1_seq:
+                                for ele in seq_['eles']:
+                                    if ele['name'] == counterpart_drift_name:
+                                        #Convention is to use the end of the first element.
+                                        coorm1 = ele['coor']
+                                        breakloop = True 
+                                        break
+                                if breakloop:
+                                    break
                         else:
                             if chicane1 | chicane2:
                                 coorm1[:3] = np.mean([coori1[:3], cooro1[:3]], axis=0)
                                 if chicane1:
-                                    coorm1[3:6] = np.copy(coori1[3:6])
+                                    coorm1[3:6] = coori1[3:6]
                                 else:
-                                    coorm1[3:6] = np.copy(cooro1[3:6])
+                                    coorm1[3:6] = cooro1[3:6]
                             else:
                                 coorm1[:3] = (coori1[:3] + cooro1[:3] + 2 * coorc1[:3]) / 4
-                                coorm1[3:6] = np.copy(coorc1[3:6])
+                                coorm1[3:6] = coorc1[3:6]
                         if pname in ['DMPS', 'DMPH']:
                             coorm1[3] = coorc1[3]  # dump line magnet coords set in FixDumpCoords
                         elif pname == 'BSYA_2':
@@ -1153,26 +1166,41 @@ for seq in main_seq:
                         SBEN[-1]['ucell'] = UCELL[id1].strip()
     
                 # UND coordinates
-    
                 SBEN[-1]['suml2'] = []
                 for k in range(6):
                     SBEN[-1][f'c2{k+1}'] = []
                     SBEN[-1][f'm2{k+1}'] = []
                 if cUND:
-                    id = [strmatch(mname1,N2,True),strmatch(mname2,N2,True)]
-                    if any(id) > 0:
-                        id1 = id[0][0]  # first piece (beam center)
+                    # find if the two halves of the sbend exist in any UND sequence.
+                    for other2_seq in other2_seqs:
+                        other2_eles = other2_seq['eles']
+                        other2_names = [x.name for x in other2_eles]
+                        id_a = strmatch(mname1,other2_names)
+                        id_b = strmatch(mname2,other2_names)
+                        if id_a and id_b:
+                            other2_ids = [id_a, id_b]
+                            break
+                    if any(other2_ids) > 0:
+                        id1 = other2_ids[0]  # first piece (beam center)
                         idi = id1 - 1  # beam in
-                        ido = id[1][-1]  # beam out
-                        suml2 = S2[id1]  # m
-                        coori2 = coor2[idi, :]  # m,rad
-                        coorc2 = coor2[id1, :]  # m,rad
-                        cooro2 = coor2[ido, :]  # m,rad
-                        coorm2 = np.zeros(coorc2.shape)  # m,rad (magnet steel center)
+                        ido = other2_ids[1]  # beam out
+                        suml2 = other2_eles[id1]['suml']
+                        coori2 = other2_eles[idi]['coor']
+                        coorc2 = other2_eles[id1]['coor']
+                        cooro2 = other2_eles[ido]['coor']
+                        coorm2 = np.zeros_like(coorc2)  # m,rad (magnet steel center)
                         if mname in KSnames:
-                            jd = strmatch(f'D{mname}',N2)
-                            coorm2 = coor2[jd[0], :]
-                            coorm2[3] = 0
+                            counterpart_drift_name = f'D{mname}'
+                            breakloop = False
+                            for seq_ in other2_seq:
+                                for ele in seq_['eles']:
+                                    if ele['name'] == counterpart_drift_name:
+                                        #Convention is to use the end of the first element.
+                                        coorm2 = ele['coor']
+                                        breakloop = True 
+                                        break
+                                if breakloop:
+                                    break
                         else:
                             if chicane1 | chicane2:
                                 coorm2[:3] = np.mean([coori2[:3], cooro2[:3]], axis=0)
@@ -1194,6 +1222,7 @@ for seq in main_seq:
                             SBEN[-1][f'c2{k+1}'] = coorc2[k]
                             SBEN[-1][f'm2{k+1}'] = coorm2[k]
     
+        #FOO main sequence SBEND done ... on to BSY SBEND
         elif kwn == 'QUAD':
             name = list(dict.fromkeys([N[i] for i in id]))
             QUAD = []
