@@ -93,23 +93,23 @@ T2kG=10             # kG per Tesla
 
 # file name roots
 
-froot = [
-    'LCLS2scS',     #  1
-    'LCLS2scSS',    #  2
-    'LCLS2scS2_X',  #  3
-    'LCLS2scSTXI',  #  4
-    'LCLS2scSTMO',  #  5
-    'LCLS2scH',     #  6
-    'LCLS2scD',     #  7
-    'DIAG0',        #  8
-    'LCLS2scDA',    #  9 (DASEL)
-    'LCLS2cuH',     # 10
-    'LCLS2cuHS',    # 11
-    'LCLS2cuHXTES', # 12
-    'LCLS2cuHTXI',  # 13
-    'LCLS2cuS',     # 14
-    'LCLS2cuGSPEC', # 15
-    'LCLS2cuSPEC',  # 16
+froot = [   # [File Root, BSY file exists?, UND file exists?]
+    ['LCLS2scS',True,False],        #  1
+    ['LCLS2scSS',True,False],       #  2
+    ['LCLS2scS2_X',True,False],     #  3
+    ['LCLS2scSTXI',True,False],     #  4
+    ['LCLS2scSTMO',True,False],     #  5
+    ['LCLS2scH',True,False],        #  6
+    ['LCLS2scD',True,False],        #  7
+    ['DIAG0',False,False],          #  8
+    ['LCLS2scDA',True,False],       #  9 (DASEL)
+    ['LCLS2cuH',True,False],        # 10
+    ['LCLS2cuHS',True,False],       # 11
+    ['LCLS2cuHXTES',True,False],    # 12
+    ['LCLS2cuHTXI',True,False],     # 13
+    ['LCLS2cuS',True,False],        # 14
+    ['LCLS2cuGSPEC',False,False],   # 15
+    ['LCLS2cuSPEC',False,False],    # 16
 ]
 
 
@@ -195,29 +195,29 @@ area.append({'name': 'L3B', 'beg': 'BEGL3B', 'end': 'ENDL3B', 'offset': [0, 0]})
 area.append({'name': 'EXT', 'beg': 'BEGEXT', 'end': 'ENDEXT', 'offset': [0, 0]})
 area.append({'name': 'DOG', 'beg': 'BEGDOG', 'end': 'ENDDOG', 'offset': [0, 0]})
 area.append({'name': 'BYP', 'beg': 'BEGBYP', 'end': 'ENDBYP', 'offset': [0, 0]})
-area.append({'name': 'SPD_1', 'beg': 'BEGSPD_1', 'end': 'ENDSPD_1', 'offset': [0, 0]})
+area.append({'name': 'SPD_1', 'beg': 'BEGSPD_1', 'end': 'ENDSPD_1', 'parent': 'SPD', 'offset': [0, 0]})
 area.append({'name': 'SPS', 'beg': 'BEGSPS', 'end': 'ENDSPS', 'offset': [0, 0]})
 area.append({'name': 'SLTS', 'beg': 'BEGSLTS', 'end': 'ENDSLTS', 'offset': [0, 0]})
 area.append({'name': 'BSYS', 'beg': 'BEGBSYS', 'end': 'ENDBSYS', 'offset': [0, 0]})
 area.append({'name': 'LTUS', 'beg': 'BEGLTUS', 'end': 'ENDLTUS', 'offset': [0, 0]})
 area.append({'name': 'UNDS', 'beg': 'BEGUNDS', 'end': 'ENDUNDS', 'offset': [0, 0]})
-area.append({'name': 'DMPS_1', 'beg': 'BEGDMPS_1', 'end': 'ENDDMPS_1', 'offset': [0, 0]})
-area.append({'name': 'DMPS_2', 'beg': 'BEGDMPS_2', 'end': 'ENDDMPS_2', 'offset': [0, 0]})
+area.append({'name': 'DMPS_1', 'beg': 'BEGDMPS_1', 'end': 'ENDDMPS_1', 'parent': 'DMPS', 'offset': [0, 0]})
+area.append({'name': 'DMPS_2', 'beg': 'BEGDMPS_2', 'end': 'ENDDMPS_2', 'parent': 'DMPS', 'offset': [0, 0]})
 
 # scSS
-area.append({'name': 'SFTS_1', 'beg': 'BEGSFTS_1', 'end': 'ENDSFTS_1', 'offset': [0, 0]})
-area.append({'name': 'SFTS_2', 'beg': 'BEGSFTS_2', 'end': 'ENDSFTS_2', 'offset': [0, 0]})
+area.append({'name': 'SFTS_1', 'beg': 'BEGSFTS_1', 'end': 'ENDSFTS_1', 'parent': 'SFTS', 'offset': [0, 0]})
+area.append({'name': 'SFTS_2', 'beg': 'BEGSFTS_2', 'end': 'ENDSFTS_2', 'parent': 'SFTS', 'offset': [0, 0]})
 # scSXTES/scS2_X/scSTXI/scSTMO
-area.append({'name': 'SXTES_1', 'beg': 'BEGSXTES_1', 'end': 'ENDSXTES_1', 'offset': [0, 0]})  # common line
-area.append({'name': 'SXTES_2', 'beg': 'BEGSXTES_2', 'end': 'ENDSXTES_2', 'offset': [0, 0]})  # "2.X" line
-area.append({'name': 'SXTES_3', 'beg': 'BEGSXTES_3', 'end': 'ENDSXTES_3', 'offset': [0, 0]})  # TXI line
-area.append({'name': 'SXTES_4', 'beg': 'BEGSXTES_4', 'end': 'ENDSXTES_4', 'offset': [0, 0]})  # TMO line
+area.append({'name': 'SXTES_1', 'beg': 'BEGSXTES_1', 'end': 'ENDSXTES_1', 'parent': 'SXTES', 'offset': [0, 0]})  # common line
+area.append({'name': 'SXTES_2', 'beg': 'BEGSXTES_2', 'end': 'ENDSXTES_2', 'parent': 'SXTES', 'offset': [0, 0]})  # "2.X" line
+area.append({'name': 'SXTES_3', 'beg': 'BEGSXTES_3', 'end': 'ENDSXTES_3', 'parent': 'SXTES', 'offset': [0, 0]})  # TXI line
+area.append({'name': 'SXTES_4', 'beg': 'BEGSXTES_4', 'end': 'ENDSXTES_4', 'parent': 'SXTES', 'offset': [0, 0]})  # TMO line
 # scH
 area.append({'name': 'SPH', 'beg': 'BEGSPH', 'end': 'ENDSPH', 'offset': [0, 0]})
 area.append({'name': 'SLTH', 'beg': 'BEGSLTH', 'end': 'ENDSLTH', 'offset': [0, 0]})
 # scD
-area.append({'name': 'SPD_2', 'beg': 'BEGSPD_2', 'end': 'ENDSPD_2', 'offset': [0, 0]})
-area.append({'name': 'SPD_3', 'beg': 'BEGSPD_3', 'end': 'ENDSPD_3', 'offset': [0, 0]})
+area.append({'name': 'SPD_2', 'beg': 'BEGSPD_2', 'end': 'ENDSPD_2', 'parent': 'SPD', 'offset': [0, 0]})
+area.append({'name': 'SPD_3', 'beg': 'BEGSPD_3', 'end': 'ENDSPD_3', 'parent': 'SPD', 'offset': [0, 0]})
 area.append({'name': 'SLTD', 'beg': 'BEGSLTD', 'end': 'ENDSLTD', 'offset': [0, 0]})
 # DIAG0
 area.append({'name': 'DIAG0', 'beg': 'BEGDIAG0', 'end': 'ENDDIAG0', 'offset': [0, 0]})
@@ -229,35 +229,40 @@ area.append({'name': 'ESA', 'beg': 'BEGESA', 'end': 'ENDESA', 'offset': [0, 0]})
 # cuH
 area.append({'name': 'GUN', 'beg': 'BEGGUN', 'end': 'ENDGUN', 'offset': [0, 0]})
 area.append({'name': 'L0', 'beg': 'BEGL0', 'end': 'ENDL0', 'offset': [0, 0]})
-area.append({'name': 'DL1_1', 'beg': 'BEGDL1_1', 'end': 'ENDDL1_1', 'offset': [0, 0]})
-area.append({'name': 'DL1_2', 'beg': 'BEGDL1_2', 'end': 'ENDDL1_2', 'offset': [0, 0]})
+area.append({'name': 'DL1_1', 'beg': 'BEGDL1_1', 'end': 'ENDDL1_1', 'parent': 'DL1', 'offset': [0, 0]})
+area.append({'name': 'DL1_2', 'beg': 'BEGDL1_2', 'end': 'ENDDL1_2', 'parent': 'DL1', 'offset': [0, 0]})
 area.append({'name': 'L1', 'beg': 'BEGL1', 'end': 'ENDL1', 'offset': [0, 0]})
 area.append({'name': 'BC1', 'beg': 'BEGBC1', 'end': 'ENDBC1', 'offset': [0, 0]})
 area.append({'name': 'L2', 'beg': 'BEGL2', 'end': 'ENDL2', 'offset': [0, 0]})
 area.append({'name': 'BC2', 'beg': 'BEGBC2', 'end': 'ENDBC2', 'offset': [0, 0]})
 area.append({'name': 'L3', 'beg': 'BEGL3', 'end': 'ENDL3', 'offset': [0, 0]})
-area.append({'name': 'CLTH_0', 'beg': 'BEGCLTH_0', 'end': 'ENDCLTH_0', 'offset': [0, 0]})
-area.append({'name': 'CLTH_1', 'beg': 'BEGCLTH_1', 'end': 'ENDCLTH_1', 'offset': [0, 0]})
-area.append({'name': 'CLTH_2', 'beg': 'BEGCLTH_2', 'end': 'ENDCLTH_2', 'offset': [0, 0]})
+area.append({'name': 'CLTH_0', 'beg': 'BEGCLTH_0', 'end': 'ENDCLTH_0', 'parent': 'CLTH', 'offset': [0, 0]})
+area.append({'name': 'CLTH_1', 'beg': 'BEGCLTH_1', 'end': 'ENDCLTH_1', 'parent': 'CLTH', 'offset': [0, 0]})
+area.append({'name': 'CLTH_2', 'beg': 'BEGCLTH_2', 'end': 'ENDCLTH_2', 'parent': 'CLTH', 'offset': [0, 0]})
 area.append({'name': 'BSYH', 'beg': 'BEGBSYH', 'end': 'ENDBSYH', 'offset': [0, 0]})
 
 area.append({'name': 'LTUH', 'beg': 'BEGLTUH', 'end': 'ENDLTUH', 'offset': [0, 0]})
 area.append({'name': 'UNDH', 'beg': 'BEGUNDH', 'end': 'ENDUNDH', 'offset': [0, 0]})
-area.append({'name': 'DMPH_1', 'beg': 'BEGDMPH_1', 'end': 'ENDDMPH_1', 'offset': [0, 0]})
-area.append({'name': 'DMPH_2', 'beg': 'BEGDMPH_2', 'end': 'ENDDMPH_2', 'offset': [0, 0]})
+area.append({'name': 'DMPH_1', 'beg': 'BEGDMPH_1', 'end': 'ENDDMPH_1', 'parent': 'DMPH', 'offset': [0, 0]})
+area.append({'name': 'DMPH_2', 'beg': 'BEGDMPH_2', 'end': 'ENDDMPH_2', 'parent': 'DMPH', 'offset': [0, 0]})
 # cuHS
-area.append({'name': 'SFTH_1', 'beg': 'BEGSFTH_1', 'end': 'ENDSFTH_1', 'offset': [0, 0]})
-area.append({'name': 'SFTH_2', 'beg': 'BEGSFTH_2', 'end': 'ENDSFTH_2', 'offset': [0, 0]})
+area.append({'name': 'SFTH_1', 'beg': 'BEGSFTH_1', 'end': 'ENDSFTH_1', 'parent': 'SFTH', 'offset': [0, 0]})
+area.append({'name': 'SFTH_2', 'beg': 'BEGSFTH_2', 'end': 'ENDSFTH_2', 'parent': 'SFTH', 'offset': [0, 0]})
 # cuHXTES/cuHTXI
-area.append({'name': 'HXTES_1', 'beg': 'BEGHXTES_1', 'end': 'ENDHXTES_1', 'offset': [0, 0]})  # common line
-area.append({'name': 'HXTES_2', 'beg': 'BEGHXTES_2', 'end': 'ENDHXTES_2', 'offset': [0, 0]})  # XTES line
-area.append({'name': 'HXTES_3', 'beg': 'BEGHXTES_3', 'end': 'ENDHXTES_3', 'offset': [0, 0]})  # TXI line
+area.append({'name': 'HXTES_1', 'beg': 'BEGHXTES_1', 'end': 'ENDHXTES_1', 'parent': 'HXTES', 'offset': [0, 0]})  # common line
+area.append({'name': 'HXTES_2', 'beg': 'BEGHXTES_2', 'end': 'ENDHXTES_2', 'parent': 'HXTES', 'offset': [0, 0]})  # XTES line
+area.append({'name': 'HXTES_3', 'beg': 'BEGHXTES_3', 'end': 'ENDHXTES_3', 'parent': 'HXTES', 'offset': [0, 0]})  # TXI line
 # cuS
 area.append({'name': 'CLTS', 'beg': 'BEGCLTS', 'end': 'ENDCLTS', 'offset': [0, 0]})
 # cuGSPEC
 area.append({'name': 'GSPEC', 'beg': 'BEGGSPEC', 'end': 'ENDGSPEC', 'offset': [0, 0]})
 # cuSPEC
 area.append({'name': 'SPEC', 'beg': 'BEGSPEC', 'end': 'ENDSPEC', 'offset': [0, 0]})
+
+# assign default area "parent" names
+for a in area:
+    if 'parent' not in a:
+        a['parent']=a['name']
 
 # ------------------------------------------------------------------------------
 # nominal coordinate system
@@ -308,140 +313,93 @@ from xtffs2mat import xtffs2mat
 stepnum += 1
 print('   {}) Read MAD output files ...'.format(stepnum))
 
-K, N, L, P, A, T, E, FDN, coor, S = [], [], [], [], [], [], [], [], [], []
-idf, ids, idd = [], [], []  # idf: which MAD output file an element came from
-                            # ids: which XAL sequence an element belongs to
-                            # idd: ordinal position in MAD output file
+K, N, L, P, A, T, E, FDN, coor, S, Sd = [], [], [], [], [], [], [], [], [], [], []
+idf, idd = [], [], []  # idf: which MAD output file an element came from
+                       # idd: ordinal position in MAD output file
 nf = 0
 for n in range(len(seq)):
-    if seq[n]['froot'] != nf:
-        nf = seq[n]['froot']
-        fname = '{}_survey.tape'.format(froot[nf-1])
-        print('Opening file {}'.format(fname))
-        titl, tK, tN, tL, tP, tA, tT, tE, tFDN, tcoor, tS = xtffs2mat(fname)
+for nf,file_root in enumerate(froot):
+    fname = f'{file_root[0]}_survey.tape'
+    print(f'Opening file {fname}')
+    titl, tK, tN, tL, tP, tA, tT, tE, tFDN, tcoor, tS = xtffs2mat(fname)
 
-    id1 = tN.index(seq[n]['beg']) + seq[n]['offset'][0]
-    id2 = tN.index(seq[n]['end']) + seq[n]['offset'][1]
-    id_range = slice(id1, id2 + 1)
-    
-    K.extend(tK[id_range])
-    len_id = len(tK[id_range])
-    N.extend(tN[id_range])
-    L.extend(tL[id_range])
-    P.extend(tP[id_range])
-    A.extend(tA[id_range])
-    T.extend(tT[id_range])
-    E.extend(tE[id_range])
-    FDN.extend(tFDN[id_range])
-    coor.extend(tcoor[id_range])
-    S.extend(tS[id_range])
-    idf.extend([nf] * len_id)
-    ids.extend([n] * len_id)
-    idd.extend(list(range(id1,id2+1)))
+    K.extend(tK)
+    N.extend(tN)
+    L.extend(tL)
+    P.extend(tP)
+    A.extend(tA)
+    T.extend(tT)
+    E.extend(tE)
+    FDN.extend(tFDN)
+    coor.extend(tcoor)
+    S.extend(tS)
+    Sd.extend(tcoor[2]) # set "display S" to linac Z-coordinate
 
-Nelem, Nc = len(N), len(N[0])
+    ndata = len(tK)
+    idf.extend([nf] * ndata)
+    idd.extend(list(range(ndata)))
 
-# set "display S" to linac Z-coordinate
-Sd = [x[2] for x in coor]
+Nelem = len(N)
 
 # get BSY coordinates
 K1, N1, L1, P1, S1, coor1, idf1, FDN1 = [], [], [], [], [], [], [], []
-
 if cBSY:
-    for n in range(len(other1)):
-        fname = f"{other1[n]['froot']}_survey.tape"
-        print('Opening file {}'.format(fname))
-        titl, tK, tN, tL, tP, tA, tT, tE, tFDN, tcoor, tS = xtffs2mat(fname)
+    for nf,file_root in enumerate(froot):
+        if file_root[1] == True:
+            fname = f"{file_root[0]}_survey.tape"
+            print(f'Opening file {fname}')
+            titl, tK, tN, tL, tP, tA, tT, tE, tFDN, tcoor, tS = xtffs2mat(fname)
 
-        id1 = strmatch(other1[n]['beg'],tN,True)[0] + other1[n]['offset'][0]
-        id2 = strmatch(other1[n]['end'],tN,True)[0] + other1[n]['offset'][1]
-        id_range = slice(id1, id2 + 1)
-        
-        K1.extend(tK[id_range])
-        len_id = len(tK[id_range])
-        N1.extend(tN[id_range])
-        L1.extend(tL[id_range])
-        P1.extend(tP[id_range])
-        S1.extend(tS[id_range])
-        coor1.extend(tcoor[id_range])
-        idf1.extend([other1[n]['froot0']] * len_id)
-        FDN1.extend(tFDN[id_range])
+            K1.extend(tK)
+            N1.extend(tN)
+            L1.extend(tL)
+            P1.extend(tP)
+            S1.extend(tS)
+            coor1.extend(tcoor)
+            FDN1.extend(tFDN)
 
+            ndata = len(tK)
+            idf1.extend([nf] * len_id)
 
 # get UND coordinates
 K2, N2, L2, P2, S2, coor2, idf2, FDN2 = [], [], [], [], [], [], [], []
-
 if cUND:
-    for n in range(len(other2)):
-        fname = f"{other2[n]['froot']}_survey.tape"
-        print('Opening file {}'.format(fname))
-        titl, tK, tN, tL, tP, tA, tT, tE, tFDN, tcoor, tS = xtffs2mat(fname)
-        
-        id1 = tN.index(other2[n]['beg']) + other2[n]['offset'][0]
-        id2 = tN.index(other2[n]['end']) + other2[n]['offset'][1]
-        id_range = slice(id1, id2 + 1)
-        
-        K2.extend(tK[id_range])
-        len_id = len(tK[id_range])
-        N2.extend(tN[id_range])
-        P2.extend(tP[id_range])
-        S2.extend(tS[id_range])
-        coor2.extend(tcoor[id_range])
-        idf2.extend([other2[n]['froot0']] * len_id)
-        FDN2.extend(tFDN[id_range])
+    for nf,file_root in enumerate(froot):
+        if file_root[2] == True:
+            fname = f"{file_root[0]}_survey.tape"
+            print(f'Opening file {fname}')
+            titl, tK, tN, tL, tP, tA, tT, tE, tFDN, tcoor, tS = xtffs2mat(fname)
+
+            K2.extend(tK)
+            N2.extend(tN)
+            L2.extend(tL)
+            P2.extend(tP)
+            S2.extend(tS)
+            coor2.extend(tcoor)
+            FDN2.extend(tFDN)
+
+            ndata = len(tK)
+            idf2.extend([nf] * len_id)
 
 def FixUpgradeNames(N):
   # Device names in upgraded SXR cells have "_" appended ... remove it
   for i in range(len(N)):
     if N[i].endswith('_'):
       N[i] = N[i][:-1]
-
-# Fix device names in upgraded SXR cells
 FixUpgradeNames(N)
 if cBSY:
   FixUpgradeNames(N1)
 if cUND:
   FixUpgradeNames(N2)
 
-# initialize the suml key in the seq dictionary
-for s in seq:
-    id1 = N.index(s['beg']) + s['offset'][0]
-    s['suml'] = S[id1]
-
 # assign machine areas
-
 ida=[]
 for ix,a in enumerate(area):
     id1 = N.index(a['beg']) + a['offset'][0]
     id2 = N.index(a['end']) + a['offset'][1]
     ida.extend([ix]*(id2-id1+1))
 
-# assign area "parent" names
-
-for a in area:
-    if a['name'] in ['DMPS_1','DMPS_2']:
-        a['parent']='DMPS'
-    elif a['name'] in ['SFTS_1','SFTS_2']:
-        a['parent']='SFTS'
-    elif a['name'] in ['SXTES_1','SXTES_2','SXTES_3','SXTES_4']:
-        a['parent']='SXTES'
-    elif a['name'] in ['DL1_1','DL1_2']:
-        a['parent']='DL1'
-    elif a['name'] in ['CLTH_0','CLTH_1','CLTH_2']:
-        a['parent']='CLTH'
-    elif a['name'] in ['DMPH_1','DMPH_2']:
-        a['parent']='DMPH'
-    elif a['name'] in ['SFTH_1','SFTH_2']:
-        a['parent']='SFTH'
-    elif a['name'] in ['HXTES_1','HXTES_2','HXTES_3']:
-        a['parent']='HXTES'
-    elif a['name'] in ['SPD_1','SPD_2','SPD_3']:
-        a['parent']='SPD'
-    else:
-        a['parent']=a['name']
-
 # special handling for rolled dump lines and A-line
-
 def fix_dump_coords(N, P, coor):
     # Implementation of FixDumpCoords function
 
@@ -470,6 +428,7 @@ def fix_dump_coords(N, P, coor):
       coor[i][5]=0
 
     return coor
+coor = fix_dump_coords(N, P, coor)
 
 def fix_aline_coords(N, P, coor):
     # Implementation of FixAlineCoords function
@@ -488,6 +447,7 @@ def fix_aline_coords(N, P, coor):
     coor[id_slice, 5] = 0  # remove residual "creeping" roll
     '''
     return coor
+coor = fix_aline_coords(N, P, coor)
 
 def fix_sxtes_coords(N, coor):
     # Implementation of FixSXTESCoords function
@@ -514,27 +474,15 @@ def fix_sxtes_coords(N, coor):
         id_matches = N.index(name[n])
         coor[id_matches][coor_id[n]] = coor_val[n]
     return coor
-
-coor = fix_dump_coords(N, P, coor)
-coor = fix_aline_coords(N, P, coor)
-
 if cBSY:
     coor1 = fix_dump_coords(N1, P1, coor1)
     coor1 = fix_aline_coords(N1, P1, coor1)
     coor1 = fix_sxtes_coords(N1, coor1)
-
 if cUND:
     coor2 = fix_dump_coords(N2, P2, coor2)
     coor2 = fix_aline_coords(N2, P2, coor2)
 
 # kicker/septum groups
-
-#KSname = [ #'BKYSP1H', 
-#    'BKYSP2H', 'BKYSP3H', 'BKYSP4H', 'BKYSP5H', 'BLXSPH',
-#    'BKYSP0S', 'BKYSP1S', 'BKYSP2S', 'BKYSP3S', 'BKYSP4S', 'BKYSP5S', 'BLXSPS',
-#    'BKRDAS1', 'BKRDAS2', 'BKRDAS3', 'BKRDAS4', 'BKRDAS5', 'BKRDAS6', 'BLRDAS',
-#    'BKRCUS', 'BLRCUS'
-#]
 KSname = [
     'BKRDG0', 'BLRDG0',
     'BKYSP0H', 'BKYSP1H', 'BKYSP2H', 'BKYSP3H', 'BKYSP4H', 'BKYSP5H', 'BLXSPH',
@@ -584,66 +532,8 @@ for m in range(0, len(idm), 2):
     P2[n1, :] = [undl, undk]
     P2[n2, :] = [undl, undk]
 
-# # make unique names
-# 
-# nfix = [['', 'MUQS', 'MPHS'],
-#         ['', 'MUQH', 'MPHH'],
-#         ['HOMCM', '', '']]
-# ioff = [[-3, -1, -1], [-2, -1, -1], [-3, -1, -1]]
-# 
-# for nr in range(len(nfix)):
-#     for nc in range(len(nfix[0])):
-#         if not nfix[nr][nc]:
-#             continue
-#         id = strmatch(nfix[nr][nc], N)
-#         if len(id) == 0:
-#             continue
-#         if nr < 2 and nc == 0:
-#             id = id[::2]
-#         lc = len(nfix[nr][nc])
-#         for m in range(len(id)):
-#             if nr < 2:
-#                 cname = N[id[m] + ioff[nr][nc]].strip()
-#                 N[id[m]] = N[id[m]][:lc] + '.' + cname[-2:]
-#             else:
-#                 N[id[m]] = N[id[m]][:lc] + '.' + N[id[m]-2][2:4]
-#         if cBSY:
-#             id = strmatch(nfix[nr][nc], N1)
-#             if len(id) == 0:
-#                 continue
-#             if nr < 2 and nc == 0:
-#                 id = id[::2]
-#             for m in range(len(id)):
-#                 cname = N1[id[m] + ioff[nr][nc]].strip()
-#                 N1[id[m]] = N1[id[m]][:lc] + '.' + cname[-2:]
-#         if cUND:
-#             id = strmatch(nfix[nr][nc], N2)
-#             if len(id) == 0:
-#                 continue
-#             if nr < 2 and nc == 0:
-#                 id = id[::2]
-#             for m in range(len(id)):
-#                 cname = N2[id[m] + ioff[nr][nc]].strip()
-#                 N2[id[m]] = N2[id[m]][:lc] + '.' + cname[-2:]
-# 
-# # Find indices of 'WOODDOOR' in N
-# jd = [i for i,x in enumerate(N) if x == 'WOODDOOR']
-# for j in jd:
-#     cname = 'WOODDOOR.{}'.format(area[ida[j]]['name'])
-#     N[j] = cname
-# 
-# if cBSY:
-#     id_ = strmatch('WOODDOOR',N)
-#     jd = strmatch('WOODDOOR',N1)
-#     for i,j in zip(id_,jd):
-#         N1[j] = N[i]
-# 
-# if cUND:
-#     id_ = strmatch('WOODDOOR',N)
-#     jd = strmatch('WOODDOOR',N2)
-#     for i,j in zip(id_,jd):
-#         N2[j] = N[i]
 
+FOO CONTINUE HERE WITH seq removal
 
 # Shared devices (devices which see both kicked and unkicked beams)
 aname_all = ['DIAG0', 'SPH', 'SPS', 'SPA', 'CLTS']
@@ -675,7 +565,7 @@ for n in name:
     for i in id_:
         P[i][3] = P[i][5]  # T1 -> TILT
 
-def assign_ucell(N, coor, idf):
+def assign_ucell(N, coor):
     UCELL = ['' for x in N]
 
     # SXR partial cell 16
@@ -704,7 +594,7 @@ def assign_ucell(N, coor, idf):
     return UCELL
 
 # Assign undulator cell names
-UCELL = assign_ucell(N1, coor1, idf1)
+UCELL = assign_ucell(N1, coor1)
 
 def read_sector():
     filename = f'{script_dir}/sectors.xlsx'
@@ -1033,7 +923,6 @@ for kwn in keyw:
             ide = [id1-1, id[-1]]  # [entrance, exit]
             sdsp = np.mean(Sd[ide])  # m (beam center)
             suml = np.mean(S[ide])  # m (beam center)
-            dist = suml - seq[ids[id1]]['suml']  # m (sequence start to beam center)
             energy = np.mean(E[ide])  # GeV (beam center)
             leng = np.sum(L[id])  # m
             freq = P[id1, 4]  # MHz
@@ -1052,9 +941,7 @@ for kwn in keyw:
             coorc = np.mean(coor[ide, :], axis=0)  # m,rad (beam center)
             nLCAV += 1
             LCAV.append({
-                'idf': idf[id1],
                 'id': idd[id1],
-                'seq': seq[ids[id1]]['name'],
                 'area': area[ida[id1]]['name'],
                 'parent': area[ida[id1]]['parent'],
                 'sector': SECTORS[id1].strip(),
@@ -1062,7 +949,6 @@ for kwn in keyw:
                 'prim': FDN[id1],
                 'name': mname,
                 'type': T[id1].strip(),
-                'dist': dist,
                 'energy': energy,
                 'leng': leng,
                 'freq': freq,
@@ -1127,7 +1013,6 @@ for kwn in keyw:
             ido = id[1][-1]  # exit point of bend
             sdsp = Sd[id1]  # m
             suml = S[id1]  # m
-            dist = suml - seq[ids[id1]]['suml']  # m
             energy = E[id1]  # GeV
             leng = np.sum(L[id])  # m
             gap = 2 * A[id1]  # m
@@ -1189,9 +1074,7 @@ for kwn in keyw:
             else:
                 coorm[3] = tilt  # remove "creeping" rolls from non-rolled SBENs
             SBEN.append({
-                'idf': idf[id1],
                 'id': idd[id1],
-                'seq': seq[ids[id1]]['name'],
                 'area': area[ida[id1]]['name'],
                 'parent': pname,
                 'sector': SECTORS[id1].strip(),
@@ -1199,7 +1082,6 @@ for kwn in keyw:
                 'prim': FDN[id1],
                 'name': mname,
                 'type': T[id1].strip(),
-                'dist': dist,
                 'energy': energy,
                 'zleng': zleng,
                 'leng': leng,
@@ -1316,7 +1198,6 @@ for kwn in keyw:
             id1 = id[0]  # first segment (beam center)
             sdsp = Sd[id1]  # m
             suml = S[id1]  # m
-            dist = suml - seq[ids[id1]]['suml']  # m
             energy = E[id1]  # GeV
             leng = np.sum(L[id])  # m
             bore = 2 * A[id1]  # m
@@ -1339,9 +1220,7 @@ for kwn in keyw:
             polarity = -np.sign(k1 + np.finfo(float).eps)  # add eps so that sign=1 when k1=0
             coorc = np.copy(coor[id1, :])  # m,rad
             QUAD.append({
-                'idf': idf[id1],
                 'id': idd[id1],
-                'seq': seq[ids[id1]]['name'],
                 'area': area[ida[id1]]['name'],
                 'parent': area[ida[id1]]['parent'],
                 'sector': SECTORS[id1].strip(),
@@ -1349,7 +1228,6 @@ for kwn in keyw:
                 'prim': FDN[id1],
                 'name': mname,
                 'type': T[id1].strip(),
-                'dist': dist,
                 'energy': energy,
                 'leng': leng,
                 'bore': bore,
@@ -1406,7 +1284,6 @@ for kwn in keyw:
             id1 = id[0]  # first half (beam center)
             sdsp = Sd[id1]  # m
             suml = S[id1]  # m
-            dist = suml - seq[ids[id1]]['suml']  # m
             energy = E[id1]  # GeV
             leng = np.sum(L[id])  # m
             bore = 2 * A[id1]  # m
@@ -1427,9 +1304,7 @@ for kwn in keyw:
             polarity = -np.sign(k2 + np.finfo(float).eps)  # add eps so that sign=1 when k2=0
             coorc = np.copy(coor[id1, :])  # m,rad
             SEXT.append({
-                'idf': idf[id1],
                 'id': idd[id1],
-                'seq': seq[ids[id1]]['name'],
                 'area': area[ida[id1]]['name'],
                 'parent': area[ida[id1]]['parent'],
                 'sector': SECTORS[id1].strip(),
@@ -1437,7 +1312,6 @@ for kwn in keyw:
                 'prim': FDN[id1],
                 'name': mname,
                 'type': T[id1].strip(),
-                'dist': dist,
                 'energy': energy,
                 'leng': leng,
                 'bore': bore,
@@ -1494,7 +1368,6 @@ for kwn in keyw:
             ide = [id1 - 1, id[-1]]  # [entrance, exit]
             sdsp = np.mean(Sd[ide])  # m
             suml = np.mean(S[ide])  # m
-            dist = suml - seq[ids[id1]]['suml']  # m
             energy = np.mean(E[ide])  # GeV
             leng = np.sum(L[id])  # m
             bore = 2 * A[id1]  # m
@@ -1514,9 +1387,7 @@ for kwn in keyw:
             polarity = -np.sign(ks + np.finfo(float).eps)  # add eps so that sign=1 when ks=0
             coorc = np.mean(coor[ide], axis=0)  # m, rad
             SOLE.append({
-                'idf': idf[id1],
                 'id': idd[id1],
-                'seq': seq[ids[id1]]['name'],
                 'area': area[ida[id1]]['name'],
                 'parent': area[ida[id1]]['parent'],
                 'sector': SECTORS[id1].strip(),
@@ -1524,7 +1395,6 @@ for kwn in keyw:
                 'prim': FDN[id1],
                 'name': mname,
                 'type': T[id1].strip(),
-                'dist': dist,
                 'energy': energy,
                 'leng': leng,
                 'bore': bore,
@@ -1581,16 +1451,13 @@ for kwn in keyw:
             id1 = id[0]  # first half (beam center)
             sdsp = Sd[id1]  # m
             suml = S[id1]  # m
-            dist = suml - seq[ids[id1]]['suml']  # m
             energy = E[id1]  # GeV
             leng = np.sum(L[id])  # m
             undl = P2[id1, 0]  # m
             undk = P2[id1, 1]  # 1
             coorc = np.copy(coor[id1])  # m, rad
             MATR.append({
-                'idf': idf[id1],
                 'id': idd[id1],
-                'seq': seq[ids[id1]]['name'],
                 'area': area[ida[id1]]['name'],
                 'parent': area[ida[id1]]['parent'],
                 'sector': SECTORS[id1].strip(),
@@ -1598,7 +1465,6 @@ for kwn in keyw:
                 'prim': FDN[id1],
                 'name': mname,
                 'type': T[id1].strip(),
-                'dist': dist,
                 'energy': energy,
                 'leng': leng,
                 'lambda': undl,
@@ -1648,16 +1514,13 @@ for kwn in keyw:
             ide = [id - 1, id]  # [entrance, exit]
             sdsp = np.mean(Sd[ide])  # m (beam center)
             suml = np.mean(S[ide])  # m (beam center)
-            dist = suml - seq[ids[id]]['suml']  # m (sequence start to beam center)
             energy = E[id]  # GeV
             leng = L[id]  # m
             xgap = 2 * P[id, 3]  # m
             ygap = 2 * P[id, 4]  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             RCOL.append({
-                'idf': idf[id],
                 'id': idd[id],
-                'seq': seq[ids[id]]['name'],
                 'area': area[ida[id]]['name'],
                 'parent': area[ida[id]]['parent'],
                 'sector': SECTORS[id].strip(),
@@ -1665,7 +1528,6 @@ for kwn in keyw:
                 'prim': FDN[id],
                 'name': mname,
                 'type': T[id].strip(),
-                'dist': dist,
                 'energy': energy,
                 'leng': leng,
                 'xgap': xgap,
@@ -1715,16 +1577,13 @@ for kwn in keyw:
             ide = [id - 1, id]  # [entrance, exit]
             sdsp = np.mean(Sd[ide])  # m (beam center)
             suml = np.mean(S[ide])  # m (beam center)
-            dist = suml - seq[ids[id]]['suml']  # m (sequence start to beam center)
             energy = E[id]  # GeV
             leng = L[id]  # m
             xbore = 2 * P[id, 3]  # m
             ybore = 2 * P[id, 4]  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             ECOL.append({
-                'idf': idf[id],
                 'id': idd[id],
-                'seq': seq[ids[id]]['name'],
                 'area': area[ida[id]]['name'],
                 'parent': area[ida[id]]['parent'],
                 'sector': SECTORS[id].strip(),
@@ -1732,7 +1591,6 @@ for kwn in keyw:
                 'prim': FDN[id],
                 'name': mname,
                 'type': T[id].strip(),
-                'dist': dist,
                 'energy': energy,
                 'leng': leng,
                 'xbore': xbore,
@@ -1782,7 +1640,6 @@ for kwn in keyw:
             ide = [id - 1, id]  # [entrance, exit]
             sdsp = np.mean(Sd[ide])  # m (beam center)
             suml = np.mean(S[ide])  # m (beam center)
-            dist = suml - seq[ids[id]]['suml']  # m (sequence start to beam center)
             energy = E[id]  # GeV
             leng = L[id]  # m
             ang = np.rad2deg(P[id, 4])  # deg
@@ -1790,9 +1647,7 @@ for kwn in keyw:
                 ang = 0
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             SROT.append({
-                'idf': idf[id],
                 'id': idd[id],
-                'seq': seq[ids[id]]['name'],
                 'area': area[ida[id]]['name'],
                 'parent': area[ida[id]]['parent'],
                 'sector': SECTORS[id].strip(),
@@ -1800,7 +1655,6 @@ for kwn in keyw:
                 'prim': FDN[id],
                 'name': mname,
                 'type': T[id].strip(),
-                'dist': dist,
                 'energy': energy,
                 'leng': leng,
                 'ang': ang,
@@ -1852,7 +1706,6 @@ for kwn in keyw:
                 idi = id - 1  # beam in
             sdsp = Sd[id]  # m (beam center)
             suml = S[id]  # m (beam center)
-            dist = suml - seq[ids[id]]['suml']  # m (sequence start to beam center)
             energy = E[id]  # GeV
             leng = np.sum(L[id])  # m
             k1 = P[id, 1]  # 1/m^2
@@ -1877,9 +1730,7 @@ for kwn in keyw:
             t = T[id].strip()
             aper = 2 * A[id]  # m
             MULT.append({
-                'idf': idf[id],
                 'id': idd[id],
-                'seq': seq[ids[id]]['name'],
                 'area': area[ida[id]]['name'],
                 'parent': area[ida[id]]['parent'],
                 'sector': SECTORS[id].strip(),
@@ -1895,7 +1746,6 @@ for kwn in keyw:
                 'sname': sname,
                 'sval': sval,
                 'type': T[id].strip(),
-                'dist': dist,
                 'energy': energy,
                 'leng': leng,
                 'sdsp': sdsp,
@@ -1950,15 +1800,12 @@ for kwn in keyw:
             ide = [idi, id[-1]]  # [entrance, exit]
             sdsp = np.mean(Sd[ide])  # m (beam center)
             suml = np.mean(S[ide])  # m (beam center)
-            dist = suml - seq[ids[id[0]]]['suml']  # m (sequence start to beam center)
             energy = E[id[0]]  # GeV
             leng = np.sum(L[id])  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             t = T[id[0]].strip()
             INST.append({
-                'idf': idf[id[0]],
                 'id': idd[id[0]],
-                'seq': seq[ids[id[0]]]['name'],
                 'area': area[ida[id[0]]]['name'],
                 'parent': area[ida[id[0]]]['parent'],
                 'sector': SECTORS[id[0]].strip(),
@@ -1966,7 +1813,6 @@ for kwn in keyw:
                 'prim': FDN[id[0]],
                 'name': mname,
                 'type': T[id[0]].strip(),
-                'dist': dist,
                 'energy': energy,
                 'leng': leng,
                 'sdsp': sdsp,
@@ -2021,15 +1867,12 @@ for kwn in keyw:
             ide = [idi, id[-1]]  # [entrance, exit]
             sdsp = np.mean(Sd[ide])  # m (beam center)
             suml = np.mean(S[ide])  # m (beam center)
-            dist = suml - seq[ids[id[0]]]['suml']  # m (sequence start to beam center)
             energy = E[id[0]]  # GeV
             leng = np.sum(L[id])  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             t = T[id[0]].strip()
             HKIC.append({
-                'idf': idf[id[0]],
                 'id': idd[id[0]],
-                'seq': seq[ids[id[0]]]['name'],
                 'area': area[ida[id[0]]]['name'],
                 'parent': area[ida[id[0]]]['parent'],
                 'sector': SECTORS[id[0]].strip(),
@@ -2037,7 +1880,6 @@ for kwn in keyw:
                 'prim': FDN[id[0]],
                 'name': mname,
                 'type': T[id[0]].strip(),
-                'dist': dist,
                 'energy': energy,
                 'leng': leng,
                 'sdsp': sdsp,
@@ -2087,15 +1929,12 @@ for kwn in keyw:
             ide = [idi, id[-1]]  # [entrance, exit]
             sdsp = np.mean(Sd[ide])  # m (beam center)
             suml = np.mean(S[ide])  # m (beam center)
-            dist = suml - seq[ids[id[0]]]['suml']  # m (sequence start to beam center)
             energy = E[id[0]]  # GeV
             leng = np.sum(L[id])  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             t = T[id[0]].strip()
             VKIC.append({
-                'idf': idf[id[0]],
                 'id': idd[id[0]],
-                'seq': seq[ids[id[0]]]['name'],
                 'area': area[ida[id[0]]]['name'],
                 'parent': area[ida[id[0]]]['parent'],
                 'sector': SECTORS[id[0]].strip(),
@@ -2103,7 +1942,6 @@ for kwn in keyw:
                 'prim': FDN[id[0]],
                 'name': mname,
                 'type': T[id[0]].strip(),
-                'dist': dist,
                 'energy': energy,
                 'leng': leng,
                 'sdsp': sdsp,
@@ -2152,15 +1990,12 @@ for kwn in keyw:
             ide = [idi, id[-1]]  # [entrance, exit]
             sdsp = np.mean(Sd[ide])  # m (beam center)
             suml = np.mean(S[ide])  # m (beam center)
-            dist = suml - seq[ids[id[0]]]['suml']  # m (sequence start to beam center)
             energy = E[id[0]]  # GeV
             leng = np.sum(L[id])  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             t = T[id[0]].strip()
             MONI.append({
-                'idf': idf[id[0]],
                 'id': idd[id[0]],
-                'seq': seq[ids[id[0]]]['name'],
                 'area': area[ida[id[0]]]['name'],
                 'parent': area[ida[id[0]]]['parent'],
                 'sector': SECTORS[id[0]].strip(),
@@ -2168,7 +2003,6 @@ for kwn in keyw:
                 'prim': FDN[id[0]],
                 'name': mname,
                 'type': T[id[0]].strip(),
-                'dist': dist,
                 'energy': energy,
                 'leng': leng,
                 'sdsp': sdsp,
@@ -2217,15 +2051,12 @@ for kwn in keyw:
             ide = [idi, id[-1]]  # [entrance, exit]
             sdsp = np.mean(Sd[ide])  # m (beam center)
             suml = np.mean(S[ide])  # m (beam center)
-            dist = suml - seq[ids[id[0]]]['suml']  # m (sequence start to beam center)
             energy = E[id[0]]  # GeV
             leng = np.sum(L[id])  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             t = T[id[0]].strip()
             WIRE.append({
-                'idf': idf[id[0]],
                 'id': idd[id[0]],
-                'seq': seq[ids[id[0]]]['name'],
                 'area': area[ida[id[0]]]['name'],
                 'parent': area[ida[id[0]]]['parent'],
                 'sector': SECTORS[id[0]].strip(),
@@ -2233,7 +2064,6 @@ for kwn in keyw:
                 'prim': FDN[id[0]],
                 'name': mname,
                 'type': T[id[0]].strip(),
-                'dist': dist,
                 'energy': energy,
                 'leng': leng,
                 'sdsp': sdsp,
@@ -2282,15 +2112,12 @@ for kwn in keyw:
             ide = [idi, id[-1]]  # [entrance, exit]
             sdsp = np.mean(Sd[ide])  # m (beam center)
             suml = np.mean(S[ide])  # m (beam center)
-            dist = suml - seq[ids[id[0]]]['suml']  # m (sequence start to beam center)
             energy = E[id[0]]  # GeV
             leng = np.sum(L[id])  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             t = T[id[0]].strip()
             PROF.append({
-                'idf': idf[id[0]],
                 'id': idd[id[0]],
-                'seq': seq[ids[id[0]]]['name'],
                 'area': area[ida[id[0]]]['name'],
                 'parent': area[ida[id[0]]]['parent'],
                 'sector': SECTORS[id[0]].strip(),
@@ -2298,7 +2125,6 @@ for kwn in keyw:
                 'prim': FDN[id[0]],
                 'name': mname,
                 'type': T[id[0]].strip(),
-                'dist': dist,
                 'energy': energy,
                 'leng': leng,
                 'sdsp': sdsp,
@@ -2347,15 +2173,12 @@ for kwn in keyw:
             ide = [idi, id[-1]]  # [entrance, exit]
             sdsp = np.mean(Sd[ide])  # m (beam center)
             suml = np.mean(S[ide])  # m (beam center)
-            dist = suml - seq[ids[id[0]]]['suml']  # m (sequence start to beam center)
             energy = E[id[0]]  # GeV
             leng = np.sum(L[id])  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             t = T[id[0]].strip()
             IMON.append({
-                'idf': idf[id[0]],
                 'id': idd[id[0]],
-                'seq': seq[ids[id[0]]]['name'],
                 'area': area[ida[id[0]]]['name'],
                 'parent': area[ida[id[0]]]['parent'],
                 'sector': SECTORS[id[0]].strip(),
@@ -2363,7 +2186,6 @@ for kwn in keyw:
                 'prim': FDN[id[0]],
                 'name': mname,
                 'type': T[id[0]].strip(),
-                'dist': dist,
                 'energy': energy,
                 'leng': leng,
                 'sdsp': sdsp,
@@ -2412,15 +2234,12 @@ for kwn in keyw:
             ide = [idi, id[-1]]  # [entrance, exit]
             sdsp = np.mean(Sd[ide])  # m (beam center)
             suml = np.mean(S[ide])  # m (beam center)
-            dist = suml - seq[ids[id[0]]]['suml']  # m (sequence start to beam center)
             energy = E[id[0]]  # GeV
             leng = np.sum(L[id])  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             t = T[id[0]].strip()
             BLMO.append({
-                'idf': idf[id[0]],
                 'id': idd[id[0]],
-                'seq': seq[ids[id[0]]]['name'],
                 'area': area[ida[id[0]]]['name'],
                 'parent': area[ida[id[0]]]['parent'],
                 'sector': SECTORS[id[0]].strip(),
@@ -2428,7 +2247,6 @@ for kwn in keyw:
                 'prim': FDN[id[0]],
                 'name': mname,
                 'type': T[id[0]].strip(),
-                'dist': dist,
                 'energy': energy,
                 'leng': leng,
                 'sdsp': sdsp,
@@ -2472,13 +2290,10 @@ for kwn in keyw:
             id = strmatch(mname,N,True)[0]
             sdsp = Sd[id]  # m
             suml = S[id]  # m
-            dist = suml - seq[ids[id]]['suml']  # m (sequence start to beam center)
             energy = E[id]  # GeV
             coorc = np.copy(coor[id])
             MARK.append({
-                'idf': idf[id],
                 'id': idd[id],
-                'seq': seq[ids[id]]['name'],
                 'area': area[ida[id]]['name'],
                 'parent': area[ida[id]]['parent'],
                 'sector': SECTORS[id].strip(),
@@ -2487,7 +2302,6 @@ for kwn in keyw:
                 'prim': FDN[id],
                 'name': mname,
                 'type': T[id].strip(),
-                'dist': dist,
                 'energy': energy,
                 'sdsp': sdsp,
                 'suml': suml,
@@ -2559,7 +2373,6 @@ def add_eic(inst):
     temp.area = 'EIC'
     temp.name = 'FC00EIC'
     temp.type = 'Faraday cup'
-    temp.dist = 3.0
     temp.sdsp = -7.044667
     temp.suml = 3.0
     temp.c1 = -7.044667
@@ -2938,7 +2751,6 @@ def arrange_output(coord_system, system_name, filename):
                 s[5] = TEMP['leng']
                 s[15] = TEMP['energy']
                 s[48] = TEMP['seq']
-                s[49] = TEMP['dist']
                 s[51] = TEMP['sdsp']
 
                 if system_name == 'NOMINAL':
@@ -3145,7 +2957,6 @@ with open(outdir+'/'+fname, 'wt') as fid:
 # "coor":coor,
 # "S":S,
 # "idf":idf,
-# "ids":ids,
 # "idd":idd,
 # "K1":K,
 # "N1":N,
