@@ -533,8 +533,6 @@ for m in range(0, len(idm), 2):
     P2[n2, :] = [undl, undk]
 
 
-FOO CONTINUE HERE WITH seq removal
-
 # Shared devices (devices which see both kicked and unkicked beams)
 aname_all = ['DIAG0', 'SPH', 'SPS', 'SPA', 'CLTS']
 name_all = ['BPMDG000', 'BPMSPH', 'BPMSPS', 'BPMDAS', 'BPMCUS']
@@ -557,7 +555,6 @@ for name, aname in zip(name_all,aname_all):
             if aname == area[ida[jd[m]]]['name']:
                 N1[jd2[m]] = name + '?'
 
-# Change keyword for GUN/GUNB solenoid correction quads from MULT to QUAD;
 # copy T1 into TILT slot
 name = ['CQ01', 'SQ01', 'CQ01B', 'SQ01B', 'SQ02B']
 for n in name:
@@ -596,7 +593,7 @@ def assign_ucell(N, coor):
 # Assign undulator cell names
 UCELL = assign_ucell(N1, coor1)
 
-def read_sector():
+def read_sector_data():
     filename = f'{script_dir}/sectors.xlsx'
     wb= pyxl.load_workbook(filename,data_only=True)
 
@@ -631,6 +628,8 @@ def read_sector():
         })
 
     return sect_sc, sect_cu
+
+FOO CONTINUE HERE WITH seq removal
 
 def set_sector(N, SECTORS, coor, idf, nf, sector):
     if nf != sector['froot']:
@@ -671,7 +670,7 @@ def set_sector(N, SECTORS, coor, idf, nf, sector):
 def assign_sector(N, coor, idf, N1, coor1, idf1):
     # NOTE: coordinates are assumed to be in MAD (not SYMBOLS) order
 
-    sect_SC, sect_CU = read_sector()
+    sect_SC, sect_CU = read_sector_data()
 
     # superconducting linac LINEs
     # nf= 1: LCLS2scS
@@ -691,23 +690,6 @@ def assign_sector(N, coor, idf, N1, coor1, idf1):
         if nf in [3, 4, 5]:
             continue  # do SXTES/2_X/TXI/TMO separately
         for ns, sector in enumerate(sect_SC, 1):
-            #if nf == 6 and ns == 31:
-            #    sector['Nend'] = 'ENDSPH'
-            #if nf == 6 and ns == 32:
-            #    sector['Nbeg'] = 'BEGSLTH'
-            #    sector['Nend'] = 'ENDSLTH'
-            #if nf == 7 and ns == 31:
-            #    sector['Nend'] = 'ENDSPD_3'
-            #if nf == 7 and ns == 32:
-            #    sector['Nbeg'] = 'BEGSLTD'
-            #    sector['Nend'] = 'ENDSLTD'
-            #if nf == 9 and ns == 31:
-            #    sector['Nbeg'] = ''
-            #    sector['Nend'] = 'WOODDOOR_SPA'
-            #if nf == 9 and ns == 32:
-            #    sector['Nbeg'] = 'WOODDOOR_SPA'
-            #    sector['Nend'] = 'BRAM1B'
-
             if sector['BSY']:
                 set_sector(N1, SECTORS1, coor1, idf1, nf, sector)
             else:
@@ -726,15 +708,6 @@ def assign_sector(N, coor, idf, N1, coor1, idf1):
         if nf in [12, 13]:
             continue  # do HXTES/TXI separately
         for ns, sector in enumerate(sect_CU, 1):
-            #if nf == 14 and ns == 12:
-            #    sector['Nbeg'] = 'BEGCLTS'
-            #    sector['Nend'] = 'ENDCLTS'
-            #if nf == 15 and ns == 1:
-            #    sector['Nbeg'] = 'BEGGSPEC'
-            #    sector['Nend'] = 'ENDGSPEC'
-            #if nf == 16 and ns == 2:
-            #    sector['Nbeg'] = 'BEGSPEC'
-            #    sector['Nend'] = 'ENDSPEC'
             if sector['BSY']:
                 set_sector(N1, SECTORS1, coor1, idf1, nf, sector)
             else:
