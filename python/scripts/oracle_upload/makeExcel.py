@@ -59,6 +59,9 @@ def roundoff(val, prec=None):
     else:
         return prec * np.round(val / prec)
 
+def slicer(N,ix):
+    return [N[i] for i in ix]
+
 #------------------------------------------
 #------------------------------------------
 #------------------------------------------
@@ -317,7 +320,7 @@ K, N, L, P, A, T, E, FDN, coor, S, Sd = [], [], [], [], [], [], [], [], [], [], 
 idf, idd = [], [], []  # idf: which MAD output file an element came from
                        # idd: ordinal position in MAD output file
 nf = 0
-for n in range(len(seq)):
+#for n in range(len(seq)):
 for nf,file_root in enumerate(froot):
     fname = f'{file_root[0]}_survey.tape'
     print(f'Opening file {fname}')
@@ -629,8 +632,6 @@ def read_sector_data():
 
     return sect_sc, sect_cu
 
-FOO CONTINUE HERE WITH seq removal
-
 def set_sector(N, SECTORS, coor, idf, nf, sector):
     if nf != sector['froot']:
         return
@@ -688,7 +689,7 @@ def assign_sector(N, coor, idf, N1, coor1, idf1):
 
     for nf in range(1, 10):  # idf values
         if nf in [3, 4, 5]:
-            continue  # do SXTES/2_X/TXI/TMO separately
+            continue  # do SXTES: 2_X/TXI/TMO separately
         for ns, sector in enumerate(sect_SC, 1):
             if sector['BSY']:
                 set_sector(N1, SECTORS1, coor1, idf1, nf, sector)
@@ -706,7 +707,7 @@ def assign_sector(N, coor, idf, N1, coor1, idf1):
 
     for nf in range(10, 17):  # idf values
         if nf in [12, 13]:
-            continue  # do HXTES/TXI separately
+            continue  # do XTECH: HXTES/TXI separately
         for ns, sector in enumerate(sect_CU, 1):
             if sector['BSY']:
                 set_sector(N1, SECTORS1, coor1, idf1, nf, sector)
@@ -736,23 +737,21 @@ SECTORS, SECTORS1 = assign_sector(N, coor, idf, N1, coor1, idf1)
 # correspond to SolidEdge [z,x,y,roll ,-pitch,yaw]
 
 ic = [2, 0, 1, 5, 4, 3]
-coor = np.array(coor)
+coor = np.array(coor)  #Probably not necessary ... coor is already a numpy array.
 coor = coor[:, ic]
 coor[:, 4] = -coor[:, 4]
 
 if cBSY:
-    coor1 = np.array(coor1)
+    coor1 = np.array(coor1) #Probably not necessary
     coor1 = coor1[:, ic]
     coor1[:, 4] = -coor1[:, 4]
 
 if cUND:
-    coor2 = np.array(coor2)
+    coor2 = np.array(coor2) #Probably not necessary
     coor2 = coor2[:, ic]
     coor2[:, 4] = -coor2[:, 4]
 
 # generate ordered list of MAD keywords
-
-tkeyw = sorted(list(set(K)))
 
 MADK = [
     'LCAV', 'SBEN', 'QUAD', 'SEXT', 'SOLE', 'MATR', 'RCOL', 'ECOL', 'SROT',
@@ -764,11 +763,11 @@ MADK = [
 # this prunes from MADK those keyword not in the survey files.
 keyw = []
 jdmisc = []
+tkeyw = sorted(list(set(K)))
 for n in range(len(MADK)):
     id_ = strmatch(MADK[n], tkeyw)
     if len(id_) > 0:
         keyw.append(MADK[n])
-
 
 # hard-wired list of bends that have energy polynomials in the database
 Ebend = []  # ['BRB', 'BXSP', 'BYSP', 'BRSP', 'BYSP', 'BX3', 'BY1', 'BY2', 'BYD']
@@ -854,11 +853,8 @@ nPROF = 0
 nIMON = 0
 nBLMO = 0
 
-def slicer(N,ix):
-    return [N[i] for i in ix]
-
 #HEAD
-Sd = np.array(Sd)
+Sd = np.array(Sd)  #Probably not needed ... already numpy array
 S = np.array(S)
 S1 = np.array(S1)
 S2 = np.array(S2)
@@ -871,7 +867,6 @@ P2 = np.array(P2)
 E = np.array(E)
 coor1 = np.array(coor1)
 coor2 = np.array(coor2)
-seq = np.array(seq)
 A = np.array(A)
 for kwn in keyw:
     id = strmatch(kwn,K)
@@ -2311,7 +2306,6 @@ for kwn in keyw:
                     for k in range(6):
                         MARK[-1][f'c2{k+1}'] = coorc2[k]
 
-
 import scipy.io as sio
 
 def fix_power_fraction(lcav):
@@ -2342,7 +2336,6 @@ def add_eic(inst):
     id = name.index('CATHODEB')
     temp = inst[id].copy()
     temp.id = 59
-    temp.seq = 'CATHODE TO DIAG0'
     temp.area = 'EIC'
     temp.name = 'FC00EIC'
     temp.type = 'Faraday cup'
@@ -2353,17 +2346,16 @@ def add_eic(inst):
     return inst
 
 # deferred devices
-
 DEPR = []
 nDEPR = 0
 pname = [x['parent'] for x in area]
 
+# gather key structures into KEYLIST
 KEYLIST = [
     LCAV, SBEN, QUAD, SEXT, SOLE, MATR, RCOL, ECOL, SROT,
     HKIC, VKIC, MONI, WIRE, PROF, IMON, BLMO, INST,
     MARK, MULT
 ]
-
 for KEY in KEYLIST:
     for m in range(len(KEY)):
         t = KEY[m]['type']
@@ -2723,7 +2715,6 @@ def arrange_output(coord_system, system_name, filename):
                 s[4] = TEMP['type']
                 s[5] = TEMP['leng']
                 s[15] = TEMP['energy']
-                s[48] = TEMP['seq']
                 s[51] = TEMP['sdsp']
 
                 if system_name == 'NOMINAL':
