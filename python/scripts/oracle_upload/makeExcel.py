@@ -784,11 +784,34 @@ E = np.array(E)
 coor1 = np.array(coor1)
 coor2 = np.array(coor2)
 A = np.array(A)
-for kwn in keyw:
+
+# gather key structures into element dictionary
+ele_dict = {
+'LCAV':[],
+'SBEN':[],
+'QUAD':[],
+'SEXT':[],
+'SOLE':[],
+'MATR':[],
+'RCOL':[],
+'ECOL':[],
+'SROT':[],
+'HKIC':[],
+'VKIC':[],
+'MONI':[],
+'WIRE':[],
+'PROF':[],
+'IMON':[],
+'BLMO':[],
+'INST':[],
+'MARK':[],
+'MULT':[]
+}
+
+for kwn,eles in ele_dict.items():
     key_ids = strmatch(kwn,K)
     name = list(dict.fromkeys([N[i] for i in key_ids]))
     if kwn == 'LCAV':
-        LCAV = []
         # create list of unique names that will allow unsplitting
         for i in range(len(name)):
             if name[i][0:4] in ['CAVL', 'CAVC']:  # unique in 7 characters
@@ -824,7 +847,7 @@ for kwn in keyw:
                 power = 1
             coorc = np.mean(coor[ide, :], axis=0)  # m,rad (beam center)
             nLCAV += 1
-            LCAV.append({
+            eles.append({
                 'idf': idf[id1],
                 'id': idd[id1],
                 'area': area[ida[id1]]['name'],
@@ -849,7 +872,7 @@ for kwn in keyw:
             # BSY coordinates
 
             for k in range(6):
-                LCAV[-1][f'c1{k+1}'] = []
+                eles[-1][f'c1{k+1}'] = []
             if cBSY:
                 if mname.startswith('TCX'):
                     id = strmatch(mname,N1,True) # differentiate between TCX01/02 and TCX01B/02B
@@ -860,18 +883,18 @@ for kwn in keyw:
                     ide = [id1 - 1, id[-1]]  # [entrance, exit]
                     suml1 = np.mean(S1[ide])  # m (beam center)
                     coorc1 = np.mean(coor1[ide, :], axis=0)  # m,rad (beam center)
-                    LCAV[-1]['suml1'] = suml1
+                    eles[-1]['suml1'] = suml1
                     for k in range(6):
-                        LCAV[-1][f'c1{k+1}'] = coorc1[k]
-                    if not LCAV[-1]['sector']:
-                        LCAV[-1]['sector'] = SECTORS1[id1].strip()
-                    LCAV[-1]['ucell'] = UCELL[id1].strip()
+                        eles[-1][f'c1{k+1}'] = coorc1[k]
+                    if not eles[-1]['sector']:
+                        eles[-1]['sector'] = SECTORS1[id1].strip()
+                    eles[-1]['ucell'] = UCELL[id1].strip()
 
             # UND coordinates
 
-            LCAV[-1]['suml2'] = []
+            eles[-1]['suml2'] = []
             for k in range(6):
-                LCAV[-1][f'c2{k+1}'] = []
+                eles[-1][f'c2{k+1}'] = []
             if cUND:
                 if mname.startswith('TCX'):
                     id = strmatch(mname,N2,True) # differentiate between TCX01/02 and TCX01B/02B
@@ -881,12 +904,11 @@ for kwn in keyw:
                     ide = [id[0] - 1, id[-1]]  # [entrance, exit]
                     suml2 = np.mean(S2[ide])  # m (beam center)
                     coorc2 = np.mean(coor2[ide, :], axis=0)  # m,rad (beam center)
-                    LCAV[-1]['suml2'] = suml2
+                    eles[-1]['suml2'] = suml2
                     for k in range(6):
-                        LCAV[-1][f'c2{k+1}'] = coorc2[k]
+                        eles[-1][f'c2{k+1}'] = coorc2[k]
     elif kwn == 'SBEN':
         Nelm = len(key_ids) // 2
-        SBEN = []
         for m in range(Nelm):
             mname1 = name[2 * m].strip()
             mname2 = name[2 * m + 1].strip()
@@ -957,7 +979,7 @@ for kwn in keyw:
                 coorm[3] = coorc[3]  # dump line magnet coords set in FixAlineCoords
             else:
                 coorm[3] = tilt  # remove "creeping" rolls from non-rolled SBENs
-            SBEN.append({
+            eles.append({
                 'idf': idf[id1],
                 'id': idd[id1],
                 'area': area[ida[id1]]['name'],
@@ -992,8 +1014,8 @@ for kwn in keyw:
             # BSY coordinates
 
             for k in range(6):
-                SBEN[-1][f'c1{k+1}'] = []
-                SBEN[-1][f'm1{k+1}'] = []
+                eles[-1][f'c1{k+1}'] = []
+                eles[-1][f'm1{k+1}'] = []
             if cBSY:
                 id = [strmatch(mname1,N1,True),strmatch(mname2,N1,True)]
                 if any(id):
@@ -1025,20 +1047,20 @@ for kwn in keyw:
                         coorm1[3] = coorc1[3]  # dump line magnet coords set in FixAlineCoords
                     else:
                         coorm1[3] = tilt  # remove "creeping" rolls from non-rolled SBENs
-                    SBEN[-1]['suml1'] = suml1
+                    eles[-1]['suml1'] = suml1
                     for k in range(6):
-                        SBEN[-1][f'c1{k+1}'] = coorc1[k]
-                        SBEN[-1][f'm1{k+1}'] = coorm1[k]
-                    if not SBEN[-1]['sector']:
-                        SBEN[-1]['sector'] = SECTORS1[id1].strip()
-                    SBEN[-1]['ucell'] = UCELL[id1].strip()
+                        eles[-1][f'c1{k+1}'] = coorc1[k]
+                        eles[-1][f'm1{k+1}'] = coorm1[k]
+                    if not eles[-1]['sector']:
+                        eles[-1]['sector'] = SECTORS1[id1].strip()
+                    eles[-1]['ucell'] = UCELL[id1].strip()
 
             # UND coordinates
 
-            SBEN[-1]['suml2'] = []
+            eles[-1]['suml2'] = []
             for k in range(6):
-                SBEN[-1][f'c2{k+1}'] = []
-                SBEN[-1][f'm2{k+1}'] = []
+                eles[-1][f'c2{k+1}'] = []
+                eles[-1][f'm2{k+1}'] = []
             if cUND:
                 id = [strmatch(mname1,N2,True),strmatch(mname2,N2,True)]
                 if any(id) > 0:
@@ -1070,13 +1092,12 @@ for kwn in keyw:
                         coorm2[3] = coorc2[3]  # dump line magnet coords set in FixAlineCoords
                     else:
                         coorm2[3] = tilt  # remove "creeping" rolls from non-rolled SBENs
-                    SBEN[-1]['suml2'] = suml2
+                    eles[-1]['suml2'] = suml2
                     for k in range(6):
-                        SBEN[-1][f'c2{k+1}'] = coorc2[k]
-                        SBEN[-1][f'm2{k+1}'] = coorm2[k]
+                        eles[-1][f'c2{k+1}'] = coorc2[k]
+                        eles[-1][f'm2{k+1}'] = coorm2[k]
 
     elif kwn == 'QUAD':
-        QUAD = []
         for mname in name:
             id = strmatch(mname,N,True)
             id1 = id[0]  # first segment (beam center)
@@ -1103,7 +1124,7 @@ for kwn in keyw:
                 sval = 1 / (leng * T2kG)
             polarity = -np.sign(k1 + np.finfo(float).eps)  # add eps so that sign=1 when k1=0
             coorc = np.copy(coor[id1, :])  # m,rad
-            QUAD.append({
+            eles.append({
                 'idf': idf[id1],
                 'id': idd[id1],
                 'area': area[ida[id1]]['name'],
@@ -1132,37 +1153,36 @@ for kwn in keyw:
             # BSY coordinates
 
             for k in range(6):
-                QUAD[-1][f'c1{k+1}'] = []
+                eles[-1][f'c1{k+1}'] = []
             if cBSY:
                 id = strmatch(mname,N1,True)
                 if len(id) > 0:
                     id1 = id[0]  # first segment (beam center)
                     suml1 = S1[id1]  # m
                     coorc1 = np.copy(coor1[id1, :])  # m,rad
-                    QUAD[-1]['suml1'] = suml1
+                    eles[-1]['suml1'] = suml1
                     for k in range(6):
-                        QUAD[-1][f'c1{k+1}'] = coorc1[k]
-                    if not QUAD[-1]['sector']:
-                        QUAD[-1]['sector'] = SECTORS1[id1].strip()
-                    QUAD[-1]['ucell'] = UCELL[id1].strip()
+                        eles[-1][f'c1{k+1}'] = coorc1[k]
+                    if not eles[-1]['sector']:
+                        eles[-1]['sector'] = SECTORS1[id1].strip()
+                    eles[-1]['ucell'] = UCELL[id1].strip()
 
             # UND coordinates
 
-            QUAD[-1]['suml2'] = []
+            eles[-1]['suml2'] = []
             for k in range(6):
-                QUAD[-1][f'c2{k+1}'] = []
+                eles[-1][f'c2{k+1}'] = []
             if cUND:
                 id = strmatch(mname,N2,True)
                 if len(id) > 0:
                     id1 = id[0]  # first segment (beam center)
                     suml2 = S2[id1]  # m
                     coorc2 = coor2[id1, :]  # m,rad
-                    QUAD[-1]['suml2'] = suml2
+                    eles[-1]['suml2'] = suml2
                     for k in range(6):
-                        QUAD[-1][f'c2{k+1}'] = coorc2[k]
+                        eles[-1][f'c2{k+1}'] = coorc2[k]
 
     elif kwn == 'SEXT':
-        SEXT = []
         for mname in name:
             id = strmatch(mname,N,True)
             id1 = id[0]  # first half (beam center)
@@ -1187,7 +1207,7 @@ for kwn in keyw:
                 sval = 1 / (leng * T2kG)
             polarity = -np.sign(k2 + np.finfo(float).eps)  # add eps so that sign=1 when k2=0
             coorc = np.copy(coor[id1, :])  # m,rad
-            SEXT.append({
+            eles.append({
                 'idf': idf[id1],
                 'id': idd[id1],
                 'area': area[ida[id1]]['name'],
@@ -1215,37 +1235,36 @@ for kwn in keyw:
             # BSY coordinates
 
             for k in range(6):
-                SEXT[-1][f'c1{k+1}'] = []
+                eles[-1][f'c1{k+1}'] = []
             if cBSY:
                 id = strmatch(mname,N1,True)
                 if len(id) > 0:
                     id1 = id[0]  # first segment (beam center)
                     suml1 = S1[id1]  # m
                     coorc1 = np.copy(coor1[id1, :])  # m,rad
-                    SEXT[-1]['suml1'] = suml1
+                    eles[-1]['suml1'] = suml1
                     for k in range(6):
-                        SEXT[-1][f'c1{k+1}'] = coorc1[k]
-                    if not SEXT[-1]['sector']:
-                        SEXT[-1]['sector'] = SECTORS1[id1].strip()
-                    SEXT[-1]['ucell'] = UCELL[id1].strip()
+                        eles[-1][f'c1{k+1}'] = coorc1[k]
+                    if not eles[-1]['sector']:
+                        eles[-1]['sector'] = SECTORS1[id1].strip()
+                    eles[-1]['ucell'] = UCELL[id1].strip()
 
             # UND coordinates
 
-            SEXT[-1]['suml2'] = []
+            eles[-1]['suml2'] = []
             for k in range(6):
-                SEXT[-1][f'c2{k+1}'] = []
+                eles[-1][f'c2{k+1}'] = []
             if cUND:
                 id = strmatch(mname,N2,True)
                 if len(id) > 0:
                     id1 = id[0]  # first segment (beam center)
                     suml2 = S2[id1]  # m
                     coorc2 = coor2[id1, :]  # m,rad
-                    SEXT[-1]['suml2'] = suml2
+                    eles[-1]['suml2'] = suml2
                     for k in range(6):
-                        SEXT[-1][f'c2{k+1}'] = coorc2[k]
+                        eles[-1][f'c2{k+1}'] = coorc2[k]
 
     elif kwn == 'SOLE':
-        SOLE = []
         for mname in name:
             id = strmatch(mname,N,True)
             id1 = id[0]
@@ -1270,7 +1289,7 @@ for kwn in keyw:
                 sval = 1 / (leng * T2kG)
             polarity = -np.sign(ks + np.finfo(float).eps)  # add eps so that sign=1 when ks=0
             coorc = np.mean(coor[ide], axis=0)  # m, rad
-            SOLE.append({
+            eles.append({
                 'idf': idf[id1],
                 'id': idd[id1],
                 'area': area[ida[id1]]['name'],
@@ -1297,7 +1316,7 @@ for kwn in keyw:
             # BSY coordinates
 
             for k in range(6):
-                SOLE[-1][f'c1{k+1}'] = []
+                eles[-1][f'c1{k+1}'] = []
             if cBSY:
                 id = strmatch(mname,N1,True)
                 if len(id) > 0:
@@ -1305,18 +1324,18 @@ for kwn in keyw:
                     ide = [id1 - 1, id[-1]]  # [entrance, exit]
                     suml1 = np.mean(S1[ide])  # m
                     coorc1 = np.mean(coor1[ide], axis=0)  # m, rad
-                    SOLE[-1]['suml1'] = suml1
+                    eles[-1]['suml1'] = suml1
                     for k in range(6):
-                        SOLE[-1][f'c1{k+1}'] = coorc1[k]
-                    if not SOLE[-1]['sector']:
-                        SOLE[-1]['sector'] = SECTORS1[id1].strip()
-                    SOLE[-1]['ucell'] = UCELL[id1].strip()
+                        eles[-1][f'c1{k+1}'] = coorc1[k]
+                    if not eles[-1]['sector']:
+                        eles[-1]['sector'] = SECTORS1[id1].strip()
+                    eles[-1]['ucell'] = UCELL[id1].strip()
 
             # UND coordinates
 
-            SOLE[-1]['suml2'] = []
+            eles[-1]['suml2'] = []
             for k in range(6):
-                SOLE[-1][f'c2{k+1}'] = []
+                eles[-1][f'c2{k+1}'] = []
             if cUND:
                 id = strmatch(mname,N2)
                 if len(id) > 0:
@@ -1324,12 +1343,11 @@ for kwn in keyw:
                     ide = [id1 - 1, id[-1]]  # [entrance, exit]
                     suml2 = np.mean(S2[ide])  # m
                     coorc2 = np.mean(coor2[ide], axis=0)  # m, rad
-                    SOLE[-1]['suml2'] = suml2
+                    eles[-1]['suml2'] = suml2
                     for k in range(6):
-                        SOLE[-1][f'c2{k+1}'] = coorc2[k]
+                        eles[-1][f'c2{k+1}'] = coorc2[k]
 
     elif kwn == 'MATR':
-        MATR = []
         for mname in name:
             id = strmatch(mname,N,True)
             id1 = id[0]  # first half (beam center)
@@ -1340,7 +1358,7 @@ for kwn in keyw:
             undl = P2[id1, 0]  # m
             undk = P2[id1, 1]  # 1
             coorc = np.copy(coor[id1])  # m, rad
-            MATR.append({
+            eles.append({
                 'idf': idf[id1],
                 'id': idd[id1],
                 'area': area[ida[id1]]['name'],
@@ -1362,37 +1380,36 @@ for kwn in keyw:
             # BSY coordinates
 
             for k in range(6):
-                MATR[-1][f'c1{k+1}'] = []
+                eles[-1][f'c1{k+1}'] = []
             if cBSY:
                 id = strmatch(mname,N1,True)
                 if len(id) > 0:
                     id1 = id[0]  # first segment (beam center)
                     suml1 = S1[id1]  # m
                     coorc1 = np.copy(coor1[id1])  # m, rad
-                    MATR[-1]['suml1'] = suml1
+                    eles[-1]['suml1'] = suml1
                     for k in range(6):
-                        MATR[-1][f'c1{k+1}'] = coorc1[k]
-                    if not MATR[-1]['sector']:
-                        MATR[-1]['sector'] = SECTORS1[id1].strip()
-                    MATR[-1]['ucell'] = UCELL[id1].strip()
+                        eles[-1][f'c1{k+1}'] = coorc1[k]
+                    if not eles[-1]['sector']:
+                        eles[-1]['sector'] = SECTORS1[id1].strip()
+                    eles[-1]['ucell'] = UCELL[id1].strip()
 
             # UND coordinates
 
-            MATR[-1]['suml2'] = []
+            eles[-1]['suml2'] = []
             for k in range(6):
-                MATR[-1][f'c2{k+1}'] = []
+                eles[-1][f'c2{k+1}'] = []
             if cUND:
                 id = strmatch(mname,N2,True)
                 if len(id) > 0:
                     id1 = id[0]  # first segment (beam center)
                     suml2 = S2[id1]  # m
                     coorc2 = coor2[id1]  # m, rad
-                    MATR[-1]['suml2'] = suml2
+                    eles[-1]['suml2'] = suml2
                     for k in range(6):
-                        MATR[-1][f'c2{k+1}'] = coorc2[k]
+                        eles[-1][f'c2{k+1}'] = coorc2[k]
 
     elif kwn == 'RCOL':
-        RCOL = []
         for mname in name:
             id = strmatch(mname,N,True)[0]
             ide = [id - 1, id]  # [entrance, exit]
@@ -1403,7 +1420,7 @@ for kwn in keyw:
             xgap = 2 * P[id, 3]  # m
             ygap = 2 * P[id, 4]  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
-            RCOL.append({
+            eles.append({
                 'idf': idf[id],
                 'id': idd[id],
                 'area': area[ida[id]]['name'],
@@ -1425,37 +1442,36 @@ for kwn in keyw:
             # BSY coordinates
 
             for k in range(6):
-                RCOL[-1][f'c1{k+1}'] = []
+                eles[-1][f'c1{k+1}'] = []
             if cBSY:
                 id = strmatch(mname,N1,True)
                 if len(id) > 0:
                     ide = [id[0] - 1, id[0]]  # [entrance, exit]
                     suml1 = np.mean(S1[ide])  # m (beam center)
                     coorc1 = np.mean(coor1[ide], axis=0)  # m, rad (beam center)
-                    RCOL[-1]['suml1'] = suml1
+                    eles[-1]['suml1'] = suml1
                     for k in range(6):
-                        RCOL[-1][f'c1{k+1}'] = coorc1[k]
-                    if not RCOL[-1]['sector']:
-                        RCOL[-1]['sector'] = SECTORS1[id[0]].strip()
-                    RCOL[-1]['ucell'] = UCELL[id[0]].strip()
+                        eles[-1][f'c1{k+1}'] = coorc1[k]
+                    if not eles[-1]['sector']:
+                        eles[-1]['sector'] = SECTORS1[id[0]].strip()
+                    eles[-1]['ucell'] = UCELL[id[0]].strip()
 
             # UND coordinates
 
-            RCOL[-1]['suml2'] = []
+            eles[-1]['suml2'] = []
             for k in range(6):
-                RCOL[-1][f'c2{k+1}'] = []
+                eles[-1][f'c2{k+1}'] = []
             if cUND:
                 id = strmatch(mname,N2)
                 if len(id) > 0:
                     ide = [id[0] - 1, id[0]]  # [entrance, exit]
                     suml2 = np.mean(S2[ide])  # m (beam center)
                     coorc2 = np.mean(coor2[ide], axis=0)  # m, rad (beam center)
-                    RCOL[-1]['suml2'] = suml2
+                    eles[-1]['suml2'] = suml2
                     for k in range(6):
-                        RCOL[-1][f'c2{k+1}'] = coorc2[k]
+                        eles[-1][f'c2{k+1}'] = coorc2[k]
 
     elif kwn == 'ECOL':
-        ECOL = []
         for mname in name:
             id = strmatch(mname,N,True)[0]
             ide = [id - 1, id]  # [entrance, exit]
@@ -1466,7 +1482,7 @@ for kwn in keyw:
             xbore = 2 * P[id, 3]  # m
             ybore = 2 * P[id, 4]  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
-            ECOL.append({
+            eles.append({
                 'idf': idf[id],
                 'id': idd[id],
                 'area': area[ida[id]]['name'],
@@ -1488,37 +1504,36 @@ for kwn in keyw:
             # BSY coordinates
 
             for k in range(6):
-                ECOL[-1][f'c1{k+1}'] = []
+                eles[-1][f'c1{k+1}'] = []
             if cBSY:
                 id = strmatch(mname,N1,True)
                 if len(id) > 0:
                     ide = [id[0] - 1, id[0]]  # [entrance, exit]
                     suml1 = np.mean(S1[ide])  # m (beam center)
                     coorc1 = np.mean(coor1[ide], axis=0)  # m, rad (beam center)
-                    ECOL[-1]['suml1'] = suml1
+                    eles[-1]['suml1'] = suml1
                     for k in range(6):
-                        ECOL[-1][f'c1{k+1}'] = coorc1[k]
-                    if not ECOL[-1]['sector']:
-                        ECOL[-1]['sector'] = SECTORS1[id[0]].strip()
-                    ECOL[-1]['ucell'] = UCELL[id[0]].strip()
+                        eles[-1][f'c1{k+1}'] = coorc1[k]
+                    if not eles[-1]['sector']:
+                        eles[-1]['sector'] = SECTORS1[id[0]].strip()
+                    eles[-1]['ucell'] = UCELL[id[0]].strip()
 
             # UND coordinates
 
-            ECOL[-1]['suml2'] = []
+            eles[-1]['suml2'] = []
             for k in range(6):
-                ECOL[-1][f'c2{k+1}'] = []
+                eles[-1][f'c2{k+1}'] = []
             if cUND:
                 id = strmatch(mname,N2,True)
                 if len(id) > 0:
                     ide = [id[0] - 1, id[0]]  # [entrance, exit]
                     suml2 = np.mean(S2[ide])  # m (beam center)
                     coorc2 = np.mean(coor2[ide], axis=0)  # m, rad (beam center)
-                    ECOL[-1]['suml2'] = suml2
+                    eles[-1]['suml2'] = suml2
                     for k in range(6):
-                        ECOL[-1][f'c2{k+1}'] = coorc2[k]
+                        eles[-1][f'c2{k+1}'] = coorc2[k]
 
     elif kwn == 'SROT':
-        SROT = []
         for mname in name:
             id = strmatch(mname,N,True)[0]
             ide = [id - 1, id]  # [entrance, exit]
@@ -1530,7 +1545,7 @@ for kwn in keyw:
             if abs(ang) < amin:
                 ang = 0
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
-            SROT.append({
+            eles.append({
                 'idf': idf[id],
                 'id': idd[id],
                 'area': area[ida[id]]['name'],
@@ -1551,37 +1566,36 @@ for kwn in keyw:
             # BSY coordinates
 
             for k in range(6):
-                SROT[-1][f'c1{k+1}'] = []
+                eles[-1][f'c1{k+1}'] = []
             if cBSY:
                 id = strmatch(mname,N1,True)
                 if len(id) > 0:
                     ide = [id[0] - 1, id[0]]  # [entrance, exit]
                     suml1 = np.mean(S1[ide])  # m (beam center)
                     coorc1 = np.mean(coor1[ide], axis=0)  # m, rad (beam center)
-                    SROT[-1]['suml1'] = suml1
+                    eles[-1]['suml1'] = suml1
                     for k in range(6):
-                        SROT[-1][f'c1{k+1}'] = coorc1[k]
-                    if not SROT[-1]['sector']:
-                        SROT[-1]['sector'] = SECTORS1[id[0]].strip()
-                    SROT[-1]['ucell'] = UCELL[id[0]].strip()
+                        eles[-1][f'c1{k+1}'] = coorc1[k]
+                    if not eles[-1]['sector']:
+                        eles[-1]['sector'] = SECTORS1[id[0]].strip()
+                    eles[-1]['ucell'] = UCELL[id[0]].strip()
 
             # UND coordinates
 
-            SROT[-1]['suml2'] = []
+            eles[-1]['suml2'] = []
             for k in range(6):
-                SROT[-1][f'c2{k+1}'] = []
+                eles[-1][f'c2{k+1}'] = []
             if cUND:
                 id = strmatch(mname,N2,True)
                 if len(id) > 0:
                     ide = [id[0] - 1, id[0]]  # [entrance, exit]
                     suml2 = np.mean(S2[ide])  # m (beam center)
                     coorc2 = np.mean(coor2[ide], axis=0)  # m, rad (beam center)
-                    SROT[-1]['suml2'] = suml2
+                    eles[-1]['suml2'] = suml2
                     for k in range(6):
-                        SROT[-1][f'c2{k+1}'] = coorc2[k]
+                        eles[-1][f'c2{k+1}'] = coorc2[k]
 
     elif kwn == 'MULT':
-        MULT = []
         for mname in name:
             id = strmatch(mname,N,True)[0]
             if id == 1:
@@ -1613,7 +1627,7 @@ for kwn in keyw:
             coorc = coor[id,:] # m, rad (beam center)
             t = T[id].strip()
             aper = 2 * A[id]  # m
-            MULT.append({
+            eles.append({
                 'idf': idf[id],
                 'id': idd[id],
                 'area': area[ida[id]]['name'],
@@ -1642,39 +1656,38 @@ for kwn in keyw:
             # BSY coordinates
 
             for k in range(6):
-                MULT[-1][f'c1{k+1}'] = []
-                MULT[-1][f'm1{k+1}'] = []
+                eles[-1][f'c1{k+1}'] = []
+                eles[-1][f'm1{k+1}'] = []
             if cBSY:
                 id = strmatch(mname,N1,True)
                 if len(id) > 0:
                     id = id[0]
                     suml1 = S1[id] 
                     coorc1 = coor1[id]
-                    MULT[-1]['suml1'] = suml1
+                    eles[-1]['suml1'] = suml1
                     for k in range(6):
-                        MULT[-1][f'c1{k+1}'] = coorc1[k]
-                    if not MULT[-1]['sector']:
-                        MULT[-1]['sector'] = SECTORS1[id].strip()
-                    MULT[-1]['ucell'] = UCELL[id].strip()
+                        eles[-1][f'c1{k+1}'] = coorc1[k]
+                    if not eles[-1]['sector']:
+                        eles[-1]['sector'] = SECTORS1[id].strip()
+                    eles[-1]['ucell'] = UCELL[id].strip()
 
             # UND coordinates
 
-            MULT[-1]['suml2'] = []
+            eles[-1]['suml2'] = []
             for k in range(6):
-                MULT[-1][f'c2{k+1}'] = []
-                MULT[-1][f'm2{k+1}'] = []  # for MULT
+                eles[-1][f'c2{k+1}'] = []
+                eles[-1][f'm2{k+1}'] = []  # for MULT
             if cUND:
                 id = strmatch(mname,N2,True)
                 if len(id) > 0:
                     id = id[0]
                     suml2 = S2[id]
                     coorc2 = coor2[id]
-                    MULT[-1]['suml2'] = suml2
+                    eles[-1]['suml2'] = suml2
                     for k in range(6):
-                        MULT[-1][f'c2{k+1}'] = coorc2[k]
+                        eles[-1][f'c2{k+1}'] = coorc2[k]
 
     elif kwn == 'INST':
-        INST = []
         for mname in name:
             id = strmatch(mname,N,True)
             if id[0] == 1:
@@ -1688,7 +1701,7 @@ for kwn in keyw:
             leng = np.sum(L[id])  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             t = T[id[0]].strip()
-            INST.append({
+            eles.append({
                 'idf': idf[id[0]],
                 'id': idd[id[0]],
                 'area': area[ida[id[0]]]['name'],
@@ -1709,39 +1722,38 @@ for kwn in keyw:
             # BSY coordinates
 
             for k in range(6):
-                INST[-1][f'c1{k+1}'] = []
-                INST[-1][f'm1{k+1}'] = []
+                eles[-1][f'c1{k+1}'] = []
+                eles[-1][f'm1{k+1}'] = []
             if cBSY:
                 id = strmatch(mname,N1,True)
                 if len(id) > 0:
                     ide = [id[0] - 1, id[-1]]  # [entrance, exit]
                     suml1 = np.mean(S1[ide])  # m (beam center)
                     coorc1 = np.mean(coor1[ide], axis=0)  # m, rad (beam center)
-                    INST[-1]['suml1'] = suml1
+                    eles[-1]['suml1'] = suml1
                     for k in range(6):
-                        INST[-1][f'c1{k+1}'] = coorc1[k]
-                    if not INST[-1]['sector']:
-                        INST[-1]['sector'] = SECTORS1[id[0]].strip()
-                    INST[-1]['ucell'] = UCELL[id[0]].strip()
+                        eles[-1][f'c1{k+1}'] = coorc1[k]
+                    if not eles[-1]['sector']:
+                        eles[-1]['sector'] = SECTORS1[id[0]].strip()
+                    eles[-1]['ucell'] = UCELL[id[0]].strip()
 
             # UND coordinates
 
-            INST[-1]['suml2'] = []
+            eles[-1]['suml2'] = []
             for k in range(6):
-                INST[-1][f'c2{k+1}'] = []
-                INST[-1][f'm2{k+1}'] = []  # for INST
+                eles[-1][f'c2{k+1}'] = []
+                eles[-1][f'm2{k+1}'] = []  # for INST
             if cUND:
                 id = strmatch(mname,N2,True)
                 if len(id) > 0:
                     ide = [id[0] - 1, id[-1]]  # [entrance, exit]
                     suml2 = np.mean(S2[ide])  # m (beam center)
                     coorc2 = np.mean(coor2[ide], axis=0)  # m, rad (beam center)
-                    INST[-1]['suml2'] = suml2
+                    eles[-1]['suml2'] = suml2
                     for k in range(6):
-                        INST[-1][f'c2{k+1}'] = coorc2[k]
+                        eles[-1][f'c2{k+1}'] = coorc2[k]
 
     elif kwn == 'HKIC':
-        HKIC = []
         for mname in name:
             id = strmatch(mname,N,True)
             if id[0] == 1:
@@ -1755,7 +1767,7 @@ for kwn in keyw:
             leng = np.sum(L[id])  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             t = T[id[0]].strip()
-            HKIC.append({
+            eles.append({
                 'idf': idf[id[0]],
                 'id': idd[id[0]],
                 'area': area[ida[id[0]]]['name'],
@@ -1775,35 +1787,34 @@ for kwn in keyw:
             # BSY coordinates
 
             for k in range(6):
-                HKIC[-1][f'c1{k+1}'] = []
+                eles[-1][f'c1{k+1}'] = []
             if cBSY:
                 id = strmatch(mname,N1,True)
                 if len(id) > 0:
                     ide = [id[0] - 1, id[-1]]  # [entrance, exit]
                     suml1 = np.mean(S1[ide])  # m (beam center)
                     coorc1 = np.mean(coor1[ide], axis=0)  # m, rad (beam center)
-                    HKIC[-1]['suml1'] = suml1
+                    eles[-1]['suml1'] = suml1
                     for k in range(6):
-                        HKIC[-1][f'c1{k+1}'] = coorc1[k]
-                    if not HKIC[-1]['sector']:
-                        HKIC[-1]['sector'] = SECTORS1[id[0]].strip()
-                    HKIC[-1]['ucell'] = UCELL[id[0]].strip()
+                        eles[-1][f'c1{k+1}'] = coorc1[k]
+                    if not eles[-1]['sector']:
+                        eles[-1]['sector'] = SECTORS1[id[0]].strip()
+                    eles[-1]['ucell'] = UCELL[id[0]].strip()
 
-            HKIC[-1]['suml2'] = []
+            eles[-1]['suml2'] = []
             for k in range(6):
-                HKIC[-1][f'c2{k+1}'] = []
+                eles[-1][f'c2{k+1}'] = []
             if cUND:
                 id = strmatch(mname,N2,True)
                 if len(id) > 0:
                     ide = [id[0] - 1, id[-1]]  # [entrance, exit]
                     suml2 = np.mean(S2[ide])  # m (beam center)
                     coorc2 = np.mean(coor2[ide], axis=0)  # m, rad (beam center)
-                    HKIC[-1]['suml2'] = suml2
+                    eles[-1]['suml2'] = suml2
                     for k in range(6):
-                        HKIC[-1][f'c2{k+1}'] = coorc2[k]
+                        eles[-1][f'c2{k+1}'] = coorc2[k]
 
     elif kwn == 'VKIC':
-        VKIC = []
         for mname in name:
             id = strmatch(mname,N,True)
             if id[0] == 1:
@@ -1817,7 +1828,7 @@ for kwn in keyw:
             leng = np.sum(L[id])  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             t = T[id[0]].strip()
-            VKIC.append({
+            eles.append({
                 'idf': idf[id[0]],
                 'id': idd[id[0]],
                 'area': area[ida[id[0]]]['name'],
@@ -1837,34 +1848,33 @@ for kwn in keyw:
             # BSY coordinates
 
             for k in range(6):
-                VKIC[-1][f'c1{k+1}'] = []
+                eles[-1][f'c1{k+1}'] = []
             if cBSY:
                 id = strmatch(mname,N1,True)
                 if len(id) > 0:
                     ide = [id[0] - 1, id[-1]]  # [entrance, exit]
                     suml1 = np.mean(S1[ide])  # m (beam center)
                     coorc1 = np.mean(coor1[ide], axis=0)  # m, rad (beam center)
-                    VKIC[-1]['suml1'] = suml1
+                    eles[-1]['suml1'] = suml1
                     for k in range(6):
-                        VKIC[-1][f'c1{k+1}'] = coorc1[k]
-                    if not VKIC[-1]['sector']:
-                        VKIC[-1]['sector'] = SECTORS1[id[0]].strip()
-                    VKIC[-1]['ucell'] = UCELL[id[0]].strip()
+                        eles[-1][f'c1{k+1}'] = coorc1[k]
+                    if not eles[-1]['sector']:
+                        eles[-1]['sector'] = SECTORS1[id[0]].strip()
+                    eles[-1]['ucell'] = UCELL[id[0]].strip()
 
-            VKIC[-1]['suml2'] = []
+            eles[-1]['suml2'] = []
             for k in range(6):
-                VKIC[-1][f'c2{k+1}'] = []
+                eles[-1][f'c2{k+1}'] = []
             if cUND:
                 id = strmatch(mname,N2,True)
                 if len(id) > 0:
                     ide = [id[0] - 1, id[-1]]  # [entrance, exit]
                     suml2 = np.mean(S2[ide])  # m (beam center)
                     coorc2 = np.mean(coor2[ide], axis=0)  # m, rad (beam center)
-                    VKIC[-1]['suml2'] = suml2
+                    eles[-1]['suml2'] = suml2
                     for k in range(6):
-                        VKIC[-1][f'c2{k+1}'] = coorc2[k]
+                        eles[-1][f'c2{k+1}'] = coorc2[k]
     elif kwn == 'MONI':
-        MONI = []
         for mname in name:
             id = strmatch(mname,N,True)
             if id[0] == 1:
@@ -1878,7 +1888,7 @@ for kwn in keyw:
             leng = np.sum(L[id])  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             t = T[id[0]].strip()
-            MONI.append({
+            eles.append({
                 'idf': idf[id[0]],
                 'id': idd[id[0]],
                 'area': area[ida[id[0]]]['name'],
@@ -1898,34 +1908,33 @@ for kwn in keyw:
             # BSY coordinates
 
             for k in range(6):
-                MONI[-1][f'c1{k+1}'] = []
+                eles[-1][f'c1{k+1}'] = []
             if cBSY:
                 id = strmatch(mname,N1,True)
                 if len(id) > 0:
                     ide = [id[0] - 1, id[-1]]  # [entrance, exit]
                     suml1 = np.mean(S1[ide])  # m (beam center)
                     coorc1 = np.mean(coor1[ide], axis=0)  # m, rad (beam center)
-                    MONI[-1]['suml1'] = suml1
+                    eles[-1]['suml1'] = suml1
                     for k in range(6):
-                        MONI[-1][f'c1{k+1}'] = coorc1[k]
-                    if not MONI[-1]['sector']:
-                        MONI[-1]['sector'] = SECTORS1[id[0]].strip()
-                    MONI[-1]['ucell'] = UCELL[id[0]].strip()
+                        eles[-1][f'c1{k+1}'] = coorc1[k]
+                    if not eles[-1]['sector']:
+                        eles[-1]['sector'] = SECTORS1[id[0]].strip()
+                    eles[-1]['ucell'] = UCELL[id[0]].strip()
 
-            MONI[-1]['suml2'] = []
+            eles[-1]['suml2'] = []
             for k in range(6):
-                MONI[-1][f'c2{k+1}'] = []
+                eles[-1][f'c2{k+1}'] = []
             if cUND:
                 id = strmatch(mname,N2,True)
                 if len(id) > 0:
                     ide = [id[0] - 1, id[-1]]  # [entrance, exit]
                     suml2 = np.mean(S2[ide])  # m (beam center)
                     coorc2 = np.mean(coor2[ide], axis=0)  # m, rad (beam center)
-                    MONI[-1]['suml2'] = suml2
+                    eles[-1]['suml2'] = suml2
                     for k in range(6):
-                        MONI[-1][f'c2{k+1}'] = coorc2[k]
+                        eles[-1][f'c2{k+1}'] = coorc2[k]
     elif kwn == 'WIRE':
-        WIRE = []
         for mname in name:
             id = strmatch(mname,N,True)
             if id[0] == 1:
@@ -1939,7 +1948,7 @@ for kwn in keyw:
             leng = np.sum(L[id])  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             t = T[id[0]].strip()
-            WIRE.append({
+            eles.append({
                 'idf': idf[id[0]],
                 'id': idd[id[0]],
                 'area': area[ida[id[0]]]['name'],
@@ -1959,34 +1968,33 @@ for kwn in keyw:
             # BSY coordinates
 
             for k in range(6):
-                WIRE[-1][f'c1{k+1}'] = []
+                eles[-1][f'c1{k+1}'] = []
             if cBSY:
                 id = strmatch(mname,N1,True)
                 if len(id) > 0:
                     ide = [id[0] - 1, id[-1]]  # [entrance, exit]
                     suml1 = np.mean(S1[ide])  # m (beam center)
                     coorc1 = np.mean(coor1[ide], axis=0)  # m, rad (beam center)
-                    WIRE[-1]['suml1'] = suml1
+                    eles[-1]['suml1'] = suml1
                     for k in range(6):
-                        WIRE[-1][f'c1{k+1}'] = coorc1[k]
-                    if not WIRE[-1]['sector']:
-                        WIRE[-1]['sector'] = SECTORS1[id[0]].strip()
-                    WIRE[-1]['ucell'] = UCELL[id[0]].strip()
+                        eles[-1][f'c1{k+1}'] = coorc1[k]
+                    if not eles[-1]['sector']:
+                        eles[-1]['sector'] = SECTORS1[id[0]].strip()
+                    eles[-1]['ucell'] = UCELL[id[0]].strip()
 
-            WIRE[-1]['suml2'] = []
+            eles[-1]['suml2'] = []
             for k in range(6):
-                WIRE[-1][f'c2{k+1}'] = []
+                eles[-1][f'c2{k+1}'] = []
             if cUND:
                 id = strmatch(mname,N2,True)
                 if len(id) > 0:
                     ide = [id[0] - 1, id[-1]]  # [entrance, exit]
                     suml2 = np.mean(S2[ide])  # m (beam center)
                     coorc2 = np.mean(coor2[ide], axis=0)  # m, rad (beam center)
-                    WIRE[-1]['suml2'] = suml2
+                    eles[-1]['suml2'] = suml2
                     for k in range(6):
-                        WIRE[-1][f'c2{k+1}'] = coorc2[k]
+                        eles[-1][f'c2{k+1}'] = coorc2[k]
     elif kwn == 'PROF':
-        PROF = []
         for mname in name:
             id = strmatch(mname,N,True)
             if id[0] == 1:
@@ -2000,7 +2008,7 @@ for kwn in keyw:
             leng = np.sum(L[id])  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             t = T[id[0]].strip()
-            PROF.append({
+            eles.append({
                 'idf': idf[id[0]],
                 'id': idd[id[0]],
                 'area': area[ida[id[0]]]['name'],
@@ -2020,34 +2028,33 @@ for kwn in keyw:
             # BSY coordinates
 
             for k in range(6):
-                PROF[-1][f'c1{k+1}'] = []
+                eles[-1][f'c1{k+1}'] = []
             if cBSY:
                 id = strmatch(mname,N1,True)
                 if len(id) > 0:
                     ide = [id[0] - 1, id[-1]]  # [entrance, exit]
                     suml1 = np.mean(S1[ide])  # m (beam center)
                     coorc1 = np.mean(coor1[ide], axis=0)  # m, rad (beam center)
-                    PROF[-1]['suml1'] = suml1
+                    eles[-1]['suml1'] = suml1
                     for k in range(6):
-                        PROF[-1][f'c1{k+1}'] = coorc1[k]
-                    if not PROF[-1]['sector']:
-                        PROF[-1]['sector'] = SECTORS1[id[0]].strip()
-                    PROF[-1]['ucell'] = UCELL[id[0]].strip()
+                        eles[-1][f'c1{k+1}'] = coorc1[k]
+                    if not eles[-1]['sector']:
+                        eles[-1]['sector'] = SECTORS1[id[0]].strip()
+                    eles[-1]['ucell'] = UCELL[id[0]].strip()
 
-            PROF[-1]['suml2'] = []
+            eles[-1]['suml2'] = []
             for k in range(6):
-                PROF[-1][f'c2{k+1}'] = []
+                eles[-1][f'c2{k+1}'] = []
             if cUND:
                 id = strmatch(mname,N2,True)
                 if len(id) > 0:
                     ide = [id[0] - 1, id[-1]]  # [entrance, exit]
                     suml2 = np.mean(S2[ide])  # m (beam center)
                     coorc2 = np.mean(coor2[ide], axis=0)  # m, rad (beam center)
-                    PROF[-1]['suml2'] = suml2
+                    eles[-1]['suml2'] = suml2
                     for k in range(6):
-                        PROF[-1][f'c2{k+1}'] = coorc2[k]
+                        eles[-1][f'c2{k+1}'] = coorc2[k]
     elif kwn == 'IMON':
-        IMON = []
         for mname in name:
             id = strmatch(mname,N,True)
             if id[0] == 1:
@@ -2061,7 +2068,7 @@ for kwn in keyw:
             leng = np.sum(L[id])  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             t = T[id[0]].strip()
-            IMON.append({
+            eles.append({
                 'idf': idf[id[0]],
                 'id': idd[id[0]],
                 'area': area[ida[id[0]]]['name'],
@@ -2081,34 +2088,33 @@ for kwn in keyw:
             # BSY coordinates
 
             for k in range(6):
-                IMON[-1][f'c1{k+1}'] = []
+                eles[-1][f'c1{k+1}'] = []
             if cBSY:
                 id = strmatch(mname,N1,True)
                 if len(id) > 0:
                     ide = [id[0] - 1, id[-1]]  # [entrance, exit]
                     suml1 = np.mean(S1[ide])  # m (beam center)
                     coorc1 = np.mean(coor1[ide], axis=0)  # m, rad (beam center)
-                    IMON[-1]['suml1'] = suml1
+                    eles[-1]['suml1'] = suml1
                     for k in range(6):
-                        IMON[-1][f'c1{k+1}'] = coorc1[k]
-                    if not IMON[-1]['sector']:
-                        IMON[-1]['sector'] = SECTORS1[id[0]].strip()
-                    IMON[-1]['ucell'] = UCELL[id[0]].strip()
+                        eles[-1][f'c1{k+1}'] = coorc1[k]
+                    if not eles[-1]['sector']:
+                        eles[-1]['sector'] = SECTORS1[id[0]].strip()
+                    eles[-1]['ucell'] = UCELL[id[0]].strip()
 
-            IMON[-1]['suml2'] = []
+            eles[-1]['suml2'] = []
             for k in range(6):
-                IMON[-1][f'c2{k+1}'] = []
+                eles[-1][f'c2{k+1}'] = []
             if cUND:
                 id = strmatch(mname,N2,True)
                 if len(id) > 0:
                     ide = [id[0] - 1, id[-1]]  # [entrance, exit]
                     suml2 = np.mean(S2[ide])  # m (beam center)
                     coorc2 = np.mean(coor2[ide], axis=0)  # m, rad (beam center)
-                    IMON[-1]['suml2'] = suml2
+                    eles[-1]['suml2'] = suml2
                     for k in range(6):
-                        IMON[-1][f'c2{k+1}'] = coorc2[k]
+                        eles[-1][f'c2{k+1}'] = coorc2[k]
     elif kwn == 'BLMO':
-        BLMO = []
         for mname in name:
             id = strmatch(mname,N,True)
             if id[0] == 1:
@@ -2122,7 +2128,7 @@ for kwn in keyw:
             leng = np.sum(L[id])  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             t = T[id[0]].strip()
-            BLMO.append({
+            eles.append({
                 'idf': idf[id[0]],
                 'id': idd[id[0]],
                 'area': area[ida[id[0]]]['name'],
@@ -2142,41 +2148,40 @@ for kwn in keyw:
             # BSY coordinates
 
             for k in range(6):
-                BLMO[-1][f'c1{k+1}'] = []
+                eles[-1][f'c1{k+1}'] = []
             if cBSY:
                 id = strmatch(mname,N1,True)
                 if len(id) > 0:
                     ide = [id[0] - 1, id[-1]]  # [entrance, exit]
                     suml1 = np.mean(S1[ide])  # m (beam center)
                     coorc1 = np.mean(coor1[ide], axis=0)  # m, rad (beam center)
-                    BLMO[-1]['suml1'] = suml1
+                    eles[-1]['suml1'] = suml1
                     for k in range(6):
-                        BLMO[-1][f'c1{k+1}'] = coorc1[k]
-                    if not BLMO[-1]['sector']:
-                        BLMO[-1]['sector'] = SECTORS1[id[0]].strip()
-                    BLMO[-1]['ucell'] = UCELL[id[0]].strip()
+                        eles[-1][f'c1{k+1}'] = coorc1[k]
+                    if not eles[-1]['sector']:
+                        eles[-1]['sector'] = SECTORS1[id[0]].strip()
+                    eles[-1]['ucell'] = UCELL[id[0]].strip()
 
-            BLMO[-1]['suml2'] = []
+            eles[-1]['suml2'] = []
             for k in range(6):
-                BLMO[-1][f'c2{k+1}'] = []
+                eles[-1][f'c2{k+1}'] = []
             if cUND:
                 id = strmatch(mname,N2,True)
                 if len(id) > 0:
                     ide = [id[0] - 1, id[-1]]  # [entrance, exit]
                     suml2 = np.mean(S2[ide])  # m (beam center)
                     coorc2 = np.mean(coor2[ide], axis=0)  # m, rad (beam center)
-                    BLMO[-1]['suml2'] = suml2
+                    eles[-1]['suml2'] = suml2
                     for k in range(6):
-                        BLMO[-1][f'c2{k+1}'] = coorc2[k]
+                        eles[-1][f'c2{k+1}'] = coorc2[k]
     elif kwn == 'MARK':
-        MARK = []
         for mname in name:
             id = strmatch(mname,N,True)[0]
             sdsp = Sd[id]  # m
             suml = S[id]  # m
             energy = E[id]  # GeV
             coorc = np.copy(coor[id])
-            MARK.append({
+            eles.append({
                 'idf': idf[id],
                 'id': idd[id],
                 'area': area[ida[id]]['name'],
@@ -2196,32 +2201,32 @@ for kwn in keyw:
             # BSY coordinates
 
             for k in range(6):
-                MARK[-1][f'c1{k+1}'] = []
+                eles[-1][f'c1{k+1}'] = []
             if cBSY:
                 id = strmatch(mname,N1,True)
                 if len(id) > 0:
                     suml1 = S1[id[0]]  # m (beam center)
                     coorc1 = np.copy(coor1[id[0]])  # m, rad (beam center)
-                    MARK[-1]['suml1'] = suml1
+                    eles[-1]['suml1'] = suml1
                     for k in range(6):
-                        MARK[-1][f'c1{k+1}'] = coorc1[k]
-                    if not MARK[-1]['sector']:
-                        MARK[-1]['sector'] = SECTORS1[id[0]].strip()
-                    MARK[-1]['ucell'] = UCELL[id[0]].strip()
+                        eles[-1][f'c1{k+1}'] = coorc1[k]
+                    if not eles[-1]['sector']:
+                        eles[-1]['sector'] = SECTORS1[id[0]].strip()
+                    eles[-1]['ucell'] = UCELL[id[0]].strip()
 
             # UND coordinates
 
-            MARK[-1]['suml2'] = []
+            eles[-1]['suml2'] = []
             for k in range(6):
-                MARK[-1][f'c2{k+1}'] = []
+                eles[-1][f'c2{k+1}'] = []
             if cUND:
                 id = strmatch(mname,N2,True)
                 if len(id) > 0:
                     suml2 = S2[id]  # m (beam center)
                     coorc2 = coor2[id]  # m, rad (beam center)
-                    MARK[-1]['suml2'] = suml2
+                    eles[-1]['suml2'] = suml2
                     for k in range(6):
-                        MARK[-1][f'c2{k+1}'] = coorc2[k]
+                        eles[-1][f'c2{k+1}'] = coorc2[k]
 
 import scipy.io as sio
 
@@ -2241,11 +2246,12 @@ def fix_power_fraction(lcav):
                 raise ValueError(f"{cav['name']} not found!")
             cav['power'] = powr[id[0]]
     
-    return lcav
+    #FOO return lcav
 
 
 # fix LCAV power fraction values (for deactivated klystrons)
-LCAV = fix_power_fraction(LCAV)
+#FOO LCAV = fix_power_fraction(ele_dict['LCAV'])
+fix_power_fraction(ele_dict['LCAV'])
 
 def add_eic(inst):
     # Add EIC Faraday cup
@@ -2263,20 +2269,13 @@ def add_eic(inst):
     return inst
 
 # deferred devices
-DEPR = []
+#FOO DEPR = []
 nDEPR = 0
 pname = [x['parent'] for x in area]
 
-# gather key structures into KEYLIST
-KEYLIST = [
-    LCAV, SBEN, QUAD, SEXT, SOLE, MATR, RCOL, ECOL, SROT,
-    HKIC, VKIC, MONI, WIRE, PROF, IMON, BLMO, INST,
-    MARK, MULT
-]
-
-for KEY in KEYLIST:
-    for m in range(len(KEY)):
-        t = KEY[m]['type']
+for kwn,eles in ele_dict.items():
+    for m in range(len(eles)):
+        t = eles[m]['type']
         if t and t[0] == '@':
             deplev = int(t[1])
             if len(t) > 2:
@@ -2284,25 +2283,25 @@ for KEY in KEYLIST:
             else:
                 t = ''
             nDEPR += 1
-            id = strmatch(KEY[m]['parent'],pname)
-            if KEY == 'SBEN':
-                z_use = KEY[m]['m1']
+            id = strmatch(eles[m]['parent'],pname)
+            if kwn == 'SBEN':
+                z_use = eles[m]['m1']
             else:
-                z_use = KEY[m]['c1']
-            DEPR.append({
-                'id':KEY[m]['id'],
-                'parent':KEY[m]['parent'],
-                'ida': id[0]+1,
-                'prim': KEY[m]['prim'],
-                'name': KEY[m]['name'],
-                'z': z_use,
-                'type': t,
-                'level': deplev,
-                })
+                z_use = eles[m]['c1']
+            #FOO DEPR.append({
+            #FOO     'id':KEY[m]['id'],
+            #FOO     'parent':KEY[m]['parent'],
+            #FOO     'ida': id[0]+1,
+            #FOO     'prim': KEY[m]['prim'],
+            #FOO     'name': KEY[m]['name'],
+            #FOO     'z': z_use,
+            #FOO     'type': t,
+            #FOO     'level': deplev,
+            #FOO     })
 
-            KEY[m]['parent'] = '*' + KEY[m]['parent']
-            KEY[m]['area'] = '*' + KEY[m]['area']
-            KEY[m]['type'] = t
+            eles[m]['parent'] = '*' + eles[m]['parent']
+            eles[m]['area'] = '*' + eles[m]['area']
+            eles[m]['type'] = t
 
 # ------------------------------------------------------------------------------
 # Fix magnet coordinates ...
@@ -2540,13 +2539,11 @@ def FixMagnetCoords(SBEN, QUAD, INST, K, N, L, P, coor, cflag):
         INST[id][f'm{cflag or ""}5'] = -pitch
         INST[id][f'm{cflag or ""}4'] = roll
 
-    return SBEN, QUAD,INST
-
-SBEN, QUAD, INST = FixMagnetCoords(SBEN, QUAD, INST, K, N, L, P, coor, None)
+FixMagnetCoords(ele_dict['SBEN'], ele_dict['QUAD'], ele_dict['INST'], K, N, L, P, coor, None)
 if cBSY:
-    SBEN, QUAD, INST = FixMagnetCoords(SBEN, QUAD, INST, K1, N1, L1, P1, coor1, 1)
+    FixMagnetCoords(ele_dict['SBEN'], ele_dict['QUAD'], ele_dict['INST'], K1, N1, L1, P1, coor1, 1)
 if cUND:
-    SBEN, QUAD, INST = FixMagnetCoords(SBEN, QUAD, INST, K2, N2, L2, P2, coor2, 2)
+    FixMagnetCoords(ele_dict['SBEN'], ele_dict['QUAD'], ele_dict['INST'], K2, N2, L2, P2, coor2, 2)
 
 # Precision for coordinate output
 prec = 1e-6
@@ -2603,10 +2600,15 @@ Ncol = head.count(',') + 1
 # ip is effectively a way to sort the eles on two keys:  file-root and ordinal position in file
 # this effectively preserves the survey file ordering in the txt output files.
 ip = []
-for n,KEY in enumerate(KEYLIST):
-    for m in range(len(KEY)):
-        ip.append([KEY[m]["idf"], n, m, KEY[m]['id']])
+for kwn,eles in ele_dict.items():
+    for m in range(len(eles)):
+        ip.append([eles[m]["idf"], kwn, m, eles[m]['id']])
 ip = sorted(ip, key=lambda x: (x[0], x[3]))
+    
+#FOO for n,KEY in enumerate(KEYLIST):
+#FOO     for m in range(len(KEY)):
+#FOO         ip.append([KEY[m]["idf"], n, m, KEY[m]['id']])
+#FOO ip = sorted(ip, key=lambda x: (x[0], x[3]))
 
 def arrange_output(roots, system_name, filename):
     filepath = Path(outdir+'/'+fname)
@@ -2615,12 +2617,12 @@ def arrange_output(roots, system_name, filename):
         fid.write(f'{head}\n')
         fid.write(f'{unit}\n')
         for entry in roots:
-            id = [i for i,x in enumerate(ip) if x[0]==entry['ix']]
+            ip_ids = [i for i,x in enumerate(ip) if x[0]==entry['ix']]
 
-            for n in id:
-                idk = ip[n][1]
-                idn = ip[n][2]
-                TEMP = KEYLIST[idk][idn]
+            for n in ip_ids:
+                kwn = ip[n][1]
+                m = ip[n][2]
+                TEMP = ele_dict[kwn][m]
 
                 s = [None] * Ncol
 
@@ -2666,13 +2668,13 @@ def arrange_output(roots, system_name, filename):
                     s[22] = roundoff(TEMP['c26'], prec)
 
                 # keyword data
-                if keyw[idk] == 'LCAV':
+                if kwn == 'LCAV':
                     s[23] = TEMP['freq']
                     s[24] = TEMP['ampl']
                     s[25] = TEMP['phase']
                     s[26] = TEMP['grad']
                     s[27] = TEMP['power']
-                elif keyw[idk] == 'SBEN':
+                elif kwn == 'SBEN':
                     s[6] = TEMP['gap']
                     s[7] = TEMP['ang']
                     s[8] = TEMP['k1']
@@ -2707,7 +2709,7 @@ def arrange_output(roots, system_name, filename):
                         s[40] = roundoff(TEMP['m24'], prec)
                         s[41] = roundoff(TEMP['m25'], prec)
                         s[42] = roundoff(TEMP['m26'], prec)
-                elif keyw[idk] == 'QUAD':
+                elif kwn == 'QUAD':
                     s[6] = TEMP['bore']
                     s[8] = TEMP['k1']
                     s[10] = TEMP['tilt']
@@ -2721,29 +2723,29 @@ def arrange_output(roots, system_name, filename):
                         s[40] = roundoff(TEMP['m4'], prec)
                         s[41] = roundoff(TEMP['m5'], prec)
                         s[42] = roundoff(TEMP['m6'], prec)
-                elif keyw[idk] == 'SEXT':
+                elif kwn == 'SEXT':
                     s[6] = TEMP['bore']
                     s[9] = TEMP['k2']
                     s[10] = TEMP['tilt']
                     s[32] = TEMP['GpL']
                     s[33] = TEMP['Gp']
-                elif keyw[idk] == 'SOLE':
+                elif kwn == 'SOLE':
                     s[6] = TEMP['bore']
                     s[30] = TEMP['BL']
                     s[31] = TEMP['B']
                     s[43] = TEMP['ks']
-                elif keyw[idk] == 'MATR':
+                elif kwn == 'MATR':
                     s[44] = TEMP['lambda']
                     s[45] = TEMP['k']
-                elif keyw[idk] == 'RCOL':
+                elif kwn == 'RCOL':
                     s[46] = TEMP['xgap']
                     s[47] = TEMP['ygap']
-                elif keyw[idk] == 'ECOL':
+                elif kwn == 'ECOL':
                     s[46] = TEMP['xbore']
                     s[47] = TEMP['ybore']
-                elif keyw[idk] == 'SROT':
+                elif kwn == 'SROT':
                     s[7] = TEMP['ang']
-                elif keyw[idk] == 'INST':
+                elif kwn == 'INST':
                     if system_name == 'NOMINAL':
                         s[37] = roundoff(TEMP['m1'], prec)
                         s[38] = roundoff(TEMP['m2'], prec)
@@ -2765,7 +2767,7 @@ def arrange_output(roots, system_name, filename):
                         s[40] = roundoff(TEMP['m24'], prec)
                         s[41] = roundoff(TEMP['m25'], prec)
                         s[42] = roundoff(TEMP['m26'], prec)
-                elif keyw[idk] == 'MULT':
+                elif kwn == 'MULT':
                     s[6] = TEMP['bore']
                     if TEMP['prim'] == 'MULT':
                         continue
@@ -2809,14 +2811,14 @@ if cUND:
 fname = f'AD_ACCEL-extra-{optics}.txt'
 with open(outdir+'/'+fname, 'wt') as fid:
     fid.write('ELEMENT,Area2,Undulator Cell,Sector\n')
-    for nf in range(1,len(file_roots)+1):
-        id = [i for i,x in enumerate(ip) if x[0]==nf]
-        for n in id:
-            idk = ip[n][1]
-            if keyw[idk] == 'MARK' or keyw[idk] == 'SROT':
+    for entry in file_roots:
+        ip_ids = [i for i,x in enumerate(ip) if x[0]==entry['ix']]
+        for n in ip_ids:
+            kwn = ip[n][1]
+            m = ip[n][2]
+            if kwn in ['MARK', 'SROT']:
                 continue
-            idn = ip[n][2]
-            TEMP = KEYLIST[idk][idn]
+            TEMP = ele_dict[kwn][m]
             TEMPucell = TEMP['ucell']
             TEMPucell = '' if isinstance(TEMPucell,list) else TEMPucell
             fid.write(f"{TEMP['name']},{TEMP['area']},{TEMPucell},{TEMP['sector']}\n")
