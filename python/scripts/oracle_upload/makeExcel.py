@@ -96,89 +96,42 @@ T2kG=10             # kG per Tesla
 
 # file name roots
 
-froot = [   # [File Root, BSY file exists?, UND file exists?]
-    ['LCLS2scS',True,False],        #  1
-    ['LCLS2scSS',True,False],       #  2
-    ['LCLS2scS2_X',True,False],     #  3
-    ['LCLS2scSTXI',True,False],     #  4
-    ['LCLS2scSTMO',True,False],     #  5
-    ['LCLS2scH',True,False],        #  6
-    ['LCLS2scD',True,False],        #  7
-    ['DIAG0',False,False],          #  8
-    ['LCLS2scDA',True,False],       #  9 (DASEL)
-    ['LCLS2cuH',True,False],        # 10
-    ['LCLS2cuHS',True,False],       # 11
-    ['LCLS2cuHXTES',True,False],    # 12
-    ['LCLS2cuHTXI',True,False],     # 13
-    ['LCLS2cuS',True,False],        # 14
-    ['LCLS2cuGSPEC',False,False],   # 15
-    ['LCLS2cuSPEC',False,False],    # 16
+file_roots = [
+    {'root':'LCLS2scS',     'beg':'BEGGUNB',      'end':'ENDDMPS_2',   'ix':1},      #  1
+    {'root':'LCLS2scSS',    'beg':'BEGSFTS_1',    'end':'ENDSFTS_2',   'ix':2},      #  2
+    {'root':'LCLS2scS2_X',  'beg':'BEGSXTES_1',   'end':'ENDSXTES_2',  'ix':3},      #  3
+    {'root':'LCLS2scSTXI',  'beg':'BEGSXTES_3',   'end':'ENDSXTES_3',  'ix':4},      #  4
+    {'root':'LCLS2scSTMO',  'beg':'BEGSXTES_4',   'end':'ENDSXTES_4',  'ix':5},      #  5
+    {'root':'LCLS2scH',     'beg':'BEGSPH',       'end':'ENDSLTH',     'ix':6},      #  6
+    {'root':'LCLS2scD',     'beg':'BEGSPD_2',     'end':'ENDSLTD',     'ix':7},      #  7
+    {'root':'DIAG0',        'beg':'BEGDIAG0',     'end':'ENDDIAG0',    'ix':8},      #  8
+    {'root':'LCLS2scDA',    'beg':'BEGSPA',       'end':'ENDESA',      'ix':9},      #  9 (DASEL)
+    {'root':'LCLS2cuH',     'beg':'BEGGUN',       'end':'ENDDMPH_2',   'ix':10},     # 10
+    {'root':'LCLS2cuHS',    'beg':'BEGSFTH_1',    'end':'ENDSFTH_2',   'ix':11},     # 11
+    {'root':'LCLS2cuHXTES', 'beg':'BEGHXTES_1',   'end':'ENDHXTES_2',  'ix':12},     # 12
+    {'root':'LCLS2cuHTXI',  'beg':'BEGHXTES_3',   'end':'ENDHXTES_3',  'ix':13},     # 13
+    {'root':'LCLS2cuS',     'beg':'BEGCLTS',      'end':'ENDCLTS',     'ix':14},     # 14
+    {'root':'LCLS2cuGSPEC', 'beg':'BEGGSPEC',     'end':'ENDGSPEC',    'ix':15},     # 15
+    {'root':'LCLS2cuSPEC',  'beg':'BEGSPEC',      'end':'ENDSPEC',     'ix':16},     # 16
 ]
 
+bsy_file_roots = [
+    {'root':'LCLS2scS',     'beg':'BEGSPD_1',     'end':'ENDDMPS_2',   'ix':1},      #  1
+    {'root':'LCLS2scSS',    'beg':'BEGSFTS_1',    'end':'ENDSFTS_2',   'ix':2},      #  2
+    {'root':'LCLS2scS2_X',  'beg':'BEGSXTES_1',   'end':'ENDSXTES_2',  'ix':3},      #  3
+    {'root':'LCLS2scSTXI',  'beg':'BEGSXTES_3',   'end':'ENDSXTES_3',  'ix':4},      #  4
+    {'root':'LCLS2scSTMO',  'beg':'BEGSXTES_4',   'end':'ENDSXTES_4',  'ix':5},      #  5
+    {'root':'LCLS2scH',     'beg':'BEGSPH',       'end':'ENDSLTH',     'ix':6},      #  6
+    {'root':'LCLS2scD',     'beg':'BEGSPD_2',     'end':'ENDSLTD',     'ix':7},      #  7
+    {'root':'LCLS2scDA',    'beg':'BEGSPA',       'end':'ENDESA',      'ix':9},      #  9 (DASEL)
+    {'root':'LCLS2cuH',     'beg':'BEGCLTH_0',    'end':'ENDDMPH_2',   'ix':10},     # 10
+    {'root':'LCLS2cuHS',    'beg':'BEGSFTH_1',    'end':'ENDSFTH_2',   'ix':11},     # 11
+    {'root':'LCLS2cuHXTES', 'beg':'BEGHXTES_1',   'end':'ENDHXTES_2',  'ix':12},     # 12
+    {'root':'LCLS2cuHTXI',  'beg':'BEGHXTES_3',   'end':'ENDHXTES_3',  'ix':13},     # 13
+    {'root':'LCLS2cuS',     'beg':'BEGCLTS',      'end':'ENDCLTS',     'ix':14},     # 14
+]
 
-# ------------------------------------------------------------------------------
-# XAL sequences: SC linac
-# SXR line
-seq = []
-seq.append({'froot': 1, 'name': 'CATHODE TO DIAG0', 'beg': 'BEGGUNB', 'end': 'ENDHTR', 'offset': [0, 0], 'prev': 0})
-seq.append({'froot': 1, 'name': 'COL0 TO COL1', 'beg': 'BEGCOL0', 'end': 'ENDBC1B', 'offset': [0, 0], 'prev': 1})
-seq.append({'froot': 1, 'name': 'COL1 TO EMIT2', 'beg': 'BEGCOL1', 'end': 'ENDBC2B', 'offset': [0, 0], 'prev': 2})
-seq.append({'froot': 1, 'name': 'EMIT2 TO DOGLEG', 'beg': 'BEGEMIT2', 'end': 'ENDEXT', 'offset': [0, 0], 'prev': 3})
-seq.append({'froot': 1, 'name': 'DOGLEG TO BYPASS', 'beg': 'BEGDOG', 'end': 'ENDDOG', 'offset': [0, 0], 'prev': 4})
-seq.append({'froot': 1, 'name': 'BYPASS TO BKYSP0H', 'beg': 'BEGBYP', 'end': 'ENDBYP', 'offset': [0, 0], 'prev': 5})
-seq.append({'froot': 1, 'name': 'BKYSP0H TO BKYSP0S', 'beg': 'BEGSPD_1', 'end': 'ENDSPD_1', 'offset': [0, 0], 'prev': 6})
-seq.append({'froot': 1, 'name': 'BKYSP0S TO BSYBEG', 'beg': 'BEGSPS', 'end': 'ENDSPS', 'offset': [0, 0], 'prev': 7})
-seq.append({'froot': 1, 'name': 'BSYBEG TO BRCUS1', 'beg': 'BEGSLTS', 'end': 'ENDSLTS', 'offset': [0, 0], 'prev': 8})
-seq.append({'froot': 1, 'name': 'BRCUS1 TO BSYEND', 'beg': 'BEGBSYS', 'end': 'ENDBSYS', 'offset': [0, 0], 'prev': 9})
-seq.append({'froot': 1, 'name': 'BSYEND TO SXRSTART', 'beg': 'BEGLTUS', 'end': 'ENDLTUS', 'offset': [0, 0], 'prev': 10})
-seq.append({'froot': 1, 'name': 'SXRSTART TO BYD1B', 'beg': 'BEGUNDS', 'end': 'ENDDMPS_1', 'offset': [0, 0], 'prev': 11})
-seq.append({'froot': 1, 'name': 'BYD1B TO DUMPB', 'beg': 'BEGDMPS_2', 'end': 'ENDDMPS_2', 'offset': [0, 0], 'prev': 12})
-# SXR safety dump line
-seq.append({ 'froot': 2, 'name': 'BYD1B TO SFTDUMPB', 'beg': 'BEGSFTS_1', 'end': 'ENDSFTS_2', 'offset': [0, 0], 'prev': 13 })
-# SXR XTES systems
-seq.append({ 'froot': 3, 'name': 'SXR 2.X', 'beg': 'BEGSXTES_1', 'end': 'ENDSXTES_2', 'offset': [0, 0], 'prev': 0 })
-seq.append({ 'froot': 4, 'name': 'SXR TXI', 'beg': 'BEGSXTES_3', 'end': 'ENDSXTES_3', 'offset': [0, 0], 'prev': 0 })
-seq.append({ 'froot': 5, 'name': 'SXR TMO', 'beg': 'BEGSXTES_4', 'end': 'ENDSXTES_4', 'offset': [0, 0], 'prev': 0 })
-# HXR cross-connect
-seq.append({ 'froot': 6, 'name': 'BKYSP0H TO BSYBEG', 'beg': 'BEGSPH', 'end': 'ENDSPH', 'offset': [0, 0], 'prev': 6 })
-seq.append({ 'froot': 6, 'name': 'BSYBEG TO BXSP1H', 'beg': 'BEGSLTH', 'end': 'ENDSLTH', 'offset': [0, 0], 'prev': 18 })
-# BSY dump line
-seq.append({ 'froot': 7, 'name': 'BKYSP0S TO BKRDAS1', 'beg': 'BEGSPD_2', 'end': 'ENDSPD_2', 'offset': [0, 0], 'prev': 7 })
-seq.append({ 'froot': 7, 'name': 'BKRDAS1 TO BSYBEG', 'beg': 'BEGSPD_3', 'end': 'ENDSPD_3', 'offset': [0, 0], 'prev': 20 })
-seq.append({ 'froot': 7, 'name': 'BSYBEG TO BSYDUMP', 'beg': 'BEGSLTD', 'end': 'ENDSLTD', 'offset': [0, 0], 'prev': 21 })
-# DIAG0 line
-seq.append({ 'froot': 8, 'name': 'DIAG0 TO FCDG0DU', 'beg': 'BEGDIAG0', 'end': 'ENDDIAG0', 'offset': [0, 0], 'prev': 1 })
-# DASEL
-seq.append({ 'froot': 9, 'name': 'BKRDAS1 TO ESA',        'beg': 'BEGSPA', 'end': 'ENDBSYA', 'offset': [0, 0], 'prev': 20 })
-seq.append({ 'froot': 9, 'name': 'ESA TO BEAM DUMP EAST', 'beg': 'BEGESA', 'end': 'ENDESA', 'offset': [0, 0], 'prev': 24 })
-
-# XAL sequences: Cu linac
-# HXR line
-seq.append({ 'froot': 10, 'name': 'CATHODE TO BXG', 'beg': 'BEGGUN', 'end': 'ENDGUN', 'offset': [0, 0], 'prev': 0 })
-seq.append({ 'froot': 10, 'name': 'BXG TO BX01', 'beg': 'BEGL0', 'end': 'ENDDL1_1', 'offset': [0, 0], 'prev': 26 })
-seq.append({ 'froot': 10, 'name': 'BX01 TO BX02', 'beg': 'BEGDL1_2', 'end': 'DBMARK83', 'offset': [0, -1], 'prev': 27 })
-seq.append({ 'froot': 10, 'name': 'BX02 TO QM15', 'beg': 'DBMARK83', 'end': 'DBMARK28', 'offset': [0, -1], 'prev': 28 })
-seq.append({ 'froot': 10, 'name': 'QM15 TO FV2', 'beg': 'DBMARK28', 'end': 'ENDL3', 'offset': [0, 0], 'prev': 29 })
-seq.append({ 'froot': 10, 'name': 'FV2 TO BSYBEG', 'beg': 'BEGCLTH_0', 'end': 'ENDCLTH_0', 'offset': [0, 0], 'prev': 30 })
-seq.append({ 'froot': 10, 'name': 'BSYBEG TO BKRCUS', 'beg': 'BEGCLTH_1', 'end': 'ENDCLTH_1', 'offset': [0, 0], 'prev': 31 })
-seq.append({ 'froot': 10, 'name': 'BKRCUS TO BXSP1H', 'beg': 'BEGCLTH_2', 'end': 'ENDCLTH_2', 'offset': [0, 0], 'prev': 32 })
-seq.append({ 'froot': 10, 'name': 'BXSP1H TO BSYEND', 'beg': 'BEGBSYH', 'end': 'ENDBSYH', 'offset': [0, 0], 'prev': 33 })
-seq.append({ 'froot': 10, 'name': 'BSYEND TO BX31', 'beg': 'BEGLTUH', 'end': 'DBMARK34', 'offset': [0, -1], 'prev': 35 })
-seq.append({ 'froot': 10, 'name': 'BX31 TO WS31', 'beg': 'DBMARK34', 'end': 'DBMARK36', 'offset': [0, 0], 'prev': 36 })
-seq.append({ 'froot': 10, 'name': 'WS31 TO HXRSTART', 'beg': 'DBMARK36', 'end': 'ENDLTUH', 'offset': [1, 0], 'prev': 37 })
-seq.append({ 'froot': 10, 'name': 'HXRSTART TO BYD1', 'beg': 'BEGUNDH', 'end': 'ENDDMPH_1', 'offset': [0, 0], 'prev': 38 })
-seq.append({ 'froot': 10, 'name': 'BYD1 TO DUMP', 'beg': 'BEGDMPH_2', 'end': 'ENDDMPH_2', 'offset': [0, 0], 'prev': 39 })
-# HXR safety dump line
-seq.append({ 'froot': 11, 'name': 'BYD1 TO SFTDUMP', 'beg': 'BEGSFTH_1', 'end': 'ENDSFTH_2', 'offset': [0, 0], 'prev': 39 })
-# HXR XTES systems
-seq.append({ 'froot': 12, 'name': 'HXR XTES', 'beg': 'BEGHXTES_1', 'end': 'ENDHXTES_2', 'offset': [0, 0], 'prev': 0 }) 
-seq.append({ 'froot': 13, 'name': 'HXR TXI', 'beg': 'BEGHXTES_3', 'end': 'ENDHXTES_3', 'offset': [0, 0], 'prev': 0 })
-# SXR cross-connect
-seq.append({ 'froot': 14, 'name': 'BKRCUS TO BRCUS1', 'beg': 'BEGCLTS', 'end': 'ENDCLTS', 'offset': [0, 0], 'prev': 32 })
-# gun spectrometer
-seq.append({ 'froot': 15, 'name': 'BXG TO GUN SPECT DUMP', 'beg': 'BEGGSPEC', 'end': 'ENDGSPEC', 'offset': [0, 0], 'prev': 26 })
-# 135 MeV spectrometer
-seq.append({ 'froot': 16, 'name': 'BX01 TO 135-MEV SPECT DUMP', 'beg': 'BEGSPEC', 'end': 'ENDSPEC', 'offset': [0, 0], 'prev': 27 })
+und_file_roots = []
 
 # ------------------------------------------------------------------------------
 # machine areas
@@ -267,47 +220,8 @@ for a in area:
     if 'parent' not in a:
         a['parent']=a['name']
 
-# ------------------------------------------------------------------------------
-# nominal coordinate system
-nominal1 = []
-nominal1.append({"froot0":1})
-nominal1.append({"froot0":2})
-nominal1.append({"froot0":3})
-nominal1.append({"froot0":4})
-nominal1.append({"froot0":5})
-nominal1.append({"froot0":6})
-nominal1.append({"froot0":7})
-nominal1.append({"froot0":8})
-nominal1.append({"froot0":9})
-nominal1.append({"froot0":10})
-nominal1.append({"froot0":11})
-nominal1.append({"froot0":12})
-nominal1.append({"froot0":13})
-nominal1.append({"froot0":14})
-nominal1.append({"froot0":15})
-nominal1.append({"froot0":16})
-
-# ------------------------------------------------------------------------------
-# special coordinate system regions
-other1 = []
-other1.append({"froot0": 1, "froot": "BSY-LCLS2scS", "beg": "BEGSPD_1", "end": "ENDDMPS_2", "offset": np.array([0, 0])})
-other1.append({"froot0": 2, "froot": "BSY-LCLS2scSS", "beg": "BEGSFTS_1", "end": "ENDSFTS_2", "offset": np.array([0, 0])})
-other1.append({"froot0": 3, "froot": "BSY-LCLS2scS2_X", "beg": "BEGSXTES_1", "end": "ENDSXTES_2", "offset": np.array([0, 0])})
-other1.append({"froot0": 4, "froot": "BSY-LCLS2scSTXI", "beg": "BEGSXTES_3", "end": "ENDSXTES_3", "offset": np.array([0, 0])})
-other1.append({"froot0": 5, "froot": "BSY-LCLS2scSTMO", "beg": "BEGSXTES_4", "end": "ENDSXTES_4", "offset": np.array([0, 0])})
-other1.append({"froot0": 6, "froot": "BSY-LCLS2scH", "beg": "BEGSPH", "end": "ENDSLTH", "offset": np.array([0, 0])})
-other1.append({"froot0": 7, "froot": "BSY-LCLS2scD", "beg": "BEGSPD_2", "end": "ENDSLTD", "offset": np.array([0, 0])})
-other1.append({"froot0": 9, "froot": "BSY-LCLS2scDA", "beg": "BEGSPA", "end": "ENDESA", "offset": np.array([0, 0])})
-other1.append({"froot0": 10, "froot": "BSY-LCLS2cuH", "beg": "BEGCLTH_0", "end": "ENDDMPH_2", "offset": np.array([0, 0])})
-other1.append({"froot0": 11, "froot": "BSY-LCLS2cuHS", "beg": "BEGSFTH_1", "end": "ENDSFTH_2", "offset": np.array([0, 0])})
-other1.append({"froot0": 12, "froot": "BSY-LCLS2cuHXTES", "beg": "BEGHXTES_1", "end": "ENDHXTES_2", "offset": np.array([0, 0])})
-other1.append({"froot0": 13, "froot": "BSY-LCLS2cuHTXI", "beg": "BEGHXTES_3", "end": "ENDHXTES_3", "offset": np.array([0, 0])})
-other1.append({"froot0": 14, "froot": "BSY-LCLS2cuS", "beg": "BEGCLTS", "end": "ENDCLTS", "offset": np.array([0, 0])})
-
-other2=[]
-
-cBSY=len(other1)>0
-cUND=len(other2)>0
+cBSY=len(bsy_file_roots)>0
+cUND=len(und_file_roots)>0
 
 from xtffs2mat import xtffs2mat
 
@@ -317,59 +231,65 @@ stepnum += 1
 print('   {}) Read MAD output files ...'.format(stepnum))
 
 K, N, L, P, A, T, E, FDN, coor, S, Sd = [], [], [], [], [], [], [], [], [], [], []
-idf, idd = [], [], []  # idf: which MAD output file an element came from
-                       # idd: ordinal position in MAD output file
-nf = 0
-#for n in range(len(seq)):
-for nf,file_root in enumerate(froot):
-    fname = f'{file_root[0]}_survey.tape'
+idf, idd = [], []  # idf: which MAD output file an element came from
+                   # idd: ordinal position in MAD output file
+
+for file_root in file_roots:
+    fname = f'{file_root["root"]}_survey.tape'
     print(f'Opening file {fname}')
     titl, tK, tN, tL, tP, tA, tT, tE, tFDN, tcoor, tS = xtffs2mat(fname)
 
-    K.extend(tK)
-    N.extend(tN)
-    L.extend(tL)
-    P.extend(tP)
-    A.extend(tA)
-    T.extend(tT)
-    E.extend(tE)
-    FDN.extend(tFDN)
-    coor.extend(tcoor)
-    S.extend(tS)
-    Sd.extend(tcoor[2]) # set "display S" to linac Z-coordinate
+    id1 = tN.index(file_root['beg'])
+    id2 = tN.index(file_root['end']) 
+    slc = slice(id1, id2 + 1)
 
-    ndata = len(tK)
-    idf.extend([nf] * ndata)
-    idd.extend(list(range(ndata)))
+    K.extend(tK[slc])
+    N.extend(tN[slc])
+    L.extend(tL[slc])
+    P.extend(tP[slc])
+    A.extend(tA[slc])
+    T.extend(tT[slc])
+    E.extend(tE[slc])
+    FDN.extend(tFDN[slc])
+    coor.extend(tcoor[slc])
+    S.extend(tS[slc])
+
+    ndata = len(tK[slc])
+    idf.extend([file_root['ix']] * ndata)
+    idd.extend(list(range(id1,id2+1)))
+
+Sd = [x[2] for x in coor] # set "display S" to linac Z-coordinate
 
 Nelem = len(N)
-
 # get BSY coordinates
 K1, N1, L1, P1, S1, coor1, idf1, FDN1 = [], [], [], [], [], [], [], []
 if cBSY:
-    for nf,file_root in enumerate(froot):
-        if file_root[1] == True:
-            fname = f"{file_root[0]}_survey.tape"
-            print(f'Opening file {fname}')
-            titl, tK, tN, tL, tP, tA, tT, tE, tFDN, tcoor, tS = xtffs2mat(fname)
+    for file_root in bsy_file_roots:
+        fname = f'BSY-{file_root["root"]}_survey.tape'
+        print(f'Opening file {fname}')
+        titl, tK, tN, tL, tP, tA, tT, tE, tFDN, tcoor, tS = xtffs2mat(fname)
 
-            K1.extend(tK)
-            N1.extend(tN)
-            L1.extend(tL)
-            P1.extend(tP)
-            S1.extend(tS)
-            coor1.extend(tcoor)
-            FDN1.extend(tFDN)
+        id1 = tN.index(file_root['beg'])
+        id2 = tN.index(file_root['end']) 
+        slc = slice(id1, id2 + 1)
 
-            ndata = len(tK)
-            idf1.extend([nf] * len_id)
+        K1.extend(tK[slc])
+        N1.extend(tN[slc])
+        L1.extend(tL[slc])
+        P1.extend(tP[slc])
+        S1.extend(tS[slc])
+        coor1.extend(tcoor[slc])
+        FDN1.extend(tFDN[slc])
+
+        ndata = len(tK[slc])
+        idf1.extend([file_root['ix']] * ndata)
 
 # get UND coordinates
 K2, N2, L2, P2, S2, coor2, idf2, FDN2 = [], [], [], [], [], [], [], []
 if cUND:
-    for nf,file_root in enumerate(froot):
-        if file_root[2] == True:
-            fname = f"{file_root[0]}_survey.tape"
+    for file_root in file_roots:
+        if file_root['UND']:
+            fname = f'{file_root[0]}_survey.tape'
             print(f'Opening file {fname}')
             titl, tK, tN, tL, tP, tA, tT, tE, tFDN, tcoor, tS = xtffs2mat(fname)
 
@@ -381,8 +301,7 @@ if cUND:
             coor2.extend(tcoor)
             FDN2.extend(tFDN)
 
-            ndata = len(tK)
-            idf2.extend([nf] * len_id)
+            idf2.extend([file_root['ix']] * len(tK))
 
 def FixUpgradeNames(N):
   # Device names in upgraded SXR cells have "_" appended ... remove it
@@ -909,6 +828,7 @@ for kwn in keyw:
             coorc = np.mean(coor[ide, :], axis=0)  # m,rad (beam center)
             nLCAV += 1
             LCAV.append({
+                'idf': idf[id1],
                 'id': idd[id1],
                 'area': area[ida[id1]]['name'],
                 'parent': area[ida[id1]]['parent'],
@@ -1042,6 +962,7 @@ for kwn in keyw:
             else:
                 coorm[3] = tilt  # remove "creeping" rolls from non-rolled SBENs
             SBEN.append({
+                'idf': idf[id1],
                 'id': idd[id1],
                 'area': area[ida[id1]]['name'],
                 'parent': pname,
@@ -1188,6 +1109,7 @@ for kwn in keyw:
             polarity = -np.sign(k1 + np.finfo(float).eps)  # add eps so that sign=1 when k1=0
             coorc = np.copy(coor[id1, :])  # m,rad
             QUAD.append({
+                'idf': idf[id1],
                 'id': idd[id1],
                 'area': area[ida[id1]]['name'],
                 'parent': area[ida[id1]]['parent'],
@@ -1272,6 +1194,7 @@ for kwn in keyw:
             polarity = -np.sign(k2 + np.finfo(float).eps)  # add eps so that sign=1 when k2=0
             coorc = np.copy(coor[id1, :])  # m,rad
             SEXT.append({
+                'idf': idf[id1],
                 'id': idd[id1],
                 'area': area[ida[id1]]['name'],
                 'parent': area[ida[id1]]['parent'],
@@ -1355,6 +1278,7 @@ for kwn in keyw:
             polarity = -np.sign(ks + np.finfo(float).eps)  # add eps so that sign=1 when ks=0
             coorc = np.mean(coor[ide], axis=0)  # m, rad
             SOLE.append({
+                'idf': idf[id1],
                 'id': idd[id1],
                 'area': area[ida[id1]]['name'],
                 'parent': area[ida[id1]]['parent'],
@@ -1425,6 +1349,7 @@ for kwn in keyw:
             undk = P2[id1, 1]  # 1
             coorc = np.copy(coor[id1])  # m, rad
             MATR.append({
+                'idf': idf[id1],
                 'id': idd[id1],
                 'area': area[ida[id1]]['name'],
                 'parent': area[ida[id1]]['parent'],
@@ -1488,6 +1413,7 @@ for kwn in keyw:
             ygap = 2 * P[id, 4]  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             RCOL.append({
+                'idf': idf[id],
                 'id': idd[id],
                 'area': area[ida[id]]['name'],
                 'parent': area[ida[id]]['parent'],
@@ -1551,6 +1477,7 @@ for kwn in keyw:
             ybore = 2 * P[id, 4]  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             ECOL.append({
+                'idf': idf[id],
                 'id': idd[id],
                 'area': area[ida[id]]['name'],
                 'parent': area[ida[id]]['parent'],
@@ -1615,6 +1542,7 @@ for kwn in keyw:
                 ang = 0
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             SROT.append({
+                'idf': idf[id],
                 'id': idd[id],
                 'area': area[ida[id]]['name'],
                 'parent': area[ida[id]]['parent'],
@@ -1698,6 +1626,7 @@ for kwn in keyw:
             t = T[id].strip()
             aper = 2 * A[id]  # m
             MULT.append({
+                'idf': idf[id],
                 'id': idd[id],
                 'area': area[ida[id]]['name'],
                 'parent': area[ida[id]]['parent'],
@@ -1773,6 +1702,7 @@ for kwn in keyw:
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             t = T[id[0]].strip()
             INST.append({
+                'idf': idf[id[0]],
                 'id': idd[id[0]],
                 'area': area[ida[id[0]]]['name'],
                 'parent': area[ida[id[0]]]['parent'],
@@ -1840,6 +1770,7 @@ for kwn in keyw:
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             t = T[id[0]].strip()
             HKIC.append({
+                'idf': idf[id[0]],
                 'id': idd[id[0]],
                 'area': area[ida[id[0]]]['name'],
                 'parent': area[ida[id[0]]]['parent'],
@@ -1902,6 +1833,7 @@ for kwn in keyw:
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             t = T[id[0]].strip()
             VKIC.append({
+                'idf': idf[id[0]],
                 'id': idd[id[0]],
                 'area': area[ida[id[0]]]['name'],
                 'parent': area[ida[id[0]]]['parent'],
@@ -1963,6 +1895,7 @@ for kwn in keyw:
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             t = T[id[0]].strip()
             MONI.append({
+                'idf': idf[id[0]],
                 'id': idd[id[0]],
                 'area': area[ida[id[0]]]['name'],
                 'parent': area[ida[id[0]]]['parent'],
@@ -2024,6 +1957,7 @@ for kwn in keyw:
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             t = T[id[0]].strip()
             WIRE.append({
+                'idf': idf[id[0]],
                 'id': idd[id[0]],
                 'area': area[ida[id[0]]]['name'],
                 'parent': area[ida[id[0]]]['parent'],
@@ -2085,6 +2019,7 @@ for kwn in keyw:
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             t = T[id[0]].strip()
             PROF.append({
+                'idf': idf[id[0]],
                 'id': idd[id[0]],
                 'area': area[ida[id[0]]]['name'],
                 'parent': area[ida[id[0]]]['parent'],
@@ -2146,6 +2081,7 @@ for kwn in keyw:
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             t = T[id[0]].strip()
             IMON.append({
+                'idf': idf[id[0]],
                 'id': idd[id[0]],
                 'area': area[ida[id[0]]]['name'],
                 'parent': area[ida[id[0]]]['parent'],
@@ -2207,6 +2143,7 @@ for kwn in keyw:
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             t = T[id[0]].strip()
             BLMO.append({
+                'idf': idf[id[0]],
                 'id': idd[id[0]],
                 'area': area[ida[id[0]]]['name'],
                 'parent': area[ida[id[0]]]['parent'],
@@ -2261,6 +2198,7 @@ for kwn in keyw:
             energy = E[id]  # GeV
             coorc = np.copy(coor[id])
             MARK.append({
+                'idf': idf[id],
                 'id': idd[id],
                 'area': area[ida[id]]['name'],
                 'parent': area[ida[id]]['parent'],
@@ -2356,6 +2294,7 @@ KEYLIST = [
     HKIC, VKIC, MONI, WIRE, PROF, IMON, BLMO, INST,
     MARK, MULT
 ]
+
 for KEY in KEYLIST:
     for m in range(len(KEY)):
         t = KEY[m]['type']
@@ -2690,15 +2629,14 @@ for n,KEY in enumerate(KEYLIST):
         ip.append([KEY[m]["idf"], n, m, KEY[m]['id']])
 ip = sorted(ip, key=lambda x: (x[0], x[3]))
 
-def arrange_output(coord_system, system_name, filename):
+def arrange_output(roots, system_name, filename):
     filepath = Path(outdir+'/'+fname)
     filepath.parent.mkdir(parents=True, exist_ok=True)
     with filepath.open('wt') as fid:
         fid.write(f'{head}\n')
         fid.write(f'{unit}\n')
-        for entry in coord_system:
-            nf = entry['froot0']
-            id = [i for i,x in enumerate(ip) if x[0]==nf]
+        for entry in roots:
+            id = [i for i,x in enumerate(ip) if x[0]==entry['ix']]
 
             for n in id:
                 idk = ip[n][1]
@@ -2725,7 +2663,7 @@ def arrange_output(coord_system, system_name, filename):
                     s[20] = roundoff(TEMP['c4'], prec)
                     s[21] = roundoff(TEMP['c5'], prec)
                     s[22] = roundoff(TEMP['c6'], prec)
-                elif system_name == 'OTHER1':
+                elif system_name == 'BSY':
                     if 'suml1' not in TEMP:
                         # use suml1 as a proxy to see if element is in BSY
                         continue
@@ -2736,7 +2674,7 @@ def arrange_output(coord_system, system_name, filename):
                     s[20] = roundoff(TEMP['c14'], prec)
                     s[21] = roundoff(TEMP['c15'], prec)
                     s[22] = roundoff(TEMP['c16'], prec)
-                elif system_name == 'OTHER2':
+                elif system_name == 'UND':
                     if 'suml2' not in TEMP:
                         # use suml2 as a proxy to see if element is in UND
                         continue
@@ -2776,14 +2714,14 @@ def arrange_output(coord_system, system_name, filename):
                         s[40] = roundoff(TEMP['m4'], prec)
                         s[41] = roundoff(TEMP['m5'], prec)
                         s[42] = roundoff(TEMP['m6'], prec)
-                    elif system_name == 'OTHER1':
+                    elif system_name == 'BSY':
                         s[37] = roundoff(TEMP['m11'], prec)
                         s[38] = roundoff(TEMP['m12'], prec)
                         s[39] = roundoff(TEMP['m13'], prec)
                         s[40] = roundoff(TEMP['m14'], prec)
                         s[41] = roundoff(TEMP['m15'], prec)
                         s[42] = roundoff(TEMP['m16'], prec)
-                    elif system_name == 'OTHER2':
+                    elif system_name == 'UND':
                         s[37] = roundoff(TEMP['m21'], prec)
                         s[38] = roundoff(TEMP['m22'], prec)
                         s[39] = roundoff(TEMP['m23'], prec)
@@ -2834,14 +2772,14 @@ def arrange_output(coord_system, system_name, filename):
                         s[40] = roundoff(TEMP['m4'], prec)
                         s[41] = roundoff(TEMP['m5'], prec)
                         s[42] = roundoff(TEMP['m6'], prec)
-                    elif system_name == 'OTHER1':
+                    elif system_name == 'BSY':
                         s[37] = roundoff(TEMP['m11'], prec)
                         s[38] = roundoff(TEMP['m12'], prec)
                         s[39] = roundoff(TEMP['m13'], prec)
                         s[40] = roundoff(TEMP['m14'], prec)
                         s[41] = roundoff(TEMP['m15'], prec)
                         s[42] = roundoff(TEMP['m16'], prec)
-                    elif system_name == 'OTHER2':
+                    elif system_name == 'UND':
                         s[37] = roundoff(TEMP['m21'], prec)
                         s[38] = roundoff(TEMP['m22'], prec)
                         s[39] = roundoff(TEMP['m23'], prec)
@@ -2877,13 +2815,13 @@ def arrange_output(coord_system, system_name, filename):
 
 
 fname = f'AD_ACCEL-{optics}.txt'
-arrange_output(nominal1,'NOMINAL',fname)
+arrange_output(file_roots,'NOMINAL',fname)
 if cBSY:
     fname = f'BSY-AD_ACCEL-{optics}.txt'
-    arrange_output(other1,'OTHER1',fname)
+    arrange_output(bsy_file_roots,'BSY',fname)
 if cUND:
     fname = f'UND-AD_ACCEL-{optics}.txt'
-    arrange_output(other2,'OTHER2',fname)
+    arrange_output(und_file_roots,'UND',fname)
 
 # ------------------------------------------------------------------------------
 # Write extra SYMBOLS txt-file ...
@@ -2892,7 +2830,7 @@ if cUND:
 fname = f'AD_ACCEL-extra-{optics}.txt'
 with open(outdir+'/'+fname, 'wt') as fid:
     fid.write('ELEMENT,Area2,Undulator Cell,Sector\n')
-    for nf in range(1,len(froot)+1):
+    for nf in range(1,len(file_roots)+1):
         id = [i for i,x in enumerate(ip) if x[0]==nf]
         for n in id:
             idk = ip[n][1]
