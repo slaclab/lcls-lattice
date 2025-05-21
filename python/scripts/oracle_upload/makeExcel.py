@@ -59,9 +59,6 @@ def roundoff(val, prec=None):
     else:
         return prec * np.round(val / prec)
 
-def slicer(N,ix):
-    return [N[i] for i in ix]
-
 #------------------------------------------
 #------------------------------------------
 #------------------------------------------
@@ -788,17 +785,17 @@ coor1 = np.array(coor1)
 coor2 = np.array(coor2)
 A = np.array(A)
 for kwn in keyw:
-    id = strmatch(kwn,K)
+    key_ids = strmatch(kwn,K)
+    name = list(dict.fromkeys([N[i] for i in key_ids]))
     if kwn == 'LCAV':
+        LCAV = []
         # create list of unique names that will allow unsplitting
-        name = slicer(N,id)
         for i in range(len(name)):
             if name[i][0:4] in ['CAVL', 'CAVC']:  # unique in 7 characters
                 name[i] = name[i][0:7]
             else:  # unique in 6 characters
                 name[i] = name[i][0:6]
         name = list(dict.fromkeys(name))
-        LCAV = []
         nLCAV = 0
 
         for mname in name:
@@ -888,9 +885,8 @@ for kwn in keyw:
                     for k in range(6):
                         LCAV[-1][f'c2{k+1}'] = coorc2[k]
     elif kwn == 'SBEN':
-        name = [N[i] for i in id]
+        Nelm = len(key_ids) // 2
         SBEN = []
-        Nelm = len(id) // 2
         for m in range(Nelm):
             mname1 = name[2 * m].strip()
             mname2 = name[2 * m + 1].strip()
@@ -1080,7 +1076,6 @@ for kwn in keyw:
                         SBEN[-1][f'm2{k+1}'] = coorm2[k]
 
     elif kwn == 'QUAD':
-        name = list(dict.fromkeys([N[i] for i in id]))
         QUAD = []
         for mname in name:
             id = strmatch(mname,N,True)
@@ -1167,7 +1162,6 @@ for kwn in keyw:
                         QUAD[-1][f'c2{k+1}'] = coorc2[k]
 
     elif kwn == 'SEXT':
-        name = list(dict.fromkeys([N[i] for i in id]))
         SEXT = []
         for mname in name:
             id = strmatch(mname,N,True)
@@ -1251,7 +1245,6 @@ for kwn in keyw:
                         SEXT[-1][f'c2{k+1}'] = coorc2[k]
 
     elif kwn == 'SOLE':
-        name = list(dict.fromkeys([N[i] for i in id]))
         SOLE = []
         for mname in name:
             id = strmatch(mname,N,True)
@@ -1336,7 +1329,6 @@ for kwn in keyw:
                         SOLE[-1][f'c2{k+1}'] = coorc2[k]
 
     elif kwn == 'MATR':
-        name = list(dict.fromkeys([N[i] for i in id]))
         MATR = []
         for mname in name:
             id = strmatch(mname,N,True)
@@ -1400,7 +1392,6 @@ for kwn in keyw:
                         MATR[-1][f'c2{k+1}'] = coorc2[k]
 
     elif kwn == 'RCOL':
-        name = [N[i] for i in id] # RCOLs are not split
         RCOL = []
         for mname in name:
             id = strmatch(mname,N,True)[0]
@@ -1464,7 +1455,6 @@ for kwn in keyw:
                         RCOL[-1][f'c2{k+1}'] = coorc2[k]
 
     elif kwn == 'ECOL':
-        name = [N[i] for i in id]  # ECOLs are not split
         ECOL = []
         for mname in name:
             id = strmatch(mname,N,True)[0]
@@ -1528,7 +1518,6 @@ for kwn in keyw:
                         ECOL[-1][f'c2{k+1}'] = coorc2[k]
 
     elif kwn == 'SROT':
-        name = [N[i] for i in id]  # SROTs are not split
         SROT = []
         for mname in name:
             id = strmatch(mname,N,True)[0]
@@ -1592,7 +1581,6 @@ for kwn in keyw:
                         SROT[-1][f'c2{k+1}'] = coorc2[k]
 
     elif kwn == 'MULT':
-        name = list(dict.fromkeys([N[i] for i in id]))
         MULT = []
         for mname in name:
             id = strmatch(mname,N,True)[0]
@@ -1686,7 +1674,6 @@ for kwn in keyw:
                         MULT[-1][f'c2{k+1}'] = coorc2[k]
 
     elif kwn == 'INST':
-        name = list(dict.fromkeys([N[i] for i in id]))
         INST = []
         for mname in name:
             id = strmatch(mname,N,True)
@@ -1754,7 +1741,6 @@ for kwn in keyw:
                         INST[-1][f'c2{k+1}'] = coorc2[k]
 
     elif kwn == 'HKIC':
-        name = list(dict.fromkeys([N[i] for i in id]))
         HKIC = []
         for mname in name:
             id = strmatch(mname,N,True)
@@ -1817,7 +1803,6 @@ for kwn in keyw:
                         HKIC[-1][f'c2{k+1}'] = coorc2[k]
 
     elif kwn == 'VKIC':
-        name = list(dict.fromkeys([N[i] for i in id]))
         VKIC = []
         for mname in name:
             id = strmatch(mname,N,True)
@@ -1879,7 +1864,6 @@ for kwn in keyw:
                     for k in range(6):
                         VKIC[-1][f'c2{k+1}'] = coorc2[k]
     elif kwn == 'MONI':
-        name = list(dict.fromkeys([N[i] for i in id]))
         MONI = []
         for mname in name:
             id = strmatch(mname,N,True)
@@ -1941,7 +1925,6 @@ for kwn in keyw:
                     for k in range(6):
                         MONI[-1][f'c2{k+1}'] = coorc2[k]
     elif kwn == 'WIRE':
-        name = list(dict.fromkeys([N[i] for i in id]))
         WIRE = []
         for mname in name:
             id = strmatch(mname,N,True)
@@ -2003,7 +1986,6 @@ for kwn in keyw:
                     for k in range(6):
                         WIRE[-1][f'c2{k+1}'] = coorc2[k]
     elif kwn == 'PROF':
-        name = list(dict.fromkeys([N[i] for i in id]))
         PROF = []
         for mname in name:
             id = strmatch(mname,N,True)
@@ -2065,7 +2047,6 @@ for kwn in keyw:
                     for k in range(6):
                         PROF[-1][f'c2{k+1}'] = coorc2[k]
     elif kwn == 'IMON':
-        name = list(dict.fromkeys([N[i] for i in id]))
         IMON = []
         for mname in name:
             id = strmatch(mname,N,True)
@@ -2127,7 +2108,6 @@ for kwn in keyw:
                     for k in range(6):
                         IMON[-1][f'c2{k+1}'] = coorc2[k]
     elif kwn == 'BLMO':
-        name = list(dict.fromkeys([N[i] for i in id]))
         BLMO = []
         for mname in name:
             id = strmatch(mname,N,True)
@@ -2189,7 +2169,6 @@ for kwn in keyw:
                     for k in range(6):
                         BLMO[-1][f'c2{k+1}'] = coorc2[k]
     elif kwn == 'MARK':
-        name = [N[i] for i in id]
         MARK = []
         for mname in name:
             id = strmatch(mname,N,True)[0]
