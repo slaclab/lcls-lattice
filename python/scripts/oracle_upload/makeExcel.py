@@ -813,22 +813,22 @@ for kwn,eles in ele_dict.items():
 
         for mname in name:
             if mname.startswith('TCX'):
-                id = strmatch(mname,N,True)
+                ids = strmatch(mname,N,True)
             else:
-                id = strmatch(mname,N)
-            id1 = id[0]  # first segment
-            ide = [id1-1, id[-1]]  # [entrance, exit]
+                ids = strmatch(mname,N)
+            id1 = ids[0]  # first segment
+            ide = [id1-1, ids[-1]]  # [entrance, exit]
             sdsp = np.mean(Sd[ide])  # m (beam center)
             suml = np.mean(S[ide])  # m (beam center)
             energy = np.mean(E[ide])  # GeV (beam center)
-            leng = np.sum(L[id])  # m
+            leng = np.sum(L[ids])  # m
             freq = P[id1, 4]  # MHz
-            ampl = np.sum(P[id, 5])  # MeV
+            ampl = np.sum(P[ids, 5])  # MeV
             phase = P[id1, 6]  # rad/2pi
             grad = ampl / leng  # MeV/m
             if re.match(r'K\d\d_\d[ABCD]', mname[0:6]):  # i.e. K27_3D
-                id = strmatch(mname[0:5],N)
-                grad0 = np.min(P[id, 5] / L[id])
+                ids = strmatch(mname[0:5],N)
+                grad0 = np.min(P[ids, 5] / L[ids])
                 if grad0 == 0:
                     power = float("NaN")
                 else:
@@ -865,12 +865,12 @@ for kwn,eles in ele_dict.items():
                 eles[-1][f'c1{k+1}'] = []
             if cBSY:
                 if mname.startswith('TCX'):
-                    id = strmatch(mname,N1,True) # differentiate between TCX01/02 and TCX01B/02B
+                    ids = strmatch(mname,N1,True) # differentiate between TCX01/02 and TCX01B/02B
                 else:
-                    id = strmatch(mname,N1)
-                if len(id) > 0:
-                    id1 = id[0]  # first segment
-                    ide = [id1 - 1, id[-1]]  # [entrance, exit]
+                    ids = strmatch(mname,N1)
+                if len(ids) > 0:
+                    id1 = ids[0]  # first segment
+                    ide = [id1 - 1, ids[-1]]  # [entrance, exit]
                     suml1 = np.mean(S1[ide])  # m (beam center)
                     coorc1 = np.mean(coor1[ide, :], axis=0)  # m,rad (beam center)
                     eles[-1]['suml1'] = suml1
@@ -887,11 +887,11 @@ for kwn,eles in ele_dict.items():
                 eles[-1][f'c2{k+1}'] = []
             if cUND:
                 if mname.startswith('TCX'):
-                    id = strmatch(mname,N2,True) # differentiate between TCX01/02 and TCX01B/02B
+                    ids = strmatch(mname,N2,True) # differentiate between TCX01/02 and TCX01B/02B
                 else:
-                    id = strmatch(mname,N2)
-                if len(id) > 0:
-                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
+                    ids = strmatch(mname,N2)
+                if len(ids) > 0:
+                    ide = [ids[0] - 1, ids[-1]]  # [entrance, exit]
                     suml2 = np.mean(S2[ide])  # m (beam center)
                     coorc2 = np.mean(coor2[ide, :], axis=0)  # m,rad (beam center)
                     eles[-1]['suml2'] = suml2
@@ -903,18 +903,18 @@ for kwn,eles in ele_dict.items():
             mname1 = name[2 * m].strip()
             mname2 = name[2 * m + 1].strip()
             mname = mname1[:-1]  # remove last character from name
-            id = [strmatch(mname1,N,True),strmatch(mname2,N,True)]
-            id1 = id[0][0]  # end point of first of 2 halfs of split bend.
+            ids = [strmatch(mname1,N,True),strmatch(mname2,N,True)]
+            id1 = ids[0][0]  # end point of first of 2 halfs of split bend.
             idi = id1 - 1  # start point of bend
-            ido = id[1][-1]  # exit point of bend
+            ido = ids[1][-1]  # exit point of bend
             sdsp = Sd[id1]  # m
             suml = S[id1]  # m
             energy = E[id1]  # GeV
-            leng = np.sum(L[id])  # m
+            leng = np.sum(L[ids])  # m
             gap = 2 * A[id1]  # m
             fint = P2[id1, 0]  # m
             tilt = P[id1, 3]  # rad
-            ang = np.sum(P[id, 0])  # rad
+            ang = np.sum(P[ids, 0])  # rad
             if abs(ang) < amin:
                 ang = 0
                 e1 = 0
@@ -1007,11 +1007,11 @@ for kwn,eles in ele_dict.items():
                 eles[-1][f'c1{k+1}'] = []
                 eles[-1][f'm1{k+1}'] = []
             if cBSY:
-                id = [strmatch(mname1,N1,True),strmatch(mname2,N1,True)]
-                if any(id):
-                    id1 = id[0][0]  # first piece (beam center)
+                ids = [strmatch(mname1,N1,True),strmatch(mname2,N1,True)]
+                if any(ids):
+                    id1 = ids[0][0]  # first piece (beam center)
                     idi = id1 - 1  # beam in
-                    ido = id[1][-1]  # beam out
+                    ido = ids[1][-1]  # beam out
                     suml1 = S1[id1]  # m
                     coori1 = np.copy(coor1[idi, :])  # m,rad
                     coorc1 = np.copy(coor1[id1, :])  # m,rad
@@ -1052,11 +1052,11 @@ for kwn,eles in ele_dict.items():
                 eles[-1][f'c2{k+1}'] = []
                 eles[-1][f'm2{k+1}'] = []
             if cUND:
-                id = [strmatch(mname1,N2,True),strmatch(mname2,N2,True)]
-                if any(id) > 0:
-                    id1 = id[0][0]  # first piece (beam center)
+                ids = [strmatch(mname1,N2,True),strmatch(mname2,N2,True)]
+                if any(ids) > 0:
+                    id1 = ids[0][0]  # first piece (beam center)
                     idi = id1 - 1  # beam in
-                    ido = id[1][-1]  # beam out
+                    ido = ids[1][-1]  # beam out
                     suml2 = S2[id1]  # m
                     coori2 = coor2[idi, :]  # m,rad
                     coorc2 = coor2[id1, :]  # m,rad
@@ -1089,12 +1089,12 @@ for kwn,eles in ele_dict.items():
 
     elif kwn == 'QUAD':
         for mname in name:
-            id = strmatch(mname,N,True)
-            id1 = id[0]  # first segment (beam center)
+            ids = strmatch(mname,N,True)
+            id1 = ids[0]  # first segment (beam center)
             sdsp = Sd[id1]  # m
             suml = S[id1]  # m
             energy = E[id1]  # GeV
-            leng = np.sum(L[id])  # m
+            leng = np.sum(L[ids])  # m
             bore = 2 * A[id1]  # m
             tilt = P[id1, 3]  # rad
             k1 = P[id1, 1]  # 1/m^2
@@ -1145,9 +1145,9 @@ for kwn,eles in ele_dict.items():
             for k in range(6):
                 eles[-1][f'c1{k+1}'] = []
             if cBSY:
-                id = strmatch(mname,N1,True)
-                if len(id) > 0:
-                    id1 = id[0]  # first segment (beam center)
+                ids = strmatch(mname,N1,True)
+                if len(ids) > 0:
+                    id1 = ids[0]  # first segment (beam center)
                     suml1 = S1[id1]  # m
                     coorc1 = np.copy(coor1[id1, :])  # m,rad
                     eles[-1]['suml1'] = suml1
@@ -1163,9 +1163,9 @@ for kwn,eles in ele_dict.items():
             for k in range(6):
                 eles[-1][f'c2{k+1}'] = []
             if cUND:
-                id = strmatch(mname,N2,True)
-                if len(id) > 0:
-                    id1 = id[0]  # first segment (beam center)
+                ids = strmatch(mname,N2,True)
+                if len(ids) > 0:
+                    id1 = ids[0]  # first segment (beam center)
                     suml2 = S2[id1]  # m
                     coorc2 = coor2[id1, :]  # m,rad
                     eles[-1]['suml2'] = suml2
@@ -1174,12 +1174,12 @@ for kwn,eles in ele_dict.items():
 
     elif kwn == 'SEXT':
         for mname in name:
-            id = strmatch(mname,N,True)
-            id1 = id[0]  # first half (beam center)
+            ids = strmatch(mname,N,True)
+            id1 = ids[0]  # first half (beam center)
             sdsp = Sd[id1]  # m
             suml = S[id1]  # m
             energy = E[id1]  # GeV
-            leng = np.sum(L[id])  # m
+            leng = np.sum(L[ids])  # m
             bore = 2 * A[id1]  # m
             tilt = P[id1, 3]  # rad
             k2 = P[id1, 2]  # 1/m^3
@@ -1227,9 +1227,9 @@ for kwn,eles in ele_dict.items():
             for k in range(6):
                 eles[-1][f'c1{k+1}'] = []
             if cBSY:
-                id = strmatch(mname,N1,True)
-                if len(id) > 0:
-                    id1 = id[0]  # first segment (beam center)
+                ids = strmatch(mname,N1,True)
+                if len(ids) > 0:
+                    id1 = ids[0]  # first segment (beam center)
                     suml1 = S1[id1]  # m
                     coorc1 = np.copy(coor1[id1, :])  # m,rad
                     eles[-1]['suml1'] = suml1
@@ -1245,9 +1245,9 @@ for kwn,eles in ele_dict.items():
             for k in range(6):
                 eles[-1][f'c2{k+1}'] = []
             if cUND:
-                id = strmatch(mname,N2,True)
-                if len(id) > 0:
-                    id1 = id[0]  # first segment (beam center)
+                ids = strmatch(mname,N2,True)
+                if len(ids) > 0:
+                    id1 = ids[0]  # first segment (beam center)
                     suml2 = S2[id1]  # m
                     coorc2 = coor2[id1, :]  # m,rad
                     eles[-1]['suml2'] = suml2
@@ -1256,13 +1256,13 @@ for kwn,eles in ele_dict.items():
 
     elif kwn == 'SOLE':
         for mname in name:
-            id = strmatch(mname,N,True)
-            id1 = id[0]
-            ide = [id1 - 1, id[-1]]  # [entrance, exit]
+            ids = strmatch(mname,N,True)
+            id1 = ids[0]
+            ide = [id1 - 1, ids[-1]]  # [entrance, exit]
             sdsp = np.mean(Sd[ide])  # m
             suml = np.mean(S[ide])  # m
             energy = np.mean(E[ide])  # GeV
-            leng = np.sum(L[id])  # m
+            leng = np.sum(L[ids])  # m
             bore = 2 * A[id1]  # m
             ks = P[id1, 4]  # 1/m
             if abs(ks) < kmin:
@@ -1308,10 +1308,10 @@ for kwn,eles in ele_dict.items():
             for k in range(6):
                 eles[-1][f'c1{k+1}'] = []
             if cBSY:
-                id = strmatch(mname,N1,True)
-                if len(id) > 0:
-                    id1 = id[0]  # first segment (beam center)
-                    ide = [id1 - 1, id[-1]]  # [entrance, exit]
+                ids = strmatch(mname,N1,True)
+                if len(ids) > 0:
+                    id1 = ids[0]  # first segment (beam center)
+                    ide = [id1 - 1, ids[-1]]  # [entrance, exit]
                     suml1 = np.mean(S1[ide])  # m
                     coorc1 = np.mean(coor1[ide], axis=0)  # m, rad
                     eles[-1]['suml1'] = suml1
@@ -1327,10 +1327,10 @@ for kwn,eles in ele_dict.items():
             for k in range(6):
                 eles[-1][f'c2{k+1}'] = []
             if cUND:
-                id = strmatch(mname,N2)
-                if len(id) > 0:
-                    id1 = id[0]  # first segment (beam center)
-                    ide = [id1 - 1, id[-1]]  # [entrance, exit]
+                ids = strmatch(mname,N2)
+                if len(ids) > 0:
+                    id1 = ids[0]  # first segment (beam center)
+                    ide = [id1 - 1, ids[-1]]  # [entrance, exit]
                     suml2 = np.mean(S2[ide])  # m
                     coorc2 = np.mean(coor2[ide], axis=0)  # m, rad
                     eles[-1]['suml2'] = suml2
@@ -1339,12 +1339,12 @@ for kwn,eles in ele_dict.items():
 
     elif kwn == 'MATR':
         for mname in name:
-            id = strmatch(mname,N,True)
-            id1 = id[0]  # first half (beam center)
+            ids = strmatch(mname,N,True)
+            id1 = ids[0]  # first half (beam center)
             sdsp = Sd[id1]  # m
             suml = S[id1]  # m
             energy = E[id1]  # GeV
-            leng = np.sum(L[id])  # m
+            leng = np.sum(L[ids])  # m
             undl = P2[id1, 0]  # m
             undk = P2[id1, 1]  # 1
             coorc = np.copy(coor[id1])  # m, rad
@@ -1372,9 +1372,9 @@ for kwn,eles in ele_dict.items():
             for k in range(6):
                 eles[-1][f'c1{k+1}'] = []
             if cBSY:
-                id = strmatch(mname,N1,True)
-                if len(id) > 0:
-                    id1 = id[0]  # first segment (beam center)
+                ids = strmatch(mname,N1,True)
+                if len(ids) > 0:
+                    id1 = ids[0]  # first segment (beam center)
                     suml1 = S1[id1]  # m
                     coorc1 = np.copy(coor1[id1])  # m, rad
                     eles[-1]['suml1'] = suml1
@@ -1390,9 +1390,9 @@ for kwn,eles in ele_dict.items():
             for k in range(6):
                 eles[-1][f'c2{k+1}'] = []
             if cUND:
-                id = strmatch(mname,N2,True)
-                if len(id) > 0:
-                    id1 = id[0]  # first segment (beam center)
+                ids = strmatch(mname,N2,True)
+                if len(ids) > 0:
+                    id1 = ids[0]  # first segment (beam center)
                     suml2 = S2[id1]  # m
                     coorc2 = coor2[id1]  # m, rad
                     eles[-1]['suml2'] = suml2
@@ -1401,25 +1401,25 @@ for kwn,eles in ele_dict.items():
 
     elif kwn == 'RCOL':
         for mname in name:
-            id = strmatch(mname,N,True)[0]
-            ide = [id - 1, id]  # [entrance, exit]
+            ids = strmatch(mname,N,True)[0]
+            ide = [ids - 1, ids]  # [entrance, exit]
             sdsp = np.mean(Sd[ide])  # m (beam center)
             suml = np.mean(S[ide])  # m (beam center)
-            energy = E[id]  # GeV
-            leng = L[id]  # m
-            xgap = 2 * P[id, 3]  # m
-            ygap = 2 * P[id, 4]  # m
+            energy = E[ids]  # GeV
+            leng = L[ids]  # m
+            xgap = 2 * P[ids, 3]  # m
+            ygap = 2 * P[ids, 4]  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             eles.append({
-                'idf': idf[id],
-                'id': idd[id],
-                'area': area[ida[id]]['name'],
-                'parent': area[ida[id]]['parent'],
-                'sector': SECTORS[id].strip(),
+                'idf': idf[ids],
+                'id': idd[ids],
+                'area': area[ida[ids]]['name'],
+                'parent': area[ida[ids]]['parent'],
+                'sector': SECTORS[ids].strip(),
                 'ucell': [],
-                'prim': FDN[id],
+                'prim': FDN[ids],
                 'name': mname,
-                'type': T[id].strip(),
+                'type': T[ids].strip(),
                 'energy': energy,
                 'leng': leng,
                 'xgap': xgap,
@@ -1434,17 +1434,17 @@ for kwn,eles in ele_dict.items():
             for k in range(6):
                 eles[-1][f'c1{k+1}'] = []
             if cBSY:
-                id = strmatch(mname,N1,True)
-                if len(id) > 0:
-                    ide = [id[0] - 1, id[0]]  # [entrance, exit]
+                ids = strmatch(mname,N1,True)
+                if len(ids) > 0:
+                    ide = [ids[0] - 1, ids[0]]  # [entrance, exit]
                     suml1 = np.mean(S1[ide])  # m (beam center)
                     coorc1 = np.mean(coor1[ide], axis=0)  # m, rad (beam center)
                     eles[-1]['suml1'] = suml1
                     for k in range(6):
                         eles[-1][f'c1{k+1}'] = coorc1[k]
                     if not eles[-1]['sector']:
-                        eles[-1]['sector'] = SECTORS1[id[0]].strip()
-                    eles[-1]['ucell'] = UCELL[id[0]].strip()
+                        eles[-1]['sector'] = SECTORS1[ids[0]].strip()
+                    eles[-1]['ucell'] = UCELL[ids[0]].strip()
 
             # UND coordinates
 
@@ -1452,9 +1452,9 @@ for kwn,eles in ele_dict.items():
             for k in range(6):
                 eles[-1][f'c2{k+1}'] = []
             if cUND:
-                id = strmatch(mname,N2)
-                if len(id) > 0:
-                    ide = [id[0] - 1, id[0]]  # [entrance, exit]
+                ids = strmatch(mname,N2)
+                if len(ids) > 0:
+                    ide = [ids[0] - 1, ids[0]]  # [entrance, exit]
                     suml2 = np.mean(S2[ide])  # m (beam center)
                     coorc2 = np.mean(coor2[ide], axis=0)  # m, rad (beam center)
                     eles[-1]['suml2'] = suml2
@@ -1463,25 +1463,25 @@ for kwn,eles in ele_dict.items():
 
     elif kwn == 'ECOL':
         for mname in name:
-            id = strmatch(mname,N,True)[0]
-            ide = [id - 1, id]  # [entrance, exit]
+            ids = strmatch(mname,N,True)[0]
+            ide = [ids - 1, ids]  # [entrance, exit]
             sdsp = np.mean(Sd[ide])  # m (beam center)
             suml = np.mean(S[ide])  # m (beam center)
-            energy = E[id]  # GeV
-            leng = L[id]  # m
-            xbore = 2 * P[id, 3]  # m
-            ybore = 2 * P[id, 4]  # m
+            energy = E[ids]  # GeV
+            leng = L[ids]  # m
+            xbore = 2 * P[ids, 3]  # m
+            ybore = 2 * P[ids, 4]  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             eles.append({
-                'idf': idf[id],
-                'id': idd[id],
-                'area': area[ida[id]]['name'],
-                'parent': area[ida[id]]['parent'],
-                'sector': SECTORS[id].strip(),
+                'idf': idf[ids],
+                'id': idd[ids],
+                'area': area[ida[ids]]['name'],
+                'parent': area[ida[ids]]['parent'],
+                'sector': SECTORS[ids].strip(),
                 'ucell': [],
-                'prim': FDN[id],
+                'prim': FDN[ids],
                 'name': mname,
-                'type': T[id].strip(),
+                'type': T[ids].strip(),
                 'energy': energy,
                 'leng': leng,
                 'xbore': xbore,
@@ -1496,17 +1496,17 @@ for kwn,eles in ele_dict.items():
             for k in range(6):
                 eles[-1][f'c1{k+1}'] = []
             if cBSY:
-                id = strmatch(mname,N1,True)
-                if len(id) > 0:
-                    ide = [id[0] - 1, id[0]]  # [entrance, exit]
+                ids = strmatch(mname,N1,True)
+                if len(ids) > 0:
+                    ide = [ids[0] - 1, ids[0]]  # [entrance, exit]
                     suml1 = np.mean(S1[ide])  # m (beam center)
                     coorc1 = np.mean(coor1[ide], axis=0)  # m, rad (beam center)
                     eles[-1]['suml1'] = suml1
                     for k in range(6):
                         eles[-1][f'c1{k+1}'] = coorc1[k]
                     if not eles[-1]['sector']:
-                        eles[-1]['sector'] = SECTORS1[id[0]].strip()
-                    eles[-1]['ucell'] = UCELL[id[0]].strip()
+                        eles[-1]['sector'] = SECTORS1[ids[0]].strip()
+                    eles[-1]['ucell'] = UCELL[ids[0]].strip()
 
             # UND coordinates
 
@@ -1514,9 +1514,9 @@ for kwn,eles in ele_dict.items():
             for k in range(6):
                 eles[-1][f'c2{k+1}'] = []
             if cUND:
-                id = strmatch(mname,N2,True)
-                if len(id) > 0:
-                    ide = [id[0] - 1, id[0]]  # [entrance, exit]
+                ids = strmatch(mname,N2,True)
+                if len(ids) > 0:
+                    ide = [ids[0] - 1, ids[0]]  # [entrance, exit]
                     suml2 = np.mean(S2[ide])  # m (beam center)
                     coorc2 = np.mean(coor2[ide], axis=0)  # m, rad (beam center)
                     eles[-1]['suml2'] = suml2
@@ -1525,26 +1525,26 @@ for kwn,eles in ele_dict.items():
 
     elif kwn == 'SROT':
         for mname in name:
-            id = strmatch(mname,N,True)[0]
-            ide = [id - 1, id]  # [entrance, exit]
+            ids = strmatch(mname,N,True)[0]
+            ide = [ids - 1, ids]  # [entrance, exit]
             sdsp = np.mean(Sd[ide])  # m (beam center)
             suml = np.mean(S[ide])  # m (beam center)
-            energy = E[id]  # GeV
-            leng = L[id]  # m
-            ang = np.rad2deg(P[id, 4])  # deg
+            energy = E[ids]  # GeV
+            leng = L[ids]  # m
+            ang = np.rad2deg(P[ids, 4])  # deg
             if abs(ang) < amin:
                 ang = 0
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
             eles.append({
-                'idf': idf[id],
-                'id': idd[id],
-                'area': area[ida[id]]['name'],
-                'parent': area[ida[id]]['parent'],
-                'sector': SECTORS[id].strip(),
+                'idf': idf[ids],
+                'id': idd[ids],
+                'area': area[ida[ids]]['name'],
+                'parent': area[ida[ids]]['parent'],
+                'sector': SECTORS[ids].strip(),
                 'ucell': [],
-                'prim': FDN[id],
+                'prim': FDN[ids],
                 'name': mname,
-                'type': T[id].strip(),
+                'type': T[ids].strip(),
                 'energy': energy,
                 'leng': leng,
                 'ang': ang,
@@ -1558,17 +1558,17 @@ for kwn,eles in ele_dict.items():
             for k in range(6):
                 eles[-1][f'c1{k+1}'] = []
             if cBSY:
-                id = strmatch(mname,N1,True)
-                if len(id) > 0:
-                    ide = [id[0] - 1, id[0]]  # [entrance, exit]
+                ids = strmatch(mname,N1,True)
+                if len(ids) > 0:
+                    ide = [ids[0] - 1, ids[0]]  # [entrance, exit]
                     suml1 = np.mean(S1[ide])  # m (beam center)
                     coorc1 = np.mean(coor1[ide], axis=0)  # m, rad (beam center)
                     eles[-1]['suml1'] = suml1
                     for k in range(6):
                         eles[-1][f'c1{k+1}'] = coorc1[k]
                     if not eles[-1]['sector']:
-                        eles[-1]['sector'] = SECTORS1[id[0]].strip()
-                    eles[-1]['ucell'] = UCELL[id[0]].strip()
+                        eles[-1]['sector'] = SECTORS1[ids[0]].strip()
+                    eles[-1]['ucell'] = UCELL[ids[0]].strip()
 
             # UND coordinates
 
@@ -1576,9 +1576,9 @@ for kwn,eles in ele_dict.items():
             for k in range(6):
                 eles[-1][f'c2{k+1}'] = []
             if cUND:
-                id = strmatch(mname,N2,True)
-                if len(id) > 0:
-                    ide = [id[0] - 1, id[0]]  # [entrance, exit]
+                ids = strmatch(mname,N2,True)
+                if len(ids) > 0:
+                    ide = [ids[0] - 1, ids[0]]  # [entrance, exit]
                     suml2 = np.mean(S2[ide])  # m (beam center)
                     coorc2 = np.mean(coor2[ide], axis=0)  # m, rad (beam center)
                     eles[-1]['suml2'] = suml2
@@ -1587,20 +1587,20 @@ for kwn,eles in ele_dict.items():
 
     elif kwn == 'MULT':
         for mname in name:
-            id = strmatch(mname,N,True)[0]
-            if id == 1:
+            ids = strmatch(mname,N,True)[0]
+            if ids == 1:
                 idi = 1
             else:
-                idi = id - 1  # beam in
-            sdsp = Sd[id]  # m (beam center)
-            suml = S[id]  # m (beam center)
-            energy = E[id]  # GeV
-            leng = np.sum(L[id])  # m
-            k1 = P[id, 1]  # 1/m^2
+                idi = ids - 1  # beam in
+            sdsp = Sd[ids]  # m (beam center)
+            suml = S[ids]  # m (beam center)
+            energy = E[ids]  # GeV
+            leng = np.sum(L[ids])  # m
+            k1 = P[ids, 1]  # 1/m^2
             if abs(k1) < kmin:
                 k1 = 0
             EeV = 1e9 * energy  # eV
-            tilt = P[id, 3]  # rad
+            tilt = P[ids, 3]  # rad
             brho = np.sqrt(EeV ** 2 - Er ** 2) / clight  # T-m
             if leng == 0:
                 G = 0  # T/m
@@ -1614,17 +1614,17 @@ for kwn,eles in ele_dict.items():
                 sval = 1 / (leng * T2kG)
             polarity = -np.sign(k1 + np.finfo(float).eps)  # add eps so that sign=1 when k1=0
             #coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
-            coorc = coor[id,:] # m, rad (beam center)
-            t = T[id].strip()
-            aper = 2 * A[id]  # m
+            coorc = coor[ids,:] # m, rad (beam center)
+            t = T[ids].strip()
+            aper = 2 * A[ids]  # m
             eles.append({
-                'idf': idf[id],
-                'id': idd[id],
-                'area': area[ida[id]]['name'],
-                'parent': area[ida[id]]['parent'],
-                'sector': SECTORS[id].strip(),
+                'idf': idf[ids],
+                'id': idd[ids],
+                'area': area[ida[ids]]['name'],
+                'parent': area[ida[ids]]['parent'],
+                'sector': SECTORS[ids].strip(),
                 'ucell': [],
-                'prim': FDN[id],
+                'prim': FDN[ids],
                 'bore': aper,
                 'k1': k1,
                 'tilt': np.rad2deg(tilt),  # deg
@@ -1634,7 +1634,7 @@ for kwn,eles in ele_dict.items():
                 'name': mname,
                 'sname': sname,
                 'sval': sval,
-                'type': T[id].strip(),
+                'type': T[ids].strip(),
                 'energy': energy,
                 'leng': leng,
                 'sdsp': sdsp,
@@ -1649,17 +1649,17 @@ for kwn,eles in ele_dict.items():
                 eles[-1][f'c1{k+1}'] = []
                 eles[-1][f'm1{k+1}'] = []
             if cBSY:
-                id = strmatch(mname,N1,True)
-                if len(id) > 0:
-                    id = id[0]
-                    suml1 = S1[id] 
-                    coorc1 = coor1[id]
+                ids = strmatch(mname,N1,True)
+                if len(ids) > 0:
+                    ids = ids[0]
+                    suml1 = S1[ids] 
+                    coorc1 = coor1[ids]
                     eles[-1]['suml1'] = suml1
                     for k in range(6):
                         eles[-1][f'c1{k+1}'] = coorc1[k]
                     if not eles[-1]['sector']:
-                        eles[-1]['sector'] = SECTORS1[id].strip()
-                    eles[-1]['ucell'] = UCELL[id].strip()
+                        eles[-1]['sector'] = SECTORS1[ids].strip()
+                    eles[-1]['ucell'] = UCELL[ids].strip()
 
             # UND coordinates
 
@@ -1668,39 +1668,39 @@ for kwn,eles in ele_dict.items():
                 eles[-1][f'c2{k+1}'] = []
                 eles[-1][f'm2{k+1}'] = []  # for MULT
             if cUND:
-                id = strmatch(mname,N2,True)
-                if len(id) > 0:
-                    id = id[0]
-                    suml2 = S2[id]
-                    coorc2 = coor2[id]
+                ids = strmatch(mname,N2,True)
+                if len(ids) > 0:
+                    ids = ids[0]
+                    suml2 = S2[ids]
+                    coorc2 = coor2[ids]
                     eles[-1]['suml2'] = suml2
                     for k in range(6):
                         eles[-1][f'c2{k+1}'] = coorc2[k]
 
     elif kwn == 'INST':
         for mname in name:
-            id = strmatch(mname,N,True)
-            if id[0] == 1:
+            ids = strmatch(mname,N,True)
+            if ids[0] == 1:
                 idi = 1
             else:
-                idi = id[0] - 1  # beam in
-            ide = [idi, id[-1]]  # [entrance, exit]
+                idi = ids[0] - 1  # beam in
+            ide = [idi, ids[-1]]  # [entrance, exit]
             sdsp = np.mean(Sd[ide])  # m (beam center)
             suml = np.mean(S[ide])  # m (beam center)
-            energy = E[id[0]]  # GeV
-            leng = np.sum(L[id])  # m
+            energy = E[ids[0]]  # GeV
+            leng = np.sum(L[ids])  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
-            t = T[id[0]].strip()
+            t = T[ids[0]].strip()
             eles.append({
-                'idf': idf[id[0]],
-                'id': idd[id[0]],
-                'area': area[ida[id[0]]]['name'],
-                'parent': area[ida[id[0]]]['parent'],
-                'sector': SECTORS[id[0]].strip(),
+                'idf': idf[ids[0]],
+                'id': idd[ids[0]],
+                'area': area[ida[ids[0]]]['name'],
+                'parent': area[ida[ids[0]]]['parent'],
+                'sector': SECTORS[ids[0]].strip(),
                 'ucell': [],
-                'prim': FDN[id[0]],
+                'prim': FDN[ids[0]],
                 'name': mname,
-                'type': T[id[0]].strip(),
+                'type': T[ids[0]].strip(),
                 'energy': energy,
                 'leng': leng,
                 'sdsp': sdsp,
@@ -1715,17 +1715,17 @@ for kwn,eles in ele_dict.items():
                 eles[-1][f'c1{k+1}'] = []
                 eles[-1][f'm1{k+1}'] = []
             if cBSY:
-                id = strmatch(mname,N1,True)
-                if len(id) > 0:
-                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
+                ids = strmatch(mname,N1,True)
+                if len(ids) > 0:
+                    ide = [ids[0] - 1, ids[-1]]  # [entrance, exit]
                     suml1 = np.mean(S1[ide])  # m (beam center)
                     coorc1 = np.mean(coor1[ide], axis=0)  # m, rad (beam center)
                     eles[-1]['suml1'] = suml1
                     for k in range(6):
                         eles[-1][f'c1{k+1}'] = coorc1[k]
                     if not eles[-1]['sector']:
-                        eles[-1]['sector'] = SECTORS1[id[0]].strip()
-                    eles[-1]['ucell'] = UCELL[id[0]].strip()
+                        eles[-1]['sector'] = SECTORS1[ids[0]].strip()
+                    eles[-1]['ucell'] = UCELL[ids[0]].strip()
 
             # UND coordinates
 
@@ -1734,9 +1734,9 @@ for kwn,eles in ele_dict.items():
                 eles[-1][f'c2{k+1}'] = []
                 eles[-1][f'm2{k+1}'] = []  # for INST
             if cUND:
-                id = strmatch(mname,N2,True)
-                if len(id) > 0:
-                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
+                ids = strmatch(mname,N2,True)
+                if len(ids) > 0:
+                    ide = [ids[0] - 1, ids[-1]]  # [entrance, exit]
                     suml2 = np.mean(S2[ide])  # m (beam center)
                     coorc2 = np.mean(coor2[ide], axis=0)  # m, rad (beam center)
                     eles[-1]['suml2'] = suml2
@@ -1745,28 +1745,28 @@ for kwn,eles in ele_dict.items():
 
     elif kwn == 'HKIC':
         for mname in name:
-            id = strmatch(mname,N,True)
-            if id[0] == 1:
+            ids = strmatch(mname,N,True)
+            if ids[0] == 1:
                 idi = 1
             else:
-                idi = id[0] - 1  # beam in
-            ide = [idi, id[-1]]  # [entrance, exit]
+                idi = ids[0] - 1  # beam in
+            ide = [idi, ids[-1]]  # [entrance, exit]
             sdsp = np.mean(Sd[ide])  # m (beam center)
             suml = np.mean(S[ide])  # m (beam center)
-            energy = E[id[0]]  # GeV
-            leng = np.sum(L[id])  # m
+            energy = E[ids[0]]  # GeV
+            leng = np.sum(L[ids])  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
-            t = T[id[0]].strip()
+            t = T[ids[0]].strip()
             eles.append({
-                'idf': idf[id[0]],
-                'id': idd[id[0]],
-                'area': area[ida[id[0]]]['name'],
-                'parent': area[ida[id[0]]]['parent'],
-                'sector': SECTORS[id[0]].strip(),
+                'idf': idf[ids[0]],
+                'id': idd[ids[0]],
+                'area': area[ida[ids[0]]]['name'],
+                'parent': area[ida[ids[0]]]['parent'],
+                'sector': SECTORS[ids[0]].strip(),
                 'ucell': [],
-                'prim': FDN[id[0]],
+                'prim': FDN[ids[0]],
                 'name': mname,
-                'type': T[id[0]].strip(),
+                'type': T[ids[0]].strip(),
                 'energy': energy,
                 'leng': leng,
                 'sdsp': sdsp,
@@ -1779,25 +1779,25 @@ for kwn,eles in ele_dict.items():
             for k in range(6):
                 eles[-1][f'c1{k+1}'] = []
             if cBSY:
-                id = strmatch(mname,N1,True)
-                if len(id) > 0:
-                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
+                ids = strmatch(mname,N1,True)
+                if len(ids) > 0:
+                    ide = [ids[0] - 1, ids[-1]]  # [entrance, exit]
                     suml1 = np.mean(S1[ide])  # m (beam center)
                     coorc1 = np.mean(coor1[ide], axis=0)  # m, rad (beam center)
                     eles[-1]['suml1'] = suml1
                     for k in range(6):
                         eles[-1][f'c1{k+1}'] = coorc1[k]
                     if not eles[-1]['sector']:
-                        eles[-1]['sector'] = SECTORS1[id[0]].strip()
-                    eles[-1]['ucell'] = UCELL[id[0]].strip()
+                        eles[-1]['sector'] = SECTORS1[ids[0]].strip()
+                    eles[-1]['ucell'] = UCELL[ids[0]].strip()
 
             eles[-1]['suml2'] = []
             for k in range(6):
                 eles[-1][f'c2{k+1}'] = []
             if cUND:
-                id = strmatch(mname,N2,True)
-                if len(id) > 0:
-                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
+                ids = strmatch(mname,N2,True)
+                if len(ids) > 0:
+                    ide = [ids[0] - 1, ids[-1]]  # [entrance, exit]
                     suml2 = np.mean(S2[ide])  # m (beam center)
                     coorc2 = np.mean(coor2[ide], axis=0)  # m, rad (beam center)
                     eles[-1]['suml2'] = suml2
@@ -1806,28 +1806,28 @@ for kwn,eles in ele_dict.items():
 
     elif kwn == 'VKIC':
         for mname in name:
-            id = strmatch(mname,N,True)
-            if id[0] == 1:
+            ids = strmatch(mname,N,True)
+            if ids[0] == 1:
                 idi = 1
             else:
-                idi = id[0] - 1  # beam in
-            ide = [idi, id[-1]]  # [entrance, exit]
+                idi = ids[0] - 1  # beam in
+            ide = [idi, ids[-1]]  # [entrance, exit]
             sdsp = np.mean(Sd[ide])  # m (beam center)
             suml = np.mean(S[ide])  # m (beam center)
-            energy = E[id[0]]  # GeV
-            leng = np.sum(L[id])  # m
+            energy = E[ids[0]]  # GeV
+            leng = np.sum(L[ids])  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
-            t = T[id[0]].strip()
+            t = T[ids[0]].strip()
             eles.append({
-                'idf': idf[id[0]],
-                'id': idd[id[0]],
-                'area': area[ida[id[0]]]['name'],
-                'parent': area[ida[id[0]]]['parent'],
-                'sector': SECTORS[id[0]].strip(),
+                'idf': idf[ids[0]],
+                'id': idd[ids[0]],
+                'area': area[ida[ids[0]]]['name'],
+                'parent': area[ida[ids[0]]]['parent'],
+                'sector': SECTORS[ids[0]].strip(),
                 'ucell': [],
-                'prim': FDN[id[0]],
+                'prim': FDN[ids[0]],
                 'name': mname,
-                'type': T[id[0]].strip(),
+                'type': T[ids[0]].strip(),
                 'energy': energy,
                 'leng': leng,
                 'sdsp': sdsp,
@@ -1840,25 +1840,25 @@ for kwn,eles in ele_dict.items():
             for k in range(6):
                 eles[-1][f'c1{k+1}'] = []
             if cBSY:
-                id = strmatch(mname,N1,True)
-                if len(id) > 0:
-                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
+                ids = strmatch(mname,N1,True)
+                if len(ids) > 0:
+                    ide = [ids[0] - 1, ids[-1]]  # [entrance, exit]
                     suml1 = np.mean(S1[ide])  # m (beam center)
                     coorc1 = np.mean(coor1[ide], axis=0)  # m, rad (beam center)
                     eles[-1]['suml1'] = suml1
                     for k in range(6):
                         eles[-1][f'c1{k+1}'] = coorc1[k]
                     if not eles[-1]['sector']:
-                        eles[-1]['sector'] = SECTORS1[id[0]].strip()
-                    eles[-1]['ucell'] = UCELL[id[0]].strip()
+                        eles[-1]['sector'] = SECTORS1[ids[0]].strip()
+                    eles[-1]['ucell'] = UCELL[ids[0]].strip()
 
             eles[-1]['suml2'] = []
             for k in range(6):
                 eles[-1][f'c2{k+1}'] = []
             if cUND:
-                id = strmatch(mname,N2,True)
-                if len(id) > 0:
-                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
+                ids = strmatch(mname,N2,True)
+                if len(ids) > 0:
+                    ide = [ids[0] - 1, ids[-1]]  # [entrance, exit]
                     suml2 = np.mean(S2[ide])  # m (beam center)
                     coorc2 = np.mean(coor2[ide], axis=0)  # m, rad (beam center)
                     eles[-1]['suml2'] = suml2
@@ -1866,28 +1866,28 @@ for kwn,eles in ele_dict.items():
                         eles[-1][f'c2{k+1}'] = coorc2[k]
     elif kwn == 'MONI':
         for mname in name:
-            id = strmatch(mname,N,True)
-            if id[0] == 1:
+            ids = strmatch(mname,N,True)
+            if ids[0] == 1:
                 idi = 1
             else:
-                idi = id[0] - 1  # beam in
-            ide = [idi, id[-1]]  # [entrance, exit]
+                idi = ids[0] - 1  # beam in
+            ide = [idi, ids[-1]]  # [entrance, exit]
             sdsp = np.mean(Sd[ide])  # m (beam center)
             suml = np.mean(S[ide])  # m (beam center)
-            energy = E[id[0]]  # GeV
-            leng = np.sum(L[id])  # m
+            energy = E[ids[0]]  # GeV
+            leng = np.sum(L[ids])  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
-            t = T[id[0]].strip()
+            t = T[ids[0]].strip()
             eles.append({
-                'idf': idf[id[0]],
-                'id': idd[id[0]],
-                'area': area[ida[id[0]]]['name'],
-                'parent': area[ida[id[0]]]['parent'],
-                'sector': SECTORS[id[0]].strip(),
+                'idf': idf[ids[0]],
+                'id': idd[ids[0]],
+                'area': area[ida[ids[0]]]['name'],
+                'parent': area[ida[ids[0]]]['parent'],
+                'sector': SECTORS[ids[0]].strip(),
                 'ucell': [],
-                'prim': FDN[id[0]],
+                'prim': FDN[ids[0]],
                 'name': mname,
-                'type': T[id[0]].strip(),
+                'type': T[ids[0]].strip(),
                 'energy': energy,
                 'leng': leng,
                 'sdsp': sdsp,
@@ -1900,25 +1900,25 @@ for kwn,eles in ele_dict.items():
             for k in range(6):
                 eles[-1][f'c1{k+1}'] = []
             if cBSY:
-                id = strmatch(mname,N1,True)
-                if len(id) > 0:
-                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
+                ids = strmatch(mname,N1,True)
+                if len(ids) > 0:
+                    ide = [ids[0] - 1, ids[-1]]  # [entrance, exit]
                     suml1 = np.mean(S1[ide])  # m (beam center)
                     coorc1 = np.mean(coor1[ide], axis=0)  # m, rad (beam center)
                     eles[-1]['suml1'] = suml1
                     for k in range(6):
                         eles[-1][f'c1{k+1}'] = coorc1[k]
                     if not eles[-1]['sector']:
-                        eles[-1]['sector'] = SECTORS1[id[0]].strip()
-                    eles[-1]['ucell'] = UCELL[id[0]].strip()
+                        eles[-1]['sector'] = SECTORS1[ids[0]].strip()
+                    eles[-1]['ucell'] = UCELL[ids[0]].strip()
 
             eles[-1]['suml2'] = []
             for k in range(6):
                 eles[-1][f'c2{k+1}'] = []
             if cUND:
-                id = strmatch(mname,N2,True)
-                if len(id) > 0:
-                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
+                ids = strmatch(mname,N2,True)
+                if len(ids) > 0:
+                    ide = [ids[0] - 1, ids[-1]]  # [entrance, exit]
                     suml2 = np.mean(S2[ide])  # m (beam center)
                     coorc2 = np.mean(coor2[ide], axis=0)  # m, rad (beam center)
                     eles[-1]['suml2'] = suml2
@@ -1926,28 +1926,28 @@ for kwn,eles in ele_dict.items():
                         eles[-1][f'c2{k+1}'] = coorc2[k]
     elif kwn == 'WIRE':
         for mname in name:
-            id = strmatch(mname,N,True)
-            if id[0] == 1:
+            ids = strmatch(mname,N,True)
+            if ids[0] == 1:
                 idi = 1
             else:
-                idi = id[0] - 1  # beam in
-            ide = [idi, id[-1]]  # [entrance, exit]
+                idi = ids[0] - 1  # beam in
+            ide = [idi, ids[-1]]  # [entrance, exit]
             sdsp = np.mean(Sd[ide])  # m (beam center)
             suml = np.mean(S[ide])  # m (beam center)
-            energy = E[id[0]]  # GeV
-            leng = np.sum(L[id])  # m
+            energy = E[ids[0]]  # GeV
+            leng = np.sum(L[ids])  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
-            t = T[id[0]].strip()
+            t = T[ids[0]].strip()
             eles.append({
-                'idf': idf[id[0]],
-                'id': idd[id[0]],
-                'area': area[ida[id[0]]]['name'],
-                'parent': area[ida[id[0]]]['parent'],
-                'sector': SECTORS[id[0]].strip(),
+                'idf': idf[ids[0]],
+                'id': idd[ids[0]],
+                'area': area[ida[ids[0]]]['name'],
+                'parent': area[ida[ids[0]]]['parent'],
+                'sector': SECTORS[ids[0]].strip(),
                 'ucell': [],
-                'prim': FDN[id[0]],
+                'prim': FDN[ids[0]],
                 'name': mname,
-                'type': T[id[0]].strip(),
+                'type': T[ids[0]].strip(),
                 'energy': energy,
                 'leng': leng,
                 'sdsp': sdsp,
@@ -1960,25 +1960,25 @@ for kwn,eles in ele_dict.items():
             for k in range(6):
                 eles[-1][f'c1{k+1}'] = []
             if cBSY:
-                id = strmatch(mname,N1,True)
-                if len(id) > 0:
-                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
+                ids = strmatch(mname,N1,True)
+                if len(ids) > 0:
+                    ide = [ids[0] - 1, ids[-1]]  # [entrance, exit]
                     suml1 = np.mean(S1[ide])  # m (beam center)
                     coorc1 = np.mean(coor1[ide], axis=0)  # m, rad (beam center)
                     eles[-1]['suml1'] = suml1
                     for k in range(6):
                         eles[-1][f'c1{k+1}'] = coorc1[k]
                     if not eles[-1]['sector']:
-                        eles[-1]['sector'] = SECTORS1[id[0]].strip()
-                    eles[-1]['ucell'] = UCELL[id[0]].strip()
+                        eles[-1]['sector'] = SECTORS1[ids[0]].strip()
+                    eles[-1]['ucell'] = UCELL[ids[0]].strip()
 
             eles[-1]['suml2'] = []
             for k in range(6):
                 eles[-1][f'c2{k+1}'] = []
             if cUND:
-                id = strmatch(mname,N2,True)
-                if len(id) > 0:
-                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
+                ids = strmatch(mname,N2,True)
+                if len(ids) > 0:
+                    ide = [ids[0] - 1, ids[-1]]  # [entrance, exit]
                     suml2 = np.mean(S2[ide])  # m (beam center)
                     coorc2 = np.mean(coor2[ide], axis=0)  # m, rad (beam center)
                     eles[-1]['suml2'] = suml2
@@ -1986,28 +1986,28 @@ for kwn,eles in ele_dict.items():
                         eles[-1][f'c2{k+1}'] = coorc2[k]
     elif kwn == 'PROF':
         for mname in name:
-            id = strmatch(mname,N,True)
-            if id[0] == 1:
+            ids = strmatch(mname,N,True)
+            if ids[0] == 1:
                 idi = 1
             else:
-                idi = id[0] - 1  # beam in
-            ide = [idi, id[-1]]  # [entrance, exit]
+                idi = ids[0] - 1  # beam in
+            ide = [idi, ids[-1]]  # [entrance, exit]
             sdsp = np.mean(Sd[ide])  # m (beam center)
             suml = np.mean(S[ide])  # m (beam center)
-            energy = E[id[0]]  # GeV
-            leng = np.sum(L[id])  # m
+            energy = E[ids[0]]  # GeV
+            leng = np.sum(L[ids])  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
-            t = T[id[0]].strip()
+            t = T[ids[0]].strip()
             eles.append({
-                'idf': idf[id[0]],
-                'id': idd[id[0]],
-                'area': area[ida[id[0]]]['name'],
-                'parent': area[ida[id[0]]]['parent'],
-                'sector': SECTORS[id[0]].strip(),
+                'idf': idf[ids[0]],
+                'id': idd[ids[0]],
+                'area': area[ida[ids[0]]]['name'],
+                'parent': area[ida[ids[0]]]['parent'],
+                'sector': SECTORS[ids[0]].strip(),
                 'ucell': [],
-                'prim': FDN[id[0]],
+                'prim': FDN[ids[0]],
                 'name': mname,
-                'type': T[id[0]].strip(),
+                'type': T[ids[0]].strip(),
                 'energy': energy,
                 'leng': leng,
                 'sdsp': sdsp,
@@ -2020,25 +2020,25 @@ for kwn,eles in ele_dict.items():
             for k in range(6):
                 eles[-1][f'c1{k+1}'] = []
             if cBSY:
-                id = strmatch(mname,N1,True)
-                if len(id) > 0:
-                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
+                ids = strmatch(mname,N1,True)
+                if len(ids) > 0:
+                    ide = [ids[0] - 1, ids[-1]]  # [entrance, exit]
                     suml1 = np.mean(S1[ide])  # m (beam center)
                     coorc1 = np.mean(coor1[ide], axis=0)  # m, rad (beam center)
                     eles[-1]['suml1'] = suml1
                     for k in range(6):
                         eles[-1][f'c1{k+1}'] = coorc1[k]
                     if not eles[-1]['sector']:
-                        eles[-1]['sector'] = SECTORS1[id[0]].strip()
-                    eles[-1]['ucell'] = UCELL[id[0]].strip()
+                        eles[-1]['sector'] = SECTORS1[ids[0]].strip()
+                    eles[-1]['ucell'] = UCELL[ids[0]].strip()
 
             eles[-1]['suml2'] = []
             for k in range(6):
                 eles[-1][f'c2{k+1}'] = []
             if cUND:
-                id = strmatch(mname,N2,True)
-                if len(id) > 0:
-                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
+                ids = strmatch(mname,N2,True)
+                if len(ids) > 0:
+                    ide = [ids[0] - 1, ids[-1]]  # [entrance, exit]
                     suml2 = np.mean(S2[ide])  # m (beam center)
                     coorc2 = np.mean(coor2[ide], axis=0)  # m, rad (beam center)
                     eles[-1]['suml2'] = suml2
@@ -2046,28 +2046,28 @@ for kwn,eles in ele_dict.items():
                         eles[-1][f'c2{k+1}'] = coorc2[k]
     elif kwn == 'IMON':
         for mname in name:
-            id = strmatch(mname,N,True)
-            if id[0] == 1:
+            ids = strmatch(mname,N,True)
+            if ids[0] == 1:
                 idi = 1
             else:
-                idi = id[0] - 1  # beam in
-            ide = [idi, id[-1]]  # [entrance, exit]
+                idi = ids[0] - 1  # beam in
+            ide = [idi, ids[-1]]  # [entrance, exit]
             sdsp = np.mean(Sd[ide])  # m (beam center)
             suml = np.mean(S[ide])  # m (beam center)
-            energy = E[id[0]]  # GeV
-            leng = np.sum(L[id])  # m
+            energy = E[ids[0]]  # GeV
+            leng = np.sum(L[ids])  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
-            t = T[id[0]].strip()
+            t = T[ids[0]].strip()
             eles.append({
-                'idf': idf[id[0]],
-                'id': idd[id[0]],
-                'area': area[ida[id[0]]]['name'],
-                'parent': area[ida[id[0]]]['parent'],
-                'sector': SECTORS[id[0]].strip(),
+                'idf': idf[ids[0]],
+                'id': idd[ids[0]],
+                'area': area[ida[ids[0]]]['name'],
+                'parent': area[ida[ids[0]]]['parent'],
+                'sector': SECTORS[ids[0]].strip(),
                 'ucell': [],
-                'prim': FDN[id[0]],
+                'prim': FDN[ids[0]],
                 'name': mname,
-                'type': T[id[0]].strip(),
+                'type': T[ids[0]].strip(),
                 'energy': energy,
                 'leng': leng,
                 'sdsp': sdsp,
@@ -2080,25 +2080,25 @@ for kwn,eles in ele_dict.items():
             for k in range(6):
                 eles[-1][f'c1{k+1}'] = []
             if cBSY:
-                id = strmatch(mname,N1,True)
-                if len(id) > 0:
-                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
+                ids = strmatch(mname,N1,True)
+                if len(ids) > 0:
+                    ide = [ids[0] - 1, ids[-1]]  # [entrance, exit]
                     suml1 = np.mean(S1[ide])  # m (beam center)
                     coorc1 = np.mean(coor1[ide], axis=0)  # m, rad (beam center)
                     eles[-1]['suml1'] = suml1
                     for k in range(6):
                         eles[-1][f'c1{k+1}'] = coorc1[k]
                     if not eles[-1]['sector']:
-                        eles[-1]['sector'] = SECTORS1[id[0]].strip()
-                    eles[-1]['ucell'] = UCELL[id[0]].strip()
+                        eles[-1]['sector'] = SECTORS1[ids[0]].strip()
+                    eles[-1]['ucell'] = UCELL[ids[0]].strip()
 
             eles[-1]['suml2'] = []
             for k in range(6):
                 eles[-1][f'c2{k+1}'] = []
             if cUND:
-                id = strmatch(mname,N2,True)
-                if len(id) > 0:
-                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
+                ids = strmatch(mname,N2,True)
+                if len(ids) > 0:
+                    ide = [ids[0] - 1, ids[-1]]  # [entrance, exit]
                     suml2 = np.mean(S2[ide])  # m (beam center)
                     coorc2 = np.mean(coor2[ide], axis=0)  # m, rad (beam center)
                     eles[-1]['suml2'] = suml2
@@ -2106,28 +2106,28 @@ for kwn,eles in ele_dict.items():
                         eles[-1][f'c2{k+1}'] = coorc2[k]
     elif kwn == 'BLMO':
         for mname in name:
-            id = strmatch(mname,N,True)
-            if id[0] == 1:
+            ids = strmatch(mname,N,True)
+            if ids[0] == 1:
                 idi = 1
             else:
-                idi = id[0] - 1  # beam in
-            ide = [idi, id[-1]]  # [entrance, exit]
+                idi = ids[0] - 1  # beam in
+            ide = [idi, ids[-1]]  # [entrance, exit]
             sdsp = np.mean(Sd[ide])  # m (beam center)
             suml = np.mean(S[ide])  # m (beam center)
-            energy = E[id[0]]  # GeV
-            leng = np.sum(L[id])  # m
+            energy = E[ids[0]]  # GeV
+            leng = np.sum(L[ids])  # m
             coorc = np.mean(coor[ide], axis=0)  # m, rad (beam center)
-            t = T[id[0]].strip()
+            t = T[ids[0]].strip()
             eles.append({
-                'idf': idf[id[0]],
-                'id': idd[id[0]],
-                'area': area[ida[id[0]]]['name'],
-                'parent': area[ida[id[0]]]['parent'],
-                'sector': SECTORS[id[0]].strip(),
+                'idf': idf[ids[0]],
+                'id': idd[ids[0]],
+                'area': area[ida[ids[0]]]['name'],
+                'parent': area[ida[ids[0]]]['parent'],
+                'sector': SECTORS[ids[0]].strip(),
                 'ucell': [],
-                'prim': FDN[id[0]],
+                'prim': FDN[ids[0]],
                 'name': mname,
-                'type': T[id[0]].strip(),
+                'type': T[ids[0]].strip(),
                 'energy': energy,
                 'leng': leng,
                 'sdsp': sdsp,
@@ -2140,25 +2140,25 @@ for kwn,eles in ele_dict.items():
             for k in range(6):
                 eles[-1][f'c1{k+1}'] = []
             if cBSY:
-                id = strmatch(mname,N1,True)
-                if len(id) > 0:
-                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
+                ids = strmatch(mname,N1,True)
+                if len(ids) > 0:
+                    ide = [ids[0] - 1, ids[-1]]  # [entrance, exit]
                     suml1 = np.mean(S1[ide])  # m (beam center)
                     coorc1 = np.mean(coor1[ide], axis=0)  # m, rad (beam center)
                     eles[-1]['suml1'] = suml1
                     for k in range(6):
                         eles[-1][f'c1{k+1}'] = coorc1[k]
                     if not eles[-1]['sector']:
-                        eles[-1]['sector'] = SECTORS1[id[0]].strip()
-                    eles[-1]['ucell'] = UCELL[id[0]].strip()
+                        eles[-1]['sector'] = SECTORS1[ids[0]].strip()
+                    eles[-1]['ucell'] = UCELL[ids[0]].strip()
 
             eles[-1]['suml2'] = []
             for k in range(6):
                 eles[-1][f'c2{k+1}'] = []
             if cUND:
-                id = strmatch(mname,N2,True)
-                if len(id) > 0:
-                    ide = [id[0] - 1, id[-1]]  # [entrance, exit]
+                ids = strmatch(mname,N2,True)
+                if len(ids) > 0:
+                    ide = [ids[0] - 1, ids[-1]]  # [entrance, exit]
                     suml2 = np.mean(S2[ide])  # m (beam center)
                     coorc2 = np.mean(coor2[ide], axis=0)  # m, rad (beam center)
                     eles[-1]['suml2'] = suml2
@@ -2166,22 +2166,22 @@ for kwn,eles in ele_dict.items():
                         eles[-1][f'c2{k+1}'] = coorc2[k]
     elif kwn == 'MARK':
         for mname in name:
-            id = strmatch(mname,N,True)[0]
-            sdsp = Sd[id]  # m
-            suml = S[id]  # m
-            energy = E[id]  # GeV
-            coorc = np.copy(coor[id])
+            ids = strmatch(mname,N,True)[0]
+            sdsp = Sd[ids]  # m
+            suml = S[ids]  # m
+            energy = E[ids]  # GeV
+            coorc = np.copy(coor[ids])
             eles.append({
-                'idf': idf[id],
-                'id': idd[id],
-                'area': area[ida[id]]['name'],
-                'parent': area[ida[id]]['parent'],
-                'sector': SECTORS[id].strip(),
+                'idf': idf[ids],
+                'id': idd[ids],
+                'area': area[ida[ids]]['name'],
+                'parent': area[ida[ids]]['parent'],
+                'sector': SECTORS[ids].strip(),
                 'ucell': [],
                 'leng': None,
-                'prim': FDN[id],
+                'prim': FDN[ids],
                 'name': mname,
-                'type': T[id].strip(),
+                'type': T[ids].strip(),
                 'energy': energy,
                 'sdsp': sdsp,
                 'suml': suml,
@@ -2193,16 +2193,16 @@ for kwn,eles in ele_dict.items():
             for k in range(6):
                 eles[-1][f'c1{k+1}'] = []
             if cBSY:
-                id = strmatch(mname,N1,True)
-                if len(id) > 0:
-                    suml1 = S1[id[0]]  # m (beam center)
-                    coorc1 = np.copy(coor1[id[0]])  # m, rad (beam center)
+                ids = strmatch(mname,N1,True)
+                if len(ids) > 0:
+                    suml1 = S1[ids[0]]  # m (beam center)
+                    coorc1 = np.copy(coor1[ids[0]])  # m, rad (beam center)
                     eles[-1]['suml1'] = suml1
                     for k in range(6):
                         eles[-1][f'c1{k+1}'] = coorc1[k]
                     if not eles[-1]['sector']:
-                        eles[-1]['sector'] = SECTORS1[id[0]].strip()
-                    eles[-1]['ucell'] = UCELL[id[0]].strip()
+                        eles[-1]['sector'] = SECTORS1[ids[0]].strip()
+                    eles[-1]['ucell'] = UCELL[ids[0]].strip()
 
             # UND coordinates
 
@@ -2210,10 +2210,10 @@ for kwn,eles in ele_dict.items():
             for k in range(6):
                 eles[-1][f'c2{k+1}'] = []
             if cUND:
-                id = strmatch(mname,N2,True)
-                if len(id) > 0:
-                    suml2 = S2[id]  # m (beam center)
-                    coorc2 = coor2[id]  # m, rad (beam center)
+                ids = strmatch(mname,N2,True)
+                if len(ids) > 0:
+                    suml2 = S2[ids]  # m (beam center)
+                    coorc2 = coor2[ids]  # m, rad (beam center)
                     eles[-1]['suml2'] = suml2
                     for k in range(6):
                         eles[-1][f'c2{k+1}'] = coorc2[k]
@@ -2231,10 +2231,10 @@ def fix_power_fraction(lcav):
     
     for cav in lcav:
         if np.isnan(cav['power']):
-            id = [i for i, x in enumerate(name) if x == cav['name']]
-            if len(id) != 1:
+            ids = [i for i, x in enumerate(name) if x == cav['name']]
+            if len(ids) != 1:
                 raise ValueError(f"{cav['name']} not found!")
-            cav['power'] = powr[id[0]]
+            cav['power'] = powr[ids[0]]
     
 
 # fix LCAV power fraction values (for deactivated klystrons)
@@ -2243,8 +2243,8 @@ fix_power_fraction(ele_dict['LCAV'])
 def add_eic(inst):
     # Add EIC Faraday cup
     name = [x['name'] for x in inst]
-    id = name.index('CATHODEB')
-    temp = inst[id].copy()
+    ids = name.index('CATHODEB')
+    temp = inst[ids].copy()
     temp.id = 59
     temp.area = 'EIC'
     temp.name = 'FC00EIC'
@@ -2315,11 +2315,11 @@ def FixMagnetCoords(SBEN, QUAD, INST, K, N, L, P, coor, cflag):
     for name in R56name[n1:]:
         id1 = strmatch(f"{name}BEG",N)[0]
         id2 = strmatch(f"{name}END",N)[0]
-        id = range(id1, id2 + 1)
+        ids = range(id1, id2 + 1)
         jd1 = [i for i,x in enumerate(K) if x == 'SBEN']
-        idb = intersection(id,jd1)[::2]
+        idb = intersection(ids,jd1)[::2]
         ang = P[idb[0], 0]
-        X, Y, Z, yaw, pitch, roll = coor[id, 1], coor[id, 2], coor[id, 0], coor[id1, 5], -coor[id1, 4], coor[id1, 3]
+        X, Y, Z, yaw, pitch, roll = coor[ids, 1], coor[ids, 2], coor[ids, 0], coor[id1, 5], -coor[id1, 4], coor[id1, 3]
         O1 = np.array([[np.cos(yaw), 0, np.sin(yaw)], [0, 1, 0], [-np.sin(yaw), 0, np.cos(yaw)]])
         O2 = np.array([[1, 0, 0], [0, np.cos(pitch), np.sin(pitch)], [0, -np.sin(pitch), np.cos(pitch)]])
         O3 = np.array([[np.cos(roll), -np.sin(roll), 0], [np.sin(roll), np.cos(roll), 0], [0, 0, 1]])
@@ -2332,7 +2332,7 @@ def FixMagnetCoords(SBEN, QUAD, INST, K, N, L, P, coor, cflag):
         Xm, Ym, Zm = t[0], t[1], t[2]
         for m in range(len(idb)):
             name = N[idb[m]].strip()[:-1] #remove last character
-            jdb = strmatch(name,[N[i] for i in id])[0]
+            jdb = strmatch(name,[N[i] for i in ids])[0]
             jd = strmatch(name,Bname)[0]
             SBEN[jd][f'm{cflag or ""}2'] = Xm[jdb]
             SBEN[jd][f'm{cflag or ""}3'] = Ym[jdb]
@@ -2351,10 +2351,10 @@ def FixMagnetCoords(SBEN, QUAD, INST, K, N, L, P, coor, cflag):
                           +1, +9.7, +9.7, +1,  # CBXFEL #1
                           +1, +9.7, +9.7, +1])  # CBXFEL #2
     for n in range(len(name)):
-        id = strmatch(name[n],Bname,True)[0]
-        X0 = SBEN[id][f'm{cflag or ""}2']
+        ids = strmatch(name[n],Bname,True)[0]
+        X0 = SBEN[ids][f'm{cflag or ""}2']
         X = X0 + dX[n]
-        SBEN[id][f'm{cflag or ""}2'] = X
+        SBEN[ids][f'm{cflag or ""}2'] = X
 
     # safety dump bends (permanent magnet dipoles)
 
@@ -2373,11 +2373,11 @@ def FixMagnetCoords(SBEN, QUAD, INST, K, N, L, P, coor, cflag):
         z1 = coor[id1, 0]
         Ym = y0 + np.tan(pitch) * (z1 - z0)
         yaw = 0
-        id = strmatch(name[n],Bname,True)[0]
-        SBEN[id][f'm{cflag or ""}2'] = Xm
-        SBEN[id][f'm{cflag or ""}3'] = Ym
-        SBEN[id][f'm{cflag or ""}6'] = yaw
-        SBEN[id][f'm{cflag or ""}5'] = -pitch
+        ids = strmatch(name[n],Bname,True)[0]
+        SBEN[ids][f'm{cflag or ""}2'] = Xm
+        SBEN[ids][f'm{cflag or ""}3'] = Ym
+        SBEN[ids][f'm{cflag or ""}6'] = yaw
+        SBEN[ids][f'm{cflag or ""}5'] = -pitch
 
     # Lambertson septa
     # coor=[z,x,y,roll,-pitch,yaw] (SYMBOLS coordinates)
@@ -2388,13 +2388,13 @@ def FixMagnetCoords(SBEN, QUAD, INST, K, N, L, P, coor, cflag):
     for n in range(len(name)):
         if n <= 1 and cflag is not None:
             continue  # no BSY or UND coords for BLRDG0 or BLRL3X
-        id = strmatch(name[n],Bname,True)[0]
-        Xm0 = SBEN[id][f'm{cflag or ""}2']
-        Ym0 = SBEN[id][f'm{cflag or ""}3']
-        Zm0 = SBEN[id][f'm{cflag or ""}1']
-        yaw = SBEN[id][f'm{cflag or ""}6']
-        pitch = -SBEN[id][f'm{cflag or ""}5']
-        roll = (np.pi / 180) * SBEN[id]['tilt']
+        ids = strmatch(name[n],Bname,True)[0]
+        Xm0 = SBEN[ids][f'm{cflag or ""}2']
+        Ym0 = SBEN[ids][f'm{cflag or ""}3']
+        Zm0 = SBEN[ids][f'm{cflag or ""}1']
+        yaw = SBEN[ids][f'm{cflag or ""}6']
+        pitch = -SBEN[ids][f'm{cflag or ""}5']
+        roll = (np.pi / 180) * SBEN[ids]['tilt']
         O1 = np.array([[np.cos(yaw), 0, np.sin(yaw)], [0, 1, 0], [-np.sin(yaw), 0, np.cos(yaw)]])
         O2 = np.array([[1, 0, 0], [0, np.cos(pitch), np.sin(pitch)], [0, -np.sin(pitch), np.cos(pitch)]])
         O3 = np.array([[np.cos(roll), -np.sin(roll), 0], [np.sin(roll), np.cos(roll), 0], [0, 0, 1]])
@@ -2405,9 +2405,9 @@ def FixMagnetCoords(SBEN, QUAD, INST, K, N, L, P, coor, cflag):
         t = O @ np.array([Xr, Yr, Zr])  # restore roll, pitch, and yaw
         Xm, Ym, Zm = t[0], t[1], t[2]
         # CheckMagnetCoords
-        SBEN[id][f'm{cflag or ""}2'] = Xm
-        SBEN[id][f'm{cflag or ""}3'] = Ym
-        SBEN[id][f'm{cflag or ""}1'] = Zm
+        SBEN[ids][f'm{cflag or ""}2'] = Xm
+        SBEN[ids][f'm{cflag or ""}3'] = Ym
+        SBEN[ids][f'm{cflag or ""}1'] = Zm
 
     # set magnet installation roll for bends, kickers, and septa
     # coor=[z,x,y,roll,-pitch,yaw] (SYMBOLS coordinates)
@@ -2438,9 +2438,9 @@ def FixMagnetCoords(SBEN, QUAD, INST, K, N, L, P, coor, cflag):
             yoff = off[0]
         else:
             yoff = off[1]
-        id = strmatch(name[n],Bname,True)[0]
-        Ym0 = SBEN[id][f'm{cflag or ""}3']
-        SBEN[id][f'm{cflag or ""}3'] = Ym0 + yoff
+        ids = strmatch(name[n],Bname,True)[0]
+        Ym0 = SBEN[ids][f'm{cflag or ""}3']
+        SBEN[ids][f'm{cflag or ""}3'] = Ym0 + yoff
 
     # CUSXR extraction magnets
     # coor=[z,x,y,roll,-pitch,yaw] (SYMBOLS coordinates)
@@ -2449,27 +2449,27 @@ def FixMagnetCoords(SBEN, QUAD, INST, K, N, L, P, coor, cflag):
     for namen in name:
         dname = f'D{namen}A'
         idd = strmatch(dname,N,True)[0]
-        id = strmatch(namen,Bname,True)[0]
+        ids = strmatch(namen,Bname,True)[0]
         for m in [1,2,3,5,6]:
-            SBEN[id][f'm{cflag or ""}{m}'] = coor[idd, m-1]
+            SBEN[ids][f'm{cflag or ""}{m}'] = coor[idd, m-1]
 
     # QDG001 and QDG003
 
     if cflag is None:  # only linac coordinates
         name = ['QDG001', 'QDG003']
         for n in range(len(name)):
-            id = strmatch(name[n], N)
-            KL = np.sum(P[id, 1] * L[id])
-            id = strmatch(f'DY{name[n]}', N)[0]
-            kick = P[id, 0]
+            ids = strmatch(name[n], N)
+            KL = np.sum(P[ids, 1] * L[ids])
+            ids = strmatch(f'DY{name[n]}', N)[0]
+            kick = P[ids, 0]
             off = kick / KL
-            id = strmatch(name[n],Qname,True)[0]
-            Xm0 = QUAD[id]['c2']
-            Ym0 = QUAD[id]['c3']
-            Zm0 = QUAD[id]['c1']
-            yaw = QUAD[id]['c6']
-            pitch = -QUAD[id]['c5']
-            roll = QUAD[id]['c4']
+            ids = strmatch(name[n],Qname,True)[0]
+            Xm0 = QUAD[ids]['c2']
+            Ym0 = QUAD[ids]['c3']
+            Zm0 = QUAD[ids]['c1']
+            yaw = QUAD[ids]['c6']
+            pitch = -QUAD[ids]['c5']
+            roll = QUAD[ids]['c4']
             O1 = np.array([[np.cos(yaw), 0, np.sin(yaw)], [0, 1, 0], [-np.sin(yaw), 0, np.cos(yaw)]])
             O2 = np.array([[1, 0, 0], [0, np.cos(pitch), np.sin(pitch)], [0, -np.sin(pitch), np.cos(pitch)]])
             O3 = np.array([[np.cos(roll), -np.sin(roll), 0], [np.sin(roll), np.cos(roll), 0], [0, 0, 1]])
@@ -2480,25 +2480,25 @@ def FixMagnetCoords(SBEN, QUAD, INST, K, N, L, P, coor, cflag):
             t = O @ np.array([Xr, Yr, Zr])  # restore roll, pitch, and yaw
             Xm, Ym, Zm = t[0], t[1], t[2]
             # CheckMagnetCoords
-            QUAD[id]['m2'] = Xm
-            QUAD[id]['m3'] = Ym
-            QUAD[id]['m1'] = Zm
-            QUAD[id]['m6'] = yaw
-            QUAD[id]['m5'] = -pitch
-            QUAD[id]['m4'] = roll
+            QUAD[ids]['m2'] = Xm
+            QUAD[ids]['m3'] = Ym
+            QUAD[ids]['m1'] = Zm
+            QUAD[ids]['m6'] = yaw
+            QUAD[ids]['m5'] = -pitch
+            QUAD[ids]['m4'] = roll
 
     # SXRSS optical components
 
     name = ['GSXS1', 'MSXS1', 'SLSXS1', 'MSXS2', 'MSXS3']
     dX = 1e-3 * np.array([0, -1.93, -3.85, -3.85, 0])
     for n in range(len(name)):
-        id = strmatch(name[n],Iname,True)[0]
-        X0 = INST[id][f'c{cflag or ""}2']
-        Y0 = INST[id][f'c{cflag or ""}3']
-        Z0 = INST[id][f'c{cflag or ""}1']
-        yaw = INST[id][f'c{cflag or ""}6']
-        pitch = -INST[id][f'c{cflag or ""}5']
-        roll = INST[id][f'c{cflag or ""}4']
+        ids = strmatch(name[n],Iname,True)[0]
+        X0 = INST[ids][f'c{cflag or ""}2']
+        Y0 = INST[ids][f'c{cflag or ""}3']
+        Z0 = INST[ids][f'c{cflag or ""}1']
+        yaw = INST[ids][f'c{cflag or ""}6']
+        pitch = -INST[ids][f'c{cflag or ""}5']
+        roll = INST[ids][f'c{cflag or ""}4']
         O1 = np.array([[np.cos(yaw), 0, np.sin(yaw)], [0, 1, 0], [-np.sin(yaw), 0, np.cos(yaw)]])
         O2 = np.array([[1, 0, 0], [0, np.cos(pitch), np.sin(pitch)], [0, -np.sin(pitch), np.cos(pitch)]])
         O3 = np.array([[np.cos(roll), -np.sin(roll), 0], [np.sin(roll), np.cos(roll), 0], [0, 0, 1]])
@@ -2508,12 +2508,12 @@ def FixMagnetCoords(SBEN, QUAD, INST, K, N, L, P, coor, cflag):
         Xr = Xr + dX[n]  # apply horizontal offset
         t = O @ np.array([Xr, Yr, Zr])  # restore roll, pitch, and yaw
         Xm, Ym, Zm = t[0], t[1], t[2]
-        INST[id][f'm{cflag or ""}2'] = Xm
-        INST[id][f'm{cflag or ""}3'] = Ym
-        INST[id][f'm{cflag or ""}1'] = Zm
-        INST[id][f'm{cflag or ""}6'] = yaw
-        INST[id][f'm{cflag or ""}5'] = -pitch
-        INST[id][f'm{cflag or ""}4'] = roll
+        INST[ids][f'm{cflag or ""}2'] = Xm
+        INST[ids][f'm{cflag or ""}3'] = Ym
+        INST[ids][f'm{cflag or ""}1'] = Zm
+        INST[ids][f'm{cflag or ""}6'] = yaw
+        INST[ids][f'm{cflag or ""}5'] = -pitch
+        INST[ids][f'm{cflag or ""}4'] = roll
 
 FixMagnetCoords(ele_dict['SBEN'], ele_dict['QUAD'], ele_dict['INST'], K, N, L, P, coor, None)
 if cBSY:
@@ -2587,181 +2587,178 @@ def arrange_output(roots, system_name, filename):
     with filepath.open('wt') as fid:
         fid.write(f'{head}\n')
         fid.write(f'{unit}\n')
-        for entry in roots:
-            ip_ids = [i for i,x in enumerate(ip) if x[0]==entry['ix']]
+        for entry in ip:
+            kwn = entry[2]
+            m = entry[3]
+            TEMP = ele_dict[kwn][m]
 
-            for n in ip_ids:
-                kwn = ip[n][2]
-                m = ip[n][3]
-                TEMP = ele_dict[kwn][m]
+            s = [None] * Ncol
 
-                s = [None] * Ncol
+            # common data
+            s[0] = TEMP['id']
+            s[1] = TEMP['parent']
+            s[2] = TEMP['prim']
+            s[3] = TEMP['name']
+            s[4] = TEMP['type']
+            s[5] = TEMP['leng']
+            s[15] = TEMP['energy']
+            s[51] = TEMP['sdsp']
 
-                # common data
-                s[0] = TEMP['id']
-                s[1] = TEMP['parent']
-                s[2] = TEMP['prim']
-                s[3] = TEMP['name']
-                s[4] = TEMP['type']
-                s[5] = TEMP['leng']
-                s[15] = TEMP['energy']
-                s[51] = TEMP['sdsp']
+            if system_name == 'NOMINAL':
+                s[16] = TEMP['suml']
+                s[17] = roundoff(TEMP['c1'], prec)
+                s[18] = roundoff(TEMP['c2'], prec)
+                s[19] = roundoff(TEMP['c3'], prec)
+                s[20] = roundoff(TEMP['c4'], prec)
+                s[21] = roundoff(TEMP['c5'], prec)
+                s[22] = roundoff(TEMP['c6'], prec)
+            elif system_name == 'BSY':
+                if 'suml1' not in TEMP:
+                    # use suml1 as a proxy to see if element is in BSY
+                    continue
+                s[16] = TEMP['suml1']
+                s[17] = roundoff(TEMP['c11'], prec)
+                s[18] = roundoff(TEMP['c12'], prec)
+                s[19] = roundoff(TEMP['c13'], prec)
+                s[20] = roundoff(TEMP['c14'], prec)
+                s[21] = roundoff(TEMP['c15'], prec)
+                s[22] = roundoff(TEMP['c16'], prec)
+            elif system_name == 'UND':
+                if 'suml2' not in TEMP:
+                    # use suml2 as a proxy to see if element is in UND
+                    continue
+                s[16] = TEMP['suml2']
+                s[17] = roundoff(TEMP['c21'], prec)
+                s[18] = roundoff(TEMP['c22'], prec)
+                s[19] = roundoff(TEMP['c23'], prec)
+                s[20] = roundoff(TEMP['c24'], prec)
+                s[21] = roundoff(TEMP['c25'], prec)
+                s[22] = roundoff(TEMP['c26'], prec)
+
+            # keyword data
+            if kwn == 'LCAV':
+                s[23] = TEMP['freq']
+                s[24] = TEMP['ampl']
+                s[25] = TEMP['phase']
+                s[26] = TEMP['grad']
+                s[27] = TEMP['power']
+            elif kwn == 'SBEN':
+                s[6] = TEMP['gap']
+                s[7] = TEMP['ang']
+                s[8] = TEMP['k1']
+                s[10] = TEMP['tilt']
+                s[11] = TEMP['e1']
+                s[12] = TEMP['e2']
+                s[28] = TEMP['zleng']
+                s[29] = TEMP['fint']
+                s[30] = TEMP['BL']
+                s[31] = TEMP['B']
+                s[32] = TEMP['GL']
+                s[33] = TEMP['G']
 
                 if system_name == 'NOMINAL':
-                    s[16] = TEMP['suml']
-                    s[17] = roundoff(TEMP['c1'], prec)
-                    s[18] = roundoff(TEMP['c2'], prec)
-                    s[19] = roundoff(TEMP['c3'], prec)
-                    s[20] = roundoff(TEMP['c4'], prec)
-                    s[21] = roundoff(TEMP['c5'], prec)
-                    s[22] = roundoff(TEMP['c6'], prec)
+                    s[37] = roundoff(TEMP['m1'], prec)
+                    s[38] = roundoff(TEMP['m2'], prec)
+                    s[39] = roundoff(TEMP['m3'], prec)
+                    s[40] = roundoff(TEMP['m4'], prec)
+                    s[41] = roundoff(TEMP['m5'], prec)
+                    s[42] = roundoff(TEMP['m6'], prec)
                 elif system_name == 'BSY':
-                    if 'suml1' not in TEMP:
-                        # use suml1 as a proxy to see if element is in BSY
-                        continue
-                    s[16] = TEMP['suml1']
-                    s[17] = roundoff(TEMP['c11'], prec)
-                    s[18] = roundoff(TEMP['c12'], prec)
-                    s[19] = roundoff(TEMP['c13'], prec)
-                    s[20] = roundoff(TEMP['c14'], prec)
-                    s[21] = roundoff(TEMP['c15'], prec)
-                    s[22] = roundoff(TEMP['c16'], prec)
+                    s[37] = roundoff(TEMP['m11'], prec)
+                    s[38] = roundoff(TEMP['m12'], prec)
+                    s[39] = roundoff(TEMP['m13'], prec)
+                    s[40] = roundoff(TEMP['m14'], prec)
+                    s[41] = roundoff(TEMP['m15'], prec)
+                    s[42] = roundoff(TEMP['m16'], prec)
                 elif system_name == 'UND':
-                    if 'suml2' not in TEMP:
-                        # use suml2 as a proxy to see if element is in UND
-                        continue
-                    s[16] = TEMP['suml2']
-                    s[17] = roundoff(TEMP['c21'], prec)
-                    s[18] = roundoff(TEMP['c22'], prec)
-                    s[19] = roundoff(TEMP['c23'], prec)
-                    s[20] = roundoff(TEMP['c24'], prec)
-                    s[21] = roundoff(TEMP['c25'], prec)
-                    s[22] = roundoff(TEMP['c26'], prec)
+                    s[37] = roundoff(TEMP['m21'], prec)
+                    s[38] = roundoff(TEMP['m22'], prec)
+                    s[39] = roundoff(TEMP['m23'], prec)
+                    s[40] = roundoff(TEMP['m24'], prec)
+                    s[41] = roundoff(TEMP['m25'], prec)
+                    s[42] = roundoff(TEMP['m26'], prec)
+            elif kwn == 'QUAD':
+                s[6] = TEMP['bore']
+                s[8] = TEMP['k1']
+                s[10] = TEMP['tilt']
+                s[32] = TEMP['GL']
+                s[33] = TEMP['G']
 
-                # keyword data
-                if kwn == 'LCAV':
-                    s[23] = TEMP['freq']
-                    s[24] = TEMP['ampl']
-                    s[25] = TEMP['phase']
-                    s[26] = TEMP['grad']
-                    s[27] = TEMP['power']
-                elif kwn == 'SBEN':
-                    s[6] = TEMP['gap']
-                    s[7] = TEMP['ang']
-                    s[8] = TEMP['k1']
+                if system_name == 'NOMINAL':
+                    s[37] = roundoff(TEMP['m1'], prec)
+                    s[38] = roundoff(TEMP['m2'], prec)
+                    s[39] = roundoff(TEMP['m3'], prec)
+                    s[40] = roundoff(TEMP['m4'], prec)
+                    s[41] = roundoff(TEMP['m5'], prec)
+                    s[42] = roundoff(TEMP['m6'], prec)
+            elif kwn == 'SEXT':
+                s[6] = TEMP['bore']
+                s[9] = TEMP['k2']
+                s[10] = TEMP['tilt']
+                s[32] = TEMP['GpL']
+                s[33] = TEMP['Gp']
+            elif kwn == 'SOLE':
+                s[6] = TEMP['bore']
+                s[30] = TEMP['BL']
+                s[31] = TEMP['B']
+                s[43] = TEMP['ks']
+            elif kwn == 'MATR':
+                s[44] = TEMP['lambda']
+                s[45] = TEMP['k']
+            elif kwn == 'RCOL':
+                s[46] = TEMP['xgap']
+                s[47] = TEMP['ygap']
+            elif kwn == 'ECOL':
+                s[46] = TEMP['xbore']
+                s[47] = TEMP['ybore']
+            elif kwn == 'SROT':
+                s[7] = TEMP['ang']
+            elif kwn == 'INST':
+                if system_name == 'NOMINAL':
+                    s[37] = roundoff(TEMP['m1'], prec)
+                    s[38] = roundoff(TEMP['m2'], prec)
+                    s[39] = roundoff(TEMP['m3'], prec)
+                    s[40] = roundoff(TEMP['m4'], prec)
+                    s[41] = roundoff(TEMP['m5'], prec)
+                    s[42] = roundoff(TEMP['m6'], prec)
+                elif system_name == 'BSY':
+                    s[37] = roundoff(TEMP['m11'], prec)
+                    s[38] = roundoff(TEMP['m12'], prec)
+                    s[39] = roundoff(TEMP['m13'], prec)
+                    s[40] = roundoff(TEMP['m14'], prec)
+                    s[41] = roundoff(TEMP['m15'], prec)
+                    s[42] = roundoff(TEMP['m16'], prec)
+                elif system_name == 'UND':
+                    s[37] = roundoff(TEMP['m21'], prec)
+                    s[38] = roundoff(TEMP['m22'], prec)
+                    s[39] = roundoff(TEMP['m23'], prec)
+                    s[40] = roundoff(TEMP['m24'], prec)
+                    s[41] = roundoff(TEMP['m25'], prec)
+                    s[42] = roundoff(TEMP['m26'], prec)
+            elif kwn == 'MULT':
+                s[6] = TEMP['bore']
+                if TEMP['prim'] == 'MULT':
+                    continue
+                if TEMP['prim'] == 'QUAD':
                     s[10] = TEMP['tilt']
-                    s[11] = TEMP['e1']
-                    s[12] = TEMP['e2']
-                    s[28] = TEMP['zleng']
-                    s[29] = TEMP['fint']
-                    s[30] = TEMP['BL']
-                    s[31] = TEMP['B']
                     s[32] = TEMP['GL']
-                    s[33] = TEMP['G']
 
-                    if system_name == 'NOMINAL':
-                        s[37] = roundoff(TEMP['m1'], prec)
-                        s[38] = roundoff(TEMP['m2'], prec)
-                        s[39] = roundoff(TEMP['m3'], prec)
-                        s[40] = roundoff(TEMP['m4'], prec)
-                        s[41] = roundoff(TEMP['m5'], prec)
-                        s[42] = roundoff(TEMP['m6'], prec)
-                    elif system_name == 'BSY':
-                        s[37] = roundoff(TEMP['m11'], prec)
-                        s[38] = roundoff(TEMP['m12'], prec)
-                        s[39] = roundoff(TEMP['m13'], prec)
-                        s[40] = roundoff(TEMP['m14'], prec)
-                        s[41] = roundoff(TEMP['m15'], prec)
-                        s[42] = roundoff(TEMP['m16'], prec)
-                    elif system_name == 'UND':
-                        s[37] = roundoff(TEMP['m21'], prec)
-                        s[38] = roundoff(TEMP['m22'], prec)
-                        s[39] = roundoff(TEMP['m23'], prec)
-                        s[40] = roundoff(TEMP['m24'], prec)
-                        s[41] = roundoff(TEMP['m25'], prec)
-                        s[42] = roundoff(TEMP['m26'], prec)
-                elif kwn == 'QUAD':
-                    s[6] = TEMP['bore']
-                    s[8] = TEMP['k1']
-                    s[10] = TEMP['tilt']
-                    s[32] = TEMP['GL']
-                    s[33] = TEMP['G']
-
-                    if system_name == 'NOMINAL':
-                        s[37] = roundoff(TEMP['m1'], prec)
-                        s[38] = roundoff(TEMP['m2'], prec)
-                        s[39] = roundoff(TEMP['m3'], prec)
-                        s[40] = roundoff(TEMP['m4'], prec)
-                        s[41] = roundoff(TEMP['m5'], prec)
-                        s[42] = roundoff(TEMP['m6'], prec)
-                elif kwn == 'SEXT':
-                    s[6] = TEMP['bore']
-                    s[9] = TEMP['k2']
-                    s[10] = TEMP['tilt']
-                    s[32] = TEMP['GpL']
-                    s[33] = TEMP['Gp']
-                elif kwn == 'SOLE':
-                    s[6] = TEMP['bore']
-                    s[30] = TEMP['BL']
-                    s[31] = TEMP['B']
-                    s[43] = TEMP['ks']
-                elif kwn == 'MATR':
-                    s[44] = TEMP['lambda']
-                    s[45] = TEMP['k']
-                elif kwn == 'RCOL':
-                    s[46] = TEMP['xgap']
-                    s[47] = TEMP['ygap']
-                elif kwn == 'ECOL':
-                    s[46] = TEMP['xbore']
-                    s[47] = TEMP['ybore']
-                elif kwn == 'SROT':
-                    s[7] = TEMP['ang']
-                elif kwn == 'INST':
-                    if system_name == 'NOMINAL':
-                        s[37] = roundoff(TEMP['m1'], prec)
-                        s[38] = roundoff(TEMP['m2'], prec)
-                        s[39] = roundoff(TEMP['m3'], prec)
-                        s[40] = roundoff(TEMP['m4'], prec)
-                        s[41] = roundoff(TEMP['m5'], prec)
-                        s[42] = roundoff(TEMP['m6'], prec)
-                    elif system_name == 'BSY':
-                        s[37] = roundoff(TEMP['m11'], prec)
-                        s[38] = roundoff(TEMP['m12'], prec)
-                        s[39] = roundoff(TEMP['m13'], prec)
-                        s[40] = roundoff(TEMP['m14'], prec)
-                        s[41] = roundoff(TEMP['m15'], prec)
-                        s[42] = roundoff(TEMP['m16'], prec)
-                    elif system_name == 'UND':
-                        s[37] = roundoff(TEMP['m21'], prec)
-                        s[38] = roundoff(TEMP['m22'], prec)
-                        s[39] = roundoff(TEMP['m23'], prec)
-                        s[40] = roundoff(TEMP['m24'], prec)
-                        s[41] = roundoff(TEMP['m25'], prec)
-                        s[42] = roundoff(TEMP['m26'], prec)
-                elif kwn == 'MULT':
-                    s[6] = TEMP['bore']
-                    if TEMP['prim'] == 'MULT':
-                        continue
-                    if TEMP['prim'] == 'QUAD':
-                        s[10] = TEMP['tilt']
-                        s[32] = TEMP['GL']
-
-                fid.write(f"{s[0]+1},")
-                for k in range(1, Ncol-1):
-                    if s[k] is None:
-                        fid.write(",")
-                    elif isinstance(s[k], str):
-                        fid.write(f"{s[k]},")
-                    else:
-                        fid.write(f"{madval(s[k])},")
-                k=Ncol-1  #No trailing commas
+            fid.write(f"{s[0]+1},")
+            for k in range(1, Ncol-1):
                 if s[k] is None:
-                    pass
+                    fid.write(",")
                 elif isinstance(s[k], str):
-                    fid.write(f"{s[k]}")
+                    fid.write(f"{s[k]},")
                 else:
-                    fid.write(f"{madval(s[k])}")
-                fid.write("\n")
+                    fid.write(f"{madval(s[k])},")
+            k=Ncol-1  #No trailing commas
+            if s[k] is None:
+                pass
+            elif isinstance(s[k], str):
+                fid.write(f"{s[k]}")
+            else:
+                fid.write(f"{madval(s[k])}")
+            fid.write("\n")
         fid.write(f'{foot}\n')
         fid.write(f'{unit}\n')
 
@@ -2782,43 +2779,17 @@ if cUND:
 fname = f'AD_ACCEL-extra-{optics}.txt'
 with open(outdir+'/'+fname, 'wt') as fid:
     fid.write('ELEMENT,Area2,Undulator Cell,Sector\n')
-    for entry in file_roots:
-        ip_ids = [i for i,x in enumerate(ip) if x[0]==entry['ix']]
-        for n in ip_ids:
-            kwn = ip[n][2]
-            m = ip[n][3]
-            if kwn in ['MARK', 'SROT']:
-                continue
-            TEMP = ele_dict[kwn][m]
-            TEMPucell = TEMP['ucell']
-            TEMPucell = '' if isinstance(TEMPucell,list) else TEMPucell
-            fid.write(f"{TEMP['name']},{TEMP['area']},{TEMPucell},{TEMP['sector']}\n")
+    for entry in ip:
+        kwn = entry[2]
+        m = entry[3]
+        if kwn in ['MARK', 'SROT']:
+            continue
+        TEMP = ele_dict[kwn][m]
+        TEMPucell = TEMP['ucell']
+        TEMPucell = '' if isinstance(TEMPucell,list) else TEMPucell
+        fid.write(f"{TEMP['name']},{TEMP['area']},{TEMPucell},{TEMP['sector']}\n")
     fid.write('ELEMENT,Area2,Undulator Cell,Sector\n')
 
 # ------------------------------------------------------------------------------
-
-# # save RDBdata
-# sio.savemat(outdir+'/makeExcel.dump.mat', 
-# mdict={
-# "K":K,
-# "N":N,
-# "L":L,
-# "P":P,
-# "A":A,
-# "T":T,
-# "E":E,
-# "SECTORS":SECTORS,
-# "coor":coor,
-# "S":S,
-# "idf":idf,
-# "idd":idd,
-# "K1":K,
-# "N1":N,
-# "L1":L,
-# "P1":P,
-# "S1":E,
-# "coor1":coor,
-# "SECTORS1":SECTORS1,
-# })
 
 print(f'Be sure to add FACET2 elements to {fname}!\n')
