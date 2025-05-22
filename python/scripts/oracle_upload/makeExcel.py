@@ -227,7 +227,8 @@ from xtffs2mat import xtffs2mat
 stepnum += 1
 print('   {}) Read MAD output files ...'.format(stepnum))
 
-K, N, L, P, A, T, E, FDN, coor, S, Sd = [], [], [], [], [], [], [], [], [], [], []
+K, N, T, FDN = [], [], [], []
+L, P, A, E, coor, S, Sd = [], [], [], [], [], [], []
 idf, idd = [], []  # idf: which MAD output file an element came from
                    # idd: ordinal position in MAD output file
 
@@ -299,6 +300,21 @@ if cUND:
             FDN2.extend(tFDN)
 
             idf2.extend([file_root['ix']] * len(tK))
+
+Sd = np.array(Sd)
+S = np.array(S)
+S1 = np.array(S1)
+S2 = np.array(S2)
+L = np.array(L)
+L1 = np.array(L1)
+L2 = np.array(L2)
+P = np.array(P)
+P1 = np.array(P1)
+P2 = np.array(P2)
+E = np.array(E)
+coor1 = np.array(coor1)
+coor2 = np.array(coor2)
+A = np.array(A)
 
 def FixUpgradeNames(N):
   # Device names in upgraded SXR cells have "_" appended ... remove it
@@ -675,16 +691,6 @@ MADK = [
     'MARK', 'MULT'
 ]
 
-#FOO FLAG key*, etc in following block for removal.
-# this prunes from MADK those keyword not in the survey files.
-keyw = []
-jdmisc = []
-tkeyw = sorted(list(set(K)))
-for n in range(len(MADK)):
-    id_ = strmatch(MADK[n], tkeyw)
-    if len(id_) > 0:
-        keyw.append(MADK[n])
-
 # hard-wired list of bends that have energy polynomials in the database
 Ebend = []  # ['BRB', 'BXSP', 'BYSP', 'BRSP', 'BYSP', 'BX3', 'BY1', 'BY2', 'BYD']
 
@@ -768,22 +774,6 @@ nWIRE = 0
 nPROF = 0
 nIMON = 0
 nBLMO = 0
-
-#HEAD
-Sd = np.array(Sd)  #Probably not needed ... already numpy array
-S = np.array(S)
-S1 = np.array(S1)
-S2 = np.array(S2)
-L = np.array(L)
-L1 = np.array(L1)
-L2 = np.array(L2)
-P = np.array(P)
-P1 = np.array(P1)
-P2 = np.array(P2)
-E = np.array(E)
-coor1 = np.array(coor1)
-coor2 = np.array(coor2)
-A = np.array(A)
 
 # gather key structures into element dictionary
 ele_dict = {
@@ -2246,11 +2236,8 @@ def fix_power_fraction(lcav):
                 raise ValueError(f"{cav['name']} not found!")
             cav['power'] = powr[id[0]]
     
-    #FOO return lcav
-
 
 # fix LCAV power fraction values (for deactivated klystrons)
-#FOO LCAV = fix_power_fraction(ele_dict['LCAV'])
 fix_power_fraction(ele_dict['LCAV'])
 
 def add_eic(inst):
@@ -2269,7 +2256,6 @@ def add_eic(inst):
     return inst
 
 # deferred devices
-#FOO DEPR = []
 nDEPR = 0
 pname = [x['parent'] for x in area]
 
@@ -2288,16 +2274,6 @@ for kwn,eles in ele_dict.items():
                 z_use = eles[m]['m1']
             else:
                 z_use = eles[m]['c1']
-            #FOO DEPR.append({
-            #FOO     'id':KEY[m]['id'],
-            #FOO     'parent':KEY[m]['parent'],
-            #FOO     'ida': id[0]+1,
-            #FOO     'prim': KEY[m]['prim'],
-            #FOO     'name': KEY[m]['name'],
-            #FOO     'z': z_use,
-            #FOO     'type': t,
-            #FOO     'level': deplev,
-            #FOO     })
 
             eles[m]['parent'] = '*' + eles[m]['parent']
             eles[m]['area'] = '*' + eles[m]['area']
@@ -2602,14 +2578,9 @@ Ncol = head.count(',') + 1
 ip = []
 for kwn,eles in ele_dict.items():
     for m in range(len(eles)):
-        ip.append([eles[m]["idf"], kwn, m, eles[m]['id']])
-ip = sorted(ip, key=lambda x: (x[0], x[3]))
+        ip.append([eles[m]["idf"], eles[m]['id'], kwn, m])
+ip = sorted(ip, key=lambda x: (x[0], x[1]))
     
-#FOO for n,KEY in enumerate(KEYLIST):
-#FOO     for m in range(len(KEY)):
-#FOO         ip.append([KEY[m]["idf"], n, m, KEY[m]['id']])
-#FOO ip = sorted(ip, key=lambda x: (x[0], x[3]))
-
 def arrange_output(roots, system_name, filename):
     filepath = Path(outdir+'/'+fname)
     filepath.parent.mkdir(parents=True, exist_ok=True)
@@ -2620,8 +2591,8 @@ def arrange_output(roots, system_name, filename):
             ip_ids = [i for i,x in enumerate(ip) if x[0]==entry['ix']]
 
             for n in ip_ids:
-                kwn = ip[n][1]
-                m = ip[n][2]
+                kwn = ip[n][2]
+                m = ip[n][3]
                 TEMP = ele_dict[kwn][m]
 
                 s = [None] * Ncol
@@ -2814,8 +2785,8 @@ with open(outdir+'/'+fname, 'wt') as fid:
     for entry in file_roots:
         ip_ids = [i for i,x in enumerate(ip) if x[0]==entry['ix']]
         for n in ip_ids:
-            kwn = ip[n][1]
-            m = ip[n][2]
+            kwn = ip[n][2]
+            m = ip[n][3]
             if kwn in ['MARK', 'SROT']:
                 continue
             TEMP = ele_dict[kwn][m]
