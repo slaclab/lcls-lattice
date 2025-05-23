@@ -78,8 +78,6 @@ print('           AD_ACCEL Excel File Generation')
 print('   ===============================================')
 print(' ')
 
-stepnum=0;
-
 Er=5.10998918e5     # electron rest mass (eV) ... XAL value
 clight=2.99792458e8 # speed of light (m/s) ... XAL value
 charge=-1           # sign of electron charge ... XAL value
@@ -224,9 +222,6 @@ from xtffs2mat import xtffs2mat
 
 # ------------------------------------------------------------------------------
 # read the MAD output files
-stepnum += 1
-print('   {}) Read MAD output files ...'.format(stepnum))
-
 K, N, T, FDN = [], [], [], []
 L, P, A, E, coor, S, Sd = [], [], [], [], [], [], []
 idf, idd = [], []  # idf: which MAD output file an element came from
@@ -809,7 +804,6 @@ for kwn,eles in ele_dict.items():
             else:  # unique in 6 characters
                 name[i] = name[i][0:6]
         name = list(dict.fromkeys(name))
-        nLCAV = 0
 
         for mname in name:
             if mname.startswith('TCX'):
@@ -836,7 +830,6 @@ for kwn,eles in ele_dict.items():
             else:
                 power = 1
             coorc = np.mean(coor[ide, :], axis=0)  # m,rad (beam center)
-            nLCAV += 1
             eles.append({
                 'idf': idf[id1],
                 'id': idd[id1],
