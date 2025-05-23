@@ -530,9 +530,9 @@ def read_sector_data():
     # read worksheet 1 (scS)
     sheet = wb.worksheets[0]
     data = sheet['A4':'J72']
-    sect_sc = []
+    sector_data = []
     for row in data:
-        sect_sc.append({
+        sector_data.append({
             'name': row[0].value,
             'froot': row[1].value,
             'BSY': row[2].value,
@@ -545,9 +545,8 @@ def read_sector_data():
     # read worksheet 2 (cuH)
     sheet = wb.worksheets[1]
     data = sheet['A4':'J39']
-    sect_cu = []
     for row in data:
-        sect_cu.append({
+        sector_data.append({
             'name': row[0].value,
             'froot': row[1].value,
             'BSY': row[2].value,
@@ -557,7 +556,7 @@ def read_sector_data():
             'Nend': notnone(row[9].value)
         })
 
-    return sect_sc, sect_cu
+    return sector_data
 
 def set_sector(N, SECTORS, coor, idf, nf, sector):
     if nf != sector['froot']:
@@ -598,20 +597,13 @@ def set_sector(N, SECTORS, coor, idf, nf, sector):
 def assign_sector(N, coor, idf, N1, coor1, idf1):
     # NOTE: coordinates are assumed to be in MAD (not SYMBOLS) order
 
-    sect_SC, sect_CU = read_sector_data()
+    sector_data = read_sector_data()
 
     SECTORS = ['' for x in N]
     SECTORS1 = ['' for x in N]
 
-    for nf in range(1, 10):  # idf values
-        for sector in sect_SC:
-            if sector['BSY']:
-                set_sector(N1, SECTORS1, coor1, idf1, nf, sector)
-            else:
-                set_sector(N, SECTORS, coor, idf, nf, sector)
-
-    for nf in range(10, 17):  # idf values
-        for sector in sect_CU:
+    for nf in [x['ix'] for x in file_roots]:
+        for sector in sector_data:
             if sector['BSY']:
                 set_sector(N1, SECTORS1, coor1, idf1, nf, sector)
             else:
