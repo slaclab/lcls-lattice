@@ -600,60 +600,22 @@ def assign_sector(N, coor, idf, N1, coor1, idf1):
 
     sect_SC, sect_CU = read_sector_data()
 
-    # superconducting linac LINEs
-    # nf= 1: LCLS2scS
-    # nf= 2: LCLS2scSS
-    # nf= 3: LCLS2scS2_X
-    # nf= 4: LCLS2scSTXI
-    # nf= 5: LCLS2scSTMO
-    # nf= 6: LCLS2scH
-    # nf= 7: LCLS2scD
-    # nf= 8: DIAG0
-    # nf= 9: LCLS2scDA (DASEL)
-
     SECTORS = ['' for x in N]
     SECTORS1 = ['' for x in N]
 
     for nf in range(1, 10):  # idf values
-        if nf in [3, 4, 5]:
-            continue  # do SXTES: 2_X/TXI/TMO separately
-        for ns, sector in enumerate(sect_SC, 1):
+        for sector in sect_SC:
             if sector['BSY']:
                 set_sector(N1, SECTORS1, coor1, idf1, nf, sector)
             else:
                 set_sector(N, SECTORS, coor, idf, nf, sector)
-
-    # copper linac LINEs
-    # nf=10: LCLS2cuH
-    # nf=11: LCLS2cuHS
-    # nf=12: LCLS2cuHXTES
-    # nf=13: LCLS2cuHTXI
-    # nf=14: LCLS2cuS
-    # nf=15: LCLS2cuGSPEC
-    # nf=16: LCLS2cuSPEC
 
     for nf in range(10, 17):  # idf values
-        if nf in [12, 13]:
-            continue  # do XTECH: HXTES/TXI separately
-        for ns, sector in enumerate(sect_CU, 1):
+        for sector in sect_CU:
             if sector['BSY']:
                 set_sector(N1, SECTORS1, coor1, idf1, nf, sector)
             else:
                 set_sector(N, SECTORS, coor, idf, nf, sector)
-
-    # handle SXTES lines separately
-    ix = [x['froot'] for x in sect_SC].index(3) # XTESS(2_x)
-    set_sector(N1, SECTORS1, coor1, idf1, 3, sect_SC[ix])
-    ix = [x['froot'] for x in sect_SC].index(4) # XTESS(TXI)
-    set_sector(N1, SECTORS1, coor1, idf1, 4, sect_SC[ix])
-    ix = [x['froot'] for x in sect_SC].index(5) # XTESS(TMO)
-    set_sector(N1, SECTORS1, coor1, idf1, 5, sect_SC[ix])
-
-    # handle HXTES lines separately
-    ix = [x['froot'] for x in sect_CU].index(12) # XTESH(HXTES)
-    set_sector(N1, SECTORS1, coor1, idf1, 12, sect_CU[ix])
-    ix = [x['froot'] for x in sect_CU].index(13) # XTESH(TXI)
-    set_sector(N1, SECTORS1, coor1, idf1, 13, sect_CU[ix])
 
     return SECTORS, SECTORS1
 
