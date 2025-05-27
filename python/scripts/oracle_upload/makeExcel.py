@@ -439,11 +439,6 @@ for m in range(0, len(idb), 2):
     name = N[na].strip()
     name = name.split('.')[0]  # remove decoration, if any
     id_ = strmatch(name,C)[0]
-    #id_ = [i for i, x in enumerate(C) if name in x][0]
-    #if not id_:
-    #    raise ValueError(f'No FINT for {name}')
-    #elif len(id_) > 1:
-    #    print('oops')
     fint = float(C[id_+6])
     P_und[na][0] = fint
     P_und[nb][0] = fint
@@ -2464,7 +2459,7 @@ for kwn,eles in ele_dict.items():
         ip.append([eles[m]["idf"], eles[m]['id'], kwn, m])
 ip = sorted(ip, key=lambda x: (x[0], x[1]))
     
-def arrange_output(roots, system_name, filename):
+def arrange_output(system_name, filename):
     filepath = Path(outdir+'/'+fname)
     filepath.parent.mkdir(parents=True, exist_ok=True)
     with filepath.open('wt') as fid:
@@ -2647,13 +2642,13 @@ def arrange_output(roots, system_name, filename):
 
 
 fname = f'AD_ACCEL-{optics}.txt'
-arrange_output(file_roots,'NOMINAL',fname)
+arrange_output('NOMINAL',fname)
 if cBSY:
     fname = f'BSY-AD_ACCEL-{optics}.txt'
-    arrange_output(bsy_file_roots,'BSY',fname)
+    arrange_output('BSY',fname)
 if cUND:
     fname = f'UND-AD_ACCEL-{optics}.txt'
-    arrange_output(und_file_roots,'UND',fname)
+    arrange_output('UND',fname)
 
 # ------------------------------------------------------------------------------
 # Write extra SYMBOLS txt-file ...
