@@ -74,7 +74,7 @@ noXTES_TEMPs=True; # skip elements named TEMP* in XTES systems
 
 print(' ')
 print('   ===============================================')
-print('           AD_ACCEL Excel File Generation')
+print('       AD_ACCEL Oracle Upload File Generation')
 print('   ===============================================')
 print(' ')
 
@@ -218,7 +218,7 @@ for a in area:
 cBSY=len(bsy_file_roots)>0
 cUND=len(und_file_roots)>0
 
-from xtffs2mat import xtffs2mat
+from parse_survey import parse_survey
 
 # ------------------------------------------------------------------------------
 # read the MAD output files
@@ -230,7 +230,7 @@ idf, idd = [], []  # idf: which MAD output file an element came from
 for file_root in file_roots:
     fname = f'{file_root["root"]}_survey.tape'
     print(f'Opening file {fname}')
-    titl, tK, tN, tL, tP, tA, tT, tE, tFDN, tcoor, tS = xtffs2mat(fname)
+    titl, tK, tN, tL, tP, tA, tT, tE, tFDN, tcoor, tS = parse_survey(fname)
 
     id1 = tN.index(file_root['beg'])
     id2 = tN.index(file_root['end']) 
@@ -260,7 +260,7 @@ if cBSY:
     for file_root in bsy_file_roots:
         fname = f'BSY-{file_root["root"]}_survey.tape'
         print(f'Opening file {fname}')
-        titl, tK, tN, tL, tP, tA, tT, tE, tFDN, tcoor, tS = xtffs2mat(fname)
+        titl, tK, tN, tL, tP, tA, tT, tE, tFDN, tcoor, tS = parse_survey(fname)
 
         id1 = tN.index(file_root['beg'])
         id2 = tN.index(file_root['end']) 
@@ -284,7 +284,7 @@ if cUND:
         if file_root['UND']:
             fname = f'{file_root[0]}_survey.tape'
             print(f'Opening file {fname}')
-            titl, tK, tN, tL, tP, tA, tT, tE, tFDN, tcoor, tS = xtffs2mat(fname)
+            titl, tK, tN, tL, tP, tA, tT, tE, tFDN, tcoor, tS = parse_survey(fname)
 
             K_und.extend(tK)
             N_und.extend(tN)
