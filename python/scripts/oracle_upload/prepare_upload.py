@@ -828,20 +828,12 @@ for kwn,eles in ele_dict.items():
                     process_bsy(name,eles[-1],split=True,exact=False)
 
             # UND coordinates
-            eles[-1]['suml2'] = []
-            for k in range(6):
-                eles[-1][f'c2{k+1}'] = []
             if cUND:
                 if name.startswith('TCX'):
-                    ids = strmatch(name,N_und,True) # differentiate between TCX01/02 and TCX01B/02B
+                    process_und(name,eles[-1],split=True,exact=True)
                 else:
-                    ids = strmatch(name,N_und)
-                if len(ids) > 0:
-                    ide = [ids[0] - 1, ids[-1]]  # [entrance, exit]
-                    coor_undc = np.mean(coor_und[ide, :], axis=0)  # m,rad (beam center)
-                    eles[-1]['suml2'] = np.mean(S_und[ide])  # m (beam center)
-                    for k in range(6):
-                        eles[-1][f'c2{k+1}'] = coor_undc[k]
+                    process_und(name,eles[-1],split=True,exact=False)
+
     elif kwn == 'SBEN':
         Nelm = len(key_ids) // 2
         for m in range(Nelm):
