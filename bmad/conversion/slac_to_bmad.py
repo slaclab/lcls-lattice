@@ -15,10 +15,8 @@ bmad_env_check_1 = run(f'ls {BMAD_ENV}/util/dist_source_me',shell=True,capture_o
 assert bmad_env_check_1.returncode == 0
 print(f'{BMAD_ENV=}')
 
-WORK_DIR = LCLS_LATTICE_ENV + '/bmad/conversion/work'
 TEMP_DIR = LCLS_LATTICE_ENV + '/bmad/conversion/temp'
 DEST_DIR = os.path.expandvars('$LCLS_LATTICE/bmad/master/')
-print(f'{WORK_DIR=}')
 print(f'{TEMP_DIR=}')
 
 
@@ -253,14 +251,13 @@ shadows = ['umasxh','umahxh','pssxh','pshxh','umxl1h','umxl2h','umxl3h','umxl4h'
 
 def process_master(master):
     print(f'Converting {master}')
-    shutil.copytree(TEMP_DIR, WORK_DIR, dirs_exist_ok=True)
 
     SCRIPT = f'python $ACC_ROOT_DIR/util_programs/mad_to_bmad/mad8_to_bmad.py --no_prepend_vars -f {master}'
-    res = run(SCRIPT, shell=True, cwd=WORK_DIR)
+    res = run(SCRIPT, shell=True, cwd=TEMP_DIR)
 
     assert res.returncode == 0
 
-    BMAD_FILES=glob(WORK_DIR+'/*bmad')
+    BMAD_FILES=glob(TEMP_DIR+'/*bmad')
     REPLACEMENTS = merge_replacements(master)
     for f in BMAD_FILES:
         finalize_bmad(f, replacements=REPLACEMENTS, verbose=False, exclude_strs=exclude_strs, shadows=shadows)  
@@ -275,5 +272,4 @@ for _m in SC_MASTERS:
     process_master(_m)
 
 #cleanup working areas
-run(f'rm -r {TEMP_DIR}',shell=True)
-run(f'rm -r {WORK_DIR}',shell=True)
+#run(f'rm -r {TEMP_DIR}',shell=True)
