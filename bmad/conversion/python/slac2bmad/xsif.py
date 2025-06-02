@@ -191,7 +191,7 @@ def prepare_xsif(xsif_file, save=True):
     # Unfold comments
     lines = unfold_comments(lines)
 
-    lines = remove_fdn_calls(lines)
+    #lines = remove_fdn_calls(lines)
     
     # Save
     if save:
