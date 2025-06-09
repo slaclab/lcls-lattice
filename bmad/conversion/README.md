@@ -3,8 +3,8 @@
 1. Once Mark Woodley has uploaded the pre-release to github lcls-lattice repo, checkout that release.
 2. Setup terminal environment
    - check that $LCLS_LATTICE is set to the location of the DDMMYY_conversion branch of lcls-lattice.
-   - check that the Bmad environment is setup (consider whether the lcls-live bmad / tao is better)
-     - i.e. cd to the bmad repo and run `. util/dist_source_me`
+   - check that the lcls-lattice-dev conda environment is active, which can be generated from lcls-lattice `environment.yml`
+   - cd to the bmad repo and run `. util/dist_source_me`
 3. Run $LCLS_LATTICE/bmad/conversion/slac_to_bmad.py
    - This generates the `lcls-lattice/bmad/master/*_devicenames.bmad` files
 4. Check if beginning twiss in `bmad/master/gunb/beginning_BEGGUNB.bmad` need to be updated from BX0, AX0, etc. in `mad/LCLS2sc_master.xsif`
