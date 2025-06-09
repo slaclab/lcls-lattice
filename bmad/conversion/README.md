@@ -6,7 +6,6 @@
    - check that the lcls-lattice-dev conda environment is active, which can be generated from lcls-lattice `environment.yml`
    - cd to the bmad repo and run `. util/dist_source_me`
 3. Run $LCLS_LATTICE/bmad/conversion/slac_to_bmad.py
-   - This generates the `lcls-lattice/bmad/master/*_devicenames.bmad` files
 4. Check if beginning twiss in `bmad/master/gunb/beginning_BEGGUNB.bmad` need to be updated from BX0, AX0, etc. in `mad/LCLS2sc_master.xsif`
 5. from `$LCLS_LATTICE` run `pytest`
 
@@ -16,6 +15,7 @@
    - Click on Actions and Download
    - Save file to `lcls-lattice/bmad/conversion/from_oracle`
 2. Run `$LCLS_LATTICE/bmad/conversion/device_mapping/device_mapping.py`
+   - This generates the `lcls-lattice/bmad/master/*_devicenames.bmad` files
 
 # Check into repo
 1. Trigger the Make Optics Plots action for the pre-release branch.
