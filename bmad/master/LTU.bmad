@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-12MAY2025s ***
+! *** OPTICS=AD_ACCEL-09JUN2025s ***
 
 ! LCLS2sc LTU and dump
 
@@ -560,31 +560,39 @@ lbx31bs = zbcc/(2*sinc31bs)
 abx31bl = abx31b-abx31bs
 lbx31bl = lbx31b-lbx31bs
 
-bcx31b11: sbend, type = "0.788D11.50", l = lbx31bs, angle = +abx31bs, e1 = 0, hgap = gbcc/2, fint = fbcc, fintx = 0
-bcx31b12: sbend, type = "0.788D11.50", l = lbx31bl, angle = +abx31bl, e2 = +abx31b, hgap = gbcc/2, fint = 0, fintx = fbcc
-bcx31b21: sbend, type = "0.788D11.50", l = lbx31bl, angle = -abx31bl, e1 = -abx31b, hgap = gbcc/2, fint = fbcc, fintx = 0
-bcx31b22: sbend, type = "0.788D11.50", l = lbx31bs, angle = -abx31bs, e2 = 0, hgap = gbcc/2, fint = 0, fintx = fbcc
-bcx31b31: sbend, type = "0.788D11.50", l = lbx31bs, angle = -abx31bs, e1 = 0, hgap = gbcc/2, fint = fbcc, fintx = 0
-bcx31b32: sbend, type = "0.788D11.50", l = lbx31bl, angle = -abx31bl, e2 = -abx31b, hgap = gbcc/2, fint = 0, fintx = fbcc
-bcx31b41: sbend, type = "0.788D11.50", l = lbx31bl, angle = +abx31bl, e1 = +abx31b, hgap = gbcc/2, fint = fbcc, fintx = 0
-bcx31b42: sbend, type = "0.788D11.50", l = lbx31bs, angle = +abx31bs, e2 = 0, hgap = gbcc/2, fint = 0, fintx = fbcc
+bcx31b11: sbend, type = "0.788D11.50", l = lbx31bs, angle = +abx31bs, e1 = 0, hgap = gbcc/2, fint = fbcc, fintx = 0,
+          descrip = "mad8_key:sben"
+bcx31b12: sbend, type = "0.788D11.50", l = lbx31bl, angle = +abx31bl, e2 = +abx31b, hgap = gbcc/2, fint = 0,
+          fintx = fbcc, descrip = "mad8_key:sben"
+bcx31b21: sbend, type = "0.788D11.50", l = lbx31bl, angle = -abx31bl, e1 = -abx31b, hgap = gbcc/2, fint = fbcc,
+          fintx = 0, descrip = "mad8_key:sben"
+bcx31b22: sbend, type = "0.788D11.50", l = lbx31bs, angle = -abx31bs, e2 = 0, hgap = gbcc/2, fint = 0, fintx = fbcc,
+          descrip = "mad8_key:sben"
+bcx31b31: sbend, type = "0.788D11.50", l = lbx31bs, angle = -abx31bs, e1 = 0, hgap = gbcc/2, fint = fbcc, fintx = 0,
+          descrip = "mad8_key:sben"
+bcx31b32: sbend, type = "0.788D11.50", l = lbx31bl, angle = -abx31bl, e2 = -abx31b, hgap = gbcc/2, fint = 0,
+          fintx = fbcc, descrip = "mad8_key:sben"
+bcx31b41: sbend, type = "0.788D11.50", l = lbx31bl, angle = +abx31bl, e1 = +abx31b, hgap = gbcc/2, fint = fbcc,
+          fintx = 0, descrip = "mad8_key:sben"
+bcx31b42: sbend, type = "0.788D11.50", l = lbx31bs, angle = +abx31bs, e2 = 0, hgap = gbcc/2, fint = 0, fintx = fbcc,
+          descrip = "mad8_key:sben"
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
 bcx31b1: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbx31b, angle = +abx31b, e1 = 0, fint = fbcc, e2 = +abx31b,
-          fintx = fbcc
+          fintx = fbcc, descrip = "mad8_key:sben"
 bcx31b2: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbx31b, angle = -abx31b, e1 = -abx31b, fint = fbcc, e2 = 0,
-          fintx = fbcc
+          fintx = fbcc, descrip = "mad8_key:sben"
 bcx31b3: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbx31b, angle = -abx31b, e1 = 0, fint = fbcc, e2 = -abx31b,
-          fintx = fbcc
+          fintx = fbcc, descrip = "mad8_key:sben"
 bcx31b4: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbx31b, angle = +abx31b, e1 = +abx31b, fint = fbcc, e2 = 0,
-          fintx = fbcc
+          fintx = fbcc, descrip = "mad8_key:sben"
 
-dcc31bo: drift, l = zdcc/cos(abx31b), type = "CSR"
-dcc31bi: drift, l = zdcc, type = "CSR"
+dcc31bo: drift, l = zdcc/cos(abx31b), type = "CSR", descrip = "mad8_key:drif"
+dcc31bi: drift, l = zdcc, type = "CSR", descrip = "mad8_key:drif"
 
-cc31bbeg: marker
-cc31bend: marker
+cc31bbeg: marker, descrip = "mad8_key:mark"
+cc31bend: marker, descrip = "mad8_key:mark"
 
 
 
@@ -626,31 +634,39 @@ lbx32bs = zbcc/(2*sinc32bs)
 abx32bl = abx32b-abx32bs
 lbx32bl = lbx32b-lbx32bs
 
-bcx32b11: sbend, type = "0.788D11.50", l = lbx32bs, angle = +abx32bs, e1 = 0, hgap = gbcc/2, fint = fbcc, fintx = 0
-bcx32b12: sbend, type = "0.788D11.50", l = lbx32bl, angle = +abx32bl, e2 = +abx32b, hgap = gbcc/2, fint = 0, fintx = fbcc
-bcx32b21: sbend, type = "0.788D11.50", l = lbx32bl, angle = -abx32bl, e1 = -abx32b, hgap = gbcc/2, fint = fbcc, fintx = 0
-bcx32b22: sbend, type = "0.788D11.50", l = lbx32bs, angle = -abx32bs, e2 = 0, hgap = gbcc/2, fint = 0, fintx = fbcc
-bcx32b31: sbend, type = "0.788D11.50", l = lbx32bs, angle = -abx32bs, e1 = 0, hgap = gbcc/2, fint = fbcc, fintx = 0
-bcx32b32: sbend, type = "0.788D11.50", l = lbx32bl, angle = -abx32bl, e2 = -abx32b, hgap = gbcc/2, fint = 0, fintx = fbcc
-bcx32b41: sbend, type = "0.788D11.50", l = lbx32bl, angle = +abx32bl, e1 = +abx32b, hgap = gbcc/2, fint = fbcc, fintx = 0
-bcx32b42: sbend, type = "0.788D11.50", l = lbx32bs, angle = +abx32bs, e2 = 0, hgap = gbcc/2, fint = 0, fintx = fbcc
+bcx32b11: sbend, type = "0.788D11.50", l = lbx32bs, angle = +abx32bs, e1 = 0, hgap = gbcc/2, fint = fbcc, fintx = 0,
+          descrip = "mad8_key:sben"
+bcx32b12: sbend, type = "0.788D11.50", l = lbx32bl, angle = +abx32bl, e2 = +abx32b, hgap = gbcc/2, fint = 0,
+          fintx = fbcc, descrip = "mad8_key:sben"
+bcx32b21: sbend, type = "0.788D11.50", l = lbx32bl, angle = -abx32bl, e1 = -abx32b, hgap = gbcc/2, fint = fbcc,
+          fintx = 0, descrip = "mad8_key:sben"
+bcx32b22: sbend, type = "0.788D11.50", l = lbx32bs, angle = -abx32bs, e2 = 0, hgap = gbcc/2, fint = 0, fintx = fbcc,
+          descrip = "mad8_key:sben"
+bcx32b31: sbend, type = "0.788D11.50", l = lbx32bs, angle = -abx32bs, e1 = 0, hgap = gbcc/2, fint = fbcc, fintx = 0,
+          descrip = "mad8_key:sben"
+bcx32b32: sbend, type = "0.788D11.50", l = lbx32bl, angle = -abx32bl, e2 = -abx32b, hgap = gbcc/2, fint = 0,
+          fintx = fbcc, descrip = "mad8_key:sben"
+bcx32b41: sbend, type = "0.788D11.50", l = lbx32bl, angle = +abx32bl, e1 = +abx32b, hgap = gbcc/2, fint = fbcc,
+          fintx = 0, descrip = "mad8_key:sben"
+bcx32b42: sbend, type = "0.788D11.50", l = lbx32bs, angle = +abx32bs, e2 = 0, hgap = gbcc/2, fint = 0, fintx = fbcc,
+          descrip = "mad8_key:sben"
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
 bcx32b1: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbx32b, angle = +abx32b, e1 = 0, fint = fbcc, e2 = +abx32b,
-          fintx = fbcc
+          fintx = fbcc, descrip = "mad8_key:sben"
 bcx32b2: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbx32b, angle = -abx32b, e1 = -abx32b, fint = fbcc, e2 = 0,
-          fintx = fbcc
+          fintx = fbcc, descrip = "mad8_key:sben"
 bcx32b3: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbx32b, angle = -abx32b, e1 = 0, fint = fbcc, e2 = -abx32b,
-          fintx = fbcc
+          fintx = fbcc, descrip = "mad8_key:sben"
 bcx32b4: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbx32b, angle = +abx32b, e1 = +abx32b, fint = fbcc, e2 = 0,
-          fintx = fbcc
+          fintx = fbcc, descrip = "mad8_key:sben"
 
-dcc32bo: drift, l = zdcc/cos(abx32b), type = "CSR"
-dcc32bi: drift, l = zdcc, type = "CSR"
+dcc32bo: drift, l = zdcc/cos(abx32b), type = "CSR", descrip = "mad8_key:drif"
+dcc32bi: drift, l = zdcc, type = "CSR", descrip = "mad8_key:drif"
 
-cc32bbeg: marker
-cc32bend: marker
+cc32bbeg: marker, descrip = "mad8_key:mark"
+cc32bend: marker, descrip = "mad8_key:mark"
 
 
 
@@ -705,34 +721,34 @@ awg2s = awgs-awg1s        !"long half" half-pole bend angle
 lwg2s = lwgs-lwg1s        !"long half" half-pole path length
 
 wig1s1: sbend, type = "@3,SLC wiggler", l = lwg1s, hgap = gwig/2, angle = awg1s, e1 = 0, e2 = 0, fint = 0.5, fintx = 0,
-          ref_tilt = pi/2
+          ref_tilt = pi/2, descrip = "mad8_key:sben"
 wig1s2: sbend, type = "@3,SLC wiggler", l = lwg2s, hgap = gwig/2, angle = awg2s, e1 = 0, e2 = awgs, fint = 0,
-          fintx = 0.5, ref_tilt = pi/2
+          fintx = 0.5, ref_tilt = pi/2, descrip = "mad8_key:sben"
 wig2s1: sbend, type = "@3,SLC wiggler", l = lwgs, hgap = gwig/2, angle = -awgs, e1 = -awgs, e2 = 0, fint = 0.5,
-          fintx = 0, ref_tilt = pi/2
+          fintx = 0, ref_tilt = pi/2, descrip = "mad8_key:sben"
 wig2s2: sbend, type = "@3,SLC wiggler", l = lwgs, hgap = gwig/2, angle = -awgs, e1 = 0, e2 = -awgs, fint = 0,
-          fintx = 0.5, ref_tilt = pi/2
+          fintx = 0.5, ref_tilt = pi/2, descrip = "mad8_key:sben"
 wig3s1: sbend, type = "@3,SLC wiggler", l = lwg2s, hgap = gwig/2, angle = awg2s, e1 = awgs, e2 = 0, fint = 0.5,
-          fintx = 0, ref_tilt = pi/2
+          fintx = 0, ref_tilt = pi/2, descrip = "mad8_key:sben"
 wig3s2: sbend, type = "@3,SLC wiggler", l = lwg1s, hgap = gwig/2, angle = awg1s, e1 = 0, e2 = 0, fint = 0, fintx = 0.5,
-          ref_tilt = pi/2
+          ref_tilt = pi/2, descrip = "mad8_key:sben"
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
 wig1s: sbend, type = "@3,SLC wiggler", hgap = gwig/2, l = lwgs, angle = +awgs, e1 = 0, fint = 0.5, e2 = +awgs,
-          fintx = 0.5, ref_tilt = pi/2
+          fintx = 0.5, ref_tilt = pi/2, descrip = "mad8_key:sben"
 wig2s: sbend, type = "@3,SLC wiggler", hgap = gwig/2, l = 2*lwgs, angle = -2*awgs, e1 = -awgs, fint = 0.5, e2 = -awgs,
-          fintx = 0.5, ref_tilt = pi/2
+          fintx = 0.5, ref_tilt = pi/2, descrip = "mad8_key:sben"
 wig3s: sbend, type = "@3,SLC wiggler", hgap = gwig/2, l = lwgs, angle = +awgs, e1 = +awgs, fint = 0.5, e2 = 0,
-          fintx = 0.5, ref_tilt = pi/2
+          fintx = 0.5, ref_tilt = pi/2, descrip = "mad8_key:sben"
 
 ldwgs = zdwg/cos(awgs)
 
-dwgs: drift, l = ldwgs
+dwgs: drift, l = ldwgs, descrip = "mad8_key:drif"
 
-ycwigs: vkicker, type = "@3,wiggler trim"
+ycwigs: vkicker, type = "@3,wiggler trim", descrip = "mad8_key:vkic"
 
-cntwigs: marker, type = "CENTER" !ELEGANT will correct the orbit here for CSR-steering
+cntwigs: marker, type = "CENTER", descrip = "mad8_key:mark" !ELEGANT will correct the orbit here for CSR-steering
 
 
 
@@ -756,9 +772,9 @@ wig3s_full: line = (wig3s)
 
 ! replace deferred wiggler with a drift
 
-dwigs: drift, l = zwig
-dwigsa: drift, l = 1.135414
-dwigsb: drift, l = dwigs[l]-dwigsa[l]-lplate
+dwigs: drift, l = zwig, descrip = "mad8_key:drif"
+dwigsa: drift, l = 1.135414, descrip = "mad8_key:drif"
+dwigsb: drift, l = dwigs[l]-dwigsa[l]-lplate, descrip = "mad8_key:drif"
 
 ! ------------------------------------------------------------------------------
 ! SXR dogleg
@@ -770,35 +786,35 @@ dwigsb: drift, l = dwigs[l]-dwigsa[l]-lplate
 kqdbl1 = -0.050357218829 !-0.050357323411
 kqdbl2 = -0.559361220066 !-0.559361105837
 
-qdbl1: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqdbl1, aperture = rqe
-qdbl2: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqdbl2, aperture = rqe
+qdbl1: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqdbl1, aperture = rqe, descrip = "mad8_key:quad"
+qdbl2: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqdbl2, aperture = rqe, descrip = "mad8_key:quad"
 
 kqdlb = 0.424676241757
 kqdl11 = kqdlb
 
-qdl11: quadrupole, type = "2Q10", l = lqr/2, k1 = kqdl11, aperture = rqr !reserve separate PS
-qdl12: quadrupole, type = "2Q10", l = lqr/2, k1 = -kqdlb, aperture = rqr
-qdl13: quadrupole, type = "2Q10", l = lqr/2, k1 = kqdlb, aperture = rqr
-qdl14: quadrupole, type = "2Q10", l = lqr/2, k1 = -kqdlb, aperture = rqr
-qdl15: quadrupole, type = "2Q10", l = lqr/2, k1 = kqdlb, aperture = rqr
-qdl16: quadrupole, type = "2Q10", l = lqr/2, k1 = -kqdlb, aperture = rqr
-qdl17: quadrupole, type = "2Q10", l = lqr/2, k1 = kqdlb, aperture = rqr
-qdl18: quadrupole, type = "2Q10", l = lqr/2, k1 = -kqdlb, aperture = rqr
-qdl19: quadrupole, type = "2Q10", l = lqr/2, k1 = kqdlb, aperture = rqr
+qdl11: quadrupole, type = "2Q10", l = lqr/2, k1 = kqdl11, aperture = rqr, descrip = "mad8_key:quad" !reserve separate PS
+qdl12: quadrupole, type = "2Q10", l = lqr/2, k1 = -kqdlb, aperture = rqr, descrip = "mad8_key:quad"
+qdl13: quadrupole, type = "2Q10", l = lqr/2, k1 = kqdlb, aperture = rqr, descrip = "mad8_key:quad"
+qdl14: quadrupole, type = "2Q10", l = lqr/2, k1 = -kqdlb, aperture = rqr, descrip = "mad8_key:quad"
+qdl15: quadrupole, type = "2Q10", l = lqr/2, k1 = kqdlb, aperture = rqr, descrip = "mad8_key:quad"
+qdl16: quadrupole, type = "2Q10", l = lqr/2, k1 = -kqdlb, aperture = rqr, descrip = "mad8_key:quad"
+qdl17: quadrupole, type = "2Q10", l = lqr/2, k1 = kqdlb, aperture = rqr, descrip = "mad8_key:quad"
+qdl18: quadrupole, type = "2Q10", l = lqr/2, k1 = -kqdlb, aperture = rqr, descrip = "mad8_key:quad"
+qdl19: quadrupole, type = "2Q10", l = lqr/2, k1 = kqdlb, aperture = rqr, descrip = "mad8_key:quad"
 
 kqdl20 = -0.487979625759
 kqdl21 = -1.904057641444
 kqdl22 = 2.191453247156
 
-qdl20: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqdl20, aperture = rqe
-qdl21: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqdl21, aperture = rqe
-qdl22: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqdl22, aperture = rqe
+qdl20: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqdl20, aperture = rqe, descrip = "mad8_key:quad"
+qdl21: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqdl21, aperture = rqe, descrip = "mad8_key:quad"
+qdl22: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqdl22, aperture = rqe, descrip = "mad8_key:quad"
 
 ksdl1 = -8.734519131209
 ksdl2 = -24.395452957066
 
-sdl1: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdl1
-sdl2: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdl2
+sdl1: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdl1, descrip = "mad8_key:sext"
+sdl2: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdl2, descrip = "mad8_key:sext"
 
 !=!  COMMENT
 !=!  COMMENT
@@ -813,57 +829,57 @@ ab3mb = -ab3pb
 leffb3b = lb3b*ab3pb/(2*sin(ab3pb/2)) !full bend eff. path length (m)
 
 bx31b1: sbend, type = "1.06D103.3T", l = leffb3b/2, angle = ab3mb/2, hgap = gb3b/2, e1 = ab3mb/2, e2 = 0, fint = 0.4297,
-          fintx = 0
+          fintx = 0, descrip = "mad8_key:sben"
 bx31b2: sbend, type = "1.06D103.3T", l = leffb3b/2, angle = ab3mb/2, hgap = gb3b/2, e1 = 0, e2 = ab3mb/2, fint = 0,
-          fintx = 0.4297
+          fintx = 0.4297, descrip = "mad8_key:sben"
 bx32b1: sbend, type = "1.06D103.3T", l = leffb3b/2, angle = ab3pb/2, hgap = gb3b/2, e1 = ab3pb/2, e2 = 0, fint = 0.4297,
-          fintx = 0
+          fintx = 0, descrip = "mad8_key:sben"
 bx32b2: sbend, type = "1.06D103.3T", l = leffb3b/2, angle = ab3pb/2, hgap = gb3b/2, e1 = 0, e2 = ab3pb/2, fint = 0,
-          fintx = 0.4297
+          fintx = 0.4297, descrip = "mad8_key:sben"
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
 bx31b: sbend, type = "1.06D103.3T", hgap = gb3b/2, l = leffb3b, angle = ab3mb, e1 = ab3mb/2, fint = 0.4297,
-          e2 = ab3mb/2, fintx = 0.4297
+          e2 = ab3mb/2, fintx = 0.4297, descrip = "mad8_key:sben"
 bx32b: sbend, type = "1.06D103.3T", hgap = gb3b/2, l = leffb3b, angle = ab3pb, e1 = ab3pb/2, fint = 0.4297,
-          e2 = ab3pb/2, fintx = 0.4297
+          e2 = ab3pb/2, fintx = 0.4297, descrip = "mad8_key:sben"
 
 ! SXR single beam dumper vertical kicker, BPM, spoiler and in-line dump
 
 abykiks = 0 !=0.889371410732E-3 when BYKIKS1,2 are turned on
 
 bykik1s1: sbend, type = "1.92K41.2", l = lkik/2, angle = abykiks/4, e1 = abykiks/4, e2 = 0, fint = 0.5, fintx = 0,
-          hgap = gkik, ref_tilt = pi/2
+          hgap = gkik, ref_tilt = pi/2, descrip = "mad8_key:sben"
 bykik1s2: sbend, type = "1.92K41.2", l = lkik/2, angle = abykiks/4, e1 = 0, e2 = abykiks/4, fint = 0, fintx = 0.5,
-          hgap = gkik, ref_tilt = pi/2
+          hgap = gkik, ref_tilt = pi/2, descrip = "mad8_key:sben"
 
 bykik2s1: sbend, type = "1.92K41.2", l = lkik/2, angle = abykiks/4, e1 = abykiks/4, e2 = 0, fint = 0.5, fintx = 0,
-          hgap = gkik, ref_tilt = pi/2
+          hgap = gkik, ref_tilt = pi/2, descrip = "mad8_key:sben"
 bykik2s2: sbend, type = "1.92K41.2", l = lkik/2, angle = abykiks/4, e1 = 0, e2 = abykiks/4, fint = 0, fintx = 0.5,
-          hgap = gkik, ref_tilt = pi/2
+          hgap = gkik, ref_tilt = pi/2, descrip = "mad8_key:sben"
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
 bykik1s: sbend, type = "1.92K41.2", hgap = gkik, l = lkik, angle = abykiks/2, e1 = abykiks/4, fint = 0.5,
-          e2 = abykiks/4, fintx = 0.5, ref_tilt = pi/2
+          e2 = abykiks/4, fintx = 0.5, ref_tilt = pi/2, descrip = "mad8_key:sben"
 bykik2s: sbend, type = "1.92K41.2", hgap = gkik, l = lkik, angle = abykiks/2, e1 = abykiks/4, fint = 0.5,
-          e2 = abykiks/4, fintx = 0.5, ref_tilt = pi/2
+          e2 = abykiks/4, fintx = 0.5, ref_tilt = pi/2, descrip = "mad8_key:sben"
 
-bpmbyks: monitor, type = "Stripline-5"
-spoilers: instrument           !TDKIKS dump spoiler (1 mm Ti)
-tdkiks: instrument, l = 0.6096 !vertical off-axis in-line dump
+bpmbyks: monitor, type = "Stripline-5", descrip = "mad8_key:moni"
+spoilers: instrument, descrip = "mad8_key:inst"           !TDKIKS dump spoiler (1 mm Ti)
+tdkiks: instrument, l = 0.6096, descrip = "mad8_key:inst" !vertical off-axis in-line dump
 
 ldbldl = 3.0 ! length of LTU doublet including drifts
 
-wall: drift, l = 16.764 !length of muon wall
-dwalla: drift, l = 1.840975 !distance from face of muon wall to face of BSY dump
-dwallb: drift, l = wall[l]-dwalla[l]
-ddbldlb: drift, l = 0.5 +(lqa-lqe)/2
-ddbldlc: drift, l = 0.4
-ddbldld: drift, l = (lqa-lqe)/2
-ddbldla: drift, l = 0.5*(ldbldl-2*lqe-ddbldlb[l]-2*ddbldlc[l]-ddbldld[l]-ljaw)
-ddbldla1: drift, l = 0.654660
-ddbldla2: drift, l = 2*ddbldla[l]-ddbldla1[l]
+wall: drift, l = 16.764, descrip = "mad8_key:drif" !length of muon wall
+dwalla: drift, l = 1.840975, descrip = "mad8_key:drif" !distance from face of muon wall to face of BSY dump
+dwallb: drift, l = wall[l]-dwalla[l], descrip = "mad8_key:drif"
+ddbldlb: drift, l = 0.5 +(lqa-lqe)/2, descrip = "mad8_key:drif"
+ddbldlc: drift, l = 0.4, descrip = "mad8_key:drif"
+ddbldld: drift, l = (lqa-lqe)/2, descrip = "mad8_key:drif"
+ddbldla: drift, l = 0.5*(ldbldl-2*lqe-ddbldlb[l]-2*ddbldlc[l]-ddbldld[l]-ljaw), descrip = "mad8_key:drif"
+ddbldla1: drift, l = 0.654660, descrip = "mad8_key:drif"
+ddbldla2: drift, l = 2*ddbldla[l]-ddbldla1[l], descrip = "mad8_key:drif"
 
 ldlcel = 25.5
 ldl6b = 0.4
@@ -917,146 +933,151 @@ ldl19bb = 6.150346 !221641 !6.201146
 ldl19bc = ldl0b-ldl19ba-ldl19bb-lplate
 ldl20b = ldl0b+1.002-(lqa-lqr)/2
 
-ddl0b: drift, l = ldl0b
-ddl0ba: drift, l = ldl0ba
-ddl0bb: drift, l = ldl0bb
-ddl0bc: drift, l = ldl0bc
-ddl1b: drift, l = ldl1b
-ddl1ba: drift, l = ldl1ba
-ddl1bb: drift, l = ldl1bb
-ddl1bc: drift, l = ldl1bc
-ddl2b: drift, l = ldl2b
-ddl2ba: drift, l = ldl2ba
-ddl2bb: drift, l = ldl2bb
-ddl4b: drift, l = ldl4b
-ddl5b: drift, l = ldl5b
-ddl6b: drift, l = ldl6b
-ddl6bb: drift, l = 0.1
-ddl6ba: drift, l = ddl6b[l]-ddl6bb[l]-lsb
-ddl7b: drift, l = ldl7b
-ddl7ba: drift, l = 0.51
-ddl7bb: drift, l = ldl7b-ddl7ba[l]
-ddl7bba: drift, l = 0.135832
-ddl7bbb: drift, l = ddl7bb[l]-ddl7bba[l]
-ddl8b: drift, l = ldl8b
-ddl8c: drift, l = ldl8c
-ddl8ca: drift, l = ldl8ca
-ddl8cb: drift, l = ldl8cb
-ddl8d: drift, l = ldl8d
+ddl0b: drift, l = ldl0b, descrip = "mad8_key:drif"
+ddl0ba: drift, l = ldl0ba, descrip = "mad8_key:drif"
+ddl0bb: drift, l = ldl0bb, descrip = "mad8_key:drif"
+ddl0bc: drift, l = ldl0bc, descrip = "mad8_key:drif"
+ddl1b: drift, l = ldl1b, descrip = "mad8_key:drif"
+ddl1ba: drift, l = ldl1ba, descrip = "mad8_key:drif"
+ddl1bb: drift, l = ldl1bb, descrip = "mad8_key:drif"
+ddl1bc: drift, l = ldl1bc, descrip = "mad8_key:drif"
+ddl2b: drift, l = ldl2b, descrip = "mad8_key:drif"
+ddl2ba: drift, l = ldl2ba, descrip = "mad8_key:drif"
+ddl2bb: drift, l = ldl2bb, descrip = "mad8_key:drif"
+ddl4b: drift, l = ldl4b, descrip = "mad8_key:drif"
+ddl5b: drift, l = ldl5b, descrip = "mad8_key:drif"
+ddl6b: drift, l = ldl6b, descrip = "mad8_key:drif"
+ddl6bb: drift, l = 0.1, descrip = "mad8_key:drif"
+ddl6ba: drift, l = ddl6b[l]-ddl6bb[l]-lsb, descrip = "mad8_key:drif"
+ddl7b: drift, l = ldl7b, descrip = "mad8_key:drif"
+ddl7ba: drift, l = 0.51, descrip = "mad8_key:drif"
+ddl7bb: drift, l = ldl7b-ddl7ba[l], descrip = "mad8_key:drif"
+ddl7bba: drift, l = 0.135832, descrip = "mad8_key:drif"
+ddl7bbb: drift, l = ddl7bb[l]-ddl7bba[l], descrip = "mad8_key:drif"
+ddl8b: drift, l = ldl8b, descrip = "mad8_key:drif"
+ddl8c: drift, l = ldl8c, descrip = "mad8_key:drif"
+ddl8ca: drift, l = ldl8ca, descrip = "mad8_key:drif"
+ddl8cb: drift, l = ldl8cb, descrip = "mad8_key:drif"
+ddl8d: drift, l = ldl8d, descrip = "mad8_key:drif"
  !DDL8da : DRIFT, L=LDL8da
  !DDL8db : DRIFT, L=LDL8db
-ddl9b: drift, l = ldl9b
-ddl10b: drift, l = ldl10b
-ddl10ba: drift, l = ldl10ba
-ddl10bb: drift, l = ldl10bb
-ddl11b: drift, l = ldl11b
-ddl11ba: drift, l = ldl11ba
-ddl11bb: drift, l = ldl11bb
-ddl12b: drift, l = ldl12b
-ddl13b: drift, l = ldl13b
-ddl14b: drift, l = ldl14b
-ddl15b: drift, l = ldl15b
-ddl15ba: drift, l = ldl15ba
-ddl15bb: drift, l = ldl15bb
-ddl15bc: drift, l = ldl15bc
-ddl16b: drift, l = ldl16b
-ddl17b: drift, l = ldl17b
-ddl18b: drift, l = ldl18b
-ddl18ba: drift, l = ldl18ba
-ddl18bb: drift, l = ldl18bb
-ddl19ba: drift, l = ldl19ba
-ddl19bb: drift, l = ldl19bb
-ddl19bc: drift, l = ldl19bc
-ddl20b: drift, l = ldl20b
+ddl9b: drift, l = ldl9b, descrip = "mad8_key:drif"
+ddl10b: drift, l = ldl10b, descrip = "mad8_key:drif"
+ddl10ba: drift, l = ldl10ba, descrip = "mad8_key:drif"
+ddl10bb: drift, l = ldl10bb, descrip = "mad8_key:drif"
+ddl11b: drift, l = ldl11b, descrip = "mad8_key:drif"
+ddl11ba: drift, l = ldl11ba, descrip = "mad8_key:drif"
+ddl11bb: drift, l = ldl11bb, descrip = "mad8_key:drif"
+ddl12b: drift, l = ldl12b, descrip = "mad8_key:drif"
+ddl13b: drift, l = ldl13b, descrip = "mad8_key:drif"
+ddl14b: drift, l = ldl14b, descrip = "mad8_key:drif"
+ddl15b: drift, l = ldl15b, descrip = "mad8_key:drif"
+ddl15ba: drift, l = ldl15ba, descrip = "mad8_key:drif"
+ddl15bb: drift, l = ldl15bb, descrip = "mad8_key:drif"
+ddl15bc: drift, l = ldl15bc, descrip = "mad8_key:drif"
+ddl16b: drift, l = ldl16b, descrip = "mad8_key:drif"
+ddl17b: drift, l = ldl17b, descrip = "mad8_key:drif"
+ddl18b: drift, l = ldl18b, descrip = "mad8_key:drif"
+ddl18ba: drift, l = ldl18ba, descrip = "mad8_key:drif"
+ddl18bb: drift, l = ldl18bb, descrip = "mad8_key:drif"
+ddl19ba: drift, l = ldl19ba, descrip = "mad8_key:drif"
+ddl19bb: drift, l = ldl19bb, descrip = "mad8_key:drif"
+ddl19bc: drift, l = ldl19bc, descrip = "mad8_key:drif"
+ddl20b: drift, l = ldl20b, descrip = "mad8_key:drif"
 
 ! drifts for BYKIKS system
 
 ldbyks = ldlcel/2-lqr !DL cell drift length
 
-dbyks01: drift, l = ddl10ba[l]    !QDL16 to CYDL16
-dbyks02: drift, l = ddl10bb[l]    !CYDL16 to BPMDL16
-dbyks03: drift, l = 1.145230      !BPMDL16 to BTM04B (DDL11BA[L]+0.299779)
-dbyks05: drift, l = 0.5893-lkik/2 !(BYKIK1S to BYKIK2S)/2 (0.609226)
-dbyks06: drift, l = 4.360149      !BYKIK2S to XCDL17      (4.340223)
-dbyks07: drift, l = 0.634128      !XCDL17 to BPMDL17
-dbyks08: drift, l = 0.415873      !BPMDL17 to QDL17
+dbyks01: drift, l = ddl10ba[l], descrip = "mad8_key:drif"    !QDL16 to CYDL16
+dbyks02: drift, l = ddl10bb[l], descrip = "mad8_key:drif"    !CYDL16 to BPMDL16
+dbyks03: drift, l = 1.145230, descrip = "mad8_key:drif"      !BPMDL16 to BTM04B (DDL11BA[L]+0.299779)
+dbyks05: drift, l = 0.5893-lkik/2, descrip = "mad8_key:drif" !(BYKIK1S to BYKIK2S)/2 (0.609226)
+dbyks06: drift, l = 4.360149, descrip = "mad8_key:drif"      !BYKIK2S to XCDL17      (4.340223)
+dbyks07: drift, l = 0.634128, descrip = "mad8_key:drif"      !XCDL17 to BPMDL17
+dbyks08: drift, l = 0.415873, descrip = "mad8_key:drif"      !BPMDL17 to QDL17
 dbyks04: drift,     !BTM04B to BYKIK1S
-          l = ldbyks- dbyks01[l]-ljaw-dbyks02[l]-dbyks03[l]-lplate- 2*(lkik+dbyks05[l])-dbyks06[l]-dbyks07[l]- dbyks08[l]
+          l = ldbyks- dbyks01[l]-ljaw-dbyks02[l]-dbyks03[l]-lplate- 2*(lkik+dbyks05[l])-dbyks06[l]-dbyks07[l]- dbyks08[l],
+          descrip = "mad8_key:drif"
 
-dbyks11: drift, l = 0.51      !QDL17 to CEDL17
-dbyks12: drift, l = 0.735832  !CEDL17 to (removed) BTM05B
-dbyks13: drift, l = 0.687668  !(removed) BTM05B to SPOILERS
-dbyks14: drift, l = 3.200208  !SPOILERS to TDKIKS (3.220859)
-dbyks15: drift, l = 0.257457  !TDKIKS to PCTDKIKS1 (0.257426)
-dbyks16: drift, l = 0.266697  !PCTDKIKS to PCTDKIKS
-dbyks18: drift, l = 0.4       !YAGDL18 to YCDL18
-dbyks19: drift, l = 0.4       !YCDL18 to QDL18
+dbyks11: drift, l = 0.51, descrip = "mad8_key:drif"      !QDL17 to CEDL17
+dbyks12: drift, l = 0.735832, descrip = "mad8_key:drif"  !CEDL17 to (removed) BTM05B
+dbyks13: drift, l = 0.687668, descrip = "mad8_key:drif"  !(removed) BTM05B to SPOILERS
+dbyks14: drift, l = 3.200208, descrip = "mad8_key:drif"  !SPOILERS to TDKIKS (3.220859)
+dbyks15: drift, l = 0.257457, descrip = "mad8_key:drif"  !TDKIKS to PCTDKIKS1 (0.257426)
+dbyks16: drift, l = 0.266697, descrip = "mad8_key:drif"  !PCTDKIKS to PCTDKIKS
+dbyks18: drift, l = 0.4, descrip = "mad8_key:drif"       !YAGDL18 to YCDL18
+dbyks19: drift, l = 0.4, descrip = "mad8_key:drif"       !YCDL18 to QDL18
 dbyks17: drift, !PCTDKIK4S to YAGDL18
           l = ldbyks- dbyks11[l]-ljaw-dbyks12[l]-dbyks13[l]- dbyks14[l]-tdkiks[l]-dbyks15[l]-  &
-         4*lpctdkik-3*dbyks16[l]-dbyks18[l]-dbyks19[l]
+         4*lpctdkik-3*dbyks16[l]-dbyks18[l]-dbyks19[l], descrip = "mad8_key:drif"
 
-bpmdbl1: monitor, type = "Stripline-2"
-bpmdbl2: monitor, type = "Stripline-2"
-bpmdl11: monitor, type = "Stripline-5"
-bpmdl12: monitor, type = "Stripline-5"
-bpmdl13: monitor, type = "Stripline-5"
-bpmdl14: monitor, type = "Stripline-5"
-bpmdl15: monitor, type = "Stripline-5"
-bpmdl16: monitor, type = "Stripline-5"
-bpmdl17: monitor, type = "Stripline-5"
-bpmdl18: monitor, type = "Stripline-5"
-bpmdl19: monitor, type = "Stripline-5"
-bpmdl20: monitor, type = "Stripline-2"
-bpmdl21: monitor, type = "Stripline-2"
-bpmdl22: monitor, type = "Stripline-2"
+bpmdbl1: monitor, type = "Stripline-2", descrip = "mad8_key:moni"
+bpmdbl2: monitor, type = "Stripline-2", descrip = "mad8_key:moni"
+bpmdl11: monitor, type = "Stripline-5", descrip = "mad8_key:moni"
+bpmdl12: monitor, type = "Stripline-5", descrip = "mad8_key:moni"
+bpmdl13: monitor, type = "Stripline-5", descrip = "mad8_key:moni"
+bpmdl14: monitor, type = "Stripline-5", descrip = "mad8_key:moni"
+bpmdl15: monitor, type = "Stripline-5", descrip = "mad8_key:moni"
+bpmdl16: monitor, type = "Stripline-5", descrip = "mad8_key:moni"
+bpmdl17: monitor, type = "Stripline-5", descrip = "mad8_key:moni"
+bpmdl18: monitor, type = "Stripline-5", descrip = "mad8_key:moni"
+bpmdl19: monitor, type = "Stripline-5", descrip = "mad8_key:moni"
+bpmdl20: monitor, type = "Stripline-2", descrip = "mad8_key:moni"
+bpmdl21: monitor, type = "Stripline-2", descrip = "mad8_key:moni"
+bpmdl22: monitor, type = "Stripline-2", descrip = "mad8_key:moni"
 
-xcdbl2: hkicker, type = "class-4"
-xcdl11: hkicker, type = "class-4"
-xcdl13: hkicker, type = "class-4"
-xcdl15: hkicker, type = "class-4"
-xcdl17: hkicker, type = "class-4"
-xcdl19: hkicker, type = "class-4"
-xcdl22: hkicker, type = "class-4"
+xcdbl2: hkicker, type = "class-4", descrip = "mad8_key:hkic"
+xcdl11: hkicker, type = "class-4", descrip = "mad8_key:hkic"
+xcdl13: hkicker, type = "class-4", descrip = "mad8_key:hkic"
+xcdl15: hkicker, type = "class-4", descrip = "mad8_key:hkic"
+xcdl17: hkicker, type = "class-4", descrip = "mad8_key:hkic"
+xcdl19: hkicker, type = "class-4", descrip = "mad8_key:hkic"
+xcdl22: hkicker, type = "class-4", descrip = "mad8_key:hkic"
 
-ycdbl1: vkicker, type = "class-4"
-ycdl12: vkicker, type = "class-4"
-ycdl14: vkicker, type = "class-4"
-ycdl16: vkicker, type = "class-4"
-ycdl18: vkicker, type = "class-4"
-ycdl20: vkicker, type = "class-4"
-ycdl21: vkicker, type = "class-4"
+ycdbl1: vkicker, type = "class-4", descrip = "mad8_key:vkic"
+ycdl12: vkicker, type = "class-4", descrip = "mad8_key:vkic"
+ycdl14: vkicker, type = "class-4", descrip = "mad8_key:vkic"
+ycdl16: vkicker, type = "class-4", descrip = "mad8_key:vkic"
+ycdl18: vkicker, type = "class-4", descrip = "mad8_key:vkic"
+ycdl20: vkicker, type = "class-4", descrip = "mad8_key:vkic"
+ycdl21: vkicker, type = "class-4", descrip = "mad8_key:vkic"
 
-cedl13: rcollimator, type = "HCOLL", l = ljaw, x_limit = 8.5e-3, y_limit = 20.e-3
-cedl17: rcollimator, type = "HCOLL", l = ljaw, x_limit = 8.5e-3, y_limit = 20.e-3
+cedl13: rcollimator, type = "HCOLL", l = ljaw, x_limit = 8.5e-3, y_limit = 20.e-3, descrip = "mad8_key:rcol"
+cedl17: rcollimator, type = "HCOLL", l = ljaw, x_limit = 8.5e-3, y_limit = 20.e-3, descrip = "mad8_key:rcol"
 
-cybdl: rcollimator, type = "VCOLL", l = ljaw, y_limit = 1.2e-3, x_limit = 20.e-3
-cydl16: rcollimator, type = "VCOLL", l = ljaw, y_limit = 1.1e-3, x_limit = 20.e-3
+cybdl: rcollimator, type = "VCOLL", l = ljaw, y_limit = 1.2e-3, x_limit = 20.e-3, descrip = "mad8_key:rcol"
+cydl16: rcollimator, type = "VCOLL", l = ljaw, y_limit = 1.1e-3, x_limit = 20.e-3, descrip = "mad8_key:rcol"
 
 ! muon collimators after SBD TDKIKS in-line dump
-pctdkik1s: ecollimator, type = "BCS PC", l = lpctdkik, x_limit = 11.1125e-3, y_limit = 11.1125e-3
-pctdkik2s: ecollimator, type = "BCS PC", l = lpctdkik, x_limit = 11.1125e-3, y_limit = 11.1125e-3
-pctdkik3s: ecollimator, type = "@5,BCS PC", l = lpctdkik, x_limit = 11.1125e-3, y_limit = 11.1125e-3
-pctdkik4s: ecollimator, type = "@5,BCS PC", l = lpctdkik, x_limit = 11.1125e-3, y_limit = 11.1125e-3
+pctdkik1s: ecollimator, type = "BCS PC", l = lpctdkik, x_limit = 11.1125e-3, y_limit = 11.1125e-3,
+          descrip = "mad8_key:ecol"
+pctdkik2s: ecollimator, type = "BCS PC", l = lpctdkik, x_limit = 11.1125e-3, y_limit = 11.1125e-3,
+          descrip = "mad8_key:ecol"
+pctdkik3s: ecollimator, type = "@5,BCS PC", l = lpctdkik, x_limit = 11.1125e-3, y_limit = 11.1125e-3,
+          descrip = "mad8_key:ecol"
+pctdkik4s: ecollimator, type = "@5,BCS PC", l = lpctdkik, x_limit = 11.1125e-3, y_limit = 11.1125e-3,
+          descrip = "mad8_key:ecol"
 
 ! combination YAG/OTR !PAL type
 
-yagdl18: monitor, type = "YAG"
-yagdl18_otr: monitor, type = "OTR"
+yagdl18: monitor, type = "YAG", descrip = "mad8_key:moni"
+yagdl18_otr: monitor, type = "OTR", descrip = "mad8_key:moni"
   YAGDL18_full : LINE=(YAGDL18,YAGDL18_OTR)
 
-pc01b: instrument, type = "BCS plate", l = lplate
-btm01b: instrument, type = "PPS BTM"
-pc03b: instrument, type = "BCS plate", l = lplate
-btm03b: instrument, type = "PPS BTM"
-pc04b: instrument, type = "BCS plate", l = lplate
-btm04b: instrument, type = "PPS BTM"
-pc06b: instrument, type = "BCS plate", l = lplate
-btm06b: instrument, type = "PPS BTM"
-pc07b: instrument, type = "BCS plate", l = lplate
-btm07b: instrument, type = "PPS BTM"
+pc01b: instrument, type = "BCS plate", l = lplate, descrip = "mad8_key:inst"
+btm01b: instrument, type = "PPS BTM", descrip = "mad8_key:inst"
+pc03b: instrument, type = "BCS plate", l = lplate, descrip = "mad8_key:inst"
+btm03b: instrument, type = "PPS BTM", descrip = "mad8_key:inst"
+pc04b: instrument, type = "BCS plate", l = lplate, descrip = "mad8_key:inst"
+btm04b: instrument, type = "PPS BTM", descrip = "mad8_key:inst"
+pc06b: instrument, type = "BCS plate", l = lplate, descrip = "mad8_key:inst"
+btm06b: instrument, type = "PPS BTM", descrip = "mad8_key:inst"
+pc07b: instrument, type = "BCS plate", l = lplate, descrip = "mad8_key:inst"
+btm07b: instrument, type = "PPS BTM", descrip = "mad8_key:inst"
 
-dbmark34b: marker !entrance of BX31
-cntlt1s: marker, type = "CENTER"
+dbmark34b: marker, descrip = "mad8_key:mark" !entrance of BX31
+cntlt1s: marker, type = "CENTER", descrip = "mad8_key:mark"
 
 
 
@@ -1231,11 +1252,11 @@ kqvbb = -2.509359002417
 kqvm3b = 0.953555362463
 kqvm4b = -1.16254158193
 
-qvb1b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqvbb, aperture = rqe
-qvb2b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = -kqvbb, aperture = rqe
-qvb3b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqvbb, aperture = rqe
-qvm3b: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqvm3b, aperture = rqa
-qvm4b: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqvm4b, aperture = rqa
+qvb1b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqvbb, aperture = rqe, descrip = "mad8_key:quad"
+qvb2b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = -kqvbb, aperture = rqe, descrip = "mad8_key:quad"
+qvb3b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqvbb, aperture = rqe, descrip = "mad8_key:quad"
+qvm3b: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqvm3b, aperture = rqa, descrip = "mad8_key:quad"
+qvm4b: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqvm4b, aperture = rqa, descrip = "mad8_key:quad"
 
 s100_pitch = -4.760000e-3
 s100_height = 77.643680
@@ -1246,65 +1267,69 @@ lvb = 1.025      !3D39 vertical bend effective length (m)
 gvb = 0.034925   !gap width (m)
 avb = (s100_pitch+asin(z_s100_undh/(r_earth+s100_height)))/2 !bend up twice this angle so e- is level in cnt. of und.
 
-by1b1: sbend, type = "3D39", l = lvb/2, angle = avb/2, hgap = gvb/2, e1 = avb/2, fint = 0.5, fintx = 0, ref_tilt = pi/2
-by1b2: sbend, type = "3D39", l = lvb/2, angle = avb/2, hgap = gvb/2, e2 = avb/2, fint = 0, fintx = 0.5, ref_tilt = pi/2
-by2b1: sbend, type = "3D39", l = lvb/2, angle = avb/2, hgap = gvb/2, e1 = avb/2, fint = 0.5, fintx = 0, ref_tilt = pi/2
-by2b2: sbend, type = "3D39", l = lvb/2, angle = avb/2, hgap = gvb/2, e2 = avb/2, fint = 0, fintx = 0.5, ref_tilt = pi/2
+by1b1: sbend, type = "3D39", l = lvb/2, angle = avb/2, hgap = gvb/2, e1 = avb/2, fint = 0.5, fintx = 0, ref_tilt = pi/2,
+          descrip = "mad8_key:sben"
+by1b2: sbend, type = "3D39", l = lvb/2, angle = avb/2, hgap = gvb/2, e2 = avb/2, fint = 0, fintx = 0.5, ref_tilt = pi/2,
+          descrip = "mad8_key:sben"
+by2b1: sbend, type = "3D39", l = lvb/2, angle = avb/2, hgap = gvb/2, e1 = avb/2, fint = 0.5, fintx = 0, ref_tilt = pi/2,
+          descrip = "mad8_key:sben"
+by2b2: sbend, type = "3D39", l = lvb/2, angle = avb/2, hgap = gvb/2, e2 = avb/2, fint = 0, fintx = 0.5, ref_tilt = pi/2,
+          descrip = "mad8_key:sben"
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
 by1b: sbend, type = "3D39", hgap = gvb/2, l = lvb, angle = avb, e1 = avb/2, fint = 0.5, e2 = avb/2, fintx = 0.5,
-          ref_tilt = pi/2
+          ref_tilt = pi/2, descrip = "mad8_key:sben"
 by2b: sbend, type = "3D39", hgap = gvb/2, l = lvb, angle = avb, e1 = avb/2, fint = 0.5, e2 = avb/2, fintx = 0.5,
-          ref_tilt = pi/2
+          ref_tilt = pi/2, descrip = "mad8_key:sben"
 
 ddvb = 4.114978912453 !adjust Y in undulator
 
-dvb1b: drift, l = 7.44546-ddvb*0.5+(lqa-lqe)/2, type = "CSR"
-dvb2b: drift, l = 4.14092-ddvb*0.5+(lqa-lqe), type = "CSR"
-dvb2m80cmb: drift, l = 3.34092-ddvb*0.5+(lqa-lqe), type = "CSR"
-dvb1m40cmb: drift, l = 7.04546-ddvb*0.5+(lqa-lqe)/2, type = "CSR"
-dvb1m40cmba: drift, l = 2.9267695, type = "CSR" !13976 !2.990270
-dvb1m40cmbb: drift, l = dvb1m40cmb[l]-dvb1m40cmba[l]-lplate, type = "CSR"
-d40cmc: drift, l = 0.40, type = "CSR"
-dycvm1: drift, l = 0.40
-dqvm1: drift, l = 0.34
-dqvm2: drift, l = 0.5
-drqvm1: drift, l = lqf/2
-drqvm2: drift, l = lqf/2
-drqvm2ba: drift, l = 0.320870 !154231 !0.384366
-drqvm2bb: drift, l = 2*drqvm2[l]-drqvm2ba[l]-lplate
-dxcvm2: drift, l = 0.25
-dvb25cm: drift, l = 0.25
-dvb25cmcb: drift, l = 1.32046
-d25cm: drift, l = 0.25
-dvbem25cmb: drift, l = 1.39092-0.076175, type = "CSR"
-d25cmd: drift, l = 0.25+0.076175, type = "CSR"
-dvbem15cmb: drift, l = 0.243073, type = "CSR"
-d10cmb: drift, l = 0.1064869
-d25cma: drift, l = 0.2209001, type = "CSR"
+dvb1b: drift, l = 7.44546-ddvb*0.5+(lqa-lqe)/2, type = "CSR", descrip = "mad8_key:drif"
+dvb2b: drift, l = 4.14092-ddvb*0.5+(lqa-lqe), type = "CSR", descrip = "mad8_key:drif"
+dvb2m80cmb: drift, l = 3.34092-ddvb*0.5+(lqa-lqe), type = "CSR", descrip = "mad8_key:drif"
+dvb1m40cmb: drift, l = 7.04546-ddvb*0.5+(lqa-lqe)/2, type = "CSR", descrip = "mad8_key:drif"
+dvb1m40cmba: drift, l = 2.9267695, type = "CSR", descrip = "mad8_key:drif" !13976 !2.990270
+dvb1m40cmbb: drift, l = dvb1m40cmb[l]-dvb1m40cmba[l]-lplate, type = "CSR", descrip = "mad8_key:drif"
+d40cmc: drift, l = 0.40, type = "CSR", descrip = "mad8_key:drif"
+dycvm1: drift, l = 0.40, descrip = "mad8_key:drif"
+dqvm1: drift, l = 0.34, descrip = "mad8_key:drif"
+dqvm2: drift, l = 0.5, descrip = "mad8_key:drif"
+drqvm1: drift, l = lqf/2, descrip = "mad8_key:drif"
+drqvm2: drift, l = lqf/2, descrip = "mad8_key:drif"
+drqvm2ba: drift, l = 0.320870, descrip = "mad8_key:drif" !154231 !0.384366
+drqvm2bb: drift, l = 2*drqvm2[l]-drqvm2ba[l]-lplate, descrip = "mad8_key:drif"
+dxcvm2: drift, l = 0.25, descrip = "mad8_key:drif"
+dvb25cm: drift, l = 0.25, descrip = "mad8_key:drif"
+dvb25cmcb: drift, l = 1.32046, descrip = "mad8_key:drif"
+d25cm: drift, l = 0.25, descrip = "mad8_key:drif"
+dvbem25cmb: drift, l = 1.39092-0.076175, type = "CSR", descrip = "mad8_key:drif"
+d25cmd: drift, l = 0.25+0.076175, type = "CSR", descrip = "mad8_key:drif"
+dvbem15cmb: drift, l = 0.243073, type = "CSR", descrip = "mad8_key:drif"
+d10cmb: drift, l = 0.1064869, descrip = "mad8_key:drif"
+d25cma: drift, l = 0.2209001, type = "CSR", descrip = "mad8_key:drif"
 
-bpmvb1b: monitor, type = "Stripline-2"
-bpmvb2b: monitor, type = "Stripline-2"
-bpmvb3b: monitor, type = "Stripline-2"
-bpmvm3b: monitor, type = "Stripline-10"
-bpmvm4b: monitor, type = "Stripline-10"
+bpmvb1b: monitor, type = "Stripline-2", descrip = "mad8_key:moni"
+bpmvb2b: monitor, type = "Stripline-2", descrip = "mad8_key:moni"
+bpmvb3b: monitor, type = "Stripline-2", descrip = "mad8_key:moni"
+bpmvm3b: monitor, type = "Stripline-10", descrip = "mad8_key:moni"
+bpmvm4b: monitor, type = "Stripline-10", descrip = "mad8_key:moni"
 
-xcvb2b: hkicker, type = "type-4"
-xcvm3b: hkicker, type = "type-4"
+xcvb2b: hkicker, type = "type-4", descrip = "mad8_key:hkic"
+xcvm3b: hkicker, type = "type-4", descrip = "mad8_key:hkic"
 
-ycvb1b: vkicker, type = "class-4"
-ycvb3b: vkicker, type = "class-4"
-ycvm4b: vkicker, type = "class-5"
+ycvb1b: vkicker, type = "class-4", descrip = "mad8_key:vkic"
+ycvb3b: vkicker, type = "class-4", descrip = "mad8_key:vkic"
+ycvm4b: vkicker, type = "class-5", descrip = "mad8_key:vkic"
 
-pc08b: instrument, type = "BCS plate", l = lplate
-btm08b: instrument, type = "PPS BTM"
-pc09b: instrument, type = "BCS plate", l = lplate
-btm09b: instrument, type = "PPS BTM"
+pc08b: instrument, type = "BCS plate", l = lplate, descrip = "mad8_key:inst"
+btm08b: instrument, type = "PPS BTM", descrip = "mad8_key:inst"
+pc09b: instrument, type = "BCS plate", l = lplate, descrip = "mad8_key:inst"
+btm09b: instrument, type = "PPS BTM", descrip = "mad8_key:inst"
 
-vbinb: marker !start of vert. bend system
-vboutb: marker !end of vert. bend system
-cntlt2s: marker, type = "CENTER" !ELEGANT will correct the orbit here for CSR-steering
+vbinb: marker, descrip = "mad8_key:mark" !start of vert. bend system
+vboutb: marker, descrip = "mad8_key:mark" !end of vert. bend system
+cntlt2s: marker, type = "CENTER", descrip = "mad8_key:mark" !ELEGANT will correct the orbit here for CSR-steering
 
 
 
@@ -1374,11 +1399,11 @@ kqem3b = 1.263611884311
 kqem3vb = 0.0
 kqem4b = -0.89171746406
 
-qem1b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqem1b, aperture = rqe
-qem2b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqem2b, aperture = rqe
-qem3b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqem3b, aperture = rqe
-qem3vb: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = kqem3vb, aperture = rqx
-qem4b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqem4b, aperture = rqe
+qem1b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqem1b, aperture = rqe, descrip = "mad8_key:quad"
+qem2b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqem2b, aperture = rqe, descrip = "mad8_key:quad"
+qem3b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqem3b, aperture = rqe, descrip = "mad8_key:quad"
+qem3vb: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = kqem3vb, aperture = rqx, descrip = "mad8_key:quad"
+qem4b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqem4b, aperture = rqe, descrip = "mad8_key:quad"
 
 kqed2b = 0.402753197988 !ED2 FODO quad strength
 
@@ -1389,120 +1414,120 @@ kqe34b = -kqed2b
 kqe35b = +kqed2b
 kqe36b = -kqed2b
 
-qe31b: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = kqe31b, aperture = rqx
-qe32b: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = kqe32b, aperture = rqx
-qe33b: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = kqe33b, aperture = rqx
-qe34b: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = kqe34b, aperture = rqx
-qe35b: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = kqe35b, aperture = rqx
-qe36b: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = kqe36b, aperture = rqx
+qe31b: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = kqe31b, aperture = rqx, descrip = "mad8_key:quad"
+qe32b: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = kqe32b, aperture = rqx, descrip = "mad8_key:quad"
+qe33b: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = kqe33b, aperture = rqx, descrip = "mad8_key:quad"
+qe34b: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = kqe34b, aperture = rqx, descrip = "mad8_key:quad"
+qe35b: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = kqe35b, aperture = rqx, descrip = "mad8_key:quad"
+qe36b: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = kqe36b, aperture = rqx, descrip = "mad8_key:quad"
 
 dz_adjust = 47.825
 ddmm = 0.161670898486e-2 !adjust Z in undulator
 
-drfb: drift, l = 0.2 !separation between (warm) quadrupole and RF BPM
+drfb: drift, l = 0.2, descrip = "mad8_key:drif" !separation between (warm) quadrupole and RF BPM
 
-d25cmb: drift, l = 0.2627
-d25cmc: drift, l = 0.2373
-dmm1m90cmb: drift, l = ddvb*2 -0.79954 +ddmm+(lqa-lqe)/2
-dmm1m90cmba: drift, l = 3.485365 !3.548865
-dmm1m90cmbb: drift, l = dmm1m90cmb[l]-dmm1m90cmba[l]-lplate
-dem1a: drift, l = 0.37
-dem1b: drift, l = 4.14092
-dem1bab: drift, l = 1.086830+(lqa-lqe)/2
-dem1bbb: drift, l = dem1b[l]-dem1bab[l]+(lqa-lqe)
-dem2b: drift, l = 0.50
-dmm3m80cm: drift, l = 11.27092
-dmm3m80cmx: drift, l = dmm3m80cm[l]+(lqa-lqe)
+d25cmb: drift, l = 0.2627, descrip = "mad8_key:drif"
+d25cmc: drift, l = 0.2373, descrip = "mad8_key:drif"
+dmm1m90cmb: drift, l = ddvb*2 -0.79954 +ddmm+(lqa-lqe)/2, descrip = "mad8_key:drif"
+dmm1m90cmba: drift, l = 3.485365, descrip = "mad8_key:drif" !3.548865
+dmm1m90cmbb: drift, l = dmm1m90cmb[l]-dmm1m90cmba[l]-lplate, descrip = "mad8_key:drif"
+dem1a: drift, l = 0.37, descrip = "mad8_key:drif"
+dem1b: drift, l = 4.14092, descrip = "mad8_key:drif"
+dem1bab: drift, l = 1.086830+(lqa-lqe)/2, descrip = "mad8_key:drif"
+dem1bbb: drift, l = dem1b[l]-dem1bab[l]+(lqa-lqe), descrip = "mad8_key:drif"
+dem2b: drift, l = 0.50, descrip = "mad8_key:drif"
+dmm3m80cm: drift, l = 11.27092, descrip = "mad8_key:drif"
+dmm3m80cmx: drift, l = dmm3m80cm[l]+(lqa-lqe), descrip = "mad8_key:drif"
 
-dmm3m80cm1: drift, l = 5.677
-dmm3m80cm2: drift, l = dmm3m80cmx[l]-dmm3m80cm1[l]
+dmm3m80cm1: drift, l = 5.677, descrip = "mad8_key:drif"
+dmm3m80cm2: drift, l = dmm3m80cmx[l]-dmm3m80cm1[l], descrip = "mad8_key:drif"
 
-dmm3mab: drift, l = 4.425910+(lqa-lqe)/2
-dmm3mbb: drift, l = dmm3m80cm[l]-dmm3mab[l]+(lqa-lqe)
-dem3a: drift, l = 0.37
-dem3b: drift, l = 0.773299
-dem3bb: drift, l = dem3b[l]+(lqa-lqe)/2
-dmm4m90cm: drift, l = 2.759621
-dmm4m90cmb: drift, l = dmm4m90cm[l]+(lqa-lqe)/2
-dmm4m90cmba: drift, l = 0.9601915 !0.523691
-dmm4m90cmbb: drift, l = dmm4m90cmb[l]-dmm4m90cmba[l]-lplate
-dem4a: drift, l = 0.50
-dmm5: drift, l = 2.07046-drfb[l]
-dmm5a: drift, l = 0.690570 !0.754070
-dmm5b: drift, l = dmm5[l]-dmm5a[l]-lplate
-dmm5ab: drift, l = 0.90407+(lqa-lqe)/2
-dmm5bb: drift, l = dmm5[l]-dmm5ab[l]+(lqa-lqe)/2
-d40cm: drift, l = 0.40
-d40cmw: drift, l = 0.3915855
-de3m80cma: drift, l = 4.6-0.4-0.4+dz_adjust/12+0.15046
-de3mab: drift, l = 5.333610
-de3mbb: drift, l = de3m80cma[l]-de3mab[l]
-dqea: drift, l = 0.40+(lqf-lqx)/2-0.15046
-dqebx: drift, l = 0.32+(lqf-lqx)/2+0.33655-0.0768665+0.04
-dqebx2: drift, l = 4.6-0.4-0.4+dz_adjust/12-0.33655+0.0768665-0.04
-de3a: drift, l = 4.6+dz_adjust/12+0.14046
-de3aba: drift, l = 1.341982
-de3abb: drift, l = de3a[l]-de3aba[l]
-dxl2btm: drift, l = 0.286375 !0.299875
-dbtm2yc: drift, l = de3abb[l]-dxl2btm[l]-lplate
-dqeaa: drift, l = 0.40+(lqf-lqx)/2-0.14046
-dqeby: drift, l = 0.32+(lqf-lqx)/2+0.33655-0.0768665+0.04
-dqeby1: drift, l = dqeby[l]-drfb[l]
-dqeby2: drift, l = 4.6-0.4+dz_adjust/12-0.33655+0.0768665-0.04
-de3m80cmb: drift, l = 4.6-0.4-0.4+dz_adjust/12+0.12046
-dqeab: drift, l = 0.40+(lqf-lqx)/2-0.12046
-dqec: drift, l = 4.6+dz_adjust/12+(lqf-lqx)/2
-dqec1: drift, l = dqec[l]-drfb[l]
-de3m40cm: drift, l = 4.6-0.4+dz_adjust/12+0.15046
-de3m80cm: drift, l = 4.6-0.4-0.4+dz_adjust/12-0.02954
-dqeac: drift, l = 0.40+(lqf-lqx)/2+0.02954
-de3: drift, l = 4.6+dz_adjust/12+0.15046
+dmm3mab: drift, l = 4.425910+(lqa-lqe)/2, descrip = "mad8_key:drif"
+dmm3mbb: drift, l = dmm3m80cm[l]-dmm3mab[l]+(lqa-lqe), descrip = "mad8_key:drif"
+dem3a: drift, l = 0.37, descrip = "mad8_key:drif"
+dem3b: drift, l = 0.773299, descrip = "mad8_key:drif"
+dem3bb: drift, l = dem3b[l]+(lqa-lqe)/2, descrip = "mad8_key:drif"
+dmm4m90cm: drift, l = 2.759621, descrip = "mad8_key:drif"
+dmm4m90cmb: drift, l = dmm4m90cm[l]+(lqa-lqe)/2, descrip = "mad8_key:drif"
+dmm4m90cmba: drift, l = 0.9601915, descrip = "mad8_key:drif" !0.523691
+dmm4m90cmbb: drift, l = dmm4m90cmb[l]-dmm4m90cmba[l]-lplate, descrip = "mad8_key:drif"
+dem4a: drift, l = 0.50, descrip = "mad8_key:drif"
+dmm5: drift, l = 2.07046-drfb[l], descrip = "mad8_key:drif"
+dmm5a: drift, l = 0.690570, descrip = "mad8_key:drif" !0.754070
+dmm5b: drift, l = dmm5[l]-dmm5a[l]-lplate, descrip = "mad8_key:drif"
+dmm5ab: drift, l = 0.90407+(lqa-lqe)/2, descrip = "mad8_key:drif"
+dmm5bb: drift, l = dmm5[l]-dmm5ab[l]+(lqa-lqe)/2, descrip = "mad8_key:drif"
+d40cm: drift, l = 0.40, descrip = "mad8_key:drif"
+d40cmw: drift, l = 0.3915855, descrip = "mad8_key:drif"
+de3m80cma: drift, l = 4.6-0.4-0.4+dz_adjust/12+0.15046, descrip = "mad8_key:drif"
+de3mab: drift, l = 5.333610, descrip = "mad8_key:drif"
+de3mbb: drift, l = de3m80cma[l]-de3mab[l], descrip = "mad8_key:drif"
+dqea: drift, l = 0.40+(lqf-lqx)/2-0.15046, descrip = "mad8_key:drif"
+dqebx: drift, l = 0.32+(lqf-lqx)/2+0.33655-0.0768665+0.04, descrip = "mad8_key:drif"
+dqebx2: drift, l = 4.6-0.4-0.4+dz_adjust/12-0.33655+0.0768665-0.04, descrip = "mad8_key:drif"
+de3a: drift, l = 4.6+dz_adjust/12+0.14046, descrip = "mad8_key:drif"
+de3aba: drift, l = 1.341982, descrip = "mad8_key:drif"
+de3abb: drift, l = de3a[l]-de3aba[l], descrip = "mad8_key:drif"
+dxl2btm: drift, l = 0.286375, descrip = "mad8_key:drif" !0.299875
+dbtm2yc: drift, l = de3abb[l]-dxl2btm[l]-lplate, descrip = "mad8_key:drif"
+dqeaa: drift, l = 0.40+(lqf-lqx)/2-0.14046, descrip = "mad8_key:drif"
+dqeby: drift, l = 0.32+(lqf-lqx)/2+0.33655-0.0768665+0.04, descrip = "mad8_key:drif"
+dqeby1: drift, l = dqeby[l]-drfb[l], descrip = "mad8_key:drif"
+dqeby2: drift, l = 4.6-0.4+dz_adjust/12-0.33655+0.0768665-0.04, descrip = "mad8_key:drif"
+de3m80cmb: drift, l = 4.6-0.4-0.4+dz_adjust/12+0.12046, descrip = "mad8_key:drif"
+dqeab: drift, l = 0.40+(lqf-lqx)/2-0.12046, descrip = "mad8_key:drif"
+dqec: drift, l = 4.6+dz_adjust/12+(lqf-lqx)/2, descrip = "mad8_key:drif"
+dqec1: drift, l = dqec[l]-drfb[l], descrip = "mad8_key:drif"
+de3m40cm: drift, l = 4.6-0.4+dz_adjust/12+0.15046, descrip = "mad8_key:drif"
+de3m80cm: drift, l = 4.6-0.4-0.4+dz_adjust/12-0.02954, descrip = "mad8_key:drif"
+dqeac: drift, l = 0.40+(lqf-lqx)/2+0.02954, descrip = "mad8_key:drif"
+de3: drift, l = 4.6+dz_adjust/12+0.15046, descrip = "mad8_key:drif"
 
-bpmem1b: monitor, type = "Stripline-2"
-bpmem2b: monitor, type = "Stripline-2"
-bpmem3b: monitor, type = "Stripline-2"
-bpmem4b: monitor, type = "Stripline-2"
-rfbem4b: monitor, type = "@2,CavityS-1"
-bpme31b: monitor, type = "Stripline-1"
-bpme32b: monitor, type = "Stripline-1" !type to be checked
-rfbe32b: monitor, type = "@2,CavityS-1"
-bpme33b: monitor, type = "Stripline-1"
-bpme34b: monitor, type = "Stripline-1" !type to be checked
-rfbe34b: monitor, type = "@2,CavityS-1"
-bpme35b: monitor, type = "Stripline-1"
-bpme36b: monitor, type = "Stripline-1" !type to be checked
-rfbe36b: monitor, type = "@2,CavityS-1"
+bpmem1b: monitor, type = "Stripline-2", descrip = "mad8_key:moni"
+bpmem2b: monitor, type = "Stripline-2", descrip = "mad8_key:moni"
+bpmem3b: monitor, type = "Stripline-2", descrip = "mad8_key:moni"
+bpmem4b: monitor, type = "Stripline-2", descrip = "mad8_key:moni"
+rfbem4b: monitor, type = "@2,CavityS-1", descrip = "mad8_key:moni"
+bpme31b: monitor, type = "Stripline-1", descrip = "mad8_key:moni"
+bpme32b: monitor, type = "Stripline-1", descrip = "mad8_key:moni" !type to be checked
+rfbe32b: monitor, type = "@2,CavityS-1", descrip = "mad8_key:moni"
+bpme33b: monitor, type = "Stripline-1", descrip = "mad8_key:moni"
+bpme34b: monitor, type = "Stripline-1", descrip = "mad8_key:moni" !type to be checked
+rfbe34b: monitor, type = "@2,CavityS-1", descrip = "mad8_key:moni"
+bpme35b: monitor, type = "Stripline-1", descrip = "mad8_key:moni"
+bpme36b: monitor, type = "Stripline-1", descrip = "mad8_key:moni" !type to be checked
+rfbe36b: monitor, type = "@2,CavityS-1", descrip = "mad8_key:moni"
 
-xcem1b: hkicker, type = "class-4"
-xcem3b: hkicker, type = "class-4"
-xce31b: hkicker, type = "class-4"
-xce33b: hkicker, type = "class-4"
-xce35b: hkicker, type = "class-4"
+xcem1b: hkicker, type = "class-4", descrip = "mad8_key:hkic"
+xcem3b: hkicker, type = "class-4", descrip = "mad8_key:hkic"
+xce31b: hkicker, type = "class-4", descrip = "mad8_key:hkic"
+xce33b: hkicker, type = "class-4", descrip = "mad8_key:hkic"
+xce35b: hkicker, type = "class-4", descrip = "mad8_key:hkic"
 
-ycem2b: vkicker, type = "class-4"
-ycem4b: vkicker, type = "class-4"
-yce32b: vkicker, type = "class-4"
-yce34b: vkicker, type = "class-4"
-yce36b: vkicker, type = "class-4"
+ycem2b: vkicker, type = "class-4", descrip = "mad8_key:vkic"
+ycem4b: vkicker, type = "class-4", descrip = "mad8_key:vkic"
+yce32b: vkicker, type = "class-4", descrip = "mad8_key:vkic"
+yce34b: vkicker, type = "class-4", descrip = "mad8_key:vkic"
+yce36b: vkicker, type = "class-4", descrip = "mad8_key:vkic"
 
-ws31b: marker, type = "fast" !LTU emittance
-ws32b: marker, type = "fast" !LTU emittance
-ws33b: marker, type = "fast" !LTU emittance
-ws34b: marker, type = "fast" !LTU emittance
+ws31b: marker, type = "fast", descrip = "mad8_key:mark" !LTU emittance
+ws32b: marker, type = "fast", descrip = "mad8_key:mark" !LTU emittance
+ws33b: marker, type = "fast", descrip = "mad8_key:mark" !LTU emittance
+ws34b: marker, type = "fast", descrip = "mad8_key:mark" !LTU emittance
 
-pc10b: instrument, type = "BCS plate", l = lplate
-btm10b: instrument, type = "PPS BTM"
-pc11b: instrument, type = "BCS plate", l = lplate
-btm11b: instrument, type = "PPS BTM"
-pc12b: instrument, type = "BCS plate", l = lplate
-btm12b: instrument, type = "PPS BTM"
+pc10b: instrument, type = "BCS plate", l = lplate, descrip = "mad8_key:inst"
+btm10b: instrument, type = "PPS BTM", descrip = "mad8_key:inst"
+pc11b: instrument, type = "BCS plate", l = lplate, descrip = "mad8_key:inst"
+btm11b: instrument, type = "PPS BTM", descrip = "mad8_key:inst"
+pc12b: instrument, type = "BCS plate", l = lplate, descrip = "mad8_key:inst"
+btm12b: instrument, type = "PPS BTM", descrip = "mad8_key:inst"
 
-dcx31b: drift, l = 0.08
-dcy32b: drift, l = 0.08
-dcx35b: drift, l = 0.08
-dcy36b: drift, l = 0.08
+dcx31b: drift, l = 0.08, descrip = "mad8_key:drif"
+dcy32b: drift, l = 0.08, descrip = "mad8_key:drif"
+dcx35b: drift, l = 0.08, descrip = "mad8_key:drif"
+dcy36b: drift, l = 0.08, descrip = "mad8_key:drif"
 
-dbmark36b: marker !center of WS31B
+dbmark36b: marker, descrip = "mad8_key:mark" !center of WS31B
 
 ! ==============================================================================
 ! XLEAP-II devices
@@ -1512,10 +1537,10 @@ dbmark36b: marker !center of WS31B
 ! recycled XLEAP type-4 correctors
 ! ------------------------------------------------------------------------------
 
-ycxl1: vkicker, type = "class-4"
-xcxl1: hkicker, type = "class-4"
-ycxl2: vkicker, type = "class-4"
-xcxl2: hkicker, type = "class-4"
+ycxl1: vkicker, type = "class-4", descrip = "mad8_key:vkic"
+xcxl1: hkicker, type = "class-4", descrip = "mad8_key:hkic"
+ycxl2: vkicker, type = "class-4", descrip = "mad8_key:vkic"
+xcxl2: hkicker, type = "class-4", descrip = "mad8_key:hkic"
 
 ! ------------------------------------------------------------------------------
 ! modified (recycled) LCLS undulators
@@ -1584,7 +1609,7 @@ r44xl1 = 1.0
 !new: umxl1h: umxl0h
 !new:
 umxl1h: taylor, type = "LCLS-I", l = lundh, tt11 = r11xl1, tt12 = r12xl1, tt21 = r21xl1, tt22 = r22xl1, tt33 = r33xl1,
-          tt34 = r34xl1, tt43 = r43xl1, tt44 = r44xl1
+          tt34 = r34xl1, tt43 = r43xl1, tt44 = r44xl1, descrip = "mad8_key:matr"
 
 r11xl3 = 1.0
 r12xl3 = lundh
@@ -1598,7 +1623,7 @@ r44xl3 = 1.0
 !new:
 !new: umxl3h: umxl0h
 umxl3h: taylor, type = "LCLS-I", l = lundh, tt11 = r11xl3, tt12 = r12xl3, tt21 = r21xl3, tt22 = r22xl3, tt33 = r33xl3,
-          tt34 = r34xl3, tt43 = r43xl3, tt44 = r44xl3
+          tt34 = r34xl3, tt43 = r43xl3, tt44 = r44xl3, descrip = "mad8_key:matr"
 
 r11xl4 = 1.0
 r12xl4 = lundh
@@ -1612,7 +1637,7 @@ r44xl4 = 1.0
 !new:
 !new: umxl4h: umxl0h
 umxl4h: taylor, type = "LCLS-I", l = lundh, tt11 = r11xl4, tt12 = r12xl4, tt21 = r21xl4, tt22 = r22xl4, tt33 = r33xl4,
-          tt34 = r34xl4, tt43 = r43xl4, tt44 = r44xl4
+          tt34 = r34xl4, tt43 = r43xl4, tt44 = r44xl4, descrip = "mad8_key:matr"
  !endcomment
 
   UMXL1_full : LINE=(UMXL1h,UMXL1h)
@@ -1642,7 +1667,7 @@ sincargw = 1-argw2/6+argw4/120-argw6/5040 !~sinc(ARGw)=sin(ARGw)/ARGw
 r34w = lwigh*sincargw
 
 wigxlh: taylor, type = "variable gap", l = lwigh, tt11 = 1.0, tt12 = lwigh, tt21 = 0, tt22 = 1.0, tt33 = cos(argw),
-          tt34 = r34w, tt43 = -sin(argw)*sqrt(kqwig), tt44 = cos(argw)
+          tt34 = r34w, tt43 = -sin(argw)*sqrt(kqwig), tt44 = cos(argw), descrip = "mad8_key:matr"
 
  !VALUE, WIGXLh[R11],WIGXLh[R12],WIGXLh[R21],WIGXLh[R22]
  !VALUE, WIGXLh[R33],WIGXLh[R34],WIGXLh[R43],WIGXLh[R44]
@@ -1656,8 +1681,8 @@ wigxlh: taylor, type = "variable gap", l = lwigh, tt11 = 1.0, tt12 = lwigh, tt21
 kqfxl1 = 0
 kqfxl2 = 0
 
-qfxl1: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqfxl1
-qfxl2: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqfxl2
+qfxl1: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqfxl1, descrip = "mad8_key:quad"
+qfxl2: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqfxl2, descrip = "mad8_key:quad"
 
 
 
@@ -1674,9 +1699,9 @@ qfxl2[L] = 2*qfxl2[L]
 
 ! wiggler pairs
 
-duqxl1: drift, l = 0.2166+0.1777551
-duqxl1w: drift, l = 0.2166+0.475-0.1777551
-duqxl2: drift, l = 0.2166
+duqxl1: drift, l = 0.2166+0.1777551, descrip = "mad8_key:drif"
+duqxl1w: drift, l = 0.2166+0.475-0.1777551, descrip = "mad8_key:drif"
+duqxl2: drift, l = 0.2166, descrip = "mad8_key:drif"
 
   UMXLpair1 : LINE=(UMXL1_full,DUQXL1,QFXL1_full,DUQXL1W,WIGXL_full)
   UMXLpair2 : LINE=(UMXL3_full,DUQXL2,QFXL2_full,DUQXL2,UMXL4_full)
@@ -1726,37 +1751,49 @@ lbxls = zbxl/(2*sincabxls)
 abxll = abxl-abxls
 lbxll = lbxl-lbxls
 
-bcxxl11: sbend, type = "0.433D14-C", l = lbxls, angle = -abxls, hgap = gbxl/2, e1 = 0, fint = fbxl, fintx = 0
-bcxxl12: sbend, type = "0.433D14-C", l = lbxll, angle = -abxll, hgap = gbxl/2, fint = 0, e2 = -abxl, fintx = fbxl
-bcxxl21: sbend, type = "0.433D14-C", l = lbxll, angle = +abxll, hgap = gbxl/2, e1 = +abxl, fint = fbxl, fintx = 0
-bcxxl22: sbend, type = "0.433D14-C", l = lbxls, angle = +abxls, hgap = gbxl/2, fint = 0, e2 = 0, fintx = fbxl
-bcxxl31: sbend, type = "0.433D14-C", l = lbxls, angle = +abxls, hgap = gbxl/2, e1 = 0, fint = fbxl, fintx = 0
-bcxxl32: sbend, type = "0.433D14-C", l = lbxll, angle = +abxll, hgap = gbxl/2, fint = 0, e2 = +abxl, fintx = fbxl
-bcxxl41: sbend, type = "0.433D14-C", l = lbxll, angle = -abxll, hgap = gbxl/2, e1 = -abxl, fint = fbxl, fintx = 0
-bcxxl42: sbend, type = "0.433D14-C", l = lbxls, angle = -abxls, hgap = gbxl/2, fint = 0, e2 = 0, fintx = fbxl
+bcxxl11: sbend, type = "0.433D14-C", l = lbxls, angle = -abxls, hgap = gbxl/2, e1 = 0, fint = fbxl, fintx = 0,
+          descrip = "mad8_key:sben"
+bcxxl12: sbend, type = "0.433D14-C", l = lbxll, angle = -abxll, hgap = gbxl/2, fint = 0, e2 = -abxl, fintx = fbxl,
+          descrip = "mad8_key:sben"
+bcxxl21: sbend, type = "0.433D14-C", l = lbxll, angle = +abxll, hgap = gbxl/2, e1 = +abxl, fint = fbxl, fintx = 0,
+          descrip = "mad8_key:sben"
+bcxxl22: sbend, type = "0.433D14-C", l = lbxls, angle = +abxls, hgap = gbxl/2, fint = 0, e2 = 0, fintx = fbxl,
+          descrip = "mad8_key:sben"
+bcxxl31: sbend, type = "0.433D14-C", l = lbxls, angle = +abxls, hgap = gbxl/2, e1 = 0, fint = fbxl, fintx = 0,
+          descrip = "mad8_key:sben"
+bcxxl32: sbend, type = "0.433D14-C", l = lbxll, angle = +abxll, hgap = gbxl/2, fint = 0, e2 = +abxl, fintx = fbxl,
+          descrip = "mad8_key:sben"
+bcxxl41: sbend, type = "0.433D14-C", l = lbxll, angle = -abxll, hgap = gbxl/2, e1 = -abxl, fint = fbxl, fintx = 0,
+          descrip = "mad8_key:sben"
+bcxxl42: sbend, type = "0.433D14-C", l = lbxls, angle = -abxls, hgap = gbxl/2, fint = 0, e2 = 0, fintx = fbxl,
+          descrip = "mad8_key:sben"
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-bcxxl1: sbend, type = "0.433D14-C", hgap = gbxl/2, l = lbxl, angle = -abxl, e1 = 0, fint = fbxl, e2 = -abxl, fintx = fbxl
-bcxxl2: sbend, type = "0.433D14-C", hgap = gbxl/2, l = lbxl, angle = +abxl, e1 = +abxl, fint = fbxl, e2 = 0, fintx = fbxl
-bcxxl3: sbend, type = "0.433D14-C", hgap = gbxl/2, l = lbxl, angle = +abxl, e1 = 0, fint = fbxl, e2 = +abxl, fintx = fbxl
-bcxxl4: sbend, type = "0.433D14-C", hgap = gbxl/2, l = lbxl, angle = -abxl, e1 = -abxl, fint = fbxl, e2 = 0, fintx = fbxl
+bcxxl1: sbend, type = "0.433D14-C", hgap = gbxl/2, l = lbxl, angle = -abxl, e1 = 0, fint = fbxl, e2 = -abxl,
+          fintx = fbxl, descrip = "mad8_key:sben"
+bcxxl2: sbend, type = "0.433D14-C", hgap = gbxl/2, l = lbxl, angle = +abxl, e1 = +abxl, fint = fbxl, e2 = 0,
+          fintx = fbxl, descrip = "mad8_key:sben"
+bcxxl3: sbend, type = "0.433D14-C", hgap = gbxl/2, l = lbxl, angle = +abxl, e1 = 0, fint = fbxl, e2 = +abxl,
+          fintx = fbxl, descrip = "mad8_key:sben"
+bcxxl4: sbend, type = "0.433D14-C", hgap = gbxl/2, l = lbxl, angle = -abxl, e1 = -abxl, fint = fbxl, e2 = 0,
+          fintx = fbxl, descrip = "mad8_key:sben"
 
 ! magnet-to-magnet path lengths
 
 zdxlo = 1.046-zbxl !outer bend-to-bend Z distance (m)
 zdxli = 0.520-zbxl !inner bend-to-bend Z distance (m)
 
-dxlo: drift, l = zdxlo/cos(abxl)
-dxli: drift, l = zdxli/2
+dxlo: drift, l = zdxlo/cos(abxl), descrip = "mad8_key:drif"
+dxli: drift, l = zdxli/2, descrip = "mad8_key:drif"
 
 lbcxl = 4*zbxl+2*zdxlo+zdxli !chicane length
 
 ! MARKers
 
-bcxlssbeg: marker
-bcxlssmid: marker
-bcxlssend: marker
+bcxlssbeg: marker, descrip = "mad8_key:mark"
+bcxlssmid: marker, descrip = "mad8_key:mark"
+bcxlssend: marker, descrip = "mad8_key:mark"
 
 ! beamline
 
@@ -1785,18 +1822,18 @@ bcxxl4_full: line = (bcxxl4)
 
 ! drifts around undulator pairs and chicane
 
-dxlua1: drift, l = 0.404978
-dxlua2: drift, l = 0.395986
-dumxl12u: drift, l = 0.566965333333
-dumxl12d: drift, l = 1.422304333333+0.475
-dxluc: drift, l = 3.5
-dxlud1: drift, l = 0.323714
-dxlud2: drift, l = 0.393700
-dumxl34u: drift, l = 0.549586
-dumxl34d: drift, l = 2.154753333333
+dxlua1: drift, l = 0.404978, descrip = "mad8_key:drif"
+dxlua2: drift, l = 0.395986, descrip = "mad8_key:drif"
+dumxl12u: drift, l = 0.566965333333, descrip = "mad8_key:drif"
+dumxl12d: drift, l = 1.422304333333+0.475, descrip = "mad8_key:drif"
+dxluc: drift, l = 3.5, descrip = "mad8_key:drif"
+dxlud1: drift, l = 0.323714, descrip = "mad8_key:drif"
+dxlud2: drift, l = 0.393700, descrip = "mad8_key:drif"
+dumxl34u: drift, l = 0.549586, descrip = "mad8_key:drif"
+dumxl34d: drift, l = 2.154753333333, descrip = "mad8_key:drif"
 
-mxl2a: marker
-mxl2b: marker
+mxl2a: marker, descrip = "mad8_key:mark"
+mxl2b: marker, descrip = "mad8_key:mark"
 
 ! ------------------------------------------------------------------------------
 ! SXR emittance diagnostic beamline
@@ -1924,80 +1961,80 @@ kqum2b = -0.796802792396 !-0.13
 kqum3b = 1.172578401021 ! 0.382165430892
 kqum4b = -1.160480624219 !-0.474867155145
 
-qum1b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqum1b, aperture = rqe
-qum2b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqum2b, aperture = rqe
-qum3b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqum3b, aperture = rqe
-qum4b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqum4b, aperture = rqe
+qum1b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqum1b, aperture = rqe, descrip = "mad8_key:quad"
+qum2b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqum2b, aperture = rqe, descrip = "mad8_key:quad"
+qum3b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqum3b, aperture = rqe, descrip = "mad8_key:quad"
+qum4b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqum4b, aperture = rqe, descrip = "mad8_key:quad"
 
-du1m80cm: drift, l = 4.550
-dcx37: drift, l = 0.08
-dcy38: drift, l = 0.08
-d32cmcb: drift, l = 1.30046+(lqa-lqe)/2 +0.5
-dum1a: drift, l = 0.49
-dum1b: drift, l = 0.47046
-d32cm: drift, l = 0.32
-du2m120cmb: drift, l = 3.730+(lqa-lqe) -0.5
-d32cma: drift, l = 0.42046
-dum2a: drift, l = 0.37
-dum2b: drift, l = 0.47046
-du3m80cm: drift, l = 7.29046
-du3m80cmb: drift, l = du3m80cm[l]+(lqa-lqe)
-dum3a: drift, l = 0.38
-dum3b: drift, l = 0.47046
-d40cma: drift, l = 1.807939
-du4m120cm: drift, l = 1.362521
-du4m120cmb: drift, l = du4m120cm[l]+(lqa-lqe)
-dum4a: drift, l = 0.50
-dum4b: drift, l = 0.59746
-du5m80cm: drift, l = 0.5
-du5m80cmb: drift, l = du5m80cm[l]+(lqa-lqe)/2
-duhwall1: drift, l = 0.250825 !length of BTH/UH wall-1
-duhvest: drift, l = 2.009175 !length of BTH/UH vestibule
-duhvesta: drift, l = 1.605684
-duhvestb: drift, l = duhvest[l]-duhvesta[l]
-duhwall2: drift, l = 0.250825 !length of BTH/UH wall-2
-dw2tdundb: drift, l = 3.001537 +0.060429 !drift from BTH/UH wall-2 to TDUNDB u/s flange
-dtdund1: drift, l = 0.855853 !from u/s TDUND flange to TDUND center
-dtdund2: drift, l = 0.347853 !from TDUND center to d/s TDUND flange
-dpcmuon: drift, l = 0.031498
-dmuon1b: drift, l = 0.154859 +0.05 -0.060429 +0.117
-dmuon3b: drift, l = 0.310592 -0.05 -0.117
+du1m80cm: drift, l = 4.550, descrip = "mad8_key:drif"
+dcx37: drift, l = 0.08, descrip = "mad8_key:drif"
+dcy38: drift, l = 0.08, descrip = "mad8_key:drif"
+d32cmcb: drift, l = 1.30046+(lqa-lqe)/2 +0.5, descrip = "mad8_key:drif"
+dum1a: drift, l = 0.49, descrip = "mad8_key:drif"
+dum1b: drift, l = 0.47046, descrip = "mad8_key:drif"
+d32cm: drift, l = 0.32, descrip = "mad8_key:drif"
+du2m120cmb: drift, l = 3.730+(lqa-lqe) -0.5, descrip = "mad8_key:drif"
+d32cma: drift, l = 0.42046, descrip = "mad8_key:drif"
+dum2a: drift, l = 0.37, descrip = "mad8_key:drif"
+dum2b: drift, l = 0.47046, descrip = "mad8_key:drif"
+du3m80cm: drift, l = 7.29046, descrip = "mad8_key:drif"
+du3m80cmb: drift, l = du3m80cm[l]+(lqa-lqe), descrip = "mad8_key:drif"
+dum3a: drift, l = 0.38, descrip = "mad8_key:drif"
+dum3b: drift, l = 0.47046, descrip = "mad8_key:drif"
+d40cma: drift, l = 1.807939, descrip = "mad8_key:drif"
+du4m120cm: drift, l = 1.362521, descrip = "mad8_key:drif"
+du4m120cmb: drift, l = du4m120cm[l]+(lqa-lqe), descrip = "mad8_key:drif"
+dum4a: drift, l = 0.50, descrip = "mad8_key:drif"
+dum4b: drift, l = 0.59746, descrip = "mad8_key:drif"
+du5m80cm: drift, l = 0.5, descrip = "mad8_key:drif"
+du5m80cmb: drift, l = du5m80cm[l]+(lqa-lqe)/2, descrip = "mad8_key:drif"
+duhwall1: drift, l = 0.250825, descrip = "mad8_key:drif" !length of BTH/UH wall-1
+duhvest: drift, l = 2.009175, descrip = "mad8_key:drif" !length of BTH/UH vestibule
+duhvesta: drift, l = 1.605684, descrip = "mad8_key:drif"
+duhvestb: drift, l = duhvest[l]-duhvesta[l], descrip = "mad8_key:drif"
+duhwall2: drift, l = 0.250825, descrip = "mad8_key:drif" !length of BTH/UH wall-2
+dw2tdundb: drift, l = 3.001537 +0.060429, descrip = "mad8_key:drif" !drift from BTH/UH wall-2 to TDUNDB u/s flange
+dtdund1: drift, l = 0.855853, descrip = "mad8_key:drif" !from u/s TDUND flange to TDUND center
+dtdund2: drift, l = 0.347853, descrip = "mad8_key:drif" !from TDUND center to d/s TDUND flange
+dpcmuon: drift, l = 0.031498, descrip = "mad8_key:drif"
+dmuon1b: drift, l = 0.154859 +0.05 -0.060429 +0.117, descrip = "mad8_key:drif"
+dmuon3b: drift, l = 0.310592 -0.05 -0.117, descrip = "mad8_key:drif"
 
-dw2tdundb1: drift, l = 1.185 !drift from BTH/UH wall-2 to RFBSX14
-dw2tdundb2: drift, l = dw2tdundb[l]-dw2tdundb1[l]-lrfbub !drift from RFBSX14 to TDUNDB u/s flange
+dw2tdundb1: drift, l = 1.185, descrip = "mad8_key:drif" !drift from BTH/UH wall-2 to RFBSX14
+dw2tdundb2: drift, l = dw2tdundb[l]-dw2tdundb1[l]-lrfbub, descrip = "mad8_key:drif" !drift from RFBSX14 to TDUNDB u/s flange
 
-bpmum1b: monitor, type = "Stripline-2"
-bpmum2b: monitor, type = "Stripline-2"
-bpmum3b: monitor, type = "Stripline-2"
-bpmum4b: monitor, type = "Stripline-2"
+bpmum1b: monitor, type = "Stripline-2", descrip = "mad8_key:moni"
+bpmum2b: monitor, type = "Stripline-2", descrip = "mad8_key:moni"
+bpmum3b: monitor, type = "Stripline-2", descrip = "mad8_key:moni"
+bpmum4b: monitor, type = "Stripline-2", descrip = "mad8_key:moni"
 
-rfbsx14: monitor, l = lrfbub, type = "CavityX-1" !for SXR undulator BBA
+rfbsx14: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni" !for SXR undulator BBA
 
-xcum1b: hkicker, type = "class-4f" !fast-feedback (loop-5)
-xcum3b: hkicker, type = "class-4f" !fast-feedback (loop-5)
+xcum1b: hkicker, type = "class-4f", descrip = "mad8_key:hkic" !fast-feedback (loop-5)
+xcum3b: hkicker, type = "class-4f", descrip = "mad8_key:hkic" !fast-feedback (loop-5)
 
-ycum2b: vkicker, type = "class-4f" !fast-feedback (loop-5)
-ycum4b: vkicker, type = "class-4f" !fast-feedback (loop-5)
+ycum2b: vkicker, type = "class-4f", descrip = "mad8_key:vkic" !fast-feedback (loop-5)
+ycum4b: vkicker, type = "class-4f", descrip = "mad8_key:vkic" !fast-feedback (loop-5)
 
-tdundb: instrument !LTU insertable block at und. extension entrance (w/ screen)
+tdundb: instrument, descrip = "mad8_key:inst" !LTU insertable block at und. extension entrance (w/ screen)
 
 ! Note: PCMUONb Y-aperture violates standard BSC -- approved by P. Emma
 
-pcmuonb: ecollimator, l = 1.1684, x_limit = 8.64e-3/2, y_limit = 4.32e-3/2 !muon scattering collimator
+pcmuonb: ecollimator, l = 1.1684, x_limit = 8.64e-3/2, y_limit = 4.32e-3/2, descrip = "mad8_key:ecol" !muon scattering collimator
 
-vv999b: marker !vacuum valve just upbeam of undulator - TBD
-pfilt1b: marker
-mm1b: marker
-mm2b: marker
-mm3b: marker
-muwallb: marker !front face of muon wall for SXR beam
-dumpbsys: marker !front face of BSY dump for SXR beam
-bsyendb: marker !FFTB side of muon plug wall
-rwwake3s: marker, type = "WAKE" !SPRDS/BSY beampipe wake applied here
-muhwall1b: marker !upstream end of BTH/UH wall-1
-muhwall2b: marker !upstream end of BTH/UH wall-2
-dbmark37b: marker !end of undulator match
-rwwake4s: marker, type = "WAKE" !LTUS beampipe wake applied here
+vv999b: marker, descrip = "mad8_key:mark" !vacuum valve just upbeam of undulator - TBD
+pfilt1b: marker, descrip = "mad8_key:mark"
+mm1b: marker, descrip = "mad8_key:mark"
+mm2b: marker, descrip = "mad8_key:mark"
+mm3b: marker, descrip = "mad8_key:mark"
+muwallb: marker, descrip = "mad8_key:mark" !front face of muon wall for SXR beam
+dumpbsys: marker, descrip = "mad8_key:mark" !front face of BSY dump for SXR beam
+bsyendb: marker, descrip = "mad8_key:mark" !FFTB side of muon plug wall
+rwwake3s: marker, type = "WAKE", descrip = "mad8_key:mark" !SPRDS/BSY beampipe wake applied here
+muhwall1b: marker, descrip = "mad8_key:mark" !upstream end of BTH/UH wall-1
+muhwall2b: marker, descrip = "mad8_key:mark" !upstream end of BTH/UH wall-2
+dbmark37b: marker, descrip = "mad8_key:mark" !end of undulator match
+rwwake4s: marker, type = "WAKE", descrip = "mad8_key:mark" !LTUS beampipe wake applied here
 
 
 
@@ -2049,8 +2086,8 @@ bpmum4b[ref] = qum4b
 
 kqdmpb = -0.15111165919 !-0.154946553294
 
-qdmp1b: quadrupole, type = "3.94Q17", l = lqp/2, k1 = kqdmpb, aperture = rqp
-qdmp2b: quadrupole, type = "3.94Q17", l = lqp/2, k1 = kqdmpb, aperture = rqp
+qdmp1b: quadrupole, type = "3.94Q17", l = lqp/2, k1 = kqdmpb, aperture = rqp, descrip = "mad8_key:quad"
+qdmp2b: quadrupole, type = "3.94Q17", l = lqp/2, k1 = kqdmpb, aperture = rqp, descrip = "mad8_key:quad"
 
 lbyds = 0.5   !effective straight length of dump soft bend 1.26D18.43
 gbyds = 0.032 !full gap of dump soft bend
@@ -2058,14 +2095,14 @@ abyds = 6.e-4
 leffbyds = lbyds*abyds/(2*sin(abyds/2)) !bend path length (m)
 
 bydss1: sbend, type = "1.26D18.43", l = leffbyds/2, angle = abyds/2, hgap = gbyds/2, e1 = abyds/2, e2 = 0, fint = 0.5,
-          fintx = 0, ref_tilt = pi/2
+          fintx = 0, ref_tilt = pi/2, descrip = "mad8_key:sben"
 bydss2: sbend, type = "1.26D18.43", l = leffbyds/2, angle = abyds/2, hgap = gbyds/2, e1 = 0, e2 = abyds/2, fint = 0,
-          fintx = 0.5, ref_tilt = pi/2
+          fintx = 0.5, ref_tilt = pi/2, descrip = "mad8_key:sben"
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
 bydss: sbend, type = "1.26D18.43", hgap = gbyds/2, l = leffbyds, angle = abyds, e1 = abyds/2, fint = 0.5, e2 = abyds/2,
-          fintx = 0.5, ref_tilt = pi/2
+          fintx = 0.5, ref_tilt = pi/2, descrip = "mad8_key:sben"
 
 lbdm = 1.452  !effective straight bend length of main dump bends - from J. Tanabe (m)
 gbdm = 0.043  !full gap (m) of main dump bends (SA-380-328-03 shows magnet half-gap = 0.866")
@@ -2074,32 +2111,32 @@ abdm = 0.02240073511             !angle per main dump bend (rad)
 leffbdm = lbdm*abdm/(2*sin(abdm/2)) !bend path length (m)
 
 byd1b1: sbend, type = "1.69VD55.1", l = leffbdm/2, angle = abdm/2, hgap = gbdm/2, e1 = abdm/2, e2 = 0, fint = fbdm,
-          fintx = 0, ref_tilt = pi/2
+          fintx = 0, ref_tilt = pi/2, descrip = "mad8_key:sben"
 byd1b2: sbend, type = "1.69VD55.1", l = leffbdm/2, angle = abdm/2, hgap = gbdm/2, e1 = 0, e2 = abdm/2, fint = 0.00,
-          fintx = fbdm, ref_tilt = pi/2
+          fintx = fbdm, ref_tilt = pi/2, descrip = "mad8_key:sben"
 
 byd2b1: sbend, type = "1.69VD55.1", l = leffbdm/2, angle = abdm/2, hgap = gbdm/2, e1 = abdm/2, e2 = 0, fint = fbdm,
-          fintx = 0, ref_tilt = pi/2
+          fintx = 0, ref_tilt = pi/2, descrip = "mad8_key:sben"
 byd2b2: sbend, type = "1.69VD55.1", l = leffbdm/2, angle = abdm/2, hgap = gbdm/2, e1 = 0, e2 = abdm/2, fint = 0.00,
-          fintx = fbdm, ref_tilt = pi/2
+          fintx = fbdm, ref_tilt = pi/2, descrip = "mad8_key:sben"
 
 byd3b1: sbend, type = "1.69VD55.1", l = leffbdm/2, angle = abdm/2, hgap = gbdm/2, e1 = abdm/2, e2 = 0, fint = fbdm,
-          fintx = 0, ref_tilt = pi/2
+          fintx = 0, ref_tilt = pi/2, descrip = "mad8_key:sben"
 byd3b2: sbend, type = "1.69VD55.1", l = leffbdm/2, angle = abdm/2, hgap = gbdm/2, e1 = 0, e2 = abdm/2, fint = 0.00,
-          fintx = fbdm, ref_tilt = pi/2
+          fintx = fbdm, ref_tilt = pi/2, descrip = "mad8_key:sben"
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
 byd1b: sbend, type = "1.69VD55.1", hgap = gbdm/2, l = leffbdm, angle = abdm, e1 = abdm/2, fint = fbdm, e2 = abdm/2,
-          fintx = fbdm, ref_tilt = pi/2
+          fintx = fbdm, ref_tilt = pi/2, descrip = "mad8_key:sben"
 byd2b: sbend, type = "1.69VD55.1", hgap = gbdm/2, l = leffbdm, angle = abdm, e1 = abdm/2, fint = fbdm, e2 = abdm/2,
-          fintx = fbdm, ref_tilt = pi/2
+          fintx = fbdm, ref_tilt = pi/2, descrip = "mad8_key:sben"
 byd3b: sbend, type = "1.69VD55.1", hgap = gbdm/2, l = leffbdm, angle = abdm, e1 = abdm/2, fint = fbdm, e2 = abdm/2,
-          fintx = fbdm, ref_tilt = pi/2
+          fintx = fbdm, ref_tilt = pi/2, descrip = "mad8_key:sben"
 
-pcpm1lb: ecollimator, l = lpcpm, x_limit = 14.2875e-3, y_limit = 14.2875e-3
-pcpm2lb: ecollimator, l = lpcpm, x_limit = 38.1e-3, y_limit = 38.1e-3
-pcebdb: ecollimator, l = 0, x_limit = 34.0e-3, y_limit = 34.0e-3, type = "gasket coll"
+pcpm1lb: ecollimator, l = lpcpm, x_limit = 14.2875e-3, y_limit = 14.2875e-3, descrip = "mad8_key:ecol"
+pcpm2lb: ecollimator, l = lpcpm, x_limit = 38.1e-3, y_limit = 38.1e-3, descrip = "mad8_key:ecol"
+pcebdb: ecollimator, l = 0, x_limit = 34.0e-3, y_limit = 34.0e-3, type = "gasket coll", descrip = "mad8_key:ecol"
 
 lds1 = 0.3158763
 lds = 0.247946
@@ -2107,57 +2144,57 @@ ldmp1 = 11.516159251113 !BYD3/BYD3B to QDmp1/QDmp1B
 ddmpv = -0.73352263654
 ddwsdump = 0.248126313572 !set Z at DUMPFACEB
 
-ds1: drift, l = lds1
-ds: drift, l = lds
-dd1ba: drift, l = 0.577681352129
-dd1bb: drift, l = 1.000087502327
-dd1bc: drift, l = 0.3048
-dd1be: drift, l = 0.24963810293
-dd1bf: drift, l = 0.409240108574
-dd1bd: drift, l = ldmp1-(dd1ba[l]+pcpm1lb[l]+dd1bb[l]+dd1bc[l]+dd1be[l]+pcpm2lb[l]+dd1bf[l])
-dd12a: drift, l = 0.25-0.0079372+0.06
-dd12b: drift, l = 0.0079372
-dd12c: drift, l = 0.25+0.06
-dd2a: drift, l = 0.4+0.0634916+0.0115084
-dd2c: drift, l = 1.0
-dd2b: drift, l = 8.1507760-lqd/2+ddmpv-dd2c[l]+0.06
-dd3a: drift, l = 0.3+0.049684+0.001583
-dd3b: drift, l = 0.3-0.001583-0.1447026
-dwsdumpa: drift, l = 0.44156/2
-dwsdumpa1: drift, l = 0.07596510786
-dwsdumpa2: drift, l = dwsdumpa[l]-dwsdumpa1[l]
-dwsdumpb: drift, l = 0.44156-dwsdumpa[l]
-dwsdumpc: drift, l = 2.038949 +ddwsdump
-ddump: drift, l = 61.120*in2m !length of EBD dump (per A. Ibrahimov)
+ds1: drift, l = lds1, descrip = "mad8_key:drif"
+ds: drift, l = lds, descrip = "mad8_key:drif"
+dd1ba: drift, l = 0.577681352129, descrip = "mad8_key:drif"
+dd1bb: drift, l = 1.000087502327, descrip = "mad8_key:drif"
+dd1bc: drift, l = 0.3048, descrip = "mad8_key:drif"
+dd1be: drift, l = 0.24963810293, descrip = "mad8_key:drif"
+dd1bf: drift, l = 0.409240108574, descrip = "mad8_key:drif"
+dd1bd: drift, l = ldmp1-(dd1ba[l]+pcpm1lb[l]+dd1bb[l]+dd1bc[l]+dd1be[l]+pcpm2lb[l]+dd1bf[l]), descrip = "mad8_key:drif"
+dd12a: drift, l = 0.25-0.0079372+0.06, descrip = "mad8_key:drif"
+dd12b: drift, l = 0.0079372, descrip = "mad8_key:drif"
+dd12c: drift, l = 0.25+0.06, descrip = "mad8_key:drif"
+dd2a: drift, l = 0.4+0.0634916+0.0115084, descrip = "mad8_key:drif"
+dd2c: drift, l = 1.0, descrip = "mad8_key:drif"
+dd2b: drift, l = 8.1507760-lqd/2+ddmpv-dd2c[l]+0.06, descrip = "mad8_key:drif"
+dd3a: drift, l = 0.3+0.049684+0.001583, descrip = "mad8_key:drif"
+dd3b: drift, l = 0.3-0.001583-0.1447026, descrip = "mad8_key:drif"
+dwsdumpa: drift, l = 0.44156/2, descrip = "mad8_key:drif"
+dwsdumpa1: drift, l = 0.07596510786, descrip = "mad8_key:drif"
+dwsdumpa2: drift, l = dwsdumpa[l]-dwsdumpa1[l], descrip = "mad8_key:drif"
+dwsdumpb: drift, l = 0.44156-dwsdumpa[l], descrip = "mad8_key:drif"
+dwsdumpc: drift, l = 2.038949 +ddwsdump, descrip = "mad8_key:drif"
+ddump: drift, l = 61.120*in2m, descrip = "mad8_key:drif" !length of EBD dump (per A. Ibrahimov)
 
-bpmqdb: monitor, type = "Stripline-11" !RFBQDB : MONI, TYPE="@2,CavityL-1"
-bpmddb: monitor, type = "Stripline-8"
-rfbddb: monitor, type = "@2,CavityL-1"
+bpmqdb: monitor, type = "Stripline-11", descrip = "mad8_key:moni" !RFBQDB : MONI, TYPE="@2,CavityL-1"
+bpmddb: monitor, type = "Stripline-8", descrip = "mad8_key:moni"
+rfbddb: monitor, type = "@2,CavityL-1", descrip = "mad8_key:moni"
 
-xcddb: hkicker, type = "class-5"
+xcddb: hkicker, type = "class-5", descrip = "mad8_key:hkic"
 
-ycddb: vkicker, type = "class-5"
+ycddb: vkicker, type = "class-5", descrip = "mad8_key:vkic"
 
-otrdmpb: monitor, type = "OTR" !Dump screen
+otrdmpb: monitor, type = "OTR", descrip = "mad8_key:moni" !Dump screen
 
-wsdumpb: marker, type = "@3,special"
+wsdumpb: marker, type = "@3,special", descrip = "mad8_key:mark"
 
-mimbcs4b: marker
+mimbcs4b: marker, descrip = "mad8_key:mark"
 
-btm1lb: instrument !Burn-Through-Monitor behind PCPM1LB
-btm2lb: instrument !Burn-Through-Monitor behind PCPM2LB
-dumpfaceb: instrument !entrance face of main e- dump
-btmdumpb: instrument !Burn-Through-Monitor of main e- dump
+btm1lb: instrument, descrip = "mad8_key:inst" !Burn-Through-Monitor behind PCPM1LB
+btm2lb: instrument, descrip = "mad8_key:inst" !Burn-Through-Monitor behind PCPM2LB
+dumpfaceb: instrument, descrip = "mad8_key:inst" !entrance face of main e- dump
+btmdumpb: instrument, descrip = "mad8_key:inst" !Burn-Through-Monitor of main e- dump
 
-mqdmpb: marker
-dmpendb: marker
-dbmark38b: marker !end of final undulator dump
+mqdmpb: marker, descrip = "mad8_key:mark"
+dmpendb: marker, descrip = "mad8_key:mark"
+dbmark38b: marker, descrip = "mad8_key:mark" !end of final undulator dump
 
 arodmp1s = -0.174519678252
 arodmp2s = 0.174913455104
 
-rodmp1s: patch, tilt = arodmp1s
-rodmp2s: patch, tilt = arodmp2s
+rodmp1s: patch, tilt = arodmp1s, descrip = "mad8_key:srot"
+rodmp2s: patch, tilt = arodmp2s, descrip = "mad8_key:srot"
 
 
 
@@ -2236,31 +2273,39 @@ lbx31s = zbcc/(2*sinc31s)
 abx31l = abx31-abx31s
 lbx31l = lbx31-lbx31s
 
-bcx3111: sbend, type = "@2,0.788D11.50", l = lbx31s, angle = +abx31s, e1 = 0, hgap = gbcc/2, fint = fbcc, fintx = 0
-bcx3112: sbend, type = "@2,0.788D11.50", l = lbx31l, angle = +abx31l, e2 = +abx31, hgap = gbcc/2, fint = 0, fintx = fbcc
-bcx3121: sbend, type = "@2,0.788D11.50", l = lbx31l, angle = -abx31l, e1 = -abx31, hgap = gbcc/2, fint = fbcc, fintx = 0
-bcx3122: sbend, type = "@2,0.788D11.50", l = lbx31s, angle = -abx31s, e2 = 0, hgap = gbcc/2, fint = 0, fintx = fbcc
-bcx3131: sbend, type = "@2,0.788D11.50", l = lbx31s, angle = -abx31s, e1 = 0, hgap = gbcc/2, fint = fbcc, fintx = 0
-bcx3132: sbend, type = "@2,0.788D11.50", l = lbx31l, angle = -abx31l, e2 = -abx31, hgap = gbcc/2, fint = 0, fintx = fbcc
-bcx3141: sbend, type = "@2,0.788D11.50", l = lbx31l, angle = +abx31l, e1 = +abx31, hgap = gbcc/2, fint = fbcc, fintx = 0
-bcx3142: sbend, type = "@2,0.788D11.50", l = lbx31s, angle = +abx31s, e2 = 0, hgap = gbcc/2, fint = 0, fintx = fbcc
+bcx3111: sbend, type = "@2,0.788D11.50", l = lbx31s, angle = +abx31s, e1 = 0, hgap = gbcc/2, fint = fbcc, fintx = 0,
+          descrip = "mad8_key:sben"
+bcx3112: sbend, type = "@2,0.788D11.50", l = lbx31l, angle = +abx31l, e2 = +abx31, hgap = gbcc/2, fint = 0,
+          fintx = fbcc, descrip = "mad8_key:sben"
+bcx3121: sbend, type = "@2,0.788D11.50", l = lbx31l, angle = -abx31l, e1 = -abx31, hgap = gbcc/2, fint = fbcc,
+          fintx = 0, descrip = "mad8_key:sben"
+bcx3122: sbend, type = "@2,0.788D11.50", l = lbx31s, angle = -abx31s, e2 = 0, hgap = gbcc/2, fint = 0, fintx = fbcc,
+          descrip = "mad8_key:sben"
+bcx3131: sbend, type = "@2,0.788D11.50", l = lbx31s, angle = -abx31s, e1 = 0, hgap = gbcc/2, fint = fbcc, fintx = 0,
+          descrip = "mad8_key:sben"
+bcx3132: sbend, type = "@2,0.788D11.50", l = lbx31l, angle = -abx31l, e2 = -abx31, hgap = gbcc/2, fint = 0,
+          fintx = fbcc, descrip = "mad8_key:sben"
+bcx3141: sbend, type = "@2,0.788D11.50", l = lbx31l, angle = +abx31l, e1 = +abx31, hgap = gbcc/2, fint = fbcc,
+          fintx = 0, descrip = "mad8_key:sben"
+bcx3142: sbend, type = "@2,0.788D11.50", l = lbx31s, angle = +abx31s, e2 = 0, hgap = gbcc/2, fint = 0, fintx = fbcc,
+          descrip = "mad8_key:sben"
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
 bcx311: sbend, type = "@2,0.788D11.50", hgap = gbcc/2, l = lbx31, angle = +abx31, e1 = 0, fint = fbcc, e2 = +abx31,
-          fintx = fbcc
+          fintx = fbcc, descrip = "mad8_key:sben"
 bcx312: sbend, type = "@2,0.788D11.50", hgap = gbcc/2, l = lbx31, angle = -abx31, e1 = -abx31, fint = fbcc, e2 = 0,
-          fintx = fbcc
+          fintx = fbcc, descrip = "mad8_key:sben"
 bcx313: sbend, type = "@2,0.788D11.50", hgap = gbcc/2, l = lbx31, angle = -abx31, e1 = 0, fint = fbcc, e2 = -abx31,
-          fintx = fbcc
+          fintx = fbcc, descrip = "mad8_key:sben"
 bcx314: sbend, type = "@2,0.788D11.50", hgap = gbcc/2, l = lbx31, angle = +abx31, e1 = +abx31, fint = fbcc, e2 = 0,
-          fintx = fbcc
+          fintx = fbcc, descrip = "mad8_key:sben"
 
-dcc31o: drift, l = zdcc/cos(abx31), type = "CSR"
-dcc31i: drift, l = zdcc, type = "CSR"
+dcc31o: drift, l = zdcc/cos(abx31), type = "CSR", descrip = "mad8_key:drif"
+dcc31i: drift, l = zdcc, type = "CSR", descrip = "mad8_key:drif"
 
-cc31beg: marker
-cc31end: marker
+cc31beg: marker, descrip = "mad8_key:mark"
+cc31end: marker, descrip = "mad8_key:mark"
 
 
 
@@ -2302,31 +2347,39 @@ lbx32s = zbcc/(2*sinc32s)
 abx32l = abx32-abx32s
 lbx32l = lbx32-lbx32s
 
-bcx3211: sbend, type = "0.788D11.50", l = lbx32s, angle = +abx32s, e1 = 0, hgap = gbcc/2, fint = fbcc, fintx = 0
-bcx3212: sbend, type = "0.788D11.50", l = lbx32l, angle = +abx32l, e2 = +abx32, hgap = gbcc/2, fint = 0, fintx = fbcc
-bcx3221: sbend, type = "0.788D11.50", l = lbx32l, angle = -abx32l, e1 = -abx32, hgap = gbcc/2, fint = fbcc, fintx = 0
-bcx3222: sbend, type = "0.788D11.50", l = lbx32s, angle = -abx32s, e2 = 0, hgap = gbcc/2, fint = 0, fintx = fbcc
-bcx3231: sbend, type = "0.788D11.50", l = lbx32s, angle = -abx32s, e1 = 0, hgap = gbcc/2, fint = fbcc, fintx = 0
-bcx3232: sbend, type = "0.788D11.50", l = lbx32l, angle = -abx32l, e2 = -abx32, hgap = gbcc/2, fint = 0, fintx = fbcc
-bcx3241: sbend, type = "0.788D11.50", l = lbx32l, angle = +abx32l, e1 = +abx32, hgap = gbcc/2, fint = fbcc, fintx = 0
-bcx3242: sbend, type = "0.788D11.50", l = lbx32s, angle = +abx32s, e2 = 0, hgap = gbcc/2, fint = 0, fintx = fbcc
+bcx3211: sbend, type = "0.788D11.50", l = lbx32s, angle = +abx32s, e1 = 0, hgap = gbcc/2, fint = fbcc, fintx = 0,
+          descrip = "mad8_key:sben"
+bcx3212: sbend, type = "0.788D11.50", l = lbx32l, angle = +abx32l, e2 = +abx32, hgap = gbcc/2, fint = 0, fintx = fbcc,
+          descrip = "mad8_key:sben"
+bcx3221: sbend, type = "0.788D11.50", l = lbx32l, angle = -abx32l, e1 = -abx32, hgap = gbcc/2, fint = fbcc, fintx = 0,
+          descrip = "mad8_key:sben"
+bcx3222: sbend, type = "0.788D11.50", l = lbx32s, angle = -abx32s, e2 = 0, hgap = gbcc/2, fint = 0, fintx = fbcc,
+          descrip = "mad8_key:sben"
+bcx3231: sbend, type = "0.788D11.50", l = lbx32s, angle = -abx32s, e1 = 0, hgap = gbcc/2, fint = fbcc, fintx = 0,
+          descrip = "mad8_key:sben"
+bcx3232: sbend, type = "0.788D11.50", l = lbx32l, angle = -abx32l, e2 = -abx32, hgap = gbcc/2, fint = 0, fintx = fbcc,
+          descrip = "mad8_key:sben"
+bcx3241: sbend, type = "0.788D11.50", l = lbx32l, angle = +abx32l, e1 = +abx32, hgap = gbcc/2, fint = fbcc, fintx = 0,
+          descrip = "mad8_key:sben"
+bcx3242: sbend, type = "0.788D11.50", l = lbx32s, angle = +abx32s, e2 = 0, hgap = gbcc/2, fint = 0, fintx = fbcc,
+          descrip = "mad8_key:sben"
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
 bcx321: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbx32, angle = +abx32, e1 = 0, fint = fbcc, e2 = +abx32,
-          fintx = fbcc
+          fintx = fbcc, descrip = "mad8_key:sben"
 bcx322: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbx32, angle = -abx32, e1 = -abx32, fint = fbcc, e2 = 0,
-          fintx = fbcc
+          fintx = fbcc, descrip = "mad8_key:sben"
 bcx323: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbx32, angle = -abx32, e1 = 0, fint = fbcc, e2 = -abx32,
-          fintx = fbcc
+          fintx = fbcc, descrip = "mad8_key:sben"
 bcx324: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbx32, angle = +abx32, e1 = +abx32, fint = fbcc, e2 = 0,
-          fintx = fbcc
+          fintx = fbcc, descrip = "mad8_key:sben"
 
-dcc32o: drift, l = zdcc/cos(abx32), type = "CSR"
-dcc32i: drift, l = zdcc, type = "CSR"
+dcc32o: drift, l = zdcc/cos(abx32), type = "CSR", descrip = "mad8_key:drif"
+dcc32i: drift, l = zdcc, type = "CSR", descrip = "mad8_key:drif"
 
-cc32beg: marker
-cc32end: marker
+cc32beg: marker, descrip = "mad8_key:mark"
+cc32end: marker, descrip = "mad8_key:mark"
 
 
 
@@ -2368,31 +2421,39 @@ lbx35s = zbcc/(2*sinc35s)
 abx35l = abx35-abx35s
 lbx35l = lbx35-lbx35s
 
-bcx3511: sbend, type = "0.788D11.50", l = lbx35s, angle = +abx35s, e1 = 0, hgap = gbcc/2, fint = fbcc, fintx = 0
-bcx3512: sbend, type = "0.788D11.50", l = lbx35l, angle = +abx35l, e2 = +abx35, hgap = gbcc/2, fint = 0, fintx = fbcc
-bcx3521: sbend, type = "0.788D11.50", l = lbx35l, angle = -abx35l, e1 = -abx35, hgap = gbcc/2, fint = fbcc, fintx = 0
-bcx3522: sbend, type = "0.788D11.50", l = lbx35s, angle = -abx35s, e2 = 0, hgap = gbcc/2, fint = 0, fintx = fbcc
-bcx3531: sbend, type = "0.788D11.50", l = lbx35s, angle = -abx35s, e1 = 0, hgap = gbcc/2, fint = fbcc, fintx = 0
-bcx3532: sbend, type = "0.788D11.50", l = lbx35l, angle = -abx35l, e2 = -abx35, hgap = gbcc/2, fint = 0, fintx = fbcc
-bcx3541: sbend, type = "0.788D11.50", l = lbx35l, angle = +abx35l, e1 = +abx35, hgap = gbcc/2, fint = fbcc, fintx = 0
-bcx3542: sbend, type = "0.788D11.50", l = lbx35s, angle = +abx35s, e2 = 0, hgap = gbcc/2, fint = 0, fintx = fbcc
+bcx3511: sbend, type = "0.788D11.50", l = lbx35s, angle = +abx35s, e1 = 0, hgap = gbcc/2, fint = fbcc, fintx = 0,
+          descrip = "mad8_key:sben"
+bcx3512: sbend, type = "0.788D11.50", l = lbx35l, angle = +abx35l, e2 = +abx35, hgap = gbcc/2, fint = 0, fintx = fbcc,
+          descrip = "mad8_key:sben"
+bcx3521: sbend, type = "0.788D11.50", l = lbx35l, angle = -abx35l, e1 = -abx35, hgap = gbcc/2, fint = fbcc, fintx = 0,
+          descrip = "mad8_key:sben"
+bcx3522: sbend, type = "0.788D11.50", l = lbx35s, angle = -abx35s, e2 = 0, hgap = gbcc/2, fint = 0, fintx = fbcc,
+          descrip = "mad8_key:sben"
+bcx3531: sbend, type = "0.788D11.50", l = lbx35s, angle = -abx35s, e1 = 0, hgap = gbcc/2, fint = fbcc, fintx = 0,
+          descrip = "mad8_key:sben"
+bcx3532: sbend, type = "0.788D11.50", l = lbx35l, angle = -abx35l, e2 = -abx35, hgap = gbcc/2, fint = 0, fintx = fbcc,
+          descrip = "mad8_key:sben"
+bcx3541: sbend, type = "0.788D11.50", l = lbx35l, angle = +abx35l, e1 = +abx35, hgap = gbcc/2, fint = fbcc, fintx = 0,
+          descrip = "mad8_key:sben"
+bcx3542: sbend, type = "0.788D11.50", l = lbx35s, angle = +abx35s, e2 = 0, hgap = gbcc/2, fint = 0, fintx = fbcc,
+          descrip = "mad8_key:sben"
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
 bcx351: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbx35, angle = +abx35, e1 = 0, fint = fbcc, e2 = +abx35,
-          fintx = fbcc
+          fintx = fbcc, descrip = "mad8_key:sben"
 bcx352: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbx35, angle = -abx35, e1 = -abx35, fint = fbcc, e2 = 0,
-          fintx = fbcc
+          fintx = fbcc, descrip = "mad8_key:sben"
 bcx353: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbx35, angle = -abx35, e1 = 0, fint = fbcc, e2 = -abx35,
-          fintx = fbcc
+          fintx = fbcc, descrip = "mad8_key:sben"
 bcx354: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbx35, angle = +abx35, e1 = +abx35, fint = fbcc, e2 = 0,
-          fintx = fbcc
+          fintx = fbcc, descrip = "mad8_key:sben"
 
-dcc35o: drift, l = zdcc/cos(abx35), type = "CSR"
-dcc35i: drift, l = zdcc, type = "CSR"
+dcc35o: drift, l = zdcc/cos(abx35), type = "CSR", descrip = "mad8_key:drif"
+dcc35i: drift, l = zdcc, type = "CSR", descrip = "mad8_key:drif"
 
-cc35beg: marker
-cc35end: marker
+cc35beg: marker, descrip = "mad8_key:mark"
+cc35end: marker, descrip = "mad8_key:mark"
 
 
 
@@ -2434,31 +2495,39 @@ lbx36s = zbcc/(2*sinc36s)
 abx36l = abx36-abx36s
 lbx36l = lbx36-lbx36s
 
-bcx3611: sbend, type = "0.788D11.50", l = lbx36s, angle = +abx36s, e1 = 0, hgap = gbcc/2, fint = fbcc, fintx = 0
-bcx3612: sbend, type = "0.788D11.50", l = lbx36l, angle = +abx36l, e2 = +abx36, hgap = gbcc/2, fint = 0, fintx = fbcc
-bcx3621: sbend, type = "0.788D11.50", l = lbx36l, angle = -abx36l, e1 = -abx36, hgap = gbcc/2, fint = fbcc, fintx = 0
-bcx3622: sbend, type = "0.788D11.50", l = lbx36s, angle = -abx36s, e2 = 0, hgap = gbcc/2, fint = 0, fintx = fbcc
-bcx3631: sbend, type = "0.788D11.50", l = lbx36s, angle = -abx36s, e1 = 0, hgap = gbcc/2, fint = fbcc, fintx = 0
-bcx3632: sbend, type = "0.788D11.50", l = lbx36l, angle = -abx36l, e2 = -abx36, hgap = gbcc/2, fint = 0, fintx = fbcc
-bcx3641: sbend, type = "0.788D11.50", l = lbx36l, angle = +abx36l, e1 = +abx36, hgap = gbcc/2, fint = fbcc, fintx = 0
-bcx3642: sbend, type = "0.788D11.50", l = lbx36s, angle = +abx36s, e2 = 0, hgap = gbcc/2, fint = 0, fintx = fbcc
+bcx3611: sbend, type = "0.788D11.50", l = lbx36s, angle = +abx36s, e1 = 0, hgap = gbcc/2, fint = fbcc, fintx = 0,
+          descrip = "mad8_key:sben"
+bcx3612: sbend, type = "0.788D11.50", l = lbx36l, angle = +abx36l, e2 = +abx36, hgap = gbcc/2, fint = 0, fintx = fbcc,
+          descrip = "mad8_key:sben"
+bcx3621: sbend, type = "0.788D11.50", l = lbx36l, angle = -abx36l, e1 = -abx36, hgap = gbcc/2, fint = fbcc, fintx = 0,
+          descrip = "mad8_key:sben"
+bcx3622: sbend, type = "0.788D11.50", l = lbx36s, angle = -abx36s, e2 = 0, hgap = gbcc/2, fint = 0, fintx = fbcc,
+          descrip = "mad8_key:sben"
+bcx3631: sbend, type = "0.788D11.50", l = lbx36s, angle = -abx36s, e1 = 0, hgap = gbcc/2, fint = fbcc, fintx = 0,
+          descrip = "mad8_key:sben"
+bcx3632: sbend, type = "0.788D11.50", l = lbx36l, angle = -abx36l, e2 = -abx36, hgap = gbcc/2, fint = 0, fintx = fbcc,
+          descrip = "mad8_key:sben"
+bcx3641: sbend, type = "0.788D11.50", l = lbx36l, angle = +abx36l, e1 = +abx36, hgap = gbcc/2, fint = fbcc, fintx = 0,
+          descrip = "mad8_key:sben"
+bcx3642: sbend, type = "0.788D11.50", l = lbx36s, angle = +abx36s, e2 = 0, hgap = gbcc/2, fint = 0, fintx = fbcc,
+          descrip = "mad8_key:sben"
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
 bcx361: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbx36, angle = +abx36, e1 = 0, fint = fbcc, e2 = +abx36,
-          fintx = fbcc
+          fintx = fbcc, descrip = "mad8_key:sben"
 bcx362: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbx36, angle = -abx36, e1 = -abx36, fint = fbcc, e2 = 0,
-          fintx = fbcc
+          fintx = fbcc, descrip = "mad8_key:sben"
 bcx363: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbx36, angle = -abx36, e1 = 0, fint = fbcc, e2 = -abx36,
-          fintx = fbcc
+          fintx = fbcc, descrip = "mad8_key:sben"
 bcx364: sbend, type = "0.788D11.50", hgap = gbcc/2, l = lbx36, angle = +abx36, e1 = +abx36, fint = fbcc, e2 = 0,
-          fintx = fbcc
+          fintx = fbcc, descrip = "mad8_key:sben"
 
-dcc36o: drift, l = zdcc/cos(abx36), type = "CSR"
-dcc36i: drift, l = zdcc, type = "CSR"
+dcc36o: drift, l = zdcc/cos(abx36), type = "CSR", descrip = "mad8_key:drif"
+dcc36i: drift, l = zdcc, type = "CSR", descrip = "mad8_key:drif"
 
-cc36beg: marker
-cc36end: marker
+cc36beg: marker, descrip = "mad8_key:mark"
+cc36end: marker, descrip = "mad8_key:mark"
 
 
 
@@ -2492,71 +2561,71 @@ kq30801 = 0.480592172519 ! 0.480592172677 ! 0.480095248389 !
 kq50q1 = -0.231522300458 !-0.231522298209 !-0.231122399508 !
 kq50q2 = 0.102074332053 ! 0.102074330212 ! 0.10177159732  !
 
-q50q1: quadrupole, type = "2Q10", l = lqr/2, k1 = kq50q1, aperture = rqr
-q50q2: quadrupole, type = "50Q2", l = 0.162151, k1 = kq50q2, aperture = 0.010325
+q50q1: quadrupole, type = "2Q10", l = lqr/2, k1 = kq50q1, aperture = rqr, descrip = "mad8_key:quad"
+q50q2: quadrupole, type = "50Q2", l = 0.162151, k1 = kq50q2, aperture = 0.010325, descrip = "mad8_key:quad"
 
 ldbsy01 = 5.995 !from beginning of BSY to Station 100
-dbsy01a: drift, l = 0.7286
-dbsy01b: drift, l = 0.25005
-dbsy01c: drift, l = 0.25005
-dbsy01d: drift, l = 0.4143
-dbsy01e: drift, l = 2.9046 !0.807+0.6+1.4976
-dbsy01f: drift, l = 0.31575
-dbsy01g: drift, l = 0.31575
-dbsy01h: drift, l = 0.7975
-dbsy01i: drift, l = 0.0184
+dbsy01a: drift, l = 0.7286, descrip = "mad8_key:drif"
+dbsy01b: drift, l = 0.25005, descrip = "mad8_key:drif"
+dbsy01c: drift, l = 0.25005, descrip = "mad8_key:drif"
+dbsy01d: drift, l = 0.4143, descrip = "mad8_key:drif"
+dbsy01e: drift, l = 2.9046, descrip = "mad8_key:drif" !0.807+0.6+1.4976
+dbsy01f: drift, l = 0.31575, descrip = "mad8_key:drif"
+dbsy01g: drift, l = 0.31575, descrip = "mad8_key:drif"
+dbsy01h: drift, l = 0.7975, descrip = "mad8_key:drif"
+dbsy01i: drift, l = 0.0184, descrip = "mad8_key:drif"
 
 ldbsy50 = 2.144276 !Station 100 to center of Q50Q1
-dbsy50: drift, l = ldbsy50-lqr/2
-dbsy50a: drift, l = 0.5782
-dbsy50b: drift, l = dbsy50[l]-dbsy50a[l]
+dbsy50: drift, l = ldbsy50-lqr/2, descrip = "mad8_key:drif"
+dbsy50a: drift, l = 0.5782, descrip = "mad8_key:drif"
+dbsy50b: drift, l = dbsy50[l]-dbsy50a[l], descrip = "mad8_key:drif"
 
-dbsy02: drift, l = 0.456124
-dbsy02b: drift, l = 0.2199
-dbsy02a: drift, l = dbsy02[l]-dbsy02b[l]
+dbsy02: drift, l = 0.456124, descrip = "mad8_key:drif"
+dbsy02b: drift, l = 0.2199, descrip = "mad8_key:drif"
+dbsy02a: drift, l = dbsy02[l]-dbsy02b[l], descrip = "mad8_key:drif"
 
-dbsy51: drift, l = 5.521976
-dbsy51b: drift, l = 0.5
-dbsy51a: drift, l = dbsy51[l]-dbsy51b[l]
+dbsy51: drift, l = 5.521976, descrip = "mad8_key:drif"
+dbsy51b: drift, l = 0.5, descrip = "mad8_key:drif"
+dbsy51a: drift, l = dbsy51[l]-dbsy51b[l], descrip = "mad8_key:drif"
 
-dbsy52: drift, l = 54.883314
-dbsy52a: drift, l = 0.079149
-dbsy52b: drift, l = 1.799589 !2.420851
-dbsy52d: drift, l = 0.5
+dbsy52: drift, l = 54.883314, descrip = "mad8_key:drif"
+dbsy52a: drift, l = 0.079149, descrip = "mad8_key:drif"
+dbsy52b: drift, l = 1.799589, descrip = "mad8_key:drif" !2.420851
+dbsy52d: drift, l = 0.5, descrip = "mad8_key:drif"
 dbsy52c: drift,
           l =  &
          dbsy52[l]-dbsy52a[l]-dbsy52b[l]-lbrcusdc1-dckdc1[l]-lbkrcus-dckdc2[l]-lbrcusdc2-dcusblra[l]-dcusblrb[l]-lblrcus-lbxsph- &
-         dbsy52d[l]
+         dbsy52d[l], descrip = "mad8_key:drif"
 
-bpmbsyq1: monitor, type = "Stripline-5" !changed from "-6" to fit 2Q10
-bpmbsyq2: monitor, type = "Stripline-6" !per C. Iverson
+bpmbsyq1: monitor, type = "Stripline-5", descrip = "mad8_key:moni" !changed from "-6" to fit 2Q10
+bpmbsyq2: monitor, type = "Stripline-6", descrip = "mad8_key:moni" !per C. Iverson
 
-ycbsyq1: vkicker, type = "class-4" !barcode=4600
+ycbsyq1: vkicker, type = "class-4", descrip = "mad8_key:vkic" !barcode=4600
 
-xcbsyq2: hkicker, type = "class-4" !barcode=4601
+xcbsyq2: hkicker, type = "class-4", descrip = "mad8_key:hkic" !barcode=4601
 
-imbsy1: marker, type = "BCS toroid" !Bergoz toroid
-imbsy2: marker, type = "BCS toroid" !Bergoz toroid
-imbsy3: marker, type = "BCS toroid" !Bergoz toroid
+imbsy1: marker, type = "BCS toroid", descrip = "mad8_key:mark" !Bergoz toroid
+imbsy2: marker, type = "BCS toroid", descrip = "mad8_key:mark" !Bergoz toroid
+imbsy3: marker, type = "BCS toroid", descrip = "mad8_key:mark" !Bergoz toroid
 
-imbsy1b: marker, type = "BCS backup toroid" !PEP2 backup toroid for IMBSY1
-imbsy2b: marker, type = "BCS backup toroid" !PEP2 backup toroid for IMBSY2
-imbsy3b: marker, type = "BCS backup toroid" !PEP2 backup toroid for IMBSY3
+imbsy1b: marker, type = "BCS backup toroid", descrip = "mad8_key:mark" !PEP2 backup toroid for IMBSY1
+imbsy2b: marker, type = "BCS backup toroid", descrip = "mad8_key:mark" !PEP2 backup toroid for IMBSY2
+imbsy3b: marker, type = "BCS backup toroid", descrip = "mad8_key:mark" !PEP2 backup toroid for IMBSY3
 
-imbsy34: marker, type = "toroid" !diagnostic toroid - existing LCLS device
+imbsy34: marker, type = "toroid", descrip = "mad8_key:mark" !diagnostic toroid - existing LCLS device
 
 lpcbsy = 0.3 !TBD
 
-bsybeg: marker
-fftborgn: marker
-s100: marker !station 100
-zlin15: marker !station-100 (or "S100"): Z=3048.0 (Z'=X'=Y'=0.0 m)
-bsy1beg: marker
-bsy1end: marker
+bsybeg: marker, descrip = "mad8_key:mark"
+fftborgn: marker, descrip = "mad8_key:mark"
+s100: marker, descrip = "mad8_key:mark" !station 100
+zlin15: marker, descrip = "mad8_key:mark" !station-100 (or "S100"): Z=3048.0 (Z'=X'=Y'=0.0 m)
+bsy1beg: marker, descrip = "mad8_key:mark"
+bsy1end: marker, descrip = "mad8_key:mark"
 
 ! wooden BSY door (separates LI30 from BSY)
 
-wooddoor: marker
+wooddoor: marker, descrip = "mad8_key:mark"
 
 
 
@@ -2598,11 +2667,11 @@ kq5 = 0.11024564993
 kq6 = -0.109735122471
 kqa0 = 0.096565286297
 
-q50q3: quadrupole, type = "50Q3", l = 0.143254, k1 = kq50q3, aperture = 0.010325
-q4: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kq4, aperture = rqf
-q5: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kq5, aperture = rqf
-q6: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kq6, aperture = rqf
-qa0: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqa0, aperture = rqf
+q50q3: quadrupole, type = "50Q3", l = 0.143254, k1 = kq50q3, aperture = 0.010325, descrip = "mad8_key:quad"
+q4: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kq4, aperture = rqf, descrip = "mad8_key:quad"
+q5: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kq5, aperture = rqf, descrip = "mad8_key:quad"
+q6: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kq6, aperture = rqf, descrip = "mad8_key:quad"
+qa0: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqa0, aperture = rqf, descrip = "mad8_key:quad"
 
 ! PM projections onto BSY beamline
 
@@ -2632,93 +2701,94 @@ lpc119 = 0.453644
 zq5 = 0.0 !adjust position of Q5
 zq6 = 0.0 !adjust position of Q6
 
-dbsy53a: drift, l = 0.091696
-dbsy53b: drift, l = 0.610705
-dbsy53c: drift, l = 0.779945
-dbsy53f: drift, l = 0.5
-dbsy53d: drift, l = 4.0-dbsy53a[l]-dbsy53b[l]-dbsy53c[l]-dbsy53f[l]
-dbsy53g: drift, l = 1.2
-dbsy53ga: drift, l = 0.91293
-dbsy53gb: drift, l = dbsy53g[l]-dbsy53ga[l]-lplate
-dbkrapm1a: drift, l = zbkrapm1/2
-dbkrapm1b: drift, l = zbkrapm1/2
-dzapm1: drift, l = ldzapm1
-dbkrapm2a: drift, l = zbkrapm2/2
-dbkrapm2b: drift, l = zbkrapm2/2
-dzapm2a: drift, l = ldzapm2/2
-dscapm2: drift, l = 0
-dzapm2b: drift, l = ldzapm2/2
-dzapm2: drift, l = ldzapm2
-dbkrapm3a: drift, l = zbkrapm3/2
-dbkrapm3b: drift, l = zbkrapm3/2
-dzapm3: drift, l = ldzapm3
-dbkrapm4a: drift, l = zbkrapm4/2
-dbkrapm4b: drift, l = zbkrapm4/2
-dzapm4: drift, l = ldzapm4
-dza01: drift, l = ldza01
-dza02: drift, l = ldza02
+dbsy53a: drift, l = 0.091696, descrip = "mad8_key:drif"
+dbsy53b: drift, l = 0.610705, descrip = "mad8_key:drif"
+dbsy53c: drift, l = 0.779945, descrip = "mad8_key:drif"
+dbsy53f: drift, l = 0.5, descrip = "mad8_key:drif"
+dbsy53d: drift, l = 4.0-dbsy53a[l]-dbsy53b[l]-dbsy53c[l]-dbsy53f[l], descrip = "mad8_key:drif"
+dbsy53g: drift, l = 1.2, descrip = "mad8_key:drif"
+dbsy53ga: drift, l = 0.91293, descrip = "mad8_key:drif"
+dbsy53gb: drift, l = dbsy53g[l]-dbsy53ga[l]-lplate, descrip = "mad8_key:drif"
+dbkrapm1a: drift, l = zbkrapm1/2, descrip = "mad8_key:drif"
+dbkrapm1b: drift, l = zbkrapm1/2, descrip = "mad8_key:drif"
+dzapm1: drift, l = ldzapm1, descrip = "mad8_key:drif"
+dbkrapm2a: drift, l = zbkrapm2/2, descrip = "mad8_key:drif"
+dbkrapm2b: drift, l = zbkrapm2/2, descrip = "mad8_key:drif"
+dzapm2a: drift, l = ldzapm2/2, descrip = "mad8_key:drif"
+dscapm2: drift, l = 0, descrip = "mad8_key:drif"
+dzapm2b: drift, l = ldzapm2/2, descrip = "mad8_key:drif"
+dzapm2: drift, l = ldzapm2, descrip = "mad8_key:drif"
+dbkrapm3a: drift, l = zbkrapm3/2, descrip = "mad8_key:drif"
+dbkrapm3b: drift, l = zbkrapm3/2, descrip = "mad8_key:drif"
+dzapm3: drift, l = ldzapm3, descrip = "mad8_key:drif"
+dbkrapm4a: drift, l = zbkrapm4/2, descrip = "mad8_key:drif"
+dbkrapm4b: drift, l = zbkrapm4/2, descrip = "mad8_key:drif"
+dzapm4: drift, l = ldzapm4, descrip = "mad8_key:drif"
+dza01: drift, l = ldza01, descrip = "mad8_key:drif"
+dza02: drift, l = ldza02, descrip = "mad8_key:drif"
 dbsy53h: drift,
           l = 34.45562-dbsy53g[l]-zbkrapm1-zbkrapm2-zbkrapm3-zbkrapm4 -2*ldzapm1-2*ldzapm2-2*ldzapm3-ldzapm4-ldza01-ldza02  &
-         -lpcbsyh-4*lpcapm +zq5
-dbsy54a: drift, l = 0.5
-dbsy54b: drift, l = 3.22454 -zq5
-dbsy54c: drift, l = 19.260056-dbsy54a[l]-dbsy54b[l] -zq5+zq6
-dbsy55a: drift, l = 0.5
-dbsy55b: drift, l = 4.226742
-dbsy55c: drift, l = 8.016028 -zq6
-dbsy55d: drift, l = 6.466828
-dbsy55e: drift, l = 21.826764-drfb[l]-dbsy55a[l]-dbsy55b[l]-lpc90 -dbsy55c[l]-lplate-dbsy55d[l]-lpc119 -zq6
-dm3: drift, l = 0.8438
-dm4a: drift, l = 0.441
-dm4c: drift, l = 0.331133-ljaw/2
-dm4d: drift, l = 1.168867-ljaw/2
-dm4da: drift, l = 0.27685
-dm4db: drift, l = dm4d[l]-dm4da[l]-lplate
-dm4b: drift, l = 8.851641-dm4a[l]-dm4c[l]-dm4d[l]-ljaw-1.717774
-dxca0: drift, l = 0.31
-dyca0: drift, l = 0.509021
-dm5: drift, l = 0.790979
-dm6: drift, l = 0.567588
-dmoni: drift, l = 0.009525
+         -lpcbsyh-4*lpcapm +zq5, descrip = "mad8_key:drif"
+dbsy54a: drift, l = 0.5, descrip = "mad8_key:drif"
+dbsy54b: drift, l = 3.22454 -zq5, descrip = "mad8_key:drif"
+dbsy54c: drift, l = 19.260056-dbsy54a[l]-dbsy54b[l] -zq5+zq6, descrip = "mad8_key:drif"
+dbsy55a: drift, l = 0.5, descrip = "mad8_key:drif"
+dbsy55b: drift, l = 4.226742, descrip = "mad8_key:drif"
+dbsy55c: drift, l = 8.016028 -zq6, descrip = "mad8_key:drif"
+dbsy55d: drift, l = 6.466828, descrip = "mad8_key:drif"
+dbsy55e: drift, l = 21.826764-drfb[l]-dbsy55a[l]-dbsy55b[l]-lpc90 -dbsy55c[l]-lplate-dbsy55d[l]-lpc119 -zq6,
+          descrip = "mad8_key:drif"
+dm3: drift, l = 0.8438, descrip = "mad8_key:drif"
+dm4a: drift, l = 0.441, descrip = "mad8_key:drif"
+dm4c: drift, l = 0.331133-ljaw/2, descrip = "mad8_key:drif"
+dm4d: drift, l = 1.168867-ljaw/2, descrip = "mad8_key:drif"
+dm4da: drift, l = 0.27685, descrip = "mad8_key:drif"
+dm4db: drift, l = dm4d[l]-dm4da[l]-lplate, descrip = "mad8_key:drif"
+dm4b: drift, l = 8.851641-dm4a[l]-dm4c[l]-dm4d[l]-ljaw-1.717774, descrip = "mad8_key:drif"
+dxca0: drift, l = 0.31, descrip = "mad8_key:drif"
+dyca0: drift, l = 0.509021, descrip = "mad8_key:drif"
+dm5: drift, l = 0.790979, descrip = "mad8_key:drif"
+dm6: drift, l = 0.567588, descrip = "mad8_key:drif"
+dmoni: drift, l = 0.009525, descrip = "mad8_key:drif"
 
-bpmbsyq3: monitor, type = "Stripline-6" !per C. Iverson
-rfbbsyq3: monitor, type = "@2,CavityS-1"
-bpmbsyq4: monitor, type = "Stripline-7"
-bpmbsyq5: monitor, type = "Stripline-7" !per C. Iverson
-bpmbsyq6: monitor, type = "Stripline-7" !per C. Iverson
-rfbbsyq6: monitor, type = "@2,CavityS-1"
-bpmbsyqa0: monitor, type = "Stripline-7" !per C. Iverson
+bpmbsyq3: monitor, type = "Stripline-6", descrip = "mad8_key:moni" !per C. Iverson
+rfbbsyq3: monitor, type = "@2,CavityS-1", descrip = "mad8_key:moni"
+bpmbsyq4: monitor, type = "Stripline-7", descrip = "mad8_key:moni"
+bpmbsyq5: monitor, type = "Stripline-7", descrip = "mad8_key:moni" !per C. Iverson
+bpmbsyq6: monitor, type = "Stripline-7", descrip = "mad8_key:moni" !per C. Iverson
+rfbbsyq6: monitor, type = "@2,CavityS-1", descrip = "mad8_key:moni"
+bpmbsyqa0: monitor, type = "Stripline-7", descrip = "mad8_key:moni" !per C. Iverson
 
-xcbsyq3: hkicker, type = "class-4" !barcode=4602
-xcbsyq5: hkicker, type = "class-4" !barcode=2100
-xca0: hkicker, type = "class-4" !barcode=2195
+xcbsyq3: hkicker, type = "class-4", descrip = "mad8_key:hkic" !barcode=4602
+xcbsyq5: hkicker, type = "class-4", descrip = "mad8_key:hkic" !barcode=2100
+xca0: hkicker, type = "class-4", descrip = "mad8_key:hkic" !barcode=2195
 
-ycbsyq4: vkicker, type = "class-4" !barcode=4603
-ycbsyq6: vkicker, type = "class-4" !barcode=2107
-yca0: vkicker, type = "class-4" !barcode=2195
+ycbsyq4: vkicker, type = "class-4", descrip = "mad8_key:vkic" !barcode=4603
+ycbsyq6: vkicker, type = "class-4", descrip = "mad8_key:vkic" !barcode=2107
+yca0: vkicker, type = "class-4", descrip = "mad8_key:vkic" !barcode=2195
 
-pcbsy3: instrument, type = "BCS plate", l = lplate !shielding plate
-pcbsy4: instrument, type = "BCS plate", l = lplate !shielding plate
-d2: instrument, type = "PPS stopper", l = 0.43   !stopper
-st60: instrument, type = "PPS stopper", l = 0.76   !backup stopper
-dm60: instrument, type = "PPS BTM"               !"disaster" BTM behind ST60
-pcbsy5: instrument, type = "BCS plate", l = lplate !shielding plate
-st61: instrument, type = "PPS stopper", l = 0.76   !backup stopper
+pcbsy3: instrument, type = "BCS plate", l = lplate, descrip = "mad8_key:inst" !shielding plate
+pcbsy4: instrument, type = "BCS plate", l = lplate, descrip = "mad8_key:inst" !shielding plate
+d2: instrument, type = "PPS stopper", l = 0.43, descrip = "mad8_key:inst"   !stopper
+st60: instrument, type = "PPS stopper", l = 0.76, descrip = "mad8_key:inst"   !backup stopper
+dm60: instrument, type = "PPS BTM", descrip = "mad8_key:inst"               !"disaster" BTM behind ST60
+pcbsy5: instrument, type = "BCS plate", l = lplate, descrip = "mad8_key:inst" !shielding plate
+st61: instrument, type = "PPS stopper", l = 0.76, descrip = "mad8_key:inst"   !backup stopper
 
-pcapm1: ecollimator, type = "MPS PC", l = lpcapm, x_limit = 44.45e-3, y_limit = 6.35e-3
-pcapm2: ecollimator, type = "MPS PC", l = lpcapm, x_limit = 44.45e-3, y_limit = 6.35e-3
-pcapm3: ecollimator, type = "MPS PC", l = lpcapm, x_limit = 44.45e-3, y_limit = 6.35e-3
-pcapm4: ecollimator, type = "MPS PC", l = lpcapm, x_limit = 44.45e-3, y_limit = 6.35e-3
-pcbsyh: ecollimator, type = "@1,MPS PC", l = 0.45, x_limit = 25.4e-3, y_limit = 25.4e-3 !installed, then removed
-pc90: ecollimator, l = lpc90, x_limit = 10.2e-3, y_limit = 10.2e-3 !existing protection collimator in BSY
-pc119: ecollimator, l = lpc119, x_limit = 10.2e-3, y_limit = 10.2e-3 !existing protection collimator in BSY
+pcapm1: ecollimator, type = "MPS PC", l = lpcapm, x_limit = 44.45e-3, y_limit = 6.35e-3, descrip = "mad8_key:ecol"
+pcapm2: ecollimator, type = "MPS PC", l = lpcapm, x_limit = 44.45e-3, y_limit = 6.35e-3, descrip = "mad8_key:ecol"
+pcapm3: ecollimator, type = "MPS PC", l = lpcapm, x_limit = 44.45e-3, y_limit = 6.35e-3, descrip = "mad8_key:ecol"
+pcapm4: ecollimator, type = "MPS PC", l = lpcapm, x_limit = 44.45e-3, y_limit = 6.35e-3, descrip = "mad8_key:ecol"
+pcbsyh: ecollimator, type = "@1,MPS PC", l = 0.45, x_limit = 25.4e-3, y_limit = 25.4e-3, descrip = "mad8_key:ecol" !installed, then removed
+pc90: ecollimator, l = lpc90, x_limit = 10.2e-3, y_limit = 10.2e-3, descrip = "mad8_key:ecol" !existing protection collimator in BSY
+pc119: ecollimator, l = lpc119, x_limit = 10.2e-3, y_limit = 10.2e-3, descrip = "mad8_key:ecol" !existing protection collimator in BSY
 
-cxq6: rcollimator, type = "HCOLL", l = ljaw, x_limit = 1.7e-3, y_limit = 20.e-3
+cxq6: rcollimator, type = "HCOLL", l = ljaw, x_limit = 1.7e-3, y_limit = 20.e-3, descrip = "mad8_key:rcol"
 
-muwall: marker !front face of muon wall for HXR beam
-dumpbsyh: marker !front face of BSY dump for HXR beam
-bsyend: marker !LTUH side of muon plug wall: Z=3224.022426 (Z'=176.020508 m, X'=0.0 m, Y'=-0.821761 m)
-rwwake3h: marker, type = "WAKE" !BSY/SPRDH beampipe wake applied here
+muwall: marker, descrip = "mad8_key:mark" !front face of muon wall for HXR beam
+dumpbsyh: marker, descrip = "mad8_key:mark" !front face of BSY dump for HXR beam
+bsyend: marker, descrip = "mad8_key:mark" !LTUH side of muon plug wall: Z=3224.022426 (Z'=176.020508 m, X'=0.0 m, Y'=-0.821761 m)
+rwwake3h: marker, type = "WAKE", descrip = "mad8_key:mark" !BSY/SPRDH beampipe wake applied here
 
 
 
@@ -2775,72 +2845,76 @@ kqvm2 = 0.236577259392
 kqvm3 = 0.715150825176
 kqvm4 = -0.681650171006
 
-qvm1: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqvm1, aperture = rqf
-qvm2: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqvm2, aperture = rqf
-qvm3: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqvm3, aperture = rqf
-qvm4: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqvm4, aperture = rqf
+qvm1: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqvm1, aperture = rqf, descrip = "mad8_key:quad"
+qvm2: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqvm2, aperture = rqf, descrip = "mad8_key:quad"
+qvm3: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqvm3, aperture = rqf, descrip = "mad8_key:quad"
+qvm4: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqvm4, aperture = rqf, descrip = "mad8_key:quad"
 
 kqvb = -0.42223036711
 
-qvb1: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqvb, aperture = rqf
-qvb2: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = -kqvb, aperture = rqf
-qvb3: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqvb, aperture = rqf
+qvb1: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqvb, aperture = rqf, descrip = "mad8_key:quad"
+qvb2: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = -kqvb, aperture = rqf, descrip = "mad8_key:quad"
+qvb3: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqvb, aperture = rqf, descrip = "mad8_key:quad"
 
-by11: sbend, type = "3D39", l = lvb/2, angle = avb/2, hgap = gvb/2, e1 = avb/2, fint = 0.5, fintx = 0, ref_tilt = pi/2
-by12: sbend, type = "3D39", l = lvb/2, angle = avb/2, hgap = gvb/2, fint = 0, e2 = avb/2, fintx = 0.5, ref_tilt = pi/2
-by21: sbend, type = "3D39", l = lvb/2, angle = avb/2, hgap = gvb/2, e1 = avb/2, fint = 0.5, fintx = 0, ref_tilt = pi/2
-by22: sbend, type = "3D39", l = lvb/2, angle = avb/2, hgap = gvb/2, fint = 0, e2 = avb/2, fintx = 0.5, ref_tilt = pi/2
+by11: sbend, type = "3D39", l = lvb/2, angle = avb/2, hgap = gvb/2, e1 = avb/2, fint = 0.5, fintx = 0, ref_tilt = pi/2,
+          descrip = "mad8_key:sben"
+by12: sbend, type = "3D39", l = lvb/2, angle = avb/2, hgap = gvb/2, fint = 0, e2 = avb/2, fintx = 0.5, ref_tilt = pi/2,
+          descrip = "mad8_key:sben"
+by21: sbend, type = "3D39", l = lvb/2, angle = avb/2, hgap = gvb/2, e1 = avb/2, fint = 0.5, fintx = 0, ref_tilt = pi/2,
+          descrip = "mad8_key:sben"
+by22: sbend, type = "3D39", l = lvb/2, angle = avb/2, hgap = gvb/2, fint = 0, e2 = avb/2, fintx = 0.5, ref_tilt = pi/2,
+          descrip = "mad8_key:sben"
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
 by1: sbend, type = "3D39", hgap = gvb/2, l = lvb, angle = avb, e1 = avb/2, fint = 0.5, e2 = avb/2, fintx = 0.5,
-          ref_tilt = pi/2
+          ref_tilt = pi/2, descrip = "mad8_key:sben"
 by2: sbend, type = "3D39", hgap = gvb/2, l = lvb, angle = avb, e1 = avb/2, fint = 0.5, e2 = avb/2, fintx = 0.5,
-          ref_tilt = pi/2
+          ref_tilt = pi/2, descrip = "mad8_key:sben"
 
-dvb1: drift, l = 8.0-2*0.3125, type = "CSR"
-dvb2m80cm: drift, l = 4.0-0.4-0.4, type = "CSR"
-dvb2: drift, l = 4.0, type = "CSR"
-dvb2ha: drift, l = 0.870432, type = "CSR" !0.981620
-dvb2hb: drift, l = dvb2[l]-dvb2ha[l]-lplate, type = "CSR"
-dvb1m40cm: drift, l = 8.0-0.4-2*0.3125, type = "CSR"
-dvb25cmc: drift, l = 0.5-0.25
-dvbem25cm: drift, l = 0.5-0.25, type = "CSR"
-dvbem15cm: drift, l = 0.150+0.00381+0.018803, type = "CSR"
-dqvm2b: drift, l = 0.24954
-dqvm2a: drift, l = dqvm2[l]-dqvm2b[l]
-dwsvm2: drift, l = dxcvm2[l]+dvb25cm[l]
-dwsvm2a: drift, l = 0.24954+0.0046
-dwsvm2b: drift, l = dwsvm2[l]-dwsvm2a[l]
+dvb1: drift, l = 8.0-2*0.3125, type = "CSR", descrip = "mad8_key:drif"
+dvb2m80cm: drift, l = 4.0-0.4-0.4, type = "CSR", descrip = "mad8_key:drif"
+dvb2: drift, l = 4.0, type = "CSR", descrip = "mad8_key:drif"
+dvb2ha: drift, l = 0.870432, type = "CSR", descrip = "mad8_key:drif" !0.981620
+dvb2hb: drift, l = dvb2[l]-dvb2ha[l]-lplate, type = "CSR", descrip = "mad8_key:drif"
+dvb1m40cm: drift, l = 8.0-0.4-2*0.3125, type = "CSR", descrip = "mad8_key:drif"
+dvb25cmc: drift, l = 0.5-0.25, descrip = "mad8_key:drif"
+dvbem25cm: drift, l = 0.5-0.25, type = "CSR", descrip = "mad8_key:drif"
+dvbem15cm: drift, l = 0.150+0.00381+0.018803, type = "CSR", descrip = "mad8_key:drif"
+dqvm2b: drift, l = 0.24954, descrip = "mad8_key:drif"
+dqvm2a: drift, l = dqvm2[l]-dqvm2b[l], descrip = "mad8_key:drif"
+dwsvm2: drift, l = dxcvm2[l]+dvb25cm[l], descrip = "mad8_key:drif"
+dwsvm2a: drift, l = 0.24954+0.0046, descrip = "mad8_key:drif"
+dwsvm2b: drift, l = dwsvm2[l]-dwsvm2a[l], descrip = "mad8_key:drif"
 
-bpmvm1: monitor, type = "Stripline-7"
-bpmvm2: monitor, type = "Stripline-7"
-bpmvm3: monitor, type = "Stripline-7"
-bpmvm4: monitor, type = "Stripline-7"
-bpmvb1: monitor, type = "Stripline-7"
-bpmvb2: monitor, type = "Stripline-7"
-bpmvb3: monitor, type = "Stripline-7"
+bpmvm1: monitor, type = "Stripline-7", descrip = "mad8_key:moni"
+bpmvm2: monitor, type = "Stripline-7", descrip = "mad8_key:moni"
+bpmvm3: monitor, type = "Stripline-7", descrip = "mad8_key:moni"
+bpmvm4: monitor, type = "Stripline-7", descrip = "mad8_key:moni"
+bpmvb1: monitor, type = "Stripline-7", descrip = "mad8_key:moni"
+bpmvb2: monitor, type = "Stripline-7", descrip = "mad8_key:moni"
+bpmvb3: monitor, type = "Stripline-7", descrip = "mad8_key:moni"
 
-xcvb2: hkicker, type = "type-4"
-xcvm2: hkicker, type = "type-4"
-xcvm3: hkicker, type = "type-4"
+xcvb2: hkicker, type = "type-4", descrip = "mad8_key:hkic"
+xcvm2: hkicker, type = "type-4", descrip = "mad8_key:hkic"
+xcvm3: hkicker, type = "type-4", descrip = "mad8_key:hkic"
 
-ycvm1: vkicker, type = "class-5c" !calibrated to <1%
-ycvb1: vkicker, type = "class-4"
-ycvb3: vkicker, type = "class-4"
-ycvm4: vkicker, type = "class-5"
+ycvm1: vkicker, type = "class-5c", descrip = "mad8_key:vkic" !calibrated to <1%
+ycvb1: vkicker, type = "class-4", descrip = "mad8_key:vkic"
+ycvb3: vkicker, type = "class-4", descrip = "mad8_key:vkic"
+ycvm4: vkicker, type = "class-5", descrip = "mad8_key:vkic"
 
-im31: marker, type = "120Hz toroid" !comparator with IM36 (existing LCLS device)
-imbcs1: marker, type = "120Hz toroid" !comparator with IMBCS2 (existing LCLS device)
+im31: marker, type = "120Hz toroid", descrip = "mad8_key:mark" !comparator with IM36 (existing LCLS device)
+imbcs1: marker, type = "120Hz toroid", descrip = "mad8_key:mark" !comparator with IMBCS2 (existing LCLS device)
 
-wsvm2: marker, type = "fast" !existing LCLS device
+wsvm2: marker, type = "fast", descrip = "mad8_key:mark" !existing LCLS device
 
-pc01: instrument, type = "BCS plate", l = lplate
-btm01: instrument, type = "PPS BTM"
+pc01: instrument, type = "BCS plate", l = lplate, descrip = "mad8_key:inst"
+btm01: instrument, type = "PPS BTM", descrip = "mad8_key:inst"
 
-vbin: marker !start of vert. bend system: Z=3226.684265 (Z'=178.682318 m, X'=0.0 m, Y'=-0.834187 m)
-vbout: marker !end of vert. bend system: Z=3252.866951 (Z'=204.865005 m, X'= 0.0 m, Y'=-0.895304 m)
-cntlt1h: marker, type = "CENTER" !ELEGANT will correct the orbit here for CSR-steering
+vbin: marker, descrip = "mad8_key:mark" !start of vert. bend system: Z=3226.684265 (Z'=178.682318 m, X'=0.0 m, Y'=-0.834187 m)
+vbout: marker, descrip = "mad8_key:mark" !end of vert. bend system: Z=3252.866951 (Z'=204.865005 m, X'= 0.0 m, Y'=-0.895304 m)
+cntlt1h: marker, type = "CENTER", descrip = "mad8_key:mark" !ELEGANT will correct the orbit here for CSR-steering
 
 
 
@@ -2922,32 +2996,32 @@ bpmvb3[ref] = qvb3
 
 kqdl = 0.437183970154
 
-qdl31: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqdl, aperture = rqa
-qdl32: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqdl, aperture = rqa
-qdl33: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqdl, aperture = rqa
-qdl34: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqdl, aperture = rqa
+qdl31: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqdl, aperture = rqa, descrip = "mad8_key:quad"
+qdl32: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqdl, aperture = rqa, descrip = "mad8_key:quad"
+qdl33: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqdl, aperture = rqa, descrip = "mad8_key:quad"
+qdl34: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqdl, aperture = rqa, descrip = "mad8_key:quad"
 
 kcq31 = 0
 kcq32 = 0
 
-cq31: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = kcq31, aperture = rqx
-cq32: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = kcq32, aperture = rqx
+cq31: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = kcq31, aperture = rqx, descrip = "mad8_key:quad"
+cq32: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = kcq32, aperture = rqx, descrip = "mad8_key:quad"
 
 kqt1 = -0.420937827343
 kqt2 = 0.839614778043
 
-qt11: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqt1, aperture = rqf
-qt12: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqt2, aperture = rqf
-qt13: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqt1, aperture = rqf
-qt21: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqt1, aperture = rqf
-qt22: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqt2, aperture = rqf
-qt23: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqt1, aperture = rqf
-qt31: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqt1, aperture = rqf
-qt32: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqt2, aperture = rqf
-qt33: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqt1, aperture = rqf
-qt41: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqt1, aperture = rqf
-qt42: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqt2, aperture = rqf
-qt43: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqt1, aperture = rqf
+qt11: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqt1, aperture = rqf, descrip = "mad8_key:quad"
+qt12: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqt2, aperture = rqf, descrip = "mad8_key:quad"
+qt13: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqt1, aperture = rqf, descrip = "mad8_key:quad"
+qt21: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqt1, aperture = rqf, descrip = "mad8_key:quad"
+qt22: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqt2, aperture = rqf, descrip = "mad8_key:quad"
+qt23: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqt1, aperture = rqf, descrip = "mad8_key:quad"
+qt31: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqt1, aperture = rqf, descrip = "mad8_key:quad"
+qt32: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqt2, aperture = rqf, descrip = "mad8_key:quad"
+qt33: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqt1, aperture = rqf, descrip = "mad8_key:quad"
+qt41: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqt1, aperture = rqf, descrip = "mad8_key:quad"
+qt42: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqt2, aperture = rqf, descrip = "mad8_key:quad"
+qt43: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqt1, aperture = rqf, descrip = "mad8_key:quad"
 
 lb3 = 2.623                   !0.68D102.36T effective length (m)
 gb3 = 0.679*in2m              !0.68D102.36T gap height (m)
@@ -2957,248 +3031,253 @@ ab3m = -ab3p
 leffb3 = lb3*ab3p/(2*sin(ab3p/2)) !full bend eff. path length (m)
 
 bx311: sbend, type = "0.68D102.36T", l = leffb3/2, angle = ab3p/2, hgap = gb3/2, e1 = ab3p/2, fint = fb3, e2 = 0,
-          fintx = 0
+          fintx = 0, descrip = "mad8_key:sben"
 bx312: sbend, type = "0.68D102.36T", l = leffb3/2, angle = ab3p/2, hgap = gb3/2, e1 = 0, fint = 0, e2 = ab3p/2,
-          fintx = fb3
+          fintx = fb3, descrip = "mad8_key:sben"
 bx321: sbend, type = "0.68D102.36T", l = leffb3/2, angle = ab3p/2, hgap = gb3/2, e1 = ab3p/2, fint = fb3, e2 = 0,
-          fintx = 0
+          fintx = 0, descrip = "mad8_key:sben"
 bx322: sbend, type = "0.68D102.36T", l = leffb3/2, angle = ab3p/2, hgap = gb3/2, e1 = 0, fint = 0, e2 = ab3p/2,
-          fintx = fb3
+          fintx = fb3, descrip = "mad8_key:sben"
 
 bx351: sbend, type = "0.68D102.36T", l = leffb3/2, angle = ab3m/2, hgap = gb3/2, e1 = ab3m/2, fint = fb3, e2 = 0,
-          fintx = 0
+          fintx = 0, descrip = "mad8_key:sben"
 bx352: sbend, type = "0.68D102.36T", l = leffb3/2, angle = ab3m/2, hgap = gb3/2, e1 = 0, fint = 0, e2 = ab3m/2,
-          fintx = fb3
+          fintx = fb3, descrip = "mad8_key:sben"
 bx361: sbend, type = "0.68D102.36T", l = leffb3/2, angle = ab3m/2, hgap = gb3/2, e1 = ab3m/2, fint = fb3, e2 = 0,
-          fintx = 0
+          fintx = 0, descrip = "mad8_key:sben"
 bx362: sbend, type = "0.68D102.36T", l = leffb3/2, angle = ab3m/2, hgap = gb3/2, e1 = 0, fint = 0, e2 = ab3m/2,
-          fintx = fb3
+          fintx = fb3, descrip = "mad8_key:sben"
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
 bx31: sbend, type = "0.68D102.36T", hgap = gb3/2, l = leffb3, angle = ab3p, e1 = ab3p/2, fint = fb3, e2 = ab3p/2,
-          fintx = fb3
+          fintx = fb3, descrip = "mad8_key:sben"
 bx32: sbend, type = "0.68D102.36T", hgap = gb3/2, l = leffb3, angle = ab3p, e1 = ab3p/2, fint = fb3, e2 = ab3p/2,
-          fintx = fb3
+          fintx = fb3, descrip = "mad8_key:sben"
 bx35: sbend, type = "0.68D102.36T", hgap = gb3/2, l = leffb3, angle = ab3m, e1 = ab3m/2, fint = fb3, e2 = ab3m/2,
-          fintx = fb3
+          fintx = fb3, descrip = "mad8_key:sben"
 bx36: sbend, type = "0.68D102.36T", hgap = gb3/2, l = leffb3, angle = ab3m, e1 = ab3m/2, fint = fb3, e2 = ab3m/2,
-          fintx = fb3
+          fintx = fb3, descrip = "mad8_key:sben"
 
 ! single beam dumper vertical kicker (existing, restored)
 
 abykik = 0 !full angle (BYKIK1+BYKIK2) = 0.75E-3 when BYKIK1,2 are turned on
 
 bykik11: sbend, type = "1.92K41.2", l = lkik/2, angle = abykik/4, hgap = gkik, e1 = abykik/4, e2 = 0, fint = 0.5,
-          fintx = 0, ref_tilt = pi/2
+          fintx = 0, ref_tilt = pi/2, descrip = "mad8_key:sben"
 bykik12: sbend, type = "1.92K41.2", l = lkik/2, angle = abykik/4, hgap = gkik, e1 = 0, e2 = abykik/4, fint = 0,
-          fintx = 0.5, ref_tilt = pi/2
+          fintx = 0.5, ref_tilt = pi/2, descrip = "mad8_key:sben"
 bykik21: sbend, type = "1.92K41.2", l = lkik/2, angle = abykik/4, hgap = gkik, e1 = abykik/4, e2 = 0, fint = 0.5,
-          fintx = 0, ref_tilt = pi/2
+          fintx = 0, ref_tilt = pi/2, descrip = "mad8_key:sben"
 bykik22: sbend, type = "1.92K41.2", l = lkik/2, angle = abykik/4, hgap = gkik, e1 = 0, e2 = abykik/4, fint = 0,
-          fintx = 0.5, ref_tilt = pi/2
+          fintx = 0.5, ref_tilt = pi/2, descrip = "mad8_key:sben"
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
 bykik1: sbend, type = "1.92K41.2", hgap = gkik, l = lkik, angle = abykik/2, e1 = abykik/4, fint = 0.5, e2 = abykik/4,
-          fintx = 0.5, ref_tilt = pi/2
+          fintx = 0.5, ref_tilt = pi/2, descrip = "mad8_key:sben"
 bykik2: sbend, type = "1.92K41.2", hgap = gkik, l = lkik, angle = abykik/2, e1 = abykik/4, fint = 0.5, e2 = abykik/4,
-          fintx = 0.5, ref_tilt = pi/2
+          fintx = 0.5, ref_tilt = pi/2, descrip = "mad8_key:sben"
 
  !DBYKIK1 : DRIF, L=LKIK
  !DBYKIK2 : DRIF, L=LKIK
 
 lspont = 1.5 !length of possible spontaneous undulator (<=5 m now that TDKIK is also there)
 
-dcb32: drift, l = 0.8 +0.01, type = "CSR"
-ddl10w: drift, l = 11.99440265, type = "CSR"
-ddl10wa: drift, l = 0.986719, type = "CSR" !1.050219
-ddl10wb: drift, l = ddl10w[l]-ddl10wa[l]-lplate, type = "CSR"
-dwsdl31a: drift, l = 0.096237
-dwsdl31b: drift, l = 0.153763
-ddl10x: drift, l = 0.126314
-d32cmb: drift, l = 0.6638034
-d31a: drift, l = 0.562465-0.002
-d31b: drift, l = 0.5624381-drfb[l]-0.002
-d31c: drift, l = 0.5, type = "CSR"
-ddl10em80cm: drift, l = 9.017887 +0.01, type = "CSR"
-ddl10em80cma: drift, l = 3.703275, type = "CSR" !3.906475
-ddl10em80cmb: drift, l = ddl10em80cm[l]-ddl10em80cma[l]-lspots, type = "CSR"
-dx33a: drift, l = 1.4154 !LB3-DX33B[L]-2.0
-dx33b: drift, l = 0.385637 !0.449137
-dx34b: drift, l = 0.5
-dx34a: drift, l = lb3-dx34b[l]-2.0
-dx37b: drift, l = 0.5
-dx37a: drift, l = lb3-dx37b[l]-2.0
-dx38a: drift, l = lb3/2
-dx38b: drift, l = lb3/2
-ddl1a: drift, l = 5.820626-lkik/2
-ddl1aa: drift, l = 1.220046 !1.261541
-ddl1ab: drift, l = 4.049039
-ddl1d: drift, l = 0.609226-lkik/2
-ddl1e: drift, l = 5.421642-lkik/2
-d32a: drift, l = 0.47046
-d32b: drift, l = 0.47046
-d33a: drift, l = 0.39
-d33b: drift, l = 0.32
-d34a: drift, l = 0.56
-d34b: drift, l = 0.32
-dsplr: drift, l = 0.43036
-ddl1cm40cm: drift, l = 6.03036-0.43036-0.6096/2
-d30cma: drift, l = 0.257426
-dpc1: drift, l = 0.266697
-dpc2: drift, l = 0.266697
-dpc3: drift, l = 0.266697
-dpc4: drift, l = 0.266697+0.339613-0.8128/2
-dspontua: drift, l = lspont/2
-dspontub: drift, l = lspont/2
-ddl1dm30cm: drift, l = 0.379160-0.262228 !allow possible new spontaneous undulator here
-dcq31a: drift, l = 6.037182, type = "CSR"
-dcq31aa: drift, l = 1.350967, type = "CSR" !1.514938
-dcq31ab: drift, l = dcq31a[l]-dcq31aa[l]-lplate, type = "CSR"
-dcq31b: drift, l = 5.811658, type = "CSR"
-dcq31ba: drift, l = 0.827094, type = "CSR"
-dcq31bb: drift, l = dcq31b[l]-dcq31ba[l]-lplate, type = "CSR"
-d29cma: drift, l = 0.29+0.023878+0.1000244+0.1704396
-d32cmd: drift, l = 0.32-0.056221+0.4000244+0.2404381
-dcq32a: drift, l = 5.4817585, type = "CSR"
-dcb36: drift, l = 2.7 +0.01-1.9 !make it identical to DCB32[L]
-dcq32b: drift, l = 6.0371785-dcb36[l]-ljaw, type = "CSR"
-d30cm: drift, l = 0.30
-ddl10m70cm: drift, l = 12.86072-0.4-0.3-0.09+0.00046
-ddl10ma: drift, l = 1.365410
-ddl10mb: drift, l = ddl10m70cm[l]-ddl10ma[l]
-ddl10um25cm: drift, l = 0.5-0.25-0.2399776+0.2404376
-ddl10v: drift, l = 12.86072-0.5
-ddl20e: drift, l = 0.5, type = "CSR"
-ddl30em40cm: drift, l = 1.0-0.4-0.090013, type = "CSR"
-d40cmb: drift, l = 0.40+0.090013
-d46cm: drift, l = (1.0-ljaw)/2
-ddl20: drift, l = 0.5
-ddl30em40cma: drift, l = 1.0-0.4-0.090013+0.000473, type = "CSR"
-d40cmd: drift, l = 0.40+0.090013-0.000473
-d40cme: drift, l = 0.40+0.090013+0.010447
-ddl30em40cmb: drift, l = 1.0-0.4-0.090013-0.010447, type = "CSR"
-ddl30em40cmc: drift, l = 1.0-0.4-0.090013+0.065013, type = "CSR"
-d40cmf: drift, l = 0.40+0.090013-0.065013
+dcb32: drift, l = 0.8 +0.01, type = "CSR", descrip = "mad8_key:drif"
+ddl10w: drift, l = 11.99440265, type = "CSR", descrip = "mad8_key:drif"
+ddl10wa: drift, l = 0.986719, type = "CSR", descrip = "mad8_key:drif" !1.050219
+ddl10wb: drift, l = ddl10w[l]-ddl10wa[l]-lplate, type = "CSR", descrip = "mad8_key:drif"
+dwsdl31a: drift, l = 0.096237, descrip = "mad8_key:drif"
+dwsdl31b: drift, l = 0.153763, descrip = "mad8_key:drif"
+ddl10x: drift, l = 0.126314, descrip = "mad8_key:drif"
+d32cmb: drift, l = 0.6638034, descrip = "mad8_key:drif"
+d31a: drift, l = 0.562465-0.002, descrip = "mad8_key:drif"
+d31b: drift, l = 0.5624381-drfb[l]-0.002, descrip = "mad8_key:drif"
+d31c: drift, l = 0.5, type = "CSR", descrip = "mad8_key:drif"
+ddl10em80cm: drift, l = 9.017887 +0.01, type = "CSR", descrip = "mad8_key:drif"
+ddl10em80cma: drift, l = 3.703275, type = "CSR", descrip = "mad8_key:drif" !3.906475
+ddl10em80cmb: drift, l = ddl10em80cm[l]-ddl10em80cma[l]-lspots, type = "CSR", descrip = "mad8_key:drif"
+dx33a: drift, l = 1.4154, descrip = "mad8_key:drif" !LB3-DX33B[L]-2.0
+dx33b: drift, l = 0.385637, descrip = "mad8_key:drif" !0.449137
+dx34b: drift, l = 0.5, descrip = "mad8_key:drif"
+dx34a: drift, l = lb3-dx34b[l]-2.0, descrip = "mad8_key:drif"
+dx37b: drift, l = 0.5, descrip = "mad8_key:drif"
+dx37a: drift, l = lb3-dx37b[l]-2.0, descrip = "mad8_key:drif"
+dx38a: drift, l = lb3/2, descrip = "mad8_key:drif"
+dx38b: drift, l = lb3/2, descrip = "mad8_key:drif"
+ddl1a: drift, l = 5.820626-lkik/2, descrip = "mad8_key:drif"
+ddl1aa: drift, l = 1.220046, descrip = "mad8_key:drif" !1.261541
+ddl1ab: drift, l = 4.049039, descrip = "mad8_key:drif"
+ddl1d: drift, l = 0.609226-lkik/2, descrip = "mad8_key:drif"
+ddl1e: drift, l = 5.421642-lkik/2, descrip = "mad8_key:drif"
+d32a: drift, l = 0.47046, descrip = "mad8_key:drif"
+d32b: drift, l = 0.47046, descrip = "mad8_key:drif"
+d33a: drift, l = 0.39, descrip = "mad8_key:drif"
+d33b: drift, l = 0.32, descrip = "mad8_key:drif"
+d34a: drift, l = 0.56, descrip = "mad8_key:drif"
+d34b: drift, l = 0.32, descrip = "mad8_key:drif"
+dsplr: drift, l = 0.43036, descrip = "mad8_key:drif"
+ddl1cm40cm: drift, l = 6.03036-0.43036-0.6096/2, descrip = "mad8_key:drif"
+d30cma: drift, l = 0.257426, descrip = "mad8_key:drif"
+dpc1: drift, l = 0.266697, descrip = "mad8_key:drif"
+dpc2: drift, l = 0.266697, descrip = "mad8_key:drif"
+dpc3: drift, l = 0.266697, descrip = "mad8_key:drif"
+dpc4: drift, l = 0.266697+0.339613-0.8128/2, descrip = "mad8_key:drif"
+dspontua: drift, l = lspont/2, descrip = "mad8_key:drif"
+dspontub: drift, l = lspont/2, descrip = "mad8_key:drif"
+ddl1dm30cm: drift, l = 0.379160-0.262228, descrip = "mad8_key:drif" !allow possible new spontaneous undulator here
+dcq31a: drift, l = 6.037182, type = "CSR", descrip = "mad8_key:drif"
+dcq31aa: drift, l = 1.350967, type = "CSR", descrip = "mad8_key:drif" !1.514938
+dcq31ab: drift, l = dcq31a[l]-dcq31aa[l]-lplate, type = "CSR", descrip = "mad8_key:drif"
+dcq31b: drift, l = 5.811658, type = "CSR", descrip = "mad8_key:drif"
+dcq31ba: drift, l = 0.827094, type = "CSR", descrip = "mad8_key:drif"
+dcq31bb: drift, l = dcq31b[l]-dcq31ba[l]-lplate, type = "CSR", descrip = "mad8_key:drif"
+d29cma: drift, l = 0.29+0.023878+0.1000244+0.1704396, descrip = "mad8_key:drif"
+d32cmd: drift, l = 0.32-0.056221+0.4000244+0.2404381, descrip = "mad8_key:drif"
+dcq32a: drift, l = 5.4817585, type = "CSR", descrip = "mad8_key:drif"
+dcb36: drift, l = 2.7 +0.01-1.9, descrip = "mad8_key:drif" !make it identical to DCB32[L]
+dcq32b: drift, l = 6.0371785-dcb36[l]-ljaw, type = "CSR", descrip = "mad8_key:drif"
+d30cm: drift, l = 0.30, descrip = "mad8_key:drif"
+ddl10m70cm: drift, l = 12.86072-0.4-0.3-0.09+0.00046, descrip = "mad8_key:drif"
+ddl10ma: drift, l = 1.365410, descrip = "mad8_key:drif"
+ddl10mb: drift, l = ddl10m70cm[l]-ddl10ma[l], descrip = "mad8_key:drif"
+ddl10um25cm: drift, l = 0.5-0.25-0.2399776+0.2404376, descrip = "mad8_key:drif"
+ddl10v: drift, l = 12.86072-0.5, descrip = "mad8_key:drif"
+ddl20e: drift, l = 0.5, type = "CSR", descrip = "mad8_key:drif"
+ddl30em40cm: drift, l = 1.0-0.4-0.090013, type = "CSR", descrip = "mad8_key:drif"
+d40cmb: drift, l = 0.40+0.090013, descrip = "mad8_key:drif"
+d46cm: drift, l = (1.0-ljaw)/2, descrip = "mad8_key:drif"
+ddl20: drift, l = 0.5, descrip = "mad8_key:drif"
+ddl30em40cma: drift, l = 1.0-0.4-0.090013+0.000473, type = "CSR", descrip = "mad8_key:drif"
+d40cmd: drift, l = 0.40+0.090013-0.000473, descrip = "mad8_key:drif"
+d40cme: drift, l = 0.40+0.090013+0.010447, descrip = "mad8_key:drif"
+ddl30em40cmb: drift, l = 1.0-0.4-0.090013-0.010447, type = "CSR", descrip = "mad8_key:drif"
+ddl30em40cmc: drift, l = 1.0-0.4-0.090013+0.065013, type = "CSR", descrip = "mad8_key:drif"
+d40cmf: drift, l = 0.40+0.090013-0.065013, descrip = "mad8_key:drif"
 
 ! RFBHX12 is moved upstream of BEGHXR
 
-rfbhx12: monitor, l = lrfbub, type = "CavityX-1"
+rfbhx12: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
 
-dmuon1: drift, l = 0.186743984144 !0.154859 +0.05
-dmuon2: drift, l = 0.018115015856 !0.0
-dmuon4: drift, l = 0.093980765446-lrfbub/2 !0.059608016 +0.009373
-dmuon3: drift, l = 0.310592 -0.05 -dmuon4[l] -lrfbub
+dmuon1: drift, l = 0.186743984144, descrip = "mad8_key:drif" !0.154859 +0.05
+dmuon2: drift, l = 0.018115015856, descrip = "mad8_key:drif" !0.0
+dmuon4: drift, l = 0.093980765446-lrfbub/2, descrip = "mad8_key:drif" !0.059608016 +0.009373
+dmuon3: drift, l = 0.310592 -0.05 -dmuon4[l] -lrfbub, descrip = "mad8_key:drif"
 
 ! dechirper installation (August, 2015)
 
 lchirp = 2.0
 
-d37a: drift, l = 0.27032  !0.123
-d37b: drift, l = 0.65268  !0.8
-d37ba: drift, l = 0.12489 !0.304687
-d37bb: drift, l = d37b[l]-d37ba[l]-lspots
-d37c: drift, l = 1.261910 !2.804723
-d37d: drift, l = 7.6979813 !6.218668237037
-wsdl4: marker, type = "slow" !Patrick K. says this device is used only with the dechirper
-d37e: drift, l = 1.097522857741
-dchirpv: instrument, l = lchirp/2 !split in half
-mdchirpv: marker             !center of dechirper
+d37a: drift, l = 0.27032, descrip = "mad8_key:drif"  !0.123
+d37b: drift, l = 0.65268, descrip = "mad8_key:drif"  !0.8
+d37ba: drift, l = 0.12489, descrip = "mad8_key:drif" !0.304687
+d37bb: drift, l = d37b[l]-d37ba[l]-lspots, descrip = "mad8_key:drif"
+d37c: drift, l = 1.261910, descrip = "mad8_key:drif" !2.804723
+d37d: drift, l = 7.6979813, descrip = "mad8_key:drif" !6.218668237037
+wsdl4: marker, type = "slow", descrip = "mad8_key:mark" !Patrick K. says this device is used only with the dechirper
+d37e: drift, l = 1.097522857741, descrip = "mad8_key:drif"
+dchirpv: instrument, l = lchirp/2, descrip = "mad8_key:inst" !split in half
+mdchirpv: marker, descrip = "mad8_key:mark"             !center of dechirper
  !D37f     : DRIF, L=DDL10mb[L]+D34A[L]-7.657981237037-D37e[L]-LCHIRP !D37d changed
-d37f: drift, l = 12.63118-d37c[l]-lplate-d37d[l]-d37e[l]-lchirp
-d38a: drift, l = 0.509870493892
-dchirph: instrument, l = lchirp/2 !split in half
-mdchirph: marker             !center of dechirper
-d38b: drift, l = 0.609117535347
-d38c: drift, l = 0.540705892339
-d38d: drift, l = (d34b[l]+ddl10um25cm[l]+ddl10v[l]+dx38a[l]+dx38b[l])- (d38a[l]+lchirp+d38b[l]+d38c[l])
-d38da: drift, l = 7.151036
-d38db: drift, l = d38d[l]-d38da[l]-lplate
+d37f: drift, l = 12.63118-d37c[l]-lplate-d37d[l]-d37e[l]-lchirp, descrip = "mad8_key:drif"
+d38a: drift, l = 0.509870493892, descrip = "mad8_key:drif"
+dchirph: instrument, l = lchirp/2, descrip = "mad8_key:inst" !split in half
+mdchirph: marker, descrip = "mad8_key:mark"             !center of dechirper
+d38b: drift, l = 0.609117535347, descrip = "mad8_key:drif"
+d38c: drift, l = 0.540705892339, descrip = "mad8_key:drif"
+d38d: drift, l = (d34b[l]+ddl10um25cm[l]+ddl10v[l]+dx38a[l]+dx38b[l])- (d38a[l]+lchirp+d38b[l]+d38c[l]),
+          descrip = "mad8_key:drif"
+d38da: drift, l = 7.151036, descrip = "mad8_key:drif"
+d38db: drift, l = d38d[l]-d38da[l]-lplate, descrip = "mad8_key:drif"
 
-rfbdl1: monitor, type = "@2,CavityL-1"
-bpmdl2: monitor, type = "Stripline-10"
-bpmdl3: monitor, type = "Stripline-10"
-bpmdl4: monitor, type = "Stripline-10"
-bpmt12: monitor, type = "Stripline-7"
-bpmt22: monitor, type = "Stripline-7"
-bpmt32: monitor, type = "Stripline-7"
-bpmt42: monitor, type = "Stripline-7"
+rfbdl1: monitor, type = "@2,CavityL-1", descrip = "mad8_key:moni"
+bpmdl2: monitor, type = "Stripline-10", descrip = "mad8_key:moni"
+bpmdl3: monitor, type = "Stripline-10", descrip = "mad8_key:moni"
+bpmdl4: monitor, type = "Stripline-10", descrip = "mad8_key:moni"
+bpmt12: monitor, type = "Stripline-7", descrip = "mad8_key:moni"
+bpmt22: monitor, type = "Stripline-7", descrip = "mad8_key:moni"
+bpmt32: monitor, type = "Stripline-7", descrip = "mad8_key:moni"
+bpmt42: monitor, type = "Stripline-7", descrip = "mad8_key:moni"
 
-bpmdl1: monitor, type = "Stripline-10" !existing LCLS device
+bpmdl1: monitor, type = "Stripline-10", descrip = "mad8_key:moni" !existing LCLS device
 
-xcdl1: hkicker, type = "class-4"
-xcdl2: hkicker, type = "class-4"
-xcdl3: hkicker, type = "class-4"
-xcqt12: hkicker, type = "class-5"
-xcqt22: hkicker, type = "class-5"
-xcqt42: hkicker, type = "class-5"
+xcdl1: hkicker, type = "class-4", descrip = "mad8_key:hkic"
+xcdl2: hkicker, type = "class-4", descrip = "mad8_key:hkic"
+xcdl3: hkicker, type = "class-4", descrip = "mad8_key:hkic"
+xcqt12: hkicker, type = "class-5", descrip = "mad8_key:hkic"
+xcqt22: hkicker, type = "class-5", descrip = "mad8_key:hkic"
+xcqt42: hkicker, type = "class-5", descrip = "mad8_key:hkic"
 
-ycdl1: vkicker, type = "class-4"
-ycdl2: vkicker, type = "class-4"
-ycdl3: vkicker, type = "class-4"
-ycdl4: vkicker, type = "class-4"
-ycqt12: vkicker, type = "class-5"
-ycqt21: vkicker, type = "class-5"
+ycdl1: vkicker, type = "class-4", descrip = "mad8_key:vkic"
+ycdl2: vkicker, type = "class-4", descrip = "mad8_key:vkic"
+ycdl3: vkicker, type = "class-4", descrip = "mad8_key:vkic"
+ycdl4: vkicker, type = "class-4", descrip = "mad8_key:vkic"
+ycqt12: vkicker, type = "class-5", descrip = "mad8_key:vkic"
+ycqt21: vkicker, type = "class-5", descrip = "mad8_key:vkic"
 
-xcqt32: hkicker, type = "class-5f" !fast-feedback (loop-4)
-xcdl4: hkicker, type = "class-5f" !fast-feedback (loop-4)
+xcqt32: hkicker, type = "class-5f", descrip = "mad8_key:hkic" !fast-feedback (loop-4)
+xcdl4: hkicker, type = "class-5f", descrip = "mad8_key:hkic" !fast-feedback (loop-4)
 
-ycqt32: vkicker, type = "class-5f" !fast-feedback (loop-4)
-ycqt42: vkicker, type = "class-5f" !fast-feedback (loop-4)
+ycqt32: vkicker, type = "class-5f", descrip = "mad8_key:vkic" !fast-feedback (loop-4)
+ycqt42: vkicker, type = "class-5f", descrip = "mad8_key:vkic" !fast-feedback (loop-4)
 
-spoiler: instrument           !TDKIK dump spoiler
-tdkik: instrument, l = 0.6096 !vertical off-axis in-line dump
+spoiler: instrument, descrip = "mad8_key:inst"           !TDKIK dump spoiler
+tdkik: instrument, l = 0.6096, descrip = "mad8_key:inst" !vertical off-axis in-line dump
 
   !DSPOILER : MARK
   !DTDKIK   : DRIF, L=0.6096
 
-wsdl31: marker, type = "fast"
+wsdl31: marker, type = "fast", descrip = "mad8_key:mark"
 
-otr30: monitor, type = "OTR" !LTU slice energy spread (90 deg from TCAV3)
+otr30: monitor, type = "OTR", descrip = "mad8_key:moni" !LTU slice energy spread (90 deg from TCAV3)
  !MOTR30 : MARK             !OTR30 abandoned in place
 
-cedl1: rcollimator, type = "HCOLL", l = 0.08, x_limit = 2.3e-3, y_limit = 20.e-3 !existing LCLS
-cedl3: rcollimator, type = "HCOLL", l = 0.08, x_limit = 2.3e-3, y_limit = 20.e-3 !existing LCLS
+cedl1: rcollimator, type = "HCOLL", l = 0.08, x_limit = 2.3e-3, y_limit = 20.e-3, descrip = "mad8_key:rcol" !existing LCLS
+cedl3: rcollimator, type = "HCOLL", l = 0.08, x_limit = 2.3e-3, y_limit = 20.e-3, descrip = "mad8_key:rcol" !existing LCLS
 
-cybx32: rcollimator, type = "VCOLL", l = ljaw, y_limit = 1.5e-3, x_limit = 20.e-3 !reconfigured LCLS CY32
-cxqt22: rcollimator, type = "HCOLL", l = ljaw, x_limit = 1.6e-3, y_limit = 20.e-3 !reconfigured LCLS CX35
-cybx36: rcollimator, type = "VCOLL", l = ljaw, y_limit = 1.5e-3, x_limit = 20.e-3 !reconfigured LCLS CY36
+cybx32: rcollimator, type = "VCOLL", l = ljaw, y_limit = 1.5e-3, x_limit = 20.e-3, descrip = "mad8_key:rcol" !reconfigured LCLS CY32
+cxqt22: rcollimator, type = "HCOLL", l = ljaw, x_limit = 1.6e-3, y_limit = 20.e-3, descrip = "mad8_key:rcol" !reconfigured LCLS CX35
+cybx36: rcollimator, type = "VCOLL", l = ljaw, y_limit = 1.5e-3, x_limit = 20.e-3, descrip = "mad8_key:rcol" !reconfigured LCLS CY36
 
 ! muon collimators after SBD TDKIK in-line dump
-pctdkik1: ecollimator, type = "BCS PC", l = lpctdkik, x_limit = 11.1125e-3, y_limit = 11.1125e-3
-pctdkik2: ecollimator, type = "BCS PC", l = lpctdkik, x_limit = 11.1125e-3, y_limit = 11.1125e-3
-pctdkik3: ecollimator, type = "BCS PC", l = lpctdkik, x_limit = 11.1125e-3, y_limit = 11.1125e-3
-pctdkik4: ecollimator, type = "BCS PC", l = lpctdkik, x_limit = 11.1125e-3, y_limit = 11.1125e-3
+pctdkik1: ecollimator, type = "BCS PC", l = lpctdkik, x_limit = 11.1125e-3, y_limit = 11.1125e-3,
+          descrip = "mad8_key:ecol"
+pctdkik2: ecollimator, type = "BCS PC", l = lpctdkik, x_limit = 11.1125e-3, y_limit = 11.1125e-3,
+          descrip = "mad8_key:ecol"
+pctdkik3: ecollimator, type = "BCS PC", l = lpctdkik, x_limit = 11.1125e-3, y_limit = 11.1125e-3,
+          descrip = "mad8_key:ecol"
+pctdkik4: ecollimator, type = "BCS PC", l = lpctdkik, x_limit = 11.1125e-3, y_limit = 11.1125e-3,
+          descrip = "mad8_key:ecol"
 
   !DPCTDKIK : DRIF, L=LPCTDKIK
 
-imbcs2: marker, type = "120Hz toroid" !comparator with IMBCS1 (existing LCLS device)
+imbcs2: marker, type = "120Hz toroid", descrip = "mad8_key:mark" !comparator with IMBCS1 (existing LCLS device)
 
-pc02: instrument, type = "BCS plate", l = lplate
-btm02: instrument, type = "PPS BTM"
-pc22: instrument, type = "BCS plate", l = lspots
-pc03: instrument, type = "BCS plate", l = lplate
-btm03: instrument, type = "PPS BTM"
-pc04: instrument, type = "BCS plate", l = lplate
-btm04: instrument, type = "PPS BTM"
-pc42: instrument, type = "BCS plate", l = lplate
-btm42: instrument, type = "PPS BTM"
-pc43: instrument, type = "BCS plate", l = lspots
-btm43: instrument, type = "PPS BTM"
-pc05: instrument, type = "BCS plate", l = lplate
-btm05: instrument, type = "PPS BTM"
-pc06: instrument, type = "BCS plate", l = lplate
-btm06: instrument, type = "PPS BTM"
+pc02: instrument, type = "BCS plate", l = lplate, descrip = "mad8_key:inst"
+btm02: instrument, type = "PPS BTM", descrip = "mad8_key:inst"
+pc22: instrument, type = "BCS plate", l = lspots, descrip = "mad8_key:inst"
+pc03: instrument, type = "BCS plate", l = lplate, descrip = "mad8_key:inst"
+btm03: instrument, type = "PPS BTM", descrip = "mad8_key:inst"
+pc04: instrument, type = "BCS plate", l = lplate, descrip = "mad8_key:inst"
+btm04: instrument, type = "PPS BTM", descrip = "mad8_key:inst"
+pc42: instrument, type = "BCS plate", l = lplate, descrip = "mad8_key:inst"
+btm42: instrument, type = "PPS BTM", descrip = "mad8_key:inst"
+pc43: instrument, type = "BCS plate", l = lspots, descrip = "mad8_key:inst"
+btm43: instrument, type = "PPS BTM", descrip = "mad8_key:inst"
+pc05: instrument, type = "BCS plate", l = lplate, descrip = "mad8_key:inst"
+btm05: instrument, type = "PPS BTM", descrip = "mad8_key:inst"
+pc06: instrument, type = "BCS plate", l = lplate, descrip = "mad8_key:inst"
+btm06: instrument, type = "PPS BTM", descrip = "mad8_key:inst"
 
-dl23beg: marker
-cntwigh: marker, type = "CENTER" !ELEGANT will correct the orbit here for CSR-steering
-cntlt2h: marker, type = "CENTER" !ELEGANT will correct the orbit here for CSR-steering
-cntlt3h: marker, type = "CENTER" !ELEGANT will correct the orbit here for CSR-steering
-ss1: marker
-ss3: marker
+dl23beg: marker, descrip = "mad8_key:mark"
+cntwigh: marker, type = "CENTER", descrip = "mad8_key:mark" !ELEGANT will correct the orbit here for CSR-steering
+cntlt2h: marker, type = "CENTER", descrip = "mad8_key:mark" !ELEGANT will correct the orbit here for CSR-steering
+cntlt3h: marker, type = "CENTER", descrip = "mad8_key:mark" !ELEGANT will correct the orbit here for CSR-steering
+ss1: marker, descrip = "mad8_key:mark"
+ss3: marker, descrip = "mad8_key:mark"
 
-dbmark34: marker !entrance of BX31
+dbmark34: marker, descrip = "mad8_key:mark" !entrance of BX31
 
 ! wiggler for sync. light energy diagnostic (described in SLAC-PUB-3945)
 ! based on FACET optics model (M. Woodley)
@@ -3223,32 +3302,32 @@ awg2h = awgh-awg1h        !"long half" half-pole bend angle
 lwg2h = lwgh-lwg1h        !"long half" half-pole path length
 
 wig1h1: sbend, type = "@3,SLC wiggler", l = lwg1h, hgap = gwig/2, angle = awg1h, e1 = 0, e2 = 0, fint = 0.5, fintx = 0,
-          ref_tilt = pi/2
+          ref_tilt = pi/2, descrip = "mad8_key:sben"
 wig1h2: sbend, type = "@3,SLC wiggler", l = lwg2h, hgap = gwig/2, angle = awg2h, e1 = 0, e2 = awgh, fint = 0,
-          fintx = 0.5, ref_tilt = pi/2
+          fintx = 0.5, ref_tilt = pi/2, descrip = "mad8_key:sben"
 wig2h1: sbend, type = "@3,SLC wiggler", l = lwgh, hgap = gwig/2, angle = -awgh, e1 = -awgh, e2 = 0, fint = 0.5,
-          fintx = 0, ref_tilt = pi/2
+          fintx = 0, ref_tilt = pi/2, descrip = "mad8_key:sben"
 wig2h2: sbend, type = "@3,SLC wiggler", l = lwgh, hgap = gwig/2, angle = -awgh, e1 = 0, e2 = -awgh, fint = 0,
-          fintx = 0.5, ref_tilt = pi/2
+          fintx = 0.5, ref_tilt = pi/2, descrip = "mad8_key:sben"
 wig3h1: sbend, type = "@3,SLC wiggler", l = lwg2h, hgap = gwig/2, angle = awg2h, e1 = awgh, e2 = 0, fint = 0.5,
-          fintx = 0, ref_tilt = pi/2
+          fintx = 0, ref_tilt = pi/2, descrip = "mad8_key:sben"
 wig3h2: sbend, type = "@3,SLC wiggler", l = lwg1h, hgap = gwig/2, angle = awg1h, e1 = 0, e2 = 0, fint = 0, fintx = 0.5,
-          ref_tilt = pi/2
+          ref_tilt = pi/2, descrip = "mad8_key:sben"
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
 wig1h: sbend, type = "@3,SLC wiggler", hgap = gwig/2, l = lwgh, angle = +awgh, e1 = 0, fint = 0.5, e2 = +awgh,
-          fintx = 0.5, ref_tilt = pi/2
+          fintx = 0.5, ref_tilt = pi/2, descrip = "mad8_key:sben"
 wig2h: sbend, type = "@3,SLC wiggler", hgap = gwig/2, l = 2*lwgh, angle = -2*awgh, e1 = -awgh, fint = 0.5, e2 = -awgh,
-          fintx = 0.5, ref_tilt = pi/2
+          fintx = 0.5, ref_tilt = pi/2, descrip = "mad8_key:sben"
 wig3h: sbend, type = "@3,SLC wiggler", hgap = gwig/2, l = lwgh, angle = +awgh, e1 = +awgh, fint = 0.5, e2 = 0,
-          fintx = 0.5, ref_tilt = pi/2
+          fintx = 0.5, ref_tilt = pi/2, descrip = "mad8_key:sben"
 
 ldwgh = zdwg/cos(awgh)
 
-dwgh: drift, l = ldwgh
+dwgh: drift, l = ldwgh, descrip = "mad8_key:drif"
 
-ycwigh: vkicker, type = "@3,wiggler trim"
+ycwigh: vkicker, type = "@3,wiggler trim", descrip = "mad8_key:vkic"
 
 
 
@@ -3477,11 +3556,11 @@ kqem2 = 0.432215708114
 kqem3 = -0.593433950486
 kqem4 = 0.420485259237
 
-qem1: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqem1, aperture = rqa
-qem2: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqem2, aperture = rqa
-qem3: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqem3, aperture = rqa
-qem3v: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = 0, aperture = rqx
-qem4: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqem4, aperture = rqa
+qem1: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqem1, aperture = rqa, descrip = "mad8_key:quad"
+qem2: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqem2, aperture = rqa, descrip = "mad8_key:quad"
+qem3: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqem3, aperture = rqa, descrip = "mad8_key:quad"
+qem3v: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = 0, aperture = rqx, descrip = "mad8_key:quad"
+qem4: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqem4, aperture = rqa, descrip = "mad8_key:quad"
 
 kqed2 = 0.402753198232
 
@@ -3492,83 +3571,83 @@ kqe34 = -kqed2
 kqe35 = +kqed2
 kqe36 = -kqed2
 
-qe31: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = kqe31, aperture = rqx
-qe32: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = kqe32, aperture = rqx
-qe33: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = kqe33, aperture = rqx
-qe34: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = kqe34, aperture = rqx
-qe35: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = kqe35, aperture = rqx
-qe36: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = kqe36, aperture = rqx
+qe31: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = kqe31, aperture = rqx, descrip = "mad8_key:quad"
+qe32: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = kqe32, aperture = rqx, descrip = "mad8_key:quad"
+qe33: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = kqe33, aperture = rqx, descrip = "mad8_key:quad"
+qe34: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = kqe34, aperture = rqx, descrip = "mad8_key:quad"
+qe35: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = kqe35, aperture = rqx, descrip = "mad8_key:quad"
+qe36: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = kqe36, aperture = rqx, descrip = "mad8_key:quad"
 
-dmm1m90cm: drift, l = 1.20046
-dmm3ma: drift, l = 4.362410 !4.425910
-dmm3mb: drift, l = dmm3m80cm[l]-dmm3ma[l]-lplate
-de3ma: drift, l = 5.430110 !5.493610
-de3mb: drift, l = de3m80cma[l]-de3ma[l]-lplate
-dqeca: drift, l = 7.950716+0.000011
-dqecb: drift, l = dqec[l]-dqeca[l]
-d40cmh: drift, l = 0.0317
-d40cmg: drift, l = d40cm[l]-d40cmh[l]
-dem1c: drift, l = dem1b[l]
+dmm1m90cm: drift, l = 1.20046, descrip = "mad8_key:drif"
+dmm3ma: drift, l = 4.362410, descrip = "mad8_key:drif" !4.425910
+dmm3mb: drift, l = dmm3m80cm[l]-dmm3ma[l]-lplate, descrip = "mad8_key:drif"
+de3ma: drift, l = 5.430110, descrip = "mad8_key:drif" !5.493610
+de3mb: drift, l = de3m80cma[l]-de3ma[l]-lplate, descrip = "mad8_key:drif"
+dqeca: drift, l = 7.950716+0.000011, descrip = "mad8_key:drif"
+dqecb: drift, l = dqec[l]-dqeca[l], descrip = "mad8_key:drif"
+d40cmh: drift, l = 0.0317, descrip = "mad8_key:drif"
+d40cmg: drift, l = d40cm[l]-d40cmh[l], descrip = "mad8_key:drif"
+dem1c: drift, l = dem1b[l], descrip = "mad8_key:drif"
 
-bpmem1: monitor, type = "Stripline-10"
-bpmem2: monitor, type = "Stripline-10"
-bpmem3: monitor, type = "Stripline-10"
-bpmem4: monitor, type = "Stripline-10" !existing LCLS device
-rfbem4: monitor, type = "@2,CavityS-1"
-bpme31: monitor, type = "Stripline-1"
-bpme32: monitor, type = "Stripline-1" !existing LCLS device
-rfbe32: monitor, type = "@2,CavityS-1"
-bpme33: monitor, type = "Stripline-1"
-bpme34: monitor, type = "Stripline-1" !existing LCLS device
-rfbe34: monitor, type = "@2,CavityS-1"
-bpme35: monitor, type = "Stripline-1"
-bpme36: monitor, type = "Stripline-1" !existing LCLS device
-rfbe36: monitor, type = "@2,CavityS-1"
+bpmem1: monitor, type = "Stripline-10", descrip = "mad8_key:moni"
+bpmem2: monitor, type = "Stripline-10", descrip = "mad8_key:moni"
+bpmem3: monitor, type = "Stripline-10", descrip = "mad8_key:moni"
+bpmem4: monitor, type = "Stripline-10", descrip = "mad8_key:moni" !existing LCLS device
+rfbem4: monitor, type = "@2,CavityS-1", descrip = "mad8_key:moni"
+bpme31: monitor, type = "Stripline-1", descrip = "mad8_key:moni"
+bpme32: monitor, type = "Stripline-1", descrip = "mad8_key:moni" !existing LCLS device
+rfbe32: monitor, type = "@2,CavityS-1", descrip = "mad8_key:moni"
+bpme33: monitor, type = "Stripline-1", descrip = "mad8_key:moni"
+bpme34: monitor, type = "Stripline-1", descrip = "mad8_key:moni" !existing LCLS device
+rfbe34: monitor, type = "@2,CavityS-1", descrip = "mad8_key:moni"
+bpme35: monitor, type = "Stripline-1", descrip = "mad8_key:moni"
+bpme36: monitor, type = "Stripline-1", descrip = "mad8_key:moni" !existing LCLS device
+rfbe36: monitor, type = "@2,CavityS-1", descrip = "mad8_key:moni"
 
-xcem2: hkicker, type = "class-4"
-xcem4: hkicker, type = "class-4"
-xce31: hkicker, type = "class-4"
-xce33: hkicker, type = "class-4"
-xce35: hkicker, type = "class-4"
+xcem2: hkicker, type = "class-4", descrip = "mad8_key:hkic"
+xcem4: hkicker, type = "class-4", descrip = "mad8_key:hkic"
+xce31: hkicker, type = "class-4", descrip = "mad8_key:hkic"
+xce33: hkicker, type = "class-4", descrip = "mad8_key:hkic"
+xce35: hkicker, type = "class-4", descrip = "mad8_key:hkic"
 
-ycem1: vkicker, type = "class-4"
-ycem3: vkicker, type = "class-4"
-yce32: vkicker, type = "class-4"
-yce34: vkicker, type = "class-4"
-yce36: vkicker, type = "class-4"
+ycem1: vkicker, type = "class-4", descrip = "mad8_key:vkic"
+ycem3: vkicker, type = "class-4", descrip = "mad8_key:vkic"
+yce32: vkicker, type = "class-4", descrip = "mad8_key:vkic"
+yce34: vkicker, type = "class-4", descrip = "mad8_key:vkic"
+yce36: vkicker, type = "class-4", descrip = "mad8_key:vkic"
 
-ws31: marker, type = "fast" !LTU emittance
-ws32: marker, type = "fast" !LTU emittance
-ws33: marker, type = "fast" !LTU emittance
-ws34: marker, type = "fast" !LTU emittance
+ws31: marker, type = "fast", descrip = "mad8_key:mark" !LTU emittance
+ws32: marker, type = "fast", descrip = "mad8_key:mark" !LTU emittance
+ws33: marker, type = "fast", descrip = "mad8_key:mark" !LTU emittance
+ws34: marker, type = "fast", descrip = "mad8_key:mark" !LTU emittance
 !  WS35 : MARKER, TYPE="fast"  !prototype ... not installed
 !  WS36 : MARKER, TYPE="piezo" !prototype ... not installed
-dws35: marker
-dws36: marker
+dws35: marker, descrip = "mad8_key:mark"
+dws36: marker, descrip = "mad8_key:mark"
 
-im36: marker, type = "120Hz toroid" !comparator with IM31 (existing LCLS device)
+im36: marker, type = "120Hz toroid", descrip = "mad8_key:mark" !comparator with IM31 (existing LCLS device)
 
-yagpsi: monitor, type = "YAG PAL" !existing LCLS device
-otr33: monitor, type = "OTR" !LTU slice emittance (existing LCLS device)
+yagpsi: monitor, type = "YAG PAL", descrip = "mad8_key:moni" !existing LCLS device
+otr33: monitor, type = "OTR", descrip = "mad8_key:moni" !LTU slice emittance (existing LCLS device)
 
-pc07: instrument, type = "BCS plate", l = lplate
-btm07: instrument, type = "PPS BTM"
-pc08: instrument, type = "BCS plate", l = lplate
-btm08: instrument, type = "PPS BTM"
-pc09: instrument, type = "BCS plate", l = lplate
-btm09: instrument, type = "PPS BTM"
+pc07: instrument, type = "BCS plate", l = lplate, descrip = "mad8_key:inst"
+btm07: instrument, type = "PPS BTM", descrip = "mad8_key:inst"
+pc08: instrument, type = "BCS plate", l = lplate, descrip = "mad8_key:inst"
+btm08: instrument, type = "PPS BTM", descrip = "mad8_key:inst"
+pc09: instrument, type = "BCS plate", l = lplate, descrip = "mad8_key:inst"
+btm09: instrument, type = "PPS BTM", descrip = "mad8_key:inst"
 
-dcx31: drift, l = 0.08
-dcx35: drift, l = 0.08
-dcy32: drift, l = 0.08
-dcy36: drift, l = 0.08
+dcx31: drift, l = 0.08, descrip = "mad8_key:drif"
+dcx35: drift, l = 0.08, descrip = "mad8_key:drif"
+dcy32: drift, l = 0.08, descrip = "mad8_key:drif"
+dcy36: drift, l = 0.08, descrip = "mad8_key:drif"
 
  !CX31 : RCOL, L=0.08 !LCLS collimator removed
  !CX35 : RCOL, L=0.08 !reconfigured as CXQT22
  !CY32 : RCOL, L=0.08 !reconfigured as CYBX32
  !CY36 : RCOL, L=0.08 !reconfigured as CYBX36
 
-dbmark36: marker !center of WS31
+dbmark36: marker, descrip = "mad8_key:mark" !center of WS31
 
 
 
@@ -3685,54 +3764,54 @@ kqum2 = -0.256692261825 !UNDH_KQ4_USDS.xsif (Eu=4.0, KHXU=2.0)
 kqum3 = 0.472597881562 !UNDH_KQ4_USDS.xsif (Eu=4.0, KHXU=2.0)
 kqum4 = -0.42682658336  !UNDH_KQ4_USDS.xsif (Eu=4.0, KHXU=2.0)
 
-qum1: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqum1, aperture = rqa
-qum2: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqum2, aperture = rqa
-qum3: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqum3, aperture = rqa
-qum4: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqum4, aperture = rqa
+qum1: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqum1, aperture = rqa, descrip = "mad8_key:quad"
+qum2: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqum2, aperture = rqa, descrip = "mad8_key:quad"
+qum3: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqum3, aperture = rqa, descrip = "mad8_key:quad"
+qum4: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqum4, aperture = rqa, descrip = "mad8_key:quad"
 
-du1m80cma: drift, l = 0.16515
-du1m80cmb: drift, l = du1m80cm[l]-du1m80cma[l]
-d32cmc: drift, l = 0.30046
-du2m120cm: drift, l = 4.730
-dw2tdund: drift, l = 0.201537 !drift from BTH/UH wall-2 to TDUNDB u/s flange
-d40cmwb: drift, l = 0.140042
-d40cmwa: drift, l = d40cmw[l]-d40cmwb[l]
+du1m80cma: drift, l = 0.16515, descrip = "mad8_key:drif"
+du1m80cmb: drift, l = du1m80cm[l]-du1m80cma[l], descrip = "mad8_key:drif"
+d32cmc: drift, l = 0.30046, descrip = "mad8_key:drif"
+du2m120cm: drift, l = 4.730, descrip = "mad8_key:drif"
+dw2tdund: drift, l = 0.201537, descrip = "mad8_key:drif" !drift from BTH/UH wall-2 to TDUNDB u/s flange
+d40cmwb: drift, l = 0.140042, descrip = "mad8_key:drif"
+d40cmwa: drift, l = d40cmw[l]-d40cmwb[l], descrip = "mad8_key:drif"
 
-bpmum1: monitor, type = "Stripline-10"
-bpmum2: monitor, type = "Stripline-10"
-bpmum3: monitor, type = "Stripline-10"
-bpmum4: monitor, type = "Stripline-10"
+bpmum1: monitor, type = "Stripline-10", descrip = "mad8_key:moni"
+bpmum2: monitor, type = "Stripline-10", descrip = "mad8_key:moni"
+bpmum3: monitor, type = "Stripline-10", descrip = "mad8_key:moni"
+bpmum4: monitor, type = "Stripline-10", descrip = "mad8_key:moni"
 
-rfb07: monitor, type = "CavityX-1" !existing LCLS device
-rfb08: monitor, type = "CavityX-1" !existing LCLS device
+rfb07: monitor, type = "CavityX-1", descrip = "mad8_key:moni" !existing LCLS device
+rfb08: monitor, type = "CavityX-1", descrip = "mad8_key:moni" !existing LCLS device
 
-imundi: marker, type = "120Hz toroid" !FEL-undulator input toroid (existing LCLS device)
+imundi: marker, type = "120Hz toroid", descrip = "mad8_key:mark" !FEL-undulator input toroid (existing LCLS device)
 
-xcum1: hkicker, type = "class-4f" !fast-feedback (loop-5)
-xcum3: hkicker, type = "class-4f" !fast-feedback (loop-5)
+xcum1: hkicker, type = "class-4f", descrip = "mad8_key:hkic" !fast-feedback (loop-5)
+xcum3: hkicker, type = "class-4f", descrip = "mad8_key:hkic" !fast-feedback (loop-5)
 
-ycum2: vkicker, type = "class-4f" !fast-feedback (loop-5)
-ycum4: vkicker, type = "class-4f" !fast-feedback (loop-5)
+ycum2: vkicker, type = "class-4f", descrip = "mad8_key:vkic" !fast-feedback (loop-5)
+ycum4: vkicker, type = "class-4f", descrip = "mad8_key:vkic" !fast-feedback (loop-5)
 
 ! Note: PCMUON is rolled 90 degree to have X-aperture smaller than Y-aperture
 !       X-aperture violates standard BSC -- approved by P. Emma
 
  !PCMUON : ECOL,L=1.1684,XSIZE=8.64E-3/2,YSIZE=4.32E-3/2 !original muon scattering collimator after pre-undulator tune-up dump (ID from Rago: 7/18/08)
-pcmuon: ecollimator, l = 1.1684, x_limit = 4.32e-3/2, y_limit = 8.64e-3/2 !90 deg rolled muon scattering collimator
+pcmuon: ecollimator, l = 1.1684, x_limit = 4.32e-3/2, y_limit = 8.64e-3/2, descrip = "mad8_key:ecol" !90 deg rolled muon scattering collimator
 
-tdund: instrument !LTU insertable block at und. extension entrance (w/ screen)
+tdund: instrument, descrip = "mad8_key:inst" !LTU insertable block at und. extension entrance (w/ screen)
 
-mm1: marker
-mm2: marker
-mm3: marker
-eoblm: marker !future electro-optic bunch length monitor?
-bltof: monitor !LTUH (gas-jet time-of-flight bunch length monitor)
-muhwall1: marker !upstream end of BTH/UH wall-1
-muhwall2: marker !upstream end of BTH/UH wall-2
-vv999: marker, type = "installed" !new vacuum valve just upbeam of undulator
-pfilt1: marker
-dbmark37: marker !end of undulator match
-rwwake4h: marker, type = "WAKE" !LTUH beampipe wake applied here
+mm1: marker, descrip = "mad8_key:mark"
+mm2: marker, descrip = "mad8_key:mark"
+mm3: marker, descrip = "mad8_key:mark"
+eoblm: marker, descrip = "mad8_key:mark" !future electro-optic bunch length monitor?
+bltof: monitor, descrip = "mad8_key:moni" !LTUH (gas-jet time-of-flight bunch length monitor)
+muhwall1: marker, descrip = "mad8_key:mark" !upstream end of BTH/UH wall-1
+muhwall2: marker, descrip = "mad8_key:mark" !upstream end of BTH/UH wall-2
+vv999: marker, type = "installed", descrip = "mad8_key:mark" !new vacuum valve just upbeam of undulator
+pfilt1: marker, descrip = "mad8_key:mark"
+dbmark37: marker, descrip = "mad8_key:mark" !end of undulator match
+rwwake4h: marker, type = "WAKE", descrip = "mad8_key:mark" !LTUH beampipe wake applied here
 
 
 
@@ -3784,86 +3863,86 @@ bpmum4[ref] = qum4
 
 kqdmp = -0.155212710055
 
-qdmp1: quadrupole, type = "3.94Q17", l = lqp/2, k1 = kqdmp, aperture = rqp
-qdmp2: quadrupole, type = "3.94Q17", l = lqp/2, k1 = kqdmp, aperture = rqp
+qdmp1: quadrupole, type = "3.94Q17", l = lqp/2, k1 = kqdmp, aperture = rqp, descrip = "mad8_key:quad"
+qdmp2: quadrupole, type = "3.94Q17", l = lqp/2, k1 = kqdmp, aperture = rqp, descrip = "mad8_key:quad"
 
 bydsh1: sbend, type = "1.26D18.43", l = leffbyds/2, angle = abyds/2, hgap = gbyds/2, e1 = abyds/2, e2 = 0, fint = 0.5,
-          fintx = 0, ref_tilt = pi/2
+          fintx = 0, ref_tilt = pi/2, descrip = "mad8_key:sben"
 bydsh2: sbend, type = "1.26D18.43", l = leffbyds/2, angle = abyds/2, hgap = gbyds/2, e1 = 0, e2 = abyds/2, fint = 0,
-          fintx = 0.5, ref_tilt = pi/2
+          fintx = 0.5, ref_tilt = pi/2, descrip = "mad8_key:sben"
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
 bydsh: sbend, type = "1.26D18.43", hgap = gbyds/2, l = leffbyds, angle = abyds, e1 = abyds/2, fint = 0.5, e2 = abyds/2,
-          fintx = 0.5, ref_tilt = pi/2
+          fintx = 0.5, ref_tilt = pi/2, descrip = "mad8_key:sben"
 
 byd11: sbend, type = "1.69VD55.1", l = leffbdm/2, angle = abdm/2, hgap = gbdm/2, e1 = abdm/2, e2 = 0, fint = 0.57,
-          fintx = 0.00, ref_tilt = pi/2
+          fintx = 0.00, ref_tilt = pi/2, descrip = "mad8_key:sben"
 byd12: sbend, type = "1.69VD55.1", l = leffbdm/2, angle = abdm/2, hgap = gbdm/2, e1 = 0, e2 = abdm/2, fint = 0.00,
-          fintx = 0.57, ref_tilt = pi/2
+          fintx = 0.57, ref_tilt = pi/2, descrip = "mad8_key:sben"
 
 byd21: sbend, type = "1.69VD55.1", l = leffbdm/2, angle = abdm/2, hgap = gbdm/2, e1 = abdm/2, e2 = 0, fint = 0.57,
-          fintx = 0.00, ref_tilt = pi/2
+          fintx = 0.00, ref_tilt = pi/2, descrip = "mad8_key:sben"
 byd22: sbend, type = "1.69VD55.1", l = leffbdm/2, angle = abdm/2, hgap = gbdm/2, e1 = 0, e2 = abdm/2, fint = 0.00,
-          fintx = 0.57, ref_tilt = pi/2
+          fintx = 0.57, ref_tilt = pi/2, descrip = "mad8_key:sben"
 
 byd31: sbend, type = "1.69VD55.1", l = leffbdm/2, angle = abdm/2, hgap = gbdm/2, e1 = abdm/2, e2 = 0, fint = 0.57,
-          fintx = 0.00, ref_tilt = pi/2
+          fintx = 0.00, ref_tilt = pi/2, descrip = "mad8_key:sben"
 byd32: sbend, type = "1.69VD55.1", l = leffbdm/2, angle = abdm/2, hgap = gbdm/2, e1 = 0, e2 = abdm/2, fint = 0.00,
-          fintx = 0.57, ref_tilt = pi/2
+          fintx = 0.57, ref_tilt = pi/2, descrip = "mad8_key:sben"
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
 byd1: sbend, type = "1.69VD55.1", hgap = gbdm/2, l = leffbdm, angle = abdm, e1 = abdm/2, fint = 0.57, e2 = abdm/2,
-          fintx = 0.57, ref_tilt = pi/2
+          fintx = 0.57, ref_tilt = pi/2, descrip = "mad8_key:sben"
 byd2: sbend, type = "1.69VD55.1", hgap = gbdm/2, l = leffbdm, angle = abdm, e1 = abdm/2, fint = 0.57, e2 = abdm/2,
-          fintx = 0.57, ref_tilt = pi/2
+          fintx = 0.57, ref_tilt = pi/2, descrip = "mad8_key:sben"
 byd3: sbend, type = "1.69VD55.1", hgap = gbdm/2, l = leffbdm, angle = abdm, e1 = abdm/2, fint = 0.57, e2 = abdm/2,
-          fintx = 0.57, ref_tilt = pi/2
+          fintx = 0.57, ref_tilt = pi/2, descrip = "mad8_key:sben"
 
-pcpm1l: ecollimator, l = lpcpm, x_limit = 14.2875e-3, y_limit = 14.2875e-3
-pcpm2l: ecollimator, l = lpcpm, x_limit = 38.1e-3, y_limit = 38.1e-3
-pcebd: ecollimator, l = 0, x_limit = 34.0e-3, y_limit = 34.0e-3, type = "gasket coll"
+pcpm1l: ecollimator, l = lpcpm, x_limit = 14.2875e-3, y_limit = 14.2875e-3, descrip = "mad8_key:ecol"
+pcpm2l: ecollimator, l = lpcpm, x_limit = 38.1e-3, y_limit = 38.1e-3, descrip = "mad8_key:ecol"
+pcebd: ecollimator, l = 0, x_limit = 34.0e-3, y_limit = 34.0e-3, type = "gasket coll", descrip = "mad8_key:ecol"
 
-dd1a: drift, l = 0.577681302427
-dd1b: drift, l = 1.000087502327
-dd1c: drift, l = 0.3048
-dd1e: drift, l = 0.249638105611
-dd1f: drift, l = 0.409240058046
-dd1d: drift, l = ldmp1-(dd1a[l]+pcpm1l[l]+dd1b[l]+dd1c[l]+dd1e[l]+pcpm2l[l]+dd1f[l])
+dd1a: drift, l = 0.577681302427, descrip = "mad8_key:drif"
+dd1b: drift, l = 1.000087502327, descrip = "mad8_key:drif"
+dd1c: drift, l = 0.3048, descrip = "mad8_key:drif"
+dd1e: drift, l = 0.249638105611, descrip = "mad8_key:drif"
+dd1f: drift, l = 0.409240058046, descrip = "mad8_key:drif"
+dd1d: drift, l = ldmp1-(dd1a[l]+pcpm1l[l]+dd1b[l]+dd1c[l]+dd1e[l]+pcpm2l[l]+dd1f[l]), descrip = "mad8_key:drif"
 
-bpmqd: monitor, type = "Stripline-11" !RFBQD : MONI, TYPE="@2,CavityL-1"
-bpmdd: monitor, type = "Stripline-8"
-rfbdd: monitor, type = "@2,CavityL-1"
+bpmqd: monitor, type = "Stripline-11", descrip = "mad8_key:moni" !RFBQD : MONI, TYPE="@2,CavityL-1"
+bpmdd: monitor, type = "Stripline-8", descrip = "mad8_key:moni"
+rfbdd: monitor, type = "@2,CavityL-1", descrip = "mad8_key:moni"
 
-xcdd: hkicker, type = "class-5"
+xcdd: hkicker, type = "class-5", descrip = "mad8_key:hkic"
 
-ycdd: vkicker, type = "class-5"
+ycdd: vkicker, type = "class-5", descrip = "mad8_key:vkic"
 
-otrdmp: monitor, type = "OTR" !Dump screen
+otrdmp: monitor, type = "OTR", descrip = "mad8_key:moni" !Dump screen
 
-wsdump: marker, type = "@3,special"
+wsdump: marker, type = "@3,special", descrip = "mad8_key:mark"
 
  !IMDUMP  : MARKER, TYPE="BCS toroid" !BCS toroid in dumpline after Y-bends
  !IMBCS4  : MARKER, TYPE="BCS toroid" !BCS comparator toroid (ACM) in dumpline after Y-bends
 
-mimdump: marker
-mimbcs4: marker
+mimdump: marker, descrip = "mad8_key:mark"
+mimbcs4: marker, descrip = "mad8_key:mark"
 
-btm1l: instrument !Burn-Through-Monitor behind PCPM1L
-btm2l: instrument !Burn-Through-Monitor behind PCPM2L
-dumpface: instrument !entrance face of main e- dump
-btmdump: instrument !Burn-Through-Monitor of main e- dump
+btm1l: instrument, descrip = "mad8_key:inst" !Burn-Through-Monitor behind PCPM1L
+btm2l: instrument, descrip = "mad8_key:inst" !Burn-Through-Monitor behind PCPM2L
+dumpface: instrument, descrip = "mad8_key:inst" !entrance face of main e- dump
+btmdump: instrument, descrip = "mad8_key:inst" !Burn-Through-Monitor of main e- dump
 
-mqdmp: marker
-dmpend: marker
-dbmark38: marker !end of final undulator dump
+mqdmp: marker, descrip = "mad8_key:mark"
+dmpend: marker, descrip = "mad8_key:mark"
+dbmark38: marker, descrip = "mad8_key:mark" !end of final undulator dump
 
 arodmp1h = -arodmp1s
 arodmp2h = -arodmp2s
 
-rodmp1h: patch, tilt = arodmp1h
-rodmp2h: patch, tilt = arodmp2h
+rodmp1h: patch, tilt = arodmp1h, descrip = "mad8_key:srot"
+rodmp2h: patch, tilt = arodmp2h, descrip = "mad8_key:srot"
 
 
 

@@ -1,10 +1,16 @@
 
-! *** OPTICS=AD_ACCEL-12MAY2025s ***
+! *** OPTICS=AD_ACCEL-09JUN2025s ***
 
 ! LCLS2sc undulator
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 11-MAY-2025, M. Woodley
+!  * replace short-period undulator and phase shifter in SXR cell 28 with a
+!    long-period undulator and phase shifter
+!  * fix lengths of DU3S_ and DU4S_ to locate long-period phase shifters per
+!    X. Permanyer email
 ! ------------------------------------------------------------------------------
 ! 24-APR-2025, M. Woodley
 !  * replace short-period undulator and phase shifter in SXR cell 27 with a
@@ -379,7 +385,7 @@ kqsx = (ksxu*2*pi/lusxu/sqrt(2)/gamu)^2 !m^-2
 !new: !---------------------------------
 umasxh: taylor, type = "VGHPU39", l = lsxuh, tt11 = 1.0, tt12 = lsxuh, tt21 = 0, tt22 = 1.0,
           tt33 = cos(lsxuh*sqrt(kqsx)), tt34 = sin(lsxuh*sqrt(kqsx))/sqrt(kqsx), tt43 = -sin(lsxuh*sqrt(kqsx))*sqrt(kqsx),
-          tt44 = cos(lsxuh*sqrt(kqsx)), tt55 = 1.0, tt66 = 1.0
+          tt44 = cos(lsxuh*sqrt(kqsx)), tt55 = 1.0, tt66 = 1.0, descrip = "mad8_key:matr"
 
 ! ------------------------------------------------------------------------------
 ! PPM phase shifter
@@ -417,7 +423,8 @@ kqpssx = (kpssx*2*pi/lupssx/sqrt(2)/gamu)^2 !m^-2
 !new: !---------------------------------
 pssxh: taylor, type = "PS75", l = lpssxh, tt11 = 1.0, tt12 = lpssxh, tt21 = 0, tt22 = 1.0,
           tt33 = cos(lpssxh*sqrt(kqpssx)), tt34 = sin(lpssxh*sqrt(kqpssx))/sqrt(kqpssx),
-          tt43 = -sin(lpssxh*sqrt(kqpssx))*sqrt(kqpssx), tt44 = cos(lpssxh*sqrt(kqpssx)), tt55 = 1.0, tt66 = 1.0
+          tt43 = -sin(lpssxh*sqrt(kqpssx))*sqrt(kqpssx), tt44 = cos(lpssxh*sqrt(kqpssx)), tt55 = 1.0, tt66 = 1.0,
+          descrip = "mad8_key:matr"
 
 ! ------------------------------------------------------------------------------
 ! FODO cell drifts
@@ -435,25 +442,25 @@ ldu7s = 0.25-lrfbub/2 -0.01
 dldu0s = 0.0 !fine tune Z in undulator
 ldu0s = 2.1359-ldu6s-ldu7s-lqu +dldu0s
 
-dtsxu: drift, l = lsxue
-du0s: drift, l = ldu0s
-du1s: drift, l = ldu1s
-du2s: drift, l = ldu2s
-du3s: drift, l = ldu3s
-du4s: drift, l = ldu4s
-du5s: drift, l = ldu5s
-du6s: drift, l = ldu6s
-du7s: drift, l = ldu7s
-due1ab: drift, l = 0.9-lrfbub -0.057
-due1e: drift, l = 0.057
+dtsxu: drift, l = lsxue, descrip = "mad8_key:drif"
+du0s: drift, l = ldu0s, descrip = "mad8_key:drif"
+du1s: drift, l = ldu1s, descrip = "mad8_key:drif"
+du2s: drift, l = ldu2s, descrip = "mad8_key:drif"
+du3s: drift, l = ldu3s, descrip = "mad8_key:drif"
+du4s: drift, l = ldu4s, descrip = "mad8_key:drif"
+du5s: drift, l = ldu5s, descrip = "mad8_key:drif"
+du6s: drift, l = ldu6s, descrip = "mad8_key:drif"
+du7s: drift, l = ldu7s, descrip = "mad8_key:drif"
+due1ab: drift, l = 0.9-lrfbub -0.057, descrip = "mad8_key:drif"
+due1e: drift, l = 0.057, descrip = "mad8_key:drif"
 
-du0sa: drift, l = 0.814408 !0.7908811950945
-du0sb: drift, l = du0s[l]-du0sa[l]-lrfbub
+du0sa: drift, l = 0.814408, descrip = "mad8_key:drif" !0.7908811950945
+du0sb: drift, l = du0s[l]-du0sa[l]-lrfbub, descrip = "mad8_key:drif"
 
-du3sa: drift, l = 0.114
-du3sb: drift, l = du3s[l]-du3sa[l]
-du4sa: drift, l = 0.117258
-du4sb: drift, l = du4s[l]-du4sa[l]
+du3sa: drift, l = 0.114, descrip = "mad8_key:drif"
+du3sb: drift, l = du3s[l]-du3sa[l], descrip = "mad8_key:drif"
+du4sa: drift, l = 0.117258, descrip = "mad8_key:drif"
+du4sb: drift, l = du4s[l]-du4sa[l], descrip = "mad8_key:drif"
 
 ! ##############################################################################
 ! SXR: long-period undulator and phase shifter definitions (LCLS-II-HE)
@@ -486,7 +493,8 @@ kqsx_ = (ksxu_*2*pi/lusxu_/sqrt(2)/gamu)^2 !m^-2
 
 umasxh_: taylor, type = "VGHPU56", l = lsxuh_, tt11 = 1.0, tt12 = lsxuh_, tt21 = 0, tt22 = 1.0,
           tt33 = cos(lsxuh_*sqrt(kqsx_)), tt34 = sin(lsxuh_*sqrt(kqsx_))/sqrt(kqsx_),
-          tt43 = -sin(lsxuh_*sqrt(kqsx_))*sqrt(kqsx_), tt44 = cos(lsxuh_*sqrt(kqsx_)), tt55 = 1.0, tt66 = 1.0
+          tt43 = -sin(lsxuh_*sqrt(kqsx_))*sqrt(kqsx_), tt44 = cos(lsxuh_*sqrt(kqsx_)), tt55 = 1.0, tt66 = 1.0,
+          descrip = "mad8_key:matr"
 
 ! ------------------------------------------------------------------------------
 ! PPM phase shifter
@@ -510,7 +518,8 @@ kqpssx_ = (kpssx_*2*pi/lupssx_/sqrt(2)/gamu)^2 !m^-2
 
 pssxh_: taylor, type = "PS97.5", l = lpssxh_, tt11 = 1.0, tt12 = lpssxh_, tt21 = 0, tt22 = 1.0,
           tt33 = cos(lpssxh_*sqrt(kqpssx_)), tt34 = sin(lpssxh_*sqrt(kqpssx_))/sqrt(kqpssx_),
-          tt43 = -sin(lpssxh_*sqrt(kqpssx_))*sqrt(kqpssx_), tt44 = cos(lpssxh_*sqrt(kqpssx_)), tt55 = 1.0, tt66 = 1.0
+          tt43 = -sin(lpssxh_*sqrt(kqpssx_))*sqrt(kqpssx_), tt44 = cos(lpssxh_*sqrt(kqpssx_)), tt55 = 1.0, tt66 = 1.0,
+          descrip = "mad8_key:matr"
 
 ! ------------------------------------------------------------------------------
 ! FODO cell drifts
@@ -518,16 +527,16 @@ pssxh_: taylor, type = "PS97.5", l = lpssxh_, tt11 = 1.0, tt12 = lpssxh_, tt21 =
 ! - DTSXU_ = SXU undulator segment small terminations modeled as drift
 ! ------------------------------------------------------------------------------
 
-ldu3s_ = 0.25-lpssxh_-0.04-0.005
-ldu4s_ = (0.25-lpssxh_-0.5*lqu)/2+0.04+0.005-0.0062
+ldu3s_ = 0.25-lpssxh_-0.04-0.005-0.010996
+ldu4s_ = (0.25-lpssxh_-0.5*lqu)/2+0.04+0.005-0.0062+0.010996
 ldu5s_ = (0.25-lpssxh_-0.5*lqu)/2+0.0062
 
-dtsxu_: drift, l = lsxue_
-du3s_: drift, l = ldu3s_
-du4s_: drift, l = ldu4s_
-du5s_: drift, l = ldu5s_
-du4sb_: drift, l = du4s_[l]-du4sa[l]
-du3sb_: drift, l = du3s_[l]-du3sa[l]
+dtsxu_: drift, l = lsxue_, descrip = "mad8_key:drif"
+du3s_: drift, l = ldu3s_, descrip = "mad8_key:drif"
+du4s_: drift, l = ldu4s_, descrip = "mad8_key:drif"
+du5s_: drift, l = ldu5s_, descrip = "mad8_key:drif"
+du4sb_: drift, l = du4s_[l]-du4sa[l], descrip = "mad8_key:drif"
+du3sb_: drift, l = du3s_[l]-du3sa[l], descrip = "mad8_key:drif"
 
 ! ##############################################################################
 ! SXR: common definitions
@@ -538,65 +547,65 @@ du3sb_: drift, l = du3s_[l]-du3sa[l]
 ! SXR undulator X-steering coils in undulator segments
 ! ------------------------------------------------------------------------------
 
-xcsu21: hkicker, type = "type-V"
-xcsu22: hkicker, type = "type-V"
-xcsu23: hkicker, type = "type-V"
-xcsu24: hkicker, type = "type-V"
-xcsu25: hkicker, type = "type-V"
-xcsu26: hkicker, type = "type-V"
-xcsu27: hkicker, type = "type-V"
-xcsu28: hkicker, type = "type-V"
-xcsu29: hkicker, type = "type-V"
-xcsu30: hkicker, type = "type-V"
-xcsu31: hkicker, type = "type-V"
-xcsu32: hkicker, type = "type-V"
-xcsu33: hkicker, type = "type-V"
-xcsu34: hkicker, type = "type-V"
+xcsu21: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xcsu22: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xcsu23: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xcsu24: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xcsu25: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xcsu26: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xcsu27: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xcsu28: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xcsu29: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xcsu30: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xcsu31: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xcsu32: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xcsu33: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xcsu34: hkicker, type = "type-V", descrip = "mad8_key:hkic"
 ! ----35
-xcsu36: hkicker, type = "type-V"
-xcsu37: hkicker, type = "type-V"
-xcsu38: hkicker, type = "type-V"
-xcsu39: hkicker, type = "type-V"
-xcsu40: hkicker, type = "type-V"
-xcsu41: hkicker, type = "type-V"
-xcsu42: hkicker, type = "type-V"
-xcsu43: hkicker, type = "type-V"
-xcsu44: hkicker, type = "type-V"
-xcsu45: hkicker, type = "type-V"
-xcsu46: hkicker, type = "type-V"
-xcsu47: hkicker, type = "type-V"
+xcsu36: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xcsu37: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xcsu38: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xcsu39: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xcsu40: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xcsu41: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xcsu42: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xcsu43: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xcsu44: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xcsu45: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xcsu46: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xcsu47: hkicker, type = "type-V", descrip = "mad8_key:hkic"
 
 ! ------------------------------------------------------------------------------
 ! SXR undulator Y-steering coils in undulator segments
 ! ------------------------------------------------------------------------------
 
-ycsu21: vkicker, type = "type-V"
-ycsu22: vkicker, type = "type-V"
-ycsu23: vkicker, type = "type-V"
-ycsu24: vkicker, type = "type-V"
-ycsu25: vkicker, type = "type-V"
-ycsu26: vkicker, type = "type-V"
-ycsu27: vkicker, type = "type-V"
-ycsu28: vkicker, type = "type-V"
-ycsu29: vkicker, type = "type-V"
-ycsu30: vkicker, type = "type-V"
-ycsu31: vkicker, type = "type-V"
-ycsu32: vkicker, type = "type-V"
-ycsu33: vkicker, type = "type-V"
-ycsu34: vkicker, type = "type-V"
+ycsu21: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ycsu22: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ycsu23: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ycsu24: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ycsu25: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ycsu26: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ycsu27: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ycsu28: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ycsu29: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ycsu30: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ycsu31: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ycsu32: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ycsu33: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ycsu34: vkicker, type = "type-V", descrip = "mad8_key:vkic"
 ! ----35
-ycsu36: vkicker, type = "type-V"
-ycsu37: vkicker, type = "type-V"
-ycsu38: vkicker, type = "type-V"
-ycsu39: vkicker, type = "type-V"
-ycsu40: vkicker, type = "type-V"
-ycsu41: vkicker, type = "type-V"
-ycsu42: vkicker, type = "type-V"
-ycsu43: vkicker, type = "type-V"
-ycsu44: vkicker, type = "type-V"
-ycsu45: vkicker, type = "type-V"
-ycsu46: vkicker, type = "type-V"
-ycsu47: vkicker, type = "type-V"
+ycsu36: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ycsu37: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ycsu38: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ycsu39: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ycsu40: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ycsu41: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ycsu42: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ycsu43: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ycsu44: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ycsu45: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ycsu46: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ycsu47: vkicker, type = "type-V", descrip = "mad8_key:vkic"
 
 ! ------------------------------------------------------------------------------
 ! SXR undulator quadrupoles
@@ -618,175 +627,175 @@ kqdsx = 1.e-9*gqdsx*c_light/gamu/mc2 !m^-2
 kqsx16 = 1.275225965331              ! 0.365159074386
 kqsx47 = -1.8284                      !-2.295714281502
 
-qsxh16: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqsx16, aperture = rqu
-qsxh17: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdsx, aperture = rqu
-qsxh18: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfsx, aperture = rqu
-qsxh19: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdsx, aperture = rqu
-qsxh20: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfsx, aperture = rqu
-qsxh21: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdsx, aperture = rqu
-qsxh22: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfsx, aperture = rqu
-qsxh23: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdsx, aperture = rqu
-qsxh24: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfsx, aperture = rqu
-qsxh25: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdsx, aperture = rqu
-qsxh26: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfsx, aperture = rqu
-qsxh27: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdsx, aperture = rqu
-qsxh28: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfsx, aperture = rqu
-qsxh29: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdsx, aperture = rqu
-qsxh30: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfsx, aperture = rqu
-qsxh31: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdsx, aperture = rqu
-qsxh32: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfsx, aperture = rqu
-qsxh33: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdsx, aperture = rqu
-qsxh34: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfsx, aperture = rqu
-qsxh35: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdsx, aperture = rqu
-qsxh36: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfsx, aperture = rqu
-qsxh37: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdsx, aperture = rqu
-qsxh38: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfsx, aperture = rqu
-qsxh39: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdsx, aperture = rqu
-qsxh40: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfsx, aperture = rqu
-qsxh41: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdsx, aperture = rqu
-qsxh42: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfsx, aperture = rqu
-qsxh43: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdsx, aperture = rqu
-qsxh44: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfsx, aperture = rqu
-qsxh45: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdsx, aperture = rqu
-qsxh46: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfsx, aperture = rqu
-qsxh47: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqsx47, aperture = rqu
+qsxh16: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqsx16, aperture = rqu, descrip = "mad8_key:quad"
+qsxh17: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdsx, aperture = rqu, descrip = "mad8_key:quad"
+qsxh18: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfsx, aperture = rqu, descrip = "mad8_key:quad"
+qsxh19: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdsx, aperture = rqu, descrip = "mad8_key:quad"
+qsxh20: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfsx, aperture = rqu, descrip = "mad8_key:quad"
+qsxh21: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdsx, aperture = rqu, descrip = "mad8_key:quad"
+qsxh22: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfsx, aperture = rqu, descrip = "mad8_key:quad"
+qsxh23: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdsx, aperture = rqu, descrip = "mad8_key:quad"
+qsxh24: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfsx, aperture = rqu, descrip = "mad8_key:quad"
+qsxh25: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdsx, aperture = rqu, descrip = "mad8_key:quad"
+qsxh26: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfsx, aperture = rqu, descrip = "mad8_key:quad"
+qsxh27: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdsx, aperture = rqu, descrip = "mad8_key:quad"
+qsxh28: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfsx, aperture = rqu, descrip = "mad8_key:quad"
+qsxh29: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdsx, aperture = rqu, descrip = "mad8_key:quad"
+qsxh30: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfsx, aperture = rqu, descrip = "mad8_key:quad"
+qsxh31: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdsx, aperture = rqu, descrip = "mad8_key:quad"
+qsxh32: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfsx, aperture = rqu, descrip = "mad8_key:quad"
+qsxh33: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdsx, aperture = rqu, descrip = "mad8_key:quad"
+qsxh34: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfsx, aperture = rqu, descrip = "mad8_key:quad"
+qsxh35: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdsx, aperture = rqu, descrip = "mad8_key:quad"
+qsxh36: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfsx, aperture = rqu, descrip = "mad8_key:quad"
+qsxh37: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdsx, aperture = rqu, descrip = "mad8_key:quad"
+qsxh38: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfsx, aperture = rqu, descrip = "mad8_key:quad"
+qsxh39: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdsx, aperture = rqu, descrip = "mad8_key:quad"
+qsxh40: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfsx, aperture = rqu, descrip = "mad8_key:quad"
+qsxh41: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdsx, aperture = rqu, descrip = "mad8_key:quad"
+qsxh42: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfsx, aperture = rqu, descrip = "mad8_key:quad"
+qsxh43: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdsx, aperture = rqu, descrip = "mad8_key:quad"
+qsxh44: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfsx, aperture = rqu, descrip = "mad8_key:quad"
+qsxh45: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdsx, aperture = rqu, descrip = "mad8_key:quad"
+qsxh46: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfsx, aperture = rqu, descrip = "mad8_key:quad"
+qsxh47: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqsx47, aperture = rqu, descrip = "mad8_key:quad"
 
 ! ------------------------------------------------------------------------------
 ! SXR undulator X-steering coils in quads
 ! ------------------------------------------------------------------------------
 
-xcsx16: hkicker, type = "type-U"
-xcsx17: hkicker, type = "type-U"
-xcsx18: hkicker, type = "type-U"
-xcsx19: hkicker, type = "type-U"
-xcsx20: hkicker, type = "type-U"
-xcsx21: hkicker, type = "type-U"
-xcsx22: hkicker, type = "type-U"
-xcsx23: hkicker, type = "type-U"
-xcsx24: hkicker, type = "type-U"
-xcsx25: hkicker, type = "type-U"
-xcsx26: hkicker, type = "type-U"
-xcsx27: hkicker, type = "type-U"
-xcsx28: hkicker, type = "type-U"
-xcsx29: hkicker, type = "type-U"
-xcsx30: hkicker, type = "type-U"
-xcsx31: hkicker, type = "type-U"
-xcsx32: hkicker, type = "type-U"
-xcsx33: hkicker, type = "type-U"
-xcsx34: hkicker, type = "type-U"
-xcsx35: hkicker, type = "type-U"
-xcsx36: hkicker, type = "type-U"
-xcsx37: hkicker, type = "type-U"
-xcsx38: hkicker, type = "type-U"
-xcsx39: hkicker, type = "type-U"
-xcsx40: hkicker, type = "type-U"
-xcsx41: hkicker, type = "type-U"
-xcsx42: hkicker, type = "type-U"
-xcsx43: hkicker, type = "type-U"
-xcsx44: hkicker, type = "type-U"
-xcsx45: hkicker, type = "type-U"
-xcsx46: hkicker, type = "type-U"
-xcsx47: hkicker, type = "type-U"
+xcsx16: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xcsx17: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xcsx18: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xcsx19: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xcsx20: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xcsx21: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xcsx22: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xcsx23: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xcsx24: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xcsx25: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xcsx26: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xcsx27: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xcsx28: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xcsx29: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xcsx30: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xcsx31: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xcsx32: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xcsx33: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xcsx34: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xcsx35: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xcsx36: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xcsx37: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xcsx38: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xcsx39: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xcsx40: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xcsx41: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xcsx42: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xcsx43: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xcsx44: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xcsx45: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xcsx46: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xcsx47: hkicker, type = "type-U", descrip = "mad8_key:hkic"
 
 ! ------------------------------------------------------------------------------
 ! SXR undulator Y-steering coils in quads
 ! ------------------------------------------------------------------------------
 
-ycsx16: vkicker, type = "type-U"
-ycsx17: vkicker, type = "type-U"
-ycsx18: vkicker, type = "type-U"
-ycsx19: vkicker, type = "type-U"
-ycsx20: vkicker, type = "type-U"
-ycsx21: vkicker, type = "type-U"
-ycsx22: vkicker, type = "type-U"
-ycsx23: vkicker, type = "type-U"
-ycsx24: vkicker, type = "type-U"
-ycsx25: vkicker, type = "type-U"
-ycsx26: vkicker, type = "type-U"
-ycsx27: vkicker, type = "type-U"
-ycsx28: vkicker, type = "type-U"
-ycsx29: vkicker, type = "type-U"
-ycsx30: vkicker, type = "type-U"
-ycsx31: vkicker, type = "type-U"
-ycsx32: vkicker, type = "type-U"
-ycsx33: vkicker, type = "type-U"
-ycsx34: vkicker, type = "type-U"
-ycsx35: vkicker, type = "type-U"
-ycsx36: vkicker, type = "type-U"
-ycsx37: vkicker, type = "type-U"
-ycsx38: vkicker, type = "type-U"
-ycsx39: vkicker, type = "type-U"
-ycsx40: vkicker, type = "type-U"
-ycsx41: vkicker, type = "type-U"
-ycsx42: vkicker, type = "type-U"
-ycsx43: vkicker, type = "type-U"
-ycsx44: vkicker, type = "type-U"
-ycsx45: vkicker, type = "type-U"
-ycsx46: vkicker, type = "type-U"
-ycsx47: vkicker, type = "type-U"
+ycsx16: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ycsx17: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ycsx18: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ycsx19: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ycsx20: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ycsx21: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ycsx22: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ycsx23: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ycsx24: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ycsx25: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ycsx26: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ycsx27: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ycsx28: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ycsx29: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ycsx30: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ycsx31: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ycsx32: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ycsx33: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ycsx34: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ycsx35: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ycsx36: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ycsx37: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ycsx38: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ycsx39: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ycsx40: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ycsx41: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ycsx42: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ycsx43: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ycsx44: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ycsx45: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ycsx46: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ycsx47: vkicker, type = "type-U", descrip = "mad8_key:vkic"
 
 ! ------------------------------------------------------------------------------
 ! SXR undulator BPMs
 ! ------------------------------------------------------------------------------
 
-rfbsx15: monitor, l = lrfbub, type = "CavityX-1"
-rfbsx16: monitor, l = lrfbub, type = "CavityX-1"
-rfbsx17: monitor, l = lrfbub, type = "CavityX-1"
-rfbsx18: monitor, l = lrfbub, type = "CavityX-1"
-rfbsx19: monitor, l = lrfbub, type = "CavityX-1"
-rfbsx20: monitor, l = lrfbub, type = "CavityX-1"
-rfbsx21: monitor, l = lrfbub, type = "CavityX-1"
-rfbsx22: monitor, l = lrfbub, type = "CavityX-1"
-rfbsx23: monitor, l = lrfbub, type = "CavityX-1"
-rfbsx24: monitor, l = lrfbub, type = "CavityX-1"
-rfbsx25: monitor, l = lrfbub, type = "CavityX-1"
-rfbsx26: monitor, l = lrfbub, type = "CavityX-1"
-rfbsx27: monitor, l = lrfbub, type = "CavityX-1"
-rfbsx28: monitor, l = lrfbub, type = "CavityX-1"
-rfbsx29: monitor, l = lrfbub, type = "CavityX-1"
-rfbsx30: monitor, l = lrfbub, type = "CavityX-1"
-rfbsx31: monitor, l = lrfbub, type = "CavityX-1"
-rfbsx32: monitor, l = lrfbub, type = "CavityX-1"
-rfbsx33: monitor, l = lrfbub, type = "CavityX-1"
-rfbsx34: monitor, l = lrfbub, type = "CavityX-1"
-rfbsx35: monitor, l = lrfbub, type = "CavityX-1"
-rfbsx36: monitor, l = lrfbub, type = "CavityX-1"
-rfbsx37: monitor, l = lrfbub, type = "CavityX-1"
-rfbsx38: monitor, l = lrfbub, type = "CavityX-1"
-rfbsx39: monitor, l = lrfbub, type = "CavityX-1"
-rfbsx40: monitor, l = lrfbub, type = "CavityX-1"
-rfbsx41: monitor, l = lrfbub, type = "CavityX-1"
-rfbsx42: monitor, l = lrfbub, type = "CavityX-1"
-rfbsx43: monitor, l = lrfbub, type = "CavityX-1"
-rfbsx44: monitor, l = lrfbub, type = "CavityX-1"
-rfbsx45: monitor, l = lrfbub, type = "CavityX-1"
-rfbsx46: monitor, l = lrfbub, type = "CavityX-1"
-rfbsx47: monitor, l = lrfbub, type = "CavityX-1"
-drfbs48: drift, l = lrfbub
-drfbs49: drift, l = lrfbub
-drfbs50: drift, l = lrfbub
-rfbsx51: monitor, l = lrfbub, type = "CavityX-1"
+rfbsx15: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbsx16: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbsx17: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbsx18: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbsx19: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbsx20: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbsx21: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbsx22: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbsx23: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbsx24: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbsx25: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbsx26: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbsx27: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbsx28: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbsx29: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbsx30: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbsx31: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbsx32: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbsx33: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbsx34: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbsx35: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbsx36: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbsx37: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbsx38: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbsx39: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbsx40: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbsx41: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbsx42: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbsx43: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbsx44: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbsx45: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbsx46: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbsx47: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+drfbs48: drift, l = lrfbub, descrip = "mad8_key:drif"
+drfbs49: drift, l = lrfbub, descrip = "mad8_key:drif"
+drfbs50: drift, l = lrfbub, descrip = "mad8_key:drif"
+rfbsx51: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
 
 ! ------------------------------------------------------------------------------
 ! SXR undulator Beam Loss Monitors (placeholders)
 ! ------------------------------------------------------------------------------
 
-mblms17: marker
-mblms19: marker
-mblms21: marker
-mblms23: marker
-mblms25: marker
-mblms27: marker
-mblms29: marker
-mblms31: marker
-mblms33: marker
+mblms17: marker, descrip = "mad8_key:mark"
+mblms19: marker, descrip = "mad8_key:mark"
+mblms21: marker, descrip = "mad8_key:mark"
+mblms23: marker, descrip = "mad8_key:mark"
+mblms25: marker, descrip = "mad8_key:mark"
+mblms27: marker, descrip = "mad8_key:mark"
+mblms29: marker, descrip = "mad8_key:mark"
+mblms31: marker, descrip = "mad8_key:mark"
+mblms33: marker, descrip = "mad8_key:mark"
 ! -----35
-mblms37: marker
-mblms39: marker
-mblms41: marker
-mblms43: marker
-mblms45: marker
-mblms47: marker
+mblms37: marker, descrip = "mad8_key:mark"
+mblms39: marker, descrip = "mad8_key:mark"
+mblms41: marker, descrip = "mad8_key:mark"
+mblms43: marker, descrip = "mad8_key:mark"
+mblms45: marker, descrip = "mad8_key:mark"
+mblms47: marker, descrip = "mad8_key:mark"
 
 ! ------------------------------------------------------------------------------
 ! SXR undulator inline valves, VAT Series 48
@@ -794,84 +803,84 @@ mblms47: marker
 
 ! post-SDT 2024
 
-vvsxu21: marker
-vvsxu28: marker
-vvsxu34: marker
-vvsxu35: marker
-vvsxu38: marker
-vvsxu44: marker
+vvsxu21: marker, descrip = "mad8_key:mark"
+vvsxu28: marker, descrip = "mad8_key:mark"
+vvsxu34: marker, descrip = "mad8_key:mark"
+vvsxu35: marker, descrip = "mad8_key:mark"
+vvsxu38: marker, descrip = "mad8_key:mark"
+vvsxu44: marker, descrip = "mad8_key:mark"
 
 ! ------------------------------------------------------------------------------
 ! markers
 ! ------------------------------------------------------------------------------
 
-sxrstart: marker !start of undulator system
-rwwake5s: marker, type = "WAKE" !SXR beampipe wake applied here
-sxrterm: marker !~end of undulator system
+sxrstart: marker, descrip = "mad8_key:mark" !start of undulator system
+rwwake5s: marker, type = "WAKE", descrip = "mad8_key:mark" !SXR beampipe wake applied here
+sxrterm: marker, descrip = "mad8_key:mark" !~end of undulator system
 
 ! SXR quadrupole centers
 
-muqs16: marker
-muqs17: marker
-muqs18: marker
-muqs19: marker
-muqs20: marker
-muqs21: marker
-muqs22: marker
-muqs23: marker
-muqs24: marker
-muqs25: marker
-muqs26: marker
-muqs27: marker
-muqs28: marker
-muqs29: marker
-muqs30: marker
-muqs31: marker
-muqs32: marker
-muqs33: marker
-muqs34: marker
-muqs35: marker
-muqs36: marker
-muqs37: marker
-muqs38: marker
-muqs39: marker
-muqs40: marker
-muqs41: marker
-muqs42: marker
-muqs43: marker
-muqs44: marker
-muqs45: marker
-muqs46: marker
-muqs47: marker
+muqs16: marker, descrip = "mad8_key:mark"
+muqs17: marker, descrip = "mad8_key:mark"
+muqs18: marker, descrip = "mad8_key:mark"
+muqs19: marker, descrip = "mad8_key:mark"
+muqs20: marker, descrip = "mad8_key:mark"
+muqs21: marker, descrip = "mad8_key:mark"
+muqs22: marker, descrip = "mad8_key:mark"
+muqs23: marker, descrip = "mad8_key:mark"
+muqs24: marker, descrip = "mad8_key:mark"
+muqs25: marker, descrip = "mad8_key:mark"
+muqs26: marker, descrip = "mad8_key:mark"
+muqs27: marker, descrip = "mad8_key:mark"
+muqs28: marker, descrip = "mad8_key:mark"
+muqs29: marker, descrip = "mad8_key:mark"
+muqs30: marker, descrip = "mad8_key:mark"
+muqs31: marker, descrip = "mad8_key:mark"
+muqs32: marker, descrip = "mad8_key:mark"
+muqs33: marker, descrip = "mad8_key:mark"
+muqs34: marker, descrip = "mad8_key:mark"
+muqs35: marker, descrip = "mad8_key:mark"
+muqs36: marker, descrip = "mad8_key:mark"
+muqs37: marker, descrip = "mad8_key:mark"
+muqs38: marker, descrip = "mad8_key:mark"
+muqs39: marker, descrip = "mad8_key:mark"
+muqs40: marker, descrip = "mad8_key:mark"
+muqs41: marker, descrip = "mad8_key:mark"
+muqs42: marker, descrip = "mad8_key:mark"
+muqs43: marker, descrip = "mad8_key:mark"
+muqs44: marker, descrip = "mad8_key:mark"
+muqs45: marker, descrip = "mad8_key:mark"
+muqs46: marker, descrip = "mad8_key:mark"
+muqs47: marker, descrip = "mad8_key:mark"
 
 ! SXR phase shifter centers
 
-mphs21: marker
-mphs22: marker
-mphs23: marker
-mphs24: marker
-mphs25: marker
-mphs26: marker
-mphs27: marker
-mphs28: marker
-mphs29: marker
-mphs30: marker
-mphs31: marker
-mphs32: marker
-mphs33: marker
-mphs34: marker
+mphs21: marker, descrip = "mad8_key:mark"
+mphs22: marker, descrip = "mad8_key:mark"
+mphs23: marker, descrip = "mad8_key:mark"
+mphs24: marker, descrip = "mad8_key:mark"
+mphs25: marker, descrip = "mad8_key:mark"
+mphs26: marker, descrip = "mad8_key:mark"
+mphs27: marker, descrip = "mad8_key:mark"
+mphs28: marker, descrip = "mad8_key:mark"
+mphs29: marker, descrip = "mad8_key:mark"
+mphs30: marker, descrip = "mad8_key:mark"
+mphs31: marker, descrip = "mad8_key:mark"
+mphs32: marker, descrip = "mad8_key:mark"
+mphs33: marker, descrip = "mad8_key:mark"
+mphs34: marker, descrip = "mad8_key:mark"
 ! ----35
-mphs36: marker
-mphs37: marker
-mphs38: marker
-mphs39: marker
-mphs40: marker
-mphs41: marker
-mphs42: marker
-mphs43: marker
-mphs44: marker
-mphs45: marker
-mphs46: marker
+mphs36: marker, descrip = "mad8_key:mark"
+mphs37: marker, descrip = "mad8_key:mark"
+mphs38: marker, descrip = "mad8_key:mark"
+mphs39: marker, descrip = "mad8_key:mark"
+mphs40: marker, descrip = "mad8_key:mark"
+mphs41: marker, descrip = "mad8_key:mark"
+mphs42: marker, descrip = "mad8_key:mark"
+mphs43: marker, descrip = "mad8_key:mark"
+mphs44: marker, descrip = "mad8_key:mark"
+mphs45: marker, descrip = "mad8_key:mark"
+mphs46: marker, descrip = "mad8_key:mark"
 
 ! ------------------------------------------------------------------------------
 ! SXRSS self-seeding chicane (LCLSII-3.2-PR-0101-R0 doesn't specify chicane
@@ -915,21 +924,33 @@ lb5s = zb5/(2*sincab5s)                  !"short" half chicane bend path length 
 ab5l = ab5-ab5s                          !"long" half chicane bend angle (rad)
 lb5l = lb5-lb5s                          !"long" half chicane bend path length (m)
 
-bcxss1a: sbend, type = "0.315D14-C", hgap = gb5/2, l = lb5s, angle = +ab5s, e1 = 0, fint = 0.5, fintx = 0
-bcxss1b: sbend, type = "0.315D14-C", hgap = gb5/2, l = lb5l, angle = +ab5l, e2 = +ab5, fint = 0, fintx = 0.5
-bcxss2a: sbend, type = "0.315D14-C", hgap = gb5/2, l = lb5l, angle = -ab5l, e1 = -ab5, fint = 0.5, fintx = 0
-bcxss2b: sbend, type = "0.315D14-C", hgap = gb5/2, l = lb5s, angle = -ab5s, e2 = 0, fint = 0, fintx = 0.5
-bcxss3a: sbend, type = "0.315D14-C", hgap = gb5/2, l = lb5s, angle = -ab5s, e1 = 0, fint = 0.5, fintx = 0
-bcxss3b: sbend, type = "0.315D14-C", hgap = gb5/2, l = lb5l, angle = -ab5l, e2 = -ab5, fint = 0, fintx = 0.5
-bcxss4a: sbend, type = "0.315D14-C", hgap = gb5/2, l = lb5l, angle = +ab5l, e1 = +ab5, fint = 0.5, fintx = 0
-bcxss4b: sbend, type = "0.315D14-C", hgap = gb5/2, l = lb5s, angle = +ab5s, e2 = 0, fint = 0, fintx = 0.5
+bcxss1a: sbend, type = "0.315D14-C", hgap = gb5/2, l = lb5s, angle = +ab5s, e1 = 0, fint = 0.5, fintx = 0,
+          descrip = "mad8_key:sben"
+bcxss1b: sbend, type = "0.315D14-C", hgap = gb5/2, l = lb5l, angle = +ab5l, e2 = +ab5, fint = 0, fintx = 0.5,
+          descrip = "mad8_key:sben"
+bcxss2a: sbend, type = "0.315D14-C", hgap = gb5/2, l = lb5l, angle = -ab5l, e1 = -ab5, fint = 0.5, fintx = 0,
+          descrip = "mad8_key:sben"
+bcxss2b: sbend, type = "0.315D14-C", hgap = gb5/2, l = lb5s, angle = -ab5s, e2 = 0, fint = 0, fintx = 0.5,
+          descrip = "mad8_key:sben"
+bcxss3a: sbend, type = "0.315D14-C", hgap = gb5/2, l = lb5s, angle = -ab5s, e1 = 0, fint = 0.5, fintx = 0,
+          descrip = "mad8_key:sben"
+bcxss3b: sbend, type = "0.315D14-C", hgap = gb5/2, l = lb5l, angle = -ab5l, e2 = -ab5, fint = 0, fintx = 0.5,
+          descrip = "mad8_key:sben"
+bcxss4a: sbend, type = "0.315D14-C", hgap = gb5/2, l = lb5l, angle = +ab5l, e1 = +ab5, fint = 0.5, fintx = 0,
+          descrip = "mad8_key:sben"
+bcxss4b: sbend, type = "0.315D14-C", hgap = gb5/2, l = lb5s, angle = +ab5s, e2 = 0, fint = 0, fintx = 0.5,
+          descrip = "mad8_key:sben"
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-bcxss1: sbend, type = "0.315D14-C", hgap = gb5/2, l = lb5, angle = +ab5, e1 = 0, fint = 0.5, e2 = +ab5, fintx = 0.5
-bcxss2: sbend, type = "0.315D14-C", hgap = gb5/2, l = lb5, angle = -ab5, e1 = -ab5, fint = 0.5, e2 = 0, fintx = 0.5
-bcxss3: sbend, type = "0.315D14-C", hgap = gb5/2, l = lb5, angle = -ab5, e1 = 0, fint = 0.5, e2 = -ab5, fintx = 0.5
-bcxss4: sbend, type = "0.315D14-C", hgap = gb5/2, l = lb5, angle = +ab5, e1 = +ab5, fint = 0.5, e2 = 0, fintx = 0.5
+bcxss1: sbend, type = "0.315D14-C", hgap = gb5/2, l = lb5, angle = +ab5, e1 = 0, fint = 0.5, e2 = +ab5, fintx = 0.5,
+          descrip = "mad8_key:sben"
+bcxss2: sbend, type = "0.315D14-C", hgap = gb5/2, l = lb5, angle = -ab5, e1 = -ab5, fint = 0.5, e2 = 0, fintx = 0.5,
+          descrip = "mad8_key:sben"
+bcxss3: sbend, type = "0.315D14-C", hgap = gb5/2, l = lb5, angle = -ab5, e1 = 0, fint = 0.5, e2 = -ab5, fintx = 0.5,
+          descrip = "mad8_key:sben"
+bcxss4: sbend, type = "0.315D14-C", hgap = gb5/2, l = lb5, angle = +ab5, e1 = +ab5, fint = 0.5, e2 = 0, fintx = 0.5,
+          descrip = "mad8_key:sben"
 
 lsssb2bo = 1.193 !outer bend center-to-center (PRD Table 3)
 lsssb2bi = 0.52  !inner bend center-to-center (PRD Table 3)
@@ -943,24 +964,24 @@ zd1se = 0.185
 zd1sf = 0.128
 zd1sg = zd1s-(zd1sd+zd1se+zd1sf)
 
-dmonos: drift, l = (3.4-2*lsssb2bo-lsssb2bi-zb5)/2
-d1sa: drift, l = zd1sa/cos(ab5)
-d1sb: drift, l = zd1sb/cos(ab5)
-d1sc: drift, l = zd1sc/cos(ab5)
-d1sd: drift, l = zd1sd/cos(ab5)
-d1se: drift, l = zd1se/cos(ab5)
-d1sf: drift, l = zd1sf/cos(ab5)
-d1sg: drift, l = zd1sg/cos(ab5)
-dchs: drift, l = (lsssb2bi-zb5)/2
+dmonos: drift, l = (3.4-2*lsssb2bo-lsssb2bi-zb5)/2, descrip = "mad8_key:drif"
+d1sa: drift, l = zd1sa/cos(ab5), descrip = "mad8_key:drif"
+d1sb: drift, l = zd1sb/cos(ab5), descrip = "mad8_key:drif"
+d1sc: drift, l = zd1sc/cos(ab5), descrip = "mad8_key:drif"
+d1sd: drift, l = zd1sd/cos(ab5), descrip = "mad8_key:drif"
+d1se: drift, l = zd1se/cos(ab5), descrip = "mad8_key:drif"
+d1sf: drift, l = zd1sf/cos(ab5), descrip = "mad8_key:drif"
+d1sg: drift, l = zd1sg/cos(ab5), descrip = "mad8_key:drif"
+dchs: drift, l = (lsssb2bi-zb5)/2, descrip = "mad8_key:drif"
 
-sxrssbeg: marker
-gsxs1: instrument, type = "grating"
-msxs1: instrument, type = "mirror"
-cntrs: marker
-slsxs1: instrument, type = "slit"
-msxs2: instrument, type = "mirror"
-msxs3: instrument, type = "mirror"
-sxrssend: marker
+sxrssbeg: marker, descrip = "mad8_key:mark"
+gsxs1: instrument, type = "grating", descrip = "mad8_key:inst"
+msxs1: instrument, type = "mirror", descrip = "mad8_key:inst"
+cntrs: marker, descrip = "mad8_key:mark"
+slsxs1: instrument, type = "slit", descrip = "mad8_key:inst"
+msxs2: instrument, type = "mirror", descrip = "mad8_key:inst"
+msxs3: instrument, type = "mirror", descrip = "mad8_key:inst"
+sxrssend: marker, descrip = "mad8_key:mark"
 
 
 
@@ -990,38 +1011,38 @@ bcxss4_full: line = (bcxss4)
 ! complete SXR undulator segments
 ! ------------------------------------------------------------------------------
 
-umasxh21: umasxh_
-umasxh22: umasxh_
-umasxh23: umasxh_
-umasxh24: umasxh_
-umasxh25: umasxh_
-umasxh26: umasxh_
-umasxh27: umasxh_
-umasxh28: umasxh
-umasxh29: umasxh
-umasxh30: umasxh
-umasxh31: umasxh
-umasxh32: umasxh
-umasxh33: umasxh
-umasxh34: umasxh
+umasxh21: umasxh_, descrip = "mad8_key:matr"
+umasxh22: umasxh_, descrip = "mad8_key:matr"
+umasxh23: umasxh_, descrip = "mad8_key:matr"
+umasxh24: umasxh_, descrip = "mad8_key:matr"
+umasxh25: umasxh_, descrip = "mad8_key:matr"
+umasxh26: umasxh_, descrip = "mad8_key:matr"
+umasxh27: umasxh_, descrip = "mad8_key:matr"
+umasxh28: umasxh_, descrip = "mad8_key:matr"
+umasxh29: umasxh, descrip = "mad8_key:matr"
+umasxh30: umasxh, descrip = "mad8_key:matr"
+umasxh31: umasxh, descrip = "mad8_key:matr"
+umasxh32: umasxh, descrip = "mad8_key:matr"
+umasxh33: umasxh, descrip = "mad8_key:matr"
+umasxh34: umasxh, descrip = "mad8_key:matr"
 ! ------35
-umasxh36: umasxh
-umasxh37: umasxh
-umasxh38: umasxh
-umasxh39: umasxh
-umasxh40: umasxh
-umasxh41: umasxh
-umasxh42: umasxh
-umasxh43: umasxh
-umasxh44: umasxh
-umasxh45: umasxh
-umasxh46: umasxh
-umasxh47: umasxh
+umasxh36: umasxh, descrip = "mad8_key:matr"
+umasxh37: umasxh, descrip = "mad8_key:matr"
+umasxh38: umasxh, descrip = "mad8_key:matr"
+umasxh39: umasxh, descrip = "mad8_key:matr"
+umasxh40: umasxh, descrip = "mad8_key:matr"
+umasxh41: umasxh, descrip = "mad8_key:matr"
+umasxh42: umasxh, descrip = "mad8_key:matr"
+umasxh43: umasxh, descrip = "mad8_key:matr"
+umasxh44: umasxh, descrip = "mad8_key:matr"
+umasxh45: umasxh, descrip = "mad8_key:matr"
+umasxh46: umasxh, descrip = "mad8_key:matr"
+umasxh47: umasxh, descrip = "mad8_key:matr"
 
-dusegs17: drift, l = ldusegs
-dusegs18: drift, l = ldusegs
-dusegs19: drift, l = ldusegs
-dusegs20: drift, l = ldusegs
+dusegs17: drift, l = ldusegs, descrip = "mad8_key:drif"
+dusegs18: drift, l = ldusegs, descrip = "mad8_key:drif"
+dusegs19: drift, l = ldusegs, descrip = "mad8_key:drif"
+dusegs20: drift, l = ldusegs, descrip = "mad8_key:drif"
   USEGSX21 : LINE=(DTSXU_,UMASXh21,XCSU21,YCSU21,UMASXh21,DTSXU_)
   USEGSX22 : LINE=(DTSXU_,UMASXh22,XCSU22,YCSU22,UMASXh22,DTSXU_)
   USEGSX23 : LINE=(DTSXU_,UMASXh23,XCSU23,YCSU23,UMASXh23,DTSXU_)
@@ -1029,7 +1050,7 @@ dusegs20: drift, l = ldusegs
   USEGSX25 : LINE=(DTSXU_,UMASXh25,XCSU25,YCSU25,UMASXh25,DTSXU_)
   USEGSX26 : LINE=(DTSXU_,UMASXh26,XCSU26,YCSU26,UMASXh26,DTSXU_)
   USEGSX27 : LINE=(DTSXU_,UMASXh27,XCSU27,YCSU27,UMASXh27,DTSXU_)
-  USEGSX28 : LINE=(DTSXU,UMASXh28,XCSU28,YCSU28,UMASXh28,DTSXU)
+  USEGSX28 : LINE=(DTSXU_,UMASXh28,XCSU28,YCSU28,UMASXh28,DTSXU_)
   USEGSX29 : LINE=(DTSXU,UMASXh29,XCSU29,YCSU29,UMASXh29,DTSXU)
   USEGSX30 : LINE=(DTSXU,UMASXh30,XCSU30,YCSU30,UMASXh30,DTSXU)
   USEGSX31 : LINE=(DTSXU,UMASXh31,XCSU31,YCSU31,UMASXh31,DTSXU)
@@ -1049,48 +1070,48 @@ dusegs20: drift, l = ldusegs
   USEGSX45 : LINE=(DTSXU,UMASXh45,XCSU45,YCSU45,UMASXh45,DTSXU)
   USEGSX46 : LINE=(DTSXU,UMASXh46,XCSU46,YCSU46,UMASXh46,DTSXU)
   USEGSX47 : LINE=(DTSXU,UMASXh47,XCSU47,YCSU47,UMASXh47,DTSXU)
-dusegs48: drift, l = ldusegs
-dusegs49: drift, l = ldusegs
-dusegs50: drift, l = ldusegs
+dusegs48: drift, l = ldusegs, descrip = "mad8_key:drif"
+dusegs49: drift, l = ldusegs, descrip = "mad8_key:drif"
+dusegs50: drift, l = ldusegs, descrip = "mad8_key:drif"
 
 ! ------------------------------------------------------------------------------
 ! complete SXR undulator phase shifters
 ! ------------------------------------------------------------------------------
 
-dpssx17: drift, l = lpssx
-dpssx18: drift, l = lpssx
-dpssx19: drift, l = lpssx
-dpssx20: drift, l = lpssx
-pssxh21: pssxh_
-pssxh22: pssxh_
-pssxh23: pssxh_
-pssxh24: pssxh_
-pssxh25: pssxh_
-pssxh26: pssxh_
-pssxh27: pssxh_
-pssxh28: pssxh
-pssxh29: pssxh
-pssxh30: pssxh
-pssxh31: pssxh
-pssxh32: pssxh
-pssxh33: pssxh
-pssxh34: pssxh
-dpssx35: drift, l = lpssx
-pssxh36: pssxh
-pssxh37: pssxh
-pssxh38: pssxh
-pssxh39: pssxh
-pssxh40: pssxh
-pssxh41: pssxh
-pssxh42: pssxh
-pssxh43: pssxh
-pssxh44: pssxh
-pssxh45: pssxh
-pssxh46: pssxh
-dpssx47: drift, l = lpssx
-dpssx48: drift, l = lpssx
-dpssx49: drift, l = lpssx
-dpssx50: drift, l = lpssx
+dpssx17: drift, l = lpssx, descrip = "mad8_key:drif"
+dpssx18: drift, l = lpssx, descrip = "mad8_key:drif"
+dpssx19: drift, l = lpssx, descrip = "mad8_key:drif"
+dpssx20: drift, l = lpssx, descrip = "mad8_key:drif"
+pssxh21: pssxh_, descrip = "mad8_key:matr"
+pssxh22: pssxh_, descrip = "mad8_key:matr"
+pssxh23: pssxh_, descrip = "mad8_key:matr"
+pssxh24: pssxh_, descrip = "mad8_key:matr"
+pssxh25: pssxh_, descrip = "mad8_key:matr"
+pssxh26: pssxh_, descrip = "mad8_key:matr"
+pssxh27: pssxh_, descrip = "mad8_key:matr"
+pssxh28: pssxh_, descrip = "mad8_key:matr"
+pssxh29: pssxh, descrip = "mad8_key:matr"
+pssxh30: pssxh, descrip = "mad8_key:matr"
+pssxh31: pssxh, descrip = "mad8_key:matr"
+pssxh32: pssxh, descrip = "mad8_key:matr"
+pssxh33: pssxh, descrip = "mad8_key:matr"
+pssxh34: pssxh, descrip = "mad8_key:matr"
+dpssx35: drift, l = lpssx, descrip = "mad8_key:drif"
+pssxh36: pssxh, descrip = "mad8_key:matr"
+pssxh37: pssxh, descrip = "mad8_key:matr"
+pssxh38: pssxh, descrip = "mad8_key:matr"
+pssxh39: pssxh, descrip = "mad8_key:matr"
+pssxh40: pssxh, descrip = "mad8_key:matr"
+pssxh41: pssxh, descrip = "mad8_key:matr"
+pssxh42: pssxh, descrip = "mad8_key:matr"
+pssxh43: pssxh, descrip = "mad8_key:matr"
+pssxh44: pssxh, descrip = "mad8_key:matr"
+pssxh45: pssxh, descrip = "mad8_key:matr"
+pssxh46: pssxh, descrip = "mad8_key:matr"
+dpssx47: drift, l = lpssx, descrip = "mad8_key:drif"
+dpssx48: drift, l = lpssx, descrip = "mad8_key:drif"
+dpssx49: drift, l = lpssx, descrip = "mad8_key:drif"
+dpssx50: drift, l = lpssx, descrip = "mad8_key:drif"
 
   PSSXh21_full : LINE=(PSSXh21,MPHS21,PSSXh21)
   PSSXh22_full : LINE=(PSSXh22,MPHS22,PSSXh22)
@@ -1507,9 +1528,9 @@ muqs47[superimpose] = T
 muqs47[ref] = qsxh47
 ycsx47[superimpose] = T
 ycsx47[ref] = qsxh47
-dqsx48: drift, l = lqu
-dqsx49: drift, l = lqu
-dqsx50: drift, l = lqu
+dqsx48: drift, l = lqu, descrip = "mad8_key:drif"
+dqsx49: drift, l = lqu, descrip = "mad8_key:drif"
+dqsx50: drift, l = lqu, descrip = "mad8_key:drif"
 
 ! ------------------------------------------------------------------------------
 ! miscellaneous SXR stuff
@@ -1517,10 +1538,10 @@ dqsx50: drift, l = lqu
 
 ! SXRSS-II BOD's
 
-bod10: monitor, type = "YAG" !Beam Overlap Device
-du7sa: drift, l = 0.078508
-bod12: monitor, type = "YAG" !Beam Overlap Device
-du7sb: drift, l = du7s[l]-du7sa[l]
+bod10: monitor, type = "YAG", descrip = "mad8_key:moni" !Beam Overlap Device
+du7sa: drift, l = 0.078508, descrip = "mad8_key:drif"
+bod12: monitor, type = "YAG", descrip = "mad8_key:moni" !Beam Overlap Device
+du7sb: drift, l = du7s[l]-du7sa[l], descrip = "mad8_key:drif"
 
 ! PEPPEx components
 
@@ -1529,28 +1550,29 @@ pepxang = 0.105263157895e-2 !offset beam toward aisle (south)
  !DU7sc     : DRIF, L=0.184
  !FSPEPX1   : INST, TYPE="fast shutter"
  !DU7sd     : DRIF, L=DU7s[L]-DU7sc[L]
-xcpepx1: hkicker, type = "2.19 Gap Type 4", kick = -pepxang*setpepx
-du7se: drift, l = 0.074
-vgpepx1: marker, type = "vacuum gauges"
-vgccpepx1: instrument, type = "cold cathode"
-vgprpepx1: instrument, type = "pirani"
-du7sf: drift, l = du7s[l]-du7se[l]
-dusegs50a: drift, l = 0.064
-xcpepx2: hkicker, type = "2.19 Gap Type 4", kick = +pepxang*setpepx
-dusegs50b: drift, l = 0.586
-zppepx: instrument, type = "zone plate"
-dusegs50c: drift, l = 0.29
-vppepx1: marker, type = "ion pump"
-dusegs50d: drift, l = 0.224
-xcpepx3: hkicker, type = "2.19 Gap Type 4", kick = +pepxang*setpepx
-dusegs50e: drift, l = 0.95
-xcpepx4: hkicker, type = "2.19 Gap Type 4", kick = -pepxang*setpepx
-dusegs50f: drift, l = 0.6
-gjpepx: instrument, type = "gas jet"
-dusegs50g: drift, l = dusegs50[l]-dusegs50a[l]-dusegs50b[l]-dusegs50c[l]-dusegs50d[l]-dusegs50e[l]-dusegs50f[l]
-due1ab1: drift, l = 0.121
-vppepx2: marker, type = "ion pump"
-due1ab2: drift, l = due1ab[l]-due1ab1[l]
+xcpepx1: hkicker, type = "2.19 Gap Type 4", kick = -pepxang*setpepx, descrip = "mad8_key:hkic"
+du7se: drift, l = 0.074, descrip = "mad8_key:drif"
+vgpepx1: marker, type = "vacuum gauges", descrip = "mad8_key:mark"
+vgccpepx1: instrument, type = "cold cathode", descrip = "mad8_key:inst"
+vgprpepx1: instrument, type = "pirani", descrip = "mad8_key:inst"
+du7sf: drift, l = du7s[l]-du7se[l], descrip = "mad8_key:drif"
+dusegs50a: drift, l = 0.064, descrip = "mad8_key:drif"
+xcpepx2: hkicker, type = "2.19 Gap Type 4", kick = +pepxang*setpepx, descrip = "mad8_key:hkic"
+dusegs50b: drift, l = 0.586, descrip = "mad8_key:drif"
+zppepx: instrument, type = "zone plate", descrip = "mad8_key:inst"
+dusegs50c: drift, l = 0.29, descrip = "mad8_key:drif"
+vppepx1: marker, type = "ion pump", descrip = "mad8_key:mark"
+dusegs50d: drift, l = 0.224, descrip = "mad8_key:drif"
+xcpepx3: hkicker, type = "2.19 Gap Type 4", kick = +pepxang*setpepx, descrip = "mad8_key:hkic"
+dusegs50e: drift, l = 0.95, descrip = "mad8_key:drif"
+xcpepx4: hkicker, type = "2.19 Gap Type 4", kick = -pepxang*setpepx, descrip = "mad8_key:hkic"
+dusegs50f: drift, l = 0.6, descrip = "mad8_key:drif"
+gjpepx: instrument, type = "gas jet", descrip = "mad8_key:inst"
+dusegs50g: drift, l = dusegs50[l]-dusegs50a[l]-dusegs50b[l]-dusegs50c[l]-dusegs50d[l]-dusegs50e[l]-dusegs50f[l],
+          descrip = "mad8_key:drif"
+due1ab1: drift, l = 0.121, descrip = "mad8_key:drif"
+vppepx2: marker, type = "ion pump", descrip = "mad8_key:mark"
+due1ab2: drift, l = due1ab[l]-due1ab1[l], descrip = "mad8_key:drif"
 
 ! ------------------------------------------------------------------------------
 ! SXR FODO cell interspace definitions
@@ -1567,7 +1589,7 @@ due1ab2: drift, l = due1ab[l]-due1ab1[l]
   SXBRK25 : LINE=(DU3s_,PSSXh25_full,DU4s_,DU5s_,QSXh25_full,DU6s,RFBSX25,DU7s)
   SXBRK26 : LINE=(DU3s_,PSSXh26_full,DU4s_,DU5s_,QSXh26_full,DU6s,RFBSX26,DU7s)
   SXBRK27 : LINE=(DU3s_,PSSXh27_full,DU4s_,DU5s_,QSXh27_full,DU6s,RFBSX27,DU7s)
-  SXBRK28 : LINE=(DU3s,PSSXh28_full,DU4s,VVSXU28,DU5s,QSXh28_full,DU6s,RFBSX28,DU7s)
+  SXBRK28 : LINE=(DU3s_,PSSXh28_full,DU4s_,VVSXU28,DU5s_,QSXh28_full,DU6s,RFBSX28,DU7s)
   SXBRK29 : LINE=(DU3s,PSSXh29_full,DU4s,DU5s,QSXh29_full,DU6s,RFBSX29,DU7s)
   SXBRK30 : LINE=(DU3s,PSSXh30_full,DU4s,DU5s,QSXh30_full,DU6s,RFBSX30,DU7s)
   SXBRK31 : LINE=(DU3s,PSSXh31_full,DU4s,DU5s,QSXh31_full,DU6s,RFBSX31,DU7s)
@@ -1595,74 +1617,74 @@ due1ab2: drift, l = due1ab[l]-due1ab1[l]
 ! SXR cell boundary definitions
 ! ------------------------------------------------------------------------------
 
-sxr17beg: marker
-sxr17end: marker
-sxr18beg: marker
-sxr18end: marker
-sxr19beg: marker
-sxr19end: marker
-sxr20beg: marker
-sxr20end: marker
-sxr21beg: marker
-sxr21end: marker
-sxr22beg: marker
-sxr22end: marker
-sxr23beg: marker
-sxr23end: marker
-sxr24beg: marker
-sxr24end: marker
-sxr25beg: marker
-sxr25end: marker
-sxr26beg: marker
-sxr26end: marker
-sxr27beg: marker
-sxr27end: marker
-sxr28beg: marker
-sxr28end: marker
-sxr29beg: marker
-sxr29end: marker
-sxr30beg: marker
-sxr30end: marker
-sxr31beg: marker
-sxr31end: marker
-sxr32beg: marker
-sxr32end: marker
-sxr33beg: marker
-sxr33end: marker
-sxr34beg: marker
-sxr34end: marker
-sxr35beg: marker
-sxr35end: marker
-sxr36beg: marker
-sxr36end: marker
-sxr37beg: marker
-sxr37end: marker
-sxr38beg: marker
-sxr38end: marker
-sxr39beg: marker
-sxr39end: marker
-sxr40beg: marker
-sxr40end: marker
-sxr41beg: marker
-sxr41end: marker
-sxr42beg: marker
-sxr42end: marker
-sxr43beg: marker
-sxr43end: marker
-sxr44beg: marker
-sxr44end: marker
-sxr45beg: marker
-sxr45end: marker
-sxr46beg: marker
-sxr46end: marker
-sxr47beg: marker
-sxr47end: marker
-sxr48beg: marker
-sxr48end: marker
-sxr49beg: marker
-sxr49end: marker
-sxr50beg: marker
-sxr50end: marker
+sxr17beg: marker, descrip = "mad8_key:mark"
+sxr17end: marker, descrip = "mad8_key:mark"
+sxr18beg: marker, descrip = "mad8_key:mark"
+sxr18end: marker, descrip = "mad8_key:mark"
+sxr19beg: marker, descrip = "mad8_key:mark"
+sxr19end: marker, descrip = "mad8_key:mark"
+sxr20beg: marker, descrip = "mad8_key:mark"
+sxr20end: marker, descrip = "mad8_key:mark"
+sxr21beg: marker, descrip = "mad8_key:mark"
+sxr21end: marker, descrip = "mad8_key:mark"
+sxr22beg: marker, descrip = "mad8_key:mark"
+sxr22end: marker, descrip = "mad8_key:mark"
+sxr23beg: marker, descrip = "mad8_key:mark"
+sxr23end: marker, descrip = "mad8_key:mark"
+sxr24beg: marker, descrip = "mad8_key:mark"
+sxr24end: marker, descrip = "mad8_key:mark"
+sxr25beg: marker, descrip = "mad8_key:mark"
+sxr25end: marker, descrip = "mad8_key:mark"
+sxr26beg: marker, descrip = "mad8_key:mark"
+sxr26end: marker, descrip = "mad8_key:mark"
+sxr27beg: marker, descrip = "mad8_key:mark"
+sxr27end: marker, descrip = "mad8_key:mark"
+sxr28beg: marker, descrip = "mad8_key:mark"
+sxr28end: marker, descrip = "mad8_key:mark"
+sxr29beg: marker, descrip = "mad8_key:mark"
+sxr29end: marker, descrip = "mad8_key:mark"
+sxr30beg: marker, descrip = "mad8_key:mark"
+sxr30end: marker, descrip = "mad8_key:mark"
+sxr31beg: marker, descrip = "mad8_key:mark"
+sxr31end: marker, descrip = "mad8_key:mark"
+sxr32beg: marker, descrip = "mad8_key:mark"
+sxr32end: marker, descrip = "mad8_key:mark"
+sxr33beg: marker, descrip = "mad8_key:mark"
+sxr33end: marker, descrip = "mad8_key:mark"
+sxr34beg: marker, descrip = "mad8_key:mark"
+sxr34end: marker, descrip = "mad8_key:mark"
+sxr35beg: marker, descrip = "mad8_key:mark"
+sxr35end: marker, descrip = "mad8_key:mark"
+sxr36beg: marker, descrip = "mad8_key:mark"
+sxr36end: marker, descrip = "mad8_key:mark"
+sxr37beg: marker, descrip = "mad8_key:mark"
+sxr37end: marker, descrip = "mad8_key:mark"
+sxr38beg: marker, descrip = "mad8_key:mark"
+sxr38end: marker, descrip = "mad8_key:mark"
+sxr39beg: marker, descrip = "mad8_key:mark"
+sxr39end: marker, descrip = "mad8_key:mark"
+sxr40beg: marker, descrip = "mad8_key:mark"
+sxr40end: marker, descrip = "mad8_key:mark"
+sxr41beg: marker, descrip = "mad8_key:mark"
+sxr41end: marker, descrip = "mad8_key:mark"
+sxr42beg: marker, descrip = "mad8_key:mark"
+sxr42end: marker, descrip = "mad8_key:mark"
+sxr43beg: marker, descrip = "mad8_key:mark"
+sxr43end: marker, descrip = "mad8_key:mark"
+sxr44beg: marker, descrip = "mad8_key:mark"
+sxr44end: marker, descrip = "mad8_key:mark"
+sxr45beg: marker, descrip = "mad8_key:mark"
+sxr45end: marker, descrip = "mad8_key:mark"
+sxr46beg: marker, descrip = "mad8_key:mark"
+sxr46end: marker, descrip = "mad8_key:mark"
+sxr47beg: marker, descrip = "mad8_key:mark"
+sxr47end: marker, descrip = "mad8_key:mark"
+sxr48beg: marker, descrip = "mad8_key:mark"
+sxr48end: marker, descrip = "mad8_key:mark"
+sxr49beg: marker, descrip = "mad8_key:mark"
+sxr49end: marker, descrip = "mad8_key:mark"
+sxr50beg: marker, descrip = "mad8_key:mark"
+sxr50end: marker, descrip = "mad8_key:mark"
 
 ! ------------------------------------------------------------------------------
 ! SXR cell definitions
@@ -1679,7 +1701,7 @@ sxr50end: marker
   SXCEL25 : LINE=(SXR25BEG,DU1s,MBLMS25,DU2s,USEGSX25,SXBRK25,SXR25END) !long
   SXCEL26 : LINE=(SXR26BEG,DU1s,        DU2s,USEGSX26,SXBRK26,SXR26END) !long
   SXCEL27 : LINE=(SXR27BEG,DU1s,MBLMS27,DU2s,USEGSX27,SXBRK27,SXR27END) !long
-  SXCEL28 : LINE=(SXR28BEG,DU1s,        DU2s,USEGSX28,SXBRK28,SXR28END) !short
+  SXCEL28 : LINE=(SXR28BEG,DU1s,        DU2s,USEGSX28,SXBRK28,SXR28END) !long
   SXCEL29 : LINE=(SXR29BEG,DU1s,MBLMS29,DU2s,USEGSX29,SXBRK29,SXR29END) !short
   SXCEL30 : LINE=(SXR30BEG,DU1s,        DU2s,USEGSX30,SXBRK30,SXR30END) !short
   SXCEL31 : LINE=(SXR31BEG,DU1s,MBLMS31,DU2s,USEGSX31,SXBRK31,SXR31END) !short
@@ -1719,7 +1741,8 @@ sxr50end: marker
 ! SXR undulator exit section
 ! ------------------------------------------------------------------------------
 
-tcx01b: lcavity, rf_frequency = xbandf * 1e6, type = "TRANS_DEFL", l = 1.5/2, cavity_type = traveling_wave !horiz. deflection
+tcx01b: lcavity, rf_frequency = xbandf * 1e6, type = "TRANS_DEFL", l = 1.5/2, cavity_type = traveling_wave, !horiz. deflection
+          descrip = "mad8_key:lcav"
 
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
@@ -1727,75 +1750,75 @@ tcx01b: lcavity, rf_frequency = xbandf * 1e6, type = "TRANS_DEFL", l = 1.5/2, ca
 kque1b = 0.292632459332 ! 0.28964739003
 kque2b = 0.0            !-0.00606676202205
 
-que1b: quadrupole, type = "2Q10", l = lqr/2, k1 = kque1b, aperture = rqr
-que2b: quadrupole, type = "2Q10", l = lqr/2, k1 = kque2b, aperture = rqr
+que1b: quadrupole, type = "2Q10", l = lqr/2, k1 = kque1b, aperture = rqr, descrip = "mad8_key:quad"
+que2b: quadrupole, type = "2Q10", l = lqr/2, k1 = kque2b, aperture = rqr, descrip = "mad8_key:quad"
 
 lbkxdmp = 1.0                !x-kicker length in dumpline
 dzsxtes = 0.468389399848e-10 !set MDLWALLb at 685 m exactly to align with SXR XTES system
 ddsb0e = -0.403705866174e-3
 
-due1d: drift, l = 0.1
-due1b: drift, l = 1.5
-due1c: drift, l = 0.5
-due2a: drift, l = 0.5
-due2d: drift, l = 0.188-0.012 !phase cavity center-to-center spacing
-due2b: drift, l = 0.8-due2d[l]+0.005555
-due2e: drift, l = 1.740055-due2b[l]-3*due2d[l]
-due2cb: drift, l = 0.615+(lqp-lqr)/2
-due3ab: drift, l = 0.375504+(lqp-lqr)/2-0.014955
-due3bb: drift, l = 1.2630495+0.014955
-due3c: drift, l = (1.7968755-lbkxdmp)/2
-dbkxdmps: drift, l = lbkxdmp !placeholder for x-kicker in SXR dumpline
-due3d: drift, l = 0.435884 !0.320516
-dfspcb: drift, l = 0.115368
-dpcbvvb: drift, l = 0.401785
-dvvbtcxb: drift, l = 0.314355
-dtcxbspb: drift, l = 0.380565 !0.381
-due4b: drift, l = 0.975911
-due5ab: drift, l = 0.477799+(lqp-lqr)/2-0.114162
-due5bb: drift, l = 0.264+0.114162-0.1016+0.1016
-due5cb: drift, l = 0.2674+0.1016-0.1016
-due5f: drift, l = 0.05
-due5d: drift, l = 0.137055-0.05
-due5eb: drift, l = 0.252825-due5d[l]-due5f[l]+dzsxtes
-ddlwallb: drift, l = 0.250825-dzsxtes !length of dumpline thermal barrier wall
-dsb0a: drift, l = 0.260150
-dsb0b: drift, l = 0.344
-dsb0c: drift, l = 0.32646
-dsb0d: drift, l = 0.123366
-dsb0e: drift, l = 0.1059327+ddsb0e
+due1d: drift, l = 0.1, descrip = "mad8_key:drif"
+due1b: drift, l = 1.5, descrip = "mad8_key:drif"
+due1c: drift, l = 0.5, descrip = "mad8_key:drif"
+due2a: drift, l = 0.5, descrip = "mad8_key:drif"
+due2d: drift, l = 0.188-0.012, descrip = "mad8_key:drif" !phase cavity center-to-center spacing
+due2b: drift, l = 0.8-due2d[l]+0.005555, descrip = "mad8_key:drif"
+due2e: drift, l = 1.740055-due2b[l]-3*due2d[l], descrip = "mad8_key:drif"
+due2cb: drift, l = 0.615+(lqp-lqr)/2, descrip = "mad8_key:drif"
+due3ab: drift, l = 0.375504+(lqp-lqr)/2-0.014955, descrip = "mad8_key:drif"
+due3bb: drift, l = 1.2630495+0.014955, descrip = "mad8_key:drif"
+due3c: drift, l = (1.7968755-lbkxdmp)/2, descrip = "mad8_key:drif"
+dbkxdmps: drift, l = lbkxdmp, descrip = "mad8_key:drif" !placeholder for x-kicker in SXR dumpline
+due3d: drift, l = 0.435884, descrip = "mad8_key:drif" !0.320516
+dfspcb: drift, l = 0.115368, descrip = "mad8_key:drif"
+dpcbvvb: drift, l = 0.401785, descrip = "mad8_key:drif"
+dvvbtcxb: drift, l = 0.314355, descrip = "mad8_key:drif"
+dtcxbspb: drift, l = 0.380565, descrip = "mad8_key:drif" !0.381
+due4b: drift, l = 0.975911, descrip = "mad8_key:drif"
+due5ab: drift, l = 0.477799+(lqp-lqr)/2-0.114162, descrip = "mad8_key:drif"
+due5bb: drift, l = 0.264+0.114162-0.1016+0.1016, descrip = "mad8_key:drif"
+due5cb: drift, l = 0.2674+0.1016-0.1016, descrip = "mad8_key:drif"
+due5f: drift, l = 0.05, descrip = "mad8_key:drif"
+due5d: drift, l = 0.137055-0.05, descrip = "mad8_key:drif"
+due5eb: drift, l = 0.252825-due5d[l]-due5f[l]+dzsxtes, descrip = "mad8_key:drif"
+ddlwallb: drift, l = 0.250825-dzsxtes, descrip = "mad8_key:drif" !length of dumpline thermal barrier wall
+dsb0a: drift, l = 0.260150, descrip = "mad8_key:drif"
+dsb0b: drift, l = 0.344, descrip = "mad8_key:drif"
+dsb0c: drift, l = 0.32646, descrip = "mad8_key:drif"
+dsb0d: drift, l = 0.123366, descrip = "mad8_key:drif"
+dsb0e: drift, l = 0.1059327+ddsb0e, descrip = "mad8_key:drif"
 
-bpmue1b: monitor, type = "Stripline-5" !RFBUE1B : MONI, TYPE="@2,CavityS-1"
-bpmue2b: monitor, type = "Stripline-5" !RFBUE2B : MONI, TYPE="@2,CavityS-1"
+bpmue1b: monitor, type = "Stripline-5", descrip = "mad8_key:moni" !RFBUE1B : MONI, TYPE="@2,CavityS-1"
+bpmue2b: monitor, type = "Stripline-5", descrip = "mad8_key:moni" !RFBUE2B : MONI, TYPE="@2,CavityS-1"
 
-xcue2b: hkicker, type = "class-4"
-xcd3b: hkicker, type = "class-5"
+xcue2b: hkicker, type = "class-4", descrip = "mad8_key:hkic"
+xcd3b: hkicker, type = "class-5", descrip = "mad8_key:hkic"
 
-ycue1b: vkicker, type = "class-4"
-ycd3b: vkicker, type = "class-5"
+ycue1b: vkicker, type = "class-4", descrip = "mad8_key:vkic"
+ycd3b: vkicker, type = "class-5", descrip = "mad8_key:vkic"
 
-pctcxb: ecollimator, type = "XCS coll", x_limit = 4.0e-3/2, y_limit = 4.0e-3/2 !XTCAV photon collimator (4 mm aperture)
-pcpm0b: ecollimator, l = lpcpm, x_limit = 17.5e-3, y_limit = 17.5e-3
+pctcxb: ecollimator, type = "XCS coll", x_limit = 4.0e-3/2, y_limit = 4.0e-3/2, descrip = "mad8_key:ecol" !XTCAV photon collimator (4 mm aperture)
+pcpm0b: ecollimator, l = lpcpm, x_limit = 17.5e-3, y_limit = 17.5e-3, descrip = "mad8_key:ecol"
 
-ph31b: instrument, type = "2805 MHz" !post-undulator phase measurement RF cavity (low rate)
-ph32b: instrument, type = "2805 MHz" !post-undulator phase measurement RF cavity (low rate)
-ph33b: instrument, type = "2604 MHz" !post-undulator phase measurement RF cavity (high rate)
-ph34b: instrument, type = "2604 MHz" !post-undulator phase measurement RF cavity (high rate)
-true1b: instrument, type = "@5" !Be foil inserter (THz)
-sptcxb: instrument, type = "XTCAV spoiler"
-btmqueb: instrument !Burn-Through-Monitor
-btm0b: instrument !Burn-Through-Monitor behind the PCPM0B
+ph31b: instrument, type = "2805 MHz", descrip = "mad8_key:inst" !post-undulator phase measurement RF cavity (low rate)
+ph32b: instrument, type = "2805 MHz", descrip = "mad8_key:inst" !post-undulator phase measurement RF cavity (low rate)
+ph33b: instrument, type = "2604 MHz", descrip = "mad8_key:inst" !post-undulator phase measurement RF cavity (high rate)
+ph34b: instrument, type = "2604 MHz", descrip = "mad8_key:inst" !post-undulator phase measurement RF cavity (high rate)
+true1b: instrument, type = "@5", descrip = "mad8_key:inst" !Be foil inserter (THz)
+sptcxb: instrument, type = "XTCAV spoiler", descrip = "mad8_key:inst"
+btmqueb: instrument, descrip = "mad8_key:inst" !Burn-Through-Monitor
+btm0b: instrument, descrip = "mad8_key:inst" !Burn-Through-Monitor behind the PCPM0B
 
-uebegb: marker
-vv36b: marker !treaty-point vacuum valve just downbeam of undulator
-mimundob: marker !IMUNDOB : MARKER, TYPE="@0,BCS ACM" !BCS ACM
-vvtcxb: marker !XTCAV vacuum valve
-mtcx01b: marker !entrance to TCX01B (for ELEGANT WATCH point)
-mtcxb: marker !center of TCX01B (for matching)
-mdlwallb: marker !front face of dumpline thermal barrier wall
-ueendb: marker
-dlstartb: marker !start of dumpline
-vv37b: marker !vac. valve in dumpline
+uebegb: marker, descrip = "mad8_key:mark"
+vv36b: marker, descrip = "mad8_key:mark" !treaty-point vacuum valve just downbeam of undulator
+mimundob: marker, descrip = "mad8_key:mark" !IMUNDOB : MARKER, TYPE="@0,BCS ACM" !BCS ACM
+vvtcxb: marker, descrip = "mad8_key:mark" !XTCAV vacuum valve
+mtcx01b: marker, descrip = "mad8_key:mark" !entrance to TCX01B (for ELEGANT WATCH point)
+mtcxb: marker, descrip = "mad8_key:mark" !center of TCX01B (for matching)
+mdlwallb: marker, descrip = "mad8_key:mark" !front face of dumpline thermal barrier wall
+ueendb: marker, descrip = "mad8_key:mark"
+dlstartb: marker, descrip = "mad8_key:mark" !start of dumpline
+vv37b: marker, descrip = "mad8_key:mark" !vac. valve in dumpline
 
 
 
@@ -1866,42 +1889,43 @@ kqpshx = (kpshx*2*pi/lupshx/sqrt(2)/gamu)^2 !m^-2
 !new: !---------------------------------
 pshxh: taylor, type = "PS45", l = lpshxh, tt11 = 1.0, tt12 = lpshxh, tt21 = 0, tt22 = 1.0,
           tt33 = cos(lpshxh*sqrt(kqpshx)), tt34 = sin(lpshxh*sqrt(kqpshx))/sqrt(kqpshx),
-          tt43 = -sin(lpshxh*sqrt(kqpshx))*sqrt(kqpshx), tt44 = cos(lpshxh*sqrt(kqpshx)), tt55 = 1.0, tt66 = 1.0
+          tt43 = -sin(lpshxh*sqrt(kqpshx))*sqrt(kqpshx), tt44 = cos(lpshxh*sqrt(kqpshx)), tt55 = 1.0, tt66 = 1.0,
+          descrip = "mad8_key:matr"
 
 ! -----13
-pshxh14: pshxh
-pshxh15: pshxh
-pshxh16: pshxh
-pshxh17: pshxh
-pshxh18: pshxh
-pshxh19: pshxh
-pshxh20: pshxh
+pshxh14: pshxh, descrip = "mad8_key:matr"
+pshxh15: pshxh, descrip = "mad8_key:matr"
+pshxh16: pshxh, descrip = "mad8_key:matr"
+pshxh17: pshxh, descrip = "mad8_key:matr"
+pshxh18: pshxh, descrip = "mad8_key:matr"
+pshxh19: pshxh, descrip = "mad8_key:matr"
+pshxh20: pshxh, descrip = "mad8_key:matr"
 ! -----21
-pshxh22: pshxh
-pshxh23: pshxh
-pshxh24: pshxh
-pshxh25: pshxh
-pshxh26: pshxh
-pshxh27: pshxh
+pshxh22: pshxh, descrip = "mad8_key:matr"
+pshxh23: pshxh, descrip = "mad8_key:matr"
+pshxh24: pshxh, descrip = "mad8_key:matr"
+pshxh25: pshxh, descrip = "mad8_key:matr"
+pshxh26: pshxh, descrip = "mad8_key:matr"
+pshxh27: pshxh, descrip = "mad8_key:matr"
 ! -----28
-pshxh29: pshxh
-pshxh30: pshxh
-pshxh31: pshxh
-pshxh32: pshxh
-pshxh33: pshxh
-pshxh34: pshxh
-pshxh35: pshxh
-pshxh36: pshxh
-pshxh37: pshxh
-pshxh38: pshxh
-pshxh39: pshxh
-pshxh40: pshxh
-pshxh41: pshxh
-pshxh42: pshxh
-pshxh43: pshxh
-pshxh44: pshxh
-pshxh45: pshxh
-pshxh46: pshxh
+pshxh29: pshxh, descrip = "mad8_key:matr"
+pshxh30: pshxh, descrip = "mad8_key:matr"
+pshxh31: pshxh, descrip = "mad8_key:matr"
+pshxh32: pshxh, descrip = "mad8_key:matr"
+pshxh33: pshxh, descrip = "mad8_key:matr"
+pshxh34: pshxh, descrip = "mad8_key:matr"
+pshxh35: pshxh, descrip = "mad8_key:matr"
+pshxh36: pshxh, descrip = "mad8_key:matr"
+pshxh37: pshxh, descrip = "mad8_key:matr"
+pshxh38: pshxh, descrip = "mad8_key:matr"
+pshxh39: pshxh, descrip = "mad8_key:matr"
+pshxh40: pshxh, descrip = "mad8_key:matr"
+pshxh41: pshxh, descrip = "mad8_key:matr"
+pshxh42: pshxh, descrip = "mad8_key:matr"
+pshxh43: pshxh, descrip = "mad8_key:matr"
+pshxh44: pshxh, descrip = "mad8_key:matr"
+pshxh45: pshxh, descrip = "mad8_key:matr"
+pshxh46: pshxh, descrip = "mad8_key:matr"
 
 ! ------------------------------------------------------------------------------
 ! - Author: Heinz-Dieter Nuhn, Stanford Linear Accelerator Center
@@ -1938,18 +1962,18 @@ ldu8h = 0.025
 dldu0h = 0.0 !fine tune Z of undulator
 ldu0h = 0.094391984077-ldu8h-lrfbub +lrfbub +dldu0h
 
-du0h: drift, l = ldu0h
-du1h: drift, l = ldu1h
-du2h: drift, l = ldu2h
-du3h: drift, l = ldu3h
-du4h: drift, l = ldu4h
-du5h: drift, l = ldu5h
-du6h: drift, l = ldu6h
-du7h: drift, l = ldu7h
-du8h: drift, l = ldu8h
+du0h: drift, l = ldu0h, descrip = "mad8_key:drif"
+du1h: drift, l = ldu1h, descrip = "mad8_key:drif"
+du2h: drift, l = ldu2h, descrip = "mad8_key:drif"
+du3h: drift, l = ldu3h, descrip = "mad8_key:drif"
+du4h: drift, l = ldu4h, descrip = "mad8_key:drif"
+du5h: drift, l = ldu5h, descrip = "mad8_key:drif"
+du6h: drift, l = ldu6h, descrip = "mad8_key:drif"
+du7h: drift, l = ldu7h, descrip = "mad8_key:drif"
+du8h: drift, l = ldu8h, descrip = "mad8_key:drif"
 
 ddue1a = 0.0
-due1a: drift, l = 2.853174666558-lrfbub +ddue1a
+due1a: drift, l = 2.853174666558-lrfbub +ddue1a, descrip = "mad8_key:drif"
 
  !IntgHX : definition moved to LCLS2sc_main.xsif and LCLS2cu_main.xsif
 gqfhx = intghx/lqu/10*1.0           !T/m
@@ -1959,41 +1983,41 @@ kqdhx = 1.e-9*gqdhx*c_light/gamu/mc2 !m^-2
 kqhx46 = -2.482122917065
 kqhx47 = 0.0
 
-qhxh13: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu
-qhxh14: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu
-qhxh15: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu
-qhxh16: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu
-qhxh17: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu
-qhxh18: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu
-qhxh19: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu
-qhxh20: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu
-qhxh21: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu
-qhxh22: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu
-qhxh23: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu
-qhxh24: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu
-qhxh25: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu
-qhxh26: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu
-qhxh27: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu
-qhxh28: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu
-qhxh29: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu
-qhxh30: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu
-qhxh31: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu
-qhxh32: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu
-qhxh33: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu
-qhxh34: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu
-qhxh35: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu
-qhxh36: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu
-qhxh37: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu
-qhxh38: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu
-qhxh39: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu
-qhxh40: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu
-qhxh41: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu
-qhxh42: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu
-qhxh43: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu
-qhxh44: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu
-qhxh45: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu
-qhxh46: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqhx46, aperture = rqu
-qhxh47: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqhx47, aperture = rqu
+qhxh13: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh14: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh15: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh16: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh17: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh18: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh19: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh20: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh21: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh22: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh23: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh24: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh25: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh26: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh27: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh28: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh29: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh30: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh31: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh32: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh33: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh34: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh35: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh36: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh37: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh38: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh39: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh40: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh41: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh42: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh43: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh44: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh45: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfhx, aperture = rqu, descrip = "mad8_key:quad"
+qhxh46: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqhx46, aperture = rqu, descrip = "mad8_key:quad"
+qhxh47: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqhx47, aperture = rqu, descrip = "mad8_key:quad"
 
 luhxu = 0.026                            !m
 nphxu = 129
@@ -2020,342 +2044,342 @@ kqhx = (khxu*2*pi/luhxu/sqrt(2)/gamu)^2 !m^-2
 !new:
 umahxh: taylor, type = "HGVPU26", l = lhxuh, tt11 = cos(lhxuh*sqrt(kqhx)), tt12 = sin(lhxuh*sqrt(kqhx))/sqrt(kqhx),
           tt21 = -sin(lhxuh*sqrt(kqhx))*sqrt(kqhx), tt22 = cos(lhxuh*sqrt(kqhx)), tt33 = 1.0, tt34 = lhxuh, tt43 = 0, tt44 = 1.0,
-          tt55 = 1.0, tt66 = 1.0
+          tt55 = 1.0, tt66 = 1.0, descrip = "mad8_key:matr"
 
 ! ------13
-umahxh14: umahxh
-umahxh15: umahxh
-umahxh16: umahxh
-umahxh17: umahxh
-umahxh18: umahxh
-umahxh19: umahxh
-umahxh20: umahxh
+umahxh14: umahxh, descrip = "mad8_key:matr"
+umahxh15: umahxh, descrip = "mad8_key:matr"
+umahxh16: umahxh, descrip = "mad8_key:matr"
+umahxh17: umahxh, descrip = "mad8_key:matr"
+umahxh18: umahxh, descrip = "mad8_key:matr"
+umahxh19: umahxh, descrip = "mad8_key:matr"
+umahxh20: umahxh, descrip = "mad8_key:matr"
 ! ------21
-umahxh22: umahxh
-umahxh23: umahxh
-umahxh24: umahxh
-umahxh25: umahxh
-umahxh26: umahxh
-umahxh27: umahxh
+umahxh22: umahxh, descrip = "mad8_key:matr"
+umahxh23: umahxh, descrip = "mad8_key:matr"
+umahxh24: umahxh, descrip = "mad8_key:matr"
+umahxh25: umahxh, descrip = "mad8_key:matr"
+umahxh26: umahxh, descrip = "mad8_key:matr"
+umahxh27: umahxh, descrip = "mad8_key:matr"
 ! ------28
-umahxh29: umahxh
-umahxh30: umahxh
-umahxh31: umahxh
-umahxh32: umahxh
-umahxh33: umahxh
-umahxh34: umahxh
-umahxh35: umahxh
-umahxh36: umahxh
-umahxh37: umahxh
-umahxh38: umahxh
-umahxh39: umahxh
-umahxh40: umahxh
-umahxh41: umahxh
-umahxh42: umahxh
-umahxh43: umahxh
-umahxh44: umahxh
-umahxh45: umahxh
-umahxh46: umahxh
-umahxh47: umahxh
+umahxh29: umahxh, descrip = "mad8_key:matr"
+umahxh30: umahxh, descrip = "mad8_key:matr"
+umahxh31: umahxh, descrip = "mad8_key:matr"
+umahxh32: umahxh, descrip = "mad8_key:matr"
+umahxh33: umahxh, descrip = "mad8_key:matr"
+umahxh34: umahxh, descrip = "mad8_key:matr"
+umahxh35: umahxh, descrip = "mad8_key:matr"
+umahxh36: umahxh, descrip = "mad8_key:matr"
+umahxh37: umahxh, descrip = "mad8_key:matr"
+umahxh38: umahxh, descrip = "mad8_key:matr"
+umahxh39: umahxh, descrip = "mad8_key:matr"
+umahxh40: umahxh, descrip = "mad8_key:matr"
+umahxh41: umahxh, descrip = "mad8_key:matr"
+umahxh42: umahxh, descrip = "mad8_key:matr"
+umahxh43: umahxh, descrip = "mad8_key:matr"
+umahxh44: umahxh, descrip = "mad8_key:matr"
+umahxh45: umahxh, descrip = "mad8_key:matr"
+umahxh46: umahxh, descrip = "mad8_key:matr"
+umahxh47: umahxh, descrip = "mad8_key:matr"
 
 ! ------------------------------------------------------------------------------
 ! HXR undulator X-steering coils in quads
 ! ------------------------------------------------------------------------------
 
-xchx13: hkicker, type = "type-U"
-xchx14: hkicker, type = "type-U"
-xchx15: hkicker, type = "type-U"
-xchx16: hkicker, type = "type-U"
-xchx17: hkicker, type = "type-U"
-xchx18: hkicker, type = "type-U"
-xchx19: hkicker, type = "type-U"
-xchx20: hkicker, type = "type-U"
-xchx21: hkicker, type = "type-U"
-xchx22: hkicker, type = "type-U"
-xchx23: hkicker, type = "type-U"
-xchx24: hkicker, type = "type-U"
-xchx25: hkicker, type = "type-U"
-xchx26: hkicker, type = "type-U"
-xchx27: hkicker, type = "type-U"
-xchx28: hkicker, type = "type-U"
-xchx29: hkicker, type = "type-U"
-xchx30: hkicker, type = "type-U"
-xchx31: hkicker, type = "type-U"
-xchx32: hkicker, type = "type-U"
-xchx33: hkicker, type = "type-U"
-xchx34: hkicker, type = "type-U"
-xchx35: hkicker, type = "type-U"
-xchx36: hkicker, type = "type-U"
-xchx37: hkicker, type = "type-U"
-xchx38: hkicker, type = "type-U"
-xchx39: hkicker, type = "type-U"
-xchx40: hkicker, type = "type-U"
-xchx41: hkicker, type = "type-U"
-xchx42: hkicker, type = "type-U"
-xchx43: hkicker, type = "type-U"
-xchx44: hkicker, type = "type-U"
-xchx45: hkicker, type = "type-U"
-xchx46: hkicker, type = "type-U"
-xchx47: hkicker, type = "type-U"
+xchx13: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx14: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx15: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx16: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx17: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx18: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx19: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx20: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx21: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx22: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx23: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx24: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx25: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx26: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx27: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx28: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx29: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx30: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx31: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx32: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx33: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx34: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx35: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx36: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx37: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx38: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx39: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx40: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx41: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx42: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx43: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx44: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx45: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx46: hkicker, type = "type-U", descrip = "mad8_key:hkic"
+xchx47: hkicker, type = "type-U", descrip = "mad8_key:hkic"
 
 ! ------------------------------------------------------------------------------
 ! HXR undulator Y-steering coils in quads
 ! ------------------------------------------------------------------------------
 
-ychx13: vkicker, type = "type-U"
-ychx14: vkicker, type = "type-U"
-ychx15: vkicker, type = "type-U"
-ychx16: vkicker, type = "type-U"
-ychx17: vkicker, type = "type-U"
-ychx18: vkicker, type = "type-U"
-ychx19: vkicker, type = "type-U"
-ychx20: vkicker, type = "type-U"
-ychx21: vkicker, type = "type-U"
-ychx22: vkicker, type = "type-U"
-ychx23: vkicker, type = "type-U"
-ychx24: vkicker, type = "type-U"
-ychx25: vkicker, type = "type-U"
-ychx26: vkicker, type = "type-U"
-ychx27: vkicker, type = "type-U"
-ychx28: vkicker, type = "type-U"
-ychx29: vkicker, type = "type-U"
-ychx30: vkicker, type = "type-U"
-ychx31: vkicker, type = "type-U"
-ychx32: vkicker, type = "type-U"
-ychx33: vkicker, type = "type-U"
-ychx34: vkicker, type = "type-U"
-ychx35: vkicker, type = "type-U"
-ychx36: vkicker, type = "type-U"
-ychx37: vkicker, type = "type-U"
-ychx38: vkicker, type = "type-U"
-ychx39: vkicker, type = "type-U"
-ychx40: vkicker, type = "type-U"
-ychx41: vkicker, type = "type-U"
-ychx42: vkicker, type = "type-U"
-ychx43: vkicker, type = "type-U"
-ychx44: vkicker, type = "type-U"
-ychx45: vkicker, type = "type-U"
-ychx46: vkicker, type = "type-U"
-ychx47: vkicker, type = "type-U"
+ychx13: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx14: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx15: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx16: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx17: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx18: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx19: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx20: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx21: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx22: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx23: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx24: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx25: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx26: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx27: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx28: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx29: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx30: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx31: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx32: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx33: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx34: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx35: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx36: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx37: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx38: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx39: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx40: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx41: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx42: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx43: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx44: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx45: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx46: vkicker, type = "type-U", descrip = "mad8_key:vkic"
+ychx47: vkicker, type = "type-U", descrip = "mad8_key:vkic"
 
 ! ------------------------------------------------------------------------------
 ! HXR undulator X-steering coils in undulator segments
 ! ------------------------------------------------------------------------------
 
 ! ----13
-xchu14: hkicker, type = "type-V"
-xchu15: hkicker, type = "type-V"
-xchu16: hkicker, type = "type-V"
-xchu17: hkicker, type = "type-V"
-xchu18: hkicker, type = "type-V"
-xchu19: hkicker, type = "type-V"
-xchu20: hkicker, type = "type-V"
+xchu14: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xchu15: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xchu16: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xchu17: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xchu18: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xchu19: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xchu20: hkicker, type = "type-V", descrip = "mad8_key:hkic"
 ! ----21
-xchu22: hkicker, type = "type-V"
-xchu23: hkicker, type = "type-V"
-xchu24: hkicker, type = "type-V"
-xchu25: hkicker, type = "type-V"
-xchu26: hkicker, type = "type-V"
-xchu27: hkicker, type = "type-V"
+xchu22: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xchu23: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xchu24: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xchu25: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xchu26: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xchu27: hkicker, type = "type-V", descrip = "mad8_key:hkic"
 ! ----28
-xchu29: hkicker, type = "type-V"
-xchu30: hkicker, type = "type-V"
-xchu31: hkicker, type = "type-V"
-xchu32: hkicker, type = "type-V"
-xchu33: hkicker, type = "type-V"
-xchu34: hkicker, type = "type-V"
-xchu35: hkicker, type = "type-V"
-xchu36: hkicker, type = "type-V"
-xchu37: hkicker, type = "type-V"
-xchu38: hkicker, type = "type-V"
-xchu39: hkicker, type = "type-V"
-xchu40: hkicker, type = "type-V"
-xchu41: hkicker, type = "type-V"
-xchu42: hkicker, type = "type-V"
-xchu43: hkicker, type = "type-V"
-xchu44: hkicker, type = "type-V"
-xchu45: hkicker, type = "type-V"
-xchu46: hkicker, type = "type-V"
-xchu47: hkicker, type = "type-V"
+xchu29: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xchu30: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xchu31: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xchu32: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xchu33: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xchu34: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xchu35: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xchu36: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xchu37: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xchu38: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xchu39: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xchu40: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xchu41: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xchu42: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xchu43: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xchu44: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xchu45: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xchu46: hkicker, type = "type-V", descrip = "mad8_key:hkic"
+xchu47: hkicker, type = "type-V", descrip = "mad8_key:hkic"
 
 ! ------------------------------------------------------------------------------
 ! HXR undulator Y-steering coils in undulator segments
 ! ------------------------------------------------------------------------------
 
 ! ----13
-ychu14: vkicker, type = "type-V"
-ychu15: vkicker, type = "type-V"
-ychu16: vkicker, type = "type-V"
-ychu17: vkicker, type = "type-V"
-ychu18: vkicker, type = "type-V"
-ychu19: vkicker, type = "type-V"
-ychu20: vkicker, type = "type-V"
+ychu14: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ychu15: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ychu16: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ychu17: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ychu18: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ychu19: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ychu20: vkicker, type = "type-V", descrip = "mad8_key:vkic"
 ! ----21
-ychu22: vkicker, type = "type-V"
-ychu23: vkicker, type = "type-V"
-ychu24: vkicker, type = "type-V"
-ychu25: vkicker, type = "type-V"
-ychu26: vkicker, type = "type-V"
-ychu27: vkicker, type = "type-V"
+ychu22: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ychu23: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ychu24: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ychu25: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ychu26: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ychu27: vkicker, type = "type-V", descrip = "mad8_key:vkic"
 ! ----28
-ychu29: vkicker, type = "type-V"
-ychu30: vkicker, type = "type-V"
-ychu31: vkicker, type = "type-V"
-ychu32: vkicker, type = "type-V"
-ychu33: vkicker, type = "type-V"
-ychu34: vkicker, type = "type-V"
-ychu35: vkicker, type = "type-V"
-ychu36: vkicker, type = "type-V"
-ychu37: vkicker, type = "type-V"
-ychu38: vkicker, type = "type-V"
-ychu39: vkicker, type = "type-V"
-ychu40: vkicker, type = "type-V"
-ychu41: vkicker, type = "type-V"
-ychu42: vkicker, type = "type-V"
-ychu43: vkicker, type = "type-V"
-ychu44: vkicker, type = "type-V"
-ychu45: vkicker, type = "type-V"
-ychu46: vkicker, type = "type-V"
-ychu47: vkicker, type = "type-V"
+ychu29: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ychu30: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ychu31: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ychu32: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ychu33: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ychu34: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ychu35: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ychu36: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ychu37: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ychu38: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ychu39: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ychu40: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ychu41: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ychu42: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ychu43: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ychu44: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ychu45: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ychu46: vkicker, type = "type-V", descrip = "mad8_key:vkic"
+ychu47: vkicker, type = "type-V", descrip = "mad8_key:vkic"
 
 ! ------------------------------------------------------------------------------
 ! HXR undulator BPMs
 ! ------------------------------------------------------------------------------
 
-rfbhx13: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx14: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx15: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx16: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx17: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx18: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx19: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx20: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx21: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx22: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx23: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx24: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx25: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx26: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx27: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx28: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx29: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx30: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx31: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx32: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx33: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx34: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx35: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx36: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx37: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx38: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx39: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx40: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx41: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx42: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx43: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx44: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx45: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx46: monitor, l = lrfbub, type = "CavityX-1"
-rfbhx47: monitor, l = lrfbub, type = "CavityX-1"
-drfbh48: drift, l = lrfbub
-drfbh49: drift, l = lrfbub
-drfbh50: drift, l = lrfbub
-rfbhx51: monitor, l = lrfbub, type = "CavityX-1"
+rfbhx13: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx14: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx15: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx16: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx17: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx18: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx19: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx20: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx21: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx22: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx23: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx24: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx25: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx26: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx27: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx28: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx29: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx30: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx31: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx32: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx33: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx34: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx35: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx36: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx37: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx38: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx39: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx40: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx41: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx42: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx43: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx44: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx45: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx46: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+rfbhx47: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
+drfbh48: drift, l = lrfbub, descrip = "mad8_key:drif"
+drfbh49: drift, l = lrfbub, descrip = "mad8_key:drif"
+drfbh50: drift, l = lrfbub, descrip = "mad8_key:drif"
+rfbhx51: monitor, l = lrfbub, type = "CavityX-1", descrip = "mad8_key:moni"
 
 ! ------------------------------------------------------------------------------
 ! DTHXU = HXU undulator segment small terminations modeled as drift
 ! ------------------------------------------------------------------------------
 
-dthxu: drift, l = lhxue
+dthxu: drift, l = lhxue, descrip = "mad8_key:drif"
 
 ! ------------------------------------------------------------------------------
 ! markers
 ! ------------------------------------------------------------------------------
 
-hxrstart: marker !start of undulator system
-rwwake5h: marker, type = "WAKE" !HXR beampipe wake applied here
-hxrterm: marker !end of undulator system
+hxrstart: marker, descrip = "mad8_key:mark" !start of undulator system
+rwwake5h: marker, type = "WAKE", descrip = "mad8_key:mark" !HXR beampipe wake applied here
+hxrterm: marker, descrip = "mad8_key:mark" !end of undulator system
 
 ! HXR quadrupole centers
 
-muqh13: marker
-muqh14: marker
-muqh15: marker
-muqh16: marker
-muqh17: marker
-muqh18: marker
-muqh19: marker
-muqh20: marker
-muqh21: marker
-muqh22: marker
-muqh23: marker
-muqh24: marker
-muqh25: marker
-muqh26: marker
-muqh27: marker
-muqh28: marker
-muqh29: marker
-muqh30: marker
-muqh31: marker
-muqh32: marker
-muqh33: marker
-muqh34: marker
-muqh35: marker
-muqh36: marker
-muqh37: marker
-muqh38: marker
-muqh39: marker
-muqh40: marker
-muqh41: marker
-muqh42: marker
-muqh43: marker
-muqh44: marker
-muqh45: marker
-muqh46: marker
-muqh47: marker
+muqh13: marker, descrip = "mad8_key:mark"
+muqh14: marker, descrip = "mad8_key:mark"
+muqh15: marker, descrip = "mad8_key:mark"
+muqh16: marker, descrip = "mad8_key:mark"
+muqh17: marker, descrip = "mad8_key:mark"
+muqh18: marker, descrip = "mad8_key:mark"
+muqh19: marker, descrip = "mad8_key:mark"
+muqh20: marker, descrip = "mad8_key:mark"
+muqh21: marker, descrip = "mad8_key:mark"
+muqh22: marker, descrip = "mad8_key:mark"
+muqh23: marker, descrip = "mad8_key:mark"
+muqh24: marker, descrip = "mad8_key:mark"
+muqh25: marker, descrip = "mad8_key:mark"
+muqh26: marker, descrip = "mad8_key:mark"
+muqh27: marker, descrip = "mad8_key:mark"
+muqh28: marker, descrip = "mad8_key:mark"
+muqh29: marker, descrip = "mad8_key:mark"
+muqh30: marker, descrip = "mad8_key:mark"
+muqh31: marker, descrip = "mad8_key:mark"
+muqh32: marker, descrip = "mad8_key:mark"
+muqh33: marker, descrip = "mad8_key:mark"
+muqh34: marker, descrip = "mad8_key:mark"
+muqh35: marker, descrip = "mad8_key:mark"
+muqh36: marker, descrip = "mad8_key:mark"
+muqh37: marker, descrip = "mad8_key:mark"
+muqh38: marker, descrip = "mad8_key:mark"
+muqh39: marker, descrip = "mad8_key:mark"
+muqh40: marker, descrip = "mad8_key:mark"
+muqh41: marker, descrip = "mad8_key:mark"
+muqh42: marker, descrip = "mad8_key:mark"
+muqh43: marker, descrip = "mad8_key:mark"
+muqh44: marker, descrip = "mad8_key:mark"
+muqh45: marker, descrip = "mad8_key:mark"
+muqh46: marker, descrip = "mad8_key:mark"
+muqh47: marker, descrip = "mad8_key:mark"
 
 ! HXR phase shifter centers
 
 ! ----13
-mphh14: marker
-mphh15: marker
-mphh16: marker
-mphh17: marker
-mphh18: marker
-mphh19: marker
-mphh20: marker
+mphh14: marker, descrip = "mad8_key:mark"
+mphh15: marker, descrip = "mad8_key:mark"
+mphh16: marker, descrip = "mad8_key:mark"
+mphh17: marker, descrip = "mad8_key:mark"
+mphh18: marker, descrip = "mad8_key:mark"
+mphh19: marker, descrip = "mad8_key:mark"
+mphh20: marker, descrip = "mad8_key:mark"
 ! ----21
-mphh22: marker
-mphh23: marker
-mphh24: marker
-mphh25: marker
-mphh26: marker
-mphh27: marker
+mphh22: marker, descrip = "mad8_key:mark"
+mphh23: marker, descrip = "mad8_key:mark"
+mphh24: marker, descrip = "mad8_key:mark"
+mphh25: marker, descrip = "mad8_key:mark"
+mphh26: marker, descrip = "mad8_key:mark"
+mphh27: marker, descrip = "mad8_key:mark"
 ! ----28
-mphh29: marker
-mphh30: marker
-mphh31: marker
-mphh32: marker
-mphh33: marker
-mphh34: marker
-mphh35: marker
-mphh36: marker
-mphh37: marker
-mphh38: marker
-mphh39: marker
-mphh40: marker
-mphh41: marker
-mphh42: marker
-mphh43: marker
-mphh44: marker
-mphh45: marker
-mphh46: marker
+mphh29: marker, descrip = "mad8_key:mark"
+mphh30: marker, descrip = "mad8_key:mark"
+mphh31: marker, descrip = "mad8_key:mark"
+mphh32: marker, descrip = "mad8_key:mark"
+mphh33: marker, descrip = "mad8_key:mark"
+mphh34: marker, descrip = "mad8_key:mark"
+mphh35: marker, descrip = "mad8_key:mark"
+mphh36: marker, descrip = "mad8_key:mark"
+mphh37: marker, descrip = "mad8_key:mark"
+mphh38: marker, descrip = "mad8_key:mark"
+mphh39: marker, descrip = "mad8_key:mark"
+mphh40: marker, descrip = "mad8_key:mark"
+mphh41: marker, descrip = "mad8_key:mark"
+mphh42: marker, descrip = "mad8_key:mark"
+mphh43: marker, descrip = "mad8_key:mark"
+mphh44: marker, descrip = "mad8_key:mark"
+mphh45: marker, descrip = "mad8_key:mark"
+mphh46: marker, descrip = "mad8_key:mark"
 
 ! ------------------------------------------------------------------------------
 ! HXR undulator phase shifters
 ! ------------------------------------------------------------------------------
 
-dpshx13: drift, l = lpshx
+dpshx13: drift, l = lpshx, descrip = "mad8_key:drif"
   PSHXh14_full : LINE=(PSHXh14,MPHH14,PSHXh14)
   PSHXh15_full : LINE=(PSHXh15,MPHH15,PSHXh15)
   PSHXh16_full : LINE=(PSHXh16,MPHH16,PSHXh16)
@@ -2363,14 +2387,14 @@ dpshx13: drift, l = lpshx
   PSHXh18_full : LINE=(PSHXh18,MPHH18,PSHXh18)
   PSHXh19_full : LINE=(PSHXh19,MPHH19,PSHXh19)
   PSHXh20_full : LINE=(PSHXh20,MPHH20,PSHXh20)
-dpshx21: drift, l = lpshx
+dpshx21: drift, l = lpshx, descrip = "mad8_key:drif"
   PSHXh22_full : LINE=(PSHXh22,MPHH22,PSHXh22)
   PSHXh23_full : LINE=(PSHXh23,MPHH23,PSHXh23)
   PSHXh24_full : LINE=(PSHXh24,MPHH24,PSHXh24)
   PSHXh25_full : LINE=(PSHXh25,MPHH25,PSHXh25)
   PSHXh26_full : LINE=(PSHXh26,MPHH26,PSHXh26)
   PSHXh27_full : LINE=(PSHXh27,MPHH27,PSHXh27)
-dpshx28: drift, l = lpshx
+dpshx28: drift, l = lpshx, descrip = "mad8_key:drif"
   PSHXh29_full : LINE=(PSHXh29,MPHH29,PSHXh29)
   PSHXh30_full : LINE=(PSHXh30,MPHH30,PSHXh30)
   PSHXh31_full : LINE=(PSHXh31,MPHH31,PSHXh31)
@@ -2389,52 +2413,52 @@ dpshx28: drift, l = lpshx
   PSHXh44_full : LINE=(PSHXh44,MPHH44,PSHXh44)
   PSHXh45_full : LINE=(PSHXh45,MPHH45,PSHXh45)
   PSHXh46_full : LINE=(PSHXh46,MPHH46,PSHXh46)
-dpshx47: drift, l = lpshx
-dpshx48: drift, l = lpshx
-dpshx49: drift, l = lpshx
-dpshx50: drift, l = lpshx
+dpshx47: drift, l = lpshx, descrip = "mad8_key:drif"
+dpshx48: drift, l = lpshx, descrip = "mad8_key:drif"
+dpshx49: drift, l = lpshx, descrip = "mad8_key:drif"
+dpshx50: drift, l = lpshx, descrip = "mad8_key:drif"
 
 ! ------------------------------------------------------------------------------
 ! HXR undulator inline vacuum isolation valves (VAT Series 48?)
 ! ------------------------------------------------------------------------------
 
-vvhxu14: marker
-vvhxu17: marker
-vvhxu20: marker
-vvhxu22: marker
-vvhxu24: marker
-vvhxu27: marker
-vvhxu29: marker
-vvhxu32: marker
-vvhxu35: marker
-vvhxu37: marker
-vvhxu40: marker
-vvhxu43: marker
-vvhxu45: marker
+vvhxu14: marker, descrip = "mad8_key:mark"
+vvhxu17: marker, descrip = "mad8_key:mark"
+vvhxu20: marker, descrip = "mad8_key:mark"
+vvhxu22: marker, descrip = "mad8_key:mark"
+vvhxu24: marker, descrip = "mad8_key:mark"
+vvhxu27: marker, descrip = "mad8_key:mark"
+vvhxu29: marker, descrip = "mad8_key:mark"
+vvhxu32: marker, descrip = "mad8_key:mark"
+vvhxu35: marker, descrip = "mad8_key:mark"
+vvhxu37: marker, descrip = "mad8_key:mark"
+vvhxu40: marker, descrip = "mad8_key:mark"
+vvhxu43: marker, descrip = "mad8_key:mark"
+vvhxu45: marker, descrip = "mad8_key:mark"
 
-dvvhxu: drift, l = 0
+dvvhxu: drift, l = 0, descrip = "mad8_key:drif"
 
 ! ------------------------------------------------------------------------------
 ! HXR undulator Beam Loss Monitors (placeholders)
 ! ------------------------------------------------------------------------------
 
-mblmh14: marker
-mblmh16: marker
-mblmh18: marker
-mblmh20: marker
-mblmh22: marker
-mblmh24: marker
-mblmh26: marker
+mblmh14: marker, descrip = "mad8_key:mark"
+mblmh16: marker, descrip = "mad8_key:mark"
+mblmh18: marker, descrip = "mad8_key:mark"
+mblmh20: marker, descrip = "mad8_key:mark"
+mblmh22: marker, descrip = "mad8_key:mark"
+mblmh24: marker, descrip = "mad8_key:mark"
+mblmh26: marker, descrip = "mad8_key:mark"
 ! -----28
-mblmh30: marker
-mblmh32: marker
-mblmh34: marker
-mblmh36: marker
-mblmh38: marker
-mblmh40: marker
-mblmh42: marker
-mblmh44: marker
-mblmh46: marker
+mblmh30: marker, descrip = "mad8_key:mark"
+mblmh32: marker, descrip = "mad8_key:mark"
+mblmh34: marker, descrip = "mad8_key:mark"
+mblmh36: marker, descrip = "mad8_key:mark"
+mblmh38: marker, descrip = "mad8_key:mark"
+mblmh40: marker, descrip = "mad8_key:mark"
+mblmh42: marker, descrip = "mad8_key:mark"
+mblmh44: marker, descrip = "mad8_key:mark"
+mblmh46: marker, descrip = "mad8_key:mark"
 
 ! ------------------------------------------------------------------------------
 ! HXRSS self-seeding chicane (LCLSII-3.2-PR-0102-R1)
@@ -2472,21 +2496,33 @@ lb4s = (zb4/2)/sincab4s                  !"short" half chicane bend path length 
 ab4l = ab4-ab4s                          !"long" half chicane bend angle (rad)
 lb4l = lb4-lb4s                          !"long" half chicane bend path length (m)
 
-bcxhs1a: sbend, type = "0.315D14-C", hgap = gb4/2, l = lb4s, angle = +ab4s, e1 = 0, fint = fb4, fintx = 0
-bcxhs1b: sbend, type = "0.315D14-C", hgap = gb4/2, l = lb4l, angle = +ab4l, e2 = +ab4, fint = 0, fintx = fb4
-bcxhs2a: sbend, type = "0.315D14-C", hgap = gb4/2, l = lb4l, angle = -ab4l, e1 = -ab4, fint = fb4, fintx = 0
-bcxhs2b: sbend, type = "0.315D14-C", hgap = gb4/2, l = lb4s, angle = -ab4s, e2 = 0, fint = 0, fintx = fb4
-bcxhs3a: sbend, type = "0.315D14-C", hgap = gb4/2, l = lb4s, angle = -ab4s, e1 = 0, fint = fb4, fintx = 0
-bcxhs3b: sbend, type = "0.315D14-C", hgap = gb4/2, l = lb4l, angle = -ab4l, e2 = -ab4, fint = 0, fintx = fb4
-bcxhs4a: sbend, type = "0.315D14-C", hgap = gb4/2, l = lb4l, angle = +ab4l, e1 = +ab4, fint = fb4, fintx = 0
-bcxhs4b: sbend, type = "0.315D14-C", hgap = gb4/2, l = lb4s, angle = +ab4s, e2 = 0, fint = 0, fintx = fb4
+bcxhs1a: sbend, type = "0.315D14-C", hgap = gb4/2, l = lb4s, angle = +ab4s, e1 = 0, fint = fb4, fintx = 0,
+          descrip = "mad8_key:sben"
+bcxhs1b: sbend, type = "0.315D14-C", hgap = gb4/2, l = lb4l, angle = +ab4l, e2 = +ab4, fint = 0, fintx = fb4,
+          descrip = "mad8_key:sben"
+bcxhs2a: sbend, type = "0.315D14-C", hgap = gb4/2, l = lb4l, angle = -ab4l, e1 = -ab4, fint = fb4, fintx = 0,
+          descrip = "mad8_key:sben"
+bcxhs2b: sbend, type = "0.315D14-C", hgap = gb4/2, l = lb4s, angle = -ab4s, e2 = 0, fint = 0, fintx = fb4,
+          descrip = "mad8_key:sben"
+bcxhs3a: sbend, type = "0.315D14-C", hgap = gb4/2, l = lb4s, angle = -ab4s, e1 = 0, fint = fb4, fintx = 0,
+          descrip = "mad8_key:sben"
+bcxhs3b: sbend, type = "0.315D14-C", hgap = gb4/2, l = lb4l, angle = -ab4l, e2 = -ab4, fint = 0, fintx = fb4,
+          descrip = "mad8_key:sben"
+bcxhs4a: sbend, type = "0.315D14-C", hgap = gb4/2, l = lb4l, angle = +ab4l, e1 = +ab4, fint = fb4, fintx = 0,
+          descrip = "mad8_key:sben"
+bcxhs4b: sbend, type = "0.315D14-C", hgap = gb4/2, l = lb4s, angle = +ab4s, e2 = 0, fint = 0, fintx = fb4,
+          descrip = "mad8_key:sben"
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-bcxhs1: sbend, type = "0.315D14-C", hgap = gb4/2, l = lb4, angle = +ab4, e1 = 0, fint = fb4, e2 = +ab4, fintx = fb4
-bcxhs2: sbend, type = "0.315D14-C", hgap = gb4/2, l = lb4, angle = -ab4, e1 = -ab4, fint = fb4, e2 = 0, fintx = fb4
-bcxhs3: sbend, type = "0.315D14-C", hgap = gb4/2, l = lb4, angle = -ab4, e1 = 0, fint = fb4, e2 = -ab4, fintx = fb4
-bcxhs4: sbend, type = "0.315D14-C", hgap = gb4/2, l = lb4, angle = +ab4, e1 = +ab4, fint = fb4, e2 = 0, fintx = fb4
+bcxhs1: sbend, type = "0.315D14-C", hgap = gb4/2, l = lb4, angle = +ab4, e1 = 0, fint = fb4, e2 = +ab4, fintx = fb4,
+          descrip = "mad8_key:sben"
+bcxhs2: sbend, type = "0.315D14-C", hgap = gb4/2, l = lb4, angle = -ab4, e1 = -ab4, fint = fb4, e2 = 0, fintx = fb4,
+          descrip = "mad8_key:sben"
+bcxhs3: sbend, type = "0.315D14-C", hgap = gb4/2, l = lb4, angle = -ab4, e1 = 0, fint = fb4, e2 = -ab4, fintx = fb4,
+          descrip = "mad8_key:sben"
+bcxhs4: sbend, type = "0.315D14-C", hgap = gb4/2, l = lb4, angle = +ab4, e1 = +ab4, fint = fb4, e2 = 0, fintx = fb4,
+          descrip = "mad8_key:sben"
 
  !LHssB2Bo := 0.939 !outer bend center-to-center (PRD Table 3)
  !LHssB2Bi := 0.936 !inner bend center-to-center (PRD Table 3)
@@ -2494,13 +2530,13 @@ bcxhs4: sbend, type = "0.315D14-C", hgap = gb4/2, l = lb4, angle = +ab4, e1 = +a
 lhssb2bo = 0.957   !outer bend center-to-center (PRD Table 3)
 lhssb2bi = 0.936   !inner bend center-to-center (PRD Table 3)
 
-d1: drift, l = (lhssb2bo-zb4)/cos(ab4)
-dch: drift, l = (lhssb2bi-zb4)/2
-dmono: drift, l = (ldusegh-2*lhssb2bo-lhssb2bi-zb4)/2
+d1: drift, l = (lhssb2bo-zb4)/cos(ab4), descrip = "mad8_key:drif"
+dch: drift, l = (lhssb2bi-zb4)/2, descrip = "mad8_key:drif"
+dmono: drift, l = (ldusegh-2*lhssb2bo-lhssb2bi-zb4)/2, descrip = "mad8_key:drif"
 
-hxrssbeg: marker
-diamond: instrument
-hxrssend: marker
+hxrssbeg: marker, descrip = "mad8_key:mark"
+diamond: instrument, descrip = "mad8_key:inst"
+hxrssend: marker, descrip = "mad8_key:mark"
 
 
 
@@ -2560,35 +2596,59 @@ lb6s = (zb6/2)/sincab6s                  !"short" half chicane bend path length 
 ab6l = ab6-ab6s                          !"long" half chicane bend angle (rad)
 lb6l = lb6-lb6s                          !"long" half chicane bend path length (m)
 
-bcxcbx11a: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6s, angle = -ab6s, e1 = 0, fint = fb6, fintx = 0
-bcxcbx11b: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6l, angle = -ab6l, e2 = -ab6, fint = 0, fintx = fb6
-bcxcbx12a: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6l, angle = +ab6l, e1 = +ab6, fint = fb6, fintx = 0
-bcxcbx12b: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6s, angle = +ab6s, e2 = 0, fint = 0, fintx = fb6
-bcxcbx13a: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6s, angle = +ab6s, e1 = 0, fint = fb6, fintx = 0
-bcxcbx13b: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6l, angle = +ab6l, e2 = +ab6, fint = 0, fintx = fb6
-bcxcbx14a: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6l, angle = -ab6l, e1 = -ab6, fint = fb6, fintx = 0
-bcxcbx14b: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6s, angle = -ab6s, e2 = 0, fint = 0, fintx = fb6
+bcxcbx11a: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6s, angle = -ab6s, e1 = 0, fint = fb6, fintx = 0,
+          descrip = "mad8_key:sben"
+bcxcbx11b: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6l, angle = -ab6l, e2 = -ab6, fint = 0, fintx = fb6,
+          descrip = "mad8_key:sben"
+bcxcbx12a: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6l, angle = +ab6l, e1 = +ab6, fint = fb6, fintx = 0,
+          descrip = "mad8_key:sben"
+bcxcbx12b: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6s, angle = +ab6s, e2 = 0, fint = 0, fintx = fb6,
+          descrip = "mad8_key:sben"
+bcxcbx13a: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6s, angle = +ab6s, e1 = 0, fint = fb6, fintx = 0,
+          descrip = "mad8_key:sben"
+bcxcbx13b: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6l, angle = +ab6l, e2 = +ab6, fint = 0, fintx = fb6,
+          descrip = "mad8_key:sben"
+bcxcbx14a: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6l, angle = -ab6l, e1 = -ab6, fint = fb6, fintx = 0,
+          descrip = "mad8_key:sben"
+bcxcbx14b: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6s, angle = -ab6s, e2 = 0, fint = 0, fintx = fb6,
+          descrip = "mad8_key:sben"
 
-bcxcbx21a: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6s, angle = -ab6s, e1 = 0, fint = fb6, fintx = 0
-bcxcbx21b: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6l, angle = -ab6l, e2 = -ab6, fint = 0, fintx = fb6
-bcxcbx22a: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6l, angle = +ab6l, e1 = +ab6, fint = fb6, fintx = 0
-bcxcbx22b: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6s, angle = +ab6s, e2 = 0, fint = 0, fintx = fb6
-bcxcbx23a: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6s, angle = +ab6s, e1 = 0, fint = fb6, fintx = 0
-bcxcbx23b: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6l, angle = +ab6l, e2 = +ab6, fint = 0, fintx = fb6
-bcxcbx24a: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6l, angle = -ab6l, e1 = -ab6, fint = fb6, fintx = 0
-bcxcbx24b: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6s, angle = -ab6s, e2 = 0, fint = 0, fintx = fb6
+bcxcbx21a: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6s, angle = -ab6s, e1 = 0, fint = fb6, fintx = 0,
+          descrip = "mad8_key:sben"
+bcxcbx21b: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6l, angle = -ab6l, e2 = -ab6, fint = 0, fintx = fb6,
+          descrip = "mad8_key:sben"
+bcxcbx22a: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6l, angle = +ab6l, e1 = +ab6, fint = fb6, fintx = 0,
+          descrip = "mad8_key:sben"
+bcxcbx22b: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6s, angle = +ab6s, e2 = 0, fint = 0, fintx = fb6,
+          descrip = "mad8_key:sben"
+bcxcbx23a: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6s, angle = +ab6s, e1 = 0, fint = fb6, fintx = 0,
+          descrip = "mad8_key:sben"
+bcxcbx23b: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6l, angle = +ab6l, e2 = +ab6, fint = 0, fintx = fb6,
+          descrip = "mad8_key:sben"
+bcxcbx24a: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6l, angle = -ab6l, e1 = -ab6, fint = fb6, fintx = 0,
+          descrip = "mad8_key:sben"
+bcxcbx24b: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6s, angle = -ab6s, e2 = 0, fint = 0, fintx = fb6,
+          descrip = "mad8_key:sben"
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-bcxcbx11: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6, angle = -ab6, e1 = 0, fint = fb6, e2 = -ab6, fintx = fb6
-bcxcbx12: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6, angle = +ab6, e1 = +ab6, fint = fb6, e2 = 0, fintx = fb6
-bcxcbx13: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6, angle = +ab6, e1 = 0, fint = fb6, e2 = +ab6, fintx = fb6
-bcxcbx14: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6, angle = -ab6, e1 = -ab6, fint = fb6, e2 = 0, fintx = fb6
+bcxcbx11: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6, angle = -ab6, e1 = 0, fint = fb6, e2 = -ab6, fintx = fb6,
+          descrip = "mad8_key:sben"
+bcxcbx12: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6, angle = +ab6, e1 = +ab6, fint = fb6, e2 = 0, fintx = fb6,
+          descrip = "mad8_key:sben"
+bcxcbx13: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6, angle = +ab6, e1 = 0, fint = fb6, e2 = +ab6, fintx = fb6,
+          descrip = "mad8_key:sben"
+bcxcbx14: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6, angle = -ab6, e1 = -ab6, fint = fb6, e2 = 0, fintx = fb6,
+          descrip = "mad8_key:sben"
 
-bcxcbx21: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6, angle = -ab6, e1 = 0, fint = fb6, e2 = -ab6, fintx = fb6
-bcxcbx22: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6, angle = +ab6, e1 = +ab6, fint = fb6, e2 = 0, fintx = fb6
-bcxcbx23: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6, angle = +ab6, e1 = 0, fint = fb6, e2 = +ab6, fintx = fb6
-bcxcbx24: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6, angle = -ab6, e1 = -ab6, fint = fb6, e2 = 0, fintx = fb6
+bcxcbx21: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6, angle = -ab6, e1 = 0, fint = fb6, e2 = -ab6, fintx = fb6,
+          descrip = "mad8_key:sben"
+bcxcbx22: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6, angle = +ab6, e1 = +ab6, fint = fb6, e2 = 0, fintx = fb6,
+          descrip = "mad8_key:sben"
+bcxcbx23: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6, angle = +ab6, e1 = 0, fint = fb6, e2 = +ab6, fintx = fb6,
+          descrip = "mad8_key:sben"
+bcxcbx24: sbend, type = "0.276D14-C", hgap = gb6/2, l = lb6, angle = -ab6, e1 = -ab6, fint = fb6, e2 = 0, fintx = fb6,
+          descrip = "mad8_key:sben"
 
  !Ztotal  := 134.391*in2m  !total system length
  !Zuseg   := 3.372032      !undulator segment length
@@ -2598,46 +2658,46 @@ zb2bi = 0.535763      !inner bend center-to-center
 zcbxc1 = 3.504082 !0.1+(D0CB1[L]+ZB6/2+ZB2Bo+ZB2Bi+ZB2Bo+ZB6/2)
 zcbxc2 = 3.504089 !0.1+(D0CB2[L]+ZB6/2+ZB2Bo+ZB2Bi+ZB2Bo+ZB6/2)
 
-d0cb1: drift, l = 0.264603-(du1h[l]+du2h[l]+zb6/2) !0.26456
-d1cb1: drift, l = (zb2bo-zb6)/cos(ab6)
-d1cb1a: drift, l = (0.656216-zb6/2)/cos(ab6)
-d1cb1b: drift, l = 0.1059/cos(ab6)
-d1cb1c: drift, l = d1cb1[l]-d1cb1a[l]-d1cb1b[l]
-dchcb1: drift, l = (zb2bi-zb6)/2
-d2cb: drift, l = d1cb1[l]
-d2cba: drift, l = 0.568799
-d2cba2: drift, l = 517.8785-517.8728101
-d2cba1: drift, l = d2cba[l]-d2cba2[l]
-d2cbb: drift, l = d2cb[l]-d2cba[l]
-d3cb1: drift, l = zcbxc1-(d0cb1[l]+zb6/2+zb2bo+zb2bi+zb2bo+zb6/2)
-du3hcb1: drift, l = 0.203362-d3cb1[l] !2*DU3h[L]+0.133428 ! 0.102780
-du4hcb1: drift, l = du4h[l]-0.000176 !-0.025003
-du5hcb1: drift, l = du5h[l]+0.000741 !-0.133252 !-0.108382
+d0cb1: drift, l = 0.264603-(du1h[l]+du2h[l]+zb6/2), descrip = "mad8_key:drif" !0.26456
+d1cb1: drift, l = (zb2bo-zb6)/cos(ab6), descrip = "mad8_key:drif"
+d1cb1a: drift, l = (0.656216-zb6/2)/cos(ab6), descrip = "mad8_key:drif"
+d1cb1b: drift, l = 0.1059/cos(ab6), descrip = "mad8_key:drif"
+d1cb1c: drift, l = d1cb1[l]-d1cb1a[l]-d1cb1b[l], descrip = "mad8_key:drif"
+dchcb1: drift, l = (zb2bi-zb6)/2, descrip = "mad8_key:drif"
+d2cb: drift, l = d1cb1[l], descrip = "mad8_key:drif"
+d2cba: drift, l = 0.568799, descrip = "mad8_key:drif"
+d2cba2: drift, l = 517.8785-517.8728101, descrip = "mad8_key:drif"
+d2cba1: drift, l = d2cba[l]-d2cba2[l], descrip = "mad8_key:drif"
+d2cbb: drift, l = d2cb[l]-d2cba[l], descrip = "mad8_key:drif"
+d3cb1: drift, l = zcbxc1-(d0cb1[l]+zb6/2+zb2bo+zb2bi+zb2bo+zb6/2), descrip = "mad8_key:drif"
+du3hcb1: drift, l = 0.203362-d3cb1[l], descrip = "mad8_key:drif" !2*DU3h[L]+0.133428 ! 0.102780
+du4hcb1: drift, l = du4h[l]-0.000176, descrip = "mad8_key:drif" !-0.025003
+du5hcb1: drift, l = du5h[l]+0.000741, descrip = "mad8_key:drif" !-0.133252 !-0.108382
 
-d0cb2: drift, l = 0.264610-(du1h[l]+du2h[l]+zb6/2) !0.26456
-d1cb2: drift, l = d1cb1[l]
-d1cb2a: drift, l = (0.605122666708-zb6/2)/cos(ab6)
-d1cb2b: drift, l = 0.05019/cos(ab6)
-d1cb2c: drift, l = d1cb2[l]-d1cb2a[l]-d1cb2b[l]
-dchcb2: drift, l = dchcb1[l]
-d3cb2: drift, l = zcbxc2-(d0cb2[l]+zb6/2+zb2bo+zb2bi+zb2bo+zb6/2)
-du3hcb2: drift, l = 0.203362-d3cb2[l] !DU3h[L]+0.184427
-du4hcb2: drift, l = du4h[l]-0.000176 !-0.025003
-du5hcb2: drift, l = du5h[l]+0.000734 !-0.133259 !-0.108382
+d0cb2: drift, l = 0.264610-(du1h[l]+du2h[l]+zb6/2), descrip = "mad8_key:drif" !0.26456
+d1cb2: drift, l = d1cb1[l], descrip = "mad8_key:drif"
+d1cb2a: drift, l = (0.605122666708-zb6/2)/cos(ab6), descrip = "mad8_key:drif"
+d1cb2b: drift, l = 0.05019/cos(ab6), descrip = "mad8_key:drif"
+d1cb2c: drift, l = d1cb2[l]-d1cb2a[l]-d1cb2b[l], descrip = "mad8_key:drif"
+dchcb2: drift, l = dchcb1[l], descrip = "mad8_key:drif"
+d3cb2: drift, l = zcbxc2-(d0cb2[l]+zb6/2+zb2bo+zb2bi+zb2bo+zb6/2), descrip = "mad8_key:drif"
+du3hcb2: drift, l = 0.203362-d3cb2[l], descrip = "mad8_key:drif" !DU3h[L]+0.184427
+du4hcb2: drift, l = du4h[l]-0.000176, descrip = "mad8_key:drif" !-0.025003
+du5hcb2: drift, l = du5h[l]+0.000734, descrip = "mad8_key:drif" !-0.133259 !-0.108382
 
-hxrcb1beg: marker
-mcbx4: instrument !X-ray diamond crystal mirror
-yagcbx42: monitor
-center1: marker
-prcbx40: monitor !Diamond
-bodcbx40: monitor !Beam Overlap Diagnostic
-hxrcb1end: marker
+hxrcb1beg: marker, descrip = "mad8_key:mark"
+mcbx4: instrument, descrip = "mad8_key:inst" !X-ray diamond crystal mirror
+yagcbx42: monitor, descrip = "mad8_key:moni"
+center1: marker, descrip = "mad8_key:mark"
+prcbx40: monitor, descrip = "mad8_key:moni" !Diamond
+bodcbx40: monitor, descrip = "mad8_key:moni" !Beam Overlap Diagnostic
+hxrcb1end: marker, descrip = "mad8_key:mark"
 
-hxrcb2beg: marker
-dsscbx11: monitor !Diamond scintillator screen
-mcbx1: instrument !X-ray diamond crystal mirror
-center2: marker
-hxrcb2end: marker
+hxrcb2beg: marker, descrip = "mad8_key:mark"
+dsscbx11: monitor, descrip = "mad8_key:moni" !Diamond scintillator screen
+mcbx1: instrument, descrip = "mad8_key:inst" !X-ray diamond crystal mirror
+center2: marker, descrip = "mad8_key:mark"
+hxrcb2end: marker, descrip = "mad8_key:mark"
 
 
 
@@ -2779,9 +2839,9 @@ bcxcbx24_full: line = (bcxcbx24)
   USEGHX45 : LINE=(DTHXU,UMAHXh45_full,DTHXU)
   USEGHX46 : LINE=(DTHXU,UMAHXh46_full,DTHXU)
   USEGHX47 : LINE=(DTHXU,UMAHXh47_full,DTHXU)
-dusegh48: drift, l = ldusegh
-dusegh49: drift, l = ldusegh
-dusegh50: drift, l = ldusegh
+dusegh48: drift, l = ldusegh, descrip = "mad8_key:drif"
+dusegh49: drift, l = ldusegh, descrip = "mad8_key:drif"
+dusegh50: drift, l = ldusegh, descrip = "mad8_key:drif"
 
 
 
@@ -3203,9 +3263,9 @@ muqh47[superimpose] = T
 muqh47[ref] = qhxh47
 ychx47[superimpose] = T
 ychx47[ref] = qhxh47
-dqhx48: drift, l = lqu
-dqhx49: drift, l = lqu
-dqhx50: drift, l = lqu
+dqhx48: drift, l = lqu, descrip = "mad8_key:drif"
+dqhx49: drift, l = lqu, descrip = "mad8_key:drif"
+dqhx50: drift, l = lqu, descrip = "mad8_key:drif"
 
   HXBRK13 : LINE=(DU3hCB1,QHXh13_full,DU4hCB1,RFBHX13,DU5hCB1,DU7h)
   HXBRK14 : LINE=(DU3h,MBLMH14,DU3h,QHXh14_full,DU4h,RFBHX14,DU5h,PSHXh14_full,DU6h,VVHXU14,DU7h)
@@ -3250,82 +3310,82 @@ dqhx50: drift, l = lqu
 ! HXR cell definitions
 ! ------------------------------------------------------------------------------
 
-hxr13beg: marker
-hxr13end: marker
-hxr14beg: marker
-hxr14end: marker
-hxr15beg: marker
-hxr15end: marker
-hxr16beg: marker
-hxr16end: marker
-hxr17beg: marker
-hxr17end: marker
-hxr18beg: marker
-hxr18end: marker
-hxr19beg: marker
-hxr19end: marker
-hxr20beg: marker
-hxr20end: marker
-hxr21beg: marker
-hxr21end: marker
-hxr22beg: marker
-hxr22end: marker
-hxr23beg: marker
-hxr23end: marker
-hxr24beg: marker
-hxr24end: marker
-hxr25beg: marker
-hxr25end: marker
-hxr26beg: marker
-hxr26end: marker
-hxr27beg: marker
-hxr27end: marker
-hxr28beg: marker
-hxr28end: marker
-hxr29beg: marker
-hxr29end: marker
-hxr30beg: marker
-hxr30end: marker
-hxr31beg: marker
-hxr31end: marker
-hxr32beg: marker
-hxr32end: marker
-hxr33beg: marker
-hxr33end: marker
-hxr34beg: marker
-hxr34end: marker
-hxr35beg: marker
-hxr35end: marker
-hxr36beg: marker
-hxr36end: marker
-hxr37beg: marker
-hxr37end: marker
-hxr38beg: marker
-hxr38end: marker
-hxr39beg: marker
-hxr39end: marker
-hxr40beg: marker
-hxr40end: marker
-hxr41beg: marker
-hxr41end: marker
-hxr42beg: marker
-hxr42end: marker
-hxr43beg: marker
-hxr43end: marker
-hxr44beg: marker
-hxr44end: marker
-hxr45beg: marker
-hxr45end: marker
-hxr46beg: marker
-hxr46end: marker
-hxr47beg: marker
-hxr47end: marker
-hxr48beg: marker
-hxr48end: marker
-hxr49beg: marker
-hxr49end: marker
-hxr50beg: marker
-hxr50end: marker
+hxr13beg: marker, descrip = "mad8_key:mark"
+hxr13end: marker, descrip = "mad8_key:mark"
+hxr14beg: marker, descrip = "mad8_key:mark"
+hxr14end: marker, descrip = "mad8_key:mark"
+hxr15beg: marker, descrip = "mad8_key:mark"
+hxr15end: marker, descrip = "mad8_key:mark"
+hxr16beg: marker, descrip = "mad8_key:mark"
+hxr16end: marker, descrip = "mad8_key:mark"
+hxr17beg: marker, descrip = "mad8_key:mark"
+hxr17end: marker, descrip = "mad8_key:mark"
+hxr18beg: marker, descrip = "mad8_key:mark"
+hxr18end: marker, descrip = "mad8_key:mark"
+hxr19beg: marker, descrip = "mad8_key:mark"
+hxr19end: marker, descrip = "mad8_key:mark"
+hxr20beg: marker, descrip = "mad8_key:mark"
+hxr20end: marker, descrip = "mad8_key:mark"
+hxr21beg: marker, descrip = "mad8_key:mark"
+hxr21end: marker, descrip = "mad8_key:mark"
+hxr22beg: marker, descrip = "mad8_key:mark"
+hxr22end: marker, descrip = "mad8_key:mark"
+hxr23beg: marker, descrip = "mad8_key:mark"
+hxr23end: marker, descrip = "mad8_key:mark"
+hxr24beg: marker, descrip = "mad8_key:mark"
+hxr24end: marker, descrip = "mad8_key:mark"
+hxr25beg: marker, descrip = "mad8_key:mark"
+hxr25end: marker, descrip = "mad8_key:mark"
+hxr26beg: marker, descrip = "mad8_key:mark"
+hxr26end: marker, descrip = "mad8_key:mark"
+hxr27beg: marker, descrip = "mad8_key:mark"
+hxr27end: marker, descrip = "mad8_key:mark"
+hxr28beg: marker, descrip = "mad8_key:mark"
+hxr28end: marker, descrip = "mad8_key:mark"
+hxr29beg: marker, descrip = "mad8_key:mark"
+hxr29end: marker, descrip = "mad8_key:mark"
+hxr30beg: marker, descrip = "mad8_key:mark"
+hxr30end: marker, descrip = "mad8_key:mark"
+hxr31beg: marker, descrip = "mad8_key:mark"
+hxr31end: marker, descrip = "mad8_key:mark"
+hxr32beg: marker, descrip = "mad8_key:mark"
+hxr32end: marker, descrip = "mad8_key:mark"
+hxr33beg: marker, descrip = "mad8_key:mark"
+hxr33end: marker, descrip = "mad8_key:mark"
+hxr34beg: marker, descrip = "mad8_key:mark"
+hxr34end: marker, descrip = "mad8_key:mark"
+hxr35beg: marker, descrip = "mad8_key:mark"
+hxr35end: marker, descrip = "mad8_key:mark"
+hxr36beg: marker, descrip = "mad8_key:mark"
+hxr36end: marker, descrip = "mad8_key:mark"
+hxr37beg: marker, descrip = "mad8_key:mark"
+hxr37end: marker, descrip = "mad8_key:mark"
+hxr38beg: marker, descrip = "mad8_key:mark"
+hxr38end: marker, descrip = "mad8_key:mark"
+hxr39beg: marker, descrip = "mad8_key:mark"
+hxr39end: marker, descrip = "mad8_key:mark"
+hxr40beg: marker, descrip = "mad8_key:mark"
+hxr40end: marker, descrip = "mad8_key:mark"
+hxr41beg: marker, descrip = "mad8_key:mark"
+hxr41end: marker, descrip = "mad8_key:mark"
+hxr42beg: marker, descrip = "mad8_key:mark"
+hxr42end: marker, descrip = "mad8_key:mark"
+hxr43beg: marker, descrip = "mad8_key:mark"
+hxr43end: marker, descrip = "mad8_key:mark"
+hxr44beg: marker, descrip = "mad8_key:mark"
+hxr44end: marker, descrip = "mad8_key:mark"
+hxr45beg: marker, descrip = "mad8_key:mark"
+hxr45end: marker, descrip = "mad8_key:mark"
+hxr46beg: marker, descrip = "mad8_key:mark"
+hxr46end: marker, descrip = "mad8_key:mark"
+hxr47beg: marker, descrip = "mad8_key:mark"
+hxr47end: marker, descrip = "mad8_key:mark"
+hxr48beg: marker, descrip = "mad8_key:mark"
+hxr48end: marker, descrip = "mad8_key:mark"
+hxr49beg: marker, descrip = "mad8_key:mark"
+hxr49end: marker, descrip = "mad8_key:mark"
+hxr50beg: marker, descrip = "mad8_key:mark"
+hxr50end: marker, descrip = "mad8_key:mark"
 
   HXCEL13  : LINE=(HXR13BEG,DU1h,DU2h,DUSEGH13,HXBRK13,HXR13END) !CBCHICANE1+Q+RFBPM
   HXCEL14  : LINE=(HXR14BEG,DU1h,DU2h,USEGHX14,HXBRK14,HXR14END)
@@ -3376,8 +3436,10 @@ hxr50end: marker
 ! HXR undulator exit section
 ! ------------------------------------------------------------------------------
 
-tcx01: lcavity, rf_frequency = xbandf * 1e6, type = "TRANS_DEFL", l = 1.0/2, cavity_type = traveling_wave !horizontal deflection
-tcx02: lcavity, rf_frequency = xbandf * 1e6, type = "TRANS_DEFL", l = 1.0/2, cavity_type = traveling_wave !horizontal deflection
+tcx01: lcavity, rf_frequency = xbandf * 1e6, type = "TRANS_DEFL", l = 1.0/2, cavity_type = traveling_wave, !horizontal deflection
+          descrip = "mad8_key:lcav"
+tcx02: lcavity, rf_frequency = xbandf * 1e6, type = "TRANS_DEFL", l = 1.0/2, cavity_type = traveling_wave, !horizontal deflection
+          descrip = "mad8_key:lcav"
 
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
@@ -3385,58 +3447,58 @@ tcx02: lcavity, rf_frequency = xbandf * 1e6, type = "TRANS_DEFL", l = 1.0/2, cav
 kque1 = 0.177882363971 ! 0.178908931125
 kque2 = -0.136231234699
 
-que1: quadrupole, type = "3.25Q20", l = lqd/2, k1 = kque1, aperture = rqd
-que2: quadrupole, type = "3.25Q20", l = lqd/2, k1 = kque2, aperture = rqd
+que1: quadrupole, type = "3.25Q20", l = lqd/2, k1 = kque1, aperture = rqd, descrip = "mad8_key:quad"
+que2: quadrupole, type = "3.25Q20", l = lqd/2, k1 = kque2, aperture = rqd, descrip = "mad8_key:quad"
 
 dzhxtes = 0.749541186639e-6 !set MDLWALL at 685 m exactly to align with HXR XTES system
 
-due2c: drift, l = due2cb[l]+(lqr-lqd)/2 !0.555
-due3a: drift, l = 0.375504 +(lqp-lqd)/2 +0.11496 -0.063643
-due3b: drift, l = 1.2630495 -0.11496 +0.063643
-dbkxdmph: drift, l = lbkxdmp !placeholder for x-kicker in HXR dumpline
-dpcvv: drift, l = 0.397
-dvvtcx: drift, l = 0.32
-dtcx12: drift, l = 0.373/2
-dtcxsp: drift, l = 0.381
-due4: drift, l = 0.394 !DUE4b[L] +(LQR-LQD)/2
-due5a: drift, l = 0.477799 +(lqp-lqd)/2 +0.012675 -0.063653
-due5b: drift, l = 0.264 -0.012675 +0.063653
-due5c: drift, l = 0.2674
-due5e: drift, l = 0.252825-due5d[l]-due5f[l]-dzhxtes
-ddlwall: drift, l = 0.250825+dzhxtes !length of dumpline thermal barrier wall
+due2c: drift, l = due2cb[l]+(lqr-lqd)/2, descrip = "mad8_key:drif" !0.555
+due3a: drift, l = 0.375504 +(lqp-lqd)/2 +0.11496 -0.063643, descrip = "mad8_key:drif"
+due3b: drift, l = 1.2630495 -0.11496 +0.063643, descrip = "mad8_key:drif"
+dbkxdmph: drift, l = lbkxdmp, descrip = "mad8_key:drif" !placeholder for x-kicker in HXR dumpline
+dpcvv: drift, l = 0.397, descrip = "mad8_key:drif"
+dvvtcx: drift, l = 0.32, descrip = "mad8_key:drif"
+dtcx12: drift, l = 0.373/2, descrip = "mad8_key:drif"
+dtcxsp: drift, l = 0.381, descrip = "mad8_key:drif"
+due4: drift, l = 0.394, descrip = "mad8_key:drif" !DUE4b[L] +(LQR-LQD)/2
+due5a: drift, l = 0.477799 +(lqp-lqd)/2 +0.012675 -0.063653, descrip = "mad8_key:drif"
+due5b: drift, l = 0.264 -0.012675 +0.063653, descrip = "mad8_key:drif"
+due5c: drift, l = 0.2674, descrip = "mad8_key:drif"
+due5e: drift, l = 0.252825-due5d[l]-due5f[l]-dzhxtes, descrip = "mad8_key:drif"
+ddlwall: drift, l = 0.250825+dzhxtes, descrip = "mad8_key:drif" !length of dumpline thermal barrier wall
 
-bpmue1: monitor, type = "Stripline-13" !RFBUE1 : MONI, TYPE="@2,CavityS-1"
-bpmue2: monitor, type = "Stripline-13" !RFBUE2 : MONI, TYPE="@2,CavityS-1"
+bpmue1: monitor, type = "Stripline-13", descrip = "mad8_key:moni" !RFBUE1 : MONI, TYPE="@2,CavityS-1"
+bpmue2: monitor, type = "Stripline-13", descrip = "mad8_key:moni" !RFBUE2 : MONI, TYPE="@2,CavityS-1"
 
-xcue2: hkicker, type = "class-4"
-xcd3: hkicker, type = "class-5"
+xcue2: hkicker, type = "class-4", descrip = "mad8_key:hkic"
+xcd3: hkicker, type = "class-5", descrip = "mad8_key:hkic"
 
-ycue1: vkicker, type = "class-4"
-ycd3: vkicker, type = "class-5"
+ycue1: vkicker, type = "class-4", descrip = "mad8_key:vkic"
+ycd3: vkicker, type = "class-5", descrip = "mad8_key:vkic"
 
-pctcx: ecollimator, x_limit = 4.5e-3, y_limit = 4.5e-3 !XTCAV photon collimator (9 mm aperture)
-pcpm0: ecollimator, l = lpcpm, x_limit = 17.5e-3, y_limit = 17.5e-3
+pctcx: ecollimator, x_limit = 4.5e-3, y_limit = 4.5e-3, descrip = "mad8_key:ecol" !XTCAV photon collimator (9 mm aperture)
+pcpm0: ecollimator, l = lpcpm, x_limit = 17.5e-3, y_limit = 17.5e-3, descrip = "mad8_key:ecol"
 
-ph31: instrument, type = "2805 MHz" !post-undulator phase measurement RF cavity (existing LCLS device)
-ph32: instrument, type = "2805 MHz" !post-undulator phase measurement RF cavity (existing LCLS device)
-ph33: instrument, type = "2604 MHz" !post-undulator phase measurement RF cavity (high rate)
-ph34: instrument, type = "2604 MHz" !post-undulator phase measurement RF cavity (high rate)
-true1: instrument, type = "@5" !Be foil inserter (THz) -- existing LCLS device
-sptcx: instrument !XTCAV spoiler
-btmque: instrument !Burn-Through-Monitor
-btm0: instrument !Burn-Through-Monitor behind the PCPM0
+ph31: instrument, type = "2805 MHz", descrip = "mad8_key:inst" !post-undulator phase measurement RF cavity (existing LCLS device)
+ph32: instrument, type = "2805 MHz", descrip = "mad8_key:inst" !post-undulator phase measurement RF cavity (existing LCLS device)
+ph33: instrument, type = "2604 MHz", descrip = "mad8_key:inst" !post-undulator phase measurement RF cavity (high rate)
+ph34: instrument, type = "2604 MHz", descrip = "mad8_key:inst" !post-undulator phase measurement RF cavity (high rate)
+true1: instrument, type = "@5", descrip = "mad8_key:inst" !Be foil inserter (THz) -- existing LCLS device
+sptcx: instrument, descrip = "mad8_key:inst" !XTCAV spoiler
+btmque: instrument, descrip = "mad8_key:inst" !Burn-Through-Monitor
+btm0: instrument, descrip = "mad8_key:inst" !Burn-Through-Monitor behind the PCPM0
 
-uebeg: marker
-vv36: marker !treaty-point vacuum valve just downbeam of undulator
-mimundo: marker
-vvtcx: marker !XTCAV vacuum valve
-mtcx01: marker !entrance to TCX01 (for ELEGANT WATCH point)
-mtcx: marker !centerline between TCX01 and TCX02 (for matching)
-mimbcs3: marker
-mdlwall: marker !front face of dumpline thermal barrier wall
-ueend: marker
-dlstart: marker !start of dumpline
-vv37: marker !vac. valve in dumpline
+uebeg: marker, descrip = "mad8_key:mark"
+vv36: marker, descrip = "mad8_key:mark" !treaty-point vacuum valve just downbeam of undulator
+mimundo: marker, descrip = "mad8_key:mark"
+vvtcx: marker, descrip = "mad8_key:mark" !XTCAV vacuum valve
+mtcx01: marker, descrip = "mad8_key:mark" !entrance to TCX01 (for ELEGANT WATCH point)
+mtcx: marker, descrip = "mad8_key:mark" !centerline between TCX01 and TCX02 (for matching)
+mimbcs3: marker, descrip = "mad8_key:mark"
+mdlwall: marker, descrip = "mad8_key:mark" !front face of dumpline thermal barrier wall
+ueend: marker, descrip = "mad8_key:mark"
+dlstart: marker, descrip = "mad8_key:mark" !start of dumpline
+vv37: marker, descrip = "mad8_key:mark" !vac. valve in dumpline
 
 
 
