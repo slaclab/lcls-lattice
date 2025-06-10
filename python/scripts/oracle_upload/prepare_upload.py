@@ -65,7 +65,7 @@ def roundoff(val, prec=None):
 
 script_dir = Path(__file__).parent.resolve()
 
-optics='12MAY2025s'
+optics='09JUN2025s'
 vfile=['LCLS2sc_value.echo','LCLS2cu_value.echo']
 
 outdir='oracle_upload'
@@ -94,17 +94,12 @@ T2kG=10             # kG per Tesla
 file_roots = [
     {'root':'LCLS2scS',     'beg':'BEGGUNB',      'end':'ENDDMPS_2',   'ix':1},      #  1
     {'root':'LCLS2scSS',    'beg':'BEGSFTS_1',    'end':'ENDSFTS_2',   'ix':2},      #  2
-    {'root':'LCLS2scS2_X',  'beg':'BEGSXTES_1',   'end':'ENDSXTES_2',  'ix':3},      #  3
-    {'root':'LCLS2scSTXI',  'beg':'BEGSXTES_3',   'end':'ENDSXTES_3',  'ix':4},      #  4
-    {'root':'LCLS2scSTMO',  'beg':'BEGSXTES_4',   'end':'ENDSXTES_4',  'ix':5},      #  5
     {'root':'LCLS2scH',     'beg':'BEGSPH',       'end':'ENDSLTH',     'ix':6},      #  6
     {'root':'LCLS2scD',     'beg':'BEGSPD_2',     'end':'ENDSLTD',     'ix':7},      #  7
     {'root':'DIAG0',        'beg':'BEGDIAG0',     'end':'ENDDIAG0',    'ix':8},      #  8
     {'root':'LCLS2scDA',    'beg':'BEGSPA',       'end':'ENDESA',      'ix':9},      #  9 (DASEL)
     {'root':'LCLS2cuH',     'beg':'BEGGUN',       'end':'ENDDMPH_2',   'ix':10},     # 10
     {'root':'LCLS2cuHS',    'beg':'BEGSFTH_1',    'end':'ENDSFTH_2',   'ix':11},     # 11
-    {'root':'LCLS2cuHXTES', 'beg':'BEGHXTES_1',   'end':'ENDHXTES_2',  'ix':12},     # 12
-    {'root':'LCLS2cuHTXI',  'beg':'BEGHXTES_3',   'end':'ENDHXTES_3',  'ix':13},     # 13
     {'root':'LCLS2cuS',     'beg':'BEGCLTS',      'end':'ENDCLTS',     'ix':14},     # 14
     {'root':'LCLS2cuGSPEC', 'beg':'BEGGSPEC',     'end':'ENDGSPEC',    'ix':15},     # 15
     {'root':'LCLS2cuSPEC',  'beg':'BEGSPEC',      'end':'ENDSPEC',     'ix':16},     # 16
@@ -113,16 +108,11 @@ file_roots = [
 bsy_file_roots = [
     {'root':'LCLS2scS',     'beg':'BEGSPD_1',     'end':'ENDDMPS_2',   'ix':1},      #  1
     {'root':'LCLS2scSS',    'beg':'BEGSFTS_1',    'end':'ENDSFTS_2',   'ix':2},      #  2
-    {'root':'LCLS2scS2_X',  'beg':'BEGSXTES_1',   'end':'ENDSXTES_2',  'ix':3},      #  3
-    {'root':'LCLS2scSTXI',  'beg':'BEGSXTES_3',   'end':'ENDSXTES_3',  'ix':4},      #  4
-    {'root':'LCLS2scSTMO',  'beg':'BEGSXTES_4',   'end':'ENDSXTES_4',  'ix':5},      #  5
     {'root':'LCLS2scH',     'beg':'BEGSPH',       'end':'ENDSLTH',     'ix':6},      #  6
     {'root':'LCLS2scD',     'beg':'BEGSPD_2',     'end':'ENDSLTD',     'ix':7},      #  7
     {'root':'LCLS2scDA',    'beg':'BEGSPA',       'end':'ENDESA',      'ix':9},      #  9 (DASEL)
     {'root':'LCLS2cuH',     'beg':'BEGCLTH_0',    'end':'ENDDMPH_2',   'ix':10},     # 10
     {'root':'LCLS2cuHS',    'beg':'BEGSFTH_1',    'end':'ENDSFTH_2',   'ix':11},     # 11
-    {'root':'LCLS2cuHXTES', 'beg':'BEGHXTES_1',   'end':'ENDHXTES_2',  'ix':12},     # 12
-    {'root':'LCLS2cuHTXI',  'beg':'BEGHXTES_3',   'end':'ENDHXTES_3',  'ix':13},     # 13
     {'root':'LCLS2cuS',     'beg':'BEGCLTS',      'end':'ENDCLTS',     'ix':14},     # 14
 ]
 
@@ -158,11 +148,6 @@ area.append({'name': 'DMPS_2', 'beg': 'BEGDMPS_2', 'end': 'ENDDMPS_2', 'parent':
 # scSS
 area.append({'name': 'SFTS_1', 'beg': 'BEGSFTS_1', 'end': 'ENDSFTS_1', 'parent': 'SFTS', 'offset': [0, 0]})
 area.append({'name': 'SFTS_2', 'beg': 'BEGSFTS_2', 'end': 'ENDSFTS_2', 'parent': 'SFTS', 'offset': [0, 0]})
-# scSXTES/scS2_X/scSTXI/scSTMO
-area.append({'name': 'SXTES_1', 'beg': 'BEGSXTES_1', 'end': 'ENDSXTES_1', 'parent': 'SXTES', 'offset': [0, 0]})  # common line
-area.append({'name': 'SXTES_2', 'beg': 'BEGSXTES_2', 'end': 'ENDSXTES_2', 'parent': 'SXTES', 'offset': [0, 0]})  # "2.X" line
-area.append({'name': 'SXTES_3', 'beg': 'BEGSXTES_3', 'end': 'ENDSXTES_3', 'parent': 'SXTES', 'offset': [0, 0]})  # TXI line
-area.append({'name': 'SXTES_4', 'beg': 'BEGSXTES_4', 'end': 'ENDSXTES_4', 'parent': 'SXTES', 'offset': [0, 0]})  # TMO line
 # scH
 area.append({'name': 'SPH', 'beg': 'BEGSPH', 'end': 'ENDSPH', 'offset': [0, 0]})
 area.append({'name': 'SLTH', 'beg': 'BEGSLTH', 'end': 'ENDSLTH', 'offset': [0, 0]})
@@ -199,10 +184,6 @@ area.append({'name': 'DMPH_2', 'beg': 'BEGDMPH_2', 'end': 'ENDDMPH_2', 'parent':
 # cuHS
 area.append({'name': 'SFTH_1', 'beg': 'BEGSFTH_1', 'end': 'ENDSFTH_1', 'parent': 'SFTH', 'offset': [0, 0]})
 area.append({'name': 'SFTH_2', 'beg': 'BEGSFTH_2', 'end': 'ENDSFTH_2', 'parent': 'SFTH', 'offset': [0, 0]})
-# cuHXTES/cuHTXI
-area.append({'name': 'HXTES_1', 'beg': 'BEGHXTES_1', 'end': 'ENDHXTES_1', 'parent': 'HXTES', 'offset': [0, 0]})  # common line
-area.append({'name': 'HXTES_2', 'beg': 'BEGHXTES_2', 'end': 'ENDHXTES_2', 'parent': 'HXTES', 'offset': [0, 0]})  # XTES line
-area.append({'name': 'HXTES_3', 'beg': 'BEGHXTES_3', 'end': 'ENDHXTES_3', 'parent': 'HXTES', 'offset': [0, 0]})  # TXI line
 # cuS
 area.append({'name': 'CLTS', 'beg': 'BEGCLTS', 'end': 'ENDCLTS', 'offset': [0, 0]})
 # cuGSPEC
@@ -407,7 +388,7 @@ def fix_sxtes_coords(N, coor):
 if cBSY:
     coor_bsy = fix_dump_coords(N_bsy, P_bsy, coor_bsy)
     coor_bsy = fix_aline_coords(N_bsy, P_bsy, coor_bsy)
-    coor_bsy = fix_sxtes_coords(N_bsy, coor_bsy)
+    #coor_bsy = fix_sxtes_coords(N_bsy, coor_bsy)
 if cUND:
     coor_und = fix_dump_coords(N_und, P_und, coor_und)
     coor_und = fix_aline_coords(N_und, P_und, coor_und)
