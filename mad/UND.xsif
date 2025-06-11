@@ -1,10 +1,16 @@
 
-! *** OPTICS=AD_ACCEL-12MAY2025s ***
+! *** OPTICS=AD_ACCEL-09JUN2025s ***
 
 ! LCLS2sc undulator
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 11-MAY-2025, M. Woodley
+!  * replace short-period undulator and phase shifter in SXR cell 28 with a
+!    long-period undulator and phase shifter
+!  * fix lengths of DU3S_ and DU4S_ to locate long-period phase shifters per
+!    X. Permanyer email
 ! ------------------------------------------------------------------------------
 ! 24-APR-2025, M. Woodley
 !  * replace short-period undulator and phase shifter in SXR cell 27 with a
@@ -523,8 +529,8 @@
 ! - DTSXU_ = SXU undulator segment small terminations modeled as drift
 ! ------------------------------------------------------------------------------
 
-  LDU3s_ := 0.25-LPSSXh_-0.04-0.005
-  LDU4s_ := (0.25-LPSSXh_-0.5*LQu)/2+0.04+0.005-0.0062
+  LDU3s_ := 0.25-LPSSXh_-0.04-0.005-0.010996
+  LDU4s_ := (0.25-LPSSXh_-0.5*LQu)/2+0.04+0.005-0.0062+0.010996
   LDU5s_ := (0.25-LPSSXh_-0.5*LQu)/2+0.0062
 
   DTSXU_   : DRIF, L=LSXUe_
@@ -1001,7 +1007,7 @@
   UMASXh25 : UMASXh_
   UMASXh26 : UMASXh_
   UMASXh27 : UMASXh_
-  UMASXh28 : UMASXh
+  UMASXh28 : UMASXh_
   UMASXh29 : UMASXh
   UMASXh30 : UMASXh
   UMASXh31 : UMASXh
@@ -1033,7 +1039,7 @@
   USEGSX25 : LINE=(DTSXU_,UMASXh25,XCSU25,YCSU25,UMASXh25,DTSXU_)
   USEGSX26 : LINE=(DTSXU_,UMASXh26,XCSU26,YCSU26,UMASXh26,DTSXU_)
   USEGSX27 : LINE=(DTSXU_,UMASXh27,XCSU27,YCSU27,UMASXh27,DTSXU_)
-  USEGSX28 : LINE=(DTSXU,UMASXh28,XCSU28,YCSU28,UMASXh28,DTSXU)
+  USEGSX28 : LINE=(DTSXU_,UMASXh28,XCSU28,YCSU28,UMASXh28,DTSXU_)
   USEGSX29 : LINE=(DTSXU,UMASXh29,XCSU29,YCSU29,UMASXh29,DTSXU)
   USEGSX30 : LINE=(DTSXU,UMASXh30,XCSU30,YCSU30,UMASXh30,DTSXU)
   USEGSX31 : LINE=(DTSXU,UMASXh31,XCSU31,YCSU31,UMASXh31,DTSXU)
@@ -1072,7 +1078,7 @@
   PSSXh25 : PSSXh_
   PSSXh26 : PSSXh_
   PSSXh27 : PSSXh_
-  PSSXh28 : PSSXh
+  PSSXh28 : PSSXh_
   PSSXh29 : PSSXh
   PSSXh30 : PSSXh
   PSSXh31 : PSSXh
@@ -1232,7 +1238,7 @@
                   RFBSX26,DU7s)
   SXBRK27 : LINE=(DU3s_,PSSXh27_full,DU4s_,DU5s_,QSXh27_full,DU6s,&
                   RFBSX27,DU7s)
-  SXBRK28 : LINE=(DU3s,PSSXh28_full,DU4s,VVSXU28,DU5s,QSXh28_full,DU6s,&
+  SXBRK28 : LINE=(DU3s_,PSSXh28_full,DU4s_,VVSXU28,DU5s_,QSXh28_full,DU6s,&
                   RFBSX28,DU7s)
   SXBRK29 : LINE=(DU3s,PSSXh29_full,DU4s,DU5s,QSXh29_full,DU6s,&
                   RFBSX29,DU7s)
@@ -1333,7 +1339,7 @@
   SXCEL25 : LINE=(SXR25BEG,DU1s,MBLMS25,DU2s,USEGSX25,SXBRK25,SXR25END) !long
   SXCEL26 : LINE=(SXR26BEG,DU1s,        DU2s,USEGSX26,SXBRK26,SXR26END) !long
   SXCEL27 : LINE=(SXR27BEG,DU1s,MBLMS27,DU2s,USEGSX27,SXBRK27,SXR27END) !long
-  SXCEL28 : LINE=(SXR28BEG,DU1s,        DU2s,USEGSX28,SXBRK28,SXR28END) !short
+  SXCEL28 : LINE=(SXR28BEG,DU1s,        DU2s,USEGSX28,SXBRK28,SXR28END) !long
   SXCEL29 : LINE=(SXR29BEG,DU1s,MBLMS29,DU2s,USEGSX29,SXBRK29,SXR29END) !short
   SXCEL30 : LINE=(SXR30BEG,DU1s,        DU2s,USEGSX30,SXBRK30,SXR30END) !short
   SXCEL31 : LINE=(SXR31BEG,DU1s,MBLMS31,DU2s,USEGSX31,SXBRK31,SXR31END) !short
