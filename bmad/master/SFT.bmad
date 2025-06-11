@@ -85,100 +85,96 @@ lbxpm2l = rbxpm*abxpm2l !path length in "long"  half of BXPM2
 lbxpm1 = lbxpm1s+lbxpm1l
 lbxpm2 = lbxpm2s+lbxpm2l
 
-bxpm11: sbend, type = "4D36-C", l = lbxpm1s, angle = abxpm1s, hgap = gbxpm/2, fint = 0.5, fintx = 0, e2 = 0, e1 = 0,
-          descrip = "mad8_key:sben"
-bxpm12: sbend, type = "4D36-C", l = lbxpm1l, angle = abxpm1l, hgap = gbxpm/2, fint = 0, fintx = 0.5, e1 = 0,
-          e2 = abxpm1, descrip = "mad8_key:sben"
+bxpm11: sbend, type = "4D36-C", l = lbxpm1s, angle = abxpm1s, hgap = gbxpm/2, fint = 0.5, fintx = 0, e2 = 0, e1 = 0
+bxpm12: sbend, type = "4D36-C", l = lbxpm1l, angle = abxpm1l, hgap = gbxpm/2, fint = 0, fintx = 0.5, e1 = 0, e2 = abxpm1
 
-bxpm21: sbend, type = "4D36-C", l = lbxpm2s, angle = abxpm2s, hgap = gbxpm/2, fint = 0.5, fintx = 0, e2 = 0,
-          e1 = -abxpm1, descrip = "mad8_key:sben"
+bxpm21: sbend, type = "4D36-C", l = lbxpm2s, angle = abxpm2s, hgap = gbxpm/2, fint = 0.5, fintx = 0, e2 = 0, e1 = -abxpm1
 bxpm22: sbend, type = "4D36-C", l = lbxpm2l, angle = abxpm2l, hgap = gbxpm/2, fint = 0, fintx = 0.5, e1 = 0,
-          e2 = abxpm1+abxpm2, descrip = "mad8_key:sben"
+          e2 = abxpm1+abxpm2
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-bxpm1: sbend, type = "4D36-C", hgap = gbxpm/2, l = lbxpm1, angle = abxpm1, e1 = 0, fint = 0.5, e2 = abxpm1, fintx = 0.5,
-          descrip = "mad8_key:sben"
+bxpm1: sbend, type = "4D36-C", hgap = gbxpm/2, l = lbxpm1, angle = abxpm1, e1 = 0, fint = 0.5, e2 = abxpm1, fintx = 0.5
 bxpm2: sbend, type = "4D36-C", hgap = gbxpm/2, l = lbxpm2, angle = abxpm2, e1 = -abxpm1, fint = 0.5, e2 = abxpm1+abxpm2,
-          fintx = 0.5, descrip = "mad8_key:sben"
+          fintx = 0.5
 
-dyds: drift, l = lbyds*cos(abyds/2), descrip = "mad8_key:drif"
-dyd1: drift, l = lbdm *cos(abyds+  abdm/2), descrip = "mad8_key:drif"
-dyd2: drift, l = lbdm *cos(abyds+3*abdm/2), descrip = "mad8_key:drif"
-dyd3: drift, l = lbdm *cos(abyds+5*abdm/2), descrip = "mad8_key:drif"
+dyds: drift, l = lbyds*cos(abyds/2)
+dyd1: drift, l = lbdm *cos(abyds+  abdm/2)
+dyd2: drift, l = lbdm *cos(abyds+3*abdm/2)
+dyd3: drift, l = lbdm *cos(abyds+5*abdm/2)
 
 ldsca = 0.479300-0.000001 !0.479298938157
 ldscb = 0.094517171073
 
-ds1s: drift, l = lds1 *cos(abyds), descrip = "mad8_key:drif"
-dssa: drift, l = lds  *cos(abyds+  abdm), descrip = "mad8_key:drif"
-dssb: drift, l = lds  *cos(abyds+2*abdm), descrip = "mad8_key:drif"
-dscsa: drift, l = ldsca*cos(abyds+3*abdm), descrip = "mad8_key:drif"
-dscsb: drift, l = ldscb*cos(abyds+3*abdm), descrip = "mad8_key:drif"
+ds1s: drift, l = lds1 *cos(abyds)
+dssa: drift, l = lds  *cos(abyds+  abdm)
+dssb: drift, l = lds  *cos(abyds+2*abdm)
+dscsa: drift, l = ldsca*cos(abyds+3*abdm)
+dscsb: drift, l = ldscb*cos(abyds+3*abdm)
 
 ldpm3 = 8.784
 ldpm31 = 8.2704483799
 ldpm32 = ldpm3-ldpm31
 zsftdmp = 0.0762 !safety dump Z-length
 
-dpcbtm1: drift, l = 0.15-0.135, descrip = "mad8_key:drif"
-dpcbtm2: drift, l = 0.15, descrip = "mad8_key:drif"
-dpm1: drift, l = 0.5350338, descrip = "mad8_key:drif" !0.298
-dpm11: drift, l = 0.188644, descrip = "mad8_key:drif"
-dpm12: drift, l = dpm1[l]-dpm11[l], descrip = "mad8_key:drif"
-dpm2: drift, l = 0.30   /cos(abxpm1), descrip = "mad8_key:drif"
-dpm3: drift, l = ldpm3  /cos(abxpm1+abxpm2), descrip = "mad8_key:drif"
-dpm31: drift, l = ldpm31 /cos(abxpm1+abxpm2), descrip = "mad8_key:drif"
-dpm32: drift, l = ldpm32 /cos(abxpm1+abxpm2), descrip = "mad8_key:drif"
-dpcbtm3: drift, l = 0, descrip = "mad8_key:drif" !BTM3 is attached to d/s face of PCPM3
-dpm4: drift, l = 2.42   /cos(abxpm1+abxpm2), descrip = "mad8_key:drif"
-dsftdmp: drift, l = zsftdmp/cos(abxpm1+abxpm2), descrip = "mad8_key:drif"
+dpcbtm1: drift, l = 0.15-0.135
+dpcbtm2: drift, l = 0.15
+dpm1: drift, l = 0.5350338 !0.298
+dpm11: drift, l = 0.188644
+dpm12: drift, l = dpm1[l]-dpm11[l]
+dpm2: drift, l = 0.30   /cos(abxpm1)
+dpm3: drift, l = ldpm3  /cos(abxpm1+abxpm2)
+dpm31: drift, l = ldpm31 /cos(abxpm1+abxpm2)
+dpm32: drift, l = ldpm32 /cos(abxpm1+abxpm2)
+dpcbtm3: drift, l = 0 !BTM3 is attached to d/s face of PCPM3
+dpm4: drift, l = 2.42   /cos(abxpm1+abxpm2)
+dsftdmp: drift, l = zsftdmp/cos(abxpm1+abxpm2)
 
-dxdcu: drift, l = 1.092223 +0.75, descrip = "mad8_key:drif"
-dxdcu1: drift, l = 0.8783, descrip = "mad8_key:drif"
-dxdcu1a: drift, l = 0.840799, descrip = "mad8_key:drif"
-dxdcu1b: drift, l = dxdcu1[l]-dxdcu1a[l], descrip = "mad8_key:drif"
-dxdcu2: drift, l = dxdcu[l]-dxdcu1[l], descrip = "mad8_key:drif"
-dxdcu2a: drift, l = 0.878201, descrip = "mad8_key:drif"
-dxdcu2b: drift, l = dxdcu2[l]-dxdcu2a[l], descrip = "mad8_key:drif"
-xdca: drift, l = 0.312777, descrip = "mad8_key:drif" !XDC chamber
-xdcb: drift, l = 0.693, descrip = "mad8_key:drif"    !XDC chamber
-xdcc: drift, l = 0.542, descrip = "mad8_key:drif"    !XDC chamber
-xdcd: drift, l = 0.255376, descrip = "mad8_key:drif" !XDC chamber
-dxdcd: drift, l = 7.1789662-dxdcu[l]-xdca[l]-xdcb[l]-xdcc[l]-xdcd[l], descrip = "mad8_key:drif" !7.266
-dxdcd1: drift, l = 2.661321, descrip = "mad8_key:drif"
-dxdcd2: drift, l = 0.512986, descrip = "mad8_key:drif"
-dxdcd2a: drift, l = 0.142402, descrip = "mad8_key:drif"
-dxdcd2b: drift, l = dxdcd2[l]-dxdcd2a[l], descrip = "mad8_key:drif"
-dxdcd3: drift, l = dxdcd[l]-dxdcd1[l]-dxdcd2[l], descrip = "mad8_key:drif"
+dxdcu: drift, l = 1.092223 +0.75
+dxdcu1: drift, l = 0.8783
+dxdcu1a: drift, l = 0.840799
+dxdcu1b: drift, l = dxdcu1[l]-dxdcu1a[l]
+dxdcu2: drift, l = dxdcu[l]-dxdcu1[l]
+dxdcu2a: drift, l = 0.878201
+dxdcu2b: drift, l = dxdcu2[l]-dxdcu2a[l]
+xdca: drift, l = 0.312777 !XDC chamber
+xdcb: drift, l = 0.693    !XDC chamber
+xdcc: drift, l = 0.542    !XDC chamber
+xdcd: drift, l = 0.255376 !XDC chamber
+dxdcd: drift, l = 7.1789662-dxdcu[l]-xdca[l]-xdcb[l]-xdcc[l]-xdcd[l] !7.266
+dxdcd1: drift, l = 2.661321
+dxdcd2: drift, l = 0.512986
+dxdcd2a: drift, l = 0.142402
+dxdcd2b: drift, l = dxdcd2[l]-dxdcd2a[l]
+dxdcd3: drift, l = dxdcd[l]-dxdcd1[l]-dxdcd2[l]
 
-pcpm1: ecollimator, l = lpcpm, x_limit = 0.0080, y_limit = 0.0080, descrip = "mad8_key:ecol" !per LCLSII-3.5-PR-0111-R1
-pcpm2: ecollimator, l = lpcpm, x_limit = 0.0127, y_limit = 0.0127, descrip = "mad8_key:ecol"
+pcpm1: ecollimator, l = lpcpm, x_limit = 0.0080, y_limit = 0.0080 !per LCLSII-3.5-PR-0111-R1
+pcpm2: ecollimator, l = lpcpm, x_limit = 0.0127, y_limit = 0.0127
  !PCPM3  : ECOL, L=LPCPMW/COS(ABXPM1+ABXPM2), XSIZE=0.0080, YSIZE=0.0080
-dpcpm3: drift, l = lpcpmw/cos(abxpm1+abxpm2), descrip = "mad8_key:drif" !placeholder for PCPM3
+dpcpm3: drift, l = lpcpmw/cos(abxpm1+abxpm2) !placeholder for PCPM3
 
-btm1: instrument, descrip = "mad8_key:inst" !Burn-Through-Monitor behind PCPM1
-btm2: instrument, descrip = "mad8_key:inst" !Burn-Through-Monitor behind PCPM2
+btm1: instrument !Burn-Through-Monitor behind PCPM1
+btm2: instrument !Burn-Through-Monitor behind PCPM2
  !BTM3   : INST !Burn-Through-Monitor behind PCPM3
-mbtm3: marker, descrip = "mad8_key:mark" !placeholder for BTM3
-btmsft: instrument, descrip = "mad8_key:inst" !Burn-Through-Monitor behind HXR safety dump
+mbtm3: marker !placeholder for BTM3
+btmsft: instrument !Burn-Through-Monitor behind HXR safety dump
 
-rtdsl0: monitor, type = "RAPID TRNAD DIAG", descrip = "mad8_key:moni"
-rtdsl0_yagxray: monitor, type = "MONITORILE MON (RTD", descrip = "mad8_key:moni"
+rtdsl0: monitor, type = "RAPID TRNAD DIAG"
+rtdsl0_yagxray: monitor, type = "MONITORILE MON (RTD"
 
-tp_hxtes0: instrument, type = "treaty flange", descrip = "mad8_key:inst" !treaty point for HXR XTES system
-tv1l0_vgc_1: instrument, type = "GATE VALVE", descrip = "mad8_key:inst"
-tv1l0_vrm_1: instrument, type = "RIGHT ANGLE VALV", descrip = "mad8_key:inst"
-tv1l0_gcc_1: instrument, type = "COLD CATHODE GAU", descrip = "mad8_key:inst"
-tv1l0_gpi_1: instrument, type = "PIRANI GAUGE", descrip = "mad8_key:inst"
-im1l0_xtes_vgc_1: instrument, type = "GATE VALVE", descrip = "mad8_key:inst"
-im1l0_xtes_vrm_1: instrument, type = "RIGHT ANGLE VALV", descrip = "mad8_key:inst"
-im1l0_xtes: instrument, type = "IMAGER", descrip = "mad8_key:inst"
-mbxpm1_pip_1: instrument, type = "ION PUMP", descrip = "mad8_key:inst"
-sftdmp: instrument, descrip = "mad8_key:inst" !front face of HXR safety dump (Z'=712-715 m per PRD)
+tp_hxtes0: instrument, type = "treaty flange" !treaty point for HXR XTES system
+tv1l0_vgc_1: instrument, type = "GATE VALVE"
+tv1l0_vrm_1: instrument, type = "RIGHT ANGLE VALV"
+tv1l0_gcc_1: instrument, type = "COLD CATHODE GAU"
+tv1l0_gpi_1: instrument, type = "PIRANI GAUGE"
+im1l0_xtes_vgc_1: instrument, type = "GATE VALVE"
+im1l0_xtes_vrm_1: instrument, type = "RIGHT ANGLE VALV"
+im1l0_xtes: instrument, type = "IMAGER"
+mbxpm1_pip_1: instrument, type = "ION PUMP"
+sftdmp: instrument !front face of HXR safety dump (Z'=712-715 m per PRD)
 
-vv38: marker, descrip = "mad8_key:mark" !vac. valve in HXR safety dump line
-mvv10: marker, descrip = "mad8_key:mark" !placeholder for vac. valve in HXR XTES line
+vv38: marker !vac. valve in HXR safety dump line
+mvv10: marker !placeholder for vac. valve in HXR XTES line
 
 
 
@@ -220,78 +216,77 @@ lbxpm1bl = rbxpmb*abxpm1bl !path length in "long"  half of BXPM1B
 
 lbxpm1b = lbxpm1bs+lbxpm1bl
 
-bxpm1b1: sbend, type = "4D36-C", l = lbxpm1bs, angle = abxpm1bs, hgap = gbxpm/2, fint = 0.5, fintx = 0, e2 = 0, e1 = 0,
-          descrip = "mad8_key:sben"
+bxpm1b1: sbend, type = "4D36-C", l = lbxpm1bs, angle = abxpm1bs, hgap = gbxpm/2, fint = 0.5, fintx = 0, e2 = 0, e1 = 0
 bxpm1b2: sbend, type = "4D36-C", l = lbxpm1bl, angle = abxpm1bl, hgap = gbxpm/2, fint = 0, fintx = 0.5, e1 = 0,
-          e2 = abxpm1b, descrip = "mad8_key:sben"
+          e2 = abxpm1b
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
 bxpm1b: sbend, type = "4D36-C", hgap = gbxpm/2, l = lbxpm1b, angle = abxpm1b, e1 = 0, fint = 0.5, e2 = abxpm1b,
-          fintx = 0.5, descrip = "mad8_key:sben"
+          fintx = 0.5
 
-dscsb1: drift, l = 0.478198407804, descrip = "mad8_key:drif" !DSCSa[L]
-dscsb2: drift, l = 0.0943, descrip = "mad8_key:drif"         !DSCSa[L]
+dscsb1: drift, l = 0.478198407804 !DSCSa[L]
+dscsb2: drift, l = 0.0943         !DSCSa[L]
 
-dxdcub: drift, l = 1.842223, descrip = "mad8_key:drif"  !1.092223
-dxdcub1: drift, l = 0.8407994, descrip = "mad8_key:drif" !0.878299738776
-dxdcub2: drift, l = 0.0375006, descrip = "mad8_key:drif"
-dxdcub3: drift, l = 0.878257, descrip = "mad8_key:drif"
-dxdcub4: drift, l = dxdcub[l]-dxdcub1[l]-dxdcub2[l]-dxdcub3[l], descrip = "mad8_key:drif"
-xdcba: drift, l = 0.312777, descrip = "mad8_key:drif" !XDC chamber
-xdcbb: drift, l = 0.693, descrip = "mad8_key:drif"    !XDC chamber
-xdcbc: drift, l = 0.542, descrip = "mad8_key:drif"    !XDC chamber
-xdcbc1: drift, l = 0.0076773, descrip = "mad8_key:drif"
-xdcbc2: drift, l = xdcbc[l]-xdcbc1[l], descrip = "mad8_key:drif"
-xdcbd: drift, l = 0.255376, descrip = "mad8_key:drif" !XDC chamber
-dxdcdb: drift, l = 7.266-dxdcub[l]-xdcba[l]-xdcbb[l]-xdcbc[l]-xdcbd[l], descrip = "mad8_key:drif"
-dxdcdb1: drift, l = 0.262395, descrip = "mad8_key:drif"
-dxdcdb2: drift, l = 0.380049, descrip = "mad8_key:drif" !0.363747
-dxdcdb3: drift, l = 0.940451, descrip = "mad8_key:drif" !0.966253
-dxdcdb4: drift, l = 1.18874, descrip = "mad8_key:drif"  !1.492023
-dxdcdb5: drift, l = 0.312783, descrip = "mad8_key:drif"
-dxdcdb6: drift, l = dxdcdb[l]-dxdcdb1[l]-dxdcdb2[l]-dxdcdb3[l]-dxdcdb4[l]-dxdcdb5[l], descrip = "mad8_key:drif"
+dxdcub: drift, l = 1.842223  !1.092223
+dxdcub1: drift, l = 0.8407994 !0.878299738776
+dxdcub2: drift, l = 0.0375006
+dxdcub3: drift, l = 0.878257
+dxdcub4: drift, l = dxdcub[l]-dxdcub1[l]-dxdcub2[l]-dxdcub3[l]
+xdcba: drift, l = 0.312777 !XDC chamber
+xdcbb: drift, l = 0.693    !XDC chamber
+xdcbc: drift, l = 0.542    !XDC chamber
+xdcbc1: drift, l = 0.0076773
+xdcbc2: drift, l = xdcbc[l]-xdcbc1[l]
+xdcbd: drift, l = 0.255376 !XDC chamber
+dxdcdb: drift, l = 7.266-dxdcub[l]-xdcba[l]-xdcbb[l]-xdcbc[l]-xdcbd[l]
+dxdcdb1: drift, l = 0.262395
+dxdcdb2: drift, l = 0.380049 !0.363747
+dxdcdb3: drift, l = 0.940451 !0.966253
+dxdcdb4: drift, l = 1.18874  !1.492023
+dxdcdb5: drift, l = 0.312783
+dxdcdb6: drift, l = dxdcdb[l]-dxdcdb1[l]-dxdcdb2[l]-dxdcdb3[l]-dxdcdb4[l]-dxdcdb5[l]
 
-dpm1b: drift, l = 0.448, descrip = "mad8_key:drif"
-dpm2b: drift, l = 3.8732111/cos(abxpm1bs+abxpm1bl), descrip = "mad8_key:drif" !10.03
-dpm2ba: drift, l = 3.8732111/cos(abxpm1bs+abxpm1bl), descrip = "mad8_key:drif"
-dpm2bb: drift, l = dpm2b[l]-dpm2ba[l], descrip = "mad8_key:drif"
-dpcbtm3b: drift, l = 0, descrip = "mad8_key:drif" !BTM3B is attached to d/s face of PCPM3B
-dpm3b: drift, l = 8.5747889/cos(abxpm1bs+abxpm1bl), descrip = "mad8_key:drif" !2.272
-dpm3ba: drift, l = 0.6560246/cos(abxpm1bs+abxpm1bl), descrip = "mad8_key:drif"
-dpm3bb: drift, l = dpm3b[l]-dpm3ba[l], descrip = "mad8_key:drif"
-dsftdmpb: drift, l = zsftdmp  /cos(abxpm1bs+abxpm1bl), descrip = "mad8_key:drif"
+dpm1b: drift, l = 0.448
+dpm2b: drift, l = 3.8732111/cos(abxpm1bs+abxpm1bl) !10.03
+dpm2ba: drift, l = 3.8732111/cos(abxpm1bs+abxpm1bl)
+dpm2bb: drift, l = dpm2b[l]-dpm2ba[l]
+dpcbtm3b: drift, l = 0 !BTM3B is attached to d/s face of PCPM3B
+dpm3b: drift, l = 8.5747889/cos(abxpm1bs+abxpm1bl) !2.272
+dpm3ba: drift, l = 0.6560246/cos(abxpm1bs+abxpm1bl)
+dpm3bb: drift, l = dpm3b[l]-dpm3ba[l]
+dsftdmpb: drift, l = zsftdmp  /cos(abxpm1bs+abxpm1bl)
 
-pcpm1b: ecollimator, type = "ELECTRON COLL", l = lpcpm, x_limit = 0.0100, y_limit = 0.0100, descrip = "mad8_key:ecol" !per LCLSII-3.5-PR-0111-R1
-pcpm2b: ecollimator, type = "ELECTRON COLL", l = lpcpm, x_limit = 0.0127, y_limit = 0.0127, descrip = "mad8_key:ecol"
+pcpm1b: ecollimator, type = "ELECTRON COLL", l = lpcpm, x_limit = 0.0100, y_limit = 0.0100 !per LCLSII-3.5-PR-0111-R1
+pcpm2b: ecollimator, type = "ELECTRON COLL", l = lpcpm, x_limit = 0.0127, y_limit = 0.0127
  !PCPM3B  : ECOL, L=LPCPM/COS(ABXPM1BS+ABXPM1BL), XSIZE=0.0100, YSIZE=0.0100
-dpcpm3b: drift, l = lpcpmw/cos(abxpm1bs+abxpm1bl), descrip = "mad8_key:drif" !placeholder for PCPM3B
+dpcpm3b: drift, l = lpcpmw/cos(abxpm1bs+abxpm1bl) !placeholder for PCPM3B
 
-btm1b: instrument, type = "BTM", descrip = "mad8_key:inst" !Burn-Through-Monitor behind PCPM1B
-btm2b: instrument, type = "BTM", descrip = "mad8_key:inst" !Burn-Through-Monitor behind PCPM2B
+btm1b: instrument, type = "BTM" !Burn-Through-Monitor behind PCPM1B
+btm2b: instrument, type = "BTM" !Burn-Through-Monitor behind PCPM2B
  !BTM3B   : INST !Burn-Through-Monitor behind PCPM3B
-mbtm3b: marker, descrip = "mad8_key:mark" !placeholder for BTM3B
-btmsftb: instrument, descrip = "mad8_key:inst" !Burn-Through-Monitor behind SXR safety dump
+mbtm3b: marker !placeholder for BTM3B
+btmsftb: instrument !Burn-Through-Monitor behind SXR safety dump
 
-tp_sxtes0: instrument, type = "INTERFACE FLANGE", descrip = "mad8_key:inst" !treaty point for SXR XTES system (SXTES0)
-rtdsk0: instrument, type = "RAPID TRNAD DIAG", descrip = "mad8_key:inst"
-rtdsk0_yagxrayb: instrument, type = "MONITORILE MON (RTD", descrip = "mad8_key:inst" !safety dump line X-ray screen (YAGXRAYB)
-pc1k0_xtes: instrument, type = "PHOTON COLL", descrip = "mad8_key:inst" !PC1S
-em1k0_gmd: instrument, type = "GAS MONITOR DECT", descrip = "mad8_key:inst" !GMD1S
-im1k0_xtes: instrument, type = "IMAGER", descrip = "mad8_key:inst" !IM1S
-msl1s: marker, type = "adj aperture", descrip = "mad8_key:mark"
-sftdmpb: instrument, descrip = "mad8_key:inst" !front face of SXR safety dump (Z'=712-715 m per PRD)
+tp_sxtes0: instrument, type = "INTERFACE FLANGE" !treaty point for SXR XTES system (SXTES0)
+rtdsk0: instrument, type = "RAPID TRNAD DIAG"
+rtdsk0_yagxrayb: instrument, type = "MONITORILE MON (RTD" !safety dump line X-ray screen (YAGXRAYB)
+pc1k0_xtes: instrument, type = "PHOTON COLL" !PC1S
+em1k0_gmd: instrument, type = "GAS MONITOR DECT" !GMD1S
+im1k0_xtes: instrument, type = "IMAGER" !IM1S
+msl1s: marker, type = "adj aperture"
+sftdmpb: instrument !front face of SXR safety dump (Z'=712-715 m per PRD)
 
-vv38b: marker, descrip = "mad8_key:mark" !vac. valve in SXR safety dump line
-rtdsk0_vgc_1: instrument, type = "GATE VALVE", descrip = "mad8_key:inst" !vac. valve in SXR safety dump line (VV1S)
-rtdsk0_vrm_1: instrument, type = "RIGHT ANGLE VALV", descrip = "mad8_key:inst"
-rtdsk0_gcc_1: instrument, type = "COLD CATHODE GAU", descrip = "mad8_key:inst"
-rtdsk0_gpi_1: instrument, type = "PIRANI GAUGE", descrip = "mad8_key:inst"
-em1k0_gmd_vgc_1: instrument, type = "GATE VALVE", descrip = "mad8_key:inst" !vac. valve in SXR safety dump line (VV2S)
-im1k0_xtes_vrm_1: instrument, type = "RIGHT ANGLE VALV", descrip = "mad8_key:inst"
-im1k0_xtes_gcc_1: instrument, type = "COLD CATHODE GAU", descrip = "mad8_key:inst"
-im1k0_xtes_gpi_1: instrument, type = "PIRANI GAUGE", descrip = "mad8_key:inst"
-mvv3s: marker, descrip = "mad8_key:mark" !placeholder for vac. valve in SXR XTES line
+vv38b: marker !vac. valve in SXR safety dump line
+rtdsk0_vgc_1: instrument, type = "GATE VALVE" !vac. valve in SXR safety dump line (VV1S)
+rtdsk0_vrm_1: instrument, type = "RIGHT ANGLE VALV"
+rtdsk0_gcc_1: instrument, type = "COLD CATHODE GAU"
+rtdsk0_gpi_1: instrument, type = "PIRANI GAUGE"
+em1k0_gmd_vgc_1: instrument, type = "GATE VALVE" !vac. valve in SXR safety dump line (VV2S)
+im1k0_xtes_vrm_1: instrument, type = "RIGHT ANGLE VALV"
+im1k0_xtes_gcc_1: instrument, type = "COLD CATHODE GAU"
+im1k0_xtes_gpi_1: instrument, type = "PIRANI GAUGE"
+mvv3s: marker !placeholder for vac. valve in SXR XTES line
 
 
 

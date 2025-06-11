@@ -181,7 +181,7 @@ gbun = 1.8     !MV/m
 pbun = -85     !deg
 
 bun1b: lcavity, cavity_type = standing_wave, type = "LBNL", rf_frequency = 1300 * 1e6, l = lbun/2, aperture = abun/2,
-          voltage = gbun*lbun/2 * 1e6, phi0 = pbun/360, descrip = "mad8_key:lcav"
+          voltage = gbun*lbun/2 * 1e6, phi0 = pbun/360
 
 ! ==============================================================================
 ! SBEN
@@ -223,33 +223,21 @@ lbhs = zbh/(2*sincabhs)
 abhl = abh-abhs
 lbhl = lbh-lbhs
 
-bcxh1a: sbend, type = "5D3.9", l = lbhs, angle = +abhs, hgap = gbh/2, e1 = 0, fint = fbh, fintx = 0,
-          descrip = "mad8_key:sben"
-bcxh1b: sbend, type = "5D3.9", l = lbhl, angle = +abhl, hgap = gbh/2, fint = 0, e2 = +abh, fintx = fbh,
-          descrip = "mad8_key:sben"
-bcxh2a: sbend, type = "5D3.9", l = lbhl, angle = -abhl, hgap = gbh/2, e1 = -abh, fint = fbh, fintx = 0,
-          descrip = "mad8_key:sben"
-bcxh2b: sbend, type = "5D3.9", l = lbhs, angle = -abhs, hgap = gbh/2, fint = 0, e2 = 0, fintx = fbh,
-          descrip = "mad8_key:sben"
-bcxh3a: sbend, type = "5D3.9", l = lbhs, angle = -abhs, hgap = gbh/2, e1 = 0, fint = fbh, fintx = 0,
-          descrip = "mad8_key:sben"
-bcxh3b: sbend, type = "5D3.9", l = lbhl, angle = -abhl, hgap = gbh/2, fint = 0, e2 = -abh, fintx = fbh,
-          descrip = "mad8_key:sben"
-bcxh4a: sbend, type = "5D3.9", l = lbhl, angle = +abhl, hgap = gbh/2, e1 = +abh, fint = fbh, fintx = 0,
-          descrip = "mad8_key:sben"
-bcxh4b: sbend, type = "5D3.9", l = lbhs, angle = +abhs, hgap = gbh/2, fint = 0, e2 = 0, fintx = fbh,
-          descrip = "mad8_key:sben"
+bcxh1a: sbend, type = "5D3.9", l = lbhs, angle = +abhs, hgap = gbh/2, e1 = 0, fint = fbh, fintx = 0
+bcxh1b: sbend, type = "5D3.9", l = lbhl, angle = +abhl, hgap = gbh/2, fint = 0, e2 = +abh, fintx = fbh
+bcxh2a: sbend, type = "5D3.9", l = lbhl, angle = -abhl, hgap = gbh/2, e1 = -abh, fint = fbh, fintx = 0
+bcxh2b: sbend, type = "5D3.9", l = lbhs, angle = -abhs, hgap = gbh/2, fint = 0, e2 = 0, fintx = fbh
+bcxh3a: sbend, type = "5D3.9", l = lbhs, angle = -abhs, hgap = gbh/2, e1 = 0, fint = fbh, fintx = 0
+bcxh3b: sbend, type = "5D3.9", l = lbhl, angle = -abhl, hgap = gbh/2, fint = 0, e2 = -abh, fintx = fbh
+bcxh4a: sbend, type = "5D3.9", l = lbhl, angle = +abhl, hgap = gbh/2, e1 = +abh, fint = fbh, fintx = 0
+bcxh4b: sbend, type = "5D3.9", l = lbhs, angle = +abhs, hgap = gbh/2, fint = 0, e2 = 0, fintx = fbh
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-bcxh1: sbend, type = "5D3.9", hgap = gbh/2, l = lbh, angle = +abh, e1 = 0, fint = fbh, e2 = +abh, fintx = fbh,
-          descrip = "mad8_key:sben"
-bcxh2: sbend, type = "5D3.9", hgap = gbh/2, l = lbh, angle = -abh, e1 = -abh, fint = fbh, e2 = 0, fintx = fbh,
-          descrip = "mad8_key:sben"
-bcxh3: sbend, type = "5D3.9", hgap = gbh/2, l = lbh, angle = -abh, e1 = 0, fint = fbh, e2 = -abh, fintx = fbh,
-          descrip = "mad8_key:sben"
-bcxh4: sbend, type = "5D3.9", hgap = gbh/2, l = lbh, angle = +abh, e1 = +abh, fint = fbh, e2 = 0, fintx = fbh,
-          descrip = "mad8_key:sben"
+bcxh1: sbend, type = "5D3.9", hgap = gbh/2, l = lbh, angle = +abh, e1 = 0, fint = fbh, e2 = +abh, fintx = fbh
+bcxh2: sbend, type = "5D3.9", hgap = gbh/2, l = lbh, angle = -abh, e1 = -abh, fint = fbh, e2 = 0, fintx = fbh
+bcxh3: sbend, type = "5D3.9", hgap = gbh/2, l = lbh, angle = -abh, e1 = 0, fint = fbh, e2 = -abh, fintx = fbh
+bcxh4: sbend, type = "5D3.9", hgap = gbh/2, l = lbh, angle = +abh, e1 = +abh, fint = fbh, e2 = 0, fintx = fbh
 
 ! ==============================================================================
 ! QUAD
@@ -257,14 +245,14 @@ bcxh4: sbend, type = "5D3.9", hgap = gbh/2, l = lbh, angle = +abh, e1 = +abh, fi
 
 ! correction coils co-wound on GUNB solenoids
 
-cq01b: multipole, type = "solenoid trim", aperture = 0.0475/2, k1l = 0, descrip = "mad8_key:mult"
-sq01b: multipole, type = "solenoid trim", aperture = 0.0475/2, k1l = 0,t1, descrip = "mad8_key:mult"
+cq01b: multipole, type = "solenoid trim", aperture = 0.0475/2, k1l = 0
+sq01b: multipole, type = "solenoid trim", aperture = 0.0475/2, k1l = 0,t1
  !CQ02B : MULT, TYPE="solenoid trim", aperture=0.0475/2, K1L=0     !shorted out
-sq02b: multipole, type = "solenoid trim", aperture = 0.0475/2, k1l = 0,t1, descrip = "mad8_key:mult"
+sq02b: multipole, type = "solenoid trim", aperture = 0.0475/2, k1l = 0,t1
 
 ! replacement for original CQ02B (correction coil co-wound on SOL2B)
 
-cq02b: quadrupole, type = "3.37Q1.2", l = lqg/2, aperture = rqg, k1 = 0, descrip = "mad8_key:quad"
+cq02b: quadrupole, type = "3.37Q1.2", l = lqg/2, aperture = rqg, k1 = 0
 
 ! L0 to WS/OTR (Q0H01-4 match to waists at WS0H04)
 
@@ -276,10 +264,10 @@ kq0h03 = 0.483905171963 ! -0.947731202989 ! -0.947730849886 !
 kq0h04 = -3.971575402157 ! -3.418410103407 ! -3.418410369207 !
 b0h04w = 7.710749594202 !  5.0            !  5.0            !
 
-q0h01: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h01, descrip = "mad8_key:quad"
-q0h02: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h02, descrip = "mad8_key:quad"
-q0h03: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h03, descrip = "mad8_key:quad"
-q0h04: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h04, descrip = "mad8_key:quad"
+q0h01: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h01
+q0h02: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h02
+q0h03: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h03
+q0h04: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h04
 
 ! WS/OTR to laser heater (Q0H05-8 match to 10x10 m beta waists LHMID)
 
@@ -291,10 +279,10 @@ kq0h07 = 5.84302489781  !  7.794364472964 !  7.804907479846 !
 kq0h08 = -5.210258454761 ! -8.272684492892 ! -8.306722243051 !
 blhuw = 7.5            ! 10.0            ! 10.0            !
 
-q0h05: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h05, descrip = "mad8_key:quad"
-q0h06: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h06, descrip = "mad8_key:quad"
-q0h07: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h07, descrip = "mad8_key:quad"
-q0h08: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h08, descrip = "mad8_key:quad"
+q0h05: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h05
+q0h06: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h06
+q0h07: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h07
+q0h08: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h08
 
 ! laser heater to diagnostic line
 
@@ -305,10 +293,10 @@ kqhd02 = 7.650668410884 !  6.400024228564 !  6.401620200768 !
 kqhd03 = -7.978934972385 ! -8.612136694917 ! -8.622952974048 !
 kqhd04 = 6.238682089532 !  6.860670498454 !  6.864937307631 !
 
-qhd01: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kqhd01, descrip = "mad8_key:quad"
-qhd02: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kqhd02, descrip = "mad8_key:quad"
-qhd03: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kqhd03, descrip = "mad8_key:quad"
-qhd04: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kqhd04, descrip = "mad8_key:quad"
+qhd01: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kqhd01
+qhd02: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kqhd02
+qhd03: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kqhd03
+qhd04: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kqhd04
 
 ! collimation FODO
 
@@ -316,8 +304,8 @@ kqcoll0 = 1.787850470726  !45 degree FODO
 ! BminColl0 := 6.996145818354
 ! BmaxColl0 := 15.616293369747
 
-qfcoll0: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqcoll0, descrip = "mad8_key:quad"
-qdcoll0: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = -kqcoll0, descrip = "mad8_key:quad"
+qfcoll0: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqcoll0
+qdcoll0: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = -kqcoll0
 
 ! COL0 collimation section
 
@@ -334,18 +322,18 @@ kqc010 = 0.346494139368
 kqc011 = -1.054136562653
 kqc012 = 0.942153662284
 
-qc001: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc001, descrip = "mad8_key:quad"
-qc002: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc002, descrip = "mad8_key:quad"
-qc003: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc003, descrip = "mad8_key:quad"
-qc004: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc004, descrip = "mad8_key:quad"
-qc005: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc005, descrip = "mad8_key:quad"
-qc006: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc006, descrip = "mad8_key:quad"
-qc007: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc007, descrip = "mad8_key:quad"
-qc008: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc008, descrip = "mad8_key:quad"
-qc009: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc009, descrip = "mad8_key:quad"
-qc010: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc010, descrip = "mad8_key:quad"
-qc011: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc011, descrip = "mad8_key:quad"
-qc012: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc012, descrip = "mad8_key:quad"
+qc001: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc001
+qc002: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc002
+qc003: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc003
+qc004: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc004
+qc005: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc005
+qc006: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc006
+qc007: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc007
+qc008: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc008
+qc009: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc009
+qc010: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc010
+qc011: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc011
+qc012: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc012
 
 ! ==============================================================================
 ! SOLE
@@ -362,9 +350,9 @@ brho = cb*sqrt(e0^2-mc2^2) !kG-m (non-relativistic)
 ksol1 = (10*bsol1)/brho     !1/m
 ksol2 = (10*bsol2)/brho     !1/m
 
-sol1bkb: solenoid, type = "Bucking Coil", l = 0, ks = 0, descrip = "mad8_key:sole"
-sol1b: solenoid, type = "LBNL", l = lsol1/2, aperture = rsol, ks = ksol1, descrip = "mad8_key:sole"
-sol2b: solenoid, type = "LBNL", l = lsol2/2, aperture = rsol, ks = ksol2, descrip = "mad8_key:sole"
+sol1bkb: solenoid, type = "Bucking Coil", l = 0, ks = 0
+sol1b: solenoid, type = "LBNL", l = lsol1/2, aperture = rsol, ks = ksol1
+sol2b: solenoid, type = "LBNL", l = lsol2/2, aperture = rsol, ks = ksol2
 
 ! ==============================================================================
 ! MATR
@@ -418,8 +406,7 @@ r34h = lhunh*sincargh
 !new: !---------------------------------
 !new:
 umhtr: taylor, type = "UMLHB", l = lhunh, tt11 = 1.0, tt12 = lhunh, tt21 = 0, tt22 = 1.0, tt33 = cos(lhunh*sqrt(kqlh)),
-          tt34 = r34h, tt43 = -sin(lhunh*sqrt(kqlh))*sqrt(kqlh), tt44 = cos(lhunh*sqrt(kqlh)), tt55 = 1, tt66 = 1,
-          descrip = "mad8_key:matr"
+          tt34 = r34h, tt43 = -sin(lhunh*sqrt(kqlh))*sqrt(kqlh), tt44 = cos(lhunh*sqrt(kqlh)), tt55 = 1, tt66 = 1
    !R56=Lhunh/(gami^2)*(1+(K_und^2)/2)
 
 ! ==============================================================================
@@ -430,72 +417,72 @@ umhtr: taylor, type = "UMLHB", l = lhunh, tt11 = 1.0, tt12 = lhunh, tt21 = 0, tt
 
 lgun = 0.04 !APEX gun
 
-dgbca: drift, l = -0.071705, descrip = "mad8_key:drif"
-dgbcb: drift, l = 0.071705, descrip = "mad8_key:drif"
-dgun: drift, l = lgun, descrip = "mad8_key:drif"
-dg001: drift, l = 0.246530-lgun-lsol1/2, descrip = "mad8_key:drif"
-dg002: drift, l = 0.140950-lsol1/2, descrip = "mad8_key:drif"
-dg003: drift, l = 0.097020, descrip = "mad8_key:drif"
-dg004: drift, l = 0.005150, descrip = "mad8_key:drif"
-dg005: drift, l = 0.105042, descrip = "mad8_key:drif"
-dg006: drift, l = 0.075408, descrip = "mad8_key:drif"
-dg007: drift, l = 0.139016-lbun/2, descrip = "mad8_key:drif"
-dg008: drift, l = 0.155084-lbun/2, descrip = "mad8_key:drif"
-dg009: drift, l = 0.181801, descrip = "mad8_key:drif"
-dg010: drift, l = 0.222999, descrip = "mad8_key:drif"
-dg011: drift, l = 0.121314, descrip = "mad8_key:drif"
-dg012: drift, l = 0.155496-lsol2/2, descrip = "mad8_key:drif"
-dg013: drift, l = 0.136970-lsol2/2, descrip = "mad8_key:drif"
-dg014: drift, l = 0.101444, descrip = "mad8_key:drif"
-dg015: drift, l = 0.004540, descrip = "mad8_key:drif"
-dg016: drift, l = 0.163813, descrip = "mad8_key:drif"
+dgbca: drift, l = -0.071705
+dgbcb: drift, l = 0.071705
+dgun: drift, l = lgun
+dg001: drift, l = 0.246530-lgun-lsol1/2
+dg002: drift, l = 0.140950-lsol1/2
+dg003: drift, l = 0.097020
+dg004: drift, l = 0.005150
+dg005: drift, l = 0.105042
+dg006: drift, l = 0.075408
+dg007: drift, l = 0.139016-lbun/2
+dg008: drift, l = 0.155084-lbun/2
+dg009: drift, l = 0.181801
+dg010: drift, l = 0.222999
+dg011: drift, l = 0.121314
+dg012: drift, l = 0.155496-lsol2/2
+dg013: drift, l = 0.136970-lsol2/2
+dg014: drift, l = 0.101444
+dg015: drift, l = 0.004540
+dg016: drift, l = 0.163813
 
-dg012a: drift, l = 0.08-lqg/2, descrip = "mad8_key:drif"
-dg012b: drift, l = dg012[l]-lqg-dg012a[l], descrip = "mad8_key:drif"
-dg016b: drift, l = 0.082968, descrip = "mad8_key:drif"
-dg016a: drift, l = dg016[l]-dg016b[l], descrip = "mad8_key:drif"
+dg012a: drift, l = 0.08-lqg/2
+dg012b: drift, l = dg012[l]-lqg-dg012a[l]
+dg016b: drift, l = 0.082968
+dg016a: drift, l = dg016[l]-dg016b[l]
 
-dgeic: drift, l = 3.0-2.052577, descrip = "mad8_key:drif"
+dgeic: drift, l = 3.0-2.052577
 
 ! L0 to laser heater
 
-d0h00: drift, l = 0.658175, descrip = "mad8_key:drif"
-d0h01: drift, l = 0.427898, descrip = "mad8_key:drif"
-d0h02: drift, l = 4.179215, descrip = "mad8_key:drif"
-d0h03: drift, l = 0.409812, descrip = "mad8_key:drif"
-d0h04: drift, l = 1.0979, descrip = "mad8_key:drif"
-d0h05: drift, l = 0.409812, descrip = "mad8_key:drif"
-d0h06: drift, l = 1.366076, descrip = "mad8_key:drif"
-d0h07: drift, l = 0.409812, descrip = "mad8_key:drif"
-d0h08: drift, l = 0.3687, descrip = "mad8_key:drif"
+d0h00: drift, l = 0.658175
+d0h01: drift, l = 0.427898
+d0h02: drift, l = 4.179215
+d0h03: drift, l = 0.409812
+d0h04: drift, l = 1.0979
+d0h05: drift, l = 0.409812
+d0h06: drift, l = 1.366076
+d0h07: drift, l = 0.409812
+d0h08: drift, l = 0.3687
 
-d0h00a: drift, l = 0.2502, descrip = "mad8_key:drif"
-d0h00b: drift, l = 0.056, descrip = "mad8_key:drif"
-d0h00c: drift, l = d0h00[l]-d0h00a[l]-ljaw-d0h00b[l], descrip = "mad8_key:drif"
-d0h01a: drift, l = 0.213949, descrip = "mad8_key:drif"
-d0h01b: drift, l = d0h01[l]-d0h01a[l], descrip = "mad8_key:drif"
-d0h02a: drift, l = 0.204906, descrip = "mad8_key:drif"
-d0h02b: drift, l = 0.911461, descrip = "mad8_key:drif"
-d0h02c: drift, l = 0.485648, descrip = "mad8_key:drif"
-d0h02f: drift, l = 0.204906, descrip = "mad8_key:drif"
-d0h02e: drift, l = 0.5-d0h02f[l], descrip = "mad8_key:drif"
-d0h02d: drift, l = d0h02[l]-d0h02a[l]-d0h02b[l]-d0h02c[l]-d0h02e[l]-d0h02f[l], descrip = "mad8_key:drif"
-d0h03a: drift, l = 0.204906, descrip = "mad8_key:drif"
-d0h03b: drift, l = d0h03[l]-d0h03a[l], descrip = "mad8_key:drif"
-d0h04a: drift, l = 0.2148, descrip = "mad8_key:drif"
-d0h04b: drift, l = 0.0333, descrip = "mad8_key:drif"
-d0h04c: drift, l = 0.2437, descrip = "mad8_key:drif"
-d0h04d: drift, l = 0.2492, descrip = "mad8_key:drif"
-d0h04e: drift, l = d0h04[l]-d0h04a[l]-d0h04b[l]-d0h04c[l]-d0h04d[l], descrip = "mad8_key:drif"
-d0h05a: drift, l = 0.204906, descrip = "mad8_key:drif"
-d0h05b: drift, l = d0h05[l]-d0h05a[l], descrip = "mad8_key:drif"
-d0h06a: drift, l = 0.204906, descrip = "mad8_key:drif"
-d0h06c: drift, l = 0.204906, descrip = "mad8_key:drif"
-d0h06b: drift, l = d0h06[l]-d0h06a[l]-d0h06c[l], descrip = "mad8_key:drif"
-d0h07a: drift, l = 0.204906, descrip = "mad8_key:drif"
-d0h07b: drift, l = d0h07[l]-d0h07a[l], descrip = "mad8_key:drif"
-d0h08a: drift, l = 0.1934, descrip = "mad8_key:drif"
-d0h08b: drift, l = d0h08[l]-d0h08a[l], descrip = "mad8_key:drif"
+d0h00a: drift, l = 0.2502
+d0h00b: drift, l = 0.056
+d0h00c: drift, l = d0h00[l]-d0h00a[l]-ljaw-d0h00b[l]
+d0h01a: drift, l = 0.213949
+d0h01b: drift, l = d0h01[l]-d0h01a[l]
+d0h02a: drift, l = 0.204906
+d0h02b: drift, l = 0.911461
+d0h02c: drift, l = 0.485648
+d0h02f: drift, l = 0.204906
+d0h02e: drift, l = 0.5-d0h02f[l]
+d0h02d: drift, l = d0h02[l]-d0h02a[l]-d0h02b[l]-d0h02c[l]-d0h02e[l]-d0h02f[l]
+d0h03a: drift, l = 0.204906
+d0h03b: drift, l = d0h03[l]-d0h03a[l]
+d0h04a: drift, l = 0.2148
+d0h04b: drift, l = 0.0333
+d0h04c: drift, l = 0.2437
+d0h04d: drift, l = 0.2492
+d0h04e: drift, l = d0h04[l]-d0h04a[l]-d0h04b[l]-d0h04c[l]-d0h04d[l]
+d0h05a: drift, l = 0.204906
+d0h05b: drift, l = d0h05[l]-d0h05a[l]
+d0h06a: drift, l = 0.204906
+d0h06c: drift, l = 0.204906
+d0h06b: drift, l = d0h06[l]-d0h06a[l]-d0h06c[l]
+d0h07a: drift, l = 0.204906
+d0h07b: drift, l = d0h07[l]-d0h07a[l]
+d0h08a: drift, l = 0.1934
+d0h08b: drift, l = d0h08[l]-d0h08a[l]
 
 ! laser heater
 
@@ -507,49 +494,49 @@ zhbmid = 1.389994208901
 
 dlhun = 0.506263-9*lam !adjust undulator length
 
-dh01: drift, l = zhbbo/cos(abh), type = "CSR", descrip = "mad8_key:drif"
-dh01a: drift, l = zhbmo/cos(abh), type = "CSR", descrip = "mad8_key:drif"
-dh01b: drift, l = zhbmiu/cos(abh), type = "CSR", descrip = "mad8_key:drif"
-dh01c: drift, l = dh01[l]-dh01a[l]-dh01b[l], type = "CSR", descrip = "mad8_key:drif"
-dh02: drift, l = zhbbi, type = "CSR", descrip = "mad8_key:drif"
-dh02a: drift, l = 0.192614-ljaw/2, type = "CSR", descrip = "mad8_key:drif"
-dh02b: drift, l = 0.298450-ljaw/2, type = "CSR", descrip = "mad8_key:drif"
+dh01: drift, l = zhbbo/cos(abh), type = "CSR"
+dh01a: drift, l = zhbmo/cos(abh), type = "CSR"
+dh01b: drift, l = zhbmiu/cos(abh), type = "CSR"
+dh01c: drift, l = dh01[l]-dh01a[l]-dh01b[l], type = "CSR"
+dh02: drift, l = zhbbi, type = "CSR"
+dh02a: drift, l = 0.192614-ljaw/2, type = "CSR"
+dh02b: drift, l = 0.298450-ljaw/2, type = "CSR"
 !new: !0.2795065
 !new: ! Shorten so that umhtr has an integer number of poles
 !new: dh02c: drift, l = 0.2795065 - ( 10*0.054 - 0.506263 ) /2 , type = "CSR" !0.297036
-dh02c: drift, l = 0.2795065+dlhun/2, type = "CSR", descrip = "mad8_key:drif"
+dh02c: drift, l = 0.2795065+dlhun/2, type = "CSR"
 !new: !0.2724707
 !new: ! Shorten so that umhtr has an integer number of poles
 !new: dh02d: drift, l = 0.2724707 - ( 10*0.054 - 0.506263 ) /2, type = "CSR" !0.2900002
-dh02d: drift, l = 0.2724707+dlhun/2, type = "CSR", descrip = "mad8_key:drif"
-dh02e: drift, l = 0.4599998, type = "CSR", descrip = "mad8_key:drif"
-dh03: drift, l = zhbbo/cos(abh), type = "CSR", descrip = "mad8_key:drif"
-dh03a: drift, l = zhbmid/cos(abh), type = "CSR", descrip = "mad8_key:drif"
-dh03c: drift, l = zhbmo/cos(abh), type = "CSR", descrip = "mad8_key:drif"
-dh03b: drift, l = dh03[l]-dh03a[l]-dh03c[l], type = "CSR", descrip = "mad8_key:drif"
+dh02d: drift, l = 0.2724707+dlhun/2, type = "CSR"
+dh02e: drift, l = 0.4599998, type = "CSR"
+dh03: drift, l = zhbbo/cos(abh), type = "CSR"
+dh03a: drift, l = zhbmid/cos(abh), type = "CSR"
+dh03c: drift, l = zhbmo/cos(abh), type = "CSR"
+dh03b: drift, l = dh03[l]-dh03a[l]-dh03c[l], type = "CSR"
 
 ! laser heater to diagnostic line
 
-dhd00: drift, l = 0.381398817802, descrip = "mad8_key:drif"
-dhd01: drift, l = 0.6566, descrip = "mad8_key:drif"
-dhd02: drift, l = 2.580388, descrip = "mad8_key:drif"
-dhd03: drift, l = 0.459812, descrip = "mad8_key:drif"
-dhd04: drift, l = 0.3687996, descrip = "mad8_key:drif"
+dhd00: drift, l = 0.381398817802
+dhd01: drift, l = 0.6566
+dhd02: drift, l = 2.580388
+dhd03: drift, l = 0.459812
+dhd04: drift, l = 0.3687996
 
-dhd00b: drift, l = 0.1, descrip = "mad8_key:drif"
-dhd00a: drift, l = dhd00[l]-dhd00b[l], descrip = "mad8_key:drif"
-dhd01a: drift, l = 0.204906, descrip = "mad8_key:drif"
-dhd01c: drift, l = 0.204906, descrip = "mad8_key:drif"
-dhd01b: drift, l = dhd01[l]-dhd01a[l]-dhd01c[l], descrip = "mad8_key:drif"
-dhd02b: drift, l = 0.204906, descrip = "mad8_key:drif"
-dhd02a: drift, l = dhd02[l]-dhd02b[l], descrip = "mad8_key:drif"
-dhd02a2: drift, l = 0.305410, descrip = "mad8_key:drif"
-dhd02a3: drift, l = 0.777294, descrip = "mad8_key:drif"
-dhd02a1: drift, l = dhd02a[l]-dhd02a2[l]-dhd02a3[l], descrip = "mad8_key:drif"
-dhd03b: drift, l = 0.204906, descrip = "mad8_key:drif"
-dhd03a: drift, l = dhd03[l]-dhd03b[l], descrip = "mad8_key:drif"
-dhd04a: drift, l = 0.1208998, descrip = "mad8_key:drif"
-dhd04b: drift, l = dhd04[l]-dhd04a[l], descrip = "mad8_key:drif"
+dhd00b: drift, l = 0.1
+dhd00a: drift, l = dhd00[l]-dhd00b[l]
+dhd01a: drift, l = 0.204906
+dhd01c: drift, l = 0.204906
+dhd01b: drift, l = dhd01[l]-dhd01a[l]-dhd01c[l]
+dhd02b: drift, l = 0.204906
+dhd02a: drift, l = dhd02[l]-dhd02b[l]
+dhd02a2: drift, l = 0.305410
+dhd02a3: drift, l = 0.777294
+dhd02a1: drift, l = dhd02a[l]-dhd02a2[l]-dhd02a3[l]
+dhd03b: drift, l = 0.204906
+dhd03a: drift, l = dhd03[l]-dhd03b[l]
+dhd04a: drift, l = 0.1208998
+dhd04b: drift, l = dhd04[l]-dhd04a[l]
 
 !=!  COMMENT
 !=!  COMMENT
@@ -562,135 +549,135 @@ dhd04b: drift, l = dhd04[l]-dhd04a[l], descrip = "mad8_key:drif"
 
 ! collimation FODO
 
-dcoll0: drift, l = 4.0-lqx, descrip = "mad8_key:drif"
-dcoll0a: drift, l = 0.2508, descrip = "mad8_key:drif"
-dcoll0c: drift, l = 0.325-ljaw/2, descrip = "mad8_key:drif"
-dcoll0b: drift, l = dcoll0[l]-dcoll0a[l]-ljaw-dcoll0c[l], descrip = "mad8_key:drif"
-dcoll0b2: drift, l = 0.3, descrip = "mad8_key:drif"
-dcoll0b3: drift, l = 0.3151, descrip = "mad8_key:drif"
-dcoll0b4: drift, l = 0.25-ljaw/2, descrip = "mad8_key:drif"
-dcoll0b1: drift, l = dcoll0b[l]-dcoll0b2[l]-dcoll0b3[l]-dcoll0b4[l], descrip = "mad8_key:drif"
-dcoll0b5: drift, l = 3.2862, descrip = "mad8_key:drif"
+dcoll0: drift, l = 4.0-lqx
+dcoll0a: drift, l = 0.2508
+dcoll0c: drift, l = 0.325-ljaw/2
+dcoll0b: drift, l = dcoll0[l]-dcoll0a[l]-ljaw-dcoll0c[l]
+dcoll0b2: drift, l = 0.3
+dcoll0b3: drift, l = 0.3151
+dcoll0b4: drift, l = 0.25-ljaw/2
+dcoll0b1: drift, l = dcoll0b[l]-dcoll0b2[l]-dcoll0b3[l]-dcoll0b4[l]
+dcoll0b5: drift, l = 3.2862
 
 ! DIAG0 extraction magnets
 
-dbkrdg0a: drift, l = 0.5, descrip = "mad8_key:drif"
-dbkrdg0b: drift, l = 0.5, descrip = "mad8_key:drif"
-dblrdg0a: drift, l = 0.2, descrip = "mad8_key:drif"
-dblrdg0b: drift, l = 0.2, descrip = "mad8_key:drif"
+dbkrdg0a: drift, l = 0.5
+dbkrdg0b: drift, l = 0.5
+dblrdg0a: drift, l = 0.2
+dblrdg0b: drift, l = 0.2
 
 ! COL0 collimation section
 
-dc000: drift, l = 5.4832+4e-7, descrip = "mad8_key:drif"
-dc001: drift, l = 0.673, descrip = "mad8_key:drif"
-dc002: drift, l = 0.8238, descrip = "mad8_key:drif"
-dc003: drift, l = 1.533669597623, descrip = "mad8_key:drif"
-dc004: drift, l = 5.2128, descrip = "mad8_key:drif"
-dc010: drift, l = dcoll0[l], descrip = "mad8_key:drif"
-dc011: drift, l = 2.8252, descrip = "mad8_key:drif"
-dc012: drift, l = 2.52236, descrip = "mad8_key:drif"
+dc000: drift, l = 5.4832+4e-7
+dc001: drift, l = 0.673
+dc002: drift, l = 0.8238
+dc003: drift, l = 1.533669597623
+dc004: drift, l = 5.2128
+dc010: drift, l = dcoll0[l]
+dc011: drift, l = 2.8252
+dc012: drift, l = 2.52236
 
-dc000a: drift, l = zksd0, descrip = "mad8_key:drif"
-dc000c: drift, l = 0.19, descrip = "mad8_key:drif"
-dc000b: drift, l = dc000[l]-zk0-dc000a[l]-zs0-dc000c[l], descrip = "mad8_key:drif" !2.5932004
-dc003a: drift, l = 0.2508, descrip = "mad8_key:drif"
-dc003b: drift, l = dc003[l]-dc003a[l], descrip = "mad8_key:drif"
-dc004a: drift, l = 0.2508, descrip = "mad8_key:drif"
-dc004c: drift, l = 0.325-ljaw/2, descrip = "mad8_key:drif"
-dc004b: drift, l = dc004[l]-dc004a[l]-ljaw-dc004c[l], descrip = "mad8_key:drif"
-dc010a: drift, l = dcoll0a[l], descrip = "mad8_key:drif"
-dc010c: drift, l = 0.3, descrip = "mad8_key:drif"
-dc010b: drift, l = dc010[l]-dc010a[l]-dc010c[l], descrip = "mad8_key:drif"
-dc011a: drift, l = 0.2508, descrip = "mad8_key:drif"
-dc011c: drift, l = 0.327, descrip = "mad8_key:drif"
-dc011b: drift, l = dc011[l]-dc011a[l]-dc011c[l], descrip = "mad8_key:drif"
+dc000a: drift, l = zksd0
+dc000c: drift, l = 0.19
+dc000b: drift, l = dc000[l]-zk0-dc000a[l]-zs0-dc000c[l] !2.5932004
+dc003a: drift, l = 0.2508
+dc003b: drift, l = dc003[l]-dc003a[l]
+dc004a: drift, l = 0.2508
+dc004c: drift, l = 0.325-ljaw/2
+dc004b: drift, l = dc004[l]-dc004a[l]-ljaw-dc004c[l]
+dc010a: drift, l = dcoll0a[l]
+dc010c: drift, l = 0.3
+dc010b: drift, l = dc010[l]-dc010a[l]-dc010c[l]
+dc011a: drift, l = 0.2508
+dc011c: drift, l = 0.327
+dc011b: drift, l = dc011[l]-dc011a[l]-dc011c[l]
 
-dc000aa: drift, l = zksd0a, descrip = "mad8_key:drif"
-dc000ab: drift, l = zksd0b, descrip = "mad8_key:drif"
+dc000aa: drift, l = zksd0a
+dc000ab: drift, l = zksd0b
 
 ! ==============================================================================
 ! BPMs
 ! ------------------------------------------------------------------------------
 
-bpm1b: monitor, type = "Stripline-4", descrip = "mad8_key:moni"
-bpm2b: monitor, type = "Stripline-4", descrip = "mad8_key:moni"
+bpm1b: monitor, type = "Stripline-4"
+bpm2b: monitor, type = "Stripline-4"
 
-bpm0h01: monitor, type = "Stripline-12", descrip = "mad8_key:moni"
-bpm0h04: monitor, type = "Stripline-12", descrip = "mad8_key:moni"
-bpm0h05: monitor, type = "Stripline-12", descrip = "mad8_key:moni"
-bpm0h08: monitor, type = "Stripline-12", descrip = "mad8_key:moni"
-bpmh1: monitor, type = "Stripline-8", descrip = "mad8_key:moni"
-bpmh2: monitor, type = "Stripline-8", descrip = "mad8_key:moni"
-bpmhd01: monitor, type = "Stripline-12", descrip = "mad8_key:moni"
-bpmhd02: monitor, type = "Stripline-12", descrip = "mad8_key:moni"
-bpmhd03: monitor, type = "Stripline-12", descrip = "mad8_key:moni"
-bpmhd04: monitor, type = "Stripline-12", descrip = "mad8_key:moni"
-bpmc001: monitor, type = "Stripline-1", descrip = "mad8_key:moni"
-bpmc002: monitor, type = "Stripline-1", descrip = "mad8_key:moni"
-bpmc003: monitor, type = "Stripline-1", descrip = "mad8_key:moni"
-bpmc004: monitor, type = "Stripline-1", descrip = "mad8_key:moni"
-bpmc005: monitor, type = "Stripline-1", descrip = "mad8_key:moni"
-bpmc006: monitor, type = "Stripline-1", descrip = "mad8_key:moni"
-bpmc007: monitor, type = "Stripline-1", descrip = "mad8_key:moni"
-bpmc008: monitor, type = "Stripline-1", descrip = "mad8_key:moni"
-bpmc009: monitor, type = "Stripline-1", descrip = "mad8_key:moni"
-bpmc010: monitor, type = "Stripline-1", descrip = "mad8_key:moni"
-bpmc011: monitor, type = "Stripline-1", descrip = "mad8_key:moni"
-bpmc012: monitor, type = "Stripline-1", descrip = "mad8_key:moni"
+bpm0h01: monitor, type = "Stripline-12"
+bpm0h04: monitor, type = "Stripline-12"
+bpm0h05: monitor, type = "Stripline-12"
+bpm0h08: monitor, type = "Stripline-12"
+bpmh1: monitor, type = "Stripline-8"
+bpmh2: monitor, type = "Stripline-8"
+bpmhd01: monitor, type = "Stripline-12"
+bpmhd02: monitor, type = "Stripline-12"
+bpmhd03: monitor, type = "Stripline-12"
+bpmhd04: monitor, type = "Stripline-12"
+bpmc001: monitor, type = "Stripline-1"
+bpmc002: monitor, type = "Stripline-1"
+bpmc003: monitor, type = "Stripline-1"
+bpmc004: monitor, type = "Stripline-1"
+bpmc005: monitor, type = "Stripline-1"
+bpmc006: monitor, type = "Stripline-1"
+bpmc007: monitor, type = "Stripline-1"
+bpmc008: monitor, type = "Stripline-1"
+bpmc009: monitor, type = "Stripline-1"
+bpmc010: monitor, type = "Stripline-1"
+bpmc011: monitor, type = "Stripline-1"
+bpmc012: monitor, type = "Stripline-1"
 
-rfb0h00: monitor, type = "@2,CavityS-1", descrip = "mad8_key:moni"
-rfb0h04: monitor, type = "@2,CavityS-1", descrip = "mad8_key:moni"
-rfb0h08: monitor, type = "@2,CavityS-1", descrip = "mad8_key:moni"
-rfbhd00: monitor, type = "@2,CavityS-1", descrip = "mad8_key:moni"
-rfbhd04: monitor, type = "@2,CavityS-1", descrip = "mad8_key:moni"
-rfbc006: monitor, type = "@2,CavityS-1", descrip = "mad8_key:moni"
-rfbc011: monitor, type = "@4,CavityS-1", descrip = "mad8_key:moni"
+rfb0h00: monitor, type = "@2,CavityS-1"
+rfb0h04: monitor, type = "@2,CavityS-1"
+rfb0h08: monitor, type = "@2,CavityS-1"
+rfbhd00: monitor, type = "@2,CavityS-1"
+rfbhd04: monitor, type = "@2,CavityS-1"
+rfbc006: monitor, type = "@2,CavityS-1"
+rfbc011: monitor, type = "@4,CavityS-1"
 
 ! ==============================================================================
 ! XCORs
 ! ------------------------------------------------------------------------------
 
-xc01b: hkicker, type = "LBNL-xy", descrip = "mad8_key:hkic"
-xc02b: hkicker, type = "LBNL-xy", descrip = "mad8_key:hkic"
-xc03b: hkicker, type = "LBNL-xy", descrip = "mad8_key:hkic"
-xc04b: hkicker, type = "LBNL-xy", descrip = "mad8_key:hkic"
-xc05b: hkicker, type = "LBNL-xy", descrip = "mad8_key:hkic"
+xc01b: hkicker, type = "LBNL-xy"
+xc02b: hkicker, type = "LBNL-xy"
+xc03b: hkicker, type = "LBNL-xy"
+xc04b: hkicker, type = "LBNL-xy"
+xc05b: hkicker, type = "LBNL-xy"
 
-xc0h01: hkicker, type = "class-6", descrip = "mad8_key:hkic"
-xc0h03: hkicker, type = "class-6", descrip = "mad8_key:hkic"
-xc0h05: hkicker, type = "class-6", descrip = "mad8_key:hkic"
-xc0h07: hkicker, type = "class-6", descrip = "mad8_key:hkic"
-xchd01: hkicker, type = "class-6", descrip = "mad8_key:hkic"
-xchd03: hkicker, type = "class-6", descrip = "mad8_key:hkic"
-xcc000: hkicker, type = "class-1a", descrip = "mad8_key:hkic"
-xcc004: hkicker, type = "class-6", descrip = "mad8_key:hkic"
-xcc006: hkicker, type = "class-6", descrip = "mad8_key:hkic"
-xcc008: hkicker, type = "class-6", descrip = "mad8_key:hkic"
-xcc010: hkicker, type = "class-6", descrip = "mad8_key:hkic"
-xcc012: hkicker, type = "class-6", descrip = "mad8_key:hkic"
+xc0h01: hkicker, type = "class-6"
+xc0h03: hkicker, type = "class-6"
+xc0h05: hkicker, type = "class-6"
+xc0h07: hkicker, type = "class-6"
+xchd01: hkicker, type = "class-6"
+xchd03: hkicker, type = "class-6"
+xcc000: hkicker, type = "class-1a"
+xcc004: hkicker, type = "class-6"
+xcc006: hkicker, type = "class-6"
+xcc008: hkicker, type = "class-6"
+xcc010: hkicker, type = "class-6"
+xcc012: hkicker, type = "class-6"
 
 ! ==============================================================================
 ! YCORs
 ! ------------------------------------------------------------------------------
 
-yc01b: vkicker, type = "LBNL-xy", descrip = "mad8_key:vkic"
-yc02b: vkicker, type = "LBNL-xy", descrip = "mad8_key:vkic"
-yc03b: vkicker, type = "LBNL-xy", descrip = "mad8_key:vkic"
-yc04b: vkicker, type = "LBNL-xy", descrip = "mad8_key:vkic"
-yc05b: vkicker, type = "LBNL-xy", descrip = "mad8_key:vkic"
+yc01b: vkicker, type = "LBNL-xy"
+yc02b: vkicker, type = "LBNL-xy"
+yc03b: vkicker, type = "LBNL-xy"
+yc04b: vkicker, type = "LBNL-xy"
+yc05b: vkicker, type = "LBNL-xy"
 
-yc0h01: vkicker, type = "class-6", descrip = "mad8_key:vkic"
-yc0h03: vkicker, type = "class-6", descrip = "mad8_key:vkic"
-yc0h05: vkicker, type = "class-6", descrip = "mad8_key:vkic"
-yc0h07: vkicker, type = "class-6", descrip = "mad8_key:vkic"
-ychd01: vkicker, type = "class-6", descrip = "mad8_key:vkic"
-ychd03: vkicker, type = "class-6", descrip = "mad8_key:vkic"
-ycc000: vkicker, type = "class-1a", descrip = "mad8_key:vkic"
-ycc003: vkicker, type = "class-6", descrip = "mad8_key:vkic"
-ycc005: vkicker, type = "class-6", descrip = "mad8_key:vkic"
-ycc007: vkicker, type = "class-6", descrip = "mad8_key:vkic"
-ycc009: vkicker, type = "class-6", descrip = "mad8_key:vkic"
-ycc011: vkicker, type = "class-6", descrip = "mad8_key:vkic"
+yc0h01: vkicker, type = "class-6"
+yc0h03: vkicker, type = "class-6"
+yc0h05: vkicker, type = "class-6"
+yc0h07: vkicker, type = "class-6"
+ychd01: vkicker, type = "class-6"
+ychd03: vkicker, type = "class-6"
+ycc000: vkicker, type = "class-1a"
+ycc003: vkicker, type = "class-6"
+ycc005: vkicker, type = "class-6"
+ycc007: vkicker, type = "class-6"
+ycc009: vkicker, type = "class-6"
+ycc011: vkicker, type = "class-6"
 
 ! ==============================================================================
 ! collimators, diagnostics, etc.
@@ -698,34 +685,34 @@ ycc011: vkicker, type = "class-6", descrip = "mad8_key:vkic"
 
 ! halo/dark current collimator
 
-pc0h00: ecollimator, l = ljaw, x_limit = 6.0e-3, y_limit = 6.0e-3, type = "tungsten", descrip = "mad8_key:ecol"
+pc0h00: ecollimator, l = ljaw, x_limit = 6.0e-3, y_limit = 6.0e-3, type = "tungsten"
 
 ! collimators
 ! (betatron X/Y half-gaps are 24/16 sigma for 1 um normalized emittance)
 
-cehtr: rcollimator, l = ljaw, x_limit = 3.0e-3, type = "HCOLL", descrip = "mad8_key:rcol"    !X momentum collimator
-cyc01: rcollimator, l = ljaw, y_limit = 4.4e-3, type = "VCOLL", descrip = "mad8_key:rcol"    !Y betatron collimator
-cxc01: rcollimator, l = ljaw, x_limit = 4.4e-3, type = "HCOLL", descrip = "mad8_key:rcol"    !X betatron collimator
-cyc02: rcollimator, l = ljaw, y_limit = 4.4e-3, type = "@4,VCOLL", descrip = "mad8_key:rcol" !Y betatron collimator
-cxc02: rcollimator, l = ljaw, x_limit = 4.4e-3, type = "@4,HCOLL", descrip = "mad8_key:rcol" !X betatron collimator
-cyc03: rcollimator, l = ljaw, y_limit = 4.4e-3, type = "VCOLL", descrip = "mad8_key:rcol"    !Y betatron collimator
-cxc03: rcollimator, l = ljaw, x_limit = 4.4e-3, type = "HCOLL", descrip = "mad8_key:rcol"    !X betatron collimator
+cehtr: rcollimator, l = ljaw, x_limit = 3.0e-3, type = "HCOLL"    !X momentum collimator
+cyc01: rcollimator, l = ljaw, y_limit = 4.4e-3, type = "VCOLL"    !Y betatron collimator
+cxc01: rcollimator, l = ljaw, x_limit = 4.4e-3, type = "HCOLL"    !X betatron collimator
+cyc02: rcollimator, l = ljaw, y_limit = 4.4e-3, type = "@4,VCOLL" !Y betatron collimator
+cxc02: rcollimator, l = ljaw, x_limit = 4.4e-3, type = "@4,HCOLL" !X betatron collimator
+cyc03: rcollimator, l = ljaw, y_limit = 4.4e-3, type = "VCOLL"    !Y betatron collimator
+cxc03: rcollimator, l = ljaw, x_limit = 4.4e-3, type = "HCOLL"    !X betatron collimator
 
 ! instruments
 
-cathodeb: instrument, descrip = "mad8_key:inst"
-vv01b: instrument, descrip = "mad8_key:inst"
-im01b: marker, type = "ICT", descrip = "mad8_key:mark"
-vv02b: instrument, descrip = "mad8_key:inst"
-ws0h04: marker, type = "fast", descrip = "mad8_key:mark"
-bz0h04: monitor, type = "gap/diode", descrip = "mad8_key:moni"
-yagh1: monitor, type = "YAG INJ", descrip = "mad8_key:moni"
-yagh2: monitor, type = "YAG INJ", descrip = "mad8_key:moni"
-imbcsi1: marker, type = "BCS ACM", descrip = "mad8_key:mark"
-imbcsi2: marker, type = "BCS ACM", descrip = "mad8_key:mark"
-wsc006: marker, type = "@4,fast", descrip = "mad8_key:mark"
+cathodeb: instrument
+vv01b: instrument
+im01b: marker, type = "ICT"
+vv02b: instrument
+ws0h04: marker, type = "fast"
+bz0h04: monitor, type = "gap/diode"
+yagh1: monitor, type = "YAG INJ"
+yagh2: monitor, type = "YAG INJ"
+imbcsi1: marker, type = "BCS ACM"
+imbcsi2: marker, type = "BCS ACM"
+wsc006: marker, type = "@4,fast"
 
-fc00eic: instrument, type = "Faraday cup", descrip = "mad8_key:inst"
+fc00eic: instrument, type = "Faraday cup"
 
 ! combination YAG/collimator/Faraday Cup
 ! - beam pipe ID = 47.6 mm
@@ -734,38 +721,38 @@ fc00eic: instrument, type = "Faraday cup", descrip = "mad8_key:inst"
 ! - four circular collimator bores
 ! - Faraday Cup
 
-yag01b: monitor, type = "YAG", descrip = "mad8_key:moni" !with or without hole
-yag01b_coll: ecollimator, type = "collimator", descrip = "mad8_key:ecol" !bore: 12mm, 16mm, 20mm, or 24mm
-yag01b_fcup: marker, type = "Faraday Cup", descrip = "mad8_key:mark"
+yag01b: monitor, type = "YAG" !with or without hole
+yag01b_coll: ecollimator, type = "collimator" !bore: 12mm, 16mm, 20mm, or 24mm
+yag01b_fcup: marker, type = "Faraday Cup"
   YAG01B_full : LINE=(YAG01B,YAG01B_COLL,YAG01B_FCUP)
 
 ! combination OTR/YAG !PAL type
 
-otr0h04: monitor, type = "OTR", descrip = "mad8_key:moni"
-otr0h04_yag: monitor, type = "YAG", descrip = "mad8_key:moni"
+otr0h04: monitor, type = "OTR"
+otr0h04_yag: monitor, type = "YAG"
   OTR0H04_full : LINE=(OTR0H04,OTR0H04_YAG)
 
-otrc006: monitor, type = "OTR", descrip = "mad8_key:moni"
-otrc006_yag: monitor, type = "YAG", descrip = "mad8_key:moni"
+otrc006: monitor, type = "OTR"
+otrc006_yag: monitor, type = "YAG"
   OTRC006_full : LINE=(OTRC006,OTRC006_YAG)
 
 ! marker points
 
-am00b: marker, descrip = "mad8_key:mark" !gun laser injection mirror (MIR01)
-blfu: marker, descrip = "mad8_key:mark" !beamline flange
-dp0h01: marker, descrip = "mad8_key:mark"
-dp0h02: marker, descrip = "mad8_key:mark"
-dp0h03: marker, descrip = "mad8_key:mark"
-lhbegb: marker, descrip = "mad8_key:mark"
-mirlhu: marker, type = "laser inj/ext", descrip = "mad8_key:mark"
-htrundb: marker, type = "SCATTER", descrip = "mad8_key:mark"
-mirlhd: marker, type = "laser inj/ext", descrip = "mad8_key:mark"
-cnthtr: marker, type = "CENTER", descrip = "mad8_key:mark"
-lhendb: marker, descrip = "mad8_key:mark"
+am00b: marker !gun laser injection mirror (MIR01)
+blfu: marker !beamline flange
+dp0h01: marker
+dp0h02: marker
+dp0h03: marker
+lhbegb: marker
+mirlhu: marker, type = "laser inj/ext"
+htrundb: marker, type = "SCATTER"
+mirlhd: marker, type = "laser inj/ext"
+cnthtr: marker, type = "CENTER"
+lhendb: marker
 
-begeic: marker, descrip = "mad8_key:mark"
-ecueic: marker, descrip = "mad8_key:mark" !u/s flange face
-endeic: marker, descrip = "mad8_key:mark"
+begeic: marker
+ecueic: marker !u/s flange face
+endeic: marker
 
 ! ==============================================================================
 ! BEAMLINE
