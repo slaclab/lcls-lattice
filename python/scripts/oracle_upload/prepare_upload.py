@@ -205,7 +205,7 @@ from parse_survey import parse_survey
 # read the MAD output files
 K, N, T, FDN = [], [], [], []
 L, P, A, E, coor, S, Sd = [], [], [], [], [], [], []
-idf, idd = [], []  # idf: which MAD output file an element came from
+idf, idd = [], []  # idf: which MAD survey file an element came from
                    # idd: ordinal position in MAD output file
 
 for file_root in file_roots:
@@ -288,6 +288,7 @@ P = np.array(P)
 P_bsy = np.array(P_bsy)
 P_und = np.array(P_und)
 E = np.array(E)
+coor = np.array(coor)
 coor_bsy = np.array(coor_bsy)
 coor_und = np.array(coor_und)
 A = np.array(A)
@@ -360,35 +361,9 @@ def fix_aline_coords(N, P, coor):
     return coor
 coor = fix_aline_coords(N, P, coor)
 
-def fix_sxtes_coords(N, coor):
-    # Implementation of FixSXTESCoords function
-    # fix BSY coordinates for selected SXTES system devices per P. Stephens
-    name = [
-        'MR1K3_VGC_1', 'ND1S', 'SP1K1_MONO_VGC_1',  # 2.2 line
-        'IM1K3_PPM', 'BT1K3_AIR',  # TXI line
-        'BT2K0_PLEG_TMO', 'LUSI'  # TMO line
-    ]
-    coor_id = [
-        1, 1, 1,
-        0, 0,
-        -1, 0
-    ]
-    coor_val = [
-        -0.8826040, -2.0921000, -0.7249275,
-        1.0694435, 1.0480923,
-        1.2500000, -1.2194000
-    ]
-
-    for n in range(len(name)):
-        if coor_id[n] == -1:
-            continue
-        id_matches = N.index(name[n])
-        coor[id_matches][coor_id[n]] = coor_val[n]
-    return coor
 if cBSY:
     coor_bsy = fix_dump_coords(N_bsy, P_bsy, coor_bsy)
     coor_bsy = fix_aline_coords(N_bsy, P_bsy, coor_bsy)
-    #coor_bsy = fix_sxtes_coords(N_bsy, coor_bsy)
 if cUND:
     coor_und = fix_dump_coords(N_und, P_und, coor_und)
     coor_und = fix_aline_coords(N_und, P_und, coor_und)
@@ -591,9 +566,7 @@ SECTORS, SECTORS1 = assign_sector(N, coor, idf, N_bsy, coor_bsy, idf_bsy)
 
 # MAD SURVEY coordinates  [x,y,z,theta,phi   ,psi]
 # correspond to SolidEdge [z,x,y,roll ,-pitch,yaw]
-
 ic = [2, 0, 1, 5, 4, 3]
-coor = np.array(coor)  #Probably not necessary ... coor is already a numpy array.
 coor = coor[:, ic]
 coor[:, 4] = -coor[:, 4]
 
@@ -606,14 +579,6 @@ if cUND:
     coor_und = np.array(coor_und) #Probably not necessary
     coor_und = coor_und[:, ic]
     coor_und[:, 4] = -coor_und[:, 4]
-
-# generate ordered list of MAD keywords
-
-MADK = [
-    'LCAV', 'SBEN', 'QUAD', 'SEXT', 'SOLE', 'MATR', 'RCOL', 'ECOL', 'SROT',
-    'HKIC', 'VKIC', 'MONI', 'WIRE', 'PROF', 'IMON', 'BLMO', 'INST',
-    'MARK', 'MULT'
-]
 
 # hard-wired list of bends that have energy polynomials in the database
 Ebend = []  # ['BRB', 'BXSP', 'BYSP', 'BRSP', 'BYSP', 'BX3', 'BY1', 'BY2', 'BYD']
@@ -1631,31 +1596,30 @@ prec = 1e-6
 
 # SYMBOLS text-file headers and footers
 
-head = ('Solid Edge,AREA,KeyW,ELEMENT,Eng_Name,L_EFF,'
-        'APER,ANGLE,K1,K2,TILT,E1,E2,H1,H2,ENERGY,'
-        'SUML,X Coor,Y Coor,Z Coor,X Angle,Y Angle,Z Angle,'
-        'RF_Frequency,RF_Amplitude,RF_Phase,RF_Gradient,RF_Power_Fraction,'
-        'Z_Length,Fringe_Field_Integral,Integrated_Field_BL,Field_B,'
-        'Integrated_Field_Gradient_GL,Field_Gradient_G,'
-        'XAL_Scale_Name,XAL_Scale_Value,XAL_Polarity,'
-        'Magnet_X_Coor,Magnet_Y_Coor,Magnet_Z_Coor,'
-        'Magnet_X_Angle,Magnet_Y_Angle,Magnet_Z_Angle,'
-        'Solenoid_Strength_KS,Undulator_Period_Length,Undulator_Strength_K,'
-        'X_Size,Y_Size,'
-        'Section,Distance_From_Section_Start,XAL_Keyword,S_Display')
+#The following columns in the symbols file are defunct:
+#  S[13] H1
+#  S[14] H2
+#  S[34] XAL_Scale_Name
+#  S[35] XAL_Scale_Value
+#  S[36] XAL_Polarity
+#  S[48] Section
+#  S[49] Distance_From_Section_Start
+#  S[50] XAL_Keyword
 
-foot = ('MAD #,AREA,KeyW,ELEMENT,Eng_Name,L_EFF,'
-        'APER,ANGLE,K1,K2,TILT,E1,E2,H1,H2,ENERGY,'
-        'SUML,MAD Z,MAD X,MAD Y,MAD Psi,MAD Phi,MAD Theta,'
-        'RF_Frequency,RF_Amplitude,RF_Phase,RF_Gradient,RF_Power_Fraction,'
-        'Z_Length,Fringe_Field_Integral,Integrated_Field_BL,Field_B,'
-        'Integrated_Field_Gradient_GL,Field_Gradient_G,'
-        'XAL_Scale_Name,XAL_Scale_Value,XAL_Polarity,'
-        'Magnet_MAD_Z,Magnet_MAD_X,Magnet_MAD_Y,'
-        'Magnet_MAD_Psi,Magnet_MAD_Phi,Magnet_MAD_Theta,'
-        'Solenoid_Strength_KS,Undulator_Period_Length,Undulator_Strength_K,'
-        'X_Size,Y_Size,'
-        'Section,Distance_From_Section_Start,XAL_Keyword,S_Display')
+
+head = ('Solid Edge,AREA,KeyW,ELEMENT,Eng_Name,L_EFF,APER,ANGLE,K1,K2,'  #0-9
+        'TILT,E1,E2,H1,H2,ENERGY,SUML,X Coor,Y Coor,Z Coor,'  #10-19
+        'X Angle,Y Angle,Z Angle,RF_Frequency,RF_Amplitude,RF_Phase,RF_Gradient,RF_Power_Fraction,Z_Length,Fringe_Field_Integral,'  #20-29
+        'Integrated_Field_BL,Field_B,Integrated_Field_Gradient_GL,Field_Gradient_G,XAL_Scale_Name,XAL_Scale_Value,XAL_Polarity,Magnet_X_Coor,Magnet_Y_Coor,Magnet_Z_Coor,'  #30-39
+        'Magnet_X_Angle,Magnet_Y_Angle,Magnet_Z_Angle,Solenoid_Strength_KS,Undulator_Period_Length,Undulator_Strength_K,X_Size,Y_Size,Section,Distance_From_Section_Start,'  #40-49
+        'XAL_Keyword,S_Display')  #50-51
+
+foot = ('MAD #,AREA,KeyW,ELEMENT,Eng_Name,L_EFF,APER,ANGLE,K1,K2,'
+        'TILT,E1,E2,H1,H2,ENERGY,SUML,MAD Z,MAD X,MAD Y,'
+        'MAD Psi,MAD Phi,MAD Theta,RF_Frequency,RF_Amplitude,RF_Phase,RF_Gradient,RF_Power_Fraction,Z_Length,Fringe_Field_Integral,Integrated_Field_BL,'
+        'Field_B,Integrated_Field_Gradient_GL,Field_Gradient_G,XAL_Scale_Name,XAL_Scale_Value,XAL_Polarity,Magnet_MAD_Z,Magnet_MAD_X,Magnet_MAD_Y,'
+        'Magnet_MAD_Psi,Magnet_MAD_Phi,Magnet_MAD_Theta,Solenoid_Strength_KS,Undulator_Period_Length,Undulator_Strength_K,X_Size,Y_Size,Section,Distance_From_Section_Start,'
+        'XAL_Keyword,S_Display')
 
 unit = (',,,,,m,'
         'm,deg,1/m^2,1/m^3,deg,deg,deg,1/m,1/m,GeV,'
