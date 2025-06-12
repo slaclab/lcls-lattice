@@ -1,6 +1,6 @@
   TITLE, "AD_ACCEL: copper linac"
 
-! *** OPTICS=AD_ACCEL-09JUN2025s ***
+! *** OPTICS=AD_ACCEL-preRelease ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY
   ASSIGN, ECHO="LCLS2cu.echo"
@@ -298,9 +298,9 @@
  !CALL, FILENAME="LCLS2cu_match.mad8"
  !CALL, FILENAME="LCLS2cu_makeSymbols.mad8"
  !CALL, FILENAME="LCLS2cu_makeElegant.mad8" !use LCLS_L*e.xsif and Cu_fdne.xsif
- !CALL, FILENAME="LCLS2cu_XLEAP.mad8" !run by itself
+  CALL, FILENAME="LCLS2cu_XLEAP.mad8" !run by itself
 
- !STOP
+  STOP
 
 ! ------------------------------------------------------------------------------
 
@@ -339,6 +339,20 @@
       STYLE=100, SPLINE, RANGE=MM2/HXR46END, FILE="LCLS2cuH", &
       TITLE="UNDH (Cu beam, 8 GeV)"
  !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! HXR safety dump
+
+  COMMENT
+    ASSIGN, PRINT="LCLS2cuHS.print"
+    BEAM, ENERGY=E00
+    SET, SETCUS, CUSOFF
+    SETK2cuH
+    USE, CU_SFTH
+    PRINT, FULL
+    SURVEY, THETA0=ADL1, X0=Xi, Z0=Zi, TAPE="LCLS2cuHS_survey.tape"
+  ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
 
