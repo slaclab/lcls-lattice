@@ -684,10 +684,7 @@ ele_dict = {
 }
 
 def process_bsy(name,ele,split=False,exact=True):
-    if exact:
-        ids = strmatch(name,N_bsy,exact)
-    else:
-        ids = strmatch(name,N_bsy,exact)
+    ids = strmatch(name,N_bsy,exact)
     if len(ids) > 0:
         if split:
             ide = [ids[0]-1, ids[-1]]
