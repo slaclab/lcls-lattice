@@ -12,16 +12,20 @@ from pathlib import Path
 #------------------------------------------
 
 def intersection(x,y):
-    return [v for v in x if v in y]
+    y_set = set(y) #set makes this faster
+    return [v for v in x if v in y_set]
+    #return [v for v in x if v in y]
 
 def strmatch(n_str,N_lst,exact=False):
     if not isinstance(N_lst,list):
         print('strmatch passed non-list. Stopping')
         stop
     if exact:
-        return [ix for ix,n_ in enumerate(N_lst) if n_.strip() == n_str.strip()]
+        return [ix for ix,n_ in enumerate(N_lst) if n_ == n_str]
     else:
-        return [ix for ix,n_ in enumerate(N_lst) if n_.startswith(n_str)]
+        mylen = len(n_str)
+        return [ix for ix,n_ in enumerate(N_lst) if n_[:mylen] == n_str]
+        #return [ix for ix,n_ in enumerate(N_lst) if n_.startswith(n_str)] #startswith is slow
 
 def notnone(val):
     if val is None:
@@ -205,7 +209,7 @@ from parse_survey import parse_survey
 # read the MAD output files
 K, N, T, FDN = [], [], [], []
 L, P, A, E, coor, S, Sd = [], [], [], [], [], [], []
-idf, idd = [], []  # idf: which MAD survey file an element came from
+idf, idd = [], []  # idf: which MAD output file an element came from
                    # idd: ordinal position in MAD output file
 
 for file_root in file_roots:
@@ -359,6 +363,7 @@ def fix_aline_coords(N, P, coor):
     coor[id_slice, 5] = 0  # remove residual "creeping" roll
     '''
     return coor
+
 coor = fix_aline_coords(N, P, coor)
 
 if cBSY:
@@ -447,26 +452,26 @@ def assign_ucell(N, coor):
     UCELL = ['' for x in N]
 
     # SXR partial cell 16
-    i1 = strmatch('BEGUNDS',N)[0]
-    i2 = strmatch('SXR17BEG',N)[0]-1
+    i1 = strmatch('BEGUNDS',N,True)[0]
+    i2 = strmatch('SXR17BEG',N,True)[0]-1
     for i in range(i1,i2+1):
         UCELL[i]='SXR 16'
     # SXR cells
     for nc in range(17,50+1):
-        i1 = strmatch(f'SXR{nc:02}BEG',N)[0]
-        i2 = strmatch(f'SXR{nc:02}END',N)[0]
+        i1 = strmatch(f'SXR{nc:02}BEG',N,True)[0]
+        i2 = strmatch(f'SXR{nc:02}END',N,True)[0]
         for j in range(i1,i2+1):
             UCELL[j]=f'SXR {nc:02}'
 
     # HXR partial cell 12
-    i1 = strmatch('BEGUNDH',N)[0]
-    i2 = strmatch('HXR13BEG',N)[0]-1
+    i1 = strmatch('BEGUNDH',N,True)[0]
+    i2 = strmatch('HXR13BEG',N,True)[0]-1
     for i in range(i1,i2+1):
         UCELL[i]='HXR 12'
     # SXR cells
     for nc in range(13,50+1):
-        i1 = strmatch(f'HXR{nc:02}BEG',N)[0]
-        i2 = strmatch(f'HXR{nc:02}END',N)[0]
+        i1 = strmatch(f'HXR{nc:02}BEG',N,True)[0]
+        i2 = strmatch(f'HXR{nc:02}END',N,True)[0]
         for j in range(i1,i2+1):
             UCELL[j]=f'HXR {nc:02}'
     return UCELL
@@ -566,6 +571,7 @@ SECTORS, SECTORS1 = assign_sector(N, coor, idf, N_bsy, coor_bsy, idf_bsy)
 
 # MAD SURVEY coordinates  [x,y,z,theta,phi   ,psi]
 # correspond to SolidEdge [z,x,y,roll ,-pitch,yaw]
+
 ic = [2, 0, 1, 5, 4, 3]
 coor = coor[:, ic]
 coor[:, 4] = -coor[:, 4]
@@ -678,7 +684,10 @@ ele_dict = {
 }
 
 def process_bsy(name,ele,split=False,exact=True):
-    ids = strmatch(name,N_bsy,exact)
+    if exact:
+        ids = strmatch(name,N_bsy,exact)
+    else:
+        ids = strmatch(name,N_bsy,exact)
     if len(ids) > 0:
         if split:
             ide = [ids[0]-1, ids[-1]]
@@ -713,7 +722,7 @@ def process_und(name,ele,split=False,exact=True):
             ele[f'c2{k+1}'] = coor_undc[k]
 
 for kwn,eles in ele_dict.items():
-    key_ids = strmatch(kwn,K)
+    key_ids = strmatch(kwn,K,True)
     names = list(dict.fromkeys([N[i] for i in key_ids]))
     if kwn == 'LCAV':
         # create list of unique names that will allow unsplitting
@@ -1336,7 +1345,6 @@ for kwn,eles in ele_dict.items():
             else:
                 t = ''
             nDEPR += 1
-            id = strmatch(eles[m]['parent'],pname)
             if kwn == 'SBEN':
                 z_use = eles[m]['m1']
             else:
@@ -1380,8 +1388,8 @@ def FixMagnetCoords(SBEN, QUAD, INST, K, N, L, P, coor, cflag):
     R56name = ['CCDLU', 'CCDLD', 'CC31B', 'CC32B', 'CC31', 'CC32', 'CC35', 'CC36']
     off = 0.005  # 5 mm offset
     for name in R56name[n1:]:
-        id1 = strmatch(f"{name}BEG",N)[0]
-        id2 = strmatch(f"{name}END",N)[0]
+        id1 = strmatch(f"{name}BEG",N,True)[0]
+        id2 = strmatch(f"{name}END",N,True)[0]
         ids = range(id1, id2 + 1)
         jd1 = [i for i,x in enumerate(K) if x == 'SBEN']
         idb = intersection(ids,jd1)[::2]
@@ -1431,7 +1439,7 @@ def FixMagnetCoords(SBEN, QUAD, INST, K, N, L, P, coor, cflag):
             Xm = 1.25
         else:  # HXR
             Xm = -1.215
-        id1 = strmatch(f"{name[n]}1",N)[0] #center
+        id1 = strmatch(f"{name[n]}1",N,True)[0] #center
         id0 = id1 - 1  # entrance
         if n != 2:
             pitch = -coor[id0, 4]
