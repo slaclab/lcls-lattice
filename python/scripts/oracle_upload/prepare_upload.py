@@ -12,11 +12,26 @@ from pathlib import Path
 #------------------------------------------
 
 def intersection(x,y):
+    """
+    x and y are lists.
+
+    This function returns the intersection of x and y, those elements
+    that are common to both.
+    """
     y_set = set(y) #set makes this faster
     return [v for v in x if v in y_set]
     #return [v for v in x if v in y]
 
 def strmatch(n_str,N_lst,exact=False):
+    """
+    n_str is a string.
+    N_lst is list of strings.
+
+    This function returns the indexes of N_lst which contain n_str.
+
+    If exact it true, then only exact matches there n_str == N_lst[ix] are returned.
+    If exact is false, then n_str is treated as a prefix.  e.g. n_str='QA' would match 'QA01', 'QAdump', etc.
+    """
     if not isinstance(N_lst,list):
         print('strmatch passed non-list. Stopping')
         stop
@@ -27,13 +42,13 @@ def strmatch(n_str,N_lst,exact=False):
         return [ix for ix,n_ in enumerate(N_lst) if n_[:mylen] == n_str]
         #return [ix for ix,n_ in enumerate(N_lst) if n_.startswith(n_str)] #startswith is slow
 
-def notnone(val):
-    if val is None:
-        return ''
-    else:
-        return val
-
 def madval(rval):
+    """
+    rval is a float.
+    return value is rval formatted to a string.
+
+    This function replicates mad8's behavior with regards to formatted float output.
+    """
     if rval == 0:
         return '0.0'
     else:
@@ -56,6 +71,12 @@ def madval(rval):
         return s.strip()
 
 def roundoff(val, prec=None):
+    """
+    val is a float
+    prec is an float
+
+    return value is val rounded to prec.
+    """
     if isinstance(val,list):
         return None
     if prec is None:
@@ -298,10 +319,16 @@ coor_und = np.array(coor_und)
 A = np.array(A)
 
 def FixUpgradeNames(N):
-  # Device names in upgraded SXR cells have "_" appended ... remove it
+  """
+  N is a list of strings.
+  This function removes trailing "_" from any names.
+
+  Device names in upgraded SXR cells have "_" appended ... remove it
+  """
   for i in range(len(N)):
     if N[i].endswith('_'):
       N[i] = N[i][:-1]
+
 FixUpgradeNames(N)
 if cBSY:
   FixUpgradeNames(N_bsy)
@@ -315,9 +342,10 @@ for ix,a in enumerate(area):
     id2 = N.index(a['end']) + a['offset'][1]
     ida.extend([ix]*(id2-id1+1))
 
-# special handling for rolled dump lines and A-line
 def fix_dump_coords(N, P, coor):
-    # Implementation of FixDumpCoords function
+    """
+    special handling for rolled dump lines and A-line
+    """
 
     # set roll angle for SXR dump line components
     id1=N.index('RODMP1S')
@@ -355,13 +383,6 @@ def fix_aline_coords(N, P, coor):
     for i in range(id1,id2+1):
       coor[i][5] = AROLL2
 
-    # The following block is commented out in the original code
-    '''
-    id1 = N.index('BEGBSYA_1')
-    id2 = N.index('ROLL2') - 1
-    id_slice = slice(id1, id2 + 1)
-    coor[id_slice, 5] = 0  # remove residual "creeping" roll
-    '''
     return coor
 
 coor = fix_aline_coords(N, P, coor)
@@ -494,8 +515,8 @@ def read_sector_data():
             'BSY': row[2].value,
             'Zbeg': row[4].value,
             'Zend': row[5].value,
-            'Nbeg': notnone(row[8].value),
-            'Nend': notnone(row[9].value)
+            'Nbeg': row[8].value,
+            'Nend': row[9].value
         })
 
     # read worksheet 2 (cuH)
@@ -508,8 +529,8 @@ def read_sector_data():
             'BSY': row[2].value,
             'Zbeg': row[4].value,
             'Zend': row[5].value,
-            'Nbeg': notnone(row[8].value),
-            'Nend': notnone(row[9].value)
+            'Nbeg': row[8].value,
+            'Nend': row[9].value
         })
 
     return sector_data
@@ -518,7 +539,7 @@ def set_sector(N, SECTORS, coor, idf, nf, sector):
     Z = [x[2] for x in coor]
 
     id_ = [i for i,x in enumerate(idf) if x == nf]
-    if sector['Nbeg'] == '':
+    if sector['Nbeg'] == None:
         jd2 = [i for i,x in enumerate(Z) if x > sector['Zbeg']]
         inter1 = intersection(id_,jd2)
         if inter1 == []:
@@ -531,7 +552,7 @@ def set_sector(N, SECTORS, coor, idf, nf, sector):
         if inter1 != []:
             inter1 = inter1[0]
 
-    if sector['Nend'] == '':
+    if sector['Nend'] == None:
         jd2 = [i for i,x in enumerate(Z) if x < sector['Zend']]
         inter2 = intersection(id_,jd2)
         if inter2 == []:
@@ -1291,42 +1312,27 @@ for kwn,eles in ele_dict.items():
             if cUND:
                 process_und(name,eles[-1],split=True)
 
-import scipy.io as sio
-
 def fix_power_fraction(lcav):
-    #fname = r'V:\LCLS\Users\Woodley\AD_ACCEL\20190613_13JUN19\RDB\RDBdata'
-    #fname = f'{script_dir}/RDBdata.mat'
-    fname = f'{script_dir}/LCAVITY_PowerFraction.mat'
-    old = sio.loadmat(fname)['LCAV']
-    
-    name = [x['name'] for x in old[0]]
-    powr = [float(x['power'][0][0]) for x in old[0]]
-    
+    """
+    fix LCAV power fraction values (for deactivated klystrons)
+    """
+    names, powrs = [], []
+    with open('LCAVITY_PowerFraction.dat','r') as f:
+        for line in f:
+            parts = line.strip().split()
+            name = parts[0]
+            powr = float(parts[1])
+            names.append(name)
+            powrs.append(powr)
+
     for cav in lcav:
         if np.isnan(cav['power']):
-            ids = [i for i, x in enumerate(name) if x == cav['name']]
+            ids = [i for i, x in enumerate(names) if x == cav['name']]
             if len(ids) != 1:
                 raise ValueError(f"{cav['name']} not found!")
-            cav['power'] = powr[ids[0]]
-    
+            cav['power'] = powrs[ids[0]]
 
-# fix LCAV power fraction values (for deactivated klystrons)
 fix_power_fraction(ele_dict['LCAV'])
-
-def add_eic(inst):
-    # Add EIC Faraday cup
-    name = [x['name'] for x in inst]
-    ids = name.index('CATHODEB')
-    temp = inst[ids].copy()
-    temp.id = 59
-    temp.area = 'EIC'
-    temp.name = 'FC00EIC'
-    temp.type = 'Faraday cup'
-    temp.sdsp = -7.044667
-    temp.suml = 3.0
-    temp.c1 = -7.044667
-    inst.append(temp)
-    return inst
 
 # deferred devices
 nDEPR = 0
