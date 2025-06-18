@@ -85,8 +85,6 @@ def roundoff(val, prec=None):
         return prec * np.round(val / prec)
 
 #------------------------------------------
-#------------------------------------------
-#------------------------------------------
 
 script_dir = Path(__file__).parent.resolve()
 
@@ -575,20 +573,20 @@ def assign_sector(N, coor, idf, N_bsy, coor_bsy, idf_bsy):
     sector_data = read_sector_data()
 
     SECTORS = ['' for x in N]
-    SECTORS1 = ['' for x in N]
+    SECTORS_bsy = ['' for x in N_bsy]
 
     for nf in [x['ix'] for x in file_roots]:
         for sector in sector_data:
             if nf == sector['froot']:
                 if sector['BSY']:
-                    set_sector(N_bsy, SECTORS1, coor_bsy, idf_bsy, nf, sector)
+                    set_sector(N_bsy, SECTORS_bsy, coor_bsy, idf_bsy, nf, sector)
                 else:
                     set_sector(N, SECTORS, coor, idf, nf, sector)
 
-    return SECTORS, SECTORS1
+    return SECTORS, SECTORS_bsy
 
 # Assign sector names
-SECTORS, SECTORS1 = assign_sector(N, coor, idf, N_bsy, coor_bsy, idf_bsy)
+SECTORS, SECTORS_bsy = assign_sector(N, coor, idf, N_bsy, coor_bsy, idf_bsy)
 
 # MAD SURVEY coordinates  [x,y,z,theta,phi   ,psi]
 # correspond to SolidEdge [z,x,y,roll ,-pitch,yaw]
@@ -720,7 +718,7 @@ def process_bsy(name,ele,split=False,exact=True):
         for k in range(6):
             ele[f'c1{k+1}'] = coor_bsyc[k]
         if not ele['sector']:
-            ele['sector'] = SECTORS1[ids].strip()
+            ele['sector'] = SECTORS_bsy[ids].strip()
         ele['ucell'] = UCELL[ids].strip()
 
 def process_und(name,ele,split=False,exact=True):
@@ -951,7 +949,7 @@ for kwn,eles in ele_dict.items():
                         eles[-1][f'c1{k+1}'] = coor_bsy1[k]
                         eles[-1][f'm1{k+1}'] = coor_bsym[k]
                     if not eles[-1]['sector']:
-                        eles[-1]['sector'] = SECTORS1[id1].strip()
+                        eles[-1]['sector'] = SECTORS_bsy[id1].strip()
                     eles[-1]['ucell'] = UCELL[id1].strip()
 
             # UND coordinates
@@ -1317,7 +1315,7 @@ def fix_power_fraction(lcav):
     fix LCAV power fraction values (for deactivated klystrons)
     """
     names, powrs = [], []
-    with open('LCAVITY_PowerFraction.dat','r') as f:
+    with open(f'{script_dir}/LCAVITY_PowerFraction.dat','r') as f:
         for line in f:
             parts = line.strip().split()
             name = parts[0]
