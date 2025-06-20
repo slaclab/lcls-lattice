@@ -232,7 +232,7 @@ from parse_survey import parse_survey
 # read the MAD output files
 K, N, T, FDN = [], [], [], []
 L, P, A, E, coor, S, Sd = [], [], [], [], [], [], []
-idf, idd = [], []  # idf: which MAD output file an element came from
+idf, idd = [], []  # idf: which MAD survey file an element came from
                    # idd: ordinal position in MAD output file
 
 for file_root in file_roots:
@@ -540,7 +540,7 @@ def set_sector(N, SECTORS, coor, idf, nf, sector):
     Z = [x[2] for x in coor]
 
     id_ = [i for i,x in enumerate(idf) if x == nf]
-    if sector['Nbeg'] == None:
+    if sector['Nbeg'] is None:
         jd2 = [i for i,x in enumerate(Z) if x > sector['Zbeg']]
         inter1 = intersection(id_,jd2)
         if inter1 == []:
@@ -553,7 +553,7 @@ def set_sector(N, SECTORS, coor, idf, nf, sector):
         if inter1 != []:
             inter1 = inter1[0]
 
-    if sector['Nend'] == None:
+    if sector['Nend'] is None:
         jd2 = [i for i,x in enumerate(Z) if x < sector['Zend']]
         inter2 = intersection(id_,jd2)
         if inter2 == []:
@@ -775,10 +775,9 @@ for kwn,eles in ele_dict.items():
             ampl = np.sum(P[ids, 5])  # MeV
             grad = ampl / leng  # MeV/m
             if re.match(r'K\d\d_\d[ABCD]', name[0:6]):  # i.e. K27_3D
-                cav_section = name[5]
                 cav_ids = strmatch(name[0:5],N)
                 cav_sections = tuple(dict.fromkeys([N[x][5] for x in  cav_ids]))
-                power = POWER_FACTORS[cav_sections][cav_section]
+                power = POWER_FACTORS[cav_sections][name[5]]
             else:
                 power = 1
             coorc = np.mean(coor[ide, :], axis=0)  # m,rad (beam center)
