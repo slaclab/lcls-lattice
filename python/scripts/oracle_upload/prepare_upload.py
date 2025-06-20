@@ -13,10 +13,14 @@ from pathlib import Path
 
 def intersection(x,y):
     """
-    x and y are lists.
+    x : list
+    y : list
+    return : list
 
     This function returns the intersection of x and y, those elements
     that are common to both.
+
+    Because of context, the intersection needs to preserve the ordering of x.
     """
     y_set = set(y) #set makes this faster
     return [v for v in x if v in y_set]
@@ -382,7 +386,6 @@ def fix_aline_coords(N, P, coor):
       coor[i][5] = AROLL2
 
     return coor
-
 coor = fix_aline_coords(N, P, coor)
 
 if cBSY:
@@ -737,6 +740,18 @@ def process_und(name,ele,split=False,exact=True):
         for k in range(6):
             ele[f'c2{k+1}'] = coor_undc[k]
 
+#Cu linac klystrons power cavities in groups of 4.
+# First the power is split 50/50, so that A & B together get half, and  C & D together get the other half.
+# Then the power is split again, so that A gets 25%, B gets 25% and so on.
+# If A or B is missing, then B or A gets the full 50%.  Similarly for C & D.
+POWER_FACTORS = {
+    ("A", "B", "C", "D"): {'A':0.25, 'B':0.25, 'C':0.25, 'D':0.25},
+    ("B", "C", "D"): {'B':0.5, 'C':0.25, 'D':0.25},
+    ("A", "C", "D"): {'A':0.5, 'C':0.25, 'D':0.25},
+    ("A", "B", "C"): {'A':0.25, 'B':0.25, 'C':0.5},
+    ("A", "B", "D"): {'A':0.25, 'B':0.25, 'D':0.5},
+}
+
 for kwn,eles in ele_dict.items():
     key_ids = strmatch(kwn,K,True)
     names = list(dict.fromkeys([N[i] for i in key_ids]))
@@ -760,12 +775,10 @@ for kwn,eles in ele_dict.items():
             ampl = np.sum(P[ids, 5])  # MeV
             grad = ampl / leng  # MeV/m
             if re.match(r'K\d\d_\d[ABCD]', name[0:6]):  # i.e. K27_3D
-                ids = strmatch(name[0:5],N)
-                grad0 = np.min(P[ids, 5] / L[ids])
-                if grad0 == 0:
-                    power = float("NaN")
-                else:
-                    power = 0.25 * round((grad / grad0) ** 2)  # KLYS power fraction (1)
+                cav_section = name[5]
+                cav_ids = strmatch(name[0:5],N)
+                cav_sections = tuple(dict.fromkeys([N[x][5] for x in  cav_ids]))
+                power = POWER_FACTORS[cav_sections][cav_section]
             else:
                 power = 1
             coorc = np.mean(coor[ide, :], axis=0)  # m,rad (beam center)
@@ -1309,28 +1322,6 @@ for kwn,eles in ele_dict.items():
             # UND coordinates
             if cUND:
                 process_und(name,eles[-1],split=True)
-
-def fix_power_fraction(lcav):
-    """
-    fix LCAV power fraction values (for deactivated klystrons)
-    """
-    names, powrs = [], []
-    with open(f'{script_dir}/LCAVITY_PowerFraction.dat','r') as f:
-        for line in f:
-            parts = line.strip().split()
-            name = parts[0]
-            powr = float(parts[1])
-            names.append(name)
-            powrs.append(powr)
-
-    for cav in lcav:
-        if np.isnan(cav['power']):
-            ids = [i for i, x in enumerate(names) if x == cav['name']]
-            if len(ids) != 1:
-                raise ValueError(f"{cav['name']} not found!")
-            cav['power'] = powrs[ids[0]]
-
-fix_power_fraction(ele_dict['LCAV'])
 
 # deferred devices
 nDEPR = 0
