@@ -520,9 +520,9 @@
 ! ------------------------------------------------------------------------------
 
  !CALL, FILENAME="patch.mad8"
-  CALL, FILENAME="ALINE_patch_mod2.mad8"
+ !CALL, FILENAME="ALINE_patch.mad8"
 
-  STOP
+ !STOP
 
 ! ------------------------------------------------------------------------------
 
@@ -566,14 +566,14 @@
 
 ! SXR safety dump
 
-  COMMENT
+ !COMMENT
     ASSIGN, PRINT="LCLS2scSS.print"
     BEAM, ENERGY=E0
     SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
     USE, SC_SFTS
     PRINT, FULL
     SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scSS_survey.tape"
-  ENDCOMMENT
+ !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
 
@@ -834,6 +834,8 @@
     BEAM, ENERGY=Ef
     SET, SETSP, SETSPd ; SET, SETDA, DAON
     USE, BSYLCLS2scDA
+    MAKESEQUENCE, LABEL="DASEL", REFER="CENTRE"
+    SAVELINE, NAME="DASEL", FILENAME="DASEL.seq"
     PRINT, FULL
     SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
       TAPE="BSY-LCLS2scDA_survey.tape"
@@ -846,6 +848,60 @@
 ! ------------------------------------------------------------------------------
 ! LCLS2sc_main working stuff
 ! ------------------------------------------------------------------------------
+
+  COMMENT !rematch for dead QCM22
+    BEAM, ENERGY=Ei
+    USE, SC_SXRi
+    SAVEBETA, TWm, CM26BEG
+    TWISS, BETA0=TWSSi
+    SHOW, TWm
+    SET, QCM22[K1], 0
+    SET, QCM23[K1], 0
+    VALUE, QCM20[K1],QCM21[K1],QCM22[K1],QCM23[K1],QCM24[K1],QCM25[K1]
+    MATCH, BETA0=TWSSi
+      VARY, QCM20[K1], STEP=1.E-6, UPPER=0
+      VARY, QCM21[K1], STEP=1.E-6, LOWER=0
+      VARY, QCM24[K1], STEP=1.E-6, UPPER=0
+      VARY, QCM25[K1], STEP=1.E-6, LOWER=0
+      CONSTR, CM26BEG, BETX=TWm[BETX], ALFX=TWm[ALFX], &
+                       BETY=TWm[BETY], ALFY=TWm[ALFY]
+      SIMPLEX, TOL=1.E-20, CALLS=10000
+      LMDIF, TOL=1.E-20, CALLS=10000
+      MIGRAD, TOL=1.E-20, CALLS=10000
+    ENDMATCH
+    VALUE, QCM20[K1],QCM21[K1],QCM22[K1],QCM23[K1],QCM24[K1],QCM25[K1]
+    TWISS, SAVE, BETA0=TWSSi
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=BEGL3B/ENDL3B, FILE="L3B", &
+      TITLE="L3B: QCM22 and QCM23 off"
+  ENDCOMMENT
+
+  COMMENT !William Colocho's match
+    BEAM, ENERGY=Ei
+    USE, SC_SXRi
+    SET, QCM20[K1], -0.208813709813
+    SET, QCM21[K1],  0.30328446035
+    SET, QCM22[K1], -0.235600917364
+    SET, QCM23[K1],  0.0
+    SET, QCM24[K1], -0.150730435467
+    TWISS, SAVE, BETA0=TWSSi
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=BEGL3B/ENDL3B, FILE="L3B", &
+      TITLE="L3B: QCM22 and QCM23 off"
+  ENDCOMMENT
+
+  COMMENT !F-JD's rule-of-thumb match
+    BEAM, ENERGY=Ei
+    USE, SC_SXRi
+    SET, QCM21[K1],  0.185334132537/2
+    SET, QCM22[K1],  0.0
+    SET, QCM23[K1],  0.0
+    SET, QCM24[K1], -0.189977001339/2
+    TWISS, SAVE, BETA0=TWSSi
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=BEGL3B/ENDL3B, FILE="L3B", &
+      TITLE="L3B: QCM22 and QCM23 off"
+  ENDCOMMENT
 
 ! @BEAM0:
 ! - BETX=9.898319949733, ALFX=-1.895312604539, BmagX= 1.0064
