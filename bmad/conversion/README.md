@@ -23,7 +23,8 @@
 3. Submit PR to github.
 4. Generate new lcls-lattice release.
 5. Update `/sdf/group/ad/sw/scm/repos/optics/lcls-lattice` on s3df.
-6. Update prod using zip of release at `lcls-srv01:/usr/local/lcls/tools/lcls-lattice`
+6. Update prod using zip of release at `lcls-srv01:/usr/local/lcls/model/lattice`
+  - Update the `/usr/local/lcls/model/lattice/current` link to point to the new release.
 
 ## Rematch notes.
 * Rematching is usually not needed.  A mismatch between mad8 and Bmad usually means something went wrong in the conversion.
