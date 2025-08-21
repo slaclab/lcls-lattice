@@ -39,7 +39,6 @@ conn = oracledb.connect(
 
 src = Path('elementdevices.dat')
 if src.is_file():
-    print('foo')
     ts = datetime.now().strftime("%Y%m%dT%H%M%S")
     dst = src.with_name(f"{src.name}-priorto-{ts}.log")
     shutil.copyfile(src, dst)
