@@ -8,13 +8,13 @@ import shutil
 import subprocess
 
 SQL1="""
-select unique element, epics_device_name, linacz_m from V_lcls_elements_report_public 
-where 
-(ELEMENT_TYPE='MAD' OR FIRST_SOURCED_FROM != 'CABLES') 
-AND ACTIVE_FLAG='A' 
-AND BEAMLINE_ID IN (11)
-order by (linacz_m)
-"""
+     select unique element, epics_device_name, linacz_m from V_lcls_elements_report_public 
+     where 
+     (ELEMENT_TYPE='MAD' OR FIRST_SOURCED_FROM != 'CABLES') 
+     AND ACTIVE_FLAG='A' 
+     AND BEAMLINE_ID IN (11)
+     order by (linacz_m)
+     """
 
 def get_db_pwd():
     res = subprocess.run(["bash","-lc","ssh mcclogin ssh -Kl physics lcls-srv01 getPwd LCLS_INFRASTRUCTURE"],
