@@ -40,7 +40,7 @@ if src.is_file():
     dst = src.with_name(f"{src.name}-priorto-{ts}.log")
     shutil.copyfile(src, dst)
 
-# Make elementdevices.dat file
+# Query element names and device names from database
 elements = []
 device_names = []
 with conn.cursor() as cur:
@@ -51,11 +51,19 @@ with conn.cursor() as cur:
         device_names.append(row[1] if "NO EPICS NAME" not in row[1] else '-')
 db_result = list(zip(elements,device_names))
 
+# Close database connection
+conn.close()
+
+#-----------------------------
+# Make elementdevices.dat file
+#-----------------------------
 with open('elementdevices.dat','w') as f:
     for row in db_result:
         f.write(f'{row[0]} {row[1]}\n')
 
+#-----------------------------
 # Make cavities elementdevices
+#-----------------------------
 pat = re.compile(r'^LCAVK[0-2][0-9]_')  # start, LCAVK, 00–29, underscore
 def cav_devices(survey_file, out_file):
     with open(survey_file,'r') as fin, open(out_file,'w') as fout:
@@ -77,7 +85,9 @@ def cav_devices(survey_file, out_file):
 cav_devices('LCLS2cuH_survey.tape', 'elementdevices_cavities_cuH.dat')
 cav_devices('LCLS2cuS_survey.tape', 'elementdevices_cavities_cuS.dat')
 
+#--------------------------
 # Make sbend elementdevices
+#--------------------------
 db_result.sort(key=lambda x: x[0])
 
 def sbend_devices(survey_file, out_file):
@@ -94,5 +104,3 @@ def sbend_devices(survey_file, out_file):
 sbend_devices('LCLS2cuH_survey.tape', 'elementdevices_sbends_cuH.dat')
 sbend_devices('LCLS2cuS_survey.tape', 'elementdevices_sbends_cuS.dat')
 
-# Close database connection
-conn.close()
