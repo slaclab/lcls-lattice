@@ -29,7 +29,7 @@ def get_sql2(eleids):
 oracledb.init_oracle_client(lib_dir=os.environ.get("ORACLE_HOME"))
 conn = oracledb.connect(
     user = "LCLS_INFRASTRUCTURE",
-    password = "35G2!a65bba74e5b",
+    password = redacted
     dsn=os.environ.get("TWO_TASK", "SLACPROD"), 
 )
 
