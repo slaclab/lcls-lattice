@@ -33,10 +33,9 @@ def get_sql2(eleids):
             """
 
 # Open database connection
-oracledb.init_oracle_client(lib_dir=os.environ.get("ORACLE_HOME"))
 conn = oracledb.connect(
     user = "LCLS_INFRASTRUCTURE",
-    dsn="SLACPROD",
+    dsn = "slacprod:1521/slacprod",
     password = get_db_pwd(),
 )
 
