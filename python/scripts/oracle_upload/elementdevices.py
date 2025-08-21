@@ -5,6 +5,7 @@ import oracledb
 from pathlib import Path
 from datetime import datetime
 import shutil
+import subprocess
 
 SQL1="""
 select unique element, epics_device_name, linacz_m from V_lcls_elements_report_public 
@@ -14,6 +15,11 @@ AND ACTIVE_FLAG='A'
 AND BEAMLINE_ID IN (11)
 order by (linacz_m)
 """
+
+def get_db_pwd():
+    res = subprocess.run(["bash","-lc","ssh mcclogin ssh -Kl physics lcls-srv01 getPwd LCLS_INFRASTRUCTURE"],
+            capture_output = True, text=True, check=True)
+    return res.stdout.rstrip("\n")
 
 def get_sql2(eleids):
     eleids_str = ",".join(f"'{x[:-1]}'" for x in eleids)
@@ -29,7 +35,7 @@ def get_sql2(eleids):
 oracledb.init_oracle_client(lib_dir=os.environ.get("ORACLE_HOME"))
 conn = oracledb.connect(
     user = "LCLS_INFRASTRUCTURE",
-    password = redacted
+    password = get_db_pwd(),
     dsn=os.environ.get("TWO_TASK", "SLACPROD"), 
 )
 
