@@ -7,6 +7,7 @@ from datetime import datetime
 import shutil
 import subprocess
 import re
+import sys
 
 SQL1="""
      select unique element, epics_device_name, linacz_m from V_lcls_elements_report_public 
@@ -16,6 +17,10 @@ SQL1="""
      AND BEAMLINE_ID IN (11)
      order by (linacz_m)
      """
+
+compare=False
+if '-c' in sys.argv:
+    compare=True
 
 def get_db_pwd():
     res = subprocess.run(["bash","-lc","ssh mcclogin ssh -Kl physics lcls-srv01 getPwd LCLS_INFRASTRUCTURE"],
@@ -60,6 +65,27 @@ conn.close()
 with open('elementdevices.dat','w') as f:
     for row in db_result:
         f.write(f'{row[0]} {row[1]}\n')
+
+#-------------------------------------------
+# Compare new elementdevices.dat to previous
+#-------------------------------------------
+if compare:
+    new= {}
+    old= {}
+    with open('elementdevices.dat','r') as fnew, open(dst,'r') as fold:
+        for line in fnew:
+            new[line.split()[0]] = line.split()[1]
+        for line in fold:
+            old[line.split()[0]] = line.split()[1]
+        for k,v in new.items():
+            if k in old:
+                if v != old[k]:
+                    print(f'device name changed. new: {k} {v} old: {k} {old[k]}')
+            if k not in old:
+                print(f'element in new but not old: {k} {v}')
+        for k,v in old.items():
+            if k not in new:
+                print(f'element in old but not new: {k} {v}')
 
 #-----------------------------
 # Make cavities elementdevices
