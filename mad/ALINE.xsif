@@ -273,21 +273,12 @@
   D117   : DRIF, L=0.7755
   D118   : DRIF, L=3.84839
   D119   : DRIF, L=0.7755
-  D120   : DRIF, L=1.744768 !1.74477
+  D120   : DRIF, L=1.744768
   D121   : DRIF, L=1.525
   D122   : DRIF, L=1.925
   D123   : DRIF, L=38.1116
   D124   : DRIF, L=21.4778
-  D125   : DRIF, L=5.04065
-
-  dSPR2 := 0.008 !adjustment to keep PR2 (ENDBSYA) fixed
-  
-  D126   : DRIF, L=7.44174     !wall to IV40 in ESA alcove (assume correct)
-  D127   : DRIF, L=0.422       !0.469
-  D128   : DRIF, L=0.75        !0.697
-  D129   : DRIF, L=1.877       !1.919
-  D130   : DRIF, L=0.715       !0.901
-  D131   : DRIF, L=1.038+dSPR2 !0.824
+  D125   : DRIF, L=5.170149 !drift to start of ESA wall
 
 ! drifts for diagnostic and correction devices
 
@@ -451,20 +442,6 @@
   MARC   : MARK !match point
   ENDB   : MARK !end of A-line bending (final emittance)
   ST29   : MARK !beam stopper
-  ALWALL : MARK !upstream face of wall that separates A-line tunnel from alcove
-  ESAE   : MARK !east wall of ESA
-  BMDE   : MARK !Beam Dump East
-
-! ==============================================================================
-! from T-474
-! ------------------------------------------------------------------------------
-
-  IV40  : INST
-  A3C1A : ECOL
-  A3C1B : ECOL
-  A3I1  : IMON
-  A3PR1 : PROF
-  A3PR2 : PROF
 
 ! ==============================================================================
 ! beamlines
@@ -542,13 +519,7 @@
     SQ27p5_full,D122,&
     Q28_full,LD123,&
     Q30_full,LD124,&
-    Q38_full,D125,ALWALL,&
-    D126,IV40,&
-    D127,A3C1A,&
-    D128,A3C1B,&
-    D129,A3I1,&
-    D130,A3PR1,&
-    D131,A3PR2,&
+    Q38_full,D125,&
     ENDBSYA)
 
 ! ==============================================================================
@@ -611,14 +582,28 @@
 ! drifts
 ! ------------------------------------------------------------------------------
 
-  D201 : DRIF, L=0.787
-  D202 : DRIF, L=0.610
-  D203 : DRIF, L=1.027
-  D204 : DRIF, L=0.699
-  D205 : DRIF, L=0.205
-  D206 : DRIF, L=0.634-D205[L]
-  D207 : DRIF, L=0.702
-  D208 : DRIF, L=1.398
+  ALWALL : DRIF, L=8*ft2m !ESA wall
+
+  dSmdw := 0
+
+  D126 : DRIF, L=0.683370252059 !wall to IV40 in ESA alcove
+  D127 : DRIF, L=0.468630
+  D127a : DRIF, L=0.0672
+  D128 : DRIF, L=0.696722-D127a[L]
+  D129 : DRIF, L=1.918716
+  D130 : DRIF, L=0.900938
+  D131 : DRIF, L=0.823976
+
+  D201 : DRIF, L=1.039368
+  D202 : DRIF, L=0.389128
+  D203 : DRIF, L=0.892302
+  D204 : DRIF, L=0.832866
+  D204a : DRIF, L=0.72125
+  D204b : DRIF, L=D204[L]-D204a[L]
+  D205 : DRIF, L=0.213868
+  D206 : DRIF, L=0.627634-D205[L]
+  D207 : DRIF, L=0.709422
+  D208 : DRIF, L=1.405927747941
   D209 : DRIF, L=2.784
   D210 : DRIF, L=4.115
   D211 : DRIF, L=3.708
@@ -632,15 +617,21 @@
   D219 : DRIF, L=1.982-ZB7/2
   D220 : DRIF, L=2.008-ZB7/2
   D221 : DRIF, L=6.472-(D218[L]+ZB7+D219[L]+D220[L]+ZB7)
-  D222 : DRIF, L=0.671
+  D222 : DRIF, L=0.765
   D223 : DRIF, L=0.692
-  D224 : DRIF, L=28.560032 !178389
-  D225 : DRIF, L=92.117974 !053719
+  D224 : DRIF, L=28.447399
+  D225 : DRIF, L=96.290872
 
 ! ==============================================================================
-! instruments
+! instruments (from T-474)
 ! ------------------------------------------------------------------------------
 
+  IV40    : INST
+  A3C1A   : ECOL
+  A3C1B   : ECOL
+  A3I1    : IMON
+  A3PR1   : PROF
+  A3PR2   : PROF
   A3I2    : IMON
   A3BPM1  : MONI
   A3BPM2  : MONI
@@ -648,9 +639,9 @@
   IV41    : INST
   A3T0    : INST
   A3WA1   : INST
+
   A3WAKE1 : INST
   A3WS1   : WIRE
-  PIVOT   : MARK
   A3C2    : ECOL
   A3BPM3  : MONI
   A3BPM4  : MONI
@@ -660,6 +651,18 @@
   A3BPM9  : MONI
   A3BPM10 : MONI
   A3BPM11 : MONI
+
+! ==============================================================================
+! points of interest
+! ------------------------------------------------------------------------------
+
+  NOTCHBEG  : MARK
+  NOTCHEND  : MARK
+  ALCOVEBEG : MARK
+  ALCOVEEND : MARK
+  PVOT      : MARK
+  ESAE      : MARK !east wall of ESA
+  BMDE      : MARK !Beam Dump East
 
 ! ==============================================================================
 ! beamlines
@@ -676,17 +679,28 @@
     BCX3D3_full,D219,A3WIG2,D220,&
     BCX3D4_full)
 
-  ESA : LINE=(BEGESA,&
+  ESAu : LINE=(BEGESA,&
+    ALWALL,NOTCHBEG,&
+    D126,IV40,&
+    D127,A3C1A,&
+    D127a,NOTCHEND,ALCOVEBEG,&
+    D128,A3C1B,&
+    D129,A3I1,&
+    D130,A3PR1,&
+    D131,A3PR2,&
     D201,A3I2,&
     D202,A3BPM1,&
     D203,A3BPM2,&
-    D204,A3I3,&
+    D204a,ALCOVEEND,&
+    D204b,A3I3,&
     D205,IV41,&
     D206,A3T0,&
     D207,A3WA1,&
     D208,A3WAKE1,&
     D209,A3WS1,&
-    D210,PIVOT,&
+    D210,PVOT)
+
+  ESAd : LINE=(&
     D211,A3C2,&
     D212,A3BPM3,&
     D213,A3BPM4,&
@@ -698,6 +712,8 @@
     D224,ESAE,&
     D225,BMDE,&
     ENDESA)
+
+  ESA : LINE=(ESAu,ESAd)
 
 ! ------------------------------------------------------------------------------
 
