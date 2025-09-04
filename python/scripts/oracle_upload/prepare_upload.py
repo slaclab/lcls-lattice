@@ -65,7 +65,7 @@ def roundoff(val, prec=None):
 
 script_dir = Path(__file__).parent.resolve()
 
-optics='09JUN2025s'
+optics='07SEP2025s'
 vfile=['LCLS2sc_value.echo','LCLS2cu_value.echo']
 
 outdir='oracle_upload'
@@ -754,7 +754,7 @@ for kwn,eles in ele_dict.items():
                 'prim': FDN[id1],
                 'name': name,
                 'type': T[id1].strip(),
-                'energy': np.mean(E[ide]),  # GeV (beam center)
+                'energy': np.mean(E[id1-1]),  # GeV (entrance)
                 'leng': leng,
                 'freq': P[id1, 4],  # MHz
                 'ampl': ampl,
