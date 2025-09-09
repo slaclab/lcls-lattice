@@ -1,10 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-09JUN2025s ***
+! *** OPTICS=AD_ACCEL-07SEP2025s ***
 
 ! LCLS2sc bunch compressor chicane #1
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 30-JUL-2025, M. Woodley
+!  * relocate and undefer BZC1 per S. Kaminski
 ! ------------------------------------------------------------------------------
 ! 17-JAN-2021, M. Woodley
 !  * new standard configuration per Y. Ding
@@ -262,8 +265,7 @@
   DC100 : DRIF, L=0.637
 
   DC100a : DRIF, L=0.3
-  DC100b : DRIF, L=0.1
-  DC100c : DRIF, L=DC100[L]-DC100a[L]-DC100b[L]
+  DC100b : DRIF, L=DC100[L]-DC100a[L]
 
 ! collimation FODO
 
@@ -280,7 +282,8 @@
   DC101a : DRIF, L=0.214288
   DC101b : DRIF, L=0.169862
   DC101c : DRIF, L=0.25
-  DC101d : DRIF, L=DC101[L]-DC101a[L]-DC101b[L]-DC101c[L]
+  DC101d : DRIF, L=3.30563
+  DC101e : DRIF, L=DC101[L]-DC101a[L]-DC101b[L]-DC101c[L]-DC101d[L]
   DC104a : DRIF, L=0.38415
   DC104c : DRIF, L=0.1
   DC104e : DRIF, L=0.613
@@ -381,15 +384,15 @@
 
 ! instruments
 
-  OTR11B : PROF, TYPE="OTR BC"       !BC1 energy spread
-  WS11B  : WIRE, TYPE="@3,fast"      !BC1 energy spread
-  BZ11B  : BLMO, TYPE="CSR"          !CSR-based relative bunch length monitor
-  BZC1   : BLMO, TYPE="@2,gap/diode" !relative bunch length monitor
-  IM11B  : IMON, TYPE="ICT"          !Beam Current Monitor
-  WSC104 : WIRE, TYPE="fast"         !post-BC1 emittance
-  WSC106 : WIRE, TYPE="fast"         !post-BC1 emittance
-  WSC108 : WIRE, TYPE="fast"         !post-BC1 emittance
-  WSC110 : WIRE, TYPE="fast"         !post-BC1 emittance
+  OTR11B : PROF, TYPE="OTR BC"    !BC1 energy spread
+  WS11B  : WIRE, TYPE="@3,fast"   !BC1 energy spread
+  BZ11B  : BLMO, TYPE="CSR"       !CSR-based relative bunch length monitor
+  IM11B  : IMON, TYPE="ICT"       !Beam Current Monitor
+  BZC1   : BLMO, TYPE="gap/diode" !relative bunch length monitor
+  WSC104 : WIRE, TYPE="fast"      !post-BC1 emittance
+  WSC106 : WIRE, TYPE="fast"      !post-BC1 emittance
+  WSC108 : WIRE, TYPE="fast"      !post-BC1 emittance
+  WSC110 : WIRE, TYPE="fast"      !post-BC1 emittance
 
 ! markers
 
@@ -451,7 +454,7 @@
 
   BC1o0 : LINE=(DC100,ENDBC1B)
 
-  BC1o : LINE=(DC100a,BZ11B,DC100b,BZC1,DC100c,ENDBC1B)
+  BC1o : LINE=(DC100a,BZ11B,DC100b,ENDBC1B)
 
   BC1 : LINE=(BC1i,BC1c,BC1o)
 
@@ -474,7 +477,7 @@
 
  !COMMENT !complete
     COL1 : LINE=(BEGCOL1,&
-      QC101_full,DC101a,IM11B,DC101b,XCC101,DC101c,YCC101,DC101d,&
+      QC101_full,DC101a,IM11B,DC101b,XCC101,DC101c,YCC101,DC101d,BZC1,DC101e,&
       QC102_full,DC102,&
       QC103_full,DC103,&
       QC104_full,DC104a,XCC104,DC104b,RFBC104,DC104c,WSC104,&
