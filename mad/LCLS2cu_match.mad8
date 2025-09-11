@@ -844,16 +844,7 @@
 
 ! ------------------------------------------------------------------------------
 
-  MSXR : SUBROUTINE !match into SXR undulator
-    BEAM, ENERGY=Ef
-    USE, (SXCEL36,SXCEL37)
-    SAVEBETA, TWm, #S
-    TWISS
-    SET, MBETX, TWm[BETX]
-    SET, MALFX, TWm[ALFX]
-    SET, MBETY, TWm[BETY]
-    SET, MALFY, TWm[ALFY]
-
+  MUNDs : SUBROUTINE !match into SXR undulator
     BEAM, ENERGY=Ef
     SET, SETCUS, CUSON
     SETK2cuS
@@ -865,13 +856,40 @@
       VARY, kQUM3b, STEP=1.E-6, LOWER=KminQUM3b, UPPER=KmaxQUM3b
       VARY, kQUM4b, STEP=1.E-6, LOWER=KminQUM4b, UPPER=KmaxQUM4b
       VARY, kQSX16, STEP=1.E-6, LOWER=KminQSX16, UPPER=KmaxQSX16
-      CONSTR, SXR36BEG, BETX=MBETX, ALFX=MALFX, BETY=MBETY, ALFY=MALFY
-      WEIGHT, BETX=1.E-3,BETY=1.E-3
-      CONSTR, QUM1B[1], BETX<76
-      CONSTR, QUM2B[1], BETY<76
-      CONSTR, QUM3B[1], BETX<76
-      CONSTR, QUM4B[1], BETY<76
-      CONSTR, QSXh16[1], BETX<76
+      WEIGHT, X=0, PX=0, BETX=1.E-5, ALFX=0, DX=0, DPX=0
+      WEIGHT, Y=0, PY=0, BETY=1.E-5, ALFY=0, DY=0, DPY=0
+      WEIGHT, T=0, PT=0
+     !comment !long-period
+      COUPLE, QSXh21[1]/QSXh23[1]
+      COUPLE, QSXh22[1]/QSXh24[1]
+      COUPLE, QSXh21[1]/QSXh25[1]
+      COUPLE, QSXh22[1]/QSXh26[1]
+      COUPLE, QSXh21[1]/QSXh27[1]
+      COUPLE, QSXh22[1]/QSXh28[1]
+      COUPLE, QSXh21[1]/QSXh29[1]
+      COUPLE, QSXh22[1]/QSXh30[1]
+      COUPLE, QSXh21[1]/QSXh31[1]
+      COUPLE, QSXh22[1]/QSXh32[1]
+      COUPLE, QSXh21[1]/QSXh33[1]
+     !endcomment
+     !comment !short-period
+      COUPLE, QSXh34[1]/QSXh36[1]
+      COUPLE, QSXh35[1]/QSXh37[1]
+      COUPLE, QSXh34[1]/QSXh38[1]
+      COUPLE, QSXh35[1]/QSXh39[1]
+      COUPLE, QSXh34[1]/QSXh40[1]
+      COUPLE, QSXh35[1]/QSXh41[1]
+      COUPLE, QSXh34[1]/QSXh42[1]
+      COUPLE, QSXh35[1]/QSXh43[1]
+      COUPLE, QSXh34[1]/QSXh44[1]
+      COUPLE, QSXh35[1]/QSXh45[1]
+      COUPLE, QSXh34[1]/QSXh46[1]
+     !endcomment
+      WEIGHT, BETX=1.E-6, BETY=1.E-6
+      CONSTR, QUM1B[1], BETX<75
+      CONSTR, QUM2B[1], BETY<75
+      CONSTR, QUM3B[1], BETX<75
+      CONSTR, QUM4B[1], BETY<75
      !LMDIF, TOL=1.E-20, CALLS=10000
      !MIGRAD, TOL=1.E-20, CALLS=10000
     ENDMATCH
@@ -879,8 +897,6 @@
 
     PRINT, FULL
     TWISS, COUPLE, BETA0=TWSCuS1, SAVE, TAPE="twiss.tape", RTAPE="rmat.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=WS31B/SXR36BEG, &
-      STYLE=100, SPLINE, FILE="match"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, VMIN=0, VMAX=80, &
       STYLE=100, SPLINE, RANGE=WS31B/SXR47END, FILE="match"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, VMIN=0, VMAX=30, &
@@ -1119,9 +1135,8 @@
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------! ------------------------------------------------------------------------------
-! NOTE: keep Yuri's energy-scalable values for these quads ... don't rematch
-
 ! matching TCAV per Yuantao's requirements
+! NOTE: keep Yuri's energy-scalable values for these quads ... don't rematch
 
   MDUMPh : SUBROUTINE !match dumpline in HXR
     BEAM, ENERGY=Ef
@@ -1130,62 +1145,29 @@
     USE, (LTUH,HXRUND,DUMPLINE), RANGE=MM1/#E
     VALUE, kQHX46,KQUE1,KQUE2,KQDMP
     MATCH, BETA0=TWSSmh
-      VARY, kQHX46, STEP=1.E-4, LOWER=-0.877*17/Eu, UPPER=0.877*17/Eu
+     !VARY, kQHX46, STEP=1.E-4, LOWER=-0.877*17/Eu, UPPER=0.877*17/Eu
       VARY, KQUE1 , STEP=1.E-4, LOWER=-0.149*17/Eu, UPPER=0.149*17/Eu
-      VARY, KQUE2 , STEP=1.E-4, LOWER=-0.149*17/Eu, UPPER=0.149*17/Eu
-! ------------------------------------------------------------------------------
-! match KQDMP for DY=0 at OTR
-! also REMOVE constraint on OTR BETY below because it cannot be matched
-! ... this is NOT the DMPH design optics!
-! ------------------------------------------------------------------------------
-      comment
-        VARY, KQDMP, STEP=1.E-4, LOWER=-0.182*17/Eu, UPPER=0.182*17/Eu
-        CONSTR, OTRDMP, DY=0
-      endcomment
-! ------------------------------------------------------------------------------
-! for fixed KQDMP the DY is also fixed, so no need for constraint on DY
-! ------------------------------------------------------------------------------
-      CONSTR, OTRDMP, BETX>10 !betx should not be too small
-      WEIGHT, BETX=1.E-4
-      CONSTR, OTRDMP, BETX<100 !reasonably large betx is ok
-      WEIGHT, BETY=1.E-2
-      CONSTR, OTRDMP, BETY<10 !prefer small bety
-      WEIGHT, BETY=1.E-5
-      CONSTR, OTRDMP, BETY<2 !very small bety is ok
-      WEIGHT, BETY=1.E-4 
-      CONSTR, MTCX, BETX>80 !need large betx
-      WEIGHT, BETX=1.E-5
-      CONSTR, MTCX, BETX<150 !but not too large due to small aperture
-      WEIGHT, BETX=1.E-6 
-      CONSTR, MTCX, BETX=100 !try to keep it around 100 m
-      WEIGHT, BETX=1.E-6, BETY=1.E-6
-      CONSTR, DUMPFACE, BETX<350, BETY<350
-      WEIGHT, BETX=0, BETY=0, ALFX=0, ALFY=0, DX=0, DPX=0, DY=0, DPY=0
-      WEIGHT, X=0, PX=0, Y=0, PY=0, T=0, PT=0, MUY=0
-      WEIGHT, MUX=1.E-2
-      COUPLE, MTCX/OTRDMP, MUX=90/360 !need close to 90 deg phase advance
-      WEIGHT, MUX=10
-     !COUPLE, MTCX/OTRDMP, MUX>70/360, MUX<110/360
-      WEIGHT, BETX=1.E-6, BETY=1.E-6
-      CONSTR, QUE1[1],  BETY<150, BETX<350
-      CONSTR, QUE2[1],  BETY<150, BETX<350
-      CONSTR, QDMP1[1], BETY<150, BETX<350
+     !VARY, KQUE2 , STEP=1.E-4, LOWER=-0.149*17/Eu, UPPER=0.149*17/Eu
+      WEIGHT, X=0, PX=0, BETX=0, ALFX=0, DX=0, DPX=0, &
+              Y=0, PY=0, BETY=0, ALFY=0, DY=0, DPY=0, &
+              T=0, PT=0
+      COUPLE, MTCX/OTRDMP, MUX=90/360
      !LMDIF, TOL=1.E-20, CALLS=50000
      !MIGRAD, TOL=1.E-20, CALLS=50000
     ENDMATCH
     VALUE, kQHX46,KQUE1,KQUE2,KQDMP
-   !PRINT, MTCX ; PRINT, OTRDMP ; PRINT, DUMPFACE
-    PRINT, FULL
+    PRINT, MTCX ; PRINT, OTRDMP ; PRINT, DUMPFACE
+   !PRINT, FULL
     TWISS, BETA0=TWSSmh, SAVE=TWISS
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
       STYLE=100, SPLINE=.T., RANGE=QHXh44[1]/DUMPFACE, &
-      TITLE="HXR undulator to Dump, w/o coupling", FILE="match", &
-      VMIN=0,-0.1, VMAX=400,1
+      TITLE="HXR undulator to Dump, w/o coupling", FILE="match" !, &
+   !  VMIN=0,-0.1, VMAX=400,1
     TWISS, BETA0=TWSSmh, SAVE=TWISS, COUPLE
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
       STYLE=100, SPLINE=.T., RANGE=QHXh44[1]/DUMPFACE, &
-      TITLE="HXR undulator to Dump, with coupling", FILE="match", &
-      VMIN=0,-0.1, VMAX=400,1
+      TITLE="HXR undulator to Dump, with coupling", FILE="match" !, &
+   !  VMIN=0,-0.1, VMAX=400,1
   ENDSUBROUTINE
 
 ! ==============================================================================
@@ -1471,8 +1453,8 @@
  !MCUSXR
  !MCLTS
  !MCULTUs
- !MSXR
-!!MDUMPs !do not use
+ !MUNDs
+ !MDUMPs
 
 ! ------------------------------------------------------------------------------
 
@@ -1483,7 +1465,7 @@
  !MBSY
  !MED2DL2
  !MHXR
-!!MDUMPh !do not use
+ !MDUMPh
 
 ! ------------------------------------------------------------------------------
 

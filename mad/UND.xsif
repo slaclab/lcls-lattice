@@ -6,6 +6,12 @@
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
+! 10-SEP-2025, M. Woodley
+! * replace short-period undulator and phase shifter with long-period undulator
+!   and phase shifter in SXR cell 33
+! * replace short-period phase shifter with long-period phase shifter in SXR
+!   cells 34, 36, and 37
+! ------------------------------------------------------------------------------
 ! 28-JUL-2025, M. Woodley (SDT 2025)
 ! * replace short-period undulator and phase shifter with long-period undulator
 !   and phase shifter: SXR cellS 29, 30, 31, and 32
@@ -632,8 +638,8 @@
   GQDSX  := -IntgSX/LQu/10*1.0           !T/m
   kQFSX  :=  1.E-9*GQFSX*CLIGHT/gamu/mc2 !m^-2
   kQDSX  :=  1.E-9*GQDSX*CLIGHT/gamu/mc2 !m^-2
-  kQSX16 :=  1.299653380268
-  kQSX47 := -2.295714281502              !Yuri (E=4.0, K=5.0)
+  kQSX16 :=  1.292800145679              ! 1.299653380268
+  kQSX47 := -2.1925                      !-2.295714281502 Yuri (E=4.0, K=5.0)
 
   QSXh16 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQSX16, APER=rQu
   QSXh17 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDSX,  APER=rQu
@@ -1020,7 +1026,7 @@
   UMASXh30 : UMASXh_
   UMASXh31 : UMASXh_
   UMASXh32 : UMASXh_
-  UMASXh33 : UMASXh
+  UMASXh33 : UMASXh_
   UMASXh34 : UMASXh
 ! ------35
   UMASXh36 : UMASXh
@@ -1052,7 +1058,7 @@
   USEGSX30 : LINE=(DTSXU_,UMASXh30,XCSU30,YCSU30,UMASXh30,DTSXU_)
   USEGSX31 : LINE=(DTSXU_,UMASXh31,XCSU31,YCSU31,UMASXh31,DTSXU_)
   USEGSX32 : LINE=(DTSXU_,UMASXh32,XCSU32,YCSU32,UMASXh32,DTSXU_)
-  USEGSX33 : LINE=(DTSXU,UMASXh33,XCSU33,YCSU33,UMASXh33,DTSXU)
+  USEGSX33 : LINE=(DTSXU_,UMASXh33,XCSU33,YCSU33,UMASXh33,DTSXU_)
   USEGSX34 : LINE=(DTSXU,UMASXh34,XCSU34,YCSU34,UMASXh34,DTSXU)
   DUSEGS35 : LINE=(SCHICANE)
   USEGSX36 : LINE=(DTSXU,UMASXh36,XCSU36,YCSU36,UMASXh36,DTSXU)
@@ -1092,10 +1098,10 @@
   PSSXh31 : PSSXh_
   PSSXh32 : PSSXh_
   PSSXh33 : PSSXh_
-  PSSXh34 : PSSXh
+  PSSXh34 : PSSXh_
   DPSSX35 : DRIF, L=LPSSX
-  PSSXh36 : PSSXh
-  PSSXh37 : PSSXh
+  PSSXh36 : PSSXh_
+  PSSXh37 : PSSXh_
   PSSXh38 : PSSXh
   PSSXh39 : PSSXh
   PSSXh40 : PSSXh
@@ -1258,13 +1264,13 @@
                   RFBSX32,DU7s)
   SXBRK33 : LINE=(DU3s_,PSSXh33_full,DU4s_,DU5s_,QSXh33_full,DU6s,&
                   RFBSX33,DU7s)
-  SXBRK34 : LINE=(DU3s,PSSXh34_full,DU4s,VVSXU34,DU5s,QSXh34_full,DU6s,&
+  SXBRK34 : LINE=(DU3s_,PSSXh34_full,DU4s_,VVSXU34,DU5s_,QSXh34_full,DU6s,&
                   RFBSX34,DU7s)
   SXBRK35 : LINE=(DU3s,DPSSX35,DU4sa,BOD10,DU4sb,VVSXU35,DU5s,QSXh35_full,&
                   DU6s,RFBSX35,DU7s)
-  SXBRK36 : LINE=(DU3s,PSSXh36_full,DU4s,DU5s,QSXh36_full,DU6s,&
+  SXBRK36 : LINE=(DU3s_,PSSXh36_full,DU4s_,DU5s_,QSXh36_full,DU6s,&
                   RFBSX36,DU7s)
-  SXBRK37 : LINE=(DU3s,PSSXh37_full,DU4s,DU5s,QSXh37_full,DU6s,&
+  SXBRK37 : LINE=(DU3s_,PSSXh37_full,DU4s_,DU5s_,QSXh37_full,DU6s,&
                   RFBSX37,DU7sa,BOD12,DU7Sb)
   SXBRK38 : LINE=(DU3s,PSSXh38_full,DU4s,VVSXU38,DU5s,QSXh38_full,DU6s,&
                   RFBSX38,DU7s)
@@ -1352,11 +1358,11 @@
   SXCEL30 : LINE=(SXR30BEG,DU1s,        DU2s,USEGSX30,SXBRK30,SXR30END) !long
   SXCEL31 : LINE=(SXR31BEG,DU1s,MBLMS31,DU2s,USEGSX31,SXBRK31,SXR31END) !long
   SXCEL32 : LINE=(SXR32BEG,DU1s,        DU2s,USEGSX32,SXBRK32,SXR32END) !long
-  SXCEL33 : LINE=(SXR33BEG,DU1s,MBLMS33,DU2s,USEGSX33,SXBRK33,SXR33END) !short/long
-  SXCEL34 : LINE=(SXR34BEG,DU1s,        DU2s,USEGSX34,SXBRK34,SXR34END) !short
+  SXCEL33 : LINE=(SXR33BEG,DU1s,MBLMS33,DU2s,USEGSX33,SXBRK33,SXR33END) !long
+  SXCEL34 : LINE=(SXR34BEG,DU1s,        DU2s,USEGSX34,SXBRK34,SXR34END) !short/long
   SXCEL35 : LINE=(SXR35BEG,DU1s,        DU2s,DUSEGS35,SXBRK35,SXR35END) !SXRSS+Q+RFBPM
-  SXCEL36 : LINE=(SXR36BEG,DU1s,        DU2s,USEGSX36,SXBRK36,SXR36END) !short
-  SXCEL37 : LINE=(SXR37BEG,DU1s,MBLMS37,DU2s,USEGSX37,SXBRK37,SXR37END) !short
+  SXCEL36 : LINE=(SXR36BEG,DU1s,        DU2s,USEGSX36,SXBRK36,SXR36END) !short/long
+  SXCEL37 : LINE=(SXR37BEG,DU1s,MBLMS37,DU2s,USEGSX37,SXBRK37,SXR37END) !short/long
   SXCEL38 : LINE=(SXR38BEG,DU1s,        DU2s,USEGSX38,SXBRK38,SXR38END) !short
   SXCEL39 : LINE=(SXR39BEG,DU1s,MBLMS39,DU2s,USEGSX39,SXBRK39,SXR39END) !short
   SXCEL40 : LINE=(SXR40BEG,DU1s,        DU2s,USEGSX40,SXBRK40,SXR40END) !short
@@ -1397,8 +1403,8 @@
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-  KQUE1B :=  0.28964739003 !Yuri (E=4.0, K=5.0)
-  KQUE2B :=  0.0           !-0.00606676202205 !Yuri (E=4.0, K=5.0)
+  KQUE1B :=  0.288790680436 ! 0.28964739003    !Yuri (E=4.0, K=5.0)
+  KQUE2B :=  0.0            !-0.00606676202205 !Yuri (E=4.0, K=5.0)
 
   QUE1B : QUAD, TYPE="2Q10", L=LQR/2, K1=KQUE1b, APER=rQR
   QUE2B : QUAD, TYPE="2Q10", L=LQR/2, K1=KQUE2b, APER=rQR
@@ -1612,7 +1618,7 @@
   GQDHX  := -IntgHX/LQu/10*1.0           !T/m
   kQFHX  :=  1.E-9*GQFHX*CLIGHT/gamu/mc2 !m^-2
   kQDHX  :=  1.E-9*GQDHX*CLIGHT/gamu/mc2 !m^-2
-  kQHX46 := -2.482122917065              !Yuri (E=4.0, K=2.0)
+  kQHX46 := -2.472847342896              !-2.482122917065 !Yuri (E=4.0, K=2.0)
   kQHX47 :=  0.0
 
   QHXh13 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFHX,  APER=rQu
@@ -2648,8 +2654,8 @@
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-  KQUE1 :=  0.178870650159 !Yuri (E=4.0, K=2.0)
-  KQUE2 := -0.136231234699 !Yuri (E=4.0, K=2.0)
+  KQUE1 :=  0.175906125028 ! 0.178870650159 !Yuri (E=4.0, K=2.0)
+  KQUE2 := -0.126603025251 !-0.136231234699 !Yuri (E=4.0, K=2.0)
 
   QUE1 : QUAD, TYPE="3.25Q20", L=LQD/2, K1=KQUE1, APER=rQD
   QUE2 : QUAD, TYPE="3.25Q20", L=LQD/2, K1=KQUE2, APER=rQD

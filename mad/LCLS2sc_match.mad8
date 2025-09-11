@@ -2148,34 +2148,32 @@
       WEIGHT, X=0, PX=0, BETX=1.E-5, ALFX=0, DX=0, DPX=0
       WEIGHT, Y=0, PY=0, BETY=1.E-5, ALFY=0, DY=0, DPY=0
       WEIGHT, T=0, PT=0
-      COUPLE, QSXh17[1]/QSXh19[1]
-      COUPLE, QSXh18[1]/QSXh20[1]
-      COUPLE, QSXh17[1]/QSXh21[1]
-      COUPLE, QSXh18[1]/QSXh22[1]
-      COUPLE, QSXh17[1]/QSXh23[1]
-      COUPLE, QSXh18[1]/QSXh24[1]
-      COUPLE, QSXh17[1]/QSXh25[1]
-      COUPLE, QSXh18[1]/QSXh26[1]
-      COUPLE, QSXh17[1]/QSXh27[1]
-      COUPLE, QSXh18[1]/QSXh28[1]
-      COUPLE, QSXh17[1]/QSXh29[1]
-      COUPLE, QSXh18[1]/QSXh30[1]
-      COUPLE, QSXh17[1]/QSXh31[1]
-      COUPLE, QSXh18[1]/QSXh32[1]
-      COUPLE, QSXh17[1]/QSXh33[1]
-      COUPLE, QSXh18[1]/QSXh34[1]
-      COUPLE, QSXh17[1]/QSXh35[1]
-      COUPLE, QSXh18[1]/QSXh36[1]
-      COUPLE, QSXh17[1]/QSXh37[1]
-      COUPLE, QSXh18[1]/QSXh38[1]
-      COUPLE, QSXh17[1]/QSXh39[1]
-      COUPLE, QSXh18[1]/QSXh40[1]
-      COUPLE, QSXh17[1]/QSXh41[1]
-      COUPLE, QSXh18[1]/QSXh42[1]
-      COUPLE, QSXh17[1]/QSXh43[1]
-      COUPLE, QSXh18[1]/QSXh44[1]
-      COUPLE, QSXh17[1]/QSXh45[1]
-      COUPLE, QSXh18[1]/QSXh46[1]
+     !comment !long-period
+      COUPLE, QSXh21[1]/QSXh23[1]
+      COUPLE, QSXh22[1]/QSXh24[1]
+      COUPLE, QSXh21[1]/QSXh25[1]
+      COUPLE, QSXh22[1]/QSXh26[1]
+      COUPLE, QSXh21[1]/QSXh27[1]
+      COUPLE, QSXh22[1]/QSXh28[1]
+      COUPLE, QSXh21[1]/QSXh29[1]
+      COUPLE, QSXh22[1]/QSXh30[1]
+      COUPLE, QSXh21[1]/QSXh31[1]
+      COUPLE, QSXh22[1]/QSXh32[1]
+      COUPLE, QSXh21[1]/QSXh33[1]
+     !endcomment
+     !comment !short-period
+      COUPLE, QSXh34[1]/QSXh36[1]
+      COUPLE, QSXh35[1]/QSXh37[1]
+      COUPLE, QSXh34[1]/QSXh38[1]
+      COUPLE, QSXh35[1]/QSXh39[1]
+      COUPLE, QSXh34[1]/QSXh40[1]
+      COUPLE, QSXh35[1]/QSXh41[1]
+      COUPLE, QSXh34[1]/QSXh42[1]
+      COUPLE, QSXh35[1]/QSXh43[1]
+      COUPLE, QSXh34[1]/QSXh44[1]
+      COUPLE, QSXh35[1]/QSXh45[1]
+      COUPLE, QSXh34[1]/QSXh46[1]
+     !endcomment
       WEIGHT, BETX=1.E-6, BETY=1.E-6
       CONSTR, QUM1B[1], BETX<75
       CONSTR, QUM2B[1], BETY<75
@@ -2208,7 +2206,7 @@
     MATCH, BETA0=TWSSms
       VARY, kQSX47, STEP=1.E-4, LOWER=-0.877*10/Eu, UPPER=0.877*10/Eu
       VARY, KQUE1B, STEP=1.E-4, UPPER= 0.149*10/Eu, LOWER=0
-      VARY, KQUE2B, STEP=1.E-4, LOWER=-0.149*10/Eu, UPPER=0
+     !VARY, KQUE2B, STEP=1.E-4, LOWER=-0.149*10/Eu, UPPER=0
 ! ------------------------------------------------------------------------------
 ! match KQDMPB for DY=0 at OTRDMPB
 ! also REMOVE constraint on OTRDMPB BETY below because it cannot be matched
@@ -2238,7 +2236,7 @@
       CONSTR, DUMPFACEB, BETX<350, BETY<350
       WEIGHT, BETX=0, BETY=0, ALFX=0, ALFY=0, DX=0, DPX=0, DY=0, DPY=0
       WEIGHT, X=0, PX=0, Y=0, PY=0, T=0, PT=0, MUY=0
-      WEIGHT, MUX=1.E-2
+      WEIGHT, MUX=100 !1.E-2
       COUPLE, MTCXB/OTRDMPB, MUX=90/360 !need close to 90 deg phase advance
       WEIGHT, MUX=10
      !COUPLE, MTCXB/OTRDMPB, MUX>70/360, MUX<110/360
@@ -2255,13 +2253,13 @@
     TWISS, BETA0=TWSSms, SAVE=TWISS
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
       STYLE=100, SPLINE, RANGE=QSXh44[1]/DUMPFACEB, &
-      TITLE="SXR undulator to Dump, w/o coupling", FILE="match", &
-      VMIN=0,-0.1, VMAX=800,1
+      TITLE="SXR undulator to Dump, w/o coupling", FILE="match" !, &
+   !  VMIN=0,-0.1, VMAX=800,1
     TWISS, BETA0=TWSSms, SAVE=TWISS, COUPLE
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
       STYLE=100, SPLINE, RANGE=QSXh44[1]/DUMPFACEB, &
-      TITLE="SXR undulator to Dump, with coupling", FILE="match", &
-      VMIN=0,-0.1, VMAX=800,1
+      TITLE="SXR undulator to Dump, with coupling", FILE="match" !, &
+   !  VMIN=0,-0.1, VMAX=800,1
   ENDSUBROUTINE
 
 ! ==============================================================================
@@ -2454,7 +2452,7 @@
       CONSTR, DUMPFACE, BETX<350, BETY<350
       WEIGHT, BETX=0, BETY=0, ALFX=0, ALFY=0, DX=0, DPX=0, DY=0, DPY=0
       WEIGHT, X=0, PX=0, Y=0, PY=0, T=0, PT=0, MUY=0
-      WEIGHT, MUX=1.E-2
+      WEIGHT, MUX=100 !1.E-2
       COUPLE, MTCX/OTRDMP, MUX=90/360 !need close to 90 deg phase advance
       WEIGHT, MUX=10
      !COUPLE, MTCX/OTRDMP, MUX>70/360, MUX<110/360
@@ -2471,13 +2469,13 @@
     TWISS, BETA0=TWSSmh, SAVE=TWISS
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
       STYLE=100, SPLINE=.T., RANGE=QHXh44[1]/DUMPFACE, &
-      TITLE="HXR undulator to Dump, w/o coupling", FILE="match", &
-      VMIN=0,-0.1, VMAX=400,1
+      TITLE="HXR undulator to Dump, w/o coupling", FILE="match" !, &
+   !  VMIN=0,-0.1, VMAX=400,1
     TWISS, BETA0=TWSSmh, SAVE=TWISS, COUPLE
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
       STYLE=100, SPLINE=.T., RANGE=QHXh44[1]/DUMPFACE, &
-      TITLE="HXR undulator to Dump, with coupling", FILE="match", &
-      VMIN=0,-0.1, VMAX=400,1
+      TITLE="HXR undulator to Dump, with coupling", FILE="match" !, &
+   !  VMIN=0,-0.1, VMAX=400,1
   ENDSUBROUTINE
 
 ! ==============================================================================
@@ -3008,7 +3006,7 @@
  !MBSY
  !MED2DL2
  !MUNDh
-!!MDUMPh !do not use
+ !MDUMPh
 
 ! ------------------------------------------------------------------------------
 
@@ -3025,7 +3023,7 @@
  !MED2P
  !MED2DL2b
  !MUNDs
-!!MDUMPs !do not use
+ !MDUMPs
 
 ! ------------------------------------------------------------------------------
 
