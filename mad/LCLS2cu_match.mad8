@@ -953,6 +953,29 @@
       TITLE="SXR undulator to Dump, with coupling", FILE="match"
   ENDSUBROUTINE
 
+  MDUMPMUXs : SUBROUTINE !match TCX01B->OTRDMPB horizontal phase advance
+    BEAM, ENERGY=Ef
+    SET, SETCUS, CUSON
+    SETK2cuS
+    USE, (CLTS,BSYS,LTUS,SXRUND,DUMPLINEb)
+    VALUE, kQSX47,KQUE1b,KQUE2b,KQDMPb
+    MATCH, BETA0=TWSCuS1
+      VARY, KQUE1b, STEP=1.E-6, LOWER=0, UPPER=0.380 !15 GeV
+      WEIGHT, X=0, PX=0, BETX=0, ALFX=0, DX=0, DPX=0, &
+              Y=0, PY=0, BETY=0, ALFY=0, DY=0, DPY=0, &
+              T=0, PT=0
+      COUPLE, MTCXB/OTRDMPB, MUX=90/360 !90 deg phase advance
+     !LMDIF, TOL=1.E-20
+     !MIGRAD, TOL=1.E-20
+    ENDMATCH
+    VALUE, kQSX47,KQUE1B,KQUE2B,KQDMPB
+    PRINT, MTCXB ; PRINT, OTRDMPB ; PRINT, DUMPFACEB
+    TWISS, COUPLE, BETA0=TWSCuS1, SAVE
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      STYLE=100, SPLINE, RANGE=QSXh44[1]/DUMPFACEB, &
+      TITLE="SXR undulator to Dump (COUPLE)", FILE="match"
+  ENDSUBROUTINE
+
 ! ==============================================================================
 ! LCLS-II HXR matching SUBROUTINEs
 ! ------------------------------------------------------------------------------
@@ -1168,6 +1191,29 @@
       STYLE=100, SPLINE=.T., RANGE=QHXh44[1]/DUMPFACE, &
       TITLE="HXR undulator to Dump, with coupling", FILE="match" !, &
    !  VMIN=0,-0.1, VMAX=400,1
+  ENDSUBROUTINE
+
+  MDUMPMUXh : SUBROUTINE !match TCX01,2->OTRDMP horizontal phase advance
+    BEAM, ENERGY=Ef
+    SET, SETCUS, CUSOFF
+    SETK2cuH
+    USE, (LTUH,HXRUND,DUMPLINE), RANGE=MM1/#E
+    VALUE, kQHX46,KQUE1,KQUE2,KQDMP
+    MATCH, BETA0=TWSSmh
+      VARY, KQUE1, STEP=1.E-6, LOWER=0, UPPER=0.149*17/Eu
+      WEIGHT, X=0, PX=0, BETX=0, ALFX=0, DX=0, DPX=0, &
+              Y=0, PY=0, BETY=0, ALFY=0, DY=0, DPY=0, &
+              T=0, PT=0
+      COUPLE, MTCX/OTRDMP, MUX=90/360 !90 deg phase advance
+     !LMDIF, TOL=1.E-20
+     !MIGRAD, TOL=1.E-20
+    ENDMATCH
+    VALUE, kQHX46,KQUE1,KQUE2,KQDMP
+    PRINT, MTCX ; PRINT, OTRDMP ; PRINT, DUMPFACE
+    TWISS, COUPLE, BETA0=TWSSmh, SAVE
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      STYLE=100, SPLINE, RANGE=QHXh44[1]/DUMPFACE, &
+      TITLE="HXR undulator to Dump (COUPLE)", FILE="match"
   ENDSUBROUTINE
 
 ! ==============================================================================
@@ -1454,7 +1500,8 @@
  !MCLTS
  !MCULTUs
  !MUNDs
- !MDUMPs
+!!MDUMPs
+ !MDUMPMUXs
 
 ! ------------------------------------------------------------------------------
 
@@ -1465,7 +1512,8 @@
  !MBSY
  !MED2DL2
  !MHXR
- !MDUMPh
+!!MDUMPh
+ !MDUMPMUXh
 
 ! ------------------------------------------------------------------------------
 
