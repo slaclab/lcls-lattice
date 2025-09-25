@@ -9,14 +9,6 @@
 4. Check if beginning twiss in `bmad/master/gunb/beginning_BEGGUNB.bmad` need to be updated from BX0, AX0, etc. in `mad/LCLS2sc_master.xsif`
 5. from `$LCLS_LATTICE` run `pytest`
 
-# Update element devices
-1. Obtain updated lcls_elements.csv
-   - Go to [https://oraweb.slac.stanford.edu/apex/slacprod/f?p=116:600](https://oraweb.slac.stanford.edu/apex/slacprod/f?p=116:600)
-   - Click on Actions and Download
-   - Save file to `lcls-lattice/bmad/conversion/from_oracle`
-2. Run `$LCLS_LATTICE/bmad/conversion/device_mapping/device_mapping.py`
-   - This generates the `lcls-lattice/bmad/master/*_devicenames.bmad` files
-
 # Check into repo
 1. Trigger the Make Optics Plots action for the pre-release branch.
    - This updates the plots in `docs/plots/`.  Check these plots for correctness.
@@ -25,6 +17,26 @@
 5. Update `/sdf/group/ad/sw/scm/repos/optics/lcls-lattice` on s3df.
 6. Update prod using zip of release at `lcls-srv01:/usr/local/lcls/model/lattice`
    - Update the `/usr/local/lcls/model/lattice/current` link to point to the new release.
+
+# Update element devices
+To be done after the Oracle database is updated by the database group.
+1. Obtain updated lcls_elements.csv
+   - Go to [https://oraweb.slac.stanford.edu/apex/slacprod/f?p=116:600](https://oraweb.slac.stanford.edu/apex/slacprod/f?p=116:600)
+   - Click on Actions and Download
+   - Save file to `lcls-lattice/bmad/conversion/from_oracle`
+2. Run `$LCLS_LATTICE/bmad/conversion/device_mapping/device_mapping.py`
+   - This generates the `lcls-lattice/bmad/master/*_devicenames.bmad` files
+
+# Publish from sdf using makefile
+To be done after the Oracle database is updated by the the database group.
+1. Log onto sdfiana16
+2. `module load conda`
+3. `conda activate oracle-conn`
+4. `cd /sdf/group/ad/sw/scm/repos/optics/lcls-lattice/mad`
+5. execute `../python/scripts/oracle_upload/elementdevices.py`
+   - Connects to oracle database to generate element devices files
+6. make -f makefile -B INSTALLDIR=22SEP2025s install
+   - replace 22SEP2025s with latest release name in DDMMMYYYYs format
 
 ## Rematch notes.
 * Rematching is usually not needed.  A mismatch between mad8 and Bmad usually means something went wrong in the conversion.
