@@ -1,10 +1,14 @@
 
-! *** OPTICS=AD_ACCEL-09JUN2025s ***
+! *** OPTICS=AD_ACCEL-22SEP2025s ***
 
 ! LCLS2sc A-line
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 24-JUN-2025, M. Woodley
+!  * replace ESA E158 components with T-474 components
+!  * prepend "A" to names that begin with "3"
 ! ------------------------------------------------------------------------------
 ! 14-MAR-2025, M. Woodley
 !  * remove BSYA_1 area components (decommissioned)
@@ -212,29 +216,6 @@
   B26 : SBEN, TYPE="Aline_bend", HGAP=GBA/2, L=LBA, ANGLE=ABA, &
               E1=ABA/2, FINT=0.5, E2=ABA/2, FINTX=0.5
 
-! ESA bends (E158)
-
-  LD1S := 1.83
-  LD2S := 3.45
-  LD3S := 3.45
-
-  AD1S :=  0.022344631354
-  AD2S := -0.044690490267
-  AD3S :=  0.022345239962
-
-  BXD1Sa : SBEN ,L=LD1S/2, ANGLE=AD1S/2, FINT=0, FINTX=0
-  BXD1Sb : SBEN ,L=LD1S/2, ANGLE=AD1S/2, FINT=0, FINTX=0
-  BXD2Sa : SBEN ,L=LD2S/2, ANGLE=AD2S/2, FINT=0, FINTX=0
-  BXD2Sb : SBEN ,L=LD2S/2, ANGLE=AD2S/2, FINT=0, FINTX=0
-  BXD3Sa : SBEN ,L=LD3S/2, ANGLE=AD3S/2, FINT=0, FINTX=0
-  BXD3Sb : SBEN ,L=LD3S/2, ANGLE=AD3S/2, FINT=0, FINTX=0
-
-! define unsplit SBENs for BMAD ... not used by MAD
-
-  BXD1S : SBEN ,L=LD1S, ANGLE=AD1S, FINT=0, FINTX=0
-  BXD2S : SBEN ,L=LD2S, ANGLE=AD2S, FINT=0, FINTX=0
-  BXD3S : SBEN ,L=LD3S, ANGLE=AD3S, FINT=0, FINTX=0
-
 ! ==============================================================================
 ! quadrupoles
 ! ------------------------------------------------------------------------------
@@ -259,35 +240,18 @@
   KQ30 := -0.028849559713
   KQ38 :=  0.034487458519
 
-  Q10 : QUAD, L=LQ8cm/2, APER=rQ8cm, K1=KQ10, TYPE="Aline_Q8cm"
-  Q11 : QUAD, L=LQ8cm/2, APER=rQ8cm, K1=KQ11, TYPE="Aline_Q8cm"
+  Q10 : QUAD, L=LQ8cm/2, APER=rQ8cm, K1=KQ10, TYPE="3.15Q76"
+  Q11 : QUAD, L=LQ8cm/2, APER=rQ8cm, K1=KQ11, TYPE="3.15Q76"
   Q19 : QUAD, L=LQ19/2,  APER=rQ19,  K1=KQ19, TYPE="Aline_Q19"
   Q20 : QUAD, L=LQ20/2,  APER=rQ20,  K1=KQ20, TYPE="Aline_Q20"
-  Q27 : QUAD, L=LQ8cm/2, APER=rQ8cm, K1=KQ27, TYPE="Aline_Q8cm"
-  Q28 : QUAD, L=LQ8cm/2, APER=rQ8cm, K1=KQ28, TYPE="Aline_Q8cm"
-  Q30 : QUAD, L=LQ8cm/2, APER=rQ8cm, K1=KQ30, TYPE="Aline_Q8cm"
-  Q38 : QUAD, L=LQ8cm/2, APER=rQ8cm, K1=KQ38, TYPE="Aline_Q8cm"
+  Q27 : QUAD, L=LQ8cm/2, APER=rQ8cm, K1=KQ27, TYPE="3.15Q76"
+  Q28 : QUAD, L=LQ8cm/2, APER=rQ8cm, K1=KQ28, TYPE="3.15Q76"
+  Q30 : QUAD, L=LQ8cm/2, APER=rQ8cm, K1=KQ30, TYPE="3.15Q76"
+  Q38 : QUAD, L=LQ8cm/2, APER=rQ8cm, K1=KQ38, TYPE="3.15Q76"
 
   KSQ := 0.0
 
   SQ27p5 : QUAD, L=LSQ/2, APER=rSQ, K1=KSQ, TILT, TYPE="Aline_SQ27"
-
-! ESA quads (E158)
-
-  LQSA := 1.327
-  rQSA := 193.0e-3
-
-! E158 run value (P. Bosted)
-
-  KQ1SA :=  0.016723215505
-  KQ2SA := -0.031838409505
-  KQ3SA :=  0.031838409505
-  KQ4SA := -0.016080013116
-
-  Q1S : QUAD, L=LQSA/2, K1=KQ1SA, APER=rQSA
-  Q2S : QUAD, L=LQSA/2, K1=KQ2SA, APER=rQSA
-  Q3S : QUAD, L=LQSA/2, K1=KQ3SA, APER=rQSA
-  Q4S : QUAD, L=LQSA/2, K1=KQ4SA, APER=rQSA
 
 ! ==============================================================================
 ! drifts
@@ -309,131 +273,69 @@
   D117   : DRIF, L=0.7755
   D118   : DRIF, L=3.84839
   D119   : DRIF, L=0.7755
-  D120   : DRIF, L=1.744768 !1.74477
+  D120   : DRIF, L=1.744768
   D121   : DRIF, L=1.525
   D122   : DRIF, L=1.925
   D123   : DRIF, L=38.1116
   D124   : DRIF, L=21.4778
-  D125   : DRIF, L=5.04065
-  DPR2   : DRIF, L=12.25174 !wall to 3PR2 in ESA alcove
-
-  D201   : DRIF, L=20.44174-DPR2[L]
-  D202   : DRIF, L=2.5
-  D203   : DRIF, L=1.69
-  D204   : DRIF, L=1.4865
-  D205   : DRIF, L=1.413
-  D206   : DRIF, L=2.603
-  D207   : DRIF, L=1.013
-  D208   : DRIF, L=31.04932
-  D209   : DRIF, L=92.118
+  D125   : DRIF, L=5.170149 !drift to start of ESA wall
 
 ! drifts for diagnostic and correction devices
 
-  comment
-  D002a : DRIF, L=0.090479
-  D002b : DRIF, L=1.654993
-  D002c : DRIF, L=0.0184
-  D002d : DRIF, L=2.466807
-  D002e : DRIF, L=0.34925
-  D002f : DRIF, L=4.3434
-  D002g : DRIF, L=6.213125
-  D002h : DRIF, L=0.3429
-  D002i : DRIF, L=0.447449
-  D003a : DRIF, L=0.128016
-  D003b : DRIF, L=1.609344
-  D003c : DRIF, L=0.331248
-  D003d : DRIF, L=0.628073
-  D003e : DRIF, L=0.2286
-  D003f : DRIF, L=0.4826
-  D003g : DRIF, L=0.3556
-  D003h : DRIF, L=0.415546
-  D004a : DRIF, L=0.204216
-  D004b : DRIF, L=0.581559
-  D005a : DRIF, L=0.762
-  D005b : DRIF, L=2.329
-  D005c : DRIF, L=5.402548
-
-  D101a : DRIF, L=7.405675
-  D101b : DRIF, L=3.2853
-  D101c : DRIF, L=0.635
-  D101d : DRIF, L=0.787
-  D101e : DRIF, L=0.534
-  D101f : DRIF, L=0.813
-  D101g : DRIF, L=0.685
-  D101h : DRIF, L=0.61
-  D101i : DRIF, L=1.27
-  D101j : DRIF, L=1.778
-  D101k : DRIF, L=0.457
-  D101l : DRIF, L=0.153
-  D101m : DRIF, L=0.177
-  D101n : DRIF, L=0.483
-  D101o : DRIF, L=0.483
-  D101p : DRIF, L=0.587
-  PMV   : DRIF, L=0.4
-  D101q : DRIF, L=0.589942
-  D102a : DRIF, L=1.06296
-  PM    : DRIF, L=7.0
-  D102b : DRIF, L=1.06296
-  D103a : DRIF, L=66.20934
-  D103b : DRIF, L=0.615959
-  D103c : DRIF, L=2.850589
-  D103d : DRIF, L=0.15875
-  endcomment
-
-  D105a  : DRIF, L=0.808
-  D105b  : DRIF, L=0.38
-  D105c  : DRIF, L=0.478
-  D105d  : DRIF, L=0.628
-  D105e  : DRIF, L=0.684
-  D105f  : DRIF, L=0.62
-  D105g  : DRIF, L=0.88
-  D105h  : DRIF, L=0.668
-  D105i  : DRIF, L=0.3912
-  D108a  : DRIF, L=0.829
-  D108b  : DRIF, L=0.785
-  D108c  : DRIF, L=2.23439
-  D110a  : DRIF, L=2.98539
-  D110b  : DRIF, L=0.863
-  D112a  : DRIF, L=7.4348
-  D112b  : DRIF, L=3.19319
-  D112c  : DRIF, L=1.159
-  D112d  : DRIF, L=1.302
-  D112e  : DRIF, L=1.264
-  D112f  : DRIF, L=0.723
-  D112g  : DRIF, L=0.673
-  D113a  : DRIF, L=1.32
-  D113b  : DRIF, L=1.981
-  D113c  : DRIF, L=5.7987
-  D114a  : DRIF, L=4.47
-  D114b  : DRIF, L=0.775
-  D114c  : DRIF, L=0.70072
-  D116a  : DRIF, L=2.81239
-  D116b  : DRIF, L=1.036
-  D118a  : DRIF, L=0.65139
-  D118b  : DRIF, L=0.707
-  D118c  : DRIF, L=1.131
-  D118d  : DRIF, L=0.501
-  D118e  : DRIF, L=0.858
-  D120b  : DRIF, L=0.35
-  D120c  : DRIF, L=0.513
-  D120a  : DRIF, L=D120[L]-D120b[L]-D120c[L] !0.881768
-  D123a  : DRIF, L=0.655
-  D123b  : DRIF, L=0.673
-  D123c  : DRIF, L=0.644
-  D123d  : DRIF, L=0.657
-  D123e  : DRIF, L=0.816
-  D123f  : DRIF, L=0.445
-  D123g  : DRIF, L=0.844
-  D123h  : DRIF, L=31.9656
-  D123i  : DRIF, L=0.729
-  D123j  : DRIF, L=0.683
-  D124a  : DRIF, L=0.629
-  D124b  : DRIF, L=0.381
-  D124c  : DRIF, L=0.635
-  D124d  : DRIF, L=0.559
-  D124e  : DRIF, L=1.041
-  D124f  : DRIF, L=16.5857
-  D124g  : DRIF, L=1.6471
+  D105a : DRIF, L=0.808
+  D105b : DRIF, L=0.38
+  D105c : DRIF, L=0.478
+  D105d : DRIF, L=0.628
+  D105e : DRIF, L=0.684
+  D105f : DRIF, L=0.62
+  D105g : DRIF, L=0.88
+  D105h : DRIF, L=0.668
+  D105i : DRIF, L=0.3912
+  D108a : DRIF, L=0.829
+  D108b : DRIF, L=0.785
+  D108c : DRIF, L=2.23439
+  D110a : DRIF, L=2.98539
+  D110b : DRIF, L=0.863
+  D112a : DRIF, L=7.4348
+  D112b : DRIF, L=3.19319
+  D112c : DRIF, L=1.159
+  D112d : DRIF, L=1.302
+  D112e : DRIF, L=1.264
+  D112f : DRIF, L=0.723
+  D112g : DRIF, L=0.673
+  D113a : DRIF, L=1.32
+  D113b : DRIF, L=1.981
+  D113c : DRIF, L=5.7987
+  D114a : DRIF, L=4.47
+  D114b : DRIF, L=0.775
+  D114c : DRIF, L=0.70072
+  D116a : DRIF, L=2.81239
+  D116b : DRIF, L=1.036
+  D118a : DRIF, L=0.65139
+  D118b : DRIF, L=0.707
+  D118c : DRIF, L=1.131
+  D118d : DRIF, L=0.501
+  D118e : DRIF, L=0.858
+  D120b : DRIF, L=0.35
+  D120c : DRIF, L=0.513
+  D120a : DRIF, L=D120[L]-D120b[L]-D120c[L] !0.881768
+  D123a : DRIF, L=0.655
+  D123b : DRIF, L=0.673
+  D123c : DRIF, L=0.644
+  D123d : DRIF, L=0.657
+  D123e : DRIF, L=0.816
+  D123f : DRIF, L=0.445
+  D123g : DRIF, L=0.844
+  D123h : DRIF, L=31.9656
+  D123i : DRIF, L=0.729
+  D123j : DRIF, L=0.683
+  D124a : DRIF, L=0.629
+  D124b : DRIF, L=0.381
+  D124c : DRIF, L=0.635
+  D124d : DRIF, L=0.559
+  D124e : DRIF, L=1.041
+  D124f : DRIF, L=16.5857
+  D124g : DRIF, L=1.6471
 
 ! ==============================================================================
 ! coordinate rolls ... bend plane rotated to remove linac slope
@@ -460,13 +362,13 @@
 ! XCORs and YCORs
 ! ------------------------------------------------------------------------------
 
-  A28X   : HKIC
-  A32X   : HKIC
+  A28X : HKIC
+  A32X : HKIC
 
-  A10Y    : VKIC
-  A18Y    : VKIC
-  A29Y    : VKIC
-  A33Y    : VKIC
+  A10Y : VKIC
+  A18Y : VKIC
+  A29Y : VKIC
+  A33Y : VKIC
 
 ! ==============================================================================
 ! BPMs
@@ -535,14 +437,11 @@
 ! points of interest
 ! ------------------------------------------------------------------------------
 
-  BEGB      : MARK !start of A-line bending
-  ST22      : MARK !beam stopper
-  MARC      : MARK !match point
-  ENDB      : MARK !end of A-line bending (final emittance)
-  ST29      : MARK !beam stopper
-  ALWALL    : MARK !upstream face of wall that separates A-line tunnel from alcove
-  ESAE      : MARK !east wall of ESA
-  BMDE      : MARK !Beam Dump East
+  BEGB   : MARK !start of A-line bending
+  ST22   : MARK !beam stopper
+  MARC   : MARK !match point
+  ENDB   : MARK !end of A-line bending (final emittance)
+  ST29   : MARK !beam stopper
 
 ! ==============================================================================
 ! beamlines
@@ -561,9 +460,6 @@
   B24_full     : LINE=(B24a,B24b)
   B25_full     : LINE=(B25a,B25b)
   B26_full     : LINE=(B26a,B26b)
-  BXD1S_full   : LINE=(BXD1Sa,BXD1Sb)
-  BXD2S_full   : LINE=(BXD2Sa,BXD2Sb)
-  BXD3S_full   : LINE=(BXD3Sa,BXD3Sb)
 
   Q10_full    : LINE=(Q10,Q10)
   Q11_full    : LINE=(Q11,Q11)
@@ -574,10 +470,6 @@
   Q28_full    : LINE=(Q28,Q28)
   Q30_full    : LINE=(Q30,Q30)
   Q38_full    : LINE=(Q38,Q38)
-  Q1S_full    : LINE=(Q1S,Q1S)
-  Q2S_full    : LINE=(Q2S,Q2S)
-  Q3S_full    : LINE=(Q3S,Q3S)
-  Q4S_full    : LINE=(Q4S,Q4S)
 
   LD105 : LINE=(&
     D105a,PC10,D105b,IV10,D105c,FV10,D105d,BPM10A,D105e,I10,D105f,PR10,D105g,&
@@ -623,23 +515,201 @@
     SQ27p5_full,D122,&
     Q28_full,LD123,&
     Q30_full,LD124,&
-    Q38_full,D125,ALWALL,DPR2,&
+    Q38_full,D125,&
     ENDBSYA)
 
-! End Station A
+! ==============================================================================
+! ILC-ESA Test Beam
+! ------------------------------------------------------------------------------
 
-  ESA : LINE=(BEGESA,D201,&
-    BXD1S_full,D202,&
-    BXD2S_full,D203,&
-    BXD3S_full,D204,&
-    Q1S_full,D205,&
-    Q2S_full,D206,&
-    Q3S_full,D207,&
-    Q4S_full,D208,&
-    ESAE,D209,BMDE,&
+! T-474 chicane
+! - 3D37 dipoles ("10D37")
+! - rule-of-thumb on-axis effective length
+! - use series approximation for sinc(x)=sin(x)/x to allow AB7=0
+
+  GB7      := 3.0*in2m !full gap
+  ZB7      := in2m*(37+3.0) !on-axis effective length
+  FB7      := 0.5 !not measured
+  AB7      := 0.125313303478E-2 !-5 mm center offset
+  BB7      := Brhof*SIN(AB7)/ZB7
+  AB7_2    := AB7*AB7
+  AB7_4    := AB7_2*AB7_2
+  AB7_6    := AB7_4*AB7_2
+  SINCAB7  := 1-AB7_2/6+AB7_4/120-AB7_6/5040 !~sinc(AB7)=sin(AB7)/AB7
+  LB7      := ZB7/SINCAB7
+  AB7S     := ASIN(SIN(AB7)/2)
+  AB7S_2   := AB7S*AB7S
+  AB7S_4   := AB7S_2*AB7S_2
+  AB7S_6   := AB7S_4*AB7S_2
+  SINCAB7S := 1-AB7S_2/6+AB7S_4/120-AB7S_6/5040 !~sinc(AB7S)=sin(AB7S)/AB7S
+  LB7S     := ZB7/(2*SINCAB7S)
+  AB7L     := AB7-AB7S
+  LB7L     := LB7-LB7S
+
+  BCX3D1a : SBEN, TYPE="3D37", L=LB7S, ANGLE=+AB7S, HGAP=GB7/2, &
+                  E1=0, FINT=FB7, FINTX=0
+  BCX3D1b : SBEN, TYPE="3D37", L=LB7L, ANGLE=+AB7L, HGAP=GB7/2, &
+                  FINT=0, E2=+AB7, FINTX=FB7
+  BCX3D2a : SBEN, TYPE="3D37", L=LB7L, ANGLE=-AB7L, HGAP=GB7/2, &
+                  E1=-AB7, FINT=FB7, FINTX=0
+  BCX3D2b : SBEN, TYPE="3D37", L=LB7S, ANGLE=-AB7S, HGAP=GB7/2, &
+                  FINT=0, E2=0, FINTX=FB7
+  BCX3D3a : SBEN, TYPE="3D37", L=LB7S, ANGLE=-AB7S, HGAP=GB7/2, &
+                  E1=0, FINT=FB7, FINTX=0
+  BCX3D3b : SBEN, TYPE="3D37", L=LB7L, ANGLE=-AB7L, HGAP=GB7/2, &
+                  FINT=0, E2=-AB7, FINTX=FB7
+  BCX3D4a : SBEN, TYPE="3D37", L=LB7L, ANGLE=+AB7L, HGAP=GB7/2, &
+                  E1=+AB7, FINT=FB7, FINTX=0
+  BCX3D4b : SBEN, TYPE="3D37", L=LB7S, ANGLE=+AB7S, HGAP=GB7/2, &
+                  FINT=0, E2=0, FINTX=FB7
+
+! define unsplit SBENs for BMAD ... not used by MAD
+
+  BCX3D1 : SBEN, TYPE="3D37", HGAP=GB7/2, L=LB7, ANGLE=+AB7, &
+                 E1=0, FINT=FB7, E2=+AB7, FINTX=FB7
+  BCX3D2 : SBEN, TYPE="3D37", HGAP=GB7/2, L=LB7, ANGLE=-AB7, &
+                 E1=-AB7, FINT=FB7, E2=0, FINTX=FB7
+  BCX3D3 : SBEN, TYPE="3D37", HGAP=GB7/2, L=LB7, ANGLE=-AB7, &
+                 E1=0, FINT=FB7, E2=-AB7, FINTX=FB7
+  BCX3D4 : SBEN, TYPE="3D37", HGAP=GB7/2, L=LB7, ANGLE=+AB7, &
+                 E1=+AB7, FINT=FB7, E2=0, FINTX=FB7
+
+! ==============================================================================
+! drifts
+! ------------------------------------------------------------------------------
+
+  ALWALL : DRIF, L=8*ft2m !ESA wall
+
+  dSmdw := 0
+
+  D126 : DRIF, L=0.683370252059 !wall to IV40 in ESA alcove
+  D127 : DRIF, L=0.468630
+  D127a : DRIF, L=0.0672
+  D128 : DRIF, L=0.696722-D127a[L]
+  D129 : DRIF, L=1.918716
+  D130 : DRIF, L=0.900938
+  D131 : DRIF, L=0.823976
+
+  D201 : DRIF, L=1.039368
+  D202 : DRIF, L=0.389128
+  D203 : DRIF, L=0.892302
+  D204 : DRIF, L=0.832866
+  D204a : DRIF, L=0.72125
+  D204b : DRIF, L=D204[L]-D204a[L]
+  D205 : DRIF, L=0.213868
+  D206 : DRIF, L=0.627634-D205[L]
+  D207 : DRIF, L=0.709422
+  D208 : DRIF, L=1.405927747941
+  D209 : DRIF, L=2.784
+  D210 : DRIF, L=4.115
+  D211 : DRIF, L=3.708
+  D212 : DRIF, L=2.163
+  D213 : DRIF, L=0.515
+  D214 : DRIF, L=0.515
+  D215 : DRIF, L=0.927-ZB7/2
+  D216 : DRIF, L=3.990-ZB7
+  D217 : DRIF, L=7.929-(D215[L]+ZB7+D216[L]+ZB7)
+  D218 : DRIF, L=1.210-ZB7/2
+  D219 : DRIF, L=1.982-ZB7/2
+  D220 : DRIF, L=2.008-ZB7/2
+  D221 : DRIF, L=6.472-(D218[L]+ZB7+D219[L]+D220[L]+ZB7)
+  D222 : DRIF, L=0.765
+  D223 : DRIF, L=0.692
+  D224 : DRIF, L=28.447399
+  D225 : DRIF, L=96.290872
+
+! ==============================================================================
+! instruments (from T-474)
+! ------------------------------------------------------------------------------
+
+  IV40    : INST
+  A3C1A   : ECOL
+  A3C1B   : ECOL
+  A3I1    : IMON
+  A3PR1   : PROF
+  A3PR2   : PROF
+  A3I2    : IMON
+  A3BPM1  : MONI
+  A3BPM2  : MONI
+  A3I3    : IMON
+  IV41    : INST
+  A3T0    : INST
+  A3WA1   : INST
+
+  A3WAKE1 : INST
+  A3WS1   : WIRE
+  A3C2    : ECOL
+  A3BPM3  : MONI
+  A3BPM4  : MONI
+  A3BPM5  : MONI
+  A3WS2   : WIRE
+  A3WIG2  : INST
+  A3BPM9  : MONI
+  A3BPM10 : MONI
+  A3BPM11 : MONI
+
+! ==============================================================================
+! points of interest
+! ------------------------------------------------------------------------------
+
+  NOTCHBEG  : MARK
+  NOTCHEND  : MARK
+  ALCOVEBEG : MARK
+  ALCOVEEND : MARK
+  PVOT      : MARK
+  ESAE      : MARK !east wall of ESA
+  BMDE      : MARK !Beam Dump East
+
+! ==============================================================================
+! beamlines
+! ------------------------------------------------------------------------------
+
+  BCX3D1_full : LINE=(BCX3D1a,BCX3D1b)
+  BCX3D2_full : LINE=(BCX3D2a,BCX3D2b)
+  BCX3D3_full : LINE=(BCX3D3a,BCX3D3b)
+  BCX3D4_full : LINE=(BCX3D4a,BCX3D4b)
+
+  ESAchicane : LINE=(&
+    BCX3D1_full,D216,&
+    BCX3D2_full,D217,A3WS2,D218,&
+    BCX3D3_full,D219,A3WIG2,D220,&
+    BCX3D4_full)
+
+  ESAu : LINE=(BEGESA,&
+    ALWALL,NOTCHBEG,&
+    D126,IV40,&
+    D127,A3C1A,&
+    D127a,NOTCHEND,ALCOVEBEG,&
+    D128,A3C1B,&
+    D129,A3I1,&
+    D130,A3PR1,&
+    D131,A3PR2,&
+    D201,A3I2,&
+    D202,A3BPM1,&
+    D203,A3BPM2,&
+    D204a,ALCOVEEND,&
+    D204b,A3I3,&
+    D205,IV41,&
+    D206,A3T0,&
+    D207,A3WA1,&
+    D208,A3WAKE1,&
+    D209,A3WS1,&
+    D210,PVOT)
+
+  ESAd : LINE=(&
+    D211,A3C2,&
+    D212,A3BPM3,&
+    D213,A3BPM4,&
+    D214,A3BPM5,&
+    D215,ESAchicane,&
+    D221,A3BPM9,&
+    D222,A3BPM10,&
+    D223,A3BPM11,&
+    D224,ESAE,&
+    D225,BMDE,&
     ENDESA)
 
-  ALINE : LINE=(BSYA,ESA)
+  ESA : LINE=(ESAu,ESAd)
 
 ! ------------------------------------------------------------------------------
 

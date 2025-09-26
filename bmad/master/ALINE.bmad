@@ -1,10 +1,14 @@
 
-! *** OPTICS=AD_ACCEL-09JUN2025s ***
+! *** OPTICS=AD_ACCEL-22SEP2025s ***
 
 ! LCLS2sc A-line
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 24-JUN-2025, M. Woodley
+!  * replace ESA E158 components with T-474 components
+!  * prepend "A" to names that begin with "3"
 ! ------------------------------------------------------------------------------
 ! 14-MAR-2025, M. Woodley
 !  * remove BSYA_1 area components (decommissioned)
@@ -175,29 +179,6 @@ b24: sbend, type = "Aline_bend", hgap = gba/2, l = lba, angle = aba, e1 = aba/2,
 b25: sbend, type = "Aline_bend", hgap = gba/2, l = lba, angle = aba, e1 = aba/2, fint = 0.5, e2 = aba/2, fintx = 0.5
 b26: sbend, type = "Aline_bend", hgap = gba/2, l = lba, angle = aba, e1 = aba/2, fint = 0.5, e2 = aba/2, fintx = 0.5
 
-! ESA bends (E158)
-
-ld1s = 1.83
-ld2s = 3.45
-ld3s = 3.45
-
-ad1s = 0.022344631354
-ad2s = -0.044690490267
-ad3s = 0.022345239962
-
-bxd1sa: sbend, l = ld1s/2, angle = ad1s/2, fint = 0, fintx = 0
-bxd1sb: sbend, l = ld1s/2, angle = ad1s/2, fint = 0, fintx = 0
-bxd2sa: sbend, l = ld2s/2, angle = ad2s/2, fint = 0, fintx = 0
-bxd2sb: sbend, l = ld2s/2, angle = ad2s/2, fint = 0, fintx = 0
-bxd3sa: sbend, l = ld3s/2, angle = ad3s/2, fint = 0, fintx = 0
-bxd3sb: sbend, l = ld3s/2, angle = ad3s/2, fint = 0, fintx = 0
-
-! define unsplit SBENs for BMAD ... not used by MAD
-
-bxd1s: sbend, l = ld1s, angle = ad1s, fint = 0, fintx = 0
-bxd2s: sbend, l = ld2s, angle = ad2s, fint = 0, fintx = 0
-bxd3s: sbend, l = ld3s, angle = ad3s, fint = 0, fintx = 0
-
 ! ==============================================================================
 ! quadrupoles
 ! ------------------------------------------------------------------------------
@@ -222,35 +203,18 @@ kq28 = 0.03548040664
 kq30 = -0.028849559713
 kq38 = 0.034487458519
 
-q10: quadrupole, l = lq8cm/2, aperture = rq8cm, k1 = kq10, type = "Aline_Q8cm"
-q11: quadrupole, l = lq8cm/2, aperture = rq8cm, k1 = kq11, type = "Aline_Q8cm"
+q10: quadrupole, l = lq8cm/2, aperture = rq8cm, k1 = kq10, type = "3.15Q76"
+q11: quadrupole, l = lq8cm/2, aperture = rq8cm, k1 = kq11, type = "3.15Q76"
 q19: quadrupole, l = lq19/2, aperture = rq19, k1 = kq19, type = "Aline_Q19"
 q20: quadrupole, l = lq20/2, aperture = rq20, k1 = kq20, type = "Aline_Q20"
-q27: quadrupole, l = lq8cm/2, aperture = rq8cm, k1 = kq27, type = "Aline_Q8cm"
-q28: quadrupole, l = lq8cm/2, aperture = rq8cm, k1 = kq28, type = "Aline_Q8cm"
-q30: quadrupole, l = lq8cm/2, aperture = rq8cm, k1 = kq30, type = "Aline_Q8cm"
-q38: quadrupole, l = lq8cm/2, aperture = rq8cm, k1 = kq38, type = "Aline_Q8cm"
+q27: quadrupole, l = lq8cm/2, aperture = rq8cm, k1 = kq27, type = "3.15Q76"
+q28: quadrupole, l = lq8cm/2, aperture = rq8cm, k1 = kq28, type = "3.15Q76"
+q30: quadrupole, l = lq8cm/2, aperture = rq8cm, k1 = kq30, type = "3.15Q76"
+q38: quadrupole, l = lq8cm/2, aperture = rq8cm, k1 = kq38, type = "3.15Q76"
 
 ksq = 0.0
 
 sq27p5: quadrupole, tilt = pi/4, l = lsq/2, aperture = rsq, k1 = ksq, type = "Aline_SQ27"
-
-! ESA quads (E158)
-
-lqsa = 1.327
-rqsa = 193.0e-3
-
-! E158 run value (P. Bosted)
-
-kq1sa = 0.016723215505
-kq2sa = -0.031838409505
-kq3sa = 0.031838409505
-kq4sa = -0.016080013116
-
-q1s: quadrupole, l = lqsa/2, k1 = kq1sa, aperture = rqsa
-q2s: quadrupole, l = lqsa/2, k1 = kq2sa, aperture = rqsa
-q3s: quadrupole, l = lqsa/2, k1 = kq3sa, aperture = rqsa
-q4s: quadrupole, l = lqsa/2, k1 = kq4sa, aperture = rqsa
 
 ! ==============================================================================
 ! drifts
@@ -272,77 +236,14 @@ d116: drift, l = 3.84839
 d117: drift, l = 0.7755
 d118: drift, l = 3.84839
 d119: drift, l = 0.7755
-d120: drift, l = 1.744768 !1.74477
+d120: drift, l = 1.744768
 d121: drift, l = 1.525
 d122: drift, l = 1.925
 d123: drift, l = 38.1116
 d124: drift, l = 21.4778
-d125: drift, l = 5.04065
-dpr2: drift, l = 12.25174 !wall to 3PR2 in ESA alcove
-
-d201: drift, l = 20.44174-dpr2[l]
-d202: drift, l = 2.5
-d203: drift, l = 1.69
-d204: drift, l = 1.4865
-d205: drift, l = 1.413
-d206: drift, l = 2.603
-d207: drift, l = 1.013
-d208: drift, l = 31.04932
-d209: drift, l = 92.118
+d125: drift, l = 5.170149 !drift to start of ESA wall
 
 ! drifts for diagnostic and correction devices
-
-!=!  comment
-!=!  comment
-!=!  D002a : DRIF, L=0.090479
-!=!  D002b : DRIF, L=1.654993
-!=!  D002c : DRIF, L=0.0184
-!=!  D002d : DRIF, L=2.466807
-!=!  D002e : DRIF, L=0.34925
-!=!  D002f : DRIF, L=4.3434
-!=!  D002g : DRIF, L=6.213125
-!=!  D002h : DRIF, L=0.3429
-!=!  D002i : DRIF, L=0.447449
-!=!  D003a : DRIF, L=0.128016
-!=!  D003b : DRIF, L=1.609344
-!=!  D003c : DRIF, L=0.331248
-!=!  D003d : DRIF, L=0.628073
-!=!  D003e : DRIF, L=0.2286
-!=!  D003f : DRIF, L=0.4826
-!=!  D003g : DRIF, L=0.3556
-!=!  D003h : DRIF, L=0.415546
-!=!  D004a : DRIF, L=0.204216
-!=!  D004b : DRIF, L=0.581559
-!=!  D005a : DRIF, L=0.762
-!=!  D005b : DRIF, L=2.329
-!=!  D005c : DRIF, L=5.402548
-!=!
-!=!  D101a : DRIF, L=7.405675
-!=!  D101b : DRIF, L=3.2853
-!=!  D101c : DRIF, L=0.635
-!=!  D101d : DRIF, L=0.787
-!=!  D101e : DRIF, L=0.534
-!=!  D101f : DRIF, L=0.813
-!=!  D101g : DRIF, L=0.685
-!=!  D101h : DRIF, L=0.61
-!=!  D101i : DRIF, L=1.27
-!=!  D101j : DRIF, L=1.778
-!=!  D101k : DRIF, L=0.457
-!=!  D101l : DRIF, L=0.153
-!=!  D101m : DRIF, L=0.177
-!=!  D101n : DRIF, L=0.483
-!=!  D101o : DRIF, L=0.483
-!=!  D101p : DRIF, L=0.587
-!=!  PMV   : DRIF, L=0.4
-!=!  D101q : DRIF, L=0.589942
-!=!  D102a : DRIF, L=1.06296
-!=!  PM    : DRIF, L=7.0
-!=!  D102b : DRIF, L=1.06296
-!=!  D103a : DRIF, L=66.20934
-!=!  D103b : DRIF, L=0.615959
-!=!  D103c : DRIF, L=2.850589
-!=!  D103d : DRIF, L=0.15875
-!=!  endcomment
 
 d105a: drift, l = 0.808
 d105b: drift, l = 0.38
@@ -504,9 +405,6 @@ st22: marker !beam stopper
 marc: marker !match point
 endb: marker !end of A-line bending (final emittance)
 st29: marker !beam stopper
-alwall: marker !upstream face of wall that separates A-line tunnel from alcove
-esae: marker !east wall of ESA
-bmde: marker !Beam Dump East
 
 ! ==============================================================================
 ! beamlines
@@ -579,21 +477,6 @@ b25_full: line = (b25)
 b26_full: line = (b26)
 
 
-!Old split line:  BXD1S_full   : LINE=(BXD1Sa,BXD1Sb)
-
-bxd1s_full: line = (bxd1s)
-
-
-!Old split line:  BXD2S_full   : LINE=(BXD2Sa,BXD2Sb)
-
-bxd2s_full: line = (bxd2s)
-
-
-!Old split line:  BXD3S_full   : LINE=(BXD3Sa,BXD3Sb)
-
-bxd3s_full: line = (bxd3s)
-
-
 
 !Old split line:  Q10_full    : LINE=(Q10,Q10)
 
@@ -648,30 +531,6 @@ q30[L] = 2*q30[L]
 q38_full: line = (q38)
 q38[L] = 2*q38[L]
 
-
-!Old split line:  Q1S_full    : LINE=(Q1S,Q1S)
-
-q1s_full: line = (q1s)
-q1s[L] = 2*q1s[L]
-
-
-!Old split line:  Q2S_full    : LINE=(Q2S,Q2S)
-
-q2s_full: line = (q2s)
-q2s[L] = 2*q2s[L]
-
-
-!Old split line:  Q3S_full    : LINE=(Q3S,Q3S)
-
-q3s_full: line = (q3s)
-q3s[L] = 2*q3s[L]
-
-
-!Old split line:  Q4S_full    : LINE=(Q4S,Q4S)
-
-q4s_full: line = (q4s)
-q4s[L] = 2*q4s[L]
-
   LD105 : LINE=(D105a,PC10,D105b,IV10,D105c,FV10,D105d,BPM10A,D105e,I10,D105f,PR10,D105g,A10Y,D105h,I11,D105i)
   LD108 : LINE=(D108a,PC12,D108b,BPM12A,D108c)
   LD110 : LINE=(D110a,PC14,D110b)
@@ -689,14 +548,173 @@ q4s[L] = 2*q4s[L]
   BSYA : LINE=(BEGBSYA,BRAM1_full,ROLL2,DAMQ10,Q10_full,LD105,Q11_full,D106,BEGB,B11_full,D107,B12_full,LD108,B13_full,
          D109,B14_full,LD110,B15_full,D111,B16_full,LD112,Q19_full,LD113,Q20_full,LD114,B21_full,D115,B22_full,LD116,B23_full,
          D117,B24_full,LD118,B25_full,D119,B26_full,MARC,ROLL3,ENDB,LD120,Q27_full,D121,SQ27p5_full,D122,Q28_full,LD123,Q30_full,
-         LD124,Q38_full,D125,ALWALL,DPR2,ENDBSYA)
+         LD124,Q38_full,D125,ENDBSYA)
 
-! End Station A
+! ==============================================================================
+! ILC-ESA Test Beam
+! ------------------------------------------------------------------------------
 
-  ESA : LINE=(BEGESA,D201,BXD1S_full,D202,BXD2S_full,D203,BXD3S_full,D204,Q1S_full,D205,Q2S_full,D206,Q3S_full,D207,
-         Q4S_full,D208,ESAE,D209,BMDE,ENDESA)
+! T-474 chicane
+! - 3D37 dipoles ("10D37")
+! - rule-of-thumb on-axis effective length
+! - use series approximation for sinc(x)=sin(x)/x to allow AB7=0
 
-  ALINE : LINE=(BSYA,ESA)
+gb7 = 3.0*in2m !full gap
+zb7 = in2m*(37+3.0) !on-axis effective length
+fb7 = 0.5 !not measured
+ab7 = 0.125313303478e-2 !-5 mm center offset
+bb7 = brhof*sin(ab7)/zb7
+ab7_2 = ab7*ab7
+ab7_4 = ab7_2*ab7_2
+ab7_6 = ab7_4*ab7_2
+sincab7 = 1-ab7_2/6+ab7_4/120-ab7_6/5040 !~sinc(AB7)=sin(AB7)/AB7
+lb7 = zb7/sincab7
+ab7s = asin(sin(ab7)/2)
+ab7s_2 = ab7s*ab7s
+ab7s_4 = ab7s_2*ab7s_2
+ab7s_6 = ab7s_4*ab7s_2
+sincab7s = 1-ab7s_2/6+ab7s_4/120-ab7s_6/5040 !~sinc(AB7S)=sin(AB7S)/AB7S
+lb7s = zb7/(2*sincab7s)
+ab7l = ab7-ab7s
+lb7l = lb7-lb7s
+
+bcx3d1a: sbend, type = "3D37", l = lb7s, angle = +ab7s, hgap = gb7/2, e1 = 0, fint = fb7, fintx = 0
+bcx3d1b: sbend, type = "3D37", l = lb7l, angle = +ab7l, hgap = gb7/2, fint = 0, e2 = +ab7, fintx = fb7
+bcx3d2a: sbend, type = "3D37", l = lb7l, angle = -ab7l, hgap = gb7/2, e1 = -ab7, fint = fb7, fintx = 0
+bcx3d2b: sbend, type = "3D37", l = lb7s, angle = -ab7s, hgap = gb7/2, fint = 0, e2 = 0, fintx = fb7
+bcx3d3a: sbend, type = "3D37", l = lb7s, angle = -ab7s, hgap = gb7/2, e1 = 0, fint = fb7, fintx = 0
+bcx3d3b: sbend, type = "3D37", l = lb7l, angle = -ab7l, hgap = gb7/2, fint = 0, e2 = -ab7, fintx = fb7
+bcx3d4a: sbend, type = "3D37", l = lb7l, angle = +ab7l, hgap = gb7/2, e1 = +ab7, fint = fb7, fintx = 0
+bcx3d4b: sbend, type = "3D37", l = lb7s, angle = +ab7s, hgap = gb7/2, fint = 0, e2 = 0, fintx = fb7
+
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bcx3d1: sbend, type = "3D37", hgap = gb7/2, l = lb7, angle = +ab7, e1 = 0, fint = fb7, e2 = +ab7, fintx = fb7
+bcx3d2: sbend, type = "3D37", hgap = gb7/2, l = lb7, angle = -ab7, e1 = -ab7, fint = fb7, e2 = 0, fintx = fb7
+bcx3d3: sbend, type = "3D37", hgap = gb7/2, l = lb7, angle = -ab7, e1 = 0, fint = fb7, e2 = -ab7, fintx = fb7
+bcx3d4: sbend, type = "3D37", hgap = gb7/2, l = lb7, angle = +ab7, e1 = +ab7, fint = fb7, e2 = 0, fintx = fb7
+
+! ==============================================================================
+! drifts
+! ------------------------------------------------------------------------------
+
+alwall: drift, l = 8*ft2m !ESA wall
+
+dsmdw = 0
+
+d126: drift, l = 0.683370252059 !wall to IV40 in ESA alcove
+d127: drift, l = 0.468630
+d127a: drift, l = 0.0672
+d128: drift, l = 0.696722-d127a[l]
+d129: drift, l = 1.918716
+d130: drift, l = 0.900938
+d131: drift, l = 0.823976
+
+d201: drift, l = 1.039368
+d202: drift, l = 0.389128
+d203: drift, l = 0.892302
+d204: drift, l = 0.832866
+d204a: drift, l = 0.72125
+d204b: drift, l = d204[l]-d204a[l]
+d205: drift, l = 0.213868
+d206: drift, l = 0.627634-d205[l]
+d207: drift, l = 0.709422
+d208: drift, l = 1.405927747941
+d209: drift, l = 2.784
+d210: drift, l = 4.115
+d211: drift, l = 3.708
+d212: drift, l = 2.163
+d213: drift, l = 0.515
+d214: drift, l = 0.515
+d215: drift, l = 0.927-zb7/2
+d216: drift, l = 3.990-zb7
+d217: drift, l = 7.929-(d215[l]+zb7+d216[l]+zb7)
+d218: drift, l = 1.210-zb7/2
+d219: drift, l = 1.982-zb7/2
+d220: drift, l = 2.008-zb7/2
+d221: drift, l = 6.472-(d218[l]+zb7+d219[l]+d220[l]+zb7)
+d222: drift, l = 0.765
+d223: drift, l = 0.692
+d224: drift, l = 28.447399
+d225: drift, l = 96.290872
+
+! ==============================================================================
+! instruments (from T-474)
+! ------------------------------------------------------------------------------
+
+iv40: instrument
+a3c1a: ecollimator
+a3c1b: ecollimator
+a3i1: marker
+a3pr1: monitor
+a3pr2: monitor
+a3i2: marker
+a3bpm1: monitor
+a3bpm2: monitor
+a3i3: marker
+iv41: instrument
+a3t0: instrument
+a3wa1: instrument
+
+a3wake1: instrument
+a3ws1: marker
+a3c2: ecollimator
+a3bpm3: monitor
+a3bpm4: monitor
+a3bpm5: monitor
+a3ws2: marker
+a3wig2: instrument
+a3bpm9: monitor
+a3bpm10: monitor
+a3bpm11: monitor
+
+! ==============================================================================
+! points of interest
+! ------------------------------------------------------------------------------
+
+notchbeg: marker
+notchend: marker
+alcovebeg: marker
+alcoveend: marker
+pvot: marker
+esae: marker !east wall of ESA
+bmde: marker !Beam Dump East
+
+! ==============================================================================
+! beamlines
+! ------------------------------------------------------------------------------
+
+
+
+!Old split line:  BCX3D1_full : LINE=(BCX3D1a,BCX3D1b)
+
+bcx3d1_full: line = (bcx3d1)
+
+
+!Old split line:  BCX3D2_full : LINE=(BCX3D2a,BCX3D2b)
+
+bcx3d2_full: line = (bcx3d2)
+
+
+!Old split line:  BCX3D3_full : LINE=(BCX3D3a,BCX3D3b)
+
+bcx3d3_full: line = (bcx3d3)
+
+
+!Old split line:  BCX3D4_full : LINE=(BCX3D4a,BCX3D4b)
+
+bcx3d4_full: line = (bcx3d4)
+
+  ESAchicane : LINE=(BCX3D1_full,D216,BCX3D2_full,D217,A3WS2,D218,BCX3D3_full,D219,A3WIG2,D220,BCX3D4_full)
+
+  ESAu : LINE=(BEGESA,ALWALL,NOTCHBEG,D126,IV40,D127,A3C1A,D127a,NOTCHEND,ALCOVEBEG,D128,A3C1B,D129,A3I1,D130,A3PR1,
+         D131,A3PR2,D201,A3I2,D202,A3BPM1,D203,A3BPM2,D204a,ALCOVEEND,D204b,A3I3,D205,IV41,D206,A3T0,D207,A3WA1,D208,A3WAKE1,
+         D209,A3WS1,D210,PVOT)
+
+  ESAd : LINE=(D211,A3C2,D212,A3BPM3,D213,A3BPM4,D214,A3BPM5,D215,ESAchicane,D221,A3BPM9,D222,A3BPM10,D223,A3BPM11,D224,
+         ESAE,D225,BMDE,ENDESA)
+
+  ESA : LINE=(ESAu,ESAd)
 
 ! ------------------------------------------------------------------------------
 

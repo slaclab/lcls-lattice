@@ -1,10 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-09JUN2025s ***
+! *** OPTICS=AD_ACCEL-22SEP2025s ***
 
 ! LCLS2sc LTU and dump
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 24-JUL-2025, M. Woodley
+!  * add MARKER point "SWIVEL" at location of swivel point
 ! ------------------------------------------------------------------------------
 ! 10-MAR-2025, M. Woodley
 !  * cleanup (remove BSY-to-Aline stuff)
@@ -786,9 +789,9 @@ qdl17: quadrupole, type = "2Q10", l = lqr/2, k1 = kqdlb, aperture = rqr
 qdl18: quadrupole, type = "2Q10", l = lqr/2, k1 = -kqdlb, aperture = rqr
 qdl19: quadrupole, type = "2Q10", l = lqr/2, k1 = kqdlb, aperture = rqr
 
-kqdl20 = -0.487979625759
-kqdl21 = -1.904057641444
-kqdl22 = 2.191453247156
+kqdl20 = -0.487749576014
+kqdl21 = -1.904149676641
+kqdl22 = 2.191524608573
 
 qdl20: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqdl20, aperture = rqe
 qdl21: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqdl21, aperture = rqe
@@ -1368,11 +1371,11 @@ bpmvm4b[ref] = qvm4b
 ! SXR emittance diagnostic
 ! ------------------------------------------------------------------------------
 
-kqem1b = 1.994771712802
-kqem2b = -1.809226178089
-kqem3b = 1.263611884311
+kqem1b = 1.994731606958
+kqem2b = -1.809273842138
+kqem3b = 1.263524123458
 kqem3vb = 0.0
-kqem4b = -0.89171746406
+kqem4b = -0.891608033545
 
 qem1b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqem1b, aperture = rqe
 qem2b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqem2b, aperture = rqe
@@ -1919,10 +1922,10 @@ bpme36b[ref] = qe36b
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 !       in the "LCLS2cu_main.mad8" file
 
-kqum1b = 0.568578046239 ! 0.293411239505
-kqum2b = -0.796802792396 !-0.13
-kqum3b = 1.172578401021 ! 0.382165430892
-kqum4b = -1.160480624219 !-0.474867155145
+kqum1b = 0.569936133069 ! 0.554702304968
+kqum2b = -0.790429888701 !-0.752736901945
+kqum3b = 1.167879604547 ! 1.164301068548
+kqum4b = -1.160653674124 !-1.176414729014
 
 qum1b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqum1b, aperture = rqe
 qum2b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqum2b, aperture = rqe
@@ -2047,7 +2050,7 @@ bpmum4b[ref] = qum4b
 ! SXR dumpline
 ! ------------------------------------------------------------------------------
 
-kqdmpb = -0.15111165919 !-0.154946553294
+kqdmpb = -0.154946553294 !Yuri (E=4.0, K=5.0)
 
 qdmp1b: quadrupole, type = "3.94Q17", l = lqp/2, k1 = kqdmpb, aperture = rqp
 qdmp2b: quadrupole, type = "3.94Q17", l = lqp/2, k1 = kqdmpb, aperture = rqp
@@ -2487,10 +2490,10 @@ bcx364_full: line = (bcx364)
 ! BSY upstream of the scH merge bend (BXSP1H)
 ! ------------------------------------------------------------------------------
 
-kq30701 = -0.396231018339 !-0.39623102008  !-0.396305842423 !
-kq30801 = 0.480592172519 ! 0.480592172677 ! 0.480095248389 !
-kq50q1 = -0.231522300458 !-0.231522298209 !-0.231122399508 !
-kq50q2 = 0.102074332053 ! 0.102074330212 ! 0.10177159732  !
+kq30701 = -0.396181540351 !-0.396231018339
+kq30801 = 0.480061954868 ! 0.480592172519
+kq50q1 = -0.231094130006 !-0.231522300458
+kq50q2 = 0.101722563756 ! 0.102074332053
 
 q50q1: quadrupole, type = "2Q10", l = lqr/2, k1 = kq50q1, aperture = rqr
 q50q2: quadrupole, type = "50Q2", l = 0.162151, k1 = kq50q2, aperture = 0.010325
@@ -2528,6 +2531,9 @@ dbsy52c: drift,
          dbsy52[l]-dbsy52a[l]-dbsy52b[l]-lbrcusdc1-dckdc1[l]-lbkrcus-dckdc2[l]-lbrcusdc2-dcusblra[l]-dcusblrb[l]-lblrcus-lbxsph- &
          dbsy52d[l]
 
+dbsy52c1: drift, l = 1.174422 !to SWIVEL point
+dbsy52c2: drift, l = dbsy52c[l]-dbsy52c1[l]
+
 bpmbsyq1: monitor, type = "Stripline-5" !changed from "-6" to fit 2Q10
 bpmbsyq2: monitor, type = "Stripline-6" !per C. Iverson
 
@@ -2552,6 +2558,7 @@ fftborgn: marker
 s100: marker !station 100
 zlin15: marker !station-100 (or "S100"): Z=3048.0 (Z'=X'=Y'=0.0 m)
 bsy1beg: marker
+swivel: marker !"swivel point"
 bsy1end: marker
 
 ! wooden BSY door (separates LI30 from BSY)
@@ -2581,7 +2588,7 @@ q50q2[L] = 2*q50q2[L]
   S100SXR : LINE=(S100SXRa,S100SXRb)
 
  !BSYSXR : LINE=(BSYbeg,BSYS100,S100SXR)
- !S100BSY1 : LINE=(S100SXR,KCUSXRa,DBSY52c,BXSP1Ha,BXSP1Hb)
+ !S100BSY1 : LINE=(S100SXR,KCUSXRa,DBSY52c1,SWIVEL,DBSY52c2,BXSP1Ha,BXSP1Hb)
  !BSY1 : LINE=(BSYS100,S100BSY1)
  !BSY : LINE=(BSYbeg,BSY1,BSY1END,SPhBSY)
 
@@ -2592,11 +2599,11 @@ q50q2[L] = 2*q50q2[L]
 ! note: the K-values below are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-kq50q3 = 0.426937957729
-kq4 = -0.219608310249
-kq5 = 0.11024564993
-kq6 = -0.109735122471
-kqa0 = 0.096565286297
+kq50q3 = 0.426937957729 ! 0.426937957729
+kq4 = -0.219608310315 !-0.219608310249
+kq5 = 0.110245649911 ! 0.11024564993
+kq6 = -0.109735122424 !-0.109735122471
+kqa0 = 0.096565286277 ! 0.096565286297
 
 q50q3: quadrupole, type = "50Q3", l = 0.143254, k1 = kq50q3, aperture = 0.010325
 q4: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kq4, aperture = rqf
@@ -3472,10 +3479,10 @@ mdchirph[ref] = dchirph
 ! HXR emittance diagnostic
 ! ------------------------------------------------------------------------------
 
-kqem1 = -0.390827735953
-kqem2 = 0.432215708114
-kqem3 = -0.593433950486
-kqem4 = 0.420485259237
+kqem1 = -0.390827735988
+kqem2 = 0.43221570814
+kqem3 = -0.593433950371
+kqem4 = 0.420485259232
 
 qem1: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqem1, aperture = rqa
 qem2: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqem2, aperture = rqa
@@ -3680,10 +3687,10 @@ bpme36[ref] = qe36
 ! note: the below K-values come from Y. Nosochkov's UNDH_KQ4_USDS.xsif file,
 !       for E= 4.0 GeV and KHXU= 2.0 (IntgHX= 30.0 kG)
 
-kqum1 = 0.21295276718  !UNDH_KQ4_USDS.xsif (Eu=4.0, KHXU=2.0)
-kqum2 = -0.256692261825 !UNDH_KQ4_USDS.xsif (Eu=4.0, KHXU=2.0)
-kqum3 = 0.472597881562 !UNDH_KQ4_USDS.xsif (Eu=4.0, KHXU=2.0)
-kqum4 = -0.42682658336  !UNDH_KQ4_USDS.xsif (Eu=4.0, KHXU=2.0)
+kqum1 = 0.217807105099
+kqum2 = -0.260867145661
+kqum3 = 0.462571229525
+kqum4 = -0.415827146064
 
 qum1: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqum1, aperture = rqa
 qum2: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqum2, aperture = rqa
@@ -3782,7 +3789,7 @@ bpmum4[ref] = qum4
 ! HXR dumpline
 ! ------------------------------------------------------------------------------
 
-kqdmp = -0.155212710055
+kqdmp = -0.155212710055 !Yuri (E=4.0, K=2.0)
 
 qdmp1: quadrupole, type = "3.94Q17", l = lqp/2, k1 = kqdmp, aperture = rqp
 qdmp2: quadrupole, type = "3.94Q17", l = lqp/2, k1 = kqdmp, aperture = rqp

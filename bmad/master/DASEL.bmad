@@ -1,10 +1,16 @@
 
-! *** OPTICS=AD_ACCEL-09JUN2025s ***
+! *** OPTICS=AD_ACCEL-22SEP2025s ***
 
 ! LCLS2sc DASEL
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 25-JUL-2025, M. Woodley
+!  * swap locations of XCDAS19 and YCDAS19 per A. Ibrahimov
+! 12-JUL-2025, M. Woodley
+!  * add wire scanner / Beam Halo Monitor (WSDAS14,WSDAS14_BHM) per
+!    N. Balakrishnan, A. Fisher, and A. Ibrahimov
 ! ------------------------------------------------------------------------------
 ! 14-MAR-2025, M. Woodley
 !  * split DASEL area into two areas: SPA and SLTA; SPA area ends at BSY wooden
@@ -343,10 +349,9 @@ dlddas = 0.0
 lddas = (158.566506190974298-10*lqm-lbsp-lddasqq-lddas11-lddas12 -lddas13-lddas14-lddas17-lddas18-lddas19-lddas20)/2+dlddas
 lddas15 = lddas
 lddas16 = lddas
-
 lddas21a = 0.5
-lddas21b = 0.397
-lddas21c = 19.829173726034-0.397
+lddas21b = 0.434930223041  !0.397
+lddas21c = 19.394243502993 !19.829173726034-0.397
 lddas22 = 0.5
 lddas23 = 0.5
 
@@ -370,6 +375,8 @@ ddas14a: drift, l = lddas14a
 ddas14aa: drift, l = lddas14aa
 ddas14ab: drift, l = lddas14ab
 ddas14ac: drift, l = lddas14ac
+ddas14ac1: drift, l = 7.132062
+ddas14ac2: drift, l = ddas14ac[l]-ddas14ac1[l]
 ddas14b: drift, l = lddas14b
 ddas15: drift, l = lddas15
 ddas16: drift, l = lddas16
@@ -427,6 +434,11 @@ tgtbram1: instrument, type = "Cu"      !secondary production Cu target
 
 imdas1: marker, type = "BCS ACM"
 imdas2: marker, type = "BCS ACM"
+
+! combination wire/BHM
+
+wsdas14: marker
+wsdas14_bhm: instrument, type = "pixel grid" !Beam Halo Monitor
 
 ! BSY wooden door
 
@@ -591,6 +603,8 @@ qdas18b[L] = 2*qdas18b[L]
 qdas19_full: line = (qdas19)
 qdas19[L] = 2*qdas19[L]
 
+  WSDAS14_full : LINE=(WSDAS14,WSDAS14_BHM)
+
 
 
 !Old split line:  DUMPDAS_full : LINE=(DUMPDAS,DUMPDAS)
@@ -605,11 +619,11 @@ dumpdas[L] = 2*dumpdas[L]
          XCDAS1  ,DDAS2a  ,YCDAS1  ,DDAS2b  ,BPMDAS1 ,DDAS3   ,QDAS1b_full,DDASQQ  ,QDAS1a_full,DDAS4   ,QDAS2a_full,DDASQQ  ,
          QDAS2b_full,DDAS5a  ,IMDAS1  ,DDAS5b  ,IMDAS2 ,DDAS5c  ,BRDAS1_full,RODAS2  ,DDAS11a ,XCDAS11 ,DDAS11b,YCDAS11 ,DDAS11c,
          QDAS11_full,DDAS12a ,PRDAS12 ,DDAS12b ,DUMPDAS_full    ,DDAS12c,QDAS12_full,DDAS13  ,QDAS13_full,DDAS14aa,PRDAS14,
-         DDAS14ac,WOODDOOR_SPA,ENDSPA)
+         DDAS14ac1,WSDAS14_full,DDAS14ac2,WOODDOOR_SPA,ENDSPA)
 
   SLTA : LINE=(BEGSLTA  ,DDAS14ab,XCDAS14,DDAS14b,QDAS14_full ,DDAS15 ,QDAS15_full ,DDAS16 ,QDAS16_full ,DDAS17a,
          PRDAS17 ,DDAS17b,YCDAS17,DDAS17c,QDAS17_full ,DDAS18 ,QDAS18a_full,DDASQQ ,QDAS18b_full,DDAS19 ,QDAS19_full ,DDAS20a,
-         BPMDAS19,DDAS20b,RODAS3,BRDAS2_full ,DDAS21a,XCDAS19,DDAS21b,YCDAS19,DDAS21c,PRBRAM1,DDAS22,TGTBRAM1,DDAS23,ENDSLTA)
+         BPMDAS19,DDAS20b,RODAS3,BRDAS2_full ,DDAS21a,YCDAS19,DDAS21b,XCDAS19,DDAS21c,PRBRAM1,DDAS22,TGTBRAM1,DDAS23,ENDSLTA)
 
 ! ------------------------------------------------------------------------------
 

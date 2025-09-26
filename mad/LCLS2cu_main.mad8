@@ -1,6 +1,6 @@
   TITLE, "AD_ACCEL: copper linac"
 
-! *** OPTICS=AD_ACCEL-09JUN2025s ***
+! *** OPTICS=AD_ACCEL-22SEP2025s ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY
   ASSIGN, ECHO="LCLS2cu.echo"
@@ -187,9 +187,13 @@
 
   TWSCUS1 : BETA0, BETX=TBXCUS1, ALFX=TAXCUS1, BETY=TBYCUS1, ALFY=TAYCUS1
 
-! periodic Twiss in HXR dogleg cells (copy from LCLS2sc_main.mad8)
+! periodic Twiss in HXR dogleg cells (@ MM1; copy from LCLS2sc_main.mad8)
 
   TWSSmh : BETA0, ENERGY=Ef, BETX=MBETXh, ALFX=MALFXh, BETY=MBETYh, ALFY=MALFYh
+
+! matched Twiss in LTUS (@ MM1B; copy from LCLS2sc_master.xsif)
+
+  TWSSms : BETA0, ENERGY=Ef, BETX=MBETXs, ALFX=MALFXs, BETY=MBETYs, ALFY=MALFYs
 
 ! ==============================================================================
 ! SUBROUTINEs
@@ -204,41 +208,39 @@
   ! set quad strengths for 8 GeV Cu-linac beam to DMPH
 
     SET, KQ50Q3,  0.384840836193 ! 0.384840836193
-    SET, KQ4,    -0.219396715399 !-0.219396715005
-    SET, KQ5,     0.165708853516 ! 0.165708852383
-    SET, KQ6,    -0.113569101753 !-0.113569101471
-    SET, KQA0,    0.109210101838 ! 0.109210100868
-  !               Yuri (8.0/2.0)
-  !              ---------------
-    SET, KQUM1,   0.272741408897
-    SET, KQUM2,  -0.270601268265
-    SET, KQUM3,   0.278762678373
-    SET, KQUM4,  -0.247470889897
-    SET, kQHX46, -1.734624260269
-    SET, KQUE1,   0.169109252491
-    SET, KQUE2,  -0.137840816238
-    SET, KQDMP,  -0.155212710055
+    SET, KQ4,    -0.219328137191 !-0.219396715399
+    SET, KQ5,     0.165330302645 ! 0.165708853516
+    SET, KQ6,    -0.113513909928 !-0.113569101753
+    SET, KQA0,    0.108918706584 ! 0.109210101838
+    SET, KQUM1,   0.269913653406 ! 0.272741408897
+    SET, KQUM2,  -0.268172177951 !-0.270601268265
+    SET, KQUM3,   0.279727400453 ! 0.278762678373
+    SET, KQUM4,  -0.249275686641 !-0.247470889897
+    SET, kQHX46, -1.734624260269 !Yuri (E=8.0, K=2.0)
+    SET, KQUE1,   0.168953374446 ! 0.169109252491 !Yuri (E=8.0, K=2.0)
+    SET, KQUE2,  -0.137840816238 !Yuri (E=8.0, K=2.0)
+    SET, KQDMP,  -0.155212710055 !Yuri (E=8.0, K=2.0)
   ENDSUBROUTINE
 
-! special redefinitions for Cu-linac (high energy) beam passing through lattice
+! redefinitions for Cu-linac (high energy) beam passing through lattice
 ! defined for SC-linac (low energy) beam
 ! (NOTE: these quad strengths are also used in CU_SXR.xsif!)
 
   SETK2cuS : SUBROUTINE !for LCLS2cuS
-    SET, KQBP33, -0.645066535687 !-0.645066535808
-    SET, KQBP34,  0.592977154201 ! 0.592977153135
-    SET, KQDBL1, -1.045760166433 !-1.045760158543
-    SET, KQDBL2,  0.585600783129 ! 0.585600770813
-    SET, KQDL11,  0.358732502315 ! 0.358732502069
-    SET, kQUM1b,  0.6048543022
-    SET, kQUM2b, -0.879775666991
-    SET, kQUM3b,  0.885017175465
-    SET, kQUM4b, -0.530290818016
-    SET, kQSX16,  0.453359672973
-    SET, kQSX47, -1.5985
-    SET, KQUE1B,  0.252909229403
-    SET, KQUE2B,  0.0
-    SET, KQDMPB, -0.15111165919
+    SET, KQBP33, -0.644929924665 !-0.645066535687
+    SET, KQBP34,  0.594268425596 ! 0.592977154201
+    SET, KQDBL1, -1.055659800022 !-1.045760166433
+    SET, KQDBL2,  0.60103715269  ! 0.585600783129
+    SET, KQDL11,  0.358957901623 ! 0.358732502315
+    SET, kQUM1b,  0.592447017875 ! 0.594601107257 ! 0.6048543022
+    SET, kQUM2b, -0.846868032999 !-0.832190827952 !-0.879775666991
+    SET, kQUM3b,  0.895080625802 ! 0.894619176764 ! 0.885017175465
+    SET, kQUM4b, -0.568377371896 !-0.592858253522 !-0.530290818016
+    SET, kQSX16,  0.470575332093 ! 0.497605535024 ! 0.453359672973
+    SET, kQSX47, -1.843482712046 !Yuri (E=8.0, K=5.0)
+    SET, KQUE1B,  0.326687144511 ! 0.325725075565 !Yuri (E=8.0, K=5.0)
+    SET, KQUE2B, -0.144356640751 !Yuri (E=8.0, K=5.0)
+    SET, KQDMPB, -0.154946553294 !Yuri (E=8.0, K=5.0)
   ENDSUBROUTINE
 
 ! ==============================================================================
@@ -342,6 +344,20 @@
 
 ! ------------------------------------------------------------------------------
 
+! HXR safety dump
+
+ !COMMENT
+    ASSIGN, PRINT="LCLS2cuHS.print"
+    BEAM, ENERGY=E00
+    SET, SETCUS, CUSOFF
+    SETK2cuH
+    USE, CU_SFTH
+    PRINT, FULL
+    SURVEY, THETA0=ADL1, X0=Xi, Z0=Zi, TAPE="LCLS2cuHS_survey.tape"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
 ! SXR
 
  !COMMENT
@@ -409,20 +425,6 @@
 
 ! ------------------------------------------------------------------------------
 
-! HXR safety dump
-
-  COMMENT
-    ASSIGN, PRINT="LCLS2cuHS.print"
-    BEAM, ENERGY=E00
-    SET, SETCUS, CUSOFF
-    SETK2cuH
-    USE, CU_SFTH
-    PRINT, FULL
-    SURVEY, THETA0=ADL1, X0=Xi, Z0=Zi, TAPE="LCLS2cuHS_survey.tape"
-  ENDCOMMENT
-
-! ------------------------------------------------------------------------------
-
 ! HXR XTES
 
  !COMMENT
@@ -468,23 +470,6 @@
 
 ! ------------------------------------------------------------------------------
 
-! SXR
-
- !COMMENT
-    ASSIGN, PRINT="BSY-LCLS2cuS.print"
-    BEAM, ENERGY=Ef
-    SET, SETCUS, CUSON   !pulsed
-   !SET, SETCUS, CUSONDC !DC
-   !VALUE, PULSED,DCMODE
-   !SETK2cuS
-    USE, BSYLTUS
-    PRINT, FULL
-    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
-      TAPE="BSY-LCLS2cuS_survey.tape"
- !ENDCOMMENT
-
-! ------------------------------------------------------------------------------
-
 ! HXR safety dump
 
  !COMMENT
@@ -526,6 +511,23 @@
     PRINT, FULL
     SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
       TAPE="BSY-LCLS2cuHTXI_survey.tape"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! SXR
+
+ !COMMENT
+    ASSIGN, PRINT="BSY-LCLS2cuS.print"
+    BEAM, ENERGY=Ef
+    SET, SETCUS, CUSON   !pulsed
+   !SET, SETCUS, CUSONDC !DC
+   !VALUE, PULSED,DCMODE
+   !SETK2cuS
+    USE, BSYLTUS
+    PRINT, FULL
+    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
+      TAPE="BSY-LCLS2cuS_survey.tape"
  !ENDCOMMENT
 
 ! ==============================================================================
