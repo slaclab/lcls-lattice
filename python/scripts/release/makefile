@@ -115,8 +115,8 @@ MAD2DOT=../python/scripts/release/mad2dot.awk
 
 # Where do we install the mad outputs, all associated files.
 #
-#INSTALLROOT=/sdf/data/ad/public_html/model/output/lcls/mad
-INSTALLROOT=/sdf/group/ad/sw/scm/repos/optics/lcls-lattice/mad/TESTTESTTEST
+INSTALLROOT=/sdf/data/ad/public_html/model/output/lcls/mad
+#INSTALLROOT=/sdf/group/ad/sw/scm/repos/optics/lcls-lattice/mad/TESTTESTTEST
 #INSTALLROOT=.
 
 # Define macros that evaluate to lists of files, mainly for help installing
