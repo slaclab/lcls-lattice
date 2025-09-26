@@ -106,11 +106,18 @@ endif
 # You can override this from the command line if you want a different 
 # executable. Eg make MAD8=<pathtomymad8>
 # 
-MAD8=/afs/slac/g/ilc/codes/mad8.53/mad
+# rh9
+MAD8=/sdf/group/ad/sw/beta/bin/mad8s.rh9
+# < rh9
+#MAD8=/sdf/group/ad/sw/beta/bin/mad8s
+
+MAD2DOT=../python/scripts/release/mad2dot.awk
 
 # Where do we install the mad outputs, all associated files.
 #
-INSTALLROOT=/afs/slac/www/grp/ad/model/output/lcls/mad
+#INSTALLROOT=/sdf/data/ad/public_html/model/output/lcls/mad
+INSTALLROOT=/sdf/group/ad/sw/scm/repos/optics/lcls-lattice/mad/TESTTESTTEST
+#INSTALLROOT=.
 
 # Define macros that evaluate to lists of files, mainly for help installing
 #
@@ -130,16 +137,15 @@ LINES=$(patsubst %.dot, %_lines.dat, $(DOTS))
 # The location of the file defining the association between
 # MAD element names and control system device names, as used
 # in the maps and lines files.
-ELEMENTDEVICES:=../../../../script/elementdevices.dat \
-                ../../../../script/elementdevices_cavities_cuH.dat \
-                ../../../../script/elementdevices_cavities_cuS.dat \
-                ../../../../script/elementdevices_sbends_cuH.dat \
-                ../../../../script/elementdevices_sbends_cuS.dat
-#                ../../../../script/elementdevices_addendum.dat
+ELEMENTDEVICES:=elementdevices.dat \
+                elementdevices_cavities_cuH.dat \
+                elementdevices_cavities_cuS.dat \
+                elementdevices_sbends_cuH.dat \
+                elementdevices_sbends_cuS.dat
 
 #  What will be published to the opt/ directory of the deck release web site.
 OPTS:=$(DOTS) $(MAPS) $(MAPICONS) $(OPTICSICONS) *_lines.dat
-WEB:=.htaccess 
+WEB:= #.htaccess 
 
 #
 # TARGETS
@@ -198,12 +204,16 @@ FORCE :
 # Superconducting beampaths MAD8
 #
 LCLS2sc%.ps LCLS2sc%.print LCLS2sc%_twiss.tape LCLS2sc%_survey.tape : LCLS2sc_main.mad8 *.xsif
-	$(MAD8) $<
+	$(MAD8) < $<
+LCLS2sc_color.ps : LCLS2sc_main.mad8 *.xsif
+	(sed 's/!COLORPLOTS//g' LCLS2sc_main.mad8 | $(MAD8))
 
 # Copper linac beampaths MAD
 #
 LCLS2cu%.ps LCLS2cu%.print LCLS2cu%_twiss.tape LCLS2cu%_survey.tape : LCLS2cu_main.mad8 *.xsif
-	$(MAD8) $<
+	$(MAD8) < $<
+LCLS2cu_color.ps : LCLS2cu_main.mad8 *.xsif
+	(sed 's/!COLORPLOTS//g' LCLS2cu_main.mad8 | $(MAD8))
 
 # Convert Postcript to PDF (of twiss plots), accomplished by ps2pdf, 
 # produces nicer results than convert, at least on a mac. Both should
@@ -231,13 +241,13 @@ DIAG0.pdf : DIAG0.ps
 # input files to the awk script is important, it is: survey.tape, elementdevices, print.
 #
 #%_lines.dat %.dot : %_survey.tape $(ELEMENTDEVICES) %.print
-#	gawk -v width=38 -v height=4  -f ../../../../script/mad2dot.awk $+ > $*.dot
+#	gawk -v width=38 -v height=4  -f mad2dot.awk $+ > $*.dot
 %_lines.dat %.dot : %_survey.tape $(ELEMENTDEVICES) %.print
-	gawk  -f ../../../../script/mad2dot.awk $+ > $*.dot
+	gawk  -f $(MAD2DOT) $+ > $*.dot
 
 # DIAG0 line: Defined explicitly because scaling is different (height).
 DIAG0_lines.dat DIAG0.dot : DIAG0_survey.tape $(ELEMENTDEVICES) DIAG0.print 
-	gawk -v width=20 -v height=10 -f ../../../../script/mad2dot.awk $+ > DIAG0.dot
+	gawk -v width=20 -v height=10 -f $(MAD2DOT) $+ > DIAG0.dot
 
 
 
