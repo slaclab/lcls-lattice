@@ -115,7 +115,7 @@ def get_slave_status(ix):
   slave_status = tao.ele_lord_slave(ix)
   ret = None
   for x in slave_status:
-    if x['type'] == 'Lord':
+    if x['type'] == 'Lord' and x['status'] == 'Super_Lord':
       ret = int(x['location_name'].split('>>')[1])
   return ret
 
@@ -128,7 +128,8 @@ for model in MODELS:
     for ix in ix_eles[:-1]:
       name = tao.lat_list(ix,'ele.name')[0]
       key = tao.lat_list(ix,'ele.key')[0]
-      slave_status = get_slave_status(ix)
+      ele_lord_slave = tao.ele_lord_slave(ix)
+      energy = tao.lat_list(ix,'ele.e_tot')[0] / 1e9
 
       if key not in kws.keys():
         print(f'missing: {name}: {key}')
@@ -137,14 +138,17 @@ for model in MODELS:
       if 'skip' in template:
         continue
       else:
+        slave_status = get_slave_status(ix)
         if slave_status:
+          ele_type = tao.ele_head(slave_status)['type']
           descrip_dict = extract_kv_pairs(tao.ele_head(slave_status)['descrip'])
         else:
+          ele_type = tao.ele_head(ix)['type']
           descrip_dict = extract_kv_pairs(tao.ele_head(ix)['descrip'])
         if 'mad8_key' in descrip_dict:
           madk = descrip_dict['mad8_key']
         else:
-          #If elements has no madk, it does not belong in Oracle Upload.
+          #If element has no madk, it does not belong in Oracle Upload.
           continue
         #Load default FDN 
         if madk in fdn_defaults:
@@ -175,7 +179,7 @@ for model in MODELS:
       vals = [my_lat_list(ix,p) for p in params[1:]]
       for n,val in enumerate(vals,1):
         if n==5:
-          line = line + "\n"
+          line = line + f' {ele_type:<16}' + f'  {energy:.9E}' + '\n'
         if key == 'Lcavity' and (params[n] == 'RF_FREQUENCY' or params[n] == 'VOLTAGE'):
           val = val / 1e6
         #if len(val) == 0:
