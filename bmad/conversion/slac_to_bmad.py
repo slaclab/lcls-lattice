@@ -252,7 +252,7 @@ shadows = ['umasxh','umahxh','pssxh','pshxh','umxl1h','umxl2h','umxl3h','umxl4h'
 def process_master(master):
     print(f'Converting {master}')
 
-    SCRIPT = f'python $ACC_ROOT_DIR/util_programs/mad_to_bmad/mad8_to_bmad.py --no_prepend_vars -f {master}'
+    SCRIPT = f'python $ACC_ROOT_DIR/util_programs/mad_to_bmad/mad8_to_bmad_SLAC.py --no_prepend_vars -f {master}'
     res = run(SCRIPT, shell=True, cwd=TEMP_DIR)
 
     assert res.returncode == 0
