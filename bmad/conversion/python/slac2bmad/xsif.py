@@ -81,8 +81,8 @@ FULLNAMES = {
 
 def expand_names(line):
     for k, v in FULLNAMES.items():
-        # Skip ones that are fine
-        line = re.sub(k,v,line)
+        if 'fdn=' not in re.sub(r'\s+','',line.lower()):
+          line = re.sub(k,v,line)
     return line
 
 
