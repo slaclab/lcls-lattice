@@ -1,6 +1,6 @@
   TITLE, "AD_ACCEL: superconducting linac"
 
-! *** OPTICS=AD_ACCEL-12MAY2025s ***
+! *** OPTICS=AD_ACCEL-22SEP2025s ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY, DOUBLE
   ASSIGN, ECHO="LCLS2sc.echo"
@@ -414,6 +414,7 @@
   TWSSa  : BETA0, ENERGY=Ei, BETX=BXa, ALFX=AXa, BETY=BYa, ALFY=AYa
   TWSSi  : BETA0, ENERGY=Ei, BETX=BXi, ALFX=AXi, BETY=BYi, ALFY=AYi
   TWSSmh : BETA0, ENERGY=Ef, BETX=MBETXh, ALFX=MALFXh, BETY=MBETYh, ALFY=MALFYh
+  TWSSms : BETA0, ENERGY=Ef, BETX=MBETXs, ALFX=MALFXs, BETY=MBETYs, ALFY=MALFYs
   TWSSP  : BETA0, BETX=TBXSP, BETY=TBYSP, ALFX=TAXSP, ALFY=TAYSP
 
 ! temporary
@@ -510,16 +511,14 @@
   OPTION, ECHO
 
 ! ------------------------------------------------------------------------------
-
+ 
  !CALL, FILENAME="LCLS2sc_beams.mad8" !alternate beams & configurations
  !CALL, FILENAME="LCLS2sc_match.mad8"
- CALL, FILENAME="LCLS2sc_makeSymbols.mad8"
+ !CALL, FILENAME="LCLS2sc_makeSymbols.mad8"
  !CALL, FILENAME="LCLS2sc_makeElegant.mad8"
  !CALL, FILENAME="LCLS2sc_XLEAP.mad8" !run by itself
 
 ! ------------------------------------------------------------------------------
-
- !CALL, FILENAME="patch.mad8"
 
  !STOP
 
@@ -559,20 +558,25 @@
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
       STYLE=100, SPLINE, RANGE=WS31B/DU7S[31], FILE="LCLS2scS", &
       TITLE="UNDS (SC beam, 4 GeV)"
+   !comment
+      SAVEBETA, TWSSms, MM1B
+      TWISS, COUPLE, BETA0=TWSSi
+      SHOW, TWssms
+   !endcomment
  !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
 
 ! SXR safety dump
 
-  COMMENT
+ !COMMENT
     ASSIGN, PRINT="LCLS2scSS.print"
     BEAM, ENERGY=E0
     SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
     USE, SC_SFTS
     PRINT, FULL
     SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scSS_survey.tape"
-  ENDCOMMENT
+ !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
 
@@ -642,6 +646,11 @@
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
       STYLE=100, SPLINE, RANGE=WS31/DU7H[25], FILE="LCLS2scH", &
       TITLE="UNDH (SC beam, 4 GeV)"
+
+    VALUE, KQ50Q3,KQ4,KQ5,KQ6,KQA0
+    SAVEBETA, TWSSmh, MM1
+    TWISS, COUPLE, BETA0=TWSSi
+    SHOW, TWSSmh
  !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
@@ -833,6 +842,8 @@
     BEAM, ENERGY=Ef
     SET, SETSP, SETSPd ; SET, SETDA, DAON
     USE, BSYLCLS2scDA
+   !MAKESEQUENCE, LABEL="DASEL", REFER="CENTRE"
+   !SAVELINE, NAME="DASEL", FILENAME="DASEL.seq"
     PRINT, FULL
     SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
       TAPE="BSY-LCLS2scDA_survey.tape"
@@ -845,6 +856,212 @@
 ! ------------------------------------------------------------------------------
 ! LCLS2sc_main working stuff
 ! ------------------------------------------------------------------------------
+
+  comment
+    BEAM, ENERGY=E0
+    SET, SETSP, SETSPd ; SET, SETDA, DAON
+    SET, AB7, 0
+    USE, SC_DASEL
+   !VALUE, dSmdw,D126[L],D208[L],D126[L]+D208[L]
+   !VALUE, D127a[L]
+   !VALUE, D204a[L]
+    VALUE, D225[L]
+    MATCH, SURVEY, XS=Xgun, YS=Ygun, ZS=Zgun
+     !VARY, dSmdw, STEP=1.E-6
+     !VARY, D127a[L], STEP=1.E-6
+     !VARY, D204a[L], STEP=1.E-6
+      VARY, D225[L], STEP=1.E-6
+      WEIGHT, ZS=1 !, CIRC=1
+     !CONSTR, A3C1A, CIRC=3373.337145
+     !CONSTR, NOTCHEND, CIRC=3373.404345
+     !CONSTR, ALCOVEEND, CIRC=3380.719545
+      CONSTR, BMDE, ZS=3503.1082
+     !LMDIF, TOL=1.E-201
+     !MIGRAD, TOL=1.E-20
+    ENDMATCH
+   !VALUE, dSmdw,D126[L],D208[L],D126[L]+D208[L]
+   !VALUE, D127a[L]
+   !VALUE, D204a[L]
+    VALUE, D225[L]
+    PRINT, FULL
+    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="survey.tape"
+  endcomment
+
+  comment
+    BEAM, ENERGY=E0
+    SET, SETSP, SETSPd ; SET, SETDA, DAON
+    USE, SC_DASEL
+   !VALUE, DDAS14ac1[L]
+   !VALUE, DDAS14ac[L],DDAS14ac1[L]+DDAS14ac2[L]
+   !VALUE, dSmdw,DDAS21b[L],DDAS21c[L],DDAS21b[L]+DDAS21c[L]
+   !VALUE, D125[L]
+   !VALUE, D126[L]
+   !VALUE, D208[L]
+    VALUE, D225[L]
+    MATCH, SURVEY, XS=Xgun, YS=Ygun, ZS=Zgun
+     !VARY, DDAS14ac1[L], STEP=1.E-6
+     !VARY, D125[L], STEP=1.E-6
+     !VARY, D126[L], STEP=1.E-6
+     !VARY, D208[L], STEP=1.E-6
+      VARY, D225[L], STEP=1.E-6
+      WEIGHT, ZS=1
+     !CONSTR, WSDAS14, ZS=3046.661
+     !CONSTR, XCDAS19, ZS=3158.000000
+     !CONSTR, D125, ZS=3350.02508
+     !CONSTR, A3C1A, ZS=3357.2266
+     !CONSTR, PIVOT, ZS=3372.6980
+      CONSTR, BMDE, ZS=3503.1082
+     !LMDIF, TOL=1.E-20
+     !MIGRAD, TOL=1.E-20
+    ENDMATCH
+   !VALUE, DDAS14ac1[L]
+   !VALUE, DDAS14ac[L],DDAS14ac1[L]+DDAS14ac2[L]
+   !VALUE, dSmdw,DDAS21b[L],DDAS21c[L],DDAS21b[L]+DDAS21c[L]
+   !VALUE, D125[L]
+   !VALUE, D126[L]
+   !VALUE, D208[L]
+    VALUE, D225[L]
+    PRINT, FULL
+    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun
+  endcomment
+
+  comment
+    BEAM, ENERGY=E0
+    SET, SETSP, SETSPd ; SET, SETDA, DAON
+    USE, SC_DASEL
+   !VALUE, dSmdw,D126[L],D127[L],D126[L]+D127[L]
+   !VALUE, dSmdw,D128[L],D129[L],D128[L]+D129[L]
+   !VALUE, dSmdw,D129[L],D130[L],D129[L]+D130[L]
+   !VALUE, dSmdw,D130[L],D131[L],D130[L]+D131[L]
+   !VALUE, dSmdw,D131[L],D201[L],D131[L]+D201[L]
+   !VALUE, dSmdw,D201[L],D202[L],D201[L]+D202[L]
+   !VALUE, dSmdw,D202[L],D203[L],D202[L]+D203[L]
+   !VALUE, dSmdw,D203[L],D204[L],D203[L]+D204[L]
+   !VALUE, dSmdw,D204[L],D205[L],D204[L]+D205[L]
+   !VALUE, dSmdw,D205[L],D206[L],D205[L]+D206[L]
+   !VALUE, dSmdw,D206[L],D207[L],D206[L]+D207[L]
+   !VALUE, dSmdw,D207[L],D208[L],D207[L]+D208[L]
+    VALUE, D224[L]
+    MATCH, SURVEY, XS=Xgun, YS=Ygun, ZS=Zgun
+     !VARY, dSmdw, STEP=1.E-6
+      VARY, D224[L], STEP=1.E-6
+      WEIGHT, CIRC=1
+     !CONSTR, IV40, CIRC=3377.660525-18.45*in2m
+     !CONSTR, A3C1B, CIRC=3377.660525+27.43*in2m
+     !CONSTR, A3I1, CIRC=3377.660525+102.97*in2m
+     !CONSTR, A3PR1, CIRC=3377.660525+138.44*in2m
+     !CONSTR, A3PR2, CIRC=3377.660525+170.88*in2m
+     !CONSTR, A3I2, CIRC=3377.660525+211.80*in2m
+     !CONSTR, A3BPM1, CIRC=3377.660525+227.12*in2m
+     !CONSTR, A3BPM2, CIRC=3377.660525+262.25*in2m
+     !CONSTR, A3I3, CIRC=3377.660525+295.04*in2m
+     !CONSTR, IV41, CIRC=3377.660525+303.46*in2m
+     !CONSTR, A3T0, CIRC=3377.660525+319.75*in2m
+     !CONSTR, A3WA1, CIRC=3377.660525+347.68*in2m
+      CONSTR, ESAE, CIRC=3394.662110+168*ft2m
+     !LMDIF, TOL=1.E-201
+     !MIGRAD, TOL=1.E-20
+    ENDMATCH
+   !VALUE, dSmdw,D126[L],D127[L],D126[L]+D127[L]
+   !VALUE, dSmdw,D128[L],D129[L],D128[L]+D129[L]
+   !VALUE, dSmdw,D129[L],D130[L],D129[L]+D130[L]
+   !VALUE, dSmdw,D130[L],D131[L],D130[L]+D131[L]
+   !VALUE, dSmdw,D131[L],D201[L],D131[L]+D201[L]
+   !VALUE, dSmdw,D201[L],D202[L],D201[L]+D202[L]
+   !VALUE, dSmdw,D202[L],D203[L],D202[L]+D203[L]
+   !VALUE, dSmdw,D203[L],D204[L],D203[L]+D204[L]
+   !VALUE, dSmdw,D204[L],D205[L],D204[L]+D205[L]
+   !VALUE, dSmdw,D205[L],D206[L],D205[L]+D206[L]
+   !VALUE, dSmdw,D206[L],D207[L],D206[L]+D207[L]
+   !VALUE, dSmdw,D207[L],D208[L],D207[L]+D208[L]
+    VALUE, D224[L]
+    PRINT, FULL
+    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun
+  endcomment
+
+  comment
+    BEAM, ENERGY=Eu
+    USE, SXCEL32
+    PRINT, FULL
+    SURVEY
+    USE, SXCEL33
+    PRINT, FULL
+    SURVEY
+    USE, SXCEL34
+    PRINT, FULL
+    SURVEY
+  endcomment
+
+  comment
+    BEAM, ENERGY=Eu
+    USE, B11_full
+    PRINT, FULL
+    SURVEY, THETA0=ABA/2
+  endcomment
+
+  comment
+    BEAM, ENERGY=E0
+    SET, SETSP, SETSPd ; SET, SETDA, DAON
+    USE, SC_DASEL
+    PRINT, FULL
+    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="survey.tape"
+  endcomment
+
+! ------------------------------------------------------------------------------
+
+  COMMENT !rematch for dead QCM22
+    BEAM, ENERGY=Ei
+    USE, SC_SXRi
+    SAVEBETA, TWm, CM26BEG
+    TWISS, BETA0=TWSSi
+    SHOW, TWm
+    SET, QCM22[K1], 0
+    SET, QCM23[K1], 0
+    VALUE, QCM20[K1],QCM21[K1],QCM22[K1],QCM23[K1],QCM24[K1],QCM25[K1]
+    MATCH, BETA0=TWSSi
+      VARY, QCM20[K1], STEP=1.E-6, UPPER=0
+      VARY, QCM21[K1], STEP=1.E-6, LOWER=0
+      VARY, QCM24[K1], STEP=1.E-6, UPPER=0
+      VARY, QCM25[K1], STEP=1.E-6, LOWER=0
+      CONSTR, CM26BEG, BETX=TWm[BETX], ALFX=TWm[ALFX], &
+                       BETY=TWm[BETY], ALFY=TWm[ALFY]
+      SIMPLEX, TOL=1.E-20, CALLS=10000
+      LMDIF, TOL=1.E-20, CALLS=10000
+      MIGRAD, TOL=1.E-20, CALLS=10000
+    ENDMATCH
+    VALUE, QCM20[K1],QCM21[K1],QCM22[K1],QCM23[K1],QCM24[K1],QCM25[K1]
+    TWISS, SAVE, BETA0=TWSSi
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=BEGL3B/ENDL3B, FILE="L3B", &
+      TITLE="L3B: QCM22 and QCM23 off"
+  ENDCOMMENT
+
+  COMMENT !William Colocho's match
+    BEAM, ENERGY=Ei
+    USE, SC_SXRi
+    SET, QCM20[K1], -0.208813709813
+    SET, QCM21[K1],  0.30328446035
+    SET, QCM22[K1], -0.235600917364
+    SET, QCM23[K1],  0.0
+    SET, QCM24[K1], -0.150730435467
+    TWISS, SAVE, BETA0=TWSSi
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=BEGL3B/ENDL3B, FILE="L3B", &
+      TITLE="L3B: QCM22 and QCM23 off"
+  ENDCOMMENT
+
+  COMMENT !F-JD's rule-of-thumb match
+    BEAM, ENERGY=Ei
+    USE, SC_SXRi
+    SET, QCM21[K1],  0.185334132537/2
+    SET, QCM22[K1],  0.0
+    SET, QCM23[K1],  0.0
+    SET, QCM24[K1], -0.189977001339/2
+    TWISS, SAVE, BETA0=TWSSi
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=BEGL3B/ENDL3B, FILE="L3B", &
+      TITLE="L3B: QCM22 and QCM23 off"
+  ENDCOMMENT
 
 ! @BEAM0:
 ! - BETX=9.898319949733, ALFX=-1.895312604539, BmagX= 1.0064

@@ -1,12 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-12MAY2025s ***
-
-================================================================================
-
-NOTE: there are three power supply strings which power two R56 chicanes each
-      (BCXDLU+BCXDLD, BCX31B+BCX32B, and BCX35+BCX36); the #2 bend of 2nd
-      chicane on each string has no trim winding, so need average polynomial
-      for BCXDLU2/BCXDLD2, BCX31B2/BCX32B2, and BCX352/BCX362!
+! *** OPTICS=AD_ACCEL-22SEP2025s ***
 
 ================================================================================
 
@@ -40,7 +33,7 @@ Cu: IntgSX= 30.0 kG; IntgHX= 30.0 kG
 ================================================================================
 
 Notes:
-* use Yuri's scalable matching solutions
+* Yuri's scalable matching solutions (D:\AD_ACCEL\20200401\yuri)
   > UNDH_KQ4_USDS.xsif
   > UNDS_KQ5_US.xsif
   > UNDS_BDES_DS_fit.xlsx
@@ -52,30 +45,28 @@ MAD deck changes
 general
 
 LCLS2sc_main.mad8
-* add (unused) SETQC002on SUBROUTINE
 
 LCLS2sc_beams.mad8
 
 LCLS2sc_match.mad8
-* changes to MD0Coll0 SUBROUTINE
+* add MDUMPMUXs and MDUMPMUXh SUBROUTINEs
 
 LCLS2sc_makeSymbols.mad8
-* long-period undulator & phase shifter in SXR cell 27
+* long-period undulator in SXR cell 33
+* long-period phase shifter in SXR cells 34, 36, and 37
 
 LCLS2sc_makeElegant.mad8
 
 LCLS2sc_XLEAP.mad8
-* matching changes
+* rematch (XLEAP variable-gap wiggler reinstalled but not operational)
 
 LCLS2sc_master.xsif
 
 common.xsif
 
 CM_SWAVE.xsif
-- set up L0 cavities per Feng ... later?
 
 INJ.xsif
-* rematch
 
 DIAG0.xsif
 
@@ -94,8 +85,10 @@ SPRD.xsif
 LTU.xsif (NOTE: all SBEN halves are: <name>1 and <name>2)
 
 UND.xsif
-* short-period undulator and phase shifter in SXR cell 27 replaced with
-  long-period undulator and phase shifter
+* long-period undulator in SXR cell 33
+* long-period phase shifter in SXR cells 34, 36, and 37
+* rematch DMPS and DMPH (dMUX=90 deg TCAV->OTR)
+  > keep Yuri quadrupole strengths except for QUE1B and QUE1
 
 SFT.xsif
 
@@ -130,9 +123,10 @@ SC_DASEL.xsif
 LCLS2cu_main.mad8
 
 LCLS2cu_match.mad8
+* add MDUMPMUXs and MDUMPMUXh SUBROUTINEs
 
 LCLS2cu_XLEAP.mad8
-* matching changes
+* rematch (XLEAP variable-gap wiggler reinstalled but not operational)
 
 LCLS2cu_master.mad8
 
@@ -155,7 +149,6 @@ BSYcu.xsif
 HXTES.xsif
 
 Cu_FDN.xsif, Cu_FDNe.xsif
-* fdn='BOD' for BODCBX40
 
 --------------------------------------------------------------------------------
 BMAD-only files
@@ -174,8 +167,6 @@ CU_SPEC.xsif
 ================================================================================
 
 Oracle upload
-
-*** Append FACET2 stuff to paths file and extras file ***
 
 * set Oracle PRIM name to "BEND" for ultra-fast kickers per K. Luchini
 * set Oracle PRIM name to "INST" for area and Sector begin and end MARKER's

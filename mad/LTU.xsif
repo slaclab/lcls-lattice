@@ -1,10 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-12MAY2025s ***
+! *** OPTICS=AD_ACCEL-22SEP2025s ***
 
 ! LCLS2sc LTU and dump
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 24-JUL-2025, M. Woodley
+!  * add MARKER point "SWIVEL" at location of swivel point
 ! ------------------------------------------------------------------------------
 ! 10-MAR-2025, M. Woodley
 !  * cleanup (remove BSY-to-Aline stuff)
@@ -768,9 +771,9 @@
   QDL18 : QUAD, TYPE="2Q10", L=LQR/2, K1=-KQDLb, APER=rQR
   QDL19 : QUAD, TYPE="2Q10", L=LQR/2, K1= KQDLb, APER=rQR
 
-  KQDL20 := -0.487979625759
-  KQDL21 := -1.904057641444
-  KQDL22 :=  2.191453247156
+  KQDL20 := -0.487749576014
+  KQDL21 := -1.904149676641
+  KQDL22 :=  2.191524608573
 
   QDL20 : QUAD, TYPE="1.085Q4.31", L=LQE/2, K1=KQDL20, APER=rQE
   QDL21 : QUAD, TYPE="1.085Q4.31", L=LQE/2, K1=KQDL21, APER=rQE
@@ -1233,11 +1236,11 @@
 ! SXR emittance diagnostic
 ! ------------------------------------------------------------------------------
 
-  KQEM1B  :=  1.994771712802
-  KQEM2B  := -1.809226178089
-  KQEM3B  :=  1.263611884311
+  KQEM1B  :=  1.994731606958
+  KQEM2B  := -1.809273842138
+  KQEM3B  :=  1.263524123458
   KQEM3VB :=  0.0
-  KQEM4B  := -0.89171746406
+  KQEM4B  := -0.891608033545
 
   QEM1B  : QUAD, TYPE="1.085Q4.31", L=LQE/2, K1=KQEM1B,  APER=rQE
   QEM2B  : QUAD, TYPE="1.085Q4.31", L=LQE/2, K1=KQEM2B,  APER=rQE
@@ -1717,10 +1720,10 @@
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 !       in the "LCLS2cu_main.mad8" file
 
-  KQUM1B :=  0.568578046239 ! 0.293411239505
-  KQUM2B := -0.796802792396 !-0.13          
-  KQUM3B :=  1.172578401021 ! 0.382165430892
-  KQUM4B := -1.160480624219 !-0.474867155145
+  KQUM1B :=  0.569936133069 ! 0.554702304968
+  KQUM2B := -0.790429888701 !-0.752736901945
+  KQUM3B :=  1.167879604547 ! 1.164301068548
+  KQUM4B := -1.160653674124 !-1.176414729014
 
   QUM1B : QUAD, TYPE="1.085Q4.31", L=LQE/2, K1=KQUM1b, APER=rQE
   QUM2B : QUAD, TYPE="1.085Q4.31", L=LQE/2, K1=KQUM2b, APER=rQE
@@ -1821,7 +1824,7 @@
 ! SXR dumpline
 ! ------------------------------------------------------------------------------
 
-  KQDMPB := -0.15111165919 !-0.154946553294
+  KQDMPB := -0.154946553294 !Yuri (E=4.0, K=5.0)
 
   QDmp1B : QUAD, TYPE="3.94Q17", L=LQP/2, K1=KQDmpb, APER=rQP
   QDmp2B : QUAD, TYPE="3.94Q17", L=LQP/2, K1=KQDmpb, APER=rQP
@@ -2232,10 +2235,10 @@
 ! BSY upstream of the scH merge bend (BXSP1H)
 ! ------------------------------------------------------------------------------
 
-  KQ30701 := -0.396231018339 !-0.39623102008  !-0.396305842423 !
-  KQ30801 :=  0.480592172519 ! 0.480592172677 ! 0.480095248389 !
-  KQ50Q1  := -0.231522300458 !-0.231522298209 !-0.231122399508 !
-  KQ50Q2  :=  0.102074332053 ! 0.102074330212 ! 0.10177159732  !
+  KQ30701 := -0.396181540351 !-0.396231018339
+  KQ30801 :=  0.480061954868 ! 0.480592172519
+  KQ50Q1  := -0.231094130006 !-0.231522300458
+  KQ50Q2  :=  0.101722563756 ! 0.102074332053
 
   Q50Q1 : QUAD, TYPE="2Q10", L=LQR/2   , K1=KQ50Q1, APER=rQR
   Q50Q2 : QUAD, TYPE="50Q2", L=0.162151, K1=KQ50Q2, APER=0.010325
@@ -2274,6 +2277,9 @@
                     LBRCUSdc2-DCUSBLRa[L]-DCUSBLRb[L]-&
                     LBLRCUS-LBXSPh-DBSY52d[L]
 
+  DBSY52c1 : DRIF, L=1.174422 !to SWIVEL point
+  DBSY52c2 : DRIF, L=DBSY52c[L]-DBSY52c1[L]
+
   BPMBSYQ1 : MONI, TYPE="Stripline-5" !changed from "-6" to fit 2Q10
   BPMBSYQ2 : MONI, TYPE="Stripline-6" !per C. Iverson
 
@@ -2298,6 +2304,7 @@
   S100     : MARK !station 100
   ZLIN15   : MARK !station-100 (or "S100"): Z=3048.0 (Z'=X'=Y'=0.0 m)
   BSY1BEG  : MARK
+  SWIVEL   : MARK !"swivel point"
   BSY1END  : MARK
 
 ! wooden BSY door (separates LI30 from BSY)
@@ -2320,7 +2327,7 @@
   S100SXR : LINE=(S100SXRa,S100SXRb)
 
  !BSYSXR : LINE=(BSYbeg,BSYS100,S100SXR)
- !S100BSY1 : LINE=(S100SXR,KCUSXRa,DBSY52c,BXSP1Ha,BXSP1Hb)
+ !S100BSY1 : LINE=(S100SXR,KCUSXRa,DBSY52c1,SWIVEL,DBSY52c2,BXSP1Ha,BXSP1Hb)
  !BSY1 : LINE=(BSYS100,S100BSY1)
  !BSY : LINE=(BSYbeg,BSY1,BSY1END,SPhBSY)
 
@@ -2331,11 +2338,11 @@
 ! note: the K-values below are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-  KQ50Q3 :=  0.426937957729 
-  KQ4    := -0.219608310249
-  KQ5    :=  0.11024564993
-  KQ6    := -0.109735122471
-  KQA0   :=  0.096565286297
+  KQ50Q3 :=  0.426937957729 ! 0.426937957729 
+  KQ4    := -0.219608310315 !-0.219608310249
+  KQ5    :=  0.110245649911 ! 0.11024564993
+  KQ6    := -0.109735122424 !-0.109735122471
+  KQA0   :=  0.096565286277 ! 0.096565286297
 
   Q50Q3 : QUAD, TYPE="50Q3"      , L=0.143254, K1=KQ50Q3, APER=0.010325
   Q4    : QUAD, TYPE="0.91Q17.72", L=LQF/2   , K1=KQ4,    APER=rQF
@@ -3022,10 +3029,10 @@
 ! HXR emittance diagnostic
 ! ------------------------------------------------------------------------------
 
-  KQEM1 := -0.390827735953
-  KQEM2 :=  0.432215708114
-  KQEM3 := -0.593433950486
-  KQEM4 :=  0.420485259237
+  KQEM1 := -0.390827735988
+  KQEM2 :=  0.43221570814
+  KQEM3 := -0.593433950371
+  KQEM4 :=  0.420485259232
 
   QEM1  : QUAD, TYPE="1.26Q12"  , L=LQA/2, K1=KQEM1, APER=rQA
   QEM2  : QUAD, TYPE="1.26Q12"  , L=LQA/2, K1=KQEM2, APER=rQA
@@ -3167,10 +3174,10 @@
 ! note: the below K-values come from Y. Nosochkov's UNDH_KQ4_USDS.xsif file,
 !       for E= 4.0 GeV and KHXU= 2.0 (IntgHX= 30.0 kG)
 
-  KQUM1 :=  0.21295276718  !UNDH_KQ4_USDS.xsif (Eu=4.0, KHXU=2.0)
-  KQUM2 := -0.256692261825 !UNDH_KQ4_USDS.xsif (Eu=4.0, KHXU=2.0)
-  KQUM3 :=  0.472597881562 !UNDH_KQ4_USDS.xsif (Eu=4.0, KHXU=2.0)
-  KQUM4 := -0.42682658336  !UNDH_KQ4_USDS.xsif (Eu=4.0, KHXU=2.0)
+  KQUM1 :=  0.217807105099
+  KQUM2 := -0.260867145661
+  KQUM3 :=  0.462571229525
+  KQUM4 := -0.415827146064
 
   QUM1 : QUAD, TYPE="1.26Q12", L=LQA/2, K1=KQUM1, APER=rQA
   QUM2 : QUAD, TYPE="1.26Q12", L=LQA/2, K1=KQUM2, APER=rQA
@@ -3246,7 +3253,7 @@
 ! HXR dumpline
 ! ------------------------------------------------------------------------------
 
-  KQDMP := -0.155212710055
+  KQDMP := -0.155212710055 !Yuri (E=4.0, K=2.0)
 
   QDmp1 : QUAD, TYPE="3.94Q17", L=LQP/2, K1=KQDmp, APER=rQP
   QDmp2 : QUAD, TYPE="3.94Q17", L=LQP/2, K1=KQDmp, APER=rQP
