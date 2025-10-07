@@ -6,29 +6,6 @@ import sys
 import re
 import numpy as np
 
-# These are FDN defaults from the mad8 dict file'
-fdn_defaults = {
-'sben':'bend',
-'matr':'useg',
-'quad':'quad',
-'sext':'sext',
-'mult':'inst',
-'sole':'sole',
-'srot':'mark',
-'hkic':'xcor',
-'vkic':'ycor',
-'moni':'bpm',
-'ecol':'pc',
-'rcol':'coll',
-'inst':'inst',
-'mark':'mark',
-'lcav':'lcav',
-'prof':'prof',
-'wire':'wire',
-'blmo':'blmo',
-'imon':'imon',
-}
-
 survey = []
 kws = {}
 kws['Beginning_Ele']   = {'madk':'    ',
@@ -150,21 +127,6 @@ for model in MODELS:
         else:
           #If element has no madk, it does not belong in Oracle Upload.
           continue
-        #Load default FDN 
-        if madk in fdn_defaults:
-          fdn = fdn_defaults[madk]
-        else:
-          fdn = None
-        #Overwrite default FDN if it exists in FDN file
-        if model.startswith('sc_'):
-          if name in sc_fdn:
-            fdn = sc_fdn[name] 
-        elif model.startswith('cu_'):
-          if name in sc_fdn:
-            fdn = cu_fdn[name] 
-        else:
-          print('file prefix error')
-          bomb
         params = template['params']
 
       if name == 'BEGINNING':
@@ -194,8 +156,6 @@ for model in MODELS:
         else:
             print(f'val is of unknown type: {val=} {type(val)=}')
             bomb
-      if fdn:
-        line = line + f' {fdn.upper():<16}'
 
       floor = tao.ele_floor(ix)['Reference']
       x,y,z,theta,phi,psi = map(float,floor)
@@ -203,17 +163,6 @@ for model in MODELS:
       line = line + f'{theta:16.9E}{phi:16.9E}{psi:16.9E}\n'
         
       f.write(line)
-
-
-
-
-
-
-
-
-
-
-
 
 
 

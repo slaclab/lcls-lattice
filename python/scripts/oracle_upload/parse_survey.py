@@ -31,7 +31,7 @@ def parse_survey(fname):
             line = fid.readline()
             xtff = line[8:16]
             if xtff.strip() != "SURVEY":
-                raise ValueError(f"Unexpected XTFF type ({xtff}) encountered ... abort")
+                raise ValueError(f'Unexpected XTFF type ({xtff}) encountered in file {fname} ... abort')
 
             # Read in the run title
             tt = fid.readline().strip()
