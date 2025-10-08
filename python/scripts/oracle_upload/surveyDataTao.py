@@ -61,18 +61,6 @@ BDIR = f'{LCLS_LATTICE_ENV}/bmad/'
 MODELS=['sc_sxr'] #FOO
 INITFILE = {model:f'{LCLS_LATTICE_ENV}/bmad/models/{model}/tao.init' for model in MODELS}
 
-def parse_fdn_file(filename):
-  fdnfile = {}
-  with open(filename,'r') as f:
-    for line in f:
-      x = [y.rstrip().strip("'").strip('"').upper() for y in re.split(r'[\[\]=]+',line.replace(' ',''))]
-      if len(x)>1 and x[1] == 'DESCRIP':
-        fdnfile[x[0]] = x[2]
-  return fdnfile
-
-cu_fdn = parse_fdn_file(f'{LCLS_LATTICE_ENV}/bmad/master/Cu_FDN.bmad')
-sc_fdn = parse_fdn_file(f'{LCLS_LATTICE_ENV}/bmad/master/SC_FDN.bmad')
-
 def my_lat_list(ix, p):
   if p == 0:
     ret = 0
@@ -97,6 +85,17 @@ def get_slave_status(ix):
   return ret
 
 for model in MODELS:
+  key_dict = {}
+  with open(f'{model}_keys.dat','r') as fkey:
+    for line in fkey:
+      if line.strip().startswith("#"):
+        continue
+      data = line.split()
+      name, madk = data[0:2]
+      dbkey = ''
+      if len(data) > 2:
+        dbkey = data[2]
+      key_dict[name] = [madk,dbkey]
   with open(model+'_survey.tape','w') as f:
     f.write('\n\n')
     tao = Tao(init_file=INITFILE[model], noplot=True)
@@ -105,6 +104,14 @@ for model in MODELS:
     for ix in ix_eles[:-1]:
       name = tao.lat_list(ix,'ele.name')[0]
       key = tao.lat_list(ix,'ele.key')[0]
+      inspect_name = name.split('#')
+      if len(inspect_name) > 1:
+        if key == 'Lcavity':
+          if inspect_name[1] == '1':
+            name = inspect_name[0] + "A"
+          elif inspect_name[1] == '2':
+            name = inspect_name[0] + "B"
+
       ele_lord_slave = tao.ele_lord_slave(ix)
       energy = tao.lat_list(ix,'ele.e_tot')[0] / 1e9
 
@@ -115,18 +122,23 @@ for model in MODELS:
       if 'skip' in template:
         continue
       else:
+        if name in key_dict:
+          madk = key_dict[name][0]
+          upload_name = key_dict[name][1]
+        else:
+          #If element not in key dictionary, does not go into Oracle Upload
+          print(f'{name} not in dictionary')
+          continue
         slave_status = get_slave_status(ix)
         if slave_status:
           ele_type = tao.ele_head(slave_status)['type']
-          descrip_dict = extract_kv_pairs(tao.ele_head(slave_status)['descrip'])
         else:
           ele_type = tao.ele_head(ix)['type']
-          descrip_dict = extract_kv_pairs(tao.ele_head(ix)['descrip'])
-        if 'mad8_key' in descrip_dict:
-          madk = descrip_dict['mad8_key']
-        else:
-          #If element has no madk, it does not belong in Oracle Upload.
-          continue
+        #if 'mad8_key' in descrip_dict:
+        #  madk = descrip_dict['mad8_key']
+        #else:
+        #  #If element has no madk, it does not belong in Oracle Upload.
+        #  continue
         params = template['params']
 
       if name == 'BEGINNING':
