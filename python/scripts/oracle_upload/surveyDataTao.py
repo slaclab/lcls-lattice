@@ -61,7 +61,7 @@ if LCLS_LATTICE_ENV is None:
 
 BDIR = f'{LCLS_LATTICE_ENV}/bmad/'
 #MODELS = [d for d in os.listdir(BDIR+'models/') if os.path.isdir(BDIR+'/models/'+d)]
-MODELS=['sc_sxr'] #FOO
+MODELS=['cu_sxr']
 INITFILE = {model:f'{LCLS_LATTICE_ENV}/bmad/models/{model}/tao.init' for model in MODELS}
 
 def my_lat_list(ix, p):
@@ -86,19 +86,20 @@ def get_slave_status(ix):
     if x['type'] == 'Lord' and x['status'] == 'Super_Lord':
       ret = int(x['location_name'].split('>>')[1])
   return ret
+  
+key_dict = {}
+with open(f'unified_keys.dat','r') as fkey:
+  for line in fkey:
+    if line.strip().startswith("#"):
+      continue
+    data = line.split()
+    name, madk = data[0:2]
+    dbkey = ''
+    if len(data) > 2:
+      dbkey = data[2]
+    key_dict[name] = [madk,dbkey]
 
 for model in MODELS:
-  key_dict = {}
-  with open(f'{model}_keys.dat','r') as fkey:
-    for line in fkey:
-      if line.strip().startswith("#"):
-        continue
-      data = line.split()
-      name, madk = data[0:2]
-      dbkey = ''
-      if len(data) > 2:
-        dbkey = data[2]
-      key_dict[name] = [madk,dbkey]
   with open(model+'_survey.tape','w') as f:
     f.write('\n\n')
     tao = Tao(init_file=INITFILE[model], noplot=True)
@@ -111,9 +112,6 @@ for model in MODELS:
       split_bend = None
       if len(inspect_name) > 1:
         if key == 'Lcavity' and not name.startswith('TCX'):
-          #if name.startswith('TCX'):
-          #  name = inspect_name[0]
-          #else:
           if inspect_name[1] == '1':
             name = inspect_name[0] + "A"
           elif inspect_name[1] == '2':
@@ -126,6 +124,8 @@ for model in MODELS:
             name = inspect_name[0]
           elif inspect_name[1] == '2':
             split_bend = 1
+            name = inspect_name[0]
+        else:
             name = inspect_name[0]
 
       ele_lord_slave = tao.ele_lord_slave(ix)
@@ -155,11 +155,6 @@ for model in MODELS:
           ele_type = tao.ele_head(slave_status)['type']
         else:
           ele_type = tao.ele_head(ix)['type']
-        #if 'mad8_key' in descrip_dict:
-        #  madk = descrip_dict['mad8_key']
-        #else:
-        #  #If element has no madk, it does not belong in Oracle Upload.
-        #  continue
         params = template['params']
 
       if name == 'BEGINNING':
@@ -177,9 +172,6 @@ for model in MODELS:
           line = line + f' {ele_type:<16}' + f'  {energy:.9E}' + '\n'
         if key == 'Lcavity' and (params[n] == 'RF_FREQUENCY' or params[n] == 'VOLTAGE'):
           val = val / 1e6
-        #if len(val) == 0:
-        #  print(f'lat_list returned empty list for key {key} param {param}')
-        #  sys.exit(1)
         if isinstance(val,(float,int)):
             line = line + f'{val:16.9E}'
         elif isinstance(val,str):

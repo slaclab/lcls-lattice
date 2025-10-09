@@ -16,12 +16,18 @@ file_roots = [
     #{'root':'LCLS2cuSPEC',  'beg':'BEGSPEC',      'end':'ENDSPEC',     'ix':16, 'outn':''},     # 16 Cu 135 MeV Spectrometer
 ]
 
+#file_roots = [
+#    {'root':'LCLS2scH',     'beg':'BEGSPH',       'end':'ENDSLTH',     'ix':6,  'outn':'sc_hxr'},      #  6 SC Hard line
+#]
+
 # ------------------------------------------------------------------------------
 # read the MAD output files
 K, N, T, FDN = [], [], [], []
 L, P, A, E, coor, S, Sd = [], [], [], [], [], [], []
 idf, idd = [], []  # idf: which MAD survey file an element came from
                    # idd: ordinal position in MAD output file
+
+outputs = {}
 
 for file_root in file_roots:
     fname = f'{file_root["root"]}_survey.tape'
@@ -30,7 +36,7 @@ for file_root in file_roots:
 
     id1 = tN.index(file_root['beg'])
     id2 = tN.index(file_root['end']) 
-    slc = slice(id1, id2 + 1)
+    slc = slice(id1, id2+1)
 
     K.extend(tK[slc])
     N.extend(tN[slc])
@@ -47,16 +53,31 @@ for file_root in file_roots:
     idf.extend([file_root['ix']] * ndata)
     idd.extend(list(range(id1,id2+1)))
 
-    faux = f'{file_root["outn"]}_keys.dat'
-    with open(faux,'w') as f:
-      f.write(f'{"# name":<19}{"madk":<10}{"dbkey"}\n')
-      for N_,K_,FDN_ in zip(N,K,FDN):
-        if FDN_ is None:
-          print(f'{N_} is missing FDN')
-        if K_ != 'DRIF':
-          f.write(f'{N_:<19}{K_:<10}{FDN_}\n')
-        else:
-          f.write(f'{N_:<19}{K_:<10}\n')
+    for N_,K_,FDN_ in zip(N,K,FDN):
+      if FDN_ is None:
+        print(f'{N_} is missing FDN')
+      if K_ != 'DRIF':
+        outputs[N_] = [K_,FDN_]
+      else:
+        outputs[N_] = [K_,None]
 
+    #faux = f'{file_root["outn"]}_keys.dat'
+    #with open(faux,'w') as f:
+    #  f.write(f'{"# name":<19}{"madk":<10}{"dbkey"}\n')
+    #  for N_,K_,FDN_ in zip(N,K,FDN):
+    #    if FDN_ is None:
+    #      print(f'{N_} is missing FDN')
+    #    if K_ != 'DRIF':
+    #      f.write(f'{N_:<19}{K_:<10}{FDN_}\n')
+    #    else:
+    #      f.write(f'{N_:<19}{K_:<10}\n')
+
+with open('unified_keys.dat','w') as f:
+  f.write(f'{"# name":<19}{"madk":<10}{"dbkey"}\n')
+  for k,v in outputs.items():
+      if v[1] is None:
+        f.write(f'{k:<19}{v[0]:<10}\n')
+      else:
+        f.write(f'{k:<19}{v[0]:<10}{v[1]}\n')
 
 
