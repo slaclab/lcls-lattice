@@ -53,10 +53,12 @@ def desplit_ele(line, double_length=True, verbose=True, exclude_strs=None):
         # This is okay though
         if (eles[0].endswith('1') and eles[-1].endswith('2')):
             double_length = False
+            dbl_type = '12'
             
             if verbose: print(f'Special desplit, names end with 1,2: {original_line}')
         elif (eles[0].endswith('a') and eles[-1].endswith('b')):
             double_length = False
+            dbl_type = 'ab'
             
             if verbose: print(f'Special desplit, names end with a,b: {original_line}') 
         elif len(eles) == 5 and eles[1].endswith('a'):
@@ -78,8 +80,15 @@ def desplit_ele(line, double_length=True, verbose=True, exclude_strs=None):
 
     lines = ['\n', '!Old split line:'+original_line]
     lines.append(name+'_full: line = ('+name+')')
+    if not double_length:
+        if dbl_type == 'ab':
+            lines.append(f'{name}_svy: null_ele, superimpose, ref={name}, ref_origin=beginning, offset={name}a[l]')
+        elif dbl_type == '12':
+            lines.append(f'{name}_svy: null_ele, superimpose, ref={name}, ref_origin=beginning, offset={name}1[l]')
     if double_length:
         lines.append(name+'[L] = 2*'+name+'[L]')
+        if not insideeles:
+            lines.append(f'{name}_svy: null_ele, superimpose, ref={name}')
     for e in insideeles:
         lines.append(e+'[superimpose] = T')
         lines.append(e+'[ref] = '+name)

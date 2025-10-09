@@ -46,8 +46,11 @@ kws['Marker']          = {'madk':'MARK',
                           'params':[0,0,0,0,0,0,0,0,0,0]}
 kws['Drift']           = {'madk':'DRIF',
                           'params':['L',0,0,0,'X1_LIMIT',0,0,0,0,0]}
+kws['Patch']           = {'madk':'SROT',
+                          'params':[0,0,0,0,0,0,'TILT',0,0,0]}
 
-skips = ['Patch']
+#skips = ['Patch']
+skips = []
 for skip in skips:
   kws[skip] = {'skip':True}
 
@@ -105,12 +108,25 @@ for model in MODELS:
       name = tao.lat_list(ix,'ele.name')[0]
       key = tao.lat_list(ix,'ele.key')[0]
       inspect_name = name.split('#')
+      split_bend = None
       if len(inspect_name) > 1:
-        if key == 'Lcavity':
+        if key == 'Lcavity' and not name.startswith('TCX'):
+          #if name.startswith('TCX'):
+          #  name = inspect_name[0]
+          #else:
           if inspect_name[1] == '1':
             name = inspect_name[0] + "A"
           elif inspect_name[1] == '2':
             name = inspect_name[0] + "B"
+        elif key in ('Solenoid','Quadrupole','Sextupole','Lcavity'):
+          name = inspect_name[0]
+        elif key == 'SBend':
+          if inspect_name[1] == '1':
+            split_bend = 0
+            name = inspect_name[0]
+          elif inspect_name[1] == '2':
+            split_bend = 1
+            name = inspect_name[0]
 
       ele_lord_slave = tao.ele_lord_slave(ix)
       energy = tao.lat_list(ix,'ele.e_tot')[0] / 1e9
@@ -122,9 +138,14 @@ for model in MODELS:
       if 'skip' in template:
         continue
       else:
-        if name in key_dict:
-          madk = key_dict[name][0]
-          upload_name = key_dict[name][1]
+        if split_bend is not None:
+          match = [key for key in key_dict if key[:-1] == name]
+          name = match[split_bend]
+        else:
+          match = [key for key in key_dict if key == name]
+        if match:
+          madk = key_dict[match[0]][0]
+          upload_name = key_dict[match[0]][1]
         else:
           #If element not in key dictionary, does not go into Oracle Upload
           print(f'{name} not in dictionary')
