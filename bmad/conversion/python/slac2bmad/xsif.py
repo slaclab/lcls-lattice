@@ -79,10 +79,34 @@ FULLNAMES = {
     'BLMO':'MONITOR'
 }
 
+import re
+
+def sub_outside_quotes(line: str, k: str, v: str) -> str:
+    """
+    Replaces literal string k with v only in parts of the line
+    that are outside of single or double quotes.
+    """
+    # This pattern matches a complete single or double quoted string.
+    # It correctly handles escaped quotes like \" and \' inside.
+    quoted_pattern = r'("(?:[^"\\]|\\.)*"|\'(?:[^\'\\]|\\.)*\')'
+
+    # re.split with a capture group keeps the delimiter (the quoted string)
+    # in the list, creating an alternating list of [unquoted, quoted, unquoted, ...].
+    parts = re.split(quoted_pattern, line)
+
+    # Process only the unquoted parts, which are at the even indices (0, 2, 4...).
+    for i in range(0, len(parts), 2):
+        # Since k is a literal string, str.replace() is perfect.
+        parts[i] = parts[i].replace(k, v)
+
+    # Join all the processed and unprocessed parts back into a single string.
+    return "".join(parts)
+
 def expand_names(line):
     for k, v in FULLNAMES.items():
         if 'fdn=' not in re.sub(r'\s+','',line.lower()):
-          line = re.sub(k,v,line)
+          #line = re.sub(k,v,line)
+          line = sub_outside_quotes(line,k,v)
     return line
 
 

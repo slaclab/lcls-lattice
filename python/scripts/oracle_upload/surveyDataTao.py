@@ -68,7 +68,7 @@ if LCLS_LATTICE_ENV is None:
 
 BDIR = f'{LCLS_LATTICE_ENV}/bmad/'
 #MODELS=['cu_spec']
-MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','sc_dasel','cu_sxr','cu_hxr','cu_sfth','cu_gspec','cu_spec']
+MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','sc_dasel','sc_sfts','cu_sxr','cu_hxr','cu_sfth','cu_gspec','cu_spec']
 INITFILE = {model:f'{LCLS_LATTICE_ENV}/bmad/models/{model}/tao.init' for model in MODELS}
 
 def my_lat_list(ix, p):
@@ -185,7 +185,7 @@ for model in MODELS:
       vals = [my_lat_list(ix,p) for p in params[1:]]
       for n,val in enumerate(vals,1):
         if n==5:
-          line = line + f' {ele_type:<16}' + f'  {energy:.9E}' + '\n'
+          line = line + f' {ele_type[:15]:<16}' + f'  {energy:.9E}' + '\n'
         if key == 'Lcavity' and (params[n] == 'RF_FREQUENCY' or params[n] == 'VOLTAGE'):
           val = val / 1e6
         if isinstance(val,(float,int)):
