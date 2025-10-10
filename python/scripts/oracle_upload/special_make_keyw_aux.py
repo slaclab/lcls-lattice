@@ -4,15 +4,15 @@ from parse_survey import parse_survey
 
 file_roots = [
     {'root':'LCLS2scS',     'beg':'BEGGUNB',      'end':'ENDDMPS_2',   'ix':1,  'outn':'sc_sxr'},      #  1 SC Soft line
-    #{'root':'LCLS2scSS',    'beg':'BEGSFTS_1',    'end':'ENDSFTS_2',   'ix':2,  'outn':''},      #  2 "SXR Safety Dump"
+    {'root':'LCLS2scSS',    'beg':'BEGSFTS_1',    'end':'ENDSFTS_2',   'ix':2,  'outn':'sc_sfts'},      #  2 "SXR Safety Dump"
     {'root':'LCLS2scH',     'beg':'BEGSPH',       'end':'ENDSLTH',     'ix':6,  'outn':'sc_hxr'},      #  6 SC Hard line
     {'root':'LCLS2scD',     'beg':'BEGSPD_2',     'end':'ENDSLTD',     'ix':7,  'outn':'sc_bsyd'},      #  7 SC BSY Dump
     {'root':'DIAG0',        'beg':'BEGDIAG0',     'end':'ENDDIAG0',    'ix':8,  'outn':'sc_diag0'},      #  8 SC Diag0
     {'root':'LCLS2scDA',    'beg':'BEGSPA',       'end':'ENDESA',      'ix':9,  'outn':'sc_dasel'},      #  9 (DASEL)
     {'root':'LCLS2cuH',     'beg':'BEGGUN',       'end':'ENDDMPH_2',   'ix':10, 'outn':'cu_hxr'},     # 10 Cu Hard line
-    #{'root':'LCLS2cuHS',    'beg':'BEGSFTH_1',    'end':'ENDSFTH_2',   'ix':11, 'outn':''},     # 11 Cu HXR Safety Dump
+    {'root':'LCLS2cuHS',    'beg':'BEGSFTH_1',    'end':'ENDSFTH_2',   'ix':11, 'outn':'cu_sfts'},     # 11 Cu HXR Safety Dump
     {'root':'LCLS2cuS',     'beg':'BEGCLTS',      'end':'ENDCLTS',     'ix':14, 'outn':'cu_sxr'},     # 14 Cu Soft line
-    #{'root':'LCLS2cuGSPEC', 'beg':'BEGGSPEC',     'end':'ENDGSPEC',    'ix':15, 'outn':''},     # 15 Cu 6 MeV Spectrometer
+    {'root':'LCLS2cuGSPEC', 'beg':'BEGGSPEC',     'end':'ENDGSPEC',    'ix':15, 'outn':'cu_gspec'},     # 15 Cu 6 MeV Spectrometer
     #{'root':'LCLS2cuSPEC',  'beg':'BEGSPEC',      'end':'ENDSPEC',     'ix':16, 'outn':''},     # 16 Cu 135 MeV Spectrometer
 ]
 

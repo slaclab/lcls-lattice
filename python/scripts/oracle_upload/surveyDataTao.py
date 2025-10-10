@@ -67,8 +67,8 @@ if LCLS_LATTICE_ENV is None:
 
 BDIR = f'{LCLS_LATTICE_ENV}/bmad/'
 #MODELS = [d for d in os.listdir(BDIR+'models/') if os.path.isdir(BDIR+'/models/'+d)]
-MODELS=['sc_dasel']
-#MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','cu_sxr','cu_hxr']
+MODELS=['cu_gspec']
+#MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','sc_dasel','cu_sxr','cu_hxr','cu_sfth']
 INITFILE = {model:f'{LCLS_LATTICE_ENV}/bmad/models/{model}/tao.init' for model in MODELS}
 
 def my_lat_list(ix, p):
