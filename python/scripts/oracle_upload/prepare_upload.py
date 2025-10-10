@@ -386,6 +386,7 @@ def fix_aline_coords(N, P, coor):
       coor[i][5] = AROLL2
 
     return coor
+
 coor = fix_aline_coords(N, P, coor)
 
 if cBSY:
