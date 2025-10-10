@@ -13,7 +13,7 @@ file_roots = [
     {'root':'LCLS2cuHS',    'beg':'BEGSFTH_1',    'end':'ENDSFTH_2',   'ix':11, 'outn':'cu_sfts'},     # 11 Cu HXR Safety Dump
     {'root':'LCLS2cuS',     'beg':'BEGCLTS',      'end':'ENDCLTS',     'ix':14, 'outn':'cu_sxr'},     # 14 Cu Soft line
     {'root':'LCLS2cuGSPEC', 'beg':'BEGGSPEC',     'end':'ENDGSPEC',    'ix':15, 'outn':'cu_gspec'},     # 15 Cu 6 MeV Spectrometer
-    #{'root':'LCLS2cuSPEC',  'beg':'BEGSPEC',      'end':'ENDSPEC',     'ix':16, 'outn':''},     # 16 Cu 135 MeV Spectrometer
+    {'root':'LCLS2cuSPEC',  'beg':'BEGSPEC',      'end':'ENDSPEC',     'ix':16, 'outn':'cu_spec'},     # 16 Cu 135 MeV Spectrometer
 ]
 
 #file_roots = [

@@ -5,6 +5,7 @@ import os
 import sys
 import re
 import numpy as np
+from datetime import datetime
 
 special_names = {
 'L0A':'L0A___',
@@ -66,9 +67,8 @@ if LCLS_LATTICE_ENV is None:
   sys.exit(1)
 
 BDIR = f'{LCLS_LATTICE_ENV}/bmad/'
-#MODELS = [d for d in os.listdir(BDIR+'models/') if os.path.isdir(BDIR+'/models/'+d)]
-MODELS=['cu_gspec']
-#MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','sc_dasel','cu_sxr','cu_hxr','cu_sfth']
+#MODELS=['cu_spec']
+MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','sc_dasel','cu_sxr','cu_hxr','cu_sfth','cu_gspec','cu_spec']
 INITFILE = {model:f'{LCLS_LATTICE_ENV}/bmad/models/{model}/tao.init' for model in MODELS}
 
 def my_lat_list(ix, p):
@@ -106,9 +106,11 @@ with open(f'unified_keys.dat','r') as fkey:
       dbkey = data[2]
     key_dict[name] = [madk,dbkey]
 
+timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
 for model in MODELS:
   with open(model+'_survey.tape','w') as f:
-    f.write('\n\n')
+    f.write(f'Linux    Bmad Survey/{timestamp}\n\n')
     tao = Tao(init_file=INITFILE[model], noplot=True)
     ix_eles = tao.lat_list('*', 'ele.ix_ele')
     suml = 0
@@ -154,9 +156,14 @@ for model in MODELS:
           name = match[split_bend]
         else:
           match = [key for key in key_dict if key == name]
+
         if match:
           madk = key_dict[match[0]][0]
           upload_name = key_dict[match[0]][1]
+        elif name == 'BEGINNING':
+          name = 'INITIAL'
+          madk = ''
+          upload_name = ''
         else:
           #If element not in key dictionary, does not go into Oracle Upload
           print(f'{name} not in dictionary')
@@ -168,8 +175,6 @@ for model in MODELS:
           ele_type = tao.ele_head(ix)['type']
         params = template['params']
 
-      if name == 'BEGINNING':
-        name = 'INITIAL'
       name_use = name.split('#',1)[0].upper()
       line = f'{madk.upper():4s}{name_use:16s}'
 
@@ -199,6 +204,8 @@ for model in MODELS:
       line = line + f'{theta:16.9E}{phi:16.9E}{psi:16.9E}\n'
         
       f.write(line)
+    f.write('\n')
+    f.write(f"{' '*33}{suml:.9E}")
 
 
 
