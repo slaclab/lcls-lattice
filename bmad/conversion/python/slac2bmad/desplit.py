@@ -80,7 +80,7 @@ def desplit_ele(line, double_length=True, verbose=True, exclude_strs=None):
 
     lines = ['\n', '!Old split line:'+original_line]
     lines.append(name+'_full: line = ('+name+')')
-    if not double_length:
+    if not double_length and not insideeles:
         if dbl_type == 'ab':
             lines.append(f'{name}_svy: null_ele, superimpose, ref={name}, ref_origin=beginning, offset={name}a[l]')
         elif dbl_type == '12':

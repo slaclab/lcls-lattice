@@ -6,6 +6,12 @@ import sys
 import re
 import numpy as np
 
+special_names = {
+'L0A':'L0A___',
+'L0B':'L0B___',
+'L1X':'L1X___',
+}
+
 survey = []
 kws = {}
 kws['Beginning_Ele']   = {'madk':'    ',
@@ -61,7 +67,7 @@ if LCLS_LATTICE_ENV is None:
 
 BDIR = f'{LCLS_LATTICE_ENV}/bmad/'
 #MODELS = [d for d in os.listdir(BDIR+'models/') if os.path.isdir(BDIR+'/models/'+d)]
-MODELS=['cu_sxr']
+MODELS=['cu_hxr']
 INITFILE = {model:f'{LCLS_LATTICE_ENV}/bmad/models/{model}/tao.init' for model in MODELS}
 
 def my_lat_list(ix, p):
@@ -111,11 +117,15 @@ for model in MODELS:
       inspect_name = name.split('#')
       split_bend = None
       if len(inspect_name) > 1:
-        if key == 'Lcavity' and not name.startswith('TCX'):
+        if inspect_name[0] in special_names:
+          name = special_names[inspect_name[0]] + inspect_name[1]
+        elif key == 'Lcavity' and not name.startswith(('TCAV','K','TCX')):
           if inspect_name[1] == '1':
             name = inspect_name[0] + "A"
           elif inspect_name[1] == '2':
             name = inspect_name[0] + "B"
+        elif key == 'Lcavity' and name.startswith('K'):
+            name = inspect_name[0] + inspect_name[1]
         elif key in ('Solenoid','Quadrupole','Sextupole','Lcavity'):
           name = inspect_name[0]
         elif key == 'SBend':

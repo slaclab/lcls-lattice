@@ -34,9 +34,9 @@ for file_root in file_roots:
     print(f'Opening file {fname}')
     titl, tK, tN, tL, tP, tA, tT, tE, tFDN, tcoor, tS = parse_survey(fname)
 
-    id1 = tN.index(file_root['beg'])
-    id2 = tN.index(file_root['end']) 
-    slc = slice(id1, id2+1)
+    id1 = 0 #tN.index(file_root['beg'])
+    id2 = len(tN) #tN.index(file_root['end']) 
+    slc = slice(id1, id2)
 
     K.extend(tK[slc])
     N.extend(tN[slc])
