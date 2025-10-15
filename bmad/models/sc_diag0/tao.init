@@ -1,7 +1,8 @@
 &tao_start
   n_universes = 1
   !plot_file   ='tao_plot.init '
-  plot_file   ='$LCLS_LATTICE/bmad/tao/tao_plot.init '
+  !plot_file   ='$LCLS_LATTICE/bmad/tao/tao_plot.init '
+  plot_file   = 'tao_plot.init'
   startup_file='$LCLS_LATTICE/bmad/tao/tao.startup'
 /
 
@@ -242,7 +243,7 @@ beam_init%sig_z = 0.8e-3
     default_data_source = 'lat'
     !search_for_lat_eles = "monitor::bpm*,monitor::rfb*,monitor::cmb*" 
     use_same_lat_eles_as = 'orbit.x'
-    datum(1:)%meas = 0
+    default_meas = 0
 /
 
 &tao_d1_data
@@ -256,6 +257,21 @@ beam_init%sig_z = 0.8e-3
 /
 
 
+&tao_d2_data
+    d2_data%name = 'eta'
+    universe = 1
+    n_d1_data = 1
+/    
+&tao_d1_data
+    ix_d1_data = 1
+    default_weight = 1
+    d1_data%name = 'y'
+    default_data_type = 'eta.y'
+    default_data_source = 'lat'
+    default_meas = 0
+    use_same_lat_eles_as = 'orbit.x'
+/
+    
 
 
 
@@ -272,6 +288,16 @@ beam_init%sig_z = 0.8e-3
     var(1:6)%attribute = 'beta_a', 'alpha_a', 'beta_b', 'alpha_b', 'eta_x', 'etap_x'
     var(1)%low_lim = 0.01
     var(3)%low_lim = 0.01
+/
+
+&tao_var
+	v1_var%name = 'fix_k0l'
+	default_step = 1e-4
+	default_universe = '1'
+	ix_min_var = 1
+	ix_max_var = 6
+	var(1:4)%ele_name  = 'qdg001', 'qdg003', 'dyqdg001', 'dyqdg003'
+  var(1:4)%attribute = 'y_offset', 'y_offset', 'y_pitch', 'y_pitch'
 /
 
 
