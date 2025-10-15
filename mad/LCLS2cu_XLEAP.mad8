@@ -1,10 +1,16 @@
 
-! *** OPTICS=AD_ACCEL-14APR2025s ***
+! *** OPTICS=AD_ACCEL-22SEP2025s ***
 
 ! XLEAP-II optics
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 27-APR-2025, M. Woodley
+!  * WIGXL is not currently installed
+! ------------------------------------------------------------------------------
+! 25-DEC-2024, M. Woodley
+!  * modified UMXL* undulators don't focus/defocus per A. Marinelli
 ! ------------------------------------------------------------------------------
 ! 28-SEP-2024, M. Woodley
 !  * add SXR interspace quadrupoles in cells 17, 18, 20, and 25
@@ -24,7 +30,12 @@
 
  !VALUE, Ef,KmaxQA,KmaxQE200,KmaxQE120,KmaxQx,KmaxQE110,KmaxQu
 
-  TWM26 : BETA0
+  TWM36 : BETA0
+
+  MBETX := 1
+  MALFX := 0
+  MBETY := 1
+  MALFY := 0
 
 ! ------------------------------------------------------------------------------
 
@@ -39,22 +50,24 @@
       SET, R34XL1, Lundh ! 1.651526938083830 
       SET, R43XL1, 0.0   !-0.028994619806734 
       SET, R44XL1, 1.0   ! 0.975763600637818 
-     !comment !UMXL1 on; WIGXL on (default)
+      comment !UMXL1 on; WIGXL on (not used ... WIGXL was removed)
         SET, SETXL2WIG, 1
-        SET, KQEM2B, -1.822581085609 !-1.834046330639
-        SET, KQEM3B,  1.252473584698 ! 1.281881645665
-        SET, KQEM4B, -0.867784240163 !-0.677895600383
-        SET, KQE31B,  0.398863482357 ! 0.0
-        SET, KQFXL1,  0.0            ! 0.765886449932
-     !endcomment
-      comment !UMXL1 on; WIGXL off
-        SET, SETXL2WIG, 0
-        SET, KQEM2B, -1.808608302717 !-1.822070435389
-        SET, KQEM3B,  1.263487899148 ! 1.295717708237
-        SET, KQEM4B, -0.892866479123 !-0.70591416778
-        SET, KQE31B,  0.403466645832 ! 0.0
-        SET, KQFXL1,  0.0            ! 0.770168135984
+        SET, KQEM1B,  1.986268374078
+        SET, KQEM2B, -1.820324864466
+        SET, KQEM3B,  1.250424893771
+        SET, KQEM4B, -0.869813021529
+        SET, KQE31B, +KQED2b
+        SET, KQFXL1,  0.0
       endcomment
+     !comment !UMXL1 on; WIGXL off (default ... WIGXL was removed)
+        SET, SETXL2WIG, 0
+        SET, KQEM1B,  1.994771712971
+        SET, KQEM2B, -1.80922617804
+        SET, KQEM3B,  1.263611884573
+        SET, KQEM4B, -0.891717464508
+        SET, KQE31B, +KQED2b
+        SET, KQFXL1,  0.0
+     !endcomment
    !ENDCOMMENT
    !COMMENT !turn on UMXL3 and UMXL4 (default)
       SET, R11XL3, 1.0   ! 1.024433796036150
@@ -75,21 +88,21 @@
       SET, R44XL4, R44XL3
      !comment !UMXL3 and UMXL4 on; BCXXL self-seeding chicane on (default)
         SET, SETXL2SS, 1
-        SET, KQFXL2,  0.0            ! 1.038528489949
-        SET, KQE36B, -0.348500537681 !-0.379207335859
-        SET, KQUM1B,  0.598491278242 ! 0.35869201539
-        SET, KQUM2B, -0.917684366978 ! 0.192875610206
-        SET, KQUM3B,  0.821057649925 !-1.104395797104
-        SET, KQUM4B, -0.38348664644  ! 0.790860357154
+        SET, KQFXL2,  0.0
+        SET, KQE36B, -0.388304969598
+        SET, KQUM1B,  0.565527674878 ! 0.568162135477
+        SET, KQUM2B, -0.840760071657 !-0.825370722678
+        SET, KQUM3B,  0.936868147782 ! 0.934234332939
+        SET, KQUM4B, -0.621751515673 !-0.643058043254
      !endcomment
       comment !UMXL3 and UMXL4 on; BCXXL self-seeding chicane off
         SET, SETXL2SS, 0
-        SET, KQFXL2,  0.0            ! 1.184331571212
-        SET, KQE36B, -0.402023027698 !-0.439481744911
-        SET, KQUM1B,  0.605183518851 ! 0.203239728799
-        SET, KQUM2B, -0.880566035085 ! 0.316828417496
-        SET, KQUM3B,  0.883007635371 !-1.099871957004
-        SET, KQUM4B, -0.526314258453 ! 0.915018568731
+        SET, KQFXL2,  0.0
+        SET, KQE36B, -KQED2b
+        SET, KQUM1B,  0.592599095887 ! 0.594601107257
+        SET, KQUM2B, -0.846976302546 !-0.832190827952
+        SET, KQUM3B,  0.8947860671   ! 0.894619176764
+        SET, KQUM4B, -0.567958314342 !-0.592858253523
       endcomment
    !ENDCOMMENT
   ENDSUBROUTINE
@@ -99,67 +112,98 @@
   MXL01 : SUBROUTINE !match into XLEAP-II
     BEAM, ENERGY=E00
     USE, CU_SXR
-    VALUE, KQEM2B,KQEM3B,KQEM4B,KQE31B,KQFXL1
+    VALUE, KQEM1B,KQEM2B,KQEM3B,KQEM4B,KQE31B,KQFXL1
     MATCH, BETA0=TWSSC
+      VARY, KQEM1B, STEP=1.E-6, LOWER=-KmaxQE200, UPPER=+KmaxQE200
       VARY, KQEM2B, STEP=1.E-6, LOWER=-KmaxQE200, UPPER=+KmaxQE200
       VARY, KQEM3B, STEP=1.E-6, LOWER=-KmaxQE120, UPPER=+KmaxQE120
       VARY, KQEM4B, STEP=1.E-6, LOWER=-KmaxQE120, UPPER=+KmaxQE120
-      VARY, KQE31B, STEP=1.E-6, LOWER=-KmaxQx,    UPPER=+KmaxQx
+     !VARY, KQE31B, STEP=1.E-6, LOWER=-KmaxQx,    UPPER=+KmaxQx
      !VARY, KQFXL1, STEP=1.E-6, LOWER= 0,         UPPER=+KmaxQE110
+      CONSTR, QEM2B[1], BETX<100, BETY<100
+      CONSTR, QEM3B[1], BETX<100, BETY<100
       WEIGHT, DX=0, DPX=0, DY=0, DPY=0
       CONSTR, QE32B[1], LINE=(QE32B,DQEC,DQEC,QE33B,QE33B,DQEC,DQEC,QE32B)
       CONSTR, #E, X=0, PX=0, Y=0, PY=0
      !LMDIF, TOL=1.E-20
      !MIGRAD, TOL=1.E-20
     ENDMATCH
-    VALUE, KQEM2B,KQEM3B,KQEM4B,KQE31B,KQFXL1
+    VALUE, KQEM1B,KQEM2B,KQEM3B,KQEM4B,KQE31B,KQFXL1
     TWISS, SAVE, BETA0=TWSSC, TAPE="twiss.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=MM1B/WS34B, &
       STYLE=100, SPLINE, FILE="match"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=VBOUTB/WS34B, &
       STYLE=100, SPLINE, FILE="match"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=VBOUTB/MBLMS48, &
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=VBOUTB/SXR47END, &
       STYLE=100, SPLINE, FILE="match"
   ENDSUBROUTINE
 
   MXL02 : SUBROUTINE !match XLEAP-II into UNDS
     BEAM, ENERGY=Ef
-    USE, (SXCEL26,SXCEL27,SXCEL28,SXCEL29, &
-          SXCEL30,SXCEL31,SXCEL32,SXCEL33)
-    SAVEBETA, TWm26, #S
+    USE, (SXCEL36,SXCEL37)
+    SAVEBETA, TWm36, #S
     TWISS
-    SET, MBETX, TWm26[BETX]
-    SET, MALFX, TWm26[ALFX]
-    SET, MBETY, TWm26[BETY]
-    SET, MALFY, TWm26[ALFY]
+    SET, MBETX, TWm36[BETX]
+    SET, MALFX, TWm36[ALFX]
+    SET, MBETY, TWm36[BETY]
+    SET, MALFY, TWm36[ALFY]
 
     BEAM, ENERGY=E00
     USE, CU_SXR
     VALUE, KQFXL2,KQE36B,KQUM1B,KQUM2B,KQUM3B,KQUM4B
     MATCH, BETA0=TWSSC
      !VARY, KQFXL2, STEP=1.E-6, LOWER= 0,         UPPER=+KmaxQE110
-      VARY, KQE36B, STEP=1.E-6, LOWER=-KmaxQx,    UPPER= 0
+     !VARY, KQE36B, STEP=1.E-6, LOWER=-KmaxQx,    UPPER= 0
       VARY, KQUM1B, STEP=1.E-6, LOWER=-KmaxQE120, UPPER=+KmaxQE120
       VARY, KQUM2B, STEP=1.E-6, LOWER=-KmaxQE120, UPPER=+KmaxQE120
       VARY, KQUM3B, STEP=1.E-6, LOWER=-KmaxQE120, UPPER=+KmaxQE120
       VARY, KQUM4B, STEP=1.E-6, LOWER=-KmaxQE120, UPPER=+KmaxQE120
-      CONSTR, QUM1B[1], BETX<76, BETY<76
-      CONSTR, QUM2B[1], BETX<76, BETY<76
-      CONSTR, QUM3B[1], BETX<76, BETY<76
-      CONSTR, QUM4B[1], BETX<76, BETY<76
-      WEIGHT, BETX=1, ALFX=10, BETY=1, ALFY=10
-      CONSTR, SXR26BEG, BETX=MBETX, ALFX=MALFX, BETY=MBETY, ALFY=MALFY
-      CONSTR, SXR26BEG, X=0, PX=0, Y=0, PY=0
-     !LMDIF, TOL=1.E-20
-     !MIGRAD, TOL=1.E-20
+      WEIGHT, X=0, PX=0, BETX=1.E-5, ALFX=0, DX=0, DPX=0
+      WEIGHT, Y=0, PY=0, BETY=1.E-5, ALFY=0, DY=0, DPY=0
+      WEIGHT, T=0, PT=0
+     !comment !long-period
+      COUPLE, QSXh21[1]/QSXh23[1]
+      COUPLE, QSXh22[1]/QSXh24[1]
+      COUPLE, QSXh21[1]/QSXh25[1]
+      COUPLE, QSXh22[1]/QSXh26[1]
+      COUPLE, QSXh21[1]/QSXh27[1]
+      COUPLE, QSXh22[1]/QSXh28[1]
+      COUPLE, QSXh21[1]/QSXh29[1]
+      COUPLE, QSXh22[1]/QSXh30[1]
+      COUPLE, QSXh21[1]/QSXh31[1]
+      COUPLE, QSXh22[1]/QSXh32[1]
+      COUPLE, QSXh21[1]/QSXh33[1]
+     !endcomment
+     !comment !short-period
+      COUPLE, QSXh34[1]/QSXh36[1]
+      COUPLE, QSXh35[1]/QSXh37[1]
+      COUPLE, QSXh34[1]/QSXh38[1]
+      COUPLE, QSXh35[1]/QSXh39[1]
+      COUPLE, QSXh34[1]/QSXh40[1]
+      COUPLE, QSXh35[1]/QSXh41[1]
+      COUPLE, QSXh34[1]/QSXh42[1]
+      COUPLE, QSXh35[1]/QSXh43[1]
+      COUPLE, QSXh34[1]/QSXh44[1]
+      COUPLE, QSXh35[1]/QSXh45[1]
+      COUPLE, QSXh34[1]/QSXh46[1]
+     !endcomment
+      WEIGHT, BETX=1.E-6, BETY=1.E-6
+      CONSTR, QUM1B[1], BETX<75
+      CONSTR, QUM2B[1], BETY<75
+      CONSTR, QUM3B[1], BETX<75
+      CONSTR, QUM4B[1], BETY<75
+     !LMDIF, TOL=1.E-20, CALLS=10000
+     !MIGRAD, TOL=1.E-20, CALLS=10000
     ENDMATCH
     VALUE, KQFXL2,KQE36B,KQUM1B,KQUM2B,KQUM3B,KQUM4B
     PRINT, FULL
     TWISS, SAVE, BETA0=TWSSC, TAPE="twiss.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=WS31B/MBLMS48, FILE="match"
+      STYLE=100, SPLINE, RANGE=WS33B/SXR32BEG, FILE="match"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=MM1B/MBLMS48, FILE="match"
+      STYLE=100, SPLINE, RANGE=QE32B[1]/SXR47END, FILE="match"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=VBOUTB/SXR47END, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------

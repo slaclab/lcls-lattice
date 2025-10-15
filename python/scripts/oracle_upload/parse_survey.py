@@ -2,7 +2,7 @@
 
 import numpy as np
 
-def xtffs2mat(fname):
+def parse_survey(fname):
     """
     Reads an XTFF SURVEY file and extracts various parameters.
 

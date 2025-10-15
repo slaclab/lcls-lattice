@@ -1,10 +1,16 @@
 
-! *** OPTICS=AD_ACCEL-14APR2025s ***
+! *** OPTICS=AD_ACCEL-22SEP2025s ***
 
 ! LCLS2sc DASEL
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 25-JUL-2025, M. Woodley
+!  * swap locations of XCDAS19 and YCDAS19 per A. Ibrahimov
+! 12-JUL-2025, M. Woodley
+!  * add wire scanner / Beam Halo Monitor (WSDAS14,WSDAS14_BHM) per
+!    N. Balakrishnan, A. Fisher, and A. Ibrahimov
 ! ------------------------------------------------------------------------------
 ! 14-MAR-2025, M. Woodley
 !  * split DASEL area into two areas: SPA and SLTA; SPA area ends at BSY wooden
@@ -354,10 +360,9 @@
               -LDDAS13-LDDAS14-LDDAS17-LDDAS18-LDDAS19-LDDAS20)/2+dLDDAS
   LDDAS15  := LDDAS
   LDDAS16  := LDDAS
-
   LDDAS21a := 0.5
-  LDDAS21b := 0.397
-  LDDAS21c := 19.829173726034-0.397
+  LDDAS21b := 0.434930223041  !0.397
+  LDDAS21c := 19.394243502993 !19.829173726034-0.397
   LDDAS22  := 0.5
   LDDAS23  := 0.5
 
@@ -381,6 +386,8 @@
   DDAS14aa : DRIF, L=LDDAS14aa
   DDAS14ab : DRIF, L=LDDAS14ab
   DDAS14ac : DRIF, L=LDDAS14ac
+  DDAS14ac1 : DRIF, L=7.132062
+  DDAS14ac2 : DRIF, L=DDAS14ac[L]-DDAS14ac1[L]
   DDAS14b  : DRIF, L=LDDAS14b
   DDAS15   : DRIF, L=LDDAS15
   DDAS16   : DRIF, L=LDDAS16
@@ -438,6 +445,11 @@
 
   IMDAS1 : IMON, TYPE="BCS ACM"
   IMDAS2 : IMON, TYPE="BCS ACM"
+
+! combination wire/BHM
+
+  WSDAS14     : WIRE
+  WSDAS14_BHM : INST, TYPE="pixel grid" !Beam Halo Monitor
 
 ! BSY wooden door
 
@@ -497,6 +509,8 @@
   QDAS18b_full : LINE=(QDAS18b,QDAS18b)
   QDAS19_full  : LINE=(QDAS19,QDAS19)
 
+  WSDAS14_full : LINE=(WSDAS14,WSDAS14_BHM)
+
   DUMPDAS_full : LINE=(DUMPDAS,DUMPDAS)
 
 ! stage-A and stage-B with dump in sector-30
@@ -519,7 +533,8 @@
     BRDAS1_full,RODAS2  ,DDAS11a ,XCDAS11 ,DDAS11b,YCDAS11 ,DDAS11c,&
     QDAS11_full,DDAS12a ,PRDAS12 ,DDAS12b ,DUMPDAS_full    ,DDAS12c,&
     QDAS12_full,DDAS13  ,&
-    QDAS13_full,DDAS14aa,PRDAS14,DDAS14ac,WOODDOOR_SPA,&
+    QDAS13_full,DDAS14aa,PRDAS14,DDAS14ac1,WSDAS14_full,DDAS14ac2,&
+    WOODDOOR_SPA,&
     ENDSPA)
     
   SLTA : LINE=(BEGSLTA  ,DDAS14ab,XCDAS14,DDAS14b,&
@@ -530,7 +545,7 @@
     QDAS18a_full,DDASQQ ,&
     QDAS18b_full,DDAS19 ,&
     QDAS19_full ,DDAS20a,BPMDAS19,DDAS20b,RODAS3,&
-    BRDAS2_full ,DDAS21a,XCDAS19,DDAS21b,YCDAS19,DDAS21c,PRBRAM1,DDAS22,&
+    BRDAS2_full ,DDAS21a,YCDAS19,DDAS21b,XCDAS19,DDAS21c,PRBRAM1,DDAS22,&
       TGTBRAM1,DDAS23,&
     ENDSLTA)
 
