@@ -9,11 +9,11 @@ lcls_lat_check_1 = run(f'ls {LCLS_LATTICE_ENV}/bmad/conversion',shell=True,captu
 assert lcls_lat_check_1.returncode == 0
 print(f'{LCLS_LATTICE_ENV=}')
 
-BMAD_ENV = os.environ['ACC_ROOT_DIR']
-assert BMAD_ENV != ''
-bmad_env_check_1 = run(f'ls {BMAD_ENV}/util/dist_source_me',shell=True,capture_output=True)
+BMAD_CONVERT_SCRIPT = os.environ['MAD8_TO_BMAD']
+assert BMAD_CONVERT_SCRIPT != ''
+bmad_env_check_1 = run(f'ls {BMAD_CONVERT_SCRIPT}',shell=True,capture_output=True)
 assert bmad_env_check_1.returncode == 0
-print(f'{BMAD_ENV=}')
+print(f'{BMAD_CONVERT_SCRIPT=}')
 
 WORK_DIR = LCLS_LATTICE_ENV + '/bmad/conversion/work'
 TEMP_DIR = LCLS_LATTICE_ENV + '/bmad/conversion/temp'
@@ -255,7 +255,7 @@ def process_master(master):
     print(f'Converting {master}')
     shutil.copytree(TEMP_DIR, WORK_DIR, dirs_exist_ok=True)
 
-    SCRIPT = f'python $ACC_ROOT_DIR/util_programs/mad_to_bmad/mad8_to_bmad.py --no_prepend_vars -f {master}'
+    SCRIPT = f'python {BMAD_CONVERT_SCRIPT} --no_prepend_vars -f {master}'
     res = run(SCRIPT, shell=True, cwd=WORK_DIR)
 
     assert res.returncode == 0
