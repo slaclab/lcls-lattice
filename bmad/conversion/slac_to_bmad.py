@@ -208,6 +208,14 @@ SC_NEWELES['dyqdg003'] = """
 ! Replace k0l with quad offset and patch with y_pitch.
 dyqdg003: patch, y_pitch = 5.88487966838956720E-004
 """
+SC_NEWELES['tcxdg0'] = """
+! mad8 describes tcav as lcavity.  Replace it with a crab_cavity.
+tcxdg0: crab_cavity, type = "STCAV_X", rf_frequency = 2856 * 1e6, l = 20*in2m/2
+"""
+SC_NEWELES['tcydg0'] = """
+! mad8 describes tcav as lcavity.  Replace it with a crab_cavity.
+tcydg0: crab_cavity, type = "STCAV_Y", rf_frequency = 2856 * 1e6, l = 20*in2m/2
+"""
 # Not needed. Desplitting handles cavities now.
 # Add these repalcements
 #SC_LINAC_REPLACEMENTS = json.load(open('replacements/good_sc_linac_replacements.json'))
@@ -255,6 +263,7 @@ def process_master(master):
     print(f'Converting {master}')
     shutil.copytree(TEMP_DIR, WORK_DIR, dirs_exist_ok=True)
 
+    #SCRIPT = f'python $ACC_ROOT_DIR/util_programs/mad_to_bmad/mad8_to_bmad.py --no_prepend_vars -f {master}'
     SCRIPT = f'python {BMAD_CONVERT_SCRIPT} --no_prepend_vars -f {master}'
     res = run(SCRIPT, shell=True, cwd=WORK_DIR)
 
