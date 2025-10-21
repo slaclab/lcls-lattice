@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-22SEP2025s ***
+! *** OPTICS=AD_ACCEL-22OCT2025s ***
 
 ! LCLS2sc matching routines
 
@@ -44,26 +44,28 @@
 
   TWm : BETA0
 
-  KmaxQR :=  47.31/(Brhof*LQR) !max |K1| @ Ef for 2Q10
-  KmaxQA := 150.00/(Brhof*LQA) !max |K1| @ Ef for 1.26Q12
-  KmaxQM :=  27.00/(Brhof*LQM) !max |K1| @ Ef for 2Q4W
-  KmaxQz :=  63.80/(Brhof*LQz) !max |K1| @ Ef for SLTR QF1545
-  KmaxQE := 100.00/(Brhof*LQE) !max |K1| @ Ef for 1.085Q4.31
-  KmaxQx :=  20.00/(Brhof*LQx) !max |K1| @ Ef for 1.26Q3.5
-  KmaxQu :=  40.00/(Brhof*LQu) !max |K1| @ Ef for 0.433Q3.1
+  Brho := Cb*Emax !rigidity @ maximum beam energy (kG-m)
 
-  KmaxSb  := 870.00/(Brhof*LSb) !max |K2| @ Ef for 1.38S3.00
+  KmaxQR :=  51/(Brho*LQR) !max |K1| @ Emax for 2Q10 @ 165 A
+  KmaxQA := 148/(Brho*LQA) !max |K1| @ Emax for 1.26Q12 @ 165 A
+  KmaxQM :=  28/(Brho*LQM) !max |K1| @ Emax for 2Q4W @ 190 A
+  KmaxQz :=  63/(Brho*LQz) !max |K1| @ Emax for SLTR QF1545 @ 160 A
+  KmaxQE := 101/(Brho*LQE) !max |K1| @ Emax for 1.085Q4.31 @ 200 A
+  KmaxQx :=  20/(Brho*LQx) !max |K1| @ Emax for 1.26Q3.5 @ 12 A
+  KmaxQu :=  40/(Brho*LQu) !max |K1| @ Emax for 0.433Q3.1 @ 6 A
 
- !VALUE, KmaxQR,KmaxQA,KmaxQM,KmaxQz,KmaxQE,KmaxQx,KmaxQu
- !VALUE, KmaxSb
+  KmaxSb := 870/(Brho*LSb) !max |K2| @ Emax for 1.38S3.00 @ 8 A
 
-  GLmaxQUM  := 100 !BMAX = 100 kG @ 120 A (bipolar) for 1.26Q12
-  KmaxQUM   := GLmaxQUM/LQA/(Cb*4) !max |K1| @ 4 GeV for QUM1-4
+  VALUE, KmaxQR,KmaxQA,KmaxQM,KmaxQz,KmaxQE,KmaxQx,KmaxQu
+  VALUE, KmaxSb
 
-  GLmaxQUMb := 67 !BMAX = 67 kG @ 120 A (bipolar) for 1.085Q4.31
-  KmaxQUMb  := GLmaxQUMb/LQE/(Cb*10) !max |K1| @ 10 GeV for QUM1B-4B
+  GLmaxQUM  := 100 !BMAX @ 120 A (bipolar) for 1.26Q12
+  KmaxQUM   := GLmaxQUM/(Brho*LQA) !max |K1| @ Emax for QUM1-4 @ 120 A
 
- !VALUE, KmaxQUM,KmaxQUMb
+  GLmaxQUMb :=  67 !BMAX @ 120 A (bipolar) for 1.085Q4.31
+  KmaxQUMb  := GLmaxQUMb/(Brho*LQE) !max |K1| @ Emax for QUM1B-4B @ 120 A
+
+  VALUE, KmaxQUM,KmaxQUMb
 
 ! ==============================================================================
 ! Injector/Linac matching
@@ -2140,11 +2142,11 @@
     USE, BSYLCLS2scS
     VALUE, KQUM1b,KQUM2b,KQUM3b,KQUM4b,kQSX16
     MATCH, BETX=TWm[BETX], ALFX=TWm[ALFX], BETY=TWm[BETY], ALFY=TWm[ALFY]
-      VARY, kQUM1b, STEP=1.E-6, LOWER=-4.272301476446, UPPER=4.262158217579
-      VARY, kQUM2b, STEP=1.E-6, LOWER=-4.277101524229, UPPER=4.263591916062
-      VARY, kQUM3b, STEP=1.E-6, LOWER=-4.236370592453, UPPER=4.285204762788
-      VARY, kQUM4b, STEP=1.E-6, LOWER=-4.258539234185, UPPER=4.243501189751
-      VARY, kQSX16, STEP=1.E-6, LOWER=-3.21206205,     UPPER=3.21206205
+      VARY, kQUM1b, STEP=1.E-6, LOWER=-KmaxQUMb, UPPER=+KmaxQUMb
+      VARY, kQUM2b, STEP=1.E-6, LOWER=-KmaxQUMb, UPPER=+KmaxQUMb
+      VARY, kQUM3b, STEP=1.E-6, LOWER=-KmaxQUMb, UPPER=+KmaxQUMb
+      VARY, kQUM4b, STEP=1.E-6, LOWER=-KmaxQUMb, UPPER=+KmaxQUMb
+      VARY, kQSX16, STEP=1.E-6, LOWER=-KmaxQu,   UPPER=+KmaxQu
       WEIGHT, X=0, PX=0, BETX=1.E-5, ALFX=0, DX=0, DPX=0
       WEIGHT, Y=0, PY=0, BETY=1.E-5, ALFY=0, DY=0, DPY=0
       WEIGHT, T=0, PT=0
@@ -2160,19 +2162,18 @@
       COUPLE, QSXh21[1]/QSXh31[1]
       COUPLE, QSXh22[1]/QSXh32[1]
       COUPLE, QSXh21[1]/QSXh33[1]
+      COUPLE, QSXh22[1]/QSXh34[1]
      !endcomment
      !comment !short-period
-      COUPLE, QSXh34[1]/QSXh36[1]
-      COUPLE, QSXh35[1]/QSXh37[1]
-      COUPLE, QSXh34[1]/QSXh38[1]
-      COUPLE, QSXh35[1]/QSXh39[1]
-      COUPLE, QSXh34[1]/QSXh40[1]
-      COUPLE, QSXh35[1]/QSXh41[1]
-      COUPLE, QSXh34[1]/QSXh42[1]
-      COUPLE, QSXh35[1]/QSXh43[1]
-      COUPLE, QSXh34[1]/QSXh44[1]
-      COUPLE, QSXh35[1]/QSXh45[1]
-      COUPLE, QSXh34[1]/QSXh46[1]
+      COUPLE, QSXh36[1]/QSXh38[1]
+      COUPLE, QSXh37[1]/QSXh39[1]
+      COUPLE, QSXh36[1]/QSXh40[1]
+      COUPLE, QSXh37[1]/QSXh41[1]
+      COUPLE, QSXh36[1]/QSXh42[1]
+      COUPLE, QSXh37[1]/QSXh43[1]
+      COUPLE, QSXh36[1]/QSXh44[1]
+      COUPLE, QSXh37[1]/QSXh45[1]
+      COUPLE, QSXh36[1]/QSXh46[1]
      !endcomment
       WEIGHT, BETX=1.E-6, BETY=1.E-6
       CONSTR, QUM1B[1], BETX<75
@@ -3051,7 +3052,7 @@
  !MED2DL2
  !MUNDh
 !!MDUMPh
-  MDUMPMUXh
+ !MDUMPMUXh
 
 ! ------------------------------------------------------------------------------
 
