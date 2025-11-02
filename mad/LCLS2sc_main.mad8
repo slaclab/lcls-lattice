@@ -1,6 +1,6 @@
   TITLE, "AD_ACCEL: superconducting linac"
 
-! *** OPTICS=AD_ACCEL-preRelease ***
+! *** OPTICS=AD_ACCEL-06NOV2025s ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY, DOUBLE
   ASSIGN, ECHO="LCLS2sc.echo"
@@ -518,8 +518,6 @@
  !CALL, FILENAME="LCLS2sc_makeElegant.mad8"
  !CALL, FILENAME="LCLS2sc_XLEAP.mad8" !run by itself
 
-! ------------------------------------------------------------------------------
-
  !STOP
 
 ! ------------------------------------------------------------------------------
@@ -558,11 +556,14 @@
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
       STYLE=100, SPLINE, RANGE=WS31B/DU7S[31], FILE="LCLS2scS", &
       TITLE="UNDS (SC beam, 4 GeV)"
-   !comment
+   !PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+   !  STYLE=100, SPLINE, RANGE=BEAM0/ENDEXT, FILE="LCLS2scS", &
+   !  TITLE="UNDS (SC beam, 4 GeV, NCELL=9.0)"
+    comment
       SAVEBETA, TWSSms, MM1B
       TWISS, COUPLE, BETA0=TWSSi
       SHOW, TWssms
-   !endcomment
+    endcomment
  !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
