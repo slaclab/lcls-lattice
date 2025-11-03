@@ -4,7 +4,8 @@
 2. Setup terminal environment
    - check that $LCLS_LATTICE is set to the location of the DDMMYY_conversion branch of lcls-lattice.
    - check that the lcls-lattice-dev conda environment is active, which can be generated from lcls-lattice `environment.yml`
-   - cd to the bmad repo and run `. util/dist_source_me`
+   - set MAD8_TO_BMAD to the location of the mad8_to_bmad.py script from the bmad_ecosystem
+      - Using dist_source_me is discouraged, as it can cause the wrong libraries to be used by pytao because it results in a mixed conda / bmad repo environment.
 3. Run $LCLS_LATTICE/bmad/conversion/slac_to_bmad.py
 4. Check if beginning twiss in `bmad/master/gunb/beginning_BEGGUNB.bmad` need to be updated from BX0, AX0, etc. in `mad/LCLS2sc_master.xsif`
 5. from `$LCLS_LATTICE` run `pytest`
