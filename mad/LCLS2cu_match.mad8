@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-22OCT2025s ***
+! *** OPTICS=AD_ACCEL-06NOV2025s ***
 
 ! LCLS2cu matching routines
 
@@ -872,34 +872,35 @@
       COUPLE, QSXh22[1]/QSXh32[1]
       COUPLE, QSXh21[1]/QSXh33[1]
       COUPLE, QSXh22[1]/QSXh34[1]
+      COUPLE, QSXh21[1]/QSXh35[1]
+      COUPLE, QSXh22[1]/QSXh36[1]
      !endcomment
      !comment !short-period
-      COUPLE, QSXh36[1]/QSXh38[1]
       COUPLE, QSXh37[1]/QSXh39[1]
-      COUPLE, QSXh36[1]/QSXh40[1]
+      COUPLE, QSXh38[1]/QSXh40[1]
       COUPLE, QSXh37[1]/QSXh41[1]
-      COUPLE, QSXh36[1]/QSXh42[1]
+      COUPLE, QSXh38[1]/QSXh42[1]
       COUPLE, QSXh37[1]/QSXh43[1]
-      COUPLE, QSXh36[1]/QSXh44[1]
+      COUPLE, QSXh38[1]/QSXh44[1]
       COUPLE, QSXh37[1]/QSXh45[1]
-      COUPLE, QSXh36[1]/QSXh46[1]
+      COUPLE, QSXh38[1]/QSXh46[1]
      !endcomment
       WEIGHT, BETX=1.E-6, BETY=1.E-6
       CONSTR, QUM1B[1], BETX<75
       CONSTR, QUM2B[1], BETY<75
       CONSTR, QUM3B[1], BETX<75
       CONSTR, QUM4B[1], BETY<75
-      LMDIF, TOL=1.E-20, CALLS=10000
-      MIGRAD, TOL=1.E-20, CALLS=10000
+     !LMDIF, TOL=1.E-20, CALLS=10000
+     !MIGRAD, TOL=1.E-20, CALLS=10000
     ENDMATCH
     VALUE, KQUM1b,KQUM2b,KQUM3b,KQUM4b,kQSX16
 
     PRINT, FULL
     TWISS, COUPLE, BETA0=TWSCuS1, SAVE, TAPE="twiss.tape", RTAPE="rmat.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, VMIN=0, VMAX=80, &
-      STYLE=100, SPLINE, RANGE=WS31B/SXR47END, FILE="match"
+      STYLE=100, SPLINE, RANGE=WS31B/SXR46END, FILE="match"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, VMIN=0, VMAX=30, &
-      STYLE=100, SPLINE, RANGE=SXRSTART/SXR47END, FILE="match"
+      STYLE=100, SPLINE, RANGE=SXRSTART/SXR46END, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
@@ -964,8 +965,8 @@
               Y=0, PY=0, BETY=0, ALFY=0, DY=0, DPY=0, &
               T=0, PT=0
       COUPLE, MTCXB/OTRDMPB, MUX=90/360 !90 deg phase advance
-      LMDIF, TOL=1.E-20
-      MIGRAD, TOL=1.E-20
+     !LMDIF, TOL=1.E-20
+     !MIGRAD, TOL=1.E-20
     ENDMATCH
     VALUE, kQSX47,KQUE1B,KQUE2B,KQDMPB
     PRINT, MTCXB ; PRINT, OTRDMPB ; PRINT, DUMPFACEB
@@ -1500,7 +1501,7 @@
  !MCULTUs
  !MUNDs
 !!MDUMPs
-  MDUMPMUXs
+ !MDUMPMUXs
 
 ! ------------------------------------------------------------------------------
 
