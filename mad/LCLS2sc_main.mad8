@@ -1,6 +1,6 @@
   TITLE, "AD_ACCEL: superconducting linac"
 
-! *** OPTICS=AD_ACCEL-preRelease ***
+! *** OPTICS=AD_ACCEL-19DEC2025s ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY, DOUBLE
   ASSIGN, ECHO="LCLS2sc.echo"
@@ -518,12 +518,14 @@
  !CALL, FILENAME="LCLS2sc_makeElegant.mad8"
  !CALL, FILENAME="LCLS2sc_XLEAP.mad8" !run by itself
 
- !STOP
-
 ! ------------------------------------------------------------------------------
 
  !CALL "LCLS2sc_color_plots.mad8" !run by itself (ends with STOP)
  !CALL "LCLS2sc_area_plots.mad8"  !run by itself (ends with STOP)
+
+! ------------------------------------------------------------------------------
+
+ !STOP
 
 ! ------------------------------------------------------------------------------
 ! SURVEY in linac coordinates
@@ -724,13 +726,19 @@
     TWISS, SAVE, BETA0=TWSSi, TAPE="LCLS2scDA_twiss.tape" !, &
    !  RTAPE="LCLS2scDA_rmat.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, VMAX=5, &
-      STYLE=100, SPLINE, RANGE=BEAM0/ENDBSYA, FILE="LCLS2scDA", &
+      STYLE=100, SPLINE, RANGE=BEAM0/MADUMP, FILE="LCLS2scDA", &
       TITLE="SC-linac to DASEL"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=rBETX,rBETY, &
-      STYLE=100, SPLINE, RANGE=BEAM0/ENDBSYA, FILE="LCLS2scDA", &
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=BEAM0/MADUMP, FILE="LCLS2scDA", &
       TITLE="SC-linac to DASEL"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE, RANGE=BEAM0/ENDBSYA, FILE="LCLS2scDA", &
+      STYLE=100, SPLINE, RANGE=BEAM0/MADUMP, FILE="LCLS2scDA", &
+      TITLE="SC-linac to DASEL"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=BEGSPA/MADUMP, FILE="LCLS2scDA", &
+      TITLE="SC-linac to DASEL"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      STYLE=100, SPLINE, RANGE=BEGSPA/MADUMP, FILE="LCLS2scDA", &
       TITLE="SC-linac to DASEL"
  !ENDCOMMENT
 
