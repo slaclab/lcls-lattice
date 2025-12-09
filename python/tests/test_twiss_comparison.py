@@ -21,7 +21,7 @@ MODELS = [
 'cu_hxr',
 'cu_spec',
 'sc_dasel',
-# 'sc_diag0',
+'sc_diag0',
 # 'cu_inj',
  #'cu_linac',
 # 'sc_inj',
@@ -32,6 +32,7 @@ TOLS['sc_bsyd']  = (1e-5,   1e-5,   1e-9)
 TOLS['sc_sxr']   = (5e-5,   5e-5,   1e-9)
 TOLS['sc_hxr']   = (1e-5,   5e-5,   1e-9)
 TOLS['sc_dasel'] = (1e-5,   5e-5,   1e-9)
+TOLS['sc_diag0'] = (1e-5,   5e-5,   1e-9)
 TOLS['cu_sxr']   = (2e-2,   2e-2,   1e-9)
 TOLS['cu_hxr']   = (2e-2,   2e-2,   1e-9)
 TOLS['cu_spec']  = (2e-2,   2e-2,   1e-9)

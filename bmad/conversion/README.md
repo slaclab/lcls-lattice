@@ -38,6 +38,8 @@ To be done after the Oracle database is updated by the the database group.
    - Connects to oracle database to generate element devices files
 6. make -f makefile -B INSTALLDIR=22SEP2025s install
    - replace 22SEP2025s with latest release name in DDMMMYYYYs format
+   - lattice files and lines files put into `/sdf/data/ad/public_html/model/output/lcls/mad/`
+   - Lattice description published here:  https://s3df.slac.stanford.edu/data/ad/model/lcls.html
 
 ## Rematch notes.
 * Rematching is usually not needed.  A mismatch between mad8 and Bmad usually means something went wrong in the conversion.
