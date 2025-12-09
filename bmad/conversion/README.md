@@ -9,6 +9,13 @@
 3. Run $LCLS_LATTICE/bmad/conversion/slac_to_bmad.py
 4. Check if beginning twiss in `bmad/master/gunb/beginning_BEGGUNB.bmad` need to be updated from BX0, AX0, etc. in `mad/LCLS2sc_master.xsif`
 5. from `$LCLS_LATTICE` run `pytest`
+6. Update plots
+   - python/scripts/make_bmad_plots.py
+   - mv beta_*.png docs/plots
+   - python/scripts/make_mad_plots.py
+   - mv beta_*.png docs/plots
+   - python/scripts/residuals.py
+   - mv residual_*.png docs/plots
 
 # Check into repo
 1. Trigger the Make Optics Plots action for the pre-release branch.
