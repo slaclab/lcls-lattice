@@ -6,6 +6,7 @@ import sys
 import re
 import numpy as np
 from datetime import datetime
+from decimal import Decimal, ROUND_HALF_UP
 
 special_names = {
 'L0A':'L0A___',
@@ -67,7 +68,7 @@ if LCLS_LATTICE_ENV is None:
   sys.exit(1)
 
 BDIR = f'{LCLS_LATTICE_ENV}/bmad/'
-#MODELS=['cu_spec']
+#MODELS=['sc_sxr']
 MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','sc_dasel','sc_sfts','cu_sxr','cu_hxr','cu_sfth','cu_gspec','cu_spec']
 INITFILE = {model:f'{LCLS_LATTICE_ENV}/bmad/models/{model}/tao.init' for model in MODELS}
 
@@ -107,6 +108,13 @@ with open(f'unified_keys.dat','r') as fkey:
     key_dict[name] = [madk,dbkey]
 
 timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+def double_round(x,n):
+  # handle float noise in a consistent manner.
+  # eg ensure numbers like 0.1000049999999 are consistently rounded to 0.10001
+  a = Decimal(x)
+  a = a.quantize(Decimal('10')**-(n+1),rounding=ROUND_HALF_UP)
+  return a.quantize(Decimal('10')**-n,rounding=ROUND_HALF_UP)
 
 for model in MODELS:
   with open(model+'_survey.tape','w') as f:
@@ -180,12 +188,12 @@ for model in MODELS:
 
       val = my_lat_list(ix,params[0])
       suml += val
-      line = line + f'{val:12.6f}'
+      line = line + f'{double_round(val,6):12.6f}'
 
       vals = [my_lat_list(ix,p) for p in params[1:]]
       for n,val in enumerate(vals,1):
         if n==5:
-          line = line + f' {ele_type[:15]:<16}' + f'  {energy:.9E}' + '\n'
+          line = line + f' {ele_type[:16]:<16}' + f'  {energy:.9E}' + '\n'
         if key == 'Lcavity' and (params[n] == 'RF_FREQUENCY' or params[n] == 'VOLTAGE'):
           val = val / 1e6
         if isinstance(val,(float,int)):

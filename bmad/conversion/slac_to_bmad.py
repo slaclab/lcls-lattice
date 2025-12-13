@@ -9,11 +9,11 @@ lcls_lat_check_1 = run(f'ls {LCLS_LATTICE_ENV}/bmad/conversion',shell=True,captu
 assert lcls_lat_check_1.returncode == 0
 print(f'{LCLS_LATTICE_ENV=}')
 
-BMAD_ENV = os.environ['ACC_ROOT_DIR']
-assert BMAD_ENV != ''
-bmad_env_check_1 = run(f'ls {BMAD_ENV}/util/dist_source_me',shell=True,capture_output=True)
+BMAD_CONVERT_SCRIPT = os.environ['MAD8_TO_BMAD']
+assert BMAD_CONVERT_SCRIPT != ''
+bmad_env_check_1 = run(f'ls {BMAD_CONVERT_SCRIPT}',shell=True,capture_output=True)
 assert bmad_env_check_1.returncode == 0
-print(f'{BMAD_ENV=}')
+print(f'{BMAD_CONVERT_SCRIPT=}')
 
 TEMP_DIR = LCLS_LATTICE_ENV + '/bmad/conversion/temp'
 DEST_DIR = os.path.expandvars('$LCLS_LATTICE/bmad/master/')
@@ -252,7 +252,8 @@ shadows = ['umasxh','umahxh','pssxh','pshxh','umxl1h','umxl2h','umxl3h','umxl4h'
 def process_master(master):
     print(f'Converting {master}')
 
-    SCRIPT = f'python $ACC_ROOT_DIR/util_programs/mad_to_bmad/mad8_to_bmad.py --no_prepend_vars -f {master}'
+    #SCRIPT = f'python $ACC_ROOT_DIR/util_programs/mad_to_bmad/mad8_to_bmad.py --no_prepend_vars -f {master}'
+    SCRIPT = f'python {BMAD_CONVERT_SCRIPT} --no_prepend_vars -f {master}'
     res = run(SCRIPT, shell=True, cwd=TEMP_DIR)
 
     assert res.returncode == 0

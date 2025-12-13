@@ -79,4 +79,9 @@ def parse_survey(fname):
 
     return tt, K, N, L, P, A, T, E, FDN, coor, S
 
+def parse_survey_dict(fname):
+
+    tt, K, N, L, P, A, T, E, FDN, coor, S = parse_survey(fname)
+
+  
 

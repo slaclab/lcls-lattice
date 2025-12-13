@@ -89,9 +89,19 @@ def desplit_ele(line, double_length=True, verbose=True, exclude_strs=None):
         lines.append(name+'[L] = 2*'+name+'[L]')
         if not insideeles:
             lines.append(f'{name}_svy: null_ele, superimpose, ref={name}')
-    for e in insideeles:
+    for ix,e in enumerate(insideeles):
         lines.append(e+'[superimpose] = T')
         lines.append(e+'[ref] = '+name)
+        #if ix == 0:
+        #  test_counter = 0
+        #  lines.append(e+'[superimpose] = T')
+        #  lines.append(e+'[ref] = '+name)
+        #  e_ref = e
+        #else:
+        #  lines.append(e+'[superimpose] = T')
+        #  lines.append(e+'[ref] = '+e_ref)
+        #  lines.append(e+'[ref_origin] = '+ref_origin_list[test_counter-1])
+        #  e_prev = e
     lines.append('\n')
 
     output = '\n'.join(lines)
