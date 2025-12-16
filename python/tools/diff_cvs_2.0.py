@@ -14,8 +14,9 @@ def is_number(s):
 
 def parse_cvs(file):
   cvs_dict = {}
+  ordered = []
   with open(file,'r') as f:
-    header = f.readline() 
+    header_lst = f.readline().split(',')
     header = f.readline() 
     for line in f:
       line_lst = line.strip().split(',')
@@ -24,11 +25,12 @@ def parse_cvs(file):
         sys.exit('key collision detected')
       if key == 'ELEMENT':
         break
+      ordered.append(key)
       cvs_dict[key] = line_lst
-  return cvs_dict
+  return ordered, header_lst, cvs_dict
 
-data1 = parse_cvs(file1)
-data2 = parse_cvs(file2)
+ordered, header_lst, data1 = parse_cvs(file1)
+dumb, dumb, data2 = parse_cvs(file2)
   
 print(f'Lines in file 1: {len(data1)}')
 print(f'Lines in file 2: {len(data2)}')
@@ -48,6 +50,11 @@ for key in data2.keys() - data1.keys():
   print(key) 
 if not got_one:
   print("   None!")
+  
+ordered_filtered = []
+for key in ordered:
+  if key in data1.keys() & data2.keys():
+    ordered_filtered.append(key)
 
 #rel_tol = 5e-8
 rel_tol = 1e-6
@@ -55,7 +62,7 @@ rel_tol = 1e-6
 veto_cols=[48,49,] #[6,50,]  #columns are zero-indexed
 
 print("Comparing common elements:")
-for key in data1.keys() & data2.keys():
+for key in ordered_filtered:
   data1_ = data1[key]
   data2_ = data2[key]
   for j,pair in enumerate(zip(data1_,data2_)):
@@ -68,7 +75,7 @@ for key in data1.keys() & data2.keys():
         abs_diff = num1-num2
         rel_diff = abs(num1-num2)/(abs(num1)+abs(num2))/2.0 
         if rel_diff > rel_tol:
-          print(f'fail for {key}, j={j}: {pair} {rel_diff} {abs_diff}')
+          print(f'fail for {key}, j={j} ({header_lst[j]}): {pair} {rel_diff} {abs_diff}')
     else:
       if pair[0].strip() != pair[1].strip():
-        print(f'fail for {key}: j={j}, {pair}')
+        print(f'fail for {key}: j={j} ({header_lst[j]}), {pair}')

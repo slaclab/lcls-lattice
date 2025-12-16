@@ -56,6 +56,8 @@ kws['Drift']           = {'madk':'DRIF',
                           'params':['L',0,0,0,'X1_LIMIT',0,0,0,0,0]}
 kws['Patch']           = {'madk':'SROT',
                           'params':[0,0,0,0,0,0,'TILT',0,0,0]}
+kws['Fixer']           = {'madk':'MARK',
+                          'params':[0,0,0,0,0,0,0,0,0,0]}
 
 #skips = ['Patch']
 skips = []
@@ -153,7 +155,7 @@ for model in MODELS:
       energy = tao.lat_list(ix,'ele.e_tot')[0] / 1e9
 
       if key not in kws.keys():
-        print(f'missing: {name}: {key}')
+        print(f'missing from kws in script: {name}: {key}')
         sys.exit(1)
       template = kws[key]
       if 'skip' in template:
