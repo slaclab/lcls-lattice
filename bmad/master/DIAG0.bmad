@@ -250,12 +250,12 @@ kqdg011 = -10.983650981721
 
 
 ! Replace k0l with quad offset and patch with y_pitch.
-qdg001: quadrupole, type = "1.51Q7.00", l = lqs/2, aperture = rqs, k1 = kqbf0, y_offset=-4.83865231890650768E-003
+qdg001: quadrupole, type = "1.51Q7.00", l = lqs/2, aperture = rqs, k1 = kqbf0, y_offset=-3.82279087319116256E-003
 !old: qdg001: quadrupole, type = "1.51Q7.00", l = lqs/2, aperture = rqs, k1 = kqbf0
 qdg002: quadrupole, type = "1.51Q7.00", l = lqs/2, aperture = rqs, k1 = kqbd0
 
 ! Replace k0l with quad offset and patch with y_pitch.
-qdg003: quadrupole, type = "1.51Q7.00", l = lqs/2, aperture = rqs, k1 = kqbf0, y_offset=-2.99813063290814820E-004
+qdg003: quadrupole, type = "1.51Q7.00", l = lqs/2, aperture = rqs, k1 = kqbf0, y_offset=-1.67332228405943817E-003
 !old: qdg003: quadrupole, type = "1.51Q7.00", l = lqs/2, aperture = rqs, k1 = kqbf0
 qdg004: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqdg004
 qdg005: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqdg005
@@ -272,13 +272,14 @@ qdg011: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqdg011
 
 ! model misaligned quadrupoles
 
-
 ! Replace k0l with quad offset and patch with y_pitch.
-dyqdg001: patch, y_pitch = 9.49758257820075558E-003
+dyqdg001a: patch, y_pitch = -9.95074005931043983E-003
+dyqdg001b: patch, y_pitch =  2.33710477241809642E-002
 !old: dyqdg001: multipole, k0l = yk01,t0
 
 ! Replace k0l with quad offset and patch with y_pitch.
-dyqdg003: patch, y_pitch = 5.88487966838956720E-004
+dyqdg003a: patch, y_pitch = -1.79409243491443528E-002
+dyqdg003b: patch, y_pitch =  1.47655908418157372E-002
 !old: dyqdg003: multipole, k0l = yk02,t0
 
  !VALUE, 1.E3*YK01/(KQBF0*LQs),1.E3*YK02/(KQBF0*LQs) !vertical offsets (mm)
@@ -516,13 +517,17 @@ bydg0_full: line = (bydg0)
 
 !Old split line:  QDG001_full : LINE=(QDG001,BPMDG001,DYQDG001,QDG001)
 
-qdg001_full: line = (qdg001)
-qdg001[L] = 2*qdg001[L]
-bpmdg001[superimpose] = T
-bpmdg001[ref] = qdg001
-dyqdg001[superimpose] = T
-dyqdg001[ref] = qdg001
-
+QDG001_full : LINE=(DYQDG001A,QDG001,BPMDG001,QDG001,DYQDG001B)
+!qdg001_full: line = (qdg001)
+!qdg001[L] = 2*qdg001[L]
+!bpmdg001[superimpose] = T
+!bpmdg001[ref] = qdg001
+!dyqdg001a[superimpose] = T
+!dyqdg001a[ref] = qdg001##1
+!dyqdg001a[ref_origin] = beginning
+!dyqdg001b[superimpose] = T
+!dyqdg001b[ref] = qdg001##2
+!dyqdg001b[ref_origin] = end
 
 !Old split line:  QDG002_full : LINE=(QDG002,BPMDG002,QDG002)
 
@@ -531,15 +536,17 @@ qdg002[L] = 2*qdg002[L]
 bpmdg002[superimpose] = T
 bpmdg002[ref] = qdg002
 
-
 !Old split line:  QDG003_full : LINE=(QDG003,BPMDG003,DYQDG003,QDG003)
 
-qdg003_full: line = (qdg003)
-qdg003[L] = 2*qdg003[L]
-bpmdg003[superimpose] = T
-bpmdg003[ref] = qdg003
-dyqdg003[superimpose] = T
-dyqdg003[ref] = qdg003
+QDG003_full : LINE=(DYQDG003A,QDG003,BPMDG003,QDG003,DYQDG003B)
+!qdg003_full: line = (qdg003)
+!qdg003[L] = 2*qdg003[L]
+!dyqdg003a[superimpose] = T
+!dyqdg003a[ref] = qdg003
+!dyqdg003a[ref_origin] = beginning
+!dyqdg003b[superimpose] = T
+!dyqdg003b[ref] = qdg003
+!dyqdg003b[ref_origin] = end
 
 
 !Old split line:  QDG004_full : LINE=(QDG004,BPMDG004,QDG004)
@@ -637,3 +644,11 @@ bpmdg011[ref] = qdg011
 
 ! ------------------------------------------------------------------------------
 
+!survey splits
+bkrdg0_svy: null_ele, superimpose, ref=bkrdg0, ref_origin=beginning, offset=bkrdg0a[l]
+blrdg0_svy: null_ele, superimpose, ref=blrdg0, ref_origin=beginning, offset=blrdg0a[l]
+bxdg0_svy: null_ele, superimpose, ref=bxdg0, ref_origin=beginning, offset=bxdg0a[l]
+bydg0_svy: null_ele, superimpose, ref=bydg0, ref_origin=beginning, offset=bydg0a[l]
+qdg006_svy: null_ele, superimpose, ref=qdg006
+qdg007_svy: null_ele, superimpose, ref=qdg007
+qdg010_svy: null_ele, superimpose, ref=qdg010
