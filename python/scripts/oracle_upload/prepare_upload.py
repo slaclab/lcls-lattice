@@ -92,7 +92,7 @@ def roundoff(val, prec=None):
 
 script_dir = Path(__file__).parent.resolve()
 
-optics='06NOV2025s'
+optics='12DEC2025s'
 vfile=['LCLS2sc_value.echo','LCLS2cu_value.echo']
 
 outdir='oracle_upload'

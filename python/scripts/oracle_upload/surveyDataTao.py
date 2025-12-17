@@ -59,7 +59,7 @@ kws['Patch']           = {'madk':'SROT',
 kws['Fixer']           = {'madk':'MARK',
                           'params':[0,0,0,0,0,0,0,0,0,0]}
 kws['Crab_Cavity']     = {'madk':'LCAV',
-                          'params':[0,0,0,0,0,0,0,0,0,0]}
+                          'params':['L',0,0,0,'X1_LIMIT',0,'RF_FREQUENCY','VOLTAGE','PHI0',0]}
 
 #skips = ['Patch']
 skips = []

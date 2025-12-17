@@ -214,7 +214,7 @@ tcxdg0: crab_cavity, type = "STCAV_X", rf_frequency = 2856 * 1e6, l = 20*in2m/2
 """
 SC_NEWELES['tcydg0'] = """
 ! mad8 describes tcav as lcavity.  Replace it with a crab_cavity.
-tcydg0: crab_cavity, type = "STCAV_Y", rf_frequency = 2856 * 1e6, l = 20*in2m/2
+tcydg0: crab_cavity, type = "@4,STCAV_Y", rf_frequency = 2856 * 1e6, l = 20*in2m/2
 """
 # Not needed. Desplitting handles cavities now.
 # Add these repalcements
