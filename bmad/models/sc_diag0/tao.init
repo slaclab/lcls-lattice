@@ -52,8 +52,6 @@ beam_init%sig_z = 0.8e-3
 
 
 
-
-
 &tao_d2_data
         d2_data%name = 'L0B'
         universe = 1
@@ -324,4 +322,43 @@ beam_init%sig_z = 0.8e-3
 
 !----------------------------------------
 
+
+!build dyqdg patches
+&tao_var
+  v1_var%name = 'fix_k0l'
+  default_step = 1e-4
+  default_universe = '1'
+  ix_min_var = 1
+  ix_max_var = 6
+  var(1:6)%ele_name  = 'qdg001', 'qdg003', 'dyqdg001a', 'dyqdg003a', 'dyqdg001b', 'dyqdg003b'
+  var(1:6)%attribute = 'y_offset', 'y_offset', 'y_pitch', 'y_pitch', 'y_pitch', 'y_pitch'
+/
+&tao_d2_data
+    d2_data%name = 'eta'
+    universe = 1
+    n_d1_data = 1
+/
+&tao_d1_data
+    ix_d1_data = 1
+    default_weight = 1
+    d1_data%name = 'y'
+    default_data_type = 'eta.y'
+    default_data_source = 'lat'
+    default_meas = 0
+    use_same_lat_eles_as = 'orbit.x'
+/
+&tao_d2_data
+    d2_data%name = 'floor'
+    universe = 1
+    n_d1_data = 1
+/
+&tao_d1_data
+    ix_d1_data = 1
+    default_weight = 1
+    d1_data%name = 'y'
+    default_data_type = 'floor.y'
+    default_data_source = 'lat'
+    default_meas = -0.99
+    use_same_lat_eles_as = 'orbit.x'
+/
 

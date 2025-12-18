@@ -9,6 +9,11 @@
 3. Run $LCLS_LATTICE/bmad/conversion/slac_to_bmad.py
 4. Check if beginning twiss in `bmad/master/gunb/beginning_BEGGUNB.bmad` need to be updated from BX0, AX0, etc. in `mad/LCLS2sc_master.xsif`
 5. from `$LCLS_LATTICE` run `pytest`
+6. Update plots
+   - `python/scripts/make_bmad_plots.py`
+   - `python/scripts/make_mad_plots.py`
+   - `python/scripts/residuals.py`
+   - `mv beta_*.png residual_*.png docs/plots`
 
 # Check into repo
 1. Trigger the Make Optics Plots action for the pre-release branch.
@@ -18,6 +23,19 @@
 5. Update `/sdf/group/ad/sw/scm/repos/optics/lcls-lattice` on s3df.
 6. Update prod using zip of release at `lcls-srv01:/usr/local/lcls/model/lattice`
    - Update the `/usr/local/lcls/model/lattice/current` link to point to the new release.
+
+# Make Oracle Upload files
+1. In the mad directory, uncomment the call to `makeSymbols` from `LCLS2cu_main.mad8` and `LCLS2sc_main.mad8`.
+2. run mad8s, assuming mad8s executable is in the lcls-lattice base directory.
+   - `../mad8s < LCLS2sc_main.mad8`
+   - `../mad8s < LCLS2cu_main.mad8`
+3. Update `optics` variable in the oracle_upload script located at `../python/scripts/oracle_upload/prepare_upload.py`
+4. Run `../python/scripts/oracle_upload/prepare_upload.py`, which generates the following files
+   - AD_ACCEL-19DEC2025s.txt
+   - AD_ACCEL-extra-19DEC2025s.txt
+   - BSY-AD_ACCEL-19DEC2025s.txt
+5. Manually copy the FACET elements from the previous extras file to the new extras file.
+   - Starts with SOL10111 and ends with CQ141866
 
 # Update element devices
 To be done after the Oracle database is updated by the database group.
