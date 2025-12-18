@@ -56,7 +56,7 @@ kws['Drift']           = {'madk':'DRIF',
                           'params':['L',0,0,0,'X1_LIMIT',0,0,0,0,0]}
 kws['Patch']           = {'madk':'SROT',
                           'params':[0,0,0,0,0,0,'TILT',0,0,0]}
-kws['Fixer']           = {'madk':'MARK',
+kws['Fixer']           = {'madk':'FIXR',
                           'params':[0,0,0,0,0,0,0,0,0,0]}
 kws['Crab_Cavity']     = {'madk':'LCAV',
                           'params':['L',0,0,0,'X1_LIMIT',0,'RF_FREQUENCY','VOLTAGE','PHI0',0]}
@@ -209,6 +209,7 @@ for model in MODELS:
         else:
             print(f'val is of unknown type: {val=} {type(val)=}')
             bomb
+      line = line + f' {upload_name}'
 
       floor = tao.ele_floor(ix)['Reference']
       x,y,z,theta,phi,psi = map(float,floor)

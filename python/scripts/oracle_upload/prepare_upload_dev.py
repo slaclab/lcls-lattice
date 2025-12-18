@@ -707,6 +707,11 @@ ele_dict = {
 'MULT':[]
 }
 
+
+not_included = [item for item in K if item not in ele_dict.keys()]
+print('the following keys are not included in the upload')
+print(set(not_included))
+
 def process_bsy(name,ele,split=False,exact=True):
     ids = strmatch(name,N_bsy,exact)
     if len(ids) > 0:
@@ -1323,6 +1328,8 @@ for kwn,eles in ele_dict.items():
             # UND coordinates
             if cUND:
                 process_und(name,eles[-1],split=True)
+    else:
+      print(f'Element {names} key {kwn} not included in upload')
 
 # deferred devices
 nDEPR = 0
