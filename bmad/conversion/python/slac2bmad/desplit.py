@@ -80,6 +80,8 @@ def desplit_ele(line, double_length=True, verbose=True, exclude_strs=None):
     lines.append(name+'_full: line = ('+name+')')
     if double_length:
         lines.append(name+'[L] = 2*'+name+'[L]')
+        if not insideeles:
+          lines.append(f'{name}_svy: null_ele, superimpose, ref={name}')
     for e in insideeles:
         lines.append(e+'[superimpose] = T')
         lines.append(e+'[ref] = '+name)
