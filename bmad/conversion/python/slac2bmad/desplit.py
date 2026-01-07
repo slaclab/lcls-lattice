@@ -47,6 +47,10 @@ def desplit_ele(line, double_length=True, verbose=True, exclude_strs=None):
             print('Info: line only has one ele:', original_line)
         return original_line
 
+    # Check for special offset quad chicane QDG00
+    if name.lower() in ['qdg001', 'qdg003']:
+      return original_line
+
     # Make sure this is true
     if eles[0] != name or eles[-1] != name:
         #return original_line
@@ -85,6 +89,10 @@ def desplit_ele(line, double_length=True, verbose=True, exclude_strs=None):
     for e in insideeles:
         lines.append(e+'[superimpose] = T')
         lines.append(e+'[ref] = '+name)
+    if not double_length and not insideeles:
+      #lines.append(f'!FOOB {original_line}\n')
+      suffix = eles[0][-1]
+      lines.append(f'{name}_svy: null_ele, superimpose, ref={name}, ref_origin=beginning, offset={name}{suffix}[l] !bend survey marker')
     lines.append('\n')
 
     output = '\n'.join(lines)
