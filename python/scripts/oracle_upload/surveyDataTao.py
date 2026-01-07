@@ -198,7 +198,7 @@ for model in MODELS:
       for n,val in enumerate(vals,1):
         if n==5:
           line = line + f' {ele_type[:16]:<16}' + f'  {energy:.9E}' + '\n'
-        if key == 'Lcavity' and (params[n] == 'RF_FREQUENCY' or params[n] == 'VOLTAGE'):
+        if key in ['Lcavity','Crab_Cavity'] and (params[n] == 'RF_FREQUENCY' or params[n] == 'VOLTAGE'):
           val = val / 1e6
         if isinstance(val,(float,int)):
             line = line + f'{val:16.9E}'

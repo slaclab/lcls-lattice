@@ -62,7 +62,7 @@ rel_tol[15] = 5e-5
 
 veto_cols=[0,48,49,] #[6,50,]  #columns are zero-indexed
 
-ignore_matching_quads=['Q0H01', 'Q0H02', 'Q0H03', 'Q0H04', 'QC011', 'QC012', 'QCM02', 'QCM03']
+ignore_matching_quads=['QA01', 'QA02', 'QE01', 'QE02', 'Q0H01', 'Q0H02', 'Q0H03', 'Q0H04', 'QC011', 'QC012', 'QCM02', 'QCM03']
 
 print("Comparing common elements:")
 for key in ordered_filtered:
