@@ -80,7 +80,7 @@ for key in ordered_filtered:
         abs_diff = num1-num2
         rel_diff = abs(num1-num2)/(abs(num1)+abs(num2))/2.0 
         if rel_diff > rel_tol[j]:
-          print(f'fail for {key}, j={j} ({header_lst[j]}): {pair} {rel_diff} {abs_diff}')
+          print(f'fail for {key}, j={j} ({header_lst[j]}): {pair} rel: {rel_diff} abs: {abs_diff}')
     else:
       if pair[0].strip() != pair[1].strip():
         print(f'fail for {key}: j={j} ({header_lst[j]}), {pair}')

@@ -120,6 +120,14 @@ def double_round(x,n):
   a = a.quantize(Decimal('10')**-(n+1),rounding=ROUND_HALF_UP)
   return a.quantize(Decimal('10')**-n,rounding=ROUND_HALF_UP)
 
+def double_round_new(x, ndigits):
+  # handle float noise in a consistent manner.
+  # eg ensure numbers like 0.1000049999999 are rounded to 5 digits as 0.10001
+  # also ensure numbers like 0.145608456 are rounded to 6 digits as 0.145608
+  d = Decimal.from_float(x)                 # keep exact float value
+  q = Decimal(1).scaleb(-ndigits)           # 10**(-ndigits)
+  return float(d.quantize(q, rounding=ROUND_HALF_UP))
+
 for model in MODELS:
   with open(model+'_survey.tape','w') as f:
     f.write(f'Linux    Bmad Survey/{timestamp}\n\n')
@@ -192,7 +200,7 @@ for model in MODELS:
 
       val = my_lat_list(ix,params[0])
       suml += val
-      line = line + f'{double_round(val,6):12.6f}'
+      line = line + f'{double_round_new(val,6):12.6f}'
 
       vals = [my_lat_list(ix,p) for p in params[1:]]
       for n,val in enumerate(vals,1):
