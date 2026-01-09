@@ -261,6 +261,10 @@ for file_root in file_roots:
 
 Sd = [x[2] for x in coor] # set "display S" to linac Z-coordinate
 
+print(f'FOO {len(N)}  {len(set(N))}')
+Q4indexes = [i for i, value in enumerate(N) if value == "Q4"]
+print(f'FOO {[P[i] for i in Q4indexes]}')
+
 Nelem = len(N)
 # get BSY coordinates
 K_bsy, N_bsy, L_bsy, P_bsy, S_bsy, coor_bsy, idf_bsy, FDN_bsy = [], [], [], [], [], [], [], []

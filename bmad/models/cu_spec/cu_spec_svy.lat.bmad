@@ -1,16 +1,11 @@
 ! 
-! cu_sxr
+! cu_spec
 !
 
 call, file = $LCLS_LATTICE/bmad/master/cu/beginning_cu_linac.bmad
 
-
-call, file = $LCLS_LATTICE/bmad/master/CU_SFTH.bmad
+call, file = $LCLS_LATTICE/bmad/master/CU_HXR.bmad
 call, file = $LCLS_LATTICE/bmad/master/LCLScu_devicenames.bmad
-
-! Bunch Compressor overlays
-call, file = $LCLS_LATTICE/bmad/overlays/cu/bc1_overlays.bmad
-call, file = $LCLS_LATTICE/bmad/overlays/cu/bc2_overlays.bmad
 
 !call, file = $LCLS_LATTICE/bmad/master/cu/cu_linac_settings.bmad
 call, file = $LCLS_LATTICE/bmad/master/cu/cu_linac_wakefields.bmad
@@ -18,15 +13,7 @@ call, file = $LCLS_LATTICE/bmad/master/cu/cu_linac_wakefields.bmad
 lcavity::*[cavity_type] = traveling_wave
 sbend::*[fringe_type] = full
 
-call, file =  $LCLS_LATTICE/bmad/overlays/cu/klystrons.bmad
-call, file =  $LCLS_LATTICE/bmad/overlays/cu/klystron_design_settings.bmad
-call, file =  $LCLS_LATTICE/bmad/overlays/cu/linac_phase_overlays.bmad
-call, file =  $LCLS_LATTICE/bmad/overlays/cu/sbst_phase_overlays.bmad
-
-call, file =  $LCLS_LATTICE/bmad/overlays/cu/linac_phase_defaults.bmad 
-
-!Overall fudge
-call, file =  $LCLS_LATTICE/bmad/overlays/cu/linac_fudge_overlays.bmad
+use, cu_spec 
 
 fixer_l0a: fixer, superimpose, ref=l0bbeg, ref_origin=beginning, 
   beta_a_stored=1.41638494, alpha_a_stored=-2.63706808, 
@@ -41,8 +28,6 @@ QA02[K1] =  1.37440905821587052E+001
 QE01[K1] = -6.56502402848857436E+000
 QE02[K1] =  5.35877772165317712E+000
 
-!expand_lattice
-!quad::*[field_master] = T
 lcavity::*[n_rf_steps]=1000
 l0a[n_rf_steps] = 50000
 l0b[n_rf_steps] = 50000

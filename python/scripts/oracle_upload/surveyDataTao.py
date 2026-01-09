@@ -74,7 +74,13 @@ if LCLS_LATTICE_ENV is None:
 BDIR = f'{LCLS_LATTICE_ENV}/bmad/'
 #MODELS=['sc_sxr']
 MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','sc_dasel','sc_sfts','cu_sxr','cu_hxr','cu_sfth','cu_gspec','cu_spec']
-INITFILE = {model:f'{LCLS_LATTICE_ENV}/bmad/models/{model}/tao.init' for model in MODELS}
+LATFILE = {}
+for model in MODELS:
+  if model.startswith('sc_'):
+    LATFILE[model] = f'{LCLS_LATTICE_ENV}/bmad/models/{model}/{model}.lat.bmad'
+
+  elif model.startswith('cu_'):
+    LATFILE[model] = f'{LCLS_LATTICE_ENV}/bmad/models/{model}/{model}_svy.lat.bmad'
 
 def my_lat_list(ix, p):
   if p == 0:
@@ -131,7 +137,7 @@ def double_round_new(x, ndigits):
 for model in MODELS:
   with open(model+'_survey.tape','w') as f:
     f.write(f'Linux    Bmad Survey/{timestamp}\n\n')
-    tao = Tao(init_file=INITFILE[model], noplot=True)
+    tao = Tao(lattice_file=LATFILE[model], noplot=True)
     ix_eles = tao.lat_list('*', 'ele.ix_ele')
     suml = 0
     for ix in ix_eles[:-1]:
