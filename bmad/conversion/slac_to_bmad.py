@@ -261,7 +261,7 @@ CU_MASTERS = [f for f in os.listdir('mad') if f.startswith('CU_') and f.endswith
 SC_MASTERS = [f for f in os.listdir('mad') if f.startswith('SC_') and f.endswith('xsif')]
 
 # exclude_strs will not go through the automatic-desplitter
-exclude_strs = ['BUN1B','WIGX','UMXL','LH_UND','UMHTR','UMASX','UMAHX','PSSX','PSHX','K21_1B']
+exclude_strs = ['BUN1B','WIGX','UMXL','LH_UND','UMHTR','UMASX','UMAHX','PSSX','PSHX','K21_1B','K21_1C']
 
 # new elements are added commented out with !new
 shadows = ['umasxh','umahxh','pssxh','pshxh','umxl1h','umxl2h','umxl3h','umxl4h',
@@ -290,6 +290,31 @@ for _m in CU_MASTERS:
 for _m in SC_MASTERS:
     process_master(_m,SC_REPLACEMENTS)
 
+#****************************
+# cleanup conversion slop: conversion mistakes that can't be fixed more elegantly.
+#****************************
+# Bmad's mad8 to bmad translator replaces all instances of PROF with MONITOR.
+# Thus, PROFILE becomes MONITORILE.  SFT has a type field containing PROFILE
+SFT_file = 'bmad/master/SFT.bmad'
+with open(SFT_file, 'r') as f:
+    content = f.read()
+content = content.replace('MONITORILE','PROFILE')
+with open(SFT_file, 'w') as f:
+    f.write(content)
+
 #cleanup working areas
 run(f'rm -r {TEMP_DIR}',shell=True)
 run(f'rm -r {WORK_DIR}',shell=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
