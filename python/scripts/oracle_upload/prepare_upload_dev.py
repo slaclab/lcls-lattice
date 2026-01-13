@@ -261,9 +261,9 @@ for file_root in file_roots:
 
 Sd = [x[2] for x in coor] # set "display S" to linac Z-coordinate
 
-print(f'FOO {len(N)}  {len(set(N))}')
-Q4indexes = [i for i, value in enumerate(N) if value == "Q4"]
-print(f'FOO {[P[i] for i in Q4indexes]}')
+#print(f'FOO {len(N)}  {len(set(N))}')
+#Q4indexes = [i for i, value in enumerate(N) if value == "Q4"]
+#print(f'FOO {[P[i] for i in Q4indexes]}')
 
 Nelem = len(N)
 # get BSY coordinates

@@ -24,6 +24,7 @@ def desplit_ele(line, double_length=True, verbose=True, exclude_strs=None):
     line = line.lower().strip() # Always work with lower case
 
     s = line.split(':')
+
     if len(s) ==1:
         return original_line
     ix = s[0].find('_full')
@@ -37,6 +38,7 @@ def desplit_ele(line, double_length=True, verbose=True, exclude_strs=None):
         for exclude_str in exclude_strs:
             if ele.startswith(exclude_str.lower()):
                 return original_line
+
 
     name = ele.split('_full')[0]
     eles = [e.strip() for e in (line.split('(')[1].split(')')[0]).split(',')]
@@ -90,9 +92,8 @@ def desplit_ele(line, double_length=True, verbose=True, exclude_strs=None):
         lines.append(e+'[superimpose] = T')
         lines.append(e+'[ref] = '+name)
     if not double_length and not insideeles:
-      #lines.append(f'!FOOB {original_line}\n')
-      suffix = eles[0][-1]
-      lines.append(f'{name}_svy: null_ele, superimpose, ref={name}, ref_origin=beginning, offset={name}{suffix}[l] !bend survey marker')
+        suffix = eles[0][-1]
+        lines.append(f'{name}_svy: null_ele, superimpose, ref={name}, ref_origin=beginning, offset={name}{suffix}[l] !bend survey marker')
     lines.append('\n')
 
     output = '\n'.join(lines)

@@ -166,7 +166,6 @@ for name, replace in CU_LINAC_REPLACEMENTS.items():
 if INCLUDE_DEFERRED:
     CU_NEWELES.update(json.load(open('bmad/conversion/replacements/deferred_cu_replacements.json')))
 
-
 # SC Only replacements
 SC_NEWELES = {}
 SC_NEWELES['umhtr'] = """
@@ -194,33 +193,33 @@ dh02d: drift, l = 0.2724707 - ( 10*0.054 - 0.506263 ) /2, type = "CSR" !0.290000
 """
 SC_NEWELES['qdg001'] = """
 ! Replace k0l with quad offset and patch with y_pitch.
-qdg001: quadrupole, type = "1.51Q7.00", l = lqs/2, aperture = rqs, k1 = kqbf0, y_offset=-3.82279087319116256E-003
+qdg001: quadrupole, type = "1.51Q7.00", l = lqs/2, aperture = rqs, k1 = kqbf0, y_offset=-5.03544523659801846E-003
 """
 SC_NEWELES['qdg003'] = """
 ! Replace k0l with quad offset and patch with y_pitch.
-qdg003: quadrupole, type = "1.51Q7.00", l = lqs/2, aperture = rqs, k1 = kqbf0, y_offset=-1.67332228405943817E-003
+qdg003: quadrupole, type = "1.51Q7.00", l = lqs/2, aperture = rqs, k1 = kqbf0, y_offset=-4.18723145115109838E-004
 """
 SC_NEWELES['dyqdg001'] = """
 dyqdg001: marker
 """
 SC_NEWELES['dyqdg001a'] = """
 ! Replace k0l with quad offset and patch with y_pitch.
-dyqdg001a: patch, y_pitch = -9.95074005931043983E-003
+dyqdg001a: patch, y_pitch = 3.08416446042434310E-003
 """
 SC_NEWELES['dyqdg001b'] = """
 ! Replace k0l with quad offset and patch with y_pitch.
-dyqdg001b: patch, y_pitch =  2.33710477241809642E-002
+dyqdg001b: patch, y_pitch = 7.01203984191581167E-003
 """
 SC_NEWELES['dyqdg003'] = """
 dyqdg003: marker
 """
 SC_NEWELES['dyqdg003a'] = """
 ! Replace k0l with quad offset and patch with y_pitch.
-dyqdg003a: patch, y_pitch = -1.79409243491443528E-002
+dyqdg003a: patch, y_pitch = -1.88994601141060660E-003
 """
 SC_NEWELES['dyqdg003b'] = """
 ! Replace k0l with quad offset and patch with y_pitch.
-dyqdg003b: patch, y_pitch =  1.47655908418157372E-002
+dyqdg003b: patch, y_pitch =  2.03871586661245191E-003
 """
 SC_NEWELES['tcxdg0'] = """
 ! mad8 describes tcav as lcavity.  Replace it with a crab_cavity.
@@ -230,6 +229,7 @@ SC_NEWELES['tcydg0'] = """
 ! mad8 describes tcav as lcavity.  Replace it with a crab_cavity.
 tcydg0: crab_cavity, type = "@4,STCAV_Y", rf_frequency = 2856 * 1e6, l = 20*in2m/2
 """
+
 # Not needed. Desplitting handles cavities now.
 # Add these repalcements
 #SC_LINAC_REPLACEMENTS = json.load(open('replacements/good_sc_linac_replacements.json'))
@@ -239,19 +239,10 @@ tcydg0: crab_cavity, type = "@4,STCAV_Y", rf_frequency = 2856 * 1e6, l = 20*in2m
 if INCLUDE_DEFERRED:
     SC_NEWELES.update(json.load(open('bmad/conversion/replacements/deferred_sc_replacements.json')))
 
-def merge_replacements(master_file):
-    dat = {}
-    dat.update(NEWELES)
-    if master_file.startswith('CU_'):
-        print('CU replacements')
-        dat.update(CU_NEWELES)
-        return dat
-    elif master_file.startswith('SC_'):
-        print('SC replacements')
-        dat.update(SC_NEWELES)
-        return dat
-    else:
-        raise 
+CU_REPLACEMENTS = NEWELES.copy()
+CU_REPLACEMENTS.update(CU_NEWELES)
+SC_REPLACEMENTS = NEWELES.copy()
+SC_REPLACEMENTS.update(SC_NEWELES)
 
 #Cleanup from previous conversion run
 run(f'rm -rf {TEMP_DIR}',shell=True)
@@ -269,33 +260,35 @@ for f in XSIF_FILES:
 CU_MASTERS = [f for f in os.listdir('mad') if f.startswith('CU_') and f.endswith('xsif')]
 SC_MASTERS = [f for f in os.listdir('mad') if f.startswith('SC_') and f.endswith('xsif')]
 
-exclude_strs = ['BUN1B','WIGX','UMXL','LH_UND','UMHTR','UMASX','UMAHX','PSSX','PSHX']
+# exclude_strs will not go through the automatic-desplitter
+exclude_strs = ['BUN1B','WIGX','UMXL','LH_UND','UMHTR','UMASX','UMAHX','PSSX','PSHX','K21_1B']
+
+# new elements are added commented out with !new
 shadows = ['umasxh','umahxh','pssxh','pshxh','umxl1h','umxl2h','umxl3h','umxl4h',
            'duqxl','lh_und','dh03a','dh03b','umhtr','dh02c','dh02d']
 
-def process_master(master):
-    print(f'Converting {master}')
-    shutil.copytree(TEMP_DIR, WORK_DIR, dirs_exist_ok=True)
+shutil.copytree(TEMP_DIR, WORK_DIR, dirs_exist_ok=True)
 
-    #SCRIPT = f'python $ACC_ROOT_DIR/util_programs/mad_to_bmad/mad8_to_bmad.py --no_prepend_vars -f {master}'
+def process_master(master, REPLACEMENTS):
+    print(f'Converting {master}')
+
+    #The BMAD_CONVERT_SCRIPT descends through mad8 call statements
     SCRIPT = f'python {BMAD_CONVERT_SCRIPT} --no_prepend_vars -f {master}'
     res = run(SCRIPT, shell=True, cwd=WORK_DIR)
-
     assert res.returncode == 0
 
     BMAD_FILES=glob(WORK_DIR+'/*bmad')
-    REPLACEMENTS = merge_replacements(master)
+
     for f in BMAD_FILES:
         finalize_bmad(f, replacements=REPLACEMENTS, verbose=False, exclude_strs=exclude_strs, shadows=shadows)  
-
-    for f in BMAD_FILES:
         shutil.copy(f, DEST_DIR)
+        os.remove(f)
 
 for _m in CU_MASTERS:
-    process_master(_m)
+    process_master(_m,CU_REPLACEMENTS)
 
 for _m in SC_MASTERS:
-    process_master(_m)
+    process_master(_m,SC_REPLACEMENTS)
 
 #cleanup working areas
 run(f'rm -r {TEMP_DIR}',shell=True)
