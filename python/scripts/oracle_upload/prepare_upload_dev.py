@@ -5,6 +5,7 @@ import openpyxl as pyxl
 import re
 import math
 from pathlib import Path
+import json
 
 
 #------------------------------------------
@@ -412,38 +413,58 @@ KSnames = [
 # read FINT values for SBENs and undulator parameters from a special echo-file
 # generated via MAD VALUE commands
 
-C = []
-for n in range(len(vfile)):
-    fname = vfile[n]
-    with open(fname, 'r') as f:
-        C.extend(f.read().split())
-
 P_und = np.zeros((Nelem, 2))
 
-idb = [i for i,x in enumerate(K) if x == 'SBEN']
-for m in range(0, len(idb), 2):
-    na = idb[m]
-    nb = idb[m+1]
-    name = N[na].strip()
-    name = name.split('.')[0]  # remove decoration, if any
-    id_ = strmatch(name,C)[0]
-    fint = float(C[id_+6])
-    P_und[na][0] = fint
-    P_und[nb][0] = fint
+with open('value_data.json','r') as f:
+  value_data = json.load(f)
 
-idm = [i for i,x in enumerate(K) if x == 'MATR']
-for m in range(0, len(idm), 2):
-    n1 = idm[m]
-    n2 = idm[m+1]
-    name = N[n1].strip()
-    Ktxt = f'"{name}_K"'
-    Ltxt = f'"{name}_L"'
-    idK = strmatch(Ktxt,C)[0]
-    idL = strmatch(Ltxt,C)[0]
-    undk = float(C[idK+2])
-    undl = float(C[idL+2])
-    P_und[n1, :] = [undl, undk]
-    P_und[n2, :] = [undl, undk]
+ixs = [i for i,x in enumerate(K) if x == 'SBEN']
+for ix in ixs:
+  name = N[ix].strip()[:-1]
+  fint = value_data[name]
+  P_und[ix] = [fint,]
+
+ixs = [i for i,x in enumerate(K) if x == 'MATR']
+for ix in ixs:
+  name = N[ix].strip()
+  mat_und_k = value_data[f'{name.upper()}_K']
+  mat_und_l = value_data[f'{name.upper()}_L']
+  P_und[ix] = [mat_und_k, mat_und_l]
+
+print(P_und)
+
+STOP
+
+#  C = []
+#  for n in range(len(vfile)):
+#    fname = vfile[n]
+#    with open(fname, 'r') as f:
+#        C.extend(f.read().split())
+#  
+#  idb = [i for i,x in enumerate(K) if x == 'SBEN']
+#  for m in range(0, len(idb), 2):
+#      na = idb[m]
+#      nb = idb[m+1]
+#      name = N[na].strip()
+#      name = name.split('.')[0]  # remove decoration, if any
+#      id_ = strmatch(name,C)[0]
+#      fint = float(C[id_+6])
+#      P_und[na][0] = fint
+#      P_und[nb][0] = fint
+#  
+#  idm = [i for i,x in enumerate(K) if x == 'MATR']
+#  for m in range(0, len(idm), 2):
+#      n1 = idm[m]
+#      n2 = idm[m+1]
+#      name = N[n1].strip()
+#      Ktxt = f'"{name}_K"'
+#      Ltxt = f'"{name}_L"'
+#      idK = strmatch(Ktxt,C)[0]
+#      idL = strmatch(Ltxt,C)[0]
+#      undk = float(C[idK+2])
+#      undl = float(C[idL+2])
+#      P_und[n1, :] = [undl, undk]
+#      P_und[n2, :] = [undl, undk]
 
 
 # Shared devices (devices which see both kicked and unkicked beams)

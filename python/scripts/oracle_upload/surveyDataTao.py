@@ -7,6 +7,7 @@ import re
 import numpy as np
 from datetime import datetime
 from decimal import Decimal, ROUND_HALF_UP
+import json
 
 special_names = {
 'L0A':'L0A___',
@@ -134,6 +135,44 @@ def double_round_new(x, ndigits):
   q = Decimal(1).scaleb(-ndigits)           # 10**(-ndigits)
   return float(d.quantize(q, rounding=ROUND_HALF_UP))
 
+
+sbend_fints = {}
+for model in MODELS:
+  tao = Tao(lattice_file=LATFILE[model], noplot=True)
+  ix_eles = tao.lat_list('*', 'ele.ix_ele')
+  for ix in ix_eles[:-1]:
+    key = tao.lat_list(ix,'ele.key')[0]
+    if key.lower() == 'sbend': 
+      name = tao.lat_list(ix,'ele.name')[0].split('#')
+      if name[1] == '1':
+        use_name = name[0] #+ "A"
+        fint =  tao.lat_list(ix,'ele.fint')[0]
+        sbend_fints[use_name] = fint
+      elif name[1] == '2':
+        pass
+        #use_name = name[0] + "B"
+        #fint =  tao.lat_list(ix,'ele.fintx')[0]
+        #sbend_fints[use_name] = fint
+      else:
+        print("sbend name error")
+        assert 0==1
+
+mat_data = {}
+mat_wigs = ['umhtr','umxl','wigxlh','umasxh','pssxh','lh_und','umahxh']
+for model in MODELS:
+  tao = Tao(lattice_file=LATFILE[model], noplot=True)
+  ix_eles = tao.lat_list('*', 'ele.ix_ele')
+  for ix in ix_eles[:-1]:
+    name = tao.lat_list(ix,'ele.name')[0].lower()
+    if any(name.startswith(prefix) for prefix in mat_wigs):
+      mat_und_k =  tao.lat_list(ix,'ele.mat_und_k')[0]
+      mat_und_l =  tao.lat_list(ix,'ele.mat_und_l')[0]
+      mat_data[f'{name.upper()}_K'] = mat_und_k
+      mat_data[f'{name.upper()}_L'] = mat_und_l
+
+with open('value_data.json','w') as f:
+  json.dump(sbend_fints|mat_data,f,indent=4)
+
 for model in MODELS:
   with open(model+'_survey.tape','w') as f:
     f.write(f'Linux    Bmad Survey/{timestamp}\n\n')
@@ -233,6 +272,20 @@ for model in MODELS:
       f.write(line)
     f.write('\n')
     f.write(f"{' '*33}{suml:.9E}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
