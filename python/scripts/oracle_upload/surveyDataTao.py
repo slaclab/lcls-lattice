@@ -158,7 +158,7 @@ for model in MODELS:
         assert 0==1
 
 mat_data = {}
-mat_wigs = ['umhtr','umxl','wigxlh','umasxh','pssxh','lh_und','umahxh']
+mat_wigs = ['umhtr','umxl','wigxlh','umasxh','pssxh','lh_und','umahxh','pshxh']
 for model in MODELS:
   tao = Tao(lattice_file=LATFILE[model], noplot=True)
   ix_eles = tao.lat_list('*', 'ele.ix_ele')

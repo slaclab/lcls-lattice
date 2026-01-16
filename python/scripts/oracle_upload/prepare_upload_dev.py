@@ -413,28 +413,27 @@ KSnames = [
 # read FINT values for SBENs and undulator parameters from a special echo-file
 # generated via MAD VALUE commands
 
-P_und = np.zeros((Nelem, 2))
 
 with open('value_data.json','r') as f:
   value_data = json.load(f)
 
+sben_param_dict = {}
 ixs = [i for i,x in enumerate(K) if x == 'SBEN']
 for ix in ixs:
   name = N[ix].strip()[:-1]
   fint = value_data[name]
-  P_und[ix] = [fint,]
+  sben_param_dict[ix] = fint
 
+matr_param_dict = {}
+ixs = [i for i,x in enumerate(K) if x == 'SBEN']
 ixs = [i for i,x in enumerate(K) if x == 'MATR']
 for ix in ixs:
   name = N[ix].strip()
   mat_und_k = value_data[f'{name.upper()}_K']
   mat_und_l = value_data[f'{name.upper()}_L']
-  P_und[ix] = [mat_und_k, mat_und_l]
+  matr_param_dict[ix] = [mat_und_k, mat_und_l]
 
-print(P_und)
-
-STOP
-
+#  P_und = np.zeros((Nelem, 2))
 #  C = []
 #  for n in range(len(vfile)):
 #    fname = vfile[n]
@@ -863,7 +862,7 @@ for kwn,eles in ele_dict.items():
             energy = E[id1]  # GeV
             leng = L[id1] + L[id2]  # m
             gap = 2 * A[id1]  # m
-            fint = P_und[id1, 0]  # m
+            fint = sben_param_dict[id1]  # m
             tilt = P[id1, 3]  # rad
             ang = P[id1,0] + P[id2,0]  # rad
             if abs(ang) < amin:
@@ -1117,8 +1116,8 @@ for kwn,eles in ele_dict.items():
             suml = S[id1]  # m
             energy = E[id1]  # GeV
             leng = np.sum(L[ids])  # m
-            undl = P_und[id1, 0]  # m
-            undk = P_und[id1, 1]  # 1
+            undk = matr_param_dict[id1][0]  # 1
+            undl = matr_param_dict[id1][1]  # m
             coorc = np.copy(coor[id1])  # m, rad
             eles.append({
                 'idf': idf[id1],
