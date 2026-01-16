@@ -94,7 +94,6 @@ def roundoff(val, prec=None):
 script_dir = Path(__file__).parent.resolve()
 
 optics='12DEC2025s'
-vfile=['LCLS2sc_value.echo','LCLS2cu_value.echo']
 
 outdir='oracle_upload_dev'
 xfile='AD_ACCEL-'+optics+'.xls'
@@ -414,6 +413,9 @@ KSnames = [
 # generated via MAD VALUE commands
 
 
+# Load "value_data", which is data, that for historical reasons, is not in the survey.tape
+# files.  This is a vestigial feature and will be removed when survey.tape files are
+# depricated.
 with open('value_data.json','r') as f:
   value_data = json.load(f)
 
@@ -432,39 +434,6 @@ for ix in ixs:
   mat_und_k = value_data[f'{name.upper()}_K']
   mat_und_l = value_data[f'{name.upper()}_L']
   matr_param_dict[ix] = [mat_und_k, mat_und_l]
-
-#  P_und = np.zeros((Nelem, 2))
-#  C = []
-#  for n in range(len(vfile)):
-#    fname = vfile[n]
-#    with open(fname, 'r') as f:
-#        C.extend(f.read().split())
-#  
-#  idb = [i for i,x in enumerate(K) if x == 'SBEN']
-#  for m in range(0, len(idb), 2):
-#      na = idb[m]
-#      nb = idb[m+1]
-#      name = N[na].strip()
-#      name = name.split('.')[0]  # remove decoration, if any
-#      id_ = strmatch(name,C)[0]
-#      fint = float(C[id_+6])
-#      P_und[na][0] = fint
-#      P_und[nb][0] = fint
-#  
-#  idm = [i for i,x in enumerate(K) if x == 'MATR']
-#  for m in range(0, len(idm), 2):
-#      n1 = idm[m]
-#      n2 = idm[m+1]
-#      name = N[n1].strip()
-#      Ktxt = f'"{name}_K"'
-#      Ltxt = f'"{name}_L"'
-#      idK = strmatch(Ktxt,C)[0]
-#      idL = strmatch(Ltxt,C)[0]
-#      undk = float(C[idK+2])
-#      undl = float(C[idL+2])
-#      P_und[n1, :] = [undl, undk]
-#      P_und[n2, :] = [undl, undk]
-
 
 # Shared devices (devices which see both kicked and unkicked beams)
 aname_all = ['DIAG0', 'SPH', 'SPS', 'SPA', 'CLTS']
