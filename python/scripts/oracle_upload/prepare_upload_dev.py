@@ -5,6 +5,7 @@ import openpyxl as pyxl
 import re
 import math
 from pathlib import Path
+import json
 
 
 #------------------------------------------
@@ -93,9 +94,8 @@ def roundoff(val, prec=None):
 script_dir = Path(__file__).parent.resolve()
 
 optics='12DEC2025s'
-vfile=['LCLS2sc_value.echo','LCLS2cu_value.echo']
 
-outdir='oracle_upload'
+outdir='oracle_upload_dev'
 xfile='AD_ACCEL-'+optics+'.xls'
 noXTES_TEMPs=True; # skip elements named TEMP* in XTES systems
 
@@ -119,28 +119,28 @@ T2kG=10             # kG per Tesla
 # file name roots
 
 file_roots = [
-    {'root':'LCLS2scS',     'beg':'BEGGUNB',      'end':'ENDDMPS_2',   'ix':1},      #  1
-    {'root':'LCLS2scSS',    'beg':'BEGSFTS_1',    'end':'ENDSFTS_2',   'ix':2},      #  2
-    {'root':'LCLS2scH',     'beg':'BEGSPH',       'end':'ENDSLTH',     'ix':6},      #  6
-    {'root':'LCLS2scD',     'beg':'BEGSPD_2',     'end':'ENDSLTD',     'ix':7},      #  7
-    {'root':'DIAG0',        'beg':'BEGDIAG0',     'end':'ENDDIAG0',    'ix':8},      #  8
-    {'root':'LCLS2scDA',    'beg':'BEGSPA',       'end':'ENDESA',      'ix':9},      #  9 (DASEL)
-    {'root':'LCLS2cuH',     'beg':'BEGGUN',       'end':'ENDDMPH_2',   'ix':10},     # 10
-    {'root':'LCLS2cuHS',    'beg':'BEGSFTH_1',    'end':'ENDSFTH_2',   'ix':11},     # 11
-    {'root':'LCLS2cuS',     'beg':'BEGCLTS',      'end':'ENDCLTS',     'ix':14},     # 14
-    {'root':'LCLS2cuGSPEC', 'beg':'BEGGSPEC',     'end':'ENDGSPEC',    'ix':15},     # 15
-    {'root':'LCLS2cuSPEC',  'beg':'BEGSPEC',      'end':'ENDSPEC',     'ix':16},     # 16
+    {'root':'sc_sxr',     'beg':'BEGGUNB',      'end':'ENDDMPS_2',   'ix':1},      #  1
+    {'root':'sc_sfts',    'beg':'BEGSFTS_1',    'end':'ENDSFTS_2',   'ix':2},      #  2
+    {'root':'sc_hxr',     'beg':'BEGSPH',       'end':'ENDSLTH',     'ix':6},      #  6
+    {'root':'sc_bsyd',    'beg':'BEGSPD_2',     'end':'ENDSLTD',     'ix':7},      #  7
+    {'root':'sc_diag0',   'beg':'BEGDIAG0',     'end':'ENDDIAG0',    'ix':8},      #  8
+    {'root':'sc_dasel',   'beg':'BEGSPA',       'end':'ENDESA',      'ix':9},      #  9 (DASEL)
+    {'root':'cu_hxr',     'beg':'BEGGUN',       'end':'ENDDMPH_2',   'ix':10},     # 10
+    {'root':'cu_sfth',    'beg':'BEGSFTH_1',    'end':'ENDSFTH_2',   'ix':11},     # 11
+    {'root':'cu_sxr',     'beg':'BEGCLTS',      'end':'ENDCLTS',     'ix':14},     # 14
+    {'root':'cu_gspec',   'beg':'BEGGSPEC',     'end':'ENDGSPEC',    'ix':15},     # 15
+    {'root':'cu_spec',    'beg':'BEGSPEC',      'end':'ENDSPEC',     'ix':16},     # 16
 ]
 
 bsy_file_roots = [
-    {'root':'LCLS2scS',     'beg':'BEGSPD_1',     'end':'ENDDMPS_2',   'ix':1},      #  1
-    {'root':'LCLS2scSS',    'beg':'BEGSFTS_1',    'end':'ENDSFTS_2',   'ix':2},      #  2
-    {'root':'LCLS2scH',     'beg':'BEGSPH',       'end':'ENDSLTH',     'ix':6},      #  6
-    {'root':'LCLS2scD',     'beg':'BEGSPD_2',     'end':'ENDSLTD',     'ix':7},      #  7
-    {'root':'LCLS2scDA',    'beg':'BEGSPA',       'end':'ENDESA',      'ix':9},      #  9 (DASEL)
-    {'root':'LCLS2cuH',     'beg':'BEGCLTH_0',    'end':'ENDDMPH_2',   'ix':10},     # 10
-    {'root':'LCLS2cuHS',    'beg':'BEGSFTH_1',    'end':'ENDSFTH_2',   'ix':11},     # 11
-    {'root':'LCLS2cuS',     'beg':'BEGCLTS',      'end':'ENDCLTS',     'ix':14},     # 14
+#    {'root':'LCLS2scS',     'beg':'BEGSPD_1',     'end':'ENDDMPS_2',   'ix':1},      #  1
+#    {'root':'LCLS2scSS',    'beg':'BEGSFTS_1',    'end':'ENDSFTS_2',   'ix':2},      #  2
+#    {'root':'LCLS2scH',     'beg':'BEGSPH',       'end':'ENDSLTH',     'ix':6},      #  6
+#    {'root':'LCLS2scD',     'beg':'BEGSPD_2',     'end':'ENDSLTD',     'ix':7},      #  7
+#    {'root':'LCLS2scDA',    'beg':'BEGSPA',       'end':'ENDESA',      'ix':9},      #  9 (DASEL)
+#    {'root':'LCLS2cuH',     'beg':'BEGCLTH_0',    'end':'ENDDMPH_2',   'ix':10},     # 10
+#    {'root':'LCLS2cuHS',    'beg':'BEGSFTH_1',    'end':'ENDSFTH_2',   'ix':11},     # 11
+#    {'root':'LCLS2cuS',     'beg':'BEGCLTS',      'end':'ENDCLTS',     'ix':14},     # 14
 ]
 
 und_file_roots = []
@@ -260,6 +260,10 @@ for file_root in file_roots:
     idd.extend(list(range(id1,id2+1)))
 
 Sd = [x[2] for x in coor] # set "display S" to linac Z-coordinate
+
+#print(f'FOO {len(N)}  {len(set(N))}')
+#Q4indexes = [i for i, value in enumerate(N) if value == "Q4"]
+#print(f'FOO {[P[i] for i in Q4indexes]}')
 
 Nelem = len(N)
 # get BSY coordinates
@@ -386,6 +390,7 @@ def fix_aline_coords(N, P, coor):
       coor[i][5] = AROLL2
 
     return coor
+
 coor = fix_aline_coords(N, P, coor)
 
 if cBSY:
@@ -407,39 +412,28 @@ KSnames = [
 # read FINT values for SBENs and undulator parameters from a special echo-file
 # generated via MAD VALUE commands
 
-C = []
-for n in range(len(vfile)):
-    fname = vfile[n]
-    with open(fname, 'r') as f:
-        C.extend(f.read().split())
 
-P_und = np.zeros((Nelem, 2))
+# Load "value_data", which is data, that for historical reasons, is not in the survey.tape
+# files.  This is a vestigial feature and will be removed when survey.tape files are
+# depricated.
+with open('value_data.json','r') as f:
+  value_data = json.load(f)
 
-idb = [i for i,x in enumerate(K) if x == 'SBEN']
-for m in range(0, len(idb), 2):
-    na = idb[m]
-    nb = idb[m+1]
-    name = N[na].strip()
-    name = name.split('.')[0]  # remove decoration, if any
-    id_ = strmatch(name,C)[0]
-    fint = float(C[id_+6])
-    P_und[na][0] = fint
-    P_und[nb][0] = fint
+sben_param_dict = {}
+ixs = [i for i,x in enumerate(K) if x == 'SBEN']
+for ix in ixs:
+  name = N[ix].strip()[:-1]
+  fint = value_data[name]
+  sben_param_dict[ix] = fint
 
-idm = [i for i,x in enumerate(K) if x == 'MATR']
-for m in range(0, len(idm), 2):
-    n1 = idm[m]
-    n2 = idm[m+1]
-    name = N[n1].strip()
-    Ktxt = f'"{name}_K"'
-    Ltxt = f'"{name}_L"'
-    idK = strmatch(Ktxt,C)[0]
-    idL = strmatch(Ltxt,C)[0]
-    undk = float(C[idK+2])
-    undl = float(C[idL+2])
-    P_und[n1, :] = [undl, undk]
-    P_und[n2, :] = [undl, undk]
-
+matr_param_dict = {}
+ixs = [i for i,x in enumerate(K) if x == 'SBEN']
+ixs = [i for i,x in enumerate(K) if x == 'MATR']
+for ix in ixs:
+  name = N[ix].strip()
+  mat_und_k = value_data[f'{name.upper()}_K']
+  mat_und_l = value_data[f'{name.upper()}_L']
+  matr_param_dict[ix] = [mat_und_k, mat_und_l]
 
 # Shared devices (devices which see both kicked and unkicked beams)
 aname_all = ['DIAG0', 'SPH', 'SPS', 'SPA', 'CLTS']
@@ -499,7 +493,8 @@ def assign_ucell(N, coor):
     return UCELL
 
 # Assign undulator cell names
-UCELL = assign_ucell(N_bsy, coor_bsy)
+if cBSY:
+  UCELL = assign_ucell(N_bsy, coor_bsy)
 
 def read_sector_data():
     filename = f'{script_dir}/sectors.xlsx'
@@ -705,6 +700,11 @@ ele_dict = {
 'MULT':[]
 }
 
+
+not_included = [item for item in K if item not in ele_dict.keys()]
+print('the following keys are not included in the upload')
+print(set(not_included))
+
 def process_bsy(name,ele,split=False,exact=True):
     ids = strmatch(name,N_bsy,exact)
     if len(ids) > 0:
@@ -831,7 +831,7 @@ for kwn,eles in ele_dict.items():
             energy = E[id1]  # GeV
             leng = L[id1] + L[id2]  # m
             gap = 2 * A[id1]  # m
-            fint = P_und[id1, 0]  # m
+            fint = sben_param_dict[id1]  # m
             tilt = P[id1, 3]  # rad
             ang = P[id1,0] + P[id2,0]  # rad
             if abs(ang) < amin:
@@ -1085,8 +1085,8 @@ for kwn,eles in ele_dict.items():
             suml = S[id1]  # m
             energy = E[id1]  # GeV
             leng = np.sum(L[ids])  # m
-            undl = P_und[id1, 0]  # m
-            undk = P_und[id1, 1]  # 1
+            undk = matr_param_dict[id1][0]  # 1
+            undl = matr_param_dict[id1][1]  # m
             coorc = np.copy(coor[id1])  # m, rad
             eles.append({
                 'idf': idf[id1],
@@ -1321,6 +1321,8 @@ for kwn,eles in ele_dict.items():
             # UND coordinates
             if cUND:
                 process_und(name,eles[-1],split=True)
+    else:
+      print(f'Element {names} key {kwn} not included in upload')
 
 # deferred devices
 nDEPR = 0

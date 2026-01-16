@@ -3,6 +3,13 @@
 
 def replace_element(lines, ele_name, new_ele, verbose=True, shadows=None):
     """
+    lines: the lattice file being converted
+    ele_name: key (element name) from the replacements list
+    new_ele: value from replacements list.
+    shadows: list of element names
+
+    shadow elements are prepended with !new and the old definition is left in place.
+
     Searches through lines for:
     ele_name: <some definition>
     , comments it out, and writes new_ele string below the comment. 

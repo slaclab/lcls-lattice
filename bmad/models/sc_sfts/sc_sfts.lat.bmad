@@ -1,0 +1,37 @@
+!
+! sc_sfts
+!
+
+parameter[custom_attribute1] = taylor::mat_und_k
+parameter[custom_attribute2] = taylor::mat_und_l
+
+call, file = $LCLS_LATTICE/bmad/master/SC_SFTS.bmad
+
+call, file = $LCLS_LATTICE/bmad/master/LCLSsc_devicenames.bmad
+call, file = $LCLS_LATTICE/bmad/overlays/sc/linac_overlays.bmad
+call, file = $LCLS_LATTICE/bmad/overlays/sc/bc1_overlays.bmad
+call, file = $LCLS_LATTICE/bmad/overlays/sc/bc2_overlays.bmad
+
+! Extra match settings
+call, file =  $LCLS_LATTICE/bmad/master/sc/sc_linac_settings.bmad
+
+! Wakefields
+call, file =  $LCLS_LATTICE/bmad/master/sc/sc_linac_wakefields.bmad
+
+sbend::*[fringe_type] = full
+call, file = $LCLS_LATTICE/bmad/master/gunb/beginning_BEGGUNB.bmad
+
+! lcavity::*[cavity_type]=traveling_wave
+! BUN1B[cavity_type]=standing_wave
+! CAVL011[cavity_type]=standing_wave
+! CAVL012[cavity_type]=standing_wave
+! CAVL013[cavity_type]=standing_wave
+! CAVL014[cavity_type]=standing_wave
+! CAVL015[cavity_type]=standing_wave
+! CAVL016[cavity_type]=standing_wave
+! CAVL017[cavity_type]=standing_wave
+! CAVL018[cavity_type]=standing_wave
+
+use, SC_SFTS
+
+lcavity::*[n_rf_steps]=0
