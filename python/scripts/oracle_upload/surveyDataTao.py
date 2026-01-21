@@ -73,15 +73,10 @@ if LCLS_LATTICE_ENV is None:
   sys.exit(1)
 
 BDIR = f'{LCLS_LATTICE_ENV}/bmad/'
-#MODELS=['sc_sxr']
 MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','sc_dasel','sc_sfts','cu_sxr','cu_hxr','cu_sfth','cu_gspec','cu_spec']
 LATFILE = {}
 for model in MODELS:
-  if model.startswith('sc_'):
-    LATFILE[model] = f'{LCLS_LATTICE_ENV}/bmad/models/{model}/{model}.lat.bmad'
-
-  elif model.startswith('cu_'):
-    LATFILE[model] = f'{LCLS_LATTICE_ENV}/bmad/models/{model}/{model}_svy.lat.bmad'
+  LATFILE[model] = f'{LCLS_LATTICE_ENV}/bmad/survey_models/{model}.lat.bmad'
 
 def my_lat_list(ix, p):
   if p == 0:
@@ -136,6 +131,13 @@ def double_round_new(x, ndigits):
   return float(d.quantize(q, rounding=ROUND_HALF_UP))
 
 
+#Build special "value_data.json" file containing values not present in the mad8s
+#output.  This is vestigial and the values here will eventually be subsumed in the 
+#survey file or whatever replaces it.
+#Two types of data are processed here:
+#  1)  sbend field integrals
+#  2)  Matrix undulator K and period length L
+#
 sbend_fints = {}
 for model in MODELS:
   tao = Tao(lattice_file=LATFILE[model], noplot=True)
@@ -157,6 +159,7 @@ for model in MODELS:
         print("sbend name error")
         assert 0==1
 
+
 mat_data = {}
 mat_wigs = ['umhtr','umxl','wigxlh','umasxh','pssxh','lh_und','umahxh','pshxh']
 for model in MODELS:
@@ -172,6 +175,14 @@ for model in MODELS:
 
 with open('value_data.json','w') as f:
   json.dump(sbend_fints|mat_data,f,indent=4)
+
+#
+#Build survey.tape files
+#The survey.tape file contains 4 lines of information for each element
+#  MAD_KEYelement_name L 4_params_depending_on_element_key TYPE(if present)  energy
+#  5_params_depending_on_element_key
+#  x y z suml
+#  theta phi psi
 
 for model in MODELS:
   with open(model+'_survey.tape','w') as f:
