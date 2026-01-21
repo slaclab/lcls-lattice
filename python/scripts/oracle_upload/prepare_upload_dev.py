@@ -133,7 +133,7 @@ file_roots = [
 ]
 
 bsy_file_roots = [
-#    {'root':'LCLS2scS',     'beg':'BEGSPD_1',     'end':'ENDDMPS_2',   'ix':1},      #  1
+    {'root':'sc_sxr_bsy',     'beg':'BEGSPD_1',     'end':'ENDDMPS_2',   'ix':1},      #  1
 #    {'root':'LCLS2scSS',    'beg':'BEGSFTS_1',    'end':'ENDSFTS_2',   'ix':2},      #  2
 #    {'root':'LCLS2scH',     'beg':'BEGSPH',       'end':'ENDSLTH',     'ix':6},      #  6
 #    {'root':'LCLS2scD',     'beg':'BEGSPD_2',     'end':'ENDSLTD',     'ix':7},      #  7
@@ -229,7 +229,7 @@ cUND=len(und_file_roots)>0
 from parse_survey import parse_survey
 
 # ------------------------------------------------------------------------------
-# read the MAD output files
+# read survey files
 K, N, T, FDN = [], [], [], []
 L, P, A, E, coor, S, Sd = [], [], [], [], [], [], []
 idf, idd = [], []  # idf: which MAD survey file an element came from
@@ -270,7 +270,7 @@ Nelem = len(N)
 K_bsy, N_bsy, L_bsy, P_bsy, S_bsy, coor_bsy, idf_bsy, FDN_bsy = [], [], [], [], [], [], [], []
 if cBSY:
     for file_root in bsy_file_roots:
-        fname = f'BSY-{file_root["root"]}_survey.tape'
+        fname = f'{file_root["root"]}_survey.tape'
         print(f'Opening file {fname}')
         titl, tK, tN, tL, tP, tA, tT, tE, tFDN, tcoor, tS = parse_survey(fname)
 
@@ -353,29 +353,31 @@ def fix_dump_coords(N, P, coor):
     special handling for rolled dump lines and A-line
     """
 
-    # set roll angle for SXR dump line components
-    id1=N.index('RODMP1S')
-    id2=N.index('RODMP2S')-1
-    ARODMP1S=P[id1][4]
-    for i in range(id1,id2+1):
-      coor[i][5]=ARODMP1S
+    if 'RODMPS1S' in N:
+      # set roll angle for SXR dump line components
+      id1=N.index('RODMP1S')
+      id2=N.index('RODMP2S')-1
+      ARODMP1S=P[id1][4]
+      for i in range(id1,id2+1):
+        coor[i][5]=ARODMP1S
 
-    id1=id2+1
-    id2=N.index('ENDDMPS_2')
-    for i in range(id1,id2+1):
-      coor[i][5]=0
+      id1=id2+1
+      id2=N.index('ENDDMPS_2')
+      for i in range(id1,id2+1):
+        coor[i][5]=0
 
-    # set roll angle for HXR dump line components
-    id1=N.index('RODMP1H')
-    id2=N.index('RODMP2H')-1
-    ARODMP1H=P[id1][4];
-    for i in range(id1,id2+1):
-      coor[i][5]=ARODMP1H
+    if 'RODMPS1H' in N:
+      # set roll angle for HXR dump line components
+      id1=N.index('RODMP1H')
+      id2=N.index('RODMP2H')-1
+      ARODMP1H=P[id1][4];
+      for i in range(id1,id2+1):
+        coor[i][5]=ARODMP1H
 
-    id1=id2+1;
-    id2=N.index('ENDDMPH_2')
-    for i in range(id1,id2+1):
-      coor[i][5]=0
+      id1=id2+1;
+      id2=N.index('ENDDMPH_2')
+      for i in range(id1,id2+1):
+        coor[i][5]=0
 
     return coor
 coor = fix_dump_coords(N, P, coor)
@@ -383,11 +385,12 @@ coor = fix_dump_coords(N, P, coor)
 def fix_aline_coords(N, P, coor):
     # Implementation of FixAlineCoords function
     # set roll angle for A-line components
-    id1 = N.index('ROLL2')
-    id2 = N.index('ENDBSYA')
-    AROLL2 = P[id1][4]
-    for i in range(id1,id2+1):
-      coor[i][5] = AROLL2
+    if 'ROLL2' in N:
+      id1 = N.index('ROLL2')
+      id2 = N.index('ENDBSYA')
+      AROLL2 = P[id1][4]
+      for i in range(id1,id2+1):
+        coor[i][5] = AROLL2
 
     return coor
 

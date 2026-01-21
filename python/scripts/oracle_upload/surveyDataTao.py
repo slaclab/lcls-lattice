@@ -73,7 +73,8 @@ if LCLS_LATTICE_ENV is None:
   sys.exit(1)
 
 BDIR = f'{LCLS_LATTICE_ENV}/bmad/'
-MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','sc_dasel','sc_sfts','cu_sxr','cu_hxr','cu_sfth','cu_gspec','cu_spec']
+MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','sc_dasel','sc_sfts','cu_sxr','cu_hxr','cu_sfth','cu_gspec','cu_spec',
+        'sc_sxr_bsy']
 LATFILE = {}
 for model in MODELS:
   LATFILE[model] = f'{LCLS_LATTICE_ENV}/bmad/survey_models/{model}.lat.bmad'
