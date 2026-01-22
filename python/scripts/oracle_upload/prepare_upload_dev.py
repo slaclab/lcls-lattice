@@ -134,13 +134,13 @@ file_roots = [
 
 bsy_file_roots = [
     {'root':'sc_sxr_bsy',     'beg':'BEGSPD_1',     'end':'ENDDMPS_2',   'ix':1},      #  1
-#    {'root':'LCLS2scSS',    'beg':'BEGSFTS_1',    'end':'ENDSFTS_2',   'ix':2},      #  2
-#    {'root':'LCLS2scH',     'beg':'BEGSPH',       'end':'ENDSLTH',     'ix':6},      #  6
-#    {'root':'LCLS2scD',     'beg':'BEGSPD_2',     'end':'ENDSLTD',     'ix':7},      #  7
-#    {'root':'LCLS2scDA',    'beg':'BEGSPA',       'end':'ENDESA',      'ix':9},      #  9 (DASEL)
-#    {'root':'LCLS2cuH',     'beg':'BEGCLTH_0',    'end':'ENDDMPH_2',   'ix':10},     # 10
-#    {'root':'LCLS2cuHS',    'beg':'BEGSFTH_1',    'end':'ENDSFTH_2',   'ix':11},     # 11
-#    {'root':'LCLS2cuS',     'beg':'BEGCLTS',      'end':'ENDCLTS',     'ix':14},     # 14
+    {'root':'sc_sfts_bsy',    'beg':'BEGSFTS_1',    'end':'ENDSFTS_2',   'ix':2},      #  2
+    {'root':'sc_hxr_bsy',     'beg':'BEGSPH',       'end':'ENDSLTH',     'ix':6},      #  6
+    {'root':'sc_bsyd_bsy',    'beg':'BEGSPD_2',     'end':'ENDSLTD',     'ix':7},      #  7
+    {'root':'sc_dasel_bsy',   'beg':'BEGSPA',       'end':'ENDESA',      'ix':9},      #  9 (DASEL)
+    {'root':'cu_hxr_bsy',     'beg':'BEGCLTH_0',    'end':'ENDDMPH_2',   'ix':10},     # 10
+    {'root':'cu_sfth_bsy',    'beg':'BEGSFTH_1',    'end':'ENDSFTH_2',   'ix':11},     # 11
+    {'root':'cu_sxr_bsy',     'beg':'BEGCLTS',      'end':'ENDCLTS',     'ix':14},     # 14
 ]
 
 und_file_roots = []
@@ -353,20 +353,18 @@ def fix_dump_coords(N, P, coor):
     special handling for rolled dump lines and A-line
     """
 
-    if 'RODMPS1S' in N:
-      # set roll angle for SXR dump line components
-      id1=N.index('RODMP1S')
-      id2=N.index('RODMP2S')-1
-      ARODMP1S=P[id1][4]
-      for i in range(id1,id2+1):
-        coor[i][5]=ARODMP1S
+    # set roll angle for SXR dump line components
+    id1=N.index('RODMP1S')
+    id2=N.index('RODMP2S')-1
+    ARODMP1S=P[id1][4]
+    for i in range(id1,id2+1):
+      coor[i][5]=ARODMP1S
 
-      id1=id2+1
-      id2=N.index('ENDDMPS_2')
-      for i in range(id1,id2+1):
-        coor[i][5]=0
+    id1=id2+1
+    id2=N.index('ENDDMPS_2')
+    for i in range(id1,id2+1):
+      coor[i][5]=0
 
-    if 'RODMPS1H' in N:
       # set roll angle for HXR dump line components
       id1=N.index('RODMP1H')
       id2=N.index('RODMP2H')-1
