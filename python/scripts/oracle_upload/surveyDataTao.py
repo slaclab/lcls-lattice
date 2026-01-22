@@ -86,22 +86,6 @@ def my_lat_list(ix, p):
     ret = tao.lat_list(ix, f'ele.{p}')[0]
   return ret
 
-def extract_kv_pairs(text):
-  pattern = r'(\w+):(\w+)'
-  pairs = re.findall(pattern, text)
-  ret = {}
-  for kv in pairs:
-    ret[kv[0]] = kv[1]
-  return ret
-
-def get_slave_status(ix):
-  slave_status = tao.ele_lord_slave(ix)
-  ret = None
-  for x in slave_status:
-    if x['type'] == 'Lord' and x['status'] == 'Super_Lord':
-      ret = int(x['location_name'].split('>>')[1])
-  return ret
-  
 key_dict = {}
 with open(f'unified_keys.dat','r') as fkey:
   for line in fkey:
@@ -245,11 +229,7 @@ for model in MODELS:
           #If element not in key dictionary, does not go into Oracle Upload
           print(f'{name} not in dictionary')
           continue
-        slave_status = get_slave_status(ix)
-        if slave_status:
-          ele_type = tao.ele_head(slave_status)['type']
-        else:
-          ele_type = tao.ele_head(ix)['type']
+        ele_type = tao.ele_head(ix)['type']
         params = template['params']
 
       name_use = name.split('#',1)[0].upper()
