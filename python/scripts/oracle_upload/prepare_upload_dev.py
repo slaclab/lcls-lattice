@@ -261,10 +261,6 @@ for file_root in file_roots:
 
 Sd = [x[2] for x in coor] # set "display S" to linac Z-coordinate
 
-#print(f'FOO {len(N)}  {len(set(N))}')
-#Q4indexes = [i for i, value in enumerate(N) if value == "Q4"]
-#print(f'FOO {[P[i] for i in Q4indexes]}')
-
 Nelem = len(N)
 # get BSY coordinates
 K_bsy, N_bsy, L_bsy, P_bsy, S_bsy, coor_bsy, idf_bsy, FDN_bsy = [], [], [], [], [], [], [], []
@@ -365,17 +361,17 @@ def fix_dump_coords(N, P, coor):
     for i in range(id1,id2+1):
       coor[i][5]=0
 
-      # set roll angle for HXR dump line components
-      id1=N.index('RODMP1H')
-      id2=N.index('RODMP2H')-1
-      ARODMP1H=P[id1][4];
-      for i in range(id1,id2+1):
-        coor[i][5]=ARODMP1H
+    # set roll angle for HXR dump line components
+    id1=N.index('RODMP1H')
+    id2=N.index('RODMP2H')-1
+    ARODMP1H=P[id1][4];
+    for i in range(id1,id2+1):
+      coor[i][5]=ARODMP1H
 
-      id1=id2+1;
-      id2=N.index('ENDDMPH_2')
-      for i in range(id1,id2+1):
-        coor[i][5]=0
+    id1=id2+1;
+    id2=N.index('ENDDMPH_2')
+    for i in range(id1,id2+1):
+      coor[i][5]=0
 
     return coor
 coor = fix_dump_coords(N, P, coor)
@@ -383,12 +379,11 @@ coor = fix_dump_coords(N, P, coor)
 def fix_aline_coords(N, P, coor):
     # Implementation of FixAlineCoords function
     # set roll angle for A-line components
-    if 'ROLL2' in N:
-      id1 = N.index('ROLL2')
-      id2 = N.index('ENDBSYA')
-      AROLL2 = P[id1][4]
-      for i in range(id1,id2+1):
-        coor[i][5] = AROLL2
+    id1 = N.index('ROLL2')
+    id2 = N.index('ENDBSYA')
+    AROLL2 = P[id1][4]
+    for i in range(id1,id2+1):
+      coor[i][5] = AROLL2
 
     return coor
 
