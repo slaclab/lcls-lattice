@@ -115,7 +115,6 @@ def double_round_new(x, ndigits):
   q = Decimal(1).scaleb(-ndigits)           # 10**(-ndigits)
   return float(d.quantize(q, rounding=ROUND_HALF_UP))
 
-
 #Build special "value_data.json" file containing values not present in the mad8s
 #output.  This is vestigial and the values here will eventually be subsumed in the 
 #survey file or whatever replaces it.
