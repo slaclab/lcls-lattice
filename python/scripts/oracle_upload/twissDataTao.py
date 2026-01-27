@@ -23,10 +23,10 @@ if LCLS_LATTICE_ENV is None:
   sys.exit(1)
 
 BDIR = f'{LCLS_LATTICE_ENV}/bmad/'
-MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','cu_sxr']
+MODELS=['sc_sxr_beam0','sc_hxr_beam0','sc_bsyd_beam0','sc_diag0_beam0','sc_dasel_beam0','cu_sxr_ws02']
 LATFILE = {}
 for model in MODELS:
-  LATFILE[model] = f'{LCLS_LATTICE_ENV}/bmad/survey_models/{model}.lat.bmad@{model}i'
+  LATFILE[model] = f'{LCLS_LATTICE_ENV}/bmad/survey_models/{model}.lat.bmad'
 
 def my_lat_list(ix, p):
   if p == 0:
@@ -112,13 +112,6 @@ for model in MODELS:
       line = line + '\n'
         
       f.write(line)
-
-
-
-
-
-
-
 
 
 
