@@ -60,7 +60,7 @@ def double_round_new(x, ndigits):
 for model in MODELS:
   with open(model+'_twiss.dat','w') as f:
     f.write(f'# Linux    Bmad Twiss/{timestamp}\n\n')
-    f.write(f'# name, s, beta_a, beta_b, phi_a, phi_b, eta_a, eta_b, e_tot')
+    f.write(f'# name, s, beta_a, beta_b, phi_a, phi_b, eta_a, eta_b, e_tot\n')
     tao = Tao(lattice_file=LATFILE[model], noplot=True)
     ix_eles = tao.lat_list('*', 'ele.ix_ele')
     suml = 0

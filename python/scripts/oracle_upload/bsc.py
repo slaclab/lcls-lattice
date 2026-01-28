@@ -44,7 +44,7 @@ class Element:
     self.phi_b = float(self.phi_b)
     self.eta_a = float(self.eta_a)
     self.eta_b = float(self.eta_b)
-    self.e_tot = float(self.e_tot)
+    self.e_tot = float(self.e_tot)*1e-9
 
 @dataclass
 class Lattice:
@@ -80,7 +80,7 @@ if LCLS_LATTICE_ENV is None:
 
 BDIR = f'{LCLS_LATTICE_ENV}/bmad/'
 #MODELS=['sc_sxr_beam0','sc_hxr_beam0','sc_bsyd_beam0','sc_diag0_beam0','sc_dasel_beam0','cu_sxr_ws02']
-MODELS=['sc_sxr_beam0','sc_dasel_beam0']
+MODELS=['sc_sxr_beam0']
 
 # 'name', 's', 'beta_a', 'beta_b', 'phi_a', 'phi_b', 'eta_a', 'eta_b', 'e_tot'
 
@@ -151,9 +151,12 @@ for model in MODELS:
 
   # R56 compensating chicanes (must add dx0 to horizontal stay-clear for each)
   R56names=['CCDLU','CCDLD','CC31B','CC32B','CC31','CC32','CC35','CC36']
+  R56ids=[]
   for R56name in R56names:
-    id1=strmatch(f'{R56name}BEG',lat.names); # chicane start
-    id2=strmatch(f'{R56name}END',lat.names); # chicane end
+    id1=strmatch(f'{R56name}BEG',lat.names) # chicane start
+    id2=strmatch(f'{R56name}END',lat.names) # chicane end
+    if id1 and id2:
+      R56ids.extend(list(range(id1[0],id2[0]+1)))
 
   # BSC computation
   esprd=[0 for x in lat.elements]  # make array, initialized to zeros and same size as S
@@ -175,8 +178,8 @@ for model in MODELS:
       Dia[ix] = 2*np.sqrt(XID[ix]**2 + YID[ix]**2);
 
     else:
-      e=eN/(ele.e_tot/511e3); # emitance along machine
-      if ele.name in R56names:
+      e=eN/(ele.e_tot/511e-6); # emitance along machine
+      if ix in R56ids:
         dx=dx0; # horizontal stay-clear addition for R56-compensating chicanes
       else:
         dx=0;  # no additional horizontal stay-clear
@@ -201,7 +204,7 @@ for model in MODELS:
         # ~post-linac (includes LCLS2cuS)
         # 3.8->3.7 & 4.2->8.2 for LCLSII-HE (July 17, 2017)
         if ele.s < S_XRstart:  # before undulator
-          esprd[ix]=dE3+chirp+vern+Ejit+Etrip/E[ix]  # includes LCLS2cuS
+          esprd[ix]=dE3 + chirp + vern + Ejit + Etrip/ele.e_tot  # includes LCLS2cuS
         elif ele.s >= S_XRstart and ele.s <= S_XRterm: 
           # in undulator
           steer=steer1
@@ -216,7 +219,7 @@ for model in MODELS:
             esprd[ix] = dE4 + chirp + vern + EFEL + Ejit + Etrip/ele.e_tot # after undulator (HXR or SXR)
           else:
             esprd[ix] = dE4 + chirp + vern + Ejit + Etrip/ele.e_tot  # in BSY dumpline
-      XID[ix] = max(2*nsig*np.sqrt(e*ele.beta_a*betaf)+etaf*np.abs(ele.eta_a)*esprd[ix]+2*steer+2*xt[ix]+dx, min_XID)
+      XID[ix] = max(2*nsig*np.sqrt(e*ele.beta_a*betaf) + etaf*np.abs(ele.eta_a)*esprd[ix] + 2*steer + 2*xt[ix] + dx, min_XID)
       #print(f'{XID[ix]=} {min_XID=}')
       #print(f'   {2*nsig*np.sqrt(e*ele.beta_a*betaf)+etaf*np.abs(ele.eta_a)*esprd[ix]+2*steer+2*xt[ix]+dx}')
       YID[ix] = max(2*nsig*np.sqrt(e*ele.beta_b*betaf)+etaf*np.abs(ele.eta_b)*esprd[ix]+2*steer, min_YID)
@@ -228,7 +231,7 @@ for model in MODELS:
     f.write('ELEMENT              S (m)        BSCd (mm)    +BSCx (mm)     -BSCx (mm)    +BSCy (mm)     -BSCy (mm)\n')
     for ix,ele in enumerate(lat.elements):
       name=ele.name.rstrip('_')
-      f.write('{}  {}  {}  {}  {}  {}  {}\n'.format(ele.name, ele.s, 1e3*Dia[ix], 1e3*XID[ix]/2, -1e3*XID[ix]/2, 1e3*YID[ix]/2, -1e3*YID[ix]/2))
+      f.write('{:<16s}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}\n'.format(ele.name, ele.s, 1e3*Dia[ix], 1e3*XID[ix]/2, -1e3*XID[ix]/2, 1e3*YID[ix]/2, -1e3*YID[ix]/2))
   print(f'BSC file written: {fout}')
   
     #   if (false) # plot
