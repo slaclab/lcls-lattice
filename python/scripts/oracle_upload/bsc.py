@@ -3,7 +3,6 @@
 import os
 import numpy as np
 from dataclasses import dataclass, field
-from pytao import Tao
 
 def strmatch(n_str,N_lst,exact=False):
     """
@@ -32,8 +31,8 @@ class Element:
   beta_b: float
   phi_a: float
   phi_b: float
-  eta_a: float
-  eta_b: float
+  eta_x: float
+  eta_y: float
   e_tot: float
 
   def __post_init__(self):
@@ -42,9 +41,9 @@ class Element:
     self.beta_b = float(self.beta_b)
     self.phi_a = float(self.phi_a)
     self.phi_b = float(self.phi_b)
-    self.eta_a = float(self.eta_a)
-    self.eta_b = float(self.eta_b)
-    self.e_tot = float(self.e_tot)*1e-9
+    self.eta_x = float(self.eta_x)
+    self.eta_y = float(self.eta_y)
+    self.e_tot = float(self.e_tot)*1e-9  # [GeV]
 
 @dataclass
 class Lattice:
@@ -72,17 +71,7 @@ A =65e-9  #  m (effective beam admittance)
 dp =0.02  #  1 (beam maximum relative energy error in the S30XL)
 D =0.002  #  m (maximum residual beam orbit in S30XL)
 
-
-LCLS_LATTICE_ENV = os.getenv('LCLS_LATTICE')
-if LCLS_LATTICE_ENV is None:
-  print('Error:  LCLS_LATTICE is not set')
-  sys.exit(1)
-
-BDIR = f'{LCLS_LATTICE_ENV}/bmad/'
-#MODELS=['sc_sxr_beam0','sc_hxr_beam0','sc_bsyd_beam0','sc_diag0_beam0','sc_dasel_beam0','cu_sxr_ws02']
-MODELS=['sc_sxr_beam0']
-
-# 'name', 's', 'beta_a', 'beta_b', 'phi_a', 'phi_b', 'eta_a', 'eta_b', 'e_tot'
+MODELS=['sc_sxr_beam0','sc_hxr_beam0','sc_bsyd_beam0','sc_diag0_beam0','sc_dasel_beam0','cu_sxr']
 
 for model in MODELS:
   print(f'model: {model}')
@@ -97,12 +86,12 @@ for model in MODELS:
 
   if model == 'sc_dasel_beam0':
     id1 = strmatch('BEGSPA',lat.names,False)[0]
-    id2 = strmatch('MADUMP',lat.names,False)[-1]+1 # ENDBSYA
-    lat.elements = lat.elements[id1:id2+1] # Yes, id2 gets +1 in previous line and this line.
+    id2 = strmatch('MADUMP',lat.names,False)[-1] # ENDBSYA
+    lat.elements = lat.elements[id1:id2+1]
     lat.names = [x.name for x in lat.elements]
     id_dasel_mark = strmatch('BLRDAS',lat.names)[-1] # downstream of BLRDAS
 
-  if model == 'cu_sxr_beam0': # BSC parameters for Cu linac beam
+  if model.startswith('cu_'): # BSC parameters for Cu linac beam
     dE3 = 0.1e-2    # full core energy width in post-linac
     eN = 1e-6    # worst case emittance (~2-times nominal)
     Etrip = 0.235/2    # largest value @ 2.5 GeV (GeV)
@@ -128,7 +117,7 @@ for model in MODELS:
     S_TCXDG0 = 1e10    # defualt to TcavX not in this beamline
     S_TCYDG0 = 1e10    # default to TcavY not in this beamline
   # some points of interest
-  if model == 'cu_sxr_ws02':
+  if model.startswith('cu_'):
     i_BSY = strmatch('BEGCLTH_0',lat.names)[0]    # entrance to BSY (Cu linac)
   S_XRstart=0   
   S_XRterm=0   
@@ -139,10 +128,10 @@ for model in MODELS:
       S_XRstart=ele.s    # S at undulator start
     elif ele.name[1:7] == 'XRTERM':
       S_XRterm=ele.s     # S at undulator exit (dumpline start)
-    elif ele.name[0:7] == 'TCX01':
+    elif ele.name[0:5] == 'TCX01':
       S_TCX01=ele.s      # S at X-band TCAV exit (just after und's)
       i_TCX01=ix
-    elif ele.name[0:5] == 'MTCX' or ele.name[0:5] == 'MTCXB':
+    elif ele.name == 'MTCX' or ele.name[0:5] == 'MTCXB':
       mx0=ele.phi_a      # phase advance at center of X-band TCAV's
     elif ele.name[0:6] == 'OTRDMP':
       S_OTRDMP=ele.s   # S at dump (TCAV) screen
@@ -165,7 +154,7 @@ for model in MODELS:
   YID=[0 for x in lat.elements]    # vertical stay-clear full height (empty array initially)
   Dia=[0 for x in lat.elements]    # Stay-clear full diameter, if cylindrical chamber (empty array initially)
   for ix,ele in enumerate(lat.elements):
-    if model == 'cu_sxr_beam0' and ix < i_BSY:
+    if model.startswith('cu_') and ix < i_BSY:
       continue
 
     if model == 'sc_dasel_beam0':
@@ -173,9 +162,11 @@ for model in MODELS:
         f=0.5
       else:
         f=1
-      XID[ix] = 2*np.sqrt(A*ele.beta_a)+np.abs(ele.eta_a*dp)+f*D   # mm
-      YID[ix] = 2*np.sqrt(A*ele.beta_b)+np.abs(ele.eta_b*dp)+f*D   # mm
+      XID[ix] = (np.sqrt(A*ele.beta_a) + np.abs(ele.eta_x*dp) + f*D)   # mm
+      YID[ix] = (np.sqrt(A*ele.beta_b) + np.abs(ele.eta_y*dp) + f*D)   # mm
       Dia[ix] = 2*np.sqrt(XID[ix]**2 + YID[ix]**2);
+      XID[ix] = 2*XID[ix]
+      YID[ix] = 2*YID[ix]
 
     else:
       e=eN/(ele.e_tot/511e-6); # emitance along machine
@@ -214,15 +205,13 @@ for model in MODELS:
           # after undulator
           if ele.s > S_TCX01: 
             # after TCX01 Tcav
-            xt[ix] = (xf+xw/2)*sqrt(ele.beta_a/bxf)*sin(ele.phi_a-mx0)/sin(mxf-mx0); # scale from "xf" offset at screen (m)
+            xt[ix] = (xf+xw/2)*np.sqrt(ele.beta_a/bxf)*np.sin(ele.phi_a-mx0)/np.sin(mxf-mx0); # scale from "xf" offset at screen (m)
           if S_XRterm>0:
             esprd[ix] = dE4 + chirp + vern + EFEL + Ejit + Etrip/ele.e_tot # after undulator (HXR or SXR)
           else:
             esprd[ix] = dE4 + chirp + vern + Ejit + Etrip/ele.e_tot  # in BSY dumpline
-      XID[ix] = max(2*nsig*np.sqrt(e*ele.beta_a*betaf) + etaf*np.abs(ele.eta_a)*esprd[ix] + 2*steer + 2*xt[ix] + dx, min_XID)
-      #print(f'{XID[ix]=} {min_XID=}')
-      #print(f'   {2*nsig*np.sqrt(e*ele.beta_a*betaf)+etaf*np.abs(ele.eta_a)*esprd[ix]+2*steer+2*xt[ix]+dx}')
-      YID[ix] = max(2*nsig*np.sqrt(e*ele.beta_b*betaf)+etaf*np.abs(ele.eta_b)*esprd[ix]+2*steer, min_YID)
+      XID[ix] = max(2*nsig*np.sqrt(e*ele.beta_a*betaf) + etaf*np.abs(ele.eta_x)*esprd[ix] + 2*steer + 2*xt[ix] + dx, min_XID)
+      YID[ix] = max(2*nsig*np.sqrt(e*ele.beta_b*betaf) + etaf*np.abs(ele.eta_y)*esprd[ix] + 2*steer, min_YID)
       Dia[ix] = np.sqrt(XID[ix]**2+YID[ix]**2)
 
   # standard BSC output file...
