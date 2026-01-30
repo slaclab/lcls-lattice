@@ -1,10 +1,16 @@
 
-! *** OPTICS=AD_ACCEL-07SEP2025s ***
+! *** OPTICS=AD_ACCEL-19DEC2025s ***
 
 ! LCLS2sc A-line
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 18-NOV-2025, M. Woodley
+!  * add MADUMP marker for entrance of ESA alcove dump (per Carsten Hast data)
+!  * add MADET marker for entrance of ESA alcove detector assuming (!) it is
+!    1.3 m upstream of the dump entrance
+!  * set Q27, Q28, Q30, and Q38 to Yuri's "relaxed" optics values
 ! ------------------------------------------------------------------------------
 ! 24-JUN-2025, M. Woodley
 !  * replace ESA E158 components with T-474 components
@@ -192,16 +198,16 @@ rq20 = 8.25*0.0254/2
 lsq = 0.55
 rsq = 0.08/2
 
-! the K-values below are for DASEL (the only connection to ALINE)
+! the K-values below are for LESA (the only connection to ALINE)
 
 kq10 = 0.040946131243
 kq11 = -0.038135136057
 kq19 = 0.030837113549
 kq20 = 0.146624351215e-2
-kq27 = -0.083919622056
-kq28 = 0.03548040664
-kq30 = -0.028849559713
-kq38 = 0.034487458519
+kq27 = -0.038606814284 !-0.083919622056
+kq28 = 0.039503266207 ! 0.03548040664
+kq30 = -0.020157257183 !-0.028849559713
+kq38 = 0.021853409081 ! 0.034487458519
 
 q10: quadrupole, l = lq8cm/2, aperture = rq8cm, k1 = kq10, type = "3.15Q76"
 q11: quadrupole, l = lq8cm/2, aperture = rq8cm, k1 = kq11, type = "3.15Q76"
@@ -610,6 +616,11 @@ d129: drift, l = 1.918716
 d130: drift, l = 0.900938
 d131: drift, l = 0.823976
 
+d129a: drift, l = 1.229078
+d129b: drift, l = d129[l]-d129a[l]
+d130a: drift, l = 0.610362
+d130b: drift, l = d130[l]-d130a[l]
+
 d201: drift, l = 1.039368
 d202: drift, l = 0.389128
 d203: drift, l = 0.892302
@@ -680,6 +691,14 @@ pvot: marker
 esae: marker !east wall of ESA
 bmde: marker !Beam Dump East
 
+! * locations of ESA alcove dump and detector are approximate
+! * distance from A3C1A to dump center is 133" = 3.3782 m (per Carsten),
+!   where dump length is assumed to be 12"
+! * assume alcove detector starts 1.3 m upstream of the alcove dump entrance
+
+madump: marker !alcove dump entrance
+madet: marker !alcove detector entrance
+
 ! ==============================================================================
 ! beamlines
 ! ------------------------------------------------------------------------------
@@ -705,9 +724,12 @@ bcx3d3_full: line = (bcx3d3)
 
 bcx3d4_full: line = (bcx3d4)
 
+  LD129 : LINE=(D129a,MADET,D129b)
+  LD130 : LINE=(D130a,MADUMP,D130b)
+
   ESAchicane : LINE=(BCX3D1_full,D216,BCX3D2_full,D217,A3WS2,D218,BCX3D3_full,D219,A3WIG2,D220,BCX3D4_full)
 
-  ESAu : LINE=(BEGESA,ALWALL,NOTCHBEG,D126,IV40,D127,A3C1A,D127a,NOTCHEND,ALCOVEBEG,D128,A3C1B,D129,A3I1,D130,A3PR1,
+  ESAu : LINE=(BEGESA,ALWALL,NOTCHBEG,D126,IV40,D127,A3C1A,D127a,NOTCHEND,ALCOVEBEG,D128,A3C1B,LD129,A3I1,LD130,A3PR1,
          D131,A3PR2,D201,A3I2,D202,A3BPM1,D203,A3BPM2,D204a,ALCOVEEND,D204b,A3I3,D205,IV41,D206,A3T0,D207,A3WA1,D208,A3WAKE1,
          D209,A3WS1,D210,PVOT)
 

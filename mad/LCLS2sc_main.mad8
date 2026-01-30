@@ -1,6 +1,6 @@
   TITLE, "AD_ACCEL: superconducting linac"
 
-! *** OPTICS=AD_ACCEL-07SEP2025s ***
+! *** OPTICS=AD_ACCEL-19DEC2025s ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY, DOUBLE
   ASSIGN, ECHO="LCLS2sc.echo"
@@ -514,18 +514,18 @@
  
  !CALL, FILENAME="LCLS2sc_beams.mad8" !alternate beams & configurations
  !CALL, FILENAME="LCLS2sc_match.mad8"
- !CALL, FILENAME="LCLS2sc_makeSymbols.mad8"
+ CALL, FILENAME="LCLS2sc_makeSymbols.mad8"
  !CALL, FILENAME="LCLS2sc_makeElegant.mad8"
  !CALL, FILENAME="LCLS2sc_XLEAP.mad8" !run by itself
 
 ! ------------------------------------------------------------------------------
 
- !STOP
+ !CALL "LCLS2sc_color_plots.mad8" !run by itself (ends with STOP)
+ !CALL "LCLS2sc_area_plots.mad8"  !run by itself (ends with STOP)
 
 ! ------------------------------------------------------------------------------
 
- !CALL "LCLS2sc_color_plots.mad8" !run by itself (ends with STOP)
- !CALL "LCLS2sc_area_plots.mad8"  !run by itself (ends with STOP)
+ !STOP
 
 ! ------------------------------------------------------------------------------
 ! SURVEY in linac coordinates
@@ -558,11 +558,14 @@
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
       STYLE=100, SPLINE, RANGE=WS31B/DU7S[31], FILE="LCLS2scS", &
       TITLE="UNDS (SC beam, 4 GeV)"
-   !comment
+   !PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+   !  STYLE=100, SPLINE, RANGE=BEAM0/ENDEXT, FILE="LCLS2scS", &
+   !  TITLE="UNDS (SC beam, 4 GeV, NCELL=9.0)"
+    comment
       SAVEBETA, TWSSms, MM1B
       TWISS, COUPLE, BETA0=TWSSi
       SHOW, TWssms
-   !endcomment
+    endcomment
  !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
@@ -723,13 +726,19 @@
     TWISS, SAVE, BETA0=TWSSi, TAPE="LCLS2scDA_twiss.tape" !, &
    !  RTAPE="LCLS2scDA_rmat.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, VMAX=5, &
-      STYLE=100, SPLINE, RANGE=BEAM0/ENDBSYA, FILE="LCLS2scDA", &
+      STYLE=100, SPLINE, RANGE=BEAM0/MADUMP, FILE="LCLS2scDA", &
       TITLE="SC-linac to DASEL"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=rBETX,rBETY, &
-      STYLE=100, SPLINE, RANGE=BEAM0/ENDBSYA, FILE="LCLS2scDA", &
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=BEAM0/MADUMP, FILE="LCLS2scDA", &
       TITLE="SC-linac to DASEL"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE, RANGE=BEAM0/ENDBSYA, FILE="LCLS2scDA", &
+      STYLE=100, SPLINE, RANGE=BEAM0/MADUMP, FILE="LCLS2scDA", &
+      TITLE="SC-linac to DASEL"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=BEGSPA/MADUMP, FILE="LCLS2scDA", &
+      TITLE="SC-linac to DASEL"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      STYLE=100, SPLINE, RANGE=BEGSPA/MADUMP, FILE="LCLS2scDA", &
       TITLE="SC-linac to DASEL"
  !ENDCOMMENT
 
@@ -842,8 +851,8 @@
     BEAM, ENERGY=Ef
     SET, SETSP, SETSPd ; SET, SETDA, DAON
     USE, BSYLCLS2scDA
-    MAKESEQUENCE, LABEL="DASEL", REFER="CENTRE"
-    SAVELINE, NAME="DASEL", FILENAME="DASEL.seq"
+   !MAKESEQUENCE, LABEL="DASEL", REFER="CENTRE"
+   !SAVELINE, NAME="DASEL", FILENAME="DASEL.seq"
     PRINT, FULL
     SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
       TAPE="BSY-LCLS2scDA_survey.tape"

@@ -4,6 +4,7 @@ import pytest
 from subprocess import run, Popen, PIPE, STDOUT
 import os, platform
 from pytao import Tao
+from pathlib import Path
 
 my_env = os.environ.copy()
 LCLS_LATTICE=my_env['LCLS_LATTICE']
@@ -20,7 +21,7 @@ MODELS = [
 'cu_hxr',
 'cu_spec',
 'sc_dasel',
-# 'sc_diag0',
+'sc_diag0',
 # 'cu_inj',
  #'cu_linac',
 # 'sc_inj',
@@ -31,6 +32,7 @@ TOLS['sc_bsyd']  = (1e-5,   1e-5,   1e-9)
 TOLS['sc_sxr']   = (5e-5,   5e-5,   1e-9)
 TOLS['sc_hxr']   = (1e-5,   5e-5,   1e-9)
 TOLS['sc_dasel'] = (1e-5,   5e-5,   1e-9)
+TOLS['sc_diag0'] = (3e-4,   3e-4,   1e-9) #because QDG001 & 3 patches
 TOLS['cu_sxr']   = (2e-2,   2e-2,   1e-9)
 TOLS['cu_hxr']   = (2e-2,   2e-2,   1e-9)
 TOLS['cu_spec']  = (2e-2,   2e-2,   1e-9)
@@ -47,6 +49,14 @@ def get_end_params_pytao(lattice_file):
   tao = Tao(lattice_file=lattice_file,noplot=True)
   end_params = tao.ele_twiss("end",verbose=False)
   end_params['s'] = tao.lat_list("end","ele.s",verbose=False)
+  #make Twiss artifacts to assist with debugging
+  s = tao.lat_list("*", "ele.s")
+  bx = tao.lat_list("*", "ele.a.beta")
+  by = tao.lat_list("*", "ele.a.beta")
+  artifact_file_name = Path(lattice_file).stem+'.twiss' 
+  with open(artifact_file_name,'w') as f:
+    for s_,bx_,by_ in zip(s,bx,by):
+      f.write('{}   {}   {}\n'.format(s_,bx_,by_))
   return end_params
 
 def parse_file(file_name):
