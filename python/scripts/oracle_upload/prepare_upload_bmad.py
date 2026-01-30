@@ -1636,13 +1636,18 @@ Ncol = head.count(',') + 1
 # SYMBOLS text-file (linac coordinates)
 
 # set up pointers
-# ip is effectively a way to sort the eles on two keys:  file-root and ordinal position in file
+# ips is effectively a way to sort the eles on two keys:  file-root and ordinal position in file
 # this effectively preserves the survey file ordering in the txt output files.
-ip = []
+ips = []
 for kwn,eles in ele_dict.items():
     for m in range(len(eles)):
-        ip.append([eles[m]["idf"], eles[m]['id'], kwn, m])
-ip = sorted(ip, key=lambda x: (x[0], x[1]))
+        ips.append([eles[m]["idf"], eles[m]['id'], kwn, m])
+ips = sorted(ips, key=lambda x: (x[0], x[1]))
+
+with open('ips.dump','w') as f:
+  f.write('# froot   ordinal_in_froot   keyword   ordinal_in_keyword\n')
+  for ip in ips:
+    f.write(f"{' '.join(f'{item:<10}' for item in ip)}\n")
     
 def arrange_output(system_name, filename):
     filepath = Path(outdir+'/'+fname)
@@ -1650,7 +1655,7 @@ def arrange_output(system_name, filename):
     with filepath.open('wt') as fid:
         fid.write(f'{head}\n')
         fid.write(f'{unit}\n')
-        for entry in ip:
+        for entry in ips:
             kwn = entry[2]
             m = entry[3]
             TEMP = ele_dict[kwn][m]
@@ -1839,7 +1844,7 @@ if cUND:
 fname = f'AD_ACCEL-extra-{optics}.txt'
 with open(outdir+'/'+fname, 'wt') as fid:
     fid.write('ELEMENT,Area2,Undulator Cell,Sector\n')
-    for entry in ip:
+    for entry in ips:
         kwn = entry[2]
         m = entry[3]
         if kwn in ['MARK', 'SROT']:
