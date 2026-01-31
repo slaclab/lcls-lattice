@@ -71,10 +71,23 @@ A =65e-9  #  m (effective beam admittance)
 dp =0.02  #  1 (beam maximum relative energy error in the S30XL)
 D =0.002  #  m (maximum residual beam orbit in S30XL)
 
-MODELS=['sc_sxr_beam0','sc_hxr_beam0','sc_bsyd_beam0','sc_diag0_beam0','sc_dasel_beam0','cu_sxr']
+#MODELS=['sc_sxr_beam0','sc_hxr_beam0','sc_bsyd_beam0','sc_diag0_beam0', 'cu_sxr', 'sc_dasel_beam0']
+MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0', 'cu_sxr', 'sc_dasel']
+froot_to_model = {1:0, 6:1, 7:2, 8:3, 14:4, 9:5}
 
+optics = '00TEST00'
+
+ips = []
+with open('ips.dump','r') as f:
+  for line in f:
+    if not line.startswith("#"):
+      parts = line.split()
+      ips.append([int(parts[0]), int(parts[1])])
+
+bsc_data={}
 for model in MODELS:
   print(f'model: {model}')
+  bsc_data[model] = {}
   nele = 0
   lat = Lattice()
   with open(model+'_twiss.dat','r') as f:
@@ -84,11 +97,11 @@ for model in MODELS:
         lat.elements.append(Element(*line.split()))
   lat.names = [x.name for x in lat.elements]
 
-  if model == 'sc_dasel_beam0':
-    id1 = strmatch('BEGSPA',lat.names,False)[0]
-    id2 = strmatch('MADUMP',lat.names,False)[-1] # ENDBSYA
-    lat.elements = lat.elements[id1:id2+1]
-    lat.names = [x.name for x in lat.elements]
+  if model == 'sc_dasel':
+    id_dasel_1 = strmatch('BEGSPA',lat.names,False)[0]
+    id_dasel_2 = strmatch('MADUMP',lat.names,False)[-1] # ENDBSYA
+    #lat.elements = lat.elements[id1:id2+1]
+    #lat.names = [x.name for x in lat.elements]
     id_dasel_mark = strmatch('BLRDAS',lat.names)[-1] # downstream of BLRDAS
 
   if model.startswith('cu_'): # BSC parameters for Cu linac beam
@@ -106,7 +119,7 @@ for model in MODELS:
     vern = 0.01    # energy vernier after linac (was 2% on 20MAR15 - set to 1% May 5, 2015 to get Dean's QDOG2 < 50 mm Diam.)
     chirp = 0.01    # FWHM energy spread due to optional linear chirp after linac (was 1% on 20MAR15)
 
-  if model == 'sc_diag0_beam0':
+  if model == 'sc_diag0':
     dE0 = 0.04    # full core energy width in DIAG0 - before adding jitter, chirp ( )
     idy = strmatch('TCYDG0',lat.names)[-1]
     idx = strmatch('TCXDG0',lat.names)[-1]
@@ -157,14 +170,16 @@ for model in MODELS:
     if model.startswith('cu_') and ix < i_BSY:
       continue
 
-    if model == 'sc_dasel_beam0':
+    if model == 'sc_dasel':
+      if ix < id_dasel_1 or ix > id_dasel_2:
+        continue
       if ix<id_dasel_mark:
         f=0.5
       else:
         f=1
-      XID[ix] = (np.sqrt(A*ele.beta_a) + np.abs(ele.eta_x*dp) + f*D)   # mm
-      YID[ix] = (np.sqrt(A*ele.beta_b) + np.abs(ele.eta_y*dp) + f*D)   # mm
-      Dia[ix] = 2*np.sqrt(XID[ix]**2 + YID[ix]**2);
+      XID[ix] = float((np.sqrt(A*ele.beta_a) + np.abs(ele.eta_x*dp) + f*D))
+      YID[ix] = float((np.sqrt(A*ele.beta_b) + np.abs(ele.eta_y*dp) + f*D))
+      Dia[ix] = float(2*np.sqrt(XID[ix]**2 + YID[ix]**2))
       XID[ix] = 2*XID[ix]
       YID[ix] = 2*YID[ix]
 
@@ -210,9 +225,10 @@ for model in MODELS:
             esprd[ix] = dE4 + chirp + vern + EFEL + Ejit + Etrip/ele.e_tot # after undulator (HXR or SXR)
           else:
             esprd[ix] = dE4 + chirp + vern + Ejit + Etrip/ele.e_tot  # in BSY dumpline
-      XID[ix] = max(2*nsig*np.sqrt(e*ele.beta_a*betaf) + etaf*np.abs(ele.eta_x)*esprd[ix] + 2*steer + 2*xt[ix] + dx, min_XID)
-      YID[ix] = max(2*nsig*np.sqrt(e*ele.beta_b*betaf) + etaf*np.abs(ele.eta_y)*esprd[ix] + 2*steer, min_YID)
-      Dia[ix] = np.sqrt(XID[ix]**2+YID[ix]**2)
+    XID[ix] = float(max(2*nsig*np.sqrt(e*ele.beta_a*betaf) + etaf*np.abs(ele.eta_x)*esprd[ix] + 2*steer + 2*xt[ix] + dx, min_XID))
+    YID[ix] = float(max(2*nsig*np.sqrt(e*ele.beta_b*betaf) + etaf*np.abs(ele.eta_y)*esprd[ix] + 2*steer, min_YID))
+    Dia[ix] = float(np.sqrt(XID[ix]**2+YID[ix]**2))
+    bsc_data[model][ix] = [Dia[ix], XID[ix], YID[ix]]
 
   # standard BSC output file...
   fout = f'BSC_{model}.txt'
@@ -222,7 +238,24 @@ for model in MODELS:
       name=ele.name.rstrip('_')
       f.write('{:<16s}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}\n'.format(ele.name, ele.s, 1e3*Dia[ix], 1e3*XID[ix]/2, -1e3*XID[ix]/2, 1e3*YID[ix]/2, -1e3*YID[ix]/2))
   print(f'BSC file written: {fout}')
-  
+
+print(bsc_data['sc_dasel'].keys())
+stop
+
+# write to AD_ACCEL collated output file
+fname=f'BSC-AD_ACCEL-{optics}.txt'
+with open(fname,'w') as f_all:
+  f_all.write("#name D -x +x -y +y\n")
+  for froot,ordinal in ips:
+    if froot in froot_to_model.keys():
+      model_name = MODELS[froot_to_model[froot]]
+      print(model_name,ordinal)
+      print("   ",bsc_data[model_name][ordinal])
+    #for ix,ele in enumerate(lat.elements):
+    #  name=ele.name.rstrip('_')
+    #  #f_all.write('{:<16s}, {:>10.6e}, {:>10.6e}, {:>10.6e}, {:>10.6e}, {:>10.6e}\n'.format(ele.name, 1e3*Dia[ix], 1e3*XID[ix]/2, -1e3*XID[ix]/2, 1e3*YID[ix]/2, -1e3*YID[ix]/2))
+    #  f_all.write('{:s}, {:.6e}, {:.6e}, {:.6e}, {:.6e}, {:.6e}\n'.format(ele.name, 1e3*Dia[ix], 1e3*XID[ix]/2, -1e3*XID[ix]/2, 1e3*YID[ix]/2, -1e3*YID[ix]/2))
+
     #   if (false) # plot
     #     figure(1)
     #     plot(S,-XID/2*1e3,'b-',S,XID/2*1e3,'b-', ...
