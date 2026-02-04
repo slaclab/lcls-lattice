@@ -71,9 +71,8 @@ A =65e-9  #  m (effective beam admittance)
 dp =0.02  #  1 (beam maximum relative energy error in the S30XL)
 D =0.002  #  m (maximum residual beam orbit in S30XL)
 
-#MODELS=['sc_sxr_beam0','sc_hxr_beam0','sc_bsyd_beam0','sc_diag0_beam0', 'cu_sxr', 'sc_dasel_beam0']
-MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0', 'cu_sxr', 'sc_dasel']
-froot_to_model = {1:0, 6:1, 7:2, 8:3, 14:4, 9:5}
+MODELS=['sc_sxr_beam0','sc_hxr_beam0','sc_bsyd_beam0','sc_diag0_beam0', 'cu_sxr', 'cu_hxr', 'sc_dasel_beam0']
+froot_to_model = {1:0, 6:1, 7:2, 8:3, 14:4, 10:5, 9:6}
 
 optics = '00TEST00'
 
@@ -97,11 +96,12 @@ for model in MODELS:
         lat.elements.append(Element(*line.split()))
   lat.names = [x.name for x in lat.elements]
 
-  if model == 'sc_dasel':
+  if model == 'cu_hxr':
+    cu_hxr_marker = lat.names.index('ENDCLTH_2')
+
+  if model == 'sc_dasel_beam0':
     id_dasel_1 = strmatch('BEGSPA',lat.names,False)[0]
     id_dasel_2 = strmatch('MADUMP',lat.names,False)[-1] # ENDBSYA
-    #lat.elements = lat.elements[id1:id2+1]
-    #lat.names = [x.name for x in lat.elements]
     id_dasel_mark = strmatch('BLRDAS',lat.names)[-1] # downstream of BLRDAS
 
   if model.startswith('cu_'): # BSC parameters for Cu linac beam
@@ -119,7 +119,7 @@ for model in MODELS:
     vern = 0.01    # energy vernier after linac (was 2% on 20MAR15 - set to 1% May 5, 2015 to get Dean's QDOG2 < 50 mm Diam.)
     chirp = 0.01    # FWHM energy spread due to optional linear chirp after linac (was 1% on 20MAR15)
 
-  if model == 'sc_diag0':
+  if model == 'sc_diag0_beam0':
     dE0 = 0.04    # full core energy width in DIAG0 - before adding jitter, chirp ( )
     idy = strmatch('TCYDG0',lat.names)[-1]
     idx = strmatch('TCXDG0',lat.names)[-1]
@@ -166,11 +166,14 @@ for model in MODELS:
   XID=[0 for x in lat.elements]    # horizontal stay-clear full height (empty array initially)
   YID=[0 for x in lat.elements]    # vertical stay-clear full height (empty array initially)
   Dia=[0 for x in lat.elements]    # Stay-clear full diameter, if cylindrical chamber (empty array initially)
+  fname = f'BSC_{model}.txt'
+  fout = open(fname,'w')
+  fout.write('ELEMENT              S (m)        BSCd (mm)    +BSCx (mm)     -BSCx (mm)    +BSCy (mm)     -BSCy (mm)\n')
   for ix,ele in enumerate(lat.elements):
     if model.startswith('cu_') and ix < i_BSY:
       continue
 
-    if model == 'sc_dasel':
+    if model == 'sc_dasel_beam0':
       if ix < id_dasel_1 or ix > id_dasel_2:
         continue
       if ix<id_dasel_mark:
@@ -228,19 +231,10 @@ for model in MODELS:
     XID[ix] = float(max(2*nsig*np.sqrt(e*ele.beta_a*betaf) + etaf*np.abs(ele.eta_x)*esprd[ix] + 2*steer + 2*xt[ix] + dx, min_XID))
     YID[ix] = float(max(2*nsig*np.sqrt(e*ele.beta_b*betaf) + etaf*np.abs(ele.eta_y)*esprd[ix] + 2*steer, min_YID))
     Dia[ix] = float(np.sqrt(XID[ix]**2+YID[ix]**2))
-    bsc_data[model][ix] = [Dia[ix], XID[ix], YID[ix]]
 
-  # standard BSC output file...
-  fout = f'BSC_{model}.txt'
-  with open(fout,'w') as f:
-    f.write('ELEMENT              S (m)        BSCd (mm)    +BSCx (mm)     -BSCx (mm)    +BSCy (mm)     -BSCy (mm)\n')
-    for ix,ele in enumerate(lat.elements):
-      name=ele.name.rstrip('_')
-      f.write('{:<16s}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}\n'.format(ele.name, ele.s, 1e3*Dia[ix], 1e3*XID[ix]/2, -1e3*XID[ix]/2, 1e3*YID[ix]/2, -1e3*YID[ix]/2))
-  print(f'BSC file written: {fout}')
-
-print(bsc_data['sc_dasel'].keys())
-stop
+    bsc_data[model][ix] = [ele.name, Dia[ix], XID[ix], YID[ix]]
+    fout.write('{:<16s}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}\n'.format(ele.name.rstrip('_'), ele.s, 1e3*Dia[ix], 1e3*XID[ix]/2, -1e3*XID[ix]/2, 1e3*YID[ix]/2, -1e3*YID[ix]/2))
+  fout.close()
 
 # write to AD_ACCEL collated output file
 fname=f'BSC-AD_ACCEL-{optics}.txt'
@@ -249,8 +243,15 @@ with open(fname,'w') as f_all:
   for froot,ordinal in ips:
     if froot in froot_to_model.keys():
       model_name = MODELS[froot_to_model[froot]]
-      print(model_name,ordinal)
-      print("   ",bsc_data[model_name][ordinal])
+      if model_name == 'cu_hxr':
+        if ordinal <= cu_hxr_marker:
+          continue
+      if ordinal in bsc_data[model_name]:
+        x = bsc_data[model_name][ordinal]
+        #f_all.write(f'{x[0]}, {x[1]}, {x[2]}, {-x[2]}, {x[3]}, {-x[3]}\n')
+        f_all.write(f'{x[0]}, {x[1]}, {x[2]}, {-x[2]}, {x[3]}, {-x[3]}, {model_name}\n')
+
+
     #for ix,ele in enumerate(lat.elements):
     #  name=ele.name.rstrip('_')
     #  #f_all.write('{:<16s}, {:>10.6e}, {:>10.6e}, {:>10.6e}, {:>10.6e}, {:>10.6e}\n'.format(ele.name, 1e3*Dia[ix], 1e3*XID[ix]/2, -1e3*XID[ix]/2, 1e3*YID[ix]/2, -1e3*YID[ix]/2))
