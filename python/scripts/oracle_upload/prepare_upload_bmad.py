@@ -235,10 +235,14 @@ L, P, A, E, coor, S, Sd = [], [], [], [], [], [], []
 idf, idd = [], []  # idf: which MAD survey file an element came from
                    # idd: ordinal position in MAD output file
 
+froot_beam0_indexes = {}
 for file_root in file_roots:
     fname = f'{file_root["root"]}_survey.tape'
     print(f'Opening file {fname}')
     titl, tK, tN, tL, tP, tA, tT, tE, tFDN, tcoor, tS = parse_survey(fname)
+
+    if 'BEAM0' in tN:
+      froot_beam0_indexes[file_root['ix']] = tN.index('BEAM0')
 
     id1 = tN.index(file_root['beg'])
     id2 = tN.index(file_root['end']) 
@@ -1647,7 +1651,13 @@ ips = sorted(ips, key=lambda x: (x[0], x[1]))
 with open('ips.dump','w') as f:
   f.write('# froot   ordinal_in_froot   keyword   ordinal_in_keyword\n')
   for ip in ips:
-    f.write(f"{' '.join(f'{item:<10}' for item in ip)}\n")
+    if ip[0] in froot_beam0_indexes:
+      ordinal_offset = froot_beam0_indexes[ip[0]] - 1
+    else:
+      ordinal_offset = 0
+    f.write("{:<10} {:<10} {:<10} {:<10}\n".format(ip[0],ip[1]-ordinal_offset,ip[2],ip[3]))
+    #f.write(f"{' '.join(f'{item:<10}' for item in ip)}\n")
+
     
 def arrange_output(system_name, filename):
     filepath = Path(outdir+'/'+fname)

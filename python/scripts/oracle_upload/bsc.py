@@ -97,7 +97,10 @@ for model in MODELS:
   lat.names = [x.name for x in lat.elements]
 
   if model == 'cu_hxr':
-    cu_hxr_marker = lat.names.index('ENDCLTH_2')
+    cu_hxr_marker = lat.names.index('BEGBSYH')
+
+  if model == 'sc_hxr_beam0':
+    sc_hxr_marker = lat.names.index('BEGBSYH')
 
   if model == 'sc_dasel_beam0':
     id_dasel_1 = strmatch('BEGSPA',lat.names,False)[0]
@@ -180,8 +183,8 @@ for model in MODELS:
         f=0.5
       else:
         f=1
-      XID[ix] = float((np.sqrt(A*ele.beta_a) + np.abs(ele.eta_x*dp) + f*D))
-      YID[ix] = float((np.sqrt(A*ele.beta_b) + np.abs(ele.eta_y*dp) + f*D))
+      XID[ix] = 1e3/2*float((np.sqrt(A*ele.beta_a) + np.abs(ele.eta_x*dp) + f*D))
+      YID[ix] = 1e3/2*float((np.sqrt(A*ele.beta_b) + np.abs(ele.eta_y*dp) + f*D))
       Dia[ix] = float(2*np.sqrt(XID[ix]**2 + YID[ix]**2))
       XID[ix] = 2*XID[ix]
       YID[ix] = 2*YID[ix]
@@ -228,28 +231,31 @@ for model in MODELS:
             esprd[ix] = dE4 + chirp + vern + EFEL + Ejit + Etrip/ele.e_tot # after undulator (HXR or SXR)
           else:
             esprd[ix] = dE4 + chirp + vern + Ejit + Etrip/ele.e_tot  # in BSY dumpline
-    XID[ix] = float(max(2*nsig*np.sqrt(e*ele.beta_a*betaf) + etaf*np.abs(ele.eta_x)*esprd[ix] + 2*steer + 2*xt[ix] + dx, min_XID))
-    YID[ix] = float(max(2*nsig*np.sqrt(e*ele.beta_b*betaf) + etaf*np.abs(ele.eta_y)*esprd[ix] + 2*steer, min_YID))
-    Dia[ix] = float(np.sqrt(XID[ix]**2+YID[ix]**2))
+      XID[ix] = 1e3/2*float(max(2*nsig*np.sqrt(e*ele.beta_a*betaf) + etaf*np.abs(ele.eta_x)*esprd[ix] + 2*steer + 2*xt[ix] + dx, min_XID))
+      YID[ix] = 1e3/2*float(max(2*nsig*np.sqrt(e*ele.beta_b*betaf) + etaf*np.abs(ele.eta_y)*esprd[ix] + 2*steer, min_YID))
+      Dia[ix] = 2*float(np.sqrt(XID[ix]**2+YID[ix]**2))
 
     bsc_data[model][ix] = [ele.name, Dia[ix], XID[ix], YID[ix]]
-    fout.write('{:<16s}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}\n'.format(ele.name.rstrip('_'), ele.s, 1e3*Dia[ix], 1e3*XID[ix]/2, -1e3*XID[ix]/2, 1e3*YID[ix]/2, -1e3*YID[ix]/2))
+    fout.write('{:<16s}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}\n'.format(ele.name.rstrip('_'), ele.s, Dia[ix], XID[ix], -XID[ix], YID[ix], -YID[ix]))
   fout.close()
+
+hxr_offset = sc_hxr_marker - cu_hxr_marker
 
 # write to AD_ACCEL collated output file
 fname=f'BSC-AD_ACCEL-{optics}.txt'
 with open(fname,'w') as f_all:
-  f_all.write("#name D -x +x -y +y\n")
+  f_all.write("ELEMENT, Stayclear Dia (mm), +Horz (mm), -Horz (mm), +Vert (mm), -Vert (mm)\n")
   for froot,ordinal in ips:
     if froot in froot_to_model.keys():
       model_name = MODELS[froot_to_model[froot]]
       if model_name == 'cu_hxr':
-        if ordinal <= cu_hxr_marker:
+        if ordinal < cu_hxr_marker:
           continue
+        model_name = 'sc_hxr_beam0'
+        ordinal = ordinal + hxr_offset
       if ordinal in bsc_data[model_name]:
         x = bsc_data[model_name][ordinal]
-        #f_all.write(f'{x[0]}, {x[1]}, {x[2]}, {-x[2]}, {x[3]}, {-x[3]}\n')
-        f_all.write(f'{x[0]}, {x[1]}, {x[2]}, {-x[2]}, {x[3]}, {-x[3]}, {model_name}\n')
+        f_all.write(f'{x[0]}, {x[1]:>10.6e}, {x[2]:>10.6e}, {-x[2]:>10.6e}, {x[3]:>10.6e}, {-x[3]:>10.6e}\n')
 
 
     #for ix,ele in enumerate(lat.elements):
