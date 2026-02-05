@@ -192,22 +192,23 @@ SC_NEWELES['dh02d'] = """
 ! Shorten so that umhtr has an integer number of poles
 dh02d: drift, l = 0.2724707 - ( 10*0.054 - 0.506263 ) /2, type = "CSR" !0.2900002
 """
-SC_NEWELES['qdg001'] = """
-! Replace k0l with quad offset and patch with y_pitch.
-qdg001: quadrupole, type = "1.51Q7.00", l = lqs/2, aperture = rqs, k1 = kqbf0, y_offset=-4.83865231890650768E-003
-"""
-SC_NEWELES['qdg003'] = """
-! Replace k0l with quad offset and patch with y_pitch.
-qdg003: quadrupole, type = "1.51Q7.00", l = lqs/2, aperture = rqs, k1 = kqbf0, y_offset=-2.99813063290814820E-004
-"""
-SC_NEWELES['dyqdg001'] = """
-! Replace k0l with quad offset and patch with y_pitch.
-dyqdg001: patch, y_pitch = 9.49758257820075558E-003
-"""
-SC_NEWELES['dyqdg003'] = """
-! Replace k0l with quad offset and patch with y_pitch.
-dyqdg003: patch, y_pitch = 5.88487966838956720E-004
-"""
+# Bmad now supports mad8-like k0l moments
+#  SC_NEWELES['qdg001'] = """
+#  ! Replace k0l with quad offset and patch with y_pitch.
+#  qdg001: quadrupole, type = "1.51Q7.00", l = lqs/2, aperture = rqs, k1 = kqbf0, y_offset=-4.83865231890650768E-003
+#  """
+#  SC_NEWELES['qdg003'] = """
+#  ! Replace k0l with quad offset and patch with y_pitch.
+#  qdg003: quadrupole, type = "1.51Q7.00", l = lqs/2, aperture = rqs, k1 = kqbf0, y_offset=-2.99813063290814820E-004
+#  """
+#  SC_NEWELES['dyqdg001'] = """
+#  ! Replace k0l with quad offset and patch with y_pitch.
+#  dyqdg001: patch, y_pitch = 9.49758257820075558E-003
+#  """
+#  SC_NEWELES['dyqdg003'] = """
+#  ! Replace k0l with quad offset and patch with y_pitch.
+#  dyqdg003: patch, y_pitch = 5.88487966838956720E-004
+#  """
 SC_NEWELES['tcxdg0'] = """
 ! mad8 describes tcav as lcavity.  Replace it with a crab_cavity.
 tcxdg0: crab_cavity, type = "STCAV_X", rf_frequency = 2856 * 1e6, l = 20*in2m/2
