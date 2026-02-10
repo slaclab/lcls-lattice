@@ -74,6 +74,8 @@ D =0.002  #  m (maximum residual beam orbit in S30XL)
 MODELS=['sc_sxr_beam0','sc_hxr_beam0','sc_bsyd_beam0','sc_diag0_beam0', 'cu_sxr', 'cu_hxr', 'sc_dasel_beam0']
 froot_to_model = {1:0, 6:1, 7:2, 8:3, 14:4, 10:5, 9:6}
 
+output_ordering = [0,6,10,7,8,14,9]
+
 optics = '00TEST00'
 
 ips = []
