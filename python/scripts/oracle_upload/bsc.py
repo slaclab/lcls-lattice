@@ -3,6 +3,7 @@
 import os
 import numpy as np
 from dataclasses import dataclass, field
+from itertools import groupby
 
 def strmatch(n_str,N_lst,exact=False):
     """
@@ -74,21 +75,26 @@ D =0.002  #  m (maximum residual beam orbit in S30XL)
 MODELS=['sc_sxr_beam0','sc_hxr_beam0','sc_bsyd_beam0','sc_diag0_beam0', 'cu_sxr', 'cu_hxr', 'sc_dasel_beam0']
 froot_to_model = {1:0, 6:1, 7:2, 8:3, 14:4, 10:5, 9:6}
 
-output_ordering = [0,6,10,7,8,14,9]
+output_ordering = [1,6,10,7,8,14,9]
 
 optics = '00TEST00'
 
-ips = []
+ips_unsorted = []
 with open('ips.dump','r') as f:
   for line in f:
     if not line.startswith("#"):
       parts = line.split()
-      ips.append([int(parts[0]), int(parts[1])])
+      ips_unsorted.append([int(parts[0]), int(parts[1])])
+
+ips = []
+for froot in output_ordering:
+  for entry in ips_unsorted:
+    if entry[0] == froot:
+      ips.append(entry)
 
 bsc_data={}
 for model in MODELS:
   print(f'model: {model}')
-  bsc_data[model] = {}
   nele = 0
   lat = Lattice()
   with open(model+'_twiss.dat','r') as f:
@@ -174,6 +180,7 @@ for model in MODELS:
   fname = f'BSC_{model}.txt'
   fout = open(fname,'w')
   fout.write('ELEMENT              S (m)        BSCd (mm)    +BSCx (mm)     -BSCx (mm)    +BSCy (mm)     -BSCy (mm)\n')
+  bsc_data[model] = [None for _ in lat.elements]
   for ix,ele in enumerate(lat.elements):
     if model.startswith('cu_') and ix < i_BSY:
       continue
@@ -237,16 +244,30 @@ for model in MODELS:
       YID[ix] = 1e3/2*float(max(2*nsig*np.sqrt(e*ele.beta_b*betaf) + etaf*np.abs(ele.eta_y)*esprd[ix] + 2*steer, min_YID))
       Dia[ix] = 2*float(np.sqrt(XID[ix]**2+YID[ix]**2))
 
+    # zero-out BSC data for kicked '?' elements
+    if ele.name.endswith('?'):
+      XID[ix] = 0.0
+      YID[ix] = 0.0
+      Dia[ix] = 0.0
     bsc_data[model][ix] = [ele.name, Dia[ix], XID[ix], YID[ix]]
     fout.write('{:<16s}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}\n'.format(ele.name.rstrip('_'), ele.s, Dia[ix], XID[ix], -XID[ix], YID[ix], -YID[ix]))
   fout.close()
+
+#for model in bsc_data:
+#  print(bsc_data[model][0:20])
+#  stop
+#  for key, group in groupby(bsc_data[model]):
+#    items = list(group)
+#    print(f"{key}: {len(items)} times - {items}")
+#stop
+  
 
 hxr_offset = sc_hxr_marker - cu_hxr_marker
 
 # write to AD_ACCEL collated output file
 fname=f'BSC-AD_ACCEL-{optics}.txt'
 with open(fname,'w') as f_all:
-  f_all.write("ELEMENT, Stayclear Dia (mm), +Horz (mm), -Horz (mm), +Vert (mm), -Vert (mm)\n")
+  f_all.write("#ELEMENT, Stayclear Dia (mm), +Horz (mm), -Horz (mm), +Vert (mm), -Vert (mm)\n")
   for froot,ordinal in ips:
     if froot in froot_to_model.keys():
       model_name = MODELS[froot_to_model[froot]]
@@ -255,7 +276,7 @@ with open(fname,'w') as f_all:
           continue
         model_name = 'sc_hxr_beam0'
         ordinal = ordinal + hxr_offset
-      if ordinal in bsc_data[model_name]:
+      if bsc_data[model_name][ordinal]:
         x = bsc_data[model_name][ordinal]
         f_all.write(f'{x[0]}, {x[1]:>10.6e}, {x[2]:>10.6e}, {-x[2]:>10.6e}, {x[3]:>10.6e}, {-x[3]:>10.6e}\n')
 
