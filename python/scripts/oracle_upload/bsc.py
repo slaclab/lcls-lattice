@@ -92,6 +92,8 @@ for froot in output_ordering:
     if entry[0] == froot:
       ips.append(entry)
 
+#n_eles = {}
+
 bsc_data={}
 for model in MODELS:
   print(f'model: {model}')
@@ -103,6 +105,7 @@ for model in MODELS:
         nele += 1
         lat.elements.append(Element(*line.split()))
   lat.names = [x.name for x in lat.elements]
+  #n_eles[model] = nele
 
   if model == 'cu_hxr':
     cu_hxr_marker = lat.names.index('BEGBSYH')
@@ -112,7 +115,7 @@ for model in MODELS:
 
   if model == 'sc_dasel_beam0':
     id_dasel_1 = strmatch('BEGSPA',lat.names,False)[0]
-    id_dasel_2 = strmatch('MADUMP',lat.names,False)[-1] # ENDBSYA
+    id_dasel_2 = strmatch('ENDBSYA',lat.names,False)[-1] # ENDBSYA
     id_dasel_mark = strmatch('BLRDAS',lat.names)[-1] # downstream of BLRDAS
 
   if model.startswith('cu_'): # BSC parameters for Cu linac beam
@@ -180,7 +183,7 @@ for model in MODELS:
   fname = f'BSC_{model}.txt'
   fout = open(fname,'w')
   fout.write('ELEMENT              S (m)        BSCd (mm)    +BSCx (mm)     -BSCx (mm)    +BSCy (mm)     -BSCy (mm)\n')
-  bsc_data[model] = [None for _ in lat.elements]
+  bsc_data[model] = [['',0,0,0] for _ in lat.elements]
   for ix,ele in enumerate(lat.elements):
     if model.startswith('cu_') and ix < i_BSY:
       continue
@@ -188,7 +191,7 @@ for model in MODELS:
     if model == 'sc_dasel_beam0':
       if ix < id_dasel_1 or ix > id_dasel_2:
         continue
-      if ix<id_dasel_mark:
+      if ix<=id_dasel_mark:
         f=0.5
       else:
         f=1
@@ -208,11 +211,13 @@ for model in MODELS:
       min_XID=min_XID0;  # default minimum XID
       min_YID=min_YID0;  # default minimum YID
       if ele.e_tot>0.07 and ele.e_tot<0.12:  # ~heater or DIAG0
-        if ele.s <= S_TCXDG0: # set minimum XID and YID (20 mm diam. after RF deflector in DIAG0)
+        if ele.s <= S_TCXDG0: # set minimum XID (20 mm diam. after RF deflector in DIAG0)
           min_XID = min_XID0
-          min_YID = min_YID0
         else:
           min_XID = 20.0e-3
+        if ele.s <= S_TCYDG0: # set minimum YID (20 mm diam. after RF deflector in DIAG0)
+          min_YID = min_YID0
+        else:
           min_YID = 20.0e-3
         esprd[ix] = dE0 + 2*chirp + 2*Ejit
       elif ele.e_tot > 0.22 and ele.e_tot < 0.28: 
@@ -253,14 +258,29 @@ for model in MODELS:
     fout.write('{:<16s}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}\n'.format(ele.name.rstrip('_'), ele.s, Dia[ix], XID[ix], -XID[ix], YID[ix], -YID[ix]))
   fout.close()
 
+#For elements with the same name, find the one with the largest Dia and
+# apply its values to all elements with that name.
+for model in bsc_data:
+  for key, group in groupby(bsc_data[model], key=lambda x: x[0]):
+    items = list(group)
+    max_ix = max(enumerate(items), key=lambda x: x[1][1])[0]
+    max_item = items[max_ix]
+    #print(f"{key}: {len(items)} times - {items} {max_ix}")
+    for item in items:
+      item[:] = max_item[:]
+
 #for model in bsc_data:
-#  print(bsc_data[model][0:20])
-#  stop
-#  for key, group in groupby(bsc_data[model]):
+#  for key, group in groupby(bsc_data[model], key=lambda x: x[0]):
 #    items = list(group)
 #    print(f"{key}: {len(items)} times - {items}")
-#stop
   
+#with open('bsc_data.dump','w') as f:
+#  for model in MODELS:
+#    for ix in range(n_eles[model]):
+#      if bsc_data[model][ix] is not None:
+#        f.write(f'{ix} {bsc_data[model][ix][0]} {bsc_data[model][ix][1]}\n')
+#      else:
+#        f.write(f'{ix} none\n')
 
 hxr_offset = sc_hxr_marker - cu_hxr_marker
 

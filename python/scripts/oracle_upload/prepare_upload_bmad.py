@@ -1652,9 +1652,13 @@ with open('ips.dump','w') as f:
   f.write('# froot   ordinal_in_froot   keyword   ordinal_in_keyword\n')
   for ip in ips:
     if ip[0] in froot_beam0_indexes:
+      # then beam0 exists in the file.  offset ordinals by this amount.  ips.dump is used for bsc calculation,
+      # which starts from beam0
       ordinal_offset = froot_beam0_indexes[ip[0]] - 1
     else:
       ordinal_offset = 0
+    if ip[1]-ordinal_offset < 0:
+      continue
     f.write("{:<10} {:<10} {:<10} {:<10}\n".format(ip[0],ip[1]-ordinal_offset,ip[2],ip[3]))
     #f.write(f"{' '.join(f'{item:<10}' for item in ip)}\n")
 

@@ -25,6 +25,7 @@ if LCLS_LATTICE_ENV is None:
 BDIR = f'{LCLS_LATTICE_ENV}/bmad/'
 #MODELS=['sc_sxr_beam0','sc_hxr_beam0','sc_bsyd_beam0','sc_diag0_beam0','sc_dasel_beam0','cu_sxr']
 MODELS=['sc_sxr_beam0','sc_hxr_beam0','sc_bsyd_beam0','sc_diag0_beam0','sc_dasel_beam0','cu_sxr','cu_hxr']
+#MODELS=['sc_diag0_beam0']
 LATFILE = {}
 for model in MODELS:
   LATFILE[model] = f'{LCLS_LATTICE_ENV}/bmad/survey_models/{model}.lat.bmad'
@@ -59,6 +60,7 @@ def double_round_new(x, ndigits):
   return float(d.quantize(q, rounding=ROUND_HALF_UP))
 
 for model in MODELS:
+  print(f'model {model}')
   with open(model+'_twiss.dat','w') as f:
     f.write(f'# Linux    Bmad Twiss/{timestamp}\n\n')
     f.write(f'# name, s, beta_a, beta_b, phi_a, phi_b, eta_x, eta_y, e_tot\n')
@@ -94,7 +96,8 @@ for model in MODELS:
 
       if split_bend is not None:
         match = [key for key in key_dict if key[:-1] == name]
-        name = match[split_bend]
+        #For split bends, get name from key_dict
+        #name = match[split_bend]
       else:
         match = [key for key in key_dict if key == name]
 
