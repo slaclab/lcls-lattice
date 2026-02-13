@@ -3,7 +3,7 @@
 import os
 import numpy as np
 from dataclasses import dataclass, field
-from itertools import groupby
+from collections import defaultdict
 
 def strmatch(n_str,N_lst,exact=False):
     """
@@ -94,6 +94,12 @@ for froot in output_ordering:
 
 #n_eles = {}
 
+# The following cavities need to have A/B stripped from the end of their names.
+cavs_to_fix_name = [f'CAVL{n:02d}5' for n in range(1,36)]
+cavs_to_fix_name.append('CAVC012')
+cavs_to_fix_name.append('CAVC022')
+cavs_to_fix_name = tuple(cavs_to_fix_name)
+
 bsc_data={}
 for model in MODELS:
   print(f'model: {model}')
@@ -104,6 +110,9 @@ for model in MODELS:
       if line.strip() and not line.startswith('#'):
         nele += 1
         lat.elements.append(Element(*line.split()))
+        #Some cavities need the postfix A/B stripped
+        if lat.elements[-1].name.startswith(cavs_to_fix_name):
+          lat.elements[-1].name = lat.elements[-1].name[:-1]
   lat.names = [x.name for x in lat.elements]
   #n_eles[model] = nele
 
@@ -261,19 +270,16 @@ for model in MODELS:
 #For elements with the same name, find the one with the largest Dia and
 # apply its values to all elements with that name.
 for model in bsc_data:
-  for key, group in groupby(bsc_data[model], key=lambda x: x[0]):
-    items = list(group)
-    max_ix = max(enumerate(items), key=lambda x: x[1][1])[0]
-    max_item = items[max_ix]
-    #print(f"{key}: {len(items)} times - {items} {max_ix}")
+  grouped = defaultdict(list)
+  for item in bsc_data[model]:
+    grouped[item[0]].append(item)
+  for key, items in grouped.items():
+    #max_ix = max(enumerate(items), key=lambda x: x[1][1])[0]
+    #max_item = items[max_ix]
+    max_item = max(items, key=lambda x: x[1])
     for item in items:
       item[:] = max_item[:]
 
-#for model in bsc_data:
-#  for key, group in groupby(bsc_data[model], key=lambda x: x[0]):
-#    items = list(group)
-#    print(f"{key}: {len(items)} times - {items}")
-  
 #with open('bsc_data.dump','w') as f:
 #  for model in MODELS:
 #    for ix in range(n_eles[model]):
