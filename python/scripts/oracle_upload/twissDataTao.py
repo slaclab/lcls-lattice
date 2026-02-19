@@ -63,7 +63,7 @@ for model in MODELS:
   print(f'model {model}')
   with open(model+'_twiss.dat','w') as f:
     f.write(f'# Linux    Bmad Twiss/{timestamp}\n\n')
-    f.write(f'# name, s, beta_a, beta_b, phi_a, phi_b, eta_x, eta_y, e_tot\n')
+    f.write(f'# name, key, s, beta_a, beta_b, phi_a, phi_b, eta_x, eta_y, e_tot\n')
     tao = Tao(lattice_file=LATFILE[model], noplot=True)
     ix_eles = tao.lat_list('*', 'ele.ix_ele')
     suml = 0
@@ -112,7 +112,7 @@ for model in MODELS:
 
       vals = [my_lat_list(ix,p) for p in params]
 
-      line = f'{name:<11s}' + '   '.join([f'{x:>16.9E}' for x in vals])
+      line = f'{name:<11s}   {key:<15s}' + '   '.join([f'{x:>16.9E}' for x in vals])
       line = line + '\n'
         
       f.write(line)

@@ -27,6 +27,7 @@ def strmatch(n_str,N_lst,exact=False):
 @dataclass
 class Element:
   name: str
+  key: str
   s: float
   beta_a: float
   beta_b: float
@@ -192,7 +193,7 @@ for model in MODELS:
   fname = f'BSC_{model}.txt'
   fout = open(fname,'w')
   fout.write('ELEMENT              S (m)        BSCd (mm)    +BSCx (mm)     -BSCx (mm)    +BSCy (mm)     -BSCy (mm)\n')
-  bsc_data[model] = [['',0,0,0] for _ in lat.elements]
+  bsc_data[model] = [['','',0,0,0] for _ in lat.elements]
   for ix,ele in enumerate(lat.elements):
     if model.startswith('cu_') and ix < i_BSY:
       continue
@@ -263,22 +264,46 @@ for model in MODELS:
       XID[ix] = 0.0
       YID[ix] = 0.0
       Dia[ix] = 0.0
-    bsc_data[model][ix] = [ele.name, Dia[ix], XID[ix], YID[ix]]
+    bsc_data[model][ix] = [ele.name, ele.key, Dia[ix], XID[ix], YID[ix]]
     fout.write('{:<16s}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}\n'.format(ele.name.rstrip('_'), ele.s, Dia[ix], XID[ix], -XID[ix], YID[ix], -YID[ix]))
   fout.close()
 
 #For elements with the same name, find the one with the largest Dia and
 # apply its values to all elements with that name.
 for model in bsc_data:
-  grouped = defaultdict(list)
-  for item in bsc_data[model]:
-    grouped[item[0]].append(item)
-  for key, items in grouped.items():
-    #max_ix = max(enumerate(items), key=lambda x: x[1][1])[0]
-    #max_item = items[max_ix]
-    max_item = max(items, key=lambda x: x[1])
+  indices = {}
+  for ix, (name,key) in enumerate([(x[0],x[1]) for x in bsc_data[model]]):
+    if name == '' or key == 'Drift':
+      continue
+    if name in indices:
+      indices[name] = (indices[name][0], ix)
+    else:
+      indices[name] = (ix, ix)
+  spans = {name: idx_pair
+           for name, idx_pair in indices.items()
+           if idx_pair[0] != idx_pair[1]}
+  for name, span in spans.items():
+    items = bsc_data[model][span[0]-1:span[1]+1]
+    #print("FOO A: ", name, span[0]-1,span[1], [[x[0],x[3]] for x in items])
+    max_item = max(items, key=lambda x: x[2])
+    #print("       ", name, max_item)
     for item in items:
-      item[:] = max_item[:]
+      if item[0] == name:
+        item[:] = max_item[:]  # these are references: modifies data in bsc_data
+    #print("FOO B: ", name, span[0]-1,span[1], [[x[0],x[3]] for x in items])
+
+#  #For elements with the same name, find the one with the largest Dia and
+#  # apply its values to all elements with that name.
+#  for model in bsc_data:
+#  grouped = defaultdict(list)
+#  for item in bsc_data[model]:
+#    grouped[item[0]].append(item)
+#  for key, items in grouped.items():
+#    #max_ix = max(enumerate(items), key=lambda x: x[1][1])[0]
+#    #max_item = items[max_ix]
+#    max_item = max(items, key=lambda x: x[1])
+#    for item in items:
+#      item[:] = max_item[:]
 
 #with open('bsc_data.dump','w') as f:
 #  for model in MODELS:
@@ -304,7 +329,7 @@ with open(fname,'w') as f_all:
         ordinal = ordinal + hxr_offset
       if bsc_data[model_name][ordinal]:
         x = bsc_data[model_name][ordinal]
-        f_all.write(f'{x[0]}, {x[1]:>10.6e}, {x[2]:>10.6e}, {-x[2]:>10.6e}, {x[3]:>10.6e}, {-x[3]:>10.6e}\n')
+        f_all.write(f'{x[0]}, {x[2]:>10.6e}, {x[3]:>10.6e}, {-x[3]:>10.6e}, {x[4]:>10.6e}, {-x[4]:>10.6e}\n')
 
 
     #for ix,ele in enumerate(lat.elements):
