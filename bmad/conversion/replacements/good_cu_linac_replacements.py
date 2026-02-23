@@ -92,11 +92,11 @@ K21_1B_full: line = (K21_1B)
     XC21101[superimpose] = T
     XC21101[ref] = K21_1B
     XC21101[ref_origin] = beginning
-    XC21101[offset] = 0.453432
+    XC21101[offset] = dLb1
     YC21102[superimpose] = T
     YC21102[ref] = K21_1B
     YC21102[ref_origin] = beginning
-    YC21102[offset] = 0.453432
+    YC21102[offset] = dLb1
 
 """,
   'K21_1C': """!---------------------
