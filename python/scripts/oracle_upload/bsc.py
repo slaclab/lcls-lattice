@@ -78,7 +78,7 @@ froot_to_model = {1:0, 6:1, 7:2, 8:3, 14:4, 10:5, 9:6}
 
 output_ordering = [1,6,10,7,8,14,9]
 
-optics = '00TEST00'
+optics = '19DEC2025s'
 
 ips_unsorted = []
 with open('ips.dump','r') as f:
@@ -332,7 +332,7 @@ with open(fname,'w') as f_all:
         x = bsc_data[model_name][ordinal]
         if not x[0].startswith('FIXER'):
           if x[0] != name:
-            print(f'FOO fail: {model_name} >{x[0]}< >{name}<')
+            print(f'WARNING.  ips.dump name not match twiss.dat name: {model_name=} twiss.dat name=>{x[0]=}< ips.dump name>{name}<')
           f_all.write(f'{name}, {x[2]:>10.6e}, {x[3]:>10.6e}, {-x[3]:>10.6e}, {x[4]:>10.6e}, {-x[4]:>10.6e}\n')
 
 

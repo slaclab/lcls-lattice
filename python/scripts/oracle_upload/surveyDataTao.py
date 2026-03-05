@@ -213,6 +213,7 @@ for model in MODELS:
       else:
         if split_bend is not None:
           match = [key for key in key_dict if key[:-1] == name]
+          #print(f'FOO: {match=} {name}')
           name = match[split_bend]
         else:
           match = [key for key in key_dict if key == name]
