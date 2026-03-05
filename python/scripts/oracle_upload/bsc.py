@@ -85,7 +85,7 @@ with open('ips.dump','r') as f:
   for line in f:
     if not line.startswith("#"):
       parts = line.split()
-      ips_unsorted.append([int(parts[0]), int(parts[1])])
+      ips_unsorted.append([int(parts[0]), int(parts[1]), parts[4]])
 
 ips = []
 for froot in output_ordering:
@@ -192,7 +192,7 @@ for model in MODELS:
   Dia=[0 for x in lat.elements]    # Stay-clear full diameter, if cylindrical chamber (empty array initially)
   fname = f'BSC_{model}.txt'
   fout = open(fname,'w')
-  fout.write('ELEMENT              S (m)        BSCd (mm)    +BSCx (mm)     -BSCx (mm)    +BSCy (mm)     -BSCy (mm)\n')
+  fout.write('#ELEMENT              S (m)        BSCd (mm)    +BSCx (mm)     -BSCx (mm)    +BSCy (mm)     -BSCy (mm)\n')
   bsc_data[model] = [['','',0,0,0] for _ in lat.elements]
   for ix,ele in enumerate(lat.elements):
     if model.startswith('cu_') and ix < i_BSY:
@@ -205,11 +205,9 @@ for model in MODELS:
         f=0.5
       else:
         f=1
-      XID[ix] = 1e3/2*float((np.sqrt(A*ele.beta_a) + np.abs(ele.eta_x*dp) + f*D))
-      YID[ix] = 1e3/2*float((np.sqrt(A*ele.beta_b) + np.abs(ele.eta_y*dp) + f*D))
-      Dia[ix] = float(2*np.sqrt(XID[ix]**2 + YID[ix]**2))
-      XID[ix] = 2*XID[ix]
-      YID[ix] = 2*YID[ix]
+      XID[ix] = 1e3*float((np.sqrt(A*ele.beta_a) + np.abs(ele.eta_x*dp) + f*D))
+      YID[ix] = 1e3*float((np.sqrt(A*ele.beta_b) + np.abs(ele.eta_y*dp) + f*D))
+      Dia[ix] = 2*float(np.sqrt(XID[ix]**2 + YID[ix]**2))
 
     else:
       e=eN/(ele.e_tot/511e-6); # emitance along machine
@@ -289,7 +287,7 @@ for model in bsc_data:
     #print("       ", name, max_item)
     for item in items:
       if item[0] == name:
-        item[:] = max_item[:]  # these are references: modifies data in bsc_data
+        item[1:] = max_item[1:]  # these are references: modifies data in bsc_data
     #print("FOO B: ", name, span[0]-1,span[1], [[x[0],x[3]] for x in items])
 
 #  #For elements with the same name, find the one with the largest Dia and
@@ -319,8 +317,11 @@ hxr_offset = sc_hxr_marker - cu_hxr_marker
 fname=f'BSC-AD_ACCEL-{optics}.txt'
 with open(fname,'w') as f_all:
   f_all.write("#ELEMENT, Stayclear Dia (mm), +Horz (mm), -Horz (mm), +Vert (mm), -Vert (mm)\n")
-  for froot,ordinal in ips:
-    if froot in froot_to_model.keys():
+  for froot,ordinal,name in ips:
+    if ordinal < 0:
+      if not name.startswith('FIXER'):
+        f_all.write(f'{name}, {0:>10.6e}, {0:>10.6e}, {0:>10.6e}, {0:>10.6e}, {0:>10.6e}\n')
+    elif froot in froot_to_model.keys():
       model_name = MODELS[froot_to_model[froot]]
       if model_name == 'cu_hxr':
         if ordinal < cu_hxr_marker:
@@ -329,7 +330,10 @@ with open(fname,'w') as f_all:
         ordinal = ordinal + hxr_offset
       if bsc_data[model_name][ordinal]:
         x = bsc_data[model_name][ordinal]
-        f_all.write(f'{x[0]}, {x[2]:>10.6e}, {x[3]:>10.6e}, {-x[3]:>10.6e}, {x[4]:>10.6e}, {-x[4]:>10.6e}\n')
+        if not x[0].startswith('FIXER'):
+          if x[0] != name:
+            print(f'FOO fail: {model_name} >{x[0]}< >{name}<')
+          f_all.write(f'{name}, {x[2]:>10.6e}, {x[3]:>10.6e}, {-x[3]:>10.6e}, {x[4]:>10.6e}, {-x[4]:>10.6e}\n')
 
 
     #for ix,ele in enumerate(lat.elements):

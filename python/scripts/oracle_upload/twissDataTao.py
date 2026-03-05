@@ -23,9 +23,8 @@ if LCLS_LATTICE_ENV is None:
   sys.exit(1)
 
 BDIR = f'{LCLS_LATTICE_ENV}/bmad/'
-#MODELS=['sc_sxr_beam0','sc_hxr_beam0','sc_bsyd_beam0','sc_diag0_beam0','sc_dasel_beam0','cu_sxr']
 MODELS=['sc_sxr_beam0','sc_hxr_beam0','sc_bsyd_beam0','sc_diag0_beam0','sc_dasel_beam0','cu_sxr','cu_hxr']
-#MODELS=['sc_diag0_beam0']
+#MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','sc_dasel','cu_sxr','cu_hxr']
 LATFILE = {}
 for model in MODELS:
   LATFILE[model] = f'{LCLS_LATTICE_ENV}/bmad/survey_models/{model}.lat.bmad'
@@ -62,7 +61,7 @@ def double_round_new(x, ndigits):
 for model in MODELS:
   print(f'model {model}')
   with open(model+'_twiss.dat','w') as f:
-    f.write(f'# Linux    Bmad Twiss/{timestamp}\n\n')
+    f.write(f'# Linux    Bmad Twiss/{timestamp}\n')
     f.write(f'# name, key, s, beta_a, beta_b, phi_a, phi_b, eta_x, eta_y, e_tot\n')
     tao = Tao(lattice_file=LATFILE[model], noplot=True)
     ix_eles = tao.lat_list('*', 'ele.ix_ele')

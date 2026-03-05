@@ -1645,11 +1645,12 @@ Ncol = head.count(',') + 1
 ips = []
 for kwn,eles in ele_dict.items():
     for m in range(len(eles)):
-        ips.append([eles[m]["idf"], eles[m]['id'], kwn, m])
+        ips.append([eles[m]["idf"], eles[m]['id'], kwn, m, eles[m]['name']])
 ips = sorted(ips, key=lambda x: (x[0], x[1]))
 
 with open('ips.dump','w') as f:
-  f.write('# froot   ordinal_in_froot   keyword   ordinal_in_keyword\n')
+  f.write('# froot   ordinal_in_froot   keyword   ordinal_in_keyword   name\n')
+  f.write('# ordinal_in_froot counted from beam0\n')
   for ip in ips:
     if ip[0] in froot_beam0_indexes:
       # then beam0 exists in the file.  offset ordinals by this amount.  ips.dump is used for bsc calculation,
@@ -1657,9 +1658,9 @@ with open('ips.dump','w') as f:
       ordinal_offset = froot_beam0_indexes[ip[0]] - 1
     else:
       ordinal_offset = 0
-    if ip[1]-ordinal_offset < 0:
-      continue
-    f.write("{:<10} {:<10} {:<10} {:<10}\n".format(ip[0],ip[1]-ordinal_offset,ip[2],ip[3]))
+    #if ip[1]-ordinal_offset < 0:
+    #  continue
+    f.write("{:<10} {:<10} {:<10} {:<10} {:<20}\n".format(ip[0],ip[1]-ordinal_offset,ip[2],ip[3],ip[4]))
     #f.write(f"{' '.join(f'{item:<10}' for item in ip)}\n")
 
     
