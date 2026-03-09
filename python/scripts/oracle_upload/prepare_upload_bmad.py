@@ -93,7 +93,7 @@ def roundoff(val, prec=None):
 
 script_dir = Path(__file__).parent.resolve()
 
-optics='12DEC2025s'
+optics='05MAR2026s'
 
 outdir='oracle_upload_dev'
 xfile='AD_ACCEL-'+optics+'.xls'
