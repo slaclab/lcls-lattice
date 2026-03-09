@@ -34,6 +34,7 @@ from slac2bmad.bmad import finalize_bmad
 from glob import glob
 import shutil
 
+import ast
 import json
 
 
@@ -42,31 +43,47 @@ INCLUDE_DEFERRED = False
 NEWELES = {}
 NEWELES['umasxh'] = """
 !------- SXR Undulator -------
-my_umasxh_k = 5.0
-umasxh: wiggler, 
-        type = "VGHPU",
-        L_period = 0.039, 
-        n_period = 87, 
-        b_max = my_umasxh_k * 2*pi*m_electron / (c_light * 0.039), 
-        L = 87*0.039, 
-        ds_step = 0.039*10
-
-umasxh[L] = umasxh[L]/2 ! Will be doubled in desplitting process. 
+!new my_umasxh_k = 5.0
+!new umasxh: wiggler, 
+!new         type = "VGHPU",
+!new         L_period = 0.039, 
+!new         n_period = 87, 
+!new         b_max = my_umasxh_k * 2*pi*m_electron / (c_light * 0.039), 
+!new         L = 87*0.039, 
+!new         ds_step = 0.039*10
+!new 
+!new umasxh[L] = umasxh[L]/2 ! Will be doubled in desplitting process. 
 !---------------------------------
+umasxh: taylor, type = "VGHPU39", l = lsxuh, tt11 = 1.0, tt12 = lsxuh, tt21 = 0, tt22 = 1.0,
+          tt33 = cos(lsxuh*sqrt(kqsx)), tt34 = sin(lsxuh*sqrt(kqsx))/sqrt(kqsx), tt43 = -sin(lsxuh*sqrt(kqsx))*sqrt(kqsx),
+          tt44 = cos(lsxuh*sqrt(kqsx)), tt55 = 1.0, tt66 = 1.0, mat_und_k = ksxu, mat_und_l = lusxu
 """
+NEWELES['umasxh_'] = """
+!------- HXR Undulator -------
+umasxh_: taylor, type = "VGHPU56", l = lsxuh_, tt11 = 1.0, tt12 = lsxuh_, tt21 = 0, tt22 = 1.0,
+          tt33 = cos(lsxuh_*sqrt(kqsx_)), tt34 = sin(lsxuh_*sqrt(kqsx_))/sqrt(kqsx_),
+          tt43 = -sin(lsxuh_*sqrt(kqsx_))*sqrt(kqsx_), tt44 = cos(lsxuh_*sqrt(kqsx_)), tt55 = 1.0, tt66 = 1.0, 
+          mat_und_k = ksxu_, mat_und_l = lusxu_
+
+!---------------------------------
+    """
 NEWELES['umahxh'] = """
 !------- HXR Undulator -------
-my_umahxh_k = 2.0
-umahxh: wiggler, 
-        type = "HGVPU",
-        L_period = 0.026, 
-        n_period = 129, 
-        b_max = my_umahxh_k * 2*pi*m_electron / (c_light * 0.026), 
-        L = 129*0.026, 
-        tilt=pi/2,
-        ds_step = 0.026*10
+!new my_umahxh_k = 2.0
+!new umahxh: wiggler, 
+!new         type = "HGVPU",
+!new         L_period = 0.026, 
+!new         n_period = 129, 
+!new         b_max = my_umahxh_k * 2*pi*m_electron / (c_light * 0.026), 
+!new         L = 129*0.026, 
+!new         tilt=pi/2,
+!new         ds_step = 0.026*10
+!new 
+!new umahxh[L] = umahxh[L]/2 ! Will be doubled in desplitting process. 
+umahxh: taylor, type = "HGVPU26", l = lhxuh, tt11 = cos(lhxuh*sqrt(kqhx)), tt12 = sin(lhxuh*sqrt(kqhx))/sqrt(kqhx),
+          tt21 = -sin(lhxuh*sqrt(kqhx))*sqrt(kqhx), tt22 = cos(lhxuh*sqrt(kqhx)), tt33 = 1.0, tt34 = lhxuh, tt43 = 0, tt44 = 1.0,
+          tt55 = 1.0, tt66 = 1.0, mat_und_k = khxu, mat_und_l = luhxu
 
-umahxh[L] = umahxh[L]/2 ! Will be doubled in desplitting process. 
 !---------------------------------
     """
 NEWELES['pssxh'] = """
@@ -74,14 +91,29 @@ NEWELES['pssxh'] = """
 !
 ! B_max = 2pi/lambda * sqrt(2*PHASE_INTEGRAL / L)
 ! 
-pssxh_phase_integral = 3814e-9  !T^2 m^3, maximum, from: T^2mm^3 (180-3814)
-pssxh_L        = 0.0825   ! m 
-pssxh_L_period = 0.075 ! m 
-pssxh: wiggler, type = "phase shifter", 
-    L = pssxh_L,
-    b_max = 2*pi / pssxh_L_period * sqrt(2 * pssxh_phase_integral / pssxh_L  ),
-    n_period = 1
-pssxh[L] = pssxh[L]/2 ! Will be doubled in desplitting process. 
+!new pssxh_phase_integral = 3814e-9  !T^2 m^3, maximum, from: T^2mm^3 (180-3814)
+!new pssxh_L        = 0.0825   ! m 
+!new pssxh_L_period = 0.075 ! m 
+!new pssxh: wiggler, type = "phase shifter", 
+!new     L = pssxh_L,
+!new     b_max = 2*pi / pssxh_L_period * sqrt(2 * pssxh_phase_integral / pssxh_L  ),
+!new     n_period = 1
+!new pssxh[L] = pssxh[L]/2 ! Will be doubled in desplitting process. 
+pssxh: taylor, type = "PS75", l = lpssxh, tt11 = 1.0, tt12 = lpssxh, tt21 = 0, tt22 = 1.0,
+          tt33 = cos(lpssxh*sqrt(kqpssx)), tt34 = sin(lpssxh*sqrt(kqpssx))/sqrt(kqpssx),
+          tt43 = -sin(lpssxh*sqrt(kqpssx))*sqrt(kqpssx), tt44 = cos(lpssxh*sqrt(kqpssx)), tt55 = 1.0, tt66 = 1.0,
+          mat_und_k = kpssx, mat_und_l = lupssx
+!---------------------------------
+"""
+NEWELES['pssxh_'] = """
+!------- SXR Phase Shifter -------
+!
+! B_max = 2pi/lambda * sqrt(2*PHASE_INTEGRAL / L)
+! 
+pssxh_: taylor, type = "PS97.5", l = lpssxh_, tt11 = 1.0, tt12 = lpssxh_, tt21 = 0, tt22 = 1.0,
+          tt33 = cos(lpssxh_*sqrt(kqpssx_)), tt34 = sin(lpssxh_*sqrt(kqpssx_))/sqrt(kqpssx_),
+          tt43 = -sin(lpssxh_*sqrt(kqpssx_))*sqrt(kqpssx_), tt44 = cos(lpssxh_*sqrt(kqpssx_)), tt55 = 1.0, tt66 = 1.0,
+          mat_und_k = kpssx_, mat_und_l = lupssx_
 !---------------------------------
 """
 NEWELES['pshxh'] = """
@@ -89,43 +121,47 @@ NEWELES['pshxh'] = """
 !
 ! B_max = 2pi/lambda * sqrt(2*PHASE_INTEGRAL / L)
 ! 
-pshxh_phase_integral = 490e-9  !T^2 m^3, maximum, from: T^2mm^3 (80-490)
-pshxh_L        = 0.0495 ! m 
-pshxh_L_period = 0.045 ! m 
-pshxh: wiggler, type = "phase shifter", 
-    L = pshxh_L,
-    b_max = 2*pi / pshxh_L_period * sqrt(2 * pshxh_phase_integral / pshxh_L  ),
-    n_period = 1
-pshxh[L] = pshxh[L]/2 ! Will be doubled in desplitting process. 
+!new pshxh_phase_integral = 490e-9  !T^2 m^3, maximum, from: T^2mm^3 (80-490)
+!new pshxh_L        = 0.0495 ! m 
+!new pshxh_L_period = 0.045 ! m 
+!new pshxh: wiggler, type = "phase shifter", 
+!new     L = pshxh_L,
+!new     b_max = 2*pi / pshxh_L_period * sqrt(2 * pshxh_phase_integral / pshxh_L  ),
+!new     n_period = 1
+!new pshxh[L] = pshxh[L]/2 ! Will be doubled in desplitting process. 
+pshxh: taylor, type = "PS45", l = lpshxh, tt11 = 1.0, tt12 = lpshxh, tt21 = 0, tt22 = 1.0,
+          tt33 = cos(lpshxh*sqrt(kqpshx)), tt34 = sin(lpshxh*sqrt(kqpshx))/sqrt(kqpshx),
+          tt43 = -sin(lpshxh*sqrt(kqpshx))*sqrt(kqpshx), tt44 = cos(lpshxh*sqrt(kqpshx)), tt55 = 1.0, tt66 = 1.0,
+          mat_und_k = kpshx, mat_und_l = lupshx
 !---------------------------------
 """
 #-----------------
 # XLEAP-II wigglers
 NEWELES['umxl1h'] = """
-!------- XLEAP-II wigglers -------
-umxl0h: wiggler, 
-        type = "LCLS-I",
-        L_period = 0.555, 
-        n_period = 6, 
-        b_max = 0, ! = K * 2*pi*m_electron / (c_light * 0.55), 
-        L = 6*0.555
-        !ds_step = 0.55*10
+!new !------- XLEAP-II wigglers -------
+!new umxl0h: wiggler, 
+!new         type = "LCLS-I",
+!new         L_period = 0.555, 
+!new         n_period = 6, 
+!new         b_max = 0, ! = K * 2*pi*m_electron / (c_light * 0.55), 
+!new         L = 6*0.555
+!new         !ds_step = 0.55*10
+!new 
+!new umxl0h[L] = umxl0h[L]/2 ! Will be doubled in desplitting process. 
+!new !---------------------------------
+!new 
+!new umxl1h: umxl0h
+umxl1h: taylor, type = "LCLS-I", l = lundh, tt11 = r11xl1, tt12 = r12xl1, tt21 = r21xl1, tt22 = r22xl1, tt33 = r33xl1,
+          tt34 = r34xl1, tt43 = r43xl1, tt44 = r44xl1, mat_und_k = kund, mat_und_l = lamu
 
-umxl0h[L] = umxl0h[L]/2 ! Will be doubled in desplitting process. 
-!---------------------------------
-
-umxl1h: umxl0h
-
-"""
-# Inherit from umxl0h
-NEWELES['umxl2h'] = """
-umxl2h: umxl0h
 """
 NEWELES['umxl3h'] = """
-umxl3h: umxl0h
+umxl3h: taylor, type = "LCLS-I", l = lundh, tt11 = r11xl3, tt12 = r12xl3, tt21 = r21xl3, tt22 = r22xl3, tt33 = r33xl3,
+          tt34 = r34xl3, tt43 = r43xl3, tt44 = r44xl3, mat_und_k = kund, mat_und_l = lamu
 """
 NEWELES['umxl4h'] = """
-umxl4h: umxl0h
+umxl4h: taylor, type = "LCLS-I", l = lundh, tt11 = r11xl4, tt12 = r12xl4, tt21 = r21xl4, tt22 = r22xl4, tt33 = r33xl4,
+          tt34 = r34xl4, tt43 = r43xl4, tt44 = r44xl4, mat_und_k = kund, mat_und_l = lamu
 """
 # This needs to be extended
 NEWELES['duqxl'] = """
@@ -138,16 +174,19 @@ duqxl: drift, L = 0.2166 + 0.03
 CU_NEWELES = {}
 CU_NEWELES['lh_und'] = """
 !------- Laser Heater Undulator for Copper Linac -------
-my_lh_und_k = 1.38523
-lh_und: wiggler, 
-        type = "laser_heater_undulator",
-        L_period = 0.054, 
-        n_period = 10, 
-        b_max = my_lh_und_k * 2*pi*m_electron / (c_light * 0.054), 
-         L = 10*0.054 ! Was: 0.506263, 
-        ds_step = 0.054
-
-lh_und[L] = lh_und[L]/2 ! Will be doubled in desplitting process. 
+!new my_lh_und_k = 1.38523
+!new lh_und: wiggler, 
+!new         type = "laser_heater_undulator",
+!new         L_period = 0.054, 
+!new         n_period = 10, 
+!new         b_max = my_lh_und_k * 2*pi*m_electron / (c_light * 0.054), 
+!new          L = 10*0.054 ! Was: 0.506263, 
+!new         ds_step = 0.054
+!new 
+!new lh_und[L] = lh_und[L]/2 ! Will be doubled in desplitting process. 
+lh_und: taylor, type = "LHund", l = lhunh, tt11 = 1.0, tt12 = lhunh, tt21 = 0, tt22 = 1.0, tt33 = cos(lhunh*sqrt(kqlh)),
+          tt34 = r34h, tt43 = -sin(lhunh*sqrt(kqlh))*sqrt(kqlh), tt44 = cos(lhunh*sqrt(kqlh)),
+          mat_und_k = k_und, mat_und_l = lam
 !---------------------------------
     """
 CU_NEWELES['dh03a'] = """
@@ -159,31 +198,43 @@ CU_NEWELES['dh03b'] = """
 dh03b: drift, l = 0.08401830- ( 10*0.054 - 0.506263 ) /2, type = "CSR"
 """
 # Append json replacements to CU_NEWELES
-CU_LINAC_REPLACEMENTS = json.load(open('bmad/conversion/replacements/good_cu_linac_replacements.json'))
+#CU_LINAC_REPLACEMENTS = json.load(open('bmad/conversion/replacements/good_cu_linac_replacements.json'))
+
+cu_replacements_file = 'bmad/conversion/replacements/good_cu_linac_replacements.py'
+with open(cu_replacements_file,'r') as f:
+ CU_LINAC_REPLACEMENTS = ast.literal_eval(f.read())
+
 for name, replace in CU_LINAC_REPLACEMENTS.items():
     CU_NEWELES[name.lower()+'_full'] = replace
 # Append deferred replacements to CU_NEWELES
 if INCLUDE_DEFERRED:
     CU_NEWELES.update(json.load(open('bmad/conversion/replacements/deferred_cu_replacements.json')))
 
-
 # SC Only replacements
 SC_NEWELES = {}
 SC_NEWELES['umhtr'] = """
 !------- Laser Heater Undulator for SC Linac -------
-my_umhtr_k = 0.960143
-
-umhtr: wiggler, 
-        type = "laser_heater_undulator",
-        L_period = 0.054, 
-        n_period = 10, 
-        b_max = my_umhtr_k * 2*pi*m_electron / (c_light * 0.054), 
-        L = 10*0.054 ! Was: 0.506263, 
-        ds_step = 0.054
-
-umhtr[L] = umhtr[L]/2 ! Will be doubled in desplitting process. 
+!new my_umhtr_k = 0.960143
+!new 
+!new umhtr: wiggler, 
+!new         type = "laser_heater_undulator",
+!new         L_period = 0.054, 
+!new         n_period = 10, 
+!new         b_max = my_umhtr_k * 2*pi*m_electron / (c_light * 0.054), 
+!new         L = 10*0.054 ! Was: 0.506263, 
+!new         ds_step = 0.054
+!new 
+!new umhtr[L] = umhtr[L]/2 ! Will be doubled in desplitting process. 
+umhtr: taylor, type = "UMLHB", l = lhunh, tt11 = 1.0, tt12 = lhunh, tt21 = 0, tt22 = 1.0, tt33 = cos(lhunh*sqrt(kqlh)),
+          tt34 = r34h, tt43 = -sin(lhunh*sqrt(kqlh))*sqrt(kqlh), tt44 = cos(lhunh*sqrt(kqlh)), tt55 = 1, tt66 = 1,
+          mat_und_k = k_und, mat_und_l = lam
 !---------------------------------
-    """
+"""
+SC_NEWELES['wigxlh'] = """
+wigxlh: taylor, type = "variable gap", l = lwigh, tt11 = 1.0, tt12 = lwigh, tt21 = 0, tt22 = 1.0, tt33 = cos(argw),
+          tt34 = r34w, tt43 = -sin(argw)*sqrt(kqwig), tt44 = cos(argw), mat_und_k = kwig, mat_und_l = lwigh
+"""
+
 SC_NEWELES['dh02c'] = """
 ! Shorten so that umhtr has an integer number of poles
 dh02c: drift, l = 0.2795065 - ( 10*0.054 - 0.506263 ) /2 , type = "CSR" !0.297036
@@ -215,8 +266,9 @@ tcxdg0: crab_cavity, type = "STCAV_X", rf_frequency = 2856 * 1e6, l = 20*in2m/2
 """
 SC_NEWELES['tcydg0'] = """
 ! mad8 describes tcav as lcavity.  Replace it with a crab_cavity.
-tcydg0: crab_cavity, type = "STCAV_Y", rf_frequency = 2856 * 1e6, l = 20*in2m/2
+tcydg0: crab_cavity, type = "@4,STCAV_Y", rf_frequency = 2856 * 1e6, l = 20*in2m/2
 """
+
 # Not needed. Desplitting handles cavities now.
 # Add these repalcements
 #SC_LINAC_REPLACEMENTS = json.load(open('replacements/good_sc_linac_replacements.json'))
@@ -226,19 +278,10 @@ tcydg0: crab_cavity, type = "STCAV_Y", rf_frequency = 2856 * 1e6, l = 20*in2m/2
 if INCLUDE_DEFERRED:
     SC_NEWELES.update(json.load(open('bmad/conversion/replacements/deferred_sc_replacements.json')))
 
-def merge_replacements(master_file):
-    dat = {}
-    dat.update(NEWELES)
-    if master_file.startswith('CU_'):
-        print('CU replacements')
-        dat.update(CU_NEWELES)
-        return dat
-    elif master_file.startswith('SC_'):
-        print('SC replacements')
-        dat.update(SC_NEWELES)
-        return dat
-    else:
-        raise 
+CU_REPLACEMENTS = NEWELES.copy()
+CU_REPLACEMENTS.update(CU_NEWELES)
+SC_REPLACEMENTS = NEWELES.copy()
+SC_REPLACEMENTS.update(SC_NEWELES)
 
 #Cleanup from previous conversion run
 run(f'rm -rf {TEMP_DIR}',shell=True)
@@ -256,34 +299,60 @@ for f in XSIF_FILES:
 CU_MASTERS = [f for f in os.listdir('mad') if f.startswith('CU_') and f.endswith('xsif')]
 SC_MASTERS = [f for f in os.listdir('mad') if f.startswith('SC_') and f.endswith('xsif')]
 
-exclude_strs = ['BUN1B','WIGX','UMXL','LH_UND','UMHTR','UMASX','UMAHX','PSSX','PSHX']
-shadows = ['umasxh','umahxh','pssxh','pshxh','umxl1h','umxl2h','umxl3h','umxl4h',
-           'duqxl','lh_und','dh03a','dh03b','umhtr','dh02c','dh02d']
+# exclude_strs will not go through the automatic-desplitter
+exclude_strs = ['BUN1B','WIGX','UMXL','LH_UND','UMHTR','UMASX','UMAHX','PSSX','PSHX','K21_1B','K21_1C']
 
-def process_master(master):
+# new elements are added commented out with !new
+shadows = ['duqxl','dh03a','dh03b','dh02c','dh02d']
+
+shutil.copytree(TEMP_DIR, WORK_DIR, dirs_exist_ok=True)
+
+def process_master(master, REPLACEMENTS):
     print(f'Converting {master}')
-    shutil.copytree(TEMP_DIR, WORK_DIR, dirs_exist_ok=True)
 
-    #SCRIPT = f'python $ACC_ROOT_DIR/util_programs/mad_to_bmad/mad8_to_bmad.py --no_prepend_vars -f {master}'
+    #The BMAD_CONVERT_SCRIPT descends through mad8 call statements
     SCRIPT = f'python {BMAD_CONVERT_SCRIPT} --no_prepend_vars -f {master}'
     res = run(SCRIPT, shell=True, cwd=WORK_DIR)
-
     assert res.returncode == 0
 
     BMAD_FILES=glob(WORK_DIR+'/*bmad')
-    REPLACEMENTS = merge_replacements(master)
+
     for f in BMAD_FILES:
         finalize_bmad(f, replacements=REPLACEMENTS, verbose=False, exclude_strs=exclude_strs, shadows=shadows)  
-
-    for f in BMAD_FILES:
         shutil.copy(f, DEST_DIR)
+        os.remove(f)
 
 for _m in CU_MASTERS:
-    process_master(_m)
+    process_master(_m,CU_REPLACEMENTS)
 
 for _m in SC_MASTERS:
-    process_master(_m)
+    process_master(_m,SC_REPLACEMENTS)
+
+#****************************
+# cleanup conversion slop: conversion mistakes that can't be fixed more elegantly.
+#****************************
+# Bmad's mad8 to bmad translator replaces all instances of PROF with MONITOR.
+# Thus, PROFILE becomes MONITORILE.  SFT has a type field containing PROFILE
+SFT_file = 'bmad/master/SFT.bmad'
+with open(SFT_file, 'r') as f:
+    content = f.read()
+content = content.replace('MONITORILE','PROFILE')
+with open(SFT_file, 'w') as f:
+    f.write(content)
 
 #cleanup working areas
 run(f'rm -r {TEMP_DIR}',shell=True)
 run(f'rm -r {WORK_DIR}',shell=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
