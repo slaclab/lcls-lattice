@@ -94,43 +94,18 @@
 #
 # =========================================================================
 
-#
+
 # MACROS
-#
+
 AWK=awk
 UNAME := $(shell uname)
-ifeq ($(UNAME), Solaris)
-    AWK=gawk
-endif
 
-# You can override this from the command line if you want a different 
-# executable. Eg make MAD8=<pathtomymad8>
-# 
-# rh9
-MAD8=/sdf/group/ad/sw/beta/bin/mad8s.rh9
-# < rh9
-#MAD8=/sdf/group/ad/sw/beta/bin/mad8s
 
 # Where do we install the mad outputs, all associated files.
-#
+
 INSTALLROOT=/sdf/data/ad/public_html/model/output/lcls/mad
 #INSTALLROOT=/sdf/group/ad/sw/scm/repos/optics/lcls-lattice/mad/TESTTESTTEST
 #INSTALLROOT=.
-
-# Define macros that evaluate to lists of files, mainly for help installing
-#
-MODELLATS:=*.ps *.print *.tape *.echo
-OPTICS:=LCLS2scH.ps LCLS2scS.ps LCLS2sc_color.ps LCLS2scD.ps DIAG0.ps LCLS2scDA.ps LCLS2cuH.ps LCLS2cuS.ps LCLS2cu_color.ps 
-OPTICSPDFS=$(patsubst %.ps, %.pdf, $(OPTICS)) 
-OPTICSICONS=$(patsubst %.ps, %_opticsicon.png, $(OPTICS)) 
-
-# The list of .dot files given here drives which _map.pdf and
-# _lines.dat files will be produced.
-#
-DOTS:=LCLS2scS.dot LCLS2scH.dot LCLS2scD.dot DIAG0.dot LCLS2scDA.dot LCLS2cuH.dot LCLS2cuS.dot
-MAPS=$(patsubst %.dot, %_map.pdf, $(DOTS))
-MAPICONS=$(patsubst %.dot, %_mapicon.png, $(DOTS))
-LINES=$(patsubst %.dot, %_lines.dat, $(DOTS))
 
 # The location of the file defining the association between
 # MAD element names and control system device names, as used
@@ -141,20 +116,9 @@ ELEMENTDEVICES:=elementdevices.dat \
                 elementdevices_sbends_cuH.dat \
                 elementdevices_sbends_cuS.dat
 
-#  What will be published to the opt/ directory of the deck release web site.
-OPTS:=$(DOTS) $(MAPS) $(MAPICONS) $(OPTICSICONS) *_lines.dat
 WEB:=.htaccess 
 
-#
 # TARGETS
-#
-
-# lattice describes the beampaths defined by the MAD8 output files.
-# sc defines superconducting realted beampaths; cu describes copper linac related.
-#
-# lattice is the first target in the makefile, and therefore the default.
-#
-lattice : sc cu 
 
 # sc (superconducting) beampaths:
 #   SC_SXR   = GUNB - L0B - superconducting linac - Bypass line - LTUS - SXR
@@ -162,6 +126,10 @@ lattice : sc cu
 #   SC_BSYD  = GUNB - L0B - superconducting linac - Bypass line - BSY dump line
 #   SC_DIAG0 = GUNB - end of diagnostics line
 #   SC_DASEL = GUNB - L0B - superconducting linac - Bypass line - DASEL 
+
+# cu (warm copper linac) beampaths:
+#   CU_HXR   = GUN - copper linac - LTUH - HXR 
+#   CU_SXR   = GUN - copper linac - LTUS - SXR
 
 
 sc : sc_bsyd_beam0  sc_dasel_beam0  sc_diag0_beam0  sc_hxr_beam0  sc_sxr_beam0
@@ -176,22 +144,6 @@ sc_sxr_beam0: sc_sxr_beam0_plots.pdf
 cu_hxr: cu_hxr_plots.pdf
 cu_sxr: cu_sxr_plots.pdf
 
-sc       : SC_SXR SC_HXR SC_BSYD SC_DIAG0 SC_DASEL sc_misc
-SC_SXR   : LCLS2scS.ps LCLS2scS.print LCLS2scS_twiss.tape LCLS2scS_survey.tape
-SC_HXR   : LCLS2scH.ps LCLS2scH.print LCLS2scH_twiss.tape LCLS2scH_survey.tape
-SC_BSYD  : LCLS2scD.ps LCLS2scD.print LCLS2scD_twiss.tape LCLS2scD_survey.tape
-SC_DIAG0 : DIAG0.ps DIAG0.print DIAG0_twiss.tape DIAG0_survey.tape
-SC_DASEL : LCLS2scDA.ps LCLS2scDA.print LCLS2scDA_twiss.tape LCLS2scDA_survey.tape
-sc_misc  : LCLS2sc_color.ps LCLS2sc.print
-
-# cu (warm copper linac) beampaths:
-#   CU_HXR   = GUN - copper linac - LTUH - HXR 
-#   CU_SXR   = GUN - copper linac - LTUS - SXR
-#
-cu       : CU_HXR CU_SXR cu_misc
-CU_HXR   : LCLS2cuH.ps LCLS2cuH.print LCLS2cuH_twiss.tape LCLS2cuH_survey.tape
-CU_SXR   : LCLS2cuS.ps LCLS2cuS.print LCLS2cuS_twiss.tape LCLS2cuS_survey.tape
-cu_misc  : LCLS2cu_color.ps LCLS2cu.print 
 
 # Special target to make everything - all MAD8 output, control system support
 # and web related things.
@@ -212,86 +164,9 @@ FORCE :
 # RULES
 #
 
-# Superconducting beampaths MAD8
-#
-LCLS2sc%.ps LCLS2sc%.print LCLS2sc%_twiss.tape LCLS2sc%_survey.tape : LCLS2sc_main.mad8 *.xsif
-	$(MAD8) < $<
-LCLS2sc_color.ps : LCLS2sc_main.mad8 *.xsif
-	(sed 's/!COLORPLOTS//g' LCLS2sc_main.mad8 | $(MAD8))
-
-# Copper linac beampaths MAD
-#
-LCLS2cu%.ps LCLS2cu%.print LCLS2cu%_twiss.tape LCLS2cu%_survey.tape : LCLS2cu_main.mad8 *.xsif
-	$(MAD8) < $<
-LCLS2cu_color.ps : LCLS2cu_main.mad8 *.xsif
-	(sed 's/!COLORPLOTS//g' LCLS2cu_main.mad8 | $(MAD8))
-
-
-
-cu_hxr_plots.pdf  cu_sxr_plots.pdf  
-sc       : SC_SXR SC_HXR SC_BSYD SC_DIAG0 SC_DASEL sc_misc
-SC_SXR   : LCLS2scS.ps LCLS2scS.print LCLS2scS_twiss.tape LCLS2scS_survey.tape
-SC_HXR   : LCLS2scH.ps LCLS2scH.print LCLS2scH_twiss.tape LCLS2scH_survey.tape
-SC_BSYD  : LCLS2scD.ps LCLS2scD.print LCLS2scD_twiss.tape LCLS2scD_survey.tape
-SC_DIAG0 : DIAG0.ps DIAG0.print DIAG0_twiss.tape DIAG0_survey.tape
-SC_DASEL : LCLS2scDA.ps LCLS2scDA.print LCLS2scDA_twiss.tape LCLS2scDA_survey.tape
-sc_misc  : LCLS2sc_color.ps LCLS2sc.print
-
-# cu (warm copper linac) beampaths:
-#   CU_HXR   = GUN - copper linac - LTUH - HXR 
-#   CU_SXR   = GUN - copper linac - LTUS - SXR
-#
-cu       : CU_HXR CU_SXR cu_misc
-CU_HXR   : LCLS2cuH.ps LCLS2cuH.print LCLS2cuH_twiss.tape LCLS2cuH_survey.tape
-CU_SXR   : LCLS2cuS.ps LCLS2cuS.print LCLS2cuS_twiss.tape LCLS2cuS_survey.tape
-cu_misc  : LCLS2cu_color.ps LCLS2cu.print 
-
-# Special target to make everything - all MAD8 output, control system support
-# and web related things.
-all : lattice lines dots maps mapicons opticspdfs opticsicons
-
-lines : $(LINES)              # Files mapping elements and devices to areas 
-dots : $(DOTS)                # Beampath maps in Dot language
-maps : $(MAPS)                # Beampath maps in PDF 
-mapicons : $(MAPICONS)        # Small .png files of beampath maps for web page
-opticspdfs : $(OPTICSPDFS)    # PDFs of twiss optics equiv to Postscript from MAD
-opticsicons : $(OPTICSICONS)  # Small .png files of optics topsheets for web page
-
-FORCE :
-	clean
-	make all
-
-#
-# RULES
-#
-
-# Superconducting beampaths MAD8
-#
-LCLS2sc%.ps LCLS2sc%.print LCLS2sc%_twiss.tape LCLS2sc%_survey.tape : LCLS2sc_main.mad8 *.xsif
-	$(MAD8) < $<
-LCLS2sc_color.ps : LCLS2sc_main.mad8 *.xsif
-	(sed 's/!COLORPLOTS//g' LCLS2sc_main.mad8 | $(MAD8))
-
-# Copper linac beampaths MAD
-#
-LCLS2cu%.ps LCLS2cu%.print LCLS2cu%_twiss.tape LCLS2cu%_survey.tape : LCLS2cu_main.mad8 *.xsif
-	$(MAD8) < $<
-LCLS2cu_color.ps : LCLS2cu_main.mad8 *.xsif
-	(sed 's/!COLORPLOTS//g' LCLS2cu_main.mad8 | $(MAD8))
-
-
-
-cu_hxr_plots.pdf  cu_sxr_plots.pdf  sc_bsyd_beam0_plots.pdf  sc_dasel_beam0_plots.pdf  sc_diag0_beam0_plots.pdf  sc_hxr_beam0_plots.pdf  sc_sxr_beam0_plots.pdf :
+sc cu:
 	../python/scripts/oracle_upload/plotsTao.py
 
-# Convert Postcript to PDF (of twiss plots), accomplished by ps2pdf, 
-# produces nicer results than convert, at least on a mac. Both should
-# be available in any unix distribution.
-#
-%.pdf : %.ps
-	ps2pdf $<
-DIAG0.pdf : DIAG0.ps
-	ps2pdf $<
 
 # To make a PDF from a .dot file, use dot -T facility
 %_map.pdf : %.dot
@@ -299,7 +174,7 @@ DIAG0.pdf : DIAG0.ps
 
 
 # Beam line device lists and maps.
-#
+
 # Create the line .dot and .dat files. Dot files describe graphically the beam's traversal
 # through each LCLS area in the dot language. The dat files are equivalent but textually list
 # each element that is also a control system device with its device and element name.
@@ -308,7 +183,7 @@ DIAG0.pdf : DIAG0.ps
 # for a beampath (as may be the case during machine construction), the lines.dat file for
 # that beampath will not be emitted (since it would be 0-length). NOTE 2: The order of
 # input files to the awk script is important, it is: survey.tape, elementdevices, print.
-#
+
 #%_lines.dat %.dot : %_survey.tape $(ELEMENTDEVICES) %.print
 #	gawk -v width=38 -v height=4  -f mad2dot.awk $+ > $*.dot
 %_lines.dat %.dot : %_survey.tape $(ELEMENTDEVICES) %.print
