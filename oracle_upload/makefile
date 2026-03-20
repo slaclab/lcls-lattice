@@ -162,7 +162,20 @@ lattice : sc cu
 #   SC_BSYD  = GUNB - L0B - superconducting linac - Bypass line - BSY dump line
 #   SC_DIAG0 = GUNB - end of diagnostics line
 #   SC_DASEL = GUNB - L0B - superconducting linac - Bypass line - DASEL 
-#
+
+
+sc : sc_bsyd_beam0  sc_dasel_beam0  sc_diag0_beam0  sc_hxr_beam0  sc_sxr_beam0
+cu : cu_hxr  cu_sxr
+
+sc_bsyd_beam0: sc_bsyd_beam0_plots.pdf
+sc_dasel_beam0: sc_dasel_beam0_plots.pdf
+sc_diag0_beam0: sc_diag0_beam0_plots.pdf
+sc_hxr_beam0: sc_hxr_beam0_plots.pdf
+sc_sxr_beam0: sc_sxr_beam0_plots.pdf
+
+cu_hxr: cu_hxr_plots.pdf
+cu_sxr: cu_sxr_plots.pdf
+
 sc       : SC_SXR SC_HXR SC_BSYD SC_DIAG0 SC_DASEL sc_misc
 SC_SXR   : LCLS2scS.ps LCLS2scS.print LCLS2scS_twiss.tape LCLS2scS_survey.tape
 SC_HXR   : LCLS2scH.ps LCLS2scH.print LCLS2scH_twiss.tape LCLS2scH_survey.tape
@@ -212,6 +225,64 @@ LCLS2cu%.ps LCLS2cu%.print LCLS2cu%_twiss.tape LCLS2cu%_survey.tape : LCLS2cu_ma
 	$(MAD8) < $<
 LCLS2cu_color.ps : LCLS2cu_main.mad8 *.xsif
 	(sed 's/!COLORPLOTS//g' LCLS2cu_main.mad8 | $(MAD8))
+
+
+
+cu_hxr_plots.pdf  cu_sxr_plots.pdf  
+sc       : SC_SXR SC_HXR SC_BSYD SC_DIAG0 SC_DASEL sc_misc
+SC_SXR   : LCLS2scS.ps LCLS2scS.print LCLS2scS_twiss.tape LCLS2scS_survey.tape
+SC_HXR   : LCLS2scH.ps LCLS2scH.print LCLS2scH_twiss.tape LCLS2scH_survey.tape
+SC_BSYD  : LCLS2scD.ps LCLS2scD.print LCLS2scD_twiss.tape LCLS2scD_survey.tape
+SC_DIAG0 : DIAG0.ps DIAG0.print DIAG0_twiss.tape DIAG0_survey.tape
+SC_DASEL : LCLS2scDA.ps LCLS2scDA.print LCLS2scDA_twiss.tape LCLS2scDA_survey.tape
+sc_misc  : LCLS2sc_color.ps LCLS2sc.print
+
+# cu (warm copper linac) beampaths:
+#   CU_HXR   = GUN - copper linac - LTUH - HXR 
+#   CU_SXR   = GUN - copper linac - LTUS - SXR
+#
+cu       : CU_HXR CU_SXR cu_misc
+CU_HXR   : LCLS2cuH.ps LCLS2cuH.print LCLS2cuH_twiss.tape LCLS2cuH_survey.tape
+CU_SXR   : LCLS2cuS.ps LCLS2cuS.print LCLS2cuS_twiss.tape LCLS2cuS_survey.tape
+cu_misc  : LCLS2cu_color.ps LCLS2cu.print 
+
+# Special target to make everything - all MAD8 output, control system support
+# and web related things.
+all : lattice lines dots maps mapicons opticspdfs opticsicons
+
+lines : $(LINES)              # Files mapping elements and devices to areas 
+dots : $(DOTS)                # Beampath maps in Dot language
+maps : $(MAPS)                # Beampath maps in PDF 
+mapicons : $(MAPICONS)        # Small .png files of beampath maps for web page
+opticspdfs : $(OPTICSPDFS)    # PDFs of twiss optics equiv to Postscript from MAD
+opticsicons : $(OPTICSICONS)  # Small .png files of optics topsheets for web page
+
+FORCE :
+	clean
+	make all
+
+#
+# RULES
+#
+
+# Superconducting beampaths MAD8
+#
+LCLS2sc%.ps LCLS2sc%.print LCLS2sc%_twiss.tape LCLS2sc%_survey.tape : LCLS2sc_main.mad8 *.xsif
+	$(MAD8) < $<
+LCLS2sc_color.ps : LCLS2sc_main.mad8 *.xsif
+	(sed 's/!COLORPLOTS//g' LCLS2sc_main.mad8 | $(MAD8))
+
+# Copper linac beampaths MAD
+#
+LCLS2cu%.ps LCLS2cu%.print LCLS2cu%_twiss.tape LCLS2cu%_survey.tape : LCLS2cu_main.mad8 *.xsif
+	$(MAD8) < $<
+LCLS2cu_color.ps : LCLS2cu_main.mad8 *.xsif
+	(sed 's/!COLORPLOTS//g' LCLS2cu_main.mad8 | $(MAD8))
+
+
+
+cu_hxr_plots.pdf  cu_sxr_plots.pdf  sc_bsyd_beam0_plots.pdf  sc_dasel_beam0_plots.pdf  sc_diag0_beam0_plots.pdf  sc_hxr_beam0_plots.pdf  sc_sxr_beam0_plots.pdf :
+	../python/scripts/oracle_upload/plotsTao.py
 
 # Convert Postcript to PDF (of twiss plots), accomplished by ps2pdf, 
 # produces nicer results than convert, at least on a mac. Both should
