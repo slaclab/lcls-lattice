@@ -64,7 +64,7 @@ kws['Crab_Cavity']     = {'madk':'LCAV',
                           'params':['L',0,0,0,'X1_LIMIT',0,'RF_FREQUENCY','VOLTAGE','PHI0',0]}
 
 #skips = ['Patch']
-skips = []
+skips = ['Fixer']
 for skip in skips:
   kws[skip] = {'skip':True}
 
@@ -74,7 +74,7 @@ if LCLS_LATTICE_ENV is None:
   sys.exit(1)
 
 LINES_ROOTS = ['sc_sxr','sc_hxr','sc_bsyd','sc_dasel','sc_diag0','cu_sxr','cu_hxr']
-LINES_EXCLUDE = ['', '    ', 'DRIF', 'MARK']
+LINES_EXCLUDE = ['', '    ',]
 
 BDIR = f'{LCLS_LATTICE_ENV}/bmad/'
 MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','sc_dasel','sc_sfts','cu_sxr','cu_hxr','cu_sfth','cu_gspec','cu_spec',
