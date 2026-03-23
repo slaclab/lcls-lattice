@@ -6,6 +6,7 @@ import re
 import math
 from pathlib import Path
 import json
+import sys
 
 
 #------------------------------------------
@@ -93,7 +94,10 @@ def roundoff(val, prec=None):
 
 script_dir = Path(__file__).parent.resolve()
 
-optics='05MAR2026s'
+if len(sys.argv) > 1:
+    optics = sys.argv[1]
+else:
+    optics = 'TEST'
 
 outdir='oracle_upload_dev'
 xfile='AD_ACCEL-'+optics+'.xls'

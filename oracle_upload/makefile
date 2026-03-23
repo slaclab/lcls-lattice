@@ -3,6 +3,8 @@ ifndef LCLS_LATTICE
 $(error MY_ENV_VAR is not set. Please set it before running make)
 endif
 
+SCRIPT_DIR = $(LCLS_LATTICE)/python/scripts/oracle_upload
+
 # Variables
 MODELS = sc_sxr sc_hxr sc_bsyd sc_dasel sc_diag0 cu_sxr cu_hxr
 OPTICS = 24MAR2025s
@@ -26,38 +28,38 @@ PLOTS_PDFS = $(foreach model,$(MODELS),$(model)_plots.pdf)
 all: AD_ACCEL-$(OPTICS).txt BSY-AD_ACCEL-$(OPTICS).txt AD_ACCEL-extra-$(OPTICS).txt BSC-AD_ACCEL-$(OPTICS).txt $(DOTS) $(PLOTS_PDFS)
 
 # surveyDataTao.py
-value_data.json $(SURVEY_TAPES) $(LINES_PRECURSORS): unified_keys.dat
-	python surveyDataTao.py
+value_data.json $(SURVEY_TAPES) $(LINES_PRECURSORS) &: unified_keys.dat
+	python $(SCRIPT_DIR)/surveyDataTao.py
 
 # twissDataTao.py
-$(TWISS_DATS): unified_keys.dat
-	python twissDataTao.py
+$(TWISS_DATS) &: unified_keys.dat
+	python $(SCRIPT_DIR)/twissDataTao.py
 
 # elementdevices_bmad.py
 elementdevices.dat elementdevices_cavities_cuH.dat elementdevices_cavities_cuS.dat \
-elementdevices_sbends_cuH.dat elementdevices_sbends_cuS.dat: cu_hxr_survey.tape cu_sxr_survey.tape elementdeviced.dat
-	python elementdevices_bmad.py
+elementdevices_sbends_cuH.dat elementdevices_sbends_cuS.dat &: cu_hxr_survey.tape cu_sxr_survey.tape
+	python $(SCRIPT_DIR)/elementdevices_bmad.py
 
 # prepare_upload.py
-ips.dump AD_ACCEL-$(OPTICS).txt BSY-AD_ACCEL-$(OPTICS).txt AD_ACCEL-extra-$(OPTICS).txt: value_data.json $(SURVEY_TAPES)
-	python prepare_upload.py
+ips.dump AD_ACCEL-$(OPTICS).txt BSY-AD_ACCEL-$(OPTICS).txt AD_ACCEL-extra-$(OPTICS).txt &: value_data.json $(SURVEY_TAPES)
+	python $(SCRIPT_DIR)/prepare_upload_bmad.py
 
 # plotsTao.py
-$(PLOTS_PDFS):
-	python plotsTao.py
+$(PLOTS_PDFS) &:
+	python $(SCRIPT_DIR)/plotsTao.py
 
 # bsc.py
-BSC-AD_ACCEL-$(OPTICS).txt $(BSC_TXTS): ips.dump $(TWISS_DATS)
-	python bsc.py
+BSC-AD_ACCEL-$(OPTICS).txt $(BSC_TXTS) &: ips.dump $(TWISS_DATS)
+	python $(SCRIPT_DIR)/bsc.py
 
 # make_lines.py
-$(LINES_ALLS) $(LINES_DATS): elementdevices.dat \
+$(LINES_ALLS) $(LINES_DATS) &: elementdevices.dat \
 elementdevices_cavities_cuH.dat elementdevices_cavities_cuS.dat elementdevices_sbends_cuH.dat elementdevices_sbends_cuS.dat
-	python make_lines.py
+	python $(SCRIPT_DIR)/make_lines.py
 
 # make_dot.py
-$(DOTS): $(LINES_ALLS)
-	python make_dot.py
+$(DOTS) &: $(LINES_ALLS)
+	python $(SCRIPT_DIR)/make_dot.py
 
 # # Clean target
 # clean:

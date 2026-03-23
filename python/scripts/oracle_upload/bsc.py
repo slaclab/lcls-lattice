@@ -4,6 +4,7 @@ import os
 import numpy as np
 from dataclasses import dataclass, field
 from collections import defaultdict
+import sys
 
 def strmatch(n_str,N_lst,exact=False):
     """
@@ -78,7 +79,10 @@ froot_to_model = {1:0, 6:1, 7:2, 8:3, 14:4, 10:5, 9:6}
 
 output_ordering = [1,6,10,7,8,14,9]
 
-optics = '05DEC2026s'
+if len(sys.argv) > 1:
+    optics = sys.argv[1]
+else:
+    optics = 'TEST'
 
 ips_unsorted = []
 with open('ips.dump','r') as f:
