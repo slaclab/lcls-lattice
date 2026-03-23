@@ -1,5 +1,12 @@
 #!/bin/env python3
 
+# Combine elementdevices files with *_lines.precursor files to make *_lines.dat and *_lines.all
+# The elementdevices files are created by elementdevices.py, queries the oracle database.
+# The *_lines.precursor files come from surveyDataBmad.py
+#
+# The output *_lines.dat files are meant to feed the directory service.
+# The output *_lines.all files are meant to feed the dot beampaths images.
+
 LINES_ROOTS = ['sc_sxr','sc_hxr','sc_bsyd','sc_dasel','sc_diag0','cu_sxr','cu_hxr']
 
 ED_FILES = ['elementdevices.dat','elementdevices_cavities_cuH.dat','elementdevices_cavities_cuS.dat','elementdevices_sbends_cuH.dat','elementdevices_sbends_cuS.dat']
@@ -15,7 +22,8 @@ for file in ED_FILES:
         if name not in ed:
           ed[name] = pv
         else:
-          print(f'dup name found in elementdevices.dat: {name}')
+          pass
+          #print(f'dup name found in elementdevices.dat: {name}')
 
 for model in LINES_ROOTS:
   with open(f'{model}_lines.precursor','r') as fpre, open(f'{model}_lines.dat','w') as fdat:

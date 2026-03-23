@@ -174,7 +174,6 @@ with open('value_data.json','w') as f:
 
 for model in MODELS:
   area = '_'
-  lines_set = {}
   with open(model+'_survey.tape','w') as f, \
        (open(model+'_lines.precursor','w') if model in LINES_ROOTS else nullcontext()) as flin:
     f.write(f'Linux    Bmad Survey/{timestamp}\n\n')
@@ -273,9 +272,7 @@ for model in MODELS:
       f.write(line)
       if model in LINES_ROOTS:
         if madk not in LINES_EXCLUDE:
-          if name_use not in lines_set:
-            lines_set[name_use] = True
-            flin.write(f'<PV> {name_use:16s} {madk} {suml:16.9E} {z:16.9E} {model.upper()} {area}\n')
+          flin.write(f'<PV> {name_use:16s} {madk} {suml:16.9E} {z:16.9E} {model.upper()} {area}\n')
     f.write('\n')
     f.write(f"{' '*33}{suml:.9E}")
 
