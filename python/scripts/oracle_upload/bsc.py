@@ -332,7 +332,7 @@ with open(fname,'w') as f_all:
           continue
         model_name = 'sc_hxr_beam0'
         ordinal = ordinal + hxr_offset
-      if bsc_data[model_name][ordinal]:
+      if bsc_data[model_name][ordinal][0] != '':
         x = bsc_data[model_name][ordinal]
         if not x[0].startswith('FIXER'):
           if x[0] != name:

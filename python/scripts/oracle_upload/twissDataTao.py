@@ -16,6 +16,7 @@ special_names = {
 }
 
 params = ['s','beta_a','beta_b','phi_a','phi_b','eta_x','eta_y','e_tot']
+skips = ['FIXER']
 
 LCLS_LATTICE_ENV = os.getenv('LCLS_LATTICE')
 if LCLS_LATTICE_ENV is None:
@@ -69,6 +70,9 @@ for model in MODELS:
     for ix in ix_eles[:-1]:
       name = tao.lat_list(ix,'ele.name')[0]
       key = tao.lat_list(ix,'ele.key')[0]
+      if key.upper() in skips:
+        print(f'skipping {name}')
+        continue
       inspect_name = name.split('#')
       split_bend = None
       if len(inspect_name) > 1:
