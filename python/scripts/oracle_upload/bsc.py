@@ -4,6 +4,7 @@ import os
 import numpy as np
 from dataclasses import dataclass, field
 from collections import defaultdict
+from pathlib import Path
 import sys
 
 def strmatch(n_str,N_lst,exact=False):
@@ -318,8 +319,11 @@ for model in bsc_data:
 hxr_offset = sc_hxr_marker - cu_hxr_marker
 
 # write to AD_ACCEL collated output file
+outdir='oracle_upload'
 fname=f'BSC-AD_ACCEL-{optics}.txt'
-with open(fname,'w') as f_all:
+filepath = Path(outdir+'/'+fname)
+filepath.parent.mkdir(parents=True, exist_ok=True)
+with filepath.open('w') as f_all:
   f_all.write("#ELEMENT, Stayclear Dia (mm), +Horz (mm), -Horz (mm), +Vert (mm), -Vert (mm)\n")
   for froot,ordinal,name in ips:
     if ordinal < 0:

@@ -99,7 +99,7 @@ if len(sys.argv) > 1:
 else:
     optics = 'TEST'
 
-outdir='oracle_upload_dev'
+outdir='oracle_upload'
 xfile='AD_ACCEL-'+optics+'.xls'
 noXTES_TEMPs=True; # skip elements named TEMP* in XTES systems
 
@@ -1668,10 +1668,10 @@ with open('ips.dump','w') as f:
     #f.write(f"{' '.join(f'{item:<10}' for item in ip)}\n")
 
     
-def arrange_output(system_name, filename):
+def arrange_output(system_name, fname):
     filepath = Path(outdir+'/'+fname)
     filepath.parent.mkdir(parents=True, exist_ok=True)
-    with filepath.open('wt') as fid:
+    with filepath.open('w') as fid:
         fid.write(f'{head}\n')
         fid.write(f'{unit}\n')
         for entry in ips:
