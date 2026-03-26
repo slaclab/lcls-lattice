@@ -149,6 +149,11 @@ install : stage
 	rm $(INSTALLROOT)/latest
 	ln -s $(OPTICS) $(INSTALLROOT)/latest
 
+mostlyclean:
+	rm -f value_data.json ips.dump $(SURVEY_TAPES) $(TWISS_DATS)
+	rm -f elementdevices*.dat $(PLOTS_PDFS) $(LINES_PRECURSORS) $(LINES_ALLS) $(LINES_DATS)
+	rm -f $(DOTS) *_mapicon.png *_opticsicon.png
+	rm -f BSC_*.txt *_survey.tape *_map.pdf
 
 
 
