@@ -1,16 +1,18 @@
 
-! *** OPTICS=AD_ACCEL-19DEC2025s ***
+! *** OPTICS=AD_ACCEL-04MAY2026s ***
 
 ! LCLS2sc A-line
 
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
-! 18-NOV-2025, M. Woodley
+! 06-NOV-2025, Y. Nosochkov/M. Woodley
+!  * add a test beamline (BSYADUMP) for beam size study at ESA alcove detector
+!    and matching A-line quads for a tuning knob
 !  * add MADUMP marker for entrance of ESA alcove dump (per Carsten Hast data)
 !  * add MADET marker for entrance of ESA alcove detector assuming (!) it is
 !    1.3 m upstream of the dump entrance
-!  * set Q27, Q28, Q30, and Q38 to Yuri's "relaxed" optics values
+!  * make relaxed optics the default
 ! ------------------------------------------------------------------------------
 ! 24-JUN-2025, M. Woodley
 !  * replace ESA E158 components with T-474 components
@@ -235,16 +237,24 @@
   LSQ   := 0.55
   rSQ   := 0.08/2
 
-! the K-values below are for LESA (the only connection to ALINE)
+! the K-values below are for DASEL (the only connection to ALINE) ...
+! relaxed optics (4 GeV K-knob)
 
   KQ10 :=  0.040946131243
   KQ11 := -0.038135136057
   KQ19 :=  0.030837113549
   KQ20 :=  0.146624351215E-2
-  KQ27 := -0.038606814284 !-0.083919622056
-  KQ28 :=  0.039503266207 ! 0.03548040664
-  KQ30 := -0.020157257183 !-0.028849559713
-  KQ38 :=  0.021853409081 ! 0.034487458519
+  KQ27 := -0.030855833729 !-0.038606814284 !
+  KQ28 :=  0.034232470171 ! 0.039503266207 !
+  KQ30 := -0.025303863088 !-0.020157257183 !
+  KQ38 :=  0.033028104498 ! 0.021853409081 !
+
+  comment !original optics
+    SET, KQ27, -0.083919622056
+    SET, KQ28,  0.03548040664
+    SET, KQ30, -0.028849559713
+    SET, KQ38,  0.034487458519
+  endcomment
 
   Q10 : QUAD, L=LQ8cm/2, APER=rQ8cm, K1=KQ10, TYPE="3.15Q76"
   Q11 : QUAD, L=LQ8cm/2, APER=rQ8cm, K1=KQ11, TYPE="3.15Q76"
@@ -421,14 +431,14 @@
   PC12 : ECOL
   PC14 : ECOL
   PC17 : ECOL
-  SL19 : RCOL
-  SL10 : RCOL
+  SL19 : RCOL, TYPE="HCOLL"
+  SL10 : RCOL, TYPE="HCOLL"
   PC20 : ECOL
   PC24 : ECOL
-  C24  : RCOL
+  C24  : RCOL, TYPE="HVCOLL"
   PC26 : ECOL
   PC29 : ECOL
-  C37  : RCOL
+  C37  : RCOL, TYPE="HVCOLL"
 
 ! ==============================================================================
 ! vacuum components
@@ -453,19 +463,19 @@
 ! beamlines
 ! ------------------------------------------------------------------------------
 
-  BRAM1_full   : LINE=(BRAM1a,BRAM1b)
-  B11_full     : LINE=(B11a,B11b)
-  B12_full     : LINE=(B12a,B12b)
-  B13_full     : LINE=(B13a,B13b)
-  B14_full     : LINE=(B14a,B14b)
-  B15_full     : LINE=(B15a,B15b)
-  B16_full     : LINE=(B16a,B16b)
-  B21_full     : LINE=(B21a,B21b)
-  B22_full     : LINE=(B22a,B22b)
-  B23_full     : LINE=(B23a,B23b)
-  B24_full     : LINE=(B24a,B24b)
-  B25_full     : LINE=(B25a,B25b)
-  B26_full     : LINE=(B26a,B26b)
+  BRAM1_full : LINE=(BRAM1a,BRAM1b)
+  B11_full   : LINE=(B11a,B11b)
+  B12_full   : LINE=(B12a,B12b)
+  B13_full   : LINE=(B13a,B13b)
+  B14_full   : LINE=(B14a,B14b)
+  B15_full   : LINE=(B15a,B15b)
+  B16_full   : LINE=(B16a,B16b)
+  B21_full   : LINE=(B21a,B21b)
+  B22_full   : LINE=(B22a,B22b)
+  B23_full   : LINE=(B23a,B23b)
+  B24_full   : LINE=(B24a,B24b)
+  B25_full   : LINE=(B25a,B25b)
+  B26_full   : LINE=(B26a,B26b)
 
   Q10_full    : LINE=(Q10,Q10)
   Q11_full    : LINE=(Q11,Q11)
@@ -494,7 +504,7 @@
     ST29,D123h,PC29,D123i,I29,D123j)
   LD124 : LINE=(&
     D124a,A32X,D124b,A33Y,D124c,BPM31,D124d,BPM32,D124e,PR33,D124f,C37,D124g)
-  
+
 ! A-line
 
   BSYA : LINE=(BEGBSYA,&
@@ -525,7 +535,7 @@
     ENDBSYA)
 
 ! ==============================================================================
-! ILC-ESA Test Beam
+! ESA
 ! ------------------------------------------------------------------------------
 
 ! T-474 chicane
@@ -585,8 +595,6 @@
 ! ------------------------------------------------------------------------------
 
   ALWALL : DRIF, L=8*ft2m !ESA wall
-
-  dSmdw := 0
 
   D126 : DRIF, L=0.683370252059 !wall to IV40 in ESA alcove
   D127 : DRIF, L=0.468630
@@ -732,6 +740,45 @@
     ENDESA)
 
   ESA : LINE=(ESAu,ESAd)
+
+! ==============================================================================
+! Test BSYADUMP beamline for alcove detector/dump optics study
+! ------------------------------------------------------------------------------
+
+  BSYADUMP : LINE=(BEGBSYA,&
+    BRAM1_full,ROLL2,DAMQ10,&
+    Q10_full,LD105,&
+    Q11_full,D106,&
+    BEGB,&
+    B11_full,D107,&
+    B12_full,LD108,&
+    B13_full,D109,&
+    B14_full,LD110,&
+    B15_full,D111,&
+    B16_full,LD112,&
+    Q19_full,LD113,&
+    Q20_full,LD114,&
+    B21_full,D115,&
+    B22_full,LD116,&
+    B23_full,D117,&
+    B24_full,LD118,&
+    B25_full,D119,&
+    B26_full,MARC,ROLL3,&
+    ENDB,LD120,&
+    Q27_full,D121,&
+    SQ27p5_full,D122,&
+    Q28_full,LD123,&
+    Q30_full,LD124,&
+    Q38_full,D125,&
+    ENDBSYA,&
+    BEGESA,&
+    ALWALL,NOTCHBEG,&
+    D126,IV40,&
+    D127,A3C1A,&
+    D127a,NOTCHEND,ALCOVEBEG,&
+    D128,A3C1B,&
+    D129a,MADET,&
+    D129b,D130a,MADUMP)
 
 ! ------------------------------------------------------------------------------
 

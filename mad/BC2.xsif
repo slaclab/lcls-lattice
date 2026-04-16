@@ -1,16 +1,10 @@
 
-! *** OPTICS=AD_ACCEL-19DEC2025s ***
+! *** OPTICS=AD_ACCEL-04MAY2026s ***
 
 ! LCLS2sc bunch compressor chicane #2
 
 ! ==============================================================================
 ! Modification History
-! ------------------------------------------------------------------------------
-! 30-NOV-2024, M. Woodley
-!  * adjust L3B area boundary location per vacuum drawing revision
-! ------------------------------------------------------------------------------
-! 17-JAN-2021, M. Woodley
-!  * new standard configuration per Y. Ding
 ! ------------------------------------------------------------------------------
 ! 23-MAY-2019, M. Woodley
 !  * move ENDBC2B to u/s face of QE201 per T. Maxwell
@@ -121,7 +115,7 @@
   GB2      := 0.03335
   ZB2      := 0.549
   FB2      := 0.6287
-  AB2      := 0.046846250848 !R56=0.045
+  AB2      := 0.04684634163 !R56=0.045
   BB2      := Brho2*SIN(AB2)/ZB2
   AB2_2    := AB2*AB2
   AB2_4    := AB2_2*AB2_2
@@ -171,7 +165,7 @@
 
 ! L2 to BC2 chicane
 
-  KQ2C01 := 0.510742626723
+  KQ2C01 :=  0.514627897513 ! 0.51577794425
 
   Q2C01 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQ2C01
 
@@ -185,10 +179,10 @@
 
 ! match into L3
 
-  KQE201 := -1.302578004949
-  KQE202 :=  1.990185768694
-  KQE203 := -2.035694933515
-  KQE204 :=  1.984107437335
+  KQE201 := -1.311235102734 !-1.311235102735
+  KQE202 :=  1.991960352338 ! 1.991960352344
+  KQE203 := -1.81339419337
+  KQE204 :=  1.648407131383
 
   QE201 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1= KQE201
   QE202 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1= KQE202
@@ -252,7 +246,7 @@
   DE204  : DRIF, L= 3.035216558157 !3.033216558157
   DE202b : DRIF, L=LEMIT2-4*LQx-D2C02[L]-DE201[L]-DE202a[L]-DE203[L]-DE204[L]
   DE202  : DRIF, L=DE202a[L]+DE202b[L]
-
+  
   DE201a  : DRIF, L=0.321044
   DE201b  : DRIF, L=0.328618
   DE201c  : DRIF, L=DE201[L]-DE201a[L]-DE201b[L]
@@ -296,9 +290,9 @@
 ! marker points, etc.
 ! ------------------------------------------------------------------------------
 
-! collimator
+! collimator (default out-of-plane half-aperture is 20 mm)
 
-  CE21B : RCOL, L=Ljaw, XSIZE=13.3e-3, TYPE="HCOLL"    !X momentum collimator
+  CE21B : RCOL, L=Ljaw, XSIZE=13.8E-3, YSIZE=20.E-3, TYPE="HCOLL" !X momentum collimator
 
 ! instruments
 
@@ -360,12 +354,25 @@
 
   BC2 : LINE=(BC2i,BC2c,BC2o)
 
-  EMIT2 : LINE=(BEGEMIT2,&
-    QE201_full,DE201a,YCE201,DE201b,IM21B,DE201c,&
-    QE202_full,DE202a1,XCE202,DE202a2,WSEMIT2,DE202b,&
-    QE203_full,DE203a,YCE203,DE203b,&
-    QE204_full,DE204a,XCE204,DE204b,&
-    ENDEMIT2)
+  COMMENT
+    EMIT2 : LINE=(BEGEMIT2,&
+      QE201_full,DE201a,YCE201,DE201b,IM21B,DE201c,&
+      QE202_full,DE202a1,XCE202,DE202a2,WSEMIT2,DE202b,&
+      QE203_full,DE203a,YCE203,DE203b,&
+      QE204_full,DE204a,XCE204,DE204b,&
+      ENDEMIT2)
+  ENDCOMMENT
+
+ !COMMENT !split EMIT2 for matching from WSEMIT2
+    EMIT2_1 : LINE=(BEGEMIT2,&
+      QE201_full,DE201a,YCE201,DE201b,IM21B,DE201c,&
+      QE202_full,DE202a1,XCE202,DE202a2,WSEMIT2)
+    EMIT2_2 : LINE=(DE202b,&
+      QE203_full,DE203a,YCE203,DE203b,&
+      QE204_full,DE204a,XCE204,DE204b,&
+      ENDEMIT2)
+    EMIT2 : LINE=(EMIT2_1,EMIT2_2)
+ !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
 

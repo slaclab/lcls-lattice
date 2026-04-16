@@ -1,0 +1,715 @@
+
+! *** OPTICS=AD_ACCEL-04MAY2026s ***
+
+! LCLS2sc injector #2: from CATHODELEI to merge with original LCLS-II injector
+!   (diagnostic line, spectrometer line, and dump line in DIAGI.xsif)
+
+! ==============================================================================
+! Modification History
+! ------------------------------------------------------------------------------
+! 28-MAR-2026, M. Woodley
+!  * there is no Faraday Cup on YAG01B, so remove it from YAG01LEI
+! ------------------------------------------------------------------------------
+! 18-JAN-2024, M. Woodley
+!  * STDLI1,2 TYPE="PPS stopper"; STDLI3 TYPE="PPS shutter" per.C. Adolphsen
+! ------------------------------------------------------------------------------
+! 10-AUG-2023, M. Woodley
+!  * T. Montagne, move QDLI2 0.1 m downstream; move QDLI5 0.1 m upstream
+!  * add PPS stoppers per K. Fox
+! 05-AUG-2023, M. Woodley
+!  * replace 1.182D6.82T dogleg dipole pairs with single BXS-type dipoles
+!  * replace reverse dogleg 1.69D6.28T (BC1) dipoles with 1.182D6.82T dipoles
+!  * rematch for R56 = -12.124 mm
+!  * rematch for 20 m waists at HTRUND
+! 20-JUL-2023, M. Woodley
+!  * switch to 4 bend LEI dogleg layout (with sextupoles), R56=0
+!  * relocate LEI LEB devices per C. Adolphsen (and F. Ji)
+! 16-JUN-2023, M. Woodley
+!  * switch to 2 bend LEI dogleg layout (with sextupoles)
+! ------------------------------------------------------------------------------
+! 20-DEC-2022, M. Woodley
+!  * adjust lengths and locations of LEI dogleg stoppers per L. Borzenets
+! ------------------------------------------------------------------------------
+! 06-SEP-2022, M. Woodley
+!  * change TYPE of XC06LEI and YC06LEI from "LBNL-xy" to "cryo"
+!  * change TYPE of BPM3LEI from "Stripline-4" to "Button-1"
+! 12-JUL-2022, M. Woodley
+!  * move XCDLI01 u/s of QDLI1; move CEDLI 80 mm d/s
+! 26-JUN-2022, Y. Nosochkov
+!  * increase horizontal separation between the LEI and LCLS-II beamlines
+!    from 6.0 m to 8.97 m; adjust dogleg length and rematch optics
+! ------------------------------------------------------------------------------
+! 01-FEB-2022, M. Woodley
+!  * set CEDLI horizontal half-gap to 3 mm (acceptance = 3% FW, DX = 0.2 m)
+! 09-NOV-2021, M. Woodley
+!  * replace YAG01LEI with combination YAG/COLL/FC device
+! ------------------------------------------------------------------------------
+! 30-JUL-2021, M. Woodley
+!  * change device complement between BUN2LEI and CM00 per C. Adolphsen
+!  * add (commented out) "compact" layout per F. Ji and C. Adolphsen
+! ------------------------------------------------------------------------------
+! 19-APR-2021, M. Woodley
+!  * remove gun bucking coil per C. Mayes
+!  * set L, DELTAE, and PHI0 for bunchers per C. Mayes
+!  * add thin-lens normal and skew quadrupoles to GUNLEI solenoids
+! 15-APR-2021, M. Woodley
+!  * locations of DLI wall and stoppers per R. Coy
+!  * add initial complement of devices to GUNLEI (in made-up locations)
+! 09-APR-2021, Y. Nosochkov
+!  * include LEI TCAV between Q0D03 and Q0D04 (location per R. Coy)
+! 07-APR-2021, M. Woodley
+!  * add simplified gun line per F. Ji
+! 02-APR-2021, Y. Nosochkov
+!  * increase LEI dogleg angle to 35 degrees (Tor)
+!  * reduce spacing between dogleg magnets
+! 26-MAR-2021, Y. Nosochkov
+!  * reduce LD0D14 from 6.1 to 3.827898, set length of D0D02 and D0D03 to 1.3 m
+!  * rematch Q0D01-04
+! 23-MAR-2021, Y. Nosochkov
+!  * reduce distance between Q0D01 and Q0D02 to 0.427898 m
+!  * reduce LD0D14 to 6.1 m, adjust quad positions and rematch
+! 15-MAR-2021, Y. Nosochkov
+!  * reduce LD0D14 by 0.1 m; rematch quads u/s of dogleg
+! 13-MAR-2021, Y. Nosochkov
+!  * optimize positions and strengths of matching quads Q0D01-04
+!    to minimize length of matching section u/s of the dogleg
+! 09-MAR-2021, M. Woodley
+!  * add matching between CM00 and dogleg
+! 05-MAR-2021, Y. Nosochkov
+!  * initial dogleg design with 6 m horizontal displacement
+!  * cancellation of 2nd order dispersion
+!  * free ~5 m space at center of the dogleg for shielding
+! ------------------------------------------------------------------------------
+
+! LEI dogleg yaw angle at CNTDLI
+
+  CNTA := -36.94*RADDEG
+
+! ==============================================================================
+! LCAV
+! ------------------------------------------------------------------------------
+
+! LCLS-II buncher cavity (use C. Mayes cavity effective length)
+
+  LBUN1LEI :=  0.358133                  !m (0.21876)
+  RBUN1LEI :=  0.0517/2                  !m
+  GBUN1LEI :=  0.35108825924014/0.358133 !MV/m
+  PBUN1LEI := -0.11900011084944          !rad/2pi
+
+  BUN1LEI : LCAV, SWAVE, FREQ=1300, L=LBUN1LEI/2, APER=RBUN1LEI, &
+                  TYPE="LCLS-II", DELTAE=GBUN1LEI*LBUN1LEI/2, PHI0=PBUN1LEI
+
+! 9-cell SRF cavity buncher (use LCLS-II cavity effective length)
+
+  LBUN2LEI :=  1.037743              !m
+  RBUN2LEI := 70e-3/2                !m
+  GBUN2LEI :=  8.8578630538/1.037743 !MV/m
+  PBUN2LEI := -0.16153574142949      !rad/2pi
+
+  BUN2LEI : LCAV, SWAVE, FREQ=1300, L=LBUN2LEI/2, APER=RBUN2LEI, &
+                  TYPE="9-cell SRF", DELTAE=GBUN2LEI*LBUN2LEI/2, PHI0=PBUN2LEI
+
+! ==============================================================================
+! TCAV
+! ------------------------------------------------------------------------------
+
+  TCXDGI : LCAV, TYPE="@2,TRANS_XDEF", FREQ=2856, L=0.6680236/2 !X-deflector (split)
+
+! ==============================================================================
+! SBEN
+! ------------------------------------------------------------------------------
+
+! main dogleg bends
+
+  ABXDLI := 28.404165093549*RADDEG !35.0 (17.5 per dipole)
+  LBXDLI := 0.5435     !BXS path length as measured at 35 deg bend angle
+  GBXDLI := 0.034      !full BXS gap
+  EBXDLI := 7.2*RADDEG !BXS edge angle as measured at 35 deg bend angle
+  FBXDLI := 0.391      !BXS field integral as measured at 35 deg bend angle
+  ZBXDLI := LBXDLI*SIN(ABXDLI/2)/(ABXDLI/2) !Z-length
+
+  BXDLI1a : SBEN, TYPE="BXS", HGAP=GBXDLI/2, L=LBXDLI/2, &
+                  ANGLE=+ABXDLI/2, E1=+EBXDLI, FINT=FBXDLI, FINTX=0
+  BXDLI1b : SBEN, TYPE="BXS", HGAP=GBXDLI/2, L=LBXDLI/2, &
+                  ANGLE=+ABXDLI/2, E2=+EBXDLI, FINT=0, FINTX=FBXDLI
+
+  BXDLI2a : SBEN, TYPE="BXS", HGAP=GBXDLI/2, L=LBXDLI/2, &
+                  ANGLE=-ABXDLI/2, E1=-EBXDLI, FINT=FBXDLI, FINTX=0
+  BXDLI2b : SBEN, TYPE="BXS", HGAP=GBXDLI/2, L=LBXDLI/2, &
+                  ANGLE=-ABXDLI/2, E2=-EBXDLI, FINT=0, FINTX=FBXDLI
+
+! define unsplit SBENs for BMAD ... not used by MAD
+
+  BXDLI1 : SBEN, TYPE="BXS", HGAP=GBXDLI/2, L=LBXDLI, ANGLE=+ABXDLI, &
+                 E1=+EBXDLI, FINT=FBXDLI, E2=+EBXDLI, FINTX=FBXDLI
+  BXDLI2 : SBEN, TYPE="BXS", HGAP=GBXDLI/2, L=LBXDLI, ANGLE=-ABXDLI, &
+                 E1=-EBXDLI, FINT=FBXDLI, E2=-EBXDLI, FINTX=FBXDLI
+
+! inner ("reverse") bends for R56 correction
+
+  ABXDLIR :=  8.535834930231*RADDEG !0
+  ZBXDLIR :=  0.2032     !1.182D6.82T "Z" length (m)
+  GBXDLIR :=  0.030      !1.182D6.82T full gap height (m)
+  FBXDLIR :=  0.45       !1.182D6.82T measured FINT/FINTX
+  LBXDLIR := ZBXDLIR*ABXDLIR/(2*SIN(ABXDLIR/2)) !bend path length (m)
+
+  BXDLIR1a : SBEN, TYPE="1.182D6.82T", L=LBXDLIR/2, ANGLE=+ABXDLIR/2, &
+                   E1=+ABXDLIR/2, E2=0, FINT=FBXDLIR, FINTX=0, HGAP=GBXDLIR/2
+  BXDLIR1b : SBEN, TYPE="1.182D6.82T", L=LBXDLIR/2, ANGLE=+ABXDLIR/2, &
+                   E2=+ABXDLIR/2, E1=0, FINT=0, FINTX=FBXDLIR, HGAP=GBXDLIR/2
+
+  BXDLIR2a : SBEN, TYPE="1.182D6.82T", L=LBXDLIR/2, ANGLE=-ABXDLIR/2, &
+                   E1=-ABXDLIR/2, E2=0, FINT=FBXDLIR, FINTX=0, HGAP=GBXDLIR/2
+  BXDLIR2b : SBEN, TYPE="1.182D6.82T", L=LBXDLIR/2, ANGLE=-ABXDLIR/2, &
+                   E2=-ABXDLIR/2, E1=0, FINT=0, FINTX=FBXDLIR, HGAP=GBXDLIR/2
+
+! define unsplit SBENs for BMAD ... not used by MAD
+
+  BXDLIR1 : SBEN, TYPE="1.182D6.82T", L=LBXDLIR, ANGLE=+ABXDLIR, &
+                  E1=+ABXDLIR/2, FINT=FBXDLIR, E2=+ABXDLIR/2, FINTX=FBXDLIR, &
+                  HGAP=GBXDLIR/2
+  BXDLIR2 : SBEN, TYPE="1.182D6.82T", L=LBXDLIR, ANGLE=-ABXDLIR, &
+                  E1=-ABXDLIR/2, FINT=FBXDLIR, E2=-ABXDLIR/2, FINTX=FBXDLIR, &
+                  HGAP=GBXDLIR/2
+
+  COMMENT
+    VALUE, Brhoi*ABXDLI,(Cb*0.15)*ABXDLI
+    VALUE, Brhoi*ABXDLIR,(Cb*0.15)*ABXDLIR
+  ENDCOMMENT
+
+! ==============================================================================
+! QUAD
+! ------------------------------------------------------------------------------
+
+! quadrupole and skew quadrupole correction coils co-wound on GUNLEI solenoids
+
+  CQ01LEI : MULT, TYPE="solenoid trim", APER=0.091/2,  K1L=0
+  SQ01LEI : MULT, TYPE="solenoid trim", APER=0.091/2,  K1L=0, T1
+  CQ02LEI : MULT, TYPE="solenoid trim", APER=0.0475/2, K1L=0
+  SQ02LEI : MULT, TYPE="solenoid trim", APER=0.0475/2, K1L=0, T1
+  CQ03LEI : MULT, TYPE="solenoid trim", APER=0.076/2,  K1L=0     !aperture not defined
+  SQ03LEI : MULT, TYPE="solenoid trim", APER=0.076/2,  K1L=0, T1 !aperture not defined
+
+! CM00 to dogleg
+
+  KQ0D01 :=  2.96356284233  ! 2.879440808366 !bipolar
+  KQ0D02 := -5.313144898767 !-5.25420873538  !bipolar
+  KQ0D03 :=  5.017950601463 ! 5.081662701897 !bipolar
+  KQ0D04 := -2.238356018748 !-2.375403619188 !bipolar
+
+  Q0D01 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0D01
+  Q0D02 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0D02
+  Q0D03 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0D03
+  Q0D04 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0D04
+
+! dogleg
+
+  KQDLI1 :=  9.878151122844 ! 9.882006477684
+  KQDLI2 := -4.862135644171 !-4.965017317032
+  KQDLI3 :=  4.669890460423 ! 4.735691302171
+  KQDLI4 :=  KQDLI3
+  KQDLI5 :=  KQDLI2
+  KQDLI6 :=  KQDLI1
+
+  QDLI1 : QUAD, TYPE="1.26Q3.5", L=LQx/2, K1=KQDLI1, APER=rQx
+  QDLI2 : QUAD, TYPE="1.26Q3.5", L=LQx/2, K1=KQDLI2, APER=rQx
+  QDLI3 : QUAD, TYPE="1.26Q3.5", L=LQx/2, K1=KQDLI3, APER=rQx
+  QDLI4 : QUAD, TYPE="1.26Q3.5", L=LQx/2, K1=KQDLI4, APER=rQx
+  QDLI5 : QUAD, TYPE="1.26Q3.5", L=LQx/2, K1=KQDLI5, APER=rQx
+  QDLI6 : QUAD, TYPE="1.26Q3.5", L=LQx/2, K1=KQDLI6, APER=rQx
+
+! ==============================================================================
+! SEXT
+! ------------------------------------------------------------------------------
+
+  KSDLI  :=  84.723277178146 ! 84.719409347478 
+  KSDLI1 :=  KSDLI 
+  KSDLI2 := -KSDLI 
+
+  SDLI1 : SEXT, TYPE="1.38S3.00", L=LSb/2, APER=rSb, K2=KSDLI1
+  SDLI2 : SEXT, TYPE="1.38S3.00", L=LSb/2, APER=rSb, K2=KSDLI2
+
+  COMMENT
+    VALUE, Brhoi*KSDLI1*LSb,(Cb*0.15)*KSDLI1*LSb
+    VALUE, Brhoi*KSDLI2*LSb,(Cb*0.15)*KSDLI2*LSb
+  ENDCOMMENT
+
+! ==============================================================================
+! SOLE
+! ------------------------------------------------------------------------------
+
+  BrhoLEI := Cb*SQRT(E0^2-mc2^2) !kG-m (non-relativistic)
+
+! Danfysik HTS solenoid
+
+  LSOL1LEI := 0.134 !m
+  RSOL1LEI := 0.091/2 !m
+  BSOL1LEI := 0 !T
+  KSOL1LEI := (10*BSOL1LEI)/BrhoLEI !1/m
+
+  SOL1LEI : SOLE, TYPE="Danfysik HTS", L=LSOL1LEI/2, APER=RSOL1LEI, &
+                  KS=KSOL1LEI
+
+! APEX solenoid
+
+  LSOL2LEI := 0.135 !m
+  RSOL2LEI := 0.0475/2 !m
+  BSOL2LEI := 0 !T
+  KSOL2LEI := (10*BSOL2)/BrhoLEI !1/m
+
+  SOL2LEI : SOLE, TYPE="APEX", L=LSOL2LEI/2, APER=RSOL2LEI, KS=KSOL2LEI
+
+! (as yet) undefined superconducting solenoid
+
+  LSOL3LEI := 0.135 !m
+  RSOL3LEI := 0.076/2 !m
+  BSOL3LEI := 0 !T
+  KSOL3LEI := (10*BSOL2)/BrhoLEI !1/m
+
+  SOL3LEI : SOLE, TYPE="cryo", L=LSOL3LEI/2, APER=RSOL3LEI, KS=KSOL3LEI
+
+! ==============================================================================
+! DRIF
+! ------------------------------------------------------------------------------
+
+! gun to L0LEI ("complex" layout)
+
+  DGLEI1  : DRIF, L=0.191-LSOL1LEI/2
+  DGLEI2  : DRIF, L=(0.91-0.191)-LSOL1LEI/2-LBUN1LEI/2
+  DGLEI3  : DRIF, L=(1.88-0.91)-LBUN1LEI/2-LSOL2LEI/2
+  DGLEI4  : DRIF, L=(3.40-1.88)-LSOL2LEI/2-LBUN2LEI/2
+  DGLEI5  : DRIF, L=(4.80-3.40)-LBUN2LEI/2-LSOL3LEI/2
+  DGLEI6  : DRIF, L=0.34225 !cathode to center of CM001 = 6.5 m
+
+  DGLEI2a : DRIF, L=0.228000
+  DGLEI2b : DRIF, L=0.076102
+  DGLEI2c : DRIF, L=0.004040
+  DGLEI2d : DRIF, L=0.082395
+  DGLEI2e : DRIF, L=0.059150
+  DGLEI2f : DRIF, L=DGLEI2[L]-DGLEI2a[L]-DGLEI2b[L]-DGLEI2c[L]-DGLEI2d[L]- &
+                    DGLEI2e[L]
+  DGLEI3a : DRIF, L=0.227415-LBUN1LEI/2
+  DGLEI3b : DRIF, L=0.192320
+  DGLEI3c : DRIF, L=0.235902
+  DGLEI3d : DRIF, L=0.128333
+  DGLEI3e : DRIF, L=DGLEI3[L]-DGLEI3a[L]-DGLEI3b[L]-DGLEI3c[L]-DGLEI3d[L]
+  DGLEI4a : DRIF, L=0.266000-LSOL2LEI/2
+  DGLEI4b : DRIF, L=0.076102
+  DGLEI4c : DRIF, L=0.004040
+  DGLEI4d : DRIF, L=0.051858
+  DGLEI4e : DRIF, L=DGLEI4[L]-DGLEI4a[L]-DGLEI4b[L]-DGLEI4c[L]-DGLEI4d[L]
+  DGLEI5b : DRIF, L=0.257000-LSOL3LEI/2
+  DGLEI5a : DRIF, L=DGLEI5[L]-DGLEI5b[l]
+
+! gun to L0LEI ("compact" layout)
+
+  DGLEI7  : DRIF, L=0.211-LSOL1LEI/2
+  DGLEI8  : DRIF, L=(2.50-0.211)-LSOL1LEI/2-LBUN2LEI/2
+  DGLEI9  : DRIF, L=(4.20-2.50)-LBUN2LEI/2-LSOL2LEI/2
+  DGLEI10 : DRIF, L=0.44225 !cathode to center of CM001 = 6.5 m
+
+  DGLEI8a  : DRIF, L=0.486-0.211-LSOL1LEI/2
+  DDGLEI8  := (DGLEI8[L]-DGLEI8a[L])/8
+  DGLEI8b  : DRIF, L=DDGLEI8
+  DGLEI8c  : DRIF, L=DDGLEI8
+  DGLEI8d  : DRIF, L=DDGLEI8
+  DGLEI8e  : DRIF, L=DDGLEI8
+  DGLEI8f  : DRIF, L=DDGLEI8
+  DGLEI8g  : DRIF, L=DDGLEI8
+  DGLEI8h  : DRIF, L=DDGLEI8
+  DGLEI8i  : DRIF, L=DDGLEI8
+  DGLEI9a  : DRIF, L=DGLEI9[L]/2
+  DGLEI9b  : DRIF, L=DGLEI9[L]-DGLEI9a[L]
+  DGLEI10a : DRIF, L=DGLEI10[L]/2
+  DGLEI10b : DRIF, L=DGLEI10[L]-DGLEI10a[L]
+  
+! CM00 to dogleg
+
+  LD0D14 := 3.647421274787 !3.827898 !sum of drifts D0D01-04
+  
+  D0D00  : DRIF, L=0.658175
+  D0D01  : DRIF, L=0.427898
+  D0D02  : DRIF, L=1.3
+  D0D03  : DRIF, L=1.3
+  D0D04  : DRIF, L=LD0D14-(D0D01[L]+D0D02[L]+D0D03[L]) !0.8
+  D0D05  : DRIF, L=ZDLIbeg-(-3.349067806)
+
+  D0D00a : DRIF, L=0.2502
+  D0D00b : DRIF, L=0.056
+  D0D00c : DRIF, L=D0D00[L]-D0D00a[L]-Ljaw-D0D00b[L]
+  D0D01b : DRIF, L=0.205
+  D0D01a : DRIF, L=D0D01[L]-D0D01b[L]
+  D0D02b : DRIF, L=0.205
+  D0D02a : DRIF, L=D0D02[L]-D0D02b[L]
+  D0D03c : DRIF, L=0.205
+  D0D03a : DRIF, L=(D0D03[L]-D0D03c[L])/2-TCXDGI[L]
+  D0D03b : DRIF, L=D0D03a[L]
+  D0D04b : DRIF, L=0.5
+  D0D04a : DRIF, L=D0D04[L]-D0D04b[L]
+
+! dogleg
+
+  XDLI   := -8.97           !total X-displacement of dogleg
+  LDLI   := 17.454787928617 !BXDLI2 to BXDLI3 (BXDLI1/BXDLI4 don't move)
+
+  DDLI  : DRIF, L=LDLI 
+  DDLIh : DRIF, L=LDLI/2
+
+  dLmdw  := 0
+  dsQDLI := 0.1 !move QDLI5 away from the shield+wall
+
+  DDLI0   : DRIF, L=0.867443597338
+  DDLI1   : DRIF, L=4.328338736181+dsQDLI
+  DDLI2   : DRIF, L=0.694180328978-dsQDLI
+  DDLI3   : DRIF, L=0.723352541342+dLmdw
+  DDLI4   : DRIF, L=3.139299027336-dLmdw
+
+  LSWALL := 1.5/SIN(ABXDLI) !effective length of shield+wall
+  
+  DDLI0b : DRIF, L=8*in2m
+  DDLI0a : DRIF, L=DDLI0[L]-LSb-DDLI0b[L]
+  DDLI1a : DRIF, L=0.25
+  DDLI1b : DRIF, L=0.25
+  DDLI1c : DRIF, L=0.25
+  DDLI1d : DRIF, L=DDLI1[L]-DDLI1a[L]-Ljaw-DDLI1b[L]-DDLI1c[L]
+  DDLI2a : DRIF, L=0.25
+  DDLI2b : DRIF, L=DDLI2[L]-DDLI2a[L]
+  DDLI3a : DRIF, L=0.25
+  DDLI3b : DRIF, L=DDLI3[L]-DDLI3a[L]
+  DDLI4h : DRIF, L=DDLI4[L]/2
+  DDLI5b : DRIF, L=0.25
+  DDLI5a : DRIF, L=DDLI3[L]-DDLI5b[L]
+  DDLI6b : DRIF, L=0.25
+  DDLI6a : DRIF, L=DDLI2[L]-DDLI6b[L]
+  DDLI7a : DRIF, L=0.633813725763
+  SWALL  : DRIF, L=LSWALL
+  DDLI7b : DRIF, L=DDLI1[L]-LSWALL-DDLI7a[L]
+  DDLI8a : DRIF, L=8*in2m
+  DDLI8b : DRIF, L=DDLI0[L]-LSb-DDLI8a[L]
+
+  DDLI4h1 : DRIF, L=1.005
+  DDLI4h2 : DRIF, L=DDLI4h[L]-DDLI4h1[L] !0.564649513668
+  DDLI4h3 : DRIF, L=0.5403505566792
+  DDLI4h4 : DRIF, L=DDLI4h[L]-DDLI4h3[L] !1.029298956989
+  DDLI7b1 : DRIF, L=0.352813038066
+  DDLI7b2 : DRIF, L=DDLI7b[L]-DDLI7b1[L] !0.288385599238
+
+  MDLI1  : MARK
+  SWALLn : MARK
+  SWALLs : MARK
+  SWALLm : MONI
+  MDLI2  : MARK
+
+! ==============================================================================
+! BPMs
+! ------------------------------------------------------------------------------
+
+  BPM1LEI : MONI, TYPE="Stripline-4"
+  BPM2LEI : MONI, TYPE="Stripline-4"
+  BPM3LEI : MONI, TYPE="Button-1" !cryogenic
+
+  BPM0D01 : MONI, TYPE="Stripline-12"
+  BPM0D02 : MONI, TYPE="Stripline-12"
+  BPM0D03 : MONI, TYPE="Stripline-12"
+  BPM0D04 : MONI, TYPE="Stripline-12"
+
+  BPMDLI1 : MONI, TYPE="Stripline-1"
+  BPMDLI2 : MONI, TYPE="Stripline-1"
+  BPMDLI3 : MONI, TYPE="Stripline-1"
+  BPMDLI4 : MONI, TYPE="Stripline-1"
+  BPMDLI5 : MONI, TYPE="Stripline-1"
+  BPMDLI6 : MONI, TYPE="Stripline-1"
+
+  RFB0D00 : MONI, TYPE="@2,CavityS-1"
+
+! ==============================================================================
+! XCORs
+! ------------------------------------------------------------------------------
+
+  XC01LEI : HKIC, TYPE="LBNL-xy"
+  XC02LEI : HKIC, TYPE="LBNL-xy"
+  XC03LEI : HKIC, TYPE="LBNL-xy"
+  XC04LEI : HKIC, TYPE="LBNL-xy"
+  XC05LEI : HKIC, TYPE="LBNL-xy"
+  XC06LEI : HKIC, TYPE="solenoid trim" ! dipole correction coil co-wound on cryogenic SOL3LEI
+
+  XC0D02  : HKIC, TYPE="class-1a"
+  XC0D03  : HKIC, TYPE="class-1a"
+  XC0D04  : HKIC, TYPE="class-1a"
+  XC0D05  : HKIC, TYPE="class-1a"
+
+  XCDLI1  : HKIC, TYPE="class-6"
+  XCDLI3  : HKIC, TYPE="class-6"
+  XCDLI4  : HKIC, TYPE="class-6"
+
+! ==============================================================================
+! YCORs
+! ------------------------------------------------------------------------------
+
+  YC01LEI : VKIC, TYPE="LBNL-xy"
+  YC02LEI : VKIC, TYPE="LBNL-xy"
+  YC03LEI : VKIC, TYPE="LBNL-xy"
+  YC04LEI : VKIC, TYPE="LBNL-xy"
+  YC05LEI : VKIC, TYPE="LBNL-xy"
+  YC06LEI : VKIC, TYPE="solenoid trim" ! dipole correction coil co-wound on cryogenic SOL3LEI
+
+  YC0D02  : VKIC, TYPE="class-1a"
+  YC0D03  : VKIC, TYPE="class-1a"
+  YC0D04  : VKIC, TYPE="class-1a"
+  YC0D05  : VKIC, TYPE="class-1a"
+
+  YCDLI1  : VKIC, TYPE="class-6"
+  YCDLI2  : VKIC, TYPE="class-6"
+  YCDLI5  : VKIC, TYPE="class-6"
+
+! ==============================================================================
+! collimators and stoppers
+! ------------------------------------------------------------------------------
+
+! halo/dark current collimator
+
+  PC0D00 : ECOL, L=Ljaw, XSIZE=6.0e-3, YSIZE=6.0e-3, TYPE="tungsten"
+
+! energy collimator (horizontal half-aperture for 3% FW, DX ~ 0.2 m;
+! default out-of-plane half-aperture is 20 mm)
+
+  CEDLI : RCOL, L=Ljaw, XSIZE=2.8E-3, YSIZE=20.E-3, TYPE="HCOLL"
+
+ !DCEDLIh : DRIF, L=Ljaw/2
+ !CEDLIm  : MARK
+ !CEDLI   : LINE=(DCEDLIh,CEDLIm,DCEDLIh)
+
+! instruments
+
+  CATHODELEI : INST
+  VV01LEI    : INST
+  IM01LEI    : IMON, TYPE="ICT"
+  AM00LEI    : INST !gun laser injection mirror
+  VV02LEI    : INST
+  STDLI1     : INST, TYPE="PPS stopper"
+  STDLI2     : INST, TYPE="PPS stopper"
+  STDLI3     : INST, TYPE="PPS shutter"
+
+! combination YAG/collimator
+! - beam pipe ID = 47.6 mm
+! - one standard YAG crystal
+! - one YAG crystal with a 6 mm diameter hole in it (for measuring beam halo)
+! - four circular collimator bores (12, 16, 20, and 24 mm diameter)
+
+  YAG01LEI      : PROF, TYPE="YAG" !with or without hole
+  YAG01LEI_COLL : ECOL, TYPE="collimator" !bore: 12mm, 16mm, 20mm, or 24mm
+  YAG01LEI_full : LINE=(YAG01LEI,YAG01LEI_COLL)
+
+! ==============================================================================
+! markers
+! ------------------------------------------------------------------------------
+
+  ECBCC   : MARK !u/s flange face
+  MTCXDGI : MARK !center of TCAV
+  CNTDLI  : MARK !center of DLI dogleg
+  
+! ==============================================================================
+! BEAMLINE
+! ------------------------------------------------------------------------------
+
+  SOL1LEI_full : LINE=(SOL1LEI,CQ01LEI,SQ01LEI,SOL1LEI)
+  BUN1LEI_full : LINE=(BUN1LEI,BUN1LEI)
+  SOL2LEI_full : LINE=(SOL2LEI,CQ02LEI,SQ02LEI,SOL2LEI)
+  BUN2LEI_full : LINE=(BUN2LEI,BUN2LEI)
+  SOL3LEI_full : LINE=(SOL3LEI,CQ03LEI,XC06LEI,YC06LEI,SQ03LEI,SOL3LEI)
+
+  SC1LEI : LINE=(XC01LEI,YC01LEI)
+  SC2LEI : LINE=(XC02LEI,YC02LEI)
+  SC3LEI : LINE=(XC03LEI,YC03LEI)
+  SC4LEI : LINE=(XC04LEI,YC04LEI)
+  SC5LEI : LINE=(XC05LEI,YC05LEI)
+
+  Q0D01_full  : LINE=(Q0D01,BPM0D01,Q0D01)
+  Q0D02_full  : LINE=(Q0D02,BPM0D02,Q0D02)
+  Q0D03_full  : LINE=(Q0D03,BPM0D03,Q0D03)
+  TCXDGI_full : LINE=(TCXDGI,MTCXDGI,TCXDGI)
+  Q0D04_full  : LINE=(Q0D04,BPM0D04,Q0D04)
+
+  SC0D02 : LINe=(XC0D02,YC0D02)
+  SC0D03 : LINe=(XC0D03,YC0D03)
+  SC0D04 : LINe=(XC0D04,YC0D04)
+  SC0D05 : LINe=(XC0D05,YC0D05)
+
+  BXDLI1_full  : LINE=(BXDLI1a,BXDLI1b)
+  QDLI1_full   : LINE=(QDLI1,BPMDLI1,QDLI1)
+  QDLI2_full   : LINE=(QDLI2,BPMDLI2,QDLI2)
+  QDLI3_full   : LINE=(QDLI3,BPMDLI3,QDLI3)
+  BXDLIR1_full : LINE=(BXDLIR1a,BXDLIR1b)
+  BXDLIR2_full : LINE=(BXDLIR2a,BXDLIR2b)
+  QDLI4_full   : LINE=(QDLI4,BPMDLI4,QDLI4)
+  QDLI5_full   : LINE=(QDLI5,BPMDLI5,QDLI5)
+  QDLI6_full   : LINE=(QDLI6,BPMDLI6,QDLI6)
+  BXDLI2_full  : LINE=(BXDLI2a,BXDLI2b)
+
+! ------------------------------------------------------------------------------
+
+  COMMENT !simplified "complex" layout
+    GUNLEI : LINE=(BEGGUNLEI,&
+      CATHODELEI,DGLEI1,&
+      SOL1LEI_full,DGLEI2,&
+      BUN1LEI_full,DGLEI3,&
+      SOL2LEI_full,DGLEI4,&
+      BUN2LEI_full,DGLEI5,&
+      SOL3LEI_full,DGLEI6,&
+      ENDGUNLEI)
+  ENDCOMMENT
+
+ !COMMENT !complete "complex" layout
+    GUNLEI : LINE=(BEGGUNLEI,&
+      CATHODELEI,DGLEI1,&
+      SOL1LEI_full,DGLEI2a,VV01LEI,DGLEI2b,SC1LEI,DGLEI2c,BPM1LEI,DGLEI2d,&
+        IM01LEI,DGLEI2e,SC2LEI,DGLEI2f,&
+      BUN1LEI_full,DGLEI3a,SC3LEI,DGLEI3b,AM00LEI,DGLEI3c,SC4LEI,DGLEI3d,&
+        YAG01LEI_full,DGLEI3e,&
+      SOL2LEI_full,DGLEI4a,VV02LEI,DGLEI4b,SC5LEI,DGLEI4c,BPM2LEI,DGLEI4d,&
+        ECBCC,DGLEI4e,&
+      BUN2LEI_full,DGLEI5a,BPM3LEI,DGLEI5b,&
+      SOL3LEI_full,DGLEI6,&
+      ENDGUNLEI)
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+  COMMENT !simplified "compact" layout
+    GUNLEI : LINE=(BEGGUNLEI,&
+      CATHODELEI,DGLEI7,&
+      SOL1LEI_full,DGLEI8,&
+      BUN2LEI_full,DGLEI9,&
+      SOL2LEI_full,DGLEI10,&
+      ENDGUNLEI)
+  ENDCOMMENT
+
+  COMMENT !complete "compact" layout
+    GUNLEI : LINE=(BEGGUNLEI,&
+      CATHODELEI,DGLEI7,&
+      SOL1LEI_full,DGLEI8a,VV01LEI,DGLEI8b,SC1LEI,DGLEI8c,BPM1LEI,DGLEI8d,&
+        IM01LEI,DGLEI8e,AM00LEI,DGLEI8f,YAG01LEI_full,DGLEI8g,SC2LEI,DGLEI8h,&
+        VV02LEI,DGLEI8i,&
+      BUN2LEI_full,DGLEI9a,SC3LEI,DGLEI9b,&
+      SOL2LEI_full,DGLEI10a,BPM2LEI,DGLEI10b,&
+      ENDGUNLEI)
+  ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+  COMMENT !simplified
+    LEI_1 : LINE=(BEGLEI_1,&
+      D0D00,&
+      Q0D01,Q0D01,D0D01,&
+      Q0D02,Q0D02,D0D02,&
+      Q0D03,Q0D03,D0D03,&
+      Q0D04,Q0D04,D0D04,D0D05,&
+      ENDLEI_1)
+  ENDCOMMENT
+
+ !COMMENT !complete
+    LEI_1 : LINE=(BEGLEI_1,&
+      D0D00a,RFB0D00,D0D00b,PC0D00,D0D00c,&
+      Q0D01_full,D0D01a,SC0D02,D0D01b,&
+      Q0D02_full,D0D02a,SC0D03,D0D02b,&
+      Q0D03_full,D0D03a,TCXDGI_full,D0D03b,SC0D04,D0D03c,&
+      Q0D04_full,D0D04a,SC0D05,D0D04b,D0D05,&
+      ENDLEI_1)
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+  COMMENT !simplified: BENDs and QUADs
+    LEI_2 : LINE=(BEGLEI_2,&
+      BXDLI1a,BXDLI1b,DDLI0,&
+      QDLI1,QDLI1,DDLI1,&
+      QDLI2,QDLI2,DDLI2,&
+      QDLI3,QDLI3,DDLI3,&
+      BXDLIR1a,BXDLIR1b,DDLI4h,CNTDLI,DDLI4h,&
+      BXDLIR2a,BXDLIR2b,DDLI3,&
+      QDLI4,QDLI4,DDLI2,&
+      QDLI5,QDLI5,DDLI1,&
+      QDLI6,QDLI6,DDLI0,&
+      BXDLI2a,BXDLI2b,&
+      ENDLEI_2)
+    LEI_2_plot : LINE=(BEGLEI_2,&
+      BXDLI1,DDLI0,&
+      QDLI1,QDLI1,DDLI1,&
+      QDLI2,QDLI2,DDLI2,&
+      QDLI3,QDLI3,DDLI3,&
+      BXDLIR1,DDLI4h,CNTDLI,DDLI4h,&
+      BXDLIR2,DDLI3,&
+      QDLI4,QDLI4,DDLI2,&
+      QDLI5,QDLI5,DDLI1,&
+      QDLI6,QDLI6,DDLI0,&
+      BXDLI2,&
+      ENDLEI_2)
+  ENDCOMMENT
+
+  COMMENT !simplified: BENDs, QUADs, SEXTs, SWALL
+    LEI_2 : LINE=(BEGLEI_2,&
+      BXDLI1a,BXDLI1b,DDLI0a,&
+      SDLI1,SDLI1,DDLI0b,&
+      QDLI1,QDLI1,DDLI1,&
+      QDLI2,QDLI2,DDLI2,&
+      QDLI3,QDLI3,DDLI3,&
+      BXDLIR1a,BXDLIR1b,DDLI4h,CNTDLI,DDLI4h,&
+      BXDLIR2a,BXDLIR2b,DDLI3,&
+      QDLI4,QDLI4,DDLI2,&
+      QDLI5,QDLI5,DDLI7a,SWALLn,SWALL,SWALLs,DDLI7b,&
+      QDLI6,QDLI6,DDLI0b,&
+      SDLI2,SDLI2,DDLI0a,&
+      BXDLI2a,BXDLI2b,&
+      ENDLEI_2)
+    LEI_2_plot : LINE=(BEGLEI_2,&
+      BXDLI1,DDLI0a,&
+      SDLI1,SDLI1,DDLI0b,&
+      QDLI1,QDLI1,DDLI1,&
+      QDLI2,QDLI2,DDLI2,&
+      QDLI3,QDLI3,DDLI3,&
+      BXDLIR1,DDLI4h,CNTDLI,DDLI4h,&
+      BXDLIR2,DDLI3,&
+      QDLI4,QDLI4,DDLI2,&
+      QDLI5,QDLI5,DDLI7a,SWALLm,SWALL,SWALLm,DDLI7b,&
+      QDLI6,QDLI6,DDLI0b,&
+      SDLI2,SDLI2,DDLI0a,&
+      BXDLI2,&
+      ENDLEI_2)
+  ENDCOMMENT
+
+ !COMMENT !complete
+    LEI_2 : LINE=(BEGLEI_2,&
+      BXDLI1_full,DDLI0a,&
+      SDLI1,SDLI1,DDLI0b,&
+      QDLI1_full,DDLI1a,CEDLI,DDLI1b,XCDLI1,DDLI1c,YCDLI1,DDLI1d,&
+      QDLI2_full,DDLI2a,YCDLI2,DDLI2b,&
+      QDLI3_full,DDLI3a,XCDLI3,DDLI3b,&
+      BXDLIR1_full,DDLI4h1,STDLI1,DDLI4h2,CNTDLI,DDLI4h3,STDLI2,DDLI4h4,&
+      BXDLIR2_full,DDLI5a,XCDLI4,DDLI5b,&
+      QDLI4_full,DDLI6a,YCDLI5,DDLI6b,&
+      QDLI5_full,DDLI7a,SWALLn,SWALL,SWALLs,DDLI7b1,STDLI3,DDLI7b2,&
+      QDLI6_full,DDLI8a,&
+      SDLI2,SDLI2,DDLI8b,&
+      BXDLI2_full,&
+      ENDLEI_2)
+    LEI_2_plot : LINE=(BEGLEI_2,&
+      BXDLI1,DDLI0a,&
+      SDLI1,SDLI1,DDLI0b,&
+      QDLI1,QDLI1,DDLI1a,CEDLI,DDLI1b,DDLI1c,DDLI1d,&
+      QDLI2,QDLI2,DDLI2a,DDLI2b,&
+      QDLI3,QDLI3,DDLI3a,DDLI3b,&
+      BXDLIR1,DDLI4h1,STDLI1,DDLI4h2,CNTDLI,DDLI4h3,STDLI2,DDLI4h4,&
+      BXDLIR2,DDLI5a,DDLI5b,&
+      QDLI4,QDLI4,DDLI6a,DDLI6b,&
+      QDLI5,QDLI5,DDLI7a,SWALLm,SWALL,SWALLm,DDLI7b1,STDLI3,DDLI7b2,&
+      QDLI6,QDLI6,DDLI8a,&
+      SDLI2,SDLI2,DDLI8b,&
+      BXDLI2,&
+      ENDLEI_2)
+ !ENDCOMMENT
+
+  LEI : LINE=(LEI_1,LEI_2)
+
+! ------------------------------------------------------------------------------
+
+  RETURN

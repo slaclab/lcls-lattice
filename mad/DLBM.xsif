@@ -1,34 +1,32 @@
 
-! *** OPTICS=AD_ACCEL-19DEC2025s ***
+! *** OPTICS=AD_ACCEL-04MAY2026s ***
 
-! LCLS2sc sector 7 dogleg plus match to bypass line
+! LCLS2sc sector 10 dogleg plus match to bypass line
 
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
-! 19-SEP-2023, M. Woodley
-!  * add XCBP10 upstream of sector 10 shield wall per C. Yi and L. Alsberg
-! ------------------------------------------------------------------------------
-! 03-FEB-2023, M. Woodley
-!  * relocate YCL2P per M. Gaydosh
+! 18-JAN-2024, M. Woodley
+!  * sextupoles deferred (level 2)
 ! ------------------------------------------------------------------------------
 ! 09-SEP-2022, M. Woodley
 !  * redefine (deferred) OTR31
-! 20-JUN-2022, M. Woodley
+! 22-JUN-2022, M. Woodley
 !  * correct location and thickness of Sector 10 (FACET) wall (concrete only)
-!    per L.Borzenets email of Thursday, February 24, 2022 11:50 AM
+!    per L.Borzenets email (Feb 24, 2022)
+!  * correct position of CEDOG per L.Borzenets
 ! ------------------------------------------------------------------------------
-! 12-JUL-2021, M. Woodley
-!  * move XCBP11 10" downstream per T. Fak
+! 24-MAR-2021, M. Woodley
+!  * dogleg moved d/s 3.2 m ... sector 10 shielding wall now before SDOG1/QDOG2
+!  * put CEDOG upstream of shielding wall per Tor
+!  * move BPMDOG2 and YCDOG2 back to their original locations w.r.t. QDOG2
 ! ------------------------------------------------------------------------------
-! 11-MAY-2021, M. Woodley
-!  * correct spacing of 2Q4/BPM/XCOR/YCOR per ID drawings
+! 28-SEP-2020, M. Woodley
+!  * add sector 10 shielding wall
+!  * move CEDOG 30 cm upstream per Tor
 ! ------------------------------------------------------------------------------
 ! 30-APR-2019, M. Woodley
 !  * use measured FINT=0.4875 for 1.0D38.37 @ 262A
-! ------------------------------------------------------------------------------
-! 07-JAN-2019, M. Woodley
-!  * add sector 10 shielding wall
 ! ------------------------------------------------------------------------------
 ! 11-OCT-2018, M. Woodley
 !  * use average measured FINT for 0.788D11.50's
@@ -42,17 +40,11 @@
 !  * move EXT/DOG boundary so that CCDLU is in DOG (per K. Fant)
 !  * remove IPEXTDOG (per K. Fant)
 ! ------------------------------------------------------------------------------
-! 16-FEB-2016, M. Woodley
-!  * move Dogleg/Bypass boundary to Z= 1202.631303 m per G. DeContreras
-!  * move RFBWSBP4 and WSBP4 from 1 FODO cell downstream of WSBP3 to 1 FODO
-!    cell upstream of WSBP1 ... rename
-!  * adjust locations of QL1P-QL4P for more robust matching
-! ------------------------------------------------------------------------------
-! 28-NOV-2016, M. Woodley
-!  * merge LCLS-II' version 28NOV16 with LCLS2sc version 04NOV16
-!  * include extended NIT line
+! 01-AUG-2017, M. Woodley
+!  * move BYP devices into BYP.xsif
 ! ------------------------------------------------------------------------------
 ! 04-NOV-2016, M. Woodley
+!  * relocate QL1P-QL4P for more robust matching
 !  * undefer IMBCSDOG (add-back list item)
 ! ------------------------------------------------------------------------------
 ! 06-JUN-2016, M. Woodley
@@ -119,13 +111,14 @@
 !  * add BC3
 ! ------------------------------------------------------------------------------
 
-! match into bypass dogleg FODO cell (at center of QDOG1)
-! LINE=(QDOG1,DBD1,QDOG2,QDOG2,DBD1,QDOG1)
+! match into bypass dogleg
 
   BXDLm := 13.103975995473
   AXDLm := -1.328121315284
-  BYDLm := 15.962707890974
+  BYDLm := 15.962707890972
   AYDLm :=  1.529775364964
+
+! ------------------------------------------------------------------------------
 
   dZdog := 77.99997504 !Z-extent of dogleg (BRB1 entrance to BRB2 exit)
 
@@ -287,17 +280,15 @@
 
 ! match to bypass line
 
-  KQL1P :=  0.322623395309
-  KQL2P := -0.155036336326
-  KQL3P :=  0.223203385308
-  KQL4P := -0.284566066043
-  KQL5P :=  0.151439029009
+  KQL1P :=  0.544259695525
+  KQL2P := -0.329072008556
+  KQL3P :=  0.63112633243
+  KQL4P := -0.067161651903
 
   QL1P : QUAD, TYPE="2Q10", L=LQR/2, APER=rQR, K1=KQL1P
   QL2P : QUAD, TYPE="2Q10", L=LQR/2, APER=rQR, K1=KQL2P
   QL3P : QUAD, TYPE="2Q4W", L=LQM/2, APER=rQM, K1=KQL3P
   QL4P : QUAD, TYPE="2Q4W", L=LQM/2, APER=rQM, K1=KQL4P
-  QL5P : QUAD, TYPE="2Q4W", L=LQM/2, APER=rQM, K1=KQL5P
 
 ! bypass line FODO
 
@@ -305,10 +296,6 @@
 
   QBPF : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1= KQBYP
   QBPD : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=-KQBYP
-
-  QBP10 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=-KQBYP
-  QBP11 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1= KQBYP
-  QBP12 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=-KQBYP
 
 ! integrated strengths
 
@@ -318,7 +305,6 @@
     VALUE, (Cb*Ef)*KQL2P*LQR
     VALUE, (Cb*Ef)*KQL3P*LQM
     VALUE, (Cb*Ef)*KQL4P*LQM
-    VALUE, (Cb*Ef)*KQL5P*LQM
     VALUE, (Cb*Ef)*KQBYP*LQM
   ENDCOMMENT
 
@@ -328,7 +314,6 @@
     VALUE, (Cb*Emax)*KQL2P*LQR
     VALUE, (Cb*Emax)*KQL3P*LQM
     VALUE, (Cb*Emax)*KQL4P*LQM
-    VALUE, (Cb*Emax)*KQL5P*LQM
     VALUE, (Cb*Emax)*KQBYP*LQM
   ENDCOMMENT
 
@@ -336,15 +321,15 @@
 ! SEXT
 ! ------------------------------------------------------------------------------
 
-  KSDOG1 := -9.188528777604 !-9.801 
-  KSDOG2 := 22.656285406772 !-20.61 
+  KSDOG1 := -9.190525183051 
+  KSDOG2 := 22.660707219978 
 
-  TSDOG1 := -13.252537412109 !-0.2331*DEGRAD
-  TSDOG2 :=  16.730337124259 ! 0.3342*DEGRAD
+  TSDOG1 := -13.255695099227
+  TSDOG2 :=  16.728592930068
 
-  SDOG1 : SEXT, TYPE="@1,1.38S3.00", L=LSb/2, APER=rSb, K2=KSDOG1, &
+  SDOG1 : SEXT, TYPE="@2,1.38S3.00", L=LSb/2, APER=rSb, K2=KSDOG1, &
                 TILT=RADDEG*TSDOG1
-  SDOG2 : SEXT, TYPE="@1,1.38S3.00", L=LSb/2, APER=rSb, K2=KSDOG2, &
+  SDOG2 : SEXT, TYPE="@2,1.38S3.00", L=LSb/2, APER=rSb, K2=KSDOG2, &
                 TILT=RADDEG*TSDOG2
 
   COMMENT
@@ -376,11 +361,11 @@
   NQBD  := 8                    !number of dogleg quads
   LTOTA := 76.022947763944      !path length from BRB1-exit to BRB2-entrance
   LDBD  := (LTOTA+LBR)/(NQBD/2) !FODO cell half length
-  dLDBD := -0.12481688608E-4    !adjustment for dispersion correction
+  dLDBD := -0.124816886085E-4   !adjustment for dispersion correction
   LDBDh := LDBD/2+dLDBD         !FODO cell half length
 
-  DBDm0 : DRIF, L=0.2333 !drift between VVEXTD and CCDLU
-  DBDm1 : DRIF, L=0.5 !drift between CCDLU and BRB1
+  DBDm0 : DRIF, L=0.287 !drift between VVEXTd and CCDLU
+  DBDm1 : DRIF, L=0.5   !drift between CCDLU and BRB1
   DBD   : DRIF, L=LTOTA
   DBD0  : DRIF, L=(LDBDh-LBR-LQR)/2-4*dLDBD
   DBD1  : DRIF, L=LDBDh-LQR
@@ -402,16 +387,18 @@
   DBD1Sa : DRIF, L=DBD1[L]-LSb-DBD1Sb[L]
   DBD6Sb : DRIF, L=0.203095
   DBD6Sa : DRIF, L=DBD6[L]-LSb-DBD6Sb[L]
-
   DBD0a : DRIF, L=1.0
   DBD0c : DRIF, L=0.5185-LQR/2
   DBD0b : DRIF, L=DBD0[L]-DBD0a[L]-DBD0c[L]
   DBD1a : DRIF, L=0.5786-LQR/2
-  DBD1d : DRIF, L=0.2016
-  DBD1c : DRIF, L=0.536-LSb-DBD1d[L]
-  DBD1b : DRIF, L=DBD1[L]-DBD1a[L]-Ljaw-DBD1c[L]-LSb-DBD1d[L]
+  DBD1b : DRIF, L=5.41231744974  !5.912334
+  DBD1c : DRIF, L=0.975601232386 !0.387558
+  S10WALL : DRIF, L=1.848553742612 !2.000599288542
+  DBD1e : DRIF, L=0.20337318127
+  DBD1d : DRIF, L=DBD1[L]-DBD1a[L]-DBD1b[L]-Ljaw-DBD1c[L]-S10WALL[L] &
+                  -LSb-DBD1e[L]
   DBD2a : DRIF, L=0.5786-LQR/2
-  DBD2b : DRIF, L=0.6368
+  DBD2b : DRIF, L=0.941597317611 !0.6368
   DBD2d : DRIF, L=0.5185-LQR/2
   DBD2c : DRIF, L=DBD2[L]-DBD2a[L]-DBD2b[L]-DBD2d[L]
   DBD3a : DRIF, L=0.5786-LQR/2
@@ -422,12 +409,12 @@
   DBD4b : DRIF, L=DBD4[L]-DBD4a[L]-DBD4c[L]
   DBD4h : DRIF, L=DBD4[L]/2
   DBD5a : DRIF, L=0.5786-LQR/2
-  DBD5c : DRIF, L=0.5
-  DBD5d : DRIF, L=0.536
+  DBD5c : DRIF, L=0.5-0.3048
+  DBD5d : DRIF, L=0.536+0.3048
   DBD5b : DRIF, L=DBD5[L]-DBD5a[L]-DBD5c[L]-DBD5d[L]
   DBD6a : DRIF, L=0.5786-LQR/2
   DBD6b : DRIF, L=0.527
-  DBD6e : DRIF, L=0.203095
+  DBD6e : DRIF, L=0.203432804686
   DBD6d : DRIF, L=0.772576-LQR/2-LSb-DBD6e[L]
   DBD6c : DRIF, L=DBD6[L]-DBD6a[L]-DBD6b[L]-DBD6d[L]-LSb-DBD6e[L]
   DBD7a : DRIF, L=0.5786-LQR/2
@@ -443,56 +430,46 @@
 
 ! bypass line FODO
 
-  DBP   : DRIF, L=(101.6-LQM)/2
+  DBP : DRIF, L=(101.6-LQM)/2
   DBPsa : DRIF, L=15.468697 !to sector boundary
   DBPsb : DRIF, L=DBP[L]-DBPsa[L]
 
 ! match to bypass line
 
-  LLtot := 99.751028062384
-
-  LL0 :=  5.0
-  LL1 := 18.0
-  LL2 := 34.5
-  LL3 := 11.0
-  LL4 := LLtot-LL0-LL1-LL2-LL3
+  LLP  := 162.4095277864 !162.4095276129
+  LL0P :=   7.5
+  LL1P :=  22.0
+  LL2P :=   7.5
+  LL3P :=  84.0
+  LL4P := LLP-LL0P-LL1P-LL2P-LL3P
 
   DLCCP : DRIF, L=0.5
-  DL0P  : DRIF, L=LL0
-  DL1P  : DRIF, L=LL1
-  DL2P  : DRIF, L=LL2
-  DL3P  : DRIF, L=LL3
-  DL4P  : DRIF, L=LL4
+  DL0P  : DRIF, L=LL0P
+  DL1P  : DRIF, L=LL1P
+  DL2P  : DRIF, L=LL2P
+  DL3P  : DRIF, L=LL3P
+  DL4P  : DRIF, L=LL4P
 
   DL0Pa : DRIF, L=0.3
-  DL0Pb : DRIF, L=LL0-DL0Pa[L]
-  DL1Pa : DRIF, L=0.4471
-  DL1Pb : DRIF, L=0.6368
-  DL1Pc : DRIF, L=LL1-DL1Pa[L]-DL1Pb[L]
-  DL2Pa : DRIF, L=0.4471
-  DL2Pb : DRIF, L=1.245325 !0.6368
-  DL2Pc : DRIF, L=LL2-DL2Pa[L]-DL2Pb[L]
-  DL3Pa : DRIF, L=0.4598
-  DL3Pb : DRIF, L=0.7433
-  DL3Pc : DRIF, L=5.9032251
-  DL3Pd : DRIF, L=LL3-DL3Pa[L]-DL3Pb[L]-DL3Pc[L]
+  DL0Pc : DRIF, L=0.5185-LQR/2
+  DL0Pb : DRIF, L=LL0P-DL0Pa[L]-DL0Pc[L]
+  DL1Pa : DRIF, L=0.5786-LQR/2
+  DL1Pb : DRIF, L=1.2154-0.5786
+  DL1Pd : DRIF, L=0.5185-LQR/2
+  DL1Pc : DRIF, L=LL1P-DL1Pa[L]-DL1Pb[L]-DL1Pd[L]
+  DL2Pa : DRIF, L=0.5786-LQR/2
+  DL2Pb : DRIF, L=0.6368
+  DL2Pd : DRIF, L=0.3
+  DL2Pc : DRIF, L=LL2P-DL2Pa[L]-DL2Pb[L]-DL2Pd[L]
+  DL3Pa : DRIF, L=0.5097-LQM/2
+  DL3Pb : DRIF, L=1.2044-0.5097
+  DL3Pc : DRIF, L=LL3P-DL3Pa[L]-DL3Pb[L]
   DL4Pa : DRIF, L=0.4598
   DL4Pb : DRIF, L=0.7433
-  DL4Pc : DRIF, L=LL4-DL4Pa[L]-DL4Pb[L]
-  DBPa  : DRIF, L=0.44518 !0.4598
-  DBPb  : DRIF, L=0.62865 !0.7433
-  DBPc  : DRIF, L=DBP[L]-DBPa[L]-DBPb[L]
-  DBPe  : DRIF, L=0.1
-  DBPf  : DRIF, L=1.0
-  DBPd  : DRIF, L=DBP[L]-DBPa[L]-DBPb[L]-DBPe[L]-DBPf[L]
-
-  DBPb1   : DRIF, L=DBPb[L]+0.38327
-  DBPc1   : DRIF, L=DBPc[L]-0.38327
-  DBPd1   : DRIF, L=21.516667
-  DBPd1a  : DRIF, L=3.950667 !30*in2m
-  DBPd1b  : DRIF, L=DBPd1[L]-DBPd1a[L]
-  S10WALL : DRIF, L=1.848
-  DBPd2   : DRIF, L=DBPd[L]-DBPd1[L]-S10WALL[L]
+  DL4Pc : DRIF, L=0.2794
+  DL4Pe : DRIF, L=0.1
+  DL4Pf : DRIF, L=1.0
+  DL4Pd : DRIF, L=LL4P-DL4Pa[L]-DL4Pb[L]-DL4Pc[L]-DL4Pe[L]-DL4Pf[L]
 
 ! ==============================================================================
 ! BPMs
@@ -510,12 +487,6 @@
   BPML2P  : MONI, TYPE="Stripline-5"
   BPML3P  : MONI, TYPE="Stripline-5"
   BPML4P  : MONI, TYPE="Stripline-5"
-  BPML5P  : MONI, TYPE="Stripline-5"
-  BPMBP10 : MONI, TYPE="Stripline-5"
-  BPMBP11 : MONI, TYPE="Stripline-5"
-  BPMBP12 : MONI, TYPE="Stripline-5"
-
-  RFBWSBP1 : MONI, TYPE="@2,CavityS-1"
 
 ! ==============================================================================
 ! XCORs
@@ -526,10 +497,9 @@
   XCDOG5 : HKIC, TYPE="type-4"
   XCDOG7 : HKIC, TYPE="type-4"
   XCL1P  : HKIC, TYPE="type-4"
+  XCL2P  : HKIC, TYPE="type-4"
   XCL3P  : HKIC, TYPE="type-4"
-  XCL5P  : HKIC, TYPE="type-4"
-  XCBP10 : HKIC, TYPE="type-4"
-  XCBP11 : HKIC, TYPE="type-4"
+  XCL4P  : HKIC, TYPE="type-4"
 
 ! ==============================================================================
 ! YCORs
@@ -540,26 +510,25 @@
   YCDOG4 : VKIC, TYPE="type-4"
   YCDOG6 : VKIC, TYPE="type-4"
   YCDOG8 : VKIC, TYPE="type-4"
+  YCL1P  : VKIC, TYPE="type-4"
   YCL2P  : VKIC, TYPE="type-4"
+  YCL3P  : VKIC, TYPE="type-4"
   YCL4P  : VKIC, TYPE="type-4"
-  YCBP10 : VKIC, TYPE="type-4"
-  YCBP12 : VKIC, TYPE="type-4"
 
 ! ==============================================================================
 ! marker points, etc.
 ! ------------------------------------------------------------------------------
 
-! collimator
+! collimator (default out-of-plane half-aperture is 20 mm)
 
 ! CEDOG : energy coll in bypass dog-leg (YSIZE is half-gap)
 
-  CEDOG : RCOL, L=Ljaw, YSIZE=8.6E-3, TYPE="VCOLL"
+  CEDOG : RCOL, L=Ljaw, YSIZE=6.8E-3, XSIZE=20.E-3, TYPE="VCOLL"
 
 ! beam profile measurement
 
   OTRDOG : PROF, TYPE="OTR"
   WSDOG  : WIRE, TYPE="@3,fast"
-  WSBP1  : WIRE, TYPE="fast"
 
 ! combination OTR/YAG !PSI type
 
@@ -574,23 +543,16 @@
   CNTDLU   : MARK, TYPE="CENTER"
   CCDLUEND : MARK
   BDBEG    : MARK
-  clBRB1   : MARK !BRB1 centerline
-  MIDBD    : MARK
-  clBRB2   : MARK !BRB2 centerline
+  clBRB1   : MARK                !BRB1 centerline
+  BDMID    : MARK
+  clBRB2   : MARK                !BRB2 centerline
   CNTDOG   : MARK, TYPE="CENTER"
   BDEND    : MARK
   CCDLDBEG : MARK
   CCDLDMID : MARK
   CNTDLD   : MARK, TYPE="CENTER"
   CCDLDEND : MARK
-  RWWAKE1  : MARK, TYPE="WAKE" !EXT+BD beampipe wake applied here
-
-! sector boundaries (ZBEG=101.6*(n-1); ZEND=101.6*n)
-
-  BPN09BEG : MARK ; BPN09END : MARK
-  BPN10BEG : MARK ; BPN10END : MARK
-  BPN11BEG : MARK ; BPN11END : MARK
-  BPN12BEG : MARK
+  RWWAKE1  : MARK, TYPE="WAKE"    !EXT+BD beampipe wake applied here
 
 ! ==============================================================================
 ! BEAMLINE
@@ -619,10 +581,6 @@
   QL2P_full  : LINE=(QL2P,QL2P)
   QL3P_full  : LINE=(QL3P,QL3P)
   QL4P_full  : LINE=(QL4P,QL4P)
-  QL5P_full  : LINE=(QL5P,QL5P)
-  QBP10_full : LINE=(QBP10,QBP10)
-  QBP11_full : LINE=(QBP11,QBP11)
-  QBP12_full : LINE=(QBP12,QBP12)
 
   SDOG1_full : LINE=(SDOG1,SDOG1)
   SDOG2_full : LINE=(SDOG2,SDOG2)
@@ -631,51 +589,49 @@
     BCXDLU1_full,DCCDLUo,&
     BCXDLU2_full,DCCDLUi,CCDLUMID,DCCDLUi,&
     BCXDLU3_full,DCCDLUo,&
-    BCXDLU4_full,CNTDLU,&
-    CCDLUEND)
+    BCXDLU4_full,CNTDLU,CCDLUEND)
 
   CCDLD : LINE=(CCDLDBEG,&
     BCXDLD1_full,DCCDLDo,&
     BCXDLD2_full,DCCDLDi,CCDLDMID,DCCDLDi,&
     BCXDLD3_full,DCCDLDo,&
-    BCXDLD4_full,CNTDLD,&
-    CCDLDEND)
+    BCXDLD4_full,CNTDLD,CCDLDEND)
 
   COMMENT !simplified (1st order)
     DLBP : LINE=(BDBEG,&
-      BRB1a,clBRB1,BRB1b,ROBRB1,DBD0,&
-      QDOG1,QDOG1,DBD1,&
-      QDOG2,QDOG2,DBD2,&
-      QDOG3,QDOG3,DBD3,&
-      QDOG4,QDOG4,DBD4h,MIDBD,DBD4h,&
-      QDOG5,QDOG5,DBD5,&
-      QDOG6,QDOG6,DBD6,&
-      QDOG7,QDOG7,DBD7,&
-      QDOG8,QDOG8,DBD8,&
-      ROBRB2,BRB2a,clBRB2,BRB2b,&
+      BRB1_full,ROBRB1,DBD0,&
+      QDOG1_full,DBD1,&
+      QDOG2_full,DBD2,&
+      QDOG3_full,DBD3,&
+      QDOG4_full,DBD4h,BDMID,DBD4h,&
+      QDOG5_full,DBD5,&
+      QDOG6_full,DBD6,&
+      QDOG7_full,DBD7,&
+      QDOG8_full,DBD8,&
+      ROBRB2,BRB2_full,&
       BDEND)
   ENDCOMMENT
 
   COMMENT !simplified (2nd order)
-    DLBP : LINE=(BDBEG,&
-      BRB1a,clBRB1,BRB1b,ROBRB1,DBD0,&
-      QDOG1,QDOG1,DBD1Sa,SDOG1,SDOG1,DBD1Sb,&
-      QDOG2,QDOG2,DBD2,&
-      QDOG3,QDOG3,DBD3,&
-      QDOG4,QDOG4,DBD4h,MIDBD,DBD4h,&
-      QDOG5,QDOG5,DBD5,&
-      QDOG6,QDOG6,DBD6Sa,SDOG2,SDOG2,DBD6Sb,&
-      QDOG7,QDOG7,DBD7,&
-      QDOG8,QDOG8,DBD8,&
-      ROBRB2,BRB2a,clBRB2,BRB2b,&
+    DLBP0S : LINE=(BDBEG,&
+      BRB1_full,ROBRB1,DBD0,&
+      QDOG1_full,DBD1Sa,SDOG1,SDOG1,DBD1Sb,&
+      QDOG2_full,DBD2,&
+      QDOG3_full,DBD3,&
+      QDOG4_full,DBD4h,BDMID,DBD4h,&
+      QDOG5_full,DBD5,&
+      QDOG6_full,DBD6Sa,SDOG2,SDOG2,DBD6Sb,&
+      QDOG7_full,DBD7,&
+      QDOG8_full,DBD8,&
+      ROBRB2,BRB2_full,&
       BDEND)
   ENDCOMMENT
 
  !COMMENT !complete
     DLBP : LINE=(BDBEG,&
       BRB1_full,ROBRB1,DBD0a,YCDOG0,DBD0b,XCDOG1,DBD0c,&
-      QDOG1_full,DBD1a,BPMDOG1,DBD1b,CEDOG,DBD1c,&
-      SDOG1_full,DBD1d,&
+      QDOG1_full,DBD1a,BPMDOG1,DBD1b,CEDOG,DBD1c,S10WALL,DBD1d,&
+      SDOG1_full,DBD1e,&
       QDOG2_full,DBD2a,BPMDOG2,DBD2b,YCDOG2,DBD2c,XCDOG3,DBD2d,&
       QDOG3_full,DBD3a,BPMDOG3,DBD3b,YCDOG4,DBD3c,&
       QDOG4_full,DBD4a,BPMDOG4,DBD4b,XCDOG5,DBD4c,&
@@ -691,31 +647,19 @@
   COMMENT !simplified
     MTCH1 : LINE=(DLCCP,&
       CCDLD,DL0P,&
-      QL1P,QL1P,DL1P,&
-      QL2P,QL2P,DL2P,&
-      QL3P,QL3P,DL3P,&
-      QL4P,QL4P,DL4P,&
-      QL5P,QL5P,DBP,DBP,&
-      QBP10,QBP10,DBPa,DBPb,DBPd,DBPe,WSBP1,DBPf,DBP,&
-      QBP11,QBP11,DBP,DBP,&
-      QBP12,QBP12,DBPa,DBPb,DBPd)
+      QL1P_full,DL1P,&
+      QL2P_full,DL2P,&
+      QL3P_full,DL3P,&
+      QL4P_full,DL4Pa,DL4Pb,DL4Pc,DL4Pd)
   ENDCOMMENT
 
  !COMMENT !complete
     MTCH1 : LINE=(DLCCP,&
-      CCDLD,DL0Pa,OTR31_full,DL0Pb,&
-      QL1P_full,DL1Pa,BPML1P,DL1Pb,XCL1P,DL1Pc,&
-      QL2P_full,DL2Pa,BPML2P,DL2Pb,YCL2P,DL2Pc,&
-      QL3P_full,DL3Pa,BPML3P,DL3Pb,XCL3P,DL3Pc,BPN09BEG,DL3Pd,&
-      QL4P_full,DL4Pa,BPML4P,DL4Pb,YCL4P,DL4Pc,&
-      QL5P_full,DBPa,BPML5P,DBPb,XCL5P,DBPc,&
-        DBPsa,BPN09END,BPN10BEG,DBPsb,&
-      QBP10_full,DBPa,BPMBP10,DBPb,YCBP10,DBPd1a,XCBP10,DBPd1b,&
-        S10WALL,DBPd2,RFBWSBP1,DBPe,WSBP1,DBPf,&
-        DBPsa,BPN10END,BPN11BEG,DBPsb,&
-      QBP11_full,DBPa,BPMBP11,DBPb1,XCBP11,DBPc1,&
-        DBPsa,BPN11END,BPN12BEG,DBPsb,&
-      QBP12_full,DBPa,BPMBP12,DBPb,YCBP12,DBPd)
+      CCDLD,DL0Pa,OTR31_full,DL0Pb,XCL1P,DL0Pc,&
+      QL1P_full,DL1Pa,BPML1P,DL1Pb,YCL1P,DL1Pc,XCL2P,DL1Pd,&
+      QL2P_full,DL2Pa,BPML2P,DL2Pb,YCL2P,DL2Pc,XCL3P,DL2Pd,&
+      QL3P_full,DL3Pa,BPML3P,DL3Pb,YCL3P,DL3Pc,&
+      QL4P_full,DL4Pa,BPML4P,DL4Pb,XCL4P,DL4Pc,YCL4P,DL4Pd)
  !ENDCOMMENT
 
   DLBM : LINE=(BEGDOG,DBDm0,CCDLU,DBDm1,DLBP,MTCH1,ENDDOG)

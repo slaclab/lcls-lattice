@@ -1,20 +1,14 @@
 
-! *** OPTICS=AD_ACCEL-19DEC2025s ***
+! *** OPTICS=AD_ACCEL-04MAY2026s ***
 
 ! ==============================================================================
-! Modification History (see also DeckMods.txt ... )
+! Modification History
 ! ------------------------------------------------------------------------------
-! 22-JAN-2025, M. Woodley
-!  * redefine BEAM0 Twiss per C. Mayes; rematch GUNB Twiss
-! ------------------------------------------------------------------------------
-! 22-MAR-2024, M. Woodley
+! 21-NOV-2024, M. Woodley
 !  * rematch Twiss at gun ... SWAVE added to BUN1B
 ! ------------------------------------------------------------------------------
 ! 04-OCT-2023, M. Woodley
 !  * lower Ei (energy after CM01) to 90 MeV per F. Zhou and Y. Ding
-! ------------------------------------------------------------------------------
-! 16-JAN-2021, M. Woodley
-!  * new standard configuration per Y. Ding
 ! ------------------------------------------------------------------------------
 
 ! ==============================================================================
@@ -29,66 +23,112 @@
   in2m  : CONSTANT=0.0254          !m/inch
   ft2m  : CONSTANT=0.3048          !m/foot
 
-! energy profile
+! kinetic energy profile
 
-  E0   := MC2+0.750E-3 !NGLS/APEX gun energy (GeV) ... 750 kV gun
-  Ei   :=  0.075       !energy at end of L0B (GeV)
-  E1   :=  0.235       !BC1 energy (GeV)
-  E2   :=  1.500       !BC2 energy (GeV)
-  Ef   :=  4.000       !final beam energy (GeV)
-  Eu   :=  4.000       !energy in undulator (GeV)
-  Emax := 10.000       !maximum beam energy
+  E0    := MC2+0.750E-3      !NGLS/APEX gun energy (GeV) ... 750 kV gun
+  Ei    := 0.075             !energy at end of L0B (GeV)
+  E1    := 0.235             !BC1 energy (GeV)
+  E2    := 1.55              !BC2 energy (GeV)
+  E3    := 4.0               !L3 final energy (GeV)
+  Ef    := 8.0               !final beam energy (GeV)
+  Eu    := 8.0               !energy in undulator (GeV)
+  Emax  := 10.0              !maximum beam energy
+  E0LEI := 2.790915293401E-3 !LEI gun energy (GeV)
 
   Brho0 := Cb*E0
   Brhoi := Cb*Ei
   Brho1 := Cb*E1
   Brho2 := Cb*E2
+  Brho3 := Cb*E3
   Brhof := Cb*Ef
   Brhou := Cb*Eu
 
 ! compression
 
-  R56HTR := 0.003552 !DXmax = 75 cm
+  R56HTR := 0.003673 !DXmax = 75 mm
   R56BC1 := 0.053
   R56BC2 := 0.045
 
   R56CCDLU := 9.99E-5
   R56CCDLD := 9.99E-5
 
+  R56DLI := -12.124e-3 !R56 of LEI dogleg
+
 ! ==============================================================================
-! input beam definition: F. Zhou (100 pC)
+! input beam definitions: C. Mayes (100 pC)
 ! ------------------------------------------------------------------------------
 
 ! Twiss at gun
 
-  BX0 := 52.439198729027
-  AX0 := 21.656499467383
-  BY0 := 52.371634252331
-  AY0 := 21.628730937285
+  BX0 := 45.166679050307
+  AX0 := 19.951185449072
+  BY0 := 45.129641649131
+  AY0 := 19.935828402737
 
 ! Twiss at S= 15.0 m (ASTRA MARKER)
 
-  BXa := 13.325594260682
+  BXa := 13.325594260691
   AXa := -2.125811087318
-  BYa := 13.315541277698
+  BYa := 13.315541277706
   AYa := -2.123153832086
 
-! Twiss at BEAM0 MARKER (from C. Mayes)
+! Twiss at BEAM0 MARKER (specified)
 
   BXi :=  9.3480
   AXi := -1.6946
   BYi :=  9.3429
   AYi := -1.6925
 
+! max beta u/s of WS0H04
+
+  Bmax := 55
+
+! "treaty" Twiss at center of laser heater undulator
+
+  BXlh := 10.0
+  AXlh := 0
+  BYlh := 10.0
+  AYlh := 0
+
+! ------------------------------------------------------------------------------
+
+! Twiss at BEAM0LEI MARKER (Fuhao Ji, 17JUL23)
+
+  BXiLEI := 19.592195324050067  !21.8
+  AXiLEI := -0.4746356317302934 !-1.0
+  BYiLEI := 19.592195324050067  !21.8
+  AYiLEI := -0.4746356317302934 !-1.0
+
+! Twiss at LEI gun
+
+  BX0LEI :=  3.132630090869 ! 2.035553709314
+  AX0LEI :=  0.792777427933 ! 0.839787110788
+  BY0LEI :=  3.132630090869 ! 2.035553709314
+  AY0LEI :=  0.792777427933 ! 0.839787110788
+
+! Twiss at entrance to LEI dogleg
+
+  BXDLI :=  0.7928151967   ! 0.773514349232
+  AXDLI :=  1.239201451893 ! 1.233992475513
+  BYDLI :=  8.389181442895 ! 8.326162160521
+  AYDLI :=  2.280563207812 ! 2.387214094461
+
+! LEI "treaty" Twiss at center of laser heater undulator
+
+  BXlhLEI := 20.0
+  AXlhLEI :=  0.0
+  BYlhLEI := 20.0
+  AYlhLEI :=  0.0
+
 ! ------------------------------------------------------------------------------
 
 ! beam parameters
 
   QBNCH  := 100.0E-12 !C
-  EMITXn := 0.35E-06  !m
-  EMITYn := 0.35E-06  !m
+  EMITXn := 0.15E-06  !m
+  EMITYn := 0.15E-06  !m
   sig_z  := 1.0E-03   !m
-  sig_dp := 0.03E-02  !1
+  sig_dp := 1.0E-04   !1
 
 ! ==============================================================================
 ! input beam definition (at BEAM0)
@@ -137,17 +177,27 @@
   Z2end :=  329.605000 !end of L2 (~24.8 m into LI04)
   Z3beg :=  388.210000 !start of L3 (~83.4 m into LI04)
   Z3end :=  641.320000 !end of L3 (~31.7 m into LI07)
-  Zdog  :=  664.310000 !entrance first dogleg bend, BRB1 (~43.1 m into LI10)
+  Z4beg :=  649.003000 !start of L4 (~39.4 m into LI07)
+  Z4end :=  939.332000 !end of L4 (~24.9 m into LI10)
+  Zdog0 :=  954.347000 !sector 10 adit "crotch" (~39.9 m into LI10)
+  Zdog  :=  957.547000 !entrance first dogleg bend, BRB1 (~43.1 m into LI10)
   Xbyp  :=   -0.650494 !QBP13 X is |Xbyp| to the south of linac axis
   Ybyp  :=    0.649478 !QBP13 Y is Ybyp above linac axis
   Zbyp  := 1254.531303 !QBP13 centerline (~35.3 m into LI13)
+
+  Xgun2    :=   9.25       !LEI beam axis (w.r.t. original linac axis)
+  Ygun2    :=   Ygun       !LEI beam axis (w.r.t. original linac axis)
+  Zgun2    := -29.23410408 !LEI cathode
+  Z0LEIbeg := -24.02435408 !start of L0LEI
+  ZiLEI    := -12.11807408 !BEAM0LEI point
+  ZDLIbeg  :=  -3.20448039 !start of LEI dogleg
+  ZDLIend  :=  12.89408800 !end of LEI dogleg (reinjection into LCLS-II)
 
 ! ==============================================================================
 ! twiss parameter definitions (for matching, etc.)
 ! ------------------------------------------------------------------------------
 
-! matched Twiss at start of coasting linac FODOs
-! (see CM.xsif for CMfodo1, CMfodo2, and CMfodo3 definitions)
+! matched Twiss for coasting linac FODOs
 
   BXCMfodo1 := 47.734300019352 !L1: 45 degrees per cell
   BYCMfodo1 := 21.362810104773 !L1: 45 degrees per cell
@@ -155,55 +205,53 @@
   BYCMfodo2 := 36.259471142003 !L2: 30 degrees per cell
   BXCMfodo3 := 61.483042301615 !L3: 30 degrees per cell
   BYCMfodo3 := 36.259471142003 !L3: 30 degrees per cell
+  BXCMfodo4 := 61.483042301615 !L4: 30 degrees per cell
+  BYCMfodo4 := 36.259471142003 !L4: 30 degrees per cell
 
-! matched Twiss at SXR LTU emittance diagnostic wire scanners
-! (at elements WS31b, WS32b, WS33b, and WS34b)
+! matched Twiss at DBMARK34B
+
+  MBETXS :=  6.841330859726
+  MALFXS := -0.28404741292
+  MBETYS := 47.12043239127
+  MALFYS :=  2.555848494223
+
+! periodic Twiss in HXR dogleg cells
+
+  MBETXH := 48.911502413804 !48.911502413792
+  MALFXH :=  3.14173605942  ! 3.141736059434
+  MBETYH := 92.803659360411 !92.803659415654
+  MALFYH :=  3.51915855489  ! 3.519158552438
+
+! match into SXR LTU emittance diagnostic section
 
   BXEDs := 46.225914318019
   AXEDs := -1.084608326468
-  BYEDs := 46.225914318017
+  BYEDs := 46.225914318019
   AYEDs :=  1.084608326468
 
-! match into HXR LTU emittance diagnostic section (at element WS31)
+! match into HXR LTU emittance diagnostic section
 
   BXEDh := 46.225914290403
   AXEDh := -1.084608326581
   BYEDh := 46.225914290403
   AYEDh :=  1.084608326581
 
-! periodic Twiss in HXR dogleg cell (at element MM1)
-! (found by setting ALFX=ALFY=0 at centers of HXR dogleg quadrupoles QDL31,32,33 and QT12,22,32)
-! (NOTE: this is an inexact match ... see SUBROUTINE MDL2M2 in LCLS2cu_match.mad8)
-
-  MBETXh := 48.911502413804
-  MALFXh :=  3.14173605942 
-  MBETYh := 92.803659360411
-  MALFYh :=  3.51915855489 
-
-! matched (COUPLE) Twiss at entrance to SXR DL2 (MM1B)
-
-  MBETXs :=  6.841330859756
-  MALFXs := -0.284047412927
-  MBETYs := 47.120432408
-  MALFYs :=  2.555848495121
-
-! ------------------------------------------------------------------------------
+! ==============================================================================
 ! load lattice definitions
 ! ------------------------------------------------------------------------------
 
   CALL, FILENAME="common.xsif"
   CALL, FILENAME="CM_SWAVE.xsif"
- !CALL, FILENAME="CM_SWAVE2.xsif" !with LCAVITY NCELL attribute
-  CALL, FILENAME="DIAG0.xsif" !must come before INJ.xsif
-  CALL, FILENAME="INJ.xsif"
+  CALL, FILENAME="DIAG0.xsif"    !must come before INJ.xsif
+  CALL, FILENAME="INJ.xsif"      !QCM01 on; Ei= 100 MeV
+  CALL, FILENAME="INJ2.xsif"     !four bend
+  CALL, FILENAME="DIAGI.xsif"    !four bend
   CALL, FILENAME="BC1.xsif"
   CALL, FILENAME="BC2.xsif"
-  CALL, FILENAME="EXT.xsif"
   CALL, FILENAME="DLBM.xsif"
   CALL, FILENAME="SPRD.xsif"
   CALL, FILENAME="CUSXR.xsif"
   CALL, FILENAME="ALINE.xsif"
- !CALL, FILENAME="ALINE_actual.xsif"
   CALL, FILENAME="BYP.xsif"
   CALL, FILENAME="LTU.xsif"
   CALL, FILENAME="UND.xsif"
@@ -214,27 +262,36 @@
   LCLS2scI : LINE=(BEAM0,DCM4b,QCM01_full,DCM5,CM01END,&
     DCMCM1,HOMCM01,DCAP0da,ASTRA,DCAP0db,FC1,DMSC0da,BLF1,DMSC0db,&
     VGL0Bd,DMSC0dc,VPL0Bd,DMSC0dd,MSC0d,VVL0Bd,ENDL0B)
-  LCLS2scC : LINE=(HTR,COL0,L1,BC1,COL1,L2,BC2,EMIT2,L3,EXT,DLBM)
+  LCLS2scC : LINE=(HTR,COL0,L1,BC1,COL1,L2,BC2,EMIT2,L3,BR3B,L4,EXT,DLBM)
 
-! FDN definitions
-
-  CALL, FILENAME="SC_FDN.xsif"
+  LCLS2scI2 : LINE=(BEAM0LEI,DCM4b,QCM00_full,DCM5,CM00END,&
+    DCMCM1,HOMCM00,DCAP0d2,FCLEI,DMSC0da,BLFLEI,&
+    DMSC0db,VGLEId,DMSC0dc,VPLEId,DMSC0dd,VVLEId,MSCLEI,&
+    ENDL0LEI)
+  LCLS2scC2 : LINE=(LEI,HTR_2,COL0,L1,BC1,COL1,L2,BC2,EMIT2,&
+    L3,BR3B,L4,EXT,DLBM)
 
 ! new BSY area definitions
 
   CALL, FILENAME="BSYsc.xsif"
 
-! beam path definitions
+! FDN definitions
+
+  CALL, FILENAME="SC_FDN.xsif"
+
+! ==============================================================================
+! beam path definitions: beam from LCLS-II gun
+! ------------------------------------------------------------------------------
 
  !SC_DIAG0 : superconducting linac to DIAG0
  !SC_HXR   : superconducting linac to e- HXR dump
  !SC_SXR   : superconducting linac to e- SXR dump
  !SC_SFTS  : superconducting linac to e- SXR safety dump
- !SC_S2_X  : superconducting linac to SXR XTES "2.X" line
- !SC_STXI  : superconducting linac to SXR XTES TXI line
- !SC_STMO  : superconducting linac to SXR XTES TMO line
+ !SC_S2_X  : superconducting linac to SXR "2.X" system
+ !SC_STXI  : superconducting linac to SXR TXI system
+ !SC_STMO  : superconducting linac to SXR TMO system
+ !SC_DASEL : superconducting linac to End Station A (LESA)
  !SC_BSYD  : superconducting linac to BSY dump
- !SC_DASEL : superconducting linac to End Station A (DASEL)
 
   SC_DIAG0 : LINE=(GUN,L0,HTR,DIAG0)
   SC_HXR   : LINE=(GUN,L0,LCLS2scC,LCLS2scH)
@@ -243,8 +300,8 @@
   SC_S2_X  : LINE=(GUN,L0,LCLS2scC,LCLS2scS2_X)
   SC_STXI  : LINE=(GUN,L0,LCLS2scC,LCLS2scSTXI)
   SC_STMO  : LINE=(GUN,L0,LCLS2scC,LCLS2scSTMO)
-  SC_BSYD  : LINE=(GUN,L0,LCLS2scC,LCLS2scD)
   SC_DASEL : LINE=(GUN,L0,LCLS2scC,LCLS2scDA)
+  SC_BSYD  : LINE=(GUN,L0,LCLS2scC,LCLS2scD)
 
 ! for Twiss starting at BEAM0
 
@@ -255,16 +312,53 @@
   SC_S2_Xi  : LINE=(LCLS2scI,LCLS2scC,LCLS2scS2_X)
   SC_STXIi  : LINE=(LCLS2scI,LCLS2scC,LCLS2scSTXI)
   SC_STMOi  : LINE=(LCLS2scI,LCLS2scC,LCLS2scSTMO)
-  SC_BSYDi  : LINE=(LCLS2scI,LCLS2scC,LCLS2scD)
   SC_DASELi : LINE=(LCLS2scI,LCLS2scC,LCLS2scDA)
+  SC_BSYDi  : LINE=(LCLS2scI,LCLS2scC,LCLS2scD)
 
+! ==============================================================================
+! beam path definitions: beam from LEI gun
 ! ------------------------------------------------------------------------------
+
+ !SC_DIAGIS : superconducting linac to DIAGI spectrometer
+ !SC_DIAG02 : superconducting linac to DIAG0
+ !SC_HXR2   : superconducting linac to e- HXR dump
+ !SC_SXR2   : superconducting linac to e- SXR dump
+ !SC_SFTS2  : superconducting linac to e- SXR safety dump
+ !SC_S2_X2  : superconducting linac to SXR "2.X" system
+ !SC_STXI2  : superconducting linac to SXR TXI system
+ !SC_STMO2  : superconducting linac to SXR TMO system
+ !SC_DASEL2 : superconducting linac to End Station A (DASEL)
+ !SC_BSYD2  : superconducting linac to BSY dump
+
+  SC_DIAGIS : LINE=(GUNLEI,L0LEI,LEI_1,DIAGIS)
+  SC_DIAG02 : LINE=(GUNLEI,L0LEI,LEI,HTR_2,DIAG0)
+  SC_HXR2   : LINE=(GUNLEI,L0LEI,LCLS2scC2,LCLS2scH)
+  SC_SXR2   : LINE=(GUNLEI,L0LEI,LCLS2scC2,LCLS2scS)
+  SC_SFTS2  : LINE=(GUNLEI,L0LEI,LCLS2scC2,LCLS2scSS)
+  SC_S2_X2  : LINE=(GUNLEI,L0LEI,LCLS2scC2,LCLS2scS2_X)
+  SC_STXI2  : LINE=(GUNLEI,L0LEI,LCLS2scC2,LCLS2scSTXI)
+  SC_STMO2  : LINE=(GUNLEI,L0LEI,LCLS2scC2,LCLS2scSTMO)
+  SC_DASEL2 : LINE=(GUNLEI,L0LEI,LCLS2scC2,LCLS2scDA)
+  SC_BSYD2  : LINE=(GUNLEI,L0LEI,LCLS2scC2,LCLS2scD)
+
+! for Twiss starting at BEAM0LEI
+
+  SC_DIAGISi : LINE=(LCLS2scI2,LEI_1,DIAGIS)
+  SC_DIAG0i2 : LINE=(LCLS2scI2,LEI,HTR_2,DIAG0)
+  SC_HXRi2   : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scH)
+  SC_SXRi2   : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scS)
+  SC_SFTSi2  : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scSS)
+  SC_S2_Xi2  : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scS2_X)
+  SC_STXIi2  : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scSTXI)
+  SC_STMOi2  : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scSTMO)
+  SC_DASELi2 : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scDA)
+  SC_BSYDi2  : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scD)
+
+! ==============================================================================
 ! initial BSY coordinates at BEGSP (LTUSPLIT)
 ! ------------------------------------------------------------------------------
 
   Xf     :=  XOFF
- !Yf     :=  1.899339708765 !1.897939159495 -0.3*SIN(2*AVB)
- !Zf     := -267.7180471454 !-267.4180504124 -0.3*COS(2*AVB)
   Yf     :=  1.899339708719 !1.897939159495 -0.3*SIN(2*AVB)
   Zf     := -267.7180471432 !-267.4180504124 -0.3*COS(2*AVB)
   THETAf :=  0
