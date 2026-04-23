@@ -92,7 +92,7 @@ def roundoff(val, prec=None):
 
 script_dir = Path(__file__).parent.resolve()
 
-optics='06NOV2025s'
+optics='04MAY2026s'
 vfile=['LCLS2sc_value.echo','LCLS2cu_value.echo']
 
 outdir='oracle_upload'
@@ -518,7 +518,7 @@ def read_sector_data():
 
     # read worksheet 1 (scS)
     sheet = wb.worksheets[0]
-    data = sheet['A4':'J72']
+    data = sheet['A4':'J76']
     sector_data = []
     for row in data:
         sector_data.append({
