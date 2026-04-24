@@ -22,20 +22,24 @@ MODELS = [
 'cu_spec',
 'sc_dasel',
 'sc_diag0',
+'sc_diag02',
+'sc_diagis',
 # 'cu_inj',
  #'cu_linac',
 # 'sc_inj',
 ]
 
-TOLS = {}         #beta_x, beta_y, end_s
-TOLS['sc_bsyd']  = (1e-5,   1e-5,   1e-9)
-TOLS['sc_sxr']   = (5e-5,   5e-5,   1e-9)
-TOLS['sc_hxr']   = (1e-5,   5e-5,   1e-9)
-TOLS['sc_dasel'] = (1e-5,   5e-5,   1e-9)
-TOLS['sc_diag0'] = (1e-5,   5e-5,   1e-9)
-TOLS['cu_sxr']   = (2e-2,   2e-2,   1e-9)
-TOLS['cu_hxr']   = (2e-2,   2e-2,   1e-9)
-TOLS['cu_spec']  = (2e-2,   2e-2,   1e-9)
+TOLS = {}           #beta_x, beta_y, end_s
+TOLS['sc_bsyd']  =  (1e-5,   1e-5,   1e-9)
+TOLS['sc_sxr']   =  (5e-5,   5e-5,   1e-9)
+TOLS['sc_hxr']   =  (1e-5,   5e-5,   1e-9)
+TOLS['sc_dasel'] =  (1e-5,   5e-5,   1e-9)
+TOLS['sc_diag0'] =  (1e-5,   5e-5,   1e-9)
+TOLS['sc_diag02'] = (1e-5,   5e-5,   1e-9)
+TOLS['sc_diagis'] = (1e-5,   5e-5,   1e-9)
+TOLS['cu_sxr']   =  (2e-2,   2e-2,   1e-9)
+TOLS['cu_hxr']   =  (2e-2,   2e-2,   1e-9)
+TOLS['cu_spec']  =  (2e-2,   2e-2,   1e-9)
 
 @pytest.fixture(scope='module',autouse=True)
 def exec_mad8s():
@@ -43,6 +47,7 @@ def exec_mad8s():
     pytest.skip('unsupported platform')
   for model in MODELS:
     mad8s_commands = open(LCLS_LATTICE+'/mad/'+model.upper()+'_CI_Testing.mad8')
+    print(f'{mad8s_commands}')
     run([LCLS_LATTICE+'/mad8s'],cwd=LCLS_LATTICE+'/mad', stdin=mad8s_commands, capture_output=True, text=True)
 
 def get_end_params_pytao(lattice_file):
