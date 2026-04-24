@@ -18,7 +18,9 @@ MODELS = [
  'sc_inj',
  'sc_sxr',
  'sc_hxr',
- 'sc_bsyd']
+ 'sc_bsyd',
+ 'sc_diag02',
+ 'sc_diagis']
 
 
 def run_tao(model):

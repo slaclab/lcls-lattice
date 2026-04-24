@@ -1,16 +1,18 @@
 
-! *** OPTICS=AD_ACCEL-19DEC2025s ***
+! *** OPTICS=AD_ACCEL-04MAY2026s ***
 
 ! LCLS2sc A-line
 
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
-! 18-NOV-2025, M. Woodley
+! 06-NOV-2025, Y. Nosochkov/M. Woodley
+!  * add a test beamline (BSYADUMP) for beam size study at ESA alcove detector
+!    and matching A-line quads for a tuning knob
 !  * add MADUMP marker for entrance of ESA alcove dump (per Carsten Hast data)
 !  * add MADET marker for entrance of ESA alcove detector assuming (!) it is
 !    1.3 m upstream of the dump entrance
-!  * set Q27, Q28, Q30, and Q38 to Yuri's "relaxed" optics values
+!  * make relaxed optics the default
 ! ------------------------------------------------------------------------------
 ! 24-JUN-2025, M. Woodley
 !  * replace ESA E158 components with T-474 components
@@ -198,16 +200,25 @@ rq20 = 8.25*0.0254/2
 lsq = 0.55
 rsq = 0.08/2
 
-! the K-values below are for LESA (the only connection to ALINE)
+! the K-values below are for DASEL (the only connection to ALINE) ...
+! relaxed optics (4 GeV K-knob)
 
 kq10 = 0.040946131243
 kq11 = -0.038135136057
 kq19 = 0.030837113549
 kq20 = 0.146624351215e-2
-kq27 = -0.038606814284 !-0.083919622056
-kq28 = 0.039503266207 ! 0.03548040664
-kq30 = -0.020157257183 !-0.028849559713
-kq38 = 0.021853409081 ! 0.034487458519
+kq27 = -0.030855833729 !-0.038606814284 !
+kq28 = 0.034232470171 ! 0.039503266207 !
+kq30 = -0.025303863088 !-0.020157257183 !
+kq38 = 0.033028104498 ! 0.021853409081 !
+
+!=!  comment !original optics
+!=!  comment !original optics
+!=!KQ27 = -0.083919622056
+!=!KQ28 = 0.03548040664
+!=!KQ30 = -0.028849559713
+!=!KQ38 = 0.034487458519
+!=!  endcomment
 
 q10: quadrupole, l = lq8cm/2, aperture = rq8cm, k1 = kq10, type = "3.15Q76"
 q11: quadrupole, l = lq8cm/2, aperture = rq8cm, k1 = kq11, type = "3.15Q76"
@@ -384,14 +395,14 @@ pc10: ecollimator
 pc12: ecollimator
 pc14: ecollimator
 pc17: ecollimator
-sl19: rcollimator
-sl10: rcollimator
+sl19: rcollimator, type = "HCOLL"
+sl10: rcollimator, type = "HCOLL"
 pc20: ecollimator
 pc24: ecollimator
-c24: rcollimator
+c24: rcollimator, type = "HVCOLL"
 pc26: ecollimator
 pc29: ecollimator
-c37: rcollimator
+c37: rcollimator, type = "HVCOLL"
 
 ! ==============================================================================
 ! vacuum components
@@ -418,67 +429,67 @@ st29: marker !beam stopper
 
 
 
-!Old split line:  BRAM1_full   : LINE=(BRAM1a,BRAM1b)
+!Old split line:  BRAM1_full : LINE=(BRAM1a,BRAM1b)
 
 bram1_full: line = (bram1)
 
 
-!Old split line:  B11_full     : LINE=(B11a,B11b)
+!Old split line:  B11_full   : LINE=(B11a,B11b)
 
 b11_full: line = (b11)
 
 
-!Old split line:  B12_full     : LINE=(B12a,B12b)
+!Old split line:  B12_full   : LINE=(B12a,B12b)
 
 b12_full: line = (b12)
 
 
-!Old split line:  B13_full     : LINE=(B13a,B13b)
+!Old split line:  B13_full   : LINE=(B13a,B13b)
 
 b13_full: line = (b13)
 
 
-!Old split line:  B14_full     : LINE=(B14a,B14b)
+!Old split line:  B14_full   : LINE=(B14a,B14b)
 
 b14_full: line = (b14)
 
 
-!Old split line:  B15_full     : LINE=(B15a,B15b)
+!Old split line:  B15_full   : LINE=(B15a,B15b)
 
 b15_full: line = (b15)
 
 
-!Old split line:  B16_full     : LINE=(B16a,B16b)
+!Old split line:  B16_full   : LINE=(B16a,B16b)
 
 b16_full: line = (b16)
 
 
-!Old split line:  B21_full     : LINE=(B21a,B21b)
+!Old split line:  B21_full   : LINE=(B21a,B21b)
 
 b21_full: line = (b21)
 
 
-!Old split line:  B22_full     : LINE=(B22a,B22b)
+!Old split line:  B22_full   : LINE=(B22a,B22b)
 
 b22_full: line = (b22)
 
 
-!Old split line:  B23_full     : LINE=(B23a,B23b)
+!Old split line:  B23_full   : LINE=(B23a,B23b)
 
 b23_full: line = (b23)
 
 
-!Old split line:  B24_full     : LINE=(B24a,B24b)
+!Old split line:  B24_full   : LINE=(B24a,B24b)
 
 b24_full: line = (b24)
 
 
-!Old split line:  B25_full     : LINE=(B25a,B25b)
+!Old split line:  B25_full   : LINE=(B25a,B25b)
 
 b25_full: line = (b25)
 
 
-!Old split line:  B26_full     : LINE=(B26a,B26b)
+!Old split line:  B26_full   : LINE=(B26a,B26b)
 
 b26_full: line = (b26)
 
@@ -557,7 +568,7 @@ q38[L] = 2*q38[L]
          LD124,Q38_full,D125,ENDBSYA)
 
 ! ==============================================================================
-! ILC-ESA Test Beam
+! ESA
 ! ------------------------------------------------------------------------------
 
 ! T-474 chicane
@@ -605,8 +616,6 @@ bcx3d4: sbend, type = "3D37", hgap = gb7/2, l = lb7, angle = +ab7, e1 = +ab7, fi
 ! ------------------------------------------------------------------------------
 
 alwall: drift, l = 8*ft2m !ESA wall
-
-dsmdw = 0
 
 d126: drift, l = 0.683370252059 !wall to IV40 in ESA alcove
 d127: drift, l = 0.468630
@@ -737,6 +746,16 @@ bcx3d4_full: line = (bcx3d4)
          ESAE,D225,BMDE,ENDESA)
 
   ESA : LINE=(ESAu,ESAd)
+
+! ==============================================================================
+! Test BSYADUMP beamline for alcove detector/dump optics study
+! ------------------------------------------------------------------------------
+
+  BSYADUMP : LINE=(BEGBSYA,BRAM1_full,ROLL2,DAMQ10,Q10_full,LD105,Q11_full,D106,BEGB,B11_full,D107,B12_full,LD108,
+         B13_full,D109,B14_full,LD110,B15_full,D111,B16_full,LD112,Q19_full,LD113,Q20_full,LD114,B21_full,D115,B22_full,LD116,
+         B23_full,D117,B24_full,LD118,B25_full,D119,B26_full,MARC,ROLL3,ENDB,LD120,Q27_full,D121,SQ27p5_full,D122,Q28_full,LD123,
+         Q30_full,LD124,Q38_full,D125,ENDBSYA,BEGESA,ALWALL,NOTCHBEG,D126,IV40,D127,A3C1A,D127a,NOTCHEND,ALCOVEBEG,D128,A3C1B,
+         D129a,MADET,D129b,D130a,MADUMP)
 
 ! ------------------------------------------------------------------------------
 
