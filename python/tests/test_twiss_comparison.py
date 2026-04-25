@@ -47,7 +47,6 @@ def exec_mad8s():
     pytest.skip('unsupported platform')
   for model in MODELS:
     mad8s_commands = open(LCLS_LATTICE+'/mad/'+model.upper()+'_CI_Testing.mad8')
-    print(f'{mad8s_commands}')
     run([LCLS_LATTICE+'/mad8s'],cwd=LCLS_LATTICE+'/mad', stdin=mad8s_commands, capture_output=True, text=True)
 
 def get_end_params_pytao(lattice_file):
