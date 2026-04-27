@@ -56,7 +56,7 @@ def get_end_params_pytao(lattice_file):
   #make Twiss artifacts to assist with debugging
   s = tao.lat_list("*", "ele.s")
   bx = tao.lat_list("*", "ele.a.beta")
-  by = tao.lat_list("*", "ele.a.beta")
+  by = tao.lat_list("*", "ele.b.beta")
   artifact_file_name = Path(lattice_file).stem+'.twiss' 
   with open(artifact_file_name,'w') as f:
     for s_,bx_,by_ in zip(s,bx,by):
