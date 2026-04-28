@@ -1,0 +1,38 @@
+!+
+! Translated from MAD8 file: SC_BSYD2.xsif
+!-
+
+
+! *** OPTICS=AD_ACCEL-04MAY2026s ***
+
+! SC_BSYD2 (from LEI) path configuration
+
+setsp = 0 !deflector switch for HXR/SXR/BSYD spreader
+setcus = 0 !deflector switch for HXR/CUSXR
+setda = 0 !deflector switch for BSYD/DASEL
+sethxrss = 0 !ON/OFF switch for HXR self-seeding chicane
+setsxrss = 0 !ON/OFF switch for SXR self-seeding chicane
+setpepx = 0 !ON/OFF switch for PEPPEx chicane
+setcbxfel = 0 !ON/OFF switch for CBXFEL chicanes
+setxl2wig = 0 !ON/OFF switch for XLEAP-II wiggler
+setxl2ss = 0 !ON/OFF switch for XLEAP-II self-seeding chicane
+
+intgsx = 30.0 !kG
+intghx = 30.0 !kG
+
+call, file = LCLS2sc_master.bmad !calls other xsif files
+call, file = SETK2scLEI.bmad
+
+!=!  COMMENT !to generate SURVEY
+!=!  COMMENT !to generate SURVEY
+!=!    USE, SC_BSYD2 !start at LEI gun
+!=!    ! initial energy: E0LEI
+!=!    ! initial SURVEY: Xgun2, Ygun2, Zgun2, 0, 0, 0
+!=!  ENDCOMMENT
+
+ !COMMENT !to generate TWISS
+use, sc_bsydi2 !start at BEAM0LEI
+    ! initial energy: Ei
+    ! initial Twiss : BXiLEI, AXiLEI, BYiLEI, AYiLEI
+ !ENDCOMMENT
+
