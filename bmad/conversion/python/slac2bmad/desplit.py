@@ -24,6 +24,7 @@ def desplit_ele(line, double_length=True, verbose=True, exclude_strs=None):
     line = line.lower().strip() # Always work with lower case
 
     s = line.split(':')
+
     if len(s) ==1:
         return original_line
     ix = s[0].find('_full')
@@ -38,6 +39,7 @@ def desplit_ele(line, double_length=True, verbose=True, exclude_strs=None):
             if ele.startswith(exclude_str.lower()):
                 return original_line
 
+
     name = ele.split('_full')[0]
     eles = [e.strip() for e in (line.split('(')[1].split(')')[0]).split(',')]
 
@@ -46,6 +48,10 @@ def desplit_ele(line, double_length=True, verbose=True, exclude_strs=None):
         if verbose:
             print('Info: line only has one ele:', original_line)
         return original_line
+
+    # Check for special offset quad chicane QDG00
+    if name.lower() in ['qdg001', 'qdg003']:
+      return original_line
 
     # Make sure this is true
     if eles[0] != name or eles[-1] != name:
@@ -80,9 +86,14 @@ def desplit_ele(line, double_length=True, verbose=True, exclude_strs=None):
     lines.append(name+'_full: line = ('+name+')')
     if double_length:
         lines.append(name+'[L] = 2*'+name+'[L]')
+        if not insideeles:
+          lines.append(f'{name}_svy: null_ele, superimpose, ref={name}')
     for e in insideeles:
         lines.append(e+'[superimpose] = T')
         lines.append(e+'[ref] = '+name)
+    if not double_length and not insideeles:
+        suffix = eles[0][-1]
+        lines.append(f'{name}_svy: null_ele, superimpose, ref={name}, ref_origin=beginning, offset={name}{suffix}[l] !bend survey marker')
     lines.append('\n')
 
     output = '\n'.join(lines)
