@@ -2,6 +2,7 @@
 
 import matplotlib.pyplot as plt
 from pytao import Tao
+import numpy as np
 
 comments = ['!','*','@','$','#']
 
@@ -68,8 +69,12 @@ for model in MODELS:
             last = bmad_s
             break
   plt.figure(figsize=(10,3))
-  plt.plot(s_data, bx_data, label='res(β$_x$)')
-  plt.plot(s_data, by_data, label='res(β$_y$)')
+  s_data = np.array(s_data)
+  bx_data = np.array(bx_data)
+  by_data = np.array(by_data)
+  mask = s_data > 10.0
+  plt.plot(s_data[mask], bx_data[mask], label='res(β$_x$)')
+  plt.plot(s_data[mask], by_data[mask], label='res(β$_y$)')
   plt.ylabel('res(β$_{x,y}$) (%)')
   plt.legend()
   plt.xlabel('location (m)')
