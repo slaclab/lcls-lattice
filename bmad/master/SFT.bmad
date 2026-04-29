@@ -160,7 +160,7 @@ btm2: instrument !Burn-Through-Monitor behind PCPM2
 btmsft: instrument !Burn-Through-Monitor behind HXR safety dump
 
 rtdsl0: monitor, type = "RAPID TRNAD DIAG"
-rtdsl0_yagxray: monitor, type = "MONITORILE MON (RTD"
+rtdsl0_yagxray: monitor, type = "PROFILE MON (RTD"
 
 tp_hxtes0: instrument, type = "treaty flange" !treaty point for HXR XTES system
 tv1l0_vgc_1: instrument, type = "GATE VALVE"
@@ -180,11 +180,13 @@ mvv10: marker !placeholder for vac. valve in HXR XTES line
 !Old split line:  BXPM1_full : LINE=(BXPM11,BXPM12)
 
 bxpm1_full: line = (bxpm1)
+bxpm1_svy: null_ele, superimpose, ref=bxpm1, ref_origin=beginning, offset=bxpm11[l] !bend survey marker
 
 
 !Old split line:  BXPM2_full : LINE=(BXPM21,BXPM22)
 
 bxpm2_full: line = (bxpm2)
+bxpm2_svy: null_ele, superimpose, ref=bxpm2, ref_origin=beginning, offset=bxpm21[l] !bend survey marker
 
   SFTDUMP1: LINE=(BEGSFTH_1,DYDS,DS1S,DYD1,DSSA,DYD2,DSSB,DYD3,DSCS,PCPM1,BTM1,DXDCU1a,TV1L0_VGC_1,DXDCU1b,TP_HXTES0,
          DXDCU2a,TV1L0_VRM_1,TV1L0_GCC_1,TV1L0_GPI_1,DXDCU2b,XDCa,RTDSL0,XDCb,XDCc,RTDSL0_YAGXRAY,XDCd,DXDCD1,IM1L0_XTES_VGC_1,
@@ -265,7 +267,7 @@ btmsftb: instrument !Burn-Through-Monitor behind SXR safety dump
 
 tp_sxtes0: instrument, type = "INTERFACE FLANGE" !treaty point for SXR XTES system (SXTES0)
 rtdsk0: instrument, type = "RAPID TRNAD DIAG"
-rtdsk0_yagxrayb: instrument, type = "MONITORILE MON (RTD" !safety dump line X-ray screen (YAGXRAYB)
+rtdsk0_yagxrayb: instrument, type = "PROFILE MON (RTD" !safety dump line X-ray screen (YAGXRAYB)
 pc1k0_xtes: instrument, type = "PHOTON COLL" !PC1S
 em1k0_gmd: instrument, type = "GAS MONITOR DECT" !GMD1S
 im1k0_xtes: instrument, type = "IMAGER" !IM1S
@@ -287,6 +289,7 @@ mvv3s: marker !placeholder for vac. valve in SXR XTES line
 !Old split line:  BXPM1B_full : LINE=(BXPM1B1,BXPM1B2)
 
 bxpm1b_full: line = (bxpm1b)
+bxpm1b_svy: null_ele, superimpose, ref=bxpm1b, ref_origin=beginning, offset=bxpm1b1[l] !bend survey marker
 
   SFTDUMPB1: LINE=(BEGSFTS_1,DYDS,DS1S,DYD1,DSSA,DYD2,DSSB,DYD3,DSCSB,PCPM1B,BTM1B,DPCBTM1B,DXDCUB1,RTDSK0_VGC_1,
          DXDCUB2,TP_SXTES0,DXDCUB3,RTDSK0_VRM_1,RTDSK0_GCC_1,RTDSK0_GPI_1,DXDCUB4,XDCBa,XDCBb,XDCBc1,RTDSK0,XDCBc2,

@@ -329,22 +329,25 @@ lsxuh = lsxucr/2
 ksxu = 5.5 !5.0
 kqsx = (ksxu*2*pi/lusxu/sqrt(2)/gamu)^2 !m^-2
 
-!new:
-!new: !------- SXR Undulator -------
-!new: my_umasxh_k = 5.0
-!new: umasxh: wiggler,
-!new:         type = "VGHPU",
-!new:         L_period = 0.039,
-!new:         n_period = 87,
-!new:         b_max = my_umasxh_k * 2*pi*m_electron / (c_light * 0.039),
-!new:         L = 87*0.039,
-!new:         ds_step = 0.039*10
-!new:
-!new: umasxh[L] = umasxh[L]/2 ! Will be doubled in desplitting process.
-!new: !---------------------------------
+
+!------- SXR Undulator -------
+!new my_umasxh_k = 5.0
+!new umasxh: wiggler, 
+!new         type = "VGHPU",
+!new         L_period = 0.039, 
+!new         n_period = 87, 
+!new         b_max = my_umasxh_k * 2*pi*m_electron / (c_light * 0.039), 
+!new         L = 87*0.039, 
+!new         ds_step = 0.039*10
+!new 
+!new umasxh[L] = umasxh[L]/2 ! Will be doubled in desplitting process. 
+!---------------------------------
 umasxh: taylor, type = "VGHPU39", l = lsxuh, tt11 = 1.0, tt12 = lsxuh, tt21 = 0, tt22 = 1.0,
           tt33 = cos(lsxuh*sqrt(kqsx)), tt34 = sin(lsxuh*sqrt(kqsx))/sqrt(kqsx), tt43 = -sin(lsxuh*sqrt(kqsx))*sqrt(kqsx),
-          tt44 = cos(lsxuh*sqrt(kqsx)), tt55 = 1.0, tt66 = 1.0
+          tt44 = cos(lsxuh*sqrt(kqsx)), tt55 = 1.0, tt66 = 1.0, mat_und_k = ksxu, mat_und_l = lusxu
+!old: umasxh: taylor, type = "VGHPU39", l = lsxuh, tt11 = 1.0, tt12 = lsxuh, tt21 = 0, tt22 = 1.0,
+!old           tt33 = cos(lsxuh*sqrt(kqsx)), tt34 = sin(lsxuh*sqrt(kqsx))/sqrt(kqsx), tt43 = -sin(lsxuh*sqrt(kqsx))*sqrt(kqsx),
+!old           tt44 = cos(lsxuh*sqrt(kqsx)), tt55 = 1.0, tt66 = 1.0
 
 ! ------------------------------------------------------------------------------
 ! PPM phase shifter
@@ -366,23 +369,27 @@ pipssx = 1800 !3814                         !T^2mm^3 (180-3814)
 kpssx = 1.e-9*c_light/mc2*sqrt(2.e-9*pipssx/lupssx)
 kqpssx = (kpssx*2*pi/lupssx/sqrt(2)/gamu)^2 !m^-2
 
-!new:
-!new: !------- SXR Phase Shifter -------
-!new: !
-!new: ! B_max = 2pi/lambda * sqrt(2*PHASE_INTEGRAL / L)
-!new: !
-!new: pssxh_phase_integral = 3814e-9  !T^2 m^3, maximum, from: T^2mm^3 (180-3814)
-!new: pssxh_L        = 0.0825   ! m
-!new: pssxh_L_period = 0.075 ! m
-!new: pssxh: wiggler, type = "phase shifter",
-!new:     L = pssxh_L,
-!new:     b_max = 2*pi / pssxh_L_period * sqrt(2 * pssxh_phase_integral / pssxh_L  ),
-!new:     n_period = 1
-!new: pssxh[L] = pssxh[L]/2 ! Will be doubled in desplitting process.
-!new: !---------------------------------
+
+!------- SXR Phase Shifter -------
+!
+! B_max = 2pi/lambda * sqrt(2*PHASE_INTEGRAL / L)
+! 
+!new pssxh_phase_integral = 3814e-9  !T^2 m^3, maximum, from: T^2mm^3 (180-3814)
+!new pssxh_L        = 0.0825   ! m 
+!new pssxh_L_period = 0.075 ! m 
+!new pssxh: wiggler, type = "phase shifter", 
+!new     L = pssxh_L,
+!new     b_max = 2*pi / pssxh_L_period * sqrt(2 * pssxh_phase_integral / pssxh_L  ),
+!new     n_period = 1
+!new pssxh[L] = pssxh[L]/2 ! Will be doubled in desplitting process. 
 pssxh: taylor, type = "PS75", l = lpssxh, tt11 = 1.0, tt12 = lpssxh, tt21 = 0, tt22 = 1.0,
           tt33 = cos(lpssxh*sqrt(kqpssx)), tt34 = sin(lpssxh*sqrt(kqpssx))/sqrt(kqpssx),
-          tt43 = -sin(lpssxh*sqrt(kqpssx))*sqrt(kqpssx), tt44 = cos(lpssxh*sqrt(kqpssx)), tt55 = 1.0, tt66 = 1.0
+          tt43 = -sin(lpssxh*sqrt(kqpssx))*sqrt(kqpssx), tt44 = cos(lpssxh*sqrt(kqpssx)), tt55 = 1.0, tt66 = 1.0,
+          mat_und_k = kpssx, mat_und_l = lupssx
+!---------------------------------
+!old: pssxh: taylor, type = "PS75", l = lpssxh, tt11 = 1.0, tt12 = lpssxh, tt21 = 0, tt22 = 1.0,
+!old           tt33 = cos(lpssxh*sqrt(kqpssx)), tt34 = sin(lpssxh*sqrt(kqpssx))/sqrt(kqpssx),
+!old           tt43 = -sin(lpssxh*sqrt(kqpssx))*sqrt(kqpssx), tt44 = cos(lpssxh*sqrt(kqpssx)), tt55 = 1.0, tt66 = 1.0
 
 ! ------------------------------------------------------------------------------
 ! FODO cell drifts
@@ -449,9 +456,17 @@ lsxuh_ = lsxucr_/2
 ksxu_ = 4.5 !8.3
 kqsx_ = (ksxu_*2*pi/lusxu_/sqrt(2)/gamu)^2 !m^-2
 
+
+!------- HXR Undulator -------
 umasxh_: taylor, type = "VGHPU56", l = lsxuh_, tt11 = 1.0, tt12 = lsxuh_, tt21 = 0, tt22 = 1.0,
           tt33 = cos(lsxuh_*sqrt(kqsx_)), tt34 = sin(lsxuh_*sqrt(kqsx_))/sqrt(kqsx_),
-          tt43 = -sin(lsxuh_*sqrt(kqsx_))*sqrt(kqsx_), tt44 = cos(lsxuh_*sqrt(kqsx_)), tt55 = 1.0, tt66 = 1.0
+          tt43 = -sin(lsxuh_*sqrt(kqsx_))*sqrt(kqsx_), tt44 = cos(lsxuh_*sqrt(kqsx_)), tt55 = 1.0, tt66 = 1.0, 
+          mat_und_k = ksxu_, mat_und_l = lusxu_
+
+!---------------------------------
+!old: umasxh_: taylor, type = "VGHPU56", l = lsxuh_, tt11 = 1.0, tt12 = lsxuh_, tt21 = 0, tt22 = 1.0,
+!old           tt33 = cos(lsxuh_*sqrt(kqsx_)), tt34 = sin(lsxuh_*sqrt(kqsx_))/sqrt(kqsx_),
+!old           tt43 = -sin(lsxuh_*sqrt(kqsx_))*sqrt(kqsx_), tt44 = cos(lsxuh_*sqrt(kqsx_)), tt55 = 1.0, tt66 = 1.0
 
 ! ------------------------------------------------------------------------------
 ! PPM phase shifter
@@ -473,9 +488,19 @@ pipssx_ = 1800 !5700                           !T^2mm^3
 kpssx_ = 1.e-9*c_light/mc2*sqrt(2.e-9*pipssx_/lupssx_)
 kqpssx_ = (kpssx_*2*pi/lupssx_/sqrt(2)/gamu)^2 !m^-2
 
+
+!------- SXR Phase Shifter -------
+!
+! B_max = 2pi/lambda * sqrt(2*PHASE_INTEGRAL / L)
+! 
 pssxh_: taylor, type = "PS97.5", l = lpssxh_, tt11 = 1.0, tt12 = lpssxh_, tt21 = 0, tt22 = 1.0,
           tt33 = cos(lpssxh_*sqrt(kqpssx_)), tt34 = sin(lpssxh_*sqrt(kqpssx_))/sqrt(kqpssx_),
-          tt43 = -sin(lpssxh_*sqrt(kqpssx_))*sqrt(kqpssx_), tt44 = cos(lpssxh_*sqrt(kqpssx_)), tt55 = 1.0, tt66 = 1.0
+          tt43 = -sin(lpssxh_*sqrt(kqpssx_))*sqrt(kqpssx_), tt44 = cos(lpssxh_*sqrt(kqpssx_)), tt55 = 1.0, tt66 = 1.0,
+          mat_und_k = kpssx_, mat_und_l = lupssx_
+!---------------------------------
+!old: pssxh_: taylor, type = "PS97.5", l = lpssxh_, tt11 = 1.0, tt12 = lpssxh_, tt21 = 0, tt22 = 1.0,
+!old           tt33 = cos(lpssxh_*sqrt(kqpssx_)), tt34 = sin(lpssxh_*sqrt(kqpssx_))/sqrt(kqpssx_),
+!old           tt43 = -sin(lpssxh_*sqrt(kqpssx_))*sqrt(kqpssx_), tt44 = cos(lpssxh_*sqrt(kqpssx_)), tt55 = 1.0, tt66 = 1.0
 
 ! ------------------------------------------------------------------------------
 ! FODO cell drifts
@@ -932,21 +957,25 @@ sxrssend: marker
 !Old split line:  BCXSS1_full : LINE=(BCXSS1a,BCXSS1b)
 
 bcxss1_full: line = (bcxss1)
+bcxss1_svy: null_ele, superimpose, ref=bcxss1, ref_origin=beginning, offset=bcxss1a[l] !bend survey marker
 
 
 !Old split line:  BCXSS2_full : LINE=(BCXSS2a,BCXSS2b)
 
 bcxss2_full: line = (bcxss2)
+bcxss2_svy: null_ele, superimpose, ref=bcxss2, ref_origin=beginning, offset=bcxss2a[l] !bend survey marker
 
 
 !Old split line:  BCXSS3_full : LINE=(BCXSS3a,BCXSS3b)
 
 bcxss3_full: line = (bcxss3)
+bcxss3_svy: null_ele, superimpose, ref=bcxss3, ref_origin=beginning, offset=bcxss3a[l] !bend survey marker
 
 
 !Old split line:  BCXSS4_full : LINE=(BCXSS4a,BCXSS4b)
 
 bcxss4_full: line = (bcxss4)
+bcxss4_svy: null_ele, superimpose, ref=bcxss4, ref_origin=beginning, offset=bcxss4a[l] !bend survey marker
 
   SCHICANE : LINE=(SXRSSBEG,DMONOS,BCXSS1_full,D1Sa,GSXS1,D1Sb,MSXS1,D1Sc,BCXSS2_full,DCHS,CNTRS,DCHS,BCXSS3_full,D1Sd,
          SLSXS1,D1Se,MSXS2,D1Sf,MSXS3,D1Sg,BCXSS4_full,DMONOS,SXRSSEND)
@@ -1777,12 +1806,14 @@ mtcxb[ref] = tcx01b
 
 que1b_full: line = (que1b)
 que1b[L] = 2*que1b[L]
+que1b_svy: null_ele, superimpose, ref=que1b
 
 
 !Old split line:  QUE2B_full : LINE=(QUE2B,QUE2B)
 
 que2b_full: line = (que2b)
 que2b[L] = 2*que2b[L]
+que2b_svy: null_ele, superimpose, ref=que2b
 
   UNDEXITb : LINE=(BEGDMPS_1,UEbegB,DUE1d,VV36B,DUE1b,MIMUNDOB,DUE1c,DUE2a,YCUE1B,DUE2b,PH31B,DUE2d,PH32B,DUE2d,PH33B,
          DUE2d,PH34B,DUE2e,XCUE2B,DUE2cb,QUE1B_full,DUE3ab,BPMUE1B,DUE3bb,TRUE1B,DUE3c,DBKXDMPS,DUE3c,DUE3d,PCTCXB,DPCBVVB,
@@ -1821,24 +1852,27 @@ lhxuh = lhxucr/2
 khxu = 2.0
 kqhx = (khxu*2*pi/luhxu/sqrt(2)/gamu)^2 !m^-2
 
-!new:
-!new: !------- HXR Undulator -------
-!new: my_umahxh_k = 2.0
-!new: umahxh: wiggler,
-!new:         type = "HGVPU",
-!new:         L_period = 0.026,
-!new:         n_period = 129,
-!new:         b_max = my_umahxh_k * 2*pi*m_electron / (c_light * 0.026),
-!new:         L = 129*0.026,
-!new:         tilt=pi/2,
-!new:         ds_step = 0.026*10
-!new:
-!new: umahxh[L] = umahxh[L]/2 ! Will be doubled in desplitting process.
-!new: !---------------------------------
-!new:
+
+!------- HXR Undulator -------
+!new my_umahxh_k = 2.0
+!new umahxh: wiggler, 
+!new         type = "HGVPU",
+!new         L_period = 0.026, 
+!new         n_period = 129, 
+!new         b_max = my_umahxh_k * 2*pi*m_electron / (c_light * 0.026), 
+!new         L = 129*0.026, 
+!new         tilt=pi/2,
+!new         ds_step = 0.026*10
+!new 
+!new umahxh[L] = umahxh[L]/2 ! Will be doubled in desplitting process. 
 umahxh: taylor, type = "HGVPU26", l = lhxuh, tt11 = cos(lhxuh*sqrt(kqhx)), tt12 = sin(lhxuh*sqrt(kqhx))/sqrt(kqhx),
           tt21 = -sin(lhxuh*sqrt(kqhx))*sqrt(kqhx), tt22 = cos(lhxuh*sqrt(kqhx)), tt33 = 1.0, tt34 = lhxuh, tt43 = 0, tt44 = 1.0,
-          tt55 = 1.0, tt66 = 1.0
+          tt55 = 1.0, tt66 = 1.0, mat_und_k = khxu, mat_und_l = luhxu
+
+!---------------------------------
+!old: umahxh: taylor, type = "HGVPU26", l = lhxuh, tt11 = cos(lhxuh*sqrt(kqhx)), tt12 = sin(lhxuh*sqrt(kqhx))/sqrt(kqhx),
+!old           tt21 = -sin(lhxuh*sqrt(kqhx))*sqrt(kqhx), tt22 = cos(lhxuh*sqrt(kqhx)), tt33 = 1.0, tt34 = lhxuh, tt43 = 0, tt44 = 1.0,
+!old           tt55 = 1.0, tt66 = 1.0
 
 ! ------------------------------------------------------------------------------
 ! PPM phase shifter
@@ -1860,23 +1894,27 @@ pipshx = 490                                !T^2mm^3 (80-490)
 kpshx = 1.e-9*c_light/mc2*sqrt(2.e-9*pipshx/lupshx)
 kqpshx = (kpshx*2*pi/lupshx/sqrt(2)/gamu)^2 !m^-2
 
-!new:
-!new: !------- HXR Phase Shifter -------
-!new: !
-!new: ! B_max = 2pi/lambda * sqrt(2*PHASE_INTEGRAL / L)
-!new: !
-!new: pshxh_phase_integral = 490e-9  !T^2 m^3, maximum, from: T^2mm^3 (80-490)
-!new: pshxh_L        = 0.0495 ! m
-!new: pshxh_L_period = 0.045 ! m
-!new: pshxh: wiggler, type = "phase shifter",
-!new:     L = pshxh_L,
-!new:     b_max = 2*pi / pshxh_L_period * sqrt(2 * pshxh_phase_integral / pshxh_L  ),
-!new:     n_period = 1
-!new: pshxh[L] = pshxh[L]/2 ! Will be doubled in desplitting process.
-!new: !---------------------------------
+
+!------- HXR Phase Shifter -------
+!
+! B_max = 2pi/lambda * sqrt(2*PHASE_INTEGRAL / L)
+! 
+!new pshxh_phase_integral = 490e-9  !T^2 m^3, maximum, from: T^2mm^3 (80-490)
+!new pshxh_L        = 0.0495 ! m 
+!new pshxh_L_period = 0.045 ! m 
+!new pshxh: wiggler, type = "phase shifter", 
+!new     L = pshxh_L,
+!new     b_max = 2*pi / pshxh_L_period * sqrt(2 * pshxh_phase_integral / pshxh_L  ),
+!new     n_period = 1
+!new pshxh[L] = pshxh[L]/2 ! Will be doubled in desplitting process. 
 pshxh: taylor, type = "PS45", l = lpshxh, tt11 = 1.0, tt12 = lpshxh, tt21 = 0, tt22 = 1.0,
           tt33 = cos(lpshxh*sqrt(kqpshx)), tt34 = sin(lpshxh*sqrt(kqpshx))/sqrt(kqpshx),
-          tt43 = -sin(lpshxh*sqrt(kqpshx))*sqrt(kqpshx), tt44 = cos(lpshxh*sqrt(kqpshx)), tt55 = 1.0, tt66 = 1.0
+          tt43 = -sin(lpshxh*sqrt(kqpshx))*sqrt(kqpshx), tt44 = cos(lpshxh*sqrt(kqpshx)), tt55 = 1.0, tt66 = 1.0,
+          mat_und_k = kpshx, mat_und_l = lupshx
+!---------------------------------
+!old: pshxh: taylor, type = "PS45", l = lpshxh, tt11 = 1.0, tt12 = lpshxh, tt21 = 0, tt22 = 1.0,
+!old           tt33 = cos(lpshxh*sqrt(kqpshx)), tt34 = sin(lpshxh*sqrt(kqpshx))/sqrt(kqpshx),
+!old           tt43 = -sin(lpshxh*sqrt(kqpshx))*sqrt(kqpshx), tt44 = cos(lpshxh*sqrt(kqpshx)), tt55 = 1.0, tt66 = 1.0
 
 ! ------------------------------------------------------------------------------
 ! FODO cell drifts
@@ -2365,21 +2403,25 @@ hxrssend: marker
 !Old split line:  BCXHS1_full : LINE=(BCXHS1a,BCXHS1b)
 
 bcxhs1_full: line = (bcxhs1)
+bcxhs1_svy: null_ele, superimpose, ref=bcxhs1, ref_origin=beginning, offset=bcxhs1a[l] !bend survey marker
 
 
 !Old split line:  BCXHS2_full : LINE=(BCXHS2a,BCXHS2b)
 
 bcxhs2_full: line = (bcxhs2)
+bcxhs2_svy: null_ele, superimpose, ref=bcxhs2, ref_origin=beginning, offset=bcxhs2a[l] !bend survey marker
 
 
 !Old split line:  BCXHS3_full : LINE=(BCXHS3a,BCXHS3b)
 
 bcxhs3_full: line = (bcxhs3)
+bcxhs3_svy: null_ele, superimpose, ref=bcxhs3, ref_origin=beginning, offset=bcxhs3a[l] !bend survey marker
 
 
 !Old split line:  BCXHS4_full : LINE=(BCXHS4a,BCXHS4b)
 
 bcxhs4_full: line = (bcxhs4)
+bcxhs4_svy: null_ele, superimpose, ref=bcxhs4, ref_origin=beginning, offset=bcxhs4a[l] !bend survey marker
 
   HCHICANE : LINE=(HXRSSBEG,DMONO,BCXHS1_full,D1,BCXHS2_full,DCH,DIAMOND,DCH,BCXHS3_full,D1,BCXHS4_full,DMONO,HXRSSEND)
 
@@ -2502,42 +2544,50 @@ hxrcb2end: marker
 !Old split line:  BCXCBX11_full : LINE=(BCXCBX11a,BCXCBX11b)
 
 bcxcbx11_full: line = (bcxcbx11)
+bcxcbx11_svy: null_ele, superimpose, ref=bcxcbx11, ref_origin=beginning, offset=bcxcbx11a[l] !bend survey marker
 
 
 !Old split line:  BCXCBX12_full : LINE=(BCXCBX12a,BCXCBX12b)
 
 bcxcbx12_full: line = (bcxcbx12)
+bcxcbx12_svy: null_ele, superimpose, ref=bcxcbx12, ref_origin=beginning, offset=bcxcbx12a[l] !bend survey marker
 
 
 !Old split line:  BCXCBX13_full : LINE=(BCXCBX13a,BCXCBX13b)
 
 bcxcbx13_full: line = (bcxcbx13)
+bcxcbx13_svy: null_ele, superimpose, ref=bcxcbx13, ref_origin=beginning, offset=bcxcbx13a[l] !bend survey marker
 
 
 !Old split line:  BCXCBX14_full : LINE=(BCXCBX14a,BCXCBX14b)
 
 bcxcbx14_full: line = (bcxcbx14)
+bcxcbx14_svy: null_ele, superimpose, ref=bcxcbx14, ref_origin=beginning, offset=bcxcbx14a[l] !bend survey marker
 
 
 
 !Old split line:  BCXCBX21_full : LINE=(BCXCBX21a,BCXCBX21b)
 
 bcxcbx21_full: line = (bcxcbx21)
+bcxcbx21_svy: null_ele, superimpose, ref=bcxcbx21, ref_origin=beginning, offset=bcxcbx21a[l] !bend survey marker
 
 
 !Old split line:  BCXCBX22_full : LINE=(BCXCBX22a,BCXCBX22b)
 
 bcxcbx22_full: line = (bcxcbx22)
+bcxcbx22_svy: null_ele, superimpose, ref=bcxcbx22, ref_origin=beginning, offset=bcxcbx22a[l] !bend survey marker
 
 
 !Old split line:  BCXCBX23_full : LINE=(BCXCBX23a,BCXCBX23b)
 
 bcxcbx23_full: line = (bcxcbx23)
+bcxcbx23_svy: null_ele, superimpose, ref=bcxcbx23, ref_origin=beginning, offset=bcxcbx23a[l] !bend survey marker
 
 
 !Old split line:  BCXCBX24_full : LINE=(BCXCBX24a,BCXCBX24b)
 
 bcxcbx24_full: line = (bcxcbx24)
+bcxcbx24_svy: null_ele, superimpose, ref=bcxcbx24, ref_origin=beginning, offset=bcxcbx24a[l] !bend survey marker
 
   CBCHICANE1 : LINE=(HXRCB1BEG,D0CB1,BCXCBX11_full,D1CB1a,MCBX4,D1CB1b,YAGCBX42,D1CB1c,BCXCBX12_full,DCHCB1,CENTER1,
          DCHCB1,BCXCBX13_full,D2CBa1,PRCBX40,D2CBa2,BODCBX40,D2CBb,BCXCBX14_full,D3CB1,HXRCB1END)
@@ -3413,12 +3463,14 @@ vv37: marker !vac. valve in dumpline
 
 tcx01_full: line = (tcx01)
 tcx01[L] = 2*tcx01[L]
+tcx01_svy: null_ele, superimpose, ref=tcx01
 
 
 !Old split line:  TCX02_full : LINE=(TCX02,TCX02)
 
 tcx02_full: line = (tcx02)
 tcx02[L] = 2*tcx02[L]
+tcx02_svy: null_ele, superimpose, ref=tcx02
 
 
 
@@ -3426,12 +3478,14 @@ tcx02[L] = 2*tcx02[L]
 
 que1_full: line = (que1)
 que1[L] = 2*que1[L]
+que1_svy: null_ele, superimpose, ref=que1
 
 
 !Old split line:  QUE2_full : LINE=(QUE2,QUE2)
 
 que2_full: line = (que2)
 que2[L] = 2*que2[L]
+que2_svy: null_ele, superimpose, ref=que2
 
   UNDEXIT : LINE=(BEGDMPH_1,UEbeg,DUE1d,VV36,DUE1b,MIMUNDO,DUE1c,DUE2a,YCUE1,DUE2b,PH31,DUE2d,PH32,DUE2d,PH33,DUE2d,
          PH34,DUE2e,XCUE2,DUE2c,QUE1_full,DUE3a,BPMUE1,DUE3b,TRUE1,DUE3c,DBKXDMPH,DUE3c,PCTCX,DPCVV,VVTCX,DVVTCX,MTCX01,

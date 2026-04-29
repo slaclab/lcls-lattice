@@ -2,6 +2,7 @@
 
 import matplotlib.pyplot as plt
 from pytao import Tao
+import numpy as np
 
 comments = ['!','*','@','$','#']
 
@@ -18,10 +19,23 @@ MODELS = [
 'sc_sxr',
 'sc_hxr',
 'sc_dasel',
+'sc_diag02',
+'sc_diagis',
 'cu_sxr',
 'cu_hxr',
 'cu_spec',
 'sc_diag0',
+]
+
+XMINS = [
+24.345,  #OTR0H04
+24.345,
+24.345,
+24.345,
+0,
+0,
+0,
+24.345,
 ]
 
 def get_twiss_pytao(model):
@@ -44,7 +58,7 @@ def get_twiss_mad8(model):
   twiss['s']     = [float(x[1]) for x in mad8_data]
   return twiss
 
-for model in MODELS:
+for model,xmin in zip(MODELS,XMINS):
   with open('residual_'+model+'.dat','w') as f:
     s_data = []
     bx_data = []
@@ -55,8 +69,9 @@ for model in MODELS:
     twiss_mad8 = get_twiss_mad8(model)
 
     last = -99.0
+    low_energy_cutoff = xmin #m
     for bmad_s,bmad_bx,bmad_by in zip(twiss_bmad['s'], twiss_bmad['betax'], twiss_bmad['betay']):
-      if bmad_s > last + 1e-6:
+      if bmad_s > last + 1e-6 and bmad_s > low_energy_cutoff:
         for mad_s,mad_bx,mad_by in zip(twiss_mad8['s'], twiss_mad8['betax'], twiss_mad8['betay']):
           if( abs(bmad_s-mad_s) < 1e-5 ):
             bx_res = (bmad_bx-mad_bx)/(bmad_bx+mad_bx)
@@ -68,8 +83,12 @@ for model in MODELS:
             last = bmad_s
             break
   plt.figure(figsize=(10,3))
-  plt.plot(s_data, bx_data, label='res(β$_x$)')
-  plt.plot(s_data, by_data, label='res(β$_y$)')
+  s_data = np.array(s_data)
+  bx_data = np.array(bx_data)
+  by_data = np.array(by_data)
+  mask = s_data > 10.0
+  plt.plot(s_data[mask], bx_data[mask], label='res(β$_x$)')
+  plt.plot(s_data[mask], by_data[mask], label='res(β$_y$)')
   plt.ylabel('res(β$_{x,y}$) (%)')
   plt.legend()
   plt.xlabel('location (m)')

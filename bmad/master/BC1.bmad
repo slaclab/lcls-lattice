@@ -149,7 +149,7 @@ bcx14: sbend, type = "1.69D6.28T", hgap = gb1/2, l = lb1, angle = +ab1, e1 = +ab
 
 ! L1 to BC1 chicane
 
-kq1c01 = 0.96880706265 ! 0.970046656108
+kq1c01 = 0.964583578003
 
 q1c01: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kq1c01
 
@@ -174,18 +174,18 @@ qdcoll1: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = -kqcoll1
 
 ! COL1 collimation section
 
-kqc101 = -0.44771216156  !-0.497282980978
-kqc102 = 1.737871893722 ! 2.037694677299
-kqc103 = 0.0            ! 0.0
-kqc104 = 0.071468491693 !-0.793150218858
-kqc105 = -2.551700538956 !-1.848944557621
+kqc101 = -0.253291436015
+kqc102 = 2.152128604228
+kqc103 = 0.0
+kqc104 = -1.217269485938
+kqc105 = -1.49025394442
 kqc106 = kqcoll1
 kqc107 = -kqcoll1
 kqc108 = kqcoll1
 kqc109 = -kqcoll1
-kqc110 = 1.419505185698 ! 1.429340974179 ! KQColl1
-kqc111 = -1.785790060899 !-1.782756875499
-kqc112 = 1.272002041537 ! 1.259818389487
+kqc110 = 1.403663991222
+kqc111 = -1.816858146673
+kqc112 = 1.311679256345
 
 qc101: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc101
 qc102: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc102
@@ -392,21 +392,25 @@ bc1bcend: marker
 !Old split line:  BCX11_full : LINE=(BCX11a,BCX11b)
 
 bcx11_full: line = (bcx11)
+bcx11_svy: null_ele, superimpose, ref=bcx11, ref_origin=beginning, offset=bcx11a[l] !bend survey marker
 
 
 !Old split line:  BCX12_full : LINE=(BCX12a,BCX12b)
 
 bcx12_full: line = (bcx12)
+bcx12_svy: null_ele, superimpose, ref=bcx12, ref_origin=beginning, offset=bcx12a[l] !bend survey marker
 
 
 !Old split line:  BCX13_full : LINE=(BCX13a,BCX13b)
 
 bcx13_full: line = (bcx13)
+bcx13_svy: null_ele, superimpose, ref=bcx13, ref_origin=beginning, offset=bcx13a[l] !bend survey marker
 
 
 !Old split line:  BCX14_full : LINE=(BCX14a,BCX14b)
 
 bcx14_full: line = (bcx14)
+bcx14_svy: null_ele, superimpose, ref=bcx14, ref_origin=beginning, offset=bcx14a[l] !bend survey marker
 
 
 
@@ -422,18 +426,21 @@ bpm1c01[ref] = q1c01
 
 cq11b_full: line = (cq11b)
 cq11b[L] = 2*cq11b[L]
+cq11b_svy: null_ele, superimpose, ref=cq11b
 
 
 !Old split line:  SQ13B_full : LINE=(SQ13B,SQ13B)
 
 sq13b_full: line = (sq13b)
 sq13b[L] = 2*sq13b[L]
+sq13b_svy: null_ele, superimpose, ref=sq13b
 
 
 !Old split line:  CQ12B_full : LINE=(CQ12B,CQ12B)
 
 cq12b_full: line = (cq12b)
 cq12b[L] = 2*cq12b[L]
+cq12b_svy: null_ele, superimpose, ref=cq12b
 
 
 !Old split line:  QC101_full : LINE=(QC101,BPMC101,QC101)

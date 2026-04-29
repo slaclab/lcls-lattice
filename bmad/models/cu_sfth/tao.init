@@ -1,0 +1,536 @@
+&tao_start
+  n_universes = 1
+  plot_file   ='$LCLS_LATTICE/bmad/tao/tao_plot.init '
+  startup_file='$LCLS_LATTICE/bmad/tao/tao.startup'
+/
+
+
+
+
+!--------------------------------------------------------
+&tao_design_lattice
+  !unique_name_suffix="*::_##?"
+  design_lattice(1)%file= 'cu_sfth.lat.bmad'
+!  combine_consecutive_elements_of_like_name = T
+/
+
+!------------------------------------------------------------------------
+&tao_params
+  !global%plot_on = T
+  global%track_type = 'single'
+  global%beam_timer_on = T
+  global%random_engine = 'pseudo' ! or: 'quasi'
+  global%de_lm_step_ratio = 1500
+  global%optimizer = 'lmdif'
+  global%n_opti_cycles = 100
+  global%var_out_file = ''
+  !---Bmad---
+  bmad_com%radiation_damping_on = F
+  bmad_com%radiation_fluctuations_on = T
+/
+
+
+&tao_beam_init
+beam_init%random_engine = 'quasi'
+ix_universe = 1
+beam_saved_at =  "MARKER::*"
+track_start = 'OTR2'
+!track_end = 'DBMARK82'
+!track_end = 'BC1CEND'
+beam_init%position_file = '$LCLS_LATTICE/bmad/beams/OTR2_250pC_rescaleto540um_solGTF1M_flat_scattered_20keV_100k.beam0'
+!beam_init%position_file = 'beam_1.hdf5'
+beam_init%center(1) = 0.0
+beam_init%center(2) = 0.0
+beam_init%center(3) = 0.0
+beam_init%center(4) = 0.0
+beam_init%center(5) = 0.0
+beam_init%center(6) = 0.0
+
+/
+
+
+
+
+
+&tao_d2_data
+        d2_data%name = 'floor'
+        universe = 1
+        n_d1_data = 1
+/
+
+&tao_d1_data
+        ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'end'
+        datum( 1) =  'floor.x'     '' '' 'OTR2'   'target' 0     1e1 
+        datum( 2) =  'floor.y'     '' '' 'OTR2'   'target' 0     1e1 
+        datum( 3) =  'floor.z'     '' '' 'OTR2'   'target' 0     1e1 
+        datum( 4) =  'floor.theta'     '' '' 'OTR2'   'target' 0     1e1 
+        datum( 5) =  's_position'  '' '' 'OTR2'   'target' 0     1e1 
+/
+
+
+
+&tao_d2_data
+        d2_data%name = 'YAG03'
+        universe = 1
+        n_d1_data = 1
+/
+
+&tao_d1_data
+        ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'begtwiss'
+        datum( 1) =  'beta.a'     '' '' 'YAG03'   'target' 17.2     1e1   ! Taken 95 percent Twiss from impact/models/cu_inj/v0 at YAG03
+        datum( 2) =  'alpha.a'    '' '' 'YAG03'   'target' -4.8     1e2
+        datum( 3) =  'beta.b'     '' '' 'YAG03'   'target' 17.2       1e1
+        datum( 4) =  'alpha.b'    '' '' 'YAG03'   'target' -4.8      1e2
+        datum( 5) =  'eta.x'      '' '' 'YAG03'   'target' 0      1e1
+        datum( 6) =  'etap.x'     '' '' 'YAG03'   'target' 0      1e2
+/  
+
+
+
+&tao_d2_data
+        d2_data%name = 'OTR2'
+        universe = 1
+        n_d1_data = 1
+/
+
+&tao_d1_data
+        ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'begtwiss'
+        datum( 1) =  'beta.a'     '' '' 'OTR2'   'target'  1.11011741290   1e1
+        datum( 2) =  'alpha.a'    '' '' 'OTR2'   'target'  -0.0687705252746 1e2
+        datum( 3) =  'beta.b'     '' '' 'OTR2'   'target'  1.11011741095     1e1
+        datum( 4) =  'alpha.b'    '' '' 'OTR2'   'target'  -0.0687705247416 1e2
+        datum( 5) =  'eta.x'      '' '' 'OTR2'   'target'   0  1e1
+        datum( 6) =  'etap.x'     '' '' 'OTR2'   'target'   0   1e2
+/ 
+
+&tao_d2_data
+        d2_data%name = 'LI22'
+        universe = 1
+        n_d1_data = 1
+/
+&tao_d1_data
+        ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'begtwiss'
+        datum( 1) =  'beta.a'     '' '' 'LI22BEG'   'target' 1.721438409E+01   1e1
+        datum( 2) =  'alpha.a'    '' '' 'LI22BEG'   'target' -6.973054777E-01  1e2
+        datum( 3) =  'beta.b'     '' '' 'LI22BEG'   'target' 3.514977530E+01      1e1
+        datum( 4) =  'alpha.b'    '' '' 'LI22BEG'   'target'  1.459698115E+00  1e2
+        datum( 5) =  'eta.x'      '' '' 'LI22BEG'   'target'   0  1e1
+        datum( 6) =  'etap.x'     '' '' 'LI22BEG'   'target'   0   1e2
+/        
+
+
+
+&tao_d2_data
+        d2_data%name = 'BC1'
+        universe = 1
+        n_d1_data = 4
+/
+&tao_d1_data
+        ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'begtwiss'
+        datum( 1) =  'beta.a'     '' '' 'BC1CBEG'   'target'  2.464682280E+01   1e1
+        datum( 2) =  'alpha.a'    '' '' 'BC1CBEG'   'target' 3.641936311E+00 1e2
+        datum( 3) =  'beta.b'     '' '' 'BC1CBEG'   'target' 3.426118191E+00      1e1
+        datum( 4) =  'alpha.b'    '' '' 'BC1CBEG'   'target' 1.465118239E+00  1e2
+        datum( 5) =  'eta.x'      '' '' 'BC1CBEG'   'target'   0  1e1
+        datum( 6) =  'etap.x'     '' '' 'BC1CBEG'   'target'   0   1e2
+/
+&tao_d1_data
+        ix_d1_data = 2
+        default_weight = 1
+        d1_data%name = 'energy'
+        datum( 1) =  'e_tot_ref'           '' '' 'BC1CBEG'   'target'  0   
+        datum( 2) =  'e_tot_ref'           '' '' 'BC1CEND'   'target'  0   
+        datum( 3) =  'orbit.e_tot'     '' '' 'BC1CBEG'   'target'  0   
+        datum( 4) =  'orbit.e_tot'     '' '' 'BC1CEND'   'target'  0   
+ / 
+ &tao_d1_data
+        ix_d1_data = 3
+        default_weight = 1
+        d1_data%name = 'offset'
+        datum( 1) =  'rel_floor.x'     'BC1CBEG' '' 'BX12'   'target' 0     1e1
+   
+ / 
+ &tao_d1_data
+        ix_d1_data = 4
+        default_weight = 1
+        d1_data%name = 'r56'
+        datum( 1) =  'r56_compaction'        'BC1CBEG'  '' 'BC1CEND'   'target'  0   
+/ 
+
+ 
+
+&tao_d2_data
+        d2_data%name = 'BC2'
+        universe = 1
+        n_d1_data = 3
+/
+&tao_d1_data
+        ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'begtwiss'
+        datum( 1) =  'beta.a'     '' '' 'BEGBC2'   'target' 999   1e1
+        datum( 2) =  'alpha.a'    '' '' 'BEGBC2'   'target' 999 1e2
+        datum( 3) =  'beta.b'     '' '' 'BEGBC2'   'target' 999     1e1
+        datum( 4) =  'alpha.b'    '' '' 'BEGBC2'   'target' 999  1e2
+        datum( 5) =  'eta.x'      '' '' 'BEGBC2'   'target'   0  1e1
+        datum( 6) =  'etap.x'     '' '' 'BEGBC2'   'target'   0   1e2
+/
+&tao_d1_data
+        ix_d1_data = 2
+        default_weight = 1
+        d1_data%name = 'energy'
+        datum( 1) =  'e_tot_ref'           '' '' 'BEGBC2'   'target'  0   
+        datum( 2) =  'e_tot_ref'           '' '' 'ENDBC2'   'target'  0   
+        datum( 3) =  'orbit.e_tot'     '' '' 'BEGBC2'   'target'  0   
+        datum( 4) =  'orbit.e_tot'     '' '' 'ENDBC2'   'target'  0   
+ / 
+ &tao_d1_data
+        ix_d1_data = 3
+        default_weight = 1
+        d1_data%name = 'offset'
+        datum( 1) =  'rel_floor.x'     'BEGBC2' '' 'BX22'   'target' 0     1e1
+   
+ / 
+
+
+&tao_d2_data
+        d2_data%name = 'L3'
+        universe = 1
+        n_d1_data = 1
+/
+&tao_d1_data
+        ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'energy'
+        datum( 1) =  'e_tot_ref'           '' '' 'BEGL3'   'target'  0   
+        datum( 2) =  'e_tot_ref'           '' '' 'ENDL3'   'target'  0   
+        datum( 3) =  'orbit.e_tot'     '' '' 'BEGL3'   'target'  0   
+        datum( 4) =  'orbit.e_tot'     '' '' 'ENDL3'   'target'  0   
+ /
+ 
+ &tao_d2_data
+       d2_data%name = 'emitmeas'
+       universe = 1
+       n_d1_data = 5
+  /
+  &tao_d1_data
+       ix_d1_data = 1
+       default_weight = 1
+       d1_data%name = 'WS02'
+       datum( 1) =  'beta.a'     '' '' 'WS02'   'target' 1.11300768
+       datum( 2) =  'alpha.a'    '' '' 'WS02'   'target' 0.06823545
+       datum( 3) =  'beta.b'     '' '' 'WS02'   'target' 1.11253678
+       datum( 4) =  'alpha.b'    '' '' 'WS02'   'target' 0.06691584
+  /
+  &tao_d1_data
+       ix_d1_data = 2
+       default_weight = 1
+       d1_data%name = 'OTR2'
+       datum( 1) =  'beta.a'     '' '' 'OTR2'   'target' 1.11311451
+       datum( 2) =  'alpha.a'    '' '' 'OTR2'   'target' -0.06893843
+       datum( 3) =  'beta.b'     '' '' 'OTR2'   'target' 1.11304981
+       datum( 4) =  'alpha.b'    '' '' 'OTR2'   'target' -0.07029174
+  /
+  &tao_d1_data
+       ix_d1_data = 3
+       default_weight = 1
+       d1_data%name = 'LI21'
+       datum( 1) =  'beta.a'     '' '' 'WS12'   'target' 3.78159449
+       datum( 2) =  'alpha.a'    '' '' 'WS12'   'target' 1.76951916
+       datum( 3) =  'beta.b'     '' '' 'WS12'   'target' 3.78281555
+       datum( 4) =  'alpha.b'    '' '' 'WS12'   'target' 1.69039968
+  /
+  &tao_d1_data
+       ix_d1_data = 4
+       default_weight = 1
+       d1_data%name = 'LI28'
+       datum( 1) =  'beta.a'     '' '' 'WS28144'   'target' 63.27768133
+       datum( 2) =  'alpha.a'    '' '' 'WS28144'   'target' -1.28409851
+       datum( 3) =  'beta.b'     '' '' 'WS28144'   'target' 35.47144303
+       datum( 4) =  'alpha.b'    '' '' 'WS28144'   'target' 0.68275107
+  /
+  &tao_d1_data
+       ix_d1_data = 5
+       default_weight = 1
+       d1_data%name = 'LTU'
+       datum( 1) =  'beta.a'     '' '' 'WS32'   'target' 47.01918369
+       datum( 2) =  'alpha.a'    '' '' 'WS32'   'target' -1.10160762
+       datum( 3) =  'beta.b'     '' '' 'WS32'   'target' 45.86021357
+       datum( 4) =  'alpha.b'    '' '' 'WS32'   'target' 1.06833431
+  /
+!&tao_d2_data
+        d2_data%name = 'r56'
+        universe = 1
+        n_d1_data = 1
+/    
+!&tao_d1_data
+        ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'endtwiss'
+        datum( 1) =  'r56_compaction'     'LHBEG' '' 'LHEND' 
+        datum( 2) =  'r56_compaction'     'BC1CBEG' '' 'BC1CEND' 
+        datum( 3) =  'r56_compaction'     'BEGBC2' '' 'ENDBC2'    
+/
+
+!-----------------------------------------
+! BPM Orbit
+! Auto-generated BPM datums using: $LCLS_LATTICE/bmad/conversion/tao/create_vars_and_datums.ipynb
+        
+&tao_d2_data
+    d2_data%name = 'orbit'
+    universe = 1
+    n_d1_data = 3
+/    
+    
+&tao_d1_data
+    ix_d1_data = 1
+    default_weight = 1
+    d1_data%name = 'x'
+    default_data_type = 'bpm_orbit.x'
+    default_data_source = 'lat'
+    !search_for_lat_eles = "monitor::bpm*,monitor::rfb*,monitor::cmb*" 
+    datum(1:)%ele_name =  'BPM2', 'BPM3', 'BPM5', 'BPM6', 'BPM8', 'BPM9', 'BPM10', 'BPM11', 'BPM12',
+     'BPM13', 'BPM14', 'BPM15', 'BPMA11', 'BPMA12', 'BPM21201', 'BPMS11',
+     'BPMM12', 'BPM21301', 'BPMM14', 'BPM21401', 'BPM21501', 'BPM21601',
+     'BPM21701', 'BPM21801', 'BPM21901', 'BPM22201', 'BPM22301', 'BPM22401',
+     'BPM22501', 'BPM22601', 'BPM22701', 'BPM22801', 'BPM22901', 'BPM23201',
+     'BPM23301', 'BPM23401', 'BPM23501', 'BPM23601', 'BPM23701', 'BPM23801',
+     'BPM23901', 'BPM24201', 'BPM24301', 'BPM24401', 'BPM24501', 'BPM24601',
+     'BPM24701', 'BPMS21', 'BPM24901', 'BPM25201', 'BPM25301', 'BPM25401',
+     'BPM25501', 'BPM25601', 'BPM25701', 'BPM25801', 'BPM25901', 'BPM26201',
+     'BPM26301', 'BPM26401', 'BPM26501', 'BPM26601', 'BPM26701', 'BPM26801',
+     'BPM26901', 'BPM27201', 'BPM27301', 'BPM27401', 'BPM27501', 'BPM27601',
+     'BPM27701', 'BPM27801', 'BPM27901', 'BPM28201', 'BPM28301', 'BPM28401',
+     'BPM28501', 'BPM28601', 'BPM28701', 'BPM28801', 'BPM28901', 'BPM29201',
+     'BPM29301', 'BPM29401', 'BPM29501', 'BPM29601', 'BPM29701', 'BPM29801',
+     'BPM29901', 'BPM30201', 'BPM30301', 'BPM30401', 'BPM30501', 'BPM30601',
+     'BPM30701', 'BPM30801', 'BPMBSYQ1', 'BPMBSYQ2', 'BPMCUS', 'BPMBSYQ3',
+     'BPMBSYQ4', 'BPMBSYQ5', 'BPMBSYQ6', 'BPMBSYQA0', 'BPMVM1', 'BPMVM2',
+     'BPMVB1', 'BPMVB2', 'BPMVB3', 'BPMVM3', 'BPMVM4', 'BPMDL1', 'BPMT12',
+     'BPMDL2', 'BPMT22', 'BPMDL3', 'BPMT32', 'BPMDL4', 'BPMT42', 'BPMEM1',
+     'BPMEM2', 'BPMEM3', 'BPMEM4', 'BPME31', 'BPME32', 'BPME33', 'BPME34',
+     'BPME35', 'BPME36', 'BPMUM1', 'BPMUM2', 'BPMUM3', 'BPMUM4', 'RFB07', 'RFB08',
+     'RFBHX12', 'RFBHX13', 'RFBHX14', 'RFBHX15', 'RFBHX16', 'RFBHX17',
+     'RFBHX18', 'RFBHX19', 'RFBHX20', 'RFBHX21', 'RFBHX22', 'RFBHX23',
+     'RFBHX24', 'RFBHX25', 'RFBHX26', 'RFBHX27', 'RFBHX28', 'RFBHX29',
+     'RFBHX30', 'RFBHX31', 'RFBHX32', 'RFBHX33', 'RFBHX34', 'RFBHX35',
+     'RFBHX36', 'RFBHX37', 'RFBHX38', 'RFBHX39', 'RFBHX40', 'RFBHX41',
+     'RFBHX42', 'RFBHX43', 'RFBHX44', 'RFBHX45', 'RFBHX46', 'RFBHX47',
+     'RFBHX51', 'BPMUE1', 'BPMUE2', 'BPMQD', 'BPMDD'
+    datum(1:)%meas = 0
+/
+
+&tao_d1_data
+    ix_d1_data = 2
+    default_weight = 1
+    d1_data%name = 'y'
+    default_data_type = 'bpm_orbit.y'
+    default_data_source = 'lat'
+    !search_for_lat_eles = "monitor::bpm*,monitor::rfb*,monitor::cmb*" 
+    use_same_lat_eles_as = 'orbit.x'
+    datum(1:)%meas = 0
+/
+
+&tao_d1_data
+    ix_d1_data = 3
+    default_weight = 1
+    d1_data%name = 'charge'
+    default_data_type = 'bunch_charge.live'
+    default_data_source = 'beam'
+    !search_for_lat_eles = "monitor::bpm*,monitor::rfb*,monitor::cmb*" 
+    use_same_lat_eles_as = 'orbit.x'
+/
+
+
+
+
+
+!-----------------------------------------
+! Two L3 Energies LTHU beta match
+&tao_d2_data
+        d2_data%name = 'LTUH_M'
+        universe = 1
+        n_d1_data = 1
+/
+&tao_d1_data
+        ix_d1_data = 1
+        default_weight = 1
+        d1_data%name = 'match_twiss'
+        datum( 1) =  'beta.a'     '' '' 'WS32'   'target' 46.25     1e1
+        datum( 2) =  'alpha.a'    '' '' 'WS32'   'target' -1.083    1e2
+        datum( 3) =  'beta.b'     '' '' 'WS32'   'target' 46.40     1e1
+        datum( 4) =  'alpha.b'    '' '' 'WS32'   'target' 1.078     1e2
+        datum( 5) =  'eta.x'      '' '' 'WS32'   'target' 0    1e1
+        datum( 6) =  'etap.x'     '' '' 'WS32'   'target' 0    1e2
+/
+
+
+!----------------------------------------
+!----------------------------------------
+
+&tao_var
+	v1_var%name = 'begtwiss'
+	default_step = 1e-4
+	default_universe = '1'
+	ix_min_var = 1
+	ix_max_var = 6
+	var(1:6)%ele_name  = 'beginning', 'beginning', 'beginning', 'beginning', 'beginning', 'beginning'
+    var(1:6)%attribute = 'beta_a', 'alpha_a', 'beta_b', 'alpha_b', 'eta_x', 'etap_x'
+    var(1)%low_lim = 0.01
+    var(3)%low_lim = 0.01
+/
+
+&tao_var
+    v1_var%name = 'q_OTR2_match'
+	default_step = 1e-4
+	default_attribute = 'K1'
+	var(1:)%ele_name = 'QA01','QA02', 'QE01', 'QE02', 'QE03', 'QE04'
+/
+
+&tao_var
+    v1_var%name = 'q_LI21_match'
+	default_step = 1e-4
+	default_attribute = 'K1'
+	var(1:)%ele_name = 'Q21201','QM11', 'QM12', 'QM13'
+/
+
+&tao_var
+    v1_var%name = 'q_LI26_match'
+	default_step = 1e-4
+	default_attribute = 'K1'
+	var(1:)%ele_name = 'Q26201','Q26301', 'Q26401', 'Q26501', 'Q26601', 'Q26701', 'Q26801', 'Q26901'
+/
+
+&tao_var
+    v1_var%name = 'q_LTU_match'
+	default_step = 1e-4
+	default_attribute = 'K1'
+	var(1:)%ele_name = 'QEM1','QEM2','QEM3','QEM4'
+/
+
+&tao_var
+    v1_var%name = 'q_LI22'
+	default_step = 1e-4
+	default_attribute = 'K1'
+	var(1:)%ele_name = 'Q21601','Q21701', 'Q21801', 'Q21901'
+/
+
+
+&tao_var
+    v1_var%name = 'q_BC1'
+	default_step = 1e-4
+	default_attribute = 'K1'
+	var(1:)%ele_name =  'QA11', 'QA12', 'Q21201', 'QM11'
+/
+
+&tao_var
+    v1_var%name = 'BC_angle'
+	default_step = 1e-2
+	default_attribute = 'angle_deg'
+	var(1:)%ele_name =  'O_BC1', 'O_BC2'
+/
+
+
+&tao_var
+    v1_var%name = 'linac_fudge'
+	default_step = 1e-4
+	default_attribute = 'f'
+	var(1:)%ele_name =  'O_L1_fudge', 'O_L2_fudge', 'O_L3_fudge'
+/
+
+
+&tao_var
+    v1_var%name = 'linac'
+  default_step = 0.1
+  default_attribute = 'phase_deg'
+  var(1:)%ele_name = 'O_L1', 'O_K21_2', 'O_L2', 'O_L3'
+/
+
+
+&tao_var
+    v1_var%name = 'qm_LTUH'
+        default_step = 1e-4
+        default_attribute = 'K1'
+        var(1:)%ele_name =  'Q50Q3','Q4','Q5', 'Q6', 'QA0', 'QEM1', 'QEM2', 'QEM3', 'QEM4'
+/
+
+!----------------------------------------
+! Correctors
+! Auto-generated corrector datums using: $LCLS_LATTICE/bmad/conversion/tao/create_vars_and_datums.ipynb
+        
+&tao_var
+    v1_var%name = 'xcor'
+    default_step = 1e-2
+    default_attribute = 'bl_kick'
+    var(1:)%ele_name =  'XC00', 'XC01', 'XC02', 'XC03', 'XC04', 'XC05', 'XC06', 'XC07', 'XC08', 'XC09',
+     'XC10', 'XC21101', 'XC21135', 'XC21165', 'XC21175', 'XC21191',
+     'XC21275', 'XC21302', 'XC21325', 'XC21402', 'XC21502', 'XC21602',
+     'XC21702', 'XC21802', 'XC21900', 'XC22202', 'XC22302', 'XC22402',
+     'XC22502', 'XC22602', 'XC22702', 'XC22802', 'XC22900', 'XC23202',
+     'XC23302', 'XC23402', 'XC23502', 'XC23602', 'XC23702', 'XC23802',
+     'XC23900', 'XC24202', 'XC24302', 'XC24402', 'XC24502', 'XC24602',
+     'XC24702', 'XC24900', 'XC25202', 'XC25302', 'XC25402', 'XC25502',
+     'XC25602', 'XC25702', 'XC25802', 'XC25900', 'XC26202', 'XC26302',
+     'XC26402', 'XC26502', 'XC26602', 'XC26702', 'XC26802', 'XC26900',
+     'XC27202', 'XC27302', 'XC27402', 'XC27502', 'XC27602', 'XC27702',
+     'XC27802', 'XC27900', 'XC28202', 'XC28302', 'XC28402', 'XC28502',
+     'XC28602', 'XC28702', 'XC28802', 'XC28900', 'XC29202', 'XC29302',
+     'XC29402', 'XC29502', 'XC29602', 'XC29702', 'XC29802', 'XC29900',
+     'XC30202', 'XC30302', 'XC30402', 'XC30502', 'XC30602', 'XC30702',
+     'XC30802', 'XC30900', 'XCBSYQ2', 'XCBSYQ3', 'XCAPM2', 'XCBSYQ5', 'XCA0',
+     'XCVM2', 'XCVB2', 'XCVM3', 'XCDL1', 'XCQT12', 'XCDL2', 'XCQT22', 'XCDL3',
+     'XCQT32', 'XCDL4', 'XCQT42', 'XCEM2', 'XCEM4', 'XCE31', 'XCE33', 'XCE35',
+     'XCUM1', 'XCUM3', 'XCHX13', 'XCHX14', 'XCHX15', 'XCHX16', 'XCHX17',
+     'XCHX18', 'XCHX19', 'XCHX20', 'XCHX21', 'XCHX22', 'XCHX23', 'XCHX24',
+     'XCHX25', 'XCHX26', 'XCHX27', 'XCHX28', 'XCHX29', 'XCHX30', 'XCHX31',
+     'XCHX32', 'XCHX33', 'XCHX34', 'XCHX35', 'XCHX36', 'XCHX37', 'XCHX38',
+     'XCHX39', 'XCHX40', 'XCHX41', 'XCHX42', 'XCHX43', 'XCHX44', 'XCHX45',
+     'XCHX46', 'XCHX47', 'XCUE2', 'XCD3', 'XCDD'
+/
+
+
+&tao_var
+    v1_var%name = 'ycor'
+    default_step = 1e-2
+    default_attribute = 'bl_kick'
+    var(1:)%ele_name =  'YC00', 'YC01', 'YC02', 'YC03', 'YC04', 'YC05', 'YC06', 'YC07', 'YC08', 'YC09',
+     'YC10', 'YC21102', 'YC21136', 'YC21166', 'YC21174', 'YC21192',
+     'YC21276', 'YC21303', 'YC21325', 'YC21403', 'YC21503', 'YC21603',
+     'YC21703', 'YC21803', 'YC21900', 'YC22203', 'YC22303', 'YC22403',
+     'YC22503', 'YC22603', 'YC22703', 'YC22803', 'YC22900', 'YC23203',
+     'YC23303', 'YC23403', 'YC23503', 'YC23603', 'YC23703', 'YC23803',
+     'YC23900', 'YC24203', 'YC24303', 'YC24403', 'YC24503', 'YC24603',
+     'YC24703', 'YC24900', 'YC25203', 'YC25303', 'YC25403', 'YC25503',
+     'YC25603', 'YC25703', 'YC25803', 'YC25900', 'YC26203', 'YC26303',
+     'YC26403', 'YC26503', 'YC26603', 'YC26703', 'YC26803', 'YC26900',
+     'YC27203', 'YC27303', 'YC27403', 'YC27503', 'YC27603', 'YC27703',
+     'YC27803', 'YC27900', 'YC28203', 'YC28303', 'YC28403', 'YC28503',
+     'YC28603', 'YC28703', 'YC28803', 'YC28900', 'YC29203', 'YC29303',
+     'YC29403', 'YC29503', 'YC29603', 'YC29703', 'YC29803', 'YC29900',
+     'YC30203', 'YC30303', 'YC30403', 'YC30503', 'YC30603', 'YC30703',
+     'YC30803', 'YC30900', 'YCBSYQ1', 'YCBSYQ4', 'YCAPM2', 'YCBSYQ6', 'YCA0',
+     'YCVM1', 'YCVB1', 'YCVB3', 'YCVM4', 'YCDL1', 'YCQT12', 'YCDL2', 'YCQT21',
+     'YCDL3', 'YCQT32', 'YCDL4', 'YCQT42', 'YCEM1', 'YCEM3', 'YCE32', 'YCE34',
+     'YCE36', 'YCUM2', 'YCUM4', 'YCHX13', 'YCHX14', 'YCHX15', 'YCHX16', 'YCHX17',
+     'YCHX18', 'YCHX19', 'YCHX20', 'YCHX21', 'YCHX22', 'YCHX23', 'YCHX24',
+     'YCHX25', 'YCHX26', 'YCHX27', 'YCHX28', 'YCHX29', 'YCHX30', 'YCHX31',
+     'YCHX32', 'YCHX33', 'YCHX34', 'YCHX35', 'YCHX36', 'YCHX37', 'YCHX38',
+     'YCHX39', 'YCHX40', 'YCHX41', 'YCHX42', 'YCHX43', 'YCHX44', 'YCHX45',
+     'YCHX46', 'YCHX47', 'YCUE1', 'YCD3', 'YCDD'
+/
+
+!----------------------------------------
+
+
+
+

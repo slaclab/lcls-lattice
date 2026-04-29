@@ -215,19 +215,22 @@ ccav22cp = 0.11262          !support post to cavity #2 center
 ccavla = ccavl/2-ccav22cp !cavity #2 length u/s of support post
 ccavlb = ccavl-ccavla     !cavity #2 length d/s of support post
 
-gradl1 = 14.210497371111 !MeV/m [11.1]
-phasl1 = -27.6            !degrees
-ghcav = 9.053035       !MeV/m
-phcav = -168.5            !degrees
-fracl2 = 0.910267341123 !100*(1-FracL2)= L2 overhead (9.0%)
-gradl2 = 16.0*fracl2     !MeV/m
-phasl2 = -25.0            !degrees
-fracl3 = 0.922223648616 !100*(1-FracL3)= L3 overhead (7.8%)
-gradl3 = 16.0*fracl3     !MeV/m
-phasl3 = 0.0            !degrees
-fracl4 = 1.007137968593 !100*(1-FracL4)= L4 overhead (-0.7%)
-gradl4 = 20.8*fracl4     !MeV/m
-phasl4 = 0.0            !degrees
+fracl0 = 0.836608295223 !Ei=75 MeV
+ampll1 = 241.9801996642 !MV
+gradl1 = ampll1/(2*8*lcavl) !MV/m (2 8-cavity CM's)
+phasl1 = -24.9 !degrees
+ahcav = 60.0 !MV
+ghcav = ahcav/(2*8*ccavl) !MV/m (2 8-cavity CM's)
+phcav = -172.5 !degrees
+ampll2 = 1555.730956156 !MV
+gradl2 = ampll2/(12*8*lcavl) !MV/m (12 8-cavity CM's)
+phasl2 = -32.3 !degrees
+ampll3 = 2450.0 !MV
+gradl3 = ampll3/(20*8*lcavl) !MV/m (20 8-cavity CM's)
+phasl3 = 0.0
+ampll4 = 4000.0 !MV
+gradl4 = ampll4/(23*8*lcavl) !MV/m (20 8-cavity CM's)
+phasl4 = 0.0 !degrees
 
 !=!  COMMENT
 !=!  COMMENT
@@ -244,66 +247,46 @@ phasl4 = 0.0            !degrees
 !=!    VALUE, E3+1.0E-3*GradL4*LactL4*COS(RADDEG*PhasL4),Ef
 !=!  ENDCOMMENT
 
-! L0 (new settings from reference 100 pC Astra run July 2017 per C. Mayes)
+! Cavity amplitudes (MV)
 
-! Maximum E_z in MV/m from Astra optimization
+a011 = 6.5
+a012 = 0.0
+a013 = 9.7
+a014 = 5.0
+a015 = 13.0*fracl0
+a016 = 16.6*fracl0
+a017 = 16.6*fracl0
+a018 = 16.6*fracl0
 
-l011_scale = 15.8
-l012_scale = 0   ! off
-l013_scale = 0   ! off
-l014_scale = 28
-l015_scale = 32
-l016_scale = 32
-l017_scale = 32
-l018_scale = 32
+! Cavity phases (deg) ... all on-crest
 
-! Phases (deg)
-
-p011 = -4.0
+p011 = 0
 p012 = 0
 p013 = 0
 p014 = 0
 p015 = 0
 p016 = 0
-p017 = 1.25
-p018 = 6.0
-
-! Fix scaling to end up with final injection energy Ei:
-
-l0_factor1 = l011_scale*cos(raddeg*p011)+ l012_scale*cos(raddeg*p012)+ l013_scale*cos(raddeg*p013)+ l014_scale*cos(raddeg*p014)
-l0_factor2 = l015_scale*cos(raddeg*p015)+ l016_scale*cos(raddeg*p016)+ l017_scale*cos(raddeg*p017)+ l018_scale*cos(raddeg*p018)
-
-l0_scale = 1.0e3*(ei-e0)/(l0_factor1+l0_factor2)/lcavl
-
-g011 = l011_scale*l0_scale
-g012 = l012_scale*l0_scale
-g013 = l013_scale*l0_scale
-g014 = l014_scale*l0_scale
-g015 = l015_scale*l0_scale
-g016 = l016_scale*l0_scale
-g017 = l017_scale*l0_scale
-g018 = l018_scale*l0_scale
-
- !VALUE, G011,G012,G013,G014,G015,G016,G017,G018
+p017 = 0
+p018 = 0
 
 cavl011: lcavity, cavity_type = standing_wave, rf_frequency = 1300 * 1e6, l = lcavl, aperture = lcavr, type = "F1.3-19",
-          voltage = g011*lcavl * 1e6, phi0 = p011/360
+          voltage = a011 * 1e6, phi0 = p011/360
 cavl012: lcavity, cavity_type = standing_wave, rf_frequency = 1300 * 1e6, l = lcavl, aperture = lcavr, type = "F1.3-19",
-          voltage = g012*lcavl * 1e6, phi0 = p012/360
+          voltage = a012 * 1e6, phi0 = p012/360
 cavl013: lcavity, cavity_type = standing_wave, rf_frequency = 1300 * 1e6, l = lcavl, aperture = lcavr, type = "F1.3-19",
-          voltage = g013*lcavl * 1e6, phi0 = p013/360
+          voltage = a013 * 1e6, phi0 = p013/360
 cavl014: lcavity, cavity_type = standing_wave, rf_frequency = 1300 * 1e6, l = lcavl, aperture = lcavr, type = "F1.3-19",
-          voltage = g014*lcavl * 1e6, phi0 = p014/360
+          voltage = a014 * 1e6, phi0 = p014/360
 cavl015a: lcavity, cavity_type = standing_wave, rf_frequency = 1300 * 1e6, l = lcavla, aperture = lcavr,
-          type = "F1.3-19", voltage = g015*lcavla * 1e6, phi0 = p015/360
+          type = "F1.3-19", voltage = a015*(lcavla/lcavl) * 1e6, phi0 = p015/360
 cavl015b: lcavity, cavity_type = standing_wave, rf_frequency = 1300 * 1e6, l = lcavlb, aperture = lcavr,
-          type = "F1.3-19", voltage = g015*lcavlb * 1e6, phi0 = p015/360
+          type = "F1.3-19", voltage = a015*(lcavlb/lcavl) * 1e6, phi0 = p015/360
 cavl016: lcavity, cavity_type = standing_wave, rf_frequency = 1300 * 1e6, l = lcavl, aperture = lcavr, type = "F1.3-19",
-          voltage = g016*lcavl * 1e6, phi0 = p016/360
+          voltage = a016 * 1e6, phi0 = p016/360
 cavl017: lcavity, cavity_type = standing_wave, rf_frequency = 1300 * 1e6, l = lcavl, aperture = lcavr, type = "F1.3-19",
-          voltage = g017*lcavl * 1e6, phi0 = p017/360
+          voltage = a017 * 1e6, phi0 = p017/360
 cavl018: lcavity, cavity_type = standing_wave, rf_frequency = 1300 * 1e6, l = lcavl, aperture = lcavr, type = "F1.3-19",
-          voltage = g018*lcavl * 1e6, phi0 = p018/360
+          voltage = a018 * 1e6, phi0 = p018/360
 
 ! L1 (1.3 GHz)
 
@@ -1519,7 +1502,7 @@ cavl008: lcavity, cavity_type = standing_wave, rf_frequency = 1300 * 1e6, l = lc
 ! define unsplit lcavitys for BMAD ... not used by MAD
 
 cavl015: lcavity, cavity_type = standing_wave, rf_frequency = 1300 * 1e6, l = lcavl, aperture = lcavr, type = "F1.3-19",
-          voltage = g015*lcavl * 1e6, phi0 = p015/360
+          voltage = a015 * 1e6, phi0 = p015/360
 cavl025: lcavity, cavity_type = standing_wave, rf_frequency = 1300 * 1e6, l = lcavl, aperture = lcavr, type = "J1.3-21",
           voltage = g025*lcavl * 1e6, phi0 = p025/360
 cavl035: lcavity, cavity_type = standing_wave, rf_frequency = 1300 * 1e6, l = lcavl, aperture = lcavr, type = "J1.3-20",
@@ -1661,77 +1644,77 @@ qcm01: quadrupole, type = "cryo SPQA127", l = lcmq/2, aperture = rcmq, k1 = kqcm
 
 ! L1
 
-qcm02: quadrupole, type = "cryo SPQA135", l = lcmq/2, aperture = rcmq, k1 = -0.350806201565 !-KQCMfodo1
-qcm03: quadrupole, type = "cryo SPQA136", l = lcmq/2, aperture = rcmq, k1 = 0.23963213759  ! KQCMfodo1
+qcm02: quadrupole, type = "cryo SPQA135", l = lcmq/2, aperture = rcmq, k1 = -0.217944649921 !-KQCMfodo1
+qcm03: quadrupole, type = "cryo SPQA136", l = lcmq/2, aperture = rcmq, k1 = 0.110942693737 ! KQCMfodo1
 
 ! L2
 
-qcm04: quadrupole, type = "cryo SPQA109", l = lcmq/2, aperture = rcmq, k1 = -0.324112516592 !-KQCMfodo2
-qcm05: quadrupole, type = "cryo SPQA104", l = lcmq/2, aperture = rcmq, k1 = 0.287977250136 ! KQCMfodo2
-qcm06: quadrupole, type = "cryo SPQA111", l = lcmq/2, aperture = rcmq, k1 = -0.190506342045 !-KQCMfodo2
-qcm07: quadrupole, type = "cryo SPQA116", l = lcmq/2, aperture = rcmq, k1 = 0.166568239336 ! KQCMfodo2
-qcm08: quadrupole, type = "cryo SPQA103", l = lcmq/2, aperture = rcmq, k1 = -0.165293138645 !-KQCMfodo2
-qcm09: quadrupole, type = "cryo SPQA108", l = lcmq/2, aperture = rcmq, k1 = 0.168083260715 ! KQCMfodo2
-qcm10: quadrupole, type = "cryo SPQA113", l = lcmq/2, aperture = rcmq, k1 = -0.16889171536  !-KQCMfodo2
-qcm11: quadrupole, type = "cryo SPQA101", l = lcmq/2, aperture = rcmq, k1 = 0.171319202987 ! KQCMfodo2
-qcm12: quadrupole, type = "cryo SPQA122", l = lcmq/2, aperture = rcmq, k1 = -0.186365278064 !-KQCMfodo2
-qcm13: quadrupole, type = "cryo SPQA115", l = lcmq/2, aperture = rcmq, k1 = 0.081823198078 ! KQCMfodo2
-qcm14: quadrupole, type = "cryo SPQA126", l = lcmq/2, aperture = rcmq, k1 = -0.201686049713 !-KQCMfodo2
-qcm15: quadrupole, type = "cryo SPQA001", l = lcmq/2, aperture = rcmq, k1 = 0.068296939536 ! KQCMfodo2
+qcm04: quadrupole, type = "cryo SPQA109", l = lcmq/2, aperture = rcmq, k1 = -0.326994275917 !-KQCMfodo2
+qcm05: quadrupole, type = "cryo SPQA104", l = lcmq/2, aperture = rcmq, k1 = 0.289428219886 ! KQCMfodo2
+qcm06: quadrupole, type = "cryo SPQA111", l = lcmq/2, aperture = rcmq, k1 = -0.189155354368 !-KQCMfodo2
+qcm07: quadrupole, type = "cryo SPQA116", l = lcmq/2, aperture = rcmq, k1 = 0.17118229764  ! KQCMfodo2
+qcm08: quadrupole, type = "cryo SPQA103", l = lcmq/2, aperture = rcmq, k1 = -0.167624498336 !-KQCMfodo2
+qcm09: quadrupole, type = "cryo SPQA108", l = lcmq/2, aperture = rcmq, k1 = 0.16898372787  ! KQCMfodo2
+qcm10: quadrupole, type = "cryo SPQA113", l = lcmq/2, aperture = rcmq, k1 = -0.16902001806  !-KQCMfodo2
+qcm11: quadrupole, type = "cryo SPQA101", l = lcmq/2, aperture = rcmq, k1 = 0.171135436608 ! KQCMfodo2
+qcm12: quadrupole, type = "cryo SPQA122", l = lcmq/2, aperture = rcmq, k1 = -0.178602419131 !-KQCMfodo2
+qcm13: quadrupole, type = "cryo SPQA115", l = lcmq/2, aperture = rcmq, k1 = 0.067202499844 ! KQCMfodo2
+qcm14: quadrupole, type = "cryo SPQA126", l = lcmq/2, aperture = rcmq, k1 = -0.202431482106 !-KQCMfodo2
+qcm15: quadrupole, type = "cryo SPQA001", l = lcmq/2, aperture = rcmq, k1 = 0.091643556891 ! KQCMfodo2
 
 ! L3
 
-qcm16: quadrupole, type = "cryo SPQA117", l = lcmq/2, aperture = rcmq, k1 = -0.315249770341 !-KQCMfodo3
-qcm17: quadrupole, type = "cryo SPQA120", l = lcmq/2, aperture = rcmq, k1 = 0.257243444429 ! KQCMfodo3
-qcm18: quadrupole, type = "cryo SPQA132", l = lcmq/2, aperture = rcmq, k1 = -0.209278370653 !-KQCMfodo3
-qcm19: quadrupole, type = "cryo SPQA130", l = lcmq/2, aperture = rcmq, k1 = 0.19122809045  ! KQCMfodo3
+qcm16: quadrupole, type = "cryo SPQA117", l = lcmq/2, aperture = rcmq, k1 = -0.315239016894 !-KQCMfodo3
+qcm17: quadrupole, type = "cryo SPQA120", l = lcmq/2, aperture = rcmq, k1 = 0.257238127219 ! KQCMfodo3
+qcm18: quadrupole, type = "cryo SPQA132", l = lcmq/2, aperture = rcmq, k1 = -0.209275402774 !-KQCMfodo3
+qcm19: quadrupole, type = "cryo SPQA130", l = lcmq/2, aperture = rcmq, k1 = 0.191224022381 ! KQCMfodo3
 qcm20: quadrupole, type = "cryo SPQA125", l = lcmq/2, aperture = rcmq, k1 = -kqcmfodo3
 qcm21: quadrupole, type = "cryo SPQA124", l = lcmq/2, aperture = rcmq, k1 = kqcmfodo3
 qcm22: quadrupole, type = "cryo SPQA119", l = lcmq/2, aperture = rcmq, k1 = -kqcmfodo3
-qcm23: quadrupole, type = "cryo SPQA121", l = lcmq/2, aperture = rcmq, k1 = 0.185814302253 !-KQCMfodo3
-qcm24: quadrupole, type = "cryo SPQA123", l = lcmq/2, aperture = rcmq, k1 = -0.19069843811  !-KQCMfodo3
-qcm25: quadrupole, type = "cryo SPQA114", l = lcmq/2, aperture = rcmq, k1 = 0.179772484915 ! KQCMfodo3
-qcm26: quadrupole, type = "cryo SPQA002", l = lcmq/2, aperture = rcmq, k1 = -0.179811694483 !-KQCMfodo3
-qcm27: quadrupole, type = "cryo SPQA003", l = lcmq/2, aperture = rcmq, k1 = 0.191500362365 ! KQCMfodo3
-qcm28: quadrupole, type = "cryo SPQA102", l = lcmq/2, aperture = rcmq, k1 = -0.186743529029 !-KQCMfodo3
+qcm23: quadrupole, type = "cryo SPQA121", l = lcmq/2, aperture = rcmq, k1 = 0.185865014622 !-KQCMfodo3
+qcm24: quadrupole, type = "cryo SPQA123", l = lcmq/2, aperture = rcmq, k1 = -0.190841961714 !-KQCMfodo3
+qcm25: quadrupole, type = "cryo SPQA114", l = lcmq/2, aperture = rcmq, k1 = 0.180021741636 ! KQCMfodo3
+qcm26: quadrupole, type = "cryo SPQA002", l = lcmq/2, aperture = rcmq, k1 = -0.180256091487 !-KQCMfodo3
+qcm27: quadrupole, type = "cryo SPQA003", l = lcmq/2, aperture = rcmq, k1 = 0.191877107738 ! KQCMfodo3
+qcm28: quadrupole, type = "cryo SPQA102", l = lcmq/2, aperture = rcmq, k1 = -0.186780825065 !-KQCMfodo3
 qcm29: quadrupole, type = "cryo SPQA134", l = lcmq/2, aperture = rcmq, k1 = kqcmfodo3
 qcm30: quadrupole, type = "cryo SPQA128", l = lcmq/2, aperture = rcmq, k1 = -kqcmfodo3
-qcm31: quadrupole, type = "cryo SPQA133", l = lcmq/2, aperture = rcmq, k1 = 0.170237231526 ! KQCMfodo3
-qcm32: quadrupole, type = "cryo SPQA129", l = lcmq/2, aperture = rcmq, k1 = -0.208938347986 !-KQCMfodo3
-qcm33: quadrupole, type = "cryo SPQA106", l = lcmq/2, aperture = rcmq, k1 = 0.224928870624 ! KQCMfodo3
-qcm34: quadrupole, type = "cryo SPQA118", l = lcmq/2, aperture = rcmq, k1 = 0            !-KQCMfodo3
-qcm35: quadrupole, type = "cryo SPQA110", l = lcmq/2, aperture = rcmq, k1 = -0.195678039545 ! KQCMfodo3
+qcm31: quadrupole, type = "cryo SPQA133", l = lcmq/2, aperture = rcmq, k1 = kqcmfodo3
+qcm32: quadrupole, type = "cryo SPQA129", l = lcmq/2, aperture = rcmq, k1 = -0.189706198724 !-KQCMfodo3
+qcm33: quadrupole, type = "cryo SPQA106", l = lcmq/2, aperture = rcmq, k1 = 0.203647523762 ! KQCMfodo3
+qcm34: quadrupole, type = "cryo SPQA118", l = lcmq/2, aperture = rcmq, k1 = -0.235865888563 !-KQCMfodo3
+qcm35: quadrupole, type = "cryo SPQA110", l = lcmq/2, aperture = rcmq, k1 = 0.191414661722 ! KQCMfodo3
 
-! L4 ( 0.185334132537)
+! L4
 
-qcm37: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.194414091499 !-KQCMfodo4
-qcm38: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0            ! KQCMfodo4
-qcm39: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.22350244709  !-KQCMfodo4
-qcm40: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.207124810843 ! KQCMfodo4
-qcm41: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.163186985225 !-KQCMfodo4
-qcm42: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.177820312975 ! KQCMfodo4
+qcm37: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.191505880243 !-KQCMfodo4
+qcm38: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.235284364944 ! KQCMfodo4
+qcm39: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.202405154915 !-KQCMfodo4
+qcm40: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.189170511781 ! KQCMfodo4
+qcm41: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -kqcmfodo4
+qcm42: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = kqcmfodo4
 qcm43: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -kqcmfodo4
 qcm44: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = kqcmfodo4
 qcm45: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -kqcmfodo4
 qcm46: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = kqcmfodo4
-qcm47: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.190620339301 !-KQCMfodo4
-qcm48: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.182708069927 ! KQCMfodo4
-qcm49: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.183940966579 !-KQCMfodo4
-qcm50: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.191856887799 ! KQCMfodo4
+qcm47: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.189752258331 !-KQCMfodo4
+qcm48: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.181898853243 ! KQCMfodo4
+qcm49: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.183162342181 !-KQCMfodo4
+qcm50: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.191854128823 ! KQCMfodo4
 qcm51: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -kqcmfodo4
 qcm52: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = kqcmfodo4
 qcm53: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -kqcmfodo4
 qcm54: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = kqcmfodo4
 qcm55: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -kqcmfodo4
-qcm56: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.188314097127 ! KQCMfodo4
-qcm57: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.196546559183 !-KQCMfodo4
-qcm58: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.205744193979 ! KQCMfodo4
-qcm59: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.293368924346 !-KQCMfodo4
+qcm56: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.188278952194 ! KQCMfodo4
+qcm57: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.195564622777 !-KQCMfodo4
+qcm58: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = 0.206044660219 ! KQCMfodo4
+qcm59: quadrupole, type = "cryo", l = lcmq/2, aperture = rcmq, k1 = -0.296171301216 !-KQCMfodo4
 
 ! EXT
 
-kqx01 = 1.128473777089 ! 1.125400573179
-kqx02 = -0.922444614934 !-0.928094293364
+kqx01 = 1.130544517546
+kqx02 = -0.918924271327
 
 qx01: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqx01
 qx02: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqx02
