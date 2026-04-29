@@ -30,7 +30,9 @@ call, file =  $LCLS_LATTICE/bmad/overlays/cu/linac_phase_defaults.bmad
 !Overall fudge
 call, file =  $LCLS_LATTICE/bmad/overlays/cu/linac_fudge_overlays.bmad
 
-l0a_fixer: fixer, superimpose, ref=l0bbeg, ref_origin=beginning, 
+call, file = $LCLS_LATTICE/bmad/instruments/cu_fixers.bmad
+
+fixer_l0a: fixer, superimpose, ref=l0bbeg, ref_origin=beginning, 
   beta_a_stored=1.41638494, alpha_a_stored=-2.63706808, 
   beta_b_stored=7.30559740, alpha_b_stored=0.44820610, 
   phi_a_stored=2.80064764, phi_b_stored=2.02441779,
@@ -48,7 +50,7 @@ QE02[K1] =  5.35877772165317712E+000
 
 !expand_lattice
 !quad::*[field_master] = T
-lcavity::*[n_rf_steps]=100
-l0a[n_rf_steps] = 1000
-l0b[n_rf_steps] = 1000
+lcavity::*[n_rf_steps]=1000
+l0a[n_rf_steps] = 50000
+l0b[n_rf_steps] = 50000
 

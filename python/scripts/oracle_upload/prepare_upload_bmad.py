@@ -8,7 +8,6 @@ from pathlib import Path
 import json
 import sys
 
-
 #------------------------------------------
 # utility functions.  To be moved to module
 #------------------------------------------

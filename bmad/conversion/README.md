@@ -27,6 +27,19 @@
 6. Update prod using zip of release at `lcls-srv01:/usr/local/lcls/model/lattice`
    - Update the `/usr/local/lcls/model/lattice/current` link to point to the new release.
 
+# Make Oracle Upload files
+1. In the mad directory, uncomment the call to `makeSymbols` from `LCLS2cu_main.mad8` and `LCLS2sc_main.mad8`.
+2. run mad8s, assuming mad8s executable is in the lcls-lattice base directory.
+   - `../mad8s < LCLS2sc_main.mad8`
+   - `../mad8s < LCLS2cu_main.mad8`
+3. Update `optics` variable in the oracle_upload script located at `../python/scripts/oracle_upload/prepare_upload.py`
+4. Run `../python/scripts/oracle_upload/prepare_upload.py`, which generates the following files
+   - AD_ACCEL-19DEC2025s.txt
+   - AD_ACCEL-extra-19DEC2025s.txt
+   - BSY-AD_ACCEL-19DEC2025s.txt
+5. Manually copy the FACET elements from the previous extras file to the new extras file.
+   - Starts with SOL10111 and ends with CQ141866
+
 # Update element devices
 To be done after the Oracle database is updated by the database group.
 1. Obtain updated lcls_elements.csv
