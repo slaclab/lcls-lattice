@@ -19,6 +19,8 @@ MODELS = [
 'sc_sxr',
 'sc_hxr',
 'sc_dasel',
+'sc_diag02',
+'sc_diagis',
 'cu_sxr',
 'cu_hxr',
 'cu_spec',
