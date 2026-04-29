@@ -29,7 +29,7 @@ MODELS = [
 # 'sc_inj',
 ]
 
-TOLS = {}           #beta_x, beta_y, end_s
+TOLS = {}           #beta_x, beta_y, end_s, e_tot
 TOLS['sc_bsyd']  =  (1e-5,   1e-5,   1e-9,   1e-9)
 TOLS['sc_sxr']   =  (5e-5,   5e-5,   1e-9,   1e-9)
 TOLS['sc_hxr']   =  (1e-5,   5e-5,   1e-9,   1e-9)
