@@ -1,27 +1,24 @@
 
-! *** OPTICS=AD_ACCEL-19DEC2025s ***
+! *** OPTICS=AD_ACCEL-04MAY2026s ***
 
 ! LCLS2sc injector: gun to start of L1 linac
 
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
-! 22-MAR-2024, M. Woodley
+! 28-MAR-2026, M. Woodley
+!  * there is no Faraday Cup on YAG01B
+! ------------------------------------------------------------------------------
+! 19-APR-2024, M. Woodley
 !  * add SWAVE attribute to BUN1B per M. Ehrlichman
 ! ------------------------------------------------------------------------------
 ! 24-OCT-2022, M. Woodley
 !  * replace CQ02B (SOL2B trim) with "mini-quad"
-! ------------------------------------------------------------------------------
-! 08-SEP-2022, M. Woodley
-!  * redefine YAG01B, OTR0H04, and OTRC001
-! 14-APR-2022, M. Woodley
-!  * replace YAG01B_YAG1 and YAG01B_YAG2 with YAG01B
+! 07-SEP-2022, M. Woodley
+!  * redefine YAG01B
 ! ------------------------------------------------------------------------------
 ! 28-SEP-2021, M. Woodley
 !  * replace YAG01B with combination YAG/COLL/FC device
-! ------------------------------------------------------------------------------
-! 16-JAN-2021, M. Woodley
-!  * new buncher settings per Y. Ding
 ! ------------------------------------------------------------------------------
 ! 26-NOV-2019, M. Woodley
 !  * Remove IMBCSi3; undefer IMBCSi1 and IMBCSi2 ... per D. Yeremian
@@ -177,8 +174,8 @@
 
   Lbun := 0.21876 !m
   Abun := 0.0517  !m
-  Gbun := 1.8     !MV/m
-  Pbun := -85     !deg
+  Gbun := 0       !MV/m
+  Pbun := 0       !deg
 
   BUN1B : LCAV, SWAVE, TYPE="LBNL", FREQ=1300, L=Lbun/2, APER=Abun/2, &
                 DELTAE=Gbun*Lbun/2, PHI0=Pbun/360
@@ -266,7 +263,7 @@
 
   CQ02B : QUAD, TYPE="3.37Q1.2", L=LQg/2, APER=rQg, K1=0
 
-! L0 to WS/OTR (Q0H01-4 match to waists at WS0H04)
+! L0 to laser heater (adjustable-sized waists at WS0H04 and LHMID)
 
 !              heater ON        heater OFF        chicane OFF	
 !           ---------------   ---------------   ---------------   
@@ -275,22 +272,16 @@
   KQ0H03 :=  0.483905171963 ! -0.947731202989 ! -0.947730849886 !
   KQ0H04 := -3.971575402157 ! -3.418410103407 ! -3.418410369207 !
   B0H04w :=  7.710749594202 !  5.0            !  5.0            !
-
-  Q0H01 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0H01
-  Q0H02 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0H02
-  Q0H03 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0H03
-  Q0H04 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0H04
-
-! WS/OTR to laser heater (Q0H05-8 match to 10x10 m beta waists LHMID)
-
-!              heater ON        heater OFF        chicane OFF	
-!           ---------------   ---------------   ---------------  
   KQ0H05 := -2.32266979602  ! -7.451315276972 ! -7.508072657056 ! 
   KQ0H06 :=  0.0            !  1.835321381141 !  1.870908387696 ! 
   KQ0H07 :=  5.84302489781  !  7.794364472964 !  7.804907479846 ! 
   KQ0H08 := -5.210258454761 ! -8.272684492892 ! -8.306722243051 ! 
   BLHUw  :=  7.5            ! 10.0            ! 10.0            !
 
+  Q0H01 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0H01
+  Q0H02 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0H02
+  Q0H03 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0H03
+  Q0H04 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0H04
   Q0H05 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0H05
   Q0H06 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0H06
   Q0H07 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0H07
@@ -298,8 +289,8 @@
 
 ! laser heater to diagnostic line
 
-!              heater ON         heater OFF        chicane OFF    
-!           ----------------   ---------------   ---------------   
+!              heater ON        heater OFF        chicane OFF      
+!           ---------------   ---------------   ---------------   
   KQHD01 := -13.178598580237 ! -8.743988237466 ! -8.746794738551 !
   KQHD02 :=   7.650668410884 !  6.400024228564 !  6.401620200768 !
   KQHD03 :=  -7.978934972385 ! -8.612136694917 ! -8.622952974048 !
@@ -321,11 +312,11 @@
 
 ! COL0 collimation section
 
-  KQC001 :=  5.135316216759 ! 5.055115117203 !
-  KQC002 :=  0.0            ! 0.157983739509 !
-  KQC003 := -5.295950232123 !-5.345027236641 !
-  KQC004 :=  2.772436085305 ! 2.756594856447 !
-  KQC005 := -1.796082149685 !-KQColl0        !
+  KQC001 :=  5.135316216759
+  KQC002 :=  0.0
+  KQC003 := -5.295950232123
+  KQC004 :=  2.772436085305
+  KQC005 := -1.796082149685
   KQC006 :=  KQColl0
   KQC007 := -KQColl0
   KQC008 :=  KQColl0
@@ -370,10 +361,11 @@
 ! MATR
 ! ------------------------------------------------------------------------------
 
-! laser heater undulator
-! - modeled as R-matrix to include natural vertical focusing
+! laser heater undulator (operating in 3rd harmonic mode at 75 MeV)
+! - modeled as R-matrix to include vertical natural focusing
 ! - parameters from LCLS-II Phase 1 undulator
-! - triple heater laser wavelength for 3rd harmonic operation
+! - triple laser wavelength for 3rd harmonic operation
+! - gap = 30.5885 mm
 
 ! lam   : laser-heater undulator period [m]
 ! lamr  : heater laser wavelength [m]
@@ -386,7 +378,7 @@
   lam   := 0.054
   lamr  := 3*1030E-9 !3rd harmonic
   gami  := Ei/EMASS
-  K_und := sqrt(2*(lamr*2*gami^2/lam-1)) !gap= 30.6 mm
+  K_und := sqrt(2*(lamr*2*gami^2/lam-1))
   Lhun  := 9*lam
   Lhunh := Lhun/2
   kqlh  := (K_und*2*pi/lam/sqrt(2)/gami)^2
@@ -686,16 +678,16 @@
 
   PC0H00 : ECOL, L=Ljaw, XSIZE=6.0e-3, YSIZE=6.0e-3, TYPE="tungsten"
 
-! collimators
-! (betatron X/Y half-gaps are 24/16 sigma for 1 um normalized emittance)
+! collimators (betatron X/Y half-apertures are 24/16 sigma for 1 um normalized
+! emittance; default out-of-plane half-aperture is 20 mm)
 
-  CEHTR : RCOL, L=Ljaw, XSIZE=3.0e-3, TYPE="HCOLL"    !X momentum collimator
-  CYC01 : RCOL, L=Ljaw, YSIZE=4.4e-3, TYPE="VCOLL"    !Y betatron collimator
-  CXC01 : RCOL, L=Ljaw, XSIZE=4.4e-3, TYPE="HCOLL"    !X betatron collimator
-  CYC02 : RCOL, L=Ljaw, YSIZE=4.4e-3, TYPE="@4,VCOLL" !Y betatron collimator
-  CXC02 : RCOL, L=Ljaw, XSIZE=4.4e-3, TYPE="@4,HCOLL" !X betatron collimator
-  CYC03 : RCOL, L=Ljaw, YSIZE=4.4e-3, TYPE="VCOLL"    !Y betatron collimator
-  CXC03 : RCOL, L=Ljaw, XSIZE=4.4e-3, TYPE="HCOLL"    !X betatron collimator
+  CEHTR : RCOL, L=Ljaw, XSIZE=3.0e-3, YSIZE=20.e-3, TYPE="HCOLL"    !X momentum collimator
+  CYC01 : RCOL, L=Ljaw, YSIZE=4.4e-3, XSIZE=20.e-3, TYPE="VCOLL"    !Y betatron collimator
+  CXC01 : RCOL, L=Ljaw, XSIZE=4.4e-3, YSIZE=20.e-3, TYPE="HCOLL"    !X betatron collimator
+  CYC02 : RCOL, L=Ljaw, YSIZE=4.4e-3, XSIZE=20.e-3, TYPE="@4,VCOLL" !Y betatron collimator
+  CXC02 : RCOL, L=Ljaw, XSIZE=4.4e-3, YSIZE=20.e-3, TYPE="@4,HCOLL" !X betatron collimator
+  CYC03 : RCOL, L=Ljaw, YSIZE=4.4e-3, XSIZE=20.e-3, TYPE="VCOLL"    !Y betatron collimator
+  CXC03 : RCOL, L=Ljaw, XSIZE=4.4e-3, YSIZE=20.e-3, TYPE="HCOLL"    !X betatron collimator
 
 ! instruments
 
@@ -713,17 +705,15 @@
 
   FC00EIC  : INST, TYPE="Faraday cup"
 
-! combination YAG/collimator/Faraday Cup
+! combination YAG/collimator
 ! - beam pipe ID = 47.6 mm
 ! - one standard YAG crystal
 ! - one YAG crystal with a 6 mm diameter hole in it (for measuring beam halo)
-! - four circular collimator bores
-! - Faraday Cup
+! - four circular collimator bores (12mm, 16mm, 20mm, 24mm)
 
   YAG01B      : PROF, TYPE="YAG" !with or without hole
   YAG01B_COLL : ECOL, TYPE="collimator" !bore: 12mm, 16mm, 20mm, or 24mm
-  YAG01B_FCUP : IMON, TYPE="Faraday Cup"
-  YAG01B_full : LINE=(YAG01B,YAG01B_COLL,YAG01B_FCUP)
+  YAG01B_full : LINE=(YAG01B,YAG01B_COLL)
 
 ! combination OTR/YAG !PAL type
 
@@ -802,6 +792,8 @@
   SC5B   : LINE=(XC05B,YC05B)
   SCC000 : LINE=(XCC000,YCC000)
 
+! ------------------------------------------------------------------------------
+
   GUN : LINE=(BEGGUNB,&
     DGBCa,SOL1BKB,DGBCb,&
     CATHODEB,DGUN,DG001,&
@@ -819,6 +811,8 @@
     SOL2B_full,DG013,VV02B,DG014,BPM2B,DG015,SC5B,DG016a,BLFU,DG016b,&
     ECUEIC,DGEIC,FC00EIC,&
     ENDEIC)
+
+! ------------------------------------------------------------------------------
 
   COMMENT !simplified
     LSRHTR : LINE=(LHBEGB,&
@@ -840,10 +834,17 @@
       LHENDB)
  !ENDCOMMENT
 
+! ------------------------------------------------------------------------------
+
   COMMENT !simplified
-    HTR : LINE=(BEGHTR,D0H00,&
+    HTR_1 : LINE=(BEGHTR_1,D0H00,&
       Q0H01,Q0H01,D0H01,&
-      Q0H02,Q0H02,D0H02,&
+      Q0H02,Q0H02,D0H02a,D0H02b,D0H02c,D0H02d,&
+      ENDHTR_1)
+  ENDCOMMENT
+
+ COMMENT !simplified
+    HTR_2 : LINE=(BEGHTR_2,D0H02e,D0H02f,&
       Q0H03,Q0H03,D0H03,&
       Q0H04,Q0H04,D0H04,&
       Q0H05,Q0H05,D0H05,&
@@ -855,14 +856,20 @@
       QHD02,QHD02,DHD02,&
       QHD03,QHD03,DHD03,&
       QHD04,QHD04,DHD04,&
-      ENDHTR)
+      ENDHTR_2)
   ENDCOMMENT
 
+! ------------------------------------------------------------------------------
+
  !COMMENT !complete
-    HTR : LINE=(BEGHTR,D0H00a,RFB0H00,D0H00b,PC0H00,D0H00c,&
+    HTR_1 : LINE=(BEGHTR_1,D0H00a,RFB0H00,D0H00b,PC0H00,D0H00c,&
       Q0H01_full,D0H01a,YC0H01,D0H01b,&
       Q0H02_full,D0H02a,XC0H01,D0H02b,DP0H01,D0H02c,DP0H02,D0H02d,DP0H03,&
-        D0H02e,XC0H03,D0H02f,&
+      ENDHTR_1)
+ !ENDCOMMENT
+
+ !COMMENT !complete
+    HTR_2 : LINE=(BEGHTR_2,D0H02e,XC0H03,D0H02f,&
       Q0H03_full,D0H03a,YC0H03,D0H03b,&
       Q0H04_full,D0H04a,RFB0H04,D0H04b,OTR0H04_full,D0H04c,WS0H04,D0H04d,&
         BZ0H04,D0H04e,&
@@ -875,8 +882,12 @@
       QHD02_full,DHD02a1,IMBCSi1,DHD02a2,IMBCSi2,DHD02a3,YCHD03,DHD02b,&
       QHD03_full,DHD03a,XCHD03,DHD03b,&
       QHD04_full,DHD04a,RFBHD04,DHD04b,&
-      ENDHTR)
+      ENDHTR_2)
  !ENDCOMMENT
+
+  HTR : LINE=(HTR_1,HTR_2)
+  
+! ------------------------------------------------------------------------------
 
   COMMENT !simplified
     COL0 : LINE=(BEGCOL0,DC000,&
@@ -914,7 +925,8 @@
       ENDCOL0)
  !ENDCOMMENT
 
-  C0fodo : LINE=(QFColl0,DColl0,QDColl0,QDColl0,DColl0,QFColl0)
+  C0fodoF : LINE=(QFColl0,DColl0,QDColl0,QDColl0,DColl0,QFColl0)
+  C0fodoD : LINE=(QDColl0,DColl0,QFColl0,QFColl0,DColl0,QDColl0)
 
 ! ------------------------------------------------------------------------------
 

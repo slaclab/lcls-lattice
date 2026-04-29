@@ -46,8 +46,11 @@ BDIR = f'{LCLS_LATTICE_ENV}/bmad/'
 
 # All models
 MODELS = [d for d in os.listdir(BDIR+'models/') if os.path.isdir(BDIR+'/models/'+d)]
-INITFILE = {model:f'{LCLS_LATTICE_ENV}/bmad/models/{model}/tao.init' for model in MODELS}
-for k,v, in INITFILE.items():
+#INITFILE = {model:f'{LCLS_LATTICE_ENV}/bmad/models/{model}/tao.init' for model in MODELS}
+LATFILE = {model:f'{LCLS_LATTICE_ENV}/bmad/survey_models/{model}.lat.bmad' for model in MODELS}
+#for k,v, in INITFILE.items():
+#    print(f'{k:<16}{v}')
+for k,v, in LATFILE.items():
     print(f'{k:<16}{v}')
 
 # Tack on FACET-II if availiable
@@ -57,18 +60,24 @@ FDIR = f'{FACET2_LATTICE_ENV}/bmad/'
 if os.path.exists(FDIR):
     print('Adding FACET-II')
     model = 'f2_elec'
-    ifile = f'{FDIR}/models/{model}/tao.init'
-    if os.path.exists(ifile):
+    #ifile = f'{FDIR}/models/{model}/tao.init'
+    lfile = f'{FDIR}/models/{model}/{model}.lat.bmad'
+    #if os.path.exists(ifile):
+    #    print(f'Adding {model} model')
+    #    MODELS.append(model)
+    #    INITFILE[model] = ifile
+    if os.path.exists(lfile):
         print(f'Adding {model} model')
         MODELS.append(model)
-        INITFILE[model] = ifile
+        LATFILE[model] = lfile
 
 from pytao import Tao
 
 def ele_names(model):
-    init = INITFILE[model]
+    #init = INITFILE[model]
+    lat = LATFILE[model]
     print(f'{model}')
-    tao = Tao(f'-init {init} -noplot')
+    tao = Tao(f'-lat {lat} -noplot')
     names = tao.cmd('python lat_list 1@0>>*|model ele.name')
     return names
 
@@ -102,7 +111,6 @@ open(CU_FILE, 'a').close()  #make an empty file
 _models = ['cu_hxr', 'cu_sxr', 'cu_spec']
 _names = []
 for _m in _models:
-    print(_m)
     _names += ele_names(_m)
 _unames = sorted(list(set(_names)))
 
@@ -113,7 +121,6 @@ SC_FILE = f'{BDIR}/master/LCLSsc_devicenames.bmad'
 _models = ['sc_hxr', 'sc_sxr', 'sc_diag0', 'sc_bsyd', 'sc_dasel']
 _names = []
 for _m in _models:
-    print(_m)
     _names += ele_names(_m)
 _unames = sorted(list(set(_names)))
 

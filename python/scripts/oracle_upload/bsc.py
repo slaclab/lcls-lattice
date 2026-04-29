@@ -75,10 +75,10 @@ A =65e-9  #  m (effective beam admittance)
 dp =0.02  #  1 (beam maximum relative energy error in the S30XL)
 D =0.002  #  m (maximum residual beam orbit in S30XL)
 
-MODELS=['sc_sxr_beam0','sc_hxr_beam0','sc_bsyd_beam0','sc_diag0_beam0', 'cu_sxr', 'cu_hxr', 'sc_dasel_beam0']
-froot_to_model = {1:0, 6:1, 7:2, 8:3, 14:4, 10:5, 9:6}
+MODELS=['sc_sxr_beam0','sc_hxr_beam0','sc_bsyd_beam0','sc_diag0_beam0', 'cu_sxr', 'cu_hxr', 'sc_dasel_beam0', 'diag02', 'diagis']
+froot_to_model = {1:0, 6:1, 7:2, 8:3, 14:4, 10:5, 9:6, 17:7, 18:8}
 
-output_ordering = [1,6,10,7,8,14,9]
+output_ordering = [1,6,10,7,8,14,9,17,18]
 
 if len(sys.argv) > 1:
     optics = sys.argv[1]

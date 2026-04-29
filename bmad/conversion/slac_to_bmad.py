@@ -300,7 +300,7 @@ CU_MASTERS = [f for f in os.listdir('mad') if f.startswith('CU_') and f.endswith
 SC_MASTERS = [f for f in os.listdir('mad') if f.startswith('SC_') and f.endswith('xsif')]
 
 # exclude_strs will not go through the automatic-desplitter
-exclude_strs = ['BUN1B','WIGX','UMXL','LH_UND','UMHTR','UMASX','UMAHX','PSSX','PSHX','K21_1B','K21_1C']
+exclude_strs = ['BUN1B','BUN1LEI','BUN2LEI','WIGX','UMXL','LH_UND','UMHTR','UMASX','UMAHX','PSSX','PSHX','K21_1B','K21_1C']
 
 # new elements are added commented out with !new
 shadows = ['duqxl','dh03a','dh03b','dh02c','dh02d']

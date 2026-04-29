@@ -1,16 +1,10 @@
 
-! *** OPTICS=AD_ACCEL-19DEC2025s ***
+! *** OPTICS=AD_ACCEL-04MAY2026s ***
 
 ! LCLS2sc bunch compressor chicane #2
 
 ! ==============================================================================
 ! Modification History
-! ------------------------------------------------------------------------------
-! 30-NOV-2024, M. Woodley
-!  * adjust L3B area boundary location per vacuum drawing revision
-! ------------------------------------------------------------------------------
-! 17-JAN-2021, M. Woodley
-!  * new standard configuration per Y. Ding
 ! ------------------------------------------------------------------------------
 ! 23-MAY-2019, M. Woodley
 !  * move ENDBC2B to u/s face of QE201 per T. Maxwell
@@ -121,7 +115,7 @@
 gb2 = 0.03335
 zb2 = 0.549
 fb2 = 0.6287
-ab2 = 0.046846250848 !R56=0.045
+ab2 = 0.04684634163 !R56=0.045
 bb2 = brho2*sin(ab2)/zb2
 ab2_2 = ab2*ab2
 ab2_4 = ab2_2*ab2_2
@@ -159,7 +153,7 @@ bcx24: sbend, type = "1D19.7", hgap = gb2/2, l = lb2, angle = +ab2, e1 = +ab2, f
 
 ! L2 to BC2 chicane
 
-kq2c01 = 0.510742626723
+kq2c01 = 0.479586901457
 
 q2c01: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kq2c01
 
@@ -173,10 +167,10 @@ cq22b: quadrupole, type = "1.69Q3.4", l = lqc/2, aperture = rqc, k1 = kcq22
 
 ! match into L3
 
-kqe201 = -1.302578004949
-kqe202 = 1.990185768694
-kqe203 = -2.035694933515
-kqe204 = 1.984107437335
+kqe201 = -1.311235102734 !-1.311235102735
+kqe202 = 1.991960352338 ! 1.991960352344
+kqe203 = -1.813368342881
+kqe204 = 1.648388012604
 
 qe201: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqe201
 qe202: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqe202
@@ -284,9 +278,9 @@ yce203: vkicker, type = "class-4"
 ! marker points, etc.
 ! ------------------------------------------------------------------------------
 
-! collimator
+! collimator (default out-of-plane half-aperture is 20 mm)
 
-ce21b: rcollimator, l = ljaw, x_limit = 13.3e-3, type = "HCOLL"    !X momentum collimator
+ce21b: rcollimator, l = ljaw, x_limit = 13.8e-3, y_limit = 20.e-3, type = "HCOLL" !X momentum collimator
 
 ! instruments
 
@@ -402,8 +396,21 @@ bpme204[ref] = qe204
 
   BC2 : LINE=(BC2i,BC2c,BC2o)
 
-  EMIT2 : LINE=(BEGEMIT2,QE201_full,DE201a,YCE201,DE201b,IM21B,DE201c,QE202_full,DE202a1,XCE202,DE202a2,WSEMIT2,DE202b,
-         QE203_full,DE203a,YCE203,DE203b,QE204_full,DE204a,XCE204,DE204b,ENDEMIT2)
+!=!  COMMENT
+!=!  COMMENT
+!=!    EMIT2 : LINE=(BEGEMIT2,&
+!=!      QE201_full,DE201a,YCE201,DE201b,IM21B,DE201c,&
+!=!      QE202_full,DE202a1,XCE202,DE202a2,WSEMIT2,DE202b,&
+!=!      QE203_full,DE203a,YCE203,DE203b,&
+!=!      QE204_full,DE204a,XCE204,DE204b,&
+!=!      ENDEMIT2)
+!=!  ENDCOMMENT
+
+ !COMMENT !split EMIT2 for matching from WSEMIT2
+    EMIT2_1 : LINE=(BEGEMIT2,QE201_full,DE201a,YCE201,DE201b,IM21B,DE201c,QE202_full,DE202a1,XCE202,DE202a2,WSEMIT2)
+    EMIT2_2 : LINE=(DE202b,QE203_full,DE203a,YCE203,DE203b,QE204_full,DE204a,XCE204,DE204b,ENDEMIT2)
+    EMIT2 : LINE=(EMIT2_1,EMIT2_2)
+ !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
 
