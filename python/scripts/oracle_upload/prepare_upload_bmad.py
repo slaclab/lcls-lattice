@@ -778,8 +778,6 @@ for kwn,eles in ele_dict.items():
                 names[i] = names[i][0:6]
             elif names[i].startswith(('L0','L1X')):
                 names[i] = names[i][0:6]
-            if names[i].endswith('___'):
-                names[i] = names[i][:-3]
         names = list(dict.fromkeys(names))
 
         for name in names:
@@ -799,6 +797,8 @@ for kwn,eles in ele_dict.items():
             else:
                 power = 1
             coorc = np.mean(coor[ide, :], axis=0)  # m,rad (beam center)
+            if name.endswith('___'):
+                name = name[:-3]
             eles.append({
                 'idf': idf[id1],
                 'id': idd[id1],
