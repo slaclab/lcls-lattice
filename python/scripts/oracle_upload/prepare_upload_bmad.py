@@ -472,7 +472,7 @@ for name, aname in zip(name_all,aname_all):
                 N_bsy[jd2[m]] = name + '?'
 
 # copy T1 into TILT slot
-name = ['CQ01', 'SQ01', 'CQ01B', 'SQ01B', 'SQ02B']
+name = ['CQ01', 'SQ01', 'CQ01B', 'SQ01B', 'SQ02B', 'SQ01LEI', 'SQ02LEI', 'SQ03LEI']
 for n in name:
     id_ = strmatch(n,N,True)
     for i in id_:
