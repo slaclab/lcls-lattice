@@ -232,7 +232,7 @@ umhtr: taylor, type = "UMLHB", l = lhunh, tt11 = 1.0, tt12 = lhunh, tt21 = 0, tt
 """
 SC_NEWELES['wigxlh'] = """
 wigxlh: taylor, type = "variable gap", l = lwigh, tt11 = 1.0, tt12 = lwigh, tt21 = 0, tt22 = 1.0, tt33 = cos(argw),
-          tt34 = r34w, tt43 = -sin(argw)*sqrt(kqwig), tt44 = cos(argw), mat_und_k = kwig, mat_und_l = lwigh
+          tt34 = r34w, tt43 = -sin(argw)*sqrt(kqwig), tt44 = cos(argw), mat_und_k = kwig, mat_und_l = lwig
 """
 
 SC_NEWELES['dh02c'] = """

@@ -9,8 +9,9 @@
 3. Run $LCLS_LATTICE/bmad/conversion/slac_to_bmad.py
 4. Check if beginning twiss in `bmad/master/gunb/beginning_BEGGUNB.bmad` need to be updated from BX0, AX0, etc. in `mad/LCLS2sc_master.xsif`
 5. Rematch SC ENDL1B using sc_sxr/tao.init q_L1[2:5] and L1[1:6].  L1 data updated from ENDL1B in mad/SC_SXR_GUN_CI
-6. from `$LCLS_LATTICE` run `pytest`
-7. Update plots
+6. Manually update `CuH_SC_QUADS.bmad` and `CuS_SC_QUADS.bmad` from `mad/LCLS2cu_main.mad8`
+7. from `$LCLS_LATTICE` run `pytest`
+8. Update plots
    - python/scripts/make_bmad_plots.py
    - mv beta_*.png docs/plots
    - python/scripts/make_mad_plots.py
