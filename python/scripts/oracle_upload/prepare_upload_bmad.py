@@ -156,7 +156,7 @@ und_file_roots = []
 area = []
 area.append({'name': 'GUNB', 'beg': 'BEGGUNB', 'end': 'ENDGUNB', 'offset': [0, 0]})
 area.append({'name': 'L0B', 'beg': 'BEGL0B', 'end': 'ENDL0B', 'offset': [0, 0]})
-area.append({'name': 'HTR', 'beg': 'BEGHTR_1', 'end': 'ENDHTR_1', 'offset': [0, 0]})
+area.append({'name': 'HTR', 'beg': 'BEGHTR_1', 'end': 'ENDHTR_2', 'offset': [0, 0]})
 area.append({'name': 'COL0', 'beg': 'BEGCOL0', 'end': 'ENDCOL0', 'offset': [0, 0]})
 area.append({'name': 'L1B', 'beg': 'BEGL1B', 'end': 'ENDL1B', 'offset': [0, 0]})
 area.append({'name': 'BC1B', 'beg': 'BEGBC1B', 'end': 'ENDBC1B', 'offset': [0, 0]})
@@ -772,10 +772,14 @@ for kwn,eles in ele_dict.items():
     if kwn == 'LCAV':
         # create list of unique names that will allow unsplitting
         for i in range(len(names)):
-            if names[i][0:4] in ['CAVL', 'CAVC']:  # unique in 7 characters
+            if names[i].startswith(('CAVL','CAVC')):
                 names[i] = names[i][0:7]
-            else:  # unique in 6 characters
+            elif names[i].startswith(('K2','K3')):
                 names[i] = names[i][0:6]
+            elif names[i].startswith(('L0','L1X')):
+                names[i] = names[i][0:6]
+            if names[i].endswith('___'):
+                names[i] = names[i][:-3]
         names = list(dict.fromkeys(names))
 
         for name in names:

@@ -98,7 +98,7 @@ with open('unified_keys.dat','w') as f:
     survey_key = v[1]
     if fullname == 'INITIAL':
       continue
-    if name in upload_data and upload_data[name] != survey_key:
+    if name in upload_data: # and upload_data[name] != survey_key:
       f.write(f'{fullname} {survey_key} {upload_data[name]}\n')
     else:
       f.write(f'{fullname} {survey_key}\n')
