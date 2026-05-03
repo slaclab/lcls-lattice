@@ -2,8 +2,8 @@
 % standing wave model; reduced L2 W in Cu linac
 
 % NOTE: when making Matlab models (LCLS2sc and LCLS2cu)
-% - remove "working stuff" from LCLS2cu_main.mad8 and LCLS2sc_main.mad8
 % - uncomment SUBROUTINES in LCLS2cu_main.mad8 and LCLS2sc_main.mad8
+% - remove "working stuff" from LCLS2cu_main.mad8 and LCLS2sc_main.mad8
 % - use special definition of UMXLh in LTU.xsif
 % - change mirrors from MULT to INST in SXTES.xsif and HXTES.xsif
 % - check that L1.xsif (etc) is being CALLed, not L1e.xsif (etc)
