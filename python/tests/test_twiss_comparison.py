@@ -24,22 +24,23 @@ MODELS = [
 'sc_diag0',
 'sc_diag02',
 'sc_diagis',
-# 'cu_inj',
- #'cu_linac',
-# 'sc_inj',
+'sc_hxr2',
+'sc_sxr2',
 ]
 
 TOLS = {}           #beta_x, beta_y, end_s, e_tot
-TOLS['sc_bsyd']  =  (1e-5,   1e-5,   1e-9,   1e-9)
-TOLS['sc_sxr']   =  (5e-5,   5e-5,   1e-9,   1e-9)
-TOLS['sc_hxr']   =  (1e-5,   5e-5,   1e-9,   1e-9)
-TOLS['sc_dasel'] =  (1e-5,   5e-5,   1e-9,   1e-9)
-TOLS['sc_diag0'] =  (1e-5,   5e-5,   1e-9,   1e-9)
-TOLS['sc_diag02'] = (1e-5,   5e-5,   1e-9,   1e-9)
-TOLS['sc_diagis'] = (1e-5,   5e-5,   1e-9,   1e-9)
-TOLS['cu_sxr']   =  (2e-2,   2e-2,   1e-9,   1e-9)
-TOLS['cu_hxr']   =  (2e-2,   2e-2,   1e-9,   1e-9)
-TOLS['cu_spec']  =  (2e-2,   2e-2,   1e-9,   1e-9)
+TOLS['sc_bsyd']  =   (1e-5,   1e-5,   1e-9,   1e-9)
+TOLS['sc_sxr']   =   (5e-5,   5e-5,   1e-9,   1e-9)
+TOLS['sc_hxr']   =   (1e-5,   5e-5,   1e-9,   1e-9)
+TOLS['sc_dasel'] =   (1e-5,   5e-5,   1e-9,   1e-9)
+TOLS['sc_diag0'] =   (1e-5,   5e-5,   1e-9,   1e-9)
+TOLS['sc_diag02'] =  (1e-5,   5e-5,   1e-9,   1e-9)
+TOLS['sc_diagis'] =  (1e-5,   5e-5,   1e-9,   1e-9)
+TOLS['cu_sxr']   =   (2e-2,   2e-2,   1e-9,   1e-9)
+TOLS['cu_hxr']   =   (2e-2,   2e-2,   1e-9,   1e-9)
+TOLS['cu_spec']  =   (2e-2,   2e-2,   1e-9,   1e-9)
+TOLS['sc_hxr2']   =  (1e-5,   5e-5,   1e-9,   1e-9)
+TOLS['sc_sxr2']   =  (1e-5,   5e-5,   1e-9,   1e-9)
 
 @pytest.fixture(scope='module',autouse=True)
 def exec_mad8s():

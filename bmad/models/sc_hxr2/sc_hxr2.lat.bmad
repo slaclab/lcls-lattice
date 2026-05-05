@@ -1,0 +1,47 @@
+!
+! sc_diagis
+!
+
+parameter[custom_attribute1] = taylor::mat_und_k
+parameter[custom_attribute2] = taylor::mat_und_l
+
+call, file = $LCLS_LATTICE/bmad/master/SC_HXR2.bmad
+!call, file = $LCLS_LATTICE/bmad/master/LCLSsc_devicenames.bmad
+
+call, file = $LCLS_LATTICE/bmad/overlays/sc/linac_overlays.bmad
+call, file = $LCLS_LATTICE/bmad/overlays/sc/bc1_overlays.bmad
+call, file = $LCLS_LATTICE/bmad/overlays/sc/bc2_overlays.bmad
+call, file = $LCLS_LATTICE/bmad/groups/sc/match_groups.bmad
+
+! Extra match settings
+call, file =  $LCLS_LATTICE/bmad/master/sc/sc_linac_settings.bmad
+
+! Wakefields
+call, file =  $LCLS_LATTICE/bmad/master/sc/sc_linac_wakefields.bmad
+
+sbend::*[fringe_type] = full
+call, file = $LCLS_LATTICE/bmad/master/gunb/beginning_BEGGUNLEI.bmad
+
+call, file = $LCLS_LATTICE/bmad/instruments/sc_fixers.bmad
+
+call, file = $LCLS_LATTICE/bmad/master/SETK2scLEI.bmad
+
+use, sc_hxr2
+
+!fixer_beam0lei[beta_a_stored] = 19.592195324050067
+!fixer_beam0lei[beta_b_stored] = 19.592195324050067
+!fixer_beam0lei[alpha_a_stored] = -0.4746356317302934
+!fixer_beam0lei[alpha_b_stored] = -0.4746356317302934
+!fixer_beam0lei[is_on] = T
+
+fixer_otr0h04[beta_a_stored] = 5.16508
+fixer_otr0h04[beta_b_stored] = 27.8531
+fixer_otr0h04[alpha_a_stored] = -4.15348
+fixer_otr0h04[alpha_b_stored] = 8.05809
+fixer_otr0h04[is_on] = T
+
+lcavity::*[n_rf_steps]=100
+bun1b[n_rf_steps]=1000
+cavl01*[n_rf_steps]=1000
+cavl*[n_cell]=9
+cavc*[n_cell]=9
