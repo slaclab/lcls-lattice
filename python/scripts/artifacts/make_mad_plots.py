@@ -22,6 +22,8 @@ MODELS = [
 'cu_spec',
 'sc_dasel',
 'sc_diag0',
+'sc_hxr2',
+'sc_sxr2',
 # 'cu_inj',
  #'cu_linac',
 # 'sc_inj',
