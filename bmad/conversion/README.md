@@ -12,11 +12,11 @@
 6. Manually update `CuH_SC_QUADS.bmad` and `CuS_SC_QUADS.bmad` from `mad/LCLS2cu_main.mad8`
 7. from `$LCLS_LATTICE` run `pytest`
 8. Update plots
-   - python/scripts/make_bmad_plots.py
+   - python/scripts/artifacts/make_bmad_plots.py
    - mv beta_*.png docs/plots
-   - python/scripts/make_mad_plots.py
+   - python/scripts/artifacts/make_mad_plots.py
    - mv beta_*.png docs/plots
-   - python/scripts/residuals.py
+   - python/scripts/artifacts/residuals.py
    - mv residual_*.png docs/plots
 
 # Check into repo
