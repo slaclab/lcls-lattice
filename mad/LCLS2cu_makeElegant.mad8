@@ -6,14 +6,16 @@
 ! ==============================================================================
 ! Instructions for generating ELEGANT input file
 ! ------------------------------------------------------------------------------
-! 1) replace the following line in MAD deck:
+! 1) replace the following lines in LCLS2cu_master.xsif:
 !      CALL, FILENAME="LCLS_L1.xsif"
 !      CALL, FILENAME="LCLS_L1.xsif"
 !      CALL, FILENAME="LCLS_L1.xsif"
+!      CALL, FILENAME="Cu_FDN.xsif"
 !    with:
 !      CALL, FILENAME="LCLS_L1e.xsif"
 !      CALL, FILENAME="LCLS_L1e.xsif"
 !      CALL, FILENAME="LCLS_L1e.xsif"
+!      CALL, FILENAME="Cu_FDNe.xsif"
 ! 2) insert the following line into your MAD deck:
 !      CALL, FILENAME="elegant/makeElegant.mad8"
 ! 3) run MAD
@@ -49,16 +51,23 @@
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
 
-  VALUE, UMASXh[L] !VGHPU56
+  VALUE, UMASXh_[L] !VGHPU56
   BEAM, ENERGY=Ef
-  USE, (UMASXh) !*LIN.03*
+  USE, (UMASXh_) !*LIN.03*
   MATCH, BETX=1, BETY=1
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
 
-  VALUE, PSSXh[L] !PS97.5
+  VALUE, PSSXh_[L] !PS97.5
   BEAM, ENERGY=Ef
-  USE, (PSSXh) !*LIN.04*
+  USE, (PSSXh_) !*LIN.04*
+  MATCH, BETX=1, BETY=1
+    RMATRIX, #S/#E, RM(6,6)=1
+  ENDMATCH
+
+  VALUE, UMASXh[L] !VGHPU39
+  BEAM, ENERGY=Ef
+  USE, (UMASXh) !*LIN.05*
   MATCH, BETX=1, BETY=1
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
@@ -272,28 +281,28 @@
 
   VALUE, UMXL1h[L]
   BEAM, ENERGY=Ef
-  USE, (UMXL1h) !*LIN.06*
+  USE, (UMXL1h) !*LIN.07*
   MATCH, BETX=1, BETY=1
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
 
   VALUE, UMXL3h[L]
   BEAM, ENERGY=Ef
-  USE, (UMXL3h) !*LIN.07*
+  USE, (UMXL3h) !*LIN.08*
   MATCH, BETX=1, BETY=1
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
 
   VALUE, UMXL4h[L]
   BEAM, ENERGY=Ef
-  USE, (UMXL4h) !*LIN.08*
+  USE, (UMXL4h) !*LIN.09*
   MATCH, BETX=1, BETY=1
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
 
   VALUE, WIGXLh[L]
   BEAM, ENERGY=Ef
-  USE, (WIGXLh) !*LIN.09*
+  USE, (WIGXLh) !*LIN.10*
   MATCH, BETX=1, BETY=1
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
