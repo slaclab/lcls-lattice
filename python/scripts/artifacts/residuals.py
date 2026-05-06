@@ -2,6 +2,7 @@
 
 import matplotlib.pyplot as plt
 from pytao import Tao
+import numpy as np
 
 comments = ['!','*','@','$','#']
 
@@ -18,10 +19,16 @@ MODELS = [
 'sc_sxr',
 'sc_hxr',
 'sc_dasel',
+'sc_diag02',
+'sc_diagis',
 'cu_sxr',
 'cu_hxr',
 'cu_spec',
 'sc_diag0',
+'sc_hxr2',
+'sc_sxr2',
+'sc_bsyd2',
+'sc_dasel2',
 ]
 
 XMINS = [
@@ -29,9 +36,15 @@ XMINS = [
 24.345,
 24.345,
 24.345,
+24.345,
+24.345,
 0,
 0,
 0,
+24.345,
+24.345,
+24.345,
+24.345,
 24.345,
 ]
 
@@ -80,8 +93,12 @@ for model,xmin in zip(MODELS,XMINS):
             last = bmad_s
             break
   plt.figure(figsize=(10,3))
-  plt.plot(s_data, bx_data, label='res(β$_x$)')
-  plt.plot(s_data, by_data, label='res(β$_y$)')
+  s_data = np.array(s_data)
+  bx_data = np.array(bx_data)
+  by_data = np.array(by_data)
+  mask = s_data > 10.0
+  plt.plot(s_data[mask], bx_data[mask], label='res(β$_x$)')
+  plt.plot(s_data[mask], by_data[mask], label='res(β$_y$)')
   plt.ylabel('res(β$_{x,y}$) (%)')
   plt.legend()
   plt.xlabel('location (m)')

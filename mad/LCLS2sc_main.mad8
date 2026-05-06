@@ -1,6 +1,6 @@
   TITLE, "AD_ACCEL: superconducting linac"
 
-! *** OPTICS=AD_ACCEL-19DEC2025s ***
+! *** OPTICS=AD_ACCEL-04MAY2026s ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY, DOUBLE
   ASSIGN, ECHO="LCLS2sc.echo"
@@ -8,6 +8,24 @@
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 14-SEP-2023, M. Woodley
+!  * use relocated endpoints of L0B, L1B, L2B, L3B, and L4B, as MSC's and add
+!    vacuum valves there per S. Saraf
+!  * add additional vacuum components (pumps and gauges) per D. White
+! 11-AUG-2023, M. Woodley
+!  * new "4-bend" design for LEI dogleg (R56= -12.124 mm)
+! ------------------------------------------------------------------------------
+! 11-MAR-2023, M. Woodley
+!  * "SLOT36" renamed "BR3B"
+! ------------------------------------------------------------------------------
+! 09-APR-2021, M. Woodley
+!  * 2nd injector (LEI) beamline
+! ------------------------------------------------------------------------------
+! 05-MAR-2020, M. Woodley
+!  * no LEX
+! ------------------------------------------------------------------------------
+! ************************* NEW LCLS-II-HE BASELINE ****************************
 ! ------------------------------------------------------------------------------
 ! 07-AUG-2019, M. Woodley
 !  * remove "h" from names of split elements
@@ -233,69 +251,86 @@
 ! ------------------------------------------------------------------------------
 
 ! ==============================================================================
-! Beamline area names (see LCLSII-2.1-PR-0134)
+! Beamline area names (see LCLSII-HE-1.1-PR-0028)
 ! see: https://docs.slac.stanford.edu/sites/pub/Publications/
-!      Beamline Boundaries.pdf
+!      LCLS-II-HE Beamline Boundaries
 ! ------------------------------------------------------------------------------
 ! SC linac common areas
 ! ------------------------------------------------------------------------------
-! GUNB   : cathode to L0
-! L0B    : L0 (end cap, CM01, end cap, mechanical stay-clear)
-! HTR    : laser heater (emittance measurement, chicane, extraction to DIAG0)
-! COL0   : collimation 0
-! L1B    : L1 (differential pumping, mechanical stay-clear, end cap, CM02-03,
-!          HCM01-02, end cap, mechanical stay-clear, differential pumping)
-! BC1B   : BC1 chicane
-! COL1   : collimation 1 (includes in-line emittance measurement)
-! L2B    : L2 (differential pumping, mechanical stay-clear, end cap, CM04-15,
-!          end cap, mechanical stay-clear, differential pumping)
-! BC2B   : BC2 chicane
-! EMIT2  : match BC2 to L3 (includes quad-scan emittance measurement station)
-! L3B    : L3 (differential pumping, mechanical stay-clear, end cap, CM16-25,
-!          vacuum break, CM26-23, end cap, mechanical stay-clear, differential
-!          pumping)
-! EXT    : L3B-to-dogleg matching
-! DOG    : dogleg to PEP-II e- bypass line
-! BYP    : bypass line (NIT)
+! GUNB    : cathode to L0
+! L0B     : L0 (end cap, CM01, feed cap, mechanical stay-clear)
+! HTR_1   : L0 to LEI merge point (emittance measurement)
+! HTR_2   : LEI merge point to laser heater (chicane, extraction to DIAG0)
+! COL0    : collimation 0
+! L1B     : L1 (differential pumping, mechanical stay-clear, feed cap, CM02-03,
+!           HCM01-02, feed cap, mechanical stay-clear, differential pumping)
+! BC1B    : BC1 chicane
+! COL1    : collimation 1 (includes in-line emittance measurement)
+! L2B     : L2 (differential pumping, mechanical stay-clear, feed cap, CM04-15,
+!           feed cap, mechanical stay-clear, differential pumping)
+! BC2B    : BC2 chicane
+! EMIT2   : match BC2 to L3 (includes quad-scan emittance measurement station)
+! L3B     : L3 (differential pumping, mechanical stay-clear, feed cap, CM16-25,
+!           vacuum break, CM26-35, end cap, mechanical stay-clear)
+! BR3B    : drift to L4 (vacuum components)
+! L4B     : L4 (mechanical stay-clear, feed cap, CM37-48,vacuum break, CM49-59,
+!           end cap, mechanical stay-clear, differential pumping)
+! EXT     : L4B-to-dogleg matching
+! DOG     : dogleg to PEP-II e- bypass line
+! BYP     : bypass line (NIT)
 ! ------------------------------------------------------------------------------
-! SC linac to HXR areas
+! SC bypass line to SXR areas
 ! ------------------------------------------------------------------------------
-! SPH    : HXR spreader kickers to start of BSY
-! SLTH   : start of BSY to SC/Cu linac merge
-! BSYH_1 : SC/Cu linac merge to A-line kickers
-! BSYH_2 : A-line kickers to end of BSY
-! LTUH   : HXR LTU (from d/s end of muon wall)
-! UNDH   : HXR undulator
-! DMPH_1 : HXR post-undulator line
-! DMPH_2 : HXR dump line
-! SFTH_1 : BYDSH u/s face to BXPM1 u/s face
-! SFTH_2 : BXPM1 u/s face to HXR safety dump
-! HXTES  : HXR XTES system (BSY coordinate SURVEY only)
+! SPS     : SXR spreader kickers to start of BSY
+! SLTS    : start of BSY to Cu/SC linac merge
+! BSYS    : Cu/SC merge to end of BSY
+! LTUS    : SXR LTU (from d/s end of muon wall)
+! UNDS    : SXR extension + SXR undulator
+! DMPS_1  : SXR post-undulator line
+! DMPS_2  : SXR dump line
+! SFTS_1  : BYDSS u/s face to BXPM1B u/s face
+! SFTS_2  : BXPM1B u/s face to SXR safety dump
+! SXTES_1 : SXR XTES common line (BSY coordinate SURVEY only)
+! SXTES_2 : SXR XTES "2.2" line (BSY coordinate SURVEY only)
+! SXTES_3 : SXR XTES TXI line (BSY coordinate SURVEY only)
+! SXTES_4 : SXR XTES TMO line (BSY coordinate SURVEY only)
 ! ------------------------------------------------------------------------------
-! SC linac to SXR areas
+! SC bypass line to HXR areas
 ! ------------------------------------------------------------------------------
-! SPS    : SXR spreader kickers to start of BSY
-! SLTS   : start of BSY to Cu/SC linac merge
-! BSYS   : Cu/SC merge to end of BSY
-! LTUS   : SXR LTU (from d/s end of muon wall)
-! UNDS   : SXR extension + SXR undulator
-! DMPS_1 : SXR post-undulator line
-! DMPS_2 : SXR dump line
-! SFTS_1 : BYDSS u/s face to BXPM1B u/s face
-! SFTS_2 : BXPM1B u/s face to SXR safety dump
-! SXTES  : SXR XTES system (BSY coordinate SURVEY only)
+! SPH     : HXR spreader kickers to start of BSY
+! SLTH    : start of BSY to SC/Cu linac merge
+! BSYH_1  : SC/Cu linac merge to A-line kickers
+! BSYH_2  : A-line kickers to end of BSY
+! LTUH    : HXR LTU (from d/s end of muon wall)
+! UNDH    : HXR undulator
+! DMPH_1  : HXR post-undulator line
+! DMPH_2  : HXR dump line
+! SFTH_1  : BYDSH u/s face to BXPM1 u/s face
+! SFTH_2  : BXPM1 u/s face to HXR safety dump
+! HXTES_1 : HXR XTES common line (BSY coordinate SURVEY only)
+! HXTES_2 : HXR XTES main line (BSY coordinate SURVEY only)
+! HXTES_3 : HXR XTES TXI (BSY coordinate SURVEY only)
 ! ------------------------------------------------------------------------------
-! SC linac to BSY dump areas
+! SC bypass line to BSY dump areas
 ! ------------------------------------------------------------------------------
-! SPD_1  : HXR spreader kickers to SXR spreader kickers
-! SPD_2  : SXR spreader kickers to DASEL kickers
-! SPD_3  : DASEL kickers to start of BSY
-! SLTD   : start of BSY to BSY dump
+! SPD_1   : HXR spreader kickers to SXR spreader kickers
+! SPD_2   : SXR spreader kickers to DASEL kickers
+! SPD_3   : DASEL kickers to start of BSY
+! SLTD    : start of BSY to BSY dump
 ! ------------------------------------------------------------------------------
 ! SC linac to other areas
 ! ------------------------------------------------------------------------------
-! DIAG0  : post laser heater diagnostics line
-! DASEL  : DASEL kickers to A-line merge
+! DIAG0   : post laser heater diagnostics line
+! DASEL   : DASEL kickers to A-line merge ... off project
+! ------------------------------------------------------------------------------
+! Low Emittance Injector areas
+! ------------------------------------------------------------------------------
+! GUNLEI  : cathode to L0LEI
+! L0LEI   : L0LEI (end cap, CM00, feed cap, mechanical stay-clear)
+! LEI_1   : L0LEI to DLI/DIAGI (TCAV)
+! LEI_2   : LEI dogleg (DLI)
+! DIAGI_1 : LEI diagnostics line (emittance measurement)
+! DIAGI_2 : LEI spectrometer line (longitudinal phase space measurement)
 ! ==============================================================================
 
 ! ==============================================================================
@@ -361,24 +396,21 @@
 ! CNT..... = ELEGANT centering element
 ! HOMCM... = standard cryomodule HOM absorber
 ! S....... = sextupole (normal or rolled sextupole, split in half)
+! BHM..... = Beam Halo Monitor (pixel grid)
 ! ==============================================================================
 
 ! ------------------------------------------------------------------------------
 ! switch definitions
 ! ------------------------------------------------------------------------------
 
-! deflector switches
-
-  SETSP  := 0 !deflector switch for HXR/SXR/BSYD spreader
-  SETCUS := 0 !deflector switch for HXR/CUSXR
-  SETDA  := 0 !deflector switch for BSYD/DASEL
-
-! other switches
+  SETSP     := 0 !deflector switch for HXR/SXR/BSYD spreader
+  SETCUS    := 0 !deflector switch for HXR/CUSXR
+  SETDA     := 0 !deflector switch for BSYD/DASEL
 
   SETHXRSS  := 0 !ON/OFF switch for HXR self-seeding chicane
   SETSXRSS  := 0 !ON/OFF switch for SXR self-seeding chicane
   SETPEPX   := 0 !ON/OFF switch for PEPPEx chicane
-  SETCBXFEL := 0 !ON/OFF switch for CBXFEL chicane(s)
+  SETCBXFEL := 0 !ON/OFF switch for CBXFEL chicanes
   SETXL2WIG := 0 !ON/OFF switch for XLEAP-II wiggler
   SETXL2SS  := 0 !ON/OFF switch for XLEAP-II self-seeding chicane
 
@@ -413,41 +445,64 @@
   TWSS0  : BETA0, ENERGY=E0, BETX=BX0, ALFX=AX0, BETY=BY0, ALFY=AY0
   TWSSa  : BETA0, ENERGY=Ei, BETX=BXa, ALFX=AXa, BETY=BYa, ALFY=AYa
   TWSSi  : BETA0, ENERGY=Ei, BETX=BXi, ALFX=AXi, BETY=BYi, ALFY=AYi
-  TWSSmh : BETA0, ENERGY=Ef, BETX=MBETXh, ALFX=MALFXh, BETY=MBETYh, ALFY=MALFYh
   TWSSms : BETA0, ENERGY=Ef, BETX=MBETXs, ALFX=MALFXs, BETY=MBETYs, ALFY=MALFYs
+  TWSSmh : BETA0, ENERGY=Ef, BETX=MBETXh, ALFX=MALFXh, BETY=MBETYh, ALFY=MALFYh
   TWSSP  : BETA0, BETX=TBXSP, BETY=TBYSP, ALFX=TAXSP, ALFY=TAYSP
+  TWSSdl : BETA0, ENERGY=Ef, BETX=BXDLm, ALFX=AXDLm, BETY=BYDLm, ALFY=AYDLm
+
+  TWSS0LEI : BETA0, ENERGY=E0LEI, &
+                    BETX=BX0LEI, ALFX=AX0LEI, BETY=BY0LEI, ALFY=AY0LEI
+  TWSSiLEI : BETA0, ENERGY=Ei, &
+                    BETX=BXiLEI, ALFX=AXiLEI, BETY=BYiLEI, ALFY=AYiLEI
+  TWSSDLI  : BETA0, ENERGY=Ei, BETX=BXDLI, ALFX=AXDLI, BETY=BYDLI, ALFY=AYDLI
 
 ! temporary
 
   TWSSm : BETA0
 
 ! ==============================================================================
-! SUBROUTINEs
+! SUBROUTINEs (only used by makeMatlabModel)
 ! ------------------------------------------------------------------------------
 
-! use QCM01
+  COMMENT !uncomment for makeMatlabModel
 
-  SETQCM01on : SUBROUTINE
-    SET, KQCM01,  0.378216482077
-    SET, KQ0H01, -6.391217650404
-    SET, KQ0H02,  5.905989161645
-    SET, KQ0H03,  2.403934435238
-    SET, KQ0H04, -6.042774733767
-  ENDSUBROUTINE
+    ! laser heater quad settings when using LEI injector (see SETK2scLEI.xsif)
 
-! use QC002 to match into COL0 FODO (set QC005[K1] to FODO value)
+    SETK2scLEI : SUBROUTINE
+     !                 UMHTR ON         UMHTR OFF      
+     !             ----------------  ---------------   
+      SET, KQ0H03,   8.693764058985 !-1.972016666089 !bipolar
+      SET, KQ0H04,  -8.630387065736 ! 5.731356352112 !bipolar
+      SET, KQ0H05,  -1.3070163098   !-7.276835838575 ! 	   
+      SET, KQ0H06,   2.723956117303 ! 5.360723202349 ! 	   
+      SET, KQ0H07,   5.206901207383 ! 0.0            ! 
+      SET, KQ0H08,  -5.661233061408 ! 0.0            ! 
+      SET, KQHD01, -15.323596824    !-7.621793780269 !  	   
+      SET, KQHD02,   8.302246972026 ! 6.185719257111 !  	   
+      SET, KQHD03,  -6.94029719918  !-8.678441968326 !  	   
+      SET, KQHD04,   4.385414807142 ! 6.424722784379 !  	   
+    ENDSUBROUTINE
 
-  SETQC002on : SUBROUTINE
-    SET, KQC001,  5.055115117203 ! 5.135316216759 !
-    SET, KQC002,  0.157983739509 ! 0.0            !
-    SET, KQC003, -5.345027236641 !-5.295950232123 !
-    SET, KQC004,  2.756594856447 ! 2.772436085305 !
-    SET, KQC005, -KQColl0        !-1.796082149685 !
-  ENDSUBROUTINE
+    ! LEI diagnostic line quad settings for mux=1.75*2pi from MTCXDGI to
+    ! OTRDGI1 (see SETK2scDGI.xsif)
+
+    SETK2scDGI : SUBROUTINE
+      SET, KQDGI01,  18.323921222247 ! 18.269820734172
+      SET, KQDGI02, -23.117802905395 !-23.262886130383
+      SET, KQDGI03,  30.893754736678 ! 31.0352417624
+      SET, KQDGI04, -23.486545514224 !-23.116501949529
+      SET, KQDGI05,  13.332818190192 ! 13.314505129786
+      SET, KQDGI08, -13.08267586869  !-13.089934976239
+    ENDSUBROUTINE
+
+  ENDCOMMENT
 
 ! ==============================================================================
 ! for testing the online Matlab model
+! (NOTE: run LCLS-II and LEI separately)
 ! ------------------------------------------------------------------------------
+
+! beam from LCLS-II gun
 
   COMMENT
     BEAM, ENERGY=E0
@@ -459,8 +514,8 @@
     TWISS, BETA0=TWSSi, TAPE="DIAG0i_twiss.tape", &
       RTAPE="DIAG0i_rmat.tape"
 
-    SET, SETSP, SETSPh
     BEAM, ENERGY=E0
+    SET, SETSP, SETSPh
     USE, SC_HXR
     TWISS, COUPLE, BETA0=TWSS0, TAPE="LCLS2scH_twiss.tape", &
       RTAPE="LCLS2scH_rmat.tape"
@@ -469,8 +524,8 @@
     TWISS, BETA0=TWSSi, TAPE="LCLS2scHi_twiss.tape", &
       RTAPE="LCLS2scHi_rmat.tape"
 
-    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
     BEAM, ENERGY=E0
+    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
     USE, SC_SXR
     TWISS, COUPLE, BETA0=TWSS0, TAPE="LCLS2scS_twiss.tape", &
       RTAPE="LCLS2scS_rmat.tape"
@@ -479,18 +534,8 @@
     TWISS, BETA0=TWSSi, TAPE="LCLS2scSi_twiss.tape", &
       RTAPE="LCLS2scSi_rmat.tape"
 
-    SET, SETSP, SETSPd ; SET, SETDA, DAOFF
     BEAM, ENERGY=E0
-    USE, SC_BSYD
-    TWISS, COUPLE, BETA0=TWSS0, TAPE="LCLS2scD_twiss.tape", &
-      RTAPE="LCLS2scD_rmat.tape"
-    BEAM, ENERGY=Ei
-    USE, SC_BSYDi
-    TWISS, BETA0=TWSSi, TAPE="LCLS2scDi_twiss.tape", &
-      RTAPE="LCLS2scDi_rmat.tape"
-
     SET, SETSP, SETSPd ; SET, SETDA, DAON
-    BEAM, ENERGY=E0
     USE, SC_DASEL
     TWISS, COUPLE, BETA0=TWSS0, TAPE="LCLS2scDA_twiss.tape", &
       RTAPE="LCLS2scDA_rmat.tape"
@@ -499,38 +544,125 @@
     TWISS, BETA0=TWSSi, TAPE="LCLS2scDAi_twiss.tape", &
       RTAPE="LCLS2scDAi_rmat.tape"
 
+    BEAM, ENERGY=E0
+    SET, SETSP, SETSPd ; SET, SETDA, DAOFF
+    USE, SC_BSYD
+    TWISS, COUPLE, BETA0=TWSS0, TAPE="LCLS2scD_twiss.tape", &
+      RTAPE="LCLS2scD_rmat.tape"
+    BEAM, ENERGY=Ei
+    USE, SC_BSYDi
+    TWISS, BETA0=TWSSi, TAPE="LCLS2scDi_twiss.tape", &
+      RTAPE="LCLS2scDi_rmat.tape"
+
+    STOP
+  ENDCOMMENT
+
+! beam from LEI gun
+
+  COMMENT
+    BEAM, ENERGY=E0LEI
+   !CALL, FILENAME="SETK2scDGI.xsif" !for mux=1.75*2pi from TCXDGI to OTRDGI1
+    USE, SC_DIAGIS
+    TWISS, COUPLE, BETA0=TWSS0LEI, TAPE="DIAGIS_twiss.tape", &
+      RTAPE="DIAGIS_rmat.tape"
+    BEAM, ENERGY=Ei
+    USE, SC_DIAGISi
+    TWISS, BETA0=TWSSiLEI, TAPE="DIAGISi_twiss.tape", &
+      RTAPE="DIAGISi_rmat.tape"
+
+    CALL, FILENAME="SETK2scLEI.xsif" !required for DIAG02/DIAG0i2, SXR2/SXRi2, HXR2/HXRi2, and BSYD2/BSYDi2
+
+    BEAM, ENERGY=E0LEI
+    USE, SC_DIAG02
+    TWISS, COUPLE, BETA0=TWSS0LEI, TAPE="DIAG02_twiss.tape", &
+      RTAPE="DIAG02_rmat.tape"
+    BEAM, ENERGY=Ei
+    USE, SC_DIAG0i2
+    TWISS, BETA0=TWSSiLEI, TAPE="DIAG02i_twiss.tape", &
+      RTAPE="DIAG02i_rmat.tape"
+
+    SET, SETSP, SETSPh
+    BEAM, ENERGY=E0LEI
+    USE, SC_HXR2
+    TWISS, COUPLE, BETA0=TWSS0LEI, TAPE="LCLS2scH2_twiss.tape", &
+      RTAPE="LCLS2scH2_rmat.tape"
+    BEAM, ENERGY=Ei
+    USE, SC_HXRi2
+    TWISS, BETA0=TWSSiLEI, TAPE="LCLS2scH2i_twiss.tape", &
+      RTAPE="LCLS2scH2i_rmat.tape"
+
+    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
+    BEAM, ENERGY=E0LEI
+    USE, SC_SXR2
+    TWISS, COUPLE, BETA0=TWSS0LEI, TAPE="LCLS2scS2_twiss.tape", &
+      RTAPE="LCLS2scS2_rmat.tape"
+    BEAM, ENERGY=Ei
+    USE, SC_SXRi2
+    TWISS, BETA0=TWSSiLEI, TAPE="LCLS2scS2i_twiss.tape", &
+      RTAPE="LCLS2scS2i_rmat.tape"
+
+    SET, SETSP, SETSPd ; SET, SETDA, DAON
+    BEAM, ENERGY=E0LEI
+    USE, SC_DASEL2
+    TWISS, COUPLE, BETA0=TWSS0LEI, TAPE="LCLS2scDA2_twiss.tape", &
+      RTAPE="LCLS2scDA2_rmat.tape"
+    BEAM, ENERGY=Ei
+    USE, SC_DASELi2
+    TWISS, BETA0=TWSSiLEI, TAPE="LCLS2scDA2i_twiss.tape", &
+      RTAPE="LCLS2scDA2i_rmat.tape"
+
+    SET, SETSP, SETSPd ; SET, SETDA, DAOFF
+    BEAM, ENERGY=E0LEI
+    USE, SC_BSYD2
+    TWISS, COUPLE, BETA0=TWSS0LEI, TAPE="LCLS2scD2_twiss.tape", &
+      RTAPE="LCLS2scD2_rmat.tape"
+    BEAM, ENERGY=Ei
+    USE, SC_BSYDi2
+    TWISS, BETA0=TWSSiLEI, TAPE="LCLS2scD2i_twiss.tape", &
+      RTAPE="LCLS2scD2i_rmat.tape"
+
     STOP
   ENDCOMMENT
 
 ! ==============================================================================
-! COMMANDs
+! COMMANDS
 ! ------------------------------------------------------------------------------
 
   SETPLOT, XSIZE=25.4, YSIZE=20.32
   SETPLOT, LWIDTH=5, LSCALE=1.5, SSCALE=1.5, RSCALE=1.5
   OPTION, ECHO
-
+  
 ! ------------------------------------------------------------------------------
- 
+
  !CALL, FILENAME="LCLS2sc_beams.mad8" !alternate beams & configurations
  !CALL, FILENAME="LCLS2sc_match.mad8"
- CALL, FILENAME="LCLS2sc_makeSymbols.mad8"
+ !CALL, FILENAME="LCLS2sc_makeSymbols.mad8"
  !CALL, FILENAME="LCLS2sc_makeElegant.mad8"
  !CALL, FILENAME="LCLS2sc_XLEAP.mad8" !run by itself
 
 ! ------------------------------------------------------------------------------
 
- !CALL "LCLS2sc_color_plots.mad8" !run by itself (ends with STOP)
- !CALL "LCLS2sc_area_plots.mad8"  !run by itself (ends with STOP)
+ !CALL, FILENAME="SETQCM00on.xsif" !use QCM00
+ !CALL, FILENAME="SETQCM01on.xsif" !use QCM01
+
+! ------------------------------------------------------------------------------
+
+ !CALL, FILENAME="AbendOpti.mad8" !compute Aline LGPS/BTRM settings
+ !CALL, FILENAME="patch.mad8"     !Matching Study or QuadScan
 
 ! ------------------------------------------------------------------------------
 
  !STOP
 
 ! ------------------------------------------------------------------------------
-! SURVEY in linac coordinates
-! ------------------------------------------------------------------------------
 
+ !CALL "LCLS2sc_color_plots.mad8" !run by itself (ends with STOP)
+ !CALL "LCLS2sc_area_plots.mad8"  !run by itself (ends with STOP)
+
+! ==============================================================================
+! Beam from LCLS-II gun (SURVEY in linac coordinates)
+! ------------------------------------------------------------------------------
+  
 ! SXR
 
  !COMMENT
@@ -546,27 +678,22 @@
     PRINT, FULL
     TWISS, SAVE, BETA0=TWSSi, TAPE="LCLS2scS_twiss.tape" !, &
    !  RTAPE="LCLS2scS_rmat.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, VMAX=5, &
-      STYLE=100, SPLINE, RANGE=BEAM0/DUMPFACEB, FILE="LCLS2scS", &
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, VMAX=10, &
+      STYLE=100, SPLINE, RANGE=#S/DUMPFACEB, FILE="LCLS2scS", &
       TITLE="SC-linac to SXR dump"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=BEAM0/DUMPFACEB, FILE="LCLS2scS", &
+      STYLE=100, SPLINE, RANGE=#S/DUMPFACEB, FILE="LCLS2scS", &
       TITLE="SC-linac to SXR dump"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE, RANGE=BEAM0/DUMPFACEB, FILE="LCLS2scS", &
+      STYLE=100, SPLINE, RANGE=#S/DUMPFACEB, FILE="LCLS2scS", &
       TITLE="SC-linac to SXR dump"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=WS31B/DU7S[31], FILE="LCLS2scS", &
-      TITLE="UNDS (SC beam, 4 GeV)"
-   !PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-   !  STYLE=100, SPLINE, RANGE=BEAM0/ENDEXT, FILE="LCLS2scS", &
-   !  TITLE="UNDS (SC beam, 4 GeV, NCELL=9.0)"
-    comment
-      SAVEBETA, TWSSms, MM1B
-      TWISS, COUPLE, BETA0=TWSSi
-      SHOW, TWssms
-    endcomment
- !ENDCOMMENT
+      STYLE=100, SPLINE, RANGE=VBOUTB/SXR47END, FILE="LCLS2scS", &
+      TITLE="VBEND through SXR"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      STYLE=100, SPLINE, RANGE=QSXh44[1]/DUMPFACEB, FILE="LCLS2scS", &
+      TITLE="SXR to Dump"
+!ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
 
@@ -583,7 +710,7 @@
 
 ! ------------------------------------------------------------------------------
 
-! SXR "2.x"
+! SXR 2_X !"2.X"
 
  !COMMENT
     ASSIGN, PRINT="LCLS2scS2_X.print"
@@ -604,7 +731,7 @@
     SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
     USE, SC_STXI
     PRINT, FULL
-    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scSTXI_survey.tape"
+    SURVEY, X0=XGUN, Y0=YGUN, Z0=ZGUN, TAPE="LCLS2scSTXI_survey.tape"
  !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
@@ -637,23 +764,18 @@
     PRINT, FULL
     TWISS, SAVE, BETA0=TWSSi, TAPE="LCLS2scH_twiss.tape" !, &
    !  RTAPE="LCLS2scH_rmat.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, VMAX=5, &
-      STYLE=100, SPLINE, RANGE=BEAM0/DUMPFACE, FILE="LCLS2scH", &
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, VMAX=10, &
+      STYLE=100, SPLINE, RANGE=#S/DUMPFACE, FILE="LCLS2scH", &
       TITLE="SC-linac to HXR dump"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=BEAM0/DUMPFACE, FILE="LCLS2scH", &
+      STYLE=100, SPLINE, RANGE=#S/DUMPFACE, FILE="LCLS2scH", &
       TITLE="SC-linac to HXR dump"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE, RANGE=BEAM0/DUMPFACE, FILE="LCLS2scH", &
+      STYLE=100, SPLINE, RANGE=#S/DUMPFACE, FILE="LCLS2scH", &
       TITLE="SC-linac to HXR dump"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=WS31/DU7H[25], FILE="LCLS2scH", &
-      TITLE="UNDH (SC beam, 4 GeV)"
-
-    VALUE, KQ50Q3,KQ4,KQ5,KQ6,KQA0
-    SAVEBETA, TWSSmh, MM1
-    TWISS, COUPLE, BETA0=TWSSi
-    SHOW, TWSSmh
+      STYLE=100, SPLINE, RANGE=MM2/DU7H[36], FILE="LCLS2scH", &
+      TITLE="VBEND through HXR"
  !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
@@ -673,14 +795,14 @@
     PRINT, FULL
     TWISS, SAVE, BETA0=TWSSi, TAPE="LCLS2scD_twiss.tape" !, &
    !  RTAPE="LCLS2scD_rmat.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, VMAX=5, &
-      STYLE=100, SPLINE, RANGE=BEAM0/DUMPBSY, FILE="LCLS2scD", &
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, &
+      STYLE=100, SPLINE, RANGE=#S/DUMPBSY, FILE="LCLS2scD", &
       TITLE="SC-linac to BSY dump"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=BEAM0/DUMPBSY, FILE="LCLS2scD", &
+      STYLE=100, SPLINE, RANGE=#S/DUMPBSY, FILE="LCLS2scD", &
       TITLE="SC-linac to BSY dump"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE, RANGE=BEAM0/DUMPBSY, FILE="LCLS2scD", &
+      STYLE=100, SPLINE, RANGE=#S/DUMPBSY, FILE="LCLS2scD", &
       TITLE="SC-linac to BSY dump"
  !ENDCOMMENT
 
@@ -701,10 +823,10 @@
     TWISS, SAVE, BETA0=TWSSi, TAPE="DIAG0_twiss.tape" !, &
    !  RTAPE="DIAG0_rmat.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=BEAM0/ENDDIAG0, FILE="DIAG0", &
+      STYLE=100, SPLINE, RANGE=#S/#E, FILE="DIAG0", &
       TITLE="SC-linac to DIAG0"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE, RANGE=BEAM0/ENDDIAG0, FILE="DIAG0", &
+      STYLE=100, SPLINE, RANGE=#S/#E, FILE="DIAG0", &
       TITLE="SC-linac to DIAG0"
  !ENDCOMMENT
 
@@ -725,24 +847,80 @@
     PRINT, FULL
     TWISS, SAVE, BETA0=TWSSi, TAPE="LCLS2scDA_twiss.tape" !, &
    !  RTAPE="LCLS2scDA_rmat.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, VMAX=5, &
-      STYLE=100, SPLINE, RANGE=BEAM0/MADUMP, FILE="LCLS2scDA", &
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, &
+      STYLE=100, SPLINE, RANGE=#S/ROLL2, FILE="LCLS2scDA", &
       TITLE="SC-linac to DASEL"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=BEAM0/MADUMP, FILE="LCLS2scDA", &
+      STYLE=100, SPLINE, RANGE=#S/ROLL2, FILE="LCLS2scDA", &
       TITLE="SC-linac to DASEL"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE, RANGE=BEAM0/MADUMP, FILE="LCLS2scDA", &
+      STYLE=100, SPLINE, RANGE=#S/ROLL2, FILE="LCLS2scDA", &
       TITLE="SC-linac to DASEL"
+    TWISS, COUPLE, SAVE, BETA0=TWSSi
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BEYY, &
+      STYLE=100, SPLINE, RANGE=BEGB/MADUMP, FILE="LCLS2scDA", &
+      TITLE="Aline (relaxed optics)"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      STYLE=100, SPLINE, RANGE=BEGB/MADUMP, FILE="LCLS2scDA", &
+      TITLE="Aline (relaxed optics)"
+ !ENDCOMMENT
+
+! ==============================================================================
+! Beam from LEI gun (SURVEY in linac coordinates)
+! ------------------------------------------------------------------------------
+
+! DIAGIS (to spectrometer)
+
+ !COMMENT
+    ASSIGN, PRINT="DIAGIS.print"
+    BEAM, ENERGY=E0LEI
+   !CALL, FILENAME="SETK2scDGI.xsif" !for mux=1.75*2pi from TCXDGI to OTRDGI1 ... use for BSC
+    USE, SC_DIAGIS
+   !SAVELINE, NAME="DIAGIS", FILENAME="DIAGIS.saveline"
+    PRINT, FULL
+    SURVEY, X0=Xgun2, Y0=Ygun2, Z0=Zgun2, TAPE="DIAGIS_survey.tape"
+    BEAM, ENERGY=Ei
+    USE, SC_DIAGISi
+    PRINT, FULL
+    TWISS, SAVE, BETA0=TWSSiLEI, TAPE="DIAGIS_twiss.tape" !, &
+   !  RTAPE="DIAGIS_rmat.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=BEGSPA/MADUMP, FILE="LCLS2scDA", &
-      TITLE="SC-linac to DASEL"
+      STYLE=100, SPLINE, RANGE=#S/DUMPFACEI, FILE="DIAGIS", &
+      TITLE="DIAGI spectrometer"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE, RANGE=BEGSPA/MADUMP, FILE="LCLS2scDA", &
-      TITLE="SC-linac to DASEL"
+      STYLE=100, SPLINE, RANGE=#S/DUMPFACEI, FILE="DIAGIS", &
+      TITLE="DIAGI spectrometer"
  !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
+
+! DIAG02
+
+ !COMMENT
+    ASSIGN, PRINT="DIAG02.print"
+    BEAM, ENERGY=E0LEI
+    CALL, FILENAME="SETK2scLEI.xsif"
+    USE, SC_DIAG02
+   !SAVELINE, NAME="SC_DIAG02", FILENAME="DIAG02.saveline"
+    PRINT, FULL
+    SURVEY, X0=Xgun2, Y0=Ygun2, Z0=Zgun2, TAPE="DIAG02_survey.tape"
+    BEAM, ENERGY=Ei
+    USE, SC_DIAG0i2
+    PRINT, FULL
+    TWISS, SAVE, BETA0=TWSSiLEI, TAPE="DIAG02_twiss.tape" !, &
+   !  RTAPE="DIAG02_rmat.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=#S/#E, FILE="DIAG02", &
+      TITLE="LEI to DIAG0"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      STYLE=100, SPLINE, RANGE=#S/#E, FILE="DIAG02", &
+      TITLE="LEI to DIAG0"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=#S/ENDLEI_2, FILE="DIAG02", &
+      TITLE="LEI to DIAG0"
+ !ENDCOMMENT
+
+! ==============================================================================
 ! SURVEY in BSY coordinates (from start of spreader)
 ! ------------------------------------------------------------------------------
 
@@ -760,7 +938,7 @@
 
 ! ------------------------------------------------------------------------------
 
-! SXR safety dump
+! SXR safety dump (nominal energy: 8 GeV; energy range: 2-10 GeV)
 
  !COMMENT
     ASSIGN, PRINT="BSY-LCLS2scSS.print"
@@ -830,7 +1008,7 @@
 
 ! ------------------------------------------------------------------------------
 
-! BSY dump
+! BSY DUMP
 
  !COMMENT
     ASSIGN, PRINT="BSY-LCLS2scD.print"
@@ -844,15 +1022,13 @@
 
 ! ------------------------------------------------------------------------------
 
-! DASEL (a.k.a. S30XL, LESA)
+! DASEL (a.k.a. S30XL, LESA ... funded off-project)
 
  !COMMENT
     ASSIGN, PRINT="BSY-LCLS2scDA.print"
     BEAM, ENERGY=Ef
     SET, SETSP, SETSPd ; SET, SETDA, DAON
     USE, BSYLCLS2scDA
-   !MAKESEQUENCE, LABEL="DASEL", REFER="CENTRE"
-   !SAVELINE, NAME="DASEL", FILENAME="DASEL.seq"
     PRINT, FULL
     SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
       TAPE="BSY-LCLS2scDA_survey.tape"
@@ -863,375 +1039,179 @@
   STOP
 
 ! ------------------------------------------------------------------------------
-! LCLS2sc_main working stuff
+! LCLS2sc working stuff
 ! ------------------------------------------------------------------------------
 
-  comment
-    BEAM, ENERGY=E0
-    SET, SETSP, SETSPd ; SET, SETDA, DAON
-    SET, AB7, 0
-    USE, SC_DASEL
-   !VALUE, dSmdw,D126[L],D208[L],D126[L]+D208[L]
-   !VALUE, D127a[L]
-   !VALUE, D204a[L]
-    VALUE, D225[L]
-    MATCH, SURVEY, XS=Xgun, YS=Ygun, ZS=Zgun
-     !VARY, dSmdw, STEP=1.E-6
-     !VARY, D127a[L], STEP=1.E-6
-     !VARY, D204a[L], STEP=1.E-6
-      VARY, D225[L], STEP=1.E-6
-      WEIGHT, ZS=1 !, CIRC=1
-     !CONSTR, A3C1A, CIRC=3373.337145
-     !CONSTR, NOTCHEND, CIRC=3373.404345
-     !CONSTR, ALCOVEEND, CIRC=3380.719545
-      CONSTR, BMDE, ZS=3503.1082
-     !LMDIF, TOL=1.E-201
-     !MIGRAD, TOL=1.E-20
-    ENDMATCH
-   !VALUE, dSmdw,D126[L],D208[L],D126[L]+D208[L]
-   !VALUE, D127a[L]
-   !VALUE, D204a[L]
-    VALUE, D225[L]
+  COMMENT !periodic SXR/HXR cells
+    BEAM, ENERGY=Eu
+    USE, (SXCEL37,SXCEL38,SXCEL39,SXCEL40)
     PRINT, FULL
-    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="survey.tape"
-  endcomment
+    SAVEBETA, TWmS, #E
+    TWISS, SAVE, TAPE="twiss.tape"
+    SHOW, TWmS
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, VMIN=0.0, &
+      STYLE=100, SPLINE, RANGE=#S/#E, FILE="plot", &
+      TITLE="SXR long-period cells (E = 8 GeV ; GLq = 30 kG)"
+    USE, (SXCEL41,SXCEL42,SXCEL43,SXCEL44)
+    PRINT, FULL
+    SAVEBETA, TWmL, #E
+    TWISS, SAVE, TAPE="twiss.tape"
+    SHOW, TWmL
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, VMIN=0.0, &
+      STYLE=100, SPLINE, RANGE=#S/#E, FILE="plot", &
+      TITLE="SXR short-period cells (E= 8 GeV ; GLq= 30 kG)"
+    USE, (HXCEL42,HXCEL43,HXCEL44,HXCEL45)
+    PRINT, FULL
+    SAVEBETA, TWmH, #E
+    TWISS, SAVE, TAPE="twiss.tape"
+    SHOW, TWmH
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, VMIN=0.0, &
+      STYLE=100, SPLINE, RANGE=#S/#E, FILE="plot", &
+      TITLE="HXR cells (E = 8 GeV ; GLq = 30 kG)"
+  ENDCOMMENT
 
-  comment
+! ------------------------------------------------------------------------------
+
+  COMMENT
+    ASSIGN, PRINT="LCLS2SCS.PRINT"
     BEAM, ENERGY=E0
-    SET, SETSP, SETSPd ; SET, SETDA, DAON
-    USE, SC_DASEL
-   !VALUE, DDAS14ac1[L]
-   !VALUE, DDAS14ac[L],DDAS14ac1[L]+DDAS14ac2[L]
-   !VALUE, dSmdw,DDAS21b[L],DDAS21c[L],DDAS21b[L]+DDAS21c[L]
-   !VALUE, D125[L]
-   !VALUE, D126[L]
-   !VALUE, D208[L]
-    VALUE, D225[L]
-    MATCH, SURVEY, XS=Xgun, YS=Ygun, ZS=Zgun
-     !VARY, DDAS14ac1[L], STEP=1.E-6
-     !VARY, D125[L], STEP=1.E-6
-     !VARY, D126[L], STEP=1.E-6
-     !VARY, D208[L], STEP=1.E-6
-      VARY, D225[L], STEP=1.E-6
+    SET, SETSP, SETSPS ; SET, SETCUS, CUSOFF
+    USE, SC_SXR
+    PRINT, FULL
+    SURVEY, X0=XGUN, Y0=YGUN, Z0=ZGUN, TAPE="LCLS2SCS_SURVEY.TAPE"
+  ENDCOMMENT
+
+  COMMENT
+    ASSIGN, PRINT="LCLS2SCH.PRINT"
+    BEAM, ENERGY=E0
+    SET, SETSP, SETSPH
+    USE, SC_HXR
+    PRINT, FULL
+    SURVEY, X0=XGUN, Y0=YGUN, Z0=ZGUN, TAPE="LCLS2SCH_SURVEY.TAPE"
+  ENDCOMMENT
+
+  COMMENT
+    ASSIGN, PRINT="BSY-LCLS2SCH.PRINT"
+    BEAM, ENERGY=EF
+    SET, SETSP, SETSPH
+    USE, BSYLCLS2SCH
+    PRINT, FULL
+    SURVEY, X0=XF, Y0=YF, Z0=ZF, THETA0=THETAF, PHI0=PHIF, PSI0=PSIF, &
+      TAPE="BSY-LCLS2SCH_SURVEY.TAPE"
+  ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+  COMMENT
+    BEAM, ENERGY=E0
+    SET, SETSP, SETSPH
+    USE, SC_HXR
+    MATCH, SURVEY, ZS=ZGUN
+      VARY, DSMDW, STEP=1.E-6
       WEIGHT, ZS=1
-     !CONSTR, WSDAS14, ZS=3046.661
-     !CONSTR, XCDAS19, ZS=3158.000000
-     !CONSTR, D125, ZS=3350.02508
-     !CONSTR, A3C1A, ZS=3357.2266
-     !CONSTR, PIVOT, ZS=3372.6980
-      CONSTR, BMDE, ZS=3503.1082
+     !CONSTR, SSP1H[1], ZS=2847.6166
+     !CONSTR, BPMSP1H,  ZS=2848.1234
+     !CONSTR, XCSP1H,   ZS=2848.7601
+     !CONSTR, XCSP3H,   ZS=2876.5
+     !CONSTR, SSP2H[1], ZS=2877.015
      !LMDIF, TOL=1.E-20
      !MIGRAD, TOL=1.E-20
     ENDMATCH
-   !VALUE, DDAS14ac1[L]
-   !VALUE, DDAS14ac[L],DDAS14ac1[L]+DDAS14ac2[L]
-   !VALUE, dSmdw,DDAS21b[L],DDAS21c[L],DDAS21b[L]+DDAS21c[L]
-   !VALUE, D125[L]
-   !VALUE, D126[L]
-   !VALUE, D208[L]
-    VALUE, D225[L]
-    PRINT, FULL
-    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun
-  endcomment
-
-  comment
     BEAM, ENERGY=E0
-    SET, SETSP, SETSPd ; SET, SETDA, DAON
-    USE, SC_DASEL
-   !VALUE, dSmdw,D126[L],D127[L],D126[L]+D127[L]
-   !VALUE, dSmdw,D128[L],D129[L],D128[L]+D129[L]
-   !VALUE, dSmdw,D129[L],D130[L],D129[L]+D130[L]
-   !VALUE, dSmdw,D130[L],D131[L],D130[L]+D131[L]
-   !VALUE, dSmdw,D131[L],D201[L],D131[L]+D201[L]
-   !VALUE, dSmdw,D201[L],D202[L],D201[L]+D202[L]
-   !VALUE, dSmdw,D202[L],D203[L],D202[L]+D203[L]
-   !VALUE, dSmdw,D203[L],D204[L],D203[L]+D204[L]
-   !VALUE, dSmdw,D204[L],D205[L],D204[L]+D205[L]
-   !VALUE, dSmdw,D205[L],D206[L],D205[L]+D206[L]
-   !VALUE, dSmdw,D206[L],D207[L],D206[L]+D207[L]
-   !VALUE, dSmdw,D207[L],D208[L],D207[L]+D208[L]
-    VALUE, D224[L]
-    MATCH, SURVEY, XS=Xgun, YS=Ygun, ZS=Zgun
-     !VARY, dSmdw, STEP=1.E-6
-      VARY, D224[L], STEP=1.E-6
-      WEIGHT, CIRC=1
-     !CONSTR, IV40, CIRC=3377.660525-18.45*in2m
-     !CONSTR, A3C1B, CIRC=3377.660525+27.43*in2m
-     !CONSTR, A3I1, CIRC=3377.660525+102.97*in2m
-     !CONSTR, A3PR1, CIRC=3377.660525+138.44*in2m
-     !CONSTR, A3PR2, CIRC=3377.660525+170.88*in2m
-     !CONSTR, A3I2, CIRC=3377.660525+211.80*in2m
-     !CONSTR, A3BPM1, CIRC=3377.660525+227.12*in2m
-     !CONSTR, A3BPM2, CIRC=3377.660525+262.25*in2m
-     !CONSTR, A3I3, CIRC=3377.660525+295.04*in2m
-     !CONSTR, IV41, CIRC=3377.660525+303.46*in2m
-     !CONSTR, A3T0, CIRC=3377.660525+319.75*in2m
-     !CONSTR, A3WA1, CIRC=3377.660525+347.68*in2m
-      CONSTR, ESAE, CIRC=3394.662110+168*ft2m
-     !LMDIF, TOL=1.E-201
-     !MIGRAD, TOL=1.E-20
-    ENDMATCH
-   !VALUE, dSmdw,D126[L],D127[L],D126[L]+D127[L]
-   !VALUE, dSmdw,D128[L],D129[L],D128[L]+D129[L]
-   !VALUE, dSmdw,D129[L],D130[L],D129[L]+D130[L]
-   !VALUE, dSmdw,D130[L],D131[L],D130[L]+D131[L]
-   !VALUE, dSmdw,D131[L],D201[L],D131[L]+D201[L]
-   !VALUE, dSmdw,D201[L],D202[L],D201[L]+D202[L]
-   !VALUE, dSmdw,D202[L],D203[L],D202[L]+D203[L]
-   !VALUE, dSmdw,D203[L],D204[L],D203[L]+D204[L]
-   !VALUE, dSmdw,D204[L],D205[L],D204[L]+D205[L]
-   !VALUE, dSmdw,D205[L],D206[L],D205[L]+D206[L]
-   !VALUE, dSmdw,D206[L],D207[L],D206[L]+D207[L]
-   !VALUE, dSmdw,D207[L],D208[L],D207[L]+D208[L]
-    VALUE, D224[L]
+    SET, SETSP, SETSPH
+    USE, SC_HXR
     PRINT, FULL
-    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun
-  endcomment
+    SURVEY, X0=XGUN, Y0=YGUN, Z0=ZGUN
+  ENDCOMMENT
 
-  comment
-    BEAM, ENERGY=Eu
-    USE, SXCEL32
-    PRINT, FULL
-    SURVEY
-    USE, SXCEL33
-    PRINT, FULL
-    SURVEY
-    USE, SXCEL34
-    PRINT, FULL
-    SURVEY
-  endcomment
-
-  comment
-    BEAM, ENERGY=Eu
-    USE, B11_full
-    PRINT, FULL
-    SURVEY, THETA0=ABA/2
-  endcomment
-
-  comment
+  COMMENT
     BEAM, ENERGY=E0
-    SET, SETSP, SETSPd ; SET, SETDA, DAON
-    USE, SC_DASEL
-    PRINT, FULL
-    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="survey.tape"
-  endcomment
-
-! ------------------------------------------------------------------------------
-
-  COMMENT !rematch for dead QCM22
-    BEAM, ENERGY=Ei
-    USE, SC_SXRi
-    SAVEBETA, TWm, CM26BEG
-    TWISS, BETA0=TWSSi
-    SHOW, TWm
-    SET, QCM22[K1], 0
-    SET, QCM23[K1], 0
-    VALUE, QCM20[K1],QCM21[K1],QCM22[K1],QCM23[K1],QCM24[K1],QCM25[K1]
-    MATCH, BETA0=TWSSi
-      VARY, QCM20[K1], STEP=1.E-6, UPPER=0
-      VARY, QCM21[K1], STEP=1.E-6, LOWER=0
-      VARY, QCM24[K1], STEP=1.E-6, UPPER=0
-      VARY, QCM25[K1], STEP=1.E-6, LOWER=0
-      CONSTR, CM26BEG, BETX=TWm[BETX], ALFX=TWm[ALFX], &
-                       BETY=TWm[BETY], ALFY=TWm[ALFY]
-      SIMPLEX, TOL=1.E-20, CALLS=10000
-      LMDIF, TOL=1.E-20, CALLS=10000
-      MIGRAD, TOL=1.E-20, CALLS=10000
-    ENDMATCH
-    VALUE, QCM20[K1],QCM21[K1],QCM22[K1],QCM23[K1],QCM24[K1],QCM25[K1]
-    TWISS, SAVE, BETA0=TWSSi
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=BEGL3B/ENDL3B, FILE="L3B", &
-      TITLE="L3B: QCM22 and QCM23 off"
-  ENDCOMMENT
-
-  COMMENT !William Colocho's match
-    BEAM, ENERGY=Ei
-    USE, SC_SXRi
-    SET, QCM20[K1], -0.208813709813
-    SET, QCM21[K1],  0.30328446035
-    SET, QCM22[K1], -0.235600917364
-    SET, QCM23[K1],  0.0
-    SET, QCM24[K1], -0.150730435467
-    TWISS, SAVE, BETA0=TWSSi
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=BEGL3B/ENDL3B, FILE="L3B", &
-      TITLE="L3B: QCM22 and QCM23 off"
-  ENDCOMMENT
-
-  COMMENT !F-JD's rule-of-thumb match
-    BEAM, ENERGY=Ei
-    USE, SC_SXRi
-    SET, QCM21[K1],  0.185334132537/2
-    SET, QCM22[K1],  0.0
-    SET, QCM23[K1],  0.0
-    SET, QCM24[K1], -0.189977001339/2
-    TWISS, SAVE, BETA0=TWSSi
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=BEGL3B/ENDL3B, FILE="L3B", &
-      TITLE="L3B: QCM22 and QCM23 off"
-  ENDCOMMENT
-
-! @BEAM0:
-! - BETX=9.898319949733, ALFX=-1.895312604539, BmagX= 1.0064
-! - BETY=3.357019824994, ALFY=-0.391485396868, BmagY= 1.6365
-
-  comment !Mike Ehrlichman's match at 75 MeV
-    SET, KQ0H01,  -5.8768  !-6.525507740091
-    SET, KQ0H02,   6.2879  ! 6.335021170323
-    SET, KQ0H03,  -0.85925 !-0.947730849876
-    SET, KQ0H04,   1.0748  !-3.418410369214
-    SET, KQ0H05,  -4.8180  !-7.013523766823
-    SET, KQ0H06,   0.0     ! 1.450322442367
-    SET, KQ0H07,  10.093   ! 7.874726189194
-    SET, KQ0H08, -11.482   !-8.293357257814
-    SET, KQHD01, -12.998   !-8.9263060781  
-    SET, KQHD02,   7.6508  ! 6.460615023279
-    SET, KQHD03,  -8.1152  !-8.534034325807
-    SET, KQHD04,   6.1453  ! 6.807615097128
-    BEAM, ENERGY=Ei
-    USE, SC_DIAG0i
-    VALUE, BXi,AXi,BYi,AYi
-    MATCH, BETA0=TWSSi
-      VARY, BXi, STEP=1.E-6, LOWER=0
-      VARY, AXi, STEP=1.E-6
-      VARY, BYi, STEP=1.E-6, LOWER=0
-      VARY, AYi, STEP=1.E-6
-      CONSTR, HTRUNDB, BETX=BXlh, ALFX=AXlh, BETY=BYlh, ALFY=AYlh
-      LMDIF, TOL=1.E-20, CALLS=10000
-      MIGRAD, TOL=1.E-20, CALLS=10000
-    ENDMATCH
-    VALUE, BXi,AXi,BYi,AYi
-    TWISS, BETA0=TWSSi, SAVE, TAPE="twiss.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=#S/#E, VMIN=0, FILE="match"
-  endcomment
-
-! ------------------------------------------------------------------------------
-
-  comment !SXR FODO (4 GeV, |GLq|=30 kG, VGHPU39, K=5.5, PSPI=1800)
-    BEAM, ENERGY=Ef
-    USE, (SXCEL26,SXCEL27,SXCEL28,SXCEL29, &
-          SXCEL30,SXCEL31,SXCEL32,SXCEL33)
-    SAVEBETA, TWm, #S
-    TWISS, SAVE, TAPE="SXR_twiss.tape", RTAPE="SXR_rmat.tape"
-    SHOW, TWm
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=#S/#E, FILE="SXR_CELL", &
-      TITLE="LCLS-II SXR FODO (30 kG; E=4, KSXU=5.5, PIPSSX=1800)"
-  endcomment
-
-  comment !HXR FODO (4 GeV, |GLq|=30 kG, HGVPU, K=2, PSPI=490)
-    BEAM, ENERGY=Ef
-    USE, (HXCEL14,HXCEL15,HXCEL16,HXCEL17,HXCEL18,HXCEL19)
-    SAVEBETA, TWm, #S
-    TWISS, SAVE, TAPE="HXR_twiss.tape", RTAPE="HXR_rmat.tape"
-    SHOW, TWm
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=#S/#E, FILE="HXR_CELL", &
-      TITLE="LCLS-II HXR FODO (30 kG; E=4, KHXU=2, PIPSHX=490)"
-  endcomment
-
-! ------------------------------------------------------------------------------
-
-  comment
-    BEAM, ENERGY=Ef
-    SET, SETSP, SETSPh
-    USE, BSYLCLS2scH
-   !VALUE, DMUON1[L],DMUON2[L]
-   !VALUE, DMUON3[L],DMUON4[L]
-   !VALUE, D0CB[L]+(DU1H[L]+DU2H[L]+ZB6/2)
-   !VALUE, ZB1toVV+ZB6/2
-   !VALUE, ZB3toVG+ZB6/2
-   !VALUE, ZVVtoB4+ZB6/2
-   !VALUE, DU3hCBb[L]-DU3h[L],DU4hCB[L]-DU4h[L]
-   !VALUE, DU4hCB[L]-DU4h[L],DU5hCB[L]-DU5h[L]
-   !VALUE, D0CB2[L]+(DU1H[L]+DU2H[L]+ZB6/2)
-    MATCH, SURVEY, XS=Xf, YS=Yf, ZS=Zf, THETAS=THETAf, PHIS=PHIf, PSIS=PSIf
-      VARY, dZmdw, STEP=1.E-6
+    SET, SETSP, SETSPS ; SET, SETCUS, CUSOFF
+    USE, SC_SXR
+    VALUE, LDSP3SC,LDSP3SD
+    VALUE, LDSP3SC+LDSP3SD
+    MATCH, SURVEY, ZS=ZGUN
+      VARY, DSMDW, STEP=1.E-6
       WEIGHT, ZS=1
-     !CONSTR, VV999,     ZS=511.930000+2.791885
-     !CONSTR, RFBHX12,   ZS=511.930000+2.97665+LRFBub/2
-     !CONSTR, BCXCBX11a, ZS=511.930000+3.42959
-     !CONSTR, VVCBX11,   ZS=511.930000+3.69228
-     !CONSTR, VGCBX1,    ZS=511.930000+5.61694
-     !CONSTR, VVCBX12,   ZS=511.930000+6.16336
-     !CONSTR, QHXH13[1], ZS=511.930000+6.85541
-     !CONSTR, RFBHX13,   ZS=511.930000+6.98524+LRFBub/2
-     !CONSTR, BCXCBX21a, ZS=511.930000+35.53093
+     !CONSTR, SSP1S[1], ZS=2924.3919
+     !CONSTR, BPMSP1S,  ZS=2924.8986
+     !CONSTR, XCSP1S,   ZS=2925.4987
      !LMDIF, TOL=1.E-20
      !MIGRAD, TOL=1.E-20
     ENDMATCH
-   !VALUE, DMUON1[L],DMUON2[L]
-   !VALUE, DMUON3[L],DMUON4[L]
-   !VALUE, D0CB[L]+(DU1H[L]+DU2H[L]+ZB6/2)
-   !VALUE, ZB1toVV+ZB6/2
-   !VALUE, ZB3toVG+ZB6/2
-   !VALUE, ZVVtoB4+ZB6/2
-   !VALUE, DU3hCBb[L]-DU3h[L],DU4hCB[L]-DU4h[L]
-   !VALUE, DU4hCB[L]-DU4h[L],DU5hCB[L]-DU5h[L]
-   !VALUE, D0CB2[L]+(DU1H[L]+DU2H[L]+ZB6/2)
+    VALUE, LDSP3SC,LDSP3SD
+    VALUE, LDSP3SC+LDSP3SD
+    BEAM, ENERGY=E0
+    SET, SETSP, SETSPS ; SET, SETCUS, CUSOFF
+    USE, SC_SXR
     PRINT, FULL
-    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
-      TAPE="survey.tape"
-  endcomment
+    SURVEY, X0=XGUN, Y0=YGUN, Z0=ZGUN
+  ENDCOMMENT
 
-  comment !use with undhBBA.m (non-BBA)
-    BEAM, ENERGY=Ef
-    SET, SETSP, SETSPh
-    USE, (LTUH,HXRUND,DUMPLINE), RANGE=MM1/#E
-    PRINT, FULL
-    TWISS, BETA0=TWSSmh, SAVE=TWISS, TAPE="twiss.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      STYLE=100, SPLINE, RANGE=QHXh44[1]/DUMPFACE, &
-      TITLE="HXR undulator to Dump, w/o coupling", FILE="match"
-   !TWISS, BETA0=TWSSmh, SAVE=TWISS, COUPLE
-   !PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-   !  STYLE=100, SPLINE, RANGE=QHXh44[1]/DUMPFACE, &
-   !  TITLE="HXR undulator to Dump, with coupling", FILE="match"
-  endcomment
-
-  comment !use with undhBBA.m (BBA)
-    BEAM, ENERGY=Ef
-    SET, SETSP, SETSPh
-    SET, kQHX46, kQDHX !for BBA
-    SET, kQHX47, kQFHX !for BBA
-    USE, (LTUH,HXRUND,DUMPLINE), RANGE=MM1/#E
-    PRINT, FULL
-    TWISS, BETA0=TWSSmh, SAVE=TWISS, TAPE="BBAtwiss.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      STYLE=100, SPLINE, RANGE=QHXh44[1]/DUMPFACE, &
-      TITLE="HXR undulator to Dump (BBA), w/o coupling", FILE="BBAmatch"
-   !TWISS, BETA0=TWSSmh, SAVE=TWISS, COUPLE
-   !PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-   !  STYLE=100, SPLINE, RANGE=QHXh44[1]/DUMPFACE, &
-   !  TITLE="HXR undulator to Dump, with coupling", FILE="BBAmatch"
-  endcomment
-
-! ------------------------------------------------------------------------------
-
-  comment
-    BEAM, ENERGY=Ef
-    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
-    USE, BSYLCLS2scS
-    VALUE, DUSEGS50f[L]
-    MATCH, SURVEY, XS=Xf, YS=Yf, ZS=Zf, THETAS=THETAf, PHIS=PHIf, PSIS=PSIf
-      VARY, DUSEGS50f[L], STEP=1.E-6
+  COMMENT !MATCH SXR RASTERING MAGNET LOCATIONS
+    BEAM, ENERGY=E0
+    SET, SETSP, SETSPS ; SET, SETCUS, CUSOFF
+    USE, SC_SXR
+    VALUE, DD2B2[L],DD2B3[L]
+    MATCH, SURVEY, XS=XGUN, YS=YGUN, ZS=ZGUN
+      VARY, DD2B2[L], STEP=1.E-6
+      VARY, DD2B3[L], STEP=1.E-6
       WEIGHT, ZS=1
-      CONSTR, GJPEPX, ZS=668.030492
+      CONSTR, BKXRASS, ZS=3754.123
+      CONSTR, BKYRASS, ZS=3754.961
       LMDIF, TOL=1.E-20
       MIGRAD, TOL=1.E-20
     ENDMATCH
-    VALUE, DUSEGS50f[L]
+    VALUE, DD2B2[L],DD2B3[L]
+    BEAM, ENERGY=E0
+    USE, SC_SXR
     PRINT, FULL
-    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
-      TAPE="survey.tape"
-    STOP
-  endcomment
+    SURVEY, X0=XGUN, Y0=YGUN, Z0=ZGUN, TAPE="SURVEY.TAPE"
+  ENDCOMMENT
 
-  comment !match SXRSS chicane to dX= 17.0 mm
-    BEAM, ENERGY=Ef
-    VALUE, Ef,Eu
+  COMMENT !MATCH CM001 LOCATION
+    BEAM, ENERGY=E0LEI
+    SET, SETSP, SETSPS ; SET, SETCUS, CUSOFF
+    USE, (GUNLEI,L0LEI)
+    VALUE, DGLEI6[L]
+    MATCH, SURVEY
+      VARY,DGLEI6[L], STEP=1.E-6
+      WEIGHT, ZS=1
+      CONSTR, CAVL001, ZS=6.5+CAVL001[L]/2
+      LMDIF, TOL=1.E-20
+      MIGRAD, TOL=1.E-20
+    ENDMATCH
+    VALUE, DGLEI6[L]
+    BEAM, ENERGY=E0LEI
+    USE, (GUNLEI,L0LEI)
+    PRINT, FULL
+    SURVEY, TAPE="SURVEY.TAPE"
+    STOP
+  ENDCOMMENT
+
+  COMMENT !MATCH CATHODELEI LOCATION
+    BEAM, ENERGY=E0LEI
+    SET, SETSP, SETSPS ; SET, SETCUS, CUSOFF
+    USE, (GUNLEI,L0LEI,LEI,HTR_2)
+    VALUE, ZGUN2
+    MATCH, SURVEY, XS=XGUN2, YS=YGUN2, ZS=ZGUN2
+      VARY, ZGUN2, STEP=1.E-6
+      WEIGHT, ZS=1
+      CONSTR, Q0H03[1], ZS=1.345628800E+01
+      LMDIF, TOL=1.E-20
+      MIGRAD, TOL=1.E-20
+    ENDMATCH
+    VALUE, ZGUN2
+    BEAM, ENERGY=E0LEI
+    USE, (GUNLEI,L0LEI,LEI,HTR_2)
+    PRINT, FULL
+    SURVEY, X0=XGUN2, Y0=YGUN2, Z0=ZGUN2, TAPE="SURVEY.TAPE"
+    STOP
+  ENDCOMMENT
+
+  COMMENT !MATCH SXRSS CHICANE TO DX= 17.0 MM
+    BEAM, ENERGY=EF
+    VALUE, EF,EU
     SET, SETSXRSS, 1
     USE, SCHICANE
     VALUE, AB5,BLB5
@@ -1245,141 +1225,241 @@
     VALUE, AB5,BLB5
     PRINT, FULL
     SURVEY
-  endcomment
-
-  comment
-    BEAM, ENERGY=E0
-    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
-    USE, SC_SXR
-    VALUE, DWSDUMPa1[L]
-    MATCH, SURVEY, XS=Xgun, YS=Ygun, ZS=Zgun
-      VARY, DWSDUMPa1[L], STEP=1.E-6
-      WEIGHT, ZS=1
-      CONSTR, PCEBDB, ZS=0.3048*12340.17
-      LMDIF, TOL=1.E-20
-      MIGRAD, TOL=1.E-20
-    ENDMATCH
-    VALUE, DWSDUMPa1[L]
-    BEAM, ENERGY=E0
-    USE, SC_SXR
-    PRINT, FULL
-    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="survey.tape"
-  endcomment
+  ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
 
-  SET, AB5, 0 !SXRSS off
+  SET, AB5, 0 !SXRSS OFF
   BEAM, ENERGY=4.0
   USE, SXCEL35
   PRINT, FULL
-  SURVEY, TAPE="LCLS2scS_survey4.tape"
+  SURVEY, TAPE="LCLS2SCS_SURVEY4.TAPE"
 
-  SET, AB5, -1.279114e-02 !bend angle (rad) for BL= 2.56 kG-m (9 A) @ 6 GeV
+  SET, AB5, -1.279114E-02 !BEND ANGLE (RAD) FOR BL= 2.56 KG-M (9 A) @ 6 GEV
   BEAM, ENERGY=6.0
   USE, SXCEL35
   PRINT, FULL
-  SURVEY, TAPE="LCLS2scS_survey6.tape"
+  SURVEY, TAPE="LCLS2SCS_SURVEY6.TAPE"
 
-  SET, AB5, -8.527430e-03 !bend angle (rad) for BL= 2.56 kG-m (9 A) @ 9 GeV
+  SET, AB5, -8.527430E-03 !BEND ANGLE (RAD) FOR BL= 2.56 KG-M (9 A) @ 9 GEV
   BEAM, ENERGY=9.0
   USE, SXCEL35
   PRINT, FULL
-  SURVEY, TAPE="LCLS2scS_survey9.tape"
+  SURVEY, TAPE="LCLS2SCS_SURVEY9.TAPE"
 
 ! ------------------------------------------------------------------------------
 
-  comment !LCLS2scD
+  COMMENT
     BEAM, ENERGY=E0
-    SET, SETSP, SETSPd ; SET, SETDA, DAOFF
-    USE, SC_BSYD
-    VALUE, LDSPBK5ha
-   !VALUE, LDSPQ1a
-   !VALUE, LDSPQ2c
-   !VALUE, LDSPBK5sa
-   !VALUE, LDSP3dd
-   !VALUE, LDSP5dd
-    MATCH, SURVEY, XS=Xgun, YS=Ygun, ZS=Zgun
-      VARY, LDSPBK5ha, STEP=1.E-6
-     !VARY, LDSPQ1a,   STEP=1.E-6
-     !VARY, LDSPQ2c,   STEP=1.E-6
-     !VARY, LDSPBK5sa, STEP=1.E-6
-     !VARY, LDSP3dd,   STEP=1.E-6
-     !VARY, LDSP5dd,   STEP=1.E-6
+    SET, SETSP, SETSPS ; SET, SETCUS, CUSOFF
+    USE, SC_SXR
+   !SET, SETSP, SETSPH
+   !USE, SC_HXR
+   !VALUE, DBD1E[L]
+   !VALUE, DBD2B[L]
+   !VALUE, DBD6E[L]
+   !VALUE, LDSP5HB
+   !VALUE, LDSP3SA,LDSP3SB
+   !VALUE, LDSP3SB,LDSP3SC
+    VALUE, LDSP12SC
+    MATCH, SURVEY, XS=XGUN, YS=YGUN, ZS=ZGUN
+     !VARY, DBD1E[L], STEP=1.E-6
+     !VARY, DBD2B[L], STEP=1.E-6
+     !VARY, DBD6E[L], STEP=1.E-6
+     !VARY, LDSP5HB,  STEP=1.E-6
+     !VARY, DLMDW,    STEP=1.E-6
+      VARY, LDSP12SC, STEP=1.E-6
       WEIGHT, ZS=1
-      CONSTR, BPMSPH,  ZS=2789.98063   !2790.043003
-     !CONSTR, BPMSP1,  ZS=2826.799175  !2826.876003
-     !CONSTR, BPMSP2,  ZS=2850.553142  !2850.586903
-     !CONSTR, BPMSPS,  ZS=2877.1781665 !2877.219003
-     !CONSTR, BPMSP2D, ZS=2962.143405  !2962.172603
-     !CONSTR, BPMSP3D, ZS=3040.93406   !3040.884777
+     !CONSTR, SDOG1[1], ZS= 974.5994
+     !CONSTR, YCDOG2,   ZS= 976.5043
+     !CONSTR, SDOG2[1], ZS=1022.6986
+     !CONSTR, SSP2H[1], ZS=2876.9646
+     !CONSTR, SSP1S[1], ZS=2924.3411
+     !CONSTR, BPMSP1S,  ZS=2924.8478
+      CONSTR, SSP2S[1], ZS=3004.8568
+      LMDIF, TOL=1.E-20
+      MIGRAD, TOL=1.E-20
+    ENDMATCH
+   !VALUE, DBD1E[L]
+   !VALUE, DBD2B[L]
+   !VALUE, DBD6E[L]
+   !VALUE, LDSP5HB
+   !VALUE, LDSP3SA,LDSP3SB
+   !VALUE, LDSP3SB,LDSP3SC
+    VALUE, LDSP12SC
+    PRINT, FULL
+    SURVEY, X0=XGUN, Y0=YGUN, Z0=ZGUN, TAPE="SURVEY.TAPE"
+  ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+  COMMENT
+    BEAM, ENERGY=E0
+    SET, SETSP, SETSPD ; SET, SETDA, DAOFF
+    USE, SC_BSYD
+    VALUE, DZMDW4D
+    MATCH, SURVEY, XS=XGUN, YS=YGUN, ZS=ZGUN
+      VARY, DZMDW4D, STEP=1.E-6
+      WEIGHT, ZS=1
+      CONSTR, MSC4D, ZS=939.332
      !LMDIF, TOL=1.E-20
      !MIGRAD, TOL=1.E-20
     ENDMATCH
-    VALUE, LDSPBK5ha
-   !VALUE, LDSPQ1a
-   !VALUE, LDSPQ2c
-   !VALUE, LDSPBK5sa
-   !VALUE, LDSP3dd
-   !VALUE, LDSP5dd
-    PRINT, FULL
-    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="survey.tape"
-  endcomment
-
-! ------------------------------------------------------------------------------
+    VALUE, DZMDW4D
+  ENDCOMMENT
 
   COMMENT
-    ASSIGN, PRINT="LCLS2scD.print"
+    ASSIGN, PRINT="LCLS2SCD.PRINT"
     BEAM, ENERGY=E0
-    SET, SETSP, SETSPd ; SET, SETDA, DAOFF
+    SET, SETSP, SETSPD ; SET, SETDA, DAOFF
     USE, SC_BSYD
     PRINT, FULL
-    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scD_survey.tape"
-    BEAM, ENERGY=Ei
-   !SETQCM01on
-    USE, SC_BSYDi
-    PRINT, FULL
-    TWISS, SAVE, BETA0=TWSSi, TAPE="LCLS2scD_twiss.tape" !, &
-   !  RTAPE="LCLS2scD_rmat.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, VMAX=5.0, &
-      STYLE=100, SPLINE, RANGE=#S/ENDEXT, FILE="LCLS2scD", &
-      TITLE="SC-linac to EXT"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, VMIN=0, &
-      STYLE=100, SPLINE, RANGE=#S/ENDCOL0, FILE="LCLS2scD", &
-      TITLE="HTR/COL0"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, VMIN=0, &
-      STYLE=100, SPLINE, RANGE=BEGEXT/OTR31, FILE="LCLS2scD", &
-      TITLE="EXT/DOG"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=#S/DUMPBSY, FILE="LCLS2scD", &
-      TITLE="SC-linac to BSY dump"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE, RANGE=#S/DUMPBSY, FILE="LCLS2scD", &
-      TITLE="SC-linac to BSY dump"
+    SURVEY, X0=XGUN, Y0=YGUN, Z0=ZGUN, TAPE="LCLS2SCD_SURVEY.TAPE"
   ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
 
   COMMENT
-    ASSIGN, PRINT="DIAG0.print"
-    BEAM, ENERGY=Ei
-   !SETQCM01on
-    USE, (LCLS2scI,HTR)
-    SAVEBETA, TWSSm, #E
-    TWISS, COUPLE, BETA0=TWSSi
-    BEAM, ENERGY=TWSSm[ENERGY]
-   !MMQDG007
-    USE, DIAG0
-    PRINT, FULL
-    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zdg0, TAPE="survey.tape"
-    TWISS, COUPLE, SAVE, TAPE="twiss.tape", RTAPE="rmat.tape", &
-      BETX=TWSSm[BETX], ALFX=TWSSm[ALFX], BETY=TWSSm[BETY], ALFY=TWSSm[ALFY]
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=#S/#E, FILE="plot", &
-      TITLE="DIAG0"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, -SPLINE, RANGE=#S/#E, FILE="plot", &
-      TITLE="DIAG0"
+    VALUE, BRHOI*KSDLI1*LSB,(CB*0.15)*KSDLI1*LSB
+    VALUE, BRHOI*KSDLI2*LSB,(CB*0.15)*KSDLI2*LSB
   ENDCOMMENT
+
+ !CALL, FILENAME="LEI_MATCH.MAD8"
+ !CALL, FILENAME="LEI_MATCH_ALT.MAD8"
+ !CALL, FILENAME="JIQIANG.MAD8"
+
+! ------------------------------------------------------------------------------
+
+  COMMENT
+    BEAM, ENERGY=E0LEI
+    USE, SC_DIAG02
+    PRINT, FULL
+    SURVEY, X0=XGUN2, Y0=YGUN2, Z0=ZGUN2, TAPE="DIAG02_SURVEY.TAPE"
+    BEAM, ENERGY=EI
+    USE, LEI_2
+    TWISS, BETA0=TWSSDLI, TAPE="TWISS.TAPE", RTAPE="RMAT.TAPE"
+    USE, LEI_2_PLOT
+    PRINT, FULL
+    TWISS, SAVE, BETA0=TWSSDLI
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, FILE="PLOT", &
+      TITLE="LCLS-II-HE: LEI DOGLEG ALTERNATE LAYOUT (R56 = -12.124 MM)"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      STYLE=100, SPLINE, FILE="PLOT", &
+      TITLE="LCLS-II-HE: LEI DOGLEG ALTERNATE LAYOUT (R56 = -12.124 MM)"
+    TWISS, CHROM, SAVE, BETA0=TWSSDLI, TAPE="CHROM.TAPE"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DDX,DDY, &
+      STYLE=100, SPLINE, FILE="PLOT", &
+      TITLE="LCLS-II-HE: LEI DOGLEG ALTERNATE LAYOUT (R56 = -12.124 MM)"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=WX,WY, &
+      STYLE=100, SPLINE, FILE="PLOT", &
+      TITLE="LCLS-II-HE: LEI DOGLEG ALTERNATE LAYOUT (R56 = -12.124 MM)"
+    BEAM, ENERGY=EI
+    USE, LEI_2
+    MATCH, BETA0=TWSSDLI
+      WEIGHT, I2=1, I5=1, I5I2=1
+      TMATRIX, #S/#E, TM(6,6,6)=0
+      RMATRIX, #S/#E, RM(6,6)=1
+    ENDMATCH
+    USE, SC_DIAG02I
+    TWISS, SAVE, BETA0=TWSSILEI
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, FILE="PLOT", &
+      TITLE="LCLS-II-HE: LEI DOGLEG ALTERNATE LAYOUT (R56 = -12.124 MM)"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      STYLE=100, SPLINE, FILE="PLOT", &
+      TITLE="LCLS-II-HE: LEI DOGLEG ALTERNATE LAYOUT (R56 = -12.124 MM)"
+    USE, SC_DIAGISI
+    TWISS, SAVE, BETA0=TWSSILEI
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, FILE="PLOT", &
+      TITLE="LCLS-II-HE: LEI DIAGNOSTIC/SPECTROMETER LINE"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      STYLE=100, SPLINE, FILE="PLOT", &
+      TITLE="LCLS-II-HE: LEI DIAGNOSTIC/SPECTROMETER LINE"
+    BEAM, ENERGY=E0LEI
+    USE, SC_DIAGIS
+    PRINT, FULL
+    SURVEY, X0=XGUN2, Y0=YGUN2, Z0=ZGUN2, TAPE="DIAGIS_SURVEY.TAPE"
+  ENDCOMMENT
+
+ !STOP
+
+! ------------------------------------------------------------------------------
+
+! FOR LEI_LAYOUT.M
+
+  COMMENT ! DIAG0
+    ASSIGN, PRINT="DIAG0.PRINT"
+    BEAM, ENERGY=E0
+    USE, SC_DIAG0
+    PRINT, FULL
+    SURVEY, X0=XGUN, Y0=YGUN, Z0=ZGUN, TAPE="DIAG0_SURVEY.TAPE"
+    ASSIGN, PRINT="DIAG02.PRINT"
+    BEAM, ENERGY=E0LEI
+    USE, SC_DIAG02
+    PRINT, FULL
+    SURVEY, X0=XGUN2, Y0=YGUN2, Z0=ZGUN2, TAPE="DIAG02_SURVEY.TAPE"
+    ASSIGN, PRINT="DIAGIS.PRINT"
+    BEAM, ENERGY=E0LEI
+    USE, SC_DIAGIS
+    PRINT, FULL
+    SURVEY, X0=XGUN2, Y0=YGUN2, Z0=ZGUN2, TAPE="DIAGIS_SURVEY.TAPE"
+  ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+ !COMMENT
+    BEAM, ENERGY=E0
+    SET, SETSP, SETSPS ; SET, SETCUS, CUSOFF
+    USE, SC_SXR
+    VALUE, LDSP12SC
+    MATCH, SURVEY, XS=XGUN, YS=YGUN, ZS=ZGUN
+      VARY, LDSP12SC, STEP=1.E-6
+      WEIGHT, ZS=1
+      CONSTR, SSP2S[1], ZS=3004.8309
+      LMDIF, TOL=1.E-20
+      MIGRAD, TOL=1.E-20
+    ENDMATCH
+    VALUE, LDSP12SC
+    PRINT, FULL
+    SURVEY, X0=XGUN, Y0=YGUN, Z0=ZGUN, TAPE="SURVEY.TAPE"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+  COMMENT
+    BEAM, ENERGY=E0
+    SET, SETSP, SETSPS ; SET, SETCUS, CUSOFF
+    USE, SC_SXR
+    PRINT, FULL
+    SURVEY, X0=XGUN, Y0=YGUN, Z0=ZGUN, TAPE="SURVEY.TAPE"
+    TWISS, COUPLE, SAVE, BETA0=TWSS0, TAPE="TWISS.TAPE", RTAPE="RMAT.TAPE"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, VMIN=0, VMAX=10, &
+      STYLE=100, SPLINE, RANGE=BEAM0/BEGDOG, FILE="PLOT", &
+      TITLE="LCLS-II-HE: BEAM0 TO EXT"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=BEAM0/BEGDOG, FILE="PLOT", &
+      TITLE="LCLS-II-HE: BEAM0 TO EXT"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=VBOUTB/DU7S[32], FILE="PLOT", &
+      TITLE="LCLS-II-HE: VBEND THROUGH SXR"
+  ENDCOMMENT
+
+ !COMMENT !
+    BEAM, ENERGY=E0LEI
+    CALL, FILENAME="SETK2scLEI.xsif"
+    USE, SC_DIAG02
+    PRINT, FULL
+    SURVEY, X0=XGUN2, Y0=YGUN2, Z0=ZGUN2, TAPE="SURVEY.TAPE"
+    TWISS, SAVE, BETA0=TWSS0LEI, TAPE="TWISS.TAPE", RTAPE="RMAT.TAPE"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
+      STYLE=100, SPLINE, RANGE=#S/#E, FILE="PLOT", &
+      TITLE="LCLS-II-HE: DIAG02"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=#S/#E, FILE="PLOT", &
+      TITLE="LCLS-II-HE: DIAG02"
+ !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
 

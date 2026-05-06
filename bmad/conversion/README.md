@@ -8,12 +8,16 @@
       - Using dist_source_me is discouraged, as it can cause the wrong libraries to be used by pytao because it results in a mixed conda / bmad repo environment.
 3. Run $LCLS_LATTICE/bmad/conversion/slac_to_bmad.py
 4. Check if beginning twiss in `bmad/master/gunb/beginning_BEGGUNB.bmad` need to be updated from BX0, AX0, etc. in `mad/LCLS2sc_master.xsif`
-5. from `$LCLS_LATTICE` run `pytest`
-6. Update plots
-   - `python/scripts/make_bmad_plots.py`
-   - `python/scripts/make_mad_plots.py`
-   - `python/scripts/residuals.py`
-   - `mv beta_*.png residual_*.png docs/plots`
+5. Rematch SC ENDL1B using sc_sxr/tao.init q_L1[2:5] and L1[1:6].  L1 data updated from ENDL1B in mad/SC_SXR_GUN_CI
+6. Manually update `CuH_SC_QUADS.bmad` and `CuS_SC_QUADS.bmad` from `mad/LCLS2cu_main.mad8`
+7. from `$LCLS_LATTICE` run `pytest`
+8. Update plots
+   - python/scripts/artifacts/make_bmad_plots.py
+   - mv beta_*.png docs/plots
+   - python/scripts/artifacts/make_mad_plots.py
+   - mv beta_*.png docs/plots
+   - python/scripts/artifacts/residuals.py
+   - mv residual_*.png docs/plots
 
 # Check into repo
 1. Trigger the Make Optics Plots action for the pre-release branch.

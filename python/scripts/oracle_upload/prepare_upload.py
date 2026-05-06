@@ -92,7 +92,7 @@ def roundoff(val, prec=None):
 
 script_dir = Path(__file__).parent.resolve()
 
-optics='12DEC2025s'
+optics='04MAY2026s'
 vfile=['LCLS2sc_value.echo','LCLS2cu_value.echo']
 
 outdir='oracle_upload'
@@ -124,12 +124,14 @@ file_roots = [
     {'root':'LCLS2scH',     'beg':'BEGSPH',       'end':'ENDSLTH',     'ix':6},      #  6
     {'root':'LCLS2scD',     'beg':'BEGSPD_2',     'end':'ENDSLTD',     'ix':7},      #  7
     {'root':'DIAG0',        'beg':'BEGDIAG0',     'end':'ENDDIAG0',    'ix':8},      #  8
-    {'root':'LCLS2scDA',    'beg':'BEGSPA',       'end':'ENDESA',      'ix':9},      #  9 (DASEL)
+    {'root':'LCLS2scDA',    'beg':'BEGSPA',       'end':'ENDESA',      'ix':9},      #  9 (LESA)
     {'root':'LCLS2cuH',     'beg':'BEGGUN',       'end':'ENDDMPH_2',   'ix':10},     # 10
     {'root':'LCLS2cuHS',    'beg':'BEGSFTH_1',    'end':'ENDSFTH_2',   'ix':11},     # 11
     {'root':'LCLS2cuS',     'beg':'BEGCLTS',      'end':'ENDCLTS',     'ix':14},     # 14
     {'root':'LCLS2cuGSPEC', 'beg':'BEGGSPEC',     'end':'ENDGSPEC',    'ix':15},     # 15
     {'root':'LCLS2cuSPEC',  'beg':'BEGSPEC',      'end':'ENDSPEC',     'ix':16},     # 16
+    {'root':'DIAG02',       'beg':'BEGGUNLEI',    'end':'ENDLEI_2',    'ix':17},     # 17
+    {'root':'DIAGIS',       'beg':'BEGDIAGI_1',   'end':'ENDDIAGI_2',     'ix':18},     # 18
 ]
 
 bsy_file_roots = [
@@ -137,7 +139,7 @@ bsy_file_roots = [
     {'root':'LCLS2scSS',    'beg':'BEGSFTS_1',    'end':'ENDSFTS_2',   'ix':2},      #  2
     {'root':'LCLS2scH',     'beg':'BEGSPH',       'end':'ENDSLTH',     'ix':6},      #  6
     {'root':'LCLS2scD',     'beg':'BEGSPD_2',     'end':'ENDSLTD',     'ix':7},      #  7
-    {'root':'LCLS2scDA',    'beg':'BEGSPA',       'end':'ENDESA',      'ix':9},      #  9 (DASEL)
+    {'root':'LCLS2scDA',    'beg':'BEGSPA',       'end':'ENDESA',      'ix':9},      #  9 (LESA)
     {'root':'LCLS2cuH',     'beg':'BEGCLTH_0',    'end':'ENDDMPH_2',   'ix':10},     # 10
     {'root':'LCLS2cuHS',    'beg':'BEGSFTH_1',    'end':'ENDSFTH_2',   'ix':11},     # 11
     {'root':'LCLS2cuS',     'beg':'BEGCLTS',      'end':'ENDCLTS',     'ix':14},     # 14
@@ -151,7 +153,7 @@ und_file_roots = []
 area = []
 area.append({'name': 'GUNB', 'beg': 'BEGGUNB', 'end': 'ENDGUNB', 'offset': [0, 0]})
 area.append({'name': 'L0B', 'beg': 'BEGL0B', 'end': 'ENDL0B', 'offset': [0, 0]})
-area.append({'name': 'HTR', 'beg': 'BEGHTR', 'end': 'ENDHTR', 'offset': [0, 0]})
+area.append({'name': 'HTR', 'beg': 'BEGHTR_1', 'end': 'ENDHTR_1', 'offset': [0, 0]})
 area.append({'name': 'COL0', 'beg': 'BEGCOL0', 'end': 'ENDCOL0', 'offset': [0, 0]})
 area.append({'name': 'L1B', 'beg': 'BEGL1B', 'end': 'ENDL1B', 'offset': [0, 0]})
 area.append({'name': 'BC1B', 'beg': 'BEGBC1B', 'end': 'ENDBC1B', 'offset': [0, 0]})
@@ -160,6 +162,8 @@ area.append({'name': 'L2B', 'beg': 'BEGL2B', 'end': 'ENDL2B', 'offset': [0, 0]})
 area.append({'name': 'BC2B', 'beg': 'BEGBC2B', 'end': 'ENDBC2B', 'offset': [0, 0]})
 area.append({'name': 'EMIT2', 'beg': 'BEGEMIT2', 'end': 'ENDEMIT2', 'offset': [0, 0]})
 area.append({'name': 'L3B', 'beg': 'BEGL3B', 'end': 'ENDL3B', 'offset': [0, 0]})
+area.append({'name': 'BR3B', 'beg': 'BEGBR3B', 'end': 'ENDBR3B', 'offset': [0, 0]})
+area.append({'name': 'L4B', 'beg': 'BEGL4B', 'end': 'ENDL4B', 'offset': [0, 0]})
 area.append({'name': 'EXT', 'beg': 'BEGEXT', 'end': 'ENDEXT', 'offset': [0, 0]})
 area.append({'name': 'DOG', 'beg': 'BEGDOG', 'end': 'ENDDOG', 'offset': [0, 0]})
 area.append({'name': 'BYP', 'beg': 'BEGBYP', 'end': 'ENDBYP', 'offset': [0, 0]})
@@ -217,6 +221,13 @@ area.append({'name': 'CLTS', 'beg': 'BEGCLTS', 'end': 'ENDCLTS', 'offset': [0, 0
 area.append({'name': 'GSPEC', 'beg': 'BEGGSPEC', 'end': 'ENDGSPEC', 'offset': [0, 0]})
 # cuSPEC
 area.append({'name': 'SPEC', 'beg': 'BEGSPEC', 'end': 'ENDSPEC', 'offset': [0, 0]})
+# Low Emittance Injector areas
+area.append({'name': 'GUNLEI', 'beg': 'BEGGUNLEI', 'end': 'ENDGUNLEI', 'offset': [0, 0]})
+area.append({'name': 'L0LEI', 'beg': 'BEGL0LEI', 'end': 'ENDL0LEI', 'offset': [0, 0]})
+area.append({'name': 'LEI_1', 'beg': 'BEGLEI_1', 'end': 'ENDLEI_1', 'parent': 'LEI', 'offset': [0, 0]})
+area.append({'name': 'LEI_2', 'beg': 'BEGLEI_2', 'end': 'ENDLEI_2', 'parent': 'LEI', 'offset': [0, 0]})
+area.append({'name': 'DIAGI_1', 'beg': 'BEGDIAGI_1', 'end': 'ENDDIAGI_1', 'parent': 'DIAGI', 'offset': [0, 0]})
+area.append({'name': 'DIAGI_2', 'beg': 'BEGDIAGI_2', 'end': 'ENDDIAGI_2', 'parent': 'DIAGI', 'offset': [0, 0]})
 
 # assign default area "parent" names
 for a in area:
@@ -507,7 +518,7 @@ def read_sector_data():
 
     # read worksheet 1 (scS)
     sheet = wb.worksheets[0]
-    data = sheet['A4':'J72']
+    data = sheet['A4':'J76']
     sector_data = []
     for row in data:
         sector_data.append({

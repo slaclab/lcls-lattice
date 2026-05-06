@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-19DEC2025s ***
+! *** OPTICS=AD_ACCEL-04MAY2026s ***
 
 ! generate output files for RDB generation
 
@@ -15,35 +15,12 @@
   PRINT, FULL
   SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="DIAG0_survey.tape"
 
-  ASSIGN, PRINT="LCLS2scH.print"
-  BEAM, ENERGY=E0
-  SET, SETSP, SETSPh
-  USE, SC_HXR
-  PRINT, FULL
-  SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scH_survey.tape"
-
   ASSIGN, PRINT="LCLS2scS.print"
   BEAM, ENERGY=E0
   SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
   USE, SC_SXR
   PRINT, FULL
   SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scS_survey.tape"
-
-  ASSIGN, PRINT="LCLS2scD.print"
-  BEAM, ENERGY=E0
-  SET, SETSP, SETSPd ; SET, SETDA, DAOFF
-  USE, SC_BSYD
-  PRINT, FULL
-  SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scD_survey.tape"
-
-  ASSIGN, PRINT="LCLS2scDA.print"
-  BEAM, ENERGY=E0
-  SET, SETSP, SETSPd ; SET, SETDA, DAON
-  USE, SC_DASEL
-  PRINT, FULL
-  SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scDA_survey.tape"
-
-! ------------------------------------------------------------------------------
 
   ASSIGN, PRINT="LCLS2scSS.print"
   BEAM, ENERGY=E0
@@ -73,17 +50,46 @@
   PRINT, FULL
   SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scSTMO_survey.tape"
 
+  ASSIGN, PRINT="LCLS2scH.print"
+  BEAM, ENERGY=E0
+  SET, SETSP, SETSPh
+  USE, SC_HXR
+  PRINT, FULL
+  SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scH_survey.tape"
+
+  ASSIGN, PRINT="LCLS2scD.print"
+  BEAM, ENERGY=E0
+  SET, SETSP, SETSPd ; SET, SETDA, DAOFF
+  USE, SC_BSYD
+  PRINT, FULL
+  SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scD_survey.tape"
+
+  ASSIGN, PRINT="LCLS2scDA.print"
+  BEAM, ENERGY=E0
+  SET, SETSP, SETSPd ; SET, SETDA, DAON
+  USE, SC_DASEL
+  PRINT, FULL
+  SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scDA_survey.tape"
+
+! ------------------------------------------------------------------------------
+
+  ASSIGN, PRINT="DIAGIS.print"
+  BEAM, ENERGY=E0LEI
+ !CALL, FILENAME="SETK2scDGI.xsif" !for mux=1.75*2pi from TCXDGI to OTRDGI1
+  USE, SC_DIAGIS
+  PRINT, FULL
+  SURVEY, X0=Xgun2, Y0=Ygun2, Z0=Zgun2, TAPE="DIAGIS_survey.tape"
+
+  ASSIGN, PRINT="DIAG02.print"
+  BEAM, ENERGY=E0LEI
+  CALL, FILENAME="SETK2scLEI.xsif"
+  USE, SC_DIAG02
+  PRINT, FULL
+  SURVEY, X0=Xgun2, Y0=Ygun2, Z0=Zgun2, TAPE="DIAG02_survey.tape"
+
 ! ------------------------------------------------------------------------------
 ! SURVEY tape files (BSY coordinates)
 ! ------------------------------------------------------------------------------
-
-  ASSIGN, PRINT="BSY-LCLS2scH.print"
-  BEAM, ENERGY=Ef
-  SET, SETSP, SETSPh
-  USE, BSYLCLS2scH
-  PRINT, FULL
-  SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
-    TAPE="BSY-LCLS2scH_survey.tape"
 
   ASSIGN, PRINT="BSY-LCLS2scS.print"
   BEAM, ENERGY=Ef
@@ -92,24 +98,6 @@
   PRINT, FULL
   SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
     TAPE="BSY-LCLS2scS_survey.tape"
-
-  ASSIGN, PRINT="BSY-LCLS2scD.print"
-  BEAM, ENERGY=Ef
-  SET, SETSP, SETSPd ; SET, SETDA, DAOFF
-  USE, BSYLCLS2scD
-  PRINT, FULL
-  SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
-    TAPE="BSY-LCLS2scD_survey.tape"
-
-  ASSIGN, PRINT="BSY-LCLS2scDA.print"
-  BEAM, ENERGY=Ef
-  SET, SETSP, SETSPd ; SET, SETDA, DAON
-  USE, BSYLCLS2scDA
-  PRINT, FULL
-  SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
-    TAPE="BSY-LCLS2scDA_survey.tape"
-
-! ------------------------------------------------------------------------------
 
   ASSIGN, PRINT="BSY-LCLS2scSS.print"
   BEAM, ENERGY=Ef
@@ -142,6 +130,30 @@
   PRINT, FULL
   SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
     TAPE="BSY-LCLS2scSTMO_survey.tape"
+
+  ASSIGN, PRINT="BSY-LCLS2scH.print"
+  BEAM, ENERGY=Ef
+  SET, SETSP, SETSPh
+  USE, BSYLCLS2scH
+  PRINT, FULL
+  SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
+    TAPE="BSY-LCLS2scH_survey.tape"
+
+  ASSIGN, PRINT="BSY-LCLS2scD.print"
+  BEAM, ENERGY=Ef
+  SET, SETSP, SETSPd ; SET, SETDA, DAOFF
+  USE, BSYLCLS2scD
+  PRINT, FULL
+  SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
+    TAPE="BSY-LCLS2scD_survey.tape"
+
+  ASSIGN, PRINT="BSY-LCLS2scDA.print"
+  BEAM, ENERGY=Ef
+  SET, SETSP, SETSPd ; SET, SETDA, DAON
+  USE, BSYLCLS2scDA
+  PRINT, FULL
+  SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
+    TAPE="BSY-LCLS2scDA_survey.tape"
 
 ! ------------------------------------------------------------------------------
 ! output values that aren't included in tape-files
@@ -244,7 +256,7 @@
   VALUE, BYSP1DA[FINT]
   VALUE, BYSP2DA[FINT]
 
-! scDA (DASEL+ALINE)
+! scDA (DASEL)
 
   VALUE, BKRDAS1A[FINT]
   VALUE, BKRDAS2A[FINT]
@@ -268,10 +280,10 @@
   VALUE, B24A[FINT] 
   VALUE, B25A[FINT] 
   VALUE, B26A[FINT] 
-  VALUE, BCX3D1A[FINT] 
-  VALUE, BCX3D2A[FINT] 
-  VALUE, BCX3D3A[FINT] 
-  VALUE, BCX3D4A[FINT] 
+  VALUE, BCX3D1A[FINT]
+  VALUE, BCX3D2A[FINT]
+  VALUE, BCX3D3A[FINT]
+  VALUE, BCX3D4A[FINT]
 
 ! DIAG0
 
@@ -280,25 +292,34 @@
   VALUE, BXDG0A[FINT]
   VALUE, BYDG0A[FINT]
 
-! laser heater undulator K-value and period
+! LEI
+
+  VALUE, BXDLI1A[FINT]
+  VALUE, BXDLIR1A[FINT]
+  VALUE, BXDLIR2A[FINT]
+  VALUE, BXDLI2A[FINT]
+
+! DIAGIS
+
+  VALUE, BYDGISA[FINT]
+  VALUE, BYDGIDA[FINT]
+
+! laser heater undulator K-value and period length
 
   UMHTR_K := K_UND ; UMHTR_L := LAM ; VALUE, UMHTR_K,UMHTR_L
 
-! XLEAP-II undulator K-value and period (UMXL2 removed)
+! XLEAP-II undulator K-value and period
 
   UMXL1H_K := Kund ; UMXL1H_L := lamu ; VALUE, UMXL1H_K,UMXL1H_L
   UMXL3H_K := Kund ; UMXL3H_L := lamu ; VALUE, UMXL3H_K,UMXL3H_L
   UMXL4H_K := Kund ; UMXL4H_L := lamu ; VALUE, UMXL4H_K,UMXL4H_L
 
-! XLEAP wiggler K-value and period
+! XLEAP wiggler K-value and period length
 
-  WIGXLH_K := Kwig ; WIGXLH_L := Lwig ; VALUE, WIGXLH_K,WIGXLH_L
+  WIGXLH_K := Kwig ; WIGXLH_L := lamw ; VALUE, WIGXLH_K,WIGXLH_L
 
 ! undulator K-value and period
 
-  UMASXH19_K := KSXU  ; UMASXH19_L := luSXU  ; VALUE, UMASXH19_K,UMASXH19_L
-  UMASXH20_K := KSXU  ; UMASXH20_L := luSXU  ; VALUE, UMASXH20_K,UMASXH20_L
-! -------------------------------------------------------------------------
   UMASXH21_K := KSXU_ ; UMASXH21_L := luSXU_ ; VALUE, UMASXH21_K,UMASXH21_L
   UMASXH22_K := KSXU_ ; UMASXH22_L := luSXU_ ; VALUE, UMASXH22_K,UMASXH22_L
   UMASXH23_K := KSXU_ ; UMASXH23_L := luSXU_ ; VALUE, UMASXH23_K,UMASXH23_L
@@ -317,10 +338,10 @@
   UMASXH36_K := KSXU_ ; UMASXH36_L := LUSXU_ ; VALUE, UMASXH36_K,UMASXH36_L
   UMASXH37_K := KSXU_ ; UMASXH37_L := LUSXU_ ; VALUE, UMASXH37_K,UMASXH37_L
   UMASXH38_K := KSXU_ ; UMASXH38_L := LUSXU_ ; VALUE, UMASXH38_K,UMASXH38_L
+  UMASXH39_K := KSXU_ ; UMASXH39_L := LUSXU_ ; VALUE, UMASXH39_K,UMASXH39_L
+  UMASXH40_K := KSXU_ ; UMASXH40_L := LUSXU_ ; VALUE, UMASXH40_K,UMASXH40_L
+  UMASXH41_K := KSXU_ ; UMASXH41_L := LUSXU_ ; VALUE, UMASXH41_K,UMASXH41_L
 ! -------------------------------------------------------------------------
-  UMASXH39_K := KSXU  ; UMASXH39_L := LUSXU  ; VALUE, UMASXH39_K,UMASXH39_L
-  UMASXH40_K := KSXU  ; UMASXH40_L := LUSXU  ; VALUE, UMASXH40_K,UMASXH40_L
-  UMASXH41_K := KSXU  ; UMASXH41_L := LUSXU  ; VALUE, UMASXH41_K,UMASXH41_L
   UMASXH42_K := KSXU  ; UMASXH42_L := LUSXU  ; VALUE, UMASXH42_K,UMASXH42_L
   UMASXH43_K := KSXU  ; UMASXH43_L := LUSXU  ; VALUE, UMASXH43_K,UMASXH43_L
   UMASXH44_K := KSXU  ; UMASXH44_L := LUSXU  ; VALUE, UMASXH44_K,UMASXH44_L
@@ -328,7 +349,7 @@
   UMASXH46_K := KSXU  ; UMASXH46_L := LUSXU  ; VALUE, UMASXH46_K,UMASXH46_L
   UMASXH47_K := KSXU  ; UMASXH47_L := LUSXU  ; VALUE, UMASXH47_K,UMASXH47_L
 
-! PPM phase shifter K-value and period
+! PPM phase shifter K-value and period length
 
   PSSXH21_K := KPSSX_ ; PSSXH21_L := LUPSSX_ ; VALUE, PSSXH21_K,PSSXH21_L
   PSSXH22_K := KPSSX_ ; PSSXH22_L := LUPSSX_ ; VALUE, PSSXH22_K,PSSXH22_L
@@ -356,6 +377,7 @@
   PSSXH44_K := KPSSX_ ; PSSXH44_L := LUPSSX_ ; VALUE, PSSXH44_K,PSSXH44_L
   PSSXH45_K := KPSSX_ ; PSSXH45_L := LUPSSX_ ; VALUE, PSSXH45_K,PSSXH45_L
   PSSXH46_K := KPSSX_ ; PSSXH46_L := LUPSSX_ ; VALUE, PSSXH46_K,PSSXH46_L
+
 ! ------------------------------------------------------------------------------
 
   STOP

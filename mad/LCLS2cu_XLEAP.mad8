@@ -1,213 +1,60 @@
 
-! *** OPTICS=AD_ACCEL-19DEC2025s ***
+! *** OPTICS=AD_ACCEL-04MAY2026s ***
 
 ! XLEAP-II optics
 
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
-! 27-APR-2025, M. Woodley
-!  * WIGXL is not currently installed
+! 17-MAR-2026, M. Woodley
+!  * given that the XLEAP undulators don't focus, there is only one XLEAP
+!    "configuration" ... XLEAP wiggler ON (gap closed)
 ! ------------------------------------------------------------------------------
-! 25-DEC-2024, M. Woodley
+! 18-SEP-2025, M. Woodley
+!  * WIGXL has been (permanently) reinstalled per Gene Kraft
+! 17-SEP-2025, M. Woodley
+!  * WIGXL is not currently installed
 !  * modified UMXL* undulators don't focus/defocus per A. Marinelli
 ! ------------------------------------------------------------------------------
-! 28-SEP-2024, M. Woodley
-!  * add SXR interspace quadrupoles in cells 17, 18, 20, and 25
-!  * turn ON all SXR quadrupoles in cells 17-25
-!  * remove quadrupole SXR cell 16
+! 31-AUG-2025, M. Woodley
+!  * from ~/git_repos/lcls-lattice/mad/LCLS2cu_XLEAP.mad8
 ! ------------------------------------------------------------------------------
 ! 07-APR-2024, M. Woodley
 !  * remove UMXL2; move WIGXLH from SXR cell 18 to UMXL2 location
 ! ------------------------------------------------------------------------------
 
-  KmaxQA    := 150.00/(Brhof*LQA) !max |K1| @ Ef for 1.26Q12    (165 A bipolar )
   KmaxQE200 := 102.00/(Brhof*LQE) !max |K1| @ Ef for 1.085Q4.31 (200 A bipolar )
   KmaxQE120 :=  67.00/(Brhof*LQE) !max |K1| @ Ef for 1.085Q4.31 (120 A bipolar )
-  KmaxQx    :=  20.00/(Brhof*LQx) !max |K1| @ Ef for 1.26Q3.5   ( 12 A bipolar )
-  KmaxQE110 :=  60.00/(Brhof*LQE) !max |K1| @ Ef for 1.085Q4.31 (110 A unipolar)
-  KmaxQu    :=  40.00/(Brhof*LQu) !max |K1| @ Ef for 0.433Q3.1  (  6 A bipolar )
 
- !VALUE, Ef,KmaxQA,KmaxQE200,KmaxQE120,KmaxQx,KmaxQE110,KmaxQu
-
-  TWM36 : BETA0
-
-  MBETX := 1
-  MALFX := 0
-  MBETY := 1
-  MALFY := 0
+ !VALUE, Ef,KmaxQE200,KmaxQE120
 
 ! ------------------------------------------------------------------------------
 
-  SETXL_8GeV : SUBROUTINE
-    SET, Ef, 8.0 ; SET, Eu, Ef
-   !COMMENT !turn on UMXL1 (default)
-      SET, R11XL1, 1.0   ! 1.024433796036150 
-      SET, R12XL1, Lundh ! 1.678538794967410 
-      SET, R21XL1, 0.0   ! 0.029468846719147 
-      SET, R22XL1, 1.0   ! 1.024433796036150 
-      SET, R33XL1, 1.0   ! 0.975763600637818 
-      SET, R34XL1, Lundh ! 1.651526938083830 
-      SET, R43XL1, 0.0   !-0.028994619806734 
-      SET, R44XL1, 1.0   ! 0.975763600637818 
-      comment !UMXL1 on; WIGXL on (not used ... WIGXL was removed)
-        SET, SETXL2WIG, 1
-        SET, KQEM1B,  1.986268374078
-        SET, KQEM2B, -1.820324864466
-        SET, KQEM3B,  1.250424893771
-        SET, KQEM4B, -0.869813021529
-        SET, KQE31B, +KQED2b
-        SET, KQFXL1,  0.0
-      endcomment
-     !comment !UMXL1 on; WIGXL off (default ... WIGXL was removed)
-        SET, SETXL2WIG, 0
-        SET, KQEM1B,  1.994771712971
-        SET, KQEM2B, -1.80922617804
-        SET, KQEM3B,  1.263611884573
-        SET, KQEM4B, -0.891717464508
-        SET, KQE31B, +KQED2b
-        SET, KQFXL1,  0.0
-     !endcomment
-   !ENDCOMMENT
-   !COMMENT !turn on UMXL3 and UMXL4 (default)
-      SET, R11XL3, 1.0   ! 1.024433796036150
-      SET, R12XL3, Lundh ! 1.678538794967410
-      SET, R21XL3, 0.0   ! 0.029468846719147
-      SET, R22XL3, 1.0   ! 1.024433796036150
-      SET, R33XL3, 1.0   ! 0.975763600637818
-      SET, R34XL3, Lundh ! 1.651526938083830
-      SET, R43XL3, 0.0   !-0.028994619806734
-      SET, R44XL3, 1.0   ! 0.975763600637818
-      SET, R11XL4, R11XL3
-      SET, R12XL4, R12XL3
-      SET, R21XL4, R21XL3
-      SET, R22XL4, R22XL3
-      SET, R33XL4, R33XL3
-      SET, R34XL4, R34XL3
-      SET, R43XL4, R43XL3
-      SET, R44XL4, R44XL3
-     !comment !UMXL3 and UMXL4 on; BCXXL self-seeding chicane on (default)
-        SET, SETXL2SS, 1
-        SET, KQFXL2,  0.0
-        SET, KQE36B, -0.388304969598
-        SET, KQUM1B,  0.573680451818 ! 0.570741007283
-        SET, KQUM2B, -0.842555947792 !-0.855555409053
-        SET, KQUM3B,  0.944730352842 ! 0.937350132723
-        SET, KQUM4B, -0.655377665613 !-0.614118670212
-     !endcomment
-      comment !UMXL3 and UMXL4 on; BCXXL self-seeding chicane off
-        SET, SETXL2SS, 0
-        SET, KQFXL2,  0.0
-        SET, KQE36B, -KQED2b
-        SET, KQUM1B,  0.600110827961 ! 0.598111184552
-        SET, KQUM2B, -0.848777197793 !-0.861207726712
-        SET, KQUM3B,  0.904137698848 ! 0.893162250058
-        SET, KQUM4B, -0.603385379538 !-0.55750962686 
-      endcomment
-   !ENDCOMMENT
-  ENDSUBROUTINE
-
-! ------------------------------------------------------------------------------
-
-  MXL01 : SUBROUTINE !match into XLEAP-II
-    BEAM, ENERGY=E00
-    USE, CU_SXR
-    VALUE, KQEM1B,KQEM2B,KQEM3B,KQEM4B,KQE31B,KQFXL1
-    MATCH, BETA0=TWSSC
+  MXL : SUBROUTINE !match XLEAP-II optics
+    BEAM, ENERGY=Ei
+    USE, LCLS2cuSe
+    VALUE, KQEM1B,KQEM2B,KQEM3B,KQEM4B
+    MATCH, BETA0=TWSSi
       VARY, KQEM1B, STEP=1.E-6, LOWER=-KmaxQE200, UPPER=+KmaxQE200
       VARY, KQEM2B, STEP=1.E-6, LOWER=-KmaxQE200, UPPER=+KmaxQE200
       VARY, KQEM3B, STEP=1.E-6, LOWER=-KmaxQE120, UPPER=+KmaxQE120
       VARY, KQEM4B, STEP=1.E-6, LOWER=-KmaxQE120, UPPER=+KmaxQE120
-     !VARY, KQE31B, STEP=1.E-6, LOWER=-KmaxQx,    UPPER=+KmaxQx
-     !VARY, KQFXL1, STEP=1.E-6, LOWER= 0,         UPPER=+KmaxQE110
-      CONSTR, QEM2B[1], BETX<100, BETY<100
-      CONSTR, QEM3B[1], BETX<100, BETY<100
       WEIGHT, DX=0, DPX=0, DY=0, DPY=0
       CONSTR, QE32B[1], LINE=(QE32B,DQEC,DQEC,QE33B,QE33B,DQEC,DQEC,QE32B)
-      CONSTR, #E, X=0, PX=0, Y=0, PY=0
      !LMDIF, TOL=1.E-20
      !MIGRAD, TOL=1.E-20
     ENDMATCH
-    VALUE, KQEM1B,KQEM2B,KQEM3B,KQEM4B,KQE31B,KQFXL1
-    TWISS, SAVE, BETA0=TWSSC, TAPE="twiss.tape"
+    VALUE, KQEM1B,KQEM2B,KQEM3B,KQEM4B
+    PRINT, FULL
+    TWISS, BETA0=TWSSi, SAVE, TAPE="twiss.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=MM1B/WS34B, &
       STYLE=100, SPLINE, FILE="match"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=VBOUTB/WS34B, &
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=WS31B/SXR47END, &
       STYLE=100, SPLINE, FILE="match"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=VBOUTB/SXR47END, &
-      STYLE=100, SPLINE, FILE="match"
-  ENDSUBROUTINE
-
-  MXL02 : SUBROUTINE !match XLEAP-II into UNDS
-    BEAM, ENERGY=Ef
-    USE, (SXCEL36,SXCEL37)
-    SAVEBETA, TWm36, #S
-    TWISS
-    SET, MBETX, TWm36[BETX]
-    SET, MALFX, TWm36[ALFX]
-    SET, MBETY, TWm36[BETY]
-    SET, MALFY, TWm36[ALFY]
-
-    BEAM, ENERGY=E00
-    USE, CU_SXR
-    VALUE, KQFXL2,KQE36B,KQUM1B,KQUM2B,KQUM3B,KQUM4B
-    MATCH, BETA0=TWSSC
-     !VARY, KQFXL2, STEP=1.E-6, LOWER= 0,         UPPER=+KmaxQE110
-     !VARY, KQE36B, STEP=1.E-6, LOWER=-KmaxQx,    UPPER= 0
-      VARY, KQUM1B, STEP=1.E-6, LOWER=-KmaxQE120, UPPER=+KmaxQE120
-      VARY, KQUM2B, STEP=1.E-6, LOWER=-KmaxQE120, UPPER=+KmaxQE120
-      VARY, KQUM3B, STEP=1.E-6, LOWER=-KmaxQE120, UPPER=+KmaxQE120
-      VARY, KQUM4B, STEP=1.E-6, LOWER=-KmaxQE120, UPPER=+KmaxQE120
-      WEIGHT, X=0, PX=0, BETX=1.E-5, ALFX=0, DX=0, DPX=0
-      WEIGHT, Y=0, PY=0, BETY=1.E-5, ALFY=0, DY=0, DPY=0
-      WEIGHT, T=0, PT=0
-     !comment !long-period
-      COUPLE, QSXh21[1]/QSXh23[1]
-      COUPLE, QSXh22[1]/QSXh24[1]
-      COUPLE, QSXh21[1]/QSXh25[1]
-      COUPLE, QSXh22[1]/QSXh26[1]
-      COUPLE, QSXh21[1]/QSXh27[1]
-      COUPLE, QSXh22[1]/QSXh28[1]
-      COUPLE, QSXh21[1]/QSXh29[1]
-      COUPLE, QSXh22[1]/QSXh30[1]
-      COUPLE, QSXh21[1]/QSXh31[1]
-      COUPLE, QSXh22[1]/QSXh32[1]
-      COUPLE, QSXh21[1]/QSXh33[1]
-      COUPLE, QSXh22[1]/QSXh34[1]
-      COUPLE, QSXh21[1]/QSXh35[1]
-      COUPLE, QSXh22[1]/QSXh36[1]
-      COUPLE, QSXh21[1]/QSXh37[1]
-      COUPLE, QSXh22[1]/QSXh38[1]
-     !endcomment
-     !comment !short-period
-      COUPLE, QSXh39[1]/QSXh41[1]
-      COUPLE, QSXh40[1]/QSXh42[1]
-      COUPLE, QSXh39[1]/QSXh43[1]
-      COUPLE, QSXh40[1]/QSXh44[1]
-      COUPLE, QSXh39[1]/QSXh45[1]
-      COUPLE, QSXh40[1]/QSXh46[1]
-     !endcomment
-      WEIGHT, BETX=1.E-6, BETY=1.E-6
-      CONSTR, QUM1B[1], BETX<75
-      CONSTR, QUM2B[1], BETY<75
-      CONSTR, QUM3B[1], BETX<75
-      CONSTR, QUM4B[1], BETY<75
-      LMDIF, TOL=1.E-20, CALLS=10000
-      MIGRAD, TOL=1.E-20, CALLS=10000
-    ENDMATCH
-    VALUE, KQFXL2,KQE36B,KQUM1B,KQUM2B,KQUM3B,KQUM4B
-    PRINT, FULL
-    TWISS, SAVE, BETA0=TWSSC, TAPE="twiss.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=WS33B/SXR39BEG, FILE="match"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=QE32B[1]/SXR46END, FILE="match"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=VBOUTB/SXR46END, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
-! create ELEGANT beamline (start at WS02)
+! create beamline that starts at WS02
 ! ------------------------------------------------------------------------------
 
   BEGDL1_1e : MARK
@@ -223,25 +70,24 @@
 
 ! ------------------------------------------------------------------------------
 
-! to run XLEAP-II optics, uncomment the SUBROUTINE(s) with the desired
-! undulator(s) turned on (UMXL1 and/or UMXL3&UMXL4); within the selected
-! SUBROUTINE(s), turn on WIGXL and/or BCXLSS chicane
-
   SET, SETCUS, CUSON
-  SETK2cuS
-  SETXL_8GeV
+  CALL, FILENAME="SETK2cuS.xsif"
+  SET, SETXL2WIG,  1
+  SET, KQEM1B,  1.984881258518 ! 1.986297644848
+  SET, KQEM2B, -1.820436227055 !-1.820291710826
+  SET, KQEM3B,  1.250067757678 ! 1.250341381674
+  SET, KQEM4B, -0.869065401564 !-0.86977238973
 
- !MXL01
- !MXL02
+ !MXL
+
+  UMXL1h, TYPE="UMXL1-XL2"
+  UMXL3h, TYPE="UMXL3-XL2"
+  UMXL4h, TYPE="UMXL4-XL2"
+  WIGXLh, TYPE="WIGXL-XL2"
 
  !COMMENT !SXR from Cu linac (XLEAP-II)
-    UMXL1h, TYPE="UMXL1-XL2"
-    UMXL3h, TYPE="UMXL3-XL2"
-    UMXL4h, TYPE="UMXL4-XL2"
-    WIGXLh, TYPE="WIGXL-XL2"
-
     ASSIGN, PRINT="LCLS2cuS-XL2.print"
-    TITLE, "AD_ACCEL: copper linac to SXR (XLEAP)"
+    TITLE, "AD_ACCEL_HE copper linac: WS02 to SXR (XLEAP)"
     BEAM, ENERGY=Ei
     USE, LCLS2cuSe
     PRINT, FULL
@@ -249,14 +95,11 @@
     TWISS, SAVE, BETA0=TWSSi, TAPE="LCLS2cuS-XL2_twiss.tape" !, &
    !  RTAPE="LCLS2cuS-XL2_rmat.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=WS31B/SXR46END, FILE="LCLS2cuS-XL2", &
+      STYLE=100, SPLINE, RANGE=MM2B/SXR40END, FILE="LCLS2cuS-XL2", &
       TITLE="XLEAP-II (from Cu linac): LTUS-UNDS"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, RANGE=MM2B/SXR46END, FILE="LCLS2scS-XL2", &
-      TITLE="XLEAP-II (from SC linac): LTUS-UNDS"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      STYLE=100, SPLINE, RANGE=SXR46END/#E, FILE="LCLS2cuS-XL2", &
-      TITLE="XLEAP-II (from Cu linac): DMPS"
+      STYLE=100, SPLINE, RANGE=WS31B/SXR40END, FILE="LCLS2cuS-XL2", &
+      TITLE="XLEAP-II (from Cu linac): LTUS-UNDS"
  !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------

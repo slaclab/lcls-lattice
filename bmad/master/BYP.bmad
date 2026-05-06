@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-19DEC2025s ***
+! *** OPTICS=AD_ACCEL-04MAY2026s ***
 
 ! LCLS2sc bypass line, plus match to LTU
 
@@ -10,9 +10,17 @@
 !  * add Sector 20 shield wall per A. Ibrahimov and G. Gassner
 ! 20-JUL-2021, M. Woodley
 !  * quad strength changes for Yuri's "symmetric" SPRDs/SPRDh match
-! ------------------------------------------------------------------------------
 ! 11-MAY-2021, M. Woodley
 !  * correct spacing of 2Q4/BPM/XCOR/YCOR per ID drawings
+! ------------------------------------------------------------------------------
+! 22-APR-2021, M. Woodley
+!  * rename BYP wire scanners (and deferred RFBPMs) per N. Lipkowitz
+! 23-MAR-2021, M. Woodley
+!  * tweak DCYfd[L] to get Z=3048.000000 at S100B;
+!    tweak DCYfe[L] to get Z=3765.480536 at ENDDMPS_2
+! ------------------------------------------------------------------------------
+! 08-JUN-2020, M. Woodley
+!  * add 4th NIT line wire scanner ... renumber other MARKERs and RF BPM's
 ! ------------------------------------------------------------------------------
 ! 07-AUG-2019, M. Woodley
 !  * combine BYPi and FODOLa BEAMLINEs (changes Zbyp)
@@ -205,21 +213,21 @@ kqy = 0.060580505638 !45 degree bypass FODO
 qfy: quadrupole, l = lqm/2, type = "PEPII", k1 = kqy, aperture = rqm !dummy magnet
 qdy: quadrupole, l = lqm/2, type = "PEPII", k1 = -kqy, aperture = rqm !dummy magnet
 
-kqbp25 = 0.070273904791
-kqbp26 = -0.10552161126
-kqbp27 = 0.11147451141
-kqbp35 = -0.291127425582
-kqbp28 = 0.323836147473
+kqbp25 = 0.070273904791 ! 0.070273904791
+kqbp26 = -0.105521611254 !-0.105521611251
+kqbp27 = 0.111474511408 ! 0.111474511407
+kqbp35 = -0.29112742557  !-0.291127425572
+kqbp28 = 0.323836147473 ! 0.323836147476
 
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-kqbp36 = 0.581885208949
-kqbp30 = -0.589938332836
-kqbp31 = 0.614211022315
-kqbp32 = -0.490251186947
-kqbp33 = -0.37247651207  !-0.372476510794
-kqbp34 = 0.54911803358  ! 0.549118036482
+kqbp36 = 0.581885208949 ! 0.581885208949
+kqbp30 = -0.589938332836 !-0.589938332836
+kqbp31 = 0.614211022315 ! 0.614211022315
+kqbp32 = -0.490251186947 !-0.490251186947
+kqbp33 = -0.372473815777 !-0.372473586764 !-0.372476510794
+kqbp34 = 0.549116661002 ! 0.54911674268  ! 0.549118036482
 
 qbp13: quadrupole, type = "2Q4", l = lqm/2, k1 = kqy, aperture = rqm
 qbp14: quadrupole, type = "2Q4", l = lqm/2, k1 = -kqy, aperture = rqm
@@ -308,6 +316,8 @@ d2q4ab: drift, l = d2q4a[l]+0.6096
 d2q4c: drift, l = 0.2794
 d2q4d: drift, l = dcy[l]-(d2q4a[l]+d2q4b[l]+d2q4c[l])
 
+dstweak = -0.8e-06 !make scSS Z's equal to 12FEB2024s
+
 ddcyd = 0.0 !adjust Z at BSYEND
 dcyd: drift, l = 35.977199997076 +ddcyd +zqbp31
 dcydb: drift, l = 1.0
@@ -315,10 +325,10 @@ dcyda: drift, l = dcyd[l]-dcydb[l]-ljaw
 dcyfa: drift, l = 1.0
 dcyfb: drift, l = 0.5
 dcyfc: drift, l = 1.0
-dcyfd: drift, l = 5.952523028144 +0.3
-dcyfe: drift, l = 12.43034602883-dcyfa[l]-dcyfb[l]-dcyfc[l]-dcyfd[l] +zqbp36
+dcyfd: drift, l = 6.2525239 !5.952523028144 +0.3
+dcyfe: drift, l = 12.4303464-dcyfa[l]-dcyfb[l]-dcyfc[l]-dcyfd[l] +zqbp36 !12.43034602883
 dcyfea: drift, l = 2.512 !3.0
-dcyfeb: drift, l = dcyfe[l]-dcyfea[l]
+dcyfeb: drift, l = dcyfe[l]-dcyfea[l]+dstweak
 dcyg: drift, l = 3.9034 -zqbp36+zqbp30
 
 dbp1b: drift, l = 19.48139075
@@ -371,12 +381,12 @@ d2q4t: drift, l = d2q4d[l]-lqm/2 -zqbp35 -0.3
 ! collimators
 ! ------------------------------------------------------------------------------
 
-cxbp21: rcollimator, type = "HCOLL", l = ljaw, x_limit = 3.6e-3, y_limit = 20.e-3
-cybp22: rcollimator, type = "VCOLL", l = ljaw, y_limit = 3.6e-3, x_limit = 20.e-3
-cxbp25: rcollimator, type = "HCOLL", l = ljaw, x_limit = 3.5e-3, y_limit = 20.e-3
-cybp26: rcollimator, type = "VCOLL", l = ljaw, y_limit = 3.8e-3, x_limit = 20.e-3
-cxbp30: rcollimator, type = "HCOLL", l = ljaw, x_limit = 2.2e-3, y_limit = 20.e-3
-cxbp34: rcollimator, type = "HCOLL", l = ljaw, x_limit = 2.2e-3, y_limit = 20.e-3
+cxbp21: rcollimator, type = "HCOLL", l = ljaw, x_limit = 2.5e-3, y_limit = 20.e-3
+cybp22: rcollimator, type = "VCOLL", l = ljaw, y_limit = 2.5e-3, x_limit = 20.e-3
+cxbp25: rcollimator, type = "HCOLL", l = ljaw, x_limit = 2.5e-3, y_limit = 20.e-3
+cybp26: rcollimator, type = "VCOLL", l = ljaw, y_limit = 2.7e-3, x_limit = 20.e-3
+cxbp30: rcollimator, type = "HCOLL", l = ljaw, x_limit = 1.6e-3, y_limit = 20.e-3
+cxbp34: rcollimator, type = "HCOLL", l = ljaw, x_limit = 1.5e-3, y_limit = 20.e-3
 
 ! ==============================================================================
 ! BPMs
@@ -407,6 +417,7 @@ bpmbp34: monitor, type = "Stripline-5"
 rfbwsbp2: monitor, type = "@2,CavityS-1"
 rfbwsbp3: monitor, type = "@2,CavityS-1"
 rfbwsbp4: monitor, type = "@2,CavityS-1"
+rfbwsbp5: monitor, type = "@2,CavityS-1"
 rfbbp24: monitor, type = "@2,CavityS-1" !4/23/14
 rfbbp35: monitor, type = "@2,CavityS-1" !4/23/14
 rfbbp30: monitor, type = "@2,CavityS-1"
@@ -419,7 +430,6 @@ rfbbp33: monitor, type = "@2,CavityS-1"
 ! corrector types:
 !   "Bypass"   = SA-344-116-01 (purple coil)
 !   "Bypass#2" = SA-344-119-01 (blue coil)
-!   "Bypass#3" = SA-344-117-01 (white coil)
 !   "type-4"   = SA-238-040-86
 !   "class-4"  = SA-238-040-86
 
@@ -454,7 +464,6 @@ xcbp34: hkicker, type = "class-4"
 ! corrector types:
 !   "Bypass"   = SA-344-116-01 (purple coil)
 !   "Bypass#2" = SA-344-119-01 (blue coil)
-!   "Bypass#3" = SA-344-117-01 (white coil)
 !   "type-4"   = SA-238-040-86
 !   "class-4"  = SA-238-040-86
 
@@ -489,6 +498,7 @@ ycbp34: vkicker, type = "class-4"
 wsbp2: marker, type = "fast"
 wsbp3: marker, type = "fast"
 wsbp4: marker, type = "fast"
+wsbp5: marker, type = "fast"
 
 stbp34a: instrument, type = "PPS stopper", l = lstebd !LCLS EBD-type stopper
 btmbp34a: instrument, type = "PPS BTM"               !Burn-Through-Monitor behind STBP34A
@@ -729,20 +739,20 @@ qbp34_svy: null_ele, superimpose, ref=qbp34
          RFBWSBP3,D2Q4i20,WSBP3,D2Q4j0,DCYsa,BPN14END,BPN15BEG,DCYsb,QBP15_full,D2Q4a0,BPMBP15,D2Q4b0,XCBP15,D2Q4c0,YCBP15,
          D2Q4d0,DCYsa,BPN15END,BPN16BEG,DCYsb,QBP16_full,D2Q4a0,BPMBP16,D2Q4b0,XCBP16,D2Q4c0,YCBP16,D2Q4i10,RFBWSBP4,D2Q4i20,
          WSBP4,D2Q4j0,DCYsa,BPN16END,BPN17BEG,DCYsb,QBP17_full,D2Q4a0,BPMBP17,D2Q4b0,XCBP17,D2Q4c0,YCBP17,D2Q4d0,DCYsa,BPN17END,
-         BPN18BEG,DCYsb,QBP18_full,D2Q4a0,BPMBP18,D2Q4b0,XCBP18,D2Q4c0,YCBP18,D2Q4d0,DCYsa,BPN18END,BPN19BEG,DCYsb,QBP19_full,
-         D2Q4a0,BPMBP19,D2Q4b0,XCBP19,D2Q4c0,YCBP19,D2Q4d0,DCYsa,BPN19END,BPN20BEG,DCYsb,QBP20_full,D2Q4a0,BPMBP20,D2Q4b0,XCBP20,
-         D2Q4c0,YCBP20,D2Q4d0,DCYsa1,S20WALL,DCYsa2,BPN20END,BPN21BEG,DCYsb,QBP21_full,D2Q4a0,BPMBP21,D2Q4b0,XCBP21,D2Q4c0,
-         YCBP21,D2Q4e0,CXBP21,D2Q4f0,DCYsa,BPN21END,BPN22BEG,DCYsb,QBP22_full,D2Q4a0,BPMBP22,D2Q4b0,XCBP22,D2Q4c0,YCBP22,D2Q4e0,
-         CYBP22,D2Q4f0,DCYsa,BPN22END,BPN23BEG,DCYsb,QBP23_full,D2Q4a0,BPMBP23,D2Q4b0,XCBP23,D2Q4c0,YCBP23,D2Q4d0,DCYsa,BPN23END,
-         BPN24BEG,DCYsb,QBP24_full,D2Q4a0,BPMBP24,RFBBP24,D2Q4b0,XCBP24,D2Q4c0,YCBP24,D2Q4d0,DCYsa,BPN24END,BPN25BEG,DCYsb,
-         QBP25_full,D2Q4a0,BPMBP25,D2Q4b0,XCBP25,D2Q4c0,YCBP25,D2Q4e0,CXBP25,D2Q4f0,DCYsa,BPN25END,BPN26BEG,DCYsb,QBP26_full,
-         D2Q4a0,BPMBP26,D2Q4b0,XCBP26,D2Q4c0,YCBP26,D2Q4e0,CYBP26,D2Q4f0,DCYsa,BPN26END,BPN27BEG,DCYsb,QBP27_full,D2Q4a0,BPMBP27,
-         D2Q4b0,XCBP27,D2Q4c0,YCBP27,D2Q4sa0,BPN27END,D2Q4sb0,QBP35_full,D2Q4a,BPMBP35,RFBBP35,D2Q4b,XCBP35,D2Q4c,YCBP35,D2Q4t,
-         QBP28_full,D2Q4a,BPMBP28,D2Q4b,XCBP28,D2Q4c,YCBP28,D2Q4q,LTUSPLIT,RWWAKE2,ENDBYP)
+         BPN18BEG,DCYsb,QBP18_full,D2Q4a0,BPMBP18,D2Q4b0,XCBP18,D2Q4c0,YCBP18,D2Q4i10,RFBWSBP5,D2Q4i20,WSBP5,D2Q4j0,DCYsa,
+         BPN18END,BPN19BEG,DCYsb,QBP19_full,D2Q4a0,BPMBP19,D2Q4b0,XCBP19,D2Q4c0,YCBP19,D2Q4d0,DCYsa,BPN19END,BPN20BEG,DCYsb,
+         QBP20_full,D2Q4a0,BPMBP20,D2Q4b0,XCBP20,D2Q4c0,YCBP20,D2Q4d0,DCYsa1,S20WALL,DCYsa2,BPN20END,BPN21BEG,DCYsb,QBP21_full,
+         D2Q4a0,BPMBP21,D2Q4b0,XCBP21,D2Q4c0,YCBP21,D2Q4e0,CXBP21,D2Q4f0,DCYsa,BPN21END,BPN22BEG,DCYsb,QBP22_full,D2Q4a0,BPMBP22,
+         D2Q4b0,XCBP22,D2Q4c0,YCBP22,D2Q4e0,CYBP22,D2Q4f0,DCYsa,BPN22END,BPN23BEG,DCYsb,QBP23_full,D2Q4a0,BPMBP23,D2Q4b0,XCBP23,
+         D2Q4c0,YCBP23,D2Q4d0,DCYsa,BPN23END,BPN24BEG,DCYsb,QBP24_full,D2Q4a0,BPMBP24,RFBBP24,D2Q4b0,XCBP24,D2Q4c0,YCBP24,D2Q4d0,
+         DCYsa,BPN24END,BPN25BEG,DCYsb,QBP25_full,D2Q4a0,BPMBP25,D2Q4b0,XCBP25,D2Q4c0,YCBP25,D2Q4e0,CXBP25,D2Q4f0,DCYsa,BPN25END,
+         BPN26BEG,DCYsb,QBP26_full,D2Q4a0,BPMBP26,D2Q4b0,XCBP26,D2Q4c0,YCBP26,D2Q4e0,CYBP26,D2Q4f0,DCYsa,BPN26END,BPN27BEG,DCYsb,
+         QBP27_full,D2Q4a0,BPMBP27,D2Q4b0,XCBP27,D2Q4c0,YCBP27,D2Q4sa0,BPN27END,D2Q4sb0,QBP35_full,D2Q4a,BPMBP35,RFBBP35,D2Q4b,
+         XCBP35,D2Q4c,YCBP35,D2Q4t,QBP28_full,D2Q4a,BPMBP28,D2Q4b,XCBP28,D2Q4c,YCBP28,D2Q4q,LTUSPLIT,RWWAKE2,ENDBYP)
 
   FODOLb : LINE=(DCYfa,DCYfb,DCYfc,DCYfd,S100B,DCYfea,WOODDOOR_SPS)
 
-  FODOLc : LINE=(DCYfeb,QBP36_full,D2Q4a,BPMBP36,D2Q4b,D2Q4c,DCYg,QBP30_full,D2Q4a,RFBBP30,D2Q4b,XCBP30,D2Q4c,YCBP30,
+  FODOLc : LINE=(DCYfeb,QBP36_full,D2Q4a,BPMBP36,D2Q4b,D2Q4c,DCYg ,QBP30_full,D2Q4a,RFBBP30,D2Q4b,XCBP30,D2Q4c,YCBP30,
          DCYc)
 
   FODOL : LINE=(FODOLa,SPRDs,FODOLb,FODOLc)

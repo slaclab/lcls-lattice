@@ -1,19 +1,21 @@
 
-! *** OPTICS=AD_ACCEL-19DEC2025s ***
+! *** OPTICS=AD_ACCEL-04MAY2026s ***
 
 ! generate input files for ELEGANT
 
 ! ==============================================================================
 ! Instructions for generating ELEGANT input file
 ! ------------------------------------------------------------------------------
-! 1) replace the following line in MAD deck:
+! 1) replace the following lines in LCLS2cu_master.xsif:
 !      CALL, FILENAME="LCLS_L1.xsif"
 !      CALL, FILENAME="LCLS_L1.xsif"
 !      CALL, FILENAME="LCLS_L1.xsif"
+!      CALL, FILENAME="Cu_FDN.xsif"
 !    with:
 !      CALL, FILENAME="LCLS_L1e.xsif"
 !      CALL, FILENAME="LCLS_L1e.xsif"
 !      CALL, FILENAME="LCLS_L1e.xsif"
+!      CALL, FILENAME="Cu_FDNe.xsif"
 ! 2) insert the following line into your MAD deck:
 !      CALL, FILENAME="elegant/makeElegant.mad8"
 ! 3) run MAD
@@ -49,30 +51,23 @@
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
 
-  VALUE, UMASXh[L] !VGHPU39
-  BEAM, ENERGY=Ef
-  USE, (UMASXh) !*LIN.03*
-  MATCH, BETX=1, BETY=1
-    RMATRIX, #S/#E, RM(6,6)=1
-  ENDMATCH
-
-  VALUE, PSSXh[L] !PS75
-  BEAM, ENERGY=Ef
-  USE, (PSSXh) !*LIN.04*
-  MATCH, BETX=1, BETY=1
-    RMATRIX, #S/#E, RM(6,6)=1
-  ENDMATCH
-
   VALUE, UMASXh_[L] !VGHPU56
   BEAM, ENERGY=Ef
-  USE, (UMASXh_) !*LIN.05*
+  USE, (UMASXh_) !*LIN.03*
   MATCH, BETX=1, BETY=1
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
 
   VALUE, PSSXh_[L] !PS97.5
   BEAM, ENERGY=Ef
-  USE, (PSSXh_) !*LIN.06*
+  USE, (PSSXh_) !*LIN.04*
+  MATCH, BETX=1, BETY=1
+    RMATRIX, #S/#E, RM(6,6)=1
+  ENDMATCH
+
+  VALUE, UMASXh[L] !VGHPU39
+  BEAM, ENERGY=Ef
+  USE, (UMASXh) !*LIN.05*
   MATCH, BETX=1, BETY=1
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
@@ -127,14 +122,14 @@
   VALUE, BCX3621[FINT]
   VALUE, BCX3631[FINT]
   VALUE, BCX3641[FINT]
-  VALUE, BCXCBX11A[FINT]        
-  VALUE, BCXCBX12A[FINT]        
-  VALUE, BCXCBX13A[FINT]        
-  VALUE, BCXCBX14A[FINT]        
-  VALUE, BCXCBX21A[FINT]        
-  VALUE, BCXCBX22A[FINT]        
-  VALUE, BCXCBX23A[FINT]        
-  VALUE, BCXCBX24A[FINT]        
+  VALUE, BCXCBX11A[FINT]
+  VALUE, BCXCBX12A[FINT]
+  VALUE, BCXCBX13A[FINT]
+  VALUE, BCXCBX14A[FINT]
+  VALUE, BCXCBX21A[FINT]
+  VALUE, BCXCBX22A[FINT]
+  VALUE, BCXCBX23A[FINT]
+  VALUE, BCXCBX24A[FINT]
   VALUE, BCXHS1A[FINT]
   VALUE, BCXHS2A[FINT]
   VALUE, BCXHS3A[FINT]
@@ -251,18 +246,18 @@
 ! generate TWISS and SURVEY tape-files
 ! ------------------------------------------------------------------------------
 
-  TITLE, "AD_ACCEL: copper linac to HXR"
+  TITLE, "AD_ACCEL: copper linac: WS02 to HXR"
   BEAM, ENERGY=Ei
   SET, SETCUS, CUSOFF
-  SETK2cuH
+  CALL, FILENAME="SETK2cuH.xsif"
   USE, LCLS2cuHe
   TWISS, BETA0=TWSSi, TAPE="LCLS2cuH_twiss.tape"
   SURVEY, X0=XWS02, Z0=ZWS02, THETA0=ADL1, TAPE="LCLS2cuH_survey.tape"
 
-  TITLE, "AD_ACCEL: copper linac to SXR"
+  TITLE, "AD_ACCEL: copper linac: WS02 to SXR"
   BEAM, ENERGY=Ei
   SET, SETCUS, CUSON
-  SETK2cuS
+  CALL, FILENAME="SETK2cuS.xsif"
   USE, LCLS2cuSe
   TWISS, BETA0=TWSSi, TAPE="LCLS2cuS_twiss.tape"
   SURVEY, X0=XWS02, Z0=ZWS02, THETA0=ADL1, TAPE="LCLS2cuS_survey.tape"
@@ -286,28 +281,28 @@
 
   VALUE, UMXL1h[L]
   BEAM, ENERGY=Ef
-  USE, (UMXL1h) !*LIN.07* (*LIN.06 if LCLS2cu_XLEAP.mad8 is CALLed)
+  USE, (UMXL1h) !*LIN.07*
   MATCH, BETX=1, BETY=1
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
 
   VALUE, UMXL3h[L]
   BEAM, ENERGY=Ef
-  USE, (UMXL3h) !*LIN.08* (*LIN.07 if LCLS2cu_XLEAP.mad8 is CALLed)
+  USE, (UMXL3h) !*LIN.08*
   MATCH, BETX=1, BETY=1
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
 
   VALUE, UMXL4h[L]
   BEAM, ENERGY=Ef
-  USE, (UMXL4h) !*LIN.09* (*LIN.08 if LCLS2cu_XLEAP.mad8 is CALLed)
+  USE, (UMXL4h) !*LIN.09*
   MATCH, BETX=1, BETY=1
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
 
   VALUE, WIGXLh[L]
   BEAM, ENERGY=Ef
-  USE, (WIGXLh) !*LIN.10* (*LIN.09 if LCLS2cu_XLEAP.mad8 is CALLed)
+  USE, (WIGXLh) !*LIN.10*
   MATCH, BETX=1, BETY=1
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH

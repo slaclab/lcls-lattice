@@ -232,7 +232,7 @@ umhtr: taylor, type = "UMLHB", l = lhunh, tt11 = 1.0, tt12 = lhunh, tt21 = 0, tt
 """
 SC_NEWELES['wigxlh'] = """
 wigxlh: taylor, type = "variable gap", l = lwigh, tt11 = 1.0, tt12 = lwigh, tt21 = 0, tt22 = 1.0, tt33 = cos(argw),
-          tt34 = r34w, tt43 = -sin(argw)*sqrt(kqwig), tt44 = cos(argw), mat_und_k = kwig, mat_und_l = lwigh
+          tt34 = r34w, tt43 = -sin(argw)*sqrt(kqwig), tt44 = cos(argw), mat_und_k = kwig, mat_und_l = lamw
 """
 
 SC_NEWELES['dh02c'] = """
@@ -300,7 +300,7 @@ CU_MASTERS = [f for f in os.listdir('mad') if f.startswith('CU_') and f.endswith
 SC_MASTERS = [f for f in os.listdir('mad') if f.startswith('SC_') and f.endswith('xsif')]
 
 # exclude_strs will not go through the automatic-desplitter
-exclude_strs = ['BUN1B','WIGX','UMXL','LH_UND','UMHTR','UMASX','UMAHX','PSSX','PSHX','K21_1B','K21_1C']
+exclude_strs = ['BUN1B','BUN1LEI','BUN2LEI','WIGX','UMXL','LH_UND','UMHTR','UMASX','UMAHX','PSSX','PSHX','K21_1B','K21_1C']
 
 # new elements are added commented out with !new
 shadows = ['duqxl','dh03a','dh03b','dh02c','dh02d']

@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-19DEC2025s ***
+! *** OPTICS=AD_ACCEL-04MAY2026s ***
 
 ! LCLS2sc LTU and dump
 
@@ -9,42 +9,55 @@
 ! 24-JUL-2025, M. Woodley
 !  * add MARKER point "SWIVEL" at location of swivel point
 ! ------------------------------------------------------------------------------
-! 10-MAR-2025, M. Woodley
-!  * cleanup (remove BSY-to-Aline stuff)
+! 06-MAY-2025, M. Woodley
+!  * sync with LCLS-II (12MAY2025s)
 ! ------------------------------------------------------------------------------
 ! 04-DEC-2024, M. Woodley
 !  * relocate RFBSX14 per X. Permanyer
-! 18-SEP-2024, M. Woodley
-!  * add RFBSX14 at end of LTUS (LCLS-II-HE location)
 ! ------------------------------------------------------------------------------
-! 02-MAY-2024, M. Woodley
+! 20-APR-2024, M. Woodley
+!  * replace UMXL2h with WIGXLh
 !  * fix negative drifts in CBXFEL chicanes
 !  * rename BODCBX42 -> YAGCBX42
 !  * add BODCBX40
-! 31-MAR-2024, M. Woodley
-!  * replace UMXL2h with WIGXLh
+! ------------------------------------------------------------------------------
+! 27-JAN-2024, M. Woodley
+!  * QDMP1B,2B K1 from Y. Nosochkov (UNDS_BDES_DS_fit.xlsx, 8.0 GeV)
+! 25-JAN-2024, M. Woodley
+!  * remove de-scoped raster magnets
+! 18-JAN-2024, M. Woodley
+!  * sextupoles deferred (level 2)
 ! ------------------------------------------------------------------------------
 ! 07-SEP-2022, M. Woodley
 !  * redefine YAGDL18
+! 29-AUG-2022, M. Woodley
+!  * defer (level 5) BKYRAS* and BKXRAS* per F. Garcia
+! 24-AUG-2022, M. Woodley
+!  * locate BKYRAS* upstream of BKXRAS*; move BKXRAS* 0.2 m downstream
+!    per M. Kosovsky
 ! ------------------------------------------------------------------------------
 ! 30-NOV-2021, M. Woodley
 !  * change TYPE of BPMQD and BPMQDB to "Stripline-11" (vertical orientation)
 ! 22-NOV-2021, M. Woodley
 !  * undefer OTRDMPB per T. Maxwell
+! 25-OCT-2021, M. Woodley
+!  * dump line raster magnet layout per M. Kosovsky
 ! ------------------------------------------------------------------------------
-! 14-JAN-2021, M. Woodley
+! 13-FEB-2021, M. Woodley
+!  * add PCEBD and PCEBDB per Y. Ding and T. Tan
+! 27-JAN-2021, M. Woodley
 !  * move RFBHX12 9.373 mm u/s per G. Gassner
-! ------------------------------------------------------------------------------
 ! 08-OCT-2020, M. Woodley
 !  * rename OTRDL18 to YAGDL18 (TYPE="YAG-PAL") and undefer per B. Jacobson
 ! ------------------------------------------------------------------------------
-! 05-OCT-2020, M. Woodley
-!  * add XLEAP quadrupoles QFXL1 and QFXL2
-! 06-AUG-2020, M. Woodley
-!  * redefined XLEAP undulators
+! 24-SEP-2020, M. Woodley
+!  * add RFBSX14 per D. Cesar
 ! ------------------------------------------------------------------------------
-! 03-MAR-2020, M. Woodley
-!  * move XLEAP wiggler to SXR cell #18
+! 26-JUN-2020, M. Woodley
+!  * copy BSYD rastering setup to HXR and SXR dump lines
+! 25-JUN-2020, M. Woodley
+!  * remove XLEAP wiggler
+! ------------------------------------------------------------------------------
 ! 12-DEC-2019, M. Woodley
 !  * move XLEAP wiggler to SXX (cell 17)
 !  * add "h" to UMXL1-4 (-> UMLX1-4h)
@@ -764,8 +777,7 @@ ycwigs[ref] = wig2s
 
 wig3s_full: line = (wig3s)
 wig3s_svy: null_ele, superimpose, ref=wig3s, ref_origin=beginning, offset=wig3s1[l] !bend survey marker
-
-  EWIGS : LINE=(WIG1S_full,DWGs,WIG2S_full,DWGs,WIG3S_full,CNTWIGS)
+  WIGS_line  : LINE=(WIG1S_full,DWGs,WIG2S_full,DWGs,WIG3S_full,CNTWIGS)
 
 ! replace deferred wiggler with a drift
 
@@ -780,8 +792,8 @@ dwigsb: drift, l = dwigs[l]-dwigsa[l]-lplate
 ! note: the K-values below are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-kqdbl1 = -0.050357218829 !-0.050357323411
-kqdbl2 = -0.559361220066 !-0.559361105837
+kqdbl1 = -0.050435325198 !-0.050440327137
+kqdbl2 = -0.559283770709 !-0.559278490815
 
 qdbl1: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqdbl1, aperture = rqe
 qdbl2: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqdbl2, aperture = rqe
@@ -799,19 +811,19 @@ qdl17: quadrupole, type = "2Q10", l = lqr/2, k1 = kqdlb, aperture = rqr
 qdl18: quadrupole, type = "2Q10", l = lqr/2, k1 = -kqdlb, aperture = rqr
 qdl19: quadrupole, type = "2Q10", l = lqr/2, k1 = kqdlb, aperture = rqr
 
-kqdl20 = -0.487749576014
-kqdl21 = -1.904149676641
-kqdl22 = 2.191524608573
+kqdl20 = -0.487928735548 !-0.487977031609
+kqdl21 = -1.904088026746 !-1.90405658267
+kqdl22 = 2.191370959478 ! 2.191451571573
 
 qdl20: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqdl20, aperture = rqe
 qdl21: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqdl21, aperture = rqe
 qdl22: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqdl22, aperture = rqe
 
-ksdl1 = -8.734519131209
-ksdl2 = -24.395452957066
+ksdl1 = -8.734519131209 ! -8.734519131209
+ksdl2 = -24.395452957072 !-24.395452957066
 
-sdl1: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdl1
-sdl2: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdl2
+sdl1: sextupole, type = "@2,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdl1
+sdl2: sextupole, type = "@2,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdl2
 
 !=!  COMMENT
 !=!  COMMENT
@@ -1042,8 +1054,8 @@ ycdl21: vkicker, type = "class-4"
 cedl13: rcollimator, type = "HCOLL", l = ljaw, x_limit = 8.5e-3, y_limit = 20.e-3
 cedl17: rcollimator, type = "HCOLL", l = ljaw, x_limit = 8.5e-3, y_limit = 20.e-3
 
-cybdl: rcollimator, type = "VCOLL", l = ljaw, y_limit = 1.2e-3, x_limit = 20.e-3
-cydl16: rcollimator, type = "VCOLL", l = ljaw, y_limit = 1.1e-3, x_limit = 20.e-3
+cybdl: rcollimator, type = "VCOLL", l = ljaw, y_limit = 0.9e-3, x_limit = 20.e-3
+cydl16: rcollimator, type = "VCOLL", l = ljaw, y_limit = 0.8e-3, x_limit = 20.e-3
 
 ! muon collimators after SBD TDKIKS in-line dump
 pctdkik1s: ecollimator, type = "BCS PC", l = lpctdkik, x_limit = 11.1125e-3, y_limit = 11.1125e-3
@@ -1216,6 +1228,9 @@ sdl2[L] = 2*sdl2[L]
 sdl2_svy: null_ele, superimpose, ref=sdl2
 
   DBLDL21 : LINE=(BEGLTUS,DDBLDLb,QDBL1_full,DDBLDLc,YCDBL1,DDBLDLa1,CYBDL,DDBLDLa2,XCDBL2,DDBLDLc,QDBL2_full,DDBLDLd)
+
+  DL2Bcell : LINE=(QDL12,DDL6b,YCDL12,DDL9b,XCDL13,DDL6ba,SDL1_full,DDL6bb,QDL13_full,DDL7ba,CEDL13,DDL7bb,BPMDL13,
+         DDL8b,YCDL14,DDL6b,QDL14)
 
   DL2sc : LINE=(DBMARK34b,DDL20b,XCDL11,DDL6b,QDL11_full,DDL15ba,BPMDL11,DDL15bb,DDL15bc,CC31b,DDL16b,BX31B_full,DDL1ba,
          PC01B,BTM01B,DDL1bb,BPMDL12,DDL1bc,QDL12_full,DDL6b,YCDL12,DDL9b,XCDL13,DDL6ba,SDL1_full,DDL6bb,QDL13_full,DDL7ba,
@@ -1398,11 +1413,11 @@ bpmvm4b[ref] = qvm4b
 ! SXR emittance diagnostic
 ! ------------------------------------------------------------------------------
 
-kqem1b = 1.994731606958
-kqem2b = -1.809273842138
-kqem3b = 1.263524123458
+kqem1b = 1.994807495497 ! 1.994770111889
+kqem2b = -1.80919428388  !-1.809227587678
+kqem3b = 1.263530793827 ! 1.2636088218
+kqem4b = -0.891678288287 !-0.891714076473
 kqem3vb = 0.0
-kqem4b = -0.891608033545
 
 qem1b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqem1b, aperture = rqe
 qem2b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqem2b, aperture = rqe
@@ -1443,10 +1458,6 @@ dem1bbb: drift, l = dem1b[l]-dem1bab[l]+(lqa-lqe)
 dem2b: drift, l = 0.50
 dmm3m80cm: drift, l = 11.27092
 dmm3m80cmx: drift, l = dmm3m80cm[l]+(lqa-lqe)
-
-dmm3m80cm1: drift, l = 5.677
-dmm3m80cm2: drift, l = dmm3m80cmx[l]-dmm3m80cm1[l]
-
 dmm3mab: drift, l = 4.425910+(lqa-lqe)/2
 dmm3mbb: drift, l = dmm3m80cm[l]-dmm3mab[l]+(lqa-lqe)
 dem3a: drift, l = 0.37
@@ -1584,8 +1595,9 @@ lundh = lund/2     !wiggler half-length [m]
 
  !comment
 
-  ! half-wiggler modeled as an R-matrix which includes vertical focusing
-  ! and horizontal defocusing per Ago Martinelli (see wigXL2.m);
+  ! undulators modeled as an R-matrix which includes vertical focusing
+  ! and horizontal defocusing per Ago Martinelli and Joe Duris
+  ! (see wigXL2.m, XLEAP-II.pptx, and LCLS2sc_XLEAP.mad8)
 
   ! define XLEAP-II wigglers (as DRIFTs)
 
@@ -1661,7 +1673,8 @@ umxl4h: taylor, type = "LCLS-I", l = lundh, tt11 = r11xl4, tt12 = r12xl4, tt21 =
 
 kwig = 34                                        !wiggler parameter [m^-1]
 lamw = 0.34                                      !wiggler period [m]
-lwigh = 2.38/2                                    !wiggler half-length [m]
+lwig = 2.38                                      !wiggler effective length [m]
+lwigh = lwig/2                                    !wiggler half-length [m]
 gamw = eu/mc2                                    !Lorentz energy factor in wiggler [ ]
 kqwig = setxl2wig*(2*pi*kwig/lamw/sqrt(2)/gamw)^2 !natural vertical focusing "k" [m^-2]
 
@@ -1676,7 +1689,7 @@ r34w = lwigh*sincargw
 
 
 wigxlh: taylor, type = "variable gap", l = lwigh, tt11 = 1.0, tt12 = lwigh, tt21 = 0, tt22 = 1.0, tt33 = cos(argw),
-          tt34 = r34w, tt43 = -sin(argw)*sqrt(kqwig), tt44 = cos(argw), mat_und_k = kwig, mat_und_l = lwigh
+          tt34 = r34w, tt43 = -sin(argw)*sqrt(kqwig), tt44 = cos(argw), mat_und_k = kwig, mat_und_l = lamw
 !old: wigxlh: taylor, type = "variable gap", l = lwigh, tt11 = 1.0, tt12 = lwigh, tt21 = 0, tt22 = 1.0, tt33 = cos(argw),
 !old           tt34 = r34w, tt43 = -sin(argw)*sqrt(kqwig), tt44 = cos(argw)
 
@@ -1686,7 +1699,7 @@ wigxlh: taylor, type = "variable gap", l = lwigh, tt11 = 1.0, tt12 = lwigh, tt21
   WIGXL_full : LINE=(WIGXLh,WIGXLh)
 
 ! ------------------------------------------------------------------------------
-! new XLEAP-II quadrupoles (to mitigate focusing of wigglers)
+! new XLEAP-II quadrupoles (to mitigate focusing of wigglers; off for now)
 ! ------------------------------------------------------------------------------
 
 kqfxl1 = 0
@@ -1932,17 +1945,6 @@ qe36b[L] = 2*qe36b[L]
 bpme36b[superimpose] = T
 bpme36b[ref] = qe36b
 
-!=!  comment
-!=!  comment
-!=!  EDMCHb : LINE=(D25cmb,D25cmc,DMM1m90cmBa,PC10B,BTM10B,DMM1m90cmBb,&
-!=!      XCEM1B,DEM1A,&
-!=!    QEM1B_full,DEM1Bab,DEM1Bbb,&
-!=!    QEM2B_full,DEM2B,YCEM2B,DMM3m80cm1,DMM3m80cm2,XCEM3B,DEM3A,&
-!=!    QEM3B_full,DEM3Bb,&
-!=!    QEM3VB_full,DMM4m90cmba,PC11B,BTM11B,DMM4m90cmbb,YCEM4B,DEM4A,&
-!=!    QEM4B_full,DRFB,RFBEM4B,DMM5ab,DMM5bb)
-!=!  endcomment
-
   EDMCHb : LINE=(D25cmb,D25cmc,DMM1m90cmBa,PC10B,BTM10B,DMM1m90cmBb,XCEM1B,DEM1A,QEM1B_full,DEM1Bab,DEM1Bbb,QEM2B_full,
          DEM2B,YCEM2B,DMM3m80cmx,XCEM3B,DEM3A,QEM3B_full,DEM3Bb,QEM3VB_full,DMM4m90cmba,PC11B,BTM11B,DMM4m90cmbb,YCEM4B,DEM4A,
          QEM4B_full,DRFB,RFBEM4B,DMM5ab,DMM5bb)
@@ -1962,10 +1964,10 @@ bpme36b[ref] = qe36b
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 !       in the "LCLS2cu_main.mad8" file
 
-kqum1b = 0.570141524801 ! 0.57267030746
-kqum2b = -0.790945462712 !-0.797265679968
-kqum3b = 1.169027566904 ! 1.163807988131
-kqum4b = -1.163744080663 !-1.143755513822
+kqum1b = 0.868733464228 ! 0.833300994164
+kqum2b = -0.771825649189 !-0.826159041824
+kqum3b = 0.678116151436 ! 0.586599530996
+kqum4b = -0.747895559578 !-0.595708778132
 
 qum1b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqum1b, aperture = rqe
 qum2b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqum2b, aperture = rqe
@@ -2090,7 +2092,7 @@ bpmum4b[ref] = qum4b
 ! SXR dumpline
 ! ------------------------------------------------------------------------------
 
-kqdmpb = -0.154946553294 !Yuri (E=4.0, K=5.0)
+kqdmpb = -0.154946553294 !Yuri (E=8.0, K=5.48)
 
 qdmp1b: quadrupole, type = "3.94Q17", l = lqp/2, k1 = kqdmpb, aperture = rqp
 qdmp2b: quadrupole, type = "3.94Q17", l = lqp/2, k1 = kqdmpb, aperture = rqp
@@ -2165,6 +2167,7 @@ dd2a: drift, l = 0.4+0.0634916+0.0115084
 dd2c: drift, l = 1.0
 dd2b: drift, l = 8.1507760-lqd/2+ddmpv-dd2c[l]+0.06
 dd3a: drift, l = 0.3+0.049684+0.001583
+dd3ab: drift, l = 0.3+0.049684+0.001583
 dd3b: drift, l = 0.3-0.001583-0.1447026
 dwsdumpa: drift, l = 0.44156/2
 dwsdumpa1: drift, l = 0.07596510786
@@ -2177,9 +2180,8 @@ bpmqdb: monitor, type = "Stripline-11" !RFBQDB : MONI, TYPE="@2,CavityL-1"
 bpmddb: monitor, type = "Stripline-8"
 rfbddb: monitor, type = "@2,CavityL-1"
 
-xcddb: hkicker, type = "class-5"
-
 ycddb: vkicker, type = "class-5"
+xcddb: hkicker, type = "class-5"
 
 otrdmpb: monitor, type = "OTR" !Dump screen
 
@@ -2244,8 +2246,8 @@ qdmp2b_svy: null_ele, superimpose, ref=qdmp2b
 
   DUMPLINEb : LINE=(BEGDMPS_2,RODMP1S,BYDSS_full,DS1,BYD1B_full,DS,BYD2B_full,DS,BYD3B_full,DD1Ba,PCPM1LB,BTM1LB,DD1Bb,
          DD1Bc,MIMBCS4b,DD1Bd,YCDDB,DD1Be,PCPM2LB,BTM2LB,DD1Bf,QDmp1B_full,DD12a,BPMQDB,DD12b,MQDMPB,DD12c,QDmp2B_full,DD2a,
-         XCDDB,DD2b,DD2c,DD3a,BPMDDB,DD3b,OTRDMPB,DWSDUMPa1,PCEBDB,DWSDUMPa2,RFBDDB,DWSDUMPb,WSDUMPB,DWSDUMPc,RODMP2S,DUMPFACEB,
-         DDUMP,DMPendb,BTMDUMPB,DBMARK38b,ENDDMPS_2)
+         XCDDB,DD2b,DD2c,DD3aB,BPMDDB,DD3b,OTRDMPB,DWSDUMPa1,PCEBDB,DWSDUMPa2,RFBDDB,DWSDUMPb,WSDUMPB,DWSDUMPc,RODMP2S,DUMPFACEB,
+         DDUMP,DMPendB,BTMDUMPB,DBMARK38B,ENDDMPS_2)
 
 ! ==============================================================================
 ! HXR LTU and dump
@@ -2552,10 +2554,10 @@ bcx364_svy: null_ele, superimpose, ref=bcx364, ref_origin=beginning, offset=bcx3
 ! BSY upstream of the scH merge bend (BXSP1H)
 ! ------------------------------------------------------------------------------
 
-kq30701 = -0.396181540351 !-0.396231018339
-kq30801 = 0.480061954868 ! 0.480592172519
-kq50q1 = -0.231094130006 !-0.231522300458
-kq50q2 = 0.101722563756 ! 0.102074332053
+kq30701 = -0.396196066234 !-0.396231018339
+kq30801 = 0.480072263235 ! 0.480592172519
+kq50q1 = -0.231032050114 !-0.231522300458
+kq50q2 = 0.101648177453 ! 0.102074332053
 
 q50q1: quadrupole, type = "2Q10", l = lqr/2, k1 = kq50q1, aperture = rqr
 q50q2: quadrupole, type = "50Q2", l = 0.162151, k1 = kq50q2, aperture = 0.010325
@@ -2663,11 +2665,11 @@ q50q2_svy: null_ele, superimpose, ref=q50q2
 ! note: the K-values below are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-kq50q3 = 0.426937957729 ! 0.426937957729
-kq4 = -0.219608310315 !-0.219608310249
-kq5 = 0.110245649911 ! 0.11024564993
-kq6 = -0.109735122424 !-0.109735122471
-kqa0 = 0.096565286277 ! 0.096565286297
+kq50q3 = 0.437511021141 ! 0.426937957729
+kq4 = -0.218137495511 !-0.219608310249
+kq5 = 0.110648337873 ! 0.11024564993
+kq6 = -0.106093050264 !-0.109735122471
+kqa0 = 0.096139190896 ! 0.096565286297
 
 q50q3: quadrupole, type = "50Q3", l = 0.143254, k1 = kq50q3, aperture = 0.010325
 q4: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kq4, aperture = rqf
@@ -2842,10 +2844,10 @@ bpmbsyqa0[ref] = qa0
 ! HXR VBEND
 ! ------------------------------------------------------------------------------
 
-kqvm1 = -0.337437273245
-kqvm2 = 0.236577259392
-kqvm3 = 0.715150825176
-kqvm4 = -0.681650171006
+kqvm1 = -0.33743727324
+kqvm2 = 0.23657725939
+kqvm3 = 0.715150825178
+kqvm4 = -0.681650171008
 
 qvm1: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqvm1, aperture = rqf
 qvm2: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqvm2, aperture = rqf
@@ -3278,7 +3280,7 @@ dbmark34: marker !entrance of BX31
 ! based on FACET optics model (M. Woodley)
 ! (series approximation for sinc(x)=sin(x)/x to enable setting with x=0)
 
-bwgh = 0                       !wiggler bend field (kG)
+bwgh = 0                      !wiggler bend field (kG)
 awgh = asin(bwgh*zwhp/(ef*cb)) !bend angle per half-pole
 awgh2 = awgh*awgh
 awgh4 = awgh2*awgh2
@@ -3343,8 +3345,7 @@ ycwigh[ref] = wig2h
 
 wig3h_full: line = (wig3h)
 wig3h_svy: null_ele, superimpose, ref=wig3h, ref_origin=beginning, offset=wig3h1[l] !bend survey marker
-
-  EWIGH : LINE=(WIG1H_full,DWGh,WIG2H_full,DWGh,WIG3H_full,CNTWIGH)
+  WIGH_line  : LINE=(WIG1H_full,DWGh,WIG2H_full,DWGh,WIG3H_full,CNTWIGH)
 
 
 
@@ -3536,7 +3537,7 @@ mdchirph[superimpose] = T
 mdchirph[ref] = dchirph
 
   DL21 : LINE=(DBMARK34,BX31_full,DDL10wa,PC02,BTM02,DDL10wb,DWSDL31a,WSDL31,DWSDL31b,DDL10x,XCDL1,D31A,QDL31_full,DRFB,
-         RFBDL1,D31B,YCDL1,D32cmb,CEDL1,D31C,EWIGH,DDL10em80cma,PC22,DDL10em80cmb,CYBX32,DCB32,BX32_full,CNTLT2H)
+         RFBDL1,D31B,YCDL1,D32cmb,CEDL1,D31C,WIGH_line,DDL10em80cma,PC22,DDL10em80cmb,CYBX32,DCB32,BX32_full,CNTLT2H)
 
   DL22 : LINE=(DX33A,CC32,DX33B,PC03,BTM03,DDL1ab,BYKIK1_full,DDL1d,DDL1d,BYKIK2_full,DDL1e,XCDL2,D32A,QDL32_full,D32B,
          YCDL2,DSPLR,SPOILER,DDL1cm40cm,TDKIK,D30cma,PCTDKIK1,DPC1,PCTDKIK2,DPC2,PCTDKIK3,DPC3,PCTDKIK4,DPC4,DSPONTUA,DSPONTUB,
@@ -3564,10 +3565,10 @@ mdchirph[ref] = dchirph
 ! HXR emittance diagnostic
 ! ------------------------------------------------------------------------------
 
-kqem1 = -0.390827735988
-kqem2 = 0.43221570814
-kqem3 = -0.593433950371
-kqem4 = 0.420485259232
+kqem1 = -0.390828157037 !-0.390828157035
+kqem2 = 0.432215882104 ! 0.432215882102
+kqem3 = -0.593433627421 !-0.593433627427
+kqem4 = 0.420485127988 ! 0.420485127989
 
 qem1: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqem1, aperture = rqa
 qem2: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqem2, aperture = rqa
@@ -3758,25 +3759,20 @@ bpme36[ref] = qe36
          YCE34,DQEA,QE34_full,DRFB,RFBE34,DQEC1,WS33,D40cm,DE3m80cm,XCE35,DQEAc,QE35_full,DQEBx,DCX35,DQEBx2,DE3,YCE36,DQEA,
          QE36_full,DRFB,RFBE36,DQEBy1,DCY36,DQEBy2,WS34,D40cmg,DWS35,D40cmh)
 
-  EDCEL : LINE=(WS31,D40cm,DE3ma,PC09,BTM09,DE3mb,XCE31,DQEA,QE31_full,DQEBx,DCX31,DQEBx2,DE3a,YCE32,DQEAa,QE32_full,
-         DRFB,RFBE32,DQEBy1,DCY32,DQEBy2,WS32,D40cm,DE3m80cmb,XCE33,DQEAb,QE33_full,DQECa,YAGPSI,DQECb,OTR33,DE3m40cm,YCE34,DQEA,
-         QE34_full,DRFB,RFBE34,DQEC1,WS33,D40cm,DE3m80cm,XCE35,DQEAc,QE35_full,DQEBx,DCX35,DQEBx2,DE3,YCE36,DQEA,QE36_full,DRFB,
-         RFBE36,DQEBy1,DCY36,DQEBy2,WS34)
-
 ! ------------------------------------------------------------------------------
 ! HXR undulator match
 ! ------------------------------------------------------------------------------
 
-! note: the below K-values are for SC beam; the settings for Cu beam are
-!       in the "LCLS2cu_main.mad8" file
-
 ! note: the below K-values come from Y. Nosochkov's UNDH_KQ4_USDS.xsif file,
-!       for E= 4.0 GeV and KHXU= 2.0 (IntgHX= 30.0 kG)
+!       for E= 8.0 GeV and KHXU= 2.0 (IntgHX= 30.0 kG)
 
-kqum1 = 0.217807105099
-kqum2 = -0.260867145661
-kqum3 = 0.462571229525
-kqum4 = -0.415827146064
+! note: the below K-values are for both SC beam and Cu beam
+! source: UNDH_KQ4_USDS.xsif (Eu=8.0, KHXU=2.0)
+
+kqum1 = 0.270162424021 ! 0.270162424008
+kqum2 = -0.2685706757   !-0.26857067573
+kqum3 = 0.279944439407 ! 0.279944439441
+kqum4 = -0.248916368758 !-0.248916368558
 
 qum1: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqum1, aperture = rqa
 qum2: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqum2, aperture = rqa
@@ -3822,7 +3818,7 @@ eoblm: marker !future electro-optic bunch length monitor?
 bltof: monitor !LTUH (gas-jet time-of-flight bunch length monitor)
 muhwall1: marker !upstream end of BTH/UH wall-1
 muhwall2: marker !upstream end of BTH/UH wall-2
-vv999: marker, type = "installed" !new vacuum valve just upbeam of undulator
+vv999: marker !new vacuum valve just upbeam of undulator
 pfilt1: marker
 dbmark37: marker !end of undulator match
 rwwake4h: marker, type = "WAKE" !LTUH beampipe wake applied here
@@ -3869,13 +3865,11 @@ bpmum4[ref] = qum4
 
   LTU : LINE=(VBSYS,MM1,DOGLG2A,DOGLG2B,MM2,EDMCH,EDSYS,UNMCH,RWWAKE4H,ENDLTUH,BEGUNDH,PREUNDH)
 
-  LTUM : LINE=(MM1,DOGLG2A,DOGLG2B,MM2,EDMCH,EDSYS,UNMCH,RWWAKE4H,ENDLTUH,BEGUNDH,PREUNDH)
-
 ! ------------------------------------------------------------------------------
 ! HXR dumpline
 ! ------------------------------------------------------------------------------
 
-kqdmp = -0.155212710055 !Yuri (E=4.0, K=2.0)
+kqdmp = -0.155212710055 !Yuri (E=8.0, K=2.0)
 
 qdmp1: quadrupole, type = "3.94Q17", l = lqp/2, k1 = kqdmp, aperture = rqp
 qdmp2: quadrupole, type = "3.94Q17", l = lqp/2, k1 = kqdmp, aperture = rqp
@@ -3918,20 +3912,19 @@ pcpm1l: ecollimator, l = lpcpm, x_limit = 14.2875e-3, y_limit = 14.2875e-3
 pcpm2l: ecollimator, l = lpcpm, x_limit = 38.1e-3, y_limit = 38.1e-3
 pcebd: ecollimator, l = 0, x_limit = 34.0e-3, y_limit = 34.0e-3, type = "gasket coll"
 
-dd1a: drift, l = 0.577681302427
-dd1b: drift, l = 1.000087502327
+dd1a: drift, l = 0.573903672148 !0.577681302427
+dd1b: drift, l = 1.003865132606 !1.000087502327
 dd1c: drift, l = 0.3048
-dd1e: drift, l = 0.249638105611
-dd1f: drift, l = 0.409240058046
+dd1e: drift, l = 0.24964958152 !0.249638105611
+dd1f: drift, l = 0.409228582137 !0.409240058046
 dd1d: drift, l = ldmp1-(dd1a[l]+pcpm1l[l]+dd1b[l]+dd1c[l]+dd1e[l]+pcpm2l[l]+dd1f[l])
 
 bpmqd: monitor, type = "Stripline-11" !RFBQD : MONI, TYPE="@2,CavityL-1"
 bpmdd: monitor, type = "Stripline-8"
 rfbdd: monitor, type = "@2,CavityL-1"
 
-xcdd: hkicker, type = "class-5"
-
 ycdd: vkicker, type = "class-5"
+xcdd: hkicker, type = "class-5"
 
 otrdmp: monitor, type = "OTR" !Dump screen
 

@@ -1,0 +1,34 @@
+
+! *** OPTICS=AD_ACCEL-04MAY2026s ***
+
+! SC_SXR2 (from LEI) path configuration
+
+  SETSP     := 1 !deflector switch for HXR/SXR/BSYD spreader
+  SETCUS    := 0 !deflector switch for HXR/CUSXR
+  SETDA     := 0 !deflector switch for BSYD/DASEL
+  SETHXRSS  := 0 !ON/OFF switch for HXR self-seeding chicane
+  SETSXRSS  := 0 !ON/OFF switch for SXR self-seeding chicane
+  SETPEPX   := 0 !ON/OFF switch for PEPPEx chicane
+  SETCBXFEL := 0 !ON/OFF switch for CBXFEL chicanes
+  SETXL2WIG := 0 !ON/OFF switch for XLEAP-II wiggler
+  SETXL2SS  := 0 !ON/OFF switch for XLEAP-II self-seeding chicane
+
+  IntgSX := 30.0 !kG
+  IntgHX := 30.0 !kG
+
+  CALL, FILENAME="LCLS2sc_master.xsif" !calls other xsif files
+  CALL, FILENAME="SETK2scLEI.xsif"
+
+  COMMENT !to generate SURVEY
+    USE, SC_SXR2 !start at LEI gun
+    ! initial energy: E0LEI
+    ! initial SURVEY: Xgun2, Ygun2, Zgun2, 0, 0, 0
+  ENDCOMMENT
+
+ !COMMENT !to generate TWISS
+    USE, SC_SXRi2 !start at BEAM0LEI
+    ! initial energy: Ei
+    ! initial Twiss : BXiLEI, AXiLEI, BYiLEI, AYiLEI
+ !ENDCOMMENT
+
+  RETURN

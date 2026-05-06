@@ -4,6 +4,8 @@ import os
 import numpy as np
 from dataclasses import dataclass, field
 from collections import defaultdict
+from pathlib import Path
+import sys
 
 def strmatch(n_str,N_lst,exact=False):
     """
@@ -73,12 +75,15 @@ A =65e-9  #  m (effective beam admittance)
 dp =0.02  #  1 (beam maximum relative energy error in the S30XL)
 D =0.002  #  m (maximum residual beam orbit in S30XL)
 
-MODELS=['sc_sxr_beam0','sc_hxr_beam0','sc_bsyd_beam0','sc_diag0_beam0', 'cu_sxr', 'cu_hxr', 'sc_dasel_beam0']
-froot_to_model = {1:0, 6:1, 7:2, 8:3, 14:4, 10:5, 9:6}
+MODELS=['sc_sxr_beam0','sc_hxr_beam0','sc_bsyd_beam0','sc_diag0_beam0', 'cu_sxr', 'cu_hxr', 'sc_dasel_beam0', 'diag02', 'diagis']
+froot_to_model = {1:0, 6:1, 7:2, 8:3, 14:4, 10:5, 9:6, 17:7, 18:8}
 
-output_ordering = [1,6,10,7,8,14,9]
+output_ordering = [1,6,10,7,8,14,9,17,18]
 
-optics = '05DEC2026s'
+if len(sys.argv) > 1:
+    optics = sys.argv[1]
+else:
+    optics = 'TEST'
 
 ips_unsorted = []
 with open('ips.dump','r') as f:
@@ -314,8 +319,11 @@ for model in bsc_data:
 hxr_offset = sc_hxr_marker - cu_hxr_marker
 
 # write to AD_ACCEL collated output file
+outdir='oracle_upload'
 fname=f'BSC-AD_ACCEL-{optics}.txt'
-with open(fname,'w') as f_all:
+filepath = Path(outdir+'/'+fname)
+filepath.parent.mkdir(parents=True, exist_ok=True)
+with filepath.open('w') as f_all:
   f_all.write("#ELEMENT, Stayclear Dia (mm), +Horz (mm), -Horz (mm), +Vert (mm), -Vert (mm)\n")
   for froot,ordinal,name in ips:
     if ordinal < 0:
@@ -328,7 +336,7 @@ with open(fname,'w') as f_all:
           continue
         model_name = 'sc_hxr_beam0'
         ordinal = ordinal + hxr_offset
-      if bsc_data[model_name][ordinal]:
+      if bsc_data[model_name][ordinal][0] != '':
         x = bsc_data[model_name][ordinal]
         if not x[0].startswith('FIXER'):
           if x[0] != name:

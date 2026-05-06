@@ -8,6 +8,7 @@ import numpy as np
 from datetime import datetime
 from decimal import Decimal, ROUND_HALF_UP
 import json
+from contextlib import nullcontext
 
 special_names = {
 'L0A':'L0A___',
@@ -63,7 +64,7 @@ kws['Crab_Cavity']     = {'madk':'LCAV',
                           'params':['L',0,0,0,'X1_LIMIT',0,'RF_FREQUENCY','VOLTAGE','PHI0',0]}
 
 #skips = ['Patch']
-skips = []
+skips = ['Fixer']
 for skip in skips:
   kws[skip] = {'skip':True}
 
@@ -72,8 +73,11 @@ if LCLS_LATTICE_ENV is None:
   print('Error:  LCLS_LATTICE is not set')
   sys.exit(1)
 
+LINES_ROOTS = ['sc_sxr','sc_hxr','sc_bsyd','sc_dasel','sc_diag0','cu_sxr','cu_hxr']
+LINES_EXCLUDE = ['', '    ',]
+
 BDIR = f'{LCLS_LATTICE_ENV}/bmad/'
-MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','sc_dasel','sc_sfts','cu_sxr','cu_hxr','cu_sfth','cu_gspec','cu_spec',
+MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','sc_diag02','sc_diagis','sc_dasel','sc_sfts','cu_sxr','cu_hxr','cu_sfth','cu_gspec','cu_spec',
         'sc_sxr_bsy', 'sc_hxr_bsy', 'sc_bsyd_bsy', 'sc_dasel_bsy', 'sc_sfts_bsy', 'cu_sxr_bsy', 'cu_hxr_bsy', 'cu_sfth_bsy']
 LATFILE = {}
 for model in MODELS:
@@ -169,13 +173,17 @@ with open('value_data.json','w') as f:
 #  theta phi psi
 
 for model in MODELS:
-  with open(model+'_survey.tape','w') as f:
+  area = '_'
+  with open(model+'_survey.tape','w') as f, \
+       (open(model+'_lines.precursor','w') if model in LINES_ROOTS else nullcontext()) as flin:
     f.write(f'Linux    Bmad Survey/{timestamp}\n\n')
     tao = Tao(lattice_file=LATFILE[model], noplot=True)
     ix_eles = tao.lat_list('*', 'ele.ix_ele')
     suml = 0
     for ix in ix_eles[:-1]:
       name = tao.lat_list(ix,'ele.name')[0]
+      if name.startswith('BEG'):
+        area = name[3:]
       key = tao.lat_list(ix,'ele.key')[0]
       inspect_name = name.split('#')
       split_bend = None
@@ -213,7 +221,6 @@ for model in MODELS:
       else:
         if split_bend is not None:
           match = [key for key in key_dict if key[:-1] == name]
-          #print(f'FOO: {match=} {name}')
           name = match[split_bend]
         else:
           match = [key for key in key_dict if key == name]
@@ -262,6 +269,9 @@ for model in MODELS:
       line = line + f'{theta:16.9E}{phi:16.9E}{psi:16.9E}\n'
         
       f.write(line)
+      if model in LINES_ROOTS:
+        if madk not in LINES_EXCLUDE:
+          flin.write(f'<PV> {name_use:16s} {madk} {suml:16.9E} {z:16.9E} {model.upper()} {area}\n')
     f.write('\n')
     f.write(f"{' '*33}{suml:.9E}")
 
