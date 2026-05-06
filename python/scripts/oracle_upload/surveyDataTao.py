@@ -73,11 +73,11 @@ if LCLS_LATTICE_ENV is None:
   print('Error:  LCLS_LATTICE is not set')
   sys.exit(1)
 
-LINES_ROOTS = ['sc_sxr','sc_hxr','sc_bsyd','sc_dasel','sc_diag0','cu_sxr','cu_hxr']
+LINES_ROOTS = ['sc_sxr','sc_hxr','sc_bsyd','sc_dasel','sc_diag0','sc_diag02','sc_diagis','cu_sxr','cu_hxr']
 LINES_EXCLUDE = ['', '    ',]
 
 BDIR = f'{LCLS_LATTICE_ENV}/bmad/'
-MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','sc_diag02','sc_diagis','sc_dasel','sc_sfts','cu_sxr','cu_hxr','cu_sfth','cu_gspec','cu_spec',
+MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','sc_dasel','sc_sfts','sc_diag02','sc_diagis','cu_sxr','cu_hxr','cu_sfth','cu_gspec','cu_spec',
         'sc_sxr_bsy', 'sc_hxr_bsy', 'sc_bsyd_bsy', 'sc_dasel_bsy', 'sc_sfts_bsy', 'cu_sxr_bsy', 'cu_hxr_bsy', 'cu_sfth_bsy']
 LATFILE = {}
 for model in MODELS:

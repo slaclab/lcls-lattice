@@ -7,7 +7,7 @@ SCRIPT_DIR = $(LCLS_LATTICE)/python/scripts/oracle_upload
 INSTALLROOT=/sdf/data/ad/public_html/model/output/lcls
 
 # Variables
-SURVEY_MODELS = sc_sxr sc_hxr sc_bsyd sc_dasel sc_diag0 cu_sxr cu_hxr
+SURVEY_MODELS = sc_sxr sc_hxr sc_bsyd sc_dasel sc_diag0 sc_diag02 sc_diagis cu_sxr cu_hxr
 BSY_SURVEY_MODELS = cu_hxr_bsy  cu_sfth_bsy  cu_sxr_bsy  sc_bsyd_bsy  sc_dasel_bsy  sc_hxr_bsy  sc_sfts_bsy  sc_sxr_bsy
 TWISS_MODELS = sc_sxr_beam0 sc_hxr_beam0 sc_bsyd_beam0 sc_dasel_beam0 sc_diag0_beam0 cu_sxr cu_hxr
 OPTICS = 04MAY2026s
@@ -34,7 +34,7 @@ ELEMENTDEVICES:= elementdevices.dat \
 # products : dependencies
 
 # Main targets
-.PHONY: all clean
+.PHONY: all clean docs opticsicons
 
 all: AD_ACCEL-$(OPTICS).txt BSY-AD_ACCEL-$(OPTICS).txt AD_ACCEL-extra-$(OPTICS).txt BSC-AD_ACCEL-$(OPTICS).txt $(DOTS) $(PLOTS_PDFS) $(DOTS_PDFS) $(MAPICON_PNGS)
 
@@ -54,13 +54,15 @@ $(ELEMENTDEVICES) &: cu_hxr_survey.tape cu_sxr_survey.tape
 ips.dump AD_ACCEL-$(OPTICS).txt BSY-AD_ACCEL-$(OPTICS).txt AD_ACCEL-extra-$(OPTICS).txt &: value_data.json $(SURVEY_TAPES)
 	python $(SCRIPT_DIR)/prepare_upload_bmad.py $(OPTICS)
 
-# plotsTao.py
-$(PLOTS_PDFS) &:
-	python $(SCRIPT_DIR)/plotsTao.py
-
 # bsc.py
 BSC-AD_ACCEL-$(OPTICS).txt $(BSC_TXTS) &: ips.dump $(TWISS_DATS)
 	python $(SCRIPT_DIR)/bsc.py $(OPTICS)
+
+oracle_upload: 
+
+# plotsTao.py
+$(PLOTS_PDFS) &:
+	python $(SCRIPT_DIR)/plotsTao.py
 
 # make_lines.py
 $(LINES_ALLS) $(LINES_DATS) &: $(ELEMENTDEVICES)
@@ -78,7 +80,6 @@ $(DOTS) &: $(LINES_ALLS)
 #
 # Create these eight optics plot icons by hand because conversion to png creates one
 # file per plot, and the ps files have many, but we only want the most interesting one.
-.PHONY: opticsicons
 opticsicons: sc_sxr_opticsicon.png sc_hxr_opticsicon.png sc_bsyd_opticsicon.png sc_dasel_opticsicon.png sc_diag0_opticsicon.png cu_hxr_opticsicon.png cu_sxr_opticsicon.png
 
 sc_sxr_opticsicon.png : sc_sxr_beam0_plots.pdf
@@ -134,6 +135,10 @@ cu_sxr_mapicon.png : cu_sxr_map.pdf
 # whole directories as opposed to lists of files.
 
 WEB:=.htaccess
+
+docs: $(PLOTS_PDFS) $(LINES_ALLS) $(DOTS) $(DOTS_PDFS) $(MAPICON_PNGS) opticsicons oracle_upload
+
+oracle_upload: $(TWISS_DATS) $(ELEMENTDEVICES) ips.dump AD_ACCEL-$(OPTICS).txt BSY-AD_ACCEL-$(OPTICS).txt AD_ACCEL-extra-$(OPTICS).txt BSC-AD_ACCEL-$(OPTICS).txt $(BSC_TXTS)
 
 stage : #all
 	mkdir -p installstage

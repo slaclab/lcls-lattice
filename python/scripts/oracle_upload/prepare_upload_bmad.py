@@ -133,8 +133,8 @@ file_roots = [
     {'root':'cu_sxr',     'beg':'BEGCLTS',      'end':'ENDCLTS',     'ix':14},     # 14
     {'root':'cu_gspec',   'beg':'BEGGSPEC',     'end':'ENDGSPEC',    'ix':15},     # 15
     {'root':'cu_spec',    'beg':'BEGSPEC',      'end':'ENDSPEC',     'ix':16},     # 16
-    {'root':'sc_diag02',     'beg':'BEGGUNLEI',    'end':'ENDLEI_2',    'ix':17},     # 17
-    {'root':'sc_diagis',     'beg':'BEGDIAGI_1',   'end':'ENDDIAGI_2',  'ix':18},     # 18
+    {'root':'sc_diag02',  'beg':'BEGGUNLEI',    'end':'ENDLEI_2',    'ix':17},     # 17
+    {'root':'sc_diagis',  'beg':'BEGDIAGI_1',   'end':'ENDDIAGI_2',  'ix':18},     # 18
 ]
 
 bsy_file_roots = [
