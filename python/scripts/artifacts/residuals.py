@@ -27,6 +27,8 @@ MODELS = [
 'sc_diag0',
 'sc_hxr2',
 'sc_sxr2',
+'sc_bsyd2',
+'sc_dasel2',
 ]
 
 XMINS = [

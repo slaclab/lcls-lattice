@@ -18,6 +18,8 @@ MODELS = [
  'sc_diagis',
  'sc_hxr2',
  'sc_sxr2',
+ 'sc_bsyd2',
+ 'sc_dasel2',
 ]
 
 
