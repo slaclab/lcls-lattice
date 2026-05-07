@@ -4,7 +4,8 @@ $(error LCLS_LATTICE is not set. Please set it before running make)
 endif
 
 SCRIPT_DIR = $(LCLS_LATTICE)/python/scripts/oracle_upload
-INSTALLROOT=/sdf/data/ad/public_html/model/output/lcls
+INSTALLROOT = /sdf/data/ad/public_html/model/output/lcls
+LINESLOCATION = /sdf/data/ad/accel/prod/lcls/
 
 # Variables
 SURVEY_MODELS = sc_sxr sc_hxr sc_bsyd sc_dasel sc_diag0 sc_diag02 sc_diagis cu_sxr cu_hxr sc_sxr2 sc_hxr2 sc_bsyd2 sc_dasel2
@@ -174,10 +175,13 @@ stage : #all
 
 # Install output lattice files, beam path device lists and maps in common area
 
-install : stage
+install_docs : stage
 	rsync -azv installstage/ $(INSTALLROOT)/$(OPTICS)
 	rm $(INSTALLROOT)/latest
 	ln -s $(OPTICS) $(INSTALLROOT)/latest
+
+install_lines : stage
+	rsync -azv $(LINES_DATS) $(LINESLOCATION)
 
 mostlyclean:
 	rm -f value_data.json ips.dump $(SURVEY_TAPES) $(TWISS_DATS)
