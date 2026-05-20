@@ -1,10 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-preRelease ***
+! *** OPTICS=AD_ACCEL-01JUN2026s ***
 
 ! LCLS-II-HE linacs: L0, L1, L2, L3, L4, L0LEI
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 19-MAY-2026, M. Woodley
+!  * SC linac energy profile per Y. Ding (10MAR2026 email)
 ! ------------------------------------------------------------------------------
 ! 25-NOV-2024, M. Woodley
 !  * adjust SC linac area boundary locations per vacuum drawing revisions
@@ -216,21 +219,30 @@
   CcavLb   := CcavL-CcavLa     !cavity #2 length d/s of support post
   
   FracL0 := 0.836608295223 !Ei=75 MeV
-  AmplL1 := 241.9801996642 !MV
-  GradL1 := AmplL1/(2*8*LcavL) !MV/m (2 8-cavity CM's)
-  PhasL1 := -24.9 !degrees
-  AHcav  := 60.0 !MV
+
+  AmplL1 := 210 !MV
+  FracL1 := 1.133546295167 !E1=75 MeV
+  GradL1 := FracL1*AmplL1/(2*8*LcavL) !MV/m (2 8-cavity CM's)
+  PhasL1 := -27.6 !degrees
+
+  AHcav  := 52.0   !MV
   GHcav  := AHcav/(2*8*CcavL) !MV/m (2 8-cavity CM's)
-  PHcav  := -172.5 !degrees
-  AmplL2 := 1555.730956156 !MV
-  GradL2 := AmplL2/(12*8*LcavL) !MV/m (12 8-cavity CM's)
-  PhasL2 := -32.3 !degrees
+  PHcav  := -168.5 !degrees
+
+  AmplL2 := 1451 !MV
+  FracL2 := 0.999960002368 !E2=235 MeV
+  GradL2 := FracL2*AmplL2/(12*8*LcavL) !MV/m (12 8-cavity CM's)
+  PhasL2 := -25.0 !degrees
+
   AmplL3 := 2450.0 !MV
-  GradL3 := AmplL3/(20*8*LcavL) !MV/m (20 8-cavity CM's)
-  PhasL3 := 0.0
+  FracL3 := 1.0    !E3=4 GeV
+  GradL3 := FracL3*AmplL3/(20*8*LcavL) !MV/m (20 8-cavity CM's)
+  PhasL3 := 0.0    !degrees
+
   AmplL4 := 4000.0 !MV
-  GradL4 := AmplL4/(23*8*LcavL) !MV/m (20 8-cavity CM's)
-  PhasL4 := 0.0 !degrees
+  FracL4 := 1.0    !E4=8 GeV
+  GradL4 := FracL4*AmplL4/(23*8*LcavL) !MV/m (20 8-cavity CM's)
+  PhasL4 := 0.0    !degrees
 
   COMMENT
     LactL2 := 12*8*LcavL
@@ -1632,48 +1644,48 @@
 
 ! L2
 
-  QCM04 : QUAD, TYPE="cryo SPQA109", L=Lcmq/2, APER=Rcmq, K1=-0.326994275917 !-KQCMfodo2
-  QCM05 : QUAD, TYPE="cryo SPQA104", L=Lcmq/2, APER=Rcmq, K1= 0.289428219886 ! KQCMfodo2
-  QCM06 : QUAD, TYPE="cryo SPQA111", L=Lcmq/2, APER=Rcmq, K1=-0.189155354368 !-KQCMfodo2
-  QCM07 : QUAD, TYPE="cryo SPQA116", L=Lcmq/2, APER=Rcmq, K1= 0.17118229764  ! KQCMfodo2
-  QCM08 : QUAD, TYPE="cryo SPQA103", L=Lcmq/2, APER=Rcmq, K1=-0.167624498336 !-KQCMfodo2
-  QCM09 : QUAD, TYPE="cryo SPQA108", L=Lcmq/2, APER=Rcmq, K1= 0.16898372787  ! KQCMfodo2
-  QCM10 : QUAD, TYPE="cryo SPQA113", L=Lcmq/2, APER=Rcmq, K1=-0.16902001806  !-KQCMfodo2
-  QCM11 : QUAD, TYPE="cryo SPQA101", L=Lcmq/2, APER=Rcmq, K1= 0.171135436608 ! KQCMfodo2
-  QCM12 : QUAD, TYPE="cryo SPQA122", L=Lcmq/2, APER=Rcmq, K1=-0.178602419131 !-KQCMfodo2
-  QCM13 : QUAD, TYPE="cryo SPQA115", L=Lcmq/2, APER=Rcmq, K1= 0.067202499844 ! KQCMfodo2
-  QCM14 : QUAD, TYPE="cryo SPQA126", L=Lcmq/2, APER=Rcmq, K1=-0.202431482106 !-KQCMfodo2
-  QCM15 : QUAD, TYPE="cryo SPQA001", L=Lcmq/2, APER=Rcmq, K1= 0.091643556891 ! KQCMfodo2
+  QCM04 : QUAD, TYPE="cryo SPQA109", L=Lcmq/2, APER=Rcmq, K1=-0.327110408403 !-KQCMfodo2
+  QCM05 : QUAD, TYPE="cryo SPQA104", L=Lcmq/2, APER=Rcmq, K1= 0.289845356697 ! KQCMfodo2
+  QCM06 : QUAD, TYPE="cryo SPQA111", L=Lcmq/2, APER=Rcmq, K1=-0.189894071232 !-KQCMfodo2
+  QCM07 : QUAD, TYPE="cryo SPQA116", L=Lcmq/2, APER=Rcmq, K1= 0.172124620075 ! KQCMfodo2
+  QCM08 : QUAD, TYPE="cryo SPQA103", L=Lcmq/2, APER=Rcmq, K1=-0.168395509237 !-KQCMfodo2
+  QCM09 : QUAD, TYPE="cryo SPQA108", L=Lcmq/2, APER=Rcmq, K1= 0.169624677614 ! KQCMfodo2
+  QCM10 : QUAD, TYPE="cryo SPQA113", L=Lcmq/2, APER=Rcmq, K1=-0.169653783601 !-KQCMfodo2
+  QCM11 : QUAD, TYPE="cryo SPQA101", L=Lcmq/2, APER=Rcmq, K1= 0.171691057758 ! KQCMfodo2
+  QCM12 : QUAD, TYPE="cryo SPQA122", L=Lcmq/2, APER=Rcmq, K1=-0.179408677301 !-KQCMfodo2
+  QCM13 : QUAD, TYPE="cryo SPQA115", L=Lcmq/2, APER=Rcmq, K1= 0.06832600622  ! KQCMfodo2
+  QCM14 : QUAD, TYPE="cryo SPQA126", L=Lcmq/2, APER=Rcmq, K1=-0.202541405764 !-KQCMfodo2
+  QCM15 : QUAD, TYPE="cryo SPQA001", L=Lcmq/2, APER=Rcmq, K1= 0.090594745977 ! KQCMfodo2
 
 ! L3
 
-  QCM16 : QUAD, TYPE="cryo SPQA117", L=Lcmq/2, APER=Rcmq, K1=-0.315239016894 !-KQCMfodo3
-  QCM17 : QUAD, TYPE="cryo SPQA120", L=Lcmq/2, APER=Rcmq, K1= 0.257238127219 ! KQCMfodo3
-  QCM18 : QUAD, TYPE="cryo SPQA132", L=Lcmq/2, APER=Rcmq, K1=-0.209275402774 !-KQCMfodo3
-  QCM19 : QUAD, TYPE="cryo SPQA130", L=Lcmq/2, APER=Rcmq, K1= 0.191224022381 ! KQCMfodo3
+  QCM16 : QUAD, TYPE="cryo SPQA117", L=Lcmq/2, APER=Rcmq, K1=-0.315239016901 !-KQCMfodo3
+  QCM17 : QUAD, TYPE="cryo SPQA120", L=Lcmq/2, APER=Rcmq, K1= 0.257238127211 ! KQCMfodo3
+  QCM18 : QUAD, TYPE="cryo SPQA132", L=Lcmq/2, APER=Rcmq, K1=-0.209275402773 !-KQCMfodo3
+  QCM19 : QUAD, TYPE="cryo SPQA130", L=Lcmq/2, APER=Rcmq, K1= 0.191224022382 ! KQCMfodo3
   QCM20 : QUAD, TYPE="cryo SPQA125", L=Lcmq/2, APER=Rcmq, K1=-KQCMfodo3
   QCM21 : QUAD, TYPE="cryo SPQA124", L=Lcmq/2, APER=Rcmq, K1= KQCMfodo3
   QCM22 : QUAD, TYPE="cryo SPQA119", L=Lcmq/2, APER=Rcmq, K1=-KQCMfodo3
-  QCM23 : QUAD, TYPE="cryo SPQA121", L=Lcmq/2, APER=Rcmq, K1= 0.185865014622 !-KQCMfodo3
-  QCM24 : QUAD, TYPE="cryo SPQA123", L=Lcmq/2, APER=Rcmq, K1=-0.190841961714 !-KQCMfodo3
-  QCM25 : QUAD, TYPE="cryo SPQA114", L=Lcmq/2, APER=Rcmq, K1= 0.180021741636 ! KQCMfodo3
-  QCM26 : QUAD, TYPE="cryo SPQA002", L=Lcmq/2, APER=Rcmq, K1=-0.180256091487 !-KQCMfodo3
-  QCM27 : QUAD, TYPE="cryo SPQA003", L=Lcmq/2, APER=Rcmq, K1= 0.191877107738 ! KQCMfodo3
-  QCM28 : QUAD, TYPE="cryo SPQA102", L=Lcmq/2, APER=Rcmq, K1=-0.186780825065 !-KQCMfodo3
+  QCM23 : QUAD, TYPE="cryo SPQA121", L=Lcmq/2, APER=Rcmq, K1= 0.185865014643 !-KQCMfodo3
+  QCM24 : QUAD, TYPE="cryo SPQA123", L=Lcmq/2, APER=Rcmq, K1=-0.190841961713 !-KQCMfodo3
+  QCM25 : QUAD, TYPE="cryo SPQA114", L=Lcmq/2, APER=Rcmq, K1= 0.180021741622 ! KQCMfodo3
+  QCM26 : QUAD, TYPE="cryo SPQA002", L=Lcmq/2, APER=Rcmq, K1=-0.180256091486 !-KQCMfodo3
+  QCM27 : QUAD, TYPE="cryo SPQA003", L=Lcmq/2, APER=Rcmq, K1= 0.191877107728 ! KQCMfodo3
+  QCM28 : QUAD, TYPE="cryo SPQA102", L=Lcmq/2, APER=Rcmq, K1=-0.186780825079 !-KQCMfodo3
   QCM29 : QUAD, TYPE="cryo SPQA134", L=Lcmq/2, APER=Rcmq, K1= KQCMfodo3
   QCM30 : QUAD, TYPE="cryo SPQA128", L=Lcmq/2, APER=Rcmq, K1=-KQCMfodo3
   QCM31 : QUAD, TYPE="cryo SPQA133", L=Lcmq/2, APER=Rcmq, K1= KQCMfodo3
-  QCM32 : QUAD, TYPE="cryo SPQA129", L=Lcmq/2, APER=Rcmq, K1=-0.189706198724 !-KQCMfodo3
-  QCM33 : QUAD, TYPE="cryo SPQA106", L=Lcmq/2, APER=Rcmq, K1= 0.203647523762 ! KQCMfodo3
-  QCM34 : QUAD, TYPE="cryo SPQA118", L=Lcmq/2, APER=Rcmq, K1=-0.235865888563 !-KQCMfodo3
-  QCM35 : QUAD, TYPE="cryo SPQA110", L=Lcmq/2, APER=Rcmq, K1= 0.191414661722 ! KQCMfodo3
+  QCM32 : QUAD, TYPE="cryo SPQA129", L=Lcmq/2, APER=Rcmq, K1=-0.189706198732 !-KQCMfodo3
+  QCM33 : QUAD, TYPE="cryo SPQA106", L=Lcmq/2, APER=Rcmq, K1= 0.203647523756 ! KQCMfodo3
+  QCM34 : QUAD, TYPE="cryo SPQA118", L=Lcmq/2, APER=Rcmq, K1=-0.235865888566 !-KQCMfodo3
+  QCM35 : QUAD, TYPE="cryo SPQA110", L=Lcmq/2, APER=Rcmq, K1= 0.191414661716 ! KQCMfodo3
 
 ! L4
 
-  QCM37 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.191505880243 !-KQCMfodo4
-  QCM38 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.235284364944 ! KQCMfodo4
-  QCM39 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.202405154915 !-KQCMfodo4
-  QCM40 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.189170511781 ! KQCMfodo4
+  QCM37 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.191505880235 !-KQCMfodo4
+  QCM38 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.235284364949 ! KQCMfodo4
+  QCM39 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.202405154914 !-KQCMfodo4
+  QCM40 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.189170511789 ! KQCMfodo4
   QCM41 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-KQCMfodo4
   QCM42 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= KQCMfodo4
   QCM43 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-KQCMfodo4
@@ -1689,15 +1701,15 @@
   QCM53 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-KQCMfodo4
   QCM54 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= KQCMfodo4
   QCM55 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-KQCMfodo4
-  QCM56 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.188278952194 ! KQCMfodo4
-  QCM57 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.195564622777 !-KQCMfodo4
-  QCM58 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.206044660219 ! KQCMfodo4
-  QCM59 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.296171301216 !-KQCMfodo4
+  QCM56 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.18816565992  ! KQCMfodo4
+  QCM57 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.195189324523 !-KQCMfodo4
+  QCM58 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1= 0.206072879171 ! KQCMfodo4
+  QCM59 : QUAD, TYPE="cryo", L=Lcmq/2, APER=Rcmq, K1=-0.296750355345 !-KQCMfodo4
 
 ! EXT
 
-  KQX01 :=  1.130544517546
-  KQX02 := -0.918924271327
+  KQX01 :=  1.130946343469
+  KQX02 := -0.918136696499
 
   QX01 : QUAD, TYPE="1.085Q4.31", L=LQE/2, APER=rQE, K1=KQX01
   QX02 : QUAD, TYPE="1.085Q4.31", L=LQE/2, APER=rQE, K1=KQX02
