@@ -1,7 +1,7 @@
 function beamLine=model_beamLineLCLS2sc()
 %
 % -----------------------------------------------------------------------------
-% *** OPTICS=AD_ACCEL-04MAY2026s ***
+% *** OPTICS=AD_ACCEL-01JUN2026s ***
 % -----------------------------------------------------------------------------
 %
 % beamLine=model_beamLineLCLS2sc();
@@ -175,7 +175,7 @@ EMASS  = 0.510998902e-3; % electron rest mass [GeV]
 PMASS  = 0.938271998;    % proton rest mass [GeV]
 CLIGHT = 2.99792458e8;   % speed of light [m/s]
 
-% *** OPTICS=AD_ACCEL-04MAY2026s ***
+% *** OPTICS=AD_ACCEL-01JUN2026s ***
 
 
 
@@ -588,7 +588,7 @@ INTGHX =  30.0 ;%kG
 % ------------------------------------------------------------------------------
 % element and line definitions
 % ------------------------------------------------------------------------------
-% *** OPTICS=AD_ACCEL-04MAY2026s ***
+% *** OPTICS=AD_ACCEL-01JUN2026s ***
 % ==============================================================================
 % Modification History
 % ------------------------------------------------------------------------------
@@ -776,7 +776,7 @@ AYEDH =   1.084608326581;
 % ==============================================================================
 % load lattice definitions
 % ------------------------------------------------------------------------------
-% *** OPTICS=AD_ACCEL-04MAY2026s ***
+% *** OPTICS=AD_ACCEL-01JUN2026s ***
 % LCLS2sc common parameters
 % ==============================================================================
 % Modification History
@@ -1147,10 +1147,13 @@ BEGBSYA_2={'mo' 'BEGBSYA_2' 0 []}';
 ENDBSYA_2={'mo' 'ENDBSYA_2' 0 []}';
 % ------------------------------------------------------------------------------
 
-% *** OPTICS=AD_ACCEL-04MAY2026s ***
+% *** OPTICS=AD_ACCEL-01JUN2026s ***
 % LCLS-II-HE linacs: L0, L1, L2, L3, L4, L0LEI
 % ==============================================================================
 % Modification History
+% ------------------------------------------------------------------------------
+% 19-MAY-2026, M. Woodley
+%  * SC linac energy profile per Y. Ding (10MAR2026 email)
 % ------------------------------------------------------------------------------
 % 25-NOV-2024, M. Woodley
 %  * adjust SC linac area boundary locations per vacuum drawing revisions
@@ -1356,21 +1359,25 @@ CCAV22CP =  0.11262          ;%support post to cavity #2 center
 CCAVLA =  CCAVL/2-CCAV22CP ;%cavity #2 length u/s of support post
 CCAVLB =  CCAVL-CCAVLA     ;%cavity #2 length d/s of support post
 FRACL0 =  0.836608295223 ;%Ei=75 MeV
-AMPLL1 =  241.9801996642 ;%MV
-GRADL1 =  AMPLL1/(2*8*LCAVL) ;%MV/m (2 8-cavity CM's)
-PHASL1 =  -24.9 ;%degrees
-AHCAV =  60.0 ;%MV
+AMPLL1 =  210 ;%MV
+FRACL1 =  1.133546295167 ;%E1=75 MeV
+GRADL1 =  FRACL1*AMPLL1/(2*8*LCAVL) ;%MV/m (2 8-cavity CM's)
+PHASL1 =  -27.6 ;%degrees
+AHCAV =  52.0   ;%MV
 GHCAV =  AHCAV/(2*8*CCAVL) ;%MV/m (2 8-cavity CM's)
-PHCAV =  -172.5 ;%degrees
-AMPLL2 =  1555.730956156 ;%MV
-GRADL2 =  AMPLL2/(12*8*LCAVL) ;%MV/m (12 8-cavity CM's)
-PHASL2 =  -32.3 ;%degrees
+PHCAV =  -168.5 ;%degrees
+AMPLL2 =  1451 ;%MV
+FRACL2 =  0.999960002368 ;%E2=235 MeV
+GRADL2 =  FRACL2*AMPLL2/(12*8*LCAVL) ;%MV/m (12 8-cavity CM's)
+PHASL2 =  -25.0 ;%degrees
 AMPLL3 =  2450.0 ;%MV
-GRADL3 =  AMPLL3/(20*8*LCAVL) ;%MV/m (20 8-cavity CM's)
-PHASL3 =  0.0;
+FRACL3 =  1.0    ;%E3=4 GeV
+GRADL3 =  FRACL3*AMPLL3/(20*8*LCAVL) ;%MV/m (20 8-cavity CM's)
+PHASL3 =  0.0    ;%degrees
 AMPLL4 =  4000.0 ;%MV
-GRADL4 =  AMPLL4/(23*8*LCAVL) ;%MV/m (20 8-cavity CM's)
-PHASL4 =  0.0 ;%degrees
+FRACL4 =  1.0    ;%E4=8 GeV
+GRADL4 =  FRACL4*AMPLL4/(23*8*LCAVL) ;%MV/m (20 8-cavity CM's)
+PHASL4 =  0.0    ;%degrees
 % 
 % LACTL2 =  12*8*LCAVL;
 % LACTL3 =  20*8*LCAVL;
@@ -2085,44 +2092,44 @@ QCM01={'qu' 'QCM01' LCMQ/2 [KQCM01 0]}';
 QCM02={'qu' 'QCM02' LCMQ/2 [-0.217944649921 0]}';%-KQCMfodo1
 QCM03={'qu' 'QCM03' LCMQ/2 [0.110942693737 0]}';% KQCMfodo1
 % L2
-QCM04={'qu' 'QCM04' LCMQ/2 [-0.326994275917 0]}';%-KQCMfodo2
-QCM05={'qu' 'QCM05' LCMQ/2 [0.289428219886 0]}';% KQCMfodo2
-QCM06={'qu' 'QCM06' LCMQ/2 [-0.189155354368 0]}';%-KQCMfodo2
-QCM07={'qu' 'QCM07' LCMQ/2 [0.17118229764 0]}';% KQCMfodo2
-QCM08={'qu' 'QCM08' LCMQ/2 [-0.167624498336 0]}';%-KQCMfodo2
-QCM09={'qu' 'QCM09' LCMQ/2 [0.16898372787 0]}';% KQCMfodo2
-QCM10={'qu' 'QCM10' LCMQ/2 [-0.16902001806 0]}';%-KQCMfodo2
-QCM11={'qu' 'QCM11' LCMQ/2 [0.171135436608 0]}';% KQCMfodo2
-QCM12={'qu' 'QCM12' LCMQ/2 [-0.178602419131 0]}';%-KQCMfodo2
-QCM13={'qu' 'QCM13' LCMQ/2 [0.067202499844 0]}';% KQCMfodo2
-QCM14={'qu' 'QCM14' LCMQ/2 [-0.202431482106 0]}';%-KQCMfodo2
-QCM15={'qu' 'QCM15' LCMQ/2 [0.091643556891 0]}';% KQCMfodo2
+QCM04={'qu' 'QCM04' LCMQ/2 [-0.327110408403 0]}';%-KQCMfodo2
+QCM05={'qu' 'QCM05' LCMQ/2 [0.289845356697 0]}';% KQCMfodo2
+QCM06={'qu' 'QCM06' LCMQ/2 [-0.189894071232 0]}';%-KQCMfodo2
+QCM07={'qu' 'QCM07' LCMQ/2 [0.172124620075 0]}';% KQCMfodo2
+QCM08={'qu' 'QCM08' LCMQ/2 [-0.168395509237 0]}';%-KQCMfodo2
+QCM09={'qu' 'QCM09' LCMQ/2 [0.169624677614 0]}';% KQCMfodo2
+QCM10={'qu' 'QCM10' LCMQ/2 [-0.169653783601 0]}';%-KQCMfodo2
+QCM11={'qu' 'QCM11' LCMQ/2 [0.171691057758 0]}';% KQCMfodo2
+QCM12={'qu' 'QCM12' LCMQ/2 [-0.179408677301 0]}';%-KQCMfodo2
+QCM13={'qu' 'QCM13' LCMQ/2 [0.06832600622 0]}';% KQCMfodo2
+QCM14={'qu' 'QCM14' LCMQ/2 [-0.202541405764 0]}';%-KQCMfodo2
+QCM15={'qu' 'QCM15' LCMQ/2 [0.090594745977 0]}';% KQCMfodo2
 % L3
-QCM16={'qu' 'QCM16' LCMQ/2 [-0.315239016894 0]}';%-KQCMfodo3
-QCM17={'qu' 'QCM17' LCMQ/2 [0.257238127219 0]}';% KQCMfodo3
-QCM18={'qu' 'QCM18' LCMQ/2 [-0.209275402774 0]}';%-KQCMfodo3
-QCM19={'qu' 'QCM19' LCMQ/2 [0.191224022381 0]}';% KQCMfodo3
+QCM16={'qu' 'QCM16' LCMQ/2 [-0.315239016901 0]}';%-KQCMfodo3
+QCM17={'qu' 'QCM17' LCMQ/2 [0.257238127211 0]}';% KQCMfodo3
+QCM18={'qu' 'QCM18' LCMQ/2 [-0.209275402773 0]}';%-KQCMfodo3
+QCM19={'qu' 'QCM19' LCMQ/2 [0.191224022382 0]}';% KQCMfodo3
 QCM20={'qu' 'QCM20' LCMQ/2 [-KQCMFODO3 0]}';
 QCM21={'qu' 'QCM21' LCMQ/2 [KQCMFODO3 0]}';
 QCM22={'qu' 'QCM22' LCMQ/2 [-KQCMFODO3 0]}';
-QCM23={'qu' 'QCM23' LCMQ/2 [0.185865014622 0]}';%-KQCMfodo3
-QCM24={'qu' 'QCM24' LCMQ/2 [-0.190841961714 0]}';%-KQCMfodo3
-QCM25={'qu' 'QCM25' LCMQ/2 [0.180021741636 0]}';% KQCMfodo3
-QCM26={'qu' 'QCM26' LCMQ/2 [-0.180256091487 0]}';%-KQCMfodo3
-QCM27={'qu' 'QCM27' LCMQ/2 [0.191877107738 0]}';% KQCMfodo3
-QCM28={'qu' 'QCM28' LCMQ/2 [-0.186780825065 0]}';%-KQCMfodo3
+QCM23={'qu' 'QCM23' LCMQ/2 [0.185865014643 0]}';%-KQCMfodo3
+QCM24={'qu' 'QCM24' LCMQ/2 [-0.190841961713 0]}';%-KQCMfodo3
+QCM25={'qu' 'QCM25' LCMQ/2 [0.180021741622 0]}';% KQCMfodo3
+QCM26={'qu' 'QCM26' LCMQ/2 [-0.180256091486 0]}';%-KQCMfodo3
+QCM27={'qu' 'QCM27' LCMQ/2 [0.191877107728 0]}';% KQCMfodo3
+QCM28={'qu' 'QCM28' LCMQ/2 [-0.186780825079 0]}';%-KQCMfodo3
 QCM29={'qu' 'QCM29' LCMQ/2 [KQCMFODO3 0]}';
 QCM30={'qu' 'QCM30' LCMQ/2 [-KQCMFODO3 0]}';
 QCM31={'qu' 'QCM31' LCMQ/2 [KQCMFODO3 0]}';
-QCM32={'qu' 'QCM32' LCMQ/2 [-0.189706198724 0]}';%-KQCMfodo3
-QCM33={'qu' 'QCM33' LCMQ/2 [0.203647523762 0]}';% KQCMfodo3
-QCM34={'qu' 'QCM34' LCMQ/2 [-0.235865888563 0]}';%-KQCMfodo3
-QCM35={'qu' 'QCM35' LCMQ/2 [0.191414661722 0]}';% KQCMfodo3
+QCM32={'qu' 'QCM32' LCMQ/2 [-0.189706198732 0]}';%-KQCMfodo3
+QCM33={'qu' 'QCM33' LCMQ/2 [0.203647523756 0]}';% KQCMfodo3
+QCM34={'qu' 'QCM34' LCMQ/2 [-0.235865888566 0]}';%-KQCMfodo3
+QCM35={'qu' 'QCM35' LCMQ/2 [0.191414661716 0]}';% KQCMfodo3
 % L4
-QCM37={'qu' 'QCM37' LCMQ/2 [-0.191505880243 0]}';%-KQCMfodo4
-QCM38={'qu' 'QCM38' LCMQ/2 [0.235284364944 0]}';% KQCMfodo4
-QCM39={'qu' 'QCM39' LCMQ/2 [-0.202405154915 0]}';%-KQCMfodo4
-QCM40={'qu' 'QCM40' LCMQ/2 [0.189170511781 0]}';% KQCMfodo4
+QCM37={'qu' 'QCM37' LCMQ/2 [-0.191505880235 0]}';%-KQCMfodo4
+QCM38={'qu' 'QCM38' LCMQ/2 [0.235284364949 0]}';% KQCMfodo4
+QCM39={'qu' 'QCM39' LCMQ/2 [-0.202405154914 0]}';%-KQCMfodo4
+QCM40={'qu' 'QCM40' LCMQ/2 [0.189170511789 0]}';% KQCMfodo4
 QCM41={'qu' 'QCM41' LCMQ/2 [-KQCMFODO4 0]}';
 QCM42={'qu' 'QCM42' LCMQ/2 [KQCMFODO4 0]}';
 QCM43={'qu' 'QCM43' LCMQ/2 [-KQCMFODO4 0]}';
@@ -2138,13 +2145,13 @@ QCM52={'qu' 'QCM52' LCMQ/2 [KQCMFODO4 0]}';
 QCM53={'qu' 'QCM53' LCMQ/2 [-KQCMFODO4 0]}';
 QCM54={'qu' 'QCM54' LCMQ/2 [KQCMFODO4 0]}';
 QCM55={'qu' 'QCM55' LCMQ/2 [-KQCMFODO4 0]}';
-QCM56={'qu' 'QCM56' LCMQ/2 [0.188278952194 0]}';% KQCMfodo4
-QCM57={'qu' 'QCM57' LCMQ/2 [-0.195564622777 0]}';%-KQCMfodo4
-QCM58={'qu' 'QCM58' LCMQ/2 [0.206044660219 0]}';% KQCMfodo4
-QCM59={'qu' 'QCM59' LCMQ/2 [-0.296171301216 0]}';%-KQCMfodo4
+QCM56={'qu' 'QCM56' LCMQ/2 [0.18816565992 0]}';% KQCMfodo4
+QCM57={'qu' 'QCM57' LCMQ/2 [-0.195189324523 0]}';%-KQCMfodo4
+QCM58={'qu' 'QCM58' LCMQ/2 [0.206072879171 0]}';% KQCMfodo4
+QCM59={'qu' 'QCM59' LCMQ/2 [-0.296750355345 0]}';%-KQCMfodo4
 % EXT
-KQX01 =   1.130544517546;
-KQX02 =  -0.918924271327;
+KQX01 =   1.130946343469;
+KQX02 =  -0.918136696499;
 QX01={'qu' 'QX01' LQE/2 [KQX01 0]}';
 QX02={'qu' 'QX02' LQE/2 [KQX02 0]}';
 % LEI (CM00)
@@ -3466,7 +3473,7 @@ CMFODO3=[QFCMFODO3,DCMFODO,QDCMFODO3,QDCMFODO3,DCMFODO,QFCMFODO3];
 CMFODO4=[QFCMFODO4,DCMFODO,QDCMFODO4,QDCMFODO4,DCMFODO,QFCMFODO4];
 % ------------------------------------------------------------------------------
 
-% *** OPTICS=AD_ACCEL-04MAY2026s ***
+% *** OPTICS=AD_ACCEL-01JUN2026s ***
 % LCLS2sc post laser heater diagnostic beamline
 % ==============================================================================
 % Modification History
@@ -3868,10 +3875,13 @@ DIAG0=[BEGDIAG0,BKRDG0_FULL,RODG0K,DKV0A,BPMDG000,DKV0B,M1DG0,BLRDG0_FULL,RODG0L
 %ENDCOMMENT
 % ------------------------------------------------------------------------------
 
-% *** OPTICS=AD_ACCEL-04MAY2026s ***
+% *** OPTICS=AD_ACCEL-01JUN2026s ***
 % LCLS2sc injector: gun to start of L1 linac
 % ==============================================================================
 % Modification History
+% ------------------------------------------------------------------------------
+% 15-MAY-2026, M. Woodley
+%  * replace SQ02B (SOL2B trim) with "mini-quad"
 % ------------------------------------------------------------------------------
 % 28-MAR-2026, M. Woodley
 %  * there is no Faraday Cup on YAG01B
@@ -4097,9 +4107,10 @@ BCXH4={'be' 'BCXH4' LBH [+ABH GBH/2 +ABH 0 FBH FBH 0]}';
 CQ01B={'mu' 'CQ01B' 0 [0 0 0 0]}';
 SQ01B={'mu' 'SQ01B' 0 [0 0 0 pi/4]}';
 %CQ02B : MULT, TYPE="solenoid trim", APER=0.0475/2, K1L=0     shorted out
-SQ02B={'mu' 'SQ02B' 0 [0 0 0 pi/4]}';
-% replacement for original CQ02B (correction coil co-wound on SOL2B)
+%SQ02B : MULT, TYPE="solenoid trim", APER=0.0475/2, K1L=0, T1
+% replacement for original CQ02B and SQ02B (correction coils co-wound on SOL2B)
 CQ02B={'qu' 'CQ02B' LQG/2 [0 0]}';
+SQ02B={'qu' 'SQ02B' LQG/2 [0 pi/4]}';
 % L0 to laser heater (adjustable-sized waists at WS0H04 and LHMID)
 %              heater ON        heater OFF        chicane OFF	
 %           ---------------   ---------------   ---------------   
@@ -4139,18 +4150,18 @@ KQCOLL0 =  1.787850470726  ;%45 degree FODO
 QFCOLL0={'qu' 'QFCOLL0' LQX/2 [KQCOLL0 0]}';
 QDCOLL0={'qu' 'QDCOLL0' LQX/2 [-KQCOLL0 0]}';
 % COL0 collimation section
-KQC001 =   5.135316216759;
+KQC001 =   5.13531621676;
 KQC002 =   0.0;
-KQC003 =  -5.295950232123;
-KQC004 =   2.772436085305;
-KQC005 =  -1.796082149685;
+KQC003 =  -5.295950232121;
+KQC004 =   2.772436085303;
+KQC005 =  -1.796082149684;
 KQC006 =   KQCOLL0;
 KQC007 =  -KQCOLL0;
 KQC008 =   KQCOLL0;
 KQC009 =  -KQCOLL0;
-KQC010 =   0.346494139368;
-KQC011 =  -1.054136562653;
-KQC012 =   0.942153662284;
+KQC010 =   0.389224765461;
+KQC011 =  -1.283293152617;
+KQC012 =   1.048722049726;
 QC001={'qu' 'QC001' LQX/2 [KQC001 0]}';
 QC002={'qu' 'QC002' LQX/2 [KQC002 0]}';
 QC003={'qu' 'QC003' LQX/2 [KQC003 0]}';
@@ -4238,6 +4249,8 @@ DG012A={'dr' '' 0.08-LQG/2 []}';
 DG012B={'dr' '' DG012{3}-LQG-DG012A{3} []}';
 DG016B={'dr' '' 0.082968 []}';
 DG016A={'dr' '' DG016{3}-DG016B{3} []}';
+DG011B={'dr' '' 5.8*IN2M-DG012A{3}-LQG []}';
+DG011A={'dr' '' DG011{3}-LQG-DG011B{3} []}';
 DGEIC={'dr' '' 3.0-2.052577 []}';
 % L0 to laser heater
 D0H00={'dr' '' 0.658175 []}';
@@ -4503,6 +4516,7 @@ BCXH1_FULL=[BCXH1A,BCXH1B];
 BCXH2_FULL=[BCXH2A,BCXH2B];
 BCXH3_FULL=[BCXH3A,BCXH3B];
 BCXH4_FULL=[BCXH4A,BCXH4B];
+SQ02B_FULL=[SQ02B,SQ02B];
 CQ02B_FULL=[CQ02B,CQ02B];
 Q0H01_FULL=[Q0H01,BPM0H01,Q0H01];
 Q0H02_FULL=[Q0H02,Q0H02];
@@ -4529,7 +4543,7 @@ QC010_FULL=[QC010,BPMC010,QC010];
 QC011_FULL=[QC011,BPMC011,QC011];
 QC012_FULL=[QC012,BPMC012,QC012];
 SOL1B_FULL=[SOL1B,CQ01B,SQ01B,SOL1B];
-SOL2B_FULL=[SOL2B,      SQ02B,SOL2B];
+SOL2B_FULL=[SOL2B,SOL2B];
 UMHTR_FULL=[UMHTR,HTRUNDB,UMHTR];
 SC1B=[XC01B,YC01B];
 SC2B=[XC02B,YC02B];
@@ -4538,7 +4552,10 @@ SC4B=[XC04B,YC04B];
 SC5B=[XC05B,YC05B];
 SCC000=[XCC000,YCC000];
 % ------------------------------------------------------------------------------
-GUN=[BEGGUNB,DGBCA,SOL1BKB,DGBCB,CATHODEB,DGUN,DG001,SOL1B_FULL,DG002,VV01B,DG003,SC1B,DG004,BPM1B,DG005,IM01B,DG006,SC2B,DG007,BUN1B_FULL,DG008,SC3B,DG009,AM00B,DG010,SC4B,DG011,YAG01B_FULL,DG012A,CQ02B_FULL,DG012B,SOL2B_FULL,DG013,VV02B,DG014,BPM2B,DG015,SC5B,DG016A,BLFU,DG016B,ENDGUNB];
+% 
+% GUN=[BEGGUNB,DGBCA,SOL1BKB,DGBCB,CATHODEB,DGUN,DG001,SOL1B_FULL,DG002,VV01B,DG003,SC1B,DG004,BPM1B,DG005,IM01B,DG006,SC2B,DG007,BUN1B_FULL,DG008,SC3B,DG009,AM00B,DG010,SC4B,DG011,YAG01B_FULL,DG012A,CQ02B_FULL,DG012B,SOL2B_FULL,DG013,VV02B,DG014,BPM2B,DG015,SC5B,DG016A,BLFU,DG016B,ENDGUNB];
+
+GUN=[BEGGUNB,DGBCA,SOL1BKB,DGBCB,CATHODEB,DGUN,DG001,SOL1B_FULL,DG002,VV01B,DG003,SC1B,DG004,BPM1B,DG005,IM01B,DG006,SC2B,DG007,BUN1B_FULL,DG008,SC3B,DG009,AM00B,DG010,SC4B,DG011A,SQ02B_FULL,DG011B,YAG01B_FULL,DG012A,CQ02B_FULL,DG012B,SOL2B_FULL,DG013,VV02B,DG014,BPM2B,DG015,SC5B,DG016A,BLFU,DG016B,ENDGUNB];
 EIC=[BEGEIC,DGBCA,SOL1BKB,DGBCB,CATHODEB,DGUN,DG001,SOL1B_FULL,DG002,VV01B,DG003,SC1B,DG004,BPM1B,DG005,IM01B,DG006,SC2B,DG007,BUN1B_FULL,DG008,SC3B,DG009,AM00B,DG010,SC4B,DG011,YAG01B,DG012,SOL2B_FULL,DG013,VV02B,DG014,BPM2B,DG015,SC5B,DG016A,BLFU,DG016B,ECUEIC,DGEIC,FC00EIC,ENDEIC];
 % ------------------------------------------------------------------------------
 % %simplified
@@ -4573,7 +4590,7 @@ C0FODOF=[QFCOLL0,DCOLL0,QDCOLL0,QDCOLL0,DCOLL0,QFCOLL0];
 C0FODOD=[QDCOLL0,DCOLL0,QFCOLL0,QFCOLL0,DCOLL0,QDCOLL0];
 % ------------------------------------------------------------------------------
 
-% *** OPTICS=AD_ACCEL-04MAY2026s ***
+% *** OPTICS=AD_ACCEL-01JUN2026s ***
 % LCLS2sc injector #2: from CATHODELEI to merge with original LCLS-II injector
 %   (diagnostic line, spectrometer line, and dump line in DIAGI.xsif)
 % ==============================================================================
@@ -5036,7 +5053,7 @@ LEI_2_PLOT=[BEGLEI_2,BXDLI1,DDLI0A,SDLI1,SDLI1,DDLI0B,QDLI1,QDLI1,DDLI1A,CEDLI,D
 LEI=[LEI_1,LEI_2];
 % ------------------------------------------------------------------------------
 
-% *** OPTICS=AD_ACCEL-04MAY2026s ***
+% *** OPTICS=AD_ACCEL-01JUN2026s ***
 % LCLS2sc injector diagnostic beamline
 % ==============================================================================
 % Modification History
@@ -5259,7 +5276,7 @@ DIAGIS=[DIAGI_1,DIAGI_2];%to spectrometer
 DIAGID=[DIAGI_1,DIAGI_3];%to straight-ahead dump (not used)
 % ------------------------------------------------------------------------------
 
-% *** OPTICS=AD_ACCEL-04MAY2026s ***
+% *** OPTICS=AD_ACCEL-01JUN2026s ***
 % LCLS2sc bunch compressor chicane #1
 % ==============================================================================
 % Modification History
@@ -5396,7 +5413,7 @@ BCX14={'be' 'BCX14' LB1 [+AB1 GB1/2 +AB1 0 FB1 FB1 0]}';
 % QUAD
 % ------------------------------------------------------------------------------
 % L1 to BC1 chicane
-KQ1C01 =  0.964583578003;
+KQ1C01 =  0.968582792751;
 Q1C01={'qu' 'Q1C01' LQX/2 [KQ1C01 0]}';
 % BC1 chicane
 KCQ11 =  0;
@@ -5412,18 +5429,18 @@ KQCOLL1 =  1.787850470726  ;%45 degree FODO
 QFCOLL1={'qu' 'QFCOLL1' LQX/2 [KQCOLL1 0]}';
 QDCOLL1={'qu' 'QDCOLL1' LQX/2 [-KQCOLL1 0]}';
 % COL1 collimation section
-KQC101 =  -0.253291436015;
-KQC102 =   2.152128604228;
+KQC101 =  -0.219665495767;
+KQC102 =   2.057704322458;
 KQC103 =   0.0;
-KQC104 =  -1.217269485938;
-KQC105 =  -1.49025394442;
+KQC104 =  -0.869876271738;
+KQC105 =  -1.707969416125;
 KQC106 =   KQCOLL1;
 KQC107 =  -KQCOLL1;
 KQC108 =   KQCOLL1;
 KQC109 =  -KQCOLL1;
-KQC110 =   1.403663991222;
-KQC111 =  -1.816858146673;
-KQC112 =   1.311679256345;
+KQC110 =   1.390618138828;
+KQC111 =  -1.791909668095;
+KQC112 =   1.304535295662;
 QC101={'qu' 'QC101' LQX/2 [KQC101 0]}';
 QC102={'qu' 'QC102' LQX/2 [KQC102 0]}';
 QC103={'qu' 'QC103' LQX/2 [KQC103 0]}';
@@ -5629,7 +5646,7 @@ COL1=[BEGCOL1,QC101_FULL,DC101A,IM11B,DC101B,XCC101,DC101C,YCC101,DC101D,BZC1,DC
 C1FODO=[QFCOLL1,DCOLL1,QDCOLL1,QDCOLL1,DCOLL1,QFCOLL1];
 % ------------------------------------------------------------------------------
 
-% *** OPTICS=AD_ACCEL-04MAY2026s ***
+% *** OPTICS=AD_ACCEL-01JUN2026s ***
 % LCLS2sc bunch compressor chicane #2
 % ==============================================================================
 % Modification History
@@ -5771,7 +5788,7 @@ BCX24={'be' 'BCX24' LB2 [+AB2 GB2/2 +AB2 0 FB2 FB2 0]}';
 % QUAD
 % ------------------------------------------------------------------------------
 % L2 to BC2 chicane
-KQ2C01 =  0.479586901457;
+KQ2C01 =  0.481236369654;
 Q2C01={'qu' 'Q2C01' LQX/2 [KQ2C01 0]}';
 % BC2 chicane
 KCQ21 =  0;
@@ -5779,10 +5796,10 @@ KCQ22 =  0;
 CQ21B={'qu' 'CQ21B' LQC/2 [KCQ21 0]}';
 CQ22B={'qu' 'CQ22B' LQC/2 [KCQ22 0]}';
 % match into L3
-KQE201 =  -1.311235102734 ;%-1.311235102735
-KQE202 =   1.991960352338 ;% 1.991960352344
-KQE203 =  -1.813368342881;
-KQE204 =   1.648388012604;
+KQE201 =  -1.311235102736;
+KQE202 =   1.991960352348;
+KQE203 =  -1.813368342922;
+KQE204 =   1.648388012602;
 QE201={'qu' 'QE201' LQX/2 [KQE201 0]}';
 QE202={'qu' 'QE202' LQX/2 [KQE202 0]}';
 QE203={'qu' 'QE203' LQX/2 [KQE203 0]}';
@@ -5908,7 +5925,7 @@ EMIT2=[EMIT2_1,EMIT2_2];
 %ENDCOMMENT
 % ------------------------------------------------------------------------------
 
-% *** OPTICS=AD_ACCEL-04MAY2026s ***
+% *** OPTICS=AD_ACCEL-01JUN2026s ***
 % LCLS2sc sector 10 dogleg plus match to bypass line
 % ==============================================================================
 % Modification History
@@ -6133,10 +6150,10 @@ QDOG6={'qu' 'QDOG6' LQR/2 [-KQDOG 0]}';
 QDOG7={'qu' 'QDOG7' LQR/2 [KQDOG 0]}';
 QDOG8={'qu' 'QDOG8' LQR/2 [-KQDOG 0]}';
 % match to bypass line
-KQL1P =   0.544259695526;
+KQL1P =   0.544259695525;
 KQL2P =  -0.329072008556;
 KQL3P =   0.63112633243;
-KQL4P =  -0.067161651902;
+KQL4P =  -0.067161651903;
 QL1P={'qu' 'QL1P' LQR/2 [KQL1P 0]}';
 QL2P={'qu' 'QL2P' LQR/2 [KQL2P 0]}';
 QL3P={'qu' 'QL3P' LQM/2 [KQL3P 0]}';
@@ -6221,7 +6238,7 @@ DBD1A={'dr' '' 0.5786-LQR/2 []}';
 DBD1B={'dr' '' 5.41231744974 []}';%5.912334
 DBD1C={'dr' '' 0.975601232386 []}';%0.387558
 S10WALL={'dr' '' 1.848553742612 []}';%2.000599288542
-DBD1E={'dr' '' 0.20337318127 []}';
+DBD1E={'dr' '' 0.2016026509 []}';%0.20337318127
 DBD1D={'dr' '' DBD1{3}-DBD1A{3}-DBD1B{3}-LJAW-DBD1C{3}-S10WALL{3}-LSB-DBD1E{3} []}';
 DBD2A={'dr' '' 0.5786-LQR/2 []}';
 DBD2B={'dr' '' 0.941597317611 []}';%0.6368
@@ -6235,8 +6252,8 @@ DBD4C={'dr' '' 0.5185-LQR/2 []}';
 DBD4B={'dr' '' DBD4{3}-DBD4A{3}-DBD4C{3} []}';
 DBD4H={'dr' '' DBD4{3}/2 []}';
 DBD5A={'dr' '' 0.5786-LQR/2 []}';
-DBD5C={'dr' '' 0.5-0.3048 []}';
-DBD5D={'dr' '' 0.536+0.3048 []}';
+DBD5C={'dr' '' 0.5 []}';%-0.3048
+DBD5D={'dr' '' 0.536 []}';%+0.3048
 DBD5B={'dr' '' DBD5{3}-DBD5A{3}-DBD5C{3}-DBD5D{3} []}';
 DBD6A={'dr' '' 0.5786-LQR/2 []}';
 DBD6B={'dr' '' 0.527 []}';
@@ -6403,7 +6420,7 @@ DLBM=[BEGDOG,DBDM0,CCDLU,DBDM1,DLBP,MTCH1,ENDDOG];
 BFODO=[QBPF,DBP,DBP,QBPD,QBPD,DBP,DBP,QBPF];
 % ------------------------------------------------------------------------------
 
-% *** OPTICS=AD_ACCEL-04MAY2026s ***
+% *** OPTICS=AD_ACCEL-01JUN2026s ***
 % LCLS2sc 3-way spreader system
 % ==============================================================================
 % Modification History
@@ -7025,10 +7042,10 @@ LDSP2HC =  0.5285;
 LDSP2HA =  LDSP2H-LDSP2HB-LDSP2HC-LBCSP1H-LBCSP2H;
 DLDSP3H =  0.0;
 LDSP3H =  4.6611 +DLDSP3H;
-LDSP3HA =  0.701153024135 ;%LDSPBPM1
-LDSP3HAA =  0.1443452812   ;%0.1
+LDSP3HA =  0.806756807795 ;%LDSPBPM1
+LDSP3HAA =  0.250049066398 ;%0.1
 LDSP3HAB =  LDSP3HA-LDSP3HAA-LSB;
-LDSP3HB =  0.636709727546 ;%0.6368
+LDSP3HB =  1.279719551344 ;%0.636709727546
 LDSP3HD =  0.1924;
 LDSP3HC =  LDSP3H-LDSP3HA-LDSP3HB-LDSP3HD;
 DLDSP4H =  0.012086980331;
@@ -7040,7 +7057,7 @@ DLDSP5H =  0.0 ;%adjust position of QSP3h,QSP11h
 LDSP5H =  14.474 +(LQN-LQA)/2 +DLDSP5H;
 LDSP5HA =  1.261892512166 ;%1.424131
 LDSP5HC =  0.799538487834 ;%LDSPCOR2 +(LQN-LQA)/2
-LDSP5HCB =  0.234535460174 ;%0.1 +(LQN-LQA)/2
+LDSP5HCB =  0.310635225184 ;%0.1 +(LQN-LQA)/2
 LDSP5HCA =  LDSP5HC-LDSP5HCB-LSB;
 LDSP5HB =  LDSP5H-LDSP5HA-LDSP5HC;
 DLDSP6H =  0.0 ;%adjust position of QSP4h,QSP10h
@@ -7210,10 +7227,10 @@ LDSP2SC =  0.6676 +(LQN-LQA)/2;
 LDSP2SA =  LDSP2S-LDSP2SB-LDSP2SC-LBCSP1S-LBCSP2S;
 DLDSP3S =  0.0;
 LDSP3S =  1.828000203381 +(LQN-LQA) +DLDSP3S;
-LDSP3SA =  0.791207309086 ;%0.7912067845   LDSPBPM2 +(LQN-LQA)/2
-LDSP3SAA =  0.234476342315 ;%0.234475817809 0.1 +(LQN-LQA)/2
+LDSP3SA =  0.894113597785 ;%0.791207309086 LDSPBPM2 +(LQN-LQA)/2
+LDSP3SAA =  0.337382631013 ;%0.234476342315 0.1 +(LQN-LQA)/2
 LDSP3SAB =  LDSP3SA-LDSP3SAA-LSB;
-LDSP3SB =  0.600136674875 ;%0.6445
+LDSP3SB =  0.497230386182 ;%0.600136674875
 LDSP3SC =  LDSP3S-LDSP3SA-LDSP3SB +DDSP34;
 LDSP4S =  8.689 +(LQN-LQA)/2 -DLDSP2S -DLDSP3S;
 LDSP4SA =  LDSPBPM2 +(LQN-LQA)/2 -DDSP34;
@@ -7256,7 +7273,7 @@ LDSP11SD =  LDSP11S-LDSP11SA-LDSP11SB-LDSP11SC-LDSP11SE;
 LDSP12S =  LDSP3S;
 LDSP12SA =  LDSPBPM2 +(LQN-LQA)/2;
 LDSP12SB =  0.6659090515;
-LDSP12SC =  0.404427591627 ;%0.327723607524
+LDSP12SC =  0.327722904143 ;%0.404427591627
 LDSP12SD =  LDSP12S-LDSP12SA-LDSP12SB-LDSP12SC-LSB;
 DLDSP13S =  -0.415633125413E-4 ;%-0.406195675138E-4
 LDSP13S =  LDSP2S +DLDSP13S +LBLXSPS/2-LBXSPS/2;
@@ -7599,7 +7616,7 @@ IDES =  47.04*BDES+671*BDES^3;
 
 % ------------------------------------------------------------------------------
 
-% *** OPTICS=AD_ACCEL-04MAY2026s ***
+% *** OPTICS=AD_ACCEL-01JUN2026s ***
 % LCLS2sc transport from Cu-linac to SXR
 % ==============================================================================
 % Modification History
@@ -7981,7 +7998,7 @@ KCUSXR=[KCUSXRA,KCUSXRB];
 DLCUSXR=[DCUS1C,QCUS1_FULL,DCUS2A,BPMCUS1,DCUS2B,XCCUS1,DCUS2C,QCUS2_FULL,DCUS3A,BPMCUS2,DCUS3B,YCCUS2,DCUS3C,BPMCUS3,DCUS3D,QCUS3_FULL,DCUS4A,YCCUS3,DCUS4B,DCUS4C,QCUS4_FULL,DCUS5A,XCCUS4,DCUS5B,BYCUS1_FULL,CNTCUS3,ROCUS3,DCUS6A,DCUS6B,QCUS5_FULL,DCUS7,MIDCUSXR,DCUS7,QCUS6_FULL,DCUS8A,YCCUS6,DCUS8B,ROCUS4,BYCUS2_FULL,CNTCUS4,DCUS9A,DCUS9B,QCUS7_FULL,DCUS10A,XCCUS7,DCUS10B,BPMCUS8,DCUS10C,QCUS8_FULL,DCUS11A,YCCUS8,DCUS11B1,STCLTS,BTMCLTS,DCUS11B2,BPMCUS9,DCUS11C,QCUS9_FULL,DCUS12A,YCCUS9,DCUS12B,XCCUS10,DCUS12C,BPMCUS10,DCUS12D,QCUS10_FULL,DCUS13,ROCUS2,BRCUS1_FULL,CNTCUS2];
 CUSXR=[BEGCUSXR,KCUSXR,DLCUSXR,ENDCUSXR];
 
-% *** OPTICS=AD_ACCEL-04MAY2026s ***
+% *** OPTICS=AD_ACCEL-01JUN2026s ***
 % LCLS2sc A-line
 % ==============================================================================
 % Modification History
@@ -8530,7 +8547,7 @@ ESA=[ESAU,ESAD];
 BSYADUMP=[BEGBSYA,BRAM1_FULL,ROLL2,DAMQ10,Q10_FULL,LD105,Q11_FULL,D106,BEGB,B11_FULL,D107,B12_FULL,LD108,B13_FULL,D109,B14_FULL,LD110,B15_FULL,D111,B16_FULL,LD112,Q19_FULL,LD113,Q20_FULL,LD114,B21_FULL,D115,B22_FULL,LD116,B23_FULL,D117,B24_FULL,LD118,B25_FULL,D119,B26_FULL,MARC,ROLL3,ENDB,LD120,Q27_FULL,D121,SQ27P5_FULL,D122,Q28_FULL,LD123,Q30_FULL,LD124,Q38_FULL,D125,ENDBSYA,BEGESA,ALWALL,NOTCHBEG,D126,IV40,D127,A3C1A,D127A,NOTCHEND,ALCOVEBEG,D128,A3C1B,D129A,MADET,D129B,D130A,MADUMP];
 % ------------------------------------------------------------------------------
 
-% *** OPTICS=AD_ACCEL-04MAY2026s ***
+% *** OPTICS=AD_ACCEL-01JUN2026s ***
 % LCLS2sc bypass line, plus match to LTU
 % ==============================================================================
 % Modification History
@@ -9079,7 +9096,7 @@ BYPM=[BYPM1,BRCUS1A,BRCUS1B,MRGCUSXR,BYPM2];
 BYPASS=[FODOL,BYPM];
 % ------------------------------------------------------------------------------
 
-% *** OPTICS=AD_ACCEL-04MAY2026s ***
+% *** OPTICS=AD_ACCEL-01JUN2026s ***
 % LCLS2sc LTU and dump
 % ==============================================================================
 % Modification History
@@ -10444,10 +10461,10 @@ ECELLB=[QE31B,DQEC,DQEC,QE32B,QE32B,DQEC,DQEC,QE31B];
 % ------------------------------------------------------------------------------
 % note: the below K-values are for SC beam; the settings for Cu beam are
 %       in the "LCLS2cu_main.mad8" file
-KQUM1B =   0.868733464228 ;% 0.833300994164
-KQUM2B =  -0.771825649189 ;%-0.826159041824
-KQUM3B =   0.678116151436 ;% 0.586599530996
-KQUM4B =  -0.747895559578 ;%-0.595708778132
+KQUM1B =   0.869377269121 ;% 0.868733464228
+KQUM2B =  -0.772006115975 ;%-0.771825649189
+KQUM3B =   0.687923619093 ;% 0.678116151436
+KQUM4B =  -0.755990352295 ;%-0.747895559578
 QUM1B={'qu' 'QUM1B' LQE/2 [KQUM1B 0]}';
 QUM2B={'qu' 'QUM2B' LQE/2 [KQUM2B 0]}';
 QUM3B={'qu' 'QUM3B' LQE/2 [KQUM3B 0]}';
@@ -11432,10 +11449,10 @@ EDSYS=[DBMARK36,WS31,D40CM,DE3MA,PC09,BTM09,DE3MB,XCE31,DQEA,QE31_FULL,DQEBX,DCX
 %       for E= 8.0 GeV and KHXU= 2.0 (IntgHX= 30.0 kG)
 % note: the below K-values are for both SC beam and Cu beam
 % source: UNDH_KQ4_USDS.xsif (Eu=8.0, KHXU=2.0)
-KQUM1 =   0.270162424021 ;% 0.270162424008
-KQUM2 =  -0.2685706757   ;%-0.26857067573
-KQUM3 =   0.279944439407 ;% 0.279944439441
-KQUM4 =  -0.248916368758 ;%-0.248916368558
+KQUM1 =   0.270162423988;
+KQUM2 =  -0.268570675694;
+KQUM3 =   0.279944439375;
+KQUM4 =  -0.248916368825;
 QUM1={'qu' 'QUM1' LQA/2 [KQUM1 0]}';
 QUM2={'qu' 'QUM2' LQA/2 [KQUM2 0]}';
 QUM3={'qu' 'QUM3' LQA/2 [KQUM3 0]}';
@@ -11541,10 +11558,16 @@ QDMP2_FULL=[QDMP2,QDMP2];
 DUMPLINE=[BEGDMPH_2,RODMP1H,BYDSH_FULL,DS1,BYD1_FULL,DS,BYD2_FULL,DS,BYD3_FULL,DD1A,PCPM1L,BTM1L,DD1B,MIMDUMP,DD1C,MIMBCS4,DD1D,YCDD,DD1E,PCPM2L,BTM2L,DD1F,QDMP1_FULL,DD12A,BPMQD,DD12B,MQDMP,DD12C,QDMP2_FULL,DD2A,XCDD,DD2B,DD2C,DD3A,BPMDD,DD3B,OTRDMP,DWSDUMPA1,PCEBD,DWSDUMPA2,RFBDD,DWSDUMPB,WSDUMP,DWSDUMPC,RODMP2H,DUMPFACE,DDUMP,DMPEND,BTMDUMP,DBMARK38,ENDDMPH_2];
 % ------------------------------------------------------------------------------
 
-% *** OPTICS=AD_ACCEL-04MAY2026s ***
+% *** OPTICS=AD_ACCEL-01JUN2026s ***
 % LCLS2sc undulator and undulator extension
 % ==============================================================================
 % Modification History
+% ------------------------------------------------------------------------------
+% 15-MAY-2026, M. Woodley
+%  * replace short-period undulator with long-period undulator in SXR cell 42
+%    per H.-D. Nuhn
+%  * restore LCLS-II HXRSS dipole spacing ...
+%    won't be changed until August per D. Bohler
 % ------------------------------------------------------------------------------
 % 06-APR-2026, M. Woodley
 %  * replace short-period undulator with long-period undulator in SXR cells 39,
@@ -12054,9 +12077,8 @@ GQFSX =   INTGSX/LQU/10*1.0           ;%T/m
 GQDSX =  -INTGSX/LQU/10*1.0           ;%T/m
 KQFSX =   1.E-9*GQFSX*CLIGHT/GAMU/MC2 ;%m^-2
 KQDSX =   1.E-9*GQDSX*CLIGHT/GAMU/MC2 ;%m^-2
-KQSX16 =   1.328820114475              ;%1.294142541171
-KQSX47 =  -1.49400915478               ;%-1.843482712046 Yuri (E=8.0, K=5.48)
-QSXH16={'qu' 'QSXH16' LQU/2 [KQSX16 0]}';
+KQSX47 =  -1.45061403166               ;%-1.843482712046 Yuri (E=8.0, K=5.48)
+QSXH16={'qu' 'QSXH16' LQU/2 [KQFSX 0]}';
 QSXH17={'qu' 'QSXH17' LQU/2 [KQDSX 0]}';
 QSXH18={'qu' 'QSXH18' LQU/2 [KQFSX 0]}';
 QSXH19={'qu' 'QSXH19' LQU/2 [KQDSX 0]}';
@@ -12400,7 +12422,7 @@ UMASXH38=UMASXH_;UMASXH38{2}='UMASXH38';
 UMASXH39=UMASXH_;UMASXH39{2}='UMASXH39';
 UMASXH40=UMASXH_;UMASXH40{2}='UMASXH40';
 UMASXH41=UMASXH_;UMASXH41{2}='UMASXH41';
-UMASXH42=UMASXH;UMASXH42{2}='UMASXH42';
+UMASXH42=UMASXH_;UMASXH42{2}='UMASXH42';
 UMASXH43=UMASXH;UMASXH43{2}='UMASXH43';
 UMASXH44=UMASXH;UMASXH44{2}='UMASXH44';
 UMASXH45=UMASXH;UMASXH45{2}='UMASXH45';
@@ -12431,7 +12453,7 @@ USEGSX38=[DTSXU_,UMASXH38,XCSU38,YCSU38,UMASXH38,DTSXU_];
 USEGSX39=[DTSXU_,UMASXH39,XCSU39,YCSU39,UMASXH39,DTSXU_];
 USEGSX40=[DTSXU_,UMASXH40,XCSU40,YCSU40,UMASXH40,DTSXU_];
 USEGSX41=[DTSXU_,UMASXH41,XCSU41,YCSU41,UMASXH41,DTSXU_];
-USEGSX42=[DTSXU,UMASXH42,XCSU42,YCSU42,UMASXH42,DTSXU];
+USEGSX42=[DTSXU_,UMASXH42,XCSU42,YCSU42,UMASXH42,DTSXU_];
 USEGSX43=[DTSXU,UMASXH43,XCSU43,YCSU43,UMASXH43,DTSXU];
 USEGSX44=[DTSXU,UMASXH44,XCSU44,YCSU44,UMASXH44,DTSXU];
 USEGSX45=[DTSXU,UMASXH45,XCSU45,YCSU45,UMASXH45,DTSXU];
@@ -12712,7 +12734,7 @@ SXCEL38=[SXR38BEG,DU1S,        DU2S,USEGSX38,SXBRK38,SXR38END];%long
 SXCEL39=[SXR39BEG,DU1S,MBLMS39,DU2S,USEGSX39,SXBRK39,SXR39END];%long
 SXCEL40=[SXR40BEG,DU1S,        DU2S,USEGSX40,SXBRK40,SXR40END];%long
 SXCEL41=[SXR41BEG,DU1S,MBLMS41,DU2S,USEGSX41,SXBRK41,SXR41END];%long
-SXCEL42=[SXR42BEG,DU1S,        DU2S,USEGSX42,SXBRK42,SXR42END];%short/long
+SXCEL42=[SXR42BEG,DU1S,        DU2S,USEGSX42,SXBRK42,SXR42END];%long
 SXCEL43=[SXR43BEG,DU1S,MBLMS43,DU2S,USEGSX43,SXBRK43,SXR43END];%short/long
 SXCEL44=[SXR44BEG,DU1S,        DU2S,USEGSX44,SXBRK44,SXR44END];%short/long
 SXCEL45=[SXR45BEG,DU1S,MBLMS45,DU2S,USEGSX45,SXBRK45,SXR45END];%short/long
@@ -12732,7 +12754,7 @@ SXR=[DU0SA,RFBSX15,DU0SB,QSXH16_FULL,DU6S,RFBSX16,DU7S,SXRSTART,SXRCL,RWWAKE5S,S
 TCX01B={'tc' 'TCX01B' 1.5/2 [XBANDF 0 0*TWOPI]}';%horiz. deflection
 % note: the below K-values are for SC beam; the settings for Cu beam are
 % in the "LCLS2cu_main.mad8" file
-KQUE1B =   0.321052033772 ;% 0.325725075565 Yuri (E=8.0, K=5.48)
+KQUE1B =   0.320428735099 ;% 0.325725075565 Yuri (E=8.0, K=5.48)
 KQUE2B =  -0.144356640751 ;%Yuri (E=8.0, K=5.48)
 QUE1B={'qu' 'QUE1B' LQR/2 [KQUE1B 0]}';
 QUE2B={'qu' 'QUE2B' LQR/2 [KQUE2B 0]}';
@@ -13240,7 +13262,7 @@ MPHH46={'mo' 'MPHH46' 0 []}';
 % ------------------------------------------------------------------------------
 % NOTEs:
 % - in LCLS: BXHS1-4
-% - Bmax = 1.93 kG-m @ 6 A
+% - Bmax = 1.9 kG-m @ 6 A (~24 mm beam offset)
 % - use series approximation for sinc(x)=sin(x)/x to allow BLB4=0
 % - deflects toward -X (to the right/south/wall)
 % - bends away from coil side
@@ -13280,10 +13302,8 @@ BCXHS1={'be' 'BCXHS' LB4 [+AB4 GB4/2 0 +AB4 FB4 FB4 0]}';
 BCXHS2={'be' 'BCXHS' LB4 [-AB4 GB4/2 -AB4 0 FB4 FB4 0]}';
 BCXHS3={'be' 'BCXHS3' LB4 [-AB4 GB4/2 0 -AB4 FB4 FB4 0]}';
 BCXHS4={'be' 'BCXHS4' LB4 [+AB4 GB4/2 +AB4 0 FB4 FB4 0]}';
-%LHssB2Bo := 0.95 outer bend center-to-center (PRD Table 3)
-%LHssB2Bi := 0.936 inner bend center-to-center (PRD Table 3)
-LHSSB2BO =  0.85519 ;%outer bend center-to-center (PRD Table 3)
-LHSSB2BI =  1.13962 ;%inner bend center-to-center (PRD Table 3)
+LHSSB2BO =  0.957 ;%outer bend center-to-center (PRD Table 3)
+LHSSB2BI =  0.936 ;%inner bend center-to-center (PRD Table 3)
 D1={'dr' '' (LHSSB2BO-ZB4)/cos(AB4) []}';
 DCH={'dr' '' (LHSSB2BI-ZB4)/2 []}';
 DMONO={'dr' '' (LDUSEGH-2*LHSSB2BO-LHSSB2BI-ZB4)/2 []}';
@@ -13801,7 +13821,7 @@ TCX01={'tc' 'TCX01' 1.0/2 [XBANDF 0 0*TWOPI]}';%horizontal deflection
 TCX02={'tc' 'TCX02' 1.0/2 [XBANDF 0 0*TWOPI]}';%horizontal deflection
 % note: the below K-values are for SC beam; the settings for Cu beam are
 % in the "LCLS2cu_main.mad8" file
-KQUE1 =   0.168949125094 ;% 0.169109252491 Yuri (E=8.0, K=2.0)
+KQUE1 =   0.168949125095 ;% 0.169109252491 Yuri (E=8.0, K=2.0)
 KQUE2 =  -0.137840816238 ;%Yuri (E=8.0, K=2.0)
 QUE1={'qu' 'QUE1' LQD/2 [KQUE1 0]}';
 QUE2={'qu' 'QUE2' LQD/2 [KQUE2 0]}';
@@ -13856,7 +13876,7 @@ QUE2_FULL=[QUE2,QUE2];
 UNDEXIT=[BEGDMPH_1,UEBEG,DUE1D,VV36,DUE1B,MIMUNDO,DUE1C,DUE2A,YCUE1,DUE2B,PH31,DUE2D,PH32,DUE2D,PH33,DUE2D,PH34,DUE2E,XCUE2,DUE2C,QUE1_FULL,DUE3A,BPMUE1,DUE3B,TRUE1,DUE3C,DBKXDMPH,DUE3C,PCTCX,DPCVV,VVTCX,DVVTCX,MTCX01,TCX01_FULL,DTCX12,MTCX,DTCX12,TCX02_FULL,DTCXSP,SPTCX,DUE4,QUE2_FULL,DUE5A,BPMUE2,DUE5B,BTMQUE,DUE5C,PCPM0,BTM0,DUE5F,DUE5D,MIMBCS3,DUE5E,MDLWALL,DDLWALL,UEEND,DLSTART,DSB0A,YCD3,DSB0B,XCD3,DSB0C,VV37,DSB0D,DSB0E,ENDDMPH_1];
 HXRUND=[HXR,UNDEXIT];
 
-% *** OPTICS=AD_ACCEL-04MAY2026s ***
+% *** OPTICS=AD_ACCEL-01JUN2026s ***
 % LCLS2sc safety dump lines
 % ==============================================================================
 % Modification History
@@ -14083,7 +14103,7 @@ SFTDUMPB1=[BEGSFTS_1,DYDS,DS1S,DYD1,DSSA,DYD2,DSSB,DYD3,DSCSB,PCPM1B,BTM1B,DPCBT
 SFTDUMPB2=[BEGSFTS_2,BXPM1B_FULL,DPM2B,MSL1S,DPM3BA,MVV3S,DPM3BB,SFTDMPB,DSFTDMPB,BTMSFTB,ENDSFTS_2];
 SFTDUMPB=[SFTDUMPB1,SFTDUMPB2];
 
-% *** OPTICS=AD_ACCEL-04MAY2026s ***
+% *** OPTICS=AD_ACCEL-01JUN2026s ***
 % SXR XTES
 % ==============================================================================
 % Modification History
@@ -14360,7 +14380,7 @@ SXTES3=[BEGSXTES_3,DSXTES37,MR1K3_TXI,DSXTES38,MR2K3_TXI,MR2K3_TXI_GBC_1,DSXTES3
 SXTES4=[BEGSXTES_4,DSXTES59,BT2K0_PLEG_TMO,DSXTES60,TV3K0_VGC_1,DSXTES61,TV3K0_PGT_1,DSXTES62,TV3K0_VRM_1,TV3K0_GCC_1,TV3K0_GPI_1,TV3K0_PIP_1,DSXTES63,MR1K4_VGC_1,DSXTES64,MR1K4_SOMS,MR1K4_SOMS_GBC_1,DSXTES65,PC1K4_SSA,DSXTES66,BT1K4_L2SI,DSXTES67,TV1K4_VGC_1,DSXTES68,TV1K4_VFS_1,DSXTES69,TV1K4_VRM_1,TV1K4_GCC_1,TV1K4_GPI_1,DSXTES70,ND2S,DSXTES71,AT1K4_SOLID,DSXTES72,TV1K4_VGC_2,DSXTES73,PC2K4_XTES,DSXTES74,BT2K4_XTES,DSXTES75,BS1K4_XTES,DSXTES76,IM1K4_XTES,DSXTES77,ST1K4_TEST,DSXTES78,SP1K4,DSXTES79,LUSI,DSXTES80,PC3K4_XTES,DSXTES81,ST2K4_BCS,DSXTES82,ST3K4_PPS,ST3K4_PPS_GBC_1,DSXTES83,ST3K4_PPS_VGC_1,DSXTES84,AL1K4_L2SI,DSXTES85,SL1K4_SCATTER,DSXTES86,IM2K4_PPM,DSXTES87,IM2K4_XTES_VRM_1,PC4K4_XTES_GCC_1,PC4K4_XTES_GPI_1,PC4K4_XTES_PIP_1,DSXTES88,PC4K4_XTES,DSXTES89,BT3K4_XTES,DSXTES90,BS2K4_XTES,DSXTES91,TP_WALL2E,DSXTES92,TP_WALL2W,ENDSXTES_4];
 % ------------------------------------------------------------------------------
 
-% *** OPTICS=AD_ACCEL-04MAY2026s ***
+% *** OPTICS=AD_ACCEL-01JUN2026s ***
 % LCLS2sc DASEL
 % ==============================================================================
 % Modification History
@@ -14769,7 +14789,7 @@ LCLS2SCC=[HTR,COL0,L1,BC1,COL1,L2,BC2,EMIT2,L3,BR3B,L4,EXT,DLBM];
 LCLS2SCI2=[BEAM0LEI,DCM4B,QCM00_FULL,DCM5,CM00END,DCMCM1,HOMCM00,DCAP0D2,FCLEI,DMSC0DA,BLFLEI,DMSC0DB,VGLEID,DMSC0DC,VPLEID,DMSC0DD,VVLEID,MSCLEI,ENDL0LEI];
 LCLS2SCC2=[LEI,HTR_2,COL0,L1,BC1,COL1,L2,BC2,EMIT2,L3,BR3B,L4,EXT,DLBM];
 % new BSY area definitions
-% *** OPTICS=AD_ACCEL-04MAY2026s ***
+% *** OPTICS=AD_ACCEL-01JUN2026s ***
 % ==============================================================================
 % Modification History
 % ------------------------------------------------------------------------------
@@ -14893,7 +14913,7 @@ LCLS2SCSTMO=[FODOLA,BSYLCLS2SCSTMO];
 % ------------------------------------------------------------------------------
 
 % FDN definitions
-% *** OPTICS=AD_ACCEL-04MAY2026s ***
+% *** OPTICS=AD_ACCEL-01JUN2026s ***
 % SC_SXR    : BEGGUNB   /ENDDMPS_2
 % SC_SFTS   : BEGSFTS_1 /ENDSFTS_2
 % SC_S2_X   : BEGSXTES_1/ENDSXTES_2
@@ -18163,7 +18183,7 @@ TWSSDLI=struct('ENERGY',EI,'BETX',BXDLI,'ALFX',AXDLI,'BETY',BYDLI,'ALFY',AYDLI);
 % 
 % 
 % %suppress "redefinition" warnings
-% % *** OPTICS=AD_ACCEL-04MAY2026s ***
+% % *** OPTICS=AD_ACCEL-01JUN2026s ***
 % % laser heater quad settings when using LEI injector
 % %           UMHTR ON         UMHTR OFF     
 % %       ----------------  ---------------  
@@ -18415,7 +18435,7 @@ TWSSDLI=struct('ENERGY',EI,'BETX',BXDLI,'ALFX',AXDLI,'BETY',BYDLI,'ALFY',AYDLI);
 
 
 %suppress "redefinition" warnings
-% *** OPTICS=AD_ACCEL-04MAY2026s ***
+% *** OPTICS=AD_ACCEL-01JUN2026s ***
 % laser heater quad settings when using LEI injector
 %           UMHTR ON         UMHTR OFF     
 %       ----------------  ---------------  
