@@ -1,4 +1,6 @@
 
+% *** OPTICS=AD_ACCEL-01JUN2026s ***
+
 % standing wave model; reduced L2 W in Cu linac
 
 % NOTE: when making Matlab models (LCLS2sc and LCLS2cu)
