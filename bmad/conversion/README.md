@@ -2,7 +2,7 @@
 
 1. Once Mark Woodley has uploaded the pre-release to github lcls-lattice repo, checkout that release.
 2. Setup terminal environment
-   - check that $LCLS_LATTICE is set to the location of the DDMMYY_conversion branch of lcls-lattice.
+   - check that $LCLS_LATTICE is set.
    - check that the lcls-lattice-dev conda environment is active, which can be generated from lcls-lattice `environment.yml`
    - set MAD8_TO_BMAD to the location of the mad8_to_bmad.py script from the bmad_ecosystem
       - Using dist_source_me is discouraged, as it can cause the wrong libraries to be used by pytao because it results in a mixed conda / bmad repo environment.
