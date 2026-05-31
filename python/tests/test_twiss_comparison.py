@@ -52,7 +52,10 @@ def exec_mad8s():
     pytest.skip('unsupported platform')
   for model in MODELS:
     mad8s_commands = open(LCLS_LATTICE+'/mad/'+model.upper()+'_CI_Testing.mad8')
-    run([LCLS_LATTICE+'/mad8s'],cwd=LCLS_LATTICE+'/mad', stdin=mad8s_commands, capture_output=True, text=True)
+    result = run([LCLS_LATTICE+'/mad8s'],cwd=LCLS_LATTICE+'/mad', stdin=mad8s_commands, capture_output=True, text=True)
+    mad8s_commands.close()
+    if "Unable to open DICT stream" in result.stdout:
+      pytest.fail(f"dict file missing from mad directory for {model}:\n{result.stdout}")
 
 def get_end_params_pytao(lattice_file):
   tao = Tao(lattice_file=lattice_file,noplot=True)
