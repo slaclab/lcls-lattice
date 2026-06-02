@@ -19,7 +19,7 @@ import json
 # Table extracted from SLACPROD Oracle Database
 MASTER = f'{LCLS_LATTICE_ENV}/bmad/conversion/from_oracle/lcls_elements.csv'
 
-df = pd.read_csv(os.path.expandvars(MASTER))
+df = pd.read_csv(os.path.expandvars(MASTER), skiprows=1)
 # Remove empty
 df = df[['Element', 'Control System Name']].dropna()
 
