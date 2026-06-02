@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-04MAY2026s ***
+! *** OPTICS=AD_ACCEL-01JUN2026s ***
 
 ! generate input files for ELEGANT
 
@@ -246,19 +246,23 @@
 ! generate TWISS and SURVEY tape-files
 ! ------------------------------------------------------------------------------
 
+  ASSIGN, PRINT="LCLS2cuH.print"
   TITLE, "AD_ACCEL: copper linac: WS02 to HXR"
   BEAM, ENERGY=Ei
   SET, SETCUS, CUSOFF
   CALL, FILENAME="SETK2cuH.xsif"
   USE, LCLS2cuHe
+  PRINT, FULL
   TWISS, BETA0=TWSSi, TAPE="LCLS2cuH_twiss.tape"
   SURVEY, X0=XWS02, Z0=ZWS02, THETA0=ADL1, TAPE="LCLS2cuH_survey.tape"
 
+  ASSIGN, PRINT="LCLS2cuS.print"
   TITLE, "AD_ACCEL: copper linac: WS02 to SXR"
   BEAM, ENERGY=Ei
   SET, SETCUS, CUSON
   CALL, FILENAME="SETK2cuS.xsif"
   USE, LCLS2cuSe
+  PRINT, FULL
   TWISS, BETA0=TWSSi, TAPE="LCLS2cuS_twiss.tape"
   SURVEY, X0=XWS02, Z0=ZWS02, THETA0=ADL1, TAPE="LCLS2cuS_survey.tape"
 

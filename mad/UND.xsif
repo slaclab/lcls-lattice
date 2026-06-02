@@ -1,10 +1,16 @@
 
-! *** OPTICS=AD_ACCEL-04MAY2026s ***
+! *** OPTICS=AD_ACCEL-01JUN2026s ***
 
 ! LCLS2sc undulator and undulator extension
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 15-MAY-2026, M. Woodley
+!  * replace short-period undulator with long-period undulator in SXR cell 42
+!    per H.-D. Nuhn
+!  * restore LCLS-II HXRSS dipole spacing ...
+!    won't be changed until August per D. Bohler
 ! ------------------------------------------------------------------------------
 ! 06-APR-2026, M. Woodley
 !  * replace short-period undulator with long-period undulator in SXR cells 39,
@@ -585,10 +591,9 @@
   GQDSX  := -IntgSX/LQu/10*1.0           !T/m
   kQFSX  :=  1.E-9*GQFSX*CLIGHT/gamu/mc2 !m^-2
   kQDSX  :=  1.E-9*GQDSX*CLIGHT/gamu/mc2 !m^-2
-  kQSX16 :=  1.328820114475              !1.294142541171
-  kQSX47 := -1.49400915478               !-1.843482712046 !Yuri (E=8.0, K=5.48)
+  kQSX47 := -1.45061403166               !-1.843482712046 !Yuri (E=8.0, K=5.48)
 
-  QSXh16 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQSX16, APER=rQu
+  QSXh16 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFSX,  APER=rQu
   QSXh17 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDSX,  APER=rQu
   QSXh18 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFSX,  APER=rQu
   QSXh19 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDSX,  APER=rQu
@@ -618,7 +623,7 @@
   QSXh43 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDSX,  APER=rQu
   QSXh44 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFSX,  APER=rQu
   QSXh45 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDSX,  APER=rQu
-  QSXh46 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFSX , APER=rQu
+  QSXh46 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFSX,  APER=rQu
   QSXh47 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQSX47, APER=rQu
 
 ! ------------------------------------------------------------------------------
@@ -980,7 +985,7 @@
   UMASXh39 : UMASXh_
   UMASXh40 : UMASXh_
   UMASXh41 : UMASXh_
-  UMASXh42 : UMASXh
+  UMASXh42 : UMASXh_
   UMASXh43 : UMASXh
   UMASXh44 : UMASXh
   UMASXh45 : UMASXh
@@ -1012,7 +1017,7 @@
   USEGSX39 : LINE=(DTSXU_,UMASXh39,XCSU39,YCSU39,UMASXh39,DTSXU_)
   USEGSX40 : LINE=(DTSXU_,UMASXh40,XCSU40,YCSU40,UMASXh40,DTSXU_)
   USEGSX41 : LINE=(DTSXU_,UMASXh41,XCSU41,YCSU41,UMASXh41,DTSXU_)
-  USEGSX42 : LINE=(DTSXU,UMASXh42,XCSU42,YCSU42,UMASXh42,DTSXU)
+  USEGSX42 : LINE=(DTSXU_,UMASXh42,XCSU42,YCSU42,UMASXh42,DTSXU_)
   USEGSX43 : LINE=(DTSXU,UMASXh43,XCSU43,YCSU43,UMASXh43,DTSXU)
   USEGSX44 : LINE=(DTSXU,UMASXh44,XCSU44,YCSU44,UMASXh44,DTSXU)
   USEGSX45 : LINE=(DTSXU,UMASXh45,XCSU45,YCSU45,UMASXh45,DTSXU)
@@ -1312,7 +1317,7 @@
   SXCEL39 : LINE=(SXR39BEG,DU1s,MBLMS39,DU2s,USEGSX39,SXBRK39,SXR39END) !long
   SXCEL40 : LINE=(SXR40BEG,DU1s,        DU2s,USEGSX40,SXBRK40,SXR40END) !long
   SXCEL41 : LINE=(SXR41BEG,DU1s,MBLMS41,DU2s,USEGSX41,SXBRK41,SXR41END) !long
-  SXCEL42 : LINE=(SXR42BEG,DU1s,        DU2s,USEGSX42,SXBRK42,SXR42END) !short/long
+  SXCEL42 : LINE=(SXR42BEG,DU1s,        DU2s,USEGSX42,SXBRK42,SXR42END) !long
   SXCEL43 : LINE=(SXR43BEG,DU1s,MBLMS43,DU2s,USEGSX43,SXBRK43,SXR43END) !short/long
   SXCEL44 : LINE=(SXR44BEG,DU1s,        DU2s,USEGSX44,SXBRK44,SXR44END) !short/long
   SXCEL45 : LINE=(SXR45BEG,DU1s,MBLMS45,DU2s,USEGSX45,SXBRK45,SXR45END) !short/long
@@ -1348,7 +1353,7 @@
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-  KQUE1B :=  0.321052033772 ! 0.325725075565 !Yuri (E=8.0, K=5.48)
+  KQUE1B :=  0.320428735099 ! 0.325725075565 !Yuri (E=8.0, K=5.48)
   KQUE2B := -0.144356640751 !Yuri (E=8.0, K=5.48)
 
   QUE1B : QUAD, TYPE="2Q10", L=LQR/2, K1=KQUE1b, APER=rQR
@@ -1935,7 +1940,7 @@
 
 ! NOTEs:
 ! - in LCLS: BXHS1-4
-! - Bmax = 1.93 kG-m @ 6 A
+! - Bmax = 1.9 kG-m @ 6 A (~24 mm beam offset)
 ! - use series approximation for sinc(x)=sin(x)/x to allow BLB4=0
 ! - deflects toward -X (to the right/south/wall)
 ! - bends away from coil side
@@ -1993,15 +1998,12 @@
   BCXHS4 : SBEN, TYPE="0.315D14-C", HGAP=GB4/2, L=LB4, ANGLE=+AB4, &
                  E1=+AB4, FINT=FB4, E2=0, FINTX=FB4
 
- !LHssB2Bo := 0.95 !outer bend center-to-center (PRD Table 3)
- !LHssB2Bi := 0.936 !inner bend center-to-center (PRD Table 3)
+  LHssB2Bo := 0.957 !outer bend center-to-center (PRD Table 3)
+  LHssB2Bi := 0.936 !inner bend center-to-center (PRD Table 3)
 
-  LHssB2Bo := 0.85519 !outer bend center-to-center (PRD Table 3)
-  LHssB2Bi := 1.13962 !inner bend center-to-center (PRD Table 3)
-
-  D1      : DRIF, L=(LHssB2Bo-ZB4)/COS(AB4)
-  DCH     : DRIF, L=(LHssB2Bi-ZB4)/2
-  DMONO   : DRIF, L=(LDUSEGH-2*LHssB2Bo-LHssB2Bi-ZB4)/2
+  D1    : DRIF, L=(LHssB2Bo-ZB4)/COS(AB4)
+  DCH   : DRIF, L=(LHssB2Bi-ZB4)/2
+  DMONO : DRIF, L=(LDUSEGH-2*LHssB2Bo-LHssB2Bi-ZB4)/2
 
   HXRSSBEG : MARK
   DIAMOND  : INST
@@ -2601,7 +2603,7 @@
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-  KQUE1 :=  0.168949125094 ! 0.169109252491 !Yuri (E=8.0, K=2.0)
+  KQUE1 :=  0.168949125095 ! 0.169109252491 !Yuri (E=8.0, K=2.0)
   KQUE2 := -0.137840816238 !Yuri (E=8.0, K=2.0)
 
   QUE1 : QUAD, TYPE="3.25Q20", L=LQD/2, K1=KQUE1, APER=rQD

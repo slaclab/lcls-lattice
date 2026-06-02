@@ -472,7 +472,8 @@ for name, aname in zip(name_all,aname_all):
                 N_bsy[jd2[m]] = name + '?'
 
 # copy T1 into TILT slot
-name = ['CQ01', 'SQ01', 'CQ01B', 'SQ01B', 'SQ02B', 'SQ01LEI', 'SQ02LEI', 'SQ03LEI']
+#name = ['CQ01', 'SQ01', 'CQ01B', 'SQ01B', 'SQ02B', 'SQ01LEI', 'SQ02LEI', 'SQ03LEI']
+name = ['CQ01', 'SQ01', 'CQ01B', 'SQ01B', 'SQ01LEI', 'SQ02LEI', 'SQ03LEI'] #sq02b now a quad
 for n in name:
     id_ = strmatch(n,N,True)
     for i in id_:
@@ -868,12 +869,12 @@ for kwn,eles in ele_dict.items():
                 k1 = 0
             G = brho * k1  # T/m
             GL = G * leng  # T
-            if name[:3] in Ebend:
-                sname = 'GeV2T'
-                sval = brho * abs(ang) / (leng * energy)
-            else:
-                sname = 'kG2T_Bdl2B'
-                sval = 1 / (leng * T2kG)
+            #if name[:3] in Ebend:
+            #    sname = 'GeV2T'
+            #    #sval = brho * abs(ang) / (leng * energy)
+            #else:
+            #    sname = 'kG2T_Bdl2B'
+            #    #sval = 1 / (leng * T2kG)
             polarity = -np.sign(ang + np.finfo(float).eps)  # add eps so that sign=1 when ang=0
             coori = np.copy(coor[id0, :])  # coordinates at bend entrance
             coorc = np.copy(coor[id1, :])  # coordinates at end of first half
@@ -930,8 +931,8 @@ for kwn,eles in ele_dict.items():
                 'k1': k1,
                 'GL': T2kG * GL,  # kG
                 'G': charge * G,
-                'sname': sname,
-                'sval': sval,
+                #'sname': sname,
+                #'sval': sval,
                 'polarity': polarity,
                 'sdsp': sdsp,
                 'suml': suml,
@@ -1032,26 +1033,28 @@ for kwn,eles in ele_dict.items():
             id1 = ids[0]  # first segment (beam center)
             leng = np.sum(L[ids])  # m
             if kwn == 'QUAD':
-                sname = 'kG2T_Gdl2G'
+                #sname = 'kG2T_Gdl2G'
                 k = P[id1, 1]
-                sval = 1 / (leng * T2kG)
+                #sval = 1 / (leng * T2kG)
             elif kwn == 'SEXT':
-                sname = 'kG2T_Gpdl2Gp'
+                #sname = 'kG2T_Gpdl2Gp'
                 k = P[id1, 2]
-                sval = 1 / (leng * T2kG)
+                #sval = 1 / (leng * T2kG)
             elif kwn == 'SOLE' and leng != 0:
-                sname = 'kG2T_Bdl2B'
+                #sname = 'kG2T_Bdl2B'
                 k = P[id1, 4]
-                sval = 1 / (leng * T2kG)
+                #sval = 1 / (leng * T2kG)
             elif kwn == 'SOLE' and leng == 0:
-                sname = 'kG2T'
+                #sname = 'kG2T'
                 k = P[id1, 4]
-                sval = 1 / T2kG
+                #sval = 1 / T2kG
             if abs(k) < kmin:
                 k = 0
 
             sdsp = Sd[id1]  # m
             suml = S[id1]  # m
+            if name in ['SQ02B','CQ02B']:
+              print(name,suml) #FOO
             energy = E[id1]  # GeV
             bore = 2 * A[id1]  # m
             tilt = P[id1, 3]  # rad
@@ -1078,8 +1081,8 @@ for kwn,eles in ele_dict.items():
                 'k': k,
                 'GL': T2kG * GL,  # kG
                 'G': charge * G,
-                'sname': sname,
-                'sval': sval,
+                #'sname': sname,
+                #'sval': sval,
                 'polarity': polarity,
                 'sdsp': sdsp,
                 'suml': suml,
@@ -1225,13 +1228,13 @@ for kwn,eles in ele_dict.items():
             if leng == 0:
                 G = 0  # T/m
                 GL = brho * k1  # T
-                sname = 'kG2T'
-                sval = 1 / T2kG
+                #sname = 'kG2T'
+                #sval = 1 / T2kG
             else:
                 G = brho * k1  # T/m
                 GL = G * leng  # T
-                sname = 'kG2T_Gdl2G'
-                sval = 1 / (leng * T2kG)
+                #sname = 'kG2T_Gdl2G'
+                #sval = 1 / (leng * T2kG)
             polarity = -np.sign(k1 + np.finfo(float).eps)  # add eps so that sign=1 when k1=0
             coorc = coor[ids,:] # m, rad (beam center)
             aper = 2 * A[ids]  # m
@@ -1250,8 +1253,8 @@ for kwn,eles in ele_dict.items():
                 'GL': T2kG * GL,  # kG
                 'polarity': polarity,
                 'name': name,
-                'sname': sname,
-                'sval': sval,
+                #'sname': sname,
+                #'sval': sval,
                 'type': T[ids].strip(),
                 'energy': energy,
                 'leng': leng,

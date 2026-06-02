@@ -1,4 +1,6 @@
 
+% *** OPTICS=AD_ACCEL-01JUN2026s ***
+
 % standing wave model; reduced L2 W in Cu linac
 
 % NOTE: when making Matlab models (LCLS2sc and LCLS2cu)
@@ -8,7 +10,7 @@
 % - change mirrors from MULT to INST in SXTES.xsif and HXTES.xsif
 % - check that L1.xsif (etc) is being CALLed, not L1e.xsif (etc)
 
-MADrelease='04MAY2026s';
+MADrelease='01JUN2026s';
 fileDir=['\\wsl.localhost\Ubuntu\home\mdw\AD_ACCEL\',MADrelease,'\mad'];
 
 fprintf('Create model_beamLineLCLS2sc.m ...\n\n')

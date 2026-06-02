@@ -1,6 +1,6 @@
   TITLE, "AD_ACCEL: superconducting linac"
 
-! *** OPTICS=AD_ACCEL-04MAY2026s ***
+! *** OPTICS=AD_ACCEL-01JUN2026s ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY, DOUBLE
   ASSIGN, ECHO="LCLS2sc.echo"
@@ -634,11 +634,12 @@
   
 ! ------------------------------------------------------------------------------
 
- !CALL, FILENAME="LCLS2sc_beams.mad8" !alternate beams & configurations
+ !CALL, FILENAME="LCLS2sc_beams.mad8"       !alternate beams & configurations
  !CALL, FILENAME="LCLS2sc_match.mad8"
  !CALL, FILENAME="LCLS2sc_makeSymbols.mad8"
  !CALL, FILENAME="LCLS2sc_makeElegant.mad8"
- !CALL, FILENAME="LCLS2sc_XLEAP.mad8" !run by itself
+ !CALL, FILENAME="LCLS2sc_XLEAP.mad8"       !run by itself
+ !CALL, FILENAME="preComputed_SC.mad8"      !pre-computed match
 
 ! ------------------------------------------------------------------------------
 
@@ -647,9 +648,9 @@
 
 ! ------------------------------------------------------------------------------
 
- !CALL, FILENAME="AbendOpti.mad8" !compute Aline LGPS/BTRM settings
- !CALL, FILENAME="patch.mad8"     !Matching Study or QuadScan
-
+ !CALL, FILENAME="AbendOpti.mad8"      !compute Aline LGPS/BTRM settings
+ !CALL, FILENAME="patch.mad8"          !Matching Study or QuadScan
+  
 ! ------------------------------------------------------------------------------
 
  !STOP
@@ -1040,6 +1041,75 @@
 
 ! ------------------------------------------------------------------------------
 ! LCLS2sc working stuff
+! ------------------------------------------------------------------------------
+
+  COMMENT
+    BEAM, ENERGY=E0
+    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
+    USE, SC_SXR
+   !VALUE, DBD1e[L]
+   !VALUE, DBD6e[L]
+   !VALUE, LDSP3saa
+   !VALUE, LDSP3sa
+   !VALUE, LDSP3sb
+    VALUE, LDSP12sc
+    MATCH, SURVEY, ZS=ZGUN
+     !VARY, DBD1e[L], STEP=1.E-6
+     !VARY, DBD6e[L], STEP=1.E-6
+     !VARY, LDSP3saa, STEP=1.E-6
+     !VARY, LDSP3sa, STEP=1.E-6
+     !VARY, LDSP3sb, STEP=1.E-6
+      VARY, LDSP12sc, STEP=1.E-6
+      WEIGHT, ZS=1
+     !CONSTR, SDOG1[1], ZS=974.60157
+     !CONSTR, SDOG2[1], ZS=1022.7246
+     !CONSTR, SSP1S[1], ZS=2924.4948
+     !CONSTR, BPMSP1S[1], ZS=2925.0015
+     !CONSTR, XCSP1S[1], ZS=2925.4987
+      CONSTR, SSP2S[1], ZS=3004.8309
+      LMDIF, TOL=1.E-20
+      MIGRAD, TOL=1.E-20
+    ENDMATCH
+   !VALUE, DBD1e[L]
+   !VALUE, DBD6e[L]
+   !VALUE, LDSP3saa
+   !VALUE, LDSP3sa
+   !VALUE, LDSP3sb
+    VALUE, LDSP12sc
+    BEAM, ENERGY=E0
+    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
+    USE, SC_SXR
+    PRINT, FULL
+    SURVEY, X0=XGUN, Y0=YGUN, Z0=ZGUN
+  ENDCOMMENT
+
+  COMMENT
+    BEAM, ENERGY=E0
+    SET, SETSP, SETSPh
+    USE, SC_HXR
+   !VALUE, LDSP3haa
+   !VALUE, LDSP3ha
+   !VALUE, LDSP3hb
+    VALUE, LDSP5hcb
+    MATCH, SURVEY, ZS=ZGUN
+     !VARY, LDSP3haa, STEP=1.E-6
+     !VARY, LDSP3ha, STEP=1.E-6
+     !VARY, LDSP3hb, STEP=1.E-6
+      VARY, LDSP5hcb, STEP=1.E-6
+      WEIGHT, ZS=1
+     !CONSTR, SSP1H[1], ZS=2847.7223
+     !CONSTR, BPMSP1H[1], ZS=2848.229
+     !CONSTR, XCSP1H[1], ZS=2849.5087
+      CONSTR, SSP2H[1], ZS=2876.9389
+      LMDIF, TOL=1.E-20
+      MIGRAD, TOL=1.E-20
+    ENDMATCH
+   !VALUE, LDSP3haa
+   !VALUE, LDSP3ha
+   !VALUE, LDSP3hb
+    VALUE, LDSP5hcb
+  ENDCOMMENT
+
 ! ------------------------------------------------------------------------------
 
   COMMENT !periodic SXR/HXR cells

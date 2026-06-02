@@ -1,10 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-04MAY2026s ***
+! *** OPTICS=AD_ACCEL-01JUN2026s ***
 
 ! LCLS2sc injector: gun to start of L1 linac
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 15-MAY-2026, M. Woodley
+!  * replace SQ02B (SOL2B trim) with "mini-quad"
 ! ------------------------------------------------------------------------------
 ! 28-MAR-2026, M. Woodley
 !  * there is no Faraday Cup on YAG01B
@@ -257,11 +260,12 @@
   CQ01B : MULT, TYPE="solenoid trim", APER=0.0475/2, K1L=0
   SQ01B : MULT, TYPE="solenoid trim", APER=0.0475/2, K1L=0, T1
  !CQ02B : MULT, TYPE="solenoid trim", APER=0.0475/2, K1L=0     !shorted out
-  SQ02B : MULT, TYPE="solenoid trim", APER=0.0475/2, K1L=0, T1
+ !SQ02B : MULT, TYPE="solenoid trim", APER=0.0475/2, K1L=0, T1
 
-! replacement for original CQ02B (correction coil co-wound on SOL2B)
+! replacement for original CQ02B and SQ02B (correction coils co-wound on SOL2B)
 
   CQ02B : QUAD, TYPE="3.37Q1.2", L=LQg/2, APER=rQg, K1=0
+  SQ02B : QUAD, TYPE="3.37Q1.2", L=LQg/2, APER=rQg, K1=0, TILT
 
 ! L0 to laser heater (adjustable-sized waists at WS0H04 and LHMID)
 
@@ -312,18 +316,18 @@
 
 ! COL0 collimation section
 
-  KQC001 :=  5.135316216759
+  KQC001 :=  5.13531621676
   KQC002 :=  0.0
-  KQC003 := -5.295950232123
-  KQC004 :=  2.772436085305
-  KQC005 := -1.796082149685
+  KQC003 := -5.295950232121
+  KQC004 :=  2.772436085303
+  KQC005 := -1.796082149684
   KQC006 :=  KQColl0
   KQC007 := -KQColl0
   KQC008 :=  KQColl0
   KQC009 := -KQColl0
-  KQC010 :=  0.346494139368
-  KQC011 := -1.054136562653
-  KQC012 :=  0.942153662284
+  KQC010 :=  0.389224765461
+  KQC011 := -1.283293152617
+  KQC012 :=  1.048722049726
 
   QC001 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQC001
   QC002 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQC002
@@ -439,6 +443,8 @@
   DG012b : DRIF, L=DG012[L]-LQg-DG012a[L]
   DG016b : DRIF, L=0.082968
   DG016a : DRIF, L=DG016[L]-DG016b[L]
+  DG011b : DRIF, L=5.8*in2m-DG012a[L]-LQg
+  DG011a : DRIF, L=DG011[L]-LQg-DG011b[L]
 
   DGEIC : DRIF, L=3.0-2.052577
 
@@ -754,6 +760,7 @@
   BCXH3_full : LINE=(BCXH3a,BCXH3b)
   BCXH4_full : LINE=(BCXH4a,BCXH4b)
 
+  SQ02B_full : LINE=(SQ02B,SQ02B)
   CQ02B_full : LINE=(CQ02B,CQ02B)
   Q0H01_full : LINE=(Q0H01,BPM0H01,Q0H01)
   Q0H02_full : LINE=(Q0H02,Q0H02)
@@ -781,7 +788,7 @@
   QC012_full : LINE=(QC012,BPMC012,QC012)
 
   SOL1B_full : LINE=(SOL1B,CQ01B,SQ01B,SOL1B)
-  SOL2B_full : LINE=(SOL2B,      SQ02B,SOL2B)
+  SOL2B_full : LINE=(SOL2B,SOL2B)
 
   UMHTR_full : LINE=(UMHTR,HTRUNDB,UMHTR)
 
@@ -794,12 +801,23 @@
 
 ! ------------------------------------------------------------------------------
 
+  comment
   GUN : LINE=(BEGGUNB,&
     DGBCa,SOL1BKB,DGBCb,&
     CATHODEB,DGUN,DG001,&
     SOL1B_full,DG002,VV01B,DG003,SC1B,DG004,BPM1B,DG005,IM01B,DG006,SC2B,DG007,&
     BUN1B_full,DG008,SC3B,DG009,AM00B,DG010,SC4B,DG011,YAG01B_full,DG012a,&
       CQ02B_full,DG012b,&
+    SOL2B_full,DG013,VV02B,DG014,BPM2B,DG015,SC5B,DG016a,BLFU,DG016b,&
+    ENDGUNB)
+  endcomment
+
+  GUN : LINE=(BEGGUNB,&
+    DGBCa,SOL1BKB,DGBCb,&
+    CATHODEB,DGUN,DG001,&
+    SOL1B_full,DG002,VV01B,DG003,SC1B,DG004,BPM1B,DG005,IM01B,DG006,SC2B,DG007,&
+    BUN1B_full,DG008,SC3B,DG009,AM00B,DG010,SC4B,DG011a,SQ02B_full,DG011b,&
+      YAG01B_full,DG012a,CQ02B_full,DG012b,&
     SOL2B_full,DG013,VV02B,DG014,BPM2B,DG015,SC5B,DG016a,BLFU,DG016b,&
     ENDGUNB)
 

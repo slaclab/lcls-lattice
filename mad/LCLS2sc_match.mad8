@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-04MAY2026s ***
+! *** OPTICS=AD_ACCEL-01JUN2026s ***
 
 ! LCLS2sc matching routines
 
@@ -104,15 +104,15 @@
   ML1E : SUBROUTINE
     BEAM, ENERGY=Ei
     USE, L1
-    VALUE, AmplL1
+    VALUE, FracL1,AmplL1
     MATCH, BETX=1, BETY=1
-      VARY, AmplL1, STEP=1.E-6
+      VARY, FracL1, STEP=1.E-6
       WEIGHT, ENERGY=1
       CONSTR, #E, ENERGY=E1
      !LMDIF, TOL=1.E-20, CALLS=10000
      !MIGRAD, TOL=1.E-20, CALLS=10000
     ENDMATCH
-    VALUE, AmplL1
+    VALUE, FracL1,FracL1*AmplL1
     USE, L1
     SAVEBETA, TWSSm, #E
     TWISS, BETX=1, BETY=1, SAVE, TAPE="twiss.tape"
@@ -126,20 +126,20 @@
   ML2E : SUBROUTINE
     BEAM, ENERGY=E1
     USE, L2
-    VALUE, AmplL2
+    VALUE, FracL2,AmplL2
     MATCH, BETX=1, BETY=1
-      VARY, AmplL2, STEP=1.E-6
+      VARY, FracL2, STEP=1.E-6
       WEIGHT, ENERGY=1
       CONSTR, #E, ENERGY=E2
      !LMDIF, TOL=1.E-20, CALLS=10000
      !MIGRAD, TOL=1.E-20, CALLS=10000
     ENDMATCH
-    VALUE, AmplL2
+    VALUE, FracL2,FracL2*AmplL2
     SAVEBETA, TWSSm, #E
     TWISS, BETX=1, BETY=1, SAVE, TAPE="twiss.tape"
     VALUE, TWSSm[ENERGY]
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
-      STYLE=100, -SPLINE, FILE="L2"
+      STYLE=100, -SPLINE, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
@@ -147,20 +147,20 @@
   ML3E : SUBROUTINE
     BEAM, ENERGY=E2
     USE, L3
-    VALUE, AmplL3
+    VALUE, FracL3,AmplL3
     MATCH, BETX=1, BETY=1
-      VARY, AmplL3, STEP=1.E-6
+      VARY, FracL3, STEP=1.E-6
       WEIGHT, ENERGY=1
       CONSTR, #E, ENERGY=E3
      !LMDIF, TOL=1.E-20, CALLS=10000
      !MIGRAD, TOL=1.E-20, CALLS=10000
     ENDMATCH
-    VALUE, AmplL3
+    VALUE, FracL3,FracL3*AmplL3
     SAVEBETA, TWSSm, #E
     TWISS, BETX=1, BETY=1, SAVE, TAPE="twiss.tape"
     VALUE, TWSSm[ENERGY]
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
-      STYLE=100, -SPLINE, FILE="L3"
+      STYLE=100, -SPLINE, FILE="match"
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
@@ -168,20 +168,20 @@
   ML4E : SUBROUTINE
     BEAM, ENERGY=E3
     USE, L4
-    VALUE, AmplL4
+    VALUE, FracL4,AmplL4
     MATCH, BETX=1, BETY=1
-      VARY, AmplL4, STEP=1.E-6
+      VARY, FracL4, STEP=1.E-6
       WEIGHT, ENERGY=1
       CONSTR, #E, ENERGY=Ef
-      LMDIF, TOL=1.E-20, CALLS=10000
-      MIGRAD, TOL=1.E-20, CALLS=10000
+     !LMDIF, TOL=1.E-20, CALLS=10000
+     !MIGRAD, TOL=1.E-20, CALLS=10000
     ENDMATCH
-    VALUE, AmplL4
+    VALUE, FracL4,FracL4*AmplL4
     SAVEBETA, TWSSm, #E
     TWISS, BETX=1, BETY=1, SAVE
     VALUE, TWSSm[ENERGY]
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
-      STYLE=100, -SPLINE, FILE="L4"
+      STYLE=100, -SPLINE, FILE="match"
     BEAM, ENERGY=E0
     USE, (L0,L1,L2,L3,L4)
     TWISS, BETX=1, BETY=1, SAVE, TAPE="twiss.tape"
@@ -532,7 +532,7 @@
     MATCH, BETA0=TWSSi
      !VARY, B0H04w, STEP=1.E-6, LOWER=0
      !VARY, BLHUw,  STEP=1.E-6, LOWER=0
-      VARY, KQCM01, STEP=1.E-6          !bipolar
+     !VARY, KQCM01, STEP=1.E-6          !bipolar
       VARY, KQ0H01, STEP=1.E-6          !bipolar
       VARY, KQ0H02, STEP=1.E-6          !bipolar
       VARY, KQ0H03, STEP=1.E-6          !bipolar
@@ -595,9 +595,9 @@
 ! ------------------------------------------------------------------------------
 
   MD0Coll0 : SUBROUTINE
-    VALUE, KQC001,KQC002,KQC003,KQC004,KQC005,KQC006
     BEAM, ENERGY=Ei
     USE, (LCLS2scI,HTR,COL0,L1)
+    VALUE, KQC001,KQC002,KQC003,KQC004,KQC005,KQC006
     MATCH, BETA0=TWSSi, SURVEY, ZS=Zi
       VARY, KQC001,   STEP=1.E-6 !, LOWER=0
      !VARY, KQC002,   STEP=1.E-6 !, LOWER=0
@@ -746,8 +746,8 @@
       CONSTR, QCM14[1], BETX=BYCMfodo2
       CONSTR, QCM15[1], BETY=BYCMfodo2
      !CONSTR, #E, X=0, PX=0, Y=0, PY=0
-      LMDIF, TOL=1.E-20, CALLS=10000
-      MIGRAD, TOL=1.E-20, CALLS=10000
+     !LMDIF, TOL=1.E-20, CALLS=10000
+     !MIGRAD, TOL=1.E-20, CALLS=10000
     ENDMATCH
     VALUE, KQC110,KQC111,KQC112
     VALUE, QCM04[K1],QCM05[K1],QCM06[K1],QCM07[K1],QCM08[K1],QCM09[K1]
@@ -933,10 +933,8 @@
     TWISS, COUPLE, BETA0=TWSSi
     BEAM, ENERGY=TWSSm[ENERGY]
     USE, (EMIT2_2,L3,BR3B,L4)
-    VALUE, QCM31[K1]
     VALUE, QCM32[K1],QCM33[K1],QCM34[K1],QCM35[K1]
     VALUE, QCM37[K1],QCM38[K1],QCM39[K1],QCM40[K1]
-    VALUE, QCM41[K1],QCM42[K1]
     VALUE, QCM47[K1],QCM48[K1],QCM49[K1],QCM50[K1]
     MATCH, & !match across BR3B
       BETX=TWSSm[BETX], ALFX=TWSSm[ALFX], BETY=TWSSm[BETY], ALFY=TWSSm[ALFY]
@@ -986,10 +984,8 @@
      !LMDIF, TOL=1.E-20
      !MIGRAD, TOL=1.E-20
     ENDMATCH
-    VALUE, QCM31[K1]
     VALUE, QCM32[K1],QCM33[K1],QCM34[K1],QCM35[K1]
     VALUE, QCM37[K1],QCM38[K1],QCM39[K1],QCM40[K1]
-    VALUE, QCM41[K1],QCM42[K1]
     VALUE, QCM47[K1],QCM48[K1],QCM49[K1],QCM50[K1]
     BEAM, ENERGY=TWSSm[ENERGY]
     USE, (EMIT2_2,L3,BR3B,L4)
@@ -1221,8 +1217,8 @@
       WEIGHT, DX=0, DPX=0, DY=0, DPY=0 !, X=0, PX=0, Y=0, PY=0, T=0, PT=0
       CONSTR, MQBP13, LINE=Bfodo
      !CONSTR, #E, X=0, PX=0, Y=0, PY=0
-      LMDIF, TOL=1.E-20
-      MIGRAD, TOL=1.E-20
+     !LMDIF, TOL=1.E-20
+     !MIGRAD, TOL=1.E-20
     ENDMATCH
     VALUE, KQL1P,KQL2P,KQL3P,KQL4P
     VALUE, LL0P,LL1P,LL2P,LL3P,LL4P
@@ -1610,8 +1606,8 @@
      !CONSTR, Q0D03[1], BETX<32
      !CONSTR, Q0D04[1], BETY<32
       CONSTR, ENDLEI_1, BETX=BXDLI, ALFX=AXDLI, BETY=BYDLI, ALFY=AYDLI
-     !LMDIF, TOL=1.E-20, CALLS=10000
-     !MIGRAD, TOL=1.E-20, CALLS=10000
+      LMDIF, TOL=1.E-20, CALLS=10000
+      MIGRAD, TOL=1.E-20, CALLS=10000
     ENDMATCH
     VALUE, KQCM00
     VALUE, KQ0D01,KQ0D02,KQ0D03,KQ0D04
@@ -1676,8 +1672,8 @@
      !CONSTR, QHD02[1], BETX<50, BETY<50
      !CONSTR, QHD03[1], BETX<55, BETY<55
      !CONSTR, QHD04[1], BETX<50, BETY<50
-     !LMDIF, TOL=1.E-20, CALLS=10000
-     !MIGRAD, TOL=1.E-20, CALLS=10000
+      LMDIF, TOL=1.E-20, CALLS=10000
+      MIGRAD, TOL=1.E-20, CALLS=10000
     ENDMATCH
     VALUE, KQHD01,KQHD02,KQHD03,KQHD04
     PRINT, FULL
@@ -2689,13 +2685,12 @@
     BEAM, ENERGY=Ei
     SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
     USE, SC_SXRi
-    VALUE, KQUM1B,KQUM2B,KQUM3B,KQUM4B,kQSX16
+    VALUE, KQUM1B,KQUM2B,KQUM3B,KQUM4B
     MATCH, BETA0=TWSSi
       VARY, KQUM1b, STEP=1.E-6, LOWER=-KmaxQUMb*0, UPPER=+KmaxQUMb
       VARY, KQUM2b, STEP=1.E-6, LOWER=-KmaxQUMb,   UPPER=+KmaxQUMb*0
       VARY, KQUM3b, STEP=1.E-6, LOWER=-KmaxQUMb*0, UPPER=+KmaxQUMb
       VARY, KQUM4b, STEP=1.E-6, LOWER=-KmaxQUMb,   UPPER=+KmaxQUMb*0
-      VARY, kQSX16, STEP=1.E-6, LOWER=-KmaxQU*0,   UPPER=+KmaxQu
       WEIGHT, X=0, PX=0, BETX=1, ALFX=0, DX=0, DPX=0
       WEIGHT, Y=0, PY=0, BETY=1, ALFY=0, DY=0, DPY=0
       WEIGHT, T=0, PT=0
@@ -2719,9 +2714,9 @@
       COUPLE, QSXh21[1]/QSXh39[1]
       COUPLE, QSXh22[1]/QSXh40[1]
       COUPLE, QSXh21[1]/QSXh41[1]
+      COUPLE, QSXh22[1]/QSXh42[1]
      !endcomment
       comment !short-period
-      COUPLE, QSXh22[1]/QSXh42[1]
       COUPLE, QSXh21[1]/QSXh43[1]
       COUPLE, QSXh22[1]/QSXh44[1]
       COUPLE, QSXh21[1]/QSXh45[1]
@@ -2735,7 +2730,7 @@
      !LMDIF, TOL=1.E-20, CALLS=10000
      !MIGRAD, TOL=1.E-20, CALLS=10000
     ENDMATCH
-    VALUE, KQUM1B,KQUM2B,KQUM3B,KQUM4B,kQSX16
+    VALUE, KQUM1B,KQUM2B,KQUM3B,KQUM4B
     PRINT, FULL
     TWISS, BETA0=TWSSi, SAVE, TAPE="twiss.tape", RTAPE="rmat.tape"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=WS31B/SXR46END, &
@@ -2918,6 +2913,32 @@ COMMENT
 ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
+! match dumpline in SXR
+
+  MDUMPMUXs : SUBROUTINE !match MUX (TCX01B->OTRDMPB)
+    BEAM, ENERGY=Ef
+    USE, (LTUS,SXRUND,DUMPLINEB), RANGE=MM1B/#E
+    VALUE, kQSX47,KQUE1B,KQUE2B,KQDMPB
+    MATCH, BETA0=TWSSms
+      VARY, kQSX47, STEP=1.E-6 !, LOWER=-0.877*10/Eu, UPPER=0.877*10/Eu
+      VARY, KQUE1B, STEP=1.E-6, LOWER=0, UPPER= KmaxQR
+      CONSTR, QDMP1B[1], BETY=300
+      WEIGHT, X=0, PX=0, BETX=0, ALFX=0, DX=0, DPX=0, &
+              Y=0, PY=0, BETY=0, ALFY=0, DY=0, DPY=0, &
+              T=0, PT=0
+      COUPLE, MTCXB/OTRDMPB, MUX=90/360 !90 deg phase advance
+     !LMDIF, TOL=1.E-20
+     !MIGRAD, TOL=1.E-20
+    ENDMATCH
+    VALUE, kQSX47,KQUE1B,KQUE2B,KQDMPB
+    PRINT, MTCXB ; PRINT, OTRDMPB ; PRINT, DUMPFACEB
+    TWISS, COUPLE, BETA0=TWSSms, SAVE, TAPE="twiss.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      STYLE=100, SPLINE, RANGE=QSXh44[1]/DUMPFACEB, &
+      TITLE="SXR undulator to Dump (COUPLE)", FILE="match"
+  ENDSUBROUTINE
+
+! ------------------------------------------------------------------------------
 ! for matching SXR dump vs energy and undulator gap
 ! NOTE: for design optics, keep Yuri's energy-scalable values for these quads
 !       ... don't rematch
@@ -2983,29 +3004,6 @@ ENDCOMMENT
       STYLE=100, SPLINE, RANGE=QSXh44[1]/DUMPFACEB, &
       TITLE="SXR undulator to Dump, with coupling", FILE="match" !, &
    !  VMIN=0,-0.1, VMAX=600,1
-  ENDSUBROUTINE
-
-  MDUMPMUXs : SUBROUTINE !match MUX (TCX01B->OTRDMPB)
-    BEAM, ENERGY=Ef
-    USE, (LTUS,SXRUND,DUMPLINEB), RANGE=MM1B/#E
-    VALUE, kQSX47,KQUE1B,KQUE2B,KQDMPB
-    MATCH, BETA0=TWSSms
-      VARY, kQSX47, STEP=1.E-6 !, LOWER=-0.877*10/Eu, UPPER=0.877*10/Eu
-      VARY, KQUE1B, STEP=1.E-6, LOWER=0, UPPER= KmaxQR
-      CONSTR, QDMP1B[1], BETY<300
-      WEIGHT, X=0, PX=0, BETX=0, ALFX=0, DX=0, DPX=0, &
-              Y=0, PY=0, BETY=0, ALFY=0, DY=0, DPY=0, &
-              T=0, PT=0
-      COUPLE, MTCXB/OTRDMPB, MUX=90/360 !90 deg phase advance
-     !LMDIF, TOL=1.E-20
-     !MIGRAD, TOL=1.E-20
-    ENDMATCH
-    VALUE, kQSX47,KQUE1B,KQUE2B,KQDMPB
-    PRINT, MTCXB ; PRINT, OTRDMPB ; PRINT, DUMPFACEB
-    TWISS, COUPLE, BETA0=TWSSms, SAVE, TAPE="twiss.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      STYLE=100, SPLINE, RANGE=QSXh44[1]/DUMPFACEB, &
-      TITLE="SXR undulator to Dump (COUPLE)", FILE="match"
   ENDSUBROUTINE
 
 ! ==============================================================================

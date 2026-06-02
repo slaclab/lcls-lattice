@@ -2,22 +2,39 @@
 
 1. Once Mark Woodley has uploaded the pre-release to github lcls-lattice repo, checkout that release.
 2. Setup terminal environment
-   - check that $LCLS_LATTICE is set to the location of the DDMMYY_conversion branch of lcls-lattice.
+   - check that $LCLS_LATTICE is set.
    - check that the lcls-lattice-dev conda environment is active, which can be generated from lcls-lattice `environment.yml`
    - set MAD8_TO_BMAD to the location of the mad8_to_bmad.py script from the bmad_ecosystem
       - Using dist_source_me is discouraged, as it can cause the wrong libraries to be used by pytao because it results in a mixed conda / bmad repo environment.
 3. Run $LCLS_LATTICE/bmad/conversion/slac_to_bmad.py
 4. Check if beginning twiss in `bmad/master/gunb/beginning_BEGGUNB.bmad` need to be updated from BX0, AX0, etc. in `mad/LCLS2sc_master.xsif`
 5. Rematch SC ENDL1B using sc_sxr/tao.init q_L1[2:5] and L1[1:6].  L1 data updated from ENDL1B in mad/SC_SXR_GUN_CI
-6. Manually update `CuH_SC_QUADS.bmad` and `CuS_SC_QUADS.bmad` from `mad/LCLS2cu_main.mad8`
-7. from `$LCLS_LATTICE` run `pytest`
-8. Update plots
+   - Store the updated QC011, QC012, QCM02, and QCM03 settings in `bmad/master/sc/sc_linac_settings.bmad`
+7. Manually update `CuH_SC_QUADS.bmad` and `CuS_SC_QUADS.bmad` from `mad/LCLS2cu_main.mad8`
+8. from `$LCLS_LATTICE` run `pytest`
+9. Update plots
    - python/scripts/artifacts/make_bmad_plots.py
    - mv beta_*.png docs/plots
    - python/scripts/artifacts/make_mad_plots.py
    - mv beta_*.png docs/plots
    - python/scripts/artifacts/residuals.py
    - mv residual_*.png docs/plots
+
+# Update element devices
+To be done after the Oracle database is updated by the database group.
+1. Obtain updated lcls_elements.csv
+   - Go to [https://oraweb.slac.stanford.edu/apex/slacprod/f?p=116:600](https://oraweb.slac.stanford.edu/apex/slacprod/f?p=116:600)
+   - Click on Actions and Download
+   - Save file to `lcls-lattice/bmad/conversion/from_oracle`
+2. Run `$LCLS_LATTICE/bmad/conversion/device_mapping/device_mapping.py`
+   - This generates the `lcls-lattice/bmad/master/*_devicenames.bmad` files
+
+# Additional validation.  Make oracle upload txt files and compare
+1. `cd oracle_upload`
+2. Edit makefile with OPTICS stamp
+3. `make -B AD_ACCEL`
+4. `../python/tools/diff_cvs_2.0.py oracle_upload/AD_ACCEL-<OPTICS STAMP>.txt <mark's mad8 version from vdrive>`
+  - example vdrive location: `LCLS/Users/Woodley/AD_ACCEL/20260601_01JUN2026s/RDB/BSY-AD_ACCEL-01JUN2026s.txt`
 
 # Check into repo
 1. Trigger the Make Optics Plots action for the pre-release branch.
@@ -28,7 +45,13 @@
 6. Update prod using zip of release at `lcls-srv01:/usr/local/lcls/model/lattice`
    - Update the `/usr/local/lcls/model/lattice/current` link to point to the new release.
 
-# Make Oracle Upload files
+# Make oracle upload files and docs
+Do this from s3df `/sdf/group/ad/sw/scm/repos/optics/lcls-lattice`
+1. `cd oracle_upload`
+2. Edit makefile OPTICS stamp
+3. `make -B`
+
+# Make Oracle Upload files (depricated.  use bmad now)
 1. In the mad directory, uncomment the call to `makeSymbols` from `LCLS2cu_main.mad8` and `LCLS2sc_main.mad8`.
 2. run mad8s, assuming mad8s executable is in the lcls-lattice base directory.
    - `../mad8s < LCLS2sc_main.mad8`
@@ -41,16 +64,7 @@
 5. Manually copy the FACET elements from the previous extras file to the new extras file.
    - Starts with SOL10111 and ends with CQ141866
 
-# Update element devices
-To be done after the Oracle database is updated by the database group.
-1. Obtain updated lcls_elements.csv
-   - Go to [https://oraweb.slac.stanford.edu/apex/slacprod/f?p=116:600](https://oraweb.slac.stanford.edu/apex/slacprod/f?p=116:600)
-   - Click on Actions and Download
-   - Save file to `lcls-lattice/bmad/conversion/from_oracle`
-2. Run `$LCLS_LATTICE/bmad/conversion/device_mapping/device_mapping.py`
-   - This generates the `lcls-lattice/bmad/master/*_devicenames.bmad` files
-
-# Publish from sdf using makefile
+# Publish from sdf using makefile (depricated)
 To be done after the Oracle database is updated by the the database group.
 1. Log onto sdfiana16
 2. `module load conda`
