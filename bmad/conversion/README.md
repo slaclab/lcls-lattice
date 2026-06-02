@@ -20,6 +20,22 @@
    - python/scripts/artifacts/residuals.py
    - mv residual_*.png docs/plots
 
+# Update element devices
+To be done after the Oracle database is updated by the database group.
+1. Obtain updated lcls_elements.csv
+   - Go to [https://oraweb.slac.stanford.edu/apex/slacprod/f?p=116:600](https://oraweb.slac.stanford.edu/apex/slacprod/f?p=116:600)
+   - Click on Actions and Download
+   - Save file to `lcls-lattice/bmad/conversion/from_oracle`
+2. Run `$LCLS_LATTICE/bmad/conversion/device_mapping/device_mapping.py`
+   - This generates the `lcls-lattice/bmad/master/*_devicenames.bmad` files
+
+# Additional validation.  Make oracle upload txt files and compare
+1. `cd oracle_upload`
+2. Edit makefile with OPTICS stamp
+3. `make -B AD_ACCEL`
+4. `../python/tools/diff_cvs_2.0.py oracle_upload/AD_ACCEL-<OPTICS STAMP>.txt <mark's mad8 version from vdrive>`
+  - example vdrive location: `LCLS/Users/Woodley/AD_ACCEL/20260601_01JUN2026s/RDB/BSY-AD_ACCEL-01JUN2026s.txt`
+
 # Check into repo
 1. Trigger the Make Optics Plots action for the pre-release branch.
    - This updates the plots in `docs/plots/`.  Check these plots for correctness.
@@ -29,7 +45,13 @@
 6. Update prod using zip of release at `lcls-srv01:/usr/local/lcls/model/lattice`
    - Update the `/usr/local/lcls/model/lattice/current` link to point to the new release.
 
-# Make Oracle Upload files
+# Make oracle upload files and docs
+Do this from s3df `/sdf/group/ad/sw/scm/repos/optics/lcls-lattice`
+1. `cd oracle_upload`
+2. Edit makefile OPTICS stamp
+3. `make -B`
+
+# Make Oracle Upload files (depricated.  use bmad now)
 1. In the mad directory, uncomment the call to `makeSymbols` from `LCLS2cu_main.mad8` and `LCLS2sc_main.mad8`.
 2. run mad8s, assuming mad8s executable is in the lcls-lattice base directory.
    - `../mad8s < LCLS2sc_main.mad8`
@@ -42,16 +64,7 @@
 5. Manually copy the FACET elements from the previous extras file to the new extras file.
    - Starts with SOL10111 and ends with CQ141866
 
-# Update element devices
-To be done after the Oracle database is updated by the database group.
-1. Obtain updated lcls_elements.csv
-   - Go to [https://oraweb.slac.stanford.edu/apex/slacprod/f?p=116:600](https://oraweb.slac.stanford.edu/apex/slacprod/f?p=116:600)
-   - Click on Actions and Download
-   - Save file to `lcls-lattice/bmad/conversion/from_oracle`
-2. Run `$LCLS_LATTICE/bmad/conversion/device_mapping/device_mapping.py`
-   - This generates the `lcls-lattice/bmad/master/*_devicenames.bmad` files
-
-# Publish from sdf using makefile
+# Publish from sdf using makefile (depricated)
 To be done after the Oracle database is updated by the the database group.
 1. Log onto sdfiana16
 2. `module load conda`
