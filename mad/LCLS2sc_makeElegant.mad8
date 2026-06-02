@@ -890,6 +890,9 @@
 
 ! DIAG02
 
+  L0LEIZWAKE : MARK, TYPE="WAKE"
+  BEAM1LEI   : MARK, TYPE="WATCH"
+
   BEAM0LEI, TYPE="WATCH"
   BEGLEI_2, TYPE="WATCH"
   ENDLEI_2, TYPE="WATCH"
@@ -905,37 +908,47 @@
 ! generate TWISS and SURVEY tape-files
 ! ------------------------------------------------------------------------------
 
+  ASSIGN, PRINT="DIAG0.print"
   TITLE, "AD_ACCEL: superconducting linac: BEAM0 to DIAG0"
   BEAM, ENERGY=Ei
   USE, SC_DIAG0i
+  PRINT, FULL
   TWISS, BETA0=TWSSi, TAPE="DIAG0_twiss.tape"
   SURVEY, X0=Xgun, Y0=Ygun, Z0=Zi, TAPE="DIAG0_survey.tape"
 
+  ASSIGN, PRINT="LCLS2scH.print"
   TITLE, "AD_ACCEL: superconducting linac: BEAM0 to HXR"
   BEAM, ENERGY=Ei
   SET, SETSP, SETSPh
   USE, SC_HXRi
+  PRINT, FULL
   TWISS, BETA0=TWSSi, TAPE="LCLS2scH_twiss.tape"
   SURVEY, X0=Xgun, Y0=Ygun, Z0=Zi, TAPE="LCLS2scH_survey.tape"
 
+  ASSIGN, PRINT="LCLS2scS.print"
   TITLE, "AD_ACCEL: superconducting linac: BEAM0 to SXR"
   BEAM, ENERGY=Ei
   SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
   USE, SC_SXRi
+  PRINT, FULL
   TWISS, BETA0=TWSSi, TAPE="LCLS2scS_twiss.tape"
   SURVEY, X0=Xgun, Y0=Ygun, Z0=Zi, TAPE="LCLS2scS_survey.tape"
 
+  ASSIGN, PRINT="LCLS2scD.print"
   TITLE, "AD_ACCEL: superconducting linac: BEAM0 to BSY dump"
   BEAM, ENERGY=Ei
   SET, SETSP, SETSPd ; SET, SETDA, DAOFF
   USE, SC_BSYDi
+  PRINT, FULL
   TWISS, BETA0=TWSSi, TAPE="LCLS2scD_twiss.tape"
   SURVEY, X0=Xgun, Y0=Ygun, Z0=Zi, TAPE="LCLS2scD_survey.tape"
 
+  ASSIGN, PRINT="LCLS2scDA.print"
   TITLE, "AD_ACCEL: superconducting linac: BEAM0 to DASEL"
   BEAM, ENERGY=Ei
   SET, SETSP, SETSPd ; SET, SETDA, DAON
   USE, SC_DASELi, RANGE=#S/MADUMP
+  PRINT, FULL
   TWISS, BETA0=TWSSi, TAPE="LCLS2scDA_twiss.tape"
   SURVEY, X0=Xgun, Y0=Ygun, Z0=Zi, TAPE="LCLS2scDA_survey.tape"
 
@@ -943,46 +956,58 @@
 
 ! for beam from LEI injector
 
+  ASSIGN, PRINT="DIAGIS.print"
   TITLE, "AD_ACCEL: superconducting linac: BEAM0LEI to DIAGI"
   BEAM, ENERGY=Ei
  !CALL, FILENAME="SETK2scDGI.xsif" !for mux=1.75*2pi from TCXDGI to OTRDGI1_OTR
   USE, SC_DIAGISi
+  PRINT, FULL
   TWISS, BETA0=TWSSiLEI, TAPE="DIAGIS_twiss.tape"
   SURVEY, X0=Xgun2, Y0=Ygun2, Z0=ZiLEI, TAPE="DIAGIS_survey.tape"
 
   CALL, FILENAME="SETK2scLEI.xsif" !special match from LEI dogleg to laser heater
 
+  ASSIGN, PRINT="DIAG02.print"
   TITLE, "AD_ACCEL: superconducting linac: BEAM0LEI to DIAG0"
   BEAM, ENERGY=Ei
   USE, SC_DIAG0i2
+  PRINT, FULL
   TWISS, BETA0=TWSSiLEI, TAPE="DIAG02_twiss.tape"
   SURVEY, X0=Xgun2, Y0=Ygun2, Z0=ZiLEI, TAPE="DIAG02_survey.tape"
 
+  ASSIGN, PRINT="LCLS2scH2.print"
   TITLE, "AD_ACCEL: superconducting linac: BEAM0LEI to HXR"
   BEAM, ENERGY=Ei
   SET, SETSP, SETSPh
   USE, SC_HXRi2
+  PRINT, FULL
   TWISS, BETA0=TWSSiLEI, TAPE="LCLS2scH2_twiss.tape"
   SURVEY, X0=Xgun2, Y0=Ygun2, Z0=ZiLEI, TAPE="LCLS2scH2_survey.tape"
 
+  ASSIGN, PRINT="LCLS2scS2.print"
   TITLE, "AD_ACCEL: superconducting linac: BEAM0LEI to SXR"
   BEAM, ENERGY=Ei
   SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
   USE, SC_SXRi2
+  PRINT, FULL
   TWISS, BETA0=TWSSiLEI, TAPE="LCLS2scS2_twiss.tape"
   SURVEY, X0=Xgun2, Y0=Ygun2, Z0=ZiLEI, TAPE="LCLS2scS2_survey.tape"
 
+  ASSIGN, PRINT="LCLS2scD2.print"
   TITLE, "AD_ACCEL: superconducting linac: BEAM0LEI to BSY dump"
   BEAM, ENERGY=Ei
   SET, SETSP, SETSPd ; SET, SETDA, DAOFF
   USE, SC_BSYDi2
+  PRINT, FULL
   TWISS, BETA0=TWSSiLEI, TAPE="LCLS2scD2_twiss.tape"
   SURVEY, X0=Xgun2, Y0=Ygun2, Z0=ZiLEI, TAPE="LCLS2scD2_survey.tape"
 
+  ASSIGN, PRINT="LCLS2scDA2.print"
   TITLE, "AD_ACCEL: superconducting linac: BEAM0LEI to DASEL"
   BEAM, ENERGY=Ei
   SET, SETSP, SETSPd ; SET, SETDA, DAON
   USE, SC_DASELi2, RANGE=#S/MADUMP
+  PRINT, FULL
   TWISS, BETA0=TWSSiLEI, TAPE="LCLS2scDA2_twiss.tape"
   SURVEY, X0=Xgun2, Y0=Ygun2, Z0=ZiLEI, TAPE="LCLS2scDA2_survey.tape"
 
