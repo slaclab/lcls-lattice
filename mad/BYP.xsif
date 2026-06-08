@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-02SEP2024s ***
+! *** OPTICS=AD_ACCEL-01JUN2026s ***
 
 ! LCLS2sc bypass line, plus match to LTU
 
@@ -10,9 +10,17 @@
 !  * add Sector 20 shield wall per A. Ibrahimov and G. Gassner
 ! 20-JUL-2021, M. Woodley
 !  * quad strength changes for Yuri's "symmetric" SPRDs/SPRDh match
-! ------------------------------------------------------------------------------
 ! 11-MAY-2021, M. Woodley
 !  * correct spacing of 2Q4/BPM/XCOR/YCOR per ID drawings
+! ------------------------------------------------------------------------------
+! 22-APR-2021, M. Woodley
+!  * rename BYP wire scanners (and deferred RFBPMs) per N. Lipkowitz
+! 23-MAR-2021, M. Woodley
+!  * tweak DCYfd[L] to get Z=3048.000000 at S100B;
+!    tweak DCYfe[L] to get Z=3765.480536 at ENDDMPS_2
+! ------------------------------------------------------------------------------
+! 08-JUN-2020, M. Woodley
+!  * add 4th NIT line wire scanner ... renumber other WIREs and RF BPM's
 ! ------------------------------------------------------------------------------
 ! 07-AUG-2019, M. Woodley
 !  * combine BYPi and FODOLa BEAMLINEs (changes Zbyp)
@@ -205,21 +213,21 @@
   QFY : QUAD, L=LQM/2, TYPE="PEPII", K1= KQY, APER=rQM !dummy magnet
   QDY : QUAD, L=LQM/2, TYPE="PEPII", K1=-KQY, APER=rQM !dummy magnet
 
-  KQBP25 :=  0.070273904791
-  KQBP26 := -0.10552161126
-  KQBP27 :=  0.11147451141
-  KQBP35 := -0.291127425586
-  KQBP28 :=  0.323836147475
+  KQBP25 :=  0.070273904791 ! 0.070273904791
+  KQBP26 := -0.105521611254 !-0.105521611251
+  KQBP27 :=  0.111474511408 ! 0.111474511407
+  KQBP35 := -0.29112742557  !-0.291127425572
+  KQBP28 :=  0.323836147473 ! 0.323836147476
 
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-  KQBP36 :=  0.581885208949
-  KQBP30 := -0.589938332836
-  KQBP31 :=  0.614211022315
-  KQBP32 := -0.490251186947
-  KQBP33 := -0.372476510794
-  KQBP34 :=  0.549118036482
+  KQBP36 :=  0.581885208949 ! 0.581885208949
+  KQBP30 := -0.589938332836 !-0.589938332836
+  KQBP31 :=  0.614211022315 ! 0.614211022315
+  KQBP32 := -0.490251186947 !-0.490251186947
+  KQBP33 := -0.372473815777 !-0.372473586764 !-0.372476510794
+  KQBP34 :=  0.549116661002 ! 0.54911674268  ! 0.549118036482
 
   QBP13 : QUAD, TYPE="2Q4",  L=LQM/2, K1= KQY,    APER=rQM
   QBP14 : QUAD, TYPE="2Q4",  L=LQM/2, K1=-KQY,    APER=rQM
@@ -272,7 +280,7 @@
 
 ! Sector 20 shield wall
 
-  DCYsa1 : DRIF, L=4.976697
+  DCYsa1  : DRIF, L=4.976697
   S20WALL : DRIF, L=2.0
   DCYsa2  : DRIF, L=DCYsa[L]-DCYsa1[L]-S20WALL[L]
 
@@ -308,6 +316,8 @@
   D2Q4c  : DRIF, L=0.2794
   D2Q4d  : DRIF, L=DCY[L]-(D2Q4a[L]+D2Q4b[L]+D2Q4c[L])
 
+ dStweak := -0.8E-06 !make scSS Z's equal to 12FEB2024s
+
  dDCYd   := 0.0 !adjust Z at BSYEND
   DCYd   : DRIF, L=35.977199997076 +dDCYd +zQBP31
   DCYdb  : DRIF, L=1.0
@@ -315,10 +325,10 @@
   DCYfa  : DRIF, L=1.0
   DCYfb  : DRIF, L=0.5 
   DCYfc  : DRIF, L=1.0
-  DCYfd  : DRIF, L=5.952523028144 +0.3
-  DCYfe  : DRIF, L=12.43034602883-DCYfa[L]-DCYfb[L]-DCYfc[L]-DCYfd[L] +zQBP36
+  DCYfd  : DRIF, L=6.2525239 !5.952523028144 +0.3
+  DCYfe  : DRIF, L=12.4303464-DCYfa[L]-DCYfb[L]-DCYfc[L]-DCYfd[L] +zQBP36 !12.43034602883
   DCYfea : DRIF, L=2.512 !3.0
-  DCYfeb : DRIF, L=DCYfe[L]-DCYfea[L]
+  DCYfeb : DRIF, L=DCYfe[L]-DCYfea[L]+dStweak
   DCYg   : DRIF, L=3.9034 -zQBP36+zQBP30
 
   DBP1b : DRIF, L=19.48139075
@@ -373,12 +383,12 @@
 ! collimators
 ! ------------------------------------------------------------------------------
 
-  CXBP21 : RCOL, TYPE="HCOLL", L=Ljaw, XSIZE=3.6E-3, YSIZE=20.E-3
-  CYBP22 : RCOL, TYPE="VCOLL", L=Ljaw, YSIZE=3.6E-3, XSIZE=20.E-3
-  CXBP25 : RCOL, TYPE="HCOLL", L=Ljaw, XSIZE=3.5E-3, YSIZE=20.E-3
-  CYBP26 : RCOL, TYPE="VCOLL", L=Ljaw, YSIZE=3.8E-3, XSIZE=20.E-3
-  CXBP30 : RCOL, TYPE="HCOLL", L=Ljaw, XSIZE=2.2E-3, YSIZE=20.E-3
-  CXBP34 : RCOL, TYPE="HCOLL", L=Ljaw, XSIZE=2.2E-3, YSIZE=20.E-3
+  CXBP21 : RCOL, TYPE="HCOLL", L=Ljaw, XSIZE=2.5E-3, YSIZE=20.E-3
+  CYBP22 : RCOL, TYPE="VCOLL", L=Ljaw, YSIZE=2.5E-3, XSIZE=20.E-3
+  CXBP25 : RCOL, TYPE="HCOLL", L=Ljaw, XSIZE=2.5E-3, YSIZE=20.E-3
+  CYBP26 : RCOL, TYPE="VCOLL", L=Ljaw, YSIZE=2.7E-3, XSIZE=20.E-3
+  CXBP30 : RCOL, TYPE="HCOLL", L=Ljaw, XSIZE=1.6E-3, YSIZE=20.E-3
+  CXBP34 : RCOL, TYPE="HCOLL", L=Ljaw, XSIZE=1.5E-3, YSIZE=20.E-3
 
 ! ==============================================================================
 ! BPMs
@@ -409,6 +419,7 @@
   RFBWSBP2 : MONI, TYPE="@2,CavityS-1"
   RFBWSBP3 : MONI, TYPE="@2,CavityS-1"
   RFBWSBP4 : MONI, TYPE="@2,CavityS-1"
+  RFBWSBP5 : MONI, TYPE="@2,CavityS-1"
   RFBBP24  : MONI, TYPE="@2,CavityS-1" !4/23/14
   RFBBP35  : MONI, TYPE="@2,CavityS-1" !4/23/14
   RFBBP30  : MONI, TYPE="@2,CavityS-1"
@@ -421,7 +432,6 @@
 ! corrector types:
 !   "Bypass"   = SA-344-116-01 (purple coil)
 !   "Bypass#2" = SA-344-119-01 (blue coil)
-!   "Bypass#3" = SA-344-117-01 (white coil)
 !   "type-4"   = SA-238-040-86
 !   "class-4"  = SA-238-040-86
 
@@ -456,7 +466,6 @@
 ! corrector types:
 !   "Bypass"   = SA-344-116-01 (purple coil)
 !   "Bypass#2" = SA-344-119-01 (blue coil)
-!   "Bypass#3" = SA-344-117-01 (white coil)
 !   "type-4"   = SA-238-040-86
 !   "class-4"  = SA-238-040-86
 
@@ -491,6 +500,7 @@
   WSBP2 : WIRE, TYPE="fast"
   WSBP3 : WIRE, TYPE="fast"
   WSBP4 : WIRE, TYPE="fast"
+  WSBP5 : WIRE, TYPE="fast"
 
   STBP34A  : INST, TYPE="PPS stopper", L=LSTEBD !LCLS EBD-type stopper
   BTMBP34A : INST, TYPE="PPS BTM"               !Burn-Through-Monitor behind STBP34A
@@ -517,6 +527,10 @@
   RWWAKE2  : MARK, TYPE="WAKE" !bypass line beampipe wake applied here
   LTUSPLIT : MARK !SXR/HXR/Dump split point
   MRGCUSXR : MARK !merge point (with CUSXR)
+
+! BSY wooden door
+
+  WOODDOOR_SPS : MARK
 
 ! sector boundaries (ZBEG=101.6*(n-1); ZEND=101.6*n)
 
@@ -581,7 +595,8 @@
       DCYsa,BPN16END,BPN17BEG,DCYsb,&
     QBP17_full,D2Q4a0,BPMBP17,D2Q4b0,XCBP17,D2Q4c0,YCBP17,D2Q4d0,&
       DCYsa,BPN17END,BPN18BEG,DCYsb,&
-    QBP18_full,D2Q4a0,BPMBP18,D2Q4b0,XCBP18,D2Q4c0,YCBP18,D2Q4d0,&
+    QBP18_full,D2Q4a0,BPMBP18,D2Q4b0,XCBP18,D2Q4c0,YCBP18,D2Q4i10,&
+      RFBWSBP5,D2Q4i20,WSBP5,D2Q4j0,&
       DCYsa,BPN18END,BPN19BEG,DCYsb,&
     QBP19_full,D2Q4a0,BPMBP19,D2Q4b0,XCBP19,D2Q4c0,YCBP19,D2Q4d0,&
       DCYsa,BPN19END,BPN20BEG,DCYsb,&
@@ -609,10 +624,10 @@
     QBP28_full,D2Q4a,BPMBP28,D2Q4b,XCBP28,D2Q4c,YCBP28,D2Q4q,&
       LTUSPLIT,RWWAKE2,ENDBYP)
 
-  FODOLb : LINE=(DCYfa,DCYfb,DCYfc,DCYfd,S100B,DCYfea,WOODDOOR)
+  FODOLb : LINE=(DCYfa,DCYfb,DCYfc,DCYfd,S100B,DCYfea,WOODDOOR_SPS)
 
   FODOLc : LINE=(DCYfeb,&
-    QBP36_full,D2Q4a,BPMBP36,D2Q4b,D2Q4c,DCYg,&
+    QBP36_full,D2Q4a,BPMBP36,D2Q4b,D2Q4c,DCYg ,&
     QBP30_full,D2Q4a,RFBBP30,D2Q4b,XCBP30,D2Q4c,YCBP30,DCYc)
 
   FODOL : LINE=(FODOLa,SPRDs,FODOLb,FODOLc)

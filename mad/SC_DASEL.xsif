@@ -1,7 +1,7 @@
 
-! *** OPTICS=AD_ACCEL-02SEP2024s ***
+! *** OPTICS=AD_ACCEL-01JUN2026s ***
 
-! SC_DASEL beam path configuration
+! SC_DASEL path configuration
 
   SETSP     := 0 !deflector switch for HXR/SXR/BSYD spreader
   SETCUS    := 0 !deflector switch for HXR/CUSXR
@@ -9,7 +9,7 @@
   SETHXRSS  := 0 !ON/OFF switch for HXR self-seeding chicane
   SETSXRSS  := 0 !ON/OFF switch for SXR self-seeding chicane
   SETPEPX   := 0 !ON/OFF switch for PEPPEx chicane
-  SETCBXFEL := 0 !ON/OFF switch for CBXFEL chicane(s)
+  SETCBXFEL := 0 !ON/OFF switch for CBXFEL chicanes
   SETXL2WIG := 0 !ON/OFF switch for XLEAP-II wiggler
   SETXL2SS  := 0 !ON/OFF switch for XLEAP-II self-seeding chicane
 
@@ -18,15 +18,6 @@
 
   CALL, FILENAME="LCLS2sc_master.xsif" !calls other xsif files
 
-  Q10, K1= 0.040946131243
-  Q11, K1=-0.038135136057
-  Q19, K1= 0.030837113549
-  Q20, K1= 0.146624351215E-2
-  Q27, K1=-0.083919622056
-  Q28, K1= 0.03548040664 
-  Q30, K1=-0.028849559713
-  Q38, K1= 0.034487458519
-
   COMMENT !to generate SURVEY
     USE, SC_DASEL !start at gun
     ! initial energy: E0
@@ -34,8 +25,6 @@
   ENDCOMMENT
 
  !COMMENT !to generate TWISS
-   !RODAS11P, ANGLE=0
-   !RODAS19P, ANGLE=0
     USE, SC_DASELi !start at BEAM0
     ! initial energy: Ei
     ! initial Twiss : BXi, AXi, BYi, AYi

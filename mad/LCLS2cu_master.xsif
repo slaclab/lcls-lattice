@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-02SEP2024s ***
+! *** OPTICS=AD_ACCEL-01JUN2026s ***
 
 ! ------------------------------------------------------------------------------
 ! constants and global parameters
@@ -28,13 +28,13 @@
 
 ! energy profile
 
-  E00  := 0.006 !beam energy after gun (GeV)
-  E0i  := 0.064 !beam energy between L0a and L0b sections (GeV)
-  Ei   := 0.135 !initial beam energy (GeV) (150->135 MeV on July 9, 2003)
-  EBC1 := 0.220 !BC1 energy (GeV)
-  EBC2 := 5.000 !BC2 energy (GeV)
-  Ef   := 8.000 !final beam energy (GeV)
-  Eu   := 8.000 !energy in undulator (GeV)
+  E00  :=  0.006 !beam energy after gun (GeV)
+  E0i  :=  0.064 !beam energy between L0a and L0b sections (GeV)
+  Ei   :=  0.135 !initial beam energy (GeV) (150->135 MeV on July 9, 2003)
+  EBC1 :=  0.220 !BC1 energy (GeV)
+  EBC2 :=  5.000 !BC2 energy (GeV)
+  Ef   :=  8.000 !final beam energy (GeV)
+  Eu   :=  8.000 !energy in undulator (GeV)
 
   Brho00 := Cb*E00
   Brho0i := Cb*E0i
@@ -62,7 +62,7 @@
   TALFY :=  0.506  !twiss alpha y
 
 ! Dummy, fitted twiss parameters at cathode which yield the above twiss parameters at
-! L0a-exit (for plotting purposes only - assumes only drift between cathode and L0a-exit)
+! L0a-exit from TWISS, COUPLE (for plotting purposes only - assumes only drift between cathode and L0a-exit)
 
   CBETX :=  15.574222415628    ! consistent with back-tracked from matched OTR2 through post Aug. 11, 2008 QA01-QE04 real BDES
   CALFX :=  -3.081460679784
@@ -81,22 +81,22 @@
 ! Twiss at the beginning of L3 linac
 
   ENBEGL3 :=  5.0
-  BXBEGL3 := 11.063556098154 !11.063556098243
-  AXBEGL3 := -0.94968706938  !-0.949687069393
-  BYBEGL3 := 70.645797110343 !70.645797110388
-  AYBEGL3 :=  2.189962742982 ! 2.189962742976
+  BXBEGL3 := 11.063556098154
+  AXBEGL3 := -0.94968706938
+  BYBEGL3 := 70.645797110343
+  AYBEGL3 :=  2.189962742982
 
 ! Twiss at the end of L3 linac (L3END)
 
   ENENDL3 :=  8.0
-  BXENDL3 := 33.223271647513 !33.223271647948
-  AXENDL3 :=  1.179788571596 ! 1.179788571613
-  BYENDL3 := 62.179034958969 !62.179034958633
-  AYENDL3 := -1.656755986924 !-1.656755986913
+  BXENDL3 := 33.223271647513
+  AXENDL3 :=  1.179788571596
+  BYENDL3 := 62.179034958969
+  AYENDL3 := -1.656755986924
 
 ! initial Twiss at BEGCLTS (see CUSXR.xsif)
 
-! periodic Twiss in HXR dogleg cells (@ MM1; copy from LCLS2sc_master.xsif)
+! periodic Twiss in HXR dogleg cells (@MM1; copy from LCLS2sc_master.xsif)
 
   MBETXH := 48.911502413792
   MALFXH :=  3.141736059434
@@ -109,13 +109,6 @@
   AXEDh := -1.084608326581
   BYEDh := 46.225914290403
   AYEDh :=  1.084608326581
-
-! match into SXR dogleg (@ MM1B)
-
-  MBETXS := 14.122413294533 !14.225768169159
-  MALFXS := -0.492130310227 !-0.494962167072
-  MBETYS := 41.689113504311 !41.657375271635
-  MALFYS :=  2.280526644358 ! 2.281685862975
 
 ! for matching ...
 
@@ -197,7 +190,6 @@
   CALL, FILENAME="common.xsif"
   CALL, FILENAME="SPRD.xsif"
   CALL, FILENAME="CUSXR.xsif"
-  CALL, FILENAME="ALINE.xsif"
   CALL, FILENAME="BYP.xsif"
   CALL, FILENAME="LTU.xsif"
   CALL, FILENAME="UND.xsif"
@@ -210,12 +202,14 @@
   CALL, FILENAME="LCLS_L1.xsif"
   CALL, FILENAME="LCLS_L2.xsif"
   CALL, FILENAME="LCLS_L3.xsif"
+  CALL, FILENAME="Cu_FDN.xsif"
 
 ! ... or simplified L1, L2, and L3 lattices (for ELEGANT)
 
  !CALL, FILENAME="LCLS_L1e.xsif"
  !CALL, FILENAME="LCLS_L2e.xsif"
  !CALL, FILENAME="LCLS_L3e.xsif"
+ !CALL, FILENAME="Cu_FDNe.xsif"
 
 ! new BSY area definitions
 
@@ -225,11 +219,11 @@
 
  !CU_GSPEC : copper linac to gun spectrometer
  !CU_SPEC  : copper linac to 135 MeV spectrometer
+ !CU_SXR   : copper linac to e- SXR dump
  !CU_HXR   : copper linac to e- HXR dump
  !CU_SFTH  : copper linac to e- HXR safety dump
  !CU_HXTES : copper linac to HXR XTES system (photon)
  !CU_HTXI  : copper linac to HXR TXI system (photon)
- !CU_SXR   : copper linac to e- SXR dump
 
   CU_GSPEC : LINE=(GUNBXG,GSPEC)
   CU_SPEC  : LINE=(GUNL0a,L0aL0b,DL1_1,SPECBL)
@@ -249,11 +243,11 @@
   LCLS2cuCI : LINE=(DL1_2,L1,BC1,L2,BC2,L3)
 
   CU_SPECi  : LINE=(LCLS2cuI,SPECBL)
+  CU_SXRi   : LINE=(LCLS2cuI,LCLS2cuCI,BSYLTUS)
   CU_HXRi   : LINE=(LCLS2cuI,LCLS2cuCI,BSYLTUH)
   CU_SFTHi  : LINE=(LCLS2cuI,LCLS2cuCI,BSYLTUHS)
   CU_HXTESi : LINE=(LCLS2cuI,LCLS2cuCI,BSYLTUHXTES)
   CU_HTXIi  : LINE=(LCLS2cuI,LCLS2cuCI,BSYLTUHTXI)
-  CU_SXRi   : LINE=(LCLS2cuI,LCLS2cuCI,BSYLTUS)
 
 ! ------------------------------------------------------------------------------
 ! initial SURVEY coordinates

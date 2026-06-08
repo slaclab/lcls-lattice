@@ -1,27 +1,27 @@
 
-! *** OPTICS=AD_ACCEL-02SEP2024s ***
+! *** OPTICS=AD_ACCEL-01JUN2026s ***
 
 ! LCLS2sc injector: gun to start of L1 linac
 
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
-! 22-MAR-2024, M. Woodley
+! 15-MAY-2026, M. Woodley
+!  * replace SQ02B (SOL2B trim) with "mini-quad"
+! ------------------------------------------------------------------------------
+! 28-MAR-2026, M. Woodley
+!  * there is no Faraday Cup on YAG01B
+! ------------------------------------------------------------------------------
+! 19-APR-2024, M. Woodley
 !  * add SWAVE attribute to BUN1B per M. Ehrlichman
 ! ------------------------------------------------------------------------------
 ! 24-OCT-2022, M. Woodley
 !  * replace CQ02B (SOL2B trim) with "mini-quad"
-! ------------------------------------------------------------------------------
-! 08-SEP-2022, M. Woodley
-!  * redefine YAG01B, OTR0H04, and OTRC001
-! 14-APR-2022, M. Woodley
-!  * replace YAG01B_YAG1 and YAG01B_YAG2 with YAG01B
+! 07-SEP-2022, M. Woodley
+!  * redefine YAG01B
 ! ------------------------------------------------------------------------------
 ! 28-SEP-2021, M. Woodley
 !  * replace YAG01B with combination YAG/COLL/FC device
-! ------------------------------------------------------------------------------
-! 16-JAN-2021, M. Woodley
-!  * new buncher settings per Y. Ding
 ! ------------------------------------------------------------------------------
 ! 26-NOV-2019, M. Woodley
 !  * Remove IMBCSi3; undefer IMBCSi1 and IMBCSi2 ... per D. Yeremian
@@ -177,8 +177,8 @@
 
 lbun = 0.21876 !m
 abun = 0.0517  !m
-gbun = 1.8     !MV/m
-pbun = -85     !deg
+gbun = 0       !MV/m
+pbun = 0       !deg
 
 bun1b: lcavity, cavity_type = standing_wave, type = "LBNL", rf_frequency = 1300 * 1e6, l = lbun/2, aperture = abun/2,
           voltage = gbun*lbun/2 * 1e6, phi0 = pbun/360
@@ -207,7 +207,7 @@ brhoh = cb*ei
 gbh = 0.03
 zbh = 0.1244
 fbh = 0.3887
-abh = 0.022113758957 !DXmax=0.075
+abh = 0.022113602317 !DXmax=0.075
 bbh = brhoh*sin(abh)/zbh
 abh_2 = abh*abh
 abh_4 = abh_2*abh_2
@@ -248,33 +248,32 @@ bcxh4: sbend, type = "5D3.9", hgap = gbh/2, l = lbh, angle = +abh, e1 = +abh, fi
 cq01b: multipole, type = "solenoid trim", aperture = 0.0475/2, k1l = 0
 sq01b: multipole, type = "solenoid trim", aperture = 0.0475/2, k1l = 0,t1
  !CQ02B : MULT, TYPE="solenoid trim", aperture=0.0475/2, K1L=0     !shorted out
-sq02b: multipole, type = "solenoid trim", aperture = 0.0475/2, k1l = 0,t1
+ !SQ02B : MULT, TYPE="solenoid trim", aperture=0.0475/2, K1L=0, T1
 
-! replacement for original CQ02B (correction coil co-wound on SOL2B)
+! replacement for original CQ02B and SQ02B (correction coils co-wound on SOL2B)
 
 cq02b: quadrupole, type = "3.37Q1.2", l = lqg/2, aperture = rqg, k1 = 0
+sq02b: quadrupole, tilt = pi/4, type = "3.37Q1.2", l = lqg/2, aperture = rqg, k1 = 0
 
-! L0 to WS/OTR (Q0H01-4 match to waists at WS0H04)
+! L0 to laser heater (adjustable-sized waists at WS0H04 and LHMID)
 
-kq0h01 = -6.525507740091
-kq0h02 = 6.335021170323
-kq0h03 = -0.947730849875
-kq0h04 = -3.418410369215
+!              heater ON        heater OFF        chicane OFF
+!           ---------------   ---------------   ---------------
+kq0h01 = -6.537777564736 ! -6.52550777024  ! -6.525507740091 !
+kq0h02 = 6.17752713417  !  6.335021207148 !  6.335021170324 !
+kq0h03 = 0.483905171963 ! -0.947731202989 ! -0.947730849886 !
+kq0h04 = -3.971575402157 ! -3.418410103407 ! -3.418410369207 !
+b0h04w = 7.710749594202 !  5.0            !  5.0            !
+kq0h05 = -2.32266979602  ! -7.451315276972 ! -7.508072657056 !
+kq0h06 = 0.0            !  1.835321381141 !  1.870908387696 !
+kq0h07 = 5.84302489781  !  7.794364472964 !  7.804907479846 !
+kq0h08 = -5.210258454761 ! -8.272684492892 ! -8.306722243051 !
+blhuw = 7.5            ! 10.0            ! 10.0            !
 
 q0h01: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h01
 q0h02: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h02
 q0h03: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h03
 q0h04: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h04
-
-! WS/OTR to laser heater (Q0H05-8 match to 10x10 m beta waists LHMID)
-
-!              heater ON        heater OFF        chicane OFF
-!           ---------------   ---------------   ---------------
-kq0h05 = -7.013523766823 ! -7.451314710799 ! -7.508072657053 !
-kq0h06 = 1.450322442367 !  1.835321381141 !  1.870908387696 !
-kq0h07 = 7.874726189194 !  7.794364119473 !  7.804907479846 !
-kq0h08 = -8.293357257814 ! -8.272683907735 ! -8.306722243052 !
-
 q0h05: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h05
 q0h06: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h06
 q0h07: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h07
@@ -284,10 +283,10 @@ q0h08: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h08
 
 !              heater ON        heater OFF        chicane OFF
 !           ---------------   ---------------   ---------------
-kqhd01 = -8.9263060781   ! -8.743988196362 ! -8.746794738551 !
-kqhd02 = 6.460615023279 !  6.400024211102 !  6.401620200767 !
-kqhd03 = -8.534034325807 ! -8.612136538817 ! -8.622952974047 !
-kqhd04 = 6.807615097128 !  6.860670430866 !  6.864937307631 !
+kqhd01 = -13.178598580237 ! -8.743988237466 ! -8.746794738551 !
+kqhd02 = 7.650668410884 !  6.400024228564 !  6.401620200768 !
+kqhd03 = -7.978934972385 ! -8.612136694917 ! -8.622952974048 !
+kqhd04 = 6.238682089532 !  6.860670498454 !  6.864937307631 !
 
 qhd01: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kqhd01
 qhd02: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kqhd02
@@ -305,18 +304,18 @@ qdcoll0: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = -kqcoll0
 
 ! COL0 collimation section
 
-kqc001 = 5.135316216765 ! 5.055115116565
-kqc002 = 0.0            ! 0.15798374076
-kqc003 = -5.29595023224  !-5.345027237142
-kqc004 = 2.772436085366 ! 2.756594856382
-kqc005 = -1.79608214975  !-KQColl0
+kqc001 = 5.13531621676
+kqc002 = 0.0
+kqc003 = -5.295950232121
+kqc004 = 2.772436085303
+kqc005 = -1.796082149684
 kqc006 = kqcoll0
 kqc007 = -kqcoll0
 kqc008 = kqcoll0
 kqc009 = -kqcoll0
-kqc010 = 0.638287288519
-kqc011 = -1.679681060652
-kqc012 = 1.309219730044
+kqc010 = 0.389224765461
+kqc011 = -1.283293152617
+kqc012 = 1.048722049726
 
 qc001: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc001
 qc002: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc002
@@ -354,9 +353,11 @@ sol2b: solenoid, type = "LBNL", l = lsol2/2, aperture = rsol, ks = ksol2
 ! MATR
 ! ------------------------------------------------------------------------------
 
-! laser heater undulator
-! - modeled as R-matrix to include natura verticall focusing
+! laser heater undulator (operating in 3rd harmonic mode at 75 MeV)
+! - modeled as R-matrix to include vertical natural focusing
 ! - parameters from LCLS-II Phase 1 undulator
+! - triple laser wavelength for 3rd harmonic operation
+! - gap = 30.5885 mm
 
 ! lam   : laser-heater undulator period [m]
 ! lamr  : heater laser wavelength [m]
@@ -367,7 +368,7 @@ sol2b: solenoid, type = "LBNL", l = lsol2/2, aperture = rsol, ks = ksol2
 ! kqlh  : natural undulator focusing "k" in y-plane [1/m2]
 
 lam = 0.054
-lamr = 1030e-9
+lamr = 3*1030e-9 !3rd harmonic
 gami = ei/emass
 k_und = sqrt(2*(lamr*2*gami^2/lam-1))
 lhun = 9*lam
@@ -387,19 +388,23 @@ r34h = lhunh*sincargh
 
 
 !------- Laser Heater Undulator for SC Linac -------
-! my_umhtr_k = 0.960143
-! umhtr: wiggler, 
-!         type = "laser_heater_undulator",
-!         L_period = 0.054, 
-!         n_period = 10, 
-!         b_max = my_umhtr_k * 2*pi*m_electron / (c_light * 0.054), 
-!         L = 10*0.054 ! Was: 0.506263, 
-!         ds_step = 0.054
-!         
-! umhtr[L] = umhtr[L]/2 ! Will be doubled in desplitting process. 
+!new my_umhtr_k = 0.960143
+!new 
+!new umhtr: wiggler, 
+!new         type = "laser_heater_undulator",
+!new         L_period = 0.054, 
+!new         n_period = 10, 
+!new         b_max = my_umhtr_k * 2*pi*m_electron / (c_light * 0.054), 
+!new         L = 10*0.054 ! Was: 0.506263, 
+!new         ds_step = 0.054
+!new 
+!new umhtr[L] = umhtr[L]/2 ! Will be doubled in desplitting process. 
+umhtr: taylor, type = "UMLHB", l = lhunh, tt11 = 1.0, tt12 = lhunh, tt21 = 0, tt22 = 1.0, tt33 = cos(lhunh*sqrt(kqlh)),
+          tt34 = r34h, tt43 = -sin(lhunh*sqrt(kqlh))*sqrt(kqlh), tt44 = cos(lhunh*sqrt(kqlh)), tt55 = 1, tt66 = 1,
+          mat_und_k = k_und, mat_und_l = lam
 !--------------------------------- !,                               &
-umhtr: taylor, type = "LHund", l = lhunh, tt11 = 1.0, tt12 = lhunh, tt21 = 0, tt22 = 1.0, tt33 = cos(lhunh*sqrt(kqlh)),
-         tt34 = r34h, tt43 = -sin(lhunh*sqrt(kqlh))*sqrt(kqlh), tt44 = cos(lhunh*sqrt(kqlh)), tt55 = 1, tt66 = 1
+!old: umhtr: taylor, type = "UMLHB", l = lhunh, tt11 = 1.0, tt12 = lhunh, tt21 = 0, tt22 = 1.0, tt33 = cos(lhunh*sqrt(kqlh)),
+!old           tt34 = r34h, tt43 = -sin(lhunh*sqrt(kqlh))*sqrt(kqlh), tt44 = cos(lhunh*sqrt(kqlh)), tt55 = 1, tt66 = 1
    !R56=Lhunh/(gami^2)*(1+(K_und^2)/2)
 
 ! ==============================================================================
@@ -434,6 +439,8 @@ dg012a: drift, l = 0.08-lqg/2
 dg012b: drift, l = dg012[l]-lqg-dg012a[l]
 dg016b: drift, l = 0.082968
 dg016a: drift, l = dg016[l]-dg016b[l]
+dg011b: drift, l = 5.8*in2m-dg012a[l]-lqg
+dg011a: drift, l = dg011[l]-lqg-dg011b[l]
 
 dgeic: drift, l = 3.0-2.052577
 
@@ -494,16 +501,14 @@ dh01c: drift, l = dh01[l]-dh01a[l]-dh01b[l], type = "CSR"
 dh02: drift, l = zhbbi, type = "CSR"
 dh02a: drift, l = 0.192614-ljaw/2, type = "CSR"
 dh02b: drift, l = 0.298450-ljaw/2, type = "CSR"
-
-! Shorten so that umhtr has an integer number of poles
-!
-dh02c: drift, l = 0.2795065 - ( 9*0.054 - 0.506263 ) /2 , type = "CSR" !0.297036 !0.2795065
-!old: dh02c: drift, l = 0.2795065+dlhun/2, type = "CSR"
-
-! Shorten so that umhtr has an integer number of poles
-!
-dh02d: drift, l = 0.2724707 - ( 9*0.054 - 0.506263 ) /2, type = "CSR" !0.2900002 !0.2724707
-!old: dh02d: drift, l = 0.2724707+dlhun/2, type = "CSR"
+!new: !0.2795065
+!new: ! Shorten so that umhtr has an integer number of poles
+!new: dh02c: drift, l = 0.2795065 - ( 10*0.054 - 0.506263 ) /2 , type = "CSR" !0.297036
+dh02c: drift, l = 0.2795065+dlhun/2, type = "CSR"
+!new: !0.2724707
+!new: ! Shorten so that umhtr has an integer number of poles
+!new: dh02d: drift, l = 0.2724707 - ( 10*0.054 - 0.506263 ) /2, type = "CSR" !0.2900002
+dh02d: drift, l = 0.2724707+dlhun/2, type = "CSR"
 dh02e: drift, l = 0.4599998, type = "CSR"
 dh03: drift, l = zhbbo/cos(abh), type = "CSR"
 dh03a: drift, l = zhbmid/cos(abh), type = "CSR"
@@ -620,20 +625,13 @@ bpmc010: monitor, type = "Stripline-1"
 bpmc011: monitor, type = "Stripline-1"
 bpmc012: monitor, type = "Stripline-1"
 
-RFB0H00: pipe, L = 0.0, type ="@2,CavityS-1", descrip = "deferred MONITOR"
-!old: rfb0h00: monitor, type = "@2,CavityS-1"
-RFB0H04: pipe, L = 0.0, type ="@2,CavityS-1", descrip = "deferred MONITOR"
-!old: rfb0h04: monitor, type = "@2,CavityS-1"
-RFB0H08: pipe, L = 0.0, type ="@2,CavityS-1", descrip = "deferred MONITOR"
-!old: rfb0h08: monitor, type = "@2,CavityS-1"
-RFBHD00: pipe, L = 0.0, type ="@2,CavityS-1", descrip = "deferred MONITOR"
-!old: rfbhd00: monitor, type = "@2,CavityS-1"
-RFBHD04: pipe, L = 0.0, type ="@2,CavityS-1", descrip = "deferred MONITOR"
-!old: rfbhd04: monitor, type = "@2,CavityS-1"
-RFBC006: pipe, L = 0.0, type ="@2,CavityS-1", descrip = "deferred MONITOR"
-!old: rfbc006: monitor, type = "@2,CavityS-1"
-RFBC011: pipe, L = 0.0, type ="@4,CavityS-1", descrip = "deferred MONITOR"
-!old: rfbc011: monitor, type = "@4,CavityS-1"
+rfb0h00: monitor, type = "@2,CavityS-1"
+rfb0h04: monitor, type = "@2,CavityS-1"
+rfb0h08: monitor, type = "@2,CavityS-1"
+rfbhd00: monitor, type = "@2,CavityS-1"
+rfbhd04: monitor, type = "@2,CavityS-1"
+rfbc006: monitor, type = "@2,CavityS-1"
+rfbc011: monitor, type = "@4,CavityS-1"
 
 ! ==============================================================================
 ! XCORs
@@ -689,18 +687,16 @@ ycc011: vkicker, type = "class-6"
 
 pc0h00: ecollimator, l = ljaw, x_limit = 6.0e-3, y_limit = 6.0e-3, type = "tungsten"
 
-! collimators
-! (betatron X/Y half-gaps are 24/16 sigma for 1 um normalized emittance)
+! collimators (betatron X/Y half-apertures are 24/16 sigma for 1 um normalized
+! emittance; default out-of-plane half-aperture is 20 mm)
 
-cehtr: rcollimator, l = ljaw, x_limit = 3.0e-3, type = "HCOLL"    !X momentum collimator
-cyc01: rcollimator, l = ljaw, y_limit = 4.4e-3, type = "VCOLL"    !Y betatron collimator
-cxc01: rcollimator, l = ljaw, x_limit = 4.4e-3, type = "HCOLL"    !X betatron collimator
-CYC02: pipe, L = 0.06, type ="@4,VCOLL", descrip = "deferred RCOLLIMATOR" !Y betatron collimator
-!old: cyc02: rcollimator, l = ljaw, y_limit = 4.4e-3, type = "@4,VCOLL"
-CXC02: pipe, L = 0.06, type ="@4,HCOLL", descrip = "deferred RCOLLIMATOR" !X betatron collimator
-!old: cxc02: rcollimator, l = ljaw, x_limit = 4.4e-3, type = "@4,HCOLL"
-cyc03: rcollimator, l = ljaw, y_limit = 4.4e-3, type = "VCOLL"    !Y betatron collimator
-cxc03: rcollimator, l = ljaw, x_limit = 4.4e-3, type = "HCOLL"    !X betatron collimator
+cehtr: rcollimator, l = ljaw, x_limit = 3.0e-3, y_limit = 20.e-3, type = "HCOLL"    !X momentum collimator
+cyc01: rcollimator, l = ljaw, y_limit = 4.4e-3, x_limit = 20.e-3, type = "VCOLL"    !Y betatron collimator
+cxc01: rcollimator, l = ljaw, x_limit = 4.4e-3, y_limit = 20.e-3, type = "HCOLL"    !X betatron collimator
+cyc02: rcollimator, l = ljaw, y_limit = 4.4e-3, x_limit = 20.e-3, type = "@4,VCOLL" !Y betatron collimator
+cxc02: rcollimator, l = ljaw, x_limit = 4.4e-3, y_limit = 20.e-3, type = "@4,HCOLL" !X betatron collimator
+cyc03: rcollimator, l = ljaw, y_limit = 4.4e-3, x_limit = 20.e-3, type = "VCOLL"    !Y betatron collimator
+cxc03: rcollimator, l = ljaw, x_limit = 4.4e-3, y_limit = 20.e-3, type = "HCOLL"    !X betatron collimator
 
 ! instruments
 
@@ -714,22 +710,19 @@ yagh1: monitor, type = "YAG INJ"
 yagh2: monitor, type = "YAG INJ"
 imbcsi1: marker, type = "BCS ACM"
 imbcsi2: marker, type = "BCS ACM"
-WSC006: pipe, L = 0.0, type ="@4,fast", descrip = "deferred MARKER"
-!old: wsc006: marker, type = "@4,fast"
+wsc006: marker, type = "@4,fast"
 
 fc00eic: instrument, type = "Faraday cup"
 
-! combination YAG/collimator/Faraday Cup
+! combination YAG/collimator
 ! - beam pipe ID = 47.6 mm
 ! - one standard YAG crystal
 ! - one YAG crystal with a 6 mm diameter hole in it (for measuring beam halo)
-! - four circular collimator bores
-! - Faraday Cup
+! - four circular collimator bores (12mm, 16mm, 20mm, 24mm)
 
 yag01b: monitor, type = "YAG" !with or without hole
 yag01b_coll: ecollimator, type = "collimator" !bore: 12mm, 16mm, 20mm, or 24mm
-yag01b_fcup: instrument, type = "Faraday Cup"
-  YAG01B_full : LINE=(YAG01B,YAG01B_COLL,YAG01B_FCUP)
+  YAG01B_full : LINE=(YAG01B,YAG01B_COLL)
 
 ! combination OTR/YAG !PAL type
 
@@ -763,40 +756,47 @@ endeic: marker
 ! BEAMLINE
 ! ------------------------------------------------------------------------------
 
+  BUN1B_full : LINE=(BUN1B,BUN1B)
 
-
-!Old split line:  BUN1B_full : LINE=(BUN1B,BUN1B)
-
-bun1b_full: line = (bun1b)
-bun1b[L] = 2*bun1b[L]
-bun1b[voltage] = 2*bun1b[voltage]
 
 
 !Old split line:  BCXH1_full : LINE=(BCXH1a,BCXH1b)
 
 bcxh1_full: line = (bcxh1)
+bcxh1_svy: null_ele, superimpose, ref=bcxh1, ref_origin=beginning, offset=bcxh1a[l] !bend survey marker
 
 
 !Old split line:  BCXH2_full : LINE=(BCXH2a,BCXH2b)
 
 bcxh2_full: line = (bcxh2)
+bcxh2_svy: null_ele, superimpose, ref=bcxh2, ref_origin=beginning, offset=bcxh2a[l] !bend survey marker
 
 
 !Old split line:  BCXH3_full : LINE=(BCXH3a,BCXH3b)
 
 bcxh3_full: line = (bcxh3)
+bcxh3_svy: null_ele, superimpose, ref=bcxh3, ref_origin=beginning, offset=bcxh3a[l] !bend survey marker
 
 
 !Old split line:  BCXH4_full : LINE=(BCXH4a,BCXH4b)
 
 bcxh4_full: line = (bcxh4)
+bcxh4_svy: null_ele, superimpose, ref=bcxh4, ref_origin=beginning, offset=bcxh4a[l] !bend survey marker
 
+
+
+!Old split line:  SQ02B_full : LINE=(SQ02B,SQ02B)
+
+sq02b_full: line = (sq02b)
+sq02b[L] = 2*sq02b[L]
+sq02b_svy: null_ele, superimpose, ref=sq02b
 
 
 !Old split line:  CQ02B_full : LINE=(CQ02B,CQ02B)
 
 cq02b_full: line = (cq02b)
 cq02b[L] = 2*cq02b[L]
+cq02b_svy: null_ele, superimpose, ref=cq02b
 
 
 !Old split line:  Q0H01_full : LINE=(Q0H01,BPM0H01,Q0H01)
@@ -811,12 +811,14 @@ bpm0h01[ref] = q0h01
 
 q0h02_full: line = (q0h02)
 q0h02[L] = 2*q0h02[L]
+q0h02_svy: null_ele, superimpose, ref=q0h02
 
 
 !Old split line:  Q0H03_full : LINE=(Q0H03,Q0H03)
 
 q0h03_full: line = (q0h03)
 q0h03[L] = 2*q0h03[L]
+q0h03_svy: null_ele, superimpose, ref=q0h03
 
 
 !Old split line:  Q0H04_full : LINE=(Q0H04,BPM0H04,Q0H04)
@@ -839,12 +841,14 @@ bpm0h05[ref] = q0h05
 
 q0h06_full: line = (q0h06)
 q0h06[L] = 2*q0h06[L]
+q0h06_svy: null_ele, superimpose, ref=q0h06
 
 
 !Old split line:  Q0H07_full : LINE=(Q0H07,Q0H07)
 
 q0h07_full: line = (q0h07)
 q0h07[L] = 2*q0h07[L]
+q0h07_svy: null_ele, superimpose, ref=q0h07
 
 
 !Old split line:  Q0H08_full : LINE=(Q0H08,BPM0H08,Q0H08)
@@ -994,21 +998,13 @@ sq01b[superimpose] = T
 sq01b[ref] = sol1b
 
 
-!Old split line:  SOL2B_full : LINE=(SOL2B,      SQ02B,SOL2B)
+!Old split line:  SOL2B_full : LINE=(SOL2B,SOL2B)
 
 sol2b_full: line = (sol2b)
 sol2b[L] = 2*sol2b[L]
-sq02b[superimpose] = T
-sq02b[ref] = sol2b
+sol2b_svy: null_ele, superimpose, ref=sol2b
 
-
-
-UMHTR_full : LINE=(UMHTR,HTRUNDB,UMHTR)
-
-!umhtr_full: line = (umhtr)
-!umhtr[L] = 2*umhtr[L]
-!htrundb[superimpose] = T
-!htrundb[ref] = umhtr
+  UMHTR_full : LINE=(UMHTR,HTRUNDB,UMHTR)
 
   SC1B   : LINE=(XC01B,YC01B)
   SC2B   : LINE=(XC02B,YC02B)
@@ -1017,13 +1013,29 @@ UMHTR_full : LINE=(UMHTR,HTRUNDB,UMHTR)
   SC5B   : LINE=(XC05B,YC05B)
   SCC000 : LINE=(XCC000,YCC000)
 
+! ------------------------------------------------------------------------------
+
+!=!  comment
+!=!  comment
+!=!  GUN : LINE=(BEGGUNB,&
+!=!    DGBCa,SOL1BKB,DGBCb,&
+!=!    CATHODEB,DGUN,DG001,&
+!=!    SOL1B_full,DG002,VV01B,DG003,SC1B,DG004,BPM1B,DG005,IM01B,DG006,SC2B,DG007,&
+!=!    BUN1B_full,DG008,SC3B,DG009,AM00B,DG010,SC4B,DG011,YAG01B_full,DG012a,&
+!=!      CQ02B_full,DG012b,&
+!=!    SOL2B_full,DG013,VV02B,DG014,BPM2B,DG015,SC5B,DG016a,BLFU,DG016b,&
+!=!    ENDGUNB)
+!=!  endcomment
+
   GUN : LINE=(BEGGUNB,DGBCa,SOL1BKB,DGBCb,CATHODEB,DGUN,DG001,SOL1B_full,DG002,VV01B,DG003,SC1B,DG004,BPM1B,DG005,IM01B,
-         DG006,SC2B,DG007,BUN1B_full,DG008,SC3B,DG009,AM00B,DG010,SC4B,DG011,YAG01B_full,DG012a,CQ02B_full,DG012b,SOL2B_full,
-         DG013,VV02B,DG014,BPM2B,DG015,SC5B,DG016a,BLFU,DG016b,ENDGUNB)
+         DG006,SC2B,DG007,BUN1B_full,DG008,SC3B,DG009,AM00B,DG010,SC4B,DG011a,SQ02B_full,DG011b,YAG01B_full,DG012a,CQ02B_full,
+         DG012b,SOL2B_full,DG013,VV02B,DG014,BPM2B,DG015,SC5B,DG016a,BLFU,DG016b,ENDGUNB)
 
   EIC : LINE=(BEGEIC,DGBCa,SOL1BKB,DGBCb,CATHODEB,DGUN,DG001,SOL1B_full,DG002,VV01B,DG003,SC1B,DG004,BPM1B,DG005,IM01B,
          DG006,SC2B,DG007,BUN1B_full,DG008,SC3B,DG009,AM00B,DG010,SC4B,DG011,YAG01B,DG012,SOL2B_full,DG013,VV02B,DG014,BPM2B,
          DG015,SC5B,DG016a,BLFU,DG016b,ECUEIC,DGEIC,FC00EIC,ENDEIC)
+
+! ------------------------------------------------------------------------------
 
 !=!  COMMENT !simplified
 !=!  COMMENT !simplified
@@ -1041,11 +1053,19 @@ UMHTR_full : LINE=(UMHTR,HTRUNDB,UMHTR)
          Dh02d,YAGH2,Dh02e,BCXH3_full,Dh03a,MIRLHd,Dh03b,BPMH2,Dh03c,BCXH4_full,CNTHTR,LHENDB)
  !ENDCOMMENT
 
+! ------------------------------------------------------------------------------
+
 !=!  COMMENT !simplified
 !=!  COMMENT !simplified
-!=!    HTR : LINE=(BEGHTR,D0H00,&
+!=!    HTR_1 : LINE=(BEGHTR_1,D0H00,&
 !=!      Q0H01,Q0H01,D0H01,&
-!=!      Q0H02,Q0H02,D0H02,&
+!=!      Q0H02,Q0H02,D0H02a,D0H02b,D0H02c,D0H02d,&
+!=!      ENDHTR_1)
+!=!  ENDCOMMENT
+
+!=! COMMENT !simplified
+!=! COMMENT !simplified
+!=!    HTR_2 : LINE=(BEGHTR_2,D0H02e,D0H02f,&
 !=!      Q0H03,Q0H03,D0H03,&
 !=!      Q0H04,Q0H04,D0H04,&
 !=!      Q0H05,Q0H05,D0H05,&
@@ -1057,17 +1077,27 @@ UMHTR_full : LINE=(UMHTR,HTRUNDB,UMHTR)
 !=!      QHD02,QHD02,DHD02,&
 !=!      QHD03,QHD03,DHD03,&
 !=!      QHD04,QHD04,DHD04,&
-!=!      ENDHTR)
+!=!      ENDHTR_2)
 !=!  ENDCOMMENT
 
+! ------------------------------------------------------------------------------
+
  !COMMENT !complete
-    HTR : LINE=(BEGHTR,D0H00a,RFB0H00,D0H00b,PC0H00,D0H00c,Q0H01_full,D0H01a,YC0H01,D0H01b,Q0H02_full,D0H02a,XC0H01,
-         D0H02b,DP0H01,D0H02c,DP0H02,D0H02d,DP0H03,D0H02e,XC0H03,D0H02f,Q0H03_full,D0H03a,YC0H03,D0H03b,Q0H04_full,D0H04a,
-         RFB0H04,D0H04b,OTR0H04_full,D0H04c,WS0H04,D0H04d,BZ0H04,D0H04e,Q0H05_full,D0H05a,YC0H05,D0H05b,Q0H06_full,D0H06a,XC0H05,
-         D0H06b,XC0H07,D0H06c,Q0H07_full,D0H07a,YC0H07,D0H07b,Q0H08_full,D0H08a,RFB0H08,D0H08b,LSRHTR,DHD00a,RFBHD00,DHD00b,
-         QHD01_full,DHD01a,YCHD01,DHD01b,XCHD01,DHD01c,QHD02_full,DHD02a1,IMBCSi1,DHD02a2,IMBCSi2,DHD02a3,YCHD03,DHD02b,
-         QHD03_full,DHD03a,XCHD03,DHD03b,QHD04_full,DHD04a,RFBHD04,DHD04b,ENDHTR)
+    HTR_1 : LINE=(BEGHTR_1,D0H00a,RFB0H00,D0H00b,PC0H00,D0H00c,Q0H01_full,D0H01a,YC0H01,D0H01b,Q0H02_full,D0H02a,XC0H01,
+         D0H02b,DP0H01,D0H02c,DP0H02,D0H02d,DP0H03,ENDHTR_1)
  !ENDCOMMENT
+
+ !COMMENT !complete
+    HTR_2 : LINE=(BEGHTR_2,D0H02e,XC0H03,D0H02f,Q0H03_full,D0H03a,YC0H03,D0H03b,Q0H04_full,D0H04a,RFB0H04,D0H04b,
+         OTR0H04_full,D0H04c,WS0H04,D0H04d,BZ0H04,D0H04e,Q0H05_full,D0H05a,YC0H05,D0H05b,Q0H06_full,D0H06a,XC0H05,D0H06b,XC0H07,
+         D0H06c,Q0H07_full,D0H07a,YC0H07,D0H07b,Q0H08_full,D0H08a,RFB0H08,D0H08b,LSRHTR,DHD00a,RFBHD00,DHD00b,QHD01_full,DHD01a,
+         YCHD01,DHD01b,XCHD01,DHD01c,QHD02_full,DHD02a1,IMBCSi1,DHD02a2,IMBCSi2,DHD02a3,YCHD03,DHD02b,QHD03_full,DHD03a,XCHD03,
+         DHD03b,QHD04_full,DHD04a,RFBHD04,DHD04b,ENDHTR_2)
+ !ENDCOMMENT
+
+  HTR : LINE=(HTR_1,HTR_2)
+
+! ------------------------------------------------------------------------------
 
 !=!  COMMENT !simplified
 !=!  COMMENT !simplified
@@ -1096,7 +1126,8 @@ UMHTR_full : LINE=(UMHTR,HTRUNDB,UMHTR)
          DC011b,XCC012,DC011c,QC012_full,DC012,ENDCOL0)
  !ENDCOMMENT
 
-  C0fodo : LINE=(QFColl0,DColl0,QDColl0,QDColl0,DColl0,QFColl0)
+  C0fodoF : LINE=(QFColl0,DColl0,QDColl0,QDColl0,DColl0,QFColl0)
+  C0fodoD : LINE=(QDColl0,DColl0,QFColl0,QFColl0,DColl0,QDColl0)
 
 ! ------------------------------------------------------------------------------
 

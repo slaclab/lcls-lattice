@@ -1,21 +1,36 @@
 
 
 
-def replace_element(lines, ele_name, new_ele, verbose=True):
+def replace_element(lines, ele_name, new_ele, verbose=True, shadows=None):
     """
+    lines: the lattice file being converted
+    ele_name: key (element name) from the replacements list
+    new_ele: value from replacements list.
+    shadows: list of element names
+
+    shadow elements are prepended with !new and the old definition is left in place.
+
     Searches through lines for:
     ele_name: <some definition>
     , comments it out, and writes new_ele string below the comment. 
     Considers & to continue the line. 
     """
+    if shadows is None:
+        shadows = []
+
     newlines = []
     inele = False
+    is_shadow = False
     for line in lines:
         if inele:
             # Continued element definition.
-            newlines.append('!old '+line)
+            if is_shadow:
+                newlines.append(line)
+            else:
+                newlines.append('!old '+line)
             if line.strip()[-1] not in (',', '&'):
                 inele=False
+                is_shadow = False
             continue
         
         s = line.split(':')
@@ -28,8 +43,15 @@ def replace_element(lines, ele_name, new_ele, verbose=True):
         # Should be a match    
         if verbose:
             print('Found ele:', ele_name)
-        newlines.append(new_ele)
-        newlines.append('!old: '+line)
+        if ele_name.lower() in shadows:
+            is_shadow = True
+        if is_shadow:
+            for l in new_ele.splitlines():
+                newlines.append('!new: '+l)
+            newlines.append(line)
+        else:
+            newlines.append(new_ele)
+            newlines.append('!old: '+line)
         if line.strip()[-1] in (',', '&'):
             # Element definition continues
             inele = True
@@ -37,13 +59,15 @@ def replace_element(lines, ele_name, new_ele, verbose=True):
 
 
 
-def replace_eles(lines, replacements, verbose=True):
+def replace_eles(lines, replacements=None, verbose=True, shadows=None):
     """
     
     """
+    if replacements is None:
+        replacements = {}
     newlines = lines
     for k in replacements:
-        newlines = replace_element(newlines, k, replacements[k], verbose=verbose)
+        newlines = replace_element(newlines, k, replacements[k], verbose=verbose, shadows=shadows)
     return newlines
 
 

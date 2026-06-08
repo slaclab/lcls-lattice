@@ -1,0 +1,29 @@
+  TITLE, "github CI unit testing"
+
+  OPTION, -ECHO, INFO, WARN, VERIFY
+  ASSIGN, ECHO="test.echo"
+  ASSIGN, PRINT="test.print"
+
+  SETPLOT, XSIZE=25.4, YSIZE=20.32
+  SETPLOT, LWIDTH=5, LSCALE=1.5, SSCALE=1.5, RSCALE=1.5, ASCALE=1.5
+
+! ==============================================================================
+
+ !SC_SXR   : superconducting linac to e- SXR dump
+ !SC_SFTS  : superconducting linac to e- SXR safety dump
+ !SC_HXR   : superconducting linac to e- HXR dump
+ !SC_BSYD  : superconducting linac to BSY dump
+ !SC_DIAG0 : superconducting linac to DIAG0
+ !SC_DASEL : superconducting linac to End Station A (DASEL)
+
+  CALL, FILENAME="SC_HXR2.xsif" !calls other xsif files
+  CALL, FILENAME="SETK2scLEI.xsif"
+  OPTION, DOUBLE
+
+  !BSYD diagnostic line from GUN
+  USE, SC_HXR2
+  BEAM, ENERGY=E0LEI
+  TWISS, SAVE, COUPLE, BETX=BX0LEI, ALFX=AX0LEI, BETY=BY0LEI, ALFY=AY0LEI
+  ARCHIVE, TABLE=TWISS, FILENAME='SC_HXR2_GUN_CI.twiss'
+
+  STOP  

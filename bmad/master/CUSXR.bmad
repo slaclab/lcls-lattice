@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-02SEP2024s ***
+! *** OPTICS=AD_ACCEL-01JUN2026s ***
 
 ! LCLS2sc transport from Cu-linac to SXR
 
@@ -89,26 +89,22 @@ pscus2 = 0.0
 
 ! Twiss at BEGCLTS
 
-!              Mark rematch      22JAN21
-!            ---------------  ---------------
-tbxcus1 = 28.807259440187 !28.733475248907
-tbycus1 = 51.615288901731 !51.61209559579
-taxcus1 = -0.120628607901 !-0.11996119728
-taycus1 = 0.736213115604 ! 0.738889504715
+tbxcus1 = 28.807259440187 !28.807259440187
+taxcus1 = -0.120628607888 !-0.120628607901
+tbycus1 = 51.615288901731 !51.615288901731
+taycus1 = 0.736213115576 ! 0.736213115604
 
 ! ------------------------------------------------------------------------------
 
 ! quads (Cu-linac energy is limited to 10 GeV)
 
-!              Mark rematch     Yuri rematch       22JAN21
-!            ---------------  ---------------  ---------------
-kqcus1 = 0.492297092478 ! 0.49228249942  ! 0.491233972308
-kqcus2 = -0.423724073005 !-0.423677593542 !-0.414060432356
-kqcus3 = -0.302266732345 !-0.302405141966 !-0.314369385154
-kqcus4 = 2.37403264227  ! 2.374750929844 ! 2.369394892073
-kqcus5 = -1.402669753585 !-1.40237462603  !-1.396338070942
-kqcus9 = -0.466050157544 !-0.465888938931 !-0.456516817666
-kqcus10 = 0.49777137309  ! 0.497735968906 ! 0.496780961708
+kqcus1 = 0.492297092478 ! 0.492297092521
+kqcus2 = -0.423724073005 !-0.423724073492
+kqcus3 = -0.302266732345 !-0.302266731726
+kqcus4 = 2.37403264227  ! 2.374032642695
+kqcus5 = -1.402669753585 !-1.402669754003
+kqcus9 = -0.466050157544 !-0.466050158031
+kqcus10 = 0.49777137309  ! 0.497771373142
 kqcus6 = kqcus5
 kqcus7 = kqcus4
 kqcus8 = kqcus3
@@ -469,36 +465,43 @@ rocus4: patch, tilt = arocus4
 !Old split line:  BRCUSdc1_full : LINE=(BRCUSdc1a,BRCUSdc1b)
 
 brcusdc1_full: line = (brcusdc1)
+brcusdc1_svy: null_ele, superimpose, ref=brcusdc1, ref_origin=beginning, offset=brcusdc1a[l] !bend survey marker
 
 
 !Old split line:  BKRCUS_full   : LINE=(BKRCUSa,BKRCUSb)
 
 bkrcus_full: line = (bkrcus)
+bkrcus_svy: null_ele, superimpose, ref=bkrcus, ref_origin=beginning, offset=bkrcusa[l] !bend survey marker
 
 
 !Old split line:  BRCUSdc2_full : LINE=(BRCUSdc2a,BRCUSdc2b)
 
 brcusdc2_full: line = (brcusdc2)
+brcusdc2_svy: null_ele, superimpose, ref=brcusdc2, ref_origin=beginning, offset=brcusdc2a[l] !bend survey marker
 
 
 !Old split line:  BLRCUS_full   : LINE=(BLRCUSa,BLRCUSb)
 
 blrcus_full: line = (blrcus)
+blrcus_svy: null_ele, superimpose, ref=blrcus, ref_origin=beginning, offset=blrcusa[l] !bend survey marker
 
 
 !Old split line:  BYCUS1_full   : LINE=(BYCUS1a,BYCUS1b)
 
 bycus1_full: line = (bycus1)
+bycus1_svy: null_ele, superimpose, ref=bycus1, ref_origin=beginning, offset=bycus1a[l] !bend survey marker
 
 
 !Old split line:  BYCUS2_full   : LINE=(BYCUS2a,BYCUS2b)
 
 bycus2_full: line = (bycus2)
+bycus2_svy: null_ele, superimpose, ref=bycus2, ref_origin=beginning, offset=bycus2a[l] !bend survey marker
 
 
 !Old split line:  BRCUS1_full   : LINE=(BRCUS1a,BRCUS1b)
 
 brcus1_full: line = (brcus1)
+brcus1_svy: null_ele, superimpose, ref=brcus1, ref_origin=beginning, offset=brcus1a[l] !bend survey marker
 
 
 
@@ -506,18 +509,21 @@ brcus1_full: line = (brcus1)
 
 qcus1_full: line = (qcus1)
 qcus1[L] = 2*qcus1[L]
+qcus1_svy: null_ele, superimpose, ref=qcus1
 
 
 !Old split line:  QCUS2_full  : LINE=(QCUS2,QCUS2)
 
 qcus2_full: line = (qcus2)
 qcus2[L] = 2*qcus2[L]
+qcus2_svy: null_ele, superimpose, ref=qcus2
 
 
 !Old split line:  QCUS3_full  : LINE=(QCUS3,QCUS3)
 
 qcus3_full: line = (qcus3)
 qcus3[L] = 2*qcus3[L]
+qcus3_svy: null_ele, superimpose, ref=qcus3
 
 
 !Old split line:  QCUS4_full  : LINE=(QCUS4,BPMCUS4,QCUS4)
@@ -540,6 +546,7 @@ bpmcus5[ref] = qcus5
 
 qcus6_full: line = (qcus6)
 qcus6[L] = 2*qcus6[L]
+qcus6_svy: null_ele, superimpose, ref=qcus6
 
 
 !Old split line:  QCUS7_full  : LINE=(QCUS7,BPMCUS7,QCUS7)
@@ -554,18 +561,21 @@ bpmcus7[ref] = qcus7
 
 qcus8_full: line = (qcus8)
 qcus8[L] = 2*qcus8[L]
+qcus8_svy: null_ele, superimpose, ref=qcus8
 
 
 !Old split line:  QCUS9_full  : LINE=(QCUS9,QCUS9)
 
 qcus9_full: line = (qcus9)
 qcus9[L] = 2*qcus9[L]
+qcus9_svy: null_ele, superimpose, ref=qcus9
 
 
 !Old split line:  QCUS10_full : LINE=(QCUS10,QCUS10)
 
 qcus10_full: line = (qcus10)
 qcus10[L] = 2*qcus10[L]
+qcus10_svy: null_ele, superimpose, ref=qcus10
 
   KCUSXRa : LINE=(BRCUSdc1_full,DCKdc1,BKRCUS_full,DCKdc2,BRCUSdc2_full,DCUSBLRa,BPMCUS,DCUSBLRb,BLRCUS_full)
 

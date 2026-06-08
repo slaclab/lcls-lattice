@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-02SEP2024s ***
+! *** OPTICS=AD_ACCEL-01JUN2026s ***
 
 ! ==============================================================================
 ! 07-JAN-2019, M. Woodley
@@ -64,24 +64,32 @@ k21_1d: lcavity, rf_frequency = sbandf * 1e6, l = dlwl10, voltage = p25*gradl1*d
 ! BEAMLINEs
 ! ------------------------------------------------------------------------------
 
-
-
-!Old split line:  K21_1b_full : LINE=(K21_1b1,XC21101,YC21102,K21_1b2)
-
-k21_1b_full: line = (k21_1b)
-xc21101[superimpose] = T
-xc21101[ref] = k21_1b
-yc21102[superimpose] = T
-yc21102[ref] = k21_1b
-
-
-!Old split line:  K21_1c_full : LINE=(K21_1c1,XC21135,YC21136,K21_1c2)
-
-k21_1c_full: line = (k21_1c)
-xc21135[superimpose] = T
-xc21135[ref] = k21_1c
-yc21136[superimpose] = T
-yc21136[ref] = k21_1c
+!---------------------
+! K21_1B LCAVITY
+K21_1B_full: line = (K21_1B)
+! contains zero length elements:
+    XC21101[superimpose] = T
+    XC21101[ref] = K21_1B
+    XC21101[ref_origin] = beginning
+    XC21101[offset] = dLb1
+    YC21102[superimpose] = T
+    YC21102[ref] = K21_1B
+    YC21102[ref_origin] = beginning
+    YC21102[offset] = dLb1
+!old:   K21_1b_full : LINE=(K21_1b1,XC21101,YC21102,K21_1b2)
+!---------------------
+! K21_1C LCAVITY
+K21_1C_full: line = (K21_1C)
+! contains zero length elements:
+    XC21135[superimpose] = T
+    XC21135[ref] = K21_1C
+    XC21135[ref_origin] = beginning
+    XC21135[offset] = dLc1
+    YC21136[superimpose] = T
+    YC21136[ref] = K21_1C
+    YC21136[ref_origin] = beginning
+    YC21136[offset] = dLc1
+!old:   K21_1c_full : LINE=(K21_1c1,XC21135,YC21136,K21_1c2)
 !---------------------
 ! K21_1D LCAVITY
 K21_1D_full: line = (K21_1D)

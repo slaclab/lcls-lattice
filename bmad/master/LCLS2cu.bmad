@@ -1,11 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-02SEP2024s ***
+! *** OPTICS=AD_ACCEL-01JUN2026s ***
 
 ! LCLS2cu various parts upstream of BSY
 
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
+! 17-NOV-2024, M. Woodley
+!  * use reduced-W LI22/LI23 lattice
 ! 06-SEP-2024, M. Woodley
 !  * set phase advance between pairs of ultra-fast kickers to 270 degrees
 ! ------------------------------------------------------------------------------
@@ -174,8 +176,7 @@ bxkikb: sbend, type = "@9,1.92K41.2", l = lkik/2, hgap = gkik
 
 ! define unsplit SBENs for BMAD ... not used by MAD
 
-BXKIK: pipe, L = 1.0601, type ="@9,1.92K41.2", descrip = "deferred SBEND"
-!old: bxkik: sbend, type = "@9,1.92K41.2", l = lkik, hgap = gkik
+bxkik: sbend, type = "@9,1.92K41.2", l = lkik, hgap = gkik
 
 ! ==============================================================================
 ! BENDs
@@ -253,6 +254,7 @@ fcg1: instrument                   !gun-spec. Faraday cup w/screen
 !Old split line:  BXG_full : LINE=(BXGa,BXGb)
 
 bxg_full: line = (bxg)
+bxg_svy: null_ele, superimpose, ref=bxg, ref_origin=beginning, offset=bxga[l] !bend survey marker
 
 
 
@@ -343,6 +345,7 @@ ycs2: vkicker, type = "class-1a"
 !Old split line:  BXS_full : LINE=(BXSa,BXSb)
 
 bxs_full: line = (bxs)
+bxs_svy: null_ele, superimpose, ref=bxs, ref_origin=beginning, offset=bxsa[l] !bend survey marker
 
 
 
@@ -358,6 +361,7 @@ bpms2[ref] = qs01
 
 qs02_full: line = (qs02)
 qs02[L] = 2*qs02[L]
+qs02_svy: null_ele, superimpose, ref=qs02
 
   SCS1 : LINE=(XCS1,YCS1)
   SCS2 : LINE=(XCS2,YCS2)
@@ -581,23 +585,25 @@ kq21701 = -kql2
 kq21801 = 0.726696191485
 kq21901 = -0.721528926061
 
-kq22201 = 0.729478096138 ! 0.714603191911
-kq22301 = -0.792424277218 !-0.762188913757
-kq22401 = 0.762744529599 ! KQL2
-kq22501 = -0.783702329103 !-KQL2
-kq22601 = 0.802891109212 ! KQL2
-kq22701 = -0.868130170114 !-KQL2
-kq22801 = 0.953428413209 ! 0.747560469838
-kq22901 = -0.868765565852 !-0.709980930665
+ !             reduced W        02SEP2024s       11APR24s
+ !           -------------    ---------------  ---------------
+kq22201 = 0.687187910907 ! 0.729478096138 ! 0.714603191911 !
+kq22301 = -0.770298864132 !-0.792424277218 !-0.762188913757 !
+kq22401 = 0.754070736025 ! 0.762744529599 ! KQL2	       !
+kq22501 = -0.811548538731 !-0.783702329103 !-KQL2	       !
+kq22601 = 0.897539366379 ! 0.802891109212 ! KQL2	       !
+kq22701 = -0.870415266281 !-0.868130170114 !-KQL2	       !
+kq22801 = 0.889540338922 ! 0.953428413209 ! 0.747560469838 !
+kq22901 = -0.748921496431 !-0.868765565852 !-0.709980930665 !
 
-kq23201 = 0.862986236421 ! 0.720791509747
-kq23301 = -0.807023880128 !-0.741851024289
-kq23401 = 0.704995381943 ! KQL2
-kq23501 = -0.682060190951 !-KQL2
-kq23601 = 0.686014709285 ! KQL2
-kq23701 = -0.69035396412  !-KQL2
-kq23801 = 0.759858365272 ! 0.770666348011
-kq23901 = -0.72048817012  !-0.726851638763
+kq23201 = 0.655708901644 ! 0.862986236421 ! 0.720791509747 !
+kq23301 = -0.655118539759 !-0.807023880128 !-0.741851024289 !
+kq23401 = 0.567373723115 ! 0.704995381943 ! KQL2	       !
+kq23501 = -0.601854348049 !-0.682060190951 !-KQL2	       !
+kq23601 = 0.609161231398 ! 0.686014709285 ! KQL2	       !
+kq23701 = -0.646986691345 !-0.69035396412  !-KQL2	       !
+kq23801 = 0.713440057261 ! 0.759858365272 ! 0.770666348011 !
+kq23901 = -0.716761832821 !-0.72048817012  !-0.726851638763 !
 
 kq24201 = 0.779293384791
 kq24301 = -0.856497177248
@@ -839,14 +845,14 @@ lbh1l = rbh1*abh1l          !"long" half heater-chicane bend path length (m)
 dh00: drift, l = 0.13453045-dlbh/2
 dh01: drift, l = (0.155-dlbh)/cos(abh1), type = "CSR"
 dh02a: drift, l = 0.06717020-dlbh/2, type = "CSR"
-
-! Shorten so that lh_und has an integer number of poles
-dh03a: drift, l = 0.09290825 - ( 10*0.054 - 0.506263 ) /2, type = "CSR"
-!old: dh03a: drift, l = 0.09290825, type = "CSR"
-
-! Shorten so that lh_und has an integer number of poles
-dh03b: drift, l = 0.08401830- ( 10*0.054 - 0.506263 ) /2, type = "CSR"
-!old: dh03b: drift, l = 0.08401830, type = "CSR"
+!new:
+!new: ! Shorten so that lh_und has an integer number of poles
+!new: dh03a: drift, l = 0.09290825 - ( 10*0.054 - 0.506263 ) /2, type = "CSR"
+dh03a: drift, l = 0.09290825, type = "CSR"
+!new:
+!new: ! Shorten so that lh_und has an integer number of poles
+!new: dh03b: drift, l = 0.08401830- ( 10*0.054 - 0.506263 ) /2, type = "CSR"
+dh03b: drift, l = 0.08401830, type = "CSR"
 dh02b: drift, l = 0.09503020-dlbh/2, type = "CSR"
 dh06: drift, l = 0.13010070-dlbh/2, type = "CSR"
 
@@ -891,16 +897,19 @@ r34h = lhunh*sincargh
 
 
 !------- Laser Heater Undulator for Copper Linac -------
-my_lh_und_k = 1.38523
-lh_und: wiggler,
-        type = "laser_heater_undulator",
-        L_period = 0.054,
-        n_period = 10,
-        b_max = my_lh_und_k * 2*pi*m_electron / (c_light * 0.054),
-         L = 10*0.054 ! Was: 0.506263,
-        ds_step = 0.054
-
-lh_und[L] = lh_und[L]/2 ! Will be doubled in desplitting process.
+!new my_lh_und_k = 1.38523
+!new lh_und: wiggler, 
+!new         type = "laser_heater_undulator",
+!new         L_period = 0.054, 
+!new         n_period = 10, 
+!new         b_max = my_lh_und_k * 2*pi*m_electron / (c_light * 0.054), 
+!new          L = 10*0.054 ! Was: 0.506263, 
+!new         ds_step = 0.054
+!new 
+!new lh_und[L] = lh_und[L]/2 ! Will be doubled in desplitting process. 
+lh_und: taylor, type = "LHund", l = lhunh, tt11 = 1.0, tt12 = lhunh, tt21 = 0, tt22 = 1.0, tt33 = cos(lhunh*sqrt(kqlh)),
+          tt34 = r34h, tt43 = -sin(lhunh*sqrt(kqlh))*sqrt(kqlh), tt44 = cos(lhunh*sqrt(kqlh)),
+          mat_und_k = k_und, mat_und_l = lam
 !--------------------------------- !,          &
 !old: lh_und: taylor, type = "LHund", l = lhunh, tt11 = 1.0, tt12 = lhunh, tt21 = 0, tt22 = 1.0, tt33 = cos(lhunh*sqrt(kqlh)),
 !old           tt34 = r34h, tt43 = -sin(lhunh*sqrt(kqlh))*sqrt(kqlh), tt44 = cos(lhunh*sqrt(kqlh))
@@ -1464,6 +1473,9 @@ d10cma: drift, l = 0.127
 L0A: L0A___1, L = 3.095244, voltage = L0A___1[voltage]+L0A___2[voltage]+L0A___3[voltage]+L0A___4[voltage]+L0A___5[voltage]+L0A___6[voltage]+L0A___7[voltage]
 L0A_full: line = (L0A)
 ! contains zero length elements:
+    FLNGA1[superimpose] = T
+    FLNGA1[ref] = L0A
+    FLNGA1[ref_origin] = beginning
     DLFDA[superimpose] = T
     DLFDA[ref] = L0A
     DLFDA[ref_origin] = beginning
@@ -1496,6 +1508,9 @@ L0A_full: line = (L0A)
     OUTCPA[ref] = L0A
     OUTCPA[ref_origin] = beginning
     OUTCPA[offset] = 3.034325
+    FLNGA2[superimpose] = T
+    FLNGA2[ref] = L0A
+    FLNGA2[ref_origin] = end
 !old:   L0a_full   : LINE=(FLNGa1,L0a___1,DLFDa,L0a___2,SOL2,L0a___3,XC02,YC02,L0a___4,L0aMID,L0a___5,XC03,YC03,L0a___6,
 !old          OUTCPa,L0a___7,FLNGa2)
 !---------------------
@@ -1503,6 +1518,9 @@ L0A_full: line = (L0A)
 L0B: L0B___1, L = 3.095244, voltage = L0B___1[voltage]+L0B___2[voltage]+L0B___3[voltage]+L0B___4[voltage]+L0B___5[voltage]+L0B___6[voltage]
 L0B_full: line = (L0B)
 ! contains zero length elements:
+    FLNGB1[superimpose] = T
+    FLNGB1[ref] = L0B
+    FLNGB1[ref_origin] = beginning
     DLFDB[superimpose] = T
     DLFDB[ref] = L0B
     DLFDB[ref_origin] = beginning
@@ -1531,6 +1549,9 @@ L0B_full: line = (L0B)
     OUTCPB[ref] = L0B
     OUTCPB[ref_origin] = beginning
     OUTCPB[offset] = 3.034325
+    FLNGB2[superimpose] = T
+    FLNGB2[ref] = L0B
+    FLNGB2[ref_origin] = end
 !old:   L0b_full   : LINE=(FLNGb1,L0b___1,DLFDb,L0b___2,XC04,YC04,L0b___3,L0bMID,L0b___4,XC05,YC05,L0b___5,OUTCPb,L0b___6,
 !old          FLNGb2)
 
@@ -1548,14 +1569,16 @@ yc06[ref] = tcav0
 L1X: L1X___1, L = 0.5948, voltage = L1X___1[voltage]+L1X___2[voltage]
 L1X_full: line = (L1X)
 ! contains zero length elements:
+    XBEG[superimpose] = T
+    XBEG[ref] = L1X
+    XBEG[ref_origin] = beginning    
     XC21191[superimpose] = T
     XC21191[ref] = L1X
-    XC21191[ref_origin] = beginning
-    XC21191[offset] = 0.2974
     YC21192[superimpose] = T
     YC21192[ref] = L1X
-    YC21192[ref_origin] = beginning
-    YC21192[offset] = 0.2974
+    XEND[superimpose] = T
+    XEND[ref] = L1X
+    XEND[ref_origin] = end
 !old:   L1X_full   : LINE=(XBEG,L1X___1,XC21191,YC21192,L1X___2,XEND)
 
 
@@ -1563,71 +1586,85 @@ L1X_full: line = (L1X)
 !Old split line:  BXH1_full : LINE=(BXH1a,BXH1b)
 
 bxh1_full: line = (bxh1)
+bxh1_svy: null_ele, superimpose, ref=bxh1, ref_origin=beginning, offset=bxh1a[l] !bend survey marker
 
 
 !Old split line:  BXH2_full : LINE=(BXH2a,BXH2b)
 
 bxh2_full: line = (bxh2)
+bxh2_svy: null_ele, superimpose, ref=bxh2, ref_origin=beginning, offset=bxh2a[l] !bend survey marker
 
 
 !Old split line:  BXH3_full : LINE=(BXH3a,BXH3b)
 
 bxh3_full: line = (bxh3)
+bxh3_svy: null_ele, superimpose, ref=bxh3, ref_origin=beginning, offset=bxh3a[l] !bend survey marker
 
 
 !Old split line:  BXH4_full : LINE=(BXH4a,BXH4b)
 
 bxh4_full: line = (bxh4)
+bxh4_svy: null_ele, superimpose, ref=bxh4, ref_origin=beginning, offset=bxh4a[l] !bend survey marker
 
 
 !Old split line:  BX01_full : LINE=(BX01a,BX01b)
 
 bx01_full: line = (bx01)
+bx01_svy: null_ele, superimpose, ref=bx01, ref_origin=beginning, offset=bx01a[l] !bend survey marker
 
 
 !Old split line:  BX02_full : LINE=(BX02a,BX02b)
 
 bx02_full: line = (bx02)
+bx02_svy: null_ele, superimpose, ref=bx02, ref_origin=beginning, offset=bx02a[l] !bend survey marker
 
 
 !Old split line:  BX11_full : LINE=(BX11a,BX11b)
 
 bx11_full: line = (bx11)
+bx11_svy: null_ele, superimpose, ref=bx11, ref_origin=beginning, offset=bx11a[l] !bend survey marker
 
 
 !Old split line:  BX12_full : LINE=(BX12a,BX12b)
 
 bx12_full: line = (bx12)
+bx12_svy: null_ele, superimpose, ref=bx12, ref_origin=beginning, offset=bx12a[l] !bend survey marker
 
 
 !Old split line:  BX13_full : LINE=(BX13a,BX13b)
 
 bx13_full: line = (bx13)
+bx13_svy: null_ele, superimpose, ref=bx13, ref_origin=beginning, offset=bx13a[l] !bend survey marker
 
 
 !Old split line:  BX14_full : LINE=(BX14a,BX14b)
 
 bx14_full: line = (bx14)
+bx14_svy: null_ele, superimpose, ref=bx14, ref_origin=beginning, offset=bx14a[l] !bend survey marker
 
 
 !Old split line:  BX21_full : LINE=(BX21a,BX21b)
 
 bx21_full: line = (bx21)
+bx21_svy: null_ele, superimpose, ref=bx21, ref_origin=beginning, offset=bx21a[l] !bend survey marker
 
 
 !Old split line:  BX22_full : LINE=(BX22a,BX22b)
 
 bx22_full: line = (bx22)
+bx22_svy: null_ele, superimpose, ref=bx22, ref_origin=beginning, offset=bx22a[l] !bend survey marker
 
 
 !Old split line:  BX23_full : LINE=(BX23a,BX23b)
 
 bx23_full: line = (bx23)
+bx23_svy: null_ele, superimpose, ref=bx23, ref_origin=beginning, offset=bx23a[l] !bend survey marker
 
 
 !Old split line:  BX24_full : LINE=(BX24a,BX24b)
 
 bx24_full: line = (bx24)
+bx24_svy: null_ele, superimpose, ref=bx24, ref_origin=beginning, offset=bx24a[l] !bend survey marker
 
 
 
@@ -1635,6 +1672,7 @@ bx24_full: line = (bx24)
 
 qa01_full: line = (qa01)
 qa01[L] = 2*qa01[L]
+qa01_svy: null_ele, superimpose, ref=qa01
 
 
 !Old split line:  QA02_full    : LINE=(QA02,BPM5,QA02)
@@ -1657,6 +1695,7 @@ bpm6[ref] = qe01
 
 qe02_full: line = (qe02)
 qe02[L] = 2*qe02[L]
+qe02_svy: null_ele, superimpose, ref=qe02
 
 
 !Old split line:  QE03_full    : LINE=(QE03,BPM8,QE03)
@@ -1729,30 +1768,35 @@ zlin02[ref] = q21201
 
 qm11_full: line = (qm11)
 qm11[L] = 2*qm11[L]
+qm11_svy: null_ele, superimpose, ref=qm11
 
 
 !Old split line:  CQ11_full    : LINE=(CQ11,CQ11)
 
 cq11_full: line = (cq11)
 cq11[L] = 2*cq11[L]
+cq11_svy: null_ele, superimpose, ref=cq11
 
 
 !Old split line:  SQ13_full    : LINE=(SQ13,SQ13)
 
 sq13_full: line = (sq13)
 sq13[L] = 2*sq13[L]
+sq13_svy: null_ele, superimpose, ref=sq13
 
 
 !Old split line:  CQ12_full    : LINE=(CQ12,CQ12)
 
 cq12_full: line = (cq12)
 cq12[L] = 2*cq12[L]
+cq12_svy: null_ele, superimpose, ref=cq12
 
 
 !Old split line:  QM12_full    : LINE=(QM12,QM12)
 
 qm12_full: line = (qm12)
 qm12[L] = 2*qm12[L]
+qm12_svy: null_ele, superimpose, ref=qm12
 
 
 !Old split line:  QM13_full    : LINE=(QM13,BPMM12,QM13)
@@ -1785,6 +1829,7 @@ bpmm14[ref] = qm14
 
 qm15_full: line = (qm15)
 qm15[L] = 2*qm15[L]
+qm15_svy: null_ele, superimpose, ref=qm15
 
 
 !Old split line:  Q24701A_full : LINE=(Q24701A,ZLIN08,Q24701A)
@@ -1807,24 +1852,28 @@ bpm24701[ref] = q24701b
 
 qm21_full: line = (qm21)
 qm21[L] = 2*qm21[L]
+qm21_svy: null_ele, superimpose, ref=qm21
 
 
 !Old split line:  CQ21_full    : LINE=(CQ21,CQ21)
 
 cq21_full: line = (cq21)
 cq21[L] = 2*cq21[L]
+cq21_svy: null_ele, superimpose, ref=cq21
 
 
 !Old split line:  CQ22_full    : LINE=(CQ22,CQ22)
 
 cq22_full: line = (cq22)
 cq22[L] = 2*cq22[L]
+cq22_svy: null_ele, superimpose, ref=cq22
 
 
 !Old split line:  QM22_full    : LINE=(QM22,QM22)
 
 qm22_full: line = (qm22)
 qm22[L] = 2*qm22[L]
+qm22_svy: null_ele, superimpose, ref=qm22
 
 
 !Old split line:  Q24901A_full : LINE=(Q24901A,BPM24901,Q24901A)
@@ -1839,6 +1888,7 @@ bpm24901[ref] = q24901a
 
 q24901b_full: line = (q24901b)
 q24901b[L] = 2*q24901b[L]
+q24901b_svy: null_ele, superimpose, ref=q24901b
 
 
 
@@ -1855,14 +1905,7 @@ yc00[ref] = sol1
 sq01[superimpose] = T
 sq01[ref] = sol1
 
-
-
-!Old split line:  LH_UND_full : LINE=(LH_UND,HTRUND,LH_UND)
-
-lh_und_full: line = (lh_und)
-lh_und[L] = 2*lh_und[L]
-htrund[superimpose] = T
-htrund[ref] = lh_und
+  LH_UND_full : LINE=(LH_UND,HTRUND,LH_UND)
 
   GUNBXG : LINE=(DL00,LOADLOCK,BEGGUN,SOL1BK,DBMARK80,CATHODE,DL01a,SOL1_full,DL01a1,VV01,DL01a2,AM00,DL01a3,AM01,
          DL01a4,YAG01,DL01a5,FC01,DL01b,IM01,DL01c,SC1,DL01h,BPM2,DL01d,DBMARK81,ENDGUN)

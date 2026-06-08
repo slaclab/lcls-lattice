@@ -1,12 +1,12 @@
 
-! *** OPTICS=AD_ACCEL-02SEP2024s ***
+! *** OPTICS=AD_ACCEL-01JUN2026s ***
 
 ! LCLS2sc DASEL
 
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
-! 27-MAR-2024, M. Woodley
+! 19-APR-2024, M. Woodley
 !  * change RCDAS11 to XCDAS11; move 0.118 m d/s; remove R0DAS11P and R0DAS11M
 !  * add YCDAS11 0.397 m d/s of XCDAS11
 !  * change RCDAS19 to XCDAS19; remove RODAS19P and RODAS19M
@@ -303,7 +303,7 @@ lddas5b = 12.05*0.0254 !=0.30607 per C. Clarke
 lddas5c = 1.0
 lddas5a = lddas5-lddas5b-lddas5c
 
-!  * tweak LDDAS14ac/LDDAS17a to locate PRDAS14/PRDAS17 per A. Ibrahimov
+! tweak LDDAS14ac/LDDAS17a to locate PRDAS14/PRDAS17 per A. Ibrahimov
 
 dlddas11 = 0.0
 lddas11 = 5.5-(lbsp+lqm)/2+dlddas11-0.7
@@ -316,8 +316,8 @@ lddas12a = 1.5
 lddas12b = 9.877925-lddas12a-ldumpdas/2
 lddas12c = lddas12-lddas12a-lddas12b-ldumpdas
 lddas13 = 18.128190337721+0.5
- !LDDAS13a := 2.97
- !LDDAS13b := LDDAS13-LDDAS13a
+ !LDDAS13a  := 2.97
+ !LDDAS13b  := LDDAS13-LDDAS13a
 lddas14 = 18.128190337721-0.5+0.79997
 lddas14b = 0.5
 lddas14a = lddas14-lddas14b
@@ -339,6 +339,11 @@ dlddas = 0.0
 lddas = (158.566506190974298-10*lqm-lbsp-lddasqq-lddas11-lddas12 -lddas13-lddas14-lddas17-lddas18-lddas19-lddas20)/2+dlddas
 lddas15 = lddas
 lddas16 = lddas
+lddas21a = 0.5
+lddas21b = 0.434930223041  !0.397
+lddas21c = 19.394243502993 !19.829173726034-0.397
+lddas22 = 0.5
+lddas23 = 0.5
 
 ddasqq: drift, l = lddasqq
 ddas1: drift, l = lddas1
@@ -360,6 +365,8 @@ ddas14a: drift, l = lddas14a
 ddas14aa: drift, l = lddas14aa
 ddas14ab: drift, l = lddas14ab
 ddas14ac: drift, l = lddas14ac
+ddas14ac1: drift, l = 7.132062
+ddas14ac2: drift, l = ddas14ac[l]-ddas14ac1[l]
 ddas14b: drift, l = lddas14b
 ddas15: drift, l = lddas15
 ddas16: drift, l = lddas16
@@ -370,6 +377,11 @@ ddas18: drift, l = lddas18
 ddas19: drift, l = lddas19
 ddas20a: drift, l = lddas20a
 ddas20b: drift, l = lddas20b
+ddas21a: drift, l = lddas21a
+ddas21b: drift, l = lddas21b
+ddas21c: drift, l = lddas21c
+ddas22: drift, l = lddas22
+ddas23: drift, l = lddas23
 
 ! roll angles
 
@@ -398,18 +410,29 @@ xcdas19: hkicker, type = "class-4"
 ycdas1: vkicker, type = "class-4"
 ycdas11: vkicker, type = "class-4"
 ycdas17: vkicker, type = "class-4"
- !YCDAS19 : defined in Aline.xsif
+ycdas19: vkicker, type = "class-4"
 
 ! profile monitors
 
 prdas12: monitor, type = "YAG" !two YAG crystals 50 um thick and 1 mm thick)
 prdas14: monitor, type = "PHOSPHOR"
 prdas17: monitor, type = "PHOSPHOR"
+prbram1: monitor, type = "unknown" !profile monitor, type to be determined
+tgtbram1: instrument, type = "Cu"      !secondary production Cu target
 
 ! ACMs
 
-imdas1: marker, type = "BCS ACM"
-imdas2: marker, type = "BCS ACM"
+imbcsa1: marker, type = "BCS ACM"
+imbcsa2: marker, type = "BCS ACM"
+
+! combination wire/BHM
+
+wsdas14: marker
+wsdas14_bhm: instrument, type = "pixel grid" !Beam Halo Monitor
+
+! BSY wooden door
+
+wooddoor_spa: marker
 
 ! collimator in front of BLRDAS septum
 ! * this collimator should be attached to or be very close to the entrance
@@ -444,46 +467,55 @@ dumpdas: instrument, type = "400W-dump", l = ldumpdas/2 !half-dump
 !Old split line:  BKRDAS1_full : LINE=(BKRDAS1a,BKRDAS1b)
 
 bkrdas1_full: line = (bkrdas1)
+bkrdas1_svy: null_ele, superimpose, ref=bkrdas1, ref_origin=beginning, offset=bkrdas1a[l] !bend survey marker
 
 
 !Old split line:  BKRDAS2_full : LINE=(BKRDAS2a,BKRDAS2b)
 
 bkrdas2_full: line = (bkrdas2)
+bkrdas2_svy: null_ele, superimpose, ref=bkrdas2, ref_origin=beginning, offset=bkrdas2a[l] !bend survey marker
 
 
 !Old split line:  BKRDAS3_full : LINE=(BKRDAS3a,BKRDAS3b)
 
 bkrdas3_full: line = (bkrdas3)
+bkrdas3_svy: null_ele, superimpose, ref=bkrdas3, ref_origin=beginning, offset=bkrdas3a[l] !bend survey marker
 
 
 !Old split line:  BKRDAS4_full : LINE=(BKRDAS4a,BKRDAS4b)
 
 bkrdas4_full: line = (bkrdas4)
+bkrdas4_svy: null_ele, superimpose, ref=bkrdas4, ref_origin=beginning, offset=bkrdas4a[l] !bend survey marker
 
 
 !Old split line:  BKRDAS5_full : LINE=(BKRDAS5a,BKRDAS5b)
 
 bkrdas5_full: line = (bkrdas5)
+bkrdas5_svy: null_ele, superimpose, ref=bkrdas5, ref_origin=beginning, offset=bkrdas5a[l] !bend survey marker
 
 
 !Old split line:  BKRDAS6_full : LINE=(BKRDAS6a,BKRDAS6b)
 
 bkrdas6_full: line = (bkrdas6)
+bkrdas6_svy: null_ele, superimpose, ref=bkrdas6, ref_origin=beginning, offset=bkrdas6a[l] !bend survey marker
 
 
 !Old split line:  BLRDAS_full  : LINE=(BLRDASa,BLRDASb)
 
 blrdas_full: line = (blrdas)
+blrdas_svy: null_ele, superimpose, ref=blrdas, ref_origin=beginning, offset=blrdasa[l] !bend survey marker
 
 
 !Old split line:  BRDAS1_full  : LINE=(BRDAS1a,BRDAS1b)
 
 brdas1_full: line = (brdas1)
+brdas1_svy: null_ele, superimpose, ref=brdas1, ref_origin=beginning, offset=brdas1a[l] !bend survey marker
 
 
 !Old split line:  BRDAS2_full  : LINE=(BRDAS2a,BRDAS2b)
 
 brdas2_full: line = (brdas2)
+brdas2_svy: null_ele, superimpose, ref=brdas2, ref_origin=beginning, offset=brdas2a[l] !bend survey marker
 
 
 
@@ -491,84 +523,100 @@ brdas2_full: line = (brdas2)
 
 qdas1b_full: line = (qdas1b)
 qdas1b[L] = 2*qdas1b[L]
+qdas1b_svy: null_ele, superimpose, ref=qdas1b
 
 
 !Old split line:  QDAS1a_full  : LINE=(QDAS1a,QDAS1a)
 
 qdas1a_full: line = (qdas1a)
 qdas1a[L] = 2*qdas1a[L]
+qdas1a_svy: null_ele, superimpose, ref=qdas1a
 
 
 !Old split line:  QDAS2a_full  : LINE=(QDAS2a,QDAS2a)
 
 qdas2a_full: line = (qdas2a)
 qdas2a[L] = 2*qdas2a[L]
+qdas2a_svy: null_ele, superimpose, ref=qdas2a
 
 
 !Old split line:  QDAS2b_full  : LINE=(QDAS2b,QDAS2b)
 
 qdas2b_full: line = (qdas2b)
 qdas2b[L] = 2*qdas2b[L]
+qdas2b_svy: null_ele, superimpose, ref=qdas2b
 
 
 !Old split line:  QDAS11_full  : LINE=(QDAS11,QDAS11)
 
 qdas11_full: line = (qdas11)
 qdas11[L] = 2*qdas11[L]
+qdas11_svy: null_ele, superimpose, ref=qdas11
 
 
 !Old split line:  QDAS12_full  : LINE=(QDAS12,QDAS12)
 
 qdas12_full: line = (qdas12)
 qdas12[L] = 2*qdas12[L]
+qdas12_svy: null_ele, superimpose, ref=qdas12
 
 
 !Old split line:  QDAS13_full  : LINE=(QDAS13,QDAS13)
 
 qdas13_full: line = (qdas13)
 qdas13[L] = 2*qdas13[L]
+qdas13_svy: null_ele, superimpose, ref=qdas13
 
 
 !Old split line:  QDAS14_full  : LINE=(QDAS14,QDAS14)
 
 qdas14_full: line = (qdas14)
 qdas14[L] = 2*qdas14[L]
+qdas14_svy: null_ele, superimpose, ref=qdas14
 
 
 !Old split line:  QDAS15_full  : LINE=(QDAS15,QDAS15)
 
 qdas15_full: line = (qdas15)
 qdas15[L] = 2*qdas15[L]
+qdas15_svy: null_ele, superimpose, ref=qdas15
 
 
 !Old split line:  QDAS16_full  : LINE=(QDAS16,QDAS16)
 
 qdas16_full: line = (qdas16)
 qdas16[L] = 2*qdas16[L]
+qdas16_svy: null_ele, superimpose, ref=qdas16
 
 
 !Old split line:  QDAS17_full  : LINE=(QDAS17,QDAS17)
 
 qdas17_full: line = (qdas17)
 qdas17[L] = 2*qdas17[L]
+qdas17_svy: null_ele, superimpose, ref=qdas17
 
 
 !Old split line:  QDAS18a_full : LINE=(QDAS18a,QDAS18a)
 
 qdas18a_full: line = (qdas18a)
 qdas18a[L] = 2*qdas18a[L]
+qdas18a_svy: null_ele, superimpose, ref=qdas18a
 
 
 !Old split line:  QDAS18b_full : LINE=(QDAS18b,QDAS18b)
 
 qdas18b_full: line = (qdas18b)
 qdas18b[L] = 2*qdas18b[L]
+qdas18b_svy: null_ele, superimpose, ref=qdas18b
 
 
 !Old split line:  QDAS19_full  : LINE=(QDAS19,QDAS19)
 
 qdas19_full: line = (qdas19)
 qdas19[L] = 2*qdas19[L]
+qdas19_svy: null_ele, superimpose, ref=qdas19
+
+  WSDAS14_full : LINE=(WSDAS14,WSDAS14_BHM)
 
 
 
@@ -576,27 +624,20 @@ qdas19[L] = 2*qdas19[L]
 
 dumpdas_full: line = (dumpdas)
 dumpdas[L] = 2*dumpdas[L]
+dumpdas_svy: null_ele, superimpose, ref=dumpdas
 
 ! stage-A and stage-B with dump in sector-30
 
-  DASELSA : LINE=(BKRDAS1_full,DDASBK1 ,BKRDAS2_full,DDASBK2 ,BKRDAS3_full,DDASBK3h,DDASBK3h,BKRDAS4_full,DDASBK4 ,
+  SPA : LINE=(BEGSPA,BKRDAS1_full,DDASBK1 ,BKRDAS2_full,DDASBK2 ,BKRDAS3_full,DDASBK3h,DDASBK3h,BKRDAS4_full,DDASBK4 ,
          BKRDAS5_full,DDASBK5 ,BKRDAS6_full,DDASBLXa,BPMDAS  ,DDASBLXb1,PCBLRDAS,DDASBLXb2,BLRDAS_full ,RODAS1  ,DDAS1   ,
          XCDAS1  ,DDAS2a  ,YCDAS1  ,DDAS2b  ,BPMDAS1 ,DDAS3   ,QDAS1b_full,DDASQQ  ,QDAS1a_full,DDAS4   ,QDAS2a_full,DDASQQ  ,
-         QDAS2b_full,DDAS5a  ,IMDAS1  ,DDAS5b  ,IMDAS2 ,DDAS5c  ,BRDAS1_full,RODAS2  ,DDAS11a ,XCDAS11 ,DDAS11b,YCDAS11 ,DDAS11c,
-         QDAS11_full,DDAS12a ,PRDAS12 ,DDAS12b ,DUMPDAS_full)
+         QDAS2b_full,DDAS5a  ,IMBCSa1  ,DDAS5b  ,IMBCSa2 ,DDAS5c  ,BRDAS1_full,RODAS2  ,DDAS11a ,XCDAS11 ,DDAS11b,YCDAS11 ,
+         DDAS11c,QDAS11_full,DDAS12a ,PRDAS12 ,DDAS12b ,DUMPDAS_full    ,DDAS12c ,QDAS12_full ,DDAS13  ,QDAS13_full ,DDAS14aa,
+         PRDAS14,DDAS14ac1,WSDAS14_full,DDAS14ac2,WOODDOOR_SPA,ENDSPA)
 
-  DASELSB : LINE=(DDAS12c ,QDAS12_full ,DDAS13  ,QDAS13_full ,DDAS14aa,PRDAS14,DDAS14ac,WOODDOOR,DDAS14ab,XCDAS14 ,
-         DDAS14b,QDAS14_full ,DDAS15  ,QDAS15_full ,DDAS16  ,QDAS16_full ,DDAS17a ,PRDAS17 ,DDAS17b ,YCDAS17,DDAS17c,
-         QDAS17_full ,DDAS18  ,QDAS18a_full,DDASQQ  ,QDAS18b_full,DDAS19  ,QDAS19_full ,DDAS20a ,BPMDAS19,DDAS20b ,RODAS3 ,
-         BRDAS2_full)
-
-! ------------------------------------------------------------------------------
-
-  DASEL  : LINE=(DASELSA,DASELSB)
-
-  DASELA : LINE=(BEGDASEL,DASEL,DA04b,XCDAS19,ALINE)
-
-  SPDASELA : LINE=(SPRDkh,SPRDks,SPRDda,DASELA)
+  SLTA : LINE=(BEGSLTA  ,DDAS14ab,XCDAS14,DDAS14b,QDAS14_full ,DDAS15 ,QDAS15_full ,DDAS16 ,QDAS16_full ,DDAS17a,
+         PRDAS17 ,DDAS17b,YCDAS17,DDAS17c,QDAS17_full ,DDAS18 ,QDAS18a_full,DDASQQ ,QDAS18b_full,DDAS19 ,QDAS19_full ,DDAS20a,
+         BPMDAS19,DDAS20b,RODAS3,BRDAS2_full ,DDAS21a,YCDAS19,DDAS21b,XCDAS19,DDAS21c,PRBRAM1,DDAS22,TGTBRAM1,DDAS23,ENDSLTA)
 
 ! ------------------------------------------------------------------------------
 

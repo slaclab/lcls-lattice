@@ -1,10 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-02SEP2024s ***
+! *** OPTICS=AD_ACCEL-01JUN2026s ***
 
 ! LCLS2sc safety dump lines
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 20-AUG-2025, M. Woodley
+!  * some device locations taken from RP note RP-14-15-R6, Table 4 per S. Xiao
 ! ------------------------------------------------------------------------------
 ! 22-JAN-2020, M. Woodley
 !  * some device names, keywords, TYPEs, and Z-locations in SFTS_1 taken from
@@ -103,14 +106,12 @@ dyd1: drift, l = lbdm *cos(abyds+  abdm/2)
 dyd2: drift, l = lbdm *cos(abyds+3*abdm/2)
 dyd3: drift, l = lbdm *cos(abyds+5*abdm/2)
 
-ldsca = 0.479300-0.000001 !0.479298938157
-ldscb = 0.094517171073
+ldsc = 0.573816158885 !0.433816171073
 
-ds1s: drift, l = lds1 *cos(abyds)
-dssa: drift, l = lds  *cos(abyds+  abdm)
-dssb: drift, l = lds  *cos(abyds+2*abdm)
-dscsa: drift, l = ldsca*cos(abyds+3*abdm)
-dscsb: drift, l = ldscb*cos(abyds+3*abdm)
+ds1s: drift, l = lds1*cos(abyds)
+dssa: drift, l = lds *cos(abyds+  abdm)
+dssb: drift, l = lds *cos(abyds+2*abdm)
+dscs: drift, l = ldsc*cos(abyds+3*abdm)
 
 ldpm3 = 8.784
 ldpm31 = 8.2704483799
@@ -119,9 +120,11 @@ zsftdmp = 0.0762 !safety dump Z-length
 
 dpcbtm1: drift, l = 0.15-0.135
 dpcbtm2: drift, l = 0.15
-dpm1: drift, l = 0.5350338 !0.298
-dpm11: drift, l = 0.188644
+
+dpm1: drift, l = 0.535 !0.5350338-0.08-0.01 !0.298
+dpm11: drift, l = 0.1886103 !0.188644-0.08-0.01
 dpm12: drift, l = dpm1[l]-dpm11[l]
+
 dpm2: drift, l = 0.30   /cos(abxpm1)
 dpm3: drift, l = ldpm3  /cos(abxpm1+abxpm2)
 dpm31: drift, l = ldpm31 /cos(abxpm1+abxpm2)
@@ -131,12 +134,12 @@ dpm4: drift, l = 2.42   /cos(abxpm1+abxpm2)
 dsftdmp: drift, l = zsftdmp/cos(abxpm1+abxpm2)
 
 dxdcu: drift, l = 1.092223 +0.75
-dxdcu1: drift, l = 0.8783
-dxdcu1a: drift, l = 0.840799
+dxdcu1: drift, l = 0.8933 !0.8783
+dxdcu1a: drift, l = 0.8557991 !0.840799
 dxdcu1b: drift, l = dxdcu1[l]-dxdcu1a[l]
 dxdcu2: drift, l = dxdcu[l]-dxdcu1[l]
 dxdcu2a: drift, l = 0.878201
-dxdcu2b: drift, l = dxdcu2[l]-dxdcu2a[l]
+dxdcu2b: drift, l = dxdcu2[l]-dxdcu2a[l]+0.015
 xdca: drift, l = 0.312777 !XDC chamber
 xdcb: drift, l = 0.693    !XDC chamber
 xdcc: drift, l = 0.542    !XDC chamber
@@ -146,21 +149,18 @@ dxdcd1: drift, l = 2.661321
 dxdcd2: drift, l = 0.512986
 dxdcd2a: drift, l = 0.142402
 dxdcd2b: drift, l = dxdcd2[l]-dxdcd2a[l]
-dxdcd3: drift, l = dxdcd[l]-dxdcd1[l]-dxdcd2[l]
+dxdcd3: drift, l = 0.374317-0.015 !DXDCD[L]-DXDCD1[L]-DXDCD2[L]+0.08+0.01
 
 pcpm1: ecollimator, l = lpcpm, x_limit = 0.0080, y_limit = 0.0080 !per LCLSII-3.5-PR-0111-R1
 pcpm2: ecollimator, l = lpcpm, x_limit = 0.0127, y_limit = 0.0127
- !PCPM3  : ECOL, L=LPCPMW/COS(ABXPM1+ABXPM2), XSIZE=0.0080, YSIZE=0.0080
 dpcpm3: drift, l = lpcpmw/cos(abxpm1+abxpm2) !placeholder for PCPM3
 
 btm1: instrument !Burn-Through-Monitor behind PCPM1
 btm2: instrument !Burn-Through-Monitor behind PCPM2
- !BTM3   : INST !Burn-Through-Monitor behind PCPM3
-mbtm3: marker !placeholder for BTM3
 btmsft: instrument !Burn-Through-Monitor behind HXR safety dump
 
 rtdsl0: monitor, type = "RAPID TRNAD DIAG"
-rtdsl0_yagxray: monitor, type = "MONITORILE MON (RTD"
+rtdsl0_yagxray: monitor, type = "PROFILE MON (RTD"
 
 tp_hxtes0: instrument, type = "treaty flange" !treaty point for HXR XTES system
 tv1l0_vgc_1: instrument, type = "GATE VALVE"
@@ -173,7 +173,6 @@ im1l0_xtes: instrument, type = "IMAGER"
 mbxpm1_pip_1: instrument, type = "ION PUMP"
 sftdmp: instrument !front face of HXR safety dump (Z'=712-715 m per PRD)
 
-vv38: marker !vac. valve in HXR safety dump line
 mvv10: marker !placeholder for vac. valve in HXR XTES line
 
 
@@ -181,18 +180,19 @@ mvv10: marker !placeholder for vac. valve in HXR XTES line
 !Old split line:  BXPM1_full : LINE=(BXPM11,BXPM12)
 
 bxpm1_full: line = (bxpm1)
+bxpm1_svy: null_ele, superimpose, ref=bxpm1, ref_origin=beginning, offset=bxpm11[l] !bend survey marker
 
 
 !Old split line:  BXPM2_full : LINE=(BXPM21,BXPM22)
 
 bxpm2_full: line = (bxpm2)
+bxpm2_svy: null_ele, superimpose, ref=bxpm2, ref_origin=beginning, offset=bxpm21[l] !bend survey marker
 
-  SFTDUMP1: LINE=(BEGSFTH_1,DYDS,DS1S,DYD1,DSSA,DYD2,DSSB,DYD3,DSCSa,VV38,DSCSb,PCPM1,DPCBTM1,BTM1,DXDCU1a,TV1L0_VGC_1,
-         DXDCU1b,TP_HXTES0,DXDCU2a,TV1L0_VRM_1,TV1L0_GCC_1,TV1L0_GPI_1,DXDCU2b,XDCa,RTDSL0,XDCb,XDCc,RTDSL0_YAGXRAY,XDCd,DXDCD1,
-         IM1L0_XTES_VGC_1,DXDCD2a,IM1L0_XTES_VRM_1,DXDCD2b,IM1L0_XTES,DXDCD3,PCPM2,BTM2,DPM11,MBXPM1_PIP_1,DPM12,ENDSFTH_1)
+  SFTDUMP1: LINE=(BEGSFTH_1,DYDS,DS1S,DYD1,DSSA,DYD2,DSSB,DYD3,DSCS,PCPM1,BTM1,DXDCU1a,TV1L0_VGC_1,DXDCU1b,TP_HXTES0,
+         DXDCU2a,TV1L0_VRM_1,TV1L0_GCC_1,TV1L0_GPI_1,DXDCU2b,XDCa,RTDSL0,XDCb,XDCc,RTDSL0_YAGXRAY,XDCd,DXDCD1,IM1L0_XTES_VGC_1,
+         DXDCD2a,IM1L0_XTES_VRM_1,DXDCD2b,IM1L0_XTES,DXDCD3,PCPM2,BTM2,DPM11,MBXPM1_PIP_1,DPM12,ENDSFTH_1)
 
-  SFTDUMP2: LINE=(BEGSFTH_2,BXPM1_full,DPM2,BXPM2_full,DPM31,MVV10,DPM32,DPCPM3,DPCBTM3,MBTM3,DPM4,SFTDMP,DSFTDMP,
-         BTMSFT,ENDSFTH_2)
+  SFTDUMP2: LINE=(BEGSFTH_2,BXPM1_full,DPM2,BXPM2_full,DPM31,MVV10,DPM32,DPCPM3,DPM4,SFTDMP,DSFTDMP,BTMSFT,ENDSFTH_2)
 
   SFTDUMP: LINE=(SFTDUMP1,SFTDUMP2)
 
@@ -203,7 +203,8 @@ bxpm2_full: line = (bxpm2)
 ! note that BXPM1b bend axis is aligned with the SXR undulator axis without
 ! any offset
 
-rbxpmb = brhof/bbxpm !bending radius (m) in permanent magnet
+bbxpmb = bbxpm
+rbxpmb = brhof/bbxpmb !bending radius (m) in permanent magnet
 
 abxpmbh = (lbxpm/rbxpmb)/2              !PM bend half-angle
 abxpm1bs = asin(abxpmbh)                 !bending angle of "short" half of BXPM1B
@@ -225,10 +226,10 @@ bxpm1b2: sbend, type = "4D36-C", l = lbxpm1bl, angle = abxpm1bl, hgap = gbxpm/2,
 bxpm1b: sbend, type = "4D36-C", hgap = gbxpm/2, l = lbxpm1b, angle = abxpm1b, e1 = 0, fint = 0.5, e2 = abxpm1b,
           fintx = 0.5
 
-dscsb1: drift, l = 0.478198407804 !DSCSa[L]
-dscsb2: drift, l = 0.0943         !DSCSa[L]
+dscsb: drift, l = 0.572499707805 !0.572498407804-0.13
+dpcbtm1b: drift, l = 0.014998699999 !0.15-0.135+0.13
 
-dxdcub: drift, l = 1.842223  !1.092223
+dxdcub: drift, l = 1.842223 !1.092223
 dxdcub1: drift, l = 0.8407994 !0.878299738776
 dxdcub2: drift, l = 0.0375006
 dxdcub3: drift, l = 0.878257
@@ -245,13 +246,11 @@ dxdcdb2: drift, l = 0.380049 !0.363747
 dxdcdb3: drift, l = 0.940451 !0.966253
 dxdcdb4: drift, l = 1.18874  !1.492023
 dxdcdb5: drift, l = 0.312783
-dxdcdb6: drift, l = dxdcdb[l]-dxdcdb1[l]-dxdcdb2[l]-dxdcdb3[l]-dxdcdb4[l]-dxdcdb5[l]
-
-dpm1b: drift, l = 0.448
-dpm2b: drift, l = 3.8732111/cos(abxpm1bs+abxpm1bl) !10.03
-dpm2ba: drift, l = 3.8732111/cos(abxpm1bs+abxpm1bl)
-dpm2bb: drift, l = dpm2b[l]-dpm2ba[l]
-dpcbtm3b: drift, l = 0 !BTM3B is attached to d/s face of PCPM3B
+dxdcdb6: drift, l = 0.536207300001
+                   !DXDCDB[L]-DXDCDB1[L]-DXDCDB2[L]-DXDCDB3[L]-DXDCDB4[L]&
+                   !-DXDCDB5[L]
+dpm1b: drift, l = 0.447998699999 !0.448
+dpm2b: drift, l = 3.953456653466
 dpm3b: drift, l = 8.5747889/cos(abxpm1bs+abxpm1bl) !2.272
 dpm3ba: drift, l = 0.6560246/cos(abxpm1bs+abxpm1bl)
 dpm3bb: drift, l = dpm3b[l]-dpm3ba[l]
@@ -260,24 +259,21 @@ dsftdmpb: drift, l = zsftdmp  /cos(abxpm1bs+abxpm1bl)
 pcpm1b: ecollimator, type = "ELECTRON COLL", l = lpcpm, x_limit = 0.0100, y_limit = 0.0100 !per LCLSII-3.5-PR-0111-R1
 pcpm2b: ecollimator, type = "ELECTRON COLL", l = lpcpm, x_limit = 0.0127, y_limit = 0.0127
  !PCPM3B  : ECOL, L=LPCPM/COS(ABXPM1BS+ABXPM1BL), XSIZE=0.0100, YSIZE=0.0100
-dpcpm3b: drift, l = lpcpmw/cos(abxpm1bs+abxpm1bl) !placeholder for PCPM3B
 
 btm1b: instrument, type = "BTM" !Burn-Through-Monitor behind PCPM1B
 btm2b: instrument, type = "BTM" !Burn-Through-Monitor behind PCPM2B
  !BTM3B   : INST !Burn-Through-Monitor behind PCPM3B
-mbtm3b: marker !placeholder for BTM3B
 btmsftb: instrument !Burn-Through-Monitor behind SXR safety dump
 
 tp_sxtes0: instrument, type = "INTERFACE FLANGE" !treaty point for SXR XTES system (SXTES0)
 rtdsk0: instrument, type = "RAPID TRNAD DIAG"
-rtdsk0_yagxrayb: instrument, type = "MONITORILE MON (RTD" !safety dump line X-ray screen (YAGXRAYB)
+rtdsk0_yagxrayb: instrument, type = "PROFILE MON (RTD" !safety dump line X-ray screen (YAGXRAYB)
 pc1k0_xtes: instrument, type = "PHOTON COLL" !PC1S
 em1k0_gmd: instrument, type = "GAS MONITOR DECT" !GMD1S
 im1k0_xtes: instrument, type = "IMAGER" !IM1S
 msl1s: marker, type = "adj aperture"
 sftdmpb: instrument !front face of SXR safety dump (Z'=712-715 m per PRD)
 
-vv38b: marker !vac. valve in SXR safety dump line
 rtdsk0_vgc_1: instrument, type = "GATE VALVE" !vac. valve in SXR safety dump line (VV1S)
 rtdsk0_vrm_1: instrument, type = "RIGHT ANGLE VALV"
 rtdsk0_gcc_1: instrument, type = "COLD CATHODE GAU"
@@ -293,14 +289,14 @@ mvv3s: marker !placeholder for vac. valve in SXR XTES line
 !Old split line:  BXPM1B_full : LINE=(BXPM1B1,BXPM1B2)
 
 bxpm1b_full: line = (bxpm1b)
+bxpm1b_svy: null_ele, superimpose, ref=bxpm1b, ref_origin=beginning, offset=bxpm1b1[l] !bend survey marker
 
-  SFTDUMPB1: LINE=(BEGSFTS_1,DYDS,DS1S,DYD1,DSSA,DYD2,DSSB,DYD3,DSCSB1,VV38B,DSCSB2,PCPM1B,DPCBTM1,BTM1B,DXDCUB1,
-         RTDSK0_VGC_1,DXDCUB2,TP_SXTES0,DXDCUB3,RTDSK0_VRM_1,RTDSK0_GCC_1,RTDSK0_GPI_1,DXDCUB4,XDCBa,XDCBb,XDCBc1,RTDSK0,XDCBc2,
+  SFTDUMPB1: LINE=(BEGSFTS_1,DYDS,DS1S,DYD1,DSSA,DYD2,DSSB,DYD3,DSCSB,PCPM1B,BTM1B,DPCBTM1B,DXDCUB1,RTDSK0_VGC_1,
+         DXDCUB2,TP_SXTES0,DXDCUB3,RTDSK0_VRM_1,RTDSK0_GCC_1,RTDSK0_GPI_1,DXDCUB4,XDCBa,XDCBb,XDCBc1,RTDSK0,XDCBc2,
          RTDSK0_YAGXRAYB,XDCBd,DXDCDB1,PC1K0_XTES,DXDCDB2,EM1K0_GMD_VGC_1,DXDCDB3,EM1K0_GMD,DXDCDB4,IM1K0_XTES_VRM_1,
          IM1K0_XTES_GCC_1,IM1K0_XTES_GPI_1,DXDCDB5,IM1K0_XTES,DXDCDB6,PCPM2B,BTM2B,DPM1B,ENDSFTS_1)
 
-  SFTDUMPB2: LINE=(BEGSFTS_2,BXPM1B_full,DPM2Ba,DPCPM3B,DPCBTM3B,MBTM3B,DPM2Bb,MSL1S,DPM3Ba,MVV3S,DPM3Bb,SFTDMPB,
-         DSFTDMPB,BTMSFTB,ENDSFTS_2)
+  SFTDUMPB2: LINE=(BEGSFTS_2,BXPM1B_full,DPM2B,MSL1S,DPM3Ba,MVV3S,DPM3Bb,SFTDMPB,DSFTDMPB,BTMSFTB,ENDSFTS_2)
 
   SFTDUMPB: LINE=(SFTDUMPB1,SFTDUMPB2)
 

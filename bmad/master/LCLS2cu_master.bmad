@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-02SEP2024s ***
+! *** OPTICS=AD_ACCEL-01JUN2026s ***
 
 ! ------------------------------------------------------------------------------
 ! constants and global parameters
@@ -62,7 +62,7 @@ tbety = 6.706  !twiss beta y (m)
 talfy = 0.506  !twiss alpha y
 
 ! Dummy, fitted twiss parameters at cathode which yield the above twiss parameters at
-! L0a-exit (for plotting purposes only - assumes only drift between cathode and L0a-exit)
+! L0a-exit from TWISS, COUPLE (for plotting purposes only - assumes only drift between cathode and L0a-exit)
 
 cbetx = 15.574222415628    ! consistent with back-tracked from matched OTR2 through post Aug. 11, 2008 QA01-QE04 real BDES
 calfx = -3.081460679784
@@ -81,22 +81,22 @@ ayi = 0.066916206364 !0.068770526037
 ! Twiss at the beginning of L3 linac
 
 enbegl3 = 5.0
-bxbegl3 = 11.063556098154 !11.063556098243
-axbegl3 = -0.94968706938  !-0.949687069393
-bybegl3 = 70.645797110343 !70.645797110388
-aybegl3 = 2.189962742982 ! 2.189962742976
+bxbegl3 = 11.063556098154
+axbegl3 = -0.94968706938
+bybegl3 = 70.645797110343
+aybegl3 = 2.189962742982
 
 ! Twiss at the end of L3 linac (L3END)
 
 enendl3 = 8.0
-bxendl3 = 33.223271647513 !33.223271647948
-axendl3 = 1.179788571596 ! 1.179788571613
-byendl3 = 62.179034958969 !62.179034958633
-ayendl3 = -1.656755986924 !-1.656755986913
+bxendl3 = 33.223271647513
+axendl3 = 1.179788571596
+byendl3 = 62.179034958969
+ayendl3 = -1.656755986924
 
 ! initial Twiss at BEGCLTS (see CUSXR.xsif)
 
-! periodic Twiss in HXR dogleg cells (@ MM1; copy from LCLS2sc_master.xsif)
+! periodic Twiss in HXR dogleg cells (@MM1; copy from LCLS2sc_master.xsif)
 
 mbetxh = 48.911502413792
 malfxh = 3.141736059434
@@ -109,13 +109,6 @@ bxedh = 46.225914290403
 axedh = -1.084608326581
 byedh = 46.225914290403
 ayedh = 1.084608326581
-
-! match into SXR dogleg (@ MM1B)
-
-mbetxs = 14.122413294533 !14.225768169159
-malfxs = -0.492130310227 !-0.494962167072
-mbetys = 41.689113504311 !41.657375271635
-malfys = 2.280526644358 ! 2.281685862975
 
 ! for matching ...
 
@@ -197,7 +190,6 @@ dbmark29: marker !(IV30-9  ) LI30 isolation valve ... start of BSY
 call, file = common.bmad
 call, file = SPRD.bmad
 call, file = CUSXR.bmad
-call, file = ALINE.bmad
 call, file = BYP.bmad
 call, file = LTU.bmad
 call, file = UND.bmad
@@ -210,12 +202,14 @@ call, file = LCLS2cu.bmad
 call, file = LCLS_L1.bmad
 call, file = LCLS_L2.bmad
 call, file = LCLS_L3.bmad
+!=!  CALL, FILENAME="Cu_FDN.xsif"
 
 ! ... or simplified L1, L2, and L3 lattices (for ELEGANT)
 
  !CALL, FILENAME="LCLS_L1e.xsif"
  !CALL, FILENAME="LCLS_L2e.xsif"
  !CALL, FILENAME="LCLS_L3e.xsif"
+!=!! SIMPLE --# !CALL, FILENAME="Cu_FDNe.xsif"
 
 ! new BSY area definitions
 
@@ -225,11 +219,11 @@ call, file = BSYcu.bmad
 
  !CU_GSPEC : copper linac to gun spectrometer
  !CU_SPEC  : copper linac to 135 MeV spectrometer
+ !CU_SXR   : copper linac to e- SXR dump
  !CU_HXR   : copper linac to e- HXR dump
  !CU_SFTH  : copper linac to e- HXR safety dump
  !CU_HXTES : copper linac to HXR XTES system (photon)
  !CU_HTXI  : copper linac to HXR TXI system (photon)
- !CU_SXR   : copper linac to e- SXR dump
 
   CU_GSPEC : LINE=(GUNBXG,GSPEC)
   CU_SPEC  : LINE=(GUNL0a,L0aL0b,DL1_1,SPECBL)
@@ -246,11 +240,11 @@ call, file = BSYcu.bmad
   LCLS2cuCI : LINE=(DL1_2,L1,BC1,L2,BC2,L3)
 
   CU_SPECi  : LINE=(LCLS2cuI,SPECBL)
+  CU_SXRi   : LINE=(LCLS2cuI,LCLS2cuCI,BSYLTUS)
   CU_HXRi   : LINE=(LCLS2cuI,LCLS2cuCI,BSYLTUH)
   CU_SFTHi  : LINE=(LCLS2cuI,LCLS2cuCI,BSYLTUHS)
   CU_HXTESi : LINE=(LCLS2cuI,LCLS2cuCI,BSYLTUHXTES)
   CU_HTXIi  : LINE=(LCLS2cuI,LCLS2cuCI,BSYLTUHTXI)
-  CU_SXRi   : LINE=(LCLS2cuI,LCLS2cuCI,BSYLTUS)
 
 ! ------------------------------------------------------------------------------
 ! initial SURVEY coordinates

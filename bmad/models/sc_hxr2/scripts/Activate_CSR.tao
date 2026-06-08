@@ -1,0 +1,50 @@
+!---Turns on some typical CSR parameters
+
+!set global track_type = single
+
+set global plot_on = false
+set global lattice_calc_on=false
+
+!---Turn on ISR fluctuations
+set bmad_com radiation_fluctuations_on = T
+
+!---CSR---
+set space_charge_com beam_chamber_height = 0.024  ! 24 mm full height
+set space_charge_com n_shield_images = 0
+set space_charge_com ds_track_step = 0.01
+set space_charge_com n_bin = 40
+set space_charge_com particle_bin_span = 2
+set space_charge_com lsc_sigma_cutoff = 0.1 ! Cutoff for the lsc calc. If a bin sigma is < cutoff * sigma_ave then ignore.
+
+!---------------------------------------------
+alias csrstep set space_charge_com ds_track_step = [[1]]
+
+alias csron  set bmad_com csr_and_space_charge_on = T
+alias csroff set bmad_com csr_and_space_charge_on = F
+
+set bmad_com csr_and_space_charge_on = T
+
+
+! Master switches
+set ele * space_charge_method = slice
+set ele * CSR_METHOD  = 1_Dim
+
+set ele HXRSTART:END space_charge_method = off
+set ele HXRSTART:END csr_method = off
+
+! Selectively turn off CSR for non-dispersive sections
+set ele BEGINNING:BEGBC1B csr_method = off
+set ele ENDBC1B:BEGBC2B csr_method = off
+set ele ENDBC2B:BEGDOG csr_method = off
+
+
+! Test 
+set ele BEGDOG:HXRSTART csr_method = off
+set ele BEGDOG:HXRSTART space_charge_method = off
+
+set space_charge_com n_bin = 40
+
+
+
+set global lattice_calc_on=true
+set global plot_on = true
