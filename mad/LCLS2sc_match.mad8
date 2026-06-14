@@ -1689,7 +1689,7 @@
 
 ! ------------------------------------------------------------------------------
 
-  MGEODIAGI : SUBROUTINE !match DIAGI geometry
+  MGEODIAGIS : SUBROUTINE !match DIAGIS geometry
     BEAM, ENERGY=E0LEI
     USE, SC_DIAGIS
     VALUE, DDGI00[L]
@@ -1707,7 +1707,7 @@
 
 ! ------------------------------------------------------------------------------
 
-  MDIAGICELL : SUBROUTINE !match DIAGI 90-deg cell
+  MDIAGISCELL : SUBROUTINE !match DIAGI 90-deg cell
     BEAM, ENERGY=Ei
     USE, FODODGI
     VALUE, KQDGI05
@@ -1725,7 +1725,7 @@
 
 ! ------------------------------------------------------------------------------
 
-  MBXBYDIAGI : SUBROUTINE !match DIAGI beta
+  MBXBYDIAGIS : SUBROUTINE !match DIAGIS beta
     BEAM, ENERGY=Ei
     USE, SC_DIAGISi
     VALUE, KQDGI01,KQDGI02,KQDGI03,KQDGI04,KQDGI05
@@ -1754,10 +1754,10 @@
     PRINT, FULL
     TWISS, BETA0=TWSSiLEI, SAVE
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, FILE="match", &
-      STYLE=100, SPLINE, RANGE=BEGDIAGI_1/#E, &
+      STYLE=100, SPLINE, RANGE=BEGDIAGIS/#E, &
       TITLE="LEI spectrometer"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, FILE="match", &
-      STYLE=100, -SPLINE, RANGE=BEGDIAGI_1/#E, &
+      STYLE=100, -SPLINE, RANGE=BEGDIAGIS/#E, &
       TITLE="LEI spectrometer"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
       STYLE=100, SPLINE, FILE="match", RANGE=#S/#E, &
@@ -1773,7 +1773,7 @@
 
 ! ------------------------------------------------------------------------------
 
-  MTCAVDIAGI : SUBROUTINE !match phase advance from TCAV center to OTRDGI1
+  MTCAVDIAGIS : SUBROUTINE !match phase advance from TCAV center to OTRDGI1
     BEAM, ENERGY=Ei
     USE, SC_DIAGISi
     SETK2scDGI
@@ -1809,10 +1809,10 @@
    !TWISS, COUPLE, BETA0=TWSSiLEI, SAVE
     TWISS, BETA0=TWSSiLEI, SAVE
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, FILE="match", &
-      STYLE=100, SPLINE, RANGE=BEGDIAGI_1/#E, &
+      STYLE=100, SPLINE, RANGE=BEGDIAGIS/#E, &
       TITLE="LEI spectrometer (TCAV optics)"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, FILE="match", &
-      STYLE=100, -SPLINE, RANGE=BEGDIAGI_1/#E, &
+      STYLE=100, -SPLINE, RANGE=BEGDIAGIS/#E, &
       TITLE="LEI spectrometer (TCAV optics)"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
       STYLE=100, SPLINE, RANGE=#S/#E, FILE="match", &
@@ -2684,6 +2684,7 @@
   MUNDs : SUBROUTINE
     BEAM, ENERGY=Ei
     SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
+    SET, QSXh47[K1], kQDSX
     USE, SC_SXRi
     VALUE, KQUM1B,KQUM2B,KQUM3B,KQUM4B
     MATCH, BETA0=TWSSi
@@ -2694,34 +2695,32 @@
       WEIGHT, X=0, PX=0, BETX=1, ALFX=0, DX=0, DPX=0
       WEIGHT, Y=0, PY=0, BETY=1, ALFY=0, DY=0, DPY=0
       WEIGHT, T=0, PT=0
-     !comment !long-period
+      COUPLE, QSXh20[1]/QSXh22[1]
       COUPLE, QSXh21[1]/QSXh23[1]
-      COUPLE, QSXh22[1]/QSXh24[1]
+      COUPLE, QSXh20[1]/QSXh24[1]
       COUPLE, QSXh21[1]/QSXh25[1]
-      COUPLE, QSXh22[1]/QSXh26[1]
+      COUPLE, QSXh20[1]/QSXh26[1]
       COUPLE, QSXh21[1]/QSXh27[1]
-      COUPLE, QSXh22[1]/QSXh28[1]
+      COUPLE, QSXh20[1]/QSXh28[1]
       COUPLE, QSXh21[1]/QSXh29[1]
-      COUPLE, QSXh22[1]/QSXh30[1]
+      COUPLE, QSXh20[1]/QSXh30[1]
       COUPLE, QSXh21[1]/QSXh31[1]
-      COUPLE, QSXh22[1]/QSXh32[1]
+      COUPLE, QSXh20[1]/QSXh32[1]
       COUPLE, QSXh21[1]/QSXh33[1]
-      COUPLE, QSXh22[1]/QSXh34[1]
+      COUPLE, QSXh20[1]/QSXh34[1]
       COUPLE, QSXh21[1]/QSXh35[1]
-      COUPLE, QSXh22[1]/QSXh36[1]
+      COUPLE, QSXh20[1]/QSXh36[1]
       COUPLE, QSXh21[1]/QSXh37[1]
-      COUPLE, QSXh22[1]/QSXh38[1]
+      COUPLE, QSXh20[1]/QSXh38[1]
       COUPLE, QSXh21[1]/QSXh39[1]
-      COUPLE, QSXh22[1]/QSXh40[1]
+      COUPLE, QSXh20[1]/QSXh40[1]
       COUPLE, QSXh21[1]/QSXh41[1]
-      COUPLE, QSXh22[1]/QSXh42[1]
-     !endcomment
-      comment !short-period
+      COUPLE, QSXh20[1]/QSXh42[1]
       COUPLE, QSXh21[1]/QSXh43[1]
-      COUPLE, QSXh22[1]/QSXh44[1]
+      COUPLE, QSXh20[1]/QSXh44[1]
       COUPLE, QSXh21[1]/QSXh45[1]
-      COUPLE, QSXh22[1]/QSXh46[1]
-      endcomment
+      COUPLE, QSXh20[1]/QSXh46[1]
+      COUPLE, QSXh21[1]/QSXh47[1]
       WEIGHT, BETX=1.E-6, BETY=1.E-6
       CONSTR, QUM1B[1], BETX<75
       CONSTR, QUM2B[1], BETY<75
@@ -4106,10 +4105,10 @@ ENDCOMMENT
  !ML0LEIDLI
  !MDLIHTR
  !MLHD0LEI
- !MGEODIAGI
- !MDIAGICELL
- !MBXBYDIAGI
- !MTCAVDIAGI
+ !MGEODIAGIS
+ !MDIAGISCELL
+ !MBXBYDIAGIS
+ !MTCAVDIAGIS
 
 ! ------------------------------------------------------------------------------
 

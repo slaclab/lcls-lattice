@@ -1,7 +1,7 @@
 function [lines,out]=model_parseMAD(MADrelease,fileDir, ...
   file,nOut,blList,simplify,opts)
 
-% *** OPTICS=AD_ACCEL-01JUN2026s ***
+% *** OPTICS=AD_ACCEL-preRelease ***
 
 % ------------------------------------------------------------------------------
 % History

@@ -329,8 +329,8 @@
 ! L0LEI   : L0LEI (end cap, CM00, feed cap, mechanical stay-clear)
 ! LEI_1   : L0LEI to DLI/DIAGI (TCAV)
 ! LEI_2   : LEI dogleg (DLI)
-! DIAGI_1 : LEI diagnostics line (emittance measurement)
-! DIAGI_2 : LEI spectrometer line (longitudinal phase space measurement)
+! DIAGIS  : LEI diagnostics line (emittance measurement) and spectrometer line
+!           (longitudinal phase space measurement)
 ! ==============================================================================
 
 ! ==============================================================================
@@ -535,16 +535,6 @@
       RTAPE="LCLS2scSi_rmat.tape"
 
     BEAM, ENERGY=E0
-    SET, SETSP, SETSPd ; SET, SETDA, DAON
-    USE, SC_DASEL
-    TWISS, COUPLE, BETA0=TWSS0, TAPE="LCLS2scDA_twiss.tape", &
-      RTAPE="LCLS2scDA_rmat.tape"
-    BEAM, ENERGY=Ei
-    USE, SC_DASELi
-    TWISS, BETA0=TWSSi, TAPE="LCLS2scDAi_twiss.tape", &
-      RTAPE="LCLS2scDAi_rmat.tape"
-
-    BEAM, ENERGY=E0
     SET, SETSP, SETSPd ; SET, SETDA, DAOFF
     USE, SC_BSYD
     TWISS, COUPLE, BETA0=TWSS0, TAPE="LCLS2scD_twiss.tape", &
@@ -553,6 +543,16 @@
     USE, SC_BSYDi
     TWISS, BETA0=TWSSi, TAPE="LCLS2scDi_twiss.tape", &
       RTAPE="LCLS2scDi_rmat.tape"
+
+    BEAM, ENERGY=E0
+    SET, SETSP, SETSPd ; SET, SETDA, DAON
+    USE, SC_DASEL
+    TWISS, COUPLE, BETA0=TWSS0, TAPE="LCLS2scDA_twiss.tape", &
+      RTAPE="LCLS2scDA_rmat.tape"
+    BEAM, ENERGY=Ei
+    USE, SC_DASELi
+    TWISS, BETA0=TWSSi, TAPE="LCLS2scDAi_twiss.tape", &
+      RTAPE="LCLS2scDAi_rmat.tape"
 
     STOP
   ENDCOMMENT
@@ -601,16 +601,6 @@
     TWISS, BETA0=TWSSiLEI, TAPE="LCLS2scS2i_twiss.tape", &
       RTAPE="LCLS2scS2i_rmat.tape"
 
-    SET, SETSP, SETSPd ; SET, SETDA, DAON
-    BEAM, ENERGY=E0LEI
-    USE, SC_DASEL2
-    TWISS, COUPLE, BETA0=TWSS0LEI, TAPE="LCLS2scDA2_twiss.tape", &
-      RTAPE="LCLS2scDA2_rmat.tape"
-    BEAM, ENERGY=Ei
-    USE, SC_DASELi2
-    TWISS, BETA0=TWSSiLEI, TAPE="LCLS2scDA2i_twiss.tape", &
-      RTAPE="LCLS2scDA2i_rmat.tape"
-
     SET, SETSP, SETSPd ; SET, SETDA, DAOFF
     BEAM, ENERGY=E0LEI
     USE, SC_BSYD2
@@ -620,6 +610,16 @@
     USE, SC_BSYDi2
     TWISS, BETA0=TWSSiLEI, TAPE="LCLS2scD2i_twiss.tape", &
       RTAPE="LCLS2scD2i_rmat.tape"
+
+    SET, SETSP, SETSPd ; SET, SETDA, DAON
+    BEAM, ENERGY=E0LEI
+    USE, SC_DASEL2
+    TWISS, COUPLE, BETA0=TWSS0LEI, TAPE="LCLS2scDA2_twiss.tape", &
+      RTAPE="LCLS2scDA2_rmat.tape"
+    BEAM, ENERGY=Ei
+    USE, SC_DASELi2
+    TWISS, BETA0=TWSSiLEI, TAPE="LCLS2scDA2i_twiss.tape", &
+      RTAPE="LCLS2scDA2i_rmat.tape"
 
     STOP
   ENDCOMMENT
@@ -648,8 +648,8 @@
 
 ! ------------------------------------------------------------------------------
 
- !CALL, FILENAME="AbendOpti.mad8"      !compute Aline LGPS/BTRM settings
- !CALL, FILENAME="patch.mad8"          !Matching Study or QuadScan
+ !CALL, FILENAME="AbendOpti.mad8" !compute Aline LGPS/BTRM settings
+ !CALL, FILENAME="patch.mad8"     !Matching Study or QuadScan
   
 ! ------------------------------------------------------------------------------
 
