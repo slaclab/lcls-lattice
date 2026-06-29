@@ -73,12 +73,13 @@ if LCLS_LATTICE_ENV is None:
   print('Error:  LCLS_LATTICE is not set')
   sys.exit(1)
 
-LINES_ROOTS = ['sc_sxr','sc_hxr','sc_bsyd','sc_dasel','sc_diag0','cu_sxr','cu_hxr']
+LINES_ROOTS = ['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','sc_dasel','sc_diag02','sc_diagis',
+               'cu_sxr','cu_hxr','sc_hxr2','sc_sxr2','sc_bsyd2','sc_dasel2']
 LINES_EXCLUDE = ['', '    ',]
 
 BDIR = f'{LCLS_LATTICE_ENV}/bmad/'
-MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','sc_diag02','sc_diagis','sc_dasel','sc_sfts','cu_sxr','cu_hxr','cu_sfth','cu_gspec','cu_spec',
-        'sc_sxr_bsy', 'sc_hxr_bsy', 'sc_bsyd_bsy', 'sc_dasel_bsy', 'sc_sfts_bsy', 'cu_sxr_bsy', 'cu_hxr_bsy', 'cu_sfth_bsy']
+MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','sc_dasel','sc_sfts','sc_diag02','sc_diagis','cu_sxr','cu_hxr','cu_sfth','cu_gspec','cu_spec',
+        'sc_sxr_bsy', 'sc_hxr_bsy', 'sc_bsyd_bsy', 'sc_dasel_bsy', 'sc_sfts_bsy', 'cu_sxr_bsy', 'cu_hxr_bsy', 'cu_sfth_bsy','sc_hxr2','sc_sxr2','sc_dasel2','sc_bsyd2']
 LATFILE = {}
 for model in MODELS:
   LATFILE[model] = f'{LCLS_LATTICE_ENV}/bmad/survey_models/{model}.lat.bmad'
@@ -172,8 +173,10 @@ with open('value_data.json','w') as f:
 #  x y z suml
 #  theta phi psi
 
+name_log = set()
 for model in MODELS:
   area = '_'
+  name_log.clear()
   with open(model+'_survey.tape','w') as f, \
        (open(model+'_lines.precursor','w') if model in LINES_ROOTS else nullcontext()) as flin:
     f.write(f'Linux    Bmad Survey/{timestamp}\n\n')
@@ -271,7 +274,10 @@ for model in MODELS:
       f.write(line)
       if model in LINES_ROOTS:
         if madk not in LINES_EXCLUDE:
-          flin.write(f'<PV> {name_use:16s} {madk} {suml:16.9E} {z:16.9E} {model.upper()} {area}\n')
+          if name_use not in name_log:
+            #flin.write(f'<PV> {name_use:16s} {madk} {suml:16.9E} {z:16.9E} {model.upper()} {area}\n')
+            flin.write(f'<PV> {name_use:16s} {madk} {suml:.6f} {z:.6f} {model.upper()} {area}\n')
+            name_log.add(name_use)
     f.write('\n')
     f.write(f"{' '*33}{suml:.9E}")
 
