@@ -59,15 +59,21 @@ def double_round_new(x, ndigits):
   q = Decimal(1).scaleb(-ndigits)           # 10**(-ndigits)
   return float(d.quantize(q, rounding=ROUND_HALF_UP))
 
+header = '#name           key         ' + ''.join([f'{p:>19s}' for p in params]) + '\n'
+
 for model in MODELS:
+  header_counter = 50
   print(f'model {model}')
   with open(model+'_twiss.dat','w') as f:
     f.write(f'# Linux    Bmad Twiss/{timestamp}\n')
-    f.write(f'# name, key, s, beta_a, beta_b, phi_a, phi_b, eta_x, eta_y, e_tot\n')
     tao = Tao(lattice_file=LATFILE[model], noplot=True)
     ix_eles = tao.lat_list('*', 'ele.ix_ele')
     suml = 0
     for ix in ix_eles[:-1]:
+      if header_counter >= 50:
+        f.write(header)
+        header_counter = 0
+      header_counter += 1
       name = tao.lat_list(ix,'ele.name')[0]
       key = tao.lat_list(ix,'ele.key')[0]
       if key.upper() in skips:
@@ -115,7 +121,7 @@ for model in MODELS:
 
       vals = [my_lat_list(ix,p) for p in params]
 
-      line = f'{name:<11s}   {key:<15s}' + '   '.join([f'{x:>16.9E}' for x in vals])
+      line = f'{name[:13]:<13s}   {key:<15s}' + '   '.join([f'{x:>16.9E}' for x in vals])
       line = line + '\n'
         
       f.write(line)

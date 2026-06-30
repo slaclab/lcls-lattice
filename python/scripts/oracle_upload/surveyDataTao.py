@@ -176,15 +176,15 @@ with open('value_data.json','w') as f:
 timestamp_alt = datetime.now().strftime('%d-%m-%y  %H.%M.%S')
 
 def write_print_header(f,model):
-    header = f'''
-                                                                                 "Bmad"                    Run: {timestamp_alt}
-Survey.                      SURVEY              line: {model.upper()}
-
-----------------------------------------------------------------------------------------------------------------------------------
-      E L E M E N T   S E Q U E N C E        I            P O S I T I O N S             I               A N G L E S              
-pos.  element occ.     sum(L)       arc      I     x             y             z        I     theta         phi           psi 
-no.   name    no.      [m]          [m]      I     [m]           [m]           [m]      I     [rad]         [rad]         [rad] 
----------------------------------------------------------------------------------------------------------------------------------- 
+    header = f'''\
+#                                                                                 "Bmad"                    Run: {timestamp_alt}
+#Survey.                      SURVEY              line: {model.upper()}
+# 
+#------------------------------------------------------------------------------------------------------------------------------------
+#       E L E M E N T   S E Q U E N C E          I            P O S I T I O N S             I               A N G L E S              
+#pos.   element   occ.     sum(L)       arc      I     x             y             z        I     theta         phi           psi 
+#no.    name      no.      [m]          [m]      I     [m]           [m]           [m]      I     [rad]         [rad]         [rad] 
+#------------------------------------------------------------------------------------------------------------------------------------
 '''
     f.write(header)
 
@@ -196,7 +196,7 @@ for model in MODELS:
        open(model+'.print','w') as fprt, \
        (open(model+'_lines.precursor','w') if model in LINES_ROOTS else nullcontext()) as flin:
     f.write(f'Linux    Bmad Survey/{timestamp}\n\n')
-    write_print_header(fprt,model)
+    print_counter = 50
     tao = Tao(lattice_file=LATFILE[model], noplot=True)
     ix_eles = tao.lat_list('*', 'ele.ix_ele')
     suml = 0
@@ -289,13 +289,17 @@ for model in MODELS:
       line = line + f'{theta:16.9E}{phi:16.9E}{psi:16.9E}\n'
 
       #produce .print output
+      if(print_counter >= 50):
+        write_print_header(fprt,model)
+        print_counter = 0
       seq_number = 1
       if len(inspect_name) > 1:
         seq_number = inspect_name[1]
       s = tao.lat_list(ix,'ele.s')[0]
       floor = tao.ele_floor(ix)['Reference']
       x,y,z,th,ps,ph = [floor[i] for i in range(6)]
-      fprt.write(f' {ix:6} {inspect_name[0][:10]:10} {seq_number:1} {suml:12.6f} {s:12.6f} {x:12.6f} {y:12.6f} {z:12.6f} {th:12.6f} {ps:12.6f} {ph:12.6f}\n')
+      fprt.write(f' {ix:6} {inspect_name[0][:11]:11} {seq_number:1}  {suml:12.6f} {s:12.6f}  {x:13.6f} {y:13.6f} {z:13.6f}  {th:13.6f} {ps:13.6f} {ph:13.6f}\n')
+      print_counter += 1
         
       f.write(line)
       if model in LINES_ROOTS:

@@ -16,6 +16,7 @@ OPTICS = 04MAY2026s
 # Expand model-specific files
 SURVEY_TAPES = $(foreach model,$(SURVEY_MODELS) $(BSY_SURVEY_MODELS),$(model)_survey.tape)
 TWISS_DATS = $(foreach model,$(TWISS_MODELS),$(model)_twiss.dat)
+PRINT_FILES = $(foreach model,$(TWISS_MODELS),$(model).print)
 LINES_PRECURSORS = $(foreach model,$(SURVEY_MODELS),$(model)_lines.precursor)
 LINES_ALLS = $(foreach model,$(SURVEY_MODELS),$(model)_lines.all)
 LINES_DATS = $(foreach model,$(SURVEY_MODELS),$(model)_lines.dat)
@@ -48,7 +49,7 @@ value_data.json $(SURVEY_TAPES) $(LINES_PRECURSORS) &: unified_keys.dat
 	python $(SCRIPT_DIR)/surveyDataTao.py
 
 # twissDataTao.py
-$(TWISS_DATS) &: unified_keys.dat
+$(TWISS_DATS) $(PRINT_FILES) &: unified_keys.dat
 	python $(SCRIPT_DIR)/twissDataTao.py
 
 # elementdevices_bmad.py
@@ -168,11 +169,11 @@ WEB:=.htaccess
 
 docs: $(PLOTS_PDFS) $(LINES_ALLS) $(DOTS) $(DOTS_PDFS) $(MAPICON_PNGS) opticsicons
 
-oracle_upload: $(TWISS_DATS) $(ELEMENTDEVICES) ips.dump AD_ACCEL-$(OPTICS).txt BSY-AD_ACCEL-$(OPTICS).txt AD_ACCEL-extra-$(OPTICS).txt BSC-AD_ACCEL-$(OPTICS).txt $(BSC_TXTS)
+oracle_upload: $(PRINT_FILES) $(TWISS_DATS) $(ELEMENTDEVICES) ips.dump AD_ACCEL-$(OPTICS).txt BSY-AD_ACCEL-$(OPTICS).txt AD_ACCEL-extra-$(OPTICS).txt BSC-AD_ACCEL-$(OPTICS).txt $(BSC_TXTS)
 
 stage : #all
 	mkdir -p installstage
-	rsync -az $(SURVEY_TAPES) $(TWISS_DATS) $(PLOTS_PDFS) $(WEB) installstage
+	rsync -az $(SURVEY_TAPES) $(PRINT_FILES) $(TWISS_DATS) $(PLOTS_PDFS) $(WEB) installstage
 	rsync -az $(DOTS) $(DOTS_PDFS) $(MAPICON_PNGS) $(LINES_DATS) $(WEB) $(ELEMENTDEVICES) installstage/opt
 	rsync -as *_opticsicon.png installstage/opt
 	rsync -az ../mad/*.mad8 ../mad/*.xsif installstage/src
@@ -188,7 +189,7 @@ install_lines : stage
 	rsync -azv $(LINES_DATS) $(LINESLOCATION)
 
 mostlyclean:
-	rm -f value_data.json ips.dump $(SURVEY_TAPES) $(TWISS_DATS)
+	rm -f value_data.json ips.dump $(SURVEY_TAPES) $(TWISS_DATS) $(PRINT_FILES)
 	rm -f elementdevices*.dat $(PLOTS_PDFS) $(LINES_PRECURSORS) $(LINES_ALLS) $(LINES_DATS)
 	rm -f $(DOTS) *_mapicon.png *_opticsicon.png
 	rm -f BSC_*.txt *_survey.tape *_map.pdf
