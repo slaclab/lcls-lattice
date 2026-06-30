@@ -173,13 +173,30 @@ with open('value_data.json','w') as f:
 #  x y z suml
 #  theta phi psi
 
+timestamp_alt = datetime.now().strftime('%d-%m-%y  %H.%M.%S')
+
+def write_print_header(f,model):
+    header = f'''
+                                                                                 "Bmad"                    Run: {timestamp_alt}
+Survey.                      SURVEY              line: {model.upper()}
+
+----------------------------------------------------------------------------------------------------------------------------------
+      E L E M E N T   S E Q U E N C E        I            P O S I T I O N S             I               A N G L E S              
+pos.  element occ.     sum(L)       arc      I     x             y             z        I     theta         phi           psi 
+no.   name    no.      [m]          [m]      I     [m]           [m]           [m]      I     [rad]         [rad]         [rad] 
+---------------------------------------------------------------------------------------------------------------------------------- 
+'''
+    f.write(header)
+
 name_log = set()
 for model in MODELS:
   area = '_'
   name_log.clear()
   with open(model+'_survey.tape','w') as f, \
+       open(model+'.print','w') as fprt, \
        (open(model+'_lines.precursor','w') if model in LINES_ROOTS else nullcontext()) as flin:
     f.write(f'Linux    Bmad Survey/{timestamp}\n\n')
+    write_print_header(fprt,model)
     tao = Tao(lattice_file=LATFILE[model], noplot=True)
     ix_eles = tao.lat_list('*', 'ele.ix_ele')
     suml = 0
@@ -270,6 +287,15 @@ for model in MODELS:
       x,y,z,theta,phi,psi = map(float,floor)
       line = line + "\n" + f'{x:16.9E}{y:16.9E}{z:16.9E}{suml:16.9E}' + "\n"
       line = line + f'{theta:16.9E}{phi:16.9E}{psi:16.9E}\n'
+
+      #produce .print output
+      seq_number = 1
+      if len(inspect_name) > 1:
+        seq_number = inspect_name[1]
+      s = tao.lat_list(ix,'ele.s')[0]
+      floor = tao.ele_floor(ix)['Reference']
+      x,y,z,th,ps,ph = [floor[i] for i in range(6)]
+      fprt.write(f' {ix:6} {inspect_name[0][:10]:10} {seq_number:1} {suml:12.6f} {s:12.6f} {x:12.6f} {y:12.6f} {z:12.6f} {th:12.6f} {ps:12.6f} {ph:12.6f}\n')
         
       f.write(line)
       if model in LINES_ROOTS:
