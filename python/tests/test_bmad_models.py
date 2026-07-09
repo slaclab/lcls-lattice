@@ -8,6 +8,7 @@ mdir = os.path.expandvars("$LCLS_LATTICE/bmad/models")
 MODELS = [
  'cu_sxr',
  'cu_spec',
+ 'cu_gspec',
  'sc_diag0',
  'cu_hxr',
  'sc_dasel',
