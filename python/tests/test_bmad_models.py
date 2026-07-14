@@ -6,19 +6,21 @@ mdir = os.path.expandvars("$LCLS_LATTICE/bmad/models")
 
 # Select models for testing. 
 MODELS = [
-    'cu_sxr',
- #'hxr',
+ 'cu_sxr',
  'cu_spec',
-# 'lcls_complex',
  'sc_diag0',
  'cu_hxr',
-# 'cu_inj',
  'sc_dasel',
- #'cu_linac',
- 'sc_inj',
  'sc_sxr',
  'sc_hxr',
- 'sc_bsyd']
+ 'sc_bsyd',
+ 'sc_diag02',
+ 'sc_diagis',
+ 'sc_hxr2',
+ 'sc_sxr2',
+ 'sc_bsyd2',
+ 'sc_dasel2',
+]
 
 
 def run_tao(model):

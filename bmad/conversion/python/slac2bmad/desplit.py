@@ -1,5 +1,5 @@
 
-def desplit_ele(line, double_length=True, verbose=True):
+def desplit_ele(line, double_length=True, verbose=True, exclude_strs=None):
     """
     De-splits elements. Converts form:
     ele_full: line (ele, other...eles, ele) to:
@@ -21,9 +21,10 @@ def desplit_ele(line, double_length=True, verbose=True):
     """
     # Check if this is a _full line
     original_line = line
-    line = line.lower() # Always work with lower case
-    
+    line = line.lower().strip() # Always work with lower case
+
     s = line.split(':')
+
     if len(s) ==1:
         return original_line
     ix = s[0].find('_full')
@@ -32,16 +33,26 @@ def desplit_ele(line, double_length=True, verbose=True):
     # Should be. 
     ele, line = line.split(':')
     ele = ele.strip()
-    
+
+    if exclude_strs is not None:
+        for exclude_str in exclude_strs:
+            if ele.startswith(exclude_str.lower()):
+                return original_line
+
+
     name = ele.split('_full')[0]
     eles = [e.strip() for e in (line.split('(')[1].split(')')[0]).split(',')]
-    
+
     # Check for just one ele definition
     if len(eles)==1:
         if verbose:
             print('Info: line only has one ele:', original_line)
         return original_line
-    
+
+    # Check for special offset quad chicane QDG00
+    if name.lower() in ['qdg001', 'qdg003']:
+      return original_line
+
     # Make sure this is true
     if eles[0] != name or eles[-1] != name:
         #return original_line
@@ -63,25 +74,30 @@ def desplit_ele(line, double_length=True, verbose=True):
                 print(name, eles[0])
                 print(f'Warning: different starting and ending ele names: {original_line}, skipping.')
             return original_line
-    
+
     if verbose:
         print(f'Desplitting ele: {name}')
-    
+
     #assert eles[0] == name
     #assert eles[-1] == name
     insideeles = eles[1:-1]
-    
+
     lines = ['\n', '!Old split line:'+original_line]
     lines.append(name+'_full: line = ('+name+')')
     if double_length:
         lines.append(name+'[L] = 2*'+name+'[L]')
+        if not insideeles:
+          lines.append(f'{name}_svy: null_ele, superimpose, ref={name}')
     for e in insideeles:
         lines.append(e+'[superimpose] = T')
         lines.append(e+'[ref] = '+name)
+    if not double_length and not insideeles:
+        suffix = eles[0][-1]
+        lines.append(f'{name}_svy: null_ele, superimpose, ref={name}, ref_origin=beginning, offset={name}{suffix}[l] !bend survey marker')
     lines.append('\n')
-    
+
     output = '\n'.join(lines)
-    
+
     return output
 
 
@@ -121,5 +137,5 @@ def process_padded_desplit(name, eles, note=""):
 
 
         
-def desplit_eles(lines, verbose=True):
-    return [desplit_ele(line, verbose=verbose) for line in lines]
+def desplit_eles(lines, verbose=True, exclude_strs=None):
+    return [desplit_ele(line, verbose=verbose, exclude_strs=exclude_strs) for line in lines]

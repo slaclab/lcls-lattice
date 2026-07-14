@@ -1,53 +1,93 @@
 
-! *** OPTICS=AD_ACCEL-18FEB2025s ***
+! *** OPTICS=AD_ACCEL-01JUN2026s ***
 
 ! LCLS2cu matching routines
 
   OPTION, -ECHO
 
-! ------------------------------------------------------------------------------
+  GLmaxQUMb := 67 !BMAX = 67 kG @ 120 A (bipolar) for 1.085Q4.31
+  KmaxQUMb  := GLmaxQUMb/LQE/(Cb*10) !max |K1| @ 10 GeV for QUM1B-4B
+
+  KmaxQR := 47.31/(Cb*15*LQR) !max |K1| @ 165 A for 2Q10 (15 GeV)
+  KmaxQD := 50/(Cb*15*LQD) !max |K1| @ 50 A for 3.25Q20 (15 GeV)
+ !KmaxQD := 40.00/(Cb*15*LQD) !max |K1| @ 38 A for a 3.25Q20 (15 GeV)
+ !KmaxQD := 40/(Cb*17*LQD) !max |K1| @ 38 A for 3.25Q20 (17 GeV)
+  VALUE, KmaxQR,KmaxQD
 
   TCUSXR0 := TCUSXR
 
-  TBSY  : BETA0
-  TWSa  : BETA0
-  TWSb  : BETA0
-  TWSm  : BETA0
-  TWm   : BETA0
-  TWm26 : BETA0
-
-  GLmaxQUM  := 100 !BMAX = 100 kG @ 120 A (bipolar) for 1.26Q12
-  KmaxQUM15 := GLmaxQUM/LQA/(Cb*15) !max |K1| @ 15 GeV for QUM1-4
-  KmaxQUM10 := GLmaxQUM/LQA/(Cb*10) !max |K1| @ 10 GeV for QUM1-4
-
-  GLmaxQUMb  := 67 !BMAX = 67 kG @ 120 A (bipolar) for 1.085Q4.31
-  KmaxQUMb15 := GLmaxQUMb/LQE/(Cb*15) !max |K1| @ 15 GeV for QUM1B-4B
-  KmaxQUMb10 := GLmaxQUMb/LQE/(Cb*10) !max |K1| @ 10 GeV for QUM1B-4B
-
-  GLmaxQu  := 40 !BMAX = 40 kG @ 6 A (bipolar) for 0.433Q3.1
-  KmaxQu15 := GLmaxQu/LQu/(Cb*15) !max |K1| @ 15 GeV for HXR undulator quads
-  KmaxQu10 := GLmaxQu/LQu/(Cb*10) !max |K1| @ 10 GeV for SXR undulator quads
-
-  !VALUE, KmaxQUM15,KmaxQUMb15,KmaxQu15
-  !VALUE, KmaxQUM10,KmaxQUMb10,KmaxQu10
-
-  KminQUM1b := -1 ; KmaxQUM1b := +1 !bipolar
-  KminQUM2b := -1 ; KmaxQUM2b := +1 !bipolar
-  KminQUM3b := -1 ; KmaxQUM3b := +1 !bipolar
-  KminQUM4b := -1 ; KmaxQUM4b := +1 !bipolar
-  KminQSX16 := -1 ; KmaxQSX16 := +1 !bipolar
-  KminQSX47 := -1 ; KmaxQSX47 := +1 !bipolar
-  KminQUE1b :=  0 ; KmaxQUE1b := +1 !unipolar QF
-  KminQUE2b := -1 ; KmaxQUE2b :=  0 !unipolar QD
-  KminQDMPb := -1 ; KmaxQDMPb :=  0 !unipolar QD
-
-  MBETX := 1
-  MALFX := 0
-  MBETY := 1
-  MALFY := 0
+  TBSY   : BETA0
+  TWSa   : BETA0
+  TWSb   : BETA0
+  TWSm   : BETA0
+  TWSSms : BETA0
 
 ! ==============================================================================
-! Original LCLS matching SUBROUTINEs
+! SUBROUTINEs
+! ------------------------------------------------------------------------------
+
+! ------------------------------------------------------------------------------
+! Note: SETK2cuS.xsif and SETK2cuH.xsif use parameter redefinition, which
+!       is not allowed within a SUBROUTINE by MAD8. Use the SUBROUTINE's below,
+!       which use SET commands, when matching ... copy final matched values to
+!       xsif-files.
+! ------------------------------------------------------------------------------
+
+  SETK2cuS : SUBROUTINE !for LCLS2cuS
+
+  ! set quad strengths for 8 GeV Cu-linac beam to DMPS
+
+  !                     Cu               SC
+  !              ---------------  ---------------
+    SET, KQBP33, -0.644538157053 !-0.372473815777
+    SET, KQBP34,  0.597475524331 ! 0.549116661002
+    SET, KQDBL1, -1.080108740787 !-0.050435325198
+    SET, KQDBL2,  0.639673976657 !-0.559283770709
+    SET, KQDL11,  0.359471462077 ! 0.424676241757
+    SET, KQUM1B,  0.870315784963 ! 0.869377269121
+    SET, KQUM2B, -0.773308111681 !-0.772006115975
+    SET, KQUM3B,  0.687839254866 ! 0.687923619093
+    SET, KQUM4B, -0.754692806229 !-0.755990352295
+    SET, KQSX47, -1.450527456458 !-1.45061403166
+    SET, KQUE1B,  0.320411045417 ! 0.320428735099
+  ENDSUBROUTINE
+
+  SETK2cuH : SUBROUTINE !for LCLS2cuH
+
+  ! set quad strengths for 8 GeV Cu-linac beam to DMPH
+
+    SET, KQ50Q3,  0.384840836193
+    SET, KQ4,    -0.219396715005
+    SET, KQ5,     0.165708852387
+    SET, KQ6,    -0.11356910147 
+    SET, KQA0,    0.109210100871
+  !                     Cu               SC
+  !              ---------------  ---------------
+    SET, KQUM1,   0.270162424011 ! 0.270162424021
+    SET, KQUM2,  -0.268570675719 !-0.2685706757  
+    SET, KQUM3,   0.279944439325 ! 0.279944439407
+    SET, KQUM4,  -0.248916368979 !-0.248916368758 
+  ENDSUBROUTINE
+
+! ------------------------------------------------------------------------------
+
+  MTWSSms : SUBROUTINE !create BETA0 block TWSSms
+    BEAM, ENERGY=E00
+    SET, SETCUS, CUSON
+    SETK2cuS
+    USE, CU_SXR
+    PRINT, FULL
+    SAVEBETA, TWSSms, MM1B !start of LTUS
+    TWISS, BETA0=TWSSC
+    SET, TWSSms[MUX], 0
+    SET, TWSSms[DX],  0
+    SET, TWSSms[DPX], 0
+    SET, TWSSms[MUY], 0
+    SET, TWSSms[DY],  0
+    SET, TWSSms[DPY], 0
+    SHOW, TWSSms
+  ENDSUBROUTINE
+
 ! ------------------------------------------------------------------------------
 
   ML0E : SUBROUTINE !check final energy
@@ -115,55 +155,67 @@
 
 ! ------------------------------------------------------------------------------
 
-  ML1c : SUBROUTINE !match L1 phase advance per cell (coasting)
+  ML1c : SUBROUTINE
+
+  ! match L1 phase advance per cell (coasting)
+
     VALUE, KQL1
     USE, L1c
     CELL
       VARY, KQL1, STEP=1.E-5, LOWER=0, UPPER=100
       CONSTR, #E, MUX=MU_L1, MUY=MU_L1
-     !LMDIF
-     !MIGRAD
+      !LMDIF
+      !MIGRAD
     ENDMATCH
-    VALUE, 1.448192E-25 !expected penalty function with fitting OFF
+    VALUE, 1.448192E-25   ! =expected penalty function with fitting OFF
     VALUE, KQL1
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
 
-  ML2c : SUBROUTINE !match L2 phase advance per cell (coasting)
+  ML2c : SUBROUTINE
+
+  ! match L2 phase advance per cell (coasting)
+
     VALUE, KQL2
     USE, L2c
     CELL
       VARY, KQL2, STEP=1.E-5, LOWER=0, UPPER=100
       CONSTR, #E, MUX=MU_L2, MUY=MU_L2
-     !LMDIF
-     !MIGRAD
+      !LMDIF
+      !MIGRAD
     ENDMATCH
-    VALUE, 2.277840E-24 !expected penalty function with fitting OFF
+    VALUE, 2.277840E-24   ! =expected penalty function with fitting OFF
     VALUE, KQL2
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
 
-  ML3c : SUBROUTINE !match L3 phase advance per cell (coasting)
+  ML3c : SUBROUTINE
+
+  ! match L3 phase advance per cell (coasting)
+
     VALUE, KQFL3,KQDL3
     USE, L3c
     CELL
       VARY, KQFL3, STEP=1.E-5, LOWER=0   , UPPER=100
       VARY, KQDL3, STEP=1.E-5, LOWER=-100, UPPER=0
       CONSTR, #E, MUX=MUX_L3, MUY=MUY_L3
-     !LMDIF
-     !MIGRAD
+      !LMDIF
+      !MIGRAD
     ENDMATCH
-    VALUE, 1.809822E-13 !expected penalty function with fitting OFF
+    VALUE, 1.809822E-13   ! =expected penalty function with fitting OFF
     VALUE, KQFL3,KQDL3
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
-! (NOTE: optics between cathode and DL1beg is meaningless ... used only to
-!        initialize sumL and show beamline layout)
 
-  MTWSSC : SUBROUTINE !find Twiss at cathode
+  MTWSSC : SUBROUTINE
+
+  ! find Twiss at cathode
+  ! (NOTE: optics between cathode and DL1beg is meaningless ... used only to
+  !        initialize sumL and show beamline layout)
+
     VALUE, CBETX,CALFX,CBETY,CALFY
     USE, GUNL0a
     MATCH, ENERGY=E00, BETX=CBETX, ALFX=CALFX, BETY=CBETY, ALFY=CALFY
@@ -175,13 +227,16 @@
      !LMDIF, TOL=1.E-20
      !MIGRAD, TOL=1.E-20
     ENDMATCH
-    VALUE,  1.434054E-15 !expected penalty function with fitting OFF
+    VALUE,  1.434054E-15   ! =expected penalty function with fitting OFF
     VALUE, CBETX,CALFX,CBETY,CALFY
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
 
-  MGSPEC : SUBROUTINE !match gun spectrometer
+  MGSPEC : SUBROUTINE
+
+  ! match gun spectrometer
+
     VALUE, QG02[K1],QG03[K1]
     USE, (GUNBXG,GSPEC)
     MATCH, BETA0=TWSSC
@@ -192,13 +247,16 @@
      !LMDIF, TOL=1.E-20
      !MIGRAD, TOL=1.E-20
     ENDMATCH
-    VALUE, 3.013681E-13 !expected penalty function with fitting OFF
+    VALUE, 3.013681E-13   ! =expected penalty function with fitting OFF
     VALUE, QG02[K1],QG03[K1]
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
 
-  MHTRR56 : SUBROUTINE !set Heater-chicane R56
+  MHTRR56 : SUBROUTINE
+
+  ! set Heater-chicane R56
+
     BEAM, ENERGY=Ei
     USE, LSRHTR
     SET, K_und, 0 !turn off undulator
@@ -218,7 +276,10 @@
 
 ! ------------------------------------------------------------------------------
 
-  MBSYS : SUBROUTINE !match DL1 bend system dispersion
+  MBSYS : SUBROUTINE
+
+  ! match DL1 bend system dispersion
+
     VALUE, KQB
     USE, (L0aL0b,DL1)
     MATCH, BETA0=TWSS0
@@ -227,13 +288,16 @@
      !LMDIF, TOL=1.E-20
      !MIGRAD, TOL=1.E-20
     ENDMATCH
-    VALUE, 2.099758E-22 !expected penalty function with fitting OFF
+    VALUE, 2.099758E-22   ! =expected penalty function with fitting OFF
     VALUE, KQB
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
 
-  MED0 : SUBROUTINE !match from exit of L0a into ED0
+  MED0 : SUBROUTINE
+
+  ! match from exit of L0a into ED0
+
     BEAM, ENERGY=E0i
     VALUE, KQA01,KQA02,KQE01,KQE02,KQE03,KQE04
     USE, (L0aL0b,DL1_1)
@@ -262,7 +326,10 @@
 
 ! ------------------------------------------------------------------------------
 
-  MED2L1 : SUBROUTINE !match from ED0 through injection bend system to L1
+  MED2L1 : SUBROUTINE
+
+  ! match from ED0 through injection bend system to L1
+
     BEAM, ENERGY=E0i
     USE, (L0aL0b,DL1,L1)
     VALUE, KQM01,KQM02,KQM03,KQM04
@@ -278,7 +345,7 @@
      !LMDIF, TOL=1.E-20
      !MIGRAD, TOL=1.E-20
     ENDMATCH
-    VALUE, 8.576116E-02 !expected penalty function with fitting OFF
+    VALUE,  8.576116E-02   ! =expected penalty function with fitting OFF
     VALUE, KQM01,KQM02,KQM03,KQM04
     BEAM, ENERGY=E0i
     USE, (L0aL0b,DL1_1,L1)
@@ -290,26 +357,29 @@
 
 ! ------------------------------------------------------------------------------
 
-  MSPEC : SUBROUTINE !match 135-MeV spectrometer
+  MSPEC : SUBROUTINE
+
+  ! match 135-MeV spectrometer
+
     BEAM, ENERGY=E0i
     USE, (L0aL0b,DL1_1,SPECBL)
     VALUE, KQS01,KQS02,KQM01,KQM02
     MATCH, BETA0=TWSS0
-      VARY, KQS01, STEP=1.E-5, LOWER=-40, UPPER=+40 ! nominal fit at YAGS2
-      VARY, KQS02, STEP=1.E-5, LOWER=-40, UPPER=+40 ! nominal fit at YAGS2
-    !!VARY, KQM01, STEP=1.E-5, LOWER=-40, UPPER=+40 ! only use when 3-keV resolution on OTR required
-    !!VARY, KQM02, STEP=1.E-5, LOWER=-40, UPPER=+40 ! only use when 3-keV resolution on OTR required
-      WEIGHT, BETX=10                               ! all fits
-      CONSTR, YAGS2, BETX<0.120,BETY>5,BETY<12      ! nominal fit at YAGS2
-    !!CONSTR, OTRS1, BETX<0.07,BETY>5,BETY<12       ! only use when 3-keV resolution on OTR required
-      CONSTR, YAGS2, DX<-0.9*E0i/Ei                 ! nominal fit at YAGS2
-    !!CONSTR, OTRS1, DX=-1.0*E0i/Ei                 ! only use when 3-keV resolution on OTR required
-    !!CONSTR, DS2, BETX<35                          ! only use when 3-keV resolution on OTR required
-    !!CONSTR, BPM12, BETY<35                        ! only use when 3-keV resolution on OTR required
+      VARY, KQS01, STEP=1.E-5, LOWER=-40,  UPPER=+40   ! nominal fit at YAGS2
+      VARY, KQS02, STEP=1.E-5, LOWER=-40,  UPPER=+40   ! nominal fit at YAGS2
+!!    VARY, KQM01, STEP=1.E-5, LOWER=-40,UPPER=+40     ! only use when 3-keV resolution on OTR required
+!!    VARY, KQM02, STEP=1.E-5, LOWER=-40,UPPER=+40     ! only use when 3-keV resolution on OTR required
+      WEIGHT, BETX=10                                  ! all fits
+      CONSTR, YAGS2, BETX<0.120,BETY>5,BETY<12         ! nominal fit at YAGS2
+!!    CONSTR, OTRS1, BETX<0.07,BETY>5,BETY<12          ! only use when 3-keV resolution on OTR required
+      CONSTR, YAGS2, DX<-0.9*E0i/Ei                    ! nominal fit at YAGS2
+!!    CONSTR, OTRS1, DX=-1.0*E0i/Ei                    ! only use when 3-keV resolution on OTR required
+!!    CONSTR, DS2, BETX<35                             ! only use when 3-keV resolution on OTR required
+!!    CONSTR, BPM12, BETY<35                           ! only use when 3-keV resolution on OTR required
      !LMDIF, TOL=1.E-20
      !MIGRAD, TOL=1.E-20
     ENDMATCH
-    VALUE, 1.377848E-02 !expected penalty function with fitting OFF
+    VALUE,  1.377848E-02   ! =expected penalty function with fitting OFF
     VALUE, KQS01,KQS02,KQM01,KQM02
     BEAM, ENERGY=E0i
     USE, (L0aL0b,DL1_1,SPECBL)
@@ -323,7 +393,10 @@
 
 ! ------------------------------------------------------------------------------
 
-  MBC1R56 : SUBROUTINE !match BC1 R56
+  MBC1R56 : SUBROUTINE
+
+  ! match BC1 R56
+
     BEAM, ENERGY=EBC1
     VALUE, AB11,AB11S,LB11S,AB11L,LB11L,BB11
     USE, BC1c
@@ -341,13 +414,16 @@
 
 ! ------------------------------------------------------------------------------
 
-  MBC1e : SUBROUTINE !match through BC1 chicane into emittance measurement system
+  MBC1e : SUBROUTINE
+
+  ! match through BC1 chicane into emittance measurement system
+
     BEAM, ENERGY=E0i
     USE, (L0aL0b,DL1,L1,BC1)
     VALUE, KQA12,KQ21201,KQM11,KQM12,KQM13
     MATCH, BETA0=TWSS0
       VARY, KQA12,   STEP=1.E-6, LOWER=-100, UPPER=+100
-      VARY, KQ21201, STEP=1.E-6, LOWER=-100, UPPER=   0
+      VARY, KQ21201, STEP=1.E-6, LOWER=-100, UPPER=0
       VARY, KQM11,   STEP=1.E-6, LOWER=-100, UPPER=+100
       VARY, KQM12,   STEP=1.E-6, LOWER=-100, UPPER=+100
       VARY, KQM13,   STEP=1.E-6, LOWER=-100, UPPER=+100
@@ -370,16 +446,19 @@
 
 ! ------------------------------------------------------------------------------
 
-  MBC1L2 : SUBROUTINE !match BC1 to L2
+  MBC1L2 : SUBROUTINE
+
+  ! match BC1 to L2
+
     BEAM, ENERGY=E0i
     VALUE, KQM14,KQM15,KQ21401,KQ21501
     USE, (L0aL0b,DL1,L1,BC1,LI21)
     MATCH, BETA0=TWSS0
-    !!VARY, KQ21301, STEP=1.E-5, LOWER=-10, UPPER= 0 !leave this quad OFF - unhook cables?
-      VARY, KQM14,   STEP=1.E-5, LOWER=  0, UPPER=10
-      VARY, KQM15,   STEP=1.E-5, LOWER=-10, UPPER= 0
-      VARY, KQ21401, STEP=1.E-5, LOWER=  0, UPPER=10
-      VARY, KQ21501, STEP=1.E-5, LOWER=-10, UPPER= 0
+!!    VARY, KQ21301, STEP=1.E-5, LOWER=-10,UPPER=0  ! leave this quad OFF - unhook cables?
+      VARY, KQM14,   STEP=1.E-5, LOWER=0  ,UPPER=10
+      VARY, KQM15,   STEP=1.E-5, LOWER=-10,UPPER=0
+      VARY, KQ21401, STEP=1.E-5, LOWER=0  ,UPPER=10
+      VARY, KQ21501, STEP=1.E-5, LOWER=-10,UPPER=0
       CONSTR, QM15[1], BETY<BET21
       CONSTR, Q21401[1], BETX=BET21 !, BETY=BET22
       CONSTR, Q21501[1], BETY=BET21 !, BETX=BET22
@@ -402,7 +481,10 @@
 
 ! ------------------------------------------------------------------------------
 
-  ML22 : SUBROUTINE !match LI22 betas
+  ML22 : SUBROUTINE
+
+  ! match LI22 betas
+
     VALUE, KQ21801,KQ21901,KQ22201,KQ22301
     USE, (L0aL0b,DL1,L1,BC1,L2)
     MATCH, BETA0=TWSS0
@@ -418,20 +500,23 @@
      !LMDIF, TOL=1.E-20
      !MIGRAD, TOL=1.E-20
     ENDMATCH
-    VALUE, 9.912298E-02 !expected penalty function with fitting OFF
+    VALUE, 9.912298E-02    ! =expected penalty function with fitting OFF
     VALUE, KQ21801,KQ21901,KQ22201,KQ22301
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
 
-  ML23 : SUBROUTINE !match LI23 betas
+  ML23 : SUBROUTINE
+
+  ! match LI23 betas
+
     VALUE, KQ22801,KQ22901,KQ23201,KQ23301
     USE, (L0aL0b,DL1,L1,BC1,L2)
     MATCH, BETA0=TWSS0
-      VARY, KQ22801, STEP=1.E-5, LOWER=   0, UPPER=100
-      VARY, KQ22901, STEP=1.E-5, LOWER=-100, UPPER=  0
-      VARY, KQ23201, STEP=1.E-5, LOWER=   0, UPPER=100
-      VARY, KQ23301, STEP=1.E-5, LOWER=-100, UPPER=  0
+      VARY, KQ22801, STEP=1.E-5, LOWER=0   , UPPER=100
+      VARY, KQ22901, STEP=1.E-5, LOWER=-100, UPPER=0
+      VARY, KQ23201, STEP=1.E-5, LOWER=0   , UPPER=100
+      VARY, KQ23301, STEP=1.E-5, LOWER=-100, UPPER=0
       CONSTR, Q23401[1], BETX=BET21, BETY=BET22
       CONSTR, Q23501[1], BETX=BET22, BETY=BET21
       CONSTR, Q23601[1], BETX=BET21, BETY=BET22
@@ -440,22 +525,25 @@
      !LMDIF, TOL=1.E-20
      !MIGRAD, TOL=1.E-20
     ENDMATCH
-    VALUE, 1.349422E-02 !expected penalty function with fitting OFF
+    VALUE, 1.349422E-02   ! =expected penalty function with fitting OFF
     VALUE, KQ22801,KQ22901,KQ23201,KQ23301
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
 
-  ML24 : SUBROUTINE !match LI24 betas
+  ML24 : SUBROUTINE
+
+  ! match LI24 betas
+
     VALUE, KQ23801,KQ23901,KQ24201,KQ24301,KQ24401,KQ24501
     USE, (L0aL0b,DL1,L1,BC1,L2)
     MATCH, BETA0=TWSS0
-      VARY, KQ23801, STEP=1.E-5, LOWER=   0, UPPER=100
-      VARY, KQ23901, STEP=1.E-5, LOWER=-100, UPPER=  0
-      VARY, KQ24201, STEP=1.E-5, LOWER=   0, UPPER=100
-      VARY, KQ24301, STEP=1.E-5, LOWER=-100, UPPER=  0
-      VARY, KQ24401, STEP=1.E-5, LOWER=   0, UPPER=100
-     !VARY, KQ24501, STEP=1.E-5, LOWER=-100, UPPER=  0
+      VARY, KQ23801, STEP=1.E-5, LOWER=0   , UPPER=100
+      VARY, KQ23901, STEP=1.E-5, LOWER=-100, UPPER=0
+      VARY, KQ24201, STEP=1.E-5, LOWER=0   , UPPER=100
+      VARY, KQ24301, STEP=1.E-5, LOWER=-100, UPPER=0
+      VARY, KQ24401, STEP=1.E-5, LOWER=0   , UPPER=100
+!      VARY, KQ24501, STEP=1.E-5, LOWER=-100, UPPER=0
       CONSTR, Q23901[1], BETY<50
       CONSTR, Q24201[1], BETX=BET21 ! , BETY=BET22
       CONSTR, Q24301[1], BETY=BET21 ! , BETX=BET22
@@ -465,19 +553,22 @@
      !LMDIF, TOL=1.E-20
      !MIGRAD, TOL=1.E-20
     ENDMATCH
-    VALUE, 8.109371E-03 !expected penalty function with fitting OFF and when KQ24501 set to post MBC2i-fit value
+    VALUE, 8.109371E-03   ! =expected penalty function with fitting OFF and when KQ24501 set to post MBC2i-fit value
     VALUE, KQ23801,KQ23901,KQ24201,KQ24301,KQ24401,KQ24501
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
 
-  MBC2R56 : SUBROUTINE !match BC2 R56
+  MBC2R56 : SUBROUTINE
+
+  ! match BC2 R56
+
     BEAM, ENERGY=EBC2
     VALUE, AB21,BB21
     USE, BC2c1
     MATCH, BETX=10, BETY=10
      !VARY, BB21, STEP=1.E-6, LOWER=-18, UPPER=0
-      VARY, AB21, STEP=1.E-6, UPPER=  0
+      VARY, AB21, STEP=1.E-6, UPPER=0
       RMATRIX, #S/#E, RM(5,6)=R56BC2 !0.0247
      !LMDIF, TOL=1.E-20
      !MIGRAD, TOL=1.E-20
@@ -490,19 +581,22 @@
 
 ! ------------------------------------------------------------------------------
 
-  MBC2i : SUBROUTINE !match into BC2
+  MBC2i : SUBROUTINE
+
+  ! match into BC2
+
     BEAM, ENERGY=E0i
     VALUE, KQ24501,KQ24601,KQ24701,KQM21
     USE, (L0aL0b,DL1,L1,BC1,L2,BC2)
     MATCH, BETA0=TWSS0
-      VARY, KQ24501, STEP=1.E-6 !, LOWER=-100, UPPER=  0
-      VARY, KQ24601, STEP=1.E-6 !, LOWER=   0, UPPER=100
-      VARY, KQ24701, STEP=1.E-6 !, LOWER=-100, UPPER=  0
-      VARY, KQM21,   STEP=1.E-6 !, LOWER=   0, UPPER=100
+      VARY, KQ24501, STEP=1.E-6 !, LOWER=-100, UPPER=0
+      VARY, KQ24601, STEP=1.E-6 !, LOWER=0   , UPPER=100
+      VARY, KQ24701, STEP=1.E-6 !, LOWER=-100, UPPER=0
+      VARY, KQM21,   STEP=1.E-6 !, LOWER=0   , UPPER=100
       WEIGHT, BETX=10
       CONSTR, BX24B, BETX=5.0, ALFX=-0.5
       WEIGHT, BETX=1.E-6, BETY=1.E-6
-      CONSTR, Q24601[1],  BETY>10
+      CONSTR, Q24601[1] , BETY>10
       CONSTR, Q24701A[2], BETY<50
       CONSTR, Q24701A[2], BETX<50
       CONSTR, Q24901A[2], BETY<75
@@ -515,17 +609,20 @@
 
 ! ------------------------------------------------------------------------------
 
-  MBC2L3 : SUBROUTINE !match BC2 to L3
+  MBC2L3 : SUBROUTINE
+
+  ! match BC2 to L3
+
     BEAM, ENERGY=E0i
     VALUE, KQM22,KQ24901,KQ25201,KQ25301,KQ25401,KQ25501
     USE, (L0aL0b,DL1,L1,BC1,L2,BC2,LI25)
     MATCH, BETA0=TWSS0
-      VARY, KQM22,   STEP=1.E-6,   LOWER= -0.65, UPPER= 0
-      VARY, KQ24901, STEP=1.E-6 !, LOWER=-10,    UPPER= 0
-      VARY, KQ25201, STEP=1.E-6 !, LOWER=  0,    UPPER=10
-      VARY, KQ25301, STEP=1.E-6 !, LOWER=-10,    UPPER= 0
-      VARY, KQ25401, STEP=1.E-6 !, LOWER=  0,    UPPER=10
-      VARY, KQ25501, STEP=1.E-6 !, LOWER=-10,    UPPER= 0
+      VARY, KQM22,   STEP=1.E-6  , LOWER=-0.65, UPPER=0
+      VARY, KQ24901, STEP=1.E-6 !, LOWER=-10 , UPPER=0
+      VARY, KQ25201, STEP=1.E-6 !, LOWER=0   , UPPER=10
+      VARY, KQ25301, STEP=1.E-6 !, LOWER=-10 , UPPER=0
+      VARY, KQ25401, STEP=1.E-6 !, LOWER=0   , UPPER=10
+      VARY, KQ25501, STEP=1.E-6 !, LOWER=-10 , UPPER=0
       CONSTR, Q25201[1], BETX<60
       CONSTR, Q25301[1], BETY<64
       CONSTR, Q25401[1], BETX=BET31, BETY=BET32
@@ -542,14 +639,17 @@
 
 ! ------------------------------------------------------------------------------
 
-  ML26 : SUBROUTINE !match LI26 betas
+  ML26 : SUBROUTINE
+
+  ! match LI26 betas
+
     VALUE, KQ25801,KQ25901,KQ26201,KQ26301
     USE, (L0aL0b,DL1,L1,BC1,L2,BC2,L3)
     MATCH, BETA0=TWSS0
-      VARY, KQ25801, STEP=1.E-5 !, LOWER=   0, UPPER=100
-      VARY, KQ25901, STEP=1.E-5 !, LOWER=-100, UPPER=  0
-      VARY, KQ26201, STEP=1.E-5 !, LOWER=   0, UPPER=100
-      VARY, KQ26301, STEP=1.E-5 !, LOWER=-100, UPPER=  0
+      VARY, KQ25801, STEP=1.E-5 !, LOWER=0   , UPPER=100
+      VARY, KQ25901, STEP=1.E-5 !, LOWER=-100, UPPER=0
+      VARY, KQ26201, STEP=1.E-5 !, LOWER=0   , UPPER=100
+      VARY, KQ26301, STEP=1.E-5 !, LOWER=-100, UPPER=0
       CONSTR, Q26301[1], BETX=BET33, BETY=BET34
       CONSTR, Q26401[1], BETX=BET31, BETY=BET32
       CONSTR, Q26501[1], BETX=BET33, BETY=BET34
@@ -559,20 +659,23 @@
      !LMDIF, TOL=1.E-20
      !MIGRAD, TOL=1.E-20
     ENDMATCH
-    VALUE, 1.522531E-02 !expected penalty function with fitting OFF
+    VALUE, 1.522531E-02   ! =expected penalty function with fitting OFF
     VALUE, KQ25801,KQ25901,KQ26201,KQ26301
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
 
-  ML27 : SUBROUTINE !match LI27 betas
+  ML27 : SUBROUTINE
+
+  ! match LI27 betas
+
     VALUE, KQ26801,KQ26901,KQ27201,KQ27301
     USE, (L0aL0b,DL1,L1,BC1,L2,BC2,L3)
     MATCH, BETA0=TWSS0
-      VARY, KQ26801, STEP=1.E-5 !, LOWER=   0, UPPER=100
-      VARY, KQ26901, STEP=1.E-5 !, LOWER=-100, UPPER=  0
-      VARY, KQ27201, STEP=1.E-5 !, LOWER=   0, UPPER=100
-      VARY, KQ27301, STEP=1.E-5 !, LOWER=-100, UPPER=  0
+      VARY, KQ26801, STEP=1.E-5 !, LOWER=0   , UPPER=100
+      VARY, KQ26901, STEP=1.E-5 !, LOWER=-100, UPPER=0
+      VARY, KQ27201, STEP=1.E-5 !, LOWER=0   , UPPER=100
+      VARY, KQ27301, STEP=1.E-5 !, LOWER=-100, UPPER=0
       CONSTR, Q27301[1], BETX=BET33, BETY=BET34
       CONSTR, Q27401[1], BETX=BET31, BETY=BET32
       CONSTR, Q27501[1], BETX=BET33, BETY=BET34
@@ -582,20 +685,23 @@
      !LMDIF, TOL=1.E-20
      !MIGRAD, TOL=1.E-20
     ENDMATCH
-    VALUE, 5.351428E-03 !expected penalty function with fitting OFF
+    VALUE, 5.351428E-03   ! =expected penalty function with fitting OFF
     VALUE, KQ26801,KQ26901,KQ27201,KQ27301
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
 
-  ML28 : SUBROUTINE !match LI28 betas
+  ML28 : SUBROUTINE
+
+  ! match LI28 betas
+
     VALUE, KQ27801,KQ27901,KQ28201,KQ28301
     USE, (L0aL0b,DL1,L1,BC1,L2,BC2,L3)
     MATCH, BETA0=TWSS0
-      VARY, KQ27801, STEP=1.E-5 !, LOWER=   0, UPPER=100
-      VARY, KQ27901, STEP=1.E-5 !, LOWER=-100, UPPER=  0
-      VARY, KQ28201, STEP=1.E-5 !, LOWER=   0, UPPER=100
-      VARY, KQ28301, STEP=1.E-5 !, LOWER=-100, UPPER=  0
+      VARY, KQ27801, STEP=1.E-5 !, LOWER=0   , UPPER=100
+      VARY, KQ27901, STEP=1.E-5 !, LOWER=-100, UPPER=0
+      VARY, KQ28201, STEP=1.E-5 !, LOWER=0   , UPPER=100
+      VARY, KQ28301, STEP=1.E-5 !, LOWER=-100, UPPER=0
       CONSTR, Q28301[1], BETX=BET33, BETY=BET34
       CONSTR, Q28401[1], BETX=BET31, BETY=BET32
       CONSTR, Q28501[1], BETX=BET33, BETY=BET34
@@ -605,20 +711,23 @@
      !LMDIF, TOL=1.E-20
      !MIGRAD, TOL=1.E-20
     ENDMATCH
-    VALUE, 2.676795E-03 !expected penalty function with fitting OFF
+    VALUE, 2.676795E-03   ! =expected penalty function with fitting OFF
     VALUE, KQ27801,KQ27901,KQ28201,KQ28301
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
 
-  ML29 : SUBROUTINE !match LI29 betas
+  ML29 : SUBROUTINE
+
+  ! match LI29 betas
+
     VALUE, KQ28801,KQ28901,KQ29201,KQ29301
     USE, (L0aL0b,DL1,L1,BC1,L2,BC2,L3)
     MATCH, BETA0=TWSS0
-      VARY, KQ28801, STEP=1.E-5 !, LOWER=   0, UPPER=100
-      VARY, KQ28901, STEP=1.E-5 !, LOWER=-100, UPPER=  0
-      VARY, KQ29201, STEP=1.E-5 !, LOWER=   0, UPPER=100
-      VARY, KQ29301, STEP=1.E-5 !, LOWER=-100, UPPER=  0
+      VARY, KQ28801, STEP=1.E-5 !, LOWER=0   , UPPER=100
+      VARY, KQ28901, STEP=1.E-5 !, LOWER=-100, UPPER=0
+      VARY, KQ29201, STEP=1.E-5 !, LOWER=0   , UPPER=100
+      VARY, KQ29301, STEP=1.E-5 !, LOWER=-100, UPPER=0
       CONSTR, Q29301[1], BETX=BET33, BETY=BET34
       CONSTR, Q29401[1], BETX=BET31, BETY=BET32
       CONSTR, Q29501[1], BETX=BET33, BETY=BET34
@@ -628,13 +737,16 @@
      !LMDIF, TOL=1.E-20
      !MIGRAD, TOL=1.E-20
     ENDMATCH
-    VALUE, 1.515926E-03 !expected penalty function with fitting OFF
+    VALUE, 1.515926E-03   ! =expected penalty function with fitting OFF
     VALUE, KQ28801,KQ28901,KQ29201,KQ29301
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
 
-  ML30 : SUBROUTINE !match "periodic" (FODO cell) LI30 betas
+  ML30 : SUBROUTINE
+
+  ! match "periodic" (FODO cell) LI30 betas
+
     BEAM, ENERGY=E0i
     SET, KQ30401, KQFL3
     SET, KQ30501, KQDL3
@@ -657,130 +769,16 @@
      !LMDIF, TOL=1.E-20
      !MIGRAD, TOL=1.E-20
     ENDMATCH
-    VALUE, 1.694700E-01 !expected penalty function with fitting OFF
+    VALUE, 1.694700E-01   ! =expected penalty function with fitting OFF
     VALUE, KQ29801,KQ29901,KQ30201,KQ30301
   ENDSUBROUTINE
 
-! ==============================================================================
-! LCLS-II SXR matching SUBROUTINEs
 ! ------------------------------------------------------------------------------
 
-  MKICKCUSXR : SUBROUTINE !match geometry and Twiss of CUSXR line (1)
-    BEAM, ENERGY=Ef
-    SET, TCUSXR0, TCUSXR
-    SET, TCUSXR, 0.0
-    SET, SETCUS, CUSON
-    USE, CUSXR, RANGE=#S/BLRCUSb[1]
-    VALUE, ABKRCUS0,LDCUSBLRa*COS(ABKRCUS)
-    MATCH, BETA0=TWSCuS1, SURVEY, XS=0, YS=0, ZS=0, THETAS=0, PHIS=0, PSIS=0
-      VARY, ABKRCUS0, STEP=1.E-6
-      VARY, LDCUSBLRa, STEP=1.E-4
-      WEIGHT, YS=1
-      CONSTR, BLRCUSa[1], YS=15.E-3
-      CONSTR, BPMCUS[1], YS=5.E-3
-     !LMDIF, TOL=1.E-20, CALLS=1000
-    ENDMATCH
-    VALUE, ABKRCUS0,LDCUSBLRa*COS(ABKRCUS)
-    PRINT, RANGE=#S/BLRCUSb[1]
-    SURVEY
-    SET, TCUSXR, TCUSXR0
-  ENDSUBROUTINE
+  MCLTS : SUBROUTINE
 
-  MXYZCUSXR : SUBROUTINE !match geometry and Twiss of CUSXR line (2)
-    BEAM, ENERGY=Ef
-    SET, SETCUS, CUSON
-    USE, CUSXR
-    VALUE, TCUSXR,TBRCUS,ABLRCUS0,dABRCUS,dLDCUS0,AROCUS1,AROCUS2,AROCUS3
-    MATCH, BETA0=TWSCuS1, SURVEY, XS=XCuS1, YS=YCuS1, ZS=ZCuS1, &
-           THETAS=THCuS1, PHIS=PHCuS1, PSIS=PSCuS1
-      VARY, TCUSXR,   STEP=1.E-5
-      VARY, TBRCUS,   STEP=1.E-5
-      VARY, ABLRCUS0, STEP=1.E-5
-      VARY, dABRCUS,  STEP=1.E-5
-      VARY, dLDCUS0,  STEP=1.E-4
-      VARY, AROCUS1,  STEP=1.E-6
-      VARY, AROCUS2,  STEP=1.E-6
-      VARY, AROCUS3,  STEP=1.E-6
-      WEIGHT, XS=1, YS=1, ZS=1, THETAS=1, PHIS=1, PSIS=1
-      CONSTR, #E, XS=XCuS2, YS=YCuS2, ZS=ZCuS2, &
-                  THETAS=THCuS2, PHIS=PHCuS2, PSIS=PSCuS2
-      CONSTR, QCUS1[1] , PSIS=0
-      CONSTR, MIDCUSXR , PSIS=0
-      CONSTR, QCuS10[1], PSIS=0
-     !LMDIF, TOL=1.E-20, CALLS=10000
-    ENDMATCH
-    VALUE, TCUSXR,TBRCUS,ABLRCUS0,dABRCUS,dLDCUS0,AROCUS1,AROCUS2,AROCUS3
-    PRINT, FULL
-    SURVEY, X0=XCuS1, Y0=YCuS1, Z0=ZCuS1, &
-            THETA0=THCuS1, PHI0=PHCuS1, PSI0=PSCuS1
-  ENDSUBROUTINE
+  ! match CLTS input Twiss (defined in CUSXR.xsif)
 
-  MCUSXR : SUBROUTINE !match geometry and Twiss of CUSXR line (3)
-    COMMENT                       !use this COMMENT/UNCOMMENT block to set-up 
-      BEAM, ENERGY=E00            !TBXCUS1 (copy result to CUSXR.xsif), then 
-      SET, SETCUS, CUSON          !turn it off, otherwise it leads to a larger 
-      USE, CU_SXR                 !penalty value in MCUSXR, when verifying the 
-      SAVEBETA, TWSCUS1, BEGCLTS  !match (LMDIF off) with prior MXYZCUSXR routine
-      TWISS, BETA0=TWSSC
-      SET, TBXCUS1, TWSCUS1[BETX]; SET, TBYCUS1, TWSCUS1[BETY]
-      SET, TAXCUS1, TWSCUS1[ALFX]; SET, TAYCUS1, TWSCUS1[ALFY]
-    ENDCOMMENT
-    BEAM, ENERGY=Ef
-    SET, SETCUS, CUSON
-    USE, CUSXR
-    VALUE, KQCuS1,KQCuS2,KQCuS3,KQCuS4,KQCuS5,KQCuS9,KQCuS10
-    MATCH, BETA0=TWSCuS1, ENERGY=Ef
-      VARY, KQCuS1 , STEP=1.E-4, LOWER=-0.570, UPPER=0.570 !10 GeV
-      VARY, KQCuS2 , STEP=1.E-4, LOWER=-0.570, UPPER=0.570
-      VARY, KQCuS3 , STEP=1.E-4, LOWER=-0.570, UPPER=0.570
-      VARY, KQCuS4 , STEP=1.E-4, LOWER=-2.807, UPPER=2.807 !10 GeV
-      VARY, KQCuS5 , STEP=1.E-4, LOWER=-2.807, UPPER=2.807
-    !!VARY, KQCuS6 , STEP=1.E-4, LOWER=-2.807, UPPER=2.807
-    !!VARY, KQCuS7 , STEP=1.E-4, LOWER=-0.570, UPPER=0.570
-    !!VARY, KQCuS8 , STEP=1.E-4, LOWER=-0.570, UPPER=0.570
-      VARY, KQCuS9 , STEP=1.E-4, LOWER=-0.570, UPPER=0.570 !10 GeV
-      VARY, KQCuS10, STEP=1.E-4, LOWER=-0.570, UPPER=0.570
-    !!VARY, dLDCuS2 , STEP=1.E-4, LOWER=-2.0, UPPER=2.0
-    !!VARY, dLDCuS3 , STEP=1.E-4, LOWER=-2.0, UPPER=2.0
-    !!VARY, dLDCuS4 , STEP=1.E-4, LOWER=-2.0, UPPER=1.0
-    !!VARY, ABYCUS  , STEP=1.E-5
-      RMATRIX, #S/#E, RM(5,6)=0, WEIGHT(5,6)=100
-      WEIGHT, DX=10, DY=10, DPX=100, DPY=100
-      CONSTR, #E, DX=0, DY=0, DPX=0, DPY=0
-    !!CONSTR, MIDCUSXR, DPX<0, DPY>0
-      CONSTR, MIDCUSXR, ALFX=0, ALFY=0
-      WEIGHT, BETX=1.E-6, BETY=1.E-6
-      CONSTR, QCuS2[1], BETX<30, BETY<155
-      CONSTR, QCuS3[1], BETX<30, BETY<130
-      CONSTR, QCuS4[1], BETX<30, BETY<30
-      CONSTR, QCuS5[1], BETX<30, BETY<30
-      WEIGHT, DX=0,DPX=0,DY=0,DPY=0,X=0,PX=0,Y=0,PY=0,T=0,PT=0
-      WEIGHT, BETX=1.E-6, BETY=1.E-6, ALFX=1.E-5, ALFY=1.E-5
-      WEIGHT, ALFX=0, ALFY=0
-      COUPLE, BLRCUSa[1]/BRCUS1a[1]
-      COUPLE, QCUS1[1]/QCUS10[1]
-      COUPLE, QCUS2[1]/QCUS9[1]
-      COUPLE, QCUS3[1]/QCUS8[1]
-      COUPLE, QCUS4[1]/QCUS7[1]
-     !LMDIF, TOL=1.E-20, CALLS=10000
-     !MIGRAD, TOL=1.E-20, CALLS=10000
-    ENDMATCH
-    VALUE, TBXCUS1,TBYCUS1,TAXCUS1,TAYCUS1
-    VALUE, KQCuS1,KQCuS2,KQCuS3,KQCuS4,KQCuS5,KQCuS9,KQCuS10
-  !!VALUE, KQCuS8!,KQCuS7,KQCuS6
-  !!VALUE, dLDCuS2,dLDCuS3,dLDCuS4
-  !!VALUE, ABYCUS
-    PRINT, MIDCUSXR
-    TWISS, BETA0=TWSCuS1, SAVE=TWISS !, TAPE
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, TITLE="Cu-linac to SXR", FILE="match"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE, TITLE="Cu-linac to SXR", FILE="match"
-  ENDSUBROUTINE
-
-! ------------------------------------------------------------------------------
-
-  MCLTS : SUBROUTINE !match into CLTS (input Twiss defined in CUSXR.xsif)
     BEAM, ENERGY=E0i
     USE, (L0aL0b,DL1,L1,BC1,L2,BC2,L3,CLTH0,CLTH1)
     VALUE, KQ30701,KQ30801,KQ50Q1,KQ50Q2
@@ -793,7 +791,7 @@
      !LMDIF, TOL=1.E-20
      !MIGRAD, TOL=1.E-20
     ENDMATCH
-    VALUE, 2.435538E-19 !expected penalty function with fitting OFF
+    VALUE, 4.403760E-20 !expected penalty function with fitting OFF
     VALUE, KQ30701,KQ30801,KQ50Q1,KQ50Q2
     BEAM, ENERGY=E0i
     USE, (L0aL0b,DL1,L1,BC1,L2,BC2,L3,CLTH0,CLTH1,CLTS)
@@ -804,278 +802,45 @@
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
+! match from bend cells to emit-diag section
 
-  MCULTUs : SUBROUTINE ! match from CUSXR to horizontal dogleg bends in SXR LTU
-    BEAM, ENERGY=E00
-    SET, SETCUS, CUSON
-    SETK2cuS
-    USE, CU_SXR
-    VALUE, KQBP33,KQBP34,KQDBL1,KQDBL2,KQDL11,Ef
-    MATCH, ENERGY=E00, BETA0=TWSSC
-      VARY, KQBP33, STEP=1.E-4, LOWER=-0.650, UPPER=0.650 !10 GeV
-      VARY, KQBP34, STEP=1.E-4, LOWER=-0.650, UPPER=0.650
-      VARY, KQDBL1, STEP=1.E-4, LOWER=-1.871, UPPER=1.871 !15 GeV
-      VARY, KQDBL2, STEP=1.E-4, LOWER=-1.871, UPPER=1.871
-      VARY, KQDL11, STEP=1.E-4, LOWER= 0    , UPPER=0.570 !10 GeV
-      CONSTR, QBP34[1], BETX<100
-      CONSTR, QDL12[1], ALFX=0, ALFY=0
-      CONSTR, QDL13[1], ALFX=0, ALFY=0
-      CONSTR, QDL14[1], ALFX=0, ALFY=0
-      CONSTR, QDL15[1], ALFX=0, ALFY=0
-      CONSTR, QDL16[1], ALFX=0, ALFY=0
-      CONSTR, QDL17[1], ALFX=0, ALFY=0
-      CONSTR, QDL18[1], ALFX=0, ALFY=0
-      CONSTR, QDL19[1], ALFX=0, ALFY=0
-      WEIGHT, ALFX=0,ALFY=0,DX=0,DPX=0,DY=0,DPY=0,X=0,PX=0,Y=0,PY=0,T=0,PT=0
-      WEIGHT, BETX=1.E-6, BETY=1.E-6
-      COUPLE, QDL11[1]/QDL13[1]
-     !LMDIF, TOL=1.E-20, CALLS=10000
-     !MIGRAD, TOL=1.E-20
-    ENDMATCH
-    VALUE, KQBP33,KQBP34,KQDBL1,KQDBL2,KQDL11
-    PRINT, FULL
-    TWISS, SAVE, BETA0=TWSSC
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE=.T., FILE="match", RANGE=BEGCLTS/QDL20[2]
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-      STYLE=100, SPLINE=.T., FILE="match", RANGE=BEGCLTS/QDL20[2]
-  ENDSUBROUTINE
-
-! ------------------------------------------------------------------------------
-
-  MSXR : SUBROUTINE !match into SXR undulator
-    BEAM, ENERGY=E00
-    SET, SETCUS, CUSON
-    SETK2cuS
-    USE, CU_SXR
-    SAVEBETA, TWm, ENDL3
-    TWISS, BETA0=TWSSC
-
-    BEAM, ENERGY=Ef
-    USE, (SXCEL26,SXCEL27,SXCEL28,SXCEL29, &
-          SXCEL30,SXCEL31,SXCEL32,SXCEL33)
-    SAVEBETA, TWm26, #S
-    TWISS
-    SET, MBETX, TWm26[BETX]
-    SET, MALFX, TWm26[ALFX]
-    SET, MBETY, TWm26[BETY]
-    SET, MALFY, TWm26[ALFY]
-
-    SET, KminQUM1b, -4.272301476446 ; SET, KmaxQUM1b, 4.262158217579
-    SET, KminQUM2b, -4.277101524229 ; SET, KmaxQUM2b, 4.263591916062
-    SET, KminQUM3b, -4.236370592453 ; SET, KmaxQUM3b, 4.285204762788
-    SET, KminQUM4b, -4.258539234185 ; SET, KmaxQUM4b, 4.243501189751
-    SET, KminQSX16, -3.21206205     ; SET, KmaxQSX16, 3.21206205
-
-    BEAM, ENERGY=Ef
-    USE, BSYLTUS
-    VALUE, KQUM1b,KQUM2b,KQUM3b,KQUM4b,kQSX16
-    MATCH, BETX=TWm[BETX], ALFX=TWm[ALFX], BETY=TWm[BETY], ALFY=TWm[ALFY]
-      VARY, kQUM1b, STEP=1.E-6, LOWER=KminQUM1b, UPPER=KmaxQUM1b
-      VARY, kQUM2b, STEP=1.E-6, LOWER=KminQUM2b, UPPER=KmaxQUM2b
-      VARY, kQUM3b, STEP=1.E-6, LOWER=KminQUM3b, UPPER=KmaxQUM3b
-      VARY, kQUM4b, STEP=1.E-6, LOWER=KminQUM4b, UPPER=KmaxQUM4b
-      VARY, kQSX16, STEP=1.E-6, LOWER=KminQSX16, UPPER=KmaxQSX16
-      CONSTR, SXR26BEG, BETX=MBETX, ALFX=MALFX, BETY=MBETY, ALFY=MALFY
-      WEIGHT, BETX=1.E-03,BETY=1.E-03
-      CONSTR, QUM1B[1], BETX<76, BETY<76
-      CONSTR, QUM2B[1], BETX<76, BETY<76
-      CONSTR, QUM3B[1], BETX<76, BETY<76
-      CONSTR, QUM4B[1], BETX<76, BETY<76
-     !LMDIF, TOL=1.E-20, CALLS=10000
-     !MIGRAD, TOL=1.E-20, CALLS=10000
-    ENDMATCH
-    VALUE, KQUM1b,KQUM2b,KQUM3b,KQUM4b,kQSX16
-
-    PRINT, FULL
-    TWISS, BETX=TWm[BETX], ALFX=TWm[ALFX], BETY=TWm[BETY], ALFY=TWm[ALFY], &
-      COUPLE, SAVE, TAPE="twiss.tape", RTAPE="rmat.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, VMIN=0, VMAX=80, &
-      STYLE=100, SPLINE, RANGE=WS33B/SXR46END, FILE="match"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=SXR26BEG/SXR33END, &
-      STYLE=100, SPLINE, FILE="match"
-  ENDSUBROUTINE
-
-! ------------------------------------------------------------------------------
-  comment !use MSXR instead
-  MUNDs : SUBROUTINE !match SXR undulator (no QSX16, normal SXR/DMPS polarity)
-    BEAM, ENERGY=E00
-    SET, SETCUS, CUSON
-    SETK2cuS
-    USE, CU_SXR
-    SAVEBETA, TWm, ENDL3
-    TWISS, BETA0=TWSSC
-    SHOW, TWm
-
-    VALUE, QSXh17[K1],QSXh18[K1],QSXh19[K1],QSXh20[K1],QSXh21[K1],&
-           QSXh22[K1],QSXh23[K1],QSXh24[K1],QSXh25[K1]
-    VALUE, QSXh26[K1],QSXh27[K1],QSXh28[K1],QSXh29[K1],QSXh30[K1],&
-           QSXh31[K1],QSXh32[K1],QSXh33[K1],QSXh34[K1],QSXh35[K1]
-    VALUE, QSXh36[K1],QSXh37[K1],QSXh38[K1],QSXh39[K1],QSXh40[K1],&
-           QSXh41[K1],QSXh42[K1],QSXh43[K1],QSXh44[K1],QSXh45[K1]
-    VALUE, QSXh46[K1],QSXh47[K1]
-
-    BEAM, ENERGY=TWm[ENERGY]
-    USE, BSYLTUS
-    VALUE, KQUM1b,KQUM2b,KQUM3b,KQUM4b
-    MATCH, BETX=TWm[BETX], ALFX=TWm[ALFX], BETY=TWm[BETY], ALFY=TWm[ALFY]
-      VARY, KQUM1b, STEP=1.E-6, LOWER=0, UPPER=+KmaxQUMb10
-      VARY, KQUM2b, STEP=1.E-6, UPPER=0, LOWER=-KmaxQUMb10
-      VARY, KQUM3b, STEP=1.E-6, UPPER=0, LOWER=-KmaxQUMb10
-      VARY, KQUM4b, STEP=1.E-6, LOWER=0, UPPER=+KmaxQUMb10
-      WEIGHT, X=0, PX=0, BETX=1, ALFX=0, DX=0, DPX=0
-      WEIGHT, Y=0, PY=0, BETY=1, ALFY=0, DY=0, DPY=0
-      WEIGHT, T=0, PT=0
-      COUPLE, QSXh26[1]/QSXh28[1]
-      COUPLE, QSXh27[1]/QSXh29[1]
-      COUPLE, QSXh26[1]/QSXh30[1]
-      COUPLE, QSXh27[1]/QSXh31[1]
-      COUPLE, QSXh26[1]/QSXh32[1]
-      COUPLE, QSXh27[1]/QSXh33[1]
-      COUPLE, QSXh26[1]/QSXh34[1]
-      COUPLE, QSXh27[1]/QSXh35[1]
-      COUPLE, QSXh26[1]/QSXh36[1]
-      COUPLE, QSXh27[1]/QSXh37[1]
-      COUPLE, QSXh26[1]/QSXh38[1]
-      COUPLE, QSXh27[1]/QSXh39[1]
-      COUPLE, QSXh26[1]/QSXh40[1]
-      COUPLE, QSXh27[1]/QSXh41[1]
-      COUPLE, QSXh26[1]/QSXh42[1]
-      COUPLE, QSXh27[1]/QSXh43[1]
-      COUPLE, QSXh26[1]/QSXh44[1]
-      COUPLE, QSXh27[1]/QSXh45[1]
-      COUPLE, QSXh26[1]/QSXh46[1]
-     !LMDIF, TOL=1.E-20, CALLS=10000
-     !MIGRAD, TOL=1.E-20, CALLS=10000
-    ENDMATCH
-    VALUE, KQUM1b,KQUM2b,KQUM3b,KQUM4b
-    PRINT, FULL
-    TWISS, BETX=TWm[BETX], ALFX=TWm[ALFX], BETY=TWm[BETY], ALFY=TWm[ALFY], &
-      SAVE, TAPE="twiss.tape", RTAPE="rmat.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=WS33B/SXR47END, &
-      STYLE=100, SPLINE, FILE="match"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=BEGBSYS/SXR47END, &
-      STYLE=100, SPLINE, FILE="match"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, RANGE=BEGBSYS/SXR47END, &
-      STYLE=100, SPLINE, FILE="match"
-  ENDSUBROUTINE
-  endcomment
-
-! ------------------------------------------------------------------------------
-! matching TCAV per Yuantao's requirements
-
-  MDUMPs : SUBROUTINE !match dumpline in SXR
-    BEAM, ENERGY=Ef
-    SET, SETCUS, CUSON
-    SETK2cuS
-    USE, (CLTS,BSYS,LTUS,SXRUND,DUMPLINEb)
-    VALUE, kQSX47,KQUE1b,KQUE2b,KQDMPb
-    MATCH, BETA0=TWSCuS1
-     !VARY, kQSX47, STEP=1.E-4, LOWER=-0.994, UPPER= 0 ! 0.994 !15 GeV
-      VARY, KQUE1b, STEP=1.E-4, UPPER= 0.380, LOWER=-0.380 !15 GeV
-     !VARY, KQUE2b, STEP=1.E-4, LOWER=-0.570, UPPER= 0.570 !10 GeV
-     !VARY, KQDMPb, STEP=1.E-4, LOWER=-0.182, UPPER= 0 ! 0.182 !17 GeV
-     !WEIGHT, BETX=1.E-5 
-     !CONSTR, MTCXB, BETX>85 !need large betx (close to 100 m)
-     !WEIGHT, BETX=1.E-6
-     !CONSTR, MTCXB, BETX<120
-    !!WEIGHT, DY=10, BETY=1.E-5, BETX=1 !relaxed bety
-    !!CONSTR, OTRDMPB, DY>0.46, BETY<0.6, BETX>20 !need large betx
-     !WEIGHT, DY=10, BETY=1, BETX=1 !relaxed bety
-     !CONSTR, OTRDMPB, DY>0.46, BETY<1.8, BETX>20 !need large betx
-      WEIGHT, X=0, PX=0, BETX=0, ALFX=0, DX=0, DPX=0, &
-              Y=0, PY=0, BETY=0, ALFY=0, DY=0, DPY=0, &
-              T=0, PT=0
-     !COUPLE, MTCXB/OTRDMPB, MUX>70/360, MUX<110/360
-     !WEIGHT, MUX=1.E-4
-      COUPLE, MTCXB/OTRDMPB, MUX=90/360
-     !WEIGHT, BETX=1.E-5, BETY=1.E-5
-     !CONSTR, QUE1B[1] , BETY<150, BETX<350
-     !CONSTR, QUE2B[1] , BETY<150, BETX<350
-     !CONSTR, QDMP1B[1], BETY<150, BETX<350
-     !CONSTR, QDMP2B[1], BETY<150, BETX<350
-     !WEIGHT, DY=10, BETX=1.E-6
-     !CONSTR, DUMPFACEB, DY<0.4  , BETX<350
-     !LMDIF, TOL=1.E-20, CALLS=10000
-     !MIGRAD, TOL=1.E-20, CALLS=10000
-    ENDMATCH
-    VALUE, kQSX47,KQUE1b,KQUE2b,KQDMPb
-    PRINT, MTCXB ; PRINT, OTRDMPB
-    TWISS, BETA0=TWSCuS1, SAVE=TWISS
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      STYLE=100, SPLINE, RANGE=QSXh44[1]/DUMPFACEB, &
-      TITLE="SXR undulator to Dump, w/o coupling", FILE="match"
-    TWISS, BETA0=TWSCuS1, SAVE=TWISS, COUPLE
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      STYLE=100, SPLINE, RANGE=QSXh44[1]/DUMPFACEB, &
-      TITLE="SXR undulator to Dump, with coupling", FILE="match"
-  ENDSUBROUTINE
-
-! ==============================================================================
-! LCLS-II HXR matching SUBROUTINEs
-! ------------------------------------------------------------------------------
-
-  MDL2B : SUBROUTINE !match DL2 dogleg dispersion in HXR
-    BEAM, ENERGY=Ef
-    USE, DL23
-    VALUE, KQDL
-    MATCH, BETX=1, BETY=1
-      VARY, KQDL, STEP=1.E-4, UPPER=0.827, LOWER=0
-      RMATRIX, #S/#E, RM(1,6)=0, RM(2,6)=0
-      TMATRIX, #S/#E, TM(5,6,6)=0, WEIGHT(5,6,6)=0
-     !LMDIF, TOL=1.E-20
-     !MIGRAD, TOL=1.E-20
-    ENDMATCH
-    VALUE, KQDL
-    TWISS, BETX=1, BETY=1, SAVE
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
-     STYLE=100, SPLINE=.T., FILE="match"
-  ENDSUBROUTINE
-
-! ------------------------------------------------------------------------------
-! note: not exact match here is due to slight asymmetry of the two bend
-!       positions relative to the quad (per existing LCLS-I deck)
-!       and focusing due to R56 chicane bends
-
-  MDL2M2 : SUBROUTINE !find symmetric beta through LTU bend cells
-    BEAM, ENERGY=Ef
-    USE, (MM1,DOGLG2A,DOGLG2B,MM2)
-    VALUE, MBETXh,MALFXh,MBETYh,MALFYh
-    MATCH, BETA0=TWSSmh
-      VARY, MBETXh, STEP=1.E-4, UPPER=100, LOWER=0.01
-      VARY, MBETYh, STEP=1.E-4, UPPER=100, LOWER=0.01
-      VARY, MALFXh, STEP=1.E-5, UPPER=20 , LOWER=-20
-      VARY, MALFYh, STEP=1.E-5, UPPER=20 , LOWER=-20
-      WEIGHT, ALFX=5.E-2, ALFY=2.E-4
-      CONSTR, QDL31[1], ALFX=0, ALFY=0, BETX<5
-      CONSTR, QDL32[1], ALFX=0, ALFY=0, BETX<5
-      CONSTR, QDL33[1], ALFX=0, ALFY=0, BETX<5
-      CONSTR, QT12[1] , ALFX=0, ALFY=0
-      CONSTR, QT22[1] , ALFX=0, ALFY=0
-      CONSTR, QT32[1] , ALFX=0, ALFY=0
-     !LMDIF, TOL=1.E-20
-     !MIGRAD, TOL=1.E-20
-    ENDMATCH
-    VALUE, MBETXh,MALFXh,MBETYh,MALFYh
-    TWISS, BETA0=TWSSmh, SAVE
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      STYLE=100, SPLINE=.T., FILE="match"
-  ENDSUBROUTINE
-
-! ------------------------------------------------------------------------------
-
-  MBSY : SUBROUTINE !match BSY to HXR LTU
-    BEAM, ENERGY=ENBEGL3
+  MED2DL2 : SUBROUTINE
+    BEAM, ENERGY=E0i
     SET, SETCUS, CUSOFF
     SETK2cuH
-    USE, (L3,CLTH0,CLTH1,CLTH2,BSYH1,BSYH2,LTUH)
+    USE, (L0aL0b,DL1,L1,BC1,L2,BC2,L3,CLTH0,CLTH1,CLTH2,BSYH1,BSYH2,LTUH)
+    VALUE, KQEM1,KQEM2,KQEM3,KQEM4
+    MATCH, BETA0=TWSS0
+      VARY, KQEM1, STEP=1.E-4, UPPER=0.827, LOWER=-0.827 !17 GeV
+      VARY, KQEM2, STEP=1.E-4, UPPER=0.827, LOWER=-0.827
+      VARY, KQEM3, STEP=1.E-4, UPPER=0.827, LOWER=-0.827
+      VARY, KQEM4, STEP=1.E-4, UPPER=0.827, LOWER=-0.827
+      CONSTR, WS31, BETX=BXEDh, ALFX=AXEDh, BETY=BYEDh, ALFY=AYEDh
+     !LMDIF, TOL=1.E-20
+     !MIGRAD, TOL=1.E-20
+    ENDMATCH
+    VALUE, KQEM1,KQEM2,KQEM3,KQEM4
+    TWISS, BETA0=TWSS0, SAVE
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE=.T., FILE="match", RANGE=LTU
+  ENDSUBROUTINE
+
+! ------------------------------------------------------------------------------
+
+! match BSY to HXR LTU
+
+  MBSY : SUBROUTINE
+    BEAM, ENERGY=E00
+    SET, SETCUS, CUSOFF
+    SETK2cuH
+    USE, CU_HXR
     VALUE, KQ50Q3,KQ4,KQ5,KQ6,KQA0
-    MATCH, BETA0=TWBEGL3
-     !VARY, KQ50Q3, STEP=1.E-4
-      VARY, KQ4,    STEP=1.E-4, LOWER=-0.949, UPPER=0.949
-      VARY, KQ5,    STEP=1.E-4, LOWER=-0.949, UPPER=0.949 !17 GeV
-      VARY, KQ6,    STEP=1.E-4, LOWER=-0.949, UPPER=0.949
-      VARY, KQA0,   STEP=1.E-4, LOWER=-0.949, UPPER=0.949
+    MATCH, BETA0=TWSSC
+     !VARY, KQ50Q3 , STEP=1.E-4
+      VARY, KQ4    , STEP=1.E-4, LOWER=-0.949, UPPER=0.949
+      VARY, KQ5    , STEP=1.E-4, LOWER=-0.949, UPPER=0.949 !17 GeV
+      VARY, KQ6    , STEP=1.E-4, LOWER=-0.949, UPPER=0.949
+      VARY, KQA0   , STEP=1.E-4, LOWER=-0.949, UPPER=0.949
       CONSTR, MM1, BETX=MBETXh, BETY=MBETYh, ALFX=MALFXh, ALFY=MALFYh
       comment
       WEIGHT, ALFX=2.E-5, ALFY=2.E-5
@@ -1092,13 +857,14 @@
       CONSTR, QVB2[1], BETX<100, BETY<100
       CONSTR, QVB3[1], BETX<100, BETY<100
       CONSTR, QVM3[1], BETX<100, BETY<100
-     !SIMPLEX, TOL=1.E-20, CALLS=5000
+      SIMPLEX, TOL=1.E-20, CALLS=5000
       endcomment
      !LMDIF, TOL=1.E-20 !, CALLS=20000
      !MIGRAD, TOL=1.E-20
     ENDMATCH
     VALUE, KQ50Q3,KQ4,KQ5,KQ6,KQA0
-    TWISS, BETA0=TWBEGL3, SAVE
+    BEAM, ENERGY=E00
+    TWISS, BETA0=TWSSC, SAVE
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=Q30401[1]/MUWALL, &
       STYLE=100, SPLINE, FILE="match"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=Q30401[1]/MM2, &
@@ -1106,41 +872,41 @@
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
-! NOTE: keep SC values for QEM1-4 ... don't rematch
 
-  MED2DL2 : SUBROUTINE !match from bend cells to emit-diag section
-    BEAM, ENERGY=Ef
-    USE, LTUM
-    VALUE, KQEM1,KQEM2,KQEM3,KQEM4
-    MATCH, BETA0=TWSSmh
-      VARY, KQEM1, STEP=1.E-6, UPPER=0.827, LOWER=-0.827 !17 GeV
-      VARY, KQEM2, STEP=1.E-6, UPPER=0.827, LOWER=-0.827
-      VARY, KQEM3, STEP=1.E-6, UPPER=0.827, LOWER=-0.827
-      VARY, KQEM4, STEP=1.E-6, UPPER=0.827, LOWER=-0.827
-      CONSTR, WS31, BETX=BXEDh, ALFX=AXEDh, BETY=BYEDh, ALFY=AYEDh
-    !!LMDIF, TOL=1.E-20
-    !!MIGRAD, TOL=1.E-20
+! match BSY to HXR LTU (follow changes for scH)
+
+  MBSY2 : SUBROUTINE
+    BEAM, ENERGY=ENBEGL3
+    SET, SETCUS, CUSOFF
+    SETK2cuH
+    USE, (L3,CLTH0,CLTH1,CLTH2,BSYH1,BSYH2,LTUH)
+    VALUE, KQVM1,KQVM2,KQVM3,KQVM4
+    MATCH, BETA0=TWBEGL3
+      VARY, KQVM1, STEP=1.E-4, LOWER=-0.949, UPPER=0.949
+      VARY, KQVM2, STEP=1.E-4, LOWER=-0.949, UPPER=0.949
+      VARY, KQVM3, STEP=1.E-4, LOWER=-0.949, UPPER=0.949
+      VARY, KQVM4, STEP=1.E-4, LOWER=-0.949, UPPER=0.949
+      CONSTR, MM1, BETX=MBETXh, ALFX=MALFXh, BETY=MBETYh, ALFY=MALFYh
+     !LMDIF, TOL=1.E-20, CALLS=5000
+     !MIGRAD, TOL=1.E-20, CALLS=5000
     ENDMATCH
-    VALUE, KQEM1,KQEM2,KQEM3,KQEM4
-    TWISS, BETA0=TWSSmh, SAVE
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-      STYLE=100, SPLINE, FILE="match"
+    VALUE, KQVM1,KQVM2,KQVM3,KQVM4
   ENDSUBROUTINE
 
 ! ------------------------------------------------------------------------------
-! NOTE: keep Yuri's energy-scalable values for QUM1-4 ... don't rematch
+! match beta in the HXR undulator
 
-  MUNDh : SUBROUTINE !match through the HXR undulator
+  MUNDh : SUBROUTINE
     BEAM, ENERGY=Ef
     SET, SETCUS, CUSOFF
     SETK2cuH
     USE, (LTUH,HXRUND), RANGE=MM1/#E
     VALUE, KQUM1,KQUM2,KQUM3,KQUM4
     MATCH, BETA0=TWSSmh
-      VARY, KQUM1, STEP=1.E-6, LOWER=-KmaxQUM15, UPPER=+KmaxQUM15 !15 GeV
-      VARY, KQUM2, STEP=1.E-6, LOWER=-KmaxQUM15, UPPER=+KmaxQUM15
-      VARY, KQUM3, STEP=1.E-6, LOWER=-KmaxQUM15, UPPER=+KmaxQUM15
-      VARY, KQUM4, STEP=1.E-6, LOWER=-KmaxQUM15, UPPER=+KmaxQUM15
+      VARY, KQUM1, STEP=1.E-5, UPPER=0.937, LOWER=-0.937 !15 GeV
+      VARY, KQUM2, STEP=1.E-5, UPPER=0.937, LOWER=-0.937
+      VARY, KQUM3, STEP=1.E-5, UPPER=0.937, LOWER=-0.937
+      VARY, KQUM4, STEP=1.E-5, UPPER=0.937, LOWER=-0.937
       WEIGHT, DX=0, DPX=0, DY=0, DPY=0, X=0, PX=0, Y=0, PY=0, T=0, PT=0
       WEIGHT, BETX=1.E-5, BETY=1.E-5, ALFX=0, ALFY=0
       COUPLE, QHXh13[1]/QHXh15[1]
@@ -1182,85 +948,664 @@
      !LMDIF, TOL=1.E-20, CALLS=10000
      !MIGRAD, TOL=1.E-20
     ENDMATCH
-    VALUE, KQUM1,KQUM2,KQUM3,KQUM4 !,KQHX13
-    TWISS, BETA0=TWSSmh, SAVE, TAPE="twiss.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=QE35[1]/HXR46END, &
-      STYLE=100, SPLINE, FILE="match"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=HXR13BEG/HXR46END, &
-      STYLE=100, SPLINE, FILE="match"
+    VALUE, KQUM1,KQUM2,KQUM3,KQUM4
+    TWISS, BETA0=TWSSmh, SAVE
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=WS31/HXR46END, &
+      STYLE=100, SPLINE, FILE="match", TITLE="UNDH (Cu beam)"
   ENDSUBROUTINE
 
-! ------------------------------------------------------------------------------! ------------------------------------------------------------------------------
-! NOTE: keep Yuri's energy-scalable values for these quads ... don't rematch
+! ------------------------------------------------------------------------------
+! match dumpline in HXR
 
-! matching TCAV per Yuantao's requirements
+COMMENT !outdated -- do not use
+  MDUMPh : SUBROUTINE
+    BEAM, ENERGY=Ef
+    SET, SETCUS, CUSOFF
+    USE, (LTUH,HXRUND,DUMPLINE), RANGE=MM1/#E
+    MATCH, BETA0=TWSSmh
+      VARY, kQDHXm, STEP=1.E-4, LOWER=-0.999, UPPER=0.999 !15 GeV
+      VARY, KQUE1 , STEP=1.E-4, LOWER=-0.149, UPPER=0.149 !17 GeV
+      VARY, KQUE2 , STEP=1.E-4, LOWER=-0.169, UPPER=0.169 !15 geV
+      VARY, KQDMP , STEP=1.E-4, LOWER=-0.182, UPPER=0.182 !17 GeV
+      CONSTR, OTRDMP, DY>0.46, BETY<0.6, BETX>100
+      WEIGHT, ALFY=1.E-5
+      CONSTR, OTRDMP, ALFY=0
+      WEIGHT, BETX=1.E-5, BETY=1.E-5
+      CONSTR, QUE1[1] , BETY<150, BETX<350
+      CONSTR, QUE2[1] , BETY<150, BETX<350
+      CONSTR, QDMP1[1], BETY<150, BETX<350
+      CONSTR, QDMP2[1], BETY<150, BETX<350
+      WEIGHT, DY=10, BETX=1.E-6
+      CONSTR, DUMPFACE, DY<0.4, BETX<400
+!!do not use      LMDIF, TOL=1.E-20, CALLS=10000
+    ENDMATCH
+    VALUE, kQDHXm,KQUE1,KQUE2,KQDMP
+    TWISS, BETA0=TWSSmh, SAVE=TWISS
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      STYLE=100, SPLINE=.T., RANGE=QHXh45[1]/DUMPFACE, &
+      TITLE="HXR undulator to Dump, w/o coupling", FILE="match"
+    TWISS, BETA0=TWSSmh, SAVE=TWISS, COUPLE
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      STYLE=100, SPLINE=.T., RANGE=QHXh45[1]/DUMPFACE, &
+      TITLE="HXR undulator to Dump, with coupling", FILE="match"
+  ENDSUBROUTINE
+ENDCOMMENT
 
-  MDUMPh : SUBROUTINE !match dumpline in HXR
+COMMENT !outdated due to new VPU undulator -- use MDUMPh3 instead
+  MDUMPh2 : SUBROUTINE !matching TCAV per Yuantao's requirements
+    BEAM, ENERGY=Ef
+    SET, SETCUS, CUSOFF
+    USE, (LTUH,HXRUND,DUMPLINE), RANGE=MM1/#E
+    MATCH, BETA0=TWSSmh
+      VARY, kQDHXm, STEP=1.E-4, LOWER=-0.999, UPPER=0.999 !15 GeV
+      VARY, KQUE1 , STEP=1.E-4, LOWER=-0.149, UPPER=0.149 !17 GeV
+      VARY, KQUE2 , STEP=1.E-4, LOWER=-0.169, UPPER=0.169 !15 geV
+      VARY, KQDMP , STEP=1.E-4, LOWER=-0.182, UPPER=0.182 !17 GeV
+      WEIGHT, DY=10, BETY=1, BETX=1
+    !!CONSTR, OTRDMP, DY>0.46, BETY<9, BETX>20 !relaxed bety, large betx
+      CONSTR, OTRDMP, DY>0.46, BETY<5, BETX>20 !relaxed bety, large betx
+    !!WEIGHT, DY=1.E-3, BETY=1, BETX=1 !relaxed Dy
+    !!WEIGHT, DY=1.E-2, BETY=1.E-4, BETX=1 !relaxed bety
+    !!CONSTR, OTRDMP, DY>0.46, BETY<0.6, BETX>20
+      WEIGHT, BETX=1.E-4
+    !!CONSTR, MTCX, BETX>80
+      CONSTR, MTCX, BETX>56 !need large betx (up to 100 m)
+      WEIGHT, BETX=0, BETY=0, ALFX=0, ALFY=0, DX=0, DPX=0, DY=0, DPY=0
+      WEIGHT, X=0, PX=0, Y=0, PY=0, T=0, PT=0
+      WEIGHT, MUX=10, MUY=0
+      COUPLE, MTCX/OTRDMP, MUX>70/360, MUX<110/360
+      WEIGHT, MUX=1.E-4
+      COUPLE, MTCX/OTRDMP, MUX=90/360
+      WEIGHT, BETX=1.E-5, BETY=1.E-5
+      CONSTR, QUE1[1] , BETY<150, BETX<350
+      CONSTR, QUE2[1] , BETY<150, BETX<350
+      CONSTR, QDMP1[1], BETY<150, BETX<350
+      CONSTR, QDMP2[1], BETY<150, BETX<350
+      WEIGHT, DY=10, BETX=1.E-6
+      CONSTR, DUMPFACE, DY<0.4  , BETX<350
+!!do not use      LMDIF, TOL=1.E-20, CALLS=10000
+    ENDMATCH
+    VALUE, kQDHXm,KQUE1,KQUE2,KQDMP
+    PRINT, MTCX ; PRINT, OTRDMP
+    TWISS, BETA0=TWSSmh, SAVE=TWISS
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      STYLE=100, SPLINE=.T., RANGE=QHXh44[1]/DUMPFACE, &
+      TITLE="HXR undulator to Dump, w/o coupling", FILE="LCLS2sc"
+    TWISS, BETA0=TWSSmh, SAVE=TWISS, COUPLE
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      STYLE=100, SPLINE=.T., RANGE=QHXh44[1]/DUMPFACE, &
+      TITLE="HXR undulator to Dump, with coupling", FILE="LCLS2sc"
+  ENDSUBROUTINE
+ENDCOMMENT
+
+  MDUMPh3 : SUBROUTINE !matching TCAV per Yuantao's requirements
     BEAM, ENERGY=Ef
     SET, SETCUS, CUSOFF
     SETK2cuH
     USE, (LTUH,HXRUND,DUMPLINE), RANGE=MM1/#E
-    VALUE, KQHX46,KQUE1,KQUE2,KQDMP
+    VALUE, kQHX46,KQUE1,KQUE2,KQDMP
     MATCH, BETA0=TWSSmh
-      VARY, KQHX46, STEP=1.E-6, LOWER=-0.9874*(15/Ef), UPPER= 0.9874*(15/Ef) ! 41.5 kG @ 15 GeV
-      VARY, KQUE1,  STEP=1.E-6, LOWER=-0.1464*(15/Ef), UPPER= 0.1464*(15/Ef) ! 40.3 kG @ 15 GeV
-      VARY, KQUE2,  STEP=1.E-4, LOWER=-0.1464*(15/Ef), UPPER= 0.1464*(15/Ef) !-40.3 kG @ 15 GeV
-      VARY, KQDMP,  STEP=1.E-4, LOWER=-0.1789*(15/Ef), UPPER= 0.1789*(15/Ef) !-38.5 kG @ 15 GeV
-      CONSTR, QUE1[1], BETX<200
-      CONSTR, QUE2[1], BETY<285
-      CONSTR, DUMPFACE, DY<1.0
+      VARY, kQHX46, STEP=1.E-4, LOWER=-0.994, UPPER=0.994 !15 GeV
+      VARY, KQUE1 , STEP=1.E-4, LOWER=-0.149, UPPER=0.149 !17 GeV
+      VARY, KQUE2 , STEP=1.E-4, LOWER=-0.169*0.95, UPPER=0.169*0.95 !15 GeV
+      VARY, KQDMP , STEP=1.E-4, LOWER=-0.182, UPPER=0.182 !17 GeV
+      WEIGHT, BETX=1.E-5 
+      CONSTR, MTCX, BETX>90 !need large betx (but <100 m)
+      WEIGHT, BETX=1.E-6
+      CONSTR, MTCX, BETX<120
+    !!WEIGHT, DY=10, BETY=1.E-5, BETX=1 !relaxed bety
+    !!CONSTR, OTRDMP, DY>0.46, BETY<0.6, BETX>20 !need large betx
+      WEIGHT, DY=10, BETY=1, BETX=1 !relaxed bety
+      CONSTR, OTRDMP, DY>0.46, BETY<1.8, BETX>20 !need large betx
       WEIGHT, BETX=0, BETY=0, ALFX=0, ALFY=0, DX=0, DPX=0, DY=0, DPY=0
+      WEIGHT, X=0, PX=0, Y=0, PY=0, T=0, PT=0
+      WEIGHT, MUX=10, MUY=0
+      COUPLE, MTCX/OTRDMP, MUX>70/360, MUX<110/360
+      WEIGHT, MUX=1.E-4
       COUPLE, MTCX/OTRDMP, MUX=90/360
+      WEIGHT, BETX=1.E-5, BETY=1.E-5
+      CONSTR, QUE1[1] , BETY<150, BETX<350
+      CONSTR, QUE2[1] , BETY<150, BETX<350
+      CONSTR, QDMP1[1], BETY<150, BETX<350
+      CONSTR, QDMP2[1], BETY<150, BETX<350
+      WEIGHT, DY=10, BETX=1.E-6
+      CONSTR, DUMPFACE, DY<0.4  , BETX<350
+     !LMDIF, TOL=1.E-20, CALLS=10000
+    ENDMATCH
+    VALUE, kQHX46,KQUE1,KQUE2,KQDMP
+    PRINT, FULL !PRINT, MTCX ; PRINT, OTRDMP
+    TWISS, BETA0=TWSSmh, SAVE=TWISS
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      STYLE=100, SPLINE=.T., RANGE=QHXh44[1]/DUMPFACE, &
+      TITLE="HXR undulator to Dump, w/o coupling", FILE="match"
+    TWISS, BETA0=TWSSmh, SAVE=TWISS, COUPLE
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      STYLE=100, SPLINE=.T., RANGE=QHXh44[1]/DUMPFACE, &
+      TITLE="HXR undulator to Dump, with coupling", FILE="match"
+  ENDSUBROUTINE
+
+  MDUMPMUXh : SUBROUTINE !match MUX (TCX01,2->OTRDMP)
+    BEAM, ENERGY=Ef
+    USE, (LTUH,HXRUND,DUMPLINE), RANGE=MM1/#E
+    VALUE, kQHX46,KQUE1,KQUE2,KQDMP
+    MATCH, BETA0=TWSSmh
+      VARY, KQUE1, STEP=1.E-6, LOWER=0, UPPER=KmaxQD
+      WEIGHT, X=0, PX=0, BETX=0, ALFX=0, DX=0, DPX=0, &
+              Y=0, PY=0, BETY=0, ALFY=0, DY=0, DPY=0, &
+              T=0, PT=0
+      COUPLE, MTCX/OTRDMP, MUX=90/360 !90 deg phase advance
+     !LMDIF, TOL=1.E-20
+     !MIGRAD, TOL=1.E-20
+    ENDMATCH
+    VALUE, kQHX46,KQUE1,KQUE2,KQDMP
+    PRINT, MTCX ; PRINT, OTRDMP ; PRINT, DUMPFACE
+    TWISS, COUPLE, BETA0=TWSSmh, SAVE, TAPE="twiss.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      STYLE=100, SPLINE, RANGE=QHXh44[1]/DUMPFACE, &
+      TITLE="HXR undulator to Dump (COUPLE)", FILE="match", &
+      VMIN=0,-0.1, VMAX=300,1
+  ENDSUBROUTINE
+
+! ------------------------------------------------------------------------------
+! match geometry and Twiss of CUSXR line (3 routines)
+
+COMMENT !outdated
+
+  MYCUSXR : SUBROUTINE
+    BEAM, ENERGY=Ef
+    SET, SETCUS, CUSON
+    USE, KCUSXRM
+    MATCH, BETA0=TWSCuS1, SURVEY, XS=XCuS1, YS=YCuS1, ZS=ZCuS1, &
+           THETAS=THCuS1, PHIS=PHCuS1, PSIS=PSCuS1
+      VARY, ABRCCUS1, STEP=1.E-5
+      VARY, ABRCCUS2, STEP=1.E-5
+      VARY, AROCUS0 , STEP=1.E-6
+        WEIGHT, XS=1, YS=1, ZS=1, THETAS=1, PHIS=1, PSIS=1
+        CONSTR, ROCUS0, PSIS=0
+        CONSTR, #E, YS=0, PHIS=0
+       !LMDIF, TOL=1.E-20, CALLS=10000
+    ENDMATCH
+    VALUE, ABRCCUS1,ABRCCUS2,AROCUS0
+!    PRINT, FULL
+!    SURVEY, X0=XCuS1, Y0=YCuS1, Z0=ZCuS1, &
+!            THETA0=THCuS1, PHI0=PHCuS1, PSI0=PSCuS1
+  ENDSUBROUTINE
+
+  MXYZCUSXR : SUBROUTINE
+    BEAM, ENERGY=Ef
+    SET, SETCUS, CUSON
+    USE, CUSXR
+    MATCH, BETA0=TWSCuS1, SURVEY, XS=XCuS1, YS=YCuS1, ZS=ZCuS1, &
+           THETAS=THCuS1, PHIS=PHCuS1, PSIS=PSCuS1
+      VARY, TCUSXR  , STEP=1.E-5
+      VARY, ABLRCUS0, STEP=1.E-5
+      VARY, dABRCUS , STEP=1.E-5
+      VARY, dLDCUS0 , STEP=1.E-4
+      VARY, AROCUS1 , STEP=1.E-6
+      VARY, AROCUS3 , STEP=1.E-6
+        WEIGHT, XS=1, YS=1, ZS=1, THETAS=1, PHIS=1, PSIS=1
+        CONSTR, #E, XS=XCuS2, YS=YCuS2, ZS=ZCuS2, &
+                    THETAS=THCuS2, PHIS=PHCuS2, PSIS=PSCuS2
+        CONSTR, QCUS1[1] , PSIS=0
+        CONSTR, MIDCUSXR , PSIS=0
+        CONSTR, QCuS10[1], PSIS=0
+       !LMDIF, TOL=1.E-20, CALLS=10000
+    ENDMATCH
+    VALUE, TCUSXR,ABLRCUS0,dABRCUS,dLDCUS0,AROCUS1,AROCUS3
+!    PRINT, FULL
+!    SURVEY, X0=XCuS1, Y0=YCuS1, Z0=ZCuS1, &
+!            THETA0=THCuS1, PHI0=PHCuS1, PSI0=PSCuS1 !, TAPE
+  ENDSUBROUTINE
+
+  MCUSXR : SUBROUTINE
+    BEAM, ENERGY=Ef
+    SET, SETCUS, CUSON
+    USE, CUSXR
+    MATCH, BETA0=TWSCuS1
+      VARY, KQCuS1 , STEP=1.E-4, LOWER=-0.570, UPPER=0.570 !10 GeV
+      VARY, KQCuS2 , STEP=1.E-4, LOWER=-0.570, UPPER=0.570
+      VARY, KQCuS3 , STEP=1.E-4, LOWER=-0.570, UPPER=0.570
+      VARY, KQCuS4 , STEP=1.E-4, LOWER=-2.807, UPPER=2.807 !10 GeV
+      VARY, KQCuS5 , STEP=1.E-4, LOWER=-2.807, UPPER=2.807
+    !!VARY, KQCuS6 , STEP=1.E-4, LOWER=-2.807, UPPER=2.807
+    !!VARY, KQCuS7 , STEP=1.E-4, LOWER=-0.570, UPPER=0.570
+    !!VARY, KQCuS8 , STEP=1.E-4, LOWER=-0.570, UPPER=0.570
+      VARY, KQCuS9 , STEP=1.E-4, LOWER=-0.570, UPPER=0.570 !10 GeV
+      VARY, KQCuS10, STEP=1.E-4, LOWER=-0.570, UPPER=0.570
+    !!VARY, dLDCuS2 , STEP=1.E-4, LOWER=-2.0, UPPER=2.0
+    !!VARY, dLDCuS3 , STEP=1.E-4, LOWER=-2.0, UPPER=2.0
+    !!VARY, dLDCuS4 , STEP=1.E-4, LOWER=-2.0, UPPER=1.0
+    !!VARY, ABYCUS  , STEP=1.E-5
+        RMATRIX, #S/#E, RM(5,6)=0, WEIGHT(5,6)=100
+        WEIGHT, DX=10, DY=10, DPX=100, DPY=100
+        CONSTR, #E, DX=0, DY=0, DPX=0, DPY=0
+      !!CONSTR, MIDCUSXR, DPX<0, DPY>0
+        CONSTR, MIDCUSXR, ALFX=0, ALFY=0
+        WEIGHT, BETX=1.E-6, BETY=1.E-6
+        CONSTR, QCuS2[1], BETX<30, BETY<155
+        CONSTR, QCuS3[1], BETX<30, BETY<130
+        CONSTR, QCuS4[1], BETX<30, BETY<30
+        CONSTR, QCuS5[1], BETX<30, BETY<30
+        WEIGHT, DX=0,DPX=0,DY=0,DPY=0,X=0,PX=0,Y=0,PY=0,T=0,PT=0
+        WEIGHT, BETX=1.E-6, BETY=1.E-6, ALFX=1.E-5, ALFY=1.E-5
+        COUPLE, BLRCUSa[1]/BRCUS1a[1]
+        WEIGHT, ALFX=0, ALFY=0
+        COUPLE, QCUS1[1]/QCUS10[1]
+       !LMDIF, TOL=1.E-20, CALLS=10000
+    ENDMATCH
+    VALUE, KQCuS1,KQCuS2,KQCuS3,KQCuS4,KQCuS5,KQCuS9,KQCuS10
+  !!VALUE, KQCuS6,KQCuS7,KQCuS8
+  !!VALUE, dLDCuS2,dLDCuS3,dLDCuS4
+  !!VALUE, ABYCUS
+    PRINT, MIDCUSXR
+    TWISS, BETA0=TWSCuS1, SAVE=TWISS !, TAPE
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, TITLE="Cu-linac to SXR", FILE="match"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      STYLE=100, SPLINE, TITLE="Cu-linac to SXR", FILE="match"
+  ENDSUBROUTINE
+
+ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+! match geometry and Twiss of CUSXR line (3 routines)
+
+  MKICKCUSXR : SUBROUTINE
+    BEAM, ENERGY=Ef
+    SET, TCUSXR0, TCUSXR
+    SET, TCUSXR, 0.0
+    SET, SETCUS, CUSON
+    USE, CUSXR, RANGE=#S/BLRCUSb[1]
+    VALUE, ABKRCUS0,LDCUSBLRa*COS(ABKRCUS)
+    MATCH, BETA0=TWSCuS1, SURVEY, XS=0, YS=0, ZS=0, THETAS=0, PHIS=0, PSIS=0
+      VARY, ABKRCUS0, STEP=1.E-6
+      VARY, LDCUSBLRa, STEP=1.E-4
+      WEIGHT, YS=1
+      CONSTR, BLRCUSa[1], YS=15.E-3
+      CONSTR, BPMCUS[1], YS=5.E-3
+     !LMDIF, TOL=1.E-20, CALLS=1000
+    ENDMATCH
+    VALUE, ABKRCUS0,LDCUSBLRa*COS(ABKRCUS)
+    PRINT, RANGE=#S/BLRCUSb[1]
+    SURVEY
+    SET, TCUSXR, TCUSXR0
+  ENDSUBROUTINE
+
+  MXYZCUSXR2 : SUBROUTINE
+    BEAM, ENERGY=Ef
+    SET, SETCUS, CUSON
+    USE, CUSXR
+    VALUE, TCUSXR,TBRCUS,ABLRCUS0,dABRCUS,dLDCUS0,AROCUS1,AROCUS2,AROCUS3
+    MATCH, BETA0=TWSCuS1, SURVEY, XS=XCuS1, YS=YCuS1, ZS=ZCuS1, &
+           THETAS=THCuS1, PHIS=PHCuS1, PSIS=PSCuS1
+      VARY, TCUSXR  , STEP=1.E-5
+      VARY, TBRCUS  , STEP=1.E-5
+      VARY, ABLRCUS0, STEP=1.E-5
+      VARY, dABRCUS , STEP=1.E-5
+      VARY, dLDCUS0 , STEP=1.E-4
+      VARY, AROCUS1 , STEP=1.E-6
+      VARY, AROCUS2 , STEP=1.E-6
+      VARY, AROCUS3 , STEP=1.E-6
+        WEIGHT, XS=1, YS=1, ZS=1, THETAS=1, PHIS=1, PSIS=1
+        CONSTR, #E, XS=XCuS2, YS=YCuS2, ZS=ZCuS2, &
+                    THETAS=THCuS2, PHIS=PHCuS2, PSIS=PSCuS2
+        CONSTR, QCUS1[1] , PSIS=0
+        CONSTR, MIDCUSXR , PSIS=0
+        CONSTR, QCuS10[1], PSIS=0
+       !LMDIF, TOL=1.E-20, CALLS=10000
+    ENDMATCH
+    VALUE, TCUSXR,TBRCUS,ABLRCUS0,dABRCUS,dLDCUS0,AROCUS1,AROCUS2,AROCUS3
+!    PRINT, FULL
+!    SURVEY, X0=XCuS1, Y0=YCuS1, Z0=ZCuS1, &
+!            THETA0=THCuS1, PHI0=PHCuS1, PSI0=PSCuS1 !, TAPE
+  ENDSUBROUTINE
+
+  MCUSXR2 : SUBROUTINE
+    COMMENT                       !use this COMMENT/UNCOMMENT block to set-up 
+      BEAM, ENERGY=E00            !TBXCUS1 (copy result to CUSXR.xsif), then 
+      SET, SETCUS, CUSON          !turn it off, otherwise it leads to a larger 
+      USE, CU_SXR                 !penalty value in MCUSXR2, when verifying the 
+      SAVEBETA, TWSCUS1, BEGCLTS  !match (LMDIF off) with prior MXYZCUSXR2 routine
+      TWISS, BETA0=TWSSC
+      SHOW, TWSCUS1
+      SET, TBXCUS1, TWSCUS1[BETX]; SET, TBYCUS1, TWSCUS1[BETY]
+      SET, TAXCUS1, TWSCUS1[ALFX]; SET, TAYCUS1, TWSCUS1[ALFY]
+    ENDCOMMENT
+    BEAM, ENERGY=Ef
+    SET, SETCUS, CUSON
+    USE, CUSXR
+    VALUE, KQCuS1,KQCuS2,KQCuS3,KQCuS4,KQCuS5,KQCuS9,KQCuS10
+    MATCH, BETA0=TWSCuS1, ENERGY=Ef
+      VARY, KQCuS1 , STEP=1.E-4, LOWER=-0.570, UPPER=0.570 !10 GeV
+      VARY, KQCuS2 , STEP=1.E-4, LOWER=-0.570, UPPER=0.570
+      VARY, KQCuS3 , STEP=1.E-4, LOWER=-0.570, UPPER=0.570
+      VARY, KQCuS4 , STEP=1.E-4, LOWER=-2.807, UPPER=2.807 !10 GeV
+      VARY, KQCuS5 , STEP=1.E-4, LOWER=-2.807, UPPER=2.807
+    !!VARY, KQCuS6 , STEP=1.E-4, LOWER=-2.807, UPPER=2.807
+    !!VARY, KQCuS7 , STEP=1.E-4, LOWER=-0.570, UPPER=0.570
+    !!VARY, KQCuS8 , STEP=1.E-4, LOWER=-0.570, UPPER=0.570
+      VARY, KQCuS9 , STEP=1.E-4, LOWER=-0.570, UPPER=0.570 !10 GeV
+      VARY, KQCuS10, STEP=1.E-4, LOWER=-0.570, UPPER=0.570
+    !!VARY, dLDCuS2 , STEP=1.E-4, LOWER=-2.0, UPPER=2.0
+    !!VARY, dLDCuS3 , STEP=1.E-4, LOWER=-2.0, UPPER=2.0
+    !!VARY, dLDCuS4 , STEP=1.E-4, LOWER=-2.0, UPPER=1.0
+    !!VARY, ABYCUS  , STEP=1.E-5
+        RMATRIX, #S/#E, RM(5,6)=0, WEIGHT(5,6)=100
+        WEIGHT, DX=10, DY=10, DPX=100, DPY=100
+        CONSTR, #E, DX=0, DY=0, DPX=0, DPY=0
+      !!CONSTR, MIDCUSXR, DPX<0, DPY>0
+        CONSTR, MIDCUSXR, ALFX=0, ALFY=0
+        WEIGHT, BETX=1.E-6, BETY=1.E-6
+        CONSTR, QCuS2[1], BETX<30, BETY<155
+        CONSTR, QCuS3[1], BETX<30, BETY<130
+        CONSTR, QCuS4[1], BETX<30, BETY<30
+        CONSTR, QCuS5[1], BETX<30, BETY<30
+        WEIGHT, DX=0,DPX=0,DY=0,DPY=0,X=0,PX=0,Y=0,PY=0,T=0,PT=0
+        WEIGHT, BETX=1.E-6, BETY=1.E-6, ALFX=1.E-5, ALFY=1.E-5
+        WEIGHT, ALFX=0, ALFY=0
+        COUPLE, BLRCUSa[1]/BRCUS1a[1]
+        COUPLE, QCUS1[1]/QCUS10[1]
+        COUPLE, QCUS2[1]/QCUS9[1]
+        COUPLE, QCUS3[1]/QCUS8[1]
+        COUPLE, QCUS4[1]/QCUS7[1]
+       !LMDIF, TOL=1.E-20 !, CALLS=10000
+       !MIGRAD, TOL=1.E-20 !, CALLS=10000
+    ENDMATCH
+    VALUE, TBXCUS1,TBYCUS1,TAXCUS1,TAYCUS1
+    VALUE, KQCuS1,KQCuS2,KQCuS3,KQCuS4,KQCuS5,KQCuS9,KQCuS10
+  !!VALUE, KQCuS8!,KQCuS7,KQCuS6
+  !!VALUE, dLDCuS2,dLDCuS3,dLDCuS4
+  !!VALUE, ABYCUS
+    PRINT, FULL !MIDCUS1
+    TWISS, BETA0=TWSCuS1, SAVE=TWISS, TAPE="twiss.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, TITLE="Cu-linac to SXR", FILE="match"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      STYLE=100, SPLINE, TITLE="Cu-linac to SXR", FILE="match"
+  ENDSUBROUTINE
+
+! ------------------------------------------------------------------------------
+! match CUSXR input Twiss
+
+  MCUSXRBXY : SUBROUTINE
+    BEAM, ENERGY=Ef
+    SET, SETCUS, CUSON
+    USE, CUSXR
+    VALUE, TBXCUS1,TAXCUS1,TBYCUS1,TAYCUS1
+    MATCH, BETX=TBXCUS1, ALFX=TAXCUS1, BETY=TBYCUS1, ALFY=TAYCUS1
+      VARY, TBXCUS1, STEP=1.E-6, LOWER=0
+      VARY, TAXCUS1, STEP=1.E-6
+      VARY, TBYCUS1, STEP=1.E-6, LOWER=0
+      VARY, TAYCUS1, STEP=1.E-6
+      CONSTR, MIDCUSXR, ALFX=0, ALFY=0
+      CONSTR #E, DX=0, DY=0
+     !LMDIF, TOL=1.E-20
+     !MIGRAD, TOL=1.E-20
+    ENDMATCH
+    VALUE, TBXCUS1,TAXCUS1,TBYCUS1,TAYCUS1
+    PRINT, FULL
+    TWISS, SAVE, BETX=TBXCUS1, ALFX=TAXCUS1, BETY=TBYCUS1, ALFY=TAYCUS1
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=#S/#E, &
+      TITLE="CUSXR", STYLE=100, SPLINE, FILE="match"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, RANGE=#S/#E, &
+      TITLE="CUSXR", STYLE=100, -SPLINE, FILE="match"
+  ENDSUBROUTINE
+
+! ------------------------------------------------------------------------------
+! match from CUSXR to horizontal dogleg bends in SXR LTU
+
+COMMENT
+  MCULTUs : SUBROUTINE
+    BEAM, ENERGY=Ef
+    SET, SETCUS, CUSON
+    USE, (CUSXR,BYPM2,BSYLTUsc)
+    MATCH, BETA0=TWSCuS1
+      VARY, KQBP33, STEP=1.E-4 !, LOWER=-0.650, UPPER=0.650 !10 GeV
+      VARY, KQBP34, STEP=1.E-4, LOWER=-0.650, UPPER=0.650
+      VARY, KQDBL1, STEP=1.E-4, LOWER=-1.871, UPPER=1.871 !15 GeV
+      VARY, KQDBL2, STEP=1.E-4, LOWER=-1.871, UPPER=1.871
+      CONSTR, DBMARK34b, BETX=MBETXs, BETY=MBETYs, ALFX=MALFXs, ALFY=MALFYs
+!!do not use      LMDIF, TOL=1.E-20, CALLS=5000
+    ENDMATCH
+    VALUE, KQBP33,KQBP34,KQDBL1,KQDBL2
+    TWISS, BETA0=TWSCuS1, SAVE
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE=.T., FILE="match", RANGE=#S/DBLDL21
+  ENDSUBROUTINE
+ENDCOMMENT
+
+  MCULTUs2 : SUBROUTINE
+    BEAM, ENERGY=Ef
+    SET, SETCUS, CUSON
+    SETK2cuS
+    USE, (CLTS,BSYS,LTUS)
+    VALUE, KQBP33,KQBP34,KQDBL1,KQDBL2,KQDL11,Ef
+    MATCH, BETA0=TWSCuS1, ENERGY=Ef
+      VARY, KQBP33, STEP=1.E-4 !, LOWER=-0.650, UPPER=0.650 !10 GeV
+      VARY, KQBP34, STEP=1.E-4 !, LOWER=-0.650, UPPER=0.650
+      VARY, KQDBL1, STEP=1.E-4 !, LOWER=-1.871, UPPER=1.871 !15 GeV
+      VARY, KQDBL2, STEP=1.E-4 !, LOWER=-1.871, UPPER=1.871
+      VARY, KQDL11, STEP=1.E-4 !, LOWER=0     , UPPER=0.570 !10 GeV
+      CONSTR, QDL12[1], ALFX=0, ALFY=0
+      CONSTR, QDL13[1], ALFX=0, ALFY=0
+      CONSTR, QDL14[1], ALFX=0, ALFY=0
+      CONSTR, QDL15[1], ALFX=0, ALFY=0
+      CONSTR, QDL16[1], ALFX=0, ALFY=0
+      CONSTR, QDL17[1], ALFX=0, ALFY=0
+      CONSTR, QDL18[1], ALFX=0, ALFY=0
+      CONSTR, QDL19[1], ALFX=0, ALFY=0
+      WEIGHT, ALFX=0,ALFY=0,DX=0,DPX=0,DY=0,DPY=0,X=0,PX=0,Y=0,PY=0,T=0,PT=0
+      WEIGHT, BETX=1.E-6, BETY=1.E-6
+      COUPLE, QDL11[1]/QDL13[1]
+     !LMDIF, TOL=1.E-20
+     !MIGRAD, TOL=1.E-20
+    ENDMATCH
+    VALUE, KQBP33,KQBP34,KQDBL1,KQDBL2,KQDL11
+    PRINT, FULL
+    SAVEBETA, TWm, MM1B
+    TWISS, BETA0=TWSCuS1, SAVE, TAPE="twiss.tape"
+    SHOW, TWm
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=#S/DBLDL21, &
+      STYLE=100, SPLINE, FILE="match"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, FILE="match", RANGE=#S/QDL20[2]
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      STYLE=100, SPLINE, FILE="match", RANGE=#S/QDL20[2]
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=#S/ENDLTUS, &
+      STYLE=100, SPLINE, FILE="match"
+  ENDSUBROUTINE
+
+! ------------------------------------------------------------------------------
+! match beta through SXR undulator
+
+  MUNDs : SUBROUTINE
+    BEAM, ENERGY=Ei
+    SET, SETCUS, CUSON
+    SETK2cuS
+    USE, CU_SXRi
+    VALUE, KQUM1b,KQUM2b,KQUM3b,KQUM4b
+    MATCH, BETA0=TWSSi
+      VARY, KQUM1b, STEP=1.E-6, LOWER=-KmaxQUMb*0, UPPER=+KmaxQUMb
+      VARY, KQUM2b, STEP=1.E-6, LOWER=-KmaxQUMb,   UPPER=+KmaxQUMb*0
+      VARY, KQUM3b, STEP=1.E-6, LOWER=-KmaxQUMb*0, UPPER=+KmaxQUMb
+      VARY, KQUM4b, STEP=1.E-6, LOWER=-KmaxQUMb,   UPPER=+KmaxQUMb*0
+      WEIGHT, X=0, PX=0, BETX=1, ALFX=0, DX=0, DPX=0
+      WEIGHT, Y=0, PY=0, BETY=1, ALFY=0, DY=0, DPY=0
+      WEIGHT, T=0, PT=0
+     !comment !long-period
+      COUPLE, QSXh21[1]/QSXh23[1]
+      COUPLE, QSXh22[1]/QSXh24[1]
+      COUPLE, QSXh21[1]/QSXh25[1]
+      COUPLE, QSXh22[1]/QSXh26[1]
+      COUPLE, QSXh21[1]/QSXh27[1]
+      COUPLE, QSXh22[1]/QSXh28[1]
+      COUPLE, QSXh21[1]/QSXh29[1]
+      COUPLE, QSXh22[1]/QSXh30[1]
+      COUPLE, QSXh21[1]/QSXh31[1]
+      COUPLE, QSXh22[1]/QSXh32[1]
+      COUPLE, QSXh21[1]/QSXh33[1]
+      COUPLE, QSXh22[1]/QSXh34[1]
+      COUPLE, QSXh21[1]/QSXh35[1]
+      COUPLE, QSXh22[1]/QSXh36[1]
+      COUPLE, QSXh21[1]/QSXh37[1]
+      COUPLE, QSXh22[1]/QSXh38[1]
+      COUPLE, QSXh21[1]/QSXh39[1]
+      COUPLE, QSXh22[1]/QSXh40[1]
+      COUPLE, QSXh21[1]/QSXh41[1]
+      COUPLE, QSXh22[1]/QSXh42[1]
+     !endcomment
+      comment !short-period
+      COUPLE, QSXh21[1]/QSXh43[1]
+      COUPLE, QSXh22[1]/QSXh44[1]
+      COUPLE, QSXh21[1]/QSXh45[1]
+      COUPLE, QSXh22[1]/QSXh46[1]
+      endcomment
+      WEIGHT, BETX=1.E-6, BETY=1.E-6
+      CONSTR, QUM1B[1], BETX<75
+      CONSTR, QUM2B[1], BETY<75
+      CONSTR, QUM3B[1], BETX<75
+      CONSTR, QUM4B[1], BETY<75
      !LMDIF, TOL=1.E-20, CALLS=10000
      !MIGRAD, TOL=1.E-20, CALLS=10000
     ENDMATCH
-    VALUE, KQHX46,KQUE1,KQUE2,KQDMP
-    PRINT, FULL
-    TWISS, BETA0=TWSSmh, SAVE=TWISS, TAPE="twiss.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      STYLE=100, SPLINE=.T., RANGE=QHXh44[1]/DUMPFACE, &
-      TITLE="HXR undulator to Dump, w/o coupling", FILE="match"
-    TWISS, BETA0=TWSSmh, SAVE=TWISS, COUPLE
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      STYLE=100, SPLINE=.T., RANGE=QHXh44[1]/DUMPFACE, &
-      TITLE="HXR undulator to Dump, with coupling", FILE="match"
+    VALUE, KQUM1b,KQUM2b,KQUM3b,KQUM4b
+    TWISS, BETA0=TWSSi, SAVE, TAPE="twiss.tape", RTAPE="rmat.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=WS31B/SXR46END, &
+      STYLE=100, SPLINE, FILE="match", TITLE="LTUS-UNDS (8 GeV)"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, RANGE=BEGBSYS/SXR47END, &
+      STYLE=100, SPLINE, FILE="match"
   ENDSUBROUTINE
 
-  MDUMPh_alt : SUBROUTINE !match dumpline in HXR
-    BEAM, ENERGY=Ef
-    SET, SETCUS, CUSOFF
-    SETK2cuH
-    USE, (LTUH,HXRUND,DUMPLINE), RANGE=MM1/#E
-    VALUE, KQHX46,KQHX47,KQUE1,KQUE2,KQDMP
-    MATCH, BETA0=TWSSmh
-      VARY, KQHX47, STEP=1.E-6, LOWER=-0.9874*(15/Ef), UPPER= 0.9874*(15/Ef) ! 41.5 kG @ 15 GeV
-      VARY, KQUE1,  STEP=1.E-6, LOWER=-0.1464*(15/Ef), UPPER= 0.1464*(15/Ef) ! 40.3 kG @ 15 GeV
-      VARY, KQUE2,  STEP=1.E-4, LOWER=-0.1464*(15/Ef), UPPER= 0.1464*(15/Ef) !-40.3 kG @ 15 GeV
-     !VARY, KQDMP,  STEP=1.E-4, LOWER=-0.1789*(15/Ef), UPPER= 0.1789*(15/Ef) !-38.5 kG @ 15 GeV
-      CONSTR, ENDDMPH_1, BETX=39.414, ALFX=1.653, BETY=275.158, ALFY=1.473
-     !CONSTR, QUE1[1], BETX>150, BETX<200
-     !CONSTR, QUE2[1], BETY>250, BETY<285
-     !CONSTR, DUMPFACE, DY<1.0
-      WEIGHT, BETX=0, BETY=0, ALFX=0, ALFY=0, DX=0, DPX=0, DY=0, DPY=0
-      COUPLE, MTCX/OTRDMP, MUX=90/360
-    !!LMDIF, TOL=1.E-20, CALLS=10000
-    !!MIGRAD, TOL=1.E-20, CALLS=10000
-    ENDMATCH
-    VALUE, KQHX47,KQUE1,KQUE2,KQDMP
-    PRINT, FULL
-    TWISS, BETA0=TWSSmh, SAVE=TWISS, TAPE="twiss.tape"
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      STYLE=100, SPLINE=.T., RANGE=QHXh44[1]/DUMPFACE, &
-      TITLE="HXR undulator to Dump, w/o coupling", FILE="match"
-    TWISS, BETA0=TWSSmh, SAVE=TWISS, COUPLE
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-      STYLE=100, SPLINE=.T., RANGE=QHXh44[1]/DUMPFACE, &
-      TITLE="HXR undulator to Dump, with coupling", FILE="match"
-  ENDSUBROUTINE
-
-! ==============================================================================
-! R56 checks
 ! ------------------------------------------------------------------------------
+! match dumpline in SXR
+
+COMMENT
+  MDUMPs : SUBROUTINE !old -- do not use
+    BEAM, ENERGY=E00
+    SET, SETCUS, CUSON
+    SETK2cuS
+    USE, CU_SXR
+    MATCH, BETA0=TWSSC
+      VARY, kQSX47, STEP=1.E-4, LOWER=-0.999, UPPER=0.999 !15 GeV
+      VARY, KQUE1b, STEP=1.E-4, LOWER=-0.380, UPPER=0.380 !15 GeV
+      VARY, KQUE2b, STEP=1.E-4, LOWER=-0.570, UPPER=0.570 !10 GeV
+      VARY, KQDMPb, STEP=1.E-4, LOWER=-0.182, UPPER=0.182 !17 GeV
+      CONSTR, OTRDMPB, DY>0.46, BETY<0.6, BETX>100
+      WEIGHT, ALFY=1.E-5
+      CONSTR, OTRDMPB, ALFY=0
+      WEIGHT, BETX=1.E-5, BETY=1.E-5
+      CONSTR, QUE1B[1] , BETY<150, BETX<350
+      CONSTR, QUE2B[1] , BETY<150, BETX<350
+      CONSTR, QDMP1B[1], BETY<150, BETX<350
+      CONSTR, QDMP2B[1], BETY<150, BETX<350
+      WEIGHT, DY=10, BETX=1.E-6
+      CONSTR, DUMPFACEB, DY<0.4  , BETX<390
+!!do not use      LMDIF, TOL=1.E-20, CALLS=10000
+    ENDMATCH
+    VALUE, kQSX47,KQUE1b,KQUE2b,KQDMPb
+    TWISS, BETA0=TWSSC, SAVE=TWISS
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      STYLE=100, SPLINE, RANGE=QSX45[1]/DUMPFACEB, &
+      TITLE="SXR undulator to Dump, w/o coupling", FILE="match"
+    MTWSSms
+    BEAM, ENERGY=TWSSms[ENERGY]
+    USE, (LTUsc,SXRUND,DUMPLINEb)
+    TWISS, COUPLE, SAVE=TWISS, &
+      BETX=TWSSms[BETX], ALFX=TWSSms[ALFX], &
+      BETY=TWSSms[BETY], ALFY=TWSSms[ALFY]
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      STYLE=100, SPLINE, RANGE=QSX45[1]/DUMPFACEB, &
+      TITLE="SXR undulator to Dump, with coupling", FILE="match"
+  ENDSUBROUTINE
+ENDCOMMENT
+
+  MDUMPs2 : SUBROUTINE !matching TCAV per Yuantao's requirements
+    BEAM, ENERGY=E00
+    SET, SETCUS, CUSON
+    SETK2cuS
+    USE, CU_SXR
+    VALUE, kQSX47,KQUE1b,KQUE2b,KQDMPb
+    MATCH, BETA0=TWSSC
+      VARY, kQSX47, STEP=1.E-4, LOWER=-0.994, UPPER=0.994 !15 GeV
+      VARY, KQUE1b, STEP=1.E-4, LOWER=-0.380, UPPER=0.380 !15 GeV
+      VARY, KQUE2b, STEP=1.E-4, LOWER=-0.570, UPPER=0.570 !10 GeV
+      VARY, KQDMPb, STEP=1.E-4, LOWER=-0.182, UPPER=0.182 !17 GeV
+      WEIGHT, BETX=1.E-5 
+      CONSTR, MTCXB, BETX>85 !need large betx (close to 100 m)
+      WEIGHT, BETX=1.E-6
+      CONSTR, MTCXB, BETX<120
+    !!WEIGHT, DY=10, BETY=1.E-5, BETX=1 !relaxed bety
+    !!CONSTR, OTRDMPB, DY>0.46, BETY<0.6, BETX>20 !need large betx
+      WEIGHT, DY=10, BETY=1, BETX=1 !relaxed bety
+      CONSTR, OTRDMPB, DY>0.46, BETY<1.8, BETX>20 !need large betx
+      WEIGHT, BETX=0, BETY=0, ALFX=0, ALFY=0, DX=0, DPX=0, DY=0, DPY=0
+      WEIGHT, X=0, PX=0, Y=0, PY=0, T=0, PT=0
+      WEIGHT, MUX=10, MUY=0
+      COUPLE, MTCXB/OTRDMPB, MUX>70/360, MUX<110/360
+      WEIGHT, MUX=1.E-4
+      COUPLE, MTCXB/OTRDMPB, MUX=90/360
+      WEIGHT, BETX=1.E-5, BETY=1.E-5
+      CONSTR, QUE1B[1] , BETY<150, BETX<350
+      CONSTR, QUE2B[1] , BETY<150, BETX<350
+      CONSTR, QDMP1B[1], BETY<150, BETX<350
+      CONSTR, QDMP2B[1], BETY<150, BETX<350
+      WEIGHT, DY=10, BETX=1.E-6
+      CONSTR, DUMPFACEB, DY<0.4  , BETX<350
+     !LMDIF, TOL=1.E-20, CALLS=10000
+     !MIGRAD, TOL=1.E-20, CALLS=10000
+    ENDMATCH
+    VALUE, kQSX47,KQUE1b,KQUE2b,KQDMPb
+    PRINT, MTCXB ; PRINT, OTRDMPB
+    TWISS, BETA0=TWSSC, SAVE=TWISS
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      STYLE=100, SPLINE=.T., RANGE=QSXh44[1]/DUMPFACEB, &
+      TITLE="SXR undulator to Dump, w/o coupling", FILE="match"
+    MTWSSms
+    BEAM, ENERGY=TWSSms[ENERGY]
+    USE, (LTUsc,SXRUND,DUMPLINEb)
+    PRINT, MTCXB ; PRINT, OTRDMPB
+    TWISS, COUPLE, SAVE=TWISS, &
+      BETX=TWSSms[BETX], ALFX=TWSSms[ALFX], &
+      BETY=TWSSms[BETY], ALFY=TWSSms[ALFY]
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      STYLE=100, SPLINE=.T., RANGE=QSXh44[1]/DUMPFACEB, &
+      TITLE="SXR undulator to Dump, with coupling", FILE="match"
+  ENDSUBROUTINE
+
+  MDUMPMUXs : SUBROUTINE !match MUX (TCX01B->OTRDMPB)
+    BEAM, ENERGY=E00
+    SET, SETCUS, CUSON
+    SETK2cuS
+    USE, CU_SXR
+    SAVEBETA, TWSSms, MM1B
+    TWISS, BETA0=TWSSC
+    SHOW, TWSSms
+
+    BEAM, ENERGY=Ef
+    SETK2cuS
+    USE, (LTUS,SXRUND,DUMPLINEB), RANGE=MM1B/#E
+    VALUE, kQSX47,KQUE1B,KQUE2B,KQDMPB
+    MATCH, BETA0=TWSSms
+      VARY, kQSX47, STEP=1.E-6 !, LOWER=-0.877*10/Eu, UPPER=0.877*10/Eu
+      VARY, KQUE1b, STEP=1.E-6, LOWER=0, UPPER=KmaxQR
+      CONSTR, QDMP1B[1], BETY=300
+      WEIGHT, X=0, PX=0, BETX=0, ALFX=0, DX=0, DPX=0, &
+              Y=0, PY=0, BETY=0, ALFY=0, DY=0, DPY=0, &
+              T=0, PT=0
+      COUPLE, MTCXB/OTRDMPB, MUX=90/360 !90 deg phase advance
+     !LMDIF, TOL=1.E-20
+     !MIGRAD, TOL=1.E-20
+    ENDMATCH
+    VALUE, kQSX47,KQUE1B,KQUE2B,KQDMPB
+    PRINT, MTCXB ; PRINT, OTRDMPB ; PRINT, DUMPFACEB
+    TWISS, COUPLE, BETA0=TWSSms, SAVE, TAPE="twiss.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
+      STYLE=100, SPLINE, RANGE=QSXh44[1]/DUMPFACEB, &
+      TITLE="SXR undulator to Dump (COUPLE)", FILE="match"
+  ENDSUBROUTINE
+
+! ------------------------------------------------------------------------------
+! R56 checks
 
   MR56CUSXR : SUBROUTINE
     BEAM, ENERGY=Ef
@@ -1273,11 +1618,12 @@
     ENDMATCH
   ENDSUBROUTINE
 
-! ==============================================================================
-! Cu linac quad strengths
 ! ------------------------------------------------------------------------------
 
-  L2K1in : SUBROUTINE !initialize L2 quad K1s to FODO cell values
+  L2K1in : SUBROUTINE
+
+  ! initialize L2 quad K1s to FODO cell values
+
     SET, KQ21401,  KQL2
     SET, KQ21501, -KQL2
     SET, KQ21601,  KQL2
@@ -1312,7 +1658,10 @@
 
 ! ------------------------------------------------------------------------------
 
-  L2K1out : SUBROUTINE !output L2 quad K1s
+  L2K1out : SUBROUTINE
+
+  ! output L2 quad K1s
+
     VALUE, KQ21401
     VALUE, KQ21501
     VALUE, KQ21601
@@ -1347,7 +1696,10 @@
 
 ! ------------------------------------------------------------------------------
 
-  L3K1in : SUBROUTINE !initialize L3 quad K1s to FODO cell values
+  L3K1in : SUBROUTINE
+
+  ! initialize L3 quad K1s to FODO cell values
+
     SET, KQ25201, KQFL3
     SET, KQ25301, KQDL3
     SET, KQ25401, KQFL3
@@ -1404,7 +1756,10 @@
 
 ! ------------------------------------------------------------------------------
 
-  L3K1out : SUBROUTINE !output L3 quad K1s
+  L3K1out : SUBROUTINE
+
+  ! output L3 quad K1s
+
     VALUE, KQ25201
     VALUE, KQ25301
     VALUE, KQ25401
@@ -1461,6 +1816,19 @@
 
 ! ==============================================================================
 ! COMMANDs
+! ------------------------------------------------------------------------------
+
+ !MCUSXR2   !match CUSXR dogleg optics
+ !MCUSXRBXY !find CUSXR incoming Twiss
+ !MCLTS     !match from L3 to CUSXR
+ !MCULTUs2  !match from CUSXR to LTUS (SETK2cuS)
+ !MUNDs     !match LTUS to SXR undulator cells
+ !MDUMPMUXs !match SXR dump line
+ !MBSY      !match BSY to LTUH (SETK2cuH)
+ !MED2DL2   !match from LTUH bend cells to emit-diag section
+ !MUNDh     !match LTUH to HXR undulator cells
+ !MDUMPMUXh !match HXR dump line
+
 ! ------------------------------------------------------------------------------
 
   COMMENT
@@ -1531,26 +1899,24 @@
    !ML28
    !ML29
    !ML30
+   !MCLTS
+   !!L3K1out
+   !MED2DL2
   ENDCOMMENT
 
-! L3/DMPS match
-
- !MCLTS
- !MCUSXR
- !MCULTUs
- !MSXR
- !MDUMPs
-
-! CLTH_1/HXR match
-
- !MDL2B
- !MDL2M2
- !MBSY
- !MBSY2
- !MED2DL2
- !MUNDh
- !MDUMPh
- !MDUMPh_alt
+ !COMMENT !LCLS-II matching routines
+   !MBSY
+   !MBSY2
+   !MUNDh
+   !MDUMPh3
+   !MKICKCUSXR
+   !MXYZCUSXR2 !see note
+   !MCUSXR2
+   !MCULTUs2
+   !MUNDs
+   !MDUMPs2
+   !MDUMPMUXs
+ !ENDCOMMENT
 
 ! ------------------------------------------------------------------------------
 

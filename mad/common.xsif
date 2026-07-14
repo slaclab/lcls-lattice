@@ -1,13 +1,21 @@
 
-! *** OPTICS=AD_ACCEL-18FEB2025s ***
+! *** OPTICS=AD_ACCEL-01JUN2026s ***
 
 ! LCLS2sc common parameters
 
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
+! 11-MAR-2023, M. Woodley
+!  * "SLOT36" renamed "BR3B"
 ! 24-OCT-2022, M. Woodley
 !  * define Qg-type quadrupole (3.37Q1.2)
+! ------------------------------------------------------------------------------
+! 20-APR-2021, M. Woodley
+!  * add area BEG/END MARKers for LEI areas
+! ------------------------------------------------------------------------------
+! 10-JUN-2020, M. Woodley
+!  * add area BEG/END MARKers for SLOT32 area
 ! ------------------------------------------------------------------------------
 ! 30-JAN-2019, M. Woodley
 !  * add area BEG/END MARKers for the Cu-linac (u/s of BSY)
@@ -168,7 +176,7 @@
 
 ! 1.92K41.2 single beam dumper vertical kicker (SA-380-330-02)
 
-  LKIK := 1.0601  !kicker coil length per magnet (m)
+  LKIK := 1.0601  !kicker coil length per magnet (m) [41.737"]
   GKIK := 25.4E-3 !kicker half-gap (m)
 
 ! ==============================================================================
@@ -217,24 +225,21 @@
   Lplate   := 2.5*in2m !length (thickness) of BCS shielding plates (RP "PC")
   Lspots   := 8.0*in2m !length (thickness) of BCS spot shield
 
-! wooden BSY door (separates LI30 from BSY)
-
-  WOODDOOR : MARK
-
 ! Note: BRDAS2 is the DC-bend which merges the DASEL beam into the A-line
 
   ABRDAS2 := -0.011874293037
   TBRDAS2 :=  0.371701698805 !BRDAS2 roll angle (rad)
 
 ! ------------------------------------------------------------------------------
-! beamline area delimiters (see PRD LCLSII-2.1-PR-0134)
+! beamline area delimiters (see PRD LCLSII-HE-1.3-PR-0028)
 ! ------------------------------------------------------------------------------
 
 ! areas "owned" by SC linac
 
   BEGGUNB    : MARK ; ENDGUNB    : MARK
   BEGL0B     : MARK ; ENDL0B     : MARK
-  BEGHTR     : MARK ; ENDHTR     : MARK
+  BEGHTR_1   : MARK ; ENDHTR_1   : MARK
+  BEGHTR_2   : MARK ; ENDHTR_2   : MARK
   BEGDIAG0   : MARK ; ENDDIAG0   : MARK
   BEGCOL0    : MARK ; ENDCOL0    : MARK
   BEGL1B     : MARK ; ENDL1B     : MARK
@@ -244,6 +249,8 @@
   BEGBC2B    : MARK ; ENDBC2B    : MARK
   BEGEMIT2   : MARK ; ENDEMIT2   : MARK
   BEGL3B     : MARK ; ENDL3B     : MARK
+  BEGBR3B    : MARK ; ENDBR3B    : MARK
+  BEGL4B     : MARK ; ENDL4B     : MARK
   BEGEXT     : MARK ; ENDEXT     : MARK
   BEGDOG     : MARK ; ENDDOG     : MARK
   BEGBYP     : MARK ; ENDBYP     : MARK
@@ -266,7 +273,20 @@
   BEGSXTES_2 : MARK ; ENDSXTES_2 : MARK
   BEGSXTES_3 : MARK ; ENDSXTES_3 : MARK
   BEGSXTES_4 : MARK ; ENDSXTES_4 : MARK
-  BEGDASEL   : MARK ; ENDDASEL   : MARK
+  BEGSPA     : MARK ; ENDSPA     : MARK
+  BEGSLTA    : MARK ; ENDSLTA    : MARK
+  BEGBSYA    : MARK ; ENDBSYA    : MARK
+  BEGESA     : MARK ; ENDESA     : MARK
+
+! Low Emittance Injector
+
+  BEGGUNLEI  : MARK ; ENDGUNLEI  : MARK
+  BEGL0LEI   : MARK ; ENDL0LEI   : MARK
+  BEGLEI_1   : MARK ; ENDLEI_1   : MARK
+  BEGLEI_2   : MARK ; ENDLEI_2   : MARK
+  BEGDIAGI_1 : MARK ; ENDDIAGI_1 : MARK
+  BEGDIAGI_2 : MARK ; ENDDIAGI_2 : MARK
+  BEGDIAGI_3 : MARK ; ENDDIAGI_3 : MARK
 
 ! areas "owned" by Cu linac
 
@@ -284,8 +304,7 @@
   BEGCLTH_0  : MARK ; ENDCLTH_0  : MARK
   BEGCLTH_1  : MARK ; ENDCLTH_1  : MARK
   BEGCLTH_2  : MARK ; ENDCLTH_2  : MARK
-  BEGBSYH_1  : MARK ; ENDBSYH_1  : MARK
-  BEGBSYH_2  : MARK ; ENDBSYH_2  : MARK
+  BEGBSYH    : MARK ; ENDBSYH    : MARK
   BEGLTUH    : MARK ; ENDLTUH    : MARK
   BEGUNDH    : MARK ; ENDUNDH    : MARK
   BEGDMPH_1  : MARK ; ENDDMPH_1  : MARK

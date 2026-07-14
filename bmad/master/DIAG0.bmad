@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-18FEB2025s ***
+! *** OPTICS=AD_ACCEL-01JUN2026s ***
 
 ! LCLS2sc post laser heater diagnostic beamline
 
@@ -131,9 +131,14 @@ kqbd0 = -7.825140556488    !-13.410702917581
 ! transverse deflecting cavities
 ! (NOTE: TCYDG0 might be installed as an uprgade at a later time)
 
-tcydg0: lcavity, type = "@4,STCAV_Y", rf_frequency = 2856 * 1e6, l = 20*in2m/2, cavity_type = traveling_wave !Y-deflector (split)
-!tcxdg0: lcavity, type = "STCAV_X", rf_frequency = 2856 * 1e6, l = 20*in2m/2, cavity_type = traveling_wave !X-deflector (split)
-tcxdg0: crab_cavity, type = "STCAV_X", rf_frequency = 2856 * 1e6, l = 20*in2m/2
+
+! mad8 describes tcav as lcavity.  Replace it with a crab_cavity.
+tcydg0: crab_cavity, type = "@4,STCAV_Y", rf_frequency = 2856 * 1e6, l = 20*in2m/2 !Y-deflector (split)
+!old: tcydg0: lcavity, type = "@4,STCAV_Y", rf_frequency = 2856 * 1e6, l = 20*in2m/2, cavity_type = traveling_wave
+
+! mad8 describes tcav as lcavity.  Replace it with a crab_cavity.
+tcxdg0: crab_cavity, type = "STCAV_X", rf_frequency = 2856 * 1e6, l = 20*in2m/2 !X-deflector (split)
+!old: tcxdg0: lcavity, type = "STCAV_X", rf_frequency = 2856 * 1e6, l = 20*in2m/2, cavity_type = traveling_wave
 
 ! ==============================================================================
 ! SBEN
@@ -234,14 +239,14 @@ bydg0: sbend, type = "BXS", hgap = gbdmp0/2, l = lbdmp0, angle = abdmp0, e1 = eb
 ! QUAD
 ! ------------------------------------------------------------------------------
 
-kqdg004 = 8.771677622156
-kqdg005 = -12.05318929963
-kqdg006 = 6.830639733081
-kqdg007 = -4.543712509866
-kqdg008 = 11.377027435394
-kqdg009 = -11.53922964265
-kqdg010 = 13.01665154883
-kqdg011 = -10.98365098164
+kqdg004 = 8.771677621875 !  8.771677622156
+kqdg005 = -12.053189299491 !-12.05318929963
+kqdg006 = 6.830639733104 !  6.830639733081
+kqdg007 = -4.543712509755 ! -4.543712509866
+kqdg008 = 11.377027435309 ! 11.377027435394
+kqdg009 = -11.539229642587 !-11.53922964265
+kqdg010 = 13.01665154881  ! 13.01665154883
+kqdg011 = -10.983650981721 !-10.98365098164
 
 qdg001: quadrupole, type = "1.51Q7.00", l = lqs/2, aperture = rqs, k1 = kqbf0
 qdg002: quadrupole, type = "1.51Q7.00", l = lqs/2, aperture = rqs, k1 = kqbd0
@@ -261,8 +266,8 @@ qdg011: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqdg011
 
 ! model misaligned quadrupoles
 
-dyqdg001: multipole, k0l = yk01,t0
-dyqdg003: multipole, k0l = yk02,t0
+dyqdg001: multipole, k0l = yk01,t0, K0L_status = bends_reference
+dyqdg003: multipole, k0l = yk02,t0, K0L_status = bends_reference
 
  !VALUE, 1.E3*YK01/(KQBF0*LQs),1.E3*YK02/(KQBF0*LQs) !vertical offsets (mm)
 
@@ -479,32 +484,27 @@ ycdgtcx[ref] = tcxdg0
 !Old split line:  BKRDG0_full : LINE=(BKRDG0a,BKRDG0b)
 
 bkrdg0_full: line = (bkrdg0)
+bkrdg0_svy: null_ele, superimpose, ref=bkrdg0, ref_origin=beginning, offset=bkrdg0a[l] !bend survey marker
 
 
 !Old split line:  BLRDG0_full : LINE=(BLRDG0a,BLRDG0b)
 
 blrdg0_full: line = (blrdg0)
+blrdg0_svy: null_ele, superimpose, ref=blrdg0, ref_origin=beginning, offset=blrdg0a[l] !bend survey marker
 
 
 !Old split line:  BXDG0_full  : LINE=(BXDG0a,BXDG0b)
 
 bxdg0_full: line = (bxdg0)
+bxdg0_svy: null_ele, superimpose, ref=bxdg0, ref_origin=beginning, offset=bxdg0a[l] !bend survey marker
 
 
 !Old split line:  BYDG0_full  : LINE=(BYDG0a,BYDG0b)
 
 bydg0_full: line = (bydg0)
+bydg0_svy: null_ele, superimpose, ref=bydg0, ref_origin=beginning, offset=bydg0a[l] !bend survey marker
 
-
-
-!Old split line:  QDG001_full : LINE=(QDG001,BPMDG001,DYQDG001,QDG001)
-
-qdg001_full: line = (qdg001)
-qdg001[L] = 2*qdg001[L]
-bpmdg001[superimpose] = T
-bpmdg001[ref] = qdg001
-dyqdg001[superimpose] = T
-dyqdg001[ref] = qdg001
+  QDG001_full : LINE=(QDG001,BPMDG001,DYQDG001,QDG001)
 
 
 !Old split line:  QDG002_full : LINE=(QDG002,BPMDG002,QDG002)
@@ -513,16 +513,7 @@ qdg002_full: line = (qdg002)
 qdg002[L] = 2*qdg002[L]
 bpmdg002[superimpose] = T
 bpmdg002[ref] = qdg002
-
-
-!Old split line:  QDG003_full : LINE=(QDG003,BPMDG003,DYQDG003,QDG003)
-
-qdg003_full: line = (qdg003)
-qdg003[L] = 2*qdg003[L]
-bpmdg003[superimpose] = T
-bpmdg003[ref] = qdg003
-dyqdg003[superimpose] = T
-dyqdg003[ref] = qdg003
+  QDG003_full : LINE=(QDG003,BPMDG003,DYQDG003,QDG003)
 
 
 !Old split line:  QDG004_full : LINE=(QDG004,BPMDG004,QDG004)
@@ -545,12 +536,14 @@ bpmdg005[ref] = qdg005
 
 qdg006_full: line = (qdg006)
 qdg006[L] = 2*qdg006[L]
+qdg006_svy: null_ele, superimpose, ref=qdg006
 
 
 !Old split line:  QDG007_full : LINE=(QDG007,QDG007)
 
 qdg007_full: line = (qdg007)
 qdg007[L] = 2*qdg007[L]
+qdg007_svy: null_ele, superimpose, ref=qdg007
 
 
 !Old split line:  QDG008_full : LINE=(QDG008,BPMDG008,QDG008)
@@ -573,6 +566,7 @@ bpmdg009[ref] = qdg009
 
 qdg010_full: line = (qdg010)
 qdg010[L] = 2*qdg010[L]
+qdg010_svy: null_ele, superimpose, ref=qdg010
 
 
 !Old split line:  QDG011_full : LINE=(QDG011,BPMDG011,QDG011)

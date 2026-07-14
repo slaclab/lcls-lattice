@@ -1,44 +1,63 @@
 
-! *** OPTICS=AD_ACCEL-18FEB2025s ***
+! *** OPTICS=AD_ACCEL-01JUN2026s ***
 
 ! LCLS2sc LTU and dump
 
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
+! 24-JUL-2025, M. Woodley
+!  * add MARKER point "SWIVEL" at location of swivel point
+! ------------------------------------------------------------------------------
+! 06-MAY-2025, M. Woodley
+!  * sync with LCLS-II (12MAY2025s)
+! ------------------------------------------------------------------------------
 ! 04-DEC-2024, M. Woodley
 !  * relocate RFBSX14 per X. Permanyer
-! 18-SEP-2024, M. Woodley
-!  * add RFBSX14 at end of LTUS (LCLS-II-HE location)
 ! ------------------------------------------------------------------------------
-! 02-MAY-2024, M. Woodley
+! 20-APR-2024, M. Woodley
+!  * replace UMXL2h with WIGXLh
 !  * fix negative drifts in CBXFEL chicanes
 !  * rename BODCBX42 -> YAGCBX42
 !  * add BODCBX40
-! 31-MAR-2024, M. Woodley
-!  * replace UMXL2h with WIGXLh
+! ------------------------------------------------------------------------------
+! 27-JAN-2024, M. Woodley
+!  * QDMP1B,2B K1 from Y. Nosochkov (UNDS_BDES_DS_fit.xlsx, 8.0 GeV)
+! 25-JAN-2024, M. Woodley
+!  * remove de-scoped raster magnets
+! 18-JAN-2024, M. Woodley
+!  * sextupoles deferred (level 2)
 ! ------------------------------------------------------------------------------
 ! 07-SEP-2022, M. Woodley
 !  * redefine YAGDL18
+! 29-AUG-2022, M. Woodley
+!  * defer (level 5) BKYRAS* and BKXRAS* per F. Garcia
+! 24-AUG-2022, M. Woodley
+!  * locate BKYRAS* upstream of BKXRAS*; move BKXRAS* 0.2 m downstream
+!    per M. Kosovsky
 ! ------------------------------------------------------------------------------
 ! 30-NOV-2021, M. Woodley
 !  * change TYPE of BPMQD and BPMQDB to "Stripline-11" (vertical orientation)
 ! 22-NOV-2021, M. Woodley
 !  * undefer OTRDMPB per T. Maxwell
+! 25-OCT-2021, M. Woodley
+!  * dump line raster magnet layout per M. Kosovsky
 ! ------------------------------------------------------------------------------
-! 14-JAN-2021, M. Woodley
+! 13-FEB-2021, M. Woodley
+!  * add PCEBD and PCEBDB per Y. Ding and T. Tan
+! 27-JAN-2021, M. Woodley
 !  * move RFBHX12 9.373 mm u/s per G. Gassner
-! ------------------------------------------------------------------------------
 ! 08-OCT-2020, M. Woodley
 !  * rename OTRDL18 to YAGDL18 (TYPE="YAG-PAL") and undefer per B. Jacobson
 ! ------------------------------------------------------------------------------
-! 05-OCT-2020, M. Woodley
-!  * add XLEAP quadrupoles QFXL1 and QFXL2
-! 06-AUG-2020, M. Woodley
-!  * redefined XLEAP undulators
+! 24-SEP-2020, M. Woodley
+!  * add RFBSX14 per D. Cesar
 ! ------------------------------------------------------------------------------
-! 03-MAR-2020, M. Woodley
-!  * move XLEAP wiggler to SXR cell #18
+! 26-JUN-2020, M. Woodley
+!  * copy BSYD rastering setup to HXR and SXR dump lines
+! 25-JUN-2020, M. Woodley
+!  * remove XLEAP wiggler
+! ------------------------------------------------------------------------------
 ! 12-DEC-2019, M. Woodley
 !  * move XLEAP wiggler to SXX (cell 17)
 !  * add "h" to UMXL1-4 (-> UMLX1-4h)
@@ -588,21 +607,25 @@ cc31bend: marker
 !Old split line:  BCX31B1_full : LINE=(BCX31B11,BCX31B12)
 
 bcx31b1_full: line = (bcx31b1)
+bcx31b1_svy: null_ele, superimpose, ref=bcx31b1, ref_origin=beginning, offset=bcx31b11[l] !bend survey marker
 
 
 !Old split line:  BCX31B2_full : LINE=(BCX31B21,BCX31B22)
 
 bcx31b2_full: line = (bcx31b2)
+bcx31b2_svy: null_ele, superimpose, ref=bcx31b2, ref_origin=beginning, offset=bcx31b21[l] !bend survey marker
 
 
 !Old split line:  BCX31B3_full : LINE=(BCX31B31,BCX31B32)
 
 bcx31b3_full: line = (bcx31b3)
+bcx31b3_svy: null_ele, superimpose, ref=bcx31b3, ref_origin=beginning, offset=bcx31b31[l] !bend survey marker
 
 
 !Old split line:  BCX31B4_full : LINE=(BCX31B41,BCX31B42)
 
 bcx31b4_full: line = (bcx31b4)
+bcx31b4_svy: null_ele, superimpose, ref=bcx31b4, ref_origin=beginning, offset=bcx31b41[l] !bend survey marker
 
   CC31B   : LINE=(CC31BBEG,BCX31B1_full,DCC31Bo,BCX31B2_full,DCC31Bi,BCX31B3_full,DCC31Bo,BCX31B4_full,CC31BEND)
 
@@ -654,21 +677,25 @@ cc32bend: marker
 !Old split line:  BCX32B1_full : LINE=(BCX32B11,BCX32B12)
 
 bcx32b1_full: line = (bcx32b1)
+bcx32b1_svy: null_ele, superimpose, ref=bcx32b1, ref_origin=beginning, offset=bcx32b11[l] !bend survey marker
 
 
 !Old split line:  BCX32B2_full : LINE=(BCX32B21,BCX32B22)
 
 bcx32b2_full: line = (bcx32b2)
+bcx32b2_svy: null_ele, superimpose, ref=bcx32b2, ref_origin=beginning, offset=bcx32b21[l] !bend survey marker
 
 
 !Old split line:  BCX32B3_full : LINE=(BCX32B31,BCX32B32)
 
 bcx32b3_full: line = (bcx32b3)
+bcx32b3_svy: null_ele, superimpose, ref=bcx32b3, ref_origin=beginning, offset=bcx32b31[l] !bend survey marker
 
 
 !Old split line:  BCX32B4_full : LINE=(BCX32B41,BCX32B42)
 
 bcx32b4_full: line = (bcx32b4)
+bcx32b4_svy: null_ele, superimpose, ref=bcx32b4, ref_origin=beginning, offset=bcx32b41[l] !bend survey marker
 
   CC32B   : LINE=(CC32BBEG,BCX32B1_full,DCC32Bo,BCX32B2_full,DCC32Bi,BCX32B3_full,DCC32Bo,BCX32B4_full,CC32BEND)
 
@@ -736,6 +763,7 @@ cntwigs: marker, type = "CENTER" !ELEGANT will correct the orbit here for CSR-st
 !Old split line:  WIG1S_full : LINE=(WIG1S1,WIG1S2)
 
 wig1s_full: line = (wig1s)
+wig1s_svy: null_ele, superimpose, ref=wig1s, ref_origin=beginning, offset=wig1s1[l] !bend survey marker
 
 
 !Old split line:  WIG2S_full : LINE=(WIG2S1,YCWIGS,WIG2S2)
@@ -748,8 +776,8 @@ ycwigs[ref] = wig2s
 !Old split line:  WIG3S_full : LINE=(WIG3S1,WIG3S2)
 
 wig3s_full: line = (wig3s)
-
-  EWIGS : LINE=(WIG1S_full,DWGs,WIG2S_full,DWGs,WIG3S_full,CNTWIGS)
+wig3s_svy: null_ele, superimpose, ref=wig3s, ref_origin=beginning, offset=wig3s1[l] !bend survey marker
+  WIGS_line  : LINE=(WIG1S_full,DWGs,WIG2S_full,DWGs,WIG3S_full,CNTWIGS)
 
 ! replace deferred wiggler with a drift
 
@@ -764,8 +792,8 @@ dwigsb: drift, l = dwigs[l]-dwigsa[l]-lplate
 ! note: the K-values below are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-kqdbl1 = -0.050357218829 !-0.050357323411
-kqdbl2 = -0.559361220066 !-0.559361105837
+kqdbl1 = -0.050435325198 !-0.050440327137
+kqdbl2 = -0.559283770709 !-0.559278490815
 
 qdbl1: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqdbl1, aperture = rqe
 qdbl2: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqdbl2, aperture = rqe
@@ -783,19 +811,19 @@ qdl17: quadrupole, type = "2Q10", l = lqr/2, k1 = kqdlb, aperture = rqr
 qdl18: quadrupole, type = "2Q10", l = lqr/2, k1 = -kqdlb, aperture = rqr
 qdl19: quadrupole, type = "2Q10", l = lqr/2, k1 = kqdlb, aperture = rqr
 
-kqdl20 = -0.487979625759
-kqdl21 = -1.904057641444
-kqdl22 = 2.191453247156
+kqdl20 = -0.487928735548 !-0.487977031609
+kqdl21 = -1.904088026746 !-1.90405658267
+kqdl22 = 2.191370959478 ! 2.191451571573
 
 qdl20: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqdl20, aperture = rqe
 qdl21: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqdl21, aperture = rqe
 qdl22: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqdl22, aperture = rqe
 
-ksdl1 = -8.734519131209
-ksdl2 = -24.395452957066
+ksdl1 = -8.734519131209 ! -8.734519131209
+ksdl2 = -24.395452957072 !-24.395452957066
 
-sdl1: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdl1
-sdl2: sextupole, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdl2
+sdl1: sextupole, type = "@2,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdl1
+sdl2: sextupole, type = "@2,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdl2
 
 !=!  COMMENT
 !=!  COMMENT
@@ -1026,8 +1054,8 @@ ycdl21: vkicker, type = "class-4"
 cedl13: rcollimator, type = "HCOLL", l = ljaw, x_limit = 8.5e-3, y_limit = 20.e-3
 cedl17: rcollimator, type = "HCOLL", l = ljaw, x_limit = 8.5e-3, y_limit = 20.e-3
 
-cybdl: rcollimator, type = "VCOLL", l = ljaw, y_limit = 1.2e-3, x_limit = 20.e-3
-cydl16: rcollimator, type = "VCOLL", l = ljaw, y_limit = 1.1e-3, x_limit = 20.e-3
+cybdl: rcollimator, type = "VCOLL", l = ljaw, y_limit = 0.9e-3, x_limit = 20.e-3
+cydl16: rcollimator, type = "VCOLL", l = ljaw, y_limit = 0.8e-3, x_limit = 20.e-3
 
 ! muon collimators after SBD TDKIKS in-line dump
 pctdkik1s: ecollimator, type = "BCS PC", l = lpctdkik, x_limit = 11.1125e-3, y_limit = 11.1125e-3
@@ -1060,21 +1088,25 @@ cntlt1s: marker, type = "CENTER"
 !Old split line:  BX31B_full   : LINE=(BX31B1,BX31B2)
 
 bx31b_full: line = (bx31b)
+bx31b_svy: null_ele, superimpose, ref=bx31b, ref_origin=beginning, offset=bx31b1[l] !bend survey marker
 
 
 !Old split line:  BYKIK1S_full : LINE=(BYKIK1S1,BYKIK1S2)
 
 bykik1s_full: line = (bykik1s)
+bykik1s_svy: null_ele, superimpose, ref=bykik1s, ref_origin=beginning, offset=bykik1s1[l] !bend survey marker
 
 
 !Old split line:  BYKIK2S_full : LINE=(BYKIK2S1,BYKIK2S2)
 
 bykik2s_full: line = (bykik2s)
+bykik2s_svy: null_ele, superimpose, ref=bykik2s, ref_origin=beginning, offset=bykik2s1[l] !bend survey marker
 
 
 !Old split line:  BX32B_full   : LINE=(BX32B1,BX32B2)
 
 bx32b_full: line = (bx32b)
+bx32b_svy: null_ele, superimpose, ref=bx32b, ref_origin=beginning, offset=bx32b1[l] !bend survey marker
 
 
 
@@ -1098,54 +1130,63 @@ bpmdbl2[ref] = qdbl2
 
 qdl11_full: line = (qdl11)
 qdl11[L] = 2*qdl11[L]
+qdl11_svy: null_ele, superimpose, ref=qdl11
 
 
 !Old split line:  QDL12_full : LINE=(QDL12,QDL12)
 
 qdl12_full: line = (qdl12)
 qdl12[L] = 2*qdl12[L]
+qdl12_svy: null_ele, superimpose, ref=qdl12
 
 
 !Old split line:  QDL13_full : LINE=(QDL13,QDL13)
 
 qdl13_full: line = (qdl13)
 qdl13[L] = 2*qdl13[L]
+qdl13_svy: null_ele, superimpose, ref=qdl13
 
 
 !Old split line:  QDL14_full : LINE=(QDL14,QDL14)
 
 qdl14_full: line = (qdl14)
 qdl14[L] = 2*qdl14[L]
+qdl14_svy: null_ele, superimpose, ref=qdl14
 
 
 !Old split line:  QDL15_full : LINE=(QDL15,QDL15)
 
 qdl15_full: line = (qdl15)
 qdl15[L] = 2*qdl15[L]
+qdl15_svy: null_ele, superimpose, ref=qdl15
 
 
 !Old split line:  QDL16_full : LINE=(QDL16,QDL16)
 
 qdl16_full: line = (qdl16)
 qdl16[L] = 2*qdl16[L]
+qdl16_svy: null_ele, superimpose, ref=qdl16
 
 
 !Old split line:  QDL17_full : LINE=(QDL17,QDL17)
 
 qdl17_full: line = (qdl17)
 qdl17[L] = 2*qdl17[L]
+qdl17_svy: null_ele, superimpose, ref=qdl17
 
 
 !Old split line:  QDL18_full : LINE=(QDL18,QDL18)
 
 qdl18_full: line = (qdl18)
 qdl18[L] = 2*qdl18[L]
+qdl18_svy: null_ele, superimpose, ref=qdl18
 
 
 !Old split line:  QDL19_full : LINE=(QDL19,QDL19)
 
 qdl19_full: line = (qdl19)
 qdl19[L] = 2*qdl19[L]
+qdl19_svy: null_ele, superimpose, ref=qdl19
 
 
 !Old split line:  QDL20_full : LINE=(QDL20,BPMDL20,QDL20)
@@ -1177,14 +1218,19 @@ bpmdl22[ref] = qdl22
 
 sdl1_full: line = (sdl1)
 sdl1[L] = 2*sdl1[L]
+sdl1_svy: null_ele, superimpose, ref=sdl1
 
 
 !Old split line:  SDL2_full : LINE=(SDL2,SDL2)
 
 sdl2_full: line = (sdl2)
 sdl2[L] = 2*sdl2[L]
+sdl2_svy: null_ele, superimpose, ref=sdl2
 
   DBLDL21 : LINE=(BEGLTUS,DDBLDLb,QDBL1_full,DDBLDLc,YCDBL1,DDBLDLa1,CYBDL,DDBLDLa2,XCDBL2,DDBLDLc,QDBL2_full,DDBLDLd)
+
+  DL2Bcell : LINE=(QDL12,DDL6b,YCDL12,DDL9b,XCDL13,DDL6ba,SDL1_full,DDL6bb,QDL13_full,DDL7ba,CEDL13,DDL7bb,BPMDL13,
+         DDL8b,YCDL14,DDL6b,QDL14)
 
   DL2sc : LINE=(DBMARK34b,DDL20b,XCDL11,DDL6b,QDL11_full,DDL15ba,BPMDL11,DDL15bb,DDL15bc,CC31b,DDL16b,BX31B_full,DDL1ba,
          PC01B,BTM01B,DDL1bb,BPMDL12,DDL1bc,QDL12_full,DDL6b,YCDL12,DDL9b,XCDL13,DDL6ba,SDL1_full,DDL6bb,QDL13_full,DDL7ba,
@@ -1308,11 +1354,13 @@ cntlt2s: marker, type = "CENTER" !ELEGANT will correct the orbit here for CSR-st
 !Old split line:  BY1B_full : LINE=(BY1B1,BY1B2)
 
 by1b_full: line = (by1b)
+by1b_svy: null_ele, superimpose, ref=by1b, ref_origin=beginning, offset=by1b1[l] !bend survey marker
 
 
 !Old split line:  BY2B_full : LINE=(BY2B1,BY2B2)
 
 by2b_full: line = (by2b)
+by2b_svy: null_ele, superimpose, ref=by2b, ref_origin=beginning, offset=by2b1[l] !bend survey marker
 
 
 
@@ -1365,11 +1413,11 @@ bpmvm4b[ref] = qvm4b
 ! SXR emittance diagnostic
 ! ------------------------------------------------------------------------------
 
-kqem1b = 1.994771712802
-kqem2b = -1.809226178089
-kqem3b = 1.263611884311
+kqem1b = 1.994807495497 ! 1.994770111889
+kqem2b = -1.80919428388  !-1.809227587678
+kqem3b = 1.263530793827 ! 1.2636088218
+kqem4b = -0.891678288287 !-0.891714076473
 kqem3vb = 0.0
-kqem4b = -0.89171746406
 
 qem1b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqem1b, aperture = rqe
 qem2b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqem2b, aperture = rqe
@@ -1410,10 +1458,6 @@ dem1bbb: drift, l = dem1b[l]-dem1bab[l]+(lqa-lqe)
 dem2b: drift, l = 0.50
 dmm3m80cm: drift, l = 11.27092
 dmm3m80cmx: drift, l = dmm3m80cm[l]+(lqa-lqe)
-
-dmm3m80cm1: drift, l = 5.677
-dmm3m80cm2: drift, l = dmm3m80cmx[l]-dmm3m80cm1[l]
-
 dmm3mab: drift, l = 4.425910+(lqa-lqe)/2
 dmm3mbb: drift, l = dmm3m80cm[l]-dmm3mab[l]+(lqa-lqe)
 dem3a: drift, l = 0.37
@@ -1551,8 +1595,9 @@ lundh = lund/2     !wiggler half-length [m]
 
  !comment
 
-  ! half-wiggler modeled as an R-matrix which includes vertical focusing
-  ! and horizontal defocusing per Ago Martinelli (see wigXL2.m);
+  ! undulators modeled as an R-matrix which includes vertical focusing
+  ! and horizontal defocusing per Ago Martinelli and Joe Duris
+  ! (see wigXL2.m, XLEAP-II.pptx, and LCLS2sc_XLEAP.mad8)
 
   ! define XLEAP-II wigglers (as DRIFTs)
 
@@ -1566,19 +1611,21 @@ r43xl1 = 0.0
 r44xl1 = 1.0
 
 
-!------- XLEAP-II wigglers -------
-umxl0h: wiggler, 
-        type = "LCLS-I",
-        L_period = 0.555, 
-        n_period = 6, 
-        b_max = 0, ! = K * 2*pi*m_electron / (c_light * 0.55), 
-        L = 6*0.555
-        !ds_step = 0.55*10
-
-umxl0h[L] = umxl0h[L]/2 ! Will be doubled in desplitting process. 
-!---------------------------------
-
-umxl1h: umxl0h
+!new !------- XLEAP-II wigglers -------
+!new umxl0h: wiggler, 
+!new         type = "LCLS-I",
+!new         L_period = 0.555, 
+!new         n_period = 6, 
+!new         b_max = 0, ! = K * 2*pi*m_electron / (c_light * 0.55), 
+!new         L = 6*0.555
+!new         !ds_step = 0.55*10
+!new 
+!new umxl0h[L] = umxl0h[L]/2 ! Will be doubled in desplitting process. 
+!new !---------------------------------
+!new 
+!new umxl1h: umxl0h
+umxl1h: taylor, type = "LCLS-I", l = lundh, tt11 = r11xl1, tt12 = r12xl1, tt21 = r21xl1, tt22 = r22xl1, tt33 = r33xl1,
+          tt34 = r34xl1, tt43 = r43xl1, tt44 = r44xl1, mat_und_k = kund, mat_und_l = lamu
 !old: umxl1h: taylor, type = "LCLS-I", l = lundh, tt11 = r11xl1, tt12 = r12xl1, tt21 = r21xl1, tt22 = r22xl1, tt33 = r33xl1,
 !old           tt34 = r34xl1, tt43 = r43xl1, tt44 = r44xl1
 
@@ -1592,7 +1639,8 @@ r43xl3 = 0.0
 r44xl3 = 1.0
 
 
-umxl3h: umxl0h
+umxl3h: taylor, type = "LCLS-I", l = lundh, tt11 = r11xl3, tt12 = r12xl3, tt21 = r21xl3, tt22 = r22xl3, tt33 = r33xl3,
+          tt34 = r34xl3, tt43 = r43xl3, tt44 = r44xl3, mat_und_k = kund, mat_und_l = lamu
 !old: umxl3h: taylor, type = "LCLS-I", l = lundh, tt11 = r11xl3, tt12 = r12xl3, tt21 = r21xl3, tt22 = r22xl3, tt33 = r33xl3,
 !old           tt34 = r34xl3, tt43 = r43xl3, tt44 = r44xl3
 
@@ -1606,7 +1654,8 @@ r43xl4 = 0.0
 r44xl4 = 1.0
 
 
-umxl4h: umxl0h
+umxl4h: taylor, type = "LCLS-I", l = lundh, tt11 = r11xl4, tt12 = r12xl4, tt21 = r21xl4, tt22 = r22xl4, tt33 = r33xl4,
+          tt34 = r34xl4, tt43 = r43xl4, tt44 = r44xl4, mat_und_k = kund, mat_und_l = lamu
 !old: umxl4h: taylor, type = "LCLS-I", l = lundh, tt11 = r11xl4, tt12 = r12xl4, tt21 = r21xl4, tt22 = r22xl4, tt33 = r33xl4,
 !old           tt34 = r34xl4, tt43 = r43xl4, tt44 = r44xl4
  !endcomment
@@ -1624,7 +1673,8 @@ umxl4h: umxl0h
 
 kwig = 34                                        !wiggler parameter [m^-1]
 lamw = 0.34                                      !wiggler period [m]
-lwigh = 2.38/2                                    !wiggler half-length [m]
+lwig = 2.38                                      !wiggler effective length [m]
+lwigh = lwig/2                                    !wiggler half-length [m]
 gamw = eu/mc2                                    !Lorentz energy factor in wiggler [ ]
 kqwig = setxl2wig*(2*pi*kwig/lamw/sqrt(2)/gamw)^2 !natural vertical focusing "k" [m^-2]
 
@@ -1637,8 +1687,11 @@ argw6 = argw4*argw2
 sincargw = 1-argw2/6+argw4/120-argw6/5040 !~sinc(ARGw)=sin(ARGw)/ARGw
 r34w = lwigh*sincargw
 
+
 wigxlh: taylor, type = "variable gap", l = lwigh, tt11 = 1.0, tt12 = lwigh, tt21 = 0, tt22 = 1.0, tt33 = cos(argw),
-          tt34 = r34w, tt43 = -sin(argw)*sqrt(kqwig), tt44 = cos(argw)
+          tt34 = r34w, tt43 = -sin(argw)*sqrt(kqwig), tt44 = cos(argw), mat_und_k = kwig, mat_und_l = lamw
+!old: wigxlh: taylor, type = "variable gap", l = lwigh, tt11 = 1.0, tt12 = lwigh, tt21 = 0, tt22 = 1.0, tt33 = cos(argw),
+!old           tt34 = r34w, tt43 = -sin(argw)*sqrt(kqwig), tt44 = cos(argw)
 
  !VALUE, WIGXLh[R11],WIGXLh[R12],WIGXLh[R21],WIGXLh[R22]
  !VALUE, WIGXLh[R33],WIGXLh[R34],WIGXLh[R43],WIGXLh[R44]
@@ -1646,7 +1699,7 @@ wigxlh: taylor, type = "variable gap", l = lwigh, tt11 = 1.0, tt12 = lwigh, tt21
   WIGXL_full : LINE=(WIGXLh,WIGXLh)
 
 ! ------------------------------------------------------------------------------
-! new XLEAP-II quadrupoles (to mitigate focusing of wigglers)
+! new XLEAP-II quadrupoles (to mitigate focusing of wigglers; off for now)
 ! ------------------------------------------------------------------------------
 
 kqfxl1 = 0
@@ -1661,12 +1714,14 @@ qfxl2: quadrupole, type = "1.085Q4.31", l = lqe/2, aperture = rqe, k1 = kqfxl2
 
 qfxl1_full: line = (qfxl1)
 qfxl1[L] = 2*qfxl1[L]
+qfxl1_svy: null_ele, superimpose, ref=qfxl1
 
 
 !Old split line:  QFXL2_full : LINE=(QFXL2,QFXL2)
 
 qfxl2_full: line = (qfxl2)
 qfxl2[L] = 2*qfxl2[L]
+qfxl2_svy: null_ele, superimpose, ref=qfxl2
 
 ! wiggler pairs
 
@@ -1761,21 +1816,25 @@ bcxlssend: marker
 !Old split line:  BCXXL1_full : LINE=(BCXXL11,BCXXL12)
 
 bcxxl1_full: line = (bcxxl1)
+bcxxl1_svy: null_ele, superimpose, ref=bcxxl1, ref_origin=beginning, offset=bcxxl11[l] !bend survey marker
 
 
 !Old split line:  BCXXL2_full : LINE=(BCXXL21,BCXXL22)
 
 bcxxl2_full: line = (bcxxl2)
+bcxxl2_svy: null_ele, superimpose, ref=bcxxl2, ref_origin=beginning, offset=bcxxl21[l] !bend survey marker
 
 
 !Old split line:  BCXXL3_full : LINE=(BCXXL31,BCXXL32)
 
 bcxxl3_full: line = (bcxxl3)
+bcxxl3_svy: null_ele, superimpose, ref=bcxxl3, ref_origin=beginning, offset=bcxxl31[l] !bend survey marker
 
 
 !Old split line:  BCXXL4_full : LINE=(BCXXL41,BCXXL42)
 
 bcxxl4_full: line = (bcxxl4)
+bcxxl4_svy: null_ele, superimpose, ref=bcxxl4, ref_origin=beginning, offset=bcxxl41[l] !bend survey marker
 
   BCXLSS : LINE=(BCXLSSBEG, BCXXL1_full,DXLo,BCXXL2_full,DXLi,BCXLSSMID,DXLi,BCXXL3_full,DXLo,BCXXL4_full,BCXLSSEND)
 
@@ -1828,6 +1887,7 @@ bpmem3b[ref] = qem3b
 
 qem3vb_full: line = (qem3vb)
 qem3vb[L] = 2*qem3vb[L]
+qem3vb_svy: null_ele, superimpose, ref=qem3vb
 
 
 !Old split line:  QEM4B_full  : LINE=(QEM4B,BPMEM4B,QEM4B)
@@ -1885,17 +1945,6 @@ qe36b[L] = 2*qe36b[L]
 bpme36b[superimpose] = T
 bpme36b[ref] = qe36b
 
-!=!  comment
-!=!  comment
-!=!  EDMCHb : LINE=(D25cmb,D25cmc,DMM1m90cmBa,PC10B,BTM10B,DMM1m90cmBb,&
-!=!      XCEM1B,DEM1A,&
-!=!    QEM1B_full,DEM1Bab,DEM1Bbb,&
-!=!    QEM2B_full,DEM2B,YCEM2B,DMM3m80cm1,DMM3m80cm2,XCEM3B,DEM3A,&
-!=!    QEM3B_full,DEM3Bb,&
-!=!    QEM3VB_full,DMM4m90cmba,PC11B,BTM11B,DMM4m90cmbb,YCEM4B,DEM4A,&
-!=!    QEM4B_full,DRFB,RFBEM4B,DMM5ab,DMM5bb)
-!=!  endcomment
-
   EDMCHb : LINE=(D25cmb,D25cmc,DMM1m90cmBa,PC10B,BTM10B,DMM1m90cmBb,XCEM1B,DEM1A,QEM1B_full,DEM1Bab,DEM1Bbb,QEM2B_full,
          DEM2B,YCEM2B,DMM3m80cmx,XCEM3B,DEM3A,QEM3B_full,DEM3Bb,QEM3VB_full,DMM4m90cmba,PC11B,BTM11B,DMM4m90cmbb,YCEM4B,DEM4A,
          QEM4B_full,DRFB,RFBEM4B,DMM5ab,DMM5bb)
@@ -1915,10 +1964,10 @@ bpme36b[ref] = qe36b
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 !       in the "LCLS2cu_main.mad8" file
 
-kqum1b = 0.568578046239 ! 0.293411239505
-kqum2b = -0.796802792396 !-0.13
-kqum3b = 1.172578401021 ! 0.382165430892
-kqum4b = -1.160480624219 !-0.474867155145
+kqum1b = 0.869377269121 ! 0.868733464228
+kqum2b = -0.772006115975 !-0.771825649189
+kqum3b = 0.687923619093 ! 0.678116151436
+kqum4b = -0.755990352295 !-0.747895559578
 
 qum1b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqum1b, aperture = rqe
 qum2b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqum2b, aperture = rqe
@@ -2043,7 +2092,7 @@ bpmum4b[ref] = qum4b
 ! SXR dumpline
 ! ------------------------------------------------------------------------------
 
-kqdmpb = -0.15111165919 !-0.154946553294
+kqdmpb = -0.154946553294 !Yuri (E=8.0, K=5.48)
 
 qdmp1b: quadrupole, type = "3.94Q17", l = lqp/2, k1 = kqdmpb, aperture = rqp
 qdmp2b: quadrupole, type = "3.94Q17", l = lqp/2, k1 = kqdmpb, aperture = rqp
@@ -2118,6 +2167,7 @@ dd2a: drift, l = 0.4+0.0634916+0.0115084
 dd2c: drift, l = 1.0
 dd2b: drift, l = 8.1507760-lqd/2+ddmpv-dd2c[l]+0.06
 dd3a: drift, l = 0.3+0.049684+0.001583
+dd3ab: drift, l = 0.3+0.049684+0.001583
 dd3b: drift, l = 0.3-0.001583-0.1447026
 dwsdumpa: drift, l = 0.44156/2
 dwsdumpa1: drift, l = 0.07596510786
@@ -2130,9 +2180,8 @@ bpmqdb: monitor, type = "Stripline-11" !RFBQDB : MONI, TYPE="@2,CavityL-1"
 bpmddb: monitor, type = "Stripline-8"
 rfbddb: monitor, type = "@2,CavityL-1"
 
-xcddb: hkicker, type = "class-5"
-
 ycddb: vkicker, type = "class-5"
+xcddb: hkicker, type = "class-5"
 
 otrdmpb: monitor, type = "OTR" !Dump screen
 
@@ -2160,21 +2209,25 @@ rodmp2s: patch, tilt = arodmp2s
 !Old split line:  BYDSS_full : LINE=(BYDSS1,BYDSS2)
 
 bydss_full: line = (bydss)
+bydss_svy: null_ele, superimpose, ref=bydss, ref_origin=beginning, offset=bydss1[l] !bend survey marker
 
 
 !Old split line:  BYD1B_full : LINE=(BYD1B1,BYD1B2)
 
 byd1b_full: line = (byd1b)
+byd1b_svy: null_ele, superimpose, ref=byd1b, ref_origin=beginning, offset=byd1b1[l] !bend survey marker
 
 
 !Old split line:  BYD2B_full : LINE=(BYD2B1,BYD2B2)
 
 byd2b_full: line = (byd2b)
+byd2b_svy: null_ele, superimpose, ref=byd2b, ref_origin=beginning, offset=byd2b1[l] !bend survey marker
 
 
 !Old split line:  BYD3B_full : LINE=(BYD3B1,BYD3B2)
 
 byd3b_full: line = (byd3b)
+byd3b_svy: null_ele, superimpose, ref=byd3b, ref_origin=beginning, offset=byd3b1[l] !bend survey marker
 
 
 
@@ -2182,17 +2235,19 @@ byd3b_full: line = (byd3b)
 
 qdmp1b_full: line = (qdmp1b)
 qdmp1b[L] = 2*qdmp1b[L]
+qdmp1b_svy: null_ele, superimpose, ref=qdmp1b
 
 
 !Old split line:  QDmp2B_full : LINE=(QDmp2B,QDmp2B)
 
 qdmp2b_full: line = (qdmp2b)
 qdmp2b[L] = 2*qdmp2b[L]
+qdmp2b_svy: null_ele, superimpose, ref=qdmp2b
 
   DUMPLINEb : LINE=(BEGDMPS_2,RODMP1S,BYDSS_full,DS1,BYD1B_full,DS,BYD2B_full,DS,BYD3B_full,DD1Ba,PCPM1LB,BTM1LB,DD1Bb,
          DD1Bc,MIMBCS4b,DD1Bd,YCDDB,DD1Be,PCPM2LB,BTM2LB,DD1Bf,QDmp1B_full,DD12a,BPMQDB,DD12b,MQDMPB,DD12c,QDmp2B_full,DD2a,
-         XCDDB,DD2b,DD2c,DD3a,BPMDDB,DD3b,OTRDMPB,DWSDUMPa1,PCEBDB,DWSDUMPa2,RFBDDB,DWSDUMPb,WSDUMPB,DWSDUMPc,RODMP2S,DUMPFACEB,
-         DDUMP,DMPendb,BTMDUMPB,DBMARK38b,ENDDMPS_2)
+         XCDDB,DD2b,DD2c,DD3aB,BPMDDB,DD3b,OTRDMPB,DWSDUMPa1,PCEBDB,DWSDUMPa2,RFBDDB,DWSDUMPb,WSDUMPB,DWSDUMPc,RODMP2S,DUMPFACEB,
+         DDUMP,DMPendB,BTMDUMPB,DBMARK38B,ENDDMPS_2)
 
 ! ==============================================================================
 ! HXR LTU and dump
@@ -2263,21 +2318,25 @@ cc31end: marker
 !Old split line:  BCX311_full : LINE=(BCX3111,BCX3112)
 
 bcx311_full: line = (bcx311)
+bcx311_svy: null_ele, superimpose, ref=bcx311, ref_origin=beginning, offset=bcx3111[l] !bend survey marker
 
 
 !Old split line:  BCX312_full : LINE=(BCX3121,BCX3122)
 
 bcx312_full: line = (bcx312)
+bcx312_svy: null_ele, superimpose, ref=bcx312, ref_origin=beginning, offset=bcx3121[l] !bend survey marker
 
 
 !Old split line:  BCX313_full : LINE=(BCX3131,BCX3132)
 
 bcx313_full: line = (bcx313)
+bcx313_svy: null_ele, superimpose, ref=bcx313, ref_origin=beginning, offset=bcx3131[l] !bend survey marker
 
 
 !Old split line:  BCX314_full : LINE=(BCX3141,BCX3142)
 
 bcx314_full: line = (bcx314)
+bcx314_svy: null_ele, superimpose, ref=bcx314, ref_origin=beginning, offset=bcx3141[l] !bend survey marker
 
   CC31   : LINE=(CC31BEG,BCX311_full,DCC31o,BCX312_full,DCC31i,BCX313_full,DCC31o,BCX314_full,CC31END)
 
@@ -2329,21 +2388,25 @@ cc32end: marker
 !Old split line:  BCX321_full : LINE=(BCX3211,BCX3212)
 
 bcx321_full: line = (bcx321)
+bcx321_svy: null_ele, superimpose, ref=bcx321, ref_origin=beginning, offset=bcx3211[l] !bend survey marker
 
 
 !Old split line:  BCX322_full : LINE=(BCX3221,BCX3222)
 
 bcx322_full: line = (bcx322)
+bcx322_svy: null_ele, superimpose, ref=bcx322, ref_origin=beginning, offset=bcx3221[l] !bend survey marker
 
 
 !Old split line:  BCX323_full : LINE=(BCX3231,BCX3232)
 
 bcx323_full: line = (bcx323)
+bcx323_svy: null_ele, superimpose, ref=bcx323, ref_origin=beginning, offset=bcx3231[l] !bend survey marker
 
 
 !Old split line:  BCX324_full : LINE=(BCX3241,BCX3242)
 
 bcx324_full: line = (bcx324)
+bcx324_svy: null_ele, superimpose, ref=bcx324, ref_origin=beginning, offset=bcx3241[l] !bend survey marker
 
   CC32   : LINE=(CC32BEG,BCX321_full,DCC32o,BCX322_full,DCC32i,BCX323_full,DCC32o,BCX324_full,CC32END)
 
@@ -2395,21 +2458,25 @@ cc35end: marker
 !Old split line:  BCX351_full : LINE=(BCX3511,BCX3512)
 
 bcx351_full: line = (bcx351)
+bcx351_svy: null_ele, superimpose, ref=bcx351, ref_origin=beginning, offset=bcx3511[l] !bend survey marker
 
 
 !Old split line:  BCX352_full : LINE=(BCX3521,BCX3522)
 
 bcx352_full: line = (bcx352)
+bcx352_svy: null_ele, superimpose, ref=bcx352, ref_origin=beginning, offset=bcx3521[l] !bend survey marker
 
 
 !Old split line:  BCX353_full : LINE=(BCX3531,BCX3532)
 
 bcx353_full: line = (bcx353)
+bcx353_svy: null_ele, superimpose, ref=bcx353, ref_origin=beginning, offset=bcx3531[l] !bend survey marker
 
 
 !Old split line:  BCX354_full : LINE=(BCX3541,BCX3542)
 
 bcx354_full: line = (bcx354)
+bcx354_svy: null_ele, superimpose, ref=bcx354, ref_origin=beginning, offset=bcx3541[l] !bend survey marker
 
   CC35   : LINE=(CC35BEG,BCX351_full,DCC35o,BCX352_full,DCC35i,BCX353_full,DCC35o,BCX354_full,CC35END)
 
@@ -2461,36 +2528,148 @@ cc36end: marker
 !Old split line:  BCX361_full : LINE=(BCX3611,BCX3612)
 
 bcx361_full: line = (bcx361)
+bcx361_svy: null_ele, superimpose, ref=bcx361, ref_origin=beginning, offset=bcx3611[l] !bend survey marker
 
 
 !Old split line:  BCX362_full : LINE=(BCX3621,BCX3622)
 
 bcx362_full: line = (bcx362)
+bcx362_svy: null_ele, superimpose, ref=bcx362, ref_origin=beginning, offset=bcx3621[l] !bend survey marker
 
 
 !Old split line:  BCX363_full : LINE=(BCX3631,BCX3632)
 
 bcx363_full: line = (bcx363)
+bcx363_svy: null_ele, superimpose, ref=bcx363, ref_origin=beginning, offset=bcx3631[l] !bend survey marker
 
 
 !Old split line:  BCX364_full : LINE=(BCX3641,BCX3642)
 
 bcx364_full: line = (bcx364)
+bcx364_svy: null_ele, superimpose, ref=bcx364, ref_origin=beginning, offset=bcx3641[l] !bend survey marker
 
   CC36   : LINE=(CC36BEG,BCX361_full,DCC36o,BCX362_full,DCC36i,BCX363_full,DCC36o,BCX364_full,CC36END)
 
 ! ------------------------------------------------------------------------------
-! HXR BSY downstream of the merge bend
+! BSY upstream of the scH merge bend (BXSP1H)
+! ------------------------------------------------------------------------------
+
+kq30701 = -0.396196066234 !-0.396231018339
+kq30801 = 0.480072263235 ! 0.480592172519
+kq50q1 = -0.231032050114 !-0.231522300458
+kq50q2 = 0.101648177453 ! 0.102074332053
+
+q50q1: quadrupole, type = "2Q10", l = lqr/2, k1 = kq50q1, aperture = rqr
+q50q2: quadrupole, type = "50Q2", l = 0.162151, k1 = kq50q2, aperture = 0.010325
+
+ldbsy01 = 5.995 !from beginning of BSY to Station 100
+dbsy01a: drift, l = 0.7286
+dbsy01b: drift, l = 0.25005
+dbsy01c: drift, l = 0.25005
+dbsy01d: drift, l = 0.4143
+dbsy01e: drift, l = 2.9046 !0.807+0.6+1.4976
+dbsy01f: drift, l = 0.31575
+dbsy01g: drift, l = 0.31575
+dbsy01h: drift, l = 0.7975
+dbsy01i: drift, l = 0.0184
+
+ldbsy50 = 2.144276 !Station 100 to center of Q50Q1
+dbsy50: drift, l = ldbsy50-lqr/2
+dbsy50a: drift, l = 0.5782
+dbsy50b: drift, l = dbsy50[l]-dbsy50a[l]
+
+dbsy02: drift, l = 0.456124
+dbsy02b: drift, l = 0.2199
+dbsy02a: drift, l = dbsy02[l]-dbsy02b[l]
+
+dbsy51: drift, l = 5.521976
+dbsy51b: drift, l = 0.5
+dbsy51a: drift, l = dbsy51[l]-dbsy51b[l]
+
+dbsy52: drift, l = 54.883314
+dbsy52a: drift, l = 0.079149
+dbsy52b: drift, l = 1.799589 !2.420851
+dbsy52d: drift, l = 0.5
+dbsy52c: drift,
+          l =  &
+         dbsy52[l]-dbsy52a[l]-dbsy52b[l]-lbrcusdc1-dckdc1[l]-lbkrcus-dckdc2[l]-lbrcusdc2-dcusblra[l]-dcusblrb[l]-lblrcus-lbxsph- &
+         dbsy52d[l]
+
+dbsy52c1: drift, l = 1.174422 !to SWIVEL point
+dbsy52c2: drift, l = dbsy52c[l]-dbsy52c1[l]
+
+bpmbsyq1: monitor, type = "Stripline-5" !changed from "-6" to fit 2Q10
+bpmbsyq2: monitor, type = "Stripline-6" !per C. Iverson
+
+ycbsyq1: vkicker, type = "class-4" !barcode=4600
+
+xcbsyq2: hkicker, type = "class-4" !barcode=4601
+
+imbsy1: marker, type = "BCS toroid" !Bergoz toroid
+imbsy2: marker, type = "BCS toroid" !Bergoz toroid
+imbsy3: marker, type = "BCS toroid" !Bergoz toroid
+
+imbsy1b: marker, type = "BCS backup toroid" !PEP2 backup toroid for IMBSY1
+imbsy2b: marker, type = "BCS backup toroid" !PEP2 backup toroid for IMBSY2
+imbsy3b: marker, type = "BCS backup toroid" !PEP2 backup toroid for IMBSY3
+
+imbsy34: marker, type = "toroid" !diagnostic toroid - existing LCLS device
+
+lpcbsy = 0.3 !TBD
+
+bsybeg: marker
+fftborgn: marker
+s100: marker !station 100
+zlin15: marker !station-100 (or "S100"): Z=3048.0 (Z'=X'=Y'=0.0 m)
+bsy1beg: marker
+swivel: marker !"swivel point"
+bsy1end: marker
+
+! wooden BSY door (separates LI30 from BSY)
+
+wooddoor: marker
+
+
+
+!Old split line:  Q50Q1_full : LINE=(Q50Q1,Q50Q1)
+
+q50q1_full: line = (q50q1)
+q50q1[L] = 2*q50q1[L]
+q50q1_svy: null_ele, superimpose, ref=q50q1
+
+
+!Old split line:  Q50Q2_full : LINE=(Q50Q2,Q50Q2)
+
+q50q2_full: line = (q50q2)
+q50q2[L] = 2*q50q2[L]
+q50q2_svy: null_ele, superimpose, ref=q50q2
+
+  BSYS100 : LINE=(BSY1BEG,DBSY01a,IMBSY1,DBSY01b,IMBSY2,DBSY01c,IMBSY3,DBSY01d,IMBSY34,DBSY01e,IMBSY1b,DBSY01f,IMBSY2b,
+         DBSY01g,IMBSY3b,DBSY01h,FFTBORGN,DBSY01i)
+
+  S100SXRa : LINE=(S100,ZLIN15,DBSY50a,YCBSYQ1,DBSY50b,Q50Q1_full,DBSY02a,WOODDOOR)
+
+  S100SXRb : LINE=(DBSY02b,BPMBSYQ1,DBSY51a,XCBSYQ2,DBSY51b,Q50Q2_full,DBSY52a,BPMBSYQ2,DBSY52b)
+
+  S100SXR : LINE=(S100SXRa,S100SXRb)
+
+ !BSYSXR : LINE=(BSYbeg,BSYS100,S100SXR)
+ !S100BSY1 : LINE=(S100SXR,KCUSXRa,DBSY52c1,SWIVEL,DBSY52c2,BXSP1Ha,BXSP1Hb)
+ !BSY1 : LINE=(BSYS100,S100BSY1)
+ !BSY : LINE=(BSYbeg,BSY1,BSY1END,SPhBSY)
+
+! ------------------------------------------------------------------------------
+! BSY downstream of scH merge bend (BXSP1H)
 ! ------------------------------------------------------------------------------
 
 ! note: the K-values below are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-kq50q3 = 0.426937957729
-kq4 = -0.219608310249
-kq5 = 0.11024564993
-kq6 = -0.109735122471
-kqa0 = 0.096565286297
+kq50q3 = 0.437511021141 ! 0.426937957729
+kq4 = -0.218137495511 !-0.219608310249
+kq5 = 0.110648337873 ! 0.11024564993
+kq6 = -0.106093050264 !-0.109735122471
+kqa0 = 0.096139190896 ! 0.096565286297
 
 q50q3: quadrupole, type = "50Q3", l = 0.143254, k1 = kq50q3, aperture = 0.010325
 q4: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kq4, aperture = rqf
@@ -2498,59 +2677,82 @@ q5: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kq5, aperture = rqf
 q6: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kq6, aperture = rqf
 qa0: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqa0, aperture = rqf
 
-cxq6: rcollimator, type = "HCOLL", l = ljaw, x_limit = 1.7e-3, y_limit = 20.e-3
+! PM projections onto BSY beamline
 
-pcbsy3: instrument, type = "BCS plate", l = lplate !shielding plate
-pcbsy4: instrument, type = "BCS plate", l = lplate !shielding plate
-pcbsy5: instrument, type = "BCS plate", l = lplate !shielding plate
+sbkrapm = 1.055 !PM effective straight length (m)
+abkrapm0 = -0.276615046502e-2 !PM bend angle (PM's have been decommissioned)
+zbkrapm1 = sbkrapm*cos(abkrapm0*1/2)
+zbkrapm2 = sbkrapm*cos(abkrapm0*3/2)
+zbkrapm3 = sbkrapm*cos(abkrapm0*5/2)
+zbkrapm4 = sbkrapm*cos(abkrapm0*7/2)
 
+! PM drifts projected onto BSY beamline
+
+ldapm = 0.5951 !space between two PMs along (decommissioned) A-line trajectory
+lpcapm = 0.1824 !length of PM collimator along BSY beamline
+ldzapm1 = (ldapm*cos(1*abkrapm0)-lpcapm)/2
+ldzapm2 = (ldapm*cos(2*abkrapm0)-lpcapm)/2
+ldzapm3 = (ldapm*cos(3*abkrapm0)-lpcapm)/2
+ldzapm4 = (ldapm*cos(4*abkrapm0)-lpcapm)/2
+lda01 = 0.1971765
+lda02 = 4.371494-lda01-1.35/cos(4*abkrapm0)
+ldza01 = lda01*cos(4*abkrapm0)
+ldza02 = lda02*cos(4*abkrapm0)
+lpcbsyh = 0.45
 lpc90 = 0.453644
 lpc119 = 0.453644
-
-pc90: ecollimator, l = lpc90, x_limit = 10.2e-3, y_limit = 10.2e-3 !existing protection collimator in BSY
-pc119: ecollimator, l = lpc119, x_limit = 10.2e-3, y_limit = 10.2e-3 !existing protection collimator in BSY
-
-! 2" ID BSY collimator -- part of 2-hole copper collimator d/s of A-line pulsed magnets
-
-pcbsyh: ecollimator, type = "@1,MPS PC", l = 0.45, x_limit = 25.4e-3, y_limit = 25.4e-3 !installed, then removed
-
-dm3: drift, l = 0.8438 !0.2196
-dm4a: drift, l = 0.4410 !0.2114
-dm4c: drift, l = 0.331133-ljaw/2
-dm4d: drift, l = 1.168867-ljaw/2
-dm4da: drift, l = 0.27685 !0.2832
-dm4db: drift, l = dm4d[l]-dm4da[l]-lplate
-dm4b: drift, l = 8.851641-dm4a[l]-dm4c[l]-dm4d[l]-ljaw-2.0 +0.282226 !8.622041
-dxca0: drift, l = 0.31
-dyca0: drift, l = 0.509021 !0.279421
-dm5: drift, l = 0.790979 !0.561379
-dm6: drift, l = 0.567588
-dmoni: drift, l = 0.009525
 
 zq5 = 0.0 !adjust position of Q5
 zq6 = 0.0 !adjust position of Q6
 
-dbsy52d: drift, l = 0.5
 dbsy53a: drift, l = 0.091696
-dbsy53b: drift, l = 0.760705-0.15
-dbsy53c: drift, l = 0.629945+0.15
+dbsy53b: drift, l = 0.610705
+dbsy53c: drift, l = 0.779945
 dbsy53f: drift, l = 0.5
 dbsy53d: drift, l = 4.0-dbsy53a[l]-dbsy53b[l]-dbsy53c[l]-dbsy53f[l]
 dbsy53g: drift, l = 1.2
-dbsy53ga: drift, l = 0.91293 !0.91928
+dbsy53ga: drift, l = 0.91293
 dbsy53gb: drift, l = dbsy53g[l]-dbsy53ga[l]-lplate
+dbkrapm1a: drift, l = zbkrapm1/2
+dbkrapm1b: drift, l = zbkrapm1/2
+dzapm1: drift, l = ldzapm1
+dbkrapm2a: drift, l = zbkrapm2/2
+dbkrapm2b: drift, l = zbkrapm2/2
+dzapm2a: drift, l = ldzapm2/2
+dscapm2: drift, l = 0
+dzapm2b: drift, l = ldzapm2/2
+dzapm2: drift, l = ldzapm2
+dbkrapm3a: drift, l = zbkrapm3/2
+dbkrapm3b: drift, l = zbkrapm3/2
+dzapm3: drift, l = ldzapm3
+dbkrapm4a: drift, l = zbkrapm4/2
+dbkrapm4b: drift, l = zbkrapm4/2
+dzapm4: drift, l = ldzapm4
+dza01: drift, l = ldza01
+dza02: drift, l = ldza02
 dbsy53h: drift,
           l = 34.45562-dbsy53g[l]-zbkrapm1-zbkrapm2-zbkrapm3-zbkrapm4 -2*ldzapm1-2*ldzapm2-2*ldzapm3-ldzapm4-ldza01-ldza02  &
-         -pcbsyh[l]-lpcapm1-lpcapm2-lpcapm3-lpcapm4 +zq5
-
+         -lpcbsyh-4*lpcapm +zq5
 dbsy54a: drift, l = 0.5
 dbsy54b: drift, l = 3.22454 -zq5
 dbsy54c: drift, l = 19.260056-dbsy54a[l]-dbsy54b[l] -zq5+zq6
 dbsy55a: drift, l = 0.5
 dbsy55b: drift, l = 4.226742
-dbsy55c: drift, l = 8.016028 -zq6 !8.022378
-dbsy55d: drift, l = 6.466828 !6.473178
-dbsy55e: drift, l = 21.826764-drfb[l]-dbsy55a[l]-dbsy55b[l]-lpc90 -dbsy55c[l]-lplate-dbsy55d[l]-lpc119 -zq6 !21.432164
+dbsy55c: drift, l = 8.016028 -zq6
+dbsy55d: drift, l = 6.466828
+dbsy55e: drift, l = 21.826764-drfb[l]-dbsy55a[l]-dbsy55b[l]-lpc90 -dbsy55c[l]-lplate-dbsy55d[l]-lpc119 -zq6
+dm3: drift, l = 0.8438
+dm4a: drift, l = 0.441
+dm4c: drift, l = 0.331133-ljaw/2
+dm4d: drift, l = 1.168867-ljaw/2
+dm4da: drift, l = 0.27685
+dm4db: drift, l = dm4d[l]-dm4da[l]-lplate
+dm4b: drift, l = 8.851641-dm4a[l]-dm4c[l]-dm4d[l]-ljaw-1.717774
+dxca0: drift, l = 0.31
+dyca0: drift, l = 0.509021
+dm5: drift, l = 0.790979
+dm6: drift, l = 0.567588
+dmoni: drift, l = 0.009525
 
 bpmbsyq3: monitor, type = "Stripline-6" !per C. Iverson
 rfbbsyq3: monitor, type = "@2,CavityS-1"
@@ -2568,15 +2770,27 @@ ycbsyq4: vkicker, type = "class-4" !barcode=4603
 ycbsyq6: vkicker, type = "class-4" !barcode=2107
 yca0: vkicker, type = "class-4" !barcode=2195
 
-d2: instrument, type = "PPS stopper", l = 0.43 !stopper
-st60: instrument, type = "PPS stopper", l = 0.76 !backup stopper
-dm60: instrument, type = "PPS BTM"             !"disaster" BTM behind ST60
-st61: instrument, type = "PPS stopper", l = 0.76 !backup stopper
+pcbsy3: instrument, type = "BCS plate", l = lplate !shielding plate
+pcbsy4: instrument, type = "BCS plate", l = lplate !shielding plate
+d2: instrument, type = "PPS stopper", l = 0.43   !stopper
+st60: instrument, type = "PPS stopper", l = 0.76   !backup stopper
+dm60: instrument, type = "PPS BTM"               !"disaster" BTM behind ST60
+pcbsy5: instrument, type = "BCS plate", l = lplate !shielding plate
+st61: instrument, type = "PPS stopper", l = 0.76   !backup stopper
 
-bsyend: marker !FFTB side of muon plug wall: Z=3224.022426 (Z'=176.020508 m, X'=0.0 m, Y'=-0.821761 m)
-dumpbsyh: marker !front face of BSY dump for HXR beam
+pcapm1: ecollimator, type = "MPS PC", l = lpcapm, x_limit = 44.45e-3, y_limit = 6.35e-3
+pcapm2: ecollimator, type = "MPS PC", l = lpcapm, x_limit = 44.45e-3, y_limit = 6.35e-3
+pcapm3: ecollimator, type = "MPS PC", l = lpcapm, x_limit = 44.45e-3, y_limit = 6.35e-3
+pcapm4: ecollimator, type = "MPS PC", l = lpcapm, x_limit = 44.45e-3, y_limit = 6.35e-3
+pcbsyh: ecollimator, type = "@1,MPS PC", l = 0.45, x_limit = 25.4e-3, y_limit = 25.4e-3 !installed, then removed
+pc90: ecollimator, l = lpc90, x_limit = 10.2e-3, y_limit = 10.2e-3 !existing protection collimator in BSY
+pc119: ecollimator, l = lpc119, x_limit = 10.2e-3, y_limit = 10.2e-3 !existing protection collimator in BSY
+
+cxq6: rcollimator, type = "HCOLL", l = ljaw, x_limit = 1.7e-3, y_limit = 20.e-3
+
 muwall: marker !front face of muon wall for HXR beam
-mrgaline: marker !merge point with A-line
+dumpbsyh: marker !front face of BSY dump for HXR beam
+bsyend: marker !LTUH side of muon plug wall: Z=3224.022426 (Z'=176.020508 m, X'=0.0 m, Y'=-0.821761 m)
 rwwake3h: marker, type = "WAKE" !BSY/SPRDH beampipe wake applied here
 
 
@@ -2585,6 +2799,7 @@ rwwake3h: marker, type = "WAKE" !BSY/SPRDH beampipe wake applied here
 
 q50q3_full: line = (q50q3)
 q50q3[L] = 2*q50q3[L]
+q50q3_svy: null_ele, superimpose, ref=q50q3
 
 
 !Old split line:  Q4_full    : LINE=(Q4,BPMBSYQ4,Q4)
@@ -2618,126 +2833,21 @@ qa0[L] = 2*qa0[L]
 bpmbsyqa0[superimpose] = T
 bpmbsyqa0[ref] = qa0
 
-  SPhAL : LINE=(DBSY52d,Q50Q3_full,DBSY53a,BPMBSYQ3,RFBBSYQ3,DBSY53b,DBSY53c,XCBSYQ3,DBSY53d,YCBSYQ4,DBSY53f,Q4_full,
-         DBSY53ga,PCBSY3,DBSY53gb,MRGALINE)
-
-  SPhBSYb : LINE=(PCBSYH,DBSY53h,Q5_full,DBSY54a,XCBSYQ5,DBSY54b,DBSY54c,Q6_full,DRFB,RFBBSYQ6,DBSY55a,YCBSYQ6,DBSY55b,
-         PC90,DBSY55c,PCBSY4,DBSY55d,PC119,DBSY55e,D2,DM3,ST60,DM4a,DM60,DM4b,CC31,DM4c,CXQ6,DM4da,PCBSY5,DM4db,XCA0,DXCA0,YCA0,
-         DYCA0,ST61,DM5,QA0_full,DM6,DMONI,DMONI,MUWALL,DWALLa,DUMPBSYh,DWALLb,BSYend,RWWAKE3H)
-
-! ------------------------------------------------------------------------------
-! BSY to ALINE (from Cu linac or SC linac) has been decommissioned
-! ------------------------------------------------------------------------------
-
- !SPhBSYa : LINE=(SPhAL,ALINEa)
-
- !SPhBSY : LINE=(SPhBSYa,SPhBSYb,ENDSPH)
-
-! ------------------------------------------------------------------------------
-! BSY1 upstream of the HXR merge bend
-! ------------------------------------------------------------------------------
-
-kq30701 = -0.396231018339 !-0.39623102008  !-0.396305842423 !
-kq30801 = 0.480592172519 ! 0.480592172677 ! 0.480095248389 !
-kq50q1 = -0.231522300458 !-0.231522298209 !-0.231122399508 !
-kq50q2 = 0.102074332053 ! 0.102074330212 ! 0.10177159732  !
-
-q50q1: quadrupole, type = "2Q10", l = lqr/2, k1 = kq50q1, aperture = rqr
-q50q2: quadrupole, type = "50Q2", l = 0.162151, k1 = kq50q2, aperture = 0.010325
-
-ldbsy01 = 5.995 !from beginning of BSY to Station 100
-dbsy01a: drift, l = 0.7286
-dbsy01b: drift, l = 0.25005
-dbsy01c: drift, l = 0.25005
-dbsy01d: drift, l = 0.4143
-dbsy01e: drift, l = 2.9046 !0.807+0.6+1.4976
-dbsy01f: drift, l = 0.31575
-dbsy01g: drift, l = 0.31575
-dbsy01h: drift, l = 0.7975
-dbsy01i: drift, l = 0.0184
-
-ldbsy50 = 2.144276 !Station 100 to center of Q50Q1
-dbsy50: drift, l = ldbsy50-lqr/2
-dbsy50a: drift, l = 0.5782
-dbsy50b: drift, l = dbsy50[l]-dbsy50a[l]
-
-dbsy02: drift, l = 0.456124
-dbsy02b: drift, l = 0.2199
-dbsy02a: drift, l = dbsy02[l]-dbsy02b[l]
-
-dbsy51: drift, l = 5.521976
-dbsy51b: drift, l = 0.5
-dbsy51a: drift, l = dbsy51[l]-dbsy51b[l]
-
-dbsy52: drift, l = 54.883314
-dbsy52a: drift, l = 0.079149
-dbsy52b: drift, l = 1.799589 !2.420851
-dbsy52c: drift,
-          l =  &
-         dbsy52[l]-dbsy52a[l]-dbsy52b[l]-lbrcusdc1-dckdc1[l]-lbkrcus-dckdc2[l]-lbrcusdc2-dcusblra[l]-dcusblrb[l]-lblrcus-lbxsph- &
-         dbsy52d[l]
-
-bpmbsyq1: monitor, type = "Stripline-5" !changed from "-6" to fit 2Q10
-bpmbsyq2: monitor, type = "Stripline-6" !per C. Iverson
-
-ycbsyq1: vkicker, type = "class-4" !barcode=4600
-
-xcbsyq2: hkicker, type = "class-4" !barcode=4601
-
-imbsy1: marker, type = "BCS toroid" !Bergoz toroid
-imbsy2: marker, type = "BCS toroid" !Bergoz toroid
-imbsy3: marker, type = "BCS toroid" !Bergoz toroid
-
-imbsy1b: marker, type = "BCS backup toroid" !PEP2 backup toroid for IMBSY1
-imbsy2b: marker, type = "BCS backup toroid" !PEP2 backup toroid for IMBSY2
-imbsy3b: marker, type = "BCS backup toroid" !PEP2 backup toroid for IMBSY3
-
-imbsy34: marker, type = "toroid" !diagnostic toroid - existing LCLS device
-
-lpcbsy = 0.3 !TBD
-
-bsybeg: marker
-fftborgn: marker
-s100: marker !station 100
-zlin15: marker !station-100 (or "S100"): Z=3048.0 (Z'=X'=Y'=0.0 m)
-bsy1beg: marker
-bsy1end: marker
-
-
-
-!Old split line:  Q50Q1_full : LINE=(Q50Q1,Q50Q1)
-
-q50q1_full: line = (q50q1)
-q50q1[L] = 2*q50q1[L]
-
-
-!Old split line:  Q50Q2_full : LINE=(Q50Q2,Q50Q2)
-
-q50q2_full: line = (q50q2)
-q50q2[L] = 2*q50q2[L]
-
-  BSYS100 : LINE=(BSY1BEG,DBSY01a,IMBSY1,DBSY01b,IMBSY2,DBSY01c,IMBSY3,DBSY01d,IMBSY34,DBSY01e,IMBSY1b,DBSY01f,IMBSY2b,
-         DBSY01g,IMBSY3b,DBSY01h,FFTBORGN,DBSY01i)
-
-  S100SXRa : LINE=(S100,ZLIN15,DBSY50a,YCBSYQ1,DBSY50b,Q50Q1_full,DBSY02a,WOODDOOR)
-
-  S100SXRb : LINE=(DBSY02b,BPMBSYQ1,DBSY51a,XCBSYQ2,DBSY51b,Q50Q2_full,DBSY52a,BPMBSYQ2,DBSY52b)
-
-  S100SXR : LINE=(S100SXRa,S100SXRb)
-
- !BSYSXR : LINE=(BSYbeg,BSYS100,S100SXR)
- !S100BSY1 : LINE=(S100SXR,KCUSXRa,DBSY52c,BXSP1Ha,BXSP1Hb)
- !BSY1 : LINE=(BSYS100,S100BSY1)
- !BSY : LINE=(BSYbeg,BSY1,BSY1END,SPhBSY)
+  BSYH : LINE=(BEGBSYH,DBSY52d,Q50Q3_full,DBSY53a,BPMBSYQ3,RFBBSYQ3,DBSY53b,DBSY53c,XCBSYQ3,DBSY53d,YCBSYQ4,DBSY53f,
+         Q4_full,DBSY53ga,PCBSY3,DBSY53gb,DBKRAPM1a,DBKRAPM1b,DZAPM1,PCAPM1,DZAPM1,DBKRAPM2a,DBKRAPM2b,DZAPM2a,DSCAPM2,DZAPM2b,
+         PCAPM2,DZAPM2,DBKRAPM3a,DBKRAPM3b,DZAPM3,PCAPM3,DZAPM3,DBKRAPM4a,DBKRAPM4b,DZAPM4,PCAPM4,DZA01,DZA02,PCBSYH,DBSY53h,
+         Q5_full,DBSY54a,XCBSYQ5,DBSY54b,DBSY54c,Q6_full,DRFB,RFBBSYQ6,DBSY55a,YCBSYQ6,DBSY55b,PC90,DBSY55c,PCBSY4,DBSY55d,PC119,
+         DBSY55e,D2,DM3,ST60,DM4a,DM60,DM4b,CC31,DM4c,CXQ6,DM4da,PCBSY5,DM4db,XCA0,DXCA0,YCA0,DYCA0,ST61,DM5,QA0_full,DM6,DMONI,
+         DMONI,MUWALL,DWALLa,DUMPBSYh,DWALLb,BSYend,RWWAKE3H,ENDBSYH)
 
 ! ------------------------------------------------------------------------------
 ! HXR VBEND
 ! ------------------------------------------------------------------------------
 
-kqvm1 = -0.337437273245
-kqvm2 = 0.236577259392
-kqvm3 = 0.715150825176
-kqvm4 = -0.681650171006
+kqvm1 = -0.33743727324
+kqvm2 = 0.23657725939
+kqvm3 = 0.715150825178
+kqvm4 = -0.681650171008
 
 qvm1: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqvm1, aperture = rqf
 qvm2: quadrupole, type = "0.91Q17.72", l = lqf/2, k1 = kqvm2, aperture = rqf
@@ -2811,11 +2921,13 @@ cntlt1h: marker, type = "CENTER" !ELEGANT will correct the orbit here for CSR-st
 !Old split line:  BY1_full : LINE=(BY11,BY12)
 
 by1_full: line = (by1)
+by1_svy: null_ele, superimpose, ref=by1, ref_origin=beginning, offset=by11[l] !bend survey marker
 
 
 !Old split line:  BY2_full : LINE=(BY21,BY22)
 
 by2_full: line = (by2)
+by2_svy: null_ele, superimpose, ref=by2, ref_origin=beginning, offset=by21[l] !bend survey marker
 
 
 
@@ -3168,7 +3280,7 @@ dbmark34: marker !entrance of BX31
 ! based on FACET optics model (M. Woodley)
 ! (series approximation for sinc(x)=sin(x)/x to enable setting with x=0)
 
-bwgh = 0                       !wiggler bend field (kG)
+bwgh = 0                      !wiggler bend field (kG)
 awgh = asin(bwgh*zwhp/(ef*cb)) !bend angle per half-pole
 awgh2 = awgh*awgh
 awgh4 = awgh2*awgh2
@@ -3219,6 +3331,7 @@ ycwigh: vkicker, type = "@3,wiggler trim"
 !Old split line:  WIG1H_full : LINE=(WIG1H1,WIG1H2)
 
 wig1h_full: line = (wig1h)
+wig1h_svy: null_ele, superimpose, ref=wig1h, ref_origin=beginning, offset=wig1h1[l] !bend survey marker
 
 
 !Old split line:  WIG2H_full : LINE=(WIG2H1,YCWIGH,WIG2H2)
@@ -3231,39 +3344,45 @@ ycwigh[ref] = wig2h
 !Old split line:  WIG3H_full : LINE=(WIG3H1,WIG3H2)
 
 wig3h_full: line = (wig3h)
-
-  EWIGH : LINE=(WIG1H_full,DWGh,WIG2H_full,DWGh,WIG3H_full,CNTWIGH)
+wig3h_svy: null_ele, superimpose, ref=wig3h, ref_origin=beginning, offset=wig3h1[l] !bend survey marker
+  WIGH_line  : LINE=(WIG1H_full,DWGh,WIG2H_full,DWGh,WIG3H_full,CNTWIGH)
 
 
 
 !Old split line:  BX31_full   : LINE=(BX311,BX312)
 
 bx31_full: line = (bx31)
+bx31_svy: null_ele, superimpose, ref=bx31, ref_origin=beginning, offset=bx311[l] !bend survey marker
 
 
 !Old split line:  BX32_full   : LINE=(BX321,BX322)
 
 bx32_full: line = (bx32)
+bx32_svy: null_ele, superimpose, ref=bx32, ref_origin=beginning, offset=bx321[l] !bend survey marker
 
 
 !Old split line:  BYKIK1_full : LINE=(BYKIK11,BYKIK12)
 
 bykik1_full: line = (bykik1)
+bykik1_svy: null_ele, superimpose, ref=bykik1, ref_origin=beginning, offset=bykik11[l] !bend survey marker
 
 
 !Old split line:  BYKIK2_full : LINE=(BYKIK21,BYKIK22)
 
 bykik2_full: line = (bykik2)
+bykik2_svy: null_ele, superimpose, ref=bykik2, ref_origin=beginning, offset=bykik21[l] !bend survey marker
 
 
 !Old split line:  BX35_full   : LINE=(BX351,BX352)
 
 bx35_full: line = (bx35)
+bx35_svy: null_ele, superimpose, ref=bx35, ref_origin=beginning, offset=bx351[l] !bend survey marker
 
 
 !Old split line:  BX36_full   : LINE=(BX361,BX362)
 
 bx36_full: line = (bx36)
+bx36_svy: null_ele, superimpose, ref=bx36, ref_origin=beginning, offset=bx361[l] !bend survey marker
 
 
 
@@ -3287,6 +3406,7 @@ bpmdl2[ref] = qdl32
 
 cq31_full: line = (cq31)
 cq31[L] = 2*cq31[L]
+cq31_svy: null_ele, superimpose, ref=cq31
 
 
 !Old split line:  QDL33_full : LINE=(QDL33,BPMDL3,QDL33)
@@ -3301,6 +3421,7 @@ bpmdl3[ref] = qdl33
 
 cq32_full: line = (cq32)
 cq32[L] = 2*cq32[L]
+cq32_svy: null_ele, superimpose, ref=cq32
 
 
 !Old split line:  QDL34_full : LINE=(QDL34,BPMDL4,QDL34)
@@ -3315,6 +3436,7 @@ bpmdl4[ref] = qdl34
 
 qt11_full: line = (qt11)
 qt11[L] = 2*qt11[L]
+qt11_svy: null_ele, superimpose, ref=qt11
 
 
 !Old split line:  QT12_full  : LINE=(QT12,BPMT12,QT12)
@@ -3329,12 +3451,14 @@ bpmt12[ref] = qt12
 
 qt13_full: line = (qt13)
 qt13[L] = 2*qt13[L]
+qt13_svy: null_ele, superimpose, ref=qt13
 
 
 !Old split line:  QT21_full  : LINE=(QT21,QT21)
 
 qt21_full: line = (qt21)
 qt21[L] = 2*qt21[L]
+qt21_svy: null_ele, superimpose, ref=qt21
 
 
 !Old split line:  QT22_full  : LINE=(QT22,BPMT22,QT22)
@@ -3349,12 +3473,14 @@ bpmt22[ref] = qt22
 
 qt23_full: line = (qt23)
 qt23[L] = 2*qt23[L]
+qt23_svy: null_ele, superimpose, ref=qt23
 
 
 !Old split line:  QT31_full  : LINE=(QT31,QT31)
 
 qt31_full: line = (qt31)
 qt31[L] = 2*qt31[L]
+qt31_svy: null_ele, superimpose, ref=qt31
 
 
 !Old split line:  QT32_full  : LINE=(QT32,BPMT32,QT32)
@@ -3369,12 +3495,14 @@ bpmt32[ref] = qt32
 
 qt33_full: line = (qt33)
 qt33[L] = 2*qt33[L]
+qt33_svy: null_ele, superimpose, ref=qt33
 
 
 !Old split line:  QT41_full  : LINE=(QT41,QT41)
 
 qt41_full: line = (qt41)
 qt41[L] = 2*qt41[L]
+qt41_svy: null_ele, superimpose, ref=qt41
 
 
 !Old split line:  QT42_full  : LINE=(QT42,BPMT42,QT42)
@@ -3389,6 +3517,7 @@ bpmt42[ref] = qt42
 
 qt43_full: line = (qt43)
 qt43[L] = 2*qt43[L]
+qt43_svy: null_ele, superimpose, ref=qt43
 
 
 
@@ -3408,7 +3537,7 @@ mdchirph[superimpose] = T
 mdchirph[ref] = dchirph
 
   DL21 : LINE=(DBMARK34,BX31_full,DDL10wa,PC02,BTM02,DDL10wb,DWSDL31a,WSDL31,DWSDL31b,DDL10x,XCDL1,D31A,QDL31_full,DRFB,
-         RFBDL1,D31B,YCDL1,D32cmb,CEDL1,D31C,EWIGH,DDL10em80cma,PC22,DDL10em80cmb,CYBX32,DCB32,BX32_full,CNTLT2H)
+         RFBDL1,D31B,YCDL1,D32cmb,CEDL1,D31C,WIGH_line,DDL10em80cma,PC22,DDL10em80cmb,CYBX32,DCB32,BX32_full,CNTLT2H)
 
   DL22 : LINE=(DX33A,CC32,DX33B,PC03,BTM03,DDL1ab,BYKIK1_full,DDL1d,DDL1d,BYKIK2_full,DDL1e,XCDL2,D32A,QDL32_full,D32B,
          YCDL2,DSPLR,SPOILER,DDL1cm40cm,TDKIK,D30cma,PCTDKIK1,DPC1,PCTDKIK2,DPC2,PCTDKIK3,DPC3,PCTDKIK4,DPC4,DSPONTUA,DSPONTUB,
@@ -3436,10 +3565,10 @@ mdchirph[ref] = dchirph
 ! HXR emittance diagnostic
 ! ------------------------------------------------------------------------------
 
-kqem1 = -0.390827735953
-kqem2 = 0.432215708114
-kqem3 = -0.593433950486
-kqem4 = 0.420485259237
+kqem1 = -0.390828157037 !-0.390828157035
+kqem2 = 0.432215882104 ! 0.432215882102
+kqem3 = -0.593433627421 !-0.593433627427
+kqem4 = 0.420485127988 ! 0.420485127989
 
 qem1: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqem1, aperture = rqa
 qem2: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqem2, aperture = rqa
@@ -3564,6 +3693,7 @@ bpmem3[ref] = qem3
 
 qem3v_full: line = (qem3v)
 qem3v[L] = 2*qem3v[L]
+qem3v_svy: null_ele, superimpose, ref=qem3v
 
 
 !Old split line:  QEM4_full  : LINE=(QEM4,BPMEM4,QEM4)
@@ -3629,25 +3759,20 @@ bpme36[ref] = qe36
          YCE34,DQEA,QE34_full,DRFB,RFBE34,DQEC1,WS33,D40cm,DE3m80cm,XCE35,DQEAc,QE35_full,DQEBx,DCX35,DQEBx2,DE3,YCE36,DQEA,
          QE36_full,DRFB,RFBE36,DQEBy1,DCY36,DQEBy2,WS34,D40cmg,DWS35,D40cmh)
 
-  EDCEL : LINE=(WS31,D40cm,DE3ma,PC09,BTM09,DE3mb,XCE31,DQEA,QE31_full,DQEBx,DCX31,DQEBx2,DE3a,YCE32,DQEAa,QE32_full,
-         DRFB,RFBE32,DQEBy1,DCY32,DQEBy2,WS32,D40cm,DE3m80cmb,XCE33,DQEAb,QE33_full,DQECa,YAGPSI,DQECb,OTR33,DE3m40cm,YCE34,DQEA,
-         QE34_full,DRFB,RFBE34,DQEC1,WS33,D40cm,DE3m80cm,XCE35,DQEAc,QE35_full,DQEBx,DCX35,DQEBx2,DE3,YCE36,DQEA,QE36_full,DRFB,
-         RFBE36,DQEBy1,DCY36,DQEBy2,WS34)
-
 ! ------------------------------------------------------------------------------
 ! HXR undulator match
 ! ------------------------------------------------------------------------------
 
-! note: the below K-values are for SC beam; the settings for Cu beam are
-!       in the "LCLS2cu_main.mad8" file
-
 ! note: the below K-values come from Y. Nosochkov's UNDH_KQ4_USDS.xsif file,
-!       for E= 4.0 GeV and KHXU= 2.0 (IntgHX= 30.0 kG)
+!       for E= 8.0 GeV and KHXU= 2.0 (IntgHX= 30.0 kG)
 
-kqum1 = 0.21295276718  !UNDH_KQ4_USDS.xsif (Eu=4.0, KHXU=2.0)
-kqum2 = -0.256692261825 !UNDH_KQ4_USDS.xsif (Eu=4.0, KHXU=2.0)
-kqum3 = 0.472597881562 !UNDH_KQ4_USDS.xsif (Eu=4.0, KHXU=2.0)
-kqum4 = -0.42682658336  !UNDH_KQ4_USDS.xsif (Eu=4.0, KHXU=2.0)
+! note: the below K-values are for both SC beam and Cu beam
+! source: UNDH_KQ4_USDS.xsif (Eu=8.0, KHXU=2.0)
+
+kqum1 = 0.270162423988
+kqum2 = -0.268570675694
+kqum3 = 0.279944439375
+kqum4 = -0.248916368825
 
 qum1: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqum1, aperture = rqa
 qum2: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqum2, aperture = rqa
@@ -3693,7 +3818,7 @@ eoblm: marker !future electro-optic bunch length monitor?
 bltof: monitor !LTUH (gas-jet time-of-flight bunch length monitor)
 muhwall1: marker !upstream end of BTH/UH wall-1
 muhwall2: marker !upstream end of BTH/UH wall-2
-vv999: marker, type = "installed" !new vacuum valve just upbeam of undulator
+vv999: marker !new vacuum valve just upbeam of undulator
 pfilt1: marker
 dbmark37: marker !end of undulator match
 rwwake4h: marker, type = "WAKE" !LTUH beampipe wake applied here
@@ -3740,13 +3865,11 @@ bpmum4[ref] = qum4
 
   LTU : LINE=(VBSYS,MM1,DOGLG2A,DOGLG2B,MM2,EDMCH,EDSYS,UNMCH,RWWAKE4H,ENDLTUH,BEGUNDH,PREUNDH)
 
-  LTUM : LINE=(MM1,DOGLG2A,DOGLG2B,MM2,EDMCH,EDSYS,UNMCH,RWWAKE4H,ENDLTUH,BEGUNDH,PREUNDH)
-
 ! ------------------------------------------------------------------------------
 ! HXR dumpline
 ! ------------------------------------------------------------------------------
 
-kqdmp = -0.155212710055
+kqdmp = -0.155212710055 !Yuri (E=8.0, K=2.0)
 
 qdmp1: quadrupole, type = "3.94Q17", l = lqp/2, k1 = kqdmp, aperture = rqp
 qdmp2: quadrupole, type = "3.94Q17", l = lqp/2, k1 = kqdmp, aperture = rqp
@@ -3789,20 +3912,19 @@ pcpm1l: ecollimator, l = lpcpm, x_limit = 14.2875e-3, y_limit = 14.2875e-3
 pcpm2l: ecollimator, l = lpcpm, x_limit = 38.1e-3, y_limit = 38.1e-3
 pcebd: ecollimator, l = 0, x_limit = 34.0e-3, y_limit = 34.0e-3, type = "gasket coll"
 
-dd1a: drift, l = 0.577681302427
-dd1b: drift, l = 1.000087502327
+dd1a: drift, l = 0.573903672148 !0.577681302427
+dd1b: drift, l = 1.003865132606 !1.000087502327
 dd1c: drift, l = 0.3048
-dd1e: drift, l = 0.249638105611
-dd1f: drift, l = 0.409240058046
+dd1e: drift, l = 0.24964958152 !0.249638105611
+dd1f: drift, l = 0.409228582137 !0.409240058046
 dd1d: drift, l = ldmp1-(dd1a[l]+pcpm1l[l]+dd1b[l]+dd1c[l]+dd1e[l]+pcpm2l[l]+dd1f[l])
 
 bpmqd: monitor, type = "Stripline-11" !RFBQD : MONI, TYPE="@2,CavityL-1"
 bpmdd: monitor, type = "Stripline-8"
 rfbdd: monitor, type = "@2,CavityL-1"
 
-xcdd: hkicker, type = "class-5"
-
 ycdd: vkicker, type = "class-5"
+xcdd: hkicker, type = "class-5"
 
 otrdmp: monitor, type = "OTR" !Dump screen
 
@@ -3834,21 +3956,25 @@ rodmp2h: patch, tilt = arodmp2h
 !Old split line:  BYDSH_full : LINE=(BYDSH1,BYDSH2)
 
 bydsh_full: line = (bydsh)
+bydsh_svy: null_ele, superimpose, ref=bydsh, ref_origin=beginning, offset=bydsh1[l] !bend survey marker
 
 
 !Old split line:  BYD1_full  : LINE=(BYD11,BYD12)
 
 byd1_full: line = (byd1)
+byd1_svy: null_ele, superimpose, ref=byd1, ref_origin=beginning, offset=byd11[l] !bend survey marker
 
 
 !Old split line:  BYD2_full  : LINE=(BYD21,BYD22)
 
 byd2_full: line = (byd2)
+byd2_svy: null_ele, superimpose, ref=byd2, ref_origin=beginning, offset=byd21[l] !bend survey marker
 
 
 !Old split line:  BYD3_full  : LINE=(BYD31,BYD32)
 
 byd3_full: line = (byd3)
+byd3_svy: null_ele, superimpose, ref=byd3, ref_origin=beginning, offset=byd31[l] !bend survey marker
 
 
 
@@ -3856,12 +3982,14 @@ byd3_full: line = (byd3)
 
 qdmp1_full: line = (qdmp1)
 qdmp1[L] = 2*qdmp1[L]
+qdmp1_svy: null_ele, superimpose, ref=qdmp1
 
 
 !Old split line:  QDmp2_full : LINE=(QDmp2,QDmp2)
 
 qdmp2_full: line = (qdmp2)
 qdmp2[L] = 2*qdmp2[L]
+qdmp2_svy: null_ele, superimpose, ref=qdmp2
 
   DUMPLINE : LINE=(BEGDMPH_2,RODMP1H,BYDSH_full,DS1,BYD1_full,DS,BYD2_full,DS,BYD3_full,DD1a,PCPM1L,BTM1L,DD1b,MIMDUMP,
          DD1c,MIMBCS4,DD1d,YCDD,DD1e,PCPM2L,BTM2L,DD1f,QDmp1_full,DD12a,BPMQD,DD12b,MQDMP,DD12c,QDmp2_full,DD2a,XCDD,DD2b,DD2c,

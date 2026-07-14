@@ -1,0 +1,365 @@
+
+! *** OPTICS=AD_ACCEL-01JUN2026s ***
+
+! LCLS2sc injector diagnostic beamline
+
+! ==============================================================================
+! Modification History
+! ------------------------------------------------------------------------------
+! 27-JAN-2024, M. Woodley
+!  * put all DIAGI devices back to 13MAR23 Z-locations
+! 24-NOV-2023, M. Woodley
+!  * Y. Nosochkov rematch for redesigned (4-bend) dogleg
+! ------------------------------------------------------------------------------
+! 12-JUL-2022, M. Woodley
+!  * move diagnostic line 0.6 m d/s to avoid interference with LEI dogleg
+! 26-JUN-2022, Y. Nosochkov
+!  * rematch quadrupoles for 8.97 m LEI and LCLS-II separation
+! ------------------------------------------------------------------------------
+! 09-NOV-2021, M. Woodley
+!  * move IMDGI1 (ICT) closer to BYDGID per A. Rosenstrom
+!  * replace OTRDGI1 with combination OTR/FC device
+!  * add BTM at back side of dump per A. Rosenstrom
+! ------------------------------------------------------------------------------
+! 15-JUN-2021, M. Woodley
+!  * add IMDGI1 (ICT) just u/s of FCDGIDUb for high power/rate beam current
+!    measurement (FARC retracted)
+! 02-MAY-2021, Y. Nosochkov
+!  * add OTRDGI2 for vertical slice emittance measurement with TCAV on (Tor)
+! 19-APR-2021, Y. Nosochkov
+!  * reduce distance from last bend to dump (A. Rosenstrom)
+!  * add copper dump length (per A. Rosenstrom)
+! 02-APR-2021, Y. Nosochkov
+!  * change spectrometer bending angle to 35 deg (Tor)
+!  * adjust some distances
+!  * add vertical bend before dump to remove the angle from spectrometer
+!  * change the type of both bends to BXS (Tor)
+!  * change from slow to fast wires (Tor)
+!  * update locations of BYDGID bend and dump (A. Rosenstrom)
+! 22-MAR-2021, Y. Nosochkov
+!  * add four deferred RFBPMs -- one RFBPM 0.1 m upstream of each wire (Tor)
+!  * change BYDGI type to 12D13.5 (SLC FF magnet -- AD 236-036-00-R0) (C. Adolphsen)
+! 15-MAR-2021, Y. Nosochkov
+!  * remove QDGI09, QDGI10
+!  * increase length of 90 deg FODO cell for betax = 1.76 m at wires
+!  * use class-6 corectors
+! 13-MAR-2021, Y. Nosochkov
+!  * add correctors at QDGI07
+! 08-MAR-2021, Y. Nosochkov
+!  * initial design
+!  * 90 deg FODO with 4 wires for emittance measurement
+!  * distance between 90 deg FODO quads is set to realistically
+!    accommodate wires (per R. Coy)
+! ------------------------------------------------------------------------------
+
+! ==============================================================================
+! SBEN
+! ------------------------------------------------------------------------------
+
+! spectrometer vertical bend
+
+abydgi = 35*raddeg
+lbydgi = 0.5435     !path length as measured at 35 deg
+gbydgi = 0.034      !full gap
+ebydgi = 7.2*raddeg !as measured
+fbydgi = 0.391      !as measured
+zbydgi = lbydgi*sin(abydgi/2)/(abydgi/2) !Z-length
+
+bydgisa: sbend, type = "BXS", hgap = gbydgi/2, l = lbydgi/2, angle = abydgi/2, e1 = ebydgi, fint = fbydgi, fintx = 0,
+          ref_tilt = 90*raddeg
+bydgisb: sbend, type = "BXS", hgap = gbydgi/2, l = lbydgi/2, angle = abydgi/2, e2 = ebydgi, fint = 0, fintx = fbydgi,
+          ref_tilt = 90*raddeg
+
+! vertical bend to remove the angle from spectrometer
+
+bydgida: sbend, type = "BXS", hgap = gbydgi/2, l = lbydgi/2, angle = -abydgi/2, e1 = -ebydgi, fint = fbydgi, fintx = 0,
+          ref_tilt = 90*raddeg
+bydgidb: sbend, type = "BXS", hgap = gbydgi/2, l = lbydgi/2, angle = -abydgi/2, e2 = -ebydgi, fint = 0, fintx = fbydgi,
+          ref_tilt = 90*raddeg
+
+! define unsplit SBENs for BMAD ... not used by MAD
+
+bydgis: sbend, type = "BXS", hgap = gbydgi/2, l = lbydgi, angle = abydgi, e1 = ebydgi, fint = fbydgi, e2 = ebydgi,
+          fintx = fbydgi, ref_tilt = 90*raddeg
+bydgid: sbend, type = "BXS", hgap = gbydgi/2, l = lbydgi, angle = -abydgi, e1 = -ebydgi, fint = fbydgi, e2 = -ebydgi,
+          fintx = fbydgi, ref_tilt = 90*raddeg
+
+! ==============================================================================
+! QUAD
+! ------------------------------------------------------------------------------
+
+kqdgi01 = 18.627874286113 ! 18.555566273709
+kqdgi02 = -22.956227415849 !-23.094689877278
+kqdgi03 = 29.054603342841 ! 29.188779461195
+kqdgi04 = -22.948750443675 !-22.541388138863
+kqdgi05 = 11.62599785155  ! 11.62599785155
+kqdgi06 = -kqdgi05
+kqdgi07 = kqdgi05
+kqdgi08 = -9.766042403296 ! -9.766043568244
+
+qdgi01: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqdgi01
+qdgi02: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqdgi02
+qdgi03: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqdgi03
+qdgi04: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqdgi04
+qdgi05: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqdgi05
+qdgi06: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqdgi06
+qdgi07: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqdgi07
+qdgi08: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqdgi08
+
+! ==============================================================================
+! DRIF
+! ------------------------------------------------------------------------------
+
+dbxdli1a: drift, l = zbxdli/2                         !parameters defined in INJ2.xsif
+dbxdli1b: drift, l = zbxdli*cos(abxdli/2)-dbxdli1a[l] !parameters defined in INJ2.xsif
+
+dbydgisa: drift, l = zbydgi/2
+dbydgisb: drift, l = zbydgi*cos(abydgi/2)-dbydgisa[l]
+
+dbydgidb: drift, l = zbydgi/2
+dbydgida: drift, l = zbydgi*cos(abydgi/2)-dbydgidb[l]
+
+ddgi00: drift, l = 1.715214550178 !2.0
+ddgi01: drift, l = 0.5 !0.6835
+ddgi02: drift, l = 0.5
+ddgi03: drift, l = 0.5
+ddgi04: drift, l = 1.055
+ddgi05: drift, l = ddgi04[l]
+ddgi06: drift, l = ddgi04[l]
+ddgi07: drift, l = ddgi04[l]
+ddgi08: drift, l = 0.6
+ddgi09: drift, l = 1.87976922505 !0.935
+ddgi10: drift, l = 2.332455 !2.85
+ddgi11: drift, l = 1.53981681 !0.765907
+ddgi12: drift, l = 2.332455 !2.85
+
+ddgi01a: drift, l = 0.2 !0.15
+ddgi01b: drift, l = ddgi01[l]-ddgi01a[l]
+ddgi02a: drift, l = 0.2
+ddgi02b: drift, l = ddgi02[l]-ddgi02a[l]
+ddgi03a: drift, l = 0.2
+ddgi03b: drift, l = ddgi03[l]-ddgi03a[l]
+ddgi04a: drift, l = 0.2
+ddgi04c: drift, l = 0.1
+ddgi04b: drift, l = ddgi04[l]/2-ddgi04a[l]-ddgi04c[l]
+ddgi04d: drift, l = ddgi04[l]-ddgi04a[l]-ddgi04b[l]-ddgi04c[l]
+ddgi05a: drift, l = 0.2
+ddgi05c: drift, l = 0.1
+ddgi05b: drift, l = ddgi05[l]/2-ddgi05a[l]-ddgi05c[l]
+ddgi05e: drift, l = 0.2
+ddgi05d: drift, l = ddgi05[l]-ddgi05a[l]-ddgi05b[l]-ddgi05c[l]-ddgi05e[l]
+ddgi06a: drift, l = 0.2
+ddgi06c: drift, l = 0.1
+ddgi06b: drift, l = ddgi06[l]/2-ddgi06a[l]-ddgi06c[l]
+ddgi06d: drift, l = ddgi06[l]-ddgi06a[l]-ddgi06b[l]-ddgi06c[l]
+ddgi07a: drift, l = 0.2
+ddgi07c: drift, l = 0.1
+ddgi07b: drift, l = ddgi07[l]/2-ddgi07a[l]-ddgi07c[l]
+ddgi07e: drift, l = 0.2
+ddgi07d: drift, l = ddgi07[l]-ddgi07a[l]-ddgi07b[l]-ddgi07c[l]-ddgi07e[l]
+ddgi08a: drift, l = 0.3
+ddgi08b: drift, l = ddgi08[l]-ddgi08a[l]
+ddgi09a: drift, l = 0.395
+ddgi09b: drift, l = 0.24
+ddgi09c: drift, l = ddgi09[l]-(ddgi09a[l]+ddgi09b[l])
+ddgi10a: drift, l = 0.2
+ddgi10b: drift, l = ddgi10[l]-ddgi10a[l]
+
+! ==============================================================================
+! BPMs
+! ------------------------------------------------------------------------------
+
+bpmdgi01: monitor, type = "Stripline-1"
+bpmdgi02: monitor, type = "Stripline-1"
+bpmdgi03: monitor, type = "Stripline-1"
+bpmdgi04: monitor, type = "Stripline-1"
+bpmdgi05: monitor, type = "Stripline-1"
+bpmdgi06: monitor, type = "Stripline-1"
+bpmdgi07: monitor, type = "Stripline-1"
+bpmdgi08: monitor, type = "Stripline-1"
+
+rfbdgi01: monitor, type = "@2,CavityS-1"
+bpmdgi09: monitor, type = "Stripline-11" !RFBDGI02 : MONI, TYPE="@2,CavityL-1"
+
+rfbdgiw1: monitor, type = "@2,CavityS-1"
+rfbdgiw2: monitor, type = "@2,CavityS-1"
+rfbdgiw3: monitor, type = "@2,CavityS-1"
+rfbdgiw4: monitor, type = "@2,CavityS-1"
+
+! ==============================================================================
+! XCORs
+! ------------------------------------------------------------------------------
+
+xcdgi01: hkicker, type = "class-6"
+xcdgi03: hkicker, type = "class-6"
+xcdgi05: hkicker, type = "class-6"
+xcdgi07: hkicker, type = "class-6"
+
+! ==============================================================================
+! YCORs
+! ------------------------------------------------------------------------------
+
+ycdgi02: vkicker, type = "class-6"
+ycdgi04: vkicker, type = "class-6"
+ycdgi06: vkicker, type = "class-6"
+ycdgi08: vkicker, type = "class-6"
+
+! ==============================================================================
+! diagnostics, etc.
+! ------------------------------------------------------------------------------
+
+! combination OTR/Faraday Cup (beam pipe ID = 47.6 mm)
+
+otrdgi1: monitor, type = "OTR"
+otrdgi1_fcup: marker, type = "Faraday Cup"
+  OTRDGI1_full : LINE=(OTRDGI1,OTRDGI1_FCUP)
+
+! profile monitors
+
+otrdgi2: monitor, type = "OTR INJ"
+
+! wire scanners
+
+wsdgi1: marker, type = "fast"
+wsdgi2: marker, type = "fast"
+wsdgi3: marker, type = "fast"
+wsdgi4: marker, type = "fast"
+
+! ICT (Bergoz turbo ICT)
+
+imdgi1: marker, type = "ICT"
+
+! Faraday cup (straight-ahead dump)
+
+fcdgidua: marker, type = "Faraday cup"
+
+! ==============================================================================
+! diagnostic line dump
+! ------------------------------------------------------------------------------
+
+dumpfacei: instrument           !entrance face of dump
+ddumpi: drift, l = 0.4309 !length of copper dump (per A. Rosenstrom)
+btmdumpi: instrument           !Burn-Through-Monitor at back of dump
+
+! ==============================================================================
+! BEAMLINE
+! ------------------------------------------------------------------------------
+
+  FODODGI : LINE=(QDGI05,DDGI05,QDGI06,QDGI06,DDGI06,QDGI07) !90 deg FODO
+
+
+
+!Old split line:  BYDGIS_full  : LINE=(BYDGISa,BYDGISb)
+
+bydgis_full: line = (bydgis)
+bydgis_svy: null_ele, superimpose, ref=bydgis, ref_origin=beginning, offset=bydgisa[l] !bend survey marker
+
+
+!Old split line:  BYDGID_full  : LINE=(BYDGIDa,BYDGIDb)
+
+bydgid_full: line = (bydgid)
+bydgid_svy: null_ele, superimpose, ref=bydgid, ref_origin=beginning, offset=bydgida[l] !bend survey marker
+
+
+
+!Old split line:  QDGI01_full : LINE=(QDGI01,BPMDGI01,QDGI01)
+
+qdgi01_full: line = (qdgi01)
+qdgi01[L] = 2*qdgi01[L]
+bpmdgi01[superimpose] = T
+bpmdgi01[ref] = qdgi01
+
+
+!Old split line:  QDGI02_full : LINE=(QDGI02,BPMDGI02,QDGI02)
+
+qdgi02_full: line = (qdgi02)
+qdgi02[L] = 2*qdgi02[L]
+bpmdgi02[superimpose] = T
+bpmdgi02[ref] = qdgi02
+
+
+!Old split line:  QDGI03_full : LINE=(QDGI03,BPMDGI03,QDGI03)
+
+qdgi03_full: line = (qdgi03)
+qdgi03[L] = 2*qdgi03[L]
+bpmdgi03[superimpose] = T
+bpmdgi03[ref] = qdgi03
+
+
+!Old split line:  QDGI04_full : LINE=(QDGI04,BPMDGI04,QDGI04)
+
+qdgi04_full: line = (qdgi04)
+qdgi04[L] = 2*qdgi04[L]
+bpmdgi04[superimpose] = T
+bpmdgi04[ref] = qdgi04
+
+
+!Old split line:  QDGI05_full : LINE=(QDGI05,BPMDGI05,QDGI05)
+
+qdgi05_full: line = (qdgi05)
+qdgi05[L] = 2*qdgi05[L]
+bpmdgi05[superimpose] = T
+bpmdgi05[ref] = qdgi05
+
+
+!Old split line:  QDGI06_full : LINE=(QDGI06,BPMDGI06,QDGI06)
+
+qdgi06_full: line = (qdgi06)
+qdgi06[L] = 2*qdgi06[L]
+bpmdgi06[superimpose] = T
+bpmdgi06[ref] = qdgi06
+
+
+!Old split line:  QDGI07_full : LINE=(QDGI07,BPMDGI07,QDGI07)
+
+qdgi07_full: line = (qdgi07)
+qdgi07[L] = 2*qdgi07[L]
+bpmdgi07[superimpose] = T
+bpmdgi07[ref] = qdgi07
+
+
+!Old split line:  QDGI08_full : LINE=(QDGI08,BPMDGI08,QDGI08)
+
+qdgi08_full: line = (qdgi08)
+qdgi08[L] = 2*qdgi08[L]
+bpmdgi08[superimpose] = T
+bpmdgi08[ref] = qdgi08
+
+!=!  COMMENT !simplified
+!=!  COMMENT !simplified
+!=!    DIAGI_1 : LINE=(BEGDIAGI_1,DBXDLI1a,DBXDLI1b,DDGI00,&
+!=!      QDGI01,QDGI01,DDGI01,&
+!=!      QDGI02,QDGI02,DDGI02,&
+!=!      QDGI03,QDGI03,DDGI03,&
+!=!      QDGI04,QDGI04,DDGI04,&
+!=!      QDGI05,QDGI05,DDGI05,&
+!=!      QDGI06,QDGI06,DDGI06,&
+!=!      QDGI07,QDGI07,DDGI07,&
+!=!      QDGI08,QDGI08,DDGI08,&
+!=!      ENDDIAGI_1)
+!=!    DIAGI_2 : LINE=(BEGDIAGI_2,&
+!=!      BYDGISa,BYDGISb,DDGI09,&
+!=!      BYDGIDa,BYDGIDb,DDGI10,DDUMPI,&
+!=!      ENDDIAGI_2)
+!=!    DIAGI_3 : LINE=(BEGDIAGI_3,&
+!=!      DBYDGISa,DBYDGISb,DDGI11,&
+!=!      DBYDGIDa,DBYDGIDb,DDGI12,DDUMPI,&
+!=!      ENDDIAGI_3)
+!=!  ENDCOMMENT
+
+ !COMMENT !complete
+    DIAGI_1 : LINE=(BEGDIAGI_1,DBXDLI1a,DBXDLI1b,DDGI00,QDGI01_full,DDGI01a,XCDGI01,DDGI01b,QDGI02_full,DDGI02a,YCDGI02,
+         DDGI02b,QDGI03_full,DDGI03a,XCDGI03,DDGI03b,QDGI04_full,DDGI04a,YCDGI04,DDGI04b,RFBDGIW1,DDGI04c,WSDGI1,DDGI04d,
+         QDGI05_full,DDGI05a,XCDGI05,DDGI05b,RFBDGIW2,DDGI05c,WSDGI2,DDGI05d,OTRDGI2,DDGI05e,QDGI06_full,DDGI06a,YCDGI06,DDGI06b,
+         RFBDGIW3,DDGI06c,WSDGI3,DDGI06d,QDGI07_full,DDGI07a,XCDGI07,DDGI07b,RFBDGIW4,DDGI07c,WSDGI4,DDGI07d,YCDGI08,DDGI07e,
+         QDGI08_full,DDGI08a,RFBDGI01,DDGI08b,ENDDIAGI_1)
+    DIAGI_2 : LINE=(BEGDIAGI_2,BYDGIS_full,DDGI09a,BPMDGI09,DDGI09b,OTRDGI1_full,DDGI09c,BYDGID_full,DDGI10a,IMDGI1,
+         DDGI10b,DUMPFACEI,DDUMPI,BTMDUMPI,ENDDIAGI_2)
+    DIAGI_3 : LINE=(BEGDIAGI_3,DBYDGISa,DBYDGISb,DDGI11,DBYDGIDa,DBYDGIDb,DDGI12,FCDGIDUa,DDUMPI,ENDDIAGI_3)
+ !ENDCOMMENT
+
+  DIAGIS : LINE=(DIAGI_1,DIAGI_2) !to spectrometer
+  DIAGID : LINE=(DIAGI_1,DIAGI_3) !to straight-ahead dump (not used)
+
+! ------------------------------------------------------------------------------
+

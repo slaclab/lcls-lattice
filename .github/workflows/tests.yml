@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.10", "3.11", "3.12"]
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
 
     name: Test Suite
 
@@ -21,7 +21,7 @@ jobs:
       LCLS_LATTICE: ${{ github.workspace }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  #v4
         with:
           fetch-depth: 0
       - uses: ./.github/actions/conda-setup
@@ -34,7 +34,7 @@ jobs:
           conda list
 
       - name: Fetch special SLAC executables
-        uses: slaclab/accel_unit_test_execs@v1.2
+        uses: slaclab/accel_unit_test_execs@7992e10995d62bf02cc32c4d9b130789defd6dae #v1.2
 
       - name: Check mad8s version
         shell: bash -l {0}

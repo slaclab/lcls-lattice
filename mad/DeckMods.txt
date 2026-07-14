@@ -1,12 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-18FEB2025s ***
-
-================================================================================
-
-NOTE: there are three power supply strings which power two R56 chicanes each
-      (BCXDLU+BCXDLD, BCX31B+BCX32B, and BCX35+BCX36); the #2 bend of 2nd
-      chicane on each string has no trim winding, so need average polynomial
-      for BCXDLU2/BCXDLD2, BCX31B2/BCX32B2, and BCX352/BCX362!
+! *** OPTICS=AD_ACCEL-01JUN2026s ***
 
 ================================================================================
 
@@ -30,17 +23,18 @@ Re-matching (FINT changes): cuS (4 GeV; after scS/scH rematch)
 ================================================================================
 
 SC: IntgSX= 30.0 kG; IntgHX= 30.0 kG
-* scS : EBC1=0.250, EBC2=1.500, Ef=4.0, Eu=4.0
-* scH : EBC1=0.250, EBC2=1.500, Ef=4.0, Eu=4.0
+* scS : EBC2=1.675, Ef=8.0, Eu=8.0
+* scH : EBC2=1.675, Ef=8.0, Eu=8.0
 
 Cu: IntgSX= 30.0 kG; IntgHX= 30.0 kG
-* cuH : EBC1=0.220, EBC2=5.000, Ef=8.0, Eu=8.0
-* cuS : EBC1=0.220, EBC2=5.000, Ef=8.0, Eu=8.0
+* cuH : EBC2=5.0, Ef=8.0, Eu=8.0
+* cuS : EBC2=5.0, Ef=8.0, Eu=8.0
 
 ================================================================================
 
 Notes:
-* use Yuri's scalable matching solutions
+* AD_ACCEL (LCLS-II) merged with AD_ACCEL_HE (LCLS-II-HE)
+* use Yuri's scalable matching solutions for QUEs and QDMPs
   > UNDH_KQ4_USDS.xsif
   > UNDS_KQ5_US.xsif
   > UNDS_BDES_DS_fit.xlsx
@@ -57,53 +51,62 @@ LCLS2sc_beams.mad8
 
 LCLS2sc_match.mad8
 
-LCLS2sc_XLEAP.mad8
-
 LCLS2sc_master.mad8
 
 common.xsif
 
 CM_SWAVE.xsif
-- set up L0 cavities per Feng ... later?
+* SC linac energy profile per Y. Ding (10MAR2026 email)
+* rematch
+
+DIAG0.xsif
 
 INJ.xsif
 
-DIAG0.xsif
+INJ2.xsif
+
+DIAGI.xsif
 
 BC1.xsif
 
 BC2.xsif
 
-EXT.xsif
-
 DLBM.xsif
+* move OTRDOG downstream 1 foot (undo 13MAR23 move) per L. Borzenets
+* adjust position of SDOG1 per L. Borzenets
+
+SPRD.xsif
+* adjust device positions per L. Borzenets
+  > SSP1H, BPMSP1H, XCSP1H, SSP2H, SSP1S, BPMSP1S, SSP2S
+* leave XCSP0D and YCSP0D in (deferred) ... remove them for next release
+
+CUSXR.xsif
+
+ALINE.xsif
 
 BYP.xsif
 
-SPRD.xsif
-* defer (level=4) YCSP0D and XCSP0D ... not installed
-
-LTU.xsif (NOTE: all SBEN halves are: <name>1 and <name>2)
+LTU.xsif
 
 UND.xsif
-* remove MBLMS MARKERs from all even-numbered SXR cells (16-46)
-* remove MBLMH MARKERs from all odd-numbered HXR cells (15-47)
-* add a long-period undulator plus phase shifter in SXR cell 21
-* NOTE: replacement of undulator in SXR cell 47 put off until later
+* replace short-period undulator with long-period undulator in SXR cell 42
+  per H.-D. Nuhn and G. Kraft
+* revert HXRSS (HXR cell 28) to LCLS-II configuration
+  per D. Bohler and A. Lutman
 
 SFT.xsif
-
-BSYsc.xsif
 
 SXTES.xsif
 
 DASEL.xsif
 
-ALINE.xsif
+BSYsc.xsif
 
 --------------------------------------------------------------------------------
 BMAD-only files
 --------------------------------------------------------------------------------
+
+BMAD_test.mad8
 
 SC_SXR.xsif
 
@@ -117,17 +120,31 @@ SC_DIAG0.xsif
 
 SC_DASEL.xsif
 
+SC_DIAGIS.xsif
+
+SC_DIAG02.xsif
+
+SC_SXR2.xsif
+
+SC_HXR2.xsif
+
+SC_BSYD2.xsif
+
+SC_DASEL2.xsif
+
 ================================================================================
 
 LCLS2cu_main.mad8
 
 LCLS2cu_match.mad8
 
-LCLS2cu_XLEAP.mad8
-
 LCLS2cu_master.mad8
 
 LCLS2cu_makeSymbols.mad8
+
+HXTES.xsif
+
+LCLS2cu.xsif
 
 LCLS-L1.xsif, LCLS-L1e.xsif
 
@@ -135,15 +152,7 @@ LCLS-L2.xsif, LCLS-L2e.xsif
 
 LCLS-L3.xsif, LCLS-L3e.xsif
 
-LCLS2cu.xsif
-
-CUSXR.xsif
-
 BSYcu.xsif
-
-HXTES.xsif
-
-ALINE.xsif
 
 --------------------------------------------------------------------------------
 BMAD-only files
@@ -155,18 +164,11 @@ CU_SFTH.xsif
 
 CU_SXR.xsif
 
-CU_GSPEC.xsif
-
-CU_SPEC.xsif
+CU_ALINE.xsif
 
 ================================================================================
 
 Oracle upload
-
-*** Append FACET2 stuff to paths file and extras file ***
-
-* set Oracle PRIM name to "BEND" for ultra-fast kickers per K. Luchini
-* set Oracle PRIM name to "INST" for area and Sector begin and end MARKER's
 
 ================================================================================
 

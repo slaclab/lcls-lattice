@@ -1,34 +1,32 @@
 
-! *** OPTICS=AD_ACCEL-18FEB2025s ***
+! *** OPTICS=AD_ACCEL-01JUN2026s ***
 
-! LCLS2sc sector 7 dogleg plus match to bypass line
+! LCLS2sc sector 10 dogleg plus match to bypass line
 
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
-! 19-SEP-2023, M. Woodley
-!  * add XCBP10 upstream of sector 10 shield wall per C. Yi and L. Alsberg
-! ------------------------------------------------------------------------------
-! 03-FEB-2023, M. Woodley
-!  * relocate YCL2P per M. Gaydosh
+! 18-JAN-2024, M. Woodley
+!  * sextupoles deferred (level 2)
 ! ------------------------------------------------------------------------------
 ! 09-SEP-2022, M. Woodley
 !  * redefine (deferred) OTR31
-! 20-JUN-2022, M. Woodley
+! 22-JUN-2022, M. Woodley
 !  * correct location and thickness of Sector 10 (FACET) wall (concrete only)
-!    per L.Borzenets email of Thursday, February 24, 2022 11:50 AM
+!    per L.Borzenets email (Feb 24, 2022)
+!  * correct position of CEDOG per L.Borzenets
 ! ------------------------------------------------------------------------------
-! 12-JUL-2021, M. Woodley
-!  * move XCBP11 10" downstream per T. Fak
+! 24-MAR-2021, M. Woodley
+!  * dogleg moved d/s 3.2 m ... sector 10 shielding wall now before SDOG1/QDOG2
+!  * put CEDOG upstream of shielding wall per Tor
+!  * move BPMDOG2 and YCDOG2 back to their original locations w.r.t. QDOG2
 ! ------------------------------------------------------------------------------
-! 11-MAY-2021, M. Woodley
-!  * correct spacing of 2Q4/BPM/XCOR/YCOR per ID drawings
+! 28-SEP-2020, M. Woodley
+!  * add sector 10 shielding wall
+!  * move CEDOG 30 cm upstream per Tor
 ! ------------------------------------------------------------------------------
 ! 30-APR-2019, M. Woodley
 !  * use measured FINT=0.4875 for 1.0D38.37 @ 262A
-! ------------------------------------------------------------------------------
-! 07-JAN-2019, M. Woodley
-!  * add sector 10 shielding wall
 ! ------------------------------------------------------------------------------
 ! 11-OCT-2018, M. Woodley
 !  * use average measured FINT for 0.788D11.50's
@@ -42,17 +40,11 @@
 !  * move EXT/DOG boundary so that CCDLU is in DOG (per K. Fant)
 !  * remove IPEXTDOG (per K. Fant)
 ! ------------------------------------------------------------------------------
-! 16-FEB-2016, M. Woodley
-!  * move Dogleg/Bypass boundary to Z= 1202.631303 m per G. DeContreras
-!  * move RFBWSBP4 and WSBP4 from 1 FODO cell downstream of WSBP3 to 1 FODO
-!    cell upstream of WSBP1 ... rename
-!  * adjust locations of QL1P-QL4P for more robust matching
-! ------------------------------------------------------------------------------
-! 28-NOV-2016, M. Woodley
-!  * merge LCLS-II' version 28NOV16 with LCLS2sc version 04NOV16
-!  * include extended NIT line
+! 01-AUG-2017, M. Woodley
+!  * move BYP devices into BYP.xsif
 ! ------------------------------------------------------------------------------
 ! 04-NOV-2016, M. Woodley
+!  * relocate QL1P-QL4P for more robust matching
 !  * undefer IMBCSDOG (add-back list item)
 ! ------------------------------------------------------------------------------
 ! 06-JUN-2016, M. Woodley
@@ -119,13 +111,14 @@
 !  * add BC3
 ! ------------------------------------------------------------------------------
 
-! match into bypass dogleg FODO cell (at center of QDOG1)
-! LINE=(QDOG1,DBD1,QDOG2,QDOG2,DBD1,QDOG1)
+! match into bypass dogleg
 
 bxdlm = 13.103975995473
 axdlm = -1.328121315284
-bydlm = 15.962707890974
+bydlm = 15.962707890972
 aydlm = 1.529775364964
+
+! ------------------------------------------------------------------------------
 
 dzdog = 77.99997504 !Z-extent of dogleg (BRB1 entrance to BRB2 exit)
 
@@ -279,17 +272,15 @@ qdog8: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = -kqdog
 
 ! match to bypass line
 
-kql1p = 0.322623395309
-kql2p = -0.155036336326
-kql3p = 0.223203385308
-kql4p = -0.284566066043
-kql5p = 0.151439029009
+kql1p = 0.544259695525
+kql2p = -0.329072008556
+kql3p = 0.63112633243
+kql4p = -0.067161651903
 
 ql1p: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kql1p
 ql2p: quadrupole, type = "2Q10", l = lqr/2, aperture = rqr, k1 = kql2p
 ql3p: quadrupole, type = "2Q4W", l = lqm/2, aperture = rqm, k1 = kql3p
 ql4p: quadrupole, type = "2Q4W", l = lqm/2, aperture = rqm, k1 = kql4p
-ql5p: quadrupole, type = "2Q4W", l = lqm/2, aperture = rqm, k1 = kql5p
 
 ! bypass line FODO
 
@@ -297,10 +288,6 @@ kqbyp = 0.060580505638 !45 degree per cell
 
 qbpf: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kqbyp
 qbpd: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = -kqbyp
-
-qbp10: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = -kqbyp
-qbp11: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kqbyp
-qbp12: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = -kqbyp
 
 ! integrated strengths
 
@@ -311,7 +298,6 @@ qbp12: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = -kqbyp
 !=!    VALUE, (Cb*Ef)*KQL2P*LQR
 !=!    VALUE, (Cb*Ef)*KQL3P*LQM
 !=!    VALUE, (Cb*Ef)*KQL4P*LQM
-!=!    VALUE, (Cb*Ef)*KQL5P*LQM
 !=!    VALUE, (Cb*Ef)*KQBYP*LQM
 !=!  ENDCOMMENT
 
@@ -322,7 +308,6 @@ qbp12: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = -kqbyp
 !=!    VALUE, (Cb*Emax)*KQL2P*LQR
 !=!    VALUE, (Cb*Emax)*KQL3P*LQM
 !=!    VALUE, (Cb*Emax)*KQL4P*LQM
-!=!    VALUE, (Cb*Emax)*KQL5P*LQM
 !=!    VALUE, (Cb*Emax)*KQBYP*LQM
 !=!  ENDCOMMENT
 
@@ -330,14 +315,14 @@ qbp12: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = -kqbyp
 ! SEXT
 ! ------------------------------------------------------------------------------
 
-ksdog1 = -9.188528777604 !-9.801
-ksdog2 = 22.656285406772 !-20.61
+ksdog1 = -9.190525183051
+ksdog2 = 22.660707219978
 
-tsdog1 = -13.252537412109 !-0.2331*DEGRAD
-tsdog2 = 16.730337124259 ! 0.3342*DEGRAD
+tsdog1 = -13.255695099227
+tsdog2 = 16.728592930068
 
-sdog1: sextupole, tilt = raddeg*tsdog1, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdog1
-sdog2: sextupole, tilt = raddeg*tsdog2, type = "@1,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdog2
+sdog1: sextupole, tilt = raddeg*tsdog1, type = "@2,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdog1
+sdog2: sextupole, tilt = raddeg*tsdog2, type = "@2,1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdog2
 
 !=!  COMMENT
 !=!  COMMENT
@@ -369,11 +354,11 @@ dccdlui: drift, l = zdcc/2, type = "CSR"
 nqbd = 8                    !number of dogleg quads
 ltota = 76.022947763944      !path length from BRB1-exit to BRB2-entrance
 ldbd = (ltota+lbr)/(nqbd/2) !FODO cell half length
-dldbd = -0.12481688608e-4    !adjustment for dispersion correction
+dldbd = -0.124816886085e-4   !adjustment for dispersion correction
 ldbdh = ldbd/2+dldbd         !FODO cell half length
 
-dbdm0: drift, l = 0.2333 !drift between VVEXTD and CCDLU
-dbdm1: drift, l = 0.5 !drift between CCDLU and BRB1
+dbdm0: drift, l = 0.287 !drift between VVEXTd and CCDLU
+dbdm1: drift, l = 0.5   !drift between CCDLU and BRB1
 dbd: drift, l = ltota
 dbd0: drift, l = (ldbdh-lbr-lqr)/2-4*dldbd
 dbd1: drift, l = ldbdh-lqr
@@ -396,16 +381,17 @@ dbd1sb: drift, l = 0.2016
 dbd1sa: drift, l = dbd1[l]-lsb-dbd1sb[l]
 dbd6sb: drift, l = 0.203095
 dbd6sa: drift, l = dbd6[l]-lsb-dbd6sb[l]
-
 dbd0a: drift, l = 1.0
 dbd0c: drift, l = 0.5185-lqr/2
 dbd0b: drift, l = dbd0[l]-dbd0a[l]-dbd0c[l]
 dbd1a: drift, l = 0.5786-lqr/2
-dbd1d: drift, l = 0.2016
-dbd1c: drift, l = 0.536-lsb-dbd1d[l]
-dbd1b: drift, l = dbd1[l]-dbd1a[l]-ljaw-dbd1c[l]-lsb-dbd1d[l]
+dbd1b: drift, l = 5.41231744974  !5.912334
+dbd1c: drift, l = 0.975601232386 !0.387558
+s10wall: drift, l = 1.848553742612 !2.000599288542
+dbd1e: drift, l = 0.2016026509 !0.20337318127
+dbd1d: drift, l = dbd1[l]-dbd1a[l]-dbd1b[l]-ljaw-dbd1c[l]-s10wall[l] -lsb-dbd1e[l]
 dbd2a: drift, l = 0.5786-lqr/2
-dbd2b: drift, l = 0.6368
+dbd2b: drift, l = 0.941597317611 !0.6368
 dbd2d: drift, l = 0.5185-lqr/2
 dbd2c: drift, l = dbd2[l]-dbd2a[l]-dbd2b[l]-dbd2d[l]
 dbd3a: drift, l = 0.5786-lqr/2
@@ -416,12 +402,12 @@ dbd4c: drift, l = 0.5185-lqr/2
 dbd4b: drift, l = dbd4[l]-dbd4a[l]-dbd4c[l]
 dbd4h: drift, l = dbd4[l]/2
 dbd5a: drift, l = 0.5786-lqr/2
-dbd5c: drift, l = 0.5
-dbd5d: drift, l = 0.536
+dbd5c: drift, l = 0.5   !-0.3048
+dbd5d: drift, l = 0.536 !+0.3048
 dbd5b: drift, l = dbd5[l]-dbd5a[l]-dbd5c[l]-dbd5d[l]
 dbd6a: drift, l = 0.5786-lqr/2
 dbd6b: drift, l = 0.527
-dbd6e: drift, l = 0.203095
+dbd6e: drift, l = 0.203432804686
 dbd6d: drift, l = 0.772576-lqr/2-lsb-dbd6e[l]
 dbd6c: drift, l = dbd6[l]-dbd6a[l]-dbd6b[l]-dbd6d[l]-lsb-dbd6e[l]
 dbd7a: drift, l = 0.5786-lqr/2
@@ -443,50 +429,40 @@ dbpsb: drift, l = dbp[l]-dbpsa[l]
 
 ! match to bypass line
 
-lltot = 99.75102806238
-
-ll0 = 5.0
-ll1 = 18.0
-ll2 = 34.5
-ll3 = 11.0
-ll4 = lltot-ll0-ll1-ll2-ll3
+llp = 162.4095277864 !162.4095276129
+ll0p = 7.5
+ll1p = 22.0
+ll2p = 7.5
+ll3p = 84.0
+ll4p = llp-ll0p-ll1p-ll2p-ll3p
 
 dlccp: drift, l = 0.5
-dl0p: drift, l = ll0
-dl1p: drift, l = ll1
-dl2p: drift, l = ll2
-dl3p: drift, l = ll3
-dl4p: drift, l = ll4
+dl0p: drift, l = ll0p
+dl1p: drift, l = ll1p
+dl2p: drift, l = ll2p
+dl3p: drift, l = ll3p
+dl4p: drift, l = ll4p
 
 dl0pa: drift, l = 0.3
-dl0pb: drift, l = ll0-dl0pa[l]
-dl1pa: drift, l = 0.4471
-dl1pb: drift, l = 0.6368
-dl1pc: drift, l = ll1-dl1pa[l]-dl1pb[l]
-dl2pa: drift, l = 0.4471
-dl2pb: drift, l = 1.245325 !0.6368
-dl2pc: drift, l = ll2-dl2pa[l]-dl2pb[l]
-dl3pa: drift, l = 0.4598
-dl3pb: drift, l = 0.7433
-dl3pc: drift, l = 5.9032251
-dl3pd: drift, l = ll3-dl3pa[l]-dl3pb[l]-dl3pc[l]
+dl0pc: drift, l = 0.5185-lqr/2
+dl0pb: drift, l = ll0p-dl0pa[l]-dl0pc[l]
+dl1pa: drift, l = 0.5786-lqr/2
+dl1pb: drift, l = 1.2154-0.5786
+dl1pd: drift, l = 0.5185-lqr/2
+dl1pc: drift, l = ll1p-dl1pa[l]-dl1pb[l]-dl1pd[l]
+dl2pa: drift, l = 0.5786-lqr/2
+dl2pb: drift, l = 0.6368
+dl2pd: drift, l = 0.3
+dl2pc: drift, l = ll2p-dl2pa[l]-dl2pb[l]-dl2pd[l]
+dl3pa: drift, l = 0.5097-lqm/2
+dl3pb: drift, l = 1.2044-0.5097
+dl3pc: drift, l = ll3p-dl3pa[l]-dl3pb[l]
 dl4pa: drift, l = 0.4598
 dl4pb: drift, l = 0.7433
-dl4pc: drift, l = ll4-dl4pa[l]-dl4pb[l]
-dbpa: drift, l = 0.44518 !0.4598
-dbpb: drift, l = 0.62865 !0.7433
-dbpc: drift, l = dbp[l]-dbpa[l]-dbpb[l]
-dbpe: drift, l = 0.1
-dbpf: drift, l = 1.0
-dbpd: drift, l = dbp[l]-dbpa[l]-dbpb[l]-dbpe[l]-dbpf[l]
-
-dbpb1: drift, l = dbpb[l]+0.38327
-dbpc1: drift, l = dbpc[l]-0.38327
-dbpd1: drift, l = 21.516667
-dbpd1a: drift, l = 3.950667 !30*in2m
-dbpd1b: drift, l = dbpd1[l]-dbpd1a[l]
-s10wall: drift, l = 1.848
-dbpd2: drift, l = dbpd[l]-dbpd1[l]-s10wall[l]
+dl4pc: drift, l = 0.2794
+dl4pe: drift, l = 0.1
+dl4pf: drift, l = 1.0
+dl4pd: drift, l = ll4p-dl4pa[l]-dl4pb[l]-dl4pc[l]-dl4pe[l]-dl4pf[l]
 
 ! ==============================================================================
 ! BPMs
@@ -504,12 +480,6 @@ bpml1p: monitor, type = "Stripline-5"
 bpml2p: monitor, type = "Stripline-5"
 bpml3p: monitor, type = "Stripline-5"
 bpml4p: monitor, type = "Stripline-5"
-bpml5p: monitor, type = "Stripline-5"
-bpmbp10: monitor, type = "Stripline-5"
-bpmbp11: monitor, type = "Stripline-5"
-bpmbp12: monitor, type = "Stripline-5"
-
-rfbwsbp1: monitor, type = "@2,CavityS-1"
 
 ! ==============================================================================
 ! XCORs
@@ -520,10 +490,9 @@ xcdog3: hkicker, type = "type-4"
 xcdog5: hkicker, type = "type-4"
 xcdog7: hkicker, type = "type-4"
 xcl1p: hkicker, type = "type-4"
+xcl2p: hkicker, type = "type-4"
 xcl3p: hkicker, type = "type-4"
-xcl5p: hkicker, type = "type-4"
-xcbp10: hkicker, type = "type-4"
-xcbp11: hkicker, type = "type-4"
+xcl4p: hkicker, type = "type-4"
 
 ! ==============================================================================
 ! YCORs
@@ -534,26 +503,25 @@ ycdog2: vkicker, type = "type-4"
 ycdog4: vkicker, type = "type-4"
 ycdog6: vkicker, type = "type-4"
 ycdog8: vkicker, type = "type-4"
+ycl1p: vkicker, type = "type-4"
 ycl2p: vkicker, type = "type-4"
+ycl3p: vkicker, type = "type-4"
 ycl4p: vkicker, type = "type-4"
-ycbp10: vkicker, type = "type-4"
-ycbp12: vkicker, type = "type-4"
 
 ! ==============================================================================
 ! marker points, etc.
 ! ------------------------------------------------------------------------------
 
-! collimator
+! collimator (default out-of-plane half-aperture is 20 mm)
 
 ! CEDOG : energy coll in bypass dog-leg (YSIZE is half-gap)
 
-cedog: rcollimator, l = ljaw, y_limit = 8.6e-3, type = "VCOLL"
+cedog: rcollimator, l = ljaw, y_limit = 6.8e-3, x_limit = 20.e-3, type = "VCOLL"
 
 ! beam profile measurement
 
 otrdog: monitor, type = "OTR"
 wsdog: marker, type = "@3,fast"
-wsbp1: marker, type = "fast"
 
 ! combination OTR/YAG !PSI type
 
@@ -568,26 +536,16 @@ ccdlumid: marker
 cntdlu: marker, type = "CENTER"
 ccdluend: marker
 bdbeg: marker
-clbrb1: marker !BRB1 centerline
-midbd: marker
-clbrb2: marker !BRB2 centerline
+clbrb1: marker                !BRB1 centerline
+bdmid: marker
+clbrb2: marker                !BRB2 centerline
 cntdog: marker, type = "CENTER"
 bdend: marker
 ccdldbeg: marker
 ccdldmid: marker
 cntdld: marker, type = "CENTER"
 ccdldend: marker
-rwwake1: marker, type = "WAKE" !EXT+BD beampipe wake applied here
-
-! sector boundaries (ZBEG=101.6*(n-1); ZEND=101.6*n)
-
-bpn09beg: marker
-bpn09end: marker
-bpn10beg: marker
-bpn10end: marker
-bpn11beg: marker
-bpn11end: marker
-bpn12beg: marker
+rwwake1: marker, type = "WAKE"    !EXT+BD beampipe wake applied here
 
 ! ==============================================================================
 ! BEAMLINE
@@ -598,21 +556,25 @@ bpn12beg: marker
 !Old split line:  BCXDLU1_full : LINE=(BCXDLU1a,BCXDLU1b)
 
 bcxdlu1_full: line = (bcxdlu1)
+bcxdlu1_svy: null_ele, superimpose, ref=bcxdlu1, ref_origin=beginning, offset=bcxdlu1a[l] !bend survey marker
 
 
 !Old split line:  BCXDLU2_full : LINE=(BCXDLU2a,BCXDLU2b)
 
 bcxdlu2_full: line = (bcxdlu2)
+bcxdlu2_svy: null_ele, superimpose, ref=bcxdlu2, ref_origin=beginning, offset=bcxdlu2a[l] !bend survey marker
 
 
 !Old split line:  BCXDLU3_full : LINE=(BCXDLU3a,BCXDLU3b)
 
 bcxdlu3_full: line = (bcxdlu3)
+bcxdlu3_svy: null_ele, superimpose, ref=bcxdlu3, ref_origin=beginning, offset=bcxdlu3a[l] !bend survey marker
 
 
 !Old split line:  BCXDLU4_full : LINE=(BCXDLU4a,BCXDLU4b)
 
 bcxdlu4_full: line = (bcxdlu4)
+bcxdlu4_svy: null_ele, superimpose, ref=bcxdlu4, ref_origin=beginning, offset=bcxdlu4a[l] !bend survey marker
 
 
 !Old split line:  BRB1_full    : LINE=(BRB1a,clBRB1,BRB1b)
@@ -632,21 +594,25 @@ clbrb2[ref] = brb2
 !Old split line:  BCXDLD1_full : LINE=(BCXDLD1a,BCXDLD1b)
 
 bcxdld1_full: line = (bcxdld1)
+bcxdld1_svy: null_ele, superimpose, ref=bcxdld1, ref_origin=beginning, offset=bcxdld1a[l] !bend survey marker
 
 
 !Old split line:  BCXDLD2_full : LINE=(BCXDLD2a,BCXDLD2b)
 
 bcxdld2_full: line = (bcxdld2)
+bcxdld2_svy: null_ele, superimpose, ref=bcxdld2, ref_origin=beginning, offset=bcxdld2a[l] !bend survey marker
 
 
 !Old split line:  BCXDLD3_full : LINE=(BCXDLD3a,BCXDLD3b)
 
 bcxdld3_full: line = (bcxdld3)
+bcxdld3_svy: null_ele, superimpose, ref=bcxdld3, ref_origin=beginning, offset=bcxdld3a[l] !bend survey marker
 
 
 !Old split line:  BCXDLD4_full : LINE=(BCXDLD4a,BCXDLD4b)
 
 bcxdld4_full: line = (bcxdld4)
+bcxdld4_svy: null_ele, superimpose, ref=bcxdld4, ref_origin=beginning, offset=bcxdld4a[l] !bend survey marker
 
 
 
@@ -654,96 +620,84 @@ bcxdld4_full: line = (bcxdld4)
 
 qdog1_full: line = (qdog1)
 qdog1[L] = 2*qdog1[L]
+qdog1_svy: null_ele, superimpose, ref=qdog1
 
 
 !Old split line:  QDOG2_full : LINE=(QDOG2,QDOG2)
 
 qdog2_full: line = (qdog2)
 qdog2[L] = 2*qdog2[L]
+qdog2_svy: null_ele, superimpose, ref=qdog2
 
 
 !Old split line:  QDOG3_full : LINE=(QDOG3,QDOG3)
 
 qdog3_full: line = (qdog3)
 qdog3[L] = 2*qdog3[L]
+qdog3_svy: null_ele, superimpose, ref=qdog3
 
 
 !Old split line:  QDOG4_full : LINE=(QDOG4,QDOG4)
 
 qdog4_full: line = (qdog4)
 qdog4[L] = 2*qdog4[L]
+qdog4_svy: null_ele, superimpose, ref=qdog4
 
 
 !Old split line:  QDOG5_full : LINE=(QDOG5,QDOG5)
 
 qdog5_full: line = (qdog5)
 qdog5[L] = 2*qdog5[L]
+qdog5_svy: null_ele, superimpose, ref=qdog5
 
 
 !Old split line:  QDOG6_full : LINE=(QDOG6,QDOG6)
 
 qdog6_full: line = (qdog6)
 qdog6[L] = 2*qdog6[L]
+qdog6_svy: null_ele, superimpose, ref=qdog6
 
 
 !Old split line:  QDOG7_full : LINE=(QDOG7,QDOG7)
 
 qdog7_full: line = (qdog7)
 qdog7[L] = 2*qdog7[L]
+qdog7_svy: null_ele, superimpose, ref=qdog7
 
 
 !Old split line:  QDOG8_full : LINE=(QDOG8,QDOG8)
 
 qdog8_full: line = (qdog8)
 qdog8[L] = 2*qdog8[L]
+qdog8_svy: null_ele, superimpose, ref=qdog8
 
 
 !Old split line:  QL1P_full  : LINE=(QL1P,QL1P)
 
 ql1p_full: line = (ql1p)
 ql1p[L] = 2*ql1p[L]
+ql1p_svy: null_ele, superimpose, ref=ql1p
 
 
 !Old split line:  QL2P_full  : LINE=(QL2P,QL2P)
 
 ql2p_full: line = (ql2p)
 ql2p[L] = 2*ql2p[L]
+ql2p_svy: null_ele, superimpose, ref=ql2p
 
 
 !Old split line:  QL3P_full  : LINE=(QL3P,QL3P)
 
 ql3p_full: line = (ql3p)
 ql3p[L] = 2*ql3p[L]
+ql3p_svy: null_ele, superimpose, ref=ql3p
 
 
 !Old split line:  QL4P_full  : LINE=(QL4P,QL4P)
 
 ql4p_full: line = (ql4p)
 ql4p[L] = 2*ql4p[L]
-
-
-!Old split line:  QL5P_full  : LINE=(QL5P,QL5P)
-
-ql5p_full: line = (ql5p)
-ql5p[L] = 2*ql5p[L]
-
-
-!Old split line:  QBP10_full : LINE=(QBP10,QBP10)
-
-qbp10_full: line = (qbp10)
-qbp10[L] = 2*qbp10[L]
-
-
-!Old split line:  QBP11_full : LINE=(QBP11,QBP11)
-
-qbp11_full: line = (qbp11)
-qbp11[L] = 2*qbp11[L]
-
-
-!Old split line:  QBP12_full : LINE=(QBP12,QBP12)
-
-qbp12_full: line = (qbp12)
-qbp12[L] = 2*qbp12[L]
+ql4p_svy: null_ele, superimpose, ref=ql4p
 
 
 
@@ -751,12 +705,14 @@ qbp12[L] = 2*qbp12[L]
 
 sdog1_full: line = (sdog1)
 sdog1[L] = 2*sdog1[L]
+sdog1_svy: null_ele, superimpose, ref=sdog1
 
 
 !Old split line:  SDOG2_full : LINE=(SDOG2,SDOG2)
 
 sdog2_full: line = (sdog2)
 sdog2[L] = 2*sdog2[L]
+sdog2_svy: null_ele, superimpose, ref=sdog2
 
   CCDLU : LINE=(CCDLUBEG,BCXDLU1_full,DCCDLUo,BCXDLU2_full,DCCDLUi,CCDLUMID,DCCDLUi,BCXDLU3_full,DCCDLUo,BCXDLU4_full,
          CNTDLU,CCDLUEND)
@@ -767,63 +723,57 @@ sdog2[L] = 2*sdog2[L]
 !=!  COMMENT !simplified (1st order)
 !=!  COMMENT !simplified (1st order)
 !=!    DLBP : LINE=(BDBEG,&
-!=!      BRB1a,clBRB1,BRB1b,ROBRB1,DBD0,&
-!=!      QDOG1,QDOG1,DBD1,&
-!=!      QDOG2,QDOG2,DBD2,&
-!=!      QDOG3,QDOG3,DBD3,&
-!=!      QDOG4,QDOG4,DBD4h,MIDBD,DBD4h,&
-!=!      QDOG5,QDOG5,DBD5,&
-!=!      QDOG6,QDOG6,DBD6,&
-!=!      QDOG7,QDOG7,DBD7,&
-!=!      QDOG8,QDOG8,DBD8,&
-!=!      ROBRB2,BRB2a,clBRB2,BRB2b,&
+!=!      BRB1_full,ROBRB1,DBD0,&
+!=!      QDOG1_full,DBD1,&
+!=!      QDOG2_full,DBD2,&
+!=!      QDOG3_full,DBD3,&
+!=!      QDOG4_full,DBD4h,BDMID,DBD4h,&
+!=!      QDOG5_full,DBD5,&
+!=!      QDOG6_full,DBD6,&
+!=!      QDOG7_full,DBD7,&
+!=!      QDOG8_full,DBD8,&
+!=!      ROBRB2,BRB2_full,&
 !=!      BDEND)
 !=!  ENDCOMMENT
 
 !=!  COMMENT !simplified (2nd order)
 !=!  COMMENT !simplified (2nd order)
-!=!    DLBP : LINE=(BDBEG,&
-!=!      BRB1a,clBRB1,BRB1b,ROBRB1,DBD0,&
-!=!      QDOG1,QDOG1,DBD1Sa,SDOG1,SDOG1,DBD1Sb,&
-!=!      QDOG2,QDOG2,DBD2,&
-!=!      QDOG3,QDOG3,DBD3,&
-!=!      QDOG4,QDOG4,DBD4h,MIDBD,DBD4h,&
-!=!      QDOG5,QDOG5,DBD5,&
-!=!      QDOG6,QDOG6,DBD6Sa,SDOG2,SDOG2,DBD6Sb,&
-!=!      QDOG7,QDOG7,DBD7,&
-!=!      QDOG8,QDOG8,DBD8,&
-!=!      ROBRB2,BRB2a,clBRB2,BRB2b,&
+!=!    DLBP0S : LINE=(BDBEG,&
+!=!      BRB1_full,ROBRB1,DBD0,&
+!=!      QDOG1_full,DBD1Sa,SDOG1,SDOG1,DBD1Sb,&
+!=!      QDOG2_full,DBD2,&
+!=!      QDOG3_full,DBD3,&
+!=!      QDOG4_full,DBD4h,BDMID,DBD4h,&
+!=!      QDOG5_full,DBD5,&
+!=!      QDOG6_full,DBD6Sa,SDOG2,SDOG2,DBD6Sb,&
+!=!      QDOG7_full,DBD7,&
+!=!      QDOG8_full,DBD8,&
+!=!      ROBRB2,BRB2_full,&
 !=!      BDEND)
 !=!  ENDCOMMENT
 
  !COMMENT !complete
     DLBP : LINE=(BDBEG,BRB1_full,ROBRB1,DBD0a,YCDOG0,DBD0b,XCDOG1,DBD0c,QDOG1_full,DBD1a,BPMDOG1,DBD1b,CEDOG,DBD1c,
-         SDOG1_full,DBD1d,QDOG2_full,DBD2a,BPMDOG2,DBD2b,YCDOG2,DBD2c,XCDOG3,DBD2d,QDOG3_full,DBD3a,BPMDOG3,DBD3b,YCDOG4,DBD3c,
-         QDOG4_full,DBD4a,BPMDOG4,DBD4b,XCDOG5,DBD4c,QDOG5_full,DBD5a,BPMDOG5,DBD5b,YCDOG6,DBD5c,OTRDOG,DBD5d,QDOG6_full,DBD6a,
-         BPMDOG6,DBD6b,WSDOG,DBD6c,XCDOG7,DBD6d,SDOG2_full,DBD6e,QDOG7_full,DBD7a,BPMDOG7,DBD7b,YCDOG8,DBD7c,QDOG8_full,DBD8a,
-         BPMDOG8,DBD8b,ROBRB2,BRB2_full,CNTDOG,RWWAKE1,BDEND)
+         S10WALL,DBD1d,SDOG1_full,DBD1e,QDOG2_full,DBD2a,BPMDOG2,DBD2b,YCDOG2,DBD2c,XCDOG3,DBD2d,QDOG3_full,DBD3a,BPMDOG3,DBD3b,
+         YCDOG4,DBD3c,QDOG4_full,DBD4a,BPMDOG4,DBD4b,XCDOG5,DBD4c,QDOG5_full,DBD5a,BPMDOG5,DBD5b,YCDOG6,DBD5c,OTRDOG,DBD5d,
+         QDOG6_full,DBD6a,BPMDOG6,DBD6b,WSDOG,DBD6c,XCDOG7,DBD6d,SDOG2_full,DBD6e,QDOG7_full,DBD7a,BPMDOG7,DBD7b,YCDOG8,DBD7c,
+         QDOG8_full,DBD8a,BPMDOG8,DBD8b,ROBRB2,BRB2_full,CNTDOG,RWWAKE1,BDEND)
  !ENDCOMMENT
 
 !=!  COMMENT !simplified
 !=!  COMMENT !simplified
 !=!    MTCH1 : LINE=(DLCCP,&
 !=!      CCDLD,DL0P,&
-!=!      QL1P,QL1P,DL1P,&
-!=!      QL2P,QL2P,DL2P,&
-!=!      QL3P,QL3P,DL3P,&
-!=!      QL4P,QL4P,DL4P,&
-!=!      QL5P,QL5P,DBP,DBP,&
-!=!      QBP10,QBP10,DBPa,DBPb,DBPd,DBPe,WSBP1,DBPf,DBP,&
-!=!      QBP11,QBP11,DBP,DBP,&
-!=!      QBP12,QBP12,DBPa,DBPb,DBPd)
+!=!      QL1P_full,DL1P,&
+!=!      QL2P_full,DL2P,&
+!=!      QL3P_full,DL3P,&
+!=!      QL4P_full,DL4Pa,DL4Pb,DL4Pc,DL4Pd)
 !=!  ENDCOMMENT
 
  !COMMENT !complete
-    MTCH1 : LINE=(DLCCP,CCDLD,DL0Pa,OTR31_full,DL0Pb,QL1P_full,DL1Pa,BPML1P,DL1Pb,XCL1P,DL1Pc,QL2P_full,DL2Pa,BPML2P,
-         DL2Pb,YCL2P,DL2Pc,QL3P_full,DL3Pa,BPML3P,DL3Pb,XCL3P,DL3Pc,BPN09BEG,DL3Pd,QL4P_full,DL4Pa,BPML4P,DL4Pb,YCL4P,DL4Pc,
-         QL5P_full,DBPa,BPML5P,DBPb,XCL5P,DBPc,DBPsa,BPN09END,BPN10BEG,DBPsb,QBP10_full,DBPa,BPMBP10,DBPb,YCBP10,DBPd1a,XCBP10,
-         DBPd1b,S10WALL,DBPd2,RFBWSBP1,DBPe,WSBP1,DBPf,DBPsa,BPN10END,BPN11BEG,DBPsb,QBP11_full,DBPa,BPMBP11,DBPb1,XCBP11,DBPc1,
-         DBPsa,BPN11END,BPN12BEG,DBPsb,QBP12_full,DBPa,BPMBP12,DBPb,YCBP12,DBPd)
+    MTCH1 : LINE=(DLCCP,CCDLD,DL0Pa,OTR31_full,DL0Pb,XCL1P,DL0Pc,QL1P_full,DL1Pa,BPML1P,DL1Pb,YCL1P,DL1Pc,XCL2P,DL1Pd,
+         QL2P_full,DL2Pa,BPML2P,DL2Pb,YCL2P,DL2Pc,XCL3P,DL2Pd,QL3P_full,DL3Pa,BPML3P,DL3Pb,YCL3P,DL3Pc,QL4P_full,DL4Pa,BPML4P,
+         DL4Pb,XCL4P,DL4Pc,YCL4P,DL4Pd)
  !ENDCOMMENT
 
   DLBM : LINE=(BEGDOG,DBDm0,CCDLU,DBDm1,DLBP,MTCH1,ENDDOG)

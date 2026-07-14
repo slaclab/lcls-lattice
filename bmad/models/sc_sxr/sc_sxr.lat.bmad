@@ -2,6 +2,9 @@
 ! sc_sxr
 !
 
+parameter[custom_attribute1] = taylor::mat_und_k
+parameter[custom_attribute2] = taylor::mat_und_l
+
 call, file = $LCLS_LATTICE/bmad/master/SC_SXR.bmad
 call, file = $LCLS_LATTICE/bmad/master/LCLSsc_devicenames.bmad
 
@@ -33,7 +36,49 @@ RWWAKE5S[sr_wake%amp_scale] = 100
 sbend::*[fringe_type] = full
 call, file = $LCLS_LATTICE/bmad/master/gunb/beginning_BEGGUNB.bmad
 
+call, file = $LCLS_LATTICE/bmad/instruments/sc_fixers.bmad
+
 use, SC_SXR
 
+fixer_otr0h04[beta_a_stored] = 7.71845178831
+fixer_otr0h04[beta_b_stored] = 7.71845178832
+fixer_otr0h04[alpha_a_stored] = 0.316052281303E-01
+fixer_otr0h04[alpha_b_stored] = 0.316052281345E-01
+fixer_otr0h04[phi_a_stored] = 6.66458592874256784850
+fixer_otr0h04[phi_b_stored] = 9.11310859759249376412
+fixer_otr0h04[is_on] = T
 
+!bun1b_fixer: fixer, superimpose, ref=yag01b, ref_origin=beginning, 
+!  beta_a_stored=5.32257628595, alpha_a_stored=6.78418895146,
+!  beta_b_stored=5.31727065195, alpha_b_stored=6.77825399680, 
+!  phi_a_stored=0.09626729251855214574, phi_b_stored=0.09635509497525581396,
+!  is_on=T
 
+! !match cavl01
+!Q0H01[K1] = -6.34014047578799378E+000
+!Q0H02[K1] =  6.05385276279990237E+000
+!Q0H03[K1] =  3.52789670818601186E-001
+!Q0H04[K1] = -4.05044570481829247E+000
+
+! !match cavl02 & cavl03
+! QC011[K1] = -1.05410605153589820E+000
+! QC012[K1] =  9.42126122808186528E-001
+! QCM02[K1] = -2.17938345390083416E-001
+! QCM03[K1] =  1.10938727219923053E-001
+
+! QC011[K1] = -1.05409491206364136E+000
+! QC012[K1] =  9.42120477786680399E-001
+! QCM02[K1] = -2.17938024453926321E-001
+! QCM03[K1] =  1.10938881531940856E-001
+
+ !01JUN2026s
+! QC011[K1] = -1.28325456675968841E+000
+! QC012[K1] =  1.04869250152542337E+000
+! QCM02[K1] = -2.17938014129210572E-001
+! QCM03[K1] =  1.10938782150757864E-001
+
+lcavity::*[n_rf_steps]=100
+bun1b[n_rf_steps]=1000
+cavl01*[n_rf_steps]=1000
+cavl*[n_cell]=9
+cavc*[n_cell]=9

@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-18FEB2025s ***
+! *** OPTICS=AD_ACCEL-01JUN2026s ***
 
 ! ==============================================================================
 ! Color Twiss plots
@@ -9,7 +9,7 @@
 
   BEAM, ENERGY=E00
   SET, SETCUS, CUSOFF
-  SETK2cuH
+  CALL, FILENAME="SETK2cuH.xsif"
   USE, CU_HXR
   PRINT, FULL
   TWISS, SAVE, BETA0=TWSSC
@@ -38,16 +38,16 @@
     COLOUR=100, SPLINE, RANGE=BEGL3/ENDL3, FILE="LCLS2cu_color", &
     TITLE="Cu_linac: L3 linac"
   PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-    COLOUR=100, SPLINE, RANGE=BEGCLTH_0/ENDBSYH_2, FILE="LCLS2cu_color", &
+    COLOUR=100, SPLINE, RANGE=BEGCLTH_0/ENDBSYH, FILE="LCLS2cu_color", &
     TITLE="Cu_linac: BSY to LTUH"
   PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
     COLOUR=100, SPLINE, RANGE=BEGLTUH/ENDLTUH, FILE="LCLS2cu_color", &
     TITLE="LTUH"
   PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
     COLOUR=100, SPLINE, RANGE=BEGUNDH/HXR46END, FILE="LCLS2cu_color", &
-    TITLE="HXR Undulator", VMIN=0
+    TITLE="HXR Undulator"
   PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-    COLOUR=100, SPLINE, RANGE=HXR47BEG/DUMPFACE, FILE="LCLS2cu_color", &
+    COLOUR=100, SPLINE, RANGE=HXR46END/DUMPFACE, FILE="LCLS2cu_color", &
     TITLE="HXR Post-undulator to dump"
 
 ! Cathode to HXR Safety Dump
@@ -65,7 +65,7 @@
   SET, SETCUS, CUSON   !pulsed
  !SET, SETCUS, CUSONDC !DC
  !VALUE, PULSED,DCMODE
-  SETK2cuS
+  CALL, FILENAME="SETK2cuS.xsif"
   USE, CU_SXR
  !SAVELINE, NAME="CU_SXR", FILENAME="LCLS2cuS.saveline"
   PRINT, FULL
@@ -86,11 +86,11 @@
     COLOUR=100, SPLINE, RANGE=BEGLTUS/ENDLTUS, FILE="LCLS2cu_color", &
     TITLE="LTUS"
   PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
-    COLOUR=100, SPLINE, RANGE=BEGUNDS/SXR46END, FILE="LCLS2cu_color", &
-    TITLE="SXR Undulator", VMIN=0
+    COLOUR=100, SPLINE, RANGE=BEGUNDS/SXR47END, FILE="LCLS2cu_color", &
+    TITLE="SXR Undulator"
   PLOT, TABLE=TWISS, HAXIS=S, VAXIS1=BETX,BETY, VAXIS2=DX,DY, &
-    COLOUR=100, SPLINE, RANGE=SXR47BEG/DUMPFACEb, FILE="LCLS2cu_color", &
-    TITLE="SXR Post-indulator to dump"
+    COLOUR=100, SPLINE, RANGE=SXR47END/DUMPFACEb, FILE="LCLS2cu_color", &
+    TITLE="SXR Post-undulator to dump"
 
 ! ------------------------------------------------------------------------------
 

@@ -1,13 +1,10 @@
 
-! *** OPTICS=AD_ACCEL-18FEB2025s ***
+! *** OPTICS=AD_ACCEL-01JUN2026s ***
 
 ! LCLS2sc bunch compressor chicane #1
 
 ! ==============================================================================
 ! Modification History
-! ------------------------------------------------------------------------------
-! 17-JAN-2021, M. Woodley
-!  * new standard configuration per Y. Ding
 ! ------------------------------------------------------------------------------
 ! 23-MAY-2019, M. Woodley
 !  * move ENDBC1B to u/s face of QC101 per T. Maxwell
@@ -110,7 +107,7 @@
 gb1 = 0.04328
 zb1 = 0.2032
 fb1 = 0.3893
-ab1 = -0.10092088117 !R56=0.053
+ab1 = -0.100916987733 !R56=0.053
 bb1 = brho1*sin(ab1)/zb1
 ab1_2 = ab1*ab1
 ab1_4 = ab1_2*ab1_2
@@ -152,7 +149,7 @@ bcx14: sbend, type = "1.69D6.28T", hgap = gb1/2, l = lb1, angle = +ab1, e1 = +ab
 
 ! L1 to BC1 chicane
 
-kq1c01 = 0.966019760844
+kq1c01 = 0.968582792751
 
 q1c01: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kq1c01
 
@@ -177,18 +174,18 @@ qdcoll1: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = -kqcoll1
 
 ! COL1 collimation section
 
-kqc101 = -0.515339094345
-kqc102 = 2.054226862445
+kqc101 = -0.219665495767
+kqc102 = 2.057704322458
 kqc103 = 0.0
-kqc104 = -0.849547795073
-kqc105 = -1.814589437453
+kqc104 = -0.869876271738
+kqc105 = -1.707969416125
 kqc106 = kqcoll1
 kqc107 = -kqcoll1
 kqc108 = kqcoll1
 kqc109 = -kqcoll1
-kqc110 = 1.40317309292  ! KQColl1
-kqc111 = -1.796414996251
-kqc112 = 1.304515461383
+kqc110 = 1.390618138828
+kqc111 = -1.791909668095
+kqc112 = 1.304535295662
 
 qc101: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc101
 qc102: quadrupole, type = "1.26Q3.5", l = lqx/2, aperture = rqx, k1 = kqc102
@@ -250,8 +247,7 @@ dc1og: drift, l = zdc1og/cos(ab1)-lqc/2, type = "CSR"
 dc100: drift, l = 0.637
 
 dc100a: drift, l = 0.3
-dc100b: drift, l = 0.1
-dc100c: drift, l = dc100[l]-dc100a[l]-dc100b[l]
+dc100b: drift, l = dc100[l]-dc100a[l]
 
 ! collimation FODO
 
@@ -268,7 +264,8 @@ dc112: drift, l = 2.545948 !0.38415+2.161798
 dc101a: drift, l = 0.214288
 dc101b: drift, l = 0.169862
 dc101c: drift, l = 0.25
-dc101d: drift, l = dc101[l]-dc101a[l]-dc101b[l]-dc101c[l]
+dc101d: drift, l = 3.30563
+dc101e: drift, l = dc101[l]-dc101a[l]-dc101b[l]-dc101c[l]-dc101d[l]
 dc104a: drift, l = 0.38415
 dc104c: drift, l = 0.1
 dc104e: drift, l = 0.613
@@ -359,25 +356,25 @@ ycc111: vkicker, type = "class-6"
 ! collimators (betatron X/Y half-apertures are 27/18 sigma for 1 um normalized
 ! emittance; default out-of-plane half-aperture is 20 mm)
 
-ce11b: rcollimator, l = ljaw, x_limit = 19.2e-3, y_limit = 20.e-3, type = "HCOLL"    !X momentum collimator
-cyc11: rcollimator, l = ljaw, y_limit = 2.7e-3, x_limit = 20.e-3, type = "VCOLL"    !Y betatron collimator
-cxc11: rcollimator, l = ljaw, x_limit = 2.7e-3, y_limit = 20.e-3, type = "HCOLL"    !X betatron collimator
-cyc12: rcollimator, l = ljaw, y_limit = 2.7e-3, x_limit = 20.e-3, type = "@4,VCOLL" !Y betatron collimator
-cxc12: rcollimator, l = ljaw, x_limit = 2.7e-3, y_limit = 20.e-3, type = "@4,HCOLL" !X betatron collimator
-cyc13: rcollimator, l = ljaw, y_limit = 2.7e-3, x_limit = 20.e-3, type = "VCOLL"    !Y betatron collimator
-cxc13: rcollimator, l = ljaw, x_limit = 2.7e-3, y_limit = 20.e-3, type = "HCOLL"    !X betatron collimator
+ce11b: rcollimator, l = ljaw, x_limit = 18.9e-3, y_limit = 20.e-3, type = "HCOLL"    !X momentum collimator
+cyc11: rcollimator, l = ljaw, y_limit = 2.8e-3, x_limit = 20.e-3, type = "VCOLL"    !Y betatron collimator
+cxc11: rcollimator, l = ljaw, x_limit = 2.8e-3, y_limit = 20.e-3, type = "HCOLL"    !X betatron collimator
+cyc12: rcollimator, l = ljaw, y_limit = 2.8e-3, x_limit = 20.e-3, type = "@4,VCOLL" !Y betatron collimator
+cxc12: rcollimator, l = ljaw, x_limit = 2.8e-3, y_limit = 20.e-3, type = "@4,HCOLL" !X betatron collimator
+cyc13: rcollimator, l = ljaw, y_limit = 2.8e-3, x_limit = 20.e-3, type = "VCOLL"    !Y betatron collimator
+cxc13: rcollimator, l = ljaw, x_limit = 2.8e-3, y_limit = 20.e-3, type = "HCOLL"    !X betatron collimator
 
 ! instruments
 
-otr11b: monitor, type = "OTR BC"       !BC1 energy spread
-ws11b: marker, type = "@3,fast"      !BC1 energy spread
-bz11b: monitor, type = "CSR"          !CSR-based relative bunch length monitor
-bzc1: monitor, type = "@2,gap/diode" !relative bunch length monitor
-im11b: marker, type = "ICT"          !Beam Current Monitor
-wsc104: marker, type = "fast"         !post-BC1 emittance
-wsc106: marker, type = "fast"         !post-BC1 emittance
-wsc108: marker, type = "fast"         !post-BC1 emittance
-wsc110: marker, type = "fast"         !post-BC1 emittance
+otr11b: monitor, type = "OTR BC"    !BC1 energy spread
+ws11b: marker, type = "@3,fast"   !BC1 energy spread
+bz11b: monitor, type = "CSR"       !CSR-based relative bunch length monitor
+im11b: marker, type = "ICT"       !Beam Current Monitor
+bzc1: monitor, type = "gap/diode" !relative bunch length monitor
+wsc104: marker, type = "fast"      !post-BC1 emittance
+wsc106: marker, type = "fast"      !post-BC1 emittance
+wsc108: marker, type = "fast"      !post-BC1 emittance
+wsc110: marker, type = "fast"      !post-BC1 emittance
 
 ! markers
 
@@ -395,21 +392,25 @@ bc1bcend: marker
 !Old split line:  BCX11_full : LINE=(BCX11a,BCX11b)
 
 bcx11_full: line = (bcx11)
+bcx11_svy: null_ele, superimpose, ref=bcx11, ref_origin=beginning, offset=bcx11a[l] !bend survey marker
 
 
 !Old split line:  BCX12_full : LINE=(BCX12a,BCX12b)
 
 bcx12_full: line = (bcx12)
+bcx12_svy: null_ele, superimpose, ref=bcx12, ref_origin=beginning, offset=bcx12a[l] !bend survey marker
 
 
 !Old split line:  BCX13_full : LINE=(BCX13a,BCX13b)
 
 bcx13_full: line = (bcx13)
+bcx13_svy: null_ele, superimpose, ref=bcx13, ref_origin=beginning, offset=bcx13a[l] !bend survey marker
 
 
 !Old split line:  BCX14_full : LINE=(BCX14a,BCX14b)
 
 bcx14_full: line = (bcx14)
+bcx14_svy: null_ele, superimpose, ref=bcx14, ref_origin=beginning, offset=bcx14a[l] !bend survey marker
 
 
 
@@ -425,18 +426,21 @@ bpm1c01[ref] = q1c01
 
 cq11b_full: line = (cq11b)
 cq11b[L] = 2*cq11b[L]
+cq11b_svy: null_ele, superimpose, ref=cq11b
 
 
 !Old split line:  SQ13B_full : LINE=(SQ13B,SQ13B)
 
 sq13b_full: line = (sq13b)
 sq13b[L] = 2*sq13b[L]
+sq13b_svy: null_ele, superimpose, ref=sq13b
 
 
 !Old split line:  CQ12B_full : LINE=(CQ12B,CQ12B)
 
 cq12b_full: line = (cq12b)
 cq12b[L] = 2*cq12b[L]
+cq12b_svy: null_ele, superimpose, ref=cq12b
 
 
 !Old split line:  QC101_full : LINE=(QC101,BPMC101,QC101)
@@ -547,7 +551,7 @@ bpmc112[ref] = qc112
 
   BC1o0 : LINE=(DC100,ENDBC1B)
 
-  BC1o : LINE=(DC100a,BZ11B,DC100b,BZC1,DC100c,ENDBC1B)
+  BC1o : LINE=(DC100a,BZ11B,DC100b,ENDBC1B)
 
   BC1 : LINE=(BC1i,BC1c,BC1o)
 
@@ -570,12 +574,12 @@ bpmc112[ref] = qc112
 !=!  ENDCOMMENT
 
  !COMMENT !complete
-    COL1 : LINE=(BEGCOL1,QC101_full,DC101a,IM11B,DC101b,XCC101,DC101c,YCC101,DC101d,QC102_full,DC102,QC103_full,DC103,
-         QC104_full,DC104a,XCC104,DC104b,RFBC104,DC104c,WSC104,DC104d,CYC11,DC104e,QC105_full,DC105a,YCC105,DC105b,CXC11,DC105c,
-         QC106_full,DC106a,XCC106,DC106b,RFBC106,DC106c,WSC106,DC106d,CYC12,DC106e,QC107_full,DC107a,YCC107,DC107b,CXC12,DC107c,
-         QC108_full,DC108a,XCC108,DC108b,RFBC108,DC108c,WSC108,DC108d,CYC13,DC108e,QC109_full,DC109a,YCC109,DC109b,CXC13,DC109c,
-         QC110_full,DC110a,XCC110,DC110b,RFBC110,DC110c,WSC110,DC110d,QC111_full,DC111a,YCC111,DC111b,QC112_full,DC112a,XCC112,
-         DC112b,ENDCOL1)
+    COL1 : LINE=(BEGCOL1,QC101_full,DC101a,IM11B,DC101b,XCC101,DC101c,YCC101,DC101d,BZC1,DC101e,QC102_full,DC102,
+         QC103_full,DC103,QC104_full,DC104a,XCC104,DC104b,RFBC104,DC104c,WSC104,DC104d,CYC11,DC104e,QC105_full,DC105a,YCC105,
+         DC105b,CXC11,DC105c,QC106_full,DC106a,XCC106,DC106b,RFBC106,DC106c,WSC106,DC106d,CYC12,DC106e,QC107_full,DC107a,YCC107,
+         DC107b,CXC12,DC107c,QC108_full,DC108a,XCC108,DC108b,RFBC108,DC108c,WSC108,DC108d,CYC13,DC108e,QC109_full,DC109a,YCC109,
+         DC109b,CXC13,DC109c,QC110_full,DC110a,XCC110,DC110b,RFBC110,DC110c,WSC110,DC110d,QC111_full,DC111a,YCC111,DC111b,
+         QC112_full,DC112a,XCC112,DC112b,ENDCOL1)
  !ENDCOMMENT
 
   C1fodo : LINE=(QFColl1,DColl1,QDColl1,QDColl1,DColl1,QFColl1)
