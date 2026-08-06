@@ -44,6 +44,12 @@ DEFAULT_PIXEL_SIZE = [10.0e-6, 10.0e-6]
 
 
 def parse_args() -> argparse.Namespace:
+	"""Parse the command line.
+
+	Every path defaults to its location in this repository, resolved relative to
+	this file rather than the working directory, so the script runs correctly from
+	anywhere in the tree.
+	"""
 	repo_root = Path(__file__).resolve().parents[2]
 	default_csv = repo_root / "bmad" / "conversion" / "from_oracle" / "lcls_elements.csv"
 	default_json_dir = repo_root / "cheetah"
@@ -97,6 +103,11 @@ class CompactJSONEncoder(json.JSONEncoder):
 	"""
 
 	def encode(self, obj, level=0):
+		"""Serialise `obj`, indenting only while `level` is below two.
+
+		Recurses through the outer object and the `elements`/`lattices` tables,
+		then falls back to `json.dumps` so each element lands on a single line.
+		"""
 		if isinstance(obj, dict) and level < 2:
 			items_indent = (level + 1) * self.indent * " "
 			items_string = ",\n".join(
@@ -251,6 +262,7 @@ def build_attributes(
 
 
 def iter_json_files(json_dir: Path) -> Iterable[Path]:
+	"""Yield the lattice files to process, sorted for reproducible output."""
 	yield from sorted(json_dir.glob("*.json"))
 
 
@@ -356,6 +368,12 @@ def update_json_file(
 
 
 def print_warning_block(title: str, names: Iterable[str]) -> None:
+	"""Print a titled, counted list of element names, or nothing if empty.
+
+	The names are always listed rather than just tallied: each block marks work
+	left undone (missing camera data, diagnostics not retyped), and a bare count
+	is too easy to read as "handled".
+	"""
 	names = list(names)
 	if not names:
 		return
@@ -366,6 +384,13 @@ def print_warning_block(title: str, names: Iterable[str]) -> None:
 
 
 def main() -> None:
+	"""Retype every lattice in `--json-dir`, then report what needs attention.
+
+	Loads the lookup tables once, updates each file in turn, and accumulates the
+	per-file reports into the three warning blocks and a summary. Raises rather
+	than writing anything if an input path is missing or the CSV yields no
+	keywords, since a silently empty lookup table would classify nothing.
+	"""
 	args = parse_args()
 
 	csv_path = args.csv_path.expanduser().resolve()
