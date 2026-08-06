@@ -11,6 +11,9 @@ corresponding Cheetah element class.
 
 Screen camera parameters come from `profmon_info.yaml`; screens missing from that
 table fall back to a 1024 px x 10 um placeholder and are reported.
+
+The new elements are written active, so the lattice reads back out of the box;
+pass `--inactive` to leave activation to the consumer.
 """
 
 from __future__ import annotations
@@ -69,6 +72,12 @@ def parse_args() -> argparse.Namespace:
 		type=Path,
 		default=default_profmon,
 		help=f"Path to profile monitor camera parameters (default: {default_profmon})",
+	)
+	parser.add_argument(
+		"--inactive",
+		dest="is_active",
+		action="store_false",
+		help="Write the new elements with is_active=false (default: true).",
 	)
 	parser.add_argument(
 		"--dry-run",
@@ -201,6 +210,7 @@ def build_attributes(
 	attributes: Dict[str, Any],
 	profmon_by_alias: Dict[str, Dict[str, Any]],
 	profmon_by_element: Dict[str, Dict[str, Any]],
+	is_active: bool = True,
 ) -> Tuple[Dict[str, Any], bool]:
 	"""Build the new attribute dict, and whether screen params were defaulted.
 
@@ -230,11 +240,11 @@ def build_attributes(
 		new_attributes["resolution"] = params["resolution"]
 		new_attributes["pixel_size"] = params["pixel_size"]
 
-	# Inactive by default, matching Cheetah and the machine: a screen is only
-	# inserted when someone asks for it, and an inactive `Screen` skips the
-	# expensive per-element image binning. Consumers flip this at runtime (e.g.
-	# via the screen's PNEUMATIC PV).
-	new_attributes["is_active"] = False
+	# Active by default so the lattice is usable as-is: an inactive `Screen`
+	# records no image and an inactive `BPM` no reading, and Cheetah's own default
+	# is `False`. Pass `--inactive` to defer activation to the consumer instead
+	# (virtual-accelerator drives this at runtime via the PNEUMATIC PV).
+	new_attributes["is_active"] = is_active
 	new_attributes["metadata"] = metadata
 
 	return new_attributes, used_defaults
@@ -249,14 +259,24 @@ def update_json_file(
 	keyword_map: Dict[str, str],
 	profmon_by_alias: Dict[str, Dict[str, Any]],
 	profmon_by_element: Dict[str, Dict[str, Any]],
+	is_active: bool = True,
 	dry_run: bool = False,
 ) -> Dict[str, Any]:
+	"""Retype one lattice file in place, returning a per-file report.
+
+	Both `Marker`s (converted) and elements already retyped by an earlier run
+	(refreshed) are rewritten, so changes to `profmon_info.yaml` or `--inactive`
+	land on a re-run without having to revert the file first. The file is only
+	written when something actually differs.
+	"""
 	with file_path.open("r", encoding="utf-8") as handle:
 		data = json.load(handle)
 
 	report: Dict[str, Any] = {
 		"screens": 0,
 		"bpms": 0,
+		"converted": 0,
+		"refreshed": 0,
 		"defaulted": [],
 		"skipped": [],
 		"missing_from_csv": [],
@@ -266,7 +286,7 @@ def update_json_file(
 	if not isinstance(elements, dict):
 		return report
 
-	updated = 0
+	changed = 0
 
 	for element_name, element_def in elements.items():
 		if not isinstance(element_name, str):
@@ -284,14 +304,13 @@ def update_json_file(
 			continue
 
 		current_class = element_def[0]
-		if current_class != "Marker":
-			if current_class != target_class:
-				# Notably the undulator RF BPMs, which are Drifts of finite
-				# length. Cheetah's BPM is zero-length, so retyping them would
-				# shorten the lattice.
-				report["skipped"].append(
-					f"{element_name} ({current_class} -> {target_class})"
-				)
+		if current_class not in ("Marker", target_class):
+			# Notably the undulator RF BPMs, which are Drifts of finite length.
+			# Cheetah's BPM is zero-length, so retyping them would shorten the
+			# lattice.
+			report["skipped"].append(
+				f"{element_name} ({current_class} -> {target_class})"
+			)
 			continue
 
 		if element_name.upper() not in keyword_map:
@@ -303,11 +322,22 @@ def update_json_file(
 			attributes,
 			profmon_by_alias,
 			profmon_by_element,
+			is_active=is_active,
 		)
+
+		# A `Screen`/`BPM` from an earlier run is rebuilt rather than skipped, so
+		# edits to `profmon_info.yaml` or `--inactive` take effect on a re-run.
+		# Rebuilding is still a no-op when nothing changed, keeping this
+		# idempotent.
+		if element_def[0] != target_class or element_def[1] != new_attributes:
+			changed += 1
+			if current_class == "Marker":
+				report["converted"] += 1
+			else:
+				report["refreshed"] += 1
 
 		element_def[0] = target_class
 		element_def[1] = new_attributes
-		updated += 1
 
 		if target_class == "Screen":
 			report["screens"] += 1
@@ -316,7 +346,7 @@ def update_json_file(
 		else:
 			report["bpms"] += 1
 
-	if updated and not dry_run:
+	if changed and not dry_run:
 		# Match cheetah's own output format exactly: first two levels indented,
 		# no trailing newline.
 		with file_path.open("w", encoding="utf-8") as handle:
@@ -359,7 +389,7 @@ def main() -> None:
 	if not json_files:
 		raise RuntimeError(f"No JSON files found in {json_dir}")
 
-	totals = {"screens": 0, "bpms": 0}
+	totals = {"screens": 0, "bpms": 0, "converted": 0, "refreshed": 0}
 	defaulted: list[str] = []
 	skipped: list[str] = []
 	missing_from_csv: list[str] = []
@@ -370,18 +400,20 @@ def main() -> None:
 			keyword_map,
 			profmon_by_alias,
 			profmon_by_element,
+			is_active=args.is_active,
 			dry_run=args.dry_run,
 		)
-		totals["screens"] += report["screens"]
-		totals["bpms"] += report["bpms"]
+		for key in totals:
+			totals[key] += report[key]
 		defaulted += [f"{json_file.name}: {name}" for name in report["defaulted"]]
 		skipped += [f"{json_file.name}: {name}" for name in report["skipped"]]
 		missing_from_csv += [
 			f"{json_file.name}: {name}" for name in report["missing_from_csv"]
 		]
 		print(
-			f"{json_file.name}: screens={report['screens']}, bpms={report['bpms']}, "
-			f"skipped={len(report['skipped'])}"
+			f"{json_file.name}: screens={report['screens']}, bpms={report['bpms']} "
+			f"(converted={report['converted']}, refreshed={report['refreshed']}, "
+			f"skipped={len(report['skipped'])})"
 		)
 
 	print_warning_block(
@@ -390,8 +422,8 @@ def main() -> None:
 		defaulted,
 	)
 	print_warning_block(
-		"diagnostics left untouched because they are not Markers "
-		"(retyping would change the lattice length)",
+		"diagnostics left untouched because they are neither Markers nor already "
+		"the target class (retyping would change the lattice length)",
 		skipped,
 	)
 	print_warning_block(
@@ -402,7 +434,9 @@ def main() -> None:
 	mode = "dry-run" if args.dry_run else "write"
 	print(
 		f"\nDone ({mode}). files={len(json_files)}, "
-		f"screens={totals['screens']}, bpms={totals['bpms']}"
+		f"screens={totals['screens']}, bpms={totals['bpms']}, "
+		f"changed={totals['converted'] + totals['refreshed']} "
+		f"(converted={totals['converted']}, refreshed={totals['refreshed']})"
 	)
 
 
