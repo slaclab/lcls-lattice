@@ -6,6 +6,8 @@
 ! ==============================================================================
 ! Modification History
 ! ------------------------------------------------------------------------------
+! 10-AUG-2026, M. Woodley
+!  * KSXU = 7.2, PIPSSX = 4400 T^2mm^3 per H.-D. Nuhn
 ! 07-JUN-2026, M. Woodley
 !  * replace short-period undulators with long-period undulators in SXR cells
 !    43-47 per G. Kraft
@@ -334,7 +336,7 @@
   LSXUCR  := luSXU*NpSXU                      !m
   LSXUe   := (LDUSEGS-LSXUCR)/2               !m
   LSXUh   := LSXUCR/2
-  KSXU    := 4.5 !8.3
+  KSXU    := 7.2 !4.5 !8.3
   kQSX    := (KSXU*2*pi/luSXU/sqrt(2)/gamu)^2 !m^-2
 
   UMASXh : MATR, TYPE="VGHPU56", L=LSXUh,        &
@@ -365,7 +367,7 @@
   LPSSX  := 0.1073                                     !m
   luPSSX := 0.0975                                     !m
   LPSSXh := LPSSX/2
-  PIPSSX := 1800 !5700                                 !T^2mm^3
+  PIPSSX := 4400 !1800 !5700                           !T^2mm^3
   KPSSX  := 1.E-9*CLIGHT/mc2*SQRT(2.E-9*PIPSSX/luPSSX)
   kQPSSX := (KPSSX*2*pi/luPSSX/sqrt(2)/gamu)^2         !m^-2
 
@@ -398,7 +400,7 @@
   GQDSX  := -IntgSX/LQu/10*1.0           !T/m
   kQFSX  :=  1.E-9*GQFSX*CLIGHT/gamu/mc2 !m^-2
   kQDSX  :=  1.E-9*GQDSX*CLIGHT/gamu/mc2 !m^-2
-  kQSX47 := -1.512437698294              !-1.843482712046 !Yuri (E=8.0, K=5.48)
+  kQSX47 := -1.516536097337              !-1.843482712046 !Yuri (E=8.0, K=5.48)
 
   QSXh16 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFSX,  APER=rQu
   QSXh17 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDSX,  APER=rQu
@@ -1287,7 +1289,7 @@
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-  KQUE1B :=  0.321326012468 ! 0.325725075565 !Yuri (E=8.0, K=5.48)
+  KQUE1B :=  0.321387608763 ! 0.325725075565 !Yuri (E=8.0, K=5.48)
   KQUE2B := -0.144356640751 !Yuri (E=8.0, K=5.48)
 
   QUE1B : QUAD, TYPE="2Q10", L=LQR/2, K1=KQUE1b, APER=rQR
@@ -2534,7 +2536,7 @@
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-  KQUE1 :=  0.168949125095 ! 0.169109252491 !Yuri (E=8.0, K=2.0)
+  KQUE1 :=  0.168949125104 ! 0.169109252491 !Yuri (E=8.0, K=2.0)
   KQUE2 := -0.137840816238 !Yuri (E=8.0, K=2.0)
 
   QUE1 : QUAD, TYPE="3.25Q20", L=LQD/2, K1=KQUE1, APER=rQD

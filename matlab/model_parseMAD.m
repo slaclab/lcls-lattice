@@ -420,6 +420,7 @@ if (strcmp(nOut,'LCLS2sc'))
     '% Additional beam lines that correspond to planned AD_ACCEL_HE'; ...
     '% beampaths originating in the new Low Emittance Injector (LEI):'; ...
     '%'; ...
+    '%  beamLine.SC_DIAGIS = gunLEI to DIAGIS beam dump'; ...
     '%  beamLine.SC_DIAG02 = gunLEI to DIAG0 FARC'; ...
     '%  beamLine.SC_HXR2   = gunLEI to HXR beam dump'; ...
     '%  beamLine.SC_SXR2   = gunLEI to SXR beam dump'; ...
@@ -428,6 +429,7 @@ if (strcmp(nOut,'LCLS2sc'))
     '%'; ...
     '% Additional beam lines used for comparison with MAD (starting at BEAM0LEI, at 75 MeV):'; ...
     '%'; ...
+    '%  beamLine.SC_DIAGISI = BEAM0LEI to DIAGIS beam dump'; ...
     '%  beamLine.SC_DIAG02I = BEAM0LEI to DIAG0 FARC'; ...
     '%  beamLine.SC_HXR2I   = BEAM0LEI to HXR beam dump'; ...
     '%  beamLine.SC_SXR2I   = BEAM0LEI to SXR beam dump'; ...
@@ -501,10 +503,15 @@ lines=[lines(1);htxt;lines(2:end)];
 
 % Write Matlab script.
 fid=fopen(['model_beamLine',nOut,'.m'],'w');
-fprintf(fid,'%s\n',lines{:});
+for nl=1:length(lines)
+  if (~isempty(lines{nl}))
+    fprintf(fid,'%s\n',lines{nl});
+  end
+end
 
 % Write Matlab subfunctions.
 fmt='for n=find(strcmp(''%s'',b(:,2)))'',b{n,4}(1)=%s;end\n';
+fmt2='for n=find(strncmp(''%s'',b(:,2),6))'',b{n,4}(2)=%s*b{n,3};end\n';
 for nf=1:nsub
   fprintf(fid,'function b=%s(b)\n',sub(nf).name);
   for ns=1:size(sub(nf).set,1)
@@ -516,6 +523,24 @@ for nf=1:nsub
       qname=lines{id(nl)}(1:jd(1)-1);
       fprintf(fid,fmt,qname,pval);
     end
+  end
+  if (strcmp(sub(nf).name,'SETK2SCLEI'))
+  % LEI injection energy is 100 MeV; BC1 energy is same as LCLS-II
+  % LEI runs laser heater at fundamental
+    ns1=find(strcmp(sub(nf).set(:,1),'EILEI'));
+    EiLEI=str2num(sub(nf).set{ns1,2});
+    ns2=find(strcmp(sub(nf).set(:,1),'LHHNUM'));
+    LHhnum=str2num(sub(nf).set{ns2,2});
+    ns3=find(strcmp(sub(nf).set(:,1),'SETUMHTR'));
+    SETUMHTR=str2num(sub(nf).set{ns3,2});
+    KQLH=LEIfun(EiLEI,LHhnum,SETUMHTR);
+    fprintf(fid,fmt,'UMHTR',madval(KQLH));
+    ns4=find(strcmp(sub(nf).set(:,1),'AMPLL1'));
+    AmplL1=str2num(sub(nf).set{ns4,2});
+    ns5=find(strcmp(sub(nf).set(:,1),'FRACL1'));
+    FracL1=str2num(sub(nf).set{ns5,2});
+    fprintf(fid,fmt2,'CAVL02',madval(FracL1*AmplL1));
+    fprintf(fid,fmt2,'CAVL03',madval(FracL1*AmplL1));
   end
   fprintf(fid,'\n');
 end
@@ -999,3 +1024,18 @@ if (true)
   name=out.name;
   fprintf('Deferred item %s keyword (%s) changed to %s\n',name,keyw,out.items{1,1})
 end
+
+%-------------------------------------------------------------------------------
+
+function KQLH=LEIfun(Ei,LHhnum,SETUMHTR)
+% compute UMHTR vertical focusing term from beam energy (Ei)
+% and laser harmonic number (LHhnum); SETUMHTR turns UMHTR
+% ON (=1) or OFF (=0)
+EMASS=0.51099906e-3;
+LAM=0.054;
+LAMR=LHhnum*1030E-9;
+GAMI=Ei/EMASS;
+K_UND=SETUMHTR*sqrt(2*(LAMR*2*GAMI^2/LAM-1));
+LHUN=9*LAM;
+LHUNH=LHUN/2;
+KQLH=(K_UND*2*pi/LAM/sqrt(2)/GAMI)^2;

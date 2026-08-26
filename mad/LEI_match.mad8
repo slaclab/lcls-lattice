@@ -1,0 +1,683 @@
+
+! *** OPTICS=AD_ACCEL-preRelease ***
+
+! LEI matching routines
+
+! ==============================================================================
+! LEI matching
+! ------------------------------------------------------------------------------
+
+  KmaxQM30 := 4.4/(Cb*EiLEI*LQM) !2Q4 @ 30 A @ EiLEI
+  KmaxQM45 := 6.7/(Cb*EiLEI*LQM) !2Q4 @ 45 A @ EiLEI
+  KmaxSbi  := 870/(Cb*EiLEI*LSb) !1.38S3.00 @ 8 A @ EiLEI
+  KmaxQxi  :=  20/(Cb*EiLEI*LQx) !1.26Q3.5 @ 12 A @ EiLEI
+  KmaxQx1  :=  20/(Cb*E1*LQx)    !1.26Q3.5 @ 12 A @ E1
+
+  MUXTCXI := 1.75 !TCAV-OTR phase advance (see MDGITCAV)
+  BETAmax := 19
+
+  TWL0 : BETA0
+  TWL1 : BETA0
+  TWL2 : BETA0
+  TWL3 : BETA0
+  TWL4 : BETA0
+
+! ------------------------------------------------------------------------------
+! Note: SETK2scLEI.xsif and SETK2scDGI.xsif use parameter redefinition, which
+!       is not allowed within a SUBROUTINE by MAD8. Use the SUBROUTINE's below,
+!       which use SET commands, when matching ... copy final matched values to
+!       xsif-files.
+! ------------------------------------------------------------------------------
+
+! match LEI injector including QCM00 (see SETQCM00on.xsif)
+
+  SETQCM00on : SUBROUTINE
+    SET, KQCM00, -0.181780595175 !-0.096418085974
+    SET, KQ0D01,  3.38547689126  ! 3.350222028856
+    SET, KQ0D02, -5.165231008041 !-5.365790388228
+    SET, KQ0D03,  4.849873864853 ! 4.845188163561
+    SET, KQ0D04, -2.869854448548 !-2.436983172854
+  ENDSUBROUTINE
+
+! LEI configuration
+
+  SETK2scLEI : SUBROUTINE
+
+  ! SC linac settings when using LEI injector ... copy to:
+  ! - LCLS2sc_main.mad8 (SUBROUTINE SETK2scLEI)
+  ! - SETK2scLEI.xsif
+
+    SET, FracL1,    FracL1LEI
+    SET, LHhnum,    1         !laser heater fundamental mode
+
+   !                   UMHTR ON         UMHTR OFF      
+   !               ---------------  ---------------   
+    SET, SETUMHTR,  1              ! 0              !
+    SET, KQ0H03,   -4.754857248208 !-3.023052541903 !bipolar
+    SET, KQ0H04,    7.113623333365 ! 5.799805804686 !bipolar
+    SET, KQ0H05,   -6.117202765633 !-6.930388057019 !unipolar	   
+    SET, KQ0H06,    4.605752623658 ! 5.724198707997 !unipolar	   
+    SET, KQ0H07,    0.0            ! 0.0            !unipolar
+    SET, KQ0H08,    0.0            !-0.469343973542 !unipolar
+    SET, KQHD01,   -7.839207637931 !-7.62179378039  !unipolar
+    SET, KQHD02,    6.258786905967 ! 6.185719257174 !unipolar
+    SET, KQHD03,   -8.442674031616 !-8.678441968602 !unipolar	   
+    SET, KQHD04,    6.291805905237 ! 6.42472278448  !unipolar	   
+
+    SET, KQC001,     5.135316216267
+    SET, KQC002,     0.0
+    SET, KQC003,    -5.295950233164
+    SET, KQC004,     2.772436086443
+    SET, KQC005,    -1.796082150953
+    SET, KQC006,     1.787850470726
+    SET, KQC010,     0.987514700504
+    SET, KQC011,    -1.053290699665
+    SET, KQC012,     0.942494093077
+    SET, QCM02[K1], -0.279246235301
+    SET, QCM03[K1],  0.210633853799
+    SET, KQ1C01,     0.968114221634
+    SET, KQC101,    -0.298061299029
+    SET, KQC102,     2.062613606573
+    SET, KQC103,     0.0
+    SET, KQC104,    -0.885420825349
+    SET, KQC105,    -1.721309564943
+
+    SET, KQL1P,     0.544259695512
+    SET, KQL2P,    -0.329072008578
+    SET, KQL3P,     0.63112633244
+    SET, KQL4P,    -0.067161651898
+  ENDSUBROUTINE,
+
+  SETK2scDGI : SUBROUTINE
+
+  ! LEI diagnostic line quad settings for MTCXDGI/OTRDGI1 dMUX=1.75*2pi ... copy to:
+  ! - LCLS2sc_main.mad8 (SUBROUTINE SETK2scDGI)
+  ! - SETK2scDGI.xsif
+
+    SET, KQDGI01,  18.218162060454 ! 18.323921222247
+    SET, KQDGI02, -23.301770754883 !-23.117802905395
+    SET, KQDGI03,  31.28953705025  ! 30.893754736678
+    SET, KQDGI04, -22.958380549844 !-23.486545514224
+    SET, KQDGI05,  13.273801633113 ! 13.332818190192
+    SET, KQDGI08, -13.112146515247 !-13.08267586869 
+  ENDSUBROUTINE
+
+! ==============================================================================
+
+  ML0LEIE : SUBROUTINE !match LEI injection energy
+    BEAM, ENERGY=E0LEI
+    USE, (GUNLEI,L0LEI)
+    VALUE, fG00
+    MATCH, BETX=1, BETY=1
+      VARY, fG00, STEP=1.E-6
+      WEIGHT, ENERGY=1
+      CONSTR, ENDL0LEI, ENERGY=EiLEI
+     !LMDIF, TOL=1.E-20, CALLS=10000
+     !MIGRAD, TOL=1.E-20, CALLS=10000
+    ENDMATCH
+    VALUE, fG00
+    SAVEBETA, TWL0, ENDL0LEI
+    TWISS, COUPLE, BETX=1, BETY=1, SAVE, TAPE="twiss.tape"
+    VALUE, TWL0[ENERGY]
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
+      STYLE=100, -SPLINE, FILE="match"
+  ENDSUBROUTINE
+
+! ------------------------------------------------------------------------------
+
+  MTWSS0LEIi : SUBROUTINE !match LEI gun Twiss to BEAM0LEI
+    BEAM, ENERGY=E0LEI
+    USE, (GUNLEI,L0LEI)
+    VALUE, BX0LEI,AX0LEI,BY0LEI,AY0LEI
+    MATCH, BETA0=TWSS0LEI
+      VARY, BX0LEI, STEP=1.E-6, LOWER=0
+      VARY, AX0LEI, STEP=1.E-6
+      VARY, BY0LEI, STEP=1.E-6, LOWER=0
+      VARY, AY0LEI, STEP=1.E-6
+      CONSTR, BEAM0LEI, BETX=BXiLEI, ALFX=AXiLEI, BETY=BYiLEI, ALFY=AYiLEI
+     !LMDIF, TOL=1.E-20, CALLS=10000
+     !MIGRAD, TOL=1.E-20, CALLS=10000
+    ENDMATCH
+    VALUE, BX0LEI,AX0LEI,BY0LEI,AY0LEI
+    SAVEBETA, TWi, BEAM0LEI
+    TWISS, COUPLE, BETA0=TWSS0LEI, TAPE="twiss.tape"
+    SHOW, TWi
+  ENDSUBROUTINE
+
+! ------------------------------------------------------------------------------
+
+  ML1LEIE : SUBROUTINE !match BC1 energy
+    BEAM, ENERGY=E0LEI
+    USE, SC_BSYD2
+    VALUE, FracL1
+    MATCH, BETA0=TWSS0LEI
+      VARY, FracL1, STEP=1.E-6
+      WEIGHT, ENERGY=1
+      CONSTR, ENDL1B, ENERGY=E1
+     !LMDIF, TOL=1.E-20, CALLS=10000
+     !MIGRAD, TOL=1.E-20, CALLS=10000
+    ENDMATCH
+    VALUE, FracL1
+    SAVEBETA, TWL0, ENDL0LEI
+    SAVEBETA, TWL1, ENDL1B
+    SAVEBETA, TWL2, ENDL2B
+    SAVEBETA, TWL3, ENDL3B
+    SAVEBETA, TWL4, ENDL4B
+    TWISS, COUPLE, BETA0=TWSS0LEI, SAVE, TAPE="twiss.tape"
+    VALUE, TWL0[ENERGY],EiLEI
+    VALUE, TWL1[ENERGY],E1
+    VALUE, TWL2[ENERGY],E2
+    VALUE, TWL3[ENERGY],E3
+    VALUE, TWL4[ENERGY],Ef
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=ENERGY, &
+      STYLE=100, -SPLINE, FILE="match"
+  ENDSUBROUTINE
+
+! ------------------------------------------------------------------------------
+
+  MGEODLI : SUBROUTINE !match LEI dogleg geometry
+    BEAM, ENERGY=E0LEI
+    USE, SC_DIAG02
+    VALUE, ABXDLI*DEGRAD,ABXDLIR*DEGRAD
+    VALUE, dLmdw,DDLI3[L],DDLI4[L]
+    MATCH, SURVEY, XS=Xgun2, YS=Ygun2, ZS=Zgun2
+      VARY, ABXDLI,  STEP=1.E-6
+      VARY, ABXDLIR, STEP=1.E-6
+     !VARY, dLmdw,   STEP=1.E-6
+      WEIGHT, XS=1, ZS=1, THETAS=1
+      CONSTR, CNTDLI, THETAS=CNTA
+      CONSTR, ENDLEI_2, XS=Xgun, ZS=12.894088
+     !LMDIF, TOL=1.E-20, CALLS=10000
+     !MIGRAD, TOL=1.E-20, CALLS=10000
+    ENDMATCH
+    VALUE, ABXDLI*DEGRAD,ABXDLIR*DEGRAD
+    VALUE, dLmdw,DDLI3[L],DDLI4[L]
+    PRINT, LEI_2
+    SURVEY, X0=Xgun2, Y0=Ygun2, Z0=Zgun2, TAPE="survey.tape"
+  ENDSUBROUTINE
+
+! ------------------------------------------------------------------------------
+
+  MDXR56DLI : SUBROUTINE !match LEI dogleg 1st order dispersion and R56
+    BEAM, ENERGY=EiLEI
+    USE, LEI_2
+    VALUE, KQDLI1,KQDLI2,KQDLI3
+    MATCH, BETX=1, BETY=1
+      VARY, KQDLI1, STEP=1.E-6, LOWER=0, UPPER=+KmaxQxi
+      VARY, KQDLI2, STEP=1.E-6, UPPER=0, LOWER=-KmaxQxi
+      VARY, KQDLI3, STEP=1.E-6, LOWER=0, UPPER=+KmaxQxi
+      CONSTR, CNTDLI, DX=0
+      CONSTR, #E, DX=0, DPX=0
+      RMATRIX, #S/#E, RM(5,6)=R56DLI
+     !LMDIF, TOL=1.E-20, CALLS=10000
+     !MIGRAD, TOL=1.E-20, CALLS=10000
+    ENDMATCH
+    VALUE, KQDLI1,KQDLI2,KQDLI3
+    MATCH, BETX=1, BETY=1
+      WEIGHT, I2=1, I5=1, I5I2=1
+      TMATRIX, #S/#E, TM(6,6,6)=0
+      RMATRIX, #S/#E, RM(6,6)=1
+    ENDMATCH
+    PRINT, FULL
+    TWISS, SAVE, BETX=1, BETY=1, TAPE="twiss.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      STYLE=100, SPLINE, FILE="match", &
+      TITLE="LEI four-bend dogleg layout"
+    BEAM, ENERGY=E0
+    USE, SC_DIAG02
+    PRINT, LEI_2
+    SURVEY, X0=Xgun2, Y0=Ygun2, Z0=Zgun2, TAPE="survey.tape"
+  ENDSUBROUTINE
+
+! ------------------------------------------------------------------------------
+
+  MBXBYDLI : SUBROUTINE !match LEI dogleg betas
+    BEAM, ENERGY=EiLEI
+    USE, LEI_2
+    VALUE, BXDLI,AXDLI,BYDLI,AYDLI
+    MATCH, BETX=BXDLI, ALFX=AXDLI, BETY=BYDLI, ALFY=AYDLI
+      VARY, BXDLI, STEP=1.E-6
+      VARY, AXDLI, STEP=1.E-6
+      VARY, BYDLI, STEP=1.E-6
+      VARY, AYDLI, STEP=1.E-6
+      CONSTR, CNTDLI, ALFX=0, ALFY=0
+      CONSTR, ENDLEI_2, BETX=BXDLI, ALFX=-AXDLI, BETY=BYDLI, ALFY=-AYDLI
+      WEIGHT, BETX=1.E-3, BETY=1.E-3
+      CONSTR, QDLI1[1], BETX<BETAmax, BETY<BETAmax
+      CONSTR, QDLI2[1], BETX<BETAmax, BETY<BETAmax
+      CONSTR, QDLI3[1], BETX<BETAmax, BETY<BETAmax
+      CONSTR, QDLI4[1], BETX<BETAmax, BETY<BETAmax
+      CONSTR, QDLI5[1], BETX<BETAmax, BETY<BETAmax
+      CONSTR, QDLI6[1], BETX<BETAmax, BETY<BETAmax
+     !LMDIF, TOL=1.E-20, CALLS=10000
+     !MIGRAD, TOL=1.E-20, CALLS=10000
+    ENDMATCH
+    VALUE, BXDLI,AXDLI,BYDLI,AYDLI
+    PRINT, FULL
+    TWISS, SAVE, BETX=BXDLI, ALFX=AXDLI, BETY=BYDLI, ALFY=AYDLI, &
+      TAPE="twiss.tape", RTAPE="rmat.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, FILE="match", &
+      TITLE="LEI four-bend dogleg layout"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      STYLE=100, SPLINE, FILE="match", &
+      TITLE="LEI four-bend dogleg layout"
+    BEAM, ENERGY=E0
+    USE, SC_DIAG02
+    PRINT, LEI_2
+    SURVEY, X0=Xgun2, Y0=Ygun2, Z0=Zgun2, TAPE="survey.tape"
+  ENDSUBROUTINE
+
+! ------------------------------------------------------------------------------
+
+  MDDXDLI : SUBROUTINE !match LEI dogleg 2nd order dispersion
+    BEAM, ENERGY=EiLEI
+    USE, LEI_2
+    VALUE, KSDLI
+    MATCH, BETX=BXDLI, ALFX=AXDLI, BETY=BYDLI, ALFY=AYDLI
+      VARY, KSDLI, STEP=1.E-6, LOWER=0, UPPER=+KmaxSbi
+      WEIGHT, DDX=1, DDPX=10
+      CONSTR, #E, DDX=0, DDPX=0
+     !LMDIF, TOL=1.E-20, CALLS=10000
+     !MIGRAD, TOL=1.E-20, CALLS=10000
+    ENDMATCH
+    VALUE, KSDLI,KmaxSbi
+    USE, LEI_2_plot
+    PRINT, FULL
+    TWISS, CHROM, SAVE, BETX=BXDLI, ALFX=AXDLI, BETY=BYDLI, ALFY=AYDLI
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, FILE="match", &
+      TITLE="LEI four-bend dogleg layout"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      STYLE=100, SPLINE, FILE="match", &
+      TITLE="LEI four-bend dogleg layout"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DDX,DDY, &
+      STYLE=100, SPLINE, FILE="match", VMIN=-1, VMAX=1, &
+      TITLE="LEI four-bend dogleg"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=WX,WY, &
+      STYLE=100, -SPLINE, FILE="match", &
+      TITLE="LEI four-bend dogleg layout"
+  ENDSUBROUTINE
+
+! ------------------------------------------------------------------------------
+
+  ML0LEIDLI : SUBROUTINE !match from LEI CM00 to LEI dogleg
+   !SETQCM00on
+    BEAM, ENERGY=EiLEI
+    USE, SC_DIAG02i
+    VALUE, KQCM00
+    VALUE, KQ0D01,KQ0D02,KQ0D03,KQ0D04
+    MATCH, BETA0=TWSSiLEI
+     !VARY, KQCM00, STEP=1.E-6                                   !bipolar
+      VARY, KQ0D01, STEP=1.E-6, LOWER=-KmaxQM30, UPPER=+KmaxQM30 !bipolar
+      VARY, KQ0D02, STEP=1.E-6, LOWER=-KmaxQM30, UPPER=+KmaxQM30 !bipolar
+      VARY, KQ0D03, STEP=1.E-6, LOWER=-KmaxQM30, UPPER=+KmaxQM30 !bipolar
+      VARY, KQ0D04, STEP=1.E-6, LOWER=-KmaxQM30, UPPER=+KmaxQM30 !bipolar
+     !WEIGHT, BETX=1.E-6, BETY=1.E-6
+     !CONSTR, Q0D01[1], BETX<32
+     !CONSTR, Q0D02[1], BETY<32
+     !CONSTR, Q0D03[1], BETX<32
+     !CONSTR, Q0D04[1], BETY<32
+      CONSTR, ENDLEI_1, BETX=BXDLI, ALFX=AXDLI, BETY=BYDLI, ALFY=AYDLI
+     !LMDIF, TOL=1.E-20, CALLS=10000
+     !MIGRAD, TOL=1.E-20, CALLS=10000
+    ENDMATCH
+    VALUE, KQCM00
+    VALUE, KQ0D01,KQ0D02,KQ0D03,KQ0D04
+    PRINT, #S/ENDLEI_2
+    TWISS, BETA0=TWSSiLEI, SAVE, TAPE="twiss.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=#S/ENDLEI_2, FILE="match", &
+      TITLE="LEI to LCLS-II"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=LEI_2, FILE="match", &
+      TITLE="LEI four-bend dogleg layout"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      STYLE=100, -SPLINE, RANGE=LEI_2, FILE="match", &
+      TITLE="LEI four-bend dogleg"
+  ENDSUBROUTINE
+
+! ------------------------------------------------------------------------------
+
+  MDLIHTR : SUBROUTINE !match from LEI dogleg to LEI laser heater
+    SETK2scLEI
+    BEAM, ENERGY=EiLEI
+    USE, SC_DIAG02i
+    VALUE, SETUMHTR,LHhnum
+    VALUE, KQ0H03,KQ0H04,KQ0H05,KQ0H06,KQ0H07,KQ0H08
+    MATCH, BETA0=TWSSiLEI
+      VARY, KQ0H03, STEP=1.E-6, LOWER=-KmaxQM30, UPPER=+KmaxQM30 !bipolar
+      VARY, KQ0H04, STEP=1.E-6, LOWER=-KmaxQM30, UPPER=+KmaxQM30 !bipolar
+      VARY, KQ0H05, STEP=1.E-6, LOWER=-KmaxQM30, UPPER=0         !unipolar
+      VARY, KQ0H06, STEP=1.E-6, UPPER=+KmaxQM30, LOWER=0         !unipolar
+     !VARY, KQ0H07, STEP=1.E-6, UPPER=+KmaxQM45, LOWER=0         !unipolar
+     !VARY, KQ0H08, STEP=1.E-6, LOWER=-KmaxQM45, UPPER=0         !unipolar
+      CONSTR, HTRUNDB, BETX=BXlhLEI, ALFX=AXlhLEI, BETY=BYlhLEI, ALFY=AYlhLEI
+      CONSTR, Q0H05[1], BETX<30, BETY<30
+      CONSTR, Q0H06[1], BETX<30, BETY<30
+      CONSTR, Q0H07[1], BETX<30, BETY<30
+      CONSTR, Q0H08[1], BETX<30, BETY<30
+     !LMDIF, TOL=1.E-20, CALLS=10000
+     !MIGRAD, TOL=1.E-20, CALLS=10000
+    ENDMATCH
+    VALUE, KQ0H03,KQ0H04,KQ0H05,KQ0H06,KQ0H07,KQ0H08
+    PRINT, FULL
+    TWISS, BETA0=TWSSiLEI, SAVE, TAPE="twiss.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, FILE="match", RANGE=#S/RFBHD00, &
+      TITLE="LEI to LCLS-II"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      STYLE=100, -SPLINE, FILE="match", RANGE=#S/RFBHD00, &
+      TITLE="LEI to LCLS-II"
+  ENDSUBROUTINE
+
+! ------------------------------------------------------------------------------
+
+  MLHD0LEI : SUBROUTINE !match from LEI laser heater to DIAG0
+    SETK2scLEI
+    BEAM, ENERGY=EiLEI
+    USE, SC_DIAG02i
+    VALUE, SETUMHTR,LHhnum
+    VALUE, KQHD01,KQHD02,KQHD03,KQHD04
+    MATCH, BETA0=TWSSiLEI
+      VARY, KQHD01, STEP=1.E-6, LOWER=-KmaxQM45, UPPER=0 !unipolar
+      VARY, KQHD02, STEP=1.E-6, UPPER=+KmaxQM45, LOWER=0 !unipolar
+      VARY, KQHD03, STEP=1.E-6, LOWER=-KmaxQM45, UPPER=0 !unipolar
+      VARY, KQHD04, STEP=1.E-6, UPPER=+KmaxQM45, LOWER=0 !unipolar
+      CONSTR, OTRDG02, BETX=BMINDG0, ALFX=0, BETY=BMINDG0, ALFY=0
+     !WEIGHT, BETX=1.E-3, BETY=1.E-3
+     !CONSTR, QHD01[1], BETX<50, BETY<50
+     !CONSTR, QHD02[1], BETX<50, BETY<50
+     !CONSTR, QHD03[1], BETX<55, BETY<55
+     !CONSTR, QHD04[1], BETX<50, BETY<50
+     !LMDIF, TOL=1.E-20, CALLS=10000
+     !MIGRAD, TOL=1.E-20, CALLS=10000
+    ENDMATCH
+    VALUE, KQHD01,KQHD02,KQHD03,KQHD04
+    PRINT, FULL
+    TWISS, BETA0=TWSSiLEI, SAVE, TAPE="twiss.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, FILE="match"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      STYLE=100, -SPLINE, FILE="match"
+    BEAM, ENERGY=E0LEI
+    USE, SC_DIAG02
+    SURVEY, X0=Xgun2, Y0=Ygun2, Z0=Zgun2, TAPE="survey.tape"
+  ENDSUBROUTINE
+
+! ------------------------------------------------------------------------------
+
+  MD0COL0LEI : SUBROUTINE
+    SETK2scLEI
+    BEAM, ENERGY=EiLEI
+    USE, SC_BSYD2i
+    VALUE, KQC001,KQC002,KQC003,KQC004,KQC005,KQC006
+    MATCH, BETA0=TWSSiLEI
+      VARY, KQC001, STEP=1.E-6, LOWER=-KmaxQxi, UPPER=+KmaxQxi
+     !VARY, KQC002, STEP=1.E-6, LOWER=-KmaxQxi, UPPER=+KmaxQxi
+      VARY, KQC003, STEP=1.E-6, LOWER=-KmaxQxi, UPPER=+KmaxQxi
+      VARY, KQC004, STEP=1.E-6, LOWER=-KmaxQxi, UPPER=+KmaxQxi
+      VARY, KQC005, STEP=1.E-6, LOWER=-KmaxQxi, UPPER=+KmaxQxi
+     !VARY, KQC006, STEP=1.E-6, LOWER=-KmaxQxi, UPPER=+KmaxQxi
+     !CONSTR, QC002[1], BETX<45
+     !CONSTR, QC003[1], BETY<30
+     !CONSTR, QC004[1], BETX<35
+      WEIGHT, DX=0, DPX=0, DY=0, DPY=0
+      CONSTR, QC007[1], LINE=C0fodoD
+      CONSTR, #E, X=0, PX=0, Y=0, PY=0
+     !LMDIF, TOL=1.E-20, CALLS=10000
+     !MIGRAD, TOL=1.E-20, CALLS=10000
+    ENDMATCH
+    VALUE, KQC001,KQC002,KQC003,KQC004,KQC005,KQC006
+   !PRINT, FULL
+    TWISS, COUPLE, BETA0=TWSSiLEI, SAVE, TAPE="twiss.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, FILE="match", RANGE=#S/ENDCOL0
+  ENDSUBROUTINE
+
+! ------------------------------------------------------------------------------
+
+  MCOL0COL1LEI : SUBROUTINE
+    SETK2scLEI
+    BEAM, ENERGY=EiLEI
+    USE, SC_BSYD2i
+    VALUE, KQC010,KQC011,KQC012,QCM02[K1],QCM03[K1],KQ1C01
+    VALUE, KQC101,KQC102,KQC103,KQC104,KQC105
+    MATCH, BETA0=TWSSiLEI
+      VARY, KQC010,    STEP=1.E-6, LOWER=-KmaxQxi, UPPER=+KmaxQxi
+      VARY, KQC011,    STEP=1.E-6, LOWER=-KmaxQxi, UPPER=+KmaxQxi
+      VARY, KQC012,    STEP=1.E-6, LOWER=-KmaxQxi, UPPER=+KmaxQxi
+      VARY, QCM02[K1], STEP=1.E-6, UPPER=0
+      VARY, QCM03[K1], STEP=1.E-6, LOWER=0
+      VARY, KQ1C01,    STEP=1.E-6, LOWER=-KmaxQx1, UPPER=+KmaxQx1
+      CONSTR, QCM02[1], BETY=70
+      CONSTR, QCM03[1], BETX=70
+      CONSTR, BCX13B,   BETY<65
+      CONSTR, BCX14A,   BETX=1.75,  ALFX=0
+     !CONSTR, BCX14B,   BETX=2.679, ALFX=1.549 !P. Emma, 01-Apr-2016
+     !CONSTR, BC1BcEND,  BETY<65
+      CONSTR, #E, X=0, PX=0, Y=0, PY=0
+     !LMDIF, TOL=1.E-20, CALLS=10000
+     !MIGRAD, TOL=1.E-20, CALLS=10000
+    ENDMATCH
+    MATCH, BETA0=TWSSiLEI
+      VARY, KQC101,   STEP=1.E-6, LOWER=-KmaxQx1, UPPER=+KmaxQx1
+      VARY, KQC102,   STEP=1.E-6, LOWER=-KmaxQx1, UPPER=+KmaxQx1
+     !VARY, KQC103,   STEP=1.E-6, LOWER=-KmaxQx1, UPPER=+KmaxQx1
+      VARY, KQC104,   STEP=1.E-6, LOWER=-KmaxQx1, UPPER=+KmaxQx1
+      VARY, KQC105,   STEP=1.E-6, LOWER=-KmaxQx1, UPPER=+KmaxQx1
+      WEIGHT, DX=0, DPX=0, DY=0, DPY=0
+      CONSTR, QC108[1], LINE=C1fodo
+      CONSTR, #E, X=0, PX=0, Y=0, PY=0
+     !LMDIF, TOL=1.E-20, CALLS=10000
+     !MIGRAD, TOL=1.E-20, CALLS=10000
+    ENDMATCH
+    VALUE, KQC010,KQC011,KQC012,QCM02[K1],QCM03[K1],KQ1C01
+    VALUE, KQC101,KQC102,KQC103,KQC104,KQC105
+    PRINT, FULL
+    TWISS, COUPLE, BETA0=TWSSiLEI, SAVE, TAPE="twiss.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, FILE="match", RANGE=#S/ENDCOL0
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=#S/BC1BcEND, &
+      STYLE=100, SPLINE, FILE="match"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=BC1BcEND/QC110[1], &
+      STYLE=100, SPLINE, FILE="match"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=#S/QC110[1], &
+      STYLE=100, SPLINE, FILE="match"
+  ENDSUBROUTINE
+
+! ------------------------------------------------------------------------------
+
+  MDLBYPLEI : SUBROUTINE
+    SETK2scLEI
+    BEAM, ENERGY=EiLEI
+    USE, SC_BSYD2i
+    VALUE, KQL1P,KQL2P,KQL3P,KQL4P
+    MATCH, BETA0=TWSSiLEI
+      VARY, KQL1P, STEP=1.E-6 !, LOWER= 0    , UPPER=0.332
+      VARY, KQL2P, STEP=1.E-6 !, LOWER=-0.250, UPPER=0
+      VARY, KQL3P, STEP=1.E-6 !, LOWER= 0    , UPPER=0.241
+      VARY, KQL4P, STEP=1.E-6 !, LOWER=-0.241, UPPER=0
+     !CONSTR, QL1P[1], BETX<150
+     !CONSTR, QL2P[1], BETY<250
+     !CONSTR, QL3P[1], BETY<350
+     !CONSTR, QL4P[1], BETY<400
+      WEIGHT, DX=0, DPX=0, DY=0, DPY=0 !, X=0, PX=0, Y=0, PY=0, T=0, PT=0
+      CONSTR, MQBP13, LINE=Bfodo
+     !CONSTR, #E, X=0, PX=0, Y=0, PY=0
+     !LMDIF, TOL=1.E-20
+     !MIGRAD, TOL=1.E-20
+    ENDMATCH
+    VALUE, KQL1P,KQL2P,KQL3P,KQL4P
+    PRINT, FULL
+    TWISS, SAVE, BETA0=TWSSiLEI
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=BEGEXT/CCDLDEND, &
+      STYLE=100, SPLINE, FILE="match"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, RANGE=BEGEXT/CCDLDEND, &
+      STYLE=100, SPLINE, FILE="match"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, RANGE=CCDLDEND/QBP17[1], &
+      STYLE=100, SPLINE, FILE="match"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, FILE="match"
+  ENDSUBROUTINE
+
+! ------------------------------------------------------------------------------
+
+  MGEODIAGIS : SUBROUTINE !match DIAGIS geometry
+    BEAM, ENERGY=E0LEI
+    USE, SC_DIAGIS
+    VALUE, DDGI00[L]
+    MATCH, SURVEY, XS=Xgun2, YS=Ygun2, ZS=Zgun2
+      VARY, DDGI00[L], STEP=1.E-6
+      WEIGHT,  ZS=1
+      CONSTR, BPMDGI01, ZS=-9.137560215E-01
+     !LMDIF, TOL=1.E-20, CALLS=10000
+     !MIGRAD, TOL=1.E-20, CALLS=10000
+    ENDMATCH
+    VALUE, DDGI00[L]
+    PRINT, FULL
+    SURVEY, X0=Xgun2, Y0=Ygun2, Z0=Zgun2, TAPE="survey.tape"
+  ENDSUBROUTINE
+
+! ------------------------------------------------------------------------------
+
+  MDIAGISCELL : SUBROUTINE !match DIAGI 90-deg cell
+    BEAM, ENERGY=EiLEI
+    USE, FODODGI
+    VALUE, KQDGI05
+    CELL
+      VARY, KQDGI05, STEP=1.E-4, LOWER=-KmaxQxi, UPPER=KmaxQxi
+      CONSTR, #E, MUX=90/360, MUY=90/360
+     !LMDIF, TOL=1.E-20, CALLS=2000
+     !MIGRAD, TOL=1.E-20, CALLS=2000
+    ENDMATCH
+    VALUE, KQDGI05
+    TWISS, SAVE
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, FILE="match", RANGE=#S/#E
+  ENDSUBROUTINE
+
+! ------------------------------------------------------------------------------
+
+  MBXBYDIAGIS : SUBROUTINE !match DIAGIS beta
+    SETK2scLEI
+    BEAM, ENERGY=EiLEI
+    USE, SC_DIAGISi
+    VALUE, KQDGI01,KQDGI02,KQDGI03,KQDGI04,KQDGI05
+    VALUE, KQDGI08
+    MATCH, BETA0=TWSSiLEI
+      VARY, KQDGI01, STEP=1.E-4, LOWER=-KmaxQxi, UPPER=KmaxQxi
+      VARY, KQDGI02, STEP=1.E-4, LOWER=-KmaxQxi, UPPER=KmaxQxi
+      VARY, KQDGI03, STEP=1.E-4, LOWER=-KmaxQxi, UPPER=KmaxQxi
+      VARY, KQDGI04, STEP=1.E-4, LOWER=-KmaxQxi, UPPER=KmaxQxi
+      VARY, KQDGI08, STEP=1.E-4, LOWER=-KmaxQxi, UPPER=KmaxQxi
+      CONSTR, QDGI05[1], ALFX=0, ALFY=0
+      CONSTR, QDGI06[1], ALFX=0, ALFY=0
+      CONSTR, QDGI07[1], ALFX=0, ALFY=0
+      WEIGHT, BETX=1.E-6, BETY=1.E-6
+      CONSTR, QDGI02[1], BETX<5, BETY<14 !50 !20
+      CONSTR, QDGI03[1], BETX<5, BETY<5
+      WEIGHT, BETX=1.E-5, BETY=1.E-5
+      CONSTR, BYDGISa[1], BETX<5, BETY<5
+      CONSTR, BYDGISb[1], BETX<5, BETY<5
+      CONSTR, OTRDGI1[1], BETX<15, BETY<0.549
+     !LMDIF, TOL=1.E-20, CALLS=100000
+     !MIGRAD, TOL=1.E-20, CALLS=10000
+    ENDMATCH
+    VALUE, KQDGI01,KQDGI02,KQDGI03,KQDGI04,KQDGI05
+    VALUE, KQDGI08
+    PRINT, FULL
+    TWISS, BETA0=TWSSiLEI, SAVE
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, FILE="match", &
+      STYLE=100, SPLINE, RANGE=BEGDIAGIS/#E, &
+      TITLE="LEI spectrometer"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, FILE="match", &
+      STYLE=100, -SPLINE, RANGE=BEGDIAGIS/#E, &
+      TITLE="LEI spectrometer"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, FILE="match", RANGE=#S/#E, &
+      TITLE="L0LEI to LEI spectrometer"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      STYLE=100, -SPLINE, FILE="match", RANGE=#S/#E, &
+      TITLE="L0LEI to LEI spectrometer"
+    BEAM, ENERGY=E0LEI
+    USE, SC_DIAGIS
+    PRINT, DIAGIS
+    SURVEY, X0=Xgun2, Y0=Ygun2, Z0=Zgun2, TAPE="survey.tape"
+  ENDSUBROUTINE
+
+! ------------------------------------------------------------------------------
+
+  MTCAVDIAGIS : SUBROUTINE !match phase advance from TCAV center to OTRDGI1
+    SETK2scLEI
+    SETK2scDGI
+    BEAM, ENERGY=EiLEI
+    USE, SC_DIAGISi
+    VALUE, KQDGI01,KQDGI02,KQDGI03,KQDGI04,KQDGI05,KQDGI08
+    MATCH, BETA0=TWSSiLEI
+      VARY, KQDGI01, STEP=1.E-4, LOWER=-KmaxQxi, UPPER=KmaxQxi
+      VARY, KQDGI02, STEP=1.E-4, LOWER=-KmaxQxi, UPPER=KmaxQxi
+      VARY, KQDGI03, STEP=1.E-4, LOWER=-KmaxQxi, UPPER=KmaxQxi
+      VARY, KQDGI04, STEP=1.E-4, LOWER=-KmaxQxi, UPPER=KmaxQxi
+      VARY, KQDGI05, STEP=1.E-4, LOWER=-KmaxQxi, UPPER=KmaxQxi
+      VARY, KQDGI08, STEP=1.E-4, LOWER=-KmaxQxi, UPPER=KmaxQxi
+      CONSTR, QDGI05[1], ALFX=0, ALFY=0
+      CONSTR, QDGI06[1], ALFX=0, ALFY=0
+      CONSTR, QDGI07[1], ALFX=0, ALFY=0
+      WEIGHT, BETX=1.E-6, BETY=1.E-6
+      CONSTR, QDGI02[1], BETX<5, BETY<14
+      CONSTR, QDGI03[1], BETX<5, BETY<5
+      CONSTR, BYDGISa[1], BETX<5, BETY<5
+      CONSTR, BYDGISb[1], BETX<5, BETY<5
+      WEIGHT, BETX=1.E-5, BETY=1.E-5
+      CONSTR, OTRDGI1[1], BETX>8.5, BETY<0.5
+     !CONSTR, #E, BETX<15, BETY<15
+      WEIGHT, BETX=0, BETY=0, ALFX=0, ALFY=0, DX=0, DPX=0, DY=0, DPY=0, &
+              X=0, PX=0, Y=0, PY=0, T=0, PT=0, MUY=0 
+      COUPLE, MTCXDGI[1]/OTRDGI1[1], MUX=MUXTCXI
+      WEIGHT, MUX=1.E-4
+      COUPLE, MTCXDGI[1]/OTRDGI2[1], MUX=MUXTCXI-0.5
+     !LMDIF, TOL=1.E-20, CALLS=2000
+     !MIGRAD, TOL=1.E-20, CALLS=1000
+    ENDMATCH
+    VALUE, KQDGI01,KQDGI02,KQDGI03,KQDGI04,KQDGI05,KQDGI08
+    PRINT, FULL
+   !TWISS, COUPLE, BETA0=TWSSiLEI, SAVE
+    TWISS, BETA0=TWSSiLEI, SAVE
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, FILE="match", &
+      STYLE=100, SPLINE, RANGE=BEGDIAGIS/#E, &
+      TITLE="LEI spectrometer (TCAV optics)"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, FILE="match", &
+      STYLE=100, -SPLINE, RANGE=BEGDIAGIS/#E, &
+      TITLE="LEI spectrometer (TCAV optics)"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
+      STYLE=100, SPLINE, RANGE=#S/#E, FILE="match", &
+      TITLE="L0LEI to LEI spectrometer (TCAV optics)"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
+      STYLE=100, -SPLINE, RANGE=DIAGIS, FILE="match", &
+      TITLE="L0LEI to LEI spectrometer (TCAV optics)"
+  ENDSUBROUTINE
+
+! ------------------------------------------------------------------------------
+
+ !ML0LEIE
+ !MTWSS0LEIi
+ !ML1LEIE
+ !MGEODLI
+ !MDXR56DLI
+ !MBXBYDLI
+ !MDDXDLI
+ !ML0LEIDLI
+ !MDLIHTR
+ !MLHD0LEI
+ !MD0COL0LEI
+ !MCOL0COL1LEI
+ !MDLBYPLEI !check match
+ !MGEODIAGIS
+ !MDIAGISCELL
+ !MBXBYDIAGIS
+ !MTCAVDIAGIS
+
+! ------------------------------------------------------------------------------
+
+  RETURN

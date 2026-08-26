@@ -173,8 +173,8 @@
                   HGAP=GBXDLIR/2
 
   COMMENT
-    VALUE, Brhoi*ABXDLI,(Cb*0.15)*ABXDLI
-    VALUE, Brhoi*ABXDLIR,(Cb*0.15)*ABXDLIR
+    VALUE, BrhoiLEI*ABXDLI,(Cb*0.15)*ABXDLI
+    VALUE, BrhoiLEI*ABXDLIR,(Cb*0.15)*ABXDLIR
   ENDCOMMENT
 
 ! ==============================================================================
@@ -192,10 +192,10 @@
 
 ! CM00 to dogleg
 
-  KQ0D01 :=  2.96356284233  ! 2.879440808366 !bipolar
-  KQ0D02 := -5.313144898767 !-5.25420873538  !bipolar
-  KQ0D03 :=  5.017950601463 ! 5.081662701897 !bipolar
-  KQ0D04 := -2.238356018748 !-2.375403619188 !bipolar
+  KQ0D01 :=  2.706882072322 ! 2.96356284233  !bipolar
+  KQ0D02 := -5.130672896128 !-5.313144898767 !bipolar
+  KQ0D03 :=  5.170150834067 ! 5.017950601463 !bipolar
+  KQ0D04 := -2.486285067037 !-2.238356018748 !bipolar
 
   Q0D01 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0D01
   Q0D02 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0D02
@@ -204,9 +204,9 @@
 
 ! dogleg
 
-  KQDLI1 :=  9.878151122844 ! 9.882006477684
-  KQDLI2 := -4.862135644171 !-4.965017317032
-  KQDLI3 :=  4.669890460423 ! 4.735691302171
+  KQDLI1 :=  9.883642037091 ! 9.878151122844
+  KQDLI2 := -5.006780433212 !-4.862135644171
+  KQDLI3 :=  4.765554706944 ! 4.669890460423
   KQDLI4 :=  KQDLI3
   KQDLI5 :=  KQDLI2
   KQDLI6 :=  KQDLI1
@@ -222,7 +222,7 @@
 ! SEXT
 ! ------------------------------------------------------------------------------
 
-  KSDLI  :=  84.723277178146 ! 84.719409347478 
+  KSDLI  :=  84.717898859512 ! 84.723277178146 
   KSDLI1 :=  KSDLI 
   KSDLI2 := -KSDLI 
 
@@ -230,15 +230,15 @@
   SDLI2 : SEXT, TYPE="1.38S3.00", L=LSb/2, APER=rSb, K2=KSDLI2
 
   COMMENT
-    VALUE, Brhoi*KSDLI1*LSb,(Cb*0.15)*KSDLI1*LSb
-    VALUE, Brhoi*KSDLI2*LSb,(Cb*0.15)*KSDLI2*LSb
+    VALUE, BrhoiLEI*KSDLI1*LSb,(Cb*0.15)*KSDLI1*LSb
+    VALUE, BrhoiLEI*KSDLI2*LSb,(Cb*0.15)*KSDLI2*LSb
   ENDCOMMENT
 
 ! ==============================================================================
 ! SOLE
 ! ------------------------------------------------------------------------------
 
-  BrhoLEI := Cb*SQRT(E0^2-mc2^2) !kG-m (non-relativistic)
+  BrhoLEI := Cb*SQRT(E0LEI^2-mc2^2) !kG-m (non-relativistic)
 
 ! Danfysik HTS solenoid
 

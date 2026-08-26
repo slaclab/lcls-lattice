@@ -1,4 +1,4 @@
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+
 ! *** OPTICS=AD_ACCEL-preRelease ***
 
 ! LCLS2sc injector: gun to start of L1 linac
@@ -269,18 +269,19 @@
 
 ! L0 to laser heater (adjustable-sized waists at WS0H04 and LHMID)
 
-!              heater ON        heater OFF        chicane OFF	
-!           ---------------   ---------------   ---------------   
-  KQ0H01 := -6.537777564736 ! -6.52550777024  ! -6.525507740091 !
-  KQ0H02 :=  6.17752713417  !  6.335021207148 !  6.335021170324 !
-  KQ0H03 :=  0.483905171963 ! -0.947731202989 ! -0.947730849886 !
-  KQ0H04 := -3.971575402157 ! -3.418410103407 ! -3.418410369207 !
-  B0H04w :=  7.710749594202 !  5.0            !  5.0            !
-  KQ0H05 := -2.32266979602  ! -7.451315276972 ! -7.508072657056 ! 
-  KQ0H06 :=  0.0            !  1.835321381141 !  1.870908387696 ! 
-  KQ0H07 :=  5.84302489781  !  7.794364472964 !  7.804907479846 ! 
-  KQ0H08 := -5.210258454761 ! -8.272684492892 ! -8.306722243051 ! 
-  BLHUw  :=  7.5            ! 10.0            ! 10.0            !
+!                heater ON        heater OFF     
+!             ---------------  ---------------   
+  SETUMHTR :=  1              ! 0
+  KQ0H01   := -6.537777564736 !-6.52550777024  !
+  KQ0H02   :=  6.17752713417  ! 6.335021207148 !
+  KQ0H03   :=  0.483905171963 !-0.94773120299  !
+  KQ0H04   := -3.971575402157 !-3.418410103407 !
+  B0H04w   :=  7.710749594202 ! 5.0            !
+  KQ0H05   := -2.32266979602  !-7.451315276972 ! 
+  KQ0H06   :=  0.0            ! 1.835321381141 ! 
+  KQ0H07   :=  5.84302489781  ! 7.794364472964 ! 
+  KQ0H08   := -5.210258454761 !-8.272684492891 ! 
+  BLHUw    :=  7.5            !10.0            !
 
   Q0H01 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0H01
   Q0H02 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQ0H02
@@ -293,12 +294,12 @@
 
 ! laser heater to diagnostic line
 
-!              heater ON        heater OFF        chicane OFF      
-!           ---------------   ---------------   ---------------   
-  KQHD01 := -13.178598580237 ! -8.743988237466 ! -8.746794738551 !
-  KQHD02 :=   7.650668410884 !  6.400024228564 !  6.401620200768 !
-  KQHD03 :=  -7.978934972385 ! -8.612136694917 ! -8.622952974048 !
-  KQHD04 :=   6.238682089532 !  6.860670498454 !  6.864937307631 !
+!              heater ON         heater OFF       
+!           ----------------   ---------------   
+  KQHD01 := -13.178598580237 ! -8.743988237466 !
+  KQHD02 :=   7.650668410884 !  6.400024228564 !
+  KQHD03 :=  -7.978934972385 ! -8.612136694917 !
+  KQHD04 :=   6.238682089532 !  6.860670498454 !
 
   QHD01 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQHD01
   QHD02 : QUAD, TYPE="2Q4", L=LQM/2, APER=rQM, K1=KQHD02
@@ -371,21 +372,23 @@
 ! - triple laser wavelength for 3rd harmonic operation
 ! - gap = 30.5885 mm
 
-! lam   : laser-heater undulator period [m]
-! lamr  : heater laser wavelength [m]
-! gami  : Lorentz energy factor in laser-heater undulator [1]
-! K_und : undulator K for laser heater undulator
-! Lhun  : length of laser-heater undulator (10 periods) [m]
-! Lhunh : half-length of laser-heater undulator [m]
-! kqlh  : natural undulator focusing "k" in y-plane [1/m2]
+! lam    : laser-heater undulator period [m]
+! LHhnum : heater laser harmonic number
+! lamr   : heater laser wavelength [m]
+! gami   : Lorentz energy factor in laser-heater undulator [1]
+! K_und  : undulator K for laser heater undulator
+! Lhun   : length of laser-heater undulator (10 periods) [m]
+! Lhunh  : half-length of laser-heater undulator [m]
+! kqlh   : natural undulator focusing "k" in y-plane [1/m2]
 
-  lam   := 0.054
-  lamr  := 3*1030E-9 !3rd harmonic
-  gami  := Ei/EMASS
-  K_und := sqrt(2*(lamr*2*gami^2/lam-1))
-  Lhun  := 9*lam
-  Lhunh := Lhun/2
-  kqlh  := (K_und*2*pi/lam/sqrt(2)/gami)^2
+  lam    := 0.054
+  LHhnum := 3 !3rd harmonic
+  lamr   := LHhnum*1030E-9
+  gami   := Ei/EMASS
+  K_und  := SETUMHTR*sqrt(2*(lamr*2*gami^2/lam-1))
+  Lhun   := 9*lam
+  Lhunh  := Lhun/2
+  kqlh   := (K_und*2*pi/lam/sqrt(2)/gami)^2
 
 ! handle K_und->0 by expressing R34 as an approximate SINC function
 
@@ -861,7 +864,7 @@
       ENDHTR_1)
   ENDCOMMENT
 
- COMMENT !simplified
+  COMMENT !simplified
     HTR_2 : LINE=(BEGHTR_2,D0H02e,D0H02f,&
       Q0H03,Q0H03,D0H03,&
       Q0H04,Q0H04,D0H04,&

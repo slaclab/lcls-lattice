@@ -22,27 +22,31 @@
   QELEC : CONSTANT=1.602176462E-19 !C
   in2m  : CONSTANT=0.0254          !m/inch
   ft2m  : CONSTANT=0.3048          !m/foot
-
+  
 ! kinetic energy profile
 
-  E0    := MC2+0.750E-3      !NGLS/APEX gun energy (GeV) ... 750 kV gun
-  Ei    := 0.075             !energy at end of L0B (GeV)
-  E1    := 0.235             !BC1 energy (GeV)
-  E2    := 1.55              !BC2 energy (GeV)
-  E3    := 4.0               !L3 final energy (GeV)
-  Ef    := 8.0               !final beam energy (GeV)
-  Eu    := 8.0               !energy in undulator (GeV)
-  Emax  := 10.0              !maximum beam energy
-  E0LEI := 2.790915293401E-3 !LEI gun energy (GeV)
+  E0   := MC2+0.750E-3 !NGLS/APEX gun energy (GeV) ... 750 kV gun
+  Ei   := 0.075        !energy at end of L0B (GeV)
+  E1   := 0.235        !BC1 energy (GeV)
+  E2   := 1.55         !BC2 energy (GeV)
+  E3   := 4.0          !L3 final energy (GeV)
+  Ef   := 8.0          !final beam energy (GeV)
+  Eu   := 8.0          !energy in undulator (GeV)
+  Emax := 10.0         !maximum beam energy
 
-  Brho0    := Cb*E0
-  Brhoi    := Cb*Ei
-  Brho1    := Cb*E1
-  Brho2    := Cb*E2
-  Brho3    := Cb*E3
-  Brhof    := Cb*Ef
-  Brhou    := Cb*Eu
+  Brho0 := Cb*E0
+  Brhoi := Cb*Ei
+  Brho1 := Cb*E1
+  Brho2 := Cb*E2
+  Brho3 := Cb*E3
+  Brhof := Cb*Ef
+  Brhou := Cb*Eu
+
+  E0LEI := 2.790915293401E-3 !LEI gun energy (GeV)
+  EiLEI := 0.100             !energy at end of L0LEI (GeV)
+
   Brho0LEI := Cb*E0LEI
+  BrhoiLEI := Cb*EiLEI
 
 ! compression
 
@@ -98,17 +102,17 @@
 
 ! Twiss at LEI gun
 
-  BX0LEI :=  3.132630090869 ! 2.035553709314
-  AX0LEI :=  0.792777427933 ! 0.839787110788
-  BY0LEI :=  3.132630090869 ! 2.035553709314
-  AY0LEI :=  0.792777427933 ! 0.839787110788
+  BX0LEI :=  2.048056174955 ! 3.132630090869
+  AX0LEI :=  1.223800103511 ! 0.792777427933
+  BY0LEI :=  2.048056174955 ! 3.132630090869
+  AY0LEI :=  1.223800103511 ! 0.792777427933
 
 ! Twiss at entrance to LEI dogleg
 
-  BXDLI :=  0.7928151967   ! 0.773514349232
-  AXDLI :=  1.239201451893 ! 1.233992475513
-  BYDLI :=  8.389181442895 ! 8.326162160521
-  AYDLI :=  2.280563207812 ! 2.387214094461
+  BXDLI :=  0.766558400686 ! 0.7928151967  
+  AXDLI :=  1.277080825402 ! 1.239201451893
+  BYDLI :=  8.368608344817 ! 8.389181442895
+  AYDLI :=  2.445831762801 ! 2.280563207812
 
 ! LEI "treaty" Twiss at center of laser heater undulator
 
@@ -341,15 +345,15 @@
 ! for Twiss starting at BEAM0LEI
 
   SC_DIAGISi : LINE=(LCLS2scI2,LEI_1,DIAGIS)
-  SC_DIAG0i2 : LINE=(LCLS2scI2,LEI,HTR_2,DIAG0)
-  SC_HXRi2   : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scH)
-  SC_SXRi2   : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scS)
-  SC_SFTSi2  : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scSS)
-  SC_S2_Xi2  : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scS2_X)
-  SC_STXIi2  : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scSTXI)
-  SC_STMOi2  : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scSTMO)
-  SC_DASELi2 : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scDA)
-  SC_BSYDi2  : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scD)
+  SC_DIAG02i : LINE=(LCLS2scI2,LEI,HTR_2,DIAG0)
+  SC_HXR2i   : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scH)
+  SC_SXR2i   : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scS)
+  SC_SFTS2i  : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scSS)
+  SC_S2_X2i  : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scS2_X)
+  SC_STXI2i  : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scSTXI)
+  SC_STMO2i  : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scSTMO)
+  SC_DASEL2i : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scDA)
+  SC_BSYD2i  : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scD)
 
 ! ==============================================================================
 ! initial BSY coordinates at BEGSP (LTUSPLIT)
