@@ -1,18 +1,18 @@
 
-% *** OPTICS=AD_ACCEL-preRelease ***
+% *** OPTICS=AD_ACCEL-10SEP2026s ***
 
 % standing wave model; reduced L2 W in Cu linac
 
 % NOTE: when making Matlab models (LCLS2sc and LCLS2cu)
 % - uncomment SUBROUTINES in LCLS2cu_main.mad8 and LCLS2sc_main.mad8
-% - use SUBROUTINEs in LCLS2cu_main.mad8 and LCLS2sc_main.mad8
+% - replace CALLs to xsif files with SUBROUTINE references
 % - remove "working stuff" from LCLS2cu_main.mad8 and LCLS2sc_main.mad8
 % - use special definition of UMXLh in LTU.xsif
 % - change mirrors from MULT to INST in SXTES.xsif and HXTES.xsif
 % - check that L1.xsif (etc) is being CALLed, not L1e.xsif (etc)
 
-MADrelease='preRelease';
-fileDir='\\wsl.localhost\Ubuntu\home\mdw\git_repos\lcls-lattice\mad';
+MADrelease='10SEP2026s';
+fileDir='\\wsl.localhost\Ubuntu\home\mdw\AD_ACCEL\10SEP2026s\mad';
 
 fprintf('Create model_beamLineLCLS2sc.m ...\n\n')
 file='LCLS2sc_main.mad8';

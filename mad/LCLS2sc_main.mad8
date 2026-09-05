@@ -1,6 +1,6 @@
   TITLE, "AD_ACCEL: superconducting linac"
 
-! *** OPTICS=AD_ACCEL-preRelease ***
+! *** OPTICS=AD_ACCEL-10SEP2026s ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY, DOUBLE
   ASSIGN, ECHO="LCLS2sc.echo"
@@ -839,7 +839,7 @@
       STYLE=100, SPLINE, RANGE=#S/ROLL2, FILE="LCLS2scDA", &
       TITLE="SC-linac to DASEL"
     TWISS, COUPLE, SAVE, BETA0=TWSSi
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BEYY, &
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, &
       STYLE=100, SPLINE, RANGE=BEGB/MADUMP, FILE="LCLS2scDA", &
       TITLE="Aline (relaxed optics)"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
@@ -1226,6 +1226,47 @@
     BEAM, ENERGY=E0
     SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
     USE, SC_SXR
+    VALUE, LDL0bc1,LDL0bc2,LDL0bc1+LDL0bc2,LDL0bc
+    MATCH, SURVEY, ZS=Zgun
+      VARY, LDL0bc1, STEP=1.E-6
+      WEIGHT, ZS=1
+      CONSTR, VPIO332, ZS=3300.672332
+      LMDIF, TOL=1.E-20
+      MIGRAD, TOL=1.E-20
+    ENDMATCH
+    VALUE, LDL0bc1,LDL0bc2,LDL0bc1+LDL0bc2,LDL0bc
+    PRINT, FULL
+    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun
+  ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+  COMMENT !periodic SXR/HXR cells
+    BEAM, ENERGY=Eu
+    USE, (SXCEL43,SXCEL44,SXCEL45,SXCEL46)
+    PRINT, FULL
+    SAVEBETA, TWmL, #E
+    TWISS, SAVE, TAPE="twiss.tape"
+    SHOW, TWmL
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, VMIN=0.0, &
+      STYLE=100, SPLINE, RANGE=#S/#E, FILE="plot", &
+      TITLE="SXR long-period cells (E= 8 GeV ; GLq= 30 kG)"
+    USE, (HXCEL42,HXCEL43,HXCEL44,HXCEL45)
+    PRINT, FULL
+    SAVEBETA, TWmH, #E
+    TWISS, SAVE, TAPE="twiss.tape"
+    SHOW, TWmH
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, VMIN=0.0, &
+      STYLE=100, SPLINE, RANGE=#S/#E, FILE="plot", &
+      TITLE="HXR cells (E = 8 GeV ; GLq = 30 kG)"
+  ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+  COMMENT
+    BEAM, ENERGY=E0
+    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
+    USE, SC_SXR
    !VALUE, DBD1e[L]
    !VALUE, DBD6e[L]
    !VALUE, LDSP3saa
@@ -1287,36 +1328,6 @@
    !VALUE, LDSP3ha
    !VALUE, LDSP3hb
     VALUE, LDSP5hcb
-  ENDCOMMENT
-
-! ------------------------------------------------------------------------------
-
-  COMMENT !periodic SXR/HXR cells
-    BEAM, ENERGY=Eu
-    USE, (SXCEL37,SXCEL38,SXCEL39,SXCEL40)
-    PRINT, FULL
-    SAVEBETA, TWmS, #E
-    TWISS, SAVE, TAPE="twiss.tape"
-    SHOW, TWmS
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, VMIN=0.0, &
-      STYLE=100, SPLINE, RANGE=#S/#E, FILE="plot", &
-      TITLE="SXR long-period cells (E = 8 GeV ; GLq = 30 kG)"
-    USE, (SXCEL41,SXCEL42,SXCEL43,SXCEL44)
-    PRINT, FULL
-    SAVEBETA, TWmL, #E
-    TWISS, SAVE, TAPE="twiss.tape"
-    SHOW, TWmL
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, VMIN=0.0, &
-      STYLE=100, SPLINE, RANGE=#S/#E, FILE="plot", &
-      TITLE="SXR short-period cells (E= 8 GeV ; GLq= 30 kG)"
-    USE, (HXCEL42,HXCEL43,HXCEL44,HXCEL45)
-    PRINT, FULL
-    SAVEBETA, TWmH, #E
-    TWISS, SAVE, TAPE="twiss.tape"
-    SHOW, TWmH
-    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, VMIN=0.0, &
-      STYLE=100, SPLINE, RANGE=#S/#E, FILE="plot", &
-      TITLE="HXR cells (E = 8 GeV ; GLq = 30 kG)"
   ENDCOMMENT
 
 ! ------------------------------------------------------------------------------

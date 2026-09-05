@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-preRelease ***
+! *** OPTICS=AD_ACCEL-10SEP2026s ***
 
 ! generate output files for RDB generation
 
@@ -86,6 +86,14 @@
   USE, SC_DIAG02
   PRINT, FULL
   SURVEY, X0=Xgun2, Y0=Ygun2, Z0=Zgun2, TAPE="DIAG02_survey.tape"
+
+  ASSIGN, PRINT="LCLS2scD2.print"
+  BEAM, ENERGY=E0LEI
+  SET, SETSP, SETSPd ; SET, SETDA, DAOFF
+  CALL, FILENAME="SETK2scLEI.xsif"
+  USE, SC_BSYD2
+  PRINT, FULL
+  SURVEY, X0=Xgun2, Y0=Ygun2, Z0=Zgun2, TAPE="LCLS2scD2_survey.tape"
 
 ! ------------------------------------------------------------------------------
 ! SURVEY tape files (BSY coordinates)

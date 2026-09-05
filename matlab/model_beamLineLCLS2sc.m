@@ -1,7 +1,7 @@
 function beamLine=model_beamLineLCLS2sc()
 %
 % -----------------------------------------------------------------------------
-% *** OPTICS=AD_ACCEL-preRelease ***
+% *** OPTICS=AD_ACCEL-10SEP2026s ***
 % -----------------------------------------------------------------------------
 %
 % beamLine=model_beamLineLCLS2sc();
@@ -136,7 +136,7 @@ E      = exp(1);
 EMASS  = 0.510998902e-3; % electron rest mass [GeV]
 PMASS  = 0.938271998;    % proton rest mass [GeV]
 CLIGHT = 2.99792458e8;   % speed of light [m/s]
-% *** OPTICS=AD_ACCEL-preRelease ***
+% *** OPTICS=AD_ACCEL-10SEP2026s ***
 % ==============================================================================
 % Modification History
 % ------------------------------------------------------------------------------
@@ -542,7 +542,7 @@ INTGHX =  30.0 ;%kG
 % ------------------------------------------------------------------------------
 % element and line definitions
 % ------------------------------------------------------------------------------
-% *** OPTICS=AD_ACCEL-preRelease ***
+% *** OPTICS=AD_ACCEL-10SEP2026s ***
 % ==============================================================================
 % Modification History
 % ------------------------------------------------------------------------------
@@ -729,7 +729,7 @@ AYEDH =   1.084608326581;
 % ==============================================================================
 % load lattice definitions
 % ------------------------------------------------------------------------------
-% *** OPTICS=AD_ACCEL-preRelease ***
+% *** OPTICS=AD_ACCEL-10SEP2026s ***
 % LCLS2sc common parameters
 % ==============================================================================
 % Modification History
@@ -1095,7 +1095,7 @@ ENDCLTS={'mo' 'ENDCLTS' 0 []}';
 BEGBSYA_2={'mo' 'BEGBSYA_2' 0 []}';
 ENDBSYA_2={'mo' 'ENDBSYA_2' 0 []}';
 % ------------------------------------------------------------------------------
-% *** OPTICS=AD_ACCEL-preRelease ***
+% *** OPTICS=AD_ACCEL-10SEP2026s ***
 % LCLS-II-HE linacs: L0, L1, L2, L3, L4, L0LEI
 % ==============================================================================
 % Modification History
@@ -3486,7 +3486,7 @@ CMFODO2=[QFCMFODO2,DCMFODO,QDCMFODO2,QDCMFODO2,DCMFODO,QFCMFODO2];
 CMFODO3=[QFCMFODO3,DCMFODO,QDCMFODO3,QDCMFODO3,DCMFODO,QFCMFODO3];
 CMFODO4=[QFCMFODO4,DCMFODO,QDCMFODO4,QDCMFODO4,DCMFODO,QFCMFODO4];
 % ------------------------------------------------------------------------------
-% *** OPTICS=AD_ACCEL-preRelease ***
+% *** OPTICS=AD_ACCEL-10SEP2026s ***
 % LCLS2sc post laser heater diagnostic beamline
 % ==============================================================================
 % Modification History
@@ -3885,7 +3885,7 @@ SCDG010=[XCDG010,YCDG010];
 DIAG0=[BEGDIAG0,BKRDG0_FULL,RODG0K,DKV0A,BPMDG000,DKV0B,M1DG0,BLRDG0_FULL,RODG0L,DQB01A,RFBDG001,DQB01B,XCDG001,DQB01C,QDG001_FULL,DQB02A,YCDG001,DQB02B,QDG002_FULL,DQB03A,XCDG002,DQB03B,QDG003_FULL,DQB04A,YCDG002,DQB04B,BXDG0_FULL,CNTDG0,M2DG0,DDG003,QDG004_FULL,DDG004A,SCDG003,DDG004B,QDG005_FULL,DDG005A,SCDG005,DDG005B,QDG006_FULL,DDG006A,TCYDG0_FULL,DDG006B,BPMDG0RF,DDG006C,TCXDG0_FULL,DDG006D,QDG007_FULL,DDG007,QDG008_FULL,DDG008A,SCDG008,DDG008B,QDG009_FULL,DDG009A,OTRDG01_FULL,DDG009B,RFBDG002,DDG009C,OTRDG02,DDG009D,WSDG01,DDG009E,OTRDG03_FULL,DDG009F,QDG010_FULL,DDG010A,SCDG010,DDG010B,QDG011_FULL,DDG011A,RFBDG003,DDG011B,BYDG0_FULL,DDG012A,BPMDG012,DDG012B,OTRDG04,DDG012C,FCDG0DU,ENDDIAG0];
 %ENDCOMMENT
 % ------------------------------------------------------------------------------
-% *** OPTICS=AD_ACCEL-preRelease ***
+% *** OPTICS=AD_ACCEL-10SEP2026s ***
 % LCLS2sc injector: gun to start of L1 linac
 % ==============================================================================
 % Modification History
@@ -4596,7 +4596,7 @@ COL0=[BEGCOL0,DBKRDG0A,DBKRDG0B,DC000AA,BPMDG000,DC000AB,DBLRDG0A,DBLRDG0B,DC000
 C0FODOF=[QFCOLL0,DCOLL0,QDCOLL0,QDCOLL0,DCOLL0,QFCOLL0];
 C0FODOD=[QDCOLL0,DCOLL0,QFCOLL0,QFCOLL0,DCOLL0,QDCOLL0];
 % ------------------------------------------------------------------------------
-% *** OPTICS=AD_ACCEL-preRelease ***
+% *** OPTICS=AD_ACCEL-10SEP2026s ***
 % LCLS2sc injector #2: from CATHODELEI to merge with original LCLS-II injector
 %   (diagnostic line, spectrometer line, and dump line in DIAGI.xsif)
 % ==============================================================================
@@ -4699,6 +4699,9 @@ TCXDGI={'dr' '' 0.6680236/2 []}';%X-deflector (split)
 % ==============================================================================
 % SBEN
 % ------------------------------------------------------------------------------
+% NOTE: the 4 dipoles of the dogleg together form the 4th PPS stopper for this
+%       system, and therefore must be powered together on a string by a single
+%       (unipolar) power supply
 % main dogleg bends
 ABXDLI =  28.404165093549*RADDEG ;%35.0 (17.5 per dipole)
 LBXDLI =  0.5435     ;%BXS path length as measured at 35 deg bend angle
@@ -5050,7 +5053,7 @@ LEI_2_PLOT=[BEGLEI_2,BXDLI1,DDLI0A,SDLI1,SDLI1,DDLI0B,QDLI1,QDLI1,DDLI1A,CEDLI,D
 %ENDCOMMENT
 LEI=[LEI_1,LEI_2];
 % ------------------------------------------------------------------------------
-% *** OPTICS=AD_ACCEL-preRelease ***
+% *** OPTICS=AD_ACCEL-10SEP2026s ***
 % LCLS2sc injector diagnostic beamline
 % ==============================================================================
 % Modification History
@@ -5262,7 +5265,7 @@ QDGI08_FULL=[QDGI08,BPMDGI08,QDGI08];
 DIAGIS=[BEGDIAGIS,DBXDLI1A,DBXDLI1B,DDGI00,QDGI01_FULL,DDGI01A,XCDGI01,DDGI01B,QDGI02_FULL,DDGI02A,YCDGI02,DDGI02B,QDGI03_FULL,DDGI03A,XCDGI03,DDGI03B,QDGI04_FULL,DDGI04A,YCDGI04,DDGI04B,RFBDGIW1,DDGI04C,WSDGI1,DDGI04D,QDGI05_FULL,DDGI05A,XCDGI05,DDGI05B,RFBDGIW2,DDGI05C,WSDGI2,DDGI05D,OTRDGI2,DDGI05E,QDGI06_FULL,DDGI06A,YCDGI06,DDGI06B,RFBDGIW3,DDGI06C,WSDGI3,DDGI06D,QDGI07_FULL,DDGI07A,XCDGI07,DDGI07B,RFBDGIW4,DDGI07C,WSDGI4,DDGI07D,YCDGI08,DDGI07E,QDGI08_FULL,DDGI08A,RFBDGI01,DDGI08B,BYDGIS_FULL,DDGI09A,BPMDGI09,DDGI09B,OTRDGI1_FULL,DDGI09C,BYDGID_FULL,DDGI10A,IMDGI1,DDGI10B,DUMPFACEI,DDUMPI,BTMDUMPI,ENDDIAGIS];
 %ENDCOMMENT
 % ------------------------------------------------------------------------------
-% *** OPTICS=AD_ACCEL-preRelease ***
+% *** OPTICS=AD_ACCEL-10SEP2026s ***
 % LCLS2sc bunch compressor chicane #1
 % ==============================================================================
 % Modification History
@@ -5630,7 +5633,7 @@ COL1=[BEGCOL1,QC101_FULL,DC101A,IM11B,DC101B,XCC101,DC101C,YCC101,DC101D,BZC1,DC
 %ENDCOMMENT
 C1FODO=[QFCOLL1,DCOLL1,QDCOLL1,QDCOLL1,DCOLL1,QFCOLL1];
 % ------------------------------------------------------------------------------
-% *** OPTICS=AD_ACCEL-preRelease ***
+% *** OPTICS=AD_ACCEL-10SEP2026s ***
 % LCLS2sc bunch compressor chicane #2
 % ==============================================================================
 % Modification History
@@ -5907,7 +5910,7 @@ EMIT2_2=[DE202B,QE203_FULL,DE203A,YCE203,DE203B,QE204_FULL,DE204A,XCE204,DE204B,
 EMIT2=[EMIT2_1,EMIT2_2];
 %ENDCOMMENT
 % ------------------------------------------------------------------------------
-% *** OPTICS=AD_ACCEL-preRelease ***
+% *** OPTICS=AD_ACCEL-10SEP2026s ***
 % LCLS2sc sector 10 dogleg plus match to bypass line
 % ==============================================================================
 % Modification History
@@ -6397,7 +6400,7 @@ MTCH1=[DLCCP,CCDLD,DL0PA,OTR31_FULL,DL0PB,XCL1P,DL0PC,QL1P_FULL,DL1PA,BPML1P,DL1
 DLBM=[BEGDOG,DBDM0,CCDLU,DBDM1,DLBP,MTCH1,ENDDOG];
 BFODO=[QBPF,DBP,DBP,QBPD,QBPD,DBP,DBP,QBPF];
 % ------------------------------------------------------------------------------
-% *** OPTICS=AD_ACCEL-preRelease ***
+% *** OPTICS=AD_ACCEL-10SEP2026s ***
 % LCLS2sc 3-way spreader system
 % ==============================================================================
 % Modification History
@@ -7588,7 +7591,7 @@ SPRDKSBDC=[DSPDC1,BYSPS_FULL,DSPDC2A,BPMSPS,DSPDC2B,BLXSPS_FULL];
 BDES =  BLSPDC;
 IDES =  47.04*BDES+671*BDES^3;
 % ------------------------------------------------------------------------------
-% *** OPTICS=AD_ACCEL-preRelease ***
+% *** OPTICS=AD_ACCEL-10SEP2026s ***
 % LCLS2sc transport from Cu-linac to SXR
 % ==============================================================================
 % Modification History
@@ -7969,10 +7972,13 @@ KCUSXRB=[CNTCUS1,ROCUS1,DCUS1A,DBRCCUS1,DBRCCUS1,DCUS1B,DBRCCUS2,DBRCCUS2,CNTCUS
 KCUSXR=[KCUSXRA,KCUSXRB];
 DLCUSXR=[DCUS1C,QCUS1_FULL,DCUS2A,BPMCUS1,DCUS2B,XCCUS1,DCUS2C,QCUS2_FULL,DCUS3A,BPMCUS2,DCUS3B,YCCUS2,DCUS3C,BPMCUS3,DCUS3D,QCUS3_FULL,DCUS4A,YCCUS3,DCUS4B,DCUS4C,QCUS4_FULL,DCUS5A,XCCUS4,DCUS5B,BYCUS1_FULL,CNTCUS3,ROCUS3,DCUS6A,DCUS6B,QCUS5_FULL,DCUS7,MIDCUSXR,DCUS7,QCUS6_FULL,DCUS8A,YCCUS6,DCUS8B,ROCUS4,BYCUS2_FULL,CNTCUS4,DCUS9A,DCUS9B,QCUS7_FULL,DCUS10A,XCCUS7,DCUS10B,BPMCUS8,DCUS10C,QCUS8_FULL,DCUS11A,YCCUS8,DCUS11B1,STCLTS,BTMCLTS,DCUS11B2,BPMCUS9,DCUS11C,QCUS9_FULL,DCUS12A,YCCUS9,DCUS12B,XCCUS10,DCUS12C,BPMCUS10,DCUS12D,QCUS10_FULL,DCUS13,ROCUS2,BRCUS1_FULL,CNTCUS2];
 CUSXR=[BEGCUSXR,KCUSXR,DLCUSXR,ENDCUSXR];
-% *** OPTICS=AD_ACCEL-preRelease ***
+% *** OPTICS=AD_ACCEL-10SEP2026s ***
 % LCLS2sc A-line
 % ==============================================================================
 % Modification History
+% ------------------------------------------------------------------------------
+% 04-SEP-2026, M. Woodley
+%  * more relaxed optics per Y. Nosochkov
 % ------------------------------------------------------------------------------
 % 06-NOV-2025, Y. Nosochkov/M. Woodley
 %  * add a test beamline (BSYADUMP) for beam size study at ESA alcove detector
@@ -8155,10 +8161,10 @@ KQ10 =   0.040946131243;
 KQ11 =  -0.038135136057;
 KQ19 =   0.030837113549;
 KQ20 =   0.146624351215E-2;
-KQ27 =  -0.030855833729 ;%-0.038606814284 
-KQ28 =   0.034232470171 ;% 0.039503266207 
-KQ30 =  -0.025303863088 ;%-0.020157257183 
-KQ38 =   0.033028104498 ;% 0.021853409081 
+KQ27 =  -0.038606814284 ;%-0.030855833729
+KQ28 =   0.039503266207 ;% 0.034232470171
+KQ30 =  -0.020157257183 ;%-0.025303863088
+KQ38 =   0.021853409081 ;% 0.033028104498
 % %original optics
 % 
 % 
@@ -8516,7 +8522,7 @@ ESA=[ESAU,ESAD];
 % ------------------------------------------------------------------------------
 BSYADUMP=[BEGBSYA,BRAM1_FULL,ROLL2,DAMQ10,Q10_FULL,LD105,Q11_FULL,D106,BEGB,B11_FULL,D107,B12_FULL,LD108,B13_FULL,D109,B14_FULL,LD110,B15_FULL,D111,B16_FULL,LD112,Q19_FULL,LD113,Q20_FULL,LD114,B21_FULL,D115,B22_FULL,LD116,B23_FULL,D117,B24_FULL,LD118,B25_FULL,D119,B26_FULL,MARC,ROLL3,ENDB,LD120,Q27_FULL,D121,SQ27P5_FULL,D122,Q28_FULL,LD123,Q30_FULL,LD124,Q38_FULL,D125,ENDBSYA,BEGESA,ALWALL,NOTCHBEG,D126,IV40,D127,A3C1A,D127A,NOTCHEND,ALCOVEBEG,D128,A3C1B,D129A,MADET,D129B,D130A,MADUMP];
 % ------------------------------------------------------------------------------
-% *** OPTICS=AD_ACCEL-preRelease ***
+% *** OPTICS=AD_ACCEL-10SEP2026s ***
 % LCLS2sc bypass line, plus match to LTU
 % ==============================================================================
 % Modification History
@@ -9064,10 +9070,13 @@ BYPM2=[D2Q4MBA,PCBP33,D2Q4MBB,STBP34A,BTMBP34A,D2Q4MBC,STBP34B,BTMBP34B,D2Q4MBD,
 BYPM=[BYPM1,BRCUS1A,BRCUS1B,MRGCUSXR,BYPM2];
 BYPASS=[FODOL,BYPM];
 % ------------------------------------------------------------------------------
-% *** OPTICS=AD_ACCEL-preRelease ***
+% *** OPTICS=AD_ACCEL-10SEP2026s ***
 % LCLS2sc LTU and dump
 % ==============================================================================
 % Modification History
+% ------------------------------------------------------------------------------
+% 03-SEP-2026, M. Woodley
+%  * add INST "VPIO332" in LTUS (between QDL15 and QDL16) per F.-J. Decker
 % ------------------------------------------------------------------------------
 % 24-JUL-2025, M. Woodley
 %  * add MARKER point "SWIVEL" at location of swivel point
@@ -9815,6 +9824,8 @@ LDL0B =  LDLCEL/2-LQA-LDL6B+(LQA-LQR);
 LDL0BA =  0.1953;
 LDL0BB =  3.213005+(LQA-LQR)/2-LDL0BA;
 LDL0BC =  LDL0B-LDL0BA-LDL0BB;
+LDL0BC1 =  5.693661880758;
+LDL0BC2 =  LDL0BC-LDL0BC1;
 LDL1B =  2.9815+(LQA-LQR)/2;
 LDL1BA =  1.316489-LPLATE ;%1.317304
 LDL1BC =  0.1953;
@@ -9863,6 +9874,8 @@ DDL0B={'dr' '' LDL0B []}';
 DDL0BA={'dr' '' LDL0BA []}';
 DDL0BB={'dr' '' LDL0BB []}';
 DDL0BC={'dr' '' LDL0BC []}';
+DDL0BC1={'dr' '' LDL0BC1 []}';
+DDL0BC2={'dr' '' LDL0BC2 []}';
 DDL1B={'dr' '' LDL1B []}';
 DDL1BA={'dr' '' LDL1BA []}';
 DDL1BB={'dr' '' LDL1BB []}';
@@ -9980,6 +9993,7 @@ PC06B={'mo' 'PC06B' LPLATE []}';
 BTM06B={'mo' 'BTM06B' 0 []}';
 PC07B={'mo' 'PC07B' LPLATE []}';
 BTM07B={'mo' 'BTM07B' 0 []}';
+VPIO332={'mo' 'VPIO332' 0 []}';
 DBMARK34B={'mo' 'DBMARK34B' 0 []}';%entrance of BX31
 CNTLT1S={'mo' 'CNTLT1S' 0 []}';
 BX31B_FULL=[BX31B1,BX31B2];
@@ -10004,7 +10018,7 @@ SDL1_FULL=[SDL1,SDL1];
 SDL2_FULL=[SDL2,SDL2];
 DBLDL21=[BEGLTUS,DDBLDLB,QDBL1_FULL,DDBLDLC,YCDBL1,DDBLDLA1,CYBDL,DDBLDLA2,XCDBL2,DDBLDLC,QDBL2_FULL,DDBLDLD];
 DL2BCELL=[QDL12,DDL6B,YCDL12,DDL9B,XCDL13,DDL6BA,SDL1_FULL,DDL6BB,QDL13_FULL,DDL7BA,CEDL13,DDL7BB,BPMDL13,DDL8B,YCDL14,DDL6B,QDL14];
-DL2SC=[DBMARK34B,DDL20B,XCDL11,DDL6B,QDL11_FULL,DDL15BA,BPMDL11,DDL15BB,DDL15BC,CC31B,DDL16B,BX31B_FULL,DDL1BA,PC01B,BTM01B,DDL1BB,BPMDL12,DDL1BC,QDL12_FULL,DDL6B,YCDL12,DDL9B,XCDL13,DDL6BA,SDL1_FULL,DDL6BB,QDL13_FULL,DDL7BA,CEDL13,DDL7BB,BPMDL13,DDL8B,YCDL14,DDL6B,QDL14_FULL,DDL8CA,BPMDL14,DDL8CB,DWIGSA,PC03B,BTM03B,DWIGSB,DDL8D,XCDL15,DDL6BA,SDL2_FULL,DDL6BB,QDL15_FULL,DDL0BA,BPMDL15,DDL0BB,DDL0BC,YCDL16,DDL6B,QDL16_FULL,DBYKS01,CYDL16,DBYKS02,BPMDL16,DBYKS03,PC04B,BTM04B,DBYKS04,BYKIK1S_FULL,DBYKS05,DBYKS05,BYKIK2S_FULL,DBYKS06,XCDL17,DBYKS07,BPMDL17,DBYKS08,QDL17_FULL,DBYKS11,CEDL17,DBYKS12,DBYKS13,SPOILERS,DBYKS14,TDKIKS,DBYKS15,PCTDKIK1S,DBYKS16,PCTDKIK2S,DBYKS16,PCTDKIK3S,DBYKS16,PCTDKIK4S,DBYKS17,YAGDL18_FULL,DBYKS18,YCDL18,DBYKS19,QDL18_FULL,DDL19BA,BPMDL18,DDL19BB,PC06B,BTM06B,DDL19BC,XCDL19,DDL6B,QDL19_FULL,DDL2BA,BPMDL19,DDL2BB,BX32B_FULL,CNTLT1S,DDL14B,QDL20_FULL,DDL6B,YCDL20,DDL17B,CC32B,DDL18BA,PC07B,BTM07B,DDL18BB,YCDL21,DDL6B,QDL21_FULL,DDL4B,XCDL22,DDL6B,QDL22_FULL,DDL5B];
+DL2SC=[DBMARK34B,DDL20B,XCDL11,DDL6B,QDL11_FULL,DDL15BA,BPMDL11,DDL15BB,DDL15BC,CC31B,DDL16B,BX31B_FULL,DDL1BA,PC01B,BTM01B,DDL1BB,BPMDL12,DDL1BC,QDL12_FULL,DDL6B,YCDL12,DDL9B,XCDL13,DDL6BA,SDL1_FULL,DDL6BB,QDL13_FULL,DDL7BA,CEDL13,DDL7BB,BPMDL13,DDL8B,YCDL14,DDL6B,QDL14_FULL,DDL8CA,BPMDL14,DDL8CB,DWIGSA,PC03B,BTM03B,DWIGSB,DDL8D,XCDL15,DDL6BA,SDL2_FULL,DDL6BB,QDL15_FULL,DDL0BA,BPMDL15,DDL0BB,DDL0BC1,VPIO332,DDL0BC2,YCDL16,DDL6B,QDL16_FULL,DBYKS01,CYDL16,DBYKS02,BPMDL16,DBYKS03,PC04B,BTM04B,DBYKS04,BYKIK1S_FULL,DBYKS05,DBYKS05,BYKIK2S_FULL,DBYKS06,XCDL17,DBYKS07,BPMDL17,DBYKS08,QDL17_FULL,DBYKS11,CEDL17,DBYKS12,DBYKS13,SPOILERS,DBYKS14,TDKIKS,DBYKS15,PCTDKIK1S,DBYKS16,PCTDKIK2S,DBYKS16,PCTDKIK3S,DBYKS16,PCTDKIK4S,DBYKS17,YAGDL18_FULL,DBYKS18,YCDL18,DBYKS19,QDL18_FULL,DDL19BA,BPMDL18,DDL19BB,PC06B,BTM06B,DDL19BC,XCDL19,DDL6B,QDL19_FULL,DDL2BA,BPMDL19,DDL2BB,BX32B_FULL,CNTLT1S,DDL14B,QDL20_FULL,DDL6B,YCDL20,DDL17B,CC32B,DDL18BA,PC07B,BTM07B,DDL18BB,YCDL21,DDL6B,QDL21_FULL,DDL4B,XCDL22,DDL6B,QDL22_FULL,DDL5B];
 % %test line to find ABYKIKS angle for -14.2 mm offset at front face of TDKIKS
 % 
 % KYKIK1S={'mo' 'KYKIK1S' LKIK/2 []}';
@@ -11522,7 +11536,7 @@ QDMP1_FULL=[QDMP1,QDMP1];
 QDMP2_FULL=[QDMP2,QDMP2];
 DUMPLINE=[BEGDMPH_2,RODMP1H,BYDSH_FULL,DS1,BYD1_FULL,DS,BYD2_FULL,DS,BYD3_FULL,DD1A,PCPM1L,BTM1L,DD1B,MIMDUMP,DD1C,MIMBCS4,DD1D,YCDD,DD1E,PCPM2L,BTM2L,DD1F,QDMP1_FULL,DD12A,BPMQD,DD12B,MQDMP,DD12C,QDMP2_FULL,DD2A,XCDD,DD2B,DD2C,DD3A,BPMDD,DD3B,OTRDMP,DWSDUMPA1,PCEBD,DWSDUMPA2,RFBDD,DWSDUMPB,WSDUMP,DWSDUMPC,RODMP2H,DUMPFACE,DDUMP,DMPEND,BTMDUMP,DBMARK38,ENDDMPH_2];
 % ------------------------------------------------------------------------------
-% *** OPTICS=AD_ACCEL-preRelease ***
+% *** OPTICS=AD_ACCEL-10SEP2026s ***
 % LCLS2sc undulator and undulator extension
 % ==============================================================================
 % Modification History
@@ -13832,7 +13846,7 @@ QUE2_FULL=[QUE2,QUE2];
 UNDEXIT=[BEGDMPH_1,UEBEG,DUE1D,VV36,DUE1B,MIMUNDO,DUE1C,DUE2A,YCUE1,DUE2B,PH31,DUE2D,PH32,DUE2D,PH33,DUE2D,PH34,DUE2E,XCUE2,DUE2C,QUE1_FULL,DUE3A,BPMUE1,DUE3B,TRUE1,DUE3C,DBKXDMPH,DUE3C,PCTCX,DPCVV,VVTCX,DVVTCX,MTCX01,TCX01_FULL,DTCX12,MTCX,DTCX12,TCX02_FULL,DTCXSP,SPTCX,DUE4,QUE2_FULL,DUE5A,BPMUE2,DUE5B,BTMQUE,DUE5C,PCPM0,BTM0,DUE5F,DUE5D,MIMBCS3,DUE5E,MDLWALL,DDLWALL,UEEND,DLSTART,DSB0A,YCD3,DSB0B,XCD3,DSB0C,VV37,DSB0D,DSB0E,ENDDMPH_1];
 HXRUND=[HXR,UNDEXIT];
 % ==============================================================================
-% *** OPTICS=AD_ACCEL-preRelease ***
+% *** OPTICS=AD_ACCEL-10SEP2026s ***
 % LCLS2sc safety dump lines
 % ==============================================================================
 % Modification History
@@ -14058,7 +14072,7 @@ BXPM1B_FULL=[BXPM1B1,BXPM1B2];
 SFTDUMPB1=[BEGSFTS_1,DYDS,DS1S,DYD1,DSSA,DYD2,DSSB,DYD3,DSCSB,PCPM1B,BTM1B,DPCBTM1B,DXDCUB1,RTDSK0_VGC_1,DXDCUB2,TP_SXTES0,DXDCUB3,RTDSK0_VRM_1,RTDSK0_GCC_1,RTDSK0_GPI_1,DXDCUB4,XDCBA,XDCBB,XDCBC1,RTDSK0,XDCBC2,RTDSK0_YAGXRAYB,XDCBD,DXDCDB1,PC1K0_XTES,DXDCDB2,EM1K0_GMD_VGC_1,DXDCDB3,EM1K0_GMD,DXDCDB4,IM1K0_XTES_VRM_1,IM1K0_XTES_GCC_1,IM1K0_XTES_GPI_1,DXDCDB5,IM1K0_XTES,DXDCDB6,PCPM2B,BTM2B,DPM1B,ENDSFTS_1];
 SFTDUMPB2=[BEGSFTS_2,BXPM1B_FULL,DPM2B,MSL1S,DPM3BA,MVV3S,DPM3BB,SFTDMPB,DSFTDMPB,BTMSFTB,ENDSFTS_2];
 SFTDUMPB=[SFTDUMPB1,SFTDUMPB2];
-% *** OPTICS=AD_ACCEL-preRelease ***
+% *** OPTICS=AD_ACCEL-10SEP2026s ***
 % SXR XTES
 % ==============================================================================
 % Modification History
@@ -14334,7 +14348,7 @@ SXTES3=[BEGSXTES_3,DSXTES37,MR1K3_TXI,DSXTES38,MR2K3_TXI,MR2K3_TXI_GBC_1,DSXTES3
 % TMO line
 SXTES4=[BEGSXTES_4,DSXTES59,BT2K0_PLEG_TMO,DSXTES60,TV3K0_VGC_1,DSXTES61,TV3K0_PGT_1,DSXTES62,TV3K0_VRM_1,TV3K0_GCC_1,TV3K0_GPI_1,TV3K0_PIP_1,DSXTES63,MR1K4_VGC_1,DSXTES64,MR1K4_SOMS,MR1K4_SOMS_GBC_1,DSXTES65,PC1K4_SSA,DSXTES66,BT1K4_L2SI,DSXTES67,TV1K4_VGC_1,DSXTES68,TV1K4_VFS_1,DSXTES69,TV1K4_VRM_1,TV1K4_GCC_1,TV1K4_GPI_1,DSXTES70,ND2S,DSXTES71,AT1K4_SOLID,DSXTES72,TV1K4_VGC_2,DSXTES73,PC2K4_XTES,DSXTES74,BT2K4_XTES,DSXTES75,BS1K4_XTES,DSXTES76,IM1K4_XTES,DSXTES77,ST1K4_TEST,DSXTES78,SP1K4,DSXTES79,LUSI,DSXTES80,PC3K4_XTES,DSXTES81,ST2K4_BCS,DSXTES82,ST3K4_PPS,ST3K4_PPS_GBC_1,DSXTES83,ST3K4_PPS_VGC_1,DSXTES84,AL1K4_L2SI,DSXTES85,SL1K4_SCATTER,DSXTES86,IM2K4_PPM,DSXTES87,IM2K4_XTES_VRM_1,PC4K4_XTES_GCC_1,PC4K4_XTES_GPI_1,PC4K4_XTES_PIP_1,DSXTES88,PC4K4_XTES,DSXTES89,BT3K4_XTES,DSXTES90,BS2K4_XTES,DSXTES91,TP_WALL2E,DSXTES92,TP_WALL2W,ENDSXTES_4];
 % ------------------------------------------------------------------------------
-% *** OPTICS=AD_ACCEL-preRelease ***
+% *** OPTICS=AD_ACCEL-10SEP2026s ***
 % LCLS2sc DASEL
 % ==============================================================================
 % Modification History
@@ -14742,7 +14756,7 @@ LCLS2SCC=[HTR,COL0,L1,BC1,COL1,L2,BC2,EMIT2,L3,BR3B,L4,EXT,DLBM];
 LCLS2SCI2=[BEAM0LEI,DCM4B,QCM00_FULL,DCM5,CM00END,DCMCM1,HOMCM00,DCAP0D2,FCLEI,DMSC0DA,BLFLEI,DMSC0DB,VGLEID,DMSC0DC,VPLEID,DMSC0DD,VVLEID,MSCLEI,ENDL0LEI];
 LCLS2SCC2=[LEI,HTR_2,COL0,L1,BC1,COL1,L2,BC2,EMIT2,L3,BR3B,L4,EXT,DLBM];
 % new BSY area definitions
-% *** OPTICS=AD_ACCEL-preRelease ***
+% *** OPTICS=AD_ACCEL-10SEP2026s ***
 % ==============================================================================
 % Modification History
 % ------------------------------------------------------------------------------
@@ -14865,7 +14879,7 @@ LCLS2SCSTXI=[FODOLA,BSYLCLS2SCSTXI];
 LCLS2SCSTMO=[FODOLA,BSYLCLS2SCSTMO];
 % ------------------------------------------------------------------------------
 % FDN definitions
-% *** OPTICS=AD_ACCEL-preRelease ***
+% *** OPTICS=AD_ACCEL-10SEP2026s ***
 % SC_SXR    : BEGGUNB   /ENDDMPS_2
 % SC_SFTS   : BEGSFTS_1 /ENDSFTS_2
 % SC_S2_X   : BEGSXTES_1/ENDSXTES_2
@@ -14973,7 +14987,7 @@ TWSSDLI=struct('ENERGY',EILEI,'BETX',BXDLI,'ALFX',AXDLI,'BETY',BYDLI,'ALFY',AYDL
 % SUBROUTINEs (only used by makeMatlabModel)
 % ------------------------------------------------------------------------------
 % NOTE: model_parseMAD.m doesn't allow SUBROUTINE calls within SUBROUTINEs
-%COMMENT uncomment for makeMatlabModel
+%COMMENT uncomment for Matlab model generation (model_parseMAD.m)
 % LEI configuration
 % SETK2SCLEI : SUBROUTINE !matched at Ei= 100 MeV
 %   SET, EILEI, 0.100
@@ -15016,7 +15030,6 @@ TWSSDLI=struct('ENERGY',EILEI,'BETX',BXDLI,'ALFX',AXDLI,'BETY',BYDLI,'ALFY',AYDL
 %   SET, KQL4P, -0.067161651898
 % LEI diagnostic line quad settings for MTCXDGI/OTRDGI1 dMUX=1.75*2pi
 % SETK2SCDGI : SUBROUTINE
-%   SET, FRACL1, 0.999211903118
 %   SET, KQDGI01, 18.218162060454
 %   SET, KQDGI02, -23.301770754883
 %   SET, KQDGI03, 31.28953705025
@@ -15077,11 +15090,10 @@ TWSSDLI=struct('ENERGY',EILEI,'BETX',BXDLI,'ALFX',AXDLI,'BETY',BYDLI,'ALFY',AYDL
 % 
 % 
 % 
-% % *** OPTICS=AD_ACCEL-preRelease ***
+% % *** OPTICS=AD_ACCEL-10SEP2026s ***
 % %suppress "redefinition" warnings
-% % LEI energy profile settings
-% E0=E0LEI;%beam energy at CATHODELEI
-% EI=EILEI;%beam energy at BEAM0LEI
+% E0=E0LEI;
+% EI=EILEI;
 % FRACL1=FRACL1LEI;%L1B: 100 MeV -> 235 MeV
 % LHHNUM=1;%heater laser harmonic (fundamental mode)
 % % SC linac settings when using LEI injector (see SETK2scLEI.xsif)
@@ -15181,7 +15193,20 @@ TWSSDLI=struct('ENERGY',EILEI,'BETX',BXDLI,'ALFX',AXDLI,'BETY',BYDLI,'ALFY',AYDL
 %STOP
 % ------------------------------------------------------------------------------
 %CALL "LCLS2sc_color_plots.mad8" run by itself (ends with STOP)
-%CALL "LCLS2sc_area_plots.mad8"  run by itself (ends with STOP)
+% *** OPTICS=AD_ACCEL-10SEP2026s ***
+% ------------------------------------------------------------------------------
+% ------------------------------------------------------------------------------
+%UES+DMPS
+% ------------------------------------------------------------------------------
+% ------------------------------------------------------------------------------
+% ------------------------------------------------------------------------------
+% ------------------------------------------------------------------------------
+% ------------------------------------------------------------------------------
+% ------------------------------------------------------------------------------
+% ------------------------------------------------------------------------------
+% ------------------------------------------------------------------------------
+%CALL, FILENAME="SETK2scDGI.xsif" for mux=1.75*2pi from TCXDGI to OTRDGI1
+% ------------------------------------------------------------------------------
 % ==============================================================================
 % Beam from LCLS-II gun (SURVEY in linac coordinates)
 % ------------------------------------------------------------------------------
@@ -15241,7 +15266,7 @@ TWSSDLI=struct('ENERGY',EILEI,'BETX',BXDLI,'ALFX',AXDLI,'BETY',BYDLI,'ALFY',AYDL
 % DIAGIS
 %COMMENT
 %CALL, FILENAME="SETK2scDGI.xsif" for mux=1.75*2pi from TCXDGI to OTRDGI1 ... use for BSC
-%SETK2scDGI
+%SETK2scDGI for Matlab model generation only (model_parseMAD.m)
 %SAVELINE, NAME="DIAGIS", FILENAME="DIAGIS.saveline"
 %, &
 %  RTAPE="DIAGIS_rmat.tape"
@@ -15250,6 +15275,7 @@ TWSSDLI=struct('ENERGY',EILEI,'BETX',BXDLI,'ALFX',AXDLI,'BETY',BYDLI,'ALFY',AYDL
 % DIAG02
 %COMMENT
 %CALL, FILENAME="SETK2scLEI.xsif"
+%for Matlab model generation only (model_parseMAD.m)
 %SAVELINE, NAME="SC_DIAG02", FILENAME="DIAG02.saveline"
 %, &
 %  RTAPE="DIAG02_rmat.tape"
@@ -15258,6 +15284,7 @@ TWSSDLI=struct('ENERGY',EILEI,'BETX',BXDLI,'ALFX',AXDLI,'BETY',BYDLI,'ALFY',AYDL
 % HXR
 %COMMENT
 %CALL, FILENAME="SETK2scLEI.xsif"
+%for Matlab model generation only (model_parseMAD.m)
 %SAVELINE, NAME="SC_HXR2", FILENAME="LCLS2scH2.saveline"
 %, &
 %  RTAPE="LCLS2scH2_rmat.tape"
@@ -15266,6 +15293,7 @@ TWSSDLI=struct('ENERGY',EILEI,'BETX',BXDLI,'ALFX',AXDLI,'BETY',BYDLI,'ALFY',AYDL
 % SXR
 %COMMENT
 %CALL, FILENAME="SETK2scLEI.xsif"
+%for Matlab model generation only (model_parseMAD.m)
 %SAVELINE, NAME="SC_SXR2", FILENAME="LCLS2scS2.saveline"
 %, &
 %  RTAPE="LCLS2scS2_rmat.tape"
@@ -15274,6 +15302,7 @@ TWSSDLI=struct('ENERGY',EILEI,'BETX',BXDLI,'ALFX',AXDLI,'BETY',BYDLI,'ALFY',AYDL
 % BSY dump
 %COMMENT
 %CALL, FILENAME="SETK2scLEI.xsif"
+%for Matlab model generation only (model_parseMAD.m)
 %SAVELINE, NAME="SC_BSYD2", FILENAME="LCLS2scD2.saveline"
 %, &
 %  RTAPE="LCLS2scD2_rmat.tape"
@@ -15282,6 +15311,7 @@ TWSSDLI=struct('ENERGY',EILEI,'BETX',BXDLI,'ALFX',AXDLI,'BETY',BYDLI,'ALFY',AYDL
 % DASEL (a.k.a. S30XL, LESA ... funded off-project)
 %COMMENT
 %CALL, FILENAME="SETK2scLEI.xsif"
+%for Matlab model generation only (model_parseMAD.m)
 %SAVELINE, NAME="SC_DASEL2", FILENAME="LCLS2scDA2.saveline"
 %, &
 %  RTAPE="LCLS2scDA2_rmat.tape"

@@ -1,10 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-preRelease ***
+! *** OPTICS=AD_ACCEL-10SEP2026s ***
 
 ! LCLS2sc LTU and dump
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 03-SEP-2026, M. Woodley
+!  * add INST "VPIO332" in LTUS (between QDL15 and QDL16) per F.-J. Decker
 ! ------------------------------------------------------------------------------
 ! 24-JUL-2025, M. Woodley
 !  * add MARKER point "SWIVEL" at location of swivel point
@@ -866,6 +869,8 @@
   LDL0ba := 0.1953
   LDL0bb := 3.213005+(LQA-LQR)/2-LDL0ba
   LDL0bc := LDL0b-LDL0ba-LDL0bb
+  LDL0bc1 := 5.693661880758
+  LDL0bc2 := LDL0bc-LDL0bc1
   LDL1b  := 2.9815+(LQA-LQR)/2
   LDL1ba := 1.316489-Lplate !1.317304
   LDL1bc := 0.1953
@@ -915,6 +920,8 @@
   DDL0ba : DRIFT, L=LDL0ba
   DDL0bb : DRIFT, L=LDL0bb
   DDL0bc : DRIFT, L=LDL0bc
+  DDL0bc1 : DRIFT, L=LDL0bc1
+  DDL0bc2 : DRIFT, L=LDL0bc2
   DDL1b  : DRIFT, L=LDL1b
   DDL1ba : DRIFT, L=LDL1ba
   DDL1bb : DRIFT, L=LDL1bb
@@ -1056,6 +1063,8 @@
   PC07B  : INST, TYPE="BCS plate", L=Lplate
   BTM07B : INST, TYPE="PPS BTM"
 
+  VPIO332 : INST, TYPE="VPIO:LTUS:332"
+
   DBMARK34b : MARK !entrance of BX31
   CNTLT1S   : MARK, TYPE="CENTER"
 
@@ -1100,7 +1109,7 @@
     QDL14_full,DDL8ca,BPMDL14,DDL8cb,&
     DWIGSa,PC03B,BTM03B,DWIGSb,DDL8d,XCDL15,DDL6ba,&
     SDL2_full,DDL6bb,&
-    QDL15_full,DDL0ba,BPMDL15,DDL0bb,DDL0bc,YCDL16,DDL6b,&
+    QDL15_full,DDL0ba,BPMDL15,DDL0bb,DDL0bc1,VPIO332,DDL0bc2,YCDL16,DDL6b,&
     QDL16_full,DBYKS01,CYDL16,DBYKS02,BPMDL16,DBYKS03,PC04B,BTM04B,DBYKS04,&
     BYKIK1S_full,DBYKS05,DBYKS05,&
     BYKIK2S_full,DBYKS06,XCDL17,DBYKS07,BPMDL17,DBYKS08,&
