@@ -485,6 +485,24 @@
 
 ! ------------------------------------------------------------------------------
 
+! SXR
+
+ !COMMENT
+    ASSIGN, PRINT="BSY-LCLS2cuS.print"
+    BEAM, ENERGY=Ef
+    SET, SETCUS, CUSON   !pulsed
+   !SET, SETCUS, CUSONDC !DC
+   !VALUE, PULSED,DCMODE
+    CALL, FILENAME="SETK2cuS.xsif"
+   !SETK2cuS
+    USE, BSYLTUS
+    PRINT, FULL
+    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
+      TAPE="BSY-LCLS2cuS_survey.tape"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
 ! HXR XTES
 
  !COMMENT
@@ -509,24 +527,6 @@
     PRINT, FULL
     SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
       TAPE="BSY-LCLS2cuHTXI_survey.tape"
- !ENDCOMMENT
-
-! ------------------------------------------------------------------------------
-
-! SXR
-
- !COMMENT
-    ASSIGN, PRINT="BSY-LCLS2cuS.print"
-    BEAM, ENERGY=Ef
-    SET, SETCUS, CUSON   !pulsed
-   !SET, SETCUS, CUSONDC !DC
-   !VALUE, PULSED,DCMODE
-    CALL, FILENAME="SETK2cuS.xsif"
-   !SETK2cuS
-    USE, BSYLTUS
-    PRINT, FULL
-    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
-      TAPE="BSY-LCLS2cuS_survey.tape"
  !ENDCOMMENT
 
 ! ==============================================================================

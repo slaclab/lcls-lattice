@@ -786,6 +786,19 @@
 
 ! ------------------------------------------------------------------------------
 
+! SXR safety dump
+
+ !COMMENT
+    ASSIGN, PRINT="LCLS2scSS.print"
+    BEAM, ENERGY=E0
+    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
+    USE, SC_SFTS
+    PRINT, FULL
+    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scSS_survey.tape"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
 ! BSY dump
 
  !COMMENT
@@ -849,19 +862,6 @@
 
 ! ------------------------------------------------------------------------------
 
-! SXR safety dump
-
- !COMMENT
-    ASSIGN, PRINT="LCLS2scSS.print"
-    BEAM, ENERGY=E0
-    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
-    USE, SC_SFTS
-    PRINT, FULL
-    SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scSS_survey.tape"
- !ENDCOMMENT
-
-! ------------------------------------------------------------------------------
-
 ! SXR 2_X !"2.X"
 
  !COMMENT
@@ -897,6 +897,120 @@
     USE, SC_STMO
     PRINT, FULL
     SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scSTMO_survey.tape"
+ !ENDCOMMENT
+
+! ==============================================================================
+! SURVEY in BSY coordinates (from start of spreader)
+! ------------------------------------------------------------------------------
+
+! HXR
+
+ !COMMENT
+    ASSIGN, PRINT="BSY-LCLS2scH.print"
+    BEAM, ENERGY=Ef
+    SET, SETSP, SETSPh
+    USE, BSYLCLS2scH
+    PRINT, FULL
+    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
+      TAPE="BSY-LCLS2scH_survey.tape"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! SXR
+
+ !COMMENT
+    ASSIGN, PRINT="BSY-LCLS2scS.print"
+    BEAM, ENERGY=Ef
+    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
+    USE, BSYLCLS2scS
+    PRINT, FULL
+    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
+      TAPE="BSY-LCLS2scS_survey.tape"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! SXR safety dump (nominal energy: 8 GeV; energy range: 2-10 GeV)
+
+ !COMMENT
+    ASSIGN, PRINT="BSY-LCLS2scSS.print"
+    BEAM, ENERGY=Ef
+    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
+    USE, BSYLCLS2scSS
+    PRINT, FULL
+    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
+      TAPE="BSY-LCLS2scSS_survey.tape"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! BSY DUMP
+
+ !COMMENT
+    ASSIGN, PRINT="BSY-LCLS2scD.print"
+    BEAM, ENERGY=Ef
+    SET, SETSP, SETSPd ; SET, SETDA, DAOFF
+    USE, BSYLCLS2scD
+    PRINT, FULL
+    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
+      TAPE="BSY-LCLS2scD_survey.tape"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! DASEL (a.k.a. S30XL, LESA ... funded off-project)
+
+ !COMMENT
+    ASSIGN, PRINT="BSY-LCLS2scDA.print"
+    BEAM, ENERGY=Ef
+    SET, SETSP, SETSPd ; SET, SETDA, DAON
+    USE, BSYLCLS2scDA
+    PRINT, FULL
+    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
+      TAPE="BSY-LCLS2scDA_survey.tape"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! SXR 2_X !"2.X"
+
+ !COMMENT
+    ASSIGN, PRINT="BSY-LCLS2scS2_X.print"
+    BEAM, ENERGY=Ef
+    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
+    USE, BSYLCLS2scS2_X
+    PRINT, FULL
+    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
+      TAPE="BSY-LCLS2scS2_X_survey.tape"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! SXR TXI
+
+ !COMMENT
+    ASSIGN, PRINT="BSY-LCLS2scSTXI.print"
+    BEAM, ENERGY=Ef
+    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
+    USE, BSYLCLS2scSTXI
+    PRINT, FULL
+    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
+      TAPE="BSY-LCLS2scSTXI_survey.tape"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
+! SXR TMO
+
+ !COMMENT
+    ASSIGN, PRINT="BSY-LCLS2scSTMO.print"
+    BEAM, ENERGY=Ef
+    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
+    USE, BSYLCLS2scSTMO
+    PRINT, FULL
+    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
+      TAPE="BSY-LCLS2scSTMO_survey.tape"
  !ENDCOMMENT
 
 ! ==============================================================================
@@ -1098,120 +1212,6 @@
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
       STYLE=100, SPLINE, RANGE=BEGB/MADUMP, FILE="LCLS2scDA2", &
       TITLE="Aline (relaxed optics)"
- !ENDCOMMENT
-
-! ==============================================================================
-! SURVEY in BSY coordinates (from start of spreader)
-! ------------------------------------------------------------------------------
-
-! HXR
-
- !COMMENT
-    ASSIGN, PRINT="BSY-LCLS2scH.print"
-    BEAM, ENERGY=Ef
-    SET, SETSP, SETSPh
-    USE, BSYLCLS2scH
-    PRINT, FULL
-    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
-      TAPE="BSY-LCLS2scH_survey.tape"
- !ENDCOMMENT
-
-! ------------------------------------------------------------------------------
-
-! SXR
-
- !COMMENT
-    ASSIGN, PRINT="BSY-LCLS2scS.print"
-    BEAM, ENERGY=Ef
-    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
-    USE, BSYLCLS2scS
-    PRINT, FULL
-    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
-      TAPE="BSY-LCLS2scS_survey.tape"
- !ENDCOMMENT
-
-! ------------------------------------------------------------------------------
-
-! BSY DUMP
-
- !COMMENT
-    ASSIGN, PRINT="BSY-LCLS2scD.print"
-    BEAM, ENERGY=Ef
-    SET, SETSP, SETSPd ; SET, SETDA, DAOFF
-    USE, BSYLCLS2scD
-    PRINT, FULL
-    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
-      TAPE="BSY-LCLS2scD_survey.tape"
- !ENDCOMMENT
-
-! ------------------------------------------------------------------------------
-
-! DASEL (a.k.a. S30XL, LESA ... funded off-project)
-
- !COMMENT
-    ASSIGN, PRINT="BSY-LCLS2scDA.print"
-    BEAM, ENERGY=Ef
-    SET, SETSP, SETSPd ; SET, SETDA, DAON
-    USE, BSYLCLS2scDA
-    PRINT, FULL
-    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
-      TAPE="BSY-LCLS2scDA_survey.tape"
- !ENDCOMMENT
-
-! ------------------------------------------------------------------------------
-
-! SXR safety dump (nominal energy: 8 GeV; energy range: 2-10 GeV)
-
- !COMMENT
-    ASSIGN, PRINT="BSY-LCLS2scSS.print"
-    BEAM, ENERGY=Ef
-    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
-    USE, BSYLCLS2scSS
-    PRINT, FULL
-    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
-      TAPE="BSY-LCLS2scSS_survey.tape"
- !ENDCOMMENT
-
-! ------------------------------------------------------------------------------
-
-! SXR 2_X !"2.X"
-
- !COMMENT
-    ASSIGN, PRINT="BSY-LCLS2scS2_X.print"
-    BEAM, ENERGY=Ef
-    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
-    USE, BSYLCLS2scS2_X
-    PRINT, FULL
-    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
-      TAPE="BSY-LCLS2scS2_X_survey.tape"
- !ENDCOMMENT
-
-! ------------------------------------------------------------------------------
-
-! SXR TXI
-
- !COMMENT
-    ASSIGN, PRINT="BSY-LCLS2scSTXI.print"
-    BEAM, ENERGY=Ef
-    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
-    USE, BSYLCLS2scSTXI
-    PRINT, FULL
-    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
-      TAPE="BSY-LCLS2scSTXI_survey.tape"
- !ENDCOMMENT
-
-! ------------------------------------------------------------------------------
-
-! SXR TMO
-
- !COMMENT
-    ASSIGN, PRINT="BSY-LCLS2scSTMO.print"
-    BEAM, ENERGY=Ef
-    SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
-    USE, BSYLCLS2scSTMO
-    PRINT, FULL
-    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
-      TAPE="BSY-LCLS2scSTMO_survey.tape"
  !ENDCOMMENT
 
 ! ==============================================================================
