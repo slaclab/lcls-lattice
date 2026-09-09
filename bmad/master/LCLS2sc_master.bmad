@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-01JUN2026s ***
+! *** OPTICS=AD_ACCEL-10SEP2026s ***
 
 ! ==============================================================================
 ! Modification History
@@ -25,15 +25,14 @@ ft2m = 0.3048          !m/foot
 
 ! kinetic energy profile
 
-e0 = mc2+0.750e-3      !NGLS/APEX gun energy (GeV) ... 750 kV gun
-ei = 0.075             !energy at end of L0B (GeV)
-e1 = 0.235             !BC1 energy (GeV)
-e2 = 1.55              !BC2 energy (GeV)
-e3 = 4.0               !L3 final energy (GeV)
-ef = 8.0               !final beam energy (GeV)
-eu = 8.0               !energy in undulator (GeV)
-emax = 10.0              !maximum beam energy
-e0lei = 2.790915293401e-3 !LEI gun energy (GeV)
+!e0 = mc2+0.750e-3 !NGLS/APEX gun energy (GeV) ... 750 kV gun
+!ei = 0.075        !energy at end of L0B (GeV)
+e1 = 0.235        !BC1 energy (GeV)
+e2 = 1.55         !BC2 energy (GeV)
+e3 = 4.0          !L3 final energy (GeV)
+ef = 8.0          !final beam energy (GeV)
+eu = 8.0          !energy in undulator (GeV)
+emax = 10.0         !maximum beam energy
 
 brho0 = cb*e0
 brhoi = cb*ei
@@ -42,7 +41,12 @@ brho2 = cb*e2
 brho3 = cb*e3
 brhof = cb*ef
 brhou = cb*eu
-brho0lei = cb*e0lei
+
+!e0lei = 2.790915293401e-3 !LEI gun energy (GeV)
+!eilei = 0.100             !energy at end of L0LEI (GeV)
+
+!brho0lei = cb*e0lei
+!brhoilei = cb*eilei
 
 ! compression
 
@@ -85,11 +89,7 @@ ayi = -1.6925
 bmax = 55
 
 ! "treaty" Twiss at center of laser heater undulator
-
-bxlh = 10.0
-axlh = 0
-bylh = 10.0
-aylh = 0
+! (see BLHUw in INJ.xsif and LCLS2sc_match.mad8, SUBROUTINE ML0LH)
 
 ! ------------------------------------------------------------------------------
 
@@ -102,17 +102,17 @@ ayilei = -0.4746356317302934 !-1.0
 
 ! Twiss at LEI gun
 
-bx0lei = 3.132630090869 ! 2.035553709314
-ax0lei = 0.792777427933 ! 0.839787110788
-by0lei = 3.132630090869 ! 2.035553709314
-ay0lei = 0.792777427933 ! 0.839787110788
+bx0lei = 2.048056174955 ! 3.132630090869
+ax0lei = 1.223800103511 ! 0.792777427933
+by0lei = 2.048056174955 ! 3.132630090869
+ay0lei = 1.223800103511 ! 0.792777427933
 
 ! Twiss at entrance to LEI dogleg
 
-bxdli = 0.7928151967   ! 0.773514349232
-axdli = 1.239201451893 ! 1.233992475513
-bydli = 8.389181442895 ! 8.326162160521
-aydli = 2.280563207812 ! 2.387214094461
+bxdli = 0.766558400686 ! 0.7928151967
+axdli = 1.277080825402 ! 1.239201451893
+bydli = 8.368608344817 ! 8.389181442895
+aydli = 2.445831762801 ! 2.280563207812
 
 ! LEI "treaty" Twiss at center of laser heater undulator
 
@@ -246,7 +246,7 @@ call, file = CM_SWAVE.bmad
 call, file = DIAG0.bmad    !must come before INJ.xsif
 call, file = INJ.bmad      !QCM01 on; Ei= 100 MeV
 call, file = INJ2.bmad     !four bend
-call, file = DIAGI.bmad    !four bend
+call, file = DIAGIS.bmad   !four bend
 call, file = BC1.bmad
 call, file = BC2.bmad
 call, file = DLBM.bmad
@@ -316,7 +316,7 @@ call, file = BSYsc.bmad
 ! beam path definitions: beam from LEI gun
 ! ------------------------------------------------------------------------------
 
- !SC_DIAGIS : superconducting linac to DIAGI spectrometer
+ !SC_DIAGIS : superconducting linac to DIAGIS spectrometer
  !SC_DIAG02 : superconducting linac to DIAG0
  !SC_HXR2   : superconducting linac to e- HXR dump
  !SC_SXR2   : superconducting linac to e- SXR dump
@@ -341,15 +341,15 @@ call, file = BSYsc.bmad
 ! for Twiss starting at BEAM0LEI
 
   SC_DIAGISi : LINE=(LCLS2scI2,LEI_1,DIAGIS)
-  SC_DIAG0i2 : LINE=(LCLS2scI2,LEI,HTR_2,DIAG0)
-  SC_HXRi2   : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scH)
-  SC_SXRi2   : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scS)
-  SC_SFTSi2  : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scSS)
-  SC_S2_Xi2  : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scS2_X)
-  SC_STXIi2  : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scSTXI)
-  SC_STMOi2  : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scSTMO)
-  SC_DASELi2 : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scDA)
-  SC_BSYDi2  : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scD)
+  SC_DIAG02i : LINE=(LCLS2scI2,LEI,HTR_2,DIAG0)
+  SC_HXR2i   : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scH)
+  SC_SXR2i   : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scS)
+  SC_SFTS2i  : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scSS)
+  SC_S2_X2i  : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scS2_X)
+  SC_STXI2i  : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scSTXI)
+  SC_STMO2i  : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scSTMO)
+  SC_DASEL2i : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scDA)
+  SC_BSYD2i  : LINE=(LCLS2scI2,LCLS2scC2,LCLS2scD)
 
 ! ==============================================================================
 ! initial BSY coordinates at BEGSP (LTUSPLIT)
