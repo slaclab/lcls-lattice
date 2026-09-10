@@ -4,7 +4,7 @@
 ! generate output files for RDB generation
 
 ! ------------------------------------------------------------------------------
-! SURVEY tape files (linac coordinates)
+! LCLS-II SURVEY tape files (linac coordinates)
 ! ------------------------------------------------------------------------------
 
 ! use default K-values
@@ -70,30 +70,6 @@
   USE, SC_DASEL
   PRINT, FULL
   SURVEY, X0=Xgun, Y0=Ygun, Z0=Zgun, TAPE="LCLS2scDA_survey.tape"
-
-! ------------------------------------------------------------------------------
-
-  ASSIGN, PRINT="DIAGIS.print"
-  BEAM, ENERGY=E0LEI
- !CALL, FILENAME="SETK2scDGI.xsif" !for mux=1.75*2pi from TCXDGI to OTRDGI1
-  USE, SC_DIAGIS
-  PRINT, FULL
-  SURVEY, X0=Xgun2, Y0=Ygun2, Z0=Zgun2, TAPE="DIAGIS_survey.tape"
-
-  ASSIGN, PRINT="DIAG02.print"
-  BEAM, ENERGY=E0LEI
-  CALL, FILENAME="SETK2scLEI.xsif"
-  USE, SC_DIAG02
-  PRINT, FULL
-  SURVEY, X0=Xgun2, Y0=Ygun2, Z0=Zgun2, TAPE="DIAG02_survey.tape"
-
-  ASSIGN, PRINT="LCLS2scD2.print"
-  BEAM, ENERGY=E0LEI
-  SET, SETSP, SETSPd ; SET, SETDA, DAOFF
-  CALL, FILENAME="SETK2scLEI.xsif"
-  USE, SC_BSYD2
-  PRINT, FULL
-  SURVEY, X0=Xgun2, Y0=Ygun2, Z0=Zgun2, TAPE="LCLS2scD2_survey.tape"
 
 ! ------------------------------------------------------------------------------
 ! SURVEY tape files (BSY coordinates)
@@ -389,6 +365,34 @@
   PSSXH44_K := KPSSX ; PSSXH44_L := LUPSSX ; VALUE, PSSXH44_K,PSSXH44_L
   PSSXH45_K := KPSSX ; PSSXH45_L := LUPSSX ; VALUE, PSSXH45_K,PSSXH45_L
   PSSXH46_K := KPSSX ; PSSXH46_L := LUPSSX ; VALUE, PSSXH46_K,PSSXH46_L
+
+! ------------------------------------------------------------------------------
+! LEI SURVEY tape files (linac coordinates)
+! ------------------------------------------------------------------------------
+
+  CALL, FILENAME="SETK2scLEI.xsif"
+
+  ASSIGN, PRINT="DIAGIS.print"
+  BEAM, ENERGY=E0
+ !CALL, FILENAME="SETK2scDGI.xsif" !for mux=1.75*2pi from TCXDGI to OTRDGI1
+  USE, SC_DIAGIS
+  PRINT, FULL
+  SURVEY, X0=Xgun2, Y0=Ygun2, Z0=Zgun2, TAPE="DIAGIS_survey.tape"
+
+  ASSIGN, PRINT="DIAG02.print"
+  BEAM, ENERGY=E0
+  CALL, FILENAME="SETK2scLEI.xsif"
+  USE, SC_DIAG02
+  PRINT, FULL
+  SURVEY, X0=Xgun2, Y0=Ygun2, Z0=Zgun2, TAPE="DIAG02_survey.tape"
+
+  ASSIGN, PRINT="LCLS2scD2.print"
+  BEAM, ENERGY=E0
+  SET, SETSP, SETSPd ; SET, SETDA, DAOFF
+  CALL, FILENAME="SETK2scLEI.xsif"
+  USE, SC_BSYD2
+  PRINT, FULL
+  SURVEY, X0=Xgun2, Y0=Ygun2, Z0=Zgun2, TAPE="LCLS2scD2_survey.tape"
 
 ! ------------------------------------------------------------------------------
 
