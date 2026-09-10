@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-01JUN2026s ***
+! *** OPTICS=AD_ACCEL-10SEP2026s ***
 
 ! LCLS2sc injector: gun to start of L1 linac
 
@@ -257,18 +257,19 @@ sq02b: quadrupole, tilt = pi/4, type = "3.37Q1.2", l = lqg/2, aperture = rqg, k1
 
 ! L0 to laser heater (adjustable-sized waists at WS0H04 and LHMID)
 
-!              heater ON        heater OFF        chicane OFF
-!           ---------------   ---------------   ---------------
-kq0h01 = -6.537777564736 ! -6.52550777024  ! -6.525507740091 !
-kq0h02 = 6.17752713417  !  6.335021207148 !  6.335021170324 !
-kq0h03 = 0.483905171963 ! -0.947731202989 ! -0.947730849886 !
-kq0h04 = -3.971575402157 ! -3.418410103407 ! -3.418410369207 !
-b0h04w = 7.710749594202 !  5.0            !  5.0            !
-kq0h05 = -2.32266979602  ! -7.451315276972 ! -7.508072657056 !
-kq0h06 = 0.0            !  1.835321381141 !  1.870908387696 !
-kq0h07 = 5.84302489781  !  7.794364472964 !  7.804907479846 !
-kq0h08 = -5.210258454761 ! -8.272684492892 ! -8.306722243051 !
-blhuw = 7.5            ! 10.0            ! 10.0            !
+!                heater ON        heater OFF
+!             ---------------  ---------------
+setumhtr = 1              ! 0
+kq0h01 = -6.537777564736 !-6.52550777024  !
+kq0h02 = 6.17752713417  ! 6.335021207148 !
+kq0h03 = 0.483905171963 !-0.94773120299  !
+kq0h04 = -3.971575402157 !-3.418410103407 !
+b0h04w = 7.710749594202 ! 5.0            !
+kq0h05 = -2.32266979602  !-7.451315276972 !
+kq0h06 = 0.0            ! 1.835321381141 !
+kq0h07 = 5.84302489781  ! 7.794364472964 !
+kq0h08 = -5.210258454761 !-8.272684492891 !
+blhuw = 7.5            !10.0            !
 
 q0h01: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h01
 q0h02: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h02
@@ -281,12 +282,12 @@ q0h08: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0h08
 
 ! laser heater to diagnostic line
 
-!              heater ON        heater OFF        chicane OFF
-!           ---------------   ---------------   ---------------
-kqhd01 = -13.178598580237 ! -8.743988237466 ! -8.746794738551 !
-kqhd02 = 7.650668410884 !  6.400024228564 !  6.401620200768 !
-kqhd03 = -7.978934972385 ! -8.612136694917 ! -8.622952974048 !
-kqhd04 = 6.238682089532 !  6.860670498454 !  6.864937307631 !
+!              heater ON         heater OFF
+!           ----------------   ---------------
+kqhd01 = -13.178598580237 ! -8.743988237466 !
+kqhd02 = 7.650668410884 !  6.400024228564 !
+kqhd03 = -7.978934972385 ! -8.612136694917 !
+kqhd04 = 6.238682089532 !  6.860670498454 !
 
 qhd01: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kqhd01
 qhd02: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kqhd02
@@ -359,18 +360,20 @@ sol2b: solenoid, type = "LBNL", l = lsol2/2, aperture = rsol, ks = ksol2
 ! - triple laser wavelength for 3rd harmonic operation
 ! - gap = 30.5885 mm
 
-! lam   : laser-heater undulator period [m]
-! lamr  : heater laser wavelength [m]
-! gami  : Lorentz energy factor in laser-heater undulator [1]
-! K_und : undulator K for laser heater undulator
-! Lhun  : length of laser-heater undulator (10 periods) [m]
-! Lhunh : half-length of laser-heater undulator [m]
-! kqlh  : natural undulator focusing "k" in y-plane [1/m2]
+! lam    : laser-heater undulator period [m]
+! LHhnum : heater laser harmonic number
+! lamr   : heater laser wavelength [m]
+! gami   : Lorentz energy factor in laser-heater undulator [1]
+! K_und  : undulator K for laser heater undulator
+! Lhun   : length of laser-heater undulator (10 periods) [m]
+! Lhunh  : half-length of laser-heater undulator [m]
+! kqlh   : natural undulator focusing "k" in y-plane [1/m2]
 
 lam = 0.054
-lamr = 3*1030e-9 !3rd harmonic
-gami = ei/emass
-k_und = sqrt(2*(lamr*2*gami^2/lam-1))
+!lhhnum = 3 !3rd harmonic
+lamr = lhhnum*1030e-9
+gami = ei/m_electron
+k_und = setumhtr*sqrt(2*(lamr*2*gami^2/lam-1))
 lhun = 9*lam
 lhunh = lhun/2
 kqlh = (k_und*2*pi/lam/sqrt(2)/gami)^2
@@ -1063,8 +1066,8 @@ sol2b_svy: null_ele, superimpose, ref=sol2b
 !=!      ENDHTR_1)
 !=!  ENDCOMMENT
 
-!=! COMMENT !simplified
-!=! COMMENT !simplified
+!=!  COMMENT !simplified
+!=!  COMMENT !simplified
 !=!    HTR_2 : LINE=(BEGHTR_2,D0H02e,D0H02f,&
 !=!      Q0H03,Q0H03,D0H03,&
 !=!      Q0H04,Q0H04,D0H04,&

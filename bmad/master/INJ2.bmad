@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-01JUN2026s ***
+! *** OPTICS=AD_ACCEL-10SEP2026s ***
 
 ! LCLS2sc injector #2: from CATHODELEI to merge with original LCLS-II injector
 !   (diagnostic line, spectrometer line, and dump line in DIAGI.xsif)
@@ -119,6 +119,10 @@ tcxdgi: lcavity, type = "@2,TRANS_XDEF", rf_frequency = 2856 * 1e6, l = 0.668023
 ! SBEN
 ! ------------------------------------------------------------------------------
 
+! NOTE: the 4 dipoles of the dogleg together form the 4th PPS stopper for this
+!       system, and therefore must be powered together on a string by a single
+!       (unipolar) power supply
+
 ! main dogleg bends
 
 abxdli = 28.404165093549*raddeg !35.0 (17.5 per dipole)
@@ -168,8 +172,8 @@ bxdlir2: sbend, type = "1.182D6.82T", l = lbxdlir, angle = -abxdlir, e1 = -abxdl
 
 !=!  COMMENT
 !=!  COMMENT
-!=!    VALUE, Brhoi*ABXDLI,(Cb*0.15)*ABXDLI
-!=!    VALUE, Brhoi*ABXDLIR,(Cb*0.15)*ABXDLIR
+!=!    VALUE, BrhoiLEI*ABXDLI,(Cb*0.15)*ABXDLI
+!=!    VALUE, BrhoiLEI*ABXDLIR,(Cb*0.15)*ABXDLIR
 !=!  ENDCOMMENT
 
 ! ==============================================================================
@@ -187,10 +191,10 @@ sq03lei: multipole, type = "solenoid trim", aperture = 0.076/2, k1l = 0,t1 !aper
 
 ! CM00 to dogleg
 
-kq0d01 = 2.96356284233  ! 2.879440808366 !bipolar
-kq0d02 = -5.313144898767 !-5.25420873538  !bipolar
-kq0d03 = 5.017950601463 ! 5.081662701897 !bipolar
-kq0d04 = -2.238356018748 !-2.375403619188 !bipolar
+kq0d01 = 2.706882072322 ! 2.96356284233  !bipolar
+kq0d02 = -5.130672896128 !-5.313144898767 !bipolar
+kq0d03 = 5.170150834067 ! 5.017950601463 !bipolar
+kq0d04 = -2.486285067037 !-2.238356018748 !bipolar
 
 q0d01: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0d01
 q0d02: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0d02
@@ -199,9 +203,9 @@ q0d04: quadrupole, type = "2Q4", l = lqm/2, aperture = rqm, k1 = kq0d04
 
 ! dogleg
 
-kqdli1 = 9.878151122844 ! 9.882006477684
-kqdli2 = -4.862135644171 !-4.965017317032
-kqdli3 = 4.669890460423 ! 4.735691302171
+kqdli1 = 9.883642037091 ! 9.878151122844
+kqdli2 = -5.006780433212 !-4.862135644171
+kqdli3 = 4.765554706944 ! 4.669890460423
 kqdli4 = kqdli3
 kqdli5 = kqdli2
 kqdli6 = kqdli1
@@ -217,7 +221,7 @@ qdli6: quadrupole, type = "1.26Q3.5", l = lqx/2, k1 = kqdli6, aperture = rqx
 ! SEXT
 ! ------------------------------------------------------------------------------
 
-ksdli = 84.723277178146 ! 84.719409347478
+ksdli = 84.717898859512 ! 84.723277178146
 ksdli1 = ksdli
 ksdli2 = -ksdli
 
@@ -226,8 +230,8 @@ sdli2: sextupole, type = "1.38S3.00", l = lsb/2, aperture = rsb, k2 = ksdli2
 
 !=!  COMMENT
 !=!  COMMENT
-!=!    VALUE, Brhoi*KSDLI1*LSb,(Cb*0.15)*KSDLI1*LSb
-!=!    VALUE, Brhoi*KSDLI2*LSb,(Cb*0.15)*KSDLI2*LSb
+!=!    VALUE, BrhoiLEI*KSDLI1*LSb,(Cb*0.15)*KSDLI1*LSb
+!=!    VALUE, BrhoiLEI*KSDLI2*LSb,(Cb*0.15)*KSDLI2*LSb
 !=!  ENDCOMMENT
 
 ! ==============================================================================
