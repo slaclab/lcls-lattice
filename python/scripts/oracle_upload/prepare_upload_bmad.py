@@ -1882,9 +1882,11 @@ with open(outdir+'/'+fname, 'wt') as fid:
     for entry in ips:
         kwn = entry[2]
         m = entry[3]
+        TEMP = ele_dict[kwn][m]
+        if TEMP['name'] == 'DYQDG001':
+            print(f'FOO {kwn}')
         if kwn in ['MARK', 'SROT']:
             continue
-        TEMP = ele_dict[kwn][m]
         TEMPucell = TEMP['ucell']
         TEMPucell = '' if isinstance(TEMPucell,list) else TEMPucell
         fid.write(f"{TEMP['name']},{TEMP['area']},{TEMPucell},{TEMP['sector']}\n")

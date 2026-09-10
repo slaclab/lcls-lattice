@@ -54,7 +54,7 @@ NEWELES['umasxh'] = """
 !new 
 !new umasxh[L] = umasxh[L]/2 ! Will be doubled in desplitting process. 
 !---------------------------------
-umasxh: taylor, type = "VGHPU39", l = lsxuh, tt11 = 1.0, tt12 = lsxuh, tt21 = 0, tt22 = 1.0,
+umasxh: taylor, type = "VGHPU56", l = lsxuh, tt11 = 1.0, tt12 = lsxuh, tt21 = 0, tt22 = 1.0,
           tt33 = cos(lsxuh*sqrt(kqsx)), tt34 = sin(lsxuh*sqrt(kqsx))/sqrt(kqsx), tt43 = -sin(lsxuh*sqrt(kqsx))*sqrt(kqsx),
           tt44 = cos(lsxuh*sqrt(kqsx)), tt55 = 1.0, tt66 = 1.0, mat_und_k = ksxu, mat_und_l = lusxu
 """
@@ -99,7 +99,7 @@ NEWELES['pssxh'] = """
 !new     b_max = 2*pi / pssxh_L_period * sqrt(2 * pssxh_phase_integral / pssxh_L  ),
 !new     n_period = 1
 !new pssxh[L] = pssxh[L]/2 ! Will be doubled in desplitting process. 
-pssxh: taylor, type = "PS75", l = lpssxh, tt11 = 1.0, tt12 = lpssxh, tt21 = 0, tt22 = 1.0,
+pssxh: taylor, type = "PS97.5", l = lpssxh, tt11 = 1.0, tt12 = lpssxh, tt21 = 0, tt22 = 1.0,
           tt33 = cos(lpssxh*sqrt(kqpssx)), tt34 = sin(lpssxh*sqrt(kqpssx))/sqrt(kqpssx),
           tt43 = -sin(lpssxh*sqrt(kqpssx))*sqrt(kqpssx), tt44 = cos(lpssxh*sqrt(kqpssx)), tt55 = 1.0, tt66 = 1.0,
           mat_und_k = kpssx, mat_und_l = lupssx
@@ -169,6 +169,17 @@ NEWELES['duqxl'] = """
 duqxl: drift, L = 0.2166 + 0.03
 """
 
+NEWELES['tcx01'] = """
+tcx01: crab_cavity, rf_frequency = xbandf * 1e6, type = "TRANS_DEFL", l = 1.0/2 !horizontal deflection
+"""
+
+NEWELES['tcx02'] = """
+tcx02: crab_cavity, rf_frequency = xbandf * 1e6, type = "TRANS_DEFL", l = 1.0/2 !horizontal deflection
+"""
+
+NEWELES['tcx01b'] = """
+tcx01b: crab_cavity, rf_frequency = xbandf * 1e6, type = "TRANS_DEFL", l = 1.5/2 !horiz. deflection
+"""
 
 # CU only replacements
 CU_NEWELES = {}
@@ -196,6 +207,13 @@ dh03a: drift, l = 0.09290825 - ( 10*0.054 - 0.506263 ) /2, type = "CSR"
 CU_NEWELES['dh03b'] = """
 ! Shorten so that lh_und has an integer number of poles
 dh03b: drift, l = 0.08401830- ( 10*0.054 - 0.506263 ) /2, type = "CSR"
+"""
+
+CU_NEWELES['tcav0'] = """
+tcav0: crab_cavity, type = "TRANS_DEFL", rf_frequency = 2856 * 1e6, l = 0.6680236/2 !flange-to-flange (then split in two)
+"""
+CU_NEWELES['tcav3'] = """
+tcav3: crab_cavity, type = "TRANS_DEFL", rf_frequency = 2856 * 1e6, l = 2.438/2
 """
 # Append json replacements to CU_NEWELES
 #CU_LINAC_REPLACEMENTS = json.load(open('bmad/conversion/replacements/good_cu_linac_replacements.json'))
