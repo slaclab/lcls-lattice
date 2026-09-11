@@ -1,10 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-01JUN2026s ***
+! *** OPTICS=AD_ACCEL-10SEP2026s ***
 
 ! LCLS2sc 3-way spreader system
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 03-JUN-2024, M. Woodley
+!  * de-scope XCSP0D and YCSP0D
 ! ------------------------------------------------------------------------------
 ! 25-JAN-2024, M. Woodley
 !  * de-scope rastering in BSY dump line
@@ -313,17 +316,17 @@ pssph = 0.0
 
 ! HXR quads
 
-kqsp1h = 0.492292814445 ! 0.49229321808  ! 0.492284061187
-kqsp2h = -1.000981055059 !-1.000981547327 !-1.000975933726
-kqsp3h = 0.304619142836 ! 0.304619176241 ! 0.304631069714
-kqsp4h = -0.301462173752 !-0.301462173869 !-0.301467337182
-kqsp5h = 0.179797605135 ! 0.179797579853 ! 0.179797501925
-kqsp6h = -0.221918232696 !-0.221918228381 !-0.221916295184
-kqsp7h = 0.44717384813  ! 0.447173802861 ! 0.447153906987
-kqsp10h = -0.301515202649 !-0.301515200372 !-0.301520272128
-kqsp11h = 0.304786173104 ! 0.304786198645 ! 0.304797809076
-kqsp12h = -0.99191810032  !-0.991916211284 !-0.991897597733
-kqsp13h = 0.491365751861 ! 0.49136556519  ! 0.49135154631
+kqsp1h = 0.492292814443 ! 0.492292814445
+kqsp2h = -1.000981055036 !-1.000981055059
+kqsp3h = 0.304619142842 ! 0.304619142836
+kqsp4h = -0.301462173749 !-0.301462173752
+kqsp5h = 0.179797605131 ! 0.179797605135
+kqsp6h = -0.221918232731 !-0.221918232696
+kqsp7h = 0.447173848164 ! 0.44717384813
+kqsp10h = -0.301515202628 !-0.301515202649
+kqsp11h = 0.304786173107 ! 0.304786173104
+kqsp12h = -0.991918100346 !-0.99191810032
+kqsp13h = 0.491365751858 ! 0.491365751861
 kqsp8h = kqsp6h
 kqsp9h = kqsp5h
 
@@ -343,11 +346,11 @@ qsp13h: quadrupole, type = "2Q10", l = lqr/2, k1 = kqsp13h, aperture = rqr
 
 ! HXR sextupoles
 
-kssp1h = -21.215952380359 !-21.282185980346 !-21.213678321818
-kssp2h = 22.699323306512 ! 22.886612812697 ! 22.697173502505
+kssp1h = -21.810964242728 !-21.215952380359
+kssp2h = 23.036129080885 ! 22.699323306512
 
-tssp1h = 15.17421962864  ! 15.186978605075 ! 15.174689147672
-tssp2h = 17.814486995202 ! 17.810742596035 ! 17.81442928042
+tssp1h = 15.008384674657 ! 15.17421962864
+tssp2h = 17.838252435796 ! 17.814486995202
 
 ssp1h: sextupole, tilt = raddeg*tssp1h, type = "@2,1.38S3.00", l = lsb/2, aperture = rsb, k2 = kssp1h
 ssp2h: sextupole, tilt = raddeg*tssp2h, type = "@2,1.38S3.00", l = lsb/2, aperture = rsb, k2 = kssp2h
@@ -403,8 +406,8 @@ qsp9s: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqsp9s, aperture = rqa
 
 ! SXR sextupoles
 
-kssp1s = 12.489478420178 !12.861579411778
-kssp2s = 13.252942923284 !12.859423277476
+kssp1s = 13.636296393751 ! 12.489478420178
+kssp2s = 13.422846570656 ! 13.252942923284
 
 ssp1s: sextupole, type = "@2,1.38S3.00", l = lsb/2, aperture = rsb, k2 = kssp1s
 ssp2s: sextupole, type = "@2,1.38S3.00", l = lsb/2, aperture = rsb, k2 = kssp2s
@@ -1240,9 +1243,6 @@ ycsp4s: vkicker, type = "class-4"
 ycsp6s: vkicker, type = "class-4"
 ycsp8s: vkicker, type = "class-4"
 
-xcsp0d: hkicker, type = "@4,Bypass#3"
-ycsp0d: vkicker, type = "@4,Bypass#3"
-
 xcsp1d: hkicker, type = "class-4"
 xcsp3d: hkicker, type = "class-4"
 xcsp5d: hkicker, type = "class-4"
@@ -1689,7 +1689,7 @@ ssp2s_svy: null_ele, superimpose, ref=ssp2s
 
   SPRDs : LINE=(SPRDsa,SPRDsb)
 
-  SPRDda : LINE=(DSP2da1a,YCSP0D,DSP2da1b,XCSP0D,DSP2da1c,MRFBSP1d,DSP2da2,BPMSP1d,DSP2db)
+  SPRDda : LINE=(DSP2da1,MRFBSP1d,DSP2da2,BPMSP1d,DSP2db)
 
   SPRDdb : LINE=(DSP2dc1)
 

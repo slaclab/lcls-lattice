@@ -1,10 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-01JUN2026s ***
+! *** OPTICS=AD_ACCEL-10SEP2026s ***
 
 ! LCLS2sc injector diagnostic beamline
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 03-JUN-2024, M. Woodley
+!  * remove straight-ahead dump line (descoped)
 ! ------------------------------------------------------------------------------
 ! 27-JAN-2024, M. Woodley
 !  * put all DIAGI devices back to 13MAR23 Z-locations
@@ -94,14 +97,14 @@
 ! QUAD
 ! ------------------------------------------------------------------------------
 
-  KQDGI01 :=  18.627874286113 ! 18.555566273709
-  KQDGI02 := -22.956227415849 !-23.094689877278
-  KQDGI03 :=  29.054603342841 ! 29.188779461195
-  KQDGI04 := -22.948750443675 !-22.541388138863
-  KQDGI05 :=  11.62599785155  ! 11.62599785155
+  KQDGI01 :=  18.485368867392 ! 18.627874286113
+  KQDGI02 := -23.136271327498 !-22.956227415849
+  KQDGI03 :=  29.451237004586 ! 29.054603342841
+  KQDGI04 := -22.377736617466 !-22.948750443675
+  KQDGI05 :=  11.62599785155  ! 11.62599785155 
   KQDGI06 := -KQDGI05
   KQDGI07 :=  KQDGI05
-  KQDGI08 :=  -9.766042403296 ! -9.766043568244
+  KQDGI08 :=  -9.865234108811 ! -9.766042403296
 
   QDGI01 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQDGI01
   QDGI02 : QUAD, TYPE="1.26Q3.5", L=LQx/2, APER=rQx, K1=KQDGI02
@@ -119,12 +122,6 @@
   DBXDLI1a : DRIF, L=ZBXDLI/2                         !parameters defined in INJ2.xsif
   DBXDLI1b : DRIF, L=ZBXDLI*COS(ABXDLI/2)-DBXDLI1a[L] !parameters defined in INJ2.xsif
 
-  DBYDGISa : DRIF, L=ZBYDGI/2
-  DBYDGISb : DRIF, L=ZBYDGI*COS(ABYDGI/2)-DBYDGISa[L]
-
-  DBYDGIDb : DRIF, L=ZBYDGI/2
-  DBYDGIDa : DRIF, L=ZBYDGI*COS(ABYDGI/2)-DBYDGIDb[L]
-
   DDGI00 : DRIF, L=1.715214550178 !2.0
   DDGI01 : DRIF, L=0.5 !0.6835
   DDGI02 : DRIF, L=0.5
@@ -136,8 +133,6 @@
   DDGI08 : DRIF, L=0.6
   DDGI09 : DRIF, L=1.87976922505 !0.935
   DDGI10 : DRIF, L=2.332455 !2.85
-  DDGI11 : DRIF, L=1.53981681 !0.765907
-  DDGI12 : DRIF, L=2.332455 !2.85
 
   DDGI01a : DRIF, L=0.2 !0.15
   DDGI01b : DRIF, L=DDGI01[L]-DDGI01a[L]
@@ -266,7 +261,7 @@
   QDGI08_full : LINE=(QDGI08,BPMDGI08,QDGI08)
 
   COMMENT !simplified
-    DIAGI_1 : LINE=(BEGDIAGI_1,DBXDLI1a,DBXDLI1b,DDGI00,&
+    DIAGIS : LINE=(BEGDIAGIS,DBXDLI1a,DBXDLI1b,DDGI00,&
       QDGI01,QDGI01,DDGI01,&
       QDGI02,QDGI02,DDGI02,&
       QDGI03,QDGI03,DDGI03,&
@@ -275,19 +270,13 @@
       QDGI06,QDGI06,DDGI06,&
       QDGI07,QDGI07,DDGI07,&
       QDGI08,QDGI08,DDGI08,&
-      ENDDIAGI_1)
-    DIAGI_2 : LINE=(BEGDIAGI_2,&
       BYDGISa,BYDGISb,DDGI09,&
       BYDGIDa,BYDGIDb,DDGI10,DDUMPI,&
-      ENDDIAGI_2)
-    DIAGI_3 : LINE=(BEGDIAGI_3,&
-      DBYDGISa,DBYDGISb,DDGI11,&
-      DBYDGIDa,DBYDGIDb,DDGI12,DDUMPI,&
-      ENDDIAGI_3)
+      ENDDIAGIS)
   ENDCOMMENT
 
  !COMMENT !complete
-    DIAGI_1 : LINE=(BEGDIAGI_1,DBXDLI1a,DBXDLI1b,DDGI00,&
+    DIAGIS : LINE=(BEGDIAGIS,DBXDLI1a,DBXDLI1b,DDGI00,&
       QDGI01_full,DDGI01a,XCDGI01,DDGI01b,&
       QDGI02_full,DDGI02a,YCDGI02,DDGI02b,&
       QDGI03_full,DDGI03a,XCDGI03,DDGI03b,&
@@ -298,19 +287,10 @@
       QDGI07_full,DDGI07a,XCDGI07,DDGI07b,RFBDGIW4,DDGI07c,WSDGI4,DDGI07d,&
         YCDGI08,DDGI07e,&
       QDGI08_full,DDGI08a,RFBDGI01,DDGI08b,&
-      ENDDIAGI_1)
-    DIAGI_2 : LINE=(BEGDIAGI_2,&
       BYDGIS_full,DDGI09a,BPMDGI09,DDGI09b,OTRDGI1_full,DDGI09c,&
       BYDGID_full,DDGI10a,IMDGI1,DDGI10b,DUMPFACEI,DDUMPI,BTMDUMPI,&
-      ENDDIAGI_2)
-    DIAGI_3 : LINE=(BEGDIAGI_3,&
-      DBYDGISa,DBYDGISb,DDGI11,&
-      DBYDGIDa,DBYDGIDb,DDGI12,FCDGIDUa,DDUMPI,&
-      ENDDIAGI_3)
+      ENDDIAGIS)
  !ENDCOMMENT
-
-  DIAGIS : LINE=(DIAGI_1,DIAGI_2) !to spectrometer
-  DIAGID : LINE=(DIAGI_1,DIAGI_3) !to straight-ahead dump (not used)
   
 ! ------------------------------------------------------------------------------
 
