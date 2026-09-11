@@ -1,10 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-01JUN2026s ***
+! *** OPTICS=AD_ACCEL-10SEP2026s ***
 
 ! LCLS2sc LTU and dump
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 03-SEP-2026, M. Woodley
+!  * add INST "VPIO332" in LTUS (between QDL15 and QDL16) per F.-J. Decker
 ! ------------------------------------------------------------------------------
 ! 24-JUL-2025, M. Woodley
 !  * add MARKER point "SWIVEL" at location of swivel point
@@ -866,6 +869,8 @@
   LDL0ba := 0.1953
   LDL0bb := 3.213005+(LQA-LQR)/2-LDL0ba
   LDL0bc := LDL0b-LDL0ba-LDL0bb
+  LDL0bc1 := 5.693661880758
+  LDL0bc2 := LDL0bc-LDL0bc1
   LDL1b  := 2.9815+(LQA-LQR)/2
   LDL1ba := 1.316489-Lplate !1.317304
   LDL1bc := 0.1953
@@ -915,6 +920,8 @@
   DDL0ba : DRIFT, L=LDL0ba
   DDL0bb : DRIFT, L=LDL0bb
   DDL0bc : DRIFT, L=LDL0bc
+  DDL0bc1 : DRIFT, L=LDL0bc1
+  DDL0bc2 : DRIFT, L=LDL0bc2
   DDL1b  : DRIFT, L=LDL1b
   DDL1ba : DRIFT, L=LDL1ba
   DDL1bb : DRIFT, L=LDL1bb
@@ -1056,6 +1063,8 @@
   PC07B  : INST, TYPE="BCS plate", L=Lplate
   BTM07B : INST, TYPE="PPS BTM"
 
+  VPIO332 : INST, TYPE="VPIO:LTUS:332"
+
   DBMARK34b : MARK !entrance of BX31
   CNTLT1S   : MARK, TYPE="CENTER"
 
@@ -1100,7 +1109,7 @@
     QDL14_full,DDL8ca,BPMDL14,DDL8cb,&
     DWIGSa,PC03B,BTM03B,DWIGSb,DDL8d,XCDL15,DDL6ba,&
     SDL2_full,DDL6bb,&
-    QDL15_full,DDL0ba,BPMDL15,DDL0bb,DDL0bc,YCDL16,DDL6b,&
+    QDL15_full,DDL0ba,BPMDL15,DDL0bb,DDL0bc1,VPIO332,DDL0bc2,YCDL16,DDL6b,&
     QDL16_full,DBYKS01,CYDL16,DBYKS02,BPMDL16,DBYKS03,PC04B,BTM04B,DBYKS04,&
     BYKIK1S_full,DBYKS05,DBYKS05,&
     BYKIK2S_full,DBYKS06,XCDL17,DBYKS07,BPMDL17,DBYKS08,&
@@ -1251,10 +1260,10 @@
 ! SXR emittance diagnostic
 ! ------------------------------------------------------------------------------
 
-  KQEM1B  :=  1.994807495497 ! 1.994770111889
-  KQEM2B  := -1.80919428388  !-1.809227587678
-  KQEM3B  :=  1.263530793827 ! 1.2636088218  
-  KQEM4B  := -0.891678288287 !-0.891714076473
+  KQEM1B  :=  1.994807495483 ! 1.994807495497
+  KQEM2B  := -1.809194283884 !-1.80919428388
+  KQEM3B  :=  1.263530793828 ! 1.263530793827
+  KQEM4B  := -0.891678288289 !-0.891678288287
   KQEM3VB :=  0.0
 
   QEM1B  : QUAD, TYPE="1.085Q4.31", L=LQE/2, K1=KQEM1b,  APER=rQE
@@ -1723,10 +1732,10 @@
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 !       in the "LCLS2cu_main.mad8" file
 
-  KQUM1B :=  0.869377269121 ! 0.868733464228
-  KQUM2B := -0.772006115975 !-0.771825649189
-  KQUM3B :=  0.687923619093 ! 0.678116151436
-  KQUM4B := -0.755990352295 !-0.747895559578
+  KQUM1B :=  0.860298333062 ! 0.871033343383
+  KQUM2B := -0.755792915734 !-0.777601039639
+  KQUM3B :=  0.700125087273 ! 0.691213292343
+  KQUM4B := -0.791862270115 !-0.75798890837
 
   QUM1B : QUAD, TYPE="1.085Q4.31", L=LQE/2, K1=KQUM1b, APER=rQE
   QUM2B : QUAD, TYPE="1.085Q4.31", L=LQE/2, K1=KQUM2b, APER=rQE
@@ -1827,7 +1836,7 @@
 ! SXR dumpline
 ! ------------------------------------------------------------------------------
 
-  KQDMPB := -0.154946553294 !Yuri (E=8.0, K=5.48)
+  KQDMPB := -0.154946553294 !Yuri (E=8.0, K=3.5)
 
   QDmp1B : QUAD, TYPE="3.94Q17", L=LQP/2, K1=KQDmpb, APER=rQP
   QDmp2B : QUAD, TYPE="3.94Q17", L=LQP/2, K1=KQDmpb, APER=rQP
@@ -3028,10 +3037,10 @@
 ! HXR emittance diagnostic
 ! ------------------------------------------------------------------------------
 
-  KQEM1 := -0.390828157037 !-0.390828157035
-  KQEM2 :=  0.432215882104 ! 0.432215882102
-  KQEM3 := -0.593433627421 !-0.593433627427
-  KQEM4 :=  0.420485127988 ! 0.420485127989
+  KQEM1 := -0.390828157113 !-0.390828157037
+  KQEM2 :=  0.432215882156 ! 0.432215882104
+  KQEM3 := -0.593433627385 !-0.593433627421
+  KQEM4 :=  0.420485128003 ! 0.420485127988
 
   QEM1  : QUAD, TYPE="1.26Q12"  , L=LQA/2, K1=KQEM1, APER=rQA
   QEM2  : QUAD, TYPE="1.26Q12"  , L=LQA/2, K1=KQEM2, APER=rQA
@@ -3164,10 +3173,10 @@
 ! note: the below K-values are for both SC beam and Cu beam
 ! source: UNDH_KQ4_USDS.xsif (Eu=8.0, KHXU=2.0)
 
-  KQUM1 :=  0.270162423988
-  KQUM2 := -0.268570675694
-  KQUM3 :=  0.279944439375
-  KQUM4 := -0.248916368825
+  KQUM1 :=  0.270162424055 ! 0.270162423988
+  KQUM2 := -0.268570675671 !-0.268570675694
+  KQUM3 :=  0.279944439307 ! 0.279944439375
+  KQUM4 := -0.248916368902 !-0.248916368825
 
   QUM1 : QUAD, TYPE="1.26Q12", L=LQA/2, K1=KQUM1, APER=rQA
   QUM2 : QUAD, TYPE="1.26Q12", L=LQA/2, K1=KQUM2, APER=rQA

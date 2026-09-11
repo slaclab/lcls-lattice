@@ -122,19 +122,19 @@ T2kG=10             # kG per Tesla
 # file name roots
 
 file_roots = [
-    {'root':'sc_sxr',     'beg':'BEGGUNB',      'end':'ENDDMPS_2',   'ix':1},      #  1
-    {'root':'sc_sfts',    'beg':'BEGSFTS_1',    'end':'ENDSFTS_2',   'ix':2},      #  2
-    {'root':'sc_hxr',     'beg':'BEGSPH',       'end':'ENDSLTH',     'ix':6},      #  6
-    {'root':'sc_bsyd',    'beg':'BEGSPD_2',     'end':'ENDSLTD',     'ix':7},      #  7
-    {'root':'sc_diag0',   'beg':'BEGDIAG0',     'end':'ENDDIAG0',    'ix':8},      #  8
-    {'root':'sc_dasel',   'beg':'BEGSPA',       'end':'ENDESA',      'ix':9},      #  9 (LESA)
-    {'root':'cu_hxr',     'beg':'BEGGUN',       'end':'ENDDMPH_2',   'ix':10},     # 10
-    {'root':'cu_sfth',    'beg':'BEGSFTH_1',    'end':'ENDSFTH_2',   'ix':11},     # 11
-    {'root':'cu_sxr',     'beg':'BEGCLTS',      'end':'ENDCLTS',     'ix':14},     # 14
-    {'root':'cu_gspec',   'beg':'BEGGSPEC',     'end':'ENDGSPEC',    'ix':15},     # 15
-    {'root':'cu_spec',    'beg':'BEGSPEC',      'end':'ENDSPEC',     'ix':16},     # 16
-    {'root':'sc_diag02',     'beg':'BEGGUNLEI',    'end':'ENDLEI_2',    'ix':17},     # 17
-    {'root':'sc_diagis',     'beg':'BEGDIAGI_1',   'end':'ENDDIAGI_2',  'ix':18},     # 18
+    {'root':'sc_sxr',     'beg':'BEGGUNB',      'end':'ENDDMPS_2',    'ix':1},      #  1
+    {'root':'sc_sfts',    'beg':'BEGSFTS_1',    'end':'ENDSFTS_2',    'ix':2},      #  2
+    {'root':'sc_hxr',     'beg':'BEGSPH',       'end':'ENDSLTH',      'ix':6},      #  6
+    {'root':'sc_bsyd',    'beg':'BEGSPD_2',     'end':'ENDSLTD',      'ix':7},      #  7
+    {'root':'sc_diag0',   'beg':'BEGDIAG0',     'end':'ENDDIAG0',     'ix':8},      #  8
+    {'root':'sc_dasel',   'beg':'BEGSPA',       'end':'ENDESA',       'ix':9},      #  9 (LESA)
+    {'root':'cu_hxr',     'beg':'BEGGUN',       'end':'ENDDMPH_2',    'ix':10},     # 10
+    {'root':'cu_sfth',    'beg':'BEGSFTH_1',    'end':'ENDSFTH_2',    'ix':11},     # 11
+    {'root':'cu_sxr',     'beg':'BEGCLTS',      'end':'ENDCLTS',      'ix':14},     # 14
+    {'root':'cu_gspec',   'beg':'BEGGSPEC',     'end':'ENDGSPEC',     'ix':15},     # 15
+    {'root':'cu_spec',    'beg':'BEGSPEC',      'end':'ENDSPEC',      'ix':16},     # 16
+    {'root':'sc_diag02',  'beg':'BEGGUNLEI',    'end':'ENDLEI_2',     'ix':17},     # 17
+    {'root':'sc_diagis',  'beg':'BEGDIAGIS',    'end':'ENDDIAGIS',    'ix':18},     # 18
 ]
 
 bsy_file_roots = [
@@ -229,8 +229,7 @@ area.append({'name': 'GUNLEI', 'beg': 'BEGGUNLEI', 'end': 'ENDGUNLEI', 'offset':
 area.append({'name': 'L0LEI', 'beg': 'BEGL0LEI', 'end': 'ENDL0LEI', 'offset': [0, 0]})
 area.append({'name': 'LEI_1', 'beg': 'BEGLEI_1', 'end': 'ENDLEI_1', 'parent': 'LEI', 'offset': [0, 0]})
 area.append({'name': 'LEI_2', 'beg': 'BEGLEI_2', 'end': 'ENDLEI_2', 'parent': 'LEI', 'offset': [0, 0]})
-area.append({'name': 'DIAGI_1', 'beg': 'BEGDIAGI_1', 'end': 'ENDDIAGI_1', 'parent': 'DIAGI', 'offset': [0, 0]})
-area.append({'name': 'DIAGI_2', 'beg': 'BEGDIAGI_2', 'end': 'ENDDIAGI_2', 'parent': 'DIAGI', 'offset': [0, 0]})
+area.append({'name': 'DIAGIS', 'beg': 'BEGDIAGIS', 'end': 'ENDDIAGIS', 'offset': [0, 0]})
 
 # assign default area "parent" names
 for a in area:
@@ -1883,9 +1882,11 @@ with open(outdir+'/'+fname, 'wt') as fid:
     for entry in ips:
         kwn = entry[2]
         m = entry[3]
+        TEMP = ele_dict[kwn][m]
+        if TEMP['name'] == 'DYQDG001':
+            print(f'FOO {kwn}')
         if kwn in ['MARK', 'SROT']:
             continue
-        TEMP = ele_dict[kwn][m]
         TEMPucell = TEMP['ucell']
         TEMPucell = '' if isinstance(TEMPucell,list) else TEMPucell
         fid.write(f"{TEMP['name']},{TEMP['area']},{TEMPucell},{TEMP['sector']}\n")

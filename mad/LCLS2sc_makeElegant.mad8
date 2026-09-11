@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-01JUN2026s ***
+! *** OPTICS=AD_ACCEL-10SEP2026s ***
 
 ! generate input files for ELEGANT
 
@@ -15,27 +15,6 @@
 ! 5) run mad2lte with survey.tape as input
 ! 6) if your beamline contains MATRIX elements, create Elegant .rmat files
 ! ------------------------------------------------------------------------------
-
-! ==============================================================================
-! SUBROUTINE
-! ------------------------------------------------------------------------------
-
-! undo SETK2scLEI
-
-  RESETHTRQ : SUBROUTINE !copy from INJ.xsif
-    SET, KQ0H03,   0.483905171963
-    SET, KQ0H04,  -3.971575402157
-  !                 heater ON        heater OFF        chicane OFF       
-  !              ---------------   ---------------   ---------------    
-    SET, KQ0H05,  -2.32266979602  ! -7.451315276972 ! -7.508072657056 
-    SET, KQ0H06,   0.0            !  1.835321381141 !  1.870908387696
-    SET, KQ0H07,   5.84302489781  !  7.794364472964 !  7.804907479846
-    SET, KQ0H08,  -5.210258454761 ! -8.272684492892 ! -8.306722243051
-    SET, KQHD01, -13.178598580237 ! -8.743988237466 ! -8.746794738551
-    SET, KQHD02,   7.650668410884 !  6.400024228564 !  6.401620200768
-    SET, KQHD03,  -7.978934972385 ! -8.612136694917 ! -8.622952974048
-    SET, KQHD04,   6.238682089532 !  6.860670498454 !  6.864937307631
-  ENDSUBROUTINE
 
 ! ==============================================================================
 
@@ -635,37 +614,30 @@
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
 
-  VALUE, UMASXh_[L] !VGHPU56
+  VALUE, UMASXh[L] !VGHPU56
   BEAM, ENERGY=Ef
-  USE, (UMASXh_) !*LIN.04*
+  USE, (UMASXh) !*LIN.04*
   MATCH, BETX=1, BETY=1
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
 
-  VALUE, PSSXh_[L] !PS97.5
+  VALUE, PSSXh[L] !PS97.5
   BEAM, ENERGY=Ef
-  USE, (PSSXh_) !*LIN.05*
-  MATCH, BETX=1, BETY=1
-    RMATRIX, #S/#E, RM(6,6)=1
-  ENDMATCH
-
-  VALUE, UMASXh[L] !VGHPU39
-  BEAM, ENERGY=Ef
-  USE, (UMASXh) !*LIN.06*
+  USE, (PSSXh) !*LIN.05*
   MATCH, BETX=1, BETY=1
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
 
   VALUE, UMAHXh[L] !HGVPU26
   BEAM, ENERGY=Ef
-  USE, (UMAHXh) !*LIN.07*
+  USE, (UMAHXh) !*LIN.06*
   MATCH, BETX=1, BETY=1
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
 
   VALUE, PSHXh[L] !PS45
   BEAM, ENERGY=Ef
-  USE, (PSHXh) !*LIN.08*
+  USE, (PSHXh) !*LIN.07*
   MATCH, BETX=1, BETY=1
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
@@ -900,7 +872,6 @@
 ! DIAGIS
 
   MTCXDGI,    TYPE="WATCH"
-  BEGDIAGI_2, TYPE="WATCH"
   OTRDGI1,    TYPE="WATCH"
   DUMPFACEI,  TYPE="WATCH"
 
@@ -954,71 +925,6 @@
 
 ! ------------------------------------------------------------------------------
 
-! for beam from LEI injector
-
-  ASSIGN, PRINT="DIAGIS.print"
-  TITLE, "AD_ACCEL: superconducting linac: BEAM0LEI to DIAGI"
-  BEAM, ENERGY=Ei
- !CALL, FILENAME="SETK2scDGI.xsif" !for mux=1.75*2pi from TCXDGI to OTRDGI1_OTR
-  USE, SC_DIAGISi
-  PRINT, FULL
-  TWISS, BETA0=TWSSiLEI, TAPE="DIAGIS_twiss.tape"
-  SURVEY, X0=Xgun2, Y0=Ygun2, Z0=ZiLEI, TAPE="DIAGIS_survey.tape"
-
-  CALL, FILENAME="SETK2scLEI.xsif" !special match from LEI dogleg to laser heater
-
-  ASSIGN, PRINT="DIAG02.print"
-  TITLE, "AD_ACCEL: superconducting linac: BEAM0LEI to DIAG0"
-  BEAM, ENERGY=Ei
-  USE, SC_DIAG0i2
-  PRINT, FULL
-  TWISS, BETA0=TWSSiLEI, TAPE="DIAG02_twiss.tape"
-  SURVEY, X0=Xgun2, Y0=Ygun2, Z0=ZiLEI, TAPE="DIAG02_survey.tape"
-
-  ASSIGN, PRINT="LCLS2scH2.print"
-  TITLE, "AD_ACCEL: superconducting linac: BEAM0LEI to HXR"
-  BEAM, ENERGY=Ei
-  SET, SETSP, SETSPh
-  USE, SC_HXRi2
-  PRINT, FULL
-  TWISS, BETA0=TWSSiLEI, TAPE="LCLS2scH2_twiss.tape"
-  SURVEY, X0=Xgun2, Y0=Ygun2, Z0=ZiLEI, TAPE="LCLS2scH2_survey.tape"
-
-  ASSIGN, PRINT="LCLS2scS2.print"
-  TITLE, "AD_ACCEL: superconducting linac: BEAM0LEI to SXR"
-  BEAM, ENERGY=Ei
-  SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
-  USE, SC_SXRi2
-  PRINT, FULL
-  TWISS, BETA0=TWSSiLEI, TAPE="LCLS2scS2_twiss.tape"
-  SURVEY, X0=Xgun2, Y0=Ygun2, Z0=ZiLEI, TAPE="LCLS2scS2_survey.tape"
-
-  ASSIGN, PRINT="LCLS2scD2.print"
-  TITLE, "AD_ACCEL: superconducting linac: BEAM0LEI to BSY dump"
-  BEAM, ENERGY=Ei
-  SET, SETSP, SETSPd ; SET, SETDA, DAOFF
-  USE, SC_BSYDi2
-  PRINT, FULL
-  TWISS, BETA0=TWSSiLEI, TAPE="LCLS2scD2_twiss.tape"
-  SURVEY, X0=Xgun2, Y0=Ygun2, Z0=ZiLEI, TAPE="LCLS2scD2_survey.tape"
-
-  ASSIGN, PRINT="LCLS2scDA2.print"
-  TITLE, "AD_ACCEL: superconducting linac: BEAM0LEI to DASEL"
-  BEAM, ENERGY=Ei
-  SET, SETSP, SETSPd ; SET, SETDA, DAON
-  USE, SC_DASELi2, RANGE=#S/MADUMP
-  PRINT, FULL
-  TWISS, BETA0=TWSSiLEI, TAPE="LCLS2scDA2_twiss.tape"
-  SURVEY, X0=Xgun2, Y0=Ygun2, Z0=ZiLEI, TAPE="LCLS2scDA2_survey.tape"
-
-! ------------------------------------------------------------------------------
-
-! undo SETK2scLEI for beam from LCLS-II injector
-
-  RESETHTRQ !copy from INJ.xsif
-
-! ------------------------------------------------------------------------------
-
 ! XLEAP-II optics
 
   CALL, FILENAME="LCLS2sc_XLEAP.mad8"
@@ -1038,7 +944,7 @@
 
   VALUE, UMXL1h[L]
   BEAM, ENERGY=Ef
-  USE, (UMXL1h) !*LIN.10*
+  USE, (UMXL1h) !*LIN.09*
   MATCH, BETX=1, BETY=1
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
@@ -1046,7 +952,7 @@
 
   VALUE, UMXL3h[L]
   BEAM, ENERGY=Ef
-  USE, (UMXL3h) !*LIN.11*
+  USE, (UMXL3h) !*LIN.10*
   MATCH, BETX=1, BETY=1
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
@@ -1054,7 +960,7 @@
 
   VALUE, UMXL4h[L]
   BEAM, ENERGY=Ef
-  USE, (UMXL4h) !*LIN.12
+  USE, (UMXL4h) !*LIN.11*
   MATCH, BETX=1, BETY=1
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
@@ -1062,11 +968,81 @@
 
   VALUE, WIGXLh[L]
   BEAM, ENERGY=Ef
-  USE, (WIGXLh) !*LIN.13*
+  USE, (WIGXLh) !*LIN.12*
   MATCH, BETX=1, BETY=1
     RMATRIX, #S/#E, RM(6,6)=1
   ENDMATCH
   WIGXLh, TYPE="WIGXL"
+
+! ------------------------------------------------------------------------------
+! for beam from LEI injector
+! ------------------------------------------------------------------------------
+
+  CALL, FILENAME="SETK2scLEI.xsif" !special match from LEI dogleg to laser heater
+
+  ASSIGN, PRINT="DIAGIS.print"
+  TITLE, "AD_ACCEL: superconducting linac: BEAM0LEI to DIAGI"
+  BEAM, ENERGY=Ei
+ !CALL, FILENAME="SETK2scDGI.xsif" !for mux=1.75*2pi from TCXDGI to OTRDGI1_OTR
+  USE, SC_DIAGISi
+  PRINT, FULL
+  TWISS, BETA0=TWSSiLEI, TAPE="DIAGIS_twiss.tape"
+  SURVEY, X0=Xgun2, Y0=Ygun2, Z0=ZiLEI, TAPE="DIAGIS_survey.tape"
+
+  ASSIGN, PRINT="DIAG02.print"
+  TITLE, "AD_ACCEL: superconducting linac: BEAM0LEI to DIAG0"
+  BEAM, ENERGY=Ei
+  USE, SC_DIAG02i
+  PRINT, FULL
+  TWISS, BETA0=TWSSiLEI, TAPE="DIAG02_twiss.tape"
+  SURVEY, X0=Xgun2, Y0=Ygun2, Z0=ZiLEI, TAPE="DIAG02_survey.tape"
+
+  ASSIGN, PRINT="LCLS2scH2.print"
+  TITLE, "AD_ACCEL: superconducting linac: BEAM0LEI to HXR"
+  BEAM, ENERGY=Ei
+  SET, SETSP, SETSPh
+  USE, SC_HXR2i
+  PRINT, FULL
+  TWISS, BETA0=TWSSiLEI, TAPE="LCLS2scH2_twiss.tape"
+  SURVEY, X0=Xgun2, Y0=Ygun2, Z0=ZiLEI, TAPE="LCLS2scH2_survey.tape"
+
+  ASSIGN, PRINT="LCLS2scS2.print"
+  TITLE, "AD_ACCEL: superconducting linac: BEAM0LEI to SXR"
+  BEAM, ENERGY=Ei
+  SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
+  USE, SC_SXR2i
+  PRINT, FULL
+  TWISS, BETA0=TWSSiLEI, TAPE="LCLS2scS2_twiss.tape"
+  SURVEY, X0=Xgun2, Y0=Ygun2, Z0=ZiLEI, TAPE="LCLS2scS2_survey.tape"
+
+  ASSIGN, PRINT="LCLS2scD2.print"
+  TITLE, "AD_ACCEL: superconducting linac: BEAM0LEI to BSY dump"
+  BEAM, ENERGY=Ei
+  SET, SETSP, SETSPd ; SET, SETDA, DAOFF
+  USE, SC_BSYD2i
+  PRINT, FULL
+  TWISS, BETA0=TWSSiLEI, TAPE="LCLS2scD2_twiss.tape"
+  SURVEY, X0=Xgun2, Y0=Ygun2, Z0=ZiLEI, TAPE="LCLS2scD2_survey.tape"
+
+  ASSIGN, PRINT="LCLS2scDA2.print"
+  TITLE, "AD_ACCEL: superconducting linac: BEAM0LEI to DASEL"
+  BEAM, ENERGY=Ei
+  SET, SETSP, SETSPd ; SET, SETDA, DAON
+  USE, SC_DASEL2i, RANGE=#S/MADUMP
+  PRINT, FULL
+  TWISS, BETA0=TWSSiLEI, TAPE="LCLS2scDA2_twiss.tape"
+  SURVEY, X0=Xgun2, Y0=Ygun2, Z0=ZiLEI, TAPE="LCLS2scDA2_survey.tape"
+
+! ------------------------------------------------------------------------------
+! output MATR definitions
+! ------------------------------------------------------------------------------
+
+  VALUE, UMHTR[L] !UMLHB
+  BEAM, ENERGY=Ei
+  USE, (UMHTR) !*LIN.03*
+  MATCH, BETX=1, BETY=1
+    RMATRIX, #S/#E, RM(6,6)=1
+  ENDMATCH
 
 ! ------------------------------------------------------------------------------
 

@@ -1,10 +1,13 @@
 
-! *** OPTICS=AD_ACCEL-01JUN2026s ***
+! *** OPTICS=AD_ACCEL-10SEP2026s ***
 
 ! LCLS2sc LTU and dump
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 03-SEP-2026, M. Woodley
+!  * add INST "VPIO332" in LTUS (between QDL15 and QDL16) per F.-J. Decker
 ! ------------------------------------------------------------------------------
 ! 24-JUL-2025, M. Woodley
 !  * add MARKER point "SWIVEL" at location of swivel point
@@ -897,6 +900,8 @@ ldl0b = ldlcel/2-lqa-ldl6b+(lqa-lqr)
 ldl0ba = 0.1953
 ldl0bb = 3.213005+(lqa-lqr)/2-ldl0ba
 ldl0bc = ldl0b-ldl0ba-ldl0bb
+ldl0bc1 = 5.693661880758
+ldl0bc2 = ldl0bc-ldl0bc1
 ldl1b = 2.9815+(lqa-lqr)/2
 ldl1ba = 1.316489-lplate !1.317304
 ldl1bc = 0.1953
@@ -946,6 +951,8 @@ ddl0b: drift, l = ldl0b
 ddl0ba: drift, l = ldl0ba
 ddl0bb: drift, l = ldl0bb
 ddl0bc: drift, l = ldl0bc
+ddl0bc1: drift, l = ldl0bc1
+ddl0bc2: drift, l = ldl0bc2
 ddl1b: drift, l = ldl1b
 ddl1ba: drift, l = ldl1ba
 ddl1bb: drift, l = ldl1bb
@@ -1079,6 +1086,8 @@ pc06b: instrument, type = "BCS plate", l = lplate
 btm06b: instrument, type = "PPS BTM"
 pc07b: instrument, type = "BCS plate", l = lplate
 btm07b: instrument, type = "PPS BTM"
+
+vpio332: instrument, type = "VPIO:LTUS:332"
 
 dbmark34b: marker !entrance of BX31
 cntlt1s: marker, type = "CENTER"
@@ -1235,12 +1244,12 @@ sdl2_svy: null_ele, superimpose, ref=sdl2
   DL2sc : LINE=(DBMARK34b,DDL20b,XCDL11,DDL6b,QDL11_full,DDL15ba,BPMDL11,DDL15bb,DDL15bc,CC31b,DDL16b,BX31B_full,DDL1ba,
          PC01B,BTM01B,DDL1bb,BPMDL12,DDL1bc,QDL12_full,DDL6b,YCDL12,DDL9b,XCDL13,DDL6ba,SDL1_full,DDL6bb,QDL13_full,DDL7ba,
          CEDL13,DDL7bb,BPMDL13,DDL8b,YCDL14,DDL6b,QDL14_full,DDL8ca,BPMDL14,DDL8cb,DWIGSa,PC03B,BTM03B,DWIGSb,DDL8d,XCDL15,
-         DDL6ba,SDL2_full,DDL6bb,QDL15_full,DDL0ba,BPMDL15,DDL0bb,DDL0bc,YCDL16,DDL6b,QDL16_full,DBYKS01,CYDL16,DBYKS02,BPMDL16,
-         DBYKS03,PC04B,BTM04B,DBYKS04,BYKIK1S_full,DBYKS05,DBYKS05,BYKIK2S_full,DBYKS06,XCDL17,DBYKS07,BPMDL17,DBYKS08,
-         QDL17_full,DBYKS11,CEDL17,DBYKS12,DBYKS13,SPOILERS,DBYKS14,TDKIKS,DBYKS15,PCTDKIK1S,DBYKS16,PCTDKIK2S,DBYKS16,PCTDKIK3S,
-         DBYKS16,PCTDKIK4S,DBYKS17,YAGDL18_full,DBYKS18,YCDL18,DBYKS19,QDL18_full,DDL19ba,BPMDL18,DDL19bb,PC06B,BTM06B,DDL19bc,
-         XCDL19,DDL6b,QDL19_full,DDL2ba,BPMDL19,DDL2bb,BX32B_full,CNTLT1S,DDL14b,QDL20_full,DDL6b,YCDL20,DDL17b,CC32b,DDL18ba,
-         PC07B,BTM07B,DDL18bb,YCDL21,DDL6b,QDL21_full,DDL4b,XCDL22,DDL6b,QDL22_full,DDL5b)
+         DDL6ba,SDL2_full,DDL6bb,QDL15_full,DDL0ba,BPMDL15,DDL0bb,DDL0bc1,VPIO332,DDL0bc2,YCDL16,DDL6b,QDL16_full,DBYKS01,CYDL16,
+         DBYKS02,BPMDL16,DBYKS03,PC04B,BTM04B,DBYKS04,BYKIK1S_full,DBYKS05,DBYKS05,BYKIK2S_full,DBYKS06,XCDL17,DBYKS07,BPMDL17,
+         DBYKS08,QDL17_full,DBYKS11,CEDL17,DBYKS12,DBYKS13,SPOILERS,DBYKS14,TDKIKS,DBYKS15,PCTDKIK1S,DBYKS16,PCTDKIK2S,DBYKS16,
+         PCTDKIK3S,DBYKS16,PCTDKIK4S,DBYKS17,YAGDL18_full,DBYKS18,YCDL18,DBYKS19,QDL18_full,DDL19ba,BPMDL18,DDL19bb,PC06B,BTM06B,
+         DDL19bc,XCDL19,DDL6b,QDL19_full,DDL2ba,BPMDL19,DDL2bb,BX32B_full,CNTLT1S,DDL14b,QDL20_full,DDL6b,YCDL20,DDL17b,CC32b,
+         DDL18ba,PC07B,BTM07B,DDL18bb,YCDL21,DDL6b,QDL21_full,DDL4b,XCDL22,DDL6b,QDL22_full,DDL5b)
 
 !=!  COMMENT !test line to find ABYKIKS angle for -14.2 mm offset at front face of TDKIKS
 !=!  COMMENT !test line to find ABYKIKS angle for -14.2 mm offset at front face of TDKIKS
@@ -1413,10 +1422,10 @@ bpmvm4b[ref] = qvm4b
 ! SXR emittance diagnostic
 ! ------------------------------------------------------------------------------
 
-kqem1b = 1.994807495497 ! 1.994770111889
-kqem2b = -1.80919428388  !-1.809227587678
-kqem3b = 1.263530793827 ! 1.2636088218
-kqem4b = -0.891678288287 !-0.891714076473
+kqem1b = 1.994807495483 ! 1.994807495497
+kqem2b = -1.809194283884 !-1.80919428388
+kqem3b = 1.263530793828 ! 1.263530793827
+kqem4b = -0.891678288289 !-0.891678288287
 kqem3vb = 0.0
 
 qem1b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqem1b, aperture = rqe
@@ -1964,10 +1973,10 @@ bpme36b[ref] = qe36b
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 !       in the "LCLS2cu_main.mad8" file
 
-kqum1b = 0.869377269121 ! 0.868733464228
-kqum2b = -0.772006115975 !-0.771825649189
-kqum3b = 0.687923619093 ! 0.678116151436
-kqum4b = -0.755990352295 !-0.747895559578
+kqum1b = 0.860298333062 ! 0.871033343383
+kqum2b = -0.755792915734 !-0.777601039639
+kqum3b = 0.700125087273 ! 0.691213292343
+kqum4b = -0.791862270115 !-0.75798890837
 
 qum1b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqum1b, aperture = rqe
 qum2b: quadrupole, type = "1.085Q4.31", l = lqe/2, k1 = kqum2b, aperture = rqe
@@ -2092,7 +2101,7 @@ bpmum4b[ref] = qum4b
 ! SXR dumpline
 ! ------------------------------------------------------------------------------
 
-kqdmpb = -0.154946553294 !Yuri (E=8.0, K=5.48)
+kqdmpb = -0.154946553294 !Yuri (E=8.0, K=3.5)
 
 qdmp1b: quadrupole, type = "3.94Q17", l = lqp/2, k1 = kqdmpb, aperture = rqp
 qdmp2b: quadrupole, type = "3.94Q17", l = lqp/2, k1 = kqdmpb, aperture = rqp
@@ -3565,10 +3574,10 @@ mdchirph[ref] = dchirph
 ! HXR emittance diagnostic
 ! ------------------------------------------------------------------------------
 
-kqem1 = -0.390828157037 !-0.390828157035
-kqem2 = 0.432215882104 ! 0.432215882102
-kqem3 = -0.593433627421 !-0.593433627427
-kqem4 = 0.420485127988 ! 0.420485127989
+kqem1 = -0.390828157113 !-0.390828157037
+kqem2 = 0.432215882156 ! 0.432215882104
+kqem3 = -0.593433627385 !-0.593433627421
+kqem4 = 0.420485128003 ! 0.420485127988
 
 qem1: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqem1, aperture = rqa
 qem2: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqem2, aperture = rqa
@@ -3769,10 +3778,10 @@ bpme36[ref] = qe36
 ! note: the below K-values are for both SC beam and Cu beam
 ! source: UNDH_KQ4_USDS.xsif (Eu=8.0, KHXU=2.0)
 
-kqum1 = 0.270162423988
-kqum2 = -0.268570675694
-kqum3 = 0.279944439375
-kqum4 = -0.248916368825
+kqum1 = 0.270162424055 ! 0.270162423988
+kqum2 = -0.268570675671 !-0.268570675694
+kqum3 = 0.279944439307 ! 0.279944439375
+kqum4 = -0.248916368902 !-0.248916368825
 
 qum1: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqum1, aperture = rqa
 qum2: quadrupole, type = "1.26Q12", l = lqa/2, k1 = kqum2, aperture = rqa
