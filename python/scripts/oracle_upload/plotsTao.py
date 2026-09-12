@@ -23,7 +23,8 @@ if LCLS_LATTICE_ENV is None:
 
 BDIR = f'{LCLS_LATTICE_ENV}/bmad/'
 MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','sc_dasel','sc_diag02',
-        'cu_sxr','cu_hxr','sc_hxr2','sc_sxr2','sc_dasel2','sc_bsyd2']
+        'cu_sxr','cu_hxr','sc_hxr2','sc_sxr2','sc_dasel2','sc_bsyd2',
+        'sc_sxr_beam0','sc_hxr_beam0','sc_bsyd_beam0','sc_dasel_beam0','sc_diag0_beam0']
 LATFILE = {}
 for model in MODELS:
   LATFILE[model] = f'{LCLS_LATTICE_ENV}/bmad/survey_models/{model}.lat.bmad'

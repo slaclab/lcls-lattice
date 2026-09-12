@@ -8,7 +8,8 @@ INSTALLROOT = /sdf/data/ad/public_html/model/output/lcls
 LINESLOCATION = /sdf/data/ad/accel/prod/lcls/
 
 # Variables
-SURVEY_MODELS = sc_sxr sc_hxr sc_bsyd sc_dasel sc_diag0 sc_diag02 sc_diagis cu_sxr cu_hxr sc_sxr2 sc_hxr2 sc_bsyd2 sc_dasel2
+#SURVEY_MODELS = sc_sxr sc_hxr sc_bsyd sc_dasel sc_diag0 sc_diag02 sc_diagis cu_sxr cu_hxr sc_sxr2 sc_hxr2 sc_bsyd2 sc_dasel2
+SURVEY_MODELS = sc_sxr sc_hxr sc_bsyd sc_dasel sc_diag0 sc_diag02 cu_sxr cu_hxr sc_sxr2 sc_hxr2 sc_bsyd2 sc_dasel2
 BSY_SURVEY_MODELS = cu_hxr_bsy cu_sfth_bsy cu_sxr_bsy sc_bsyd_bsy sc_dasel_bsy sc_hxr_bsy sc_sfts_bsy sc_sxr_bsy
 #TWISS_MODELS = sc_sxr sc_hxr sc_bsyd sc_dasel sc_diag0 cu_sxr cu_hxr sc_sxr2 sc_hxr2 sc_bsyd2 sc_dasel2 sc_diag02
 TWISS_MODELS = sc_sxr_beam0 sc_hxr_beam0 sc_bsyd_beam0 sc_dasel_beam0 sc_diag0_beam0 cu_sxr cu_hxr
@@ -172,7 +173,7 @@ docs: $(PLOTS_PDFS) $(LINES_ALLS) $(DOTS) $(DOTS_PDFS) $(MAPICON_PNGS) opticsico
 
 oracle_upload: $(PRINT_FILES) $(TWISS_DATS) $(ELEMENTDEVICES) ips.dump AD_ACCEL-$(OPTICS).txt BSY-AD_ACCEL-$(OPTICS).txt AD_ACCEL-extra-$(OPTICS).txt BSC-AD_ACCEL-$(OPTICS).txt $(BSC_TXTS)
 
-stage : #all
+stage : $(PRINT_FILES) $(TWISS_DATS) $(PLOTS_PDFS) $(SURVEY_TAPES)
 	mkdir -p installstage
 	rsync -az $(SURVEY_TAPES) $(PRINT_FILES) $(TWISS_DATS) $(PLOTS_PDFS) $(WEB) installstage
 	rsync -az $(DOTS) $(DOTS_PDFS) $(MAPICON_PNGS) $(LINES_DATS) $(WEB) $(ELEMENTDEVICES) installstage/opt
