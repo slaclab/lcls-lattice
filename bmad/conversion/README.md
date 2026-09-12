@@ -73,11 +73,12 @@ To be done after the Oracle database is updated by the the database group.
 1. Log onto sdfiana16
 2. `module load conda`
 3. `conda activate oracle-conn`
-4. `cd /sdf/group/ad/sw/scm/repos/optics/lcls-lattice/mad`
-5. execute `../python/scripts/oracle_upload/elementdevices.py`
+4. `cd /sdf/group/ad/sw/scm/repos/optics/lcls-lattice/oracle_upload`
+5. execute `../python/scripts/oracle_upload/surveyDataTao.py`
+6. execute `../python/scripts/oracle_upload/elementdevices_bmad.py`
    - Connects to oracle database to generate element devices files
-6. make -f makefile -B INSTALLDIR=22SEP2025s install
-   - replace 22SEP2025s with latest release name in DDMMMYYYYs format
+7. make -f makefile -B install
+   - replace DDMMMYYYs with latest release name
    - lattice files and lines files put into `/sdf/data/ad/public_html/model/output/lcls/mad/`
    - Lattice description published here:  https://s3df.slac.stanford.edu/data/ad/model/lcls.html
 
