@@ -1,7 +1,7 @@
 function [lines,out]=model_parseMAD(MADrelease,fileDir, ...
   file,nOut,blList,simplify,opts)
 
-% *** OPTICS=AD_ACCEL-10SEP2026s ***
+% *** OPTICS=AD_ACCEL-14OCT2026s ***
 
 % ------------------------------------------------------------------------------
 % History
@@ -55,7 +55,7 @@ if (nargin<4),nOut=[];end
 if ((nargin<3)||isempty(file)),file='LCLS2sc_main.mad8';end
 
 switch file
-  case 'LCLS2cu_main.mad8' % LCLS2cu
+  case 'MM_LCLS2cu_main.mad8' % LCLS2cu
     if (isempty(blList))
       blList={ ...
         'CU_HXR'   {'GUNL0A' 'L0AL0B' 'LCLS2CUH'}; ...       % 1
@@ -81,7 +81,7 @@ switch file
       opts.sub2={'','','','','','',''};
     end
     if (isempty(nOut)),nOut='LCLS2cu';end
-  case 'LCLS2sc_main.mad8' % LCLS2sc
+  case 'MM_LCLS2sc_main.mad8' % LCLS2sc
     if (isempty(blList))
       blList={ ...
         'SC_DIAG0' {'GUN' 'L0' 'HTR' 'DIAG0'}; ...                  %  1

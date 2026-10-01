@@ -1,10 +1,15 @@
 
-! *** OPTICS=AD_ACCEL-preRelease ***
+! *** OPTICS=AD_ACCEL-14OCT2026s ***
 
 ! LCLS2sc undulator and undulator extension
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 14-OCT-2026, M. Woodley
+!  * remove long-period phase shifters from SXR cells 17 and 18 until new
+!    long-period undulators are installed in those cells
+!  * add long-period undulator in SXR cell 19
 ! ------------------------------------------------------------------------------
 ! 10-AUG-2026, M. Woodley
 !  * KSXU = 7.2, PIPSSX = 4400 T^2mm^3 per H.-D. Nuhn
@@ -400,7 +405,7 @@
   GQDSX  := -IntgSX/LQu/10*1.0           !T/m
   kQFSX  :=  1.E-9*GQFSX*CLIGHT/gamu/mc2 !m^-2
   kQDSX  :=  1.E-9*GQDSX*CLIGHT/gamu/mc2 !m^-2
-  kQSX47 := -1.516536097337              !-1.843482712046 !Yuri (E=8.0, K=5.48)
+  kQSX47 := -1.510290893229              !-1.843482712046 !Yuri (E=8.0, K=5.48)
 
   QSXh16 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQFSX,  APER=rQu
   QSXh17 : QUAD, TYPE="0.433Q3.1", L=LQu/2, K1=kQDSX,  APER=rQu
@@ -516,6 +521,7 @@
 ! SXR undulator X-steering coils in undulator segments
 ! ------------------------------------------------------------------------------
 
+  XCSU19 : HKIC, TYPE="type-V"
   XCSU20 : HKIC, TYPE="type-V"
   XCSU21 : HKIC, TYPE="type-V"
   XCSU22 : HKIC, TYPE="type-V"
@@ -549,6 +555,7 @@
 ! SXR undulator Y-steering coils in undulator segments
 ! ------------------------------------------------------------------------------
 
+  YCSU19 : VKIC, TYPE="type-V"
   YCSU20 : VKIC, TYPE="type-V"
   YCSU21 : VKIC, TYPE="type-V"
   YCSU22 : VKIC, TYPE="type-V"
@@ -656,6 +663,7 @@
 ! SXR undulator Beam Loss Monitors (placeholders)
 ! ------------------------------------------------------------------------------
 
+  MBLMS19 : MARK
   MBLMS21 : MARK
   MBLMS23 : MARK
   MBLMS25 : MARK
@@ -731,8 +739,6 @@
 
 ! SXR phase shifter centers
 
-  MPHS17 : MARK
-  MPHS18 : MARK
   MPHS19 : MARK
   MPHS20 : MARK
   MPHS21 : MARK
@@ -915,6 +921,7 @@
 ! complete SXR undulator segments
 ! ------------------------------------------------------------------------------
 
+  UMASXh19 : UMASXh
   UMASXh20 : UMASXh
   UMASXh21 : UMASXh
   UMASXh22 : UMASXh
@@ -946,7 +953,7 @@
 
 ! ------17
 ! ------18
-! ------19
+  USEGSX19_full : LINE=(UMASXh19,XCSU19,YCSU19,UMASXh19)
   USEGSX20_full : LINE=(UMASXh20,XCSU20,YCSU20,UMASXh20)
   USEGSX21_full : LINE=(UMASXh21,XCSU21,YCSU21,UMASXh21)
   USEGSX22_full : LINE=(UMASXh22,XCSU22,YCSU22,UMASXh22)
@@ -978,14 +985,13 @@
 
   DUSEGS17h : DRIF, L=LDUSEGS/2
   DUSEGS18h : DRIF, L=LDUSEGS/2
-  DUSEGS19h : DRIF, L=LDUSEGS/2
   DUSEGS48h : DRIF, L=LDUSEGS/2
   DUSEGS49h : DRIF, L=LDUSEGS/2
  !DUSEGS50h : DRIF, L=LDUSEGS/2
 
   DUSEGS17 : LINE=(DUSEGS17h,DUSEGS17h)
   DUSEGS18 : LINE=(DUSEGS18h,DUSEGS18h)
-  DUSEGS19 : LINE=(DUSEGS19h,DUSEGS19h)
+  USEGSX19 : LINE=(DTSXU,USEGSX19_full,DTSXU)
   USEGSX20 : LINE=(DTSXU,USEGSX20_full,DTSXU)
   USEGSX21 : LINE=(DTSXU,USEGSX21_full,DTSXU)
   USEGSX22 : LINE=(DTSXU,USEGSX22_full,DTSXU)
@@ -1022,8 +1028,8 @@
 ! complete SXR undulator phase shifters
 ! ------------------------------------------------------------------------------
 
-  PSSXh17  : PSSXh
-  PSSXh18  : PSSXh
+  DPSSX17h : DRIF, L=LPSSXh
+  DPSSX18h : DRIF, L=LPSSXh
   PSSXh19  : PSSXh
   PSSXh20  : PSSXh
   PSSXh21  : PSSXh
@@ -1057,8 +1063,6 @@
   DPSSX49h : DRIF, L=LPSSXh
   DPSSX50h : DRIF, L=LPSSXh
 
-  PSSXh17_full : LINE=(PSSXh17,MPHS17,PSSXh17)
-  PSSXh18_full : LINE=(PSSXh18,MPHS18,PSSXh18)
   PSSXh19_full : LINE=(PSSXh19,MPHS19,PSSXh19)
   PSSXh20_full : LINE=(PSSXh20,MPHS20,PSSXh20)
   PSSXh21_full : LINE=(PSSXh21,MPHS21,PSSXh21)
@@ -1175,14 +1179,16 @@
 ! SXR cell interspace definitions
 ! ------------------------------------------------------------------------------
 
+  DPSSX17 : LINE=(DPSSX17h,DPSSX17h)
+  DPSSX18 : LINE=(DPSSX18h,DPSSX18h)
   DPSSX35 : LINE=(DPSSX35h,DPSSX35h)
   DPSSX47 : LINE=(DPSSX47h,DPSSX47h)
   DPSSX48 : LINE=(DPSSX48h,DPSSX48h)
   DPSSX49 : LINE=(DPSSX49h,DPSSX49h)
   DPSSX50 : LINE=(DPSSX50h,DPSSX50h)
   
-  SXBRK17 : LINE=(DU3s,PSSXh17_full,DU4s,DU5s,QSXh17_full,DU6s,RFBSX17,DU7s)
-  SXBRK18 : LINE=(DU3s,PSSXh18_full,DU4s,DU5s,QSXh18_full,DU6s,RFBSX18,DU7s)
+  SXBRK17 : LINE=(DU3s,DPSSX17,DU4s,DU5s,QSXh17_full,DU6s,RFBSX17,DU7s)
+  SXBRK18 : LINE=(DU3s,DPSSX18,DU4s,DU5s,QSXh18_full,DU6s,RFBSX18,DU7s)
   SXBRK19 : LINE=(DU3s,PSSXh19_full,DU4s,DU5s,QSXh19_full,DU6s,RFBSX19,DU7s)
   SXBRK20 : LINE=(DU3s,PSSXh20_full,DU4s,DU5s,QSXh20_full,DU6s,RFBSX20,DU7s)
   SXBRK21 : LINE=(DU3s,PSSXh21_full,DU4s,VVSXU21,DU5s,QSXh21_full,DU6s,&
@@ -1228,9 +1234,9 @@
 ! SXR cell definitions
 ! ------------------------------------------------------------------------------
 
-  SXCEL17 : LINE=(SXR17BEG,DU1s,        DU2s,DUSEGS17,SXBRK17,SXR17END) !long
-  SXCEL18 : LINE=(SXR18BEG,DU1s,        DU2s,DUSEGS18,SXBRK18,SXR18END) !long
-  SXCEL19 : LINE=(SXR19BEG,DU1s,        DU2s,DUSEGS19,SXBRK19,SXR19END) !long
+  SXCEL17 : LINE=(SXR17BEG,DU1s,        DU2s,DUSEGS17,SXBRK17,SXR17END) !Q+RFBPM
+  SXCEL18 : LINE=(SXR18BEG,DU1s,        DU2s,DUSEGS18,SXBRK18,SXR18END) !Q+RFBPM
+  SXCEL19 : LINE=(SXR19BEG,DU1s,MBLMS19,DU2s,USEGSX19,SXBRK19,SXR19END) !long
   SXCEL20 : LINE=(SXR20BEG,DU1s,        DU2s,USEGSX20,SXBRK20,SXR20END) !long
   SXCEL21 : LINE=(SXR21BEG,DU1s,MBLMS21,DU2s,USEGSX21,SXBRK21,SXR21END) !long
   SXCEL22 : LINE=(SXR22BEG,DU1s,        DU2s,USEGSX22,SXBRK22,SXR22END) !long
@@ -1289,7 +1295,7 @@
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-  KQUE1B :=  0.321387608763 ! 0.325725075565 !Yuri (E=8.0, K=5.48)
+  KQUE1B :=  0.321293841248 ! 0.325725075565 !Yuri (E=8.0, K=5.48)
   KQUE2B := -0.144356640751 !Yuri (E=8.0, K=5.48)
 
   QUE1B : QUAD, TYPE="2Q10", L=LQR/2, K1=KQUE1b, APER=rQR
