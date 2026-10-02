@@ -25,7 +25,7 @@ if LCLS_LATTICE_ENV is None:
 
 BDIR = f'{LCLS_LATTICE_ENV}/bmad/'
 MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','sc_dasel','cu_sxr','cu_hxr',
-        'sc_sxr2','sc_hxr2','sc_bsyd2','sc_dasel2','sc_diag02',
+        'sc_sxr2','sc_hxr2','sc_bsyd2','sc_dasel2','sc_diag02', 'sc_diagis',
         'sc_sxr_beam0','sc_hxr_beam0','sc_bsyd_beam0','sc_dasel_beam0','sc_diag0_beam0']
 LATFILE = {}
 for model in MODELS:
@@ -85,7 +85,7 @@ for model in MODELS:
       if len(inspect_name) > 1:
         if inspect_name[0] in special_names:
           name = special_names[inspect_name[0]] + inspect_name[1]
-        elif key == 'Lcavity' and not name.startswith(('TCAV','K','TCX','TCY')):
+        elif key == 'Lcavity' and not name.startswith(('TCAV','K','TCX','TCY','CAVL','CAVC')):
           if inspect_name[1] == '1':
             name = inspect_name[0] + "A"
           elif inspect_name[1] == '2':
