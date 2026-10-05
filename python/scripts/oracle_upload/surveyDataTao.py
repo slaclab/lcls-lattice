@@ -73,12 +73,14 @@ if LCLS_LATTICE_ENV is None:
   print('Error:  LCLS_LATTICE is not set')
   sys.exit(1)
 
-LINES_ROOTS = ['sc_sxr','sc_hxr','sc_bsyd','sc_dasel','sc_diag0','cu_sxr','cu_hxr']
+LINES_ROOTS = ['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','sc_dasel','sc_diag02','sc_diagis',
+               'cu_sxr','cu_hxr','sc_hxr2','sc_sxr2','sc_bsyd2','sc_dasel2']
 LINES_EXCLUDE = ['', '    ',]
 
 BDIR = f'{LCLS_LATTICE_ENV}/bmad/'
-MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','sc_diag02','sc_diagis','sc_dasel','sc_sfts','cu_sxr','cu_hxr','cu_sfth','cu_gspec','cu_spec',
-        'sc_sxr_bsy', 'sc_hxr_bsy', 'sc_bsyd_bsy', 'sc_dasel_bsy', 'sc_sfts_bsy', 'cu_sxr_bsy', 'cu_hxr_bsy', 'cu_sfth_bsy']
+MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','sc_dasel','sc_sfts','sc_diag02','sc_diagis','cu_sxr','cu_hxr','cu_sfth','cu_gspec','cu_spec',
+        'sc_sxr_bsy', 'sc_hxr_bsy', 'sc_bsyd_bsy', 'sc_dasel_bsy', 'sc_sfts_bsy', 'cu_sxr_bsy', 'cu_hxr_bsy', 'cu_sfth_bsy','sc_hxr2','sc_sxr2','sc_dasel2','sc_bsyd2',
+        'sc_sxr_beam0','sc_hxr_beam0','sc_bsyd_beam0','sc_dasel_beam0','sc_diag0_beam0']
 LATFILE = {}
 for model in MODELS:
   LATFILE[model] = f'{LCLS_LATTICE_ENV}/bmad/survey_models/{model}.lat.bmad'
@@ -172,11 +174,30 @@ with open('value_data.json','w') as f:
 #  x y z suml
 #  theta phi psi
 
+timestamp_alt = datetime.now().strftime('%d-%m-%y  %H.%M.%S')
+
+def write_print_header(f,model):
+    header = f'''\
+#                                                                                 "Bmad"                    Run: {timestamp_alt}
+#Survey.                      SURVEY              line: {model.upper()}
+# 
+#------------------------------------------------------------------------------------------------------------------------------------
+#       E L E M E N T   S E Q U E N C E          I            P O S I T I O N S             I               A N G L E S              
+#pos.   element   occ.     sum(L)       arc      I     x             y             z        I     theta         phi           psi 
+#no.    name      no.      [m]          [m]      I     [m]           [m]           [m]      I     [rad]         [rad]         [rad] 
+#------------------------------------------------------------------------------------------------------------------------------------
+'''
+    f.write(header)
+
+name_log = set()
 for model in MODELS:
   area = '_'
+  name_log.clear()
   with open(model+'_survey.tape','w') as f, \
+       open(model+'.print','w') as fprt, \
        (open(model+'_lines.precursor','w') if model in LINES_ROOTS else nullcontext()) as flin:
     f.write(f'Linux    Bmad Survey/{timestamp}\n\n')
+    print_counter = 50
     tao = Tao(lattice_file=LATFILE[model], noplot=True)
     ix_eles = tao.lat_list('*', 'ele.ix_ele')
     suml = 0
@@ -267,11 +288,27 @@ for model in MODELS:
       x,y,z,theta,phi,psi = map(float,floor)
       line = line + "\n" + f'{x:16.9E}{y:16.9E}{z:16.9E}{suml:16.9E}' + "\n"
       line = line + f'{theta:16.9E}{phi:16.9E}{psi:16.9E}\n'
+
+      #produce .print output
+      if(print_counter >= 50):
+        write_print_header(fprt,model)
+        print_counter = 0
+      seq_number = 1
+      if len(inspect_name) > 1:
+        seq_number = inspect_name[1]
+      s = tao.lat_list(ix,'ele.s')[0]
+      floor = tao.ele_floor(ix)['Reference']
+      x,y,z,th,ps,ph = [floor[i] for i in range(6)]
+      fprt.write(f' {ix:6} {inspect_name[0][:11]:11} {seq_number:1}  {suml:12.6f} {s:12.6f}  {x:13.6f} {y:13.6f} {z:13.6f}  {th:13.6f} {ps:13.6f} {ph:13.6f}\n')
+      print_counter += 1
         
       f.write(line)
       if model in LINES_ROOTS:
         if madk not in LINES_EXCLUDE:
-          flin.write(f'<PV> {name_use:16s} {madk} {suml:16.9E} {z:16.9E} {model.upper()} {area}\n')
+          if name_use not in name_log:
+            #flin.write(f'<PV> {name_use:16s} {madk} {suml:16.9E} {z:16.9E} {model.upper()} {area}\n')
+            flin.write(f'<PV> {name_use:16s} {madk} {suml:.6f} {z:.6f} {model.upper()} {area}\n')
+            name_log.add(name_use)
     f.write('\n')
     f.write(f"{' '*33}{suml:.9E}")
 
