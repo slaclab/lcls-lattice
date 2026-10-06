@@ -21,7 +21,7 @@ SURVEY_MODELS = sc_sxr sc_hxr sc_bsyd sc_dasel sc_diag0 sc_diag02 cu_sxr cu_hxr 
 BSY_SURVEY_MODELS = cu_hxr_bsy cu_sfth_bsy cu_sxr_bsy sc_bsyd_bsy sc_dasel_bsy sc_hxr_bsy sc_sfts_bsy sc_sxr_bsy
 #TWISS_MODELS = sc_sxr sc_hxr sc_bsyd sc_dasel sc_diag0 cu_sxr cu_hxr sc_sxr2 sc_hxr2 sc_bsyd2 sc_dasel2 sc_diag02
 TWISS_MODELS = sc_sxr_beam0 sc_hxr_beam0 sc_bsyd_beam0 sc_dasel_beam0 sc_diag0_beam0 cu_sxr cu_hxr
-OPTICS ?= 10SEP2026sDEV
+OPTICS ?= 05OCT2026s
 
 # Expand model-specific files
 PLOT_MODELS = sc_sxr sc_hxr sc_bsyd sc_diag0 sc_dasel sc_diag02 \
