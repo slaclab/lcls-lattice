@@ -366,11 +366,14 @@ def read_ips(path: Path) -> list[tuple[int, int, str]]:
 
 
 def write_collated(path: Path, ips, tables: dict[str, BscTable], markers: dict[str, int]) -> None:
+    # tables comes from twiss.dat files
+    # ips is the dump from prepare_upload
     hxr_offset = markers['sc_hxr_beam0'] - markers['cu_hxr']
     path.parent.mkdir(parents=True, exist_ok=True)
     zero = f'{0:>10.6e}'
     with open(path, 'w') as f:
         f.write('#ELEMENT, Stayclear Dia (mm), +Horz (mm), -Horz (mm), +Vert (mm), -Vert (mm)\n')
+        written = set()
         for froot, ordinal, name in ips:
             if ordinal < 0:
                 if not name.startswith('FIXER'):
@@ -389,10 +392,13 @@ def write_collated(path: Path, ips, tables: dict[str, BscTable], markers: dict[s
             if not table.valid[ordinal] or table.names[ordinal].startswith('FIXER'):
                 continue
             name_ = name.removesuffix('?')
+            if name in written:
+                continue
             if table.names[ordinal] != name_:
                 print(f'WARNING.  ips.dump name does not match twiss.dat name: '
                       f'model={spec.name} twiss.dat name=>{table.names[ordinal]}< ips.dump name>{name}<')
             # NB: spacing (", " vs ",") kept identical to the legacy script's output.
+            written.add(name)
             f.write(f'{name}, {table.dia[ordinal]:>10.6e}, {table.xid[ordinal]:>10.6e},'
                     f'{-table.xid[ordinal]:>10.6e}, {table.yid[ordinal]:>10.6e},'
                     f'{-table.yid[ordinal]:>10.6e}\n')

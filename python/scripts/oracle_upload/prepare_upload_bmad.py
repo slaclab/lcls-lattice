@@ -772,6 +772,8 @@ for kwn,eles in ele_dict.items():
     if kwn == 'LCAV':
         # create list of unique names that will allow unsplitting
         for i in range(len(names)):
+            if names[i].startswith('CAVL12'):
+              print(f'FOO C: {names[i]=}') #FOO
             if names[i].startswith(('CAVL','CAVC')):
                 names[i] = names[i][0:7]
             elif names[i].startswith(('K2','K3')):
@@ -1052,8 +1054,6 @@ for kwn,eles in ele_dict.items():
 
             sdsp = Sd[id1]  # m
             suml = S[id1]  # m
-            if name in ['SQ02B','CQ02B']:
-              print(name,suml) #FOO
             energy = E[id1]  # GeV
             bore = 2 * A[id1]  # m
             tilt = P[id1, 3]  # rad
@@ -1665,6 +1665,8 @@ Ncol = head.count(',') + 1
 ips = []
 for kwn,eles in ele_dict.items():
     for m in range(len(eles)):
+        if eles[m]['name'].startswith('CAVL12'):
+          print(f'FOO B: {eles[m]["name"]=}') #FOO
         ips.append([eles[m]["idf"], eles[m]['id'], kwn, m, eles[m]['name']])
 ips = sorted(ips, key=lambda x: (x[0], x[1]))
 
@@ -1672,6 +1674,8 @@ with open('ips.dump','w') as f:
   f.write('# froot   ordinal_in_froot   keyword   ordinal_in_keyword   name\n')
   f.write('# ordinal_in_froot counted from beam0\n')
   for ip in ips:
+    if ip[4].startswith('CAVL12'):
+      print(f'FOO A: {ip[4]=}') #FOO
     if ip[0] in froot_beam0_indexes:
       # then beam0 exists in the file.  offset ordinals by this amount.  ips.dump is used for bsc calculation,
       # which starts from beam0
@@ -1883,8 +1887,6 @@ with open(outdir+'/'+fname, 'wt') as fid:
         kwn = entry[2]
         m = entry[3]
         TEMP = ele_dict[kwn][m]
-        if TEMP['name'] == 'DYQDG001':
-            print(f'FOO {kwn}')
         if kwn in ['MARK', 'SROT']:
             continue
         TEMPucell = TEMP['ucell']

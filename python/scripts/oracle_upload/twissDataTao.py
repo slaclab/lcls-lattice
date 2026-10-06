@@ -85,7 +85,7 @@ for model in MODELS:
       if len(inspect_name) > 1:
         if inspect_name[0] in special_names:
           name = special_names[inspect_name[0]] + inspect_name[1]
-        elif key == 'Lcavity' and not name.startswith(('TCAV','K','TCX','TCY','CAVL','CAVC')):
+        elif key == 'Lcavity' and not name.startswith(('TCAV','K','TCX','TCY')):
           if inspect_name[1] == '1':
             name = inspect_name[0] + "A"
           elif inspect_name[1] == '2':
