@@ -76,6 +76,7 @@ dp =0.02  #  1 (beam maximum relative energy error in the S30XL)
 D =0.002  #  m (maximum residual beam orbit in S30XL)
 
 MODELS=['sc_sxr_beam0','sc_hxr_beam0','sc_bsyd_beam0','sc_diag0_beam0', 'cu_sxr', 'cu_hxr', 'sc_dasel_beam0', 'sc_diag02', 'sc_diagis']
+#MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0', 'cu_sxr', 'cu_hxr', 'sc_dasel', 'sc_diag02', 'sc_diagis']
 froot_to_model = {1:0, 6:1, 7:2, 8:3, 14:4, 10:5, 9:6, 17:7, 18:8}
 
 output_ordering = [1,6,10,7,8,14,9,17,18]
@@ -125,10 +126,10 @@ for model in MODELS:
   if model == 'cu_hxr':
     cu_hxr_marker = lat.names.index('BEGBSYH')
 
-  if model == 'sc_hxr_beam0':
+  if model == 'sc_hxr':
     sc_hxr_marker = lat.names.index('BEGBSYH')
 
-  if model == 'sc_dasel_beam0':
+  if model == 'sc_dasel':
     id_dasel_1 = strmatch('BEGSPA',lat.names,False)[0]
     id_dasel_2 = strmatch('ENDBSYA',lat.names,False)[-1] # ENDBSYA
     id_dasel_mark = strmatch('BLRDAS',lat.names)[-1] # downstream of BLRDAS
@@ -148,7 +149,7 @@ for model in MODELS:
     vern = 0.01    # energy vernier after linac (was 2% on 20MAR15 - set to 1% May 5, 2015 to get Dean's QDOG2 < 50 mm Diam.)
     chirp = 0.01    # FWHM energy spread due to optional linear chirp after linac (was 1% on 20MAR15)
 
-  if model == 'sc_diag0_beam0':
+  if model == 'sc_diag0':
     dE0 = 0.04    # full core energy width in DIAG0 - before adding jitter, chirp ( )
     idy = strmatch('TCYDG0',lat.names)[-1]
     idx = strmatch('TCXDG0',lat.names)[-1]
@@ -203,7 +204,7 @@ for model in MODELS:
     if model.startswith('cu_') and ix < i_BSY:
       continue
 
-    if model == 'sc_dasel_beam0':
+    if model == 'sc_dasel':
       if ix < id_dasel_1 or ix > id_dasel_2:
         continue
       if ix<=id_dasel_mark:
@@ -274,6 +275,9 @@ for model in MODELS:
 #For elements with the same name, find the one with the largest Dia and
 # apply its values to all elements with that name.
 for model in bsc_data:
+  for item in bsc_data[model]:
+    if item[0] == 'Q0H04':
+        print(f'{model}   FOO: {item}')
   indices = {}
   for ix, (name,key) in enumerate([(x[0],x[1]) for x in bsc_data[model]]):
     if name == '' or key == 'Drift':
@@ -286,14 +290,20 @@ for model in bsc_data:
            for name, idx_pair in indices.items()
            if idx_pair[0] != idx_pair[1]}
   for name, span in spans.items():
-    items = bsc_data[model][span[0]-1:span[1]+1]
+    start = max(span[0] - 1, 0)
+    items = bsc_data[model][start:span[1]+1]
     #print("FOO A: ", name, span[0]-1,span[1], [[x[0],x[3]] for x in items])
     max_item = max(items, key=lambda x: x[2])
     #print("       ", name, max_item)
     for item in items:
       if item[0] == name:
-        item[1:] = max_item[1:]  # these are references: modifies data in bsc_data
+        item[2:] = max_item[2:]  # these are references: modifies data in bsc_data
     #print("FOO B: ", name, span[0]-1,span[1], [[x[0],x[3]] for x in items])
+  for item in bsc_data[model]:
+    if item[0] == 'Q0H04':
+        print(f'{model}   FOO: {item}')
+
+
 
 #  #For elements with the same name, find the one with the largest Dia and
 #  # apply its values to all elements with that name.
@@ -334,10 +344,12 @@ with filepath.open('w') as f_all:
       if model_name == 'cu_hxr':
         if ordinal < cu_hxr_marker:
           continue
-        model_name = 'sc_hxr_beam0'
+        model_name = 'sc_hxr'
         ordinal = ordinal + hxr_offset
       if bsc_data[model_name][ordinal][0] != '':
         x = bsc_data[model_name][ordinal]
+        if x[0] == 'Q0H04':
+            print(f'FOO: {x}')
         if not x[0].startswith('FIXER'):
           if x[0] != name:
             print(f'WARNING.  ips.dump name not match twiss.dat name: {model_name=} twiss.dat name=>{x[0]=}< ips.dump name>{name}<')

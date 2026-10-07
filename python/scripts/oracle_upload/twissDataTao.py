@@ -24,12 +24,18 @@ if LCLS_LATTICE_ENV is None:
   sys.exit(1)
 
 BDIR = f'{LCLS_LATTICE_ENV}/bmad/'
-MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','sc_dasel','cu_sxr','cu_hxr',
-        'sc_sxr2','sc_hxr2','sc_bsyd2','sc_dasel2','sc_diag02', 'sc_diagis',
-        'sc_sxr_beam0','sc_hxr_beam0','sc_bsyd_beam0','sc_dasel_beam0','sc_diag0_beam0']
+#MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','sc_dasel','cu_sxr','cu_hxr',
+#        'sc_sxr2','sc_hxr2','sc_bsyd2','sc_dasel2','sc_diag02', 'sc_diagis',
+#        'sc_sxr_beam0','sc_hxr_beam0','sc_bsyd_beam0','sc_dasel_beam0','sc_diag0_beam0']
+MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0', 'cu_sxr', 'cu_hxr', 'sc_dasel', 'sc_diag02', 'sc_diagis']
+BEAM0_LATS=[]  #['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','sc_dasel']
 LATFILE = {}
 for model in MODELS:
-  LATFILE[model] = f'{LCLS_LATTICE_ENV}/bmad/survey_models/{model}.lat.bmad'
+  #LATFILE[model] = f'{LCLS_LATTICE_ENV}/bmad/survey_models/{model}.lat.bmad'
+  if model in BEAM0_LATS:
+    LATFILE[model] = f'{LCLS_LATTICE_ENV}/bmad/models/{model}/{model}.lat.bmad@{model}i'
+  else:
+    LATFILE[model] = f'{LCLS_LATTICE_ENV}/bmad/models/{model}/{model}.lat.bmad'
 
 def my_lat_list(ix, p):
   if p == 0:

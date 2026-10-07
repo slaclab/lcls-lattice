@@ -64,9 +64,8 @@ R56_CHICANES = ['CCDLU', 'CCDLD', 'CC31B', 'CC32B', 'CC31', 'CC32', 'CC35', 'CC3
 
 # Cavities whose names carry a trailing A/B that must be stripped.
 CAVITY_PREFIXES = tuple(
-    [f'CAVL{n:02d}5' for n in range(1, 36)] + ['CAVC012', 'CAVC022']
+    [f'CAVL{n:02d}5' for n in range(0, 60)] + ['CAVC012', 'CAVC022']
 )
-
 
 @dataclass(frozen=True)
 class BeamParams:
@@ -153,8 +152,8 @@ def load_twiss(path: Path) -> Lattice:
             if len(parts) != 10:
                 raise ValueError(f'{path}: expected 10 columns, got {len(parts)}: {line!r}')
             name = parts[0]
-            #if name.startswith(CAVITY_PREFIXES):
-            #    name = name[:-1]
+            if name.startswith(CAVITY_PREFIXES):
+                name = name[:-1]
             names.append(name)
             keys.append(parts[1])
             rows.append([float(x) for x in parts[2:]])
@@ -425,6 +424,7 @@ def main(argv=None):
         if spec.name in ('cu_hxr', 'sc_hxr_beam0'):
             markers[spec.name] = lat.names.index('BEGBSYH')
         table = compute_model(spec, lat)
+        print(f'FOO: {[i for i, name in enumerate(table.names) if name == "Q0H03"]}')
         write_model_file(args.model_out_dir / f'BSC_{spec.name}.txt', lat, table)
         tables[spec.name] = table
 
