@@ -1,5 +1,5 @@
 
-! *** OPTICS=AD_ACCEL-10SEP2026s ***
+! *** OPTICS=AD_ACCEL-14OCT2026s ***
 
 ! LEI matching routines
 
@@ -47,8 +47,10 @@
   ! - LCLS2sc_main.mad8 (SUBROUTINE SETK2scLEI)
   ! - SETK2scLEI.xsif
 
-    SET, FracL1,    FracL1LEI
-    SET, LHhnum,    1         !laser heater fundamental mode
+    SET, E0,     E0LEI
+    SET, Ei,     EiLEI
+    SET, FracL1, FracL1LEI
+    SET, LHhnum, 1 !laser heater fundamental mode
 
    !                   UMHTR ON         UMHTR OFF      
    !               ---------------  ---------------   
@@ -76,16 +78,18 @@
     SET, QCM02[K1], -0.279246235301
     SET, QCM03[K1],  0.210633853799
     SET, KQ1C01,     0.968114221634
-    SET, KQC101,    -0.298061299029
+    SET, KQC101,    -0.298061299028
     SET, KQC102,     2.062613606573
     SET, KQC103,     0.0
-    SET, KQC104,    -0.885420825349
-    SET, KQC105,    -1.721309564943
+    SET, KQC104,    -0.885420825347
+    SET, KQC105,    -1.721309564941
 
     SET, KQL1P,     0.544259695512
     SET, KQL2P,    -0.329072008578
     SET, KQL3P,     0.63112633244
     SET, KQL4P,    -0.067161651898
+
+    VALUE, E0,Ei,LHhnum,SETUMHTR,K_und,kqlh
   ENDSUBROUTINE,
 
   SETK2scDGI : SUBROUTINE
@@ -375,9 +379,8 @@
 
   MLHD0LEI : SUBROUTINE !match from LEI laser heater to DIAG0
     SETK2scLEI
-    BEAM, ENERGY=EiLEI
+    BEAM, ENERGY=Ei
     USE, SC_DIAG02i
-    VALUE, SETUMHTR,LHhnum
     VALUE, KQHD01,KQHD02,KQHD03,KQHD04
     MATCH, BETA0=TWSSiLEI
       VARY, KQHD01, STEP=1.E-6, LOWER=-KmaxQM45, UPPER=0 !unipolar
@@ -390,8 +393,8 @@
      !CONSTR, QHD02[1], BETX<50, BETY<50
      !CONSTR, QHD03[1], BETX<55, BETY<55
      !CONSTR, QHD04[1], BETX<50, BETY<50
-     !LMDIF, TOL=1.E-20, CALLS=10000
-     !MIGRAD, TOL=1.E-20, CALLS=10000
+      LMDIF, TOL=1.E-20, CALLS=10000
+      MIGRAD, TOL=1.E-20, CALLS=10000
     ENDMATCH
     VALUE, KQHD01,KQHD02,KQHD03,KQHD04
     PRINT, FULL
@@ -400,7 +403,7 @@
       STYLE=100, SPLINE, FILE="match"
     PLOT, TABLE=TWISS, HAXIS=S, VAXIS=DX,DY, &
       STYLE=100, -SPLINE, FILE="match"
-    BEAM, ENERGY=E0LEI
+    BEAM, ENERGY=E0
     USE, SC_DIAG02
     SURVEY, X0=Xgun2, Y0=Ygun2, Z0=Zgun2, TAPE="survey.tape"
   ENDSUBROUTINE
@@ -439,7 +442,7 @@
 
   MCOL0COL1LEI : SUBROUTINE
     SETK2scLEI
-    BEAM, ENERGY=EiLEI
+    BEAM, ENERGY=Ei
     USE, SC_BSYD2i
     VALUE, KQC010,KQC011,KQC012,QCM02[K1],QCM03[K1],KQ1C01
     VALUE, KQC101,KQC102,KQC103,KQC104,KQC105
@@ -490,7 +493,7 @@
 
   MDLBYPLEI : SUBROUTINE
     SETK2scLEI
-    BEAM, ENERGY=EiLEI
+    BEAM, ENERGY=Ei
     USE, SC_BSYD2i
     VALUE, KQL1P,KQL2P,KQL3P,KQL4P
     MATCH, BETA0=TWSSiLEI
@@ -657,6 +660,16 @@
       STYLE=100, -SPLINE, RANGE=DIAGIS, FILE="match", &
       TITLE="L0LEI to LEI spectrometer (TCAV optics)"
   ENDSUBROUTINE
+
+! ==============================================================================
+! COMMANDs
+! ------------------------------------------------------------------------------
+
+! LEI: verify match into LCLS-II
+
+ !MLHD0LEI     !(23) match LEI into DIAG0
+ !MCOL0COL1LEI !(24) match LEI into COL1
+ !MDLBYPLEI    !(25) check
 
 ! ------------------------------------------------------------------------------
 

@@ -7,7 +7,8 @@
 # The output *_lines.dat files are meant to feed the directory service.
 # The output *_lines.all files are meant to feed the dot beampaths images.
 
-LINES_ROOTS = ['sc_sxr','sc_hxr','sc_bsyd','sc_dasel','sc_diag0','cu_sxr','cu_hxr']
+LINES_ROOTS = ['sc_sxr','sc_hxr','sc_bsyd','sc_dasel','sc_diag0','cu_sxr','cu_hxr','sc_diagis','sc_diag02',
+               'sc_hxr2','sc_sxr2','sc_bsyd2','sc_dasel2']
 
 ED_FILES = ['elementdevices.dat','elementdevices_cavities_cuH.dat','elementdevices_cavities_cuS.dat','elementdevices_sbends_cuH.dat','elementdevices_sbends_cuS.dat']
 
@@ -25,6 +26,7 @@ for file in ED_FILES:
           pass
           #print(f'dup name found in elementdevices.dat: {name}')
 
+# Make .dat files
 for model in LINES_ROOTS:
   with open(f'{model}_lines.precursor','r') as fpre, open(f'{model}_lines.dat','w') as fdat:
     for line in fpre:
@@ -37,6 +39,7 @@ for model in LINES_ROOTS:
           if data[1][:-1] in ed:
             fdat.write(f'{ed[data[1][:-1]]} {" ".join(data[1:])}\n')
 
+# Make .all files
 for model in LINES_ROOTS:
   with open(f'{model}_lines.precursor','r') as fpre, open(f'{model}_lines.all','w') as fdat:
     for line in fpre:

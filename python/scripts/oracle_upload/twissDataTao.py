@@ -24,11 +24,19 @@ if LCLS_LATTICE_ENV is None:
   sys.exit(1)
 
 BDIR = f'{LCLS_LATTICE_ENV}/bmad/'
-MODELS=['sc_sxr_beam0','sc_hxr_beam0','sc_bsyd_beam0','sc_diag0_beam0','sc_dasel_beam0','cu_sxr','cu_hxr']
-#MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','sc_dasel','cu_sxr','cu_hxr']
+#MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','sc_dasel','cu_sxr','cu_hxr',
+#        'sc_sxr2','sc_hxr2','sc_bsyd2','sc_dasel2','sc_diag02', 'sc_diagis',
+#        'sc_sxr_beam0','sc_hxr_beam0','sc_bsyd_beam0','sc_dasel_beam0','sc_diag0_beam0']
+MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0', 'cu_sxr', 'cu_hxr', 'sc_dasel', 'sc_diag02', 'sc_diagis']
+#BEAM0_LATS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','sc_dasel']
 LATFILE = {}
 for model in MODELS:
-  LATFILE[model] = f'{LCLS_LATTICE_ENV}/bmad/survey_models/{model}.lat.bmad'
+  #LATFILE[model] = f'{LCLS_LATTICE_ENV}/bmad/survey_models/{model}.lat.bmad'
+  LATFILE[model] = f'{LCLS_LATTICE_ENV}/bmad/models/{model}/{model}.lat.bmad'
+  #if model in BEAM0_LATS:
+  #  LATFILE[model] = f'{LCLS_LATTICE_ENV}/bmad/models/{model}/{model}.lat.bmad@{model}i'
+  #else:
+  #  LATFILE[model] = f'{LCLS_LATTICE_ENV}/bmad/models/{model}/{model}.lat.bmad'
 
 def my_lat_list(ix, p):
   if p == 0:
@@ -59,15 +67,21 @@ def double_round_new(x, ndigits):
   q = Decimal(1).scaleb(-ndigits)           # 10**(-ndigits)
   return float(d.quantize(q, rounding=ROUND_HALF_UP))
 
+header = '#name           key         ' + ''.join([f'{p:>19s}' for p in params]) + '\n'
+
 for model in MODELS:
+  header_counter = 50
   print(f'model {model}')
   with open(model+'_twiss.dat','w') as f:
     f.write(f'# Linux    Bmad Twiss/{timestamp}\n')
-    f.write(f'# name, key, s, beta_a, beta_b, phi_a, phi_b, eta_x, eta_y, e_tot\n')
     tao = Tao(lattice_file=LATFILE[model], noplot=True)
     ix_eles = tao.lat_list('*', 'ele.ix_ele')
     suml = 0
     for ix in ix_eles[:-1]:
+      if header_counter >= 50:
+        f.write(header)
+        header_counter = 0
+      header_counter += 1
       name = tao.lat_list(ix,'ele.name')[0]
       key = tao.lat_list(ix,'ele.key')[0]
       if key.upper() in skips:
@@ -115,7 +129,7 @@ for model in MODELS:
 
       vals = [my_lat_list(ix,p) for p in params]
 
-      line = f'{name:<11s}   {key:<15s}' + '   '.join([f'{x:>16.9E}' for x in vals])
+      line = f'{name[:13]:<13s}   {key:<15s}' + '   '.join([f'{x:>16.9E}' for x in vals])
       line = line + '\n'
         
       f.write(line)

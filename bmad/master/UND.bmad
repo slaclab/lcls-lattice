@@ -1,10 +1,15 @@
 
-! *** OPTICS=AD_ACCEL-10SEP2026s ***
+! *** OPTICS=AD_ACCEL-14OCT2026s ***
 
 ! LCLS2sc undulator and undulator extension
 
 ! ==============================================================================
 ! Modification History
+! ------------------------------------------------------------------------------
+! 14-OCT-2026, M. Woodley
+!  * remove long-period phase shifters from SXR cells 17 and 18 until new
+!    long-period undulators are installed in those cells
+!  * add long-period undulator in SXR cell 19
 ! ------------------------------------------------------------------------------
 ! 10-AUG-2026, M. Woodley
 !  * KSXU = 7.2, PIPSSX = 4400 T^2mm^3 per H.-D. Nuhn
@@ -418,7 +423,7 @@ gqfsx = intgsx/lqu/10*1.0           !T/m
 gqdsx = -intgsx/lqu/10*1.0           !T/m
 kqfsx = 1.e-9*gqfsx*c_light/gamu/mc2 !m^-2
 kqdsx = 1.e-9*gqdsx*c_light/gamu/mc2 !m^-2
-kqsx47 = -1.516536097337              !-1.843482712046 !Yuri (E=8.0, K=5.48)
+kqsx47 = -1.510290893229              !-1.843482712046 !Yuri (E=8.0, K=5.48)
 
 qsxh16: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqfsx, aperture = rqu
 qsxh17: quadrupole, type = "0.433Q3.1", l = lqu/2, k1 = kqdsx, aperture = rqu
@@ -534,6 +539,7 @@ rfbsx51: monitor, l = lrfbub, type = "CavityX-1"
 ! SXR undulator X-steering coils in undulator segments
 ! ------------------------------------------------------------------------------
 
+xcsu19: hkicker, type = "type-V"
 xcsu20: hkicker, type = "type-V"
 xcsu21: hkicker, type = "type-V"
 xcsu22: hkicker, type = "type-V"
@@ -567,6 +573,7 @@ xcsu47: hkicker, type = "type-V"
 ! SXR undulator Y-steering coils in undulator segments
 ! ------------------------------------------------------------------------------
 
+ycsu19: vkicker, type = "type-V"
 ycsu20: vkicker, type = "type-V"
 ycsu21: vkicker, type = "type-V"
 ycsu22: vkicker, type = "type-V"
@@ -674,6 +681,7 @@ ycsx47: vkicker, type = "type-U"
 ! SXR undulator Beam Loss Monitors (placeholders)
 ! ------------------------------------------------------------------------------
 
+mblms19: marker
 mblms21: marker
 mblms23: marker
 mblms25: marker
@@ -749,8 +757,6 @@ muqs47: marker
 
 ! SXR phase shifter centers
 
-mphs17: marker
-mphs18: marker
 mphs19: marker
 mphs20: marker
 mphs21: marker
@@ -972,6 +978,7 @@ bcxss4_svy: null_ele, superimpose, ref=bcxss4, ref_origin=beginning, offset=bcxs
 ! complete SXR undulator segments
 ! ------------------------------------------------------------------------------
 
+umasxh19: umasxh
 umasxh20: umasxh
 umasxh21: umasxh
 umasxh22: umasxh
@@ -1003,7 +1010,7 @@ umasxh47: umasxh
 
 ! ------17
 ! ------18
-! ------19
+  USEGSX19_full : LINE=(UMASXh19,XCSU19,YCSU19,UMASXh19)
   USEGSX20_full : LINE=(UMASXh20,XCSU20,YCSU20,UMASXh20)
   USEGSX21_full : LINE=(UMASXh21,XCSU21,YCSU21,UMASXh21)
   USEGSX22_full : LINE=(UMASXh22,XCSU22,YCSU22,UMASXh22)
@@ -1035,14 +1042,13 @@ umasxh47: umasxh
 
 dusegs17h: drift, l = ldusegs/2
 dusegs18h: drift, l = ldusegs/2
-dusegs19h: drift, l = ldusegs/2
 dusegs48h: drift, l = ldusegs/2
 dusegs49h: drift, l = ldusegs/2
  !DUSEGS50h : DRIF, L=LDUSEGS/2
 
   DUSEGS17 : LINE=(DUSEGS17h,DUSEGS17h)
   DUSEGS18 : LINE=(DUSEGS18h,DUSEGS18h)
-  DUSEGS19 : LINE=(DUSEGS19h,DUSEGS19h)
+  USEGSX19 : LINE=(DTSXU,USEGSX19_full,DTSXU)
   USEGSX20 : LINE=(DTSXU,USEGSX20_full,DTSXU)
   USEGSX21 : LINE=(DTSXU,USEGSX21_full,DTSXU)
   USEGSX22 : LINE=(DTSXU,USEGSX22_full,DTSXU)
@@ -1079,8 +1085,8 @@ dusegs49h: drift, l = ldusegs/2
 ! complete SXR undulator phase shifters
 ! ------------------------------------------------------------------------------
 
-pssxh17: pssxh
-pssxh18: pssxh
+dpssx17h: drift, l = lpssxh
+dpssx18h: drift, l = lpssxh
 pssxh19: pssxh
 pssxh20: pssxh
 pssxh21: pssxh
@@ -1114,8 +1120,6 @@ dpssx48h: drift, l = lpssxh
 dpssx49h: drift, l = lpssxh
 dpssx50h: drift, l = lpssxh
 
-  PSSXh17_full : LINE=(PSSXh17,MPHS17,PSSXh17)
-  PSSXh18_full : LINE=(PSSXh18,MPHS18,PSSXh18)
   PSSXh19_full : LINE=(PSSXh19,MPHS19,PSSXh19)
   PSSXh20_full : LINE=(PSSXh20,MPHS20,PSSXh20)
   PSSXh21_full : LINE=(PSSXh21,MPHS21,PSSXh21)
@@ -1582,14 +1586,16 @@ due1ab2: drift, l = due1ab[l]-due1ab1[l]
 ! SXR cell interspace definitions
 ! ------------------------------------------------------------------------------
 
+  DPSSX17 : LINE=(DPSSX17h,DPSSX17h)
+  DPSSX18 : LINE=(DPSSX18h,DPSSX18h)
   DPSSX35 : LINE=(DPSSX35h,DPSSX35h)
   DPSSX47 : LINE=(DPSSX47h,DPSSX47h)
   DPSSX48 : LINE=(DPSSX48h,DPSSX48h)
   DPSSX49 : LINE=(DPSSX49h,DPSSX49h)
   DPSSX50 : LINE=(DPSSX50h,DPSSX50h)
 
-  SXBRK17 : LINE=(DU3s,PSSXh17_full,DU4s,DU5s,QSXh17_full,DU6s,RFBSX17,DU7s)
-  SXBRK18 : LINE=(DU3s,PSSXh18_full,DU4s,DU5s,QSXh18_full,DU6s,RFBSX18,DU7s)
+  SXBRK17 : LINE=(DU3s,DPSSX17,DU4s,DU5s,QSXh17_full,DU6s,RFBSX17,DU7s)
+  SXBRK18 : LINE=(DU3s,DPSSX18,DU4s,DU5s,QSXh18_full,DU6s,RFBSX18,DU7s)
   SXBRK19 : LINE=(DU3s,PSSXh19_full,DU4s,DU5s,QSXh19_full,DU6s,RFBSX19,DU7s)
   SXBRK20 : LINE=(DU3s,PSSXh20_full,DU4s,DU5s,QSXh20_full,DU6s,RFBSX20,DU7s)
   SXBRK21 : LINE=(DU3s,PSSXh21_full,DU4s,VVSXU21,DU5s,QSXh21_full,DU6s,RFBSX21,DU7s)
@@ -1627,9 +1633,9 @@ due1ab2: drift, l = due1ab[l]-due1ab1[l]
 ! SXR cell definitions
 ! ------------------------------------------------------------------------------
 
-  SXCEL17 : LINE=(SXR17BEG,DU1s,        DU2s,DUSEGS17,SXBRK17,SXR17END) !long
-  SXCEL18 : LINE=(SXR18BEG,DU1s,        DU2s,DUSEGS18,SXBRK18,SXR18END) !long
-  SXCEL19 : LINE=(SXR19BEG,DU1s,        DU2s,DUSEGS19,SXBRK19,SXR19END) !long
+  SXCEL17 : LINE=(SXR17BEG,DU1s,        DU2s,DUSEGS17,SXBRK17,SXR17END) !Q+RFBPM
+  SXCEL18 : LINE=(SXR18BEG,DU1s,        DU2s,DUSEGS18,SXBRK18,SXR18END) !Q+RFBPM
+  SXCEL19 : LINE=(SXR19BEG,DU1s,MBLMS19,DU2s,USEGSX19,SXBRK19,SXR19END) !long
   SXCEL20 : LINE=(SXR20BEG,DU1s,        DU2s,USEGSX20,SXBRK20,SXR20END) !long
   SXCEL21 : LINE=(SXR21BEG,DU1s,MBLMS21,DU2s,USEGSX21,SXBRK21,SXR21END) !long
   SXCEL22 : LINE=(SXR22BEG,DU1s,        DU2s,USEGSX22,SXBRK22,SXR22END) !long
@@ -1678,13 +1684,14 @@ due1ab2: drift, l = due1ab[l]-due1ab1[l]
 ! SXR undulator exit section
 ! ------------------------------------------------------------------------------
 
-!tcx01b: lcavity, rf_frequency = xbandf * 1e6, type = "TRANS_DEFL", l = 1.5/2, cavity_type = traveling_wave !horiz. deflection
-tcx01b: crab_cavity, rf_frequency = xbandf * 1e6, type = "TRANS_DEFL", l = 1.5/2 !horiz. deflection
+
+tcx01b: crab_cavity, rf_frequency = xbandf * 1e6, type = "TRANS_DEFL", l = 1.5/2 !horiz. deflection !horiz. deflection
+!old: tcx01b: lcavity, rf_frequency = xbandf * 1e6, type = "TRANS_DEFL", l = 1.5/2, cavity_type = traveling_wave
 
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file
 
-kque1b = 0.321387608763 ! 0.325725075565 !Yuri (E=8.0, K=5.48)
+kque1b = 0.321293841248 ! 0.325725075565 !Yuri (E=8.0, K=5.48)
 kque2b = -0.144356640751 !Yuri (E=8.0, K=5.48)
 
 que1b: quadrupole, type = "2Q10", l = lqr/2, k1 = kque1b, aperture = rqr
@@ -3358,10 +3365,12 @@ dqhx50: drift, l = lqu
 ! HXR undulator exit section
 ! ------------------------------------------------------------------------------
 
-!tcx01: lcavity, rf_frequency = xbandf * 1e6, type = "TRANS_DEFL", l = 1.0/2, cavity_type = traveling_wave !horizontal deflection
-!tcx02: lcavity, rf_frequency = xbandf * 1e6, type = "TRANS_DEFL", l = 1.0/2, cavity_type = traveling_wave !horizontal deflection
-tcx01: crab_cavity, rf_frequency = xbandf * 1e6, type = "TRANS_DEFL", l = 1.0/2 !horizontal deflection
-tcx02: crab_cavity, rf_frequency = xbandf * 1e6, type = "TRANS_DEFL", l = 1.0/2 !horizontal deflection
+
+tcx01: crab_cavity, rf_frequency = xbandf * 1e6, type = "TRANS_DEFL", l = 1.0/2 !horizontal deflection !horizontal deflection
+!old: tcx01: lcavity, rf_frequency = xbandf * 1e6, type = "TRANS_DEFL", l = 1.0/2, cavity_type = traveling_wave
+
+tcx02: crab_cavity, rf_frequency = xbandf * 1e6, type = "TRANS_DEFL", l = 1.0/2 !horizontal deflection !horizontal deflection
+!old: tcx02: lcavity, rf_frequency = xbandf * 1e6, type = "TRANS_DEFL", l = 1.0/2, cavity_type = traveling_wave
 
 ! note: the below K-values are for SC beam; the settings for Cu beam are
 ! in the "LCLS2cu_main.mad8" file

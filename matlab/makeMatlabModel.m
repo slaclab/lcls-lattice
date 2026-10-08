@@ -1,5 +1,5 @@
 
-% *** OPTICS=AD_ACCEL-10SEP2026s ***
+% *** OPTICS=AD_ACCEL-14OCT2026s ***
 
 % standing wave model; reduced L2 W in Cu linac
 
@@ -11,11 +11,11 @@
 % - change mirrors from MULT to INST in SXTES.xsif and HXTES.xsif
 % - check that L1.xsif (etc) is being CALLed, not L1e.xsif (etc)
 
-MADrelease='10SEP2026s';
-fileDir='\\wsl.localhost\Ubuntu\home\mdw\AD_ACCEL\10SEP2026s\mad';
+MADrelease='14OCT2026s';
+fileDir=['\\wsl.localhost\Ubuntu\home\mdw\AD_ACCEL\',MADrelease,'\mad'];
 
 fprintf('Create model_beamLineLCLS2sc.m ...\n\n')
-file='LCLS2sc_main.mad8';
+file='MM_LCLS2sc_main.mad8';
 nOut='LCLS2sc';
 [lines,out]=model_parseMAD(MADrelease,fileDir,file,nOut);
 % blList
@@ -23,7 +23,7 @@ nOut='LCLS2sc';
 % - SC_DIAG0I,SC_HXRI,SC_SXRI,SC_BSYDI,SC_DASELI (start at BEAM0)
 
 fprintf('\nCreate model_beamLineLCLS2cu.m ...\n\n')
-file='LCLS2cu_main.mad8';
+file='MM_LCLS2cu_main.mad8';
 nOut='LCLS2cu';
 [lines,out]=model_parseMAD(MADrelease,fileDir,file,nOut);
 % blList

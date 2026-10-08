@@ -1,6 +1,6 @@
   TITLE, "AD_ACCEL: superconducting linac"
 
-! *** OPTICS=AD_ACCEL-10SEP2026s ***
+! *** OPTICS=AD_ACCEL-14OCT2026s ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY, DOUBLE
   ASSIGN, ECHO="LCLS2sc.echo"
@@ -463,70 +463,65 @@
 
 ! ==============================================================================
 ! SUBROUTINEs (only used by makeMatlabModel)
+! NOTE: model_parseMAD.m doesn't allow SUBROUTINE calls within SUBROUTINEs
 ! ------------------------------------------------------------------------------
 
- ! NOTE: model_parseMAD.m doesn't allow SUBROUTINE calls within SUBROUTINEs
+! LEI configuration
 
-  COMMENT !uncomment for Matlab model generation (model_parseMAD.m)
+ !SETK2scLEI : SUBROUTINE !matched at Ei= 100 MeV
+ !  SET, EiLEI,   0.100          !laser heater energy
+ !  SET, LHhnum,  1              !laser heaterfundamental mode
+ !  SET, AmplL1, 12.647638609597 !full amplitude per cavity
+ !  SET, FracL1,  0.999211903118 !E1=235 MeV (Ei=100 MeV)
+ !
+ !!                    UMHTR ON         UMHTR OFF       
+ !!                ---------------  ---------------    
+ !  SET, SETUMHTR,  1              ! 0              !
+ !  SET, KQ0H03,   -4.754857248208 !-3.023052541903 !bipolar
+ !  SET, KQ0H04,    7.113623333365 ! 5.799805804686 !bipolar
+ !  SET, KQ0H05,   -6.117202765633 !-6.930388057019 !unipolar	   
+ !  SET, KQ0H06,    4.605752623658 ! 5.724198707997 !unipolar	   
+ !  SET, KQ0H07,    0.0            ! 0.0            !unipolar
+ !  SET, KQ0H08,    0.0            !-0.469343973542 !unipolar
+ !  SET, KQHD01,   -7.839207637931 !-7.62179378039  !unipolar
+ !  SET, KQHD02,    6.258786905967 ! 6.185719257174 !unipolar
+ !  SET, KQHD03,   -8.442674031616 !-8.678441968602 !unipolar	   
+ !  SET, KQHD04,    6.291805905237 ! 6.42472278448  !unipolar	   
+ !
+ !  SET, KQC001,    5.135316216267
+ !  SET, KQC002,    0.0
+ !  SET, KQC003,   -5.295950233164
+ !  SET, KQC004,    2.772436086443
+ !  SET, KQC005,   -1.796082150953
+ !  SET, KQC006,    1.787850470726
+ !  SET, KQC010,    0.987514700504
+ !  SET, KQC011,   -1.053290699665
+ !  SET, KQC012,    0.942494093077
+ !  SET, KQCM02,   -0.279246235301
+ !  SET, KQCM03,    0.210633853799
+ !  SET, KQ1C01,    0.968114221634
+ !  SET, KQC101,   -0.298061299028
+ !  SET, KQC102,    2.062613606573
+ !  SET, KQC103,    0.0
+ !  SET, KQC104,   -0.885420825347
+ !  SET, KQC105,   -1.721309564941
+ !
+ !  SET, KQL1P,     0.544259695512
+ !  SET, KQL2P,    -0.329072008578
+ !  SET, KQL3P,     0.63112633244
+ !  SET, KQL4P,    -0.067161651898
+ !ENDSUBROUTINE
 
-  ! LEI configuration
+! LEI diagnostic line quad settings for MTCXDGI/OTRDGI1 dMUX=1.75*2pi
 
-    SETK2scLEI : SUBROUTINE !matched at Ei= 100 MeV
-      SET, EiLEI,   0.100          !laser heater energy
-      SET, LHhnum,  1              !laser heaterfundamental mode
-      SET, AmplL1, 12.647638609597 !full amplitude per cavity
-      SET, FracL1,  0.999211903118 !E1=235 MeV (Ei=100 MeV)
-
-     !                   UMHTR ON         UMHTR OFF       
-     !               ---------------  ---------------    
-      SET, SETUMHTR,  1              ! 0              !
-      SET, KQ0H03,   -4.754857248208 !-3.023052541903 !bipolar
-      SET, KQ0H04,    7.113623333365 ! 5.799805804686 !bipolar
-      SET, KQ0H05,   -6.117202765633 !-6.930388057019 !unipolar	   
-      SET, KQ0H06,    4.605752623658 ! 5.724198707997 !unipolar	   
-      SET, KQ0H07,    0.0            ! 0.0            !unipolar
-      SET, KQ0H08,    0.0            !-0.469343973542 !unipolar
-      SET, KQHD01,   -7.839207637931 !-7.62179378039  !unipolar
-      SET, KQHD02,    6.258786905967 ! 6.185719257174 !unipolar
-      SET, KQHD03,   -8.442674031616 !-8.678441968602 !unipolar	   
-      SET, KQHD04,    6.291805905237 ! 6.42472278448  !unipolar	   
-
-      SET, KQC001,    5.135316216267
-      SET, KQC002,    0.0
-      SET, KQC003,   -5.295950233164
-      SET, KQC004,    2.772436086443
-      SET, KQC005,   -1.796082150953
-      SET, KQC006,    1.787850470726
-      SET, KQC010,    0.987514700504
-      SET, KQC011,   -1.053290699665
-      SET, KQC012,    0.942494093077
-      SET, KQCM02,   -0.279246235301
-      SET, KQCM03,    0.210633853799
-      SET, KQ1C01,    0.968114221634
-      SET, KQC101,   -0.298061299029
-      SET, KQC102,    2.062613606573
-      SET, KQC103,    0.0
-      SET, KQC104,   -0.885420825349
-      SET, KQC105,   -1.721309564943
-
-      SET, KQL1P,     0.544259695512
-      SET, KQL2P,    -0.329072008578
-      SET, KQL3P,     0.63112633244
-      SET, KQL4P,    -0.067161651898
-    ENDSUBROUTINE,
-
-  ! LEI diagnostic line quad settings for MTCXDGI/OTRDGI1 dMUX=1.75*2pi
-
-    SETK2scDGI : SUBROUTINE
-      SET, KQDGI01,  18.218162060454 ! 18.323921222247
-      SET, KQDGI02, -23.301770754883 !-23.117802905395
-      SET, KQDGI03,  31.28953705025  ! 30.893754736678
-      SET, KQDGI04, -22.958380549844 !-23.486545514224
-      SET, KQDGI05,  13.273801633113 ! 13.332818190192
-      SET, KQDGI08, -13.112146515247 !-13.08267586869 
-    ENDSUBROUTINE
-
-  ENDCOMMENT
+ !SETK2scDGI : SUBROUTINE
+ !  SET, KQDGI01,  18.218162060454 ! 18.323921222247
+ !  SET, KQDGI02, -23.301770754883 !-23.117802905395
+ !  SET, KQDGI03,  31.28953705025  ! 30.893754736678
+ !  SET, KQDGI04, -22.958380549844 !-23.486545514224
+ !  SET, KQDGI05,  13.273801633113 ! 13.332818190192
+ !  SET, KQDGI08, -13.112146515247 !-13.08267586869 
+ !ENDSUBROUTINE
 
 ! ==============================================================================
 ! for testing the online Matlab model
@@ -1023,7 +1018,6 @@
     ASSIGN, PRINT="DIAGIS.print"
     BEAM, ENERGY=E0LEI
    !CALL, FILENAME="SETK2scDGI.xsif" !for mux=1.75*2pi from TCXDGI to OTRDGI1 ... use for BSC
-   !SETK2scDGI !for Matlab model generation only (model_parseMAD.m)
     USE, SC_DIAGIS
    !SAVELINE, NAME="DIAGIS", FILENAME="DIAGIS.saveline"
     PRINT, FULL
@@ -1049,7 +1043,6 @@
     ASSIGN, PRINT="DIAG02.print"
     BEAM, ENERGY=E0LEI
     CALL, FILENAME="SETK2scLEI.xsif"
-   !SETK2scLEI !for Matlab model generation only (model_parseMAD.m)
     USE, SC_DIAG02
    !SAVELINE, NAME="SC_DIAG02", FILENAME="DIAG02.saveline"
     PRINT, FULL
@@ -1080,7 +1073,6 @@
  !COMMENT
     ASSIGN, PRINT="LCLS2scH2.print"
     CALL, FILENAME="SETK2scLEI.xsif"
-   !SETK2scLEI !for Matlab model generation only (model_parseMAD.m)
     SET, SETSP, SETSPh
     BEAM, ENERGY=E0LEI
     USE, SC_HXR2
@@ -1116,7 +1108,6 @@
  !COMMENT
     ASSIGN, PRINT="LCLS2scS2.print"
     CALL, FILENAME="SETK2scLEI.xsif"
-   !SETK2scLEI !for Matlab model generation only (model_parseMAD.m)
     SET, SETSP, SETSPs ; SET, SETCUS, CUSOFF
     BEAM, ENERGY=E0LEI
     USE, SC_SXR2
@@ -1152,7 +1143,6 @@
  !COMMENT
     ASSIGN, PRINT="LCLS2scD2.print"
     CALL, FILENAME="SETK2scLEI.xsif"
-   !SETK2scLEI !for Matlab model generation only (model_parseMAD.m)
     SET, SETSP, SETSPd ; SET, SETDA, DAOFF
     BEAM, ENERGY=E0LEI
     USE, SC_BSYD2
@@ -1185,7 +1175,6 @@
  !COMMENT
     ASSIGN, PRINT="LCLS2scDA2.print"
     CALL, FILENAME="SETK2scLEI.xsif"
-   !SETK2scLEI !for Matlab model generation only (model_parseMAD.m)
     SET, SETSP, SETSPd ; SET, SETDA, DAON
     BEAM, ENERGY=E0LEI
     USE, SC_DASEL2

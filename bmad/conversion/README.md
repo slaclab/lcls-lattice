@@ -45,11 +45,15 @@ To be done after the Oracle database is updated by the database group.
 6. Update prod using zip of release at `lcls-srv01:/usr/local/lcls/model/lattice`
    - Update the `/usr/local/lcls/model/lattice/current` link to point to the new release.
 
-# Make oracle upload files and docs
+# Make oracle upload files, docs, and lines file
 Do this from s3df `/sdf/group/ad/sw/scm/repos/optics/lcls-lattice`
 1. `cd oracle_upload`
 2. Edit makefile OPTICS stamp
 3. `make -B`
+4. `make stage`
+5. `make install_docs`
+  - check that web page is updated `https://s3df.slac.stanford.edu/data/ad/model/lcls.html`
+7. `make install_lines`
 
 # Make Oracle Upload files (depricated.  use bmad now)
 1. In the mad directory, uncomment the call to `makeSymbols` from `LCLS2cu_main.mad8` and `LCLS2sc_main.mad8`.
@@ -69,11 +73,12 @@ To be done after the Oracle database is updated by the the database group.
 1. Log onto sdfiana16
 2. `module load conda`
 3. `conda activate oracle-conn`
-4. `cd /sdf/group/ad/sw/scm/repos/optics/lcls-lattice/mad`
-5. execute `../python/scripts/oracle_upload/elementdevices.py`
+4. `cd /sdf/group/ad/sw/scm/repos/optics/lcls-lattice/oracle_upload`
+5. execute `../python/scripts/oracle_upload/surveyDataTao.py`
+6. execute `../python/scripts/oracle_upload/elementdevices_bmad.py`
    - Connects to oracle database to generate element devices files
-6. make -f makefile -B INSTALLDIR=22SEP2025s install
-   - replace 22SEP2025s with latest release name in DDMMMYYYYs format
+7. make -f makefile -B install
+   - replace DDMMMYYYs with latest release name
    - lattice files and lines files put into `/sdf/data/ad/public_html/model/output/lcls/mad/`
    - Lattice description published here:  https://s3df.slac.stanford.edu/data/ad/model/lcls.html
 
