@@ -1,6 +1,6 @@
   TITLE, "AD_ACCEL: superconducting linac"
 
-! *** OPTICS=AD_ACCEL-14OCT2026s ***
+! *** OPTICS=AD_ACCEL-11NOV2026s ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY, DOUBLE
   ASSIGN, ECHO="LCLS2sc.echo"
@@ -506,10 +506,10 @@
  !  SET, KQC104,   -0.885420825347
  !  SET, KQC105,   -1.721309564941
  !
- !  SET, KQL1P,     0.544259695512
+ !  SET, KQL1P,     0.544259695513
  !  SET, KQL2P,    -0.329072008578
  !  SET, KQL3P,     0.63112633244
- !  SET, KQL4P,    -0.067161651898
+ !  SET, KQL4P,    -0.067161651897
  !ENDSUBROUTINE
 
 ! LEI diagnostic line quad settings for MTCXDGI/OTRDGI1 dMUX=1.75*2pi
@@ -685,7 +685,7 @@
 
 ! ------------------------------------------------------------------------------
 
- CALL "LCLS2sc_color_plots.mad8" !run by itself (ends with STOP)
+ !CALL "LCLS2sc_color_plots.mad8" !run by itself (ends with STOP)
  !CALL "LCLS2sc_area_plots.mad8"  !run by itself (ends with STOP)
 
 ! ==============================================================================
@@ -1210,6 +1210,47 @@
 ! ------------------------------------------------------------------------------
 ! LCLS2sc working stuff
 ! ------------------------------------------------------------------------------
+
+  COMMENT !periodic SXR/HXR cells
+   !  1) periodic
+    BEAM, ENERGY=Eu
+    USE, (SXCEL43,SXCEL44,SXCEL45,SXCEL46)
+    PRINT, FULL
+    SAVEBETA, TWmL, #S
+    TWISS, CHROM, SAVE, TAPE="twiss.tape"
+    SHOW, TWmL
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, VMIN=0.0, &
+      STYLE=100, SPLINE, RANGE=#S/#E, FILE="plot", &
+      TITLE="SXR long-period cells (E= 8 GeV ; GLq= 30 kG)"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=WX,WY, VMIN=0.0, &
+      STYLE=100, SPLINE, RANGE=#S/#E, FILE="plot", &
+      TITLE="SXR long-period cells (E= 8 GeV ; GLq= 30 kG)"
+   !  2) initial specified in TWISS statenemt
+    TWISS, CHROM, SAVE, TAPE="twiss.tape", &
+      BETX=22.10505844086, ALFX=1.250508198405, MUX=0.0, &
+      BETY=12.567422047284, ALFY=-0.723036242354, MUY=0.0, &
+      WX=0.021142205775, PHIX=-2.681130237183, DMUX=0.0, &
+      WY=0.02280158202, PHIY=2.360114372114, DMUY=0.0
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, VMIN=0.0, &
+      STYLE=100, SPLINE, RANGE=#S/#E, FILE="plot", &
+      TITLE="SXR long-period cells (E= 8 GeV ; GLq= 30 kG)"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=WX,WY, VMIN=0.0, &
+      STYLE=100, SPLINE, RANGE=#S/#E, FILE="plot", &
+      TITLE="SXR long-period cells (E= 8 GeV ; GLq= 30 kG)"
+   !  3) initial specified as pre-defined BETA0 block
+    INITIAL : BETA0, &, &
+      BETX=22.10505844086, ALFX=1.250508198405, MUX=0.0, &
+      BETY=12.567422047284, ALFY=-0.723036242354, MUY=0.0, &
+      WX=0.021142205775, PHIX=-2.681130237183, DMUX=0.0, &
+      WY=0.02280158202, PHIY=2.360114372114, DMUY=0.0
+    TWISS, CHROM, SAVE, BETA0=INITIAL, TAPE="twiss.tape"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=BETX,BETY, VMIN=0.0, &
+      STYLE=100, SPLINE, RANGE=#S/#E, FILE="plot", &
+      TITLE="SXR long-period cells (E= 8 GeV ; GLq= 30 kG)"
+    PLOT, TABLE=TWISS, HAXIS=S, VAXIS=WX,WY, VMIN=0.0, &
+      STYLE=100, SPLINE, RANGE=#S/#E, FILE="plot", &
+      TITLE="SXR long-period cells (E= 8 GeV ; GLq= 30 kG)"
+  ENDCOMMENT
 
   COMMENT
     BEAM, ENERGY=E0
