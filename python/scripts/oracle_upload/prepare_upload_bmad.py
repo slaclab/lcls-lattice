@@ -772,8 +772,6 @@ for kwn,eles in ele_dict.items():
     if kwn == 'LCAV':
         # create list of unique names that will allow unsplitting
         for i in range(len(names)):
-            if names[i].startswith('CAVL12'):
-              print(f'FOO C: {names[i]=}') #FOO
             if names[i].startswith(('CAVL','CAVC')):
                 names[i] = names[i][0:7]
             elif names[i].startswith(('K2','K3')):
@@ -1665,17 +1663,14 @@ Ncol = head.count(',') + 1
 ips = []
 for kwn,eles in ele_dict.items():
     for m in range(len(eles)):
-        if eles[m]['name'].startswith('CAVL12'):
-          print(f'FOO B: {eles[m]["name"]=}') #FOO
         ips.append([eles[m]["idf"], eles[m]['id'], kwn, m, eles[m]['name']])
 ips = sorted(ips, key=lambda x: (x[0], x[1]))
 
 with open('ips.dump','w') as f:
-  f.write('# froot   ordinal_in_froot   keyword   ordinal_in_keyword   name\n')
   f.write('# ordinal_in_froot counted from beam0\n')
+  f.write('# model_name   ordinal_in_froot   keyword   ordinal_in_keyword   name\n')
+  ix_to_index = {d['ix']: i for i, d in enumerate(file_roots)}
   for ip in ips:
-    if ip[4].startswith('CAVL12'):
-      print(f'FOO A: {ip[4]=}') #FOO
     if ip[0] in froot_beam0_indexes:
       # then beam0 exists in the file.  offset ordinals by this amount.  ips.dump is used for bsc calculation,
       # which starts from beam0
@@ -1684,7 +1679,8 @@ with open('ips.dump','w') as f:
       ordinal_offset = 0
     #if ip[1]-ordinal_offset < 0:
     #  continue
-    f.write("{:<10} {:<10} {:<10} {:<10} {:<20}\n".format(ip[0],ip[1]-ordinal_offset,ip[2],ip[3],ip[4]))
+    model_name = file_roots[ix_to_index.get(ip[0])]['root']
+    f.write("{:<10} {:<10} {:<10} {:<10} {:<20}\n".format(model_name,ip[1]-ordinal_offset,ip[2],ip[3],ip[4]))
     #f.write(f"{' '.join(f'{item:<10}' for item in ip)}\n")
 
     

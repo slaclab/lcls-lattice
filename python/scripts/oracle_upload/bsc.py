@@ -75,30 +75,28 @@ A =65e-9  #  m (effective beam admittance)
 dp =0.02  #  1 (beam maximum relative energy error in the S30XL)
 D =0.002  #  m (maximum residual beam orbit in S30XL)
 
-#MODELS=['sc_sxr_beam0','sc_hxr_beam0','sc_bsyd_beam0','sc_diag0_beam0', 'cu_sxr', 'cu_hxr', 'sc_dasel_beam0', 'sc_diag02', 'sc_diagis']
-MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0', 'cu_sxr', 'cu_hxr', 'sc_dasel', 'sc_diag02', 'sc_diagis']
-froot_to_model = {1:0, 6:1, 7:2, 8:3, 14:4, 10:5, 9:6, 17:7, 18:8}
-
-output_ordering = [1,6,10,7,8,14,9,17,18]
+MODELS = ['sc_sxr','sc_hxr','cu_hxr','sc_bsyd','cu_sxr','cu_hxr','sc_dasel','sc_diag02','sc_diagis']
 
 if len(sys.argv) > 1:
     optics = sys.argv[1]
 else:
     optics = 'TEST'
 
-ips_unsorted = []
+ips_raw = []
 with open('ips.dump','r') as f:
   for line in f:
     if not line.startswith("#"):
       parts = line.split()
       #name_ = parts[4].removesuffix('?')
       name_ = parts[4]
-      ips_unsorted.append([int(parts[0]), int(parts[1]), name_])
+      ips_raw.append([parts[0], int(parts[1]), name_])
 
+#Filter ips data for only those in MODELS.
+#The implicit sorting of ips by MODELS is importantant.
 ips = []
-for froot in output_ordering:
-  for entry in ips_unsorted:
-    if entry[0] == froot:
+for model_name in MODELS:
+  for entry in ips_raw:
+    if entry[0] == model_name:
       ips.append(entry)
 
 #n_eles = {}
@@ -214,8 +212,6 @@ for model in MODELS:
       continue
 
     if model == 'sc_dasel':
-      #if ix < id_dasel_1 or ix > id_dasel_2:
-      #  continue
       if ix<=id_dasel_mark:
         f=0.5
       else:
@@ -228,9 +224,9 @@ for model in MODELS:
       elim = min(ele.e_tot,Emax)
       e=eN/(elim/511e-6); # emitance along machine
       if ix in R56ids:
-        dx=dx0; # horizontal stay-clear addition for R56-compensating chicanes
+        dx=dx0  # horizontal stay-clear addition for R56-compensating chicanes
       else:
-        dx=0;  # no additional horizontal stay-clear
+        dx=0   # no additional horizontal stay-clear
       steer=steer2;  # default steering range
       min_XID=min_XID0;  # default minimum XID
       min_YID=min_YID0;  # default minimum YID
@@ -245,13 +241,13 @@ for model in MODELS:
           min_YID = 20.0e-3
         esprd[ix] = dE0 + 2*chirp + 2*Ejit
       elif ele.e_tot > 0.22 and ele.e_tot < 0.28: 
-        # ~BC1
+        # BC1
         esprd[ix] = dE1 + 2*chirp + 2*Ejit
       elif ele.e_tot > 1.3 and ele.e_tot < 1.9: 
-        # ~BC2
+        # BC2
         esprd[ix] = dE2 + chirp + 2*Ejit + Etrip/elim
       elif ele.e_tot > 3.7 and ele.e_tot < 8.2: 
-        # ~post-linac (includes LCLS2cuS)
+        # post-linac (includes LCLS2cuS)
         # 3.8->3.7 & 4.2->8.2 for LCLSII-HE (July 17, 2017)
         if ele.s < S_XRstart:  # before undulator
           esprd[ix]=dE3 + chirp + vern + Ejit + Etrip/elim # includes LCLS2cuS
@@ -264,7 +260,6 @@ for model in MODELS:
           # after undulator
           if ele.s > S_TCX01: 
             # after TCX01 Tcav
-            print(f'{ele.name=}')
             xt[ix] = (xf+xw/2)*np.sqrt(ele.beta_a/bxf)*np.sin(ele.phi_a-mx0)/np.sin(mxf-mx0); # scale from "xf" offset at screen (m)
           if S_XRterm>0:
             esprd[ix] = dE4 + chirp + vern + EFEL + Ejit + Etrip/elim # after undulator (HXR or SXR)
@@ -282,17 +277,16 @@ for model in MODELS:
       XID[ix] = 0.0
       YID[ix] = 0.0
       Dia[ix] = 0.0
-    #print(f'FOO: {model} {ix-ordinal_offset} {ele.name} {ele.key}')
     bsc_data[model][ix] = [ele.name, ele.key, Dia[ix], XID[ix], YID[ix]]
     fout.write('{:<16s}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}\n'.format(ele.name.rstrip('_'), ele.s, Dia[ix], XID[ix], -XID[ix], YID[ix], -YID[ix]))
   fout.close()
 
-#For elements with the same name, find the one with the largest Dia and
+
+#--------------------------------------------------------------------------
+# For elements with the same name, find the one with the largest Dia and
 # apply its values to all elements with that name.
+#--------------------------------------------------------------------------
 for model in bsc_data:
-  #for item in bsc_data[model]:
-  #  if item[0] == 'Q0H04':
-  #      print(f'{model}   FOO: {item}')
   indices = {}
   for ix, (name,key) in enumerate([(x[0],x[1]) for x in bsc_data[model]]):
     if name == '' or key == 'Drift':
@@ -307,99 +301,38 @@ for model in bsc_data:
   for name, span in spans.items():
     start = max(span[0] - 1, 0)
     items = bsc_data[model][start:span[1]+1]
-    #print("FOO A: ", name, span[0]-1,span[1], [[x[0],x[3]] for x in items])
     max_item = max(items, key=lambda x: x[2])
-    #print("       ", name, max_item)
     for item in items:
       if item[0] == name:
         item[2:] = max_item[2:]  # these are references: modifies data in bsc_data
-    #print("FOO B: ", name, span[0]-1,span[1], [[x[0],x[3]] for x in items])
-  #for item in bsc_data[model]:
-  #  if item[0] == 'Q0H04':
-  #      print(f'{model}   FOO: {item}')
 
 
-
-#  #For elements with the same name, find the one with the largest Dia and
-#  # apply its values to all elements with that name.
-#  for model in bsc_data:
-#  grouped = defaultdict(list)
-#  for item in bsc_data[model]:
-#    grouped[item[0]].append(item)
-#  for key, items in grouped.items():
-#    #max_ix = max(enumerate(items), key=lambda x: x[1][1])[0]
-#    #max_item = items[max_ix]
-#    max_item = max(items, key=lambda x: x[1])
-#    for item in items:
-#      item[:] = max_item[:]
-
-#with open('bsc_data.dump','w') as f:
-#  for model in MODELS:
-#    for ix in range(n_eles[model]):
-#      if bsc_data[model][ix] is not None:
-#        f.write(f'{ix} {bsc_data[model][ix][0]} {bsc_data[model][ix][1]}\n')
-#      else:
-#        f.write(f'{ix} none\n')
-
-hxr_offset = sc_hxr_marker - cu_hxr_marker
-
+# ----------------------------------------------------
 # write to AD_ACCEL collated output file
+#-----------------------------------------------------
+hxr_offset = sc_hxr_marker - cu_hxr_marker
 outdir='oracle_upload'
 fname=f'BSC-AD_ACCEL-{optics}.txt'
 filepath = Path(outdir+'/'+fname)
 filepath.parent.mkdir(parents=True, exist_ok=True)
 with filepath.open('w') as f_all:
   f_all.write("#ELEMENT, Stayclear Dia (mm), +Horz (mm), -Horz (mm), +Vert (mm), -Vert (mm)\n")
-  for froot,ordinal,name in ips:
+  for model_name,ordinal,name in ips:
     if ordinal < 0:
       if not name.startswith('FIXER'):
         f_all.write(f'{name}, {0:>10.6e}, {0:>10.6e}, {0:>10.6e}, {0:>10.6e}, {0:>10.6e}\n')
-    elif froot in froot_to_model.keys():
-      model_name = MODELS[froot_to_model[froot]]
-      ordinal_offset_ = ordinal_offset[model_name]
-      if model_name == 'cu_hxr':
-        if ordinal < cu_hxr_marker:
-          continue
-        model_name = 'sc_hxr'
-        ordinal = ordinal + hxr_offset
-      if bsc_data[model_name][ordinal][0] != '':
-        x = bsc_data[model_name][ordinal + ordinal_offset_]
-        #if x[0] == 'Q0H04':
-        #    print(f'FOO: {x}')
-        if not x[0].startswith('FIXER'):
-          if x[0] != name.removesuffix('?'):
-            print(f'WARNING.  For {model_name}, ips.dump name >{name}< not match {model_name}_twiss.dat name >{x[0]}<')
-          f_all.write(f'{name}, {x[2]:>10.6e}, {x[3]:>10.6e},{-x[3]:>10.6e}, {x[4]:>10.6e},{-x[4]:>10.6e}\n')
-
-
-    #for ix,ele in enumerate(lat.elements):
-    #  name=ele.name.rstrip('_')
-    #  #f_all.write('{:<16s}, {:>10.6e}, {:>10.6e}, {:>10.6e}, {:>10.6e}, {:>10.6e}\n'.format(ele.name, 1e3*Dia[ix], 1e3*XID[ix]/2, -1e3*XID[ix]/2, 1e3*YID[ix]/2, -1e3*YID[ix]/2))
-    #  f_all.write('{:s}, {:.6e}, {:.6e}, {:.6e}, {:.6e}, {:.6e}\n'.format(ele.name, 1e3*Dia[ix], 1e3*XID[ix]/2, -1e3*XID[ix]/2, 1e3*YID[ix]/2, -1e3*YID[ix]/2))
-
-    #   if (false) # plot
-    #     figure(1)
-    #     plot(S,-XID/2*1e3,'b-',S,XID/2*1e3,'b-', ...
-    #          S,-YID/2*1e3,'r--',S,YID/2*1e3,'r--', ...
-    #          S,-Dia/2*1e3,'g-.',S,Dia/2*1e3,'g-.')
-    #     hor_line(0)
-    #     xlabel('{\itS} (m)')
-    #     ylabel('X and Y Beam Stay Clear (mm)')
-    #     legend('+X','-X','+Y','-Y','-R','+R','Location','NorthWest');
-  
-    #     if (S_OTRDMP>0)
-    #       figure(2)
-    #       id=(i_TCX01:length(S));
-    #       plot(S(id),xt(id)*1e3,'g--', ...
-    #            S(id),xt(id)*1e3*xf/(xf+xw/2),'g-', ...
-    #            S(id),xt(id)*1e3*(xf-xw/2)/(xf+xw/2),'g--')
-    #       ver_line(S_TCX01)
-    #       ver_line(S_OTRDMP)
-    #       xlabel('{\itS} (m)')
-    #       ylabel('{\itx} (mm)')
-
-
-
+    ordinal_offset_ = ordinal_offset[model_name]
+    if model_name == 'cu_hxr':
+      if ordinal < cu_hxr_marker:
+        continue
+      model_name = 'sc_hxr'
+      ordinal = ordinal + hxr_offset
+    if bsc_data[model_name][ordinal][0] != '':
+      x = bsc_data[model_name][ordinal + ordinal_offset_]
+      if not x[0].startswith('FIXER'):
+        if x[0] != name.removesuffix('?'):
+          print(f'WARNING.  For {model_name}, ips.dump name >{name}< not match {model_name}_twiss.dat name >{x[0]}<')
+        f_all.write(f'{name}, {x[2]:>10.6e}, {x[3]:>10.6e},{-x[3]:>10.6e}, {x[4]:>10.6e},{-x[4]:>10.6e}\n')
 
 
 
