@@ -14,10 +14,9 @@
 8. from `$LCLS_LATTICE` run `pytest`
 9. Update plots
    - python/scripts/artifacts/make_bmad_plots.py
-   - mv beta_*.png docs/plots
    - python/scripts/artifacts/make_mad_plots.py
-   - mv beta_*.png docs/plots
    - python/scripts/artifacts/residuals.py
+   - mv beta_*.png docs/plots
    - mv residual_*.png docs/plots
 
 # Update element devices
