@@ -8,23 +8,23 @@ from pathlib import Path
 import sys
 
 def strmatch(n_str,N_lst,exact=False):
-    """
-    n_str is a string.
-    N_lst is list of strings.
+  """
+  n_str is a string.
+  N_lst is list of strings.
 
-    This function returns the indexes of N_lst which contain n_str.
+  This function returns the indexes of N_lst which contain n_str.
 
-    If exact it true, then only exact matches there n_str == N_lst[ix] are returned.
-    If exact is false, then n_str is treated as a prefix.  e.g. n_str='QA' would match 'QA01', 'QAdump', etc.
-    """
-    if not isinstance(N_lst,list):
-        print('strmatch passed non-list. Stopping')
-        stop
-    if exact:
-        return [ix for ix,n_ in enumerate(N_lst) if n_ == n_str]
-    else:
-        mylen = len(n_str)
-        return [ix for ix,n_ in enumerate(N_lst) if n_[:mylen] == n_str]
+  If exact it true, then only exact matches there n_str == N_lst[ix] are returned.
+  If exact is false, then n_str is treated as a prefix.  e.g. n_str='QA' would match 'QA01', 'QAdump', etc.
+  """
+  if not isinstance(N_lst,list):
+    print('strmatch passed non-list. Stopping')
+    stop
+  if exact:
+    return [ix for ix,n_ in enumerate(N_lst) if n_ == n_str]
+  else:
+    mylen = len(n_str)
+    return [ix for ix,n_ in enumerate(N_lst) if n_[:mylen] == n_str]
 
 @dataclass
 class Element:
@@ -54,6 +54,8 @@ class Lattice:
   elements: list[Element] = field(default_factory=list)
   names: list[str] = field(default_factory=list)
 
+m_electron =  511e-6
+
 # Specifications
 # BSC Parameters (starting from J. Welch, LCLSII-TN-14-15, 2014)
 min_XID0 = 8e-3    # set minimum X-BSC diameter (m) (except undulator is 0.005 m)
@@ -65,40 +67,39 @@ nsig = 16    # max. num. sigma (betatron size)
 steer1 = 1e-3    # max. steering range in und. (+- this value)
 steer2 = 2e-3    # max. steering range everywere else (+- this value)
 dx0 = 5e-3    # hor. addition to FW stay-clear if we are in an R56-compensating-chicane (any of the 4 bends) (m)
-betaf = 2.0    # worst case beta scalar
-etaf = 1.25    # worst case dispersion scalar (was 1.3 on 20MAR15)
+beta_margin = 2.0    # worst case beta scalar
+eta_margin = 1.25    # worst case dispersion scalar (was 1.3 on 20MAR15)
 EFEL = 0.02    # FEL energy loss after und. (was 2% on 20MAR15)
 xf = 18e-3    # x-offset of beam at OTRDMP with X-band TCAV on (m) - was 15 mm on 07JUL17
 xw = 12e-3    # x-full width of streaked beam at OTRDMP with X-band TCAV on (m) - was 18 mm on 07JUL17
+
 #For DASEL
 A =65e-9  #  m (effective beam admittance)
 dp =0.02  #  1 (beam maximum relative energy error in the S30XL)
 D =0.002  #  m (maximum residual beam orbit in S30XL)
 
-#MODELS=['sc_sxr_beam0','sc_hxr_beam0','sc_bsyd_beam0','sc_diag0_beam0', 'cu_sxr', 'cu_hxr', 'sc_dasel_beam0', 'sc_diag02', 'sc_diagis']
-MODELS=['sc_sxr','sc_hxr','sc_bsyd','sc_diag0', 'cu_sxr', 'cu_hxr', 'sc_dasel', 'sc_diag02', 'sc_diagis']
-froot_to_model = {1:0, 6:1, 7:2, 8:3, 14:4, 10:5, 9:6, 17:7, 18:8}
-
-output_ordering = [1,6,10,7,8,14,9,17,18]
 
 if len(sys.argv) > 1:
-    optics = sys.argv[1]
+  optics = sys.argv[1]
 else:
-    optics = 'TEST'
+  optics = 'TEST'
 
-ips_unsorted = []
+ips_raw = []
 with open('ips.dump','r') as f:
   for line in f:
     if not line.startswith("#"):
       parts = line.split()
       #name_ = parts[4].removesuffix('?')
       name_ = parts[4]
-      ips_unsorted.append([int(parts[0]), int(parts[1]), name_])
+      ips_raw.append([parts[0], int(parts[1]), name_])
 
+#Filter ips data for only those in MODELS.
+#The implicit sorting of ips by MODELS is importantant.
+MODELS = ['sc_sxr', 'sc_hxr', 'cu_hxr', 'sc_bsyd', 'sc_diag0', 'cu_sxr', 'sc_dasel', 'sc_diag02', 'sc_diagis']
 ips = []
-for froot in output_ordering:
-  for entry in ips_unsorted:
-    if entry[0] == froot:
+for model_name in MODELS:
+  for entry in ips_raw:
+    if entry[0] == model_name:
       ips.append(entry)
 
 #n_eles = {}
@@ -109,22 +110,23 @@ cavs_to_fix_name.append('CAVC012')
 cavs_to_fix_name.append('CAVC022')
 cavs_to_fix_name = tuple(cavs_to_fix_name)
 
-bsc_data={}
-ordinal_offset = {}
-for model in MODELS:
+def read_twiss_data(model):
   print(f'model: {model}')
-  nele = 0
   lat = Lattice()
   with open(model+'_twiss.dat','r') as f:
     for line in f:
       if line.strip() and not line.startswith('#'):
-        nele += 1
         lat.elements.append(Element(*line.split()))
         #Some cavities need the postfix A/B stripped
         if lat.elements[-1].name.startswith(cavs_to_fix_name):
           lat.elements[-1].name = lat.elements[-1].name[:-1]
   lat.names = [x.name for x in lat.elements]
-  #n_eles[model] = nele
+  return lat
+
+bsc_data={}
+ordinal_offset = {}
+for model in MODELS:
+  lat = read_twiss_data(model)
 
   if model in ['sc_sxr','sc_hxr','sc_bsyd','sc_diag0','sc_dasel']:
     ordinal_offset[model] = lat.names.index('BEAM0') - 1
@@ -144,14 +146,14 @@ for model in MODELS:
 
   if model.startswith('cu_'): # BSC parameters for Cu linac beam
     dE3 = 0.1e-2    # full core energy width in post-linac
-    eN = 1e-6    # worst case emittance (~2-times nominal)
+    emit_worst = 1e-6    # worst case emittance (~2-times nominal)
     Etrip = 0.235/2    # largest value @ 2.5 GeV (GeV)
     Ejit = 0.1e-2    # estimated FW rel. energy jitter
     vern = 0.01    # energy vernier after linac
     chirp = 0.01    # FWHM energy spread due to optional linear chirp after linac
   else:
     dE3 = 0.016    # full core energy width in post-linac ( )
-    eN = 1e-6    # worst case emittance (~2-times nom.)
+    emit_worst = 1e-6    # worst case emittance (~2-times nom.)
     Etrip = 0.016    # one SSA trip (GeV)
     Ejit = 0.1e-2    # estimated FW rel. energy jitter
     vern = 0.01    # energy vernier after linac (was 2% on 20MAR15 - set to 1% May 5, 2015 to get Dean's QDOG2 < 50 mm Diam.)
@@ -167,7 +169,8 @@ for model in MODELS:
     dE0 = 0.058    # full core energy width in heater area - before adding jitter, chirp ( )
     S_TCXDG0 = 1e10    # defualt to TcavX not in this beamline
     S_TCYDG0 = 1e10    # default to TcavY not in this beamline
-  # some points of interest
+
+  # Locate certain regions
   if model.startswith('cu_'):
     i_BSY = strmatch('BEGCLTH_0',lat.names)[0]    # entrance to BSY (Cu linac)
   S_XRstart=0   
@@ -212,194 +215,133 @@ for model in MODELS:
   for ix,ele in enumerate(lat.elements):
     if model.startswith('cu_') and ix < i_BSY:
       continue
+    if ele.name.endswith('?'):
+      continue
 
     if model == 'sc_dasel':
-      #if ix < id_dasel_1 or ix > id_dasel_2:
-      #  continue
       if ix<=id_dasel_mark:
         f=0.5
       else:
         f=1
       XID[ix] = 1e3*float((np.sqrt(A*ele.beta_a) + np.abs(ele.eta_x*dp) + f*D))
       YID[ix] = 1e3*float((np.sqrt(A*ele.beta_b) + np.abs(ele.eta_y*dp) + f*D))
-      Dia[ix] = 2*float(np.sqrt(XID[ix]**2 + YID[ix]**2))
-
     else:
-      elim = min(ele.e_tot,Emax)
-      e=eN/(elim/511e-6); # emitance along machine
       if ix in R56ids:
-        dx=dx0; # horizontal stay-clear addition for R56-compensating chicanes
+        dx=dx0  # horizontal stay-clear addition for R56-compensating chicanes
       else:
-        dx=0;  # no additional horizontal stay-clear
-      steer=steer2;  # default steering range
+        dx=0   # no additional horizontal stay-clear
+
+      # min_XID and min_YID
       min_XID=min_XID0;  # default minimum XID
       min_YID=min_YID0;  # default minimum YID
-      if ele.e_tot>0.07 and ele.e_tot<0.12:  # ~heater or DIAG0
-        if ele.s <= S_TCXDG0: # set minimum XID (20 mm diam. after RF deflector in DIAG0)
-          min_XID = min_XID0
-        else:
-          min_XID = 20.0e-3
-        if ele.s <= S_TCYDG0: # set minimum YID (20 mm diam. after RF deflector in DIAG0)
-          min_YID = min_YID0
-        else:
-          min_YID = 20.0e-3
-        esprd[ix] = dE0 + 2*chirp + 2*Ejit
-      elif ele.e_tot > 0.22 and ele.e_tot < 0.28: 
-        # ~BC1
-        esprd[ix] = dE1 + 2*chirp + 2*Ejit
-      elif ele.e_tot > 1.3 and ele.e_tot < 1.9: 
-        # ~BC2
-        esprd[ix] = dE2 + chirp + 2*Ejit + Etrip/elim
-      elif ele.e_tot > 3.7 and ele.e_tot < 8.2: 
-        # ~post-linac (includes LCLS2cuS)
-        # 3.8->3.7 & 4.2->8.2 for LCLSII-HE (July 17, 2017)
-        if ele.s < S_XRstart:  # before undulator
-          esprd[ix]=dE3 + chirp + vern + Ejit + Etrip/elim # includes LCLS2cuS
-        elif ele.s >= S_XRstart and ele.s <= S_XRterm: 
-          # in undulator
-          steer=steer1
-          min_XID=5e-3  # set minimum XID for undulator (m)
-          min_YID=5e-3  # set minimum YID for und. (m)
-        elif ele.s > S_XRterm:  
-          # after undulator
-          if ele.s > S_TCX01: 
-            # after TCX01 Tcav
-            print(f'{ele.name=}')
-            xt[ix] = (xf+xw/2)*np.sqrt(ele.beta_a/bxf)*np.sin(ele.phi_a-mx0)/np.sin(mxf-mx0); # scale from "xf" offset at screen (m)
-          if S_XRterm>0:
-            esprd[ix] = dE4 + chirp + vern + EFEL + Ejit + Etrip/elim # after undulator (HXR or SXR)
+      if 0.07 < ele.e_tot < 0.12:  # ~heater or DIAG0
+          # set minimum XID/YID (20 mm diam. after RF deflector in DIAG0)
+          if ele.s <= S_TCXDG0:
+              min_XID = min_XID0
           else:
-            esprd[ix] = dE4 + chirp + vern + Ejit + Etrip/elim  # in BSY dumpline
+              min_XID = 20.0e-3
+          if ele.s <= S_TCYDG0:
+              min_YID = min_YID0
+          else:
+              min_YID = 20.0e-3
+      elif 3.7 < ele.e_tot < 8.2:  # post-linac
+          if S_XRstart <= ele.s <= S_XRterm:  # in undulator
+              min_XID = 5e-3  # minimum XID for undulator (m)
+              min_YID = 5e-3  # minimum YID for undulator (m)
+
+      # esprd
+      E = min(ele.e_tot,Emax)
+      emit = emit_worst / (E/m_electron); # emitance along machine
+      if 0.07 < ele.e_tot < 0.12:  # heater or DIAG0
+          esprd[ix] = dE0 + 2*chirp + 2*Ejit
+      elif 0.22 < ele.e_tot < 0.28:  # BC1
+          esprd[ix] = dE1 + 2*chirp + 2*Ejit
+      elif 1.3 < ele.e_tot < 1.9:  # BC2
+          esprd[ix] = dE2 + chirp + 2*Ejit + Etrip/E
+      elif 3.7 < ele.e_tot < 8.2:
+          # post-linac (includes LCLS2cuS)
+          # 3.8->3.7 & 4.2->8.2 for LCLSII-HE (July 17, 2017)
+          if ele.s < S_XRstart:  # before undulator
+              esprd[ix] = dE3 + chirp + vern + Ejit + Etrip/E  # includes LCLS2cuS
+          elif ele.s > S_XRterm:  # after undulator
+              if S_XRterm > 0:
+                  esprd[ix] = dE4 + chirp + vern + EFEL + Ejit + Etrip/E  # HXR or SXR
+              else:
+                  esprd[ix] = dE4 + chirp + vern + Ejit + Etrip/E  # in BSY dumpline
+
+      # steer
+      if S_XRstart <= ele.s <= S_XRterm:
+          steer = steer1 # in undulator
+      else:
+          steer = steer2  # default steering range
+
+      # xt
+      if ele.s > S_TCX01:
+        xt[ix] = (xf + xw/2) * np.sqrt(ele.beta_a/bxf) * np.sin(ele.phi_a - mx0) / np.sin(mxf - mx0)
+
       # energy_spread_estimate = region_specific_base_dE + 2*optional_chirp + 2*jitter + dE_SSA_trip
       # xt = (offset_from_tcav + haf_width_from_tcav) * sqrt(beta/tcav_beta) * sin(phi-phi0)/sin(dump_phi-phi0)
       # XID[IX] = 0.5 * 2*nsig*sqrt(emit*beta*beta_scaler) + eta_scaler*|eta|*energy_spread_estimate + 2*steering_error * 2*xt + chicane_extra
-      XID[ix] = 1e3/2*float(max(2*nsig*np.sqrt(e*ele.beta_a*betaf) + etaf*np.abs(ele.eta_x)*esprd[ix] + 2*steer + 2*xt[ix] + dx, min_XID))
-      YID[ix] = 1e3/2*float(max(2*nsig*np.sqrt(e*ele.beta_b*betaf) + etaf*np.abs(ele.eta_y)*esprd[ix] + 2*steer, min_YID))
-      Dia[ix] = 2*float(np.sqrt(XID[ix]**2+YID[ix]**2))
 
-    # zero-out BSC data for kicked '?' elements
-    if ele.name.endswith('?'):
-      XID[ix] = 0.0
-      YID[ix] = 0.0
-      Dia[ix] = 0.0
-    #print(f'FOO: {model} {ix-ordinal_offset} {ele.name} {ele.key}')
+      XID_ = 2*nsig*np.sqrt(emit*ele.beta_a*beta_margin) + eta_margin*np.abs(ele.eta_x)*esprd[ix] + 2*steer + 2*xt[ix] + dx
+      YID_ = 2*nsig*np.sqrt(emit*ele.beta_b*beta_margin) + eta_margin*np.abs(ele.eta_y)*esprd[ix] + 2*steer
+
+      XID[ix] = 1e3/2*float(max(XID_, min_XID))
+      YID[ix] = 1e3/2*float(max(YID_, min_YID))
+
+    Dia[ix] = 2*float(np.sqrt(XID[ix]**2 + YID[ix]**2))
     bsc_data[model][ix] = [ele.name, ele.key, Dia[ix], XID[ix], YID[ix]]
+
     fout.write('{:<16s}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}  {:>10.6e}\n'.format(ele.name.rstrip('_'), ele.s, Dia[ix], XID[ix], -XID[ix], YID[ix], -YID[ix]))
   fout.close()
 
-#For elements with the same name, find the one with the largest Dia and
+
+#--------------------------------------------------------------------------
+# For elements with the same name, find the one with the largest Dia and
 # apply its values to all elements with that name.
-for model in bsc_data:
-  #for item in bsc_data[model]:
-  #  if item[0] == 'Q0H04':
-  #      print(f'{model}   FOO: {item}')
-  indices = {}
-  for ix, (name,key) in enumerate([(x[0],x[1]) for x in bsc_data[model]]):
+#--------------------------------------------------------------------------
+for rows in bsc_data.values():
+  first, last = {}, {}
+  for ix, (name, key, *_) in enumerate(rows):
     if name == '' or key == 'Drift':
       continue
-    if name in indices:
-      indices[name] = (indices[name][0], ix)
-    else:
-      indices[name] = (ix, ix)
-  spans = {name: idx_pair
-           for name, idx_pair in indices.items()
-           if idx_pair[0] != idx_pair[1]}
-  for name, span in spans.items():
-    start = max(span[0] - 1, 0)
-    items = bsc_data[model][start:span[1]+1]
-    #print("FOO A: ", name, span[0]-1,span[1], [[x[0],x[3]] for x in items])
+    first.setdefault(name, ix)
+    last[name] = ix
+
+  for name, start in first.items():
+    end = last[name]
+    if start == end:
+      continue
+    items = rows[max(start - 1, 0):end + 1]
     max_item = max(items, key=lambda x: x[2])
-    #print("       ", name, max_item)
     for item in items:
       if item[0] == name:
-        item[2:] = max_item[2:]  # these are references: modifies data in bsc_data
-    #print("FOO B: ", name, span[0]-1,span[1], [[x[0],x[3]] for x in items])
-  #for item in bsc_data[model]:
-  #  if item[0] == 'Q0H04':
-  #      print(f'{model}   FOO: {item}')
+        item[2:] = max_item[2:]  # rows are lists, so this modifies bsc_data in place
 
-
-
-#  #For elements with the same name, find the one with the largest Dia and
-#  # apply its values to all elements with that name.
-#  for model in bsc_data:
-#  grouped = defaultdict(list)
-#  for item in bsc_data[model]:
-#    grouped[item[0]].append(item)
-#  for key, items in grouped.items():
-#    #max_ix = max(enumerate(items), key=lambda x: x[1][1])[0]
-#    #max_item = items[max_ix]
-#    max_item = max(items, key=lambda x: x[1])
-#    for item in items:
-#      item[:] = max_item[:]
-
-#with open('bsc_data.dump','w') as f:
-#  for model in MODELS:
-#    for ix in range(n_eles[model]):
-#      if bsc_data[model][ix] is not None:
-#        f.write(f'{ix} {bsc_data[model][ix][0]} {bsc_data[model][ix][1]}\n')
-#      else:
-#        f.write(f'{ix} none\n')
-
-hxr_offset = sc_hxr_marker - cu_hxr_marker
-
+# ----------------------------------------------------
 # write to AD_ACCEL collated output file
+#-----------------------------------------------------
+hxr_offset = sc_hxr_marker - cu_hxr_marker
 outdir='oracle_upload'
 fname=f'BSC-AD_ACCEL-{optics}.txt'
 filepath = Path(outdir+'/'+fname)
 filepath.parent.mkdir(parents=True, exist_ok=True)
 with filepath.open('w') as f_all:
   f_all.write("#ELEMENT, Stayclear Dia (mm), +Horz (mm), -Horz (mm), +Vert (mm), -Vert (mm)\n")
-  for froot,ordinal,name in ips:
+  for model_name,ordinal,name in ips:
     if ordinal < 0:
-      if not name.startswith('FIXER'):
-        f_all.write(f'{name}, {0:>10.6e}, {0:>10.6e}, {0:>10.6e}, {0:>10.6e}, {0:>10.6e}\n')
-    elif froot in froot_to_model.keys():
-      model_name = MODELS[froot_to_model[froot]]
-      ordinal_offset_ = ordinal_offset[model_name]
-      if model_name == 'cu_hxr':
-        if ordinal < cu_hxr_marker:
-          continue
-        model_name = 'sc_hxr'
-        ordinal = ordinal + hxr_offset
-      if bsc_data[model_name][ordinal][0] != '':
-        x = bsc_data[model_name][ordinal + ordinal_offset_]
-        #if x[0] == 'Q0H04':
-        #    print(f'FOO: {x}')
-        if not x[0].startswith('FIXER'):
-          if x[0] != name.removesuffix('?'):
-            print(f'WARNING.  For {model_name}, ips.dump name >{name}< not match {model_name}_twiss.dat name >{x[0]}<')
-          f_all.write(f'{name}, {x[2]:>10.6e}, {x[3]:>10.6e},{-x[3]:>10.6e}, {x[4]:>10.6e},{-x[4]:>10.6e}\n')
-
-
-    #for ix,ele in enumerate(lat.elements):
-    #  name=ele.name.rstrip('_')
-    #  #f_all.write('{:<16s}, {:>10.6e}, {:>10.6e}, {:>10.6e}, {:>10.6e}, {:>10.6e}\n'.format(ele.name, 1e3*Dia[ix], 1e3*XID[ix]/2, -1e3*XID[ix]/2, 1e3*YID[ix]/2, -1e3*YID[ix]/2))
-    #  f_all.write('{:s}, {:.6e}, {:.6e}, {:.6e}, {:.6e}, {:.6e}\n'.format(ele.name, 1e3*Dia[ix], 1e3*XID[ix]/2, -1e3*XID[ix]/2, 1e3*YID[ix]/2, -1e3*YID[ix]/2))
-
-    #   if (false) # plot
-    #     figure(1)
-    #     plot(S,-XID/2*1e3,'b-',S,XID/2*1e3,'b-', ...
-    #          S,-YID/2*1e3,'r--',S,YID/2*1e3,'r--', ...
-    #          S,-Dia/2*1e3,'g-.',S,Dia/2*1e3,'g-.')
-    #     hor_line(0)
-    #     xlabel('{\itS} (m)')
-    #     ylabel('X and Y Beam Stay Clear (mm)')
-    #     legend('+X','-X','+Y','-Y','-R','+R','Location','NorthWest');
-  
-    #     if (S_OTRDMP>0)
-    #       figure(2)
-    #       id=(i_TCX01:length(S));
-    #       plot(S(id),xt(id)*1e3,'g--', ...
-    #            S(id),xt(id)*1e3*xf/(xf+xw/2),'g-', ...
-    #            S(id),xt(id)*1e3*(xf-xw/2)/(xf+xw/2),'g--')
-    #       ver_line(S_TCX01)
-    #       ver_line(S_OTRDMP)
-    #       xlabel('{\itS} (m)')
-    #       ylabel('{\itx} (mm)')
-
-
-
+      f_all.write(f'{name}, {0:>10.6e}, {0:>10.6e}, {0:>10.6e}, {0:>10.6e}, {0:>10.6e}\n')
+    ordinal_offset_ = ordinal_offset[model_name]
+    if model_name == 'cu_hxr':
+      if ordinal < cu_hxr_marker:
+        continue
+      model_name = 'sc_hxr'
+      ordinal = ordinal + hxr_offset
+    if bsc_data[model_name][ordinal][0] != '':
+      x = bsc_data[model_name][ordinal + ordinal_offset_]
+      if x[0] != name.removesuffix('?'):
+        print(f'WARNING.  For {model_name}, ips.dump name >{name}< not match {model_name}_twiss.dat name >{x[0]}<')
+      f_all.write(f'{name}, {x[2]:>10.6e}, {x[3]:>10.6e},{-x[3]:>10.6e}, {x[4]:>10.6e},{-x[4]:>10.6e}\n')
 
 
 

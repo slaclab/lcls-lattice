@@ -1,3 +1,5 @@
+#!/bin/env python3
+
 from pytao import Tao
 import pytest
 import os
