@@ -36,7 +36,7 @@ LINES_MODELS   = $(MODELS)
 
 #TWISS_MODELS = sc_sxr sc_hxr sc_bsyd sc_dasel sc_diag0 cu_sxr cu_hxr sc_sxr2 sc_hxr2 sc_bsyd2 sc_dasel2 sc_diag02 sc_diagis
 #TWISS_MODELS = sc_sxr_beam0 sc_hxr_beam0 sc_bsyd_beam0 sc_dasel_beam0 sc_diag0_beam0 cu_sxr cu_hxr
-OPTICS ?= TEST
+OPTICS ?= 11NOV2026s
 
 # Expand model-specific files
 PLOTS_PDFS = $(foreach model,$(PLOT_MODELS),$(model)_plots.pdf)
