@@ -1,3 +1,5 @@
+#!/bin/env python3
+
 from distgen import Generator
 import pytest
 import os
