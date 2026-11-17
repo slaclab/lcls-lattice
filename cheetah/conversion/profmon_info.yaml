@@ -1,0 +1,129 @@
+# Profile monitor (screen) camera parameters, keyed by MAD element name.
+#
+# Schema matches virtual-accelerator's
+# `virtual_accelerator/utils/cu_hxr_profmon_info.yaml`, so that repo can point
+# at this file instead of carrying its own copy:
+#
+#   <ELEMENT>:
+#      name: <control system name>   # matched against metadata.alias
+#      shape: [n_rows, n_cols]       # -> cheetah Screen.resolution
+#      pixel_size: <microns>         # -> cheetah Screen.pixel_size, x 1e-6
+#
+# Consumed by `rename_screens_and_bpms.py`. Screens absent from this file fall
+# back to a 1024 x 1024 @ 10 um placeholder (a 10.24 mm field of view) and are
+# reported as a warning by that script.
+#
+# The nine entries below were copied from virtual-accelerator. Do not source
+# these from the deleted cheetah/nc_hxr.json (see commit 2eb81e5^) -- the values
+# there were hand-entered with inconsistent axis order.
+
+OTRH1:
+   name: OTRS:IN20:465
+   shape:
+   - 1040
+   - 1392
+   pixel_size: 18.59
+
+OTRH2:
+   name: OTRS:IN20:471
+   shape:
+   - 1040
+   - 1392
+   pixel_size: 19.16
+
+OTR2:
+   name: OTRS:IN20:571
+   shape:
+   - 1040
+   - 1392
+   pixel_size: 12.66
+
+OTR3:
+   name: OTRS:IN20:621
+   shape:
+   - 1040
+   - 1392
+   pixel_size: 12.12
+
+OTR4:
+   name: OTRS:IN20:711
+   shape:
+   - 1040
+   - 1392
+   pixel_size: 17.06
+
+OTR11:
+   name: OTRS:LI21:237
+   shape:
+   - 1040
+   - 1392
+   pixel_size: 18.15
+
+OTR12:
+   name: OTRS:LI21:291
+   shape:
+   - 1040
+   - 1392
+   pixel_size: 10.93
+
+OTR21:
+   name: OTRS:LI24:807
+   shape:
+   - 1040
+   - 1392
+   pixel_size: 17.09
+
+OTRDMP:
+   name: OTRS:DMPH:695
+   shape:
+   - 1024
+   - 1024
+   pixel_size: 27.47
+
+# TODO: the following 42 screens have no camera parameters and currently fall
+# back to the placeholder above. Values can be read from the machine with
+#   caget <name>:N_OF_COL <name>:N_OF_ROW <name>:RESOLUTION
+# (see distgen/models/cu_inj/vcc_image/vcc_image.ipynb for the pattern).
+#
+#   YAG01         YAGS:IN20:211      (cu_hxr)
+#   YAG02         YAGS:IN20:241      (cu_hxr)
+#   YAG03         YAGS:IN20:351      (cu_hxr)
+#   OTR1          OTRS:IN20:541      (cu_hxr)
+#   OTR_TCAV      OTRS:LI25:920      (cu_hxr)
+#   P30013        LI30:PROF:13       (cu_hxr)
+#   P30014        LI30:PROF:14       (cu_hxr)
+#   P30143        LI30:PROF:143      (cu_hxr)
+#   P30144        LI30:PROF:144      (cu_hxr)
+#   P30443        LI30:PROF:443      (cu_hxr)
+#   P30444        LI30:PROF:444      (cu_hxr)
+#   P30543        LI30:PROF:543      (cu_hxr)
+#   P30544        LI30:PROF:544      (cu_hxr)
+#   OTR30         OTRS:LTU1:449      (cu_hxr)
+#   YAGPSI        YAGS:LTUH:743      (cu_hxr)
+#   OTR33         OTRS:LTUH:745      (cu_hxr)
+#   YAGCBX42      PROF:UNDH:1353     (cu_hxr)
+#   PRCBX40       -                  (cu_hxr)
+#   DSSCBX11      PROF:UNDH:2140     (cu_hxr)
+#   YAG01B        MOVR:GUNB:753      (sc_diag0, sc_sxr)
+#   OTR0H04       OTRS:HTR:330       (sc_diag0, sc_sxr)
+#   OTR0H04_YAG   -                  (sc_diag0, sc_sxr)
+#   YAGH1         YAGS:HTR:625       (sc_diag0, sc_sxr)
+#   YAGH2         YAGS:HTR:675       (sc_diag0, sc_sxr)
+#   OTRDG01       OTRS:DIAG0:396     (sc_diag0)
+#   OTRDG01_YAG   -                  (sc_diag0)
+#   OTRDG02       OTRS:DIAG0:420     (sc_diag0)
+#   OTRDG03       OTRS:DIAG0:440     (sc_diag0)
+#   OTRDG03_YAG   -                  (sc_diag0)
+#   OTRDG04       OTRS:DIAG0:525     (sc_diag0)
+#   OTRC006       PROF:COL0:535      (sc_sxr)
+#   OTRC006_YAG   -                  (sc_sxr)
+#   OTR11B        PROF:BC1B:470      (sc_sxr)
+#   OTR21B        PROF:BC2B:545      (sc_sxr)
+#   OTRDOG        PROF:DOG:195       (sc_sxr)
+#   OTR31         PROF:DOG:245       (sc_sxr)
+#   OTR31_YAG     -                  (sc_sxr)
+#   YAGDL18       YAGS:LTUS:417      (sc_sxr)
+#   YAGDL18_OTR   -                  (sc_sxr)
+#   BOD10         YAGS:UNDS:3575     (sc_sxr)
+#   BOD12         YAGS:UNDS:3795     (sc_sxr)
+#   OTRDMPB       OTRS:DMPS:695      (sc_sxr)
