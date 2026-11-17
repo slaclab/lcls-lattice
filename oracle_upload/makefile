@@ -152,6 +152,9 @@ install_docs :
 install_lines : $(LINES_DATS)
 	rsync -azv $(LINES_DATS) $(LINESLOCATION)
 
+install_repo_docs :
+	rsync -azv *_twiss.dat ../docs/twiss/
+
 clean:
 	rm -f value_data.json ips.dump $(SURVEY_TAPES) $(TWISS_DATS) $(PRINT_FILES)
 	rm -f elementdevices*.dat $(PLOTS_PDFS) $(LINES_PRECURSORS) $(LINES_ALLS) $(LINES_DATS)
