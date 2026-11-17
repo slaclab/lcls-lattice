@@ -1,6 +1,6 @@
   TITLE, "AD_ACCEL: copper linac"
 
-! *** OPTICS=AD_ACCEL-01JUN2026s ***
+! *** OPTICS=AD_ACCEL-11NOV2026s ***
 
   OPTION, -ECHO, INFO, WARN, VERIFY
   ASSIGN, ECHO="LCLS2cu.echo"
@@ -191,47 +191,44 @@
 
 ! ==============================================================================
 ! SUBROUTINEs (only used by makeMatlabModel)
+! NOTE: model_parseMAD.m doesn't allow SUBROUTINE calls within SUBROUTINEs
 ! ------------------------------------------------------------------------------
 
-  COMMENT
+ !SETK2cuS : SUBROUTINE !for LCLS2cuS
+ !
+ !!                    Cu               SC
+ !!              ---------------  ---------------
+ !  SET, KQBP33, -0.644042321735 !-0.372473815777
+ !  SET, KQBP34,  0.601139859386 ! 0.549116661002
+ !  SET, KQDBL1, -1.106601967867 !-0.050435325198
+ !  SET, KQDBL2,  0.683189757357 !-0.559283770709
+ !  SET, KQDL11,  0.360176165954 ! 0.424676241757
+ !  SET, KQUM1B,  0.880293504434 ! 0.87935939831 
+ !  SET, KQUM2B, -0.807058004554 !-0.80585772871 
+ !  SET, KQUM3B,  0.707157196374 ! 0.707497860888
+ !  SET, KQUM4B, -0.766244044843 !-0.767717846745
+ !  SET, KQSX47, -1.509717636564 !-1.509580870972
+ !  SET, KQUE1B,  0.321269881802 ! 0.321283101112
+ !ENDSUBROUTINE
 
-    SETK2cuH : SUBROUTINE !for LCLS2cuH
-
-    ! set quad strengths for 8 GeV Cu-linac beam to DMPH
-
-      SET, KQ50Q3,  0.384840836193
-      SET, KQ4,    -0.219396715005
-      SET, KQ5,     0.165708852387
-      SET, KQ6,    -0.11356910147 
-      SET, KQA0,    0.109210100871
-    !                     Cu               SC
-    !              ---------------  ---------------
-      SET, KQUM1,   0.270162424011 ! 0.270162424021
-      SET, KQUM2,  -0.268570675719 !-0.2685706757  
-      SET, KQUM3,   0.279944439325 ! 0.279944439407
-      SET, KQUM4,  -0.248916368979 !-0.248916368758 
-    ENDSUBROUTINE
-
-    SETK2cuS : SUBROUTINE !for LCLS2cuS
-
-    ! set quad strengths for 8 GeV Cu-linac beam to DMPS
-
-    !                     Cu               SC
-    !              ---------------  ---------------
-      SET, KQBP33, -0.644538157053 !-0.372473815777
-      SET, KQBP34,  0.597475524331 ! 0.549116661002
-      SET, KQDBL1, -1.080108740787 !-0.050435325198
-      SET, KQDBL2,  0.639673976657 !-0.559283770709
-      SET, KQDL11,  0.359471462077 ! 0.424676241757
-      SET, KQUM1B,  0.870315784963 ! 0.869377269121
-      SET, KQUM2B, -0.773308111681 !-0.772006115975
-      SET, KQUM3B,  0.687839254866 ! 0.687923619093
-      SET, KQUM4B, -0.754692806229 !-0.755990352295
-      SET, KQSX47, -1.450527456458 !-1.45061403166
-      SET, KQUE1B,  0.320411045417 ! 0.320428735099
-    ENDSUBROUTINE
-
-  ENDCOMMENT
+ !SETK2cuH : SUBROUTINE !for LCLS2cuH
+ !
+ !!                     Cu              SC
+ !!              ---------------  ---------------
+ !  SET, KQ50Q3,  0.384840836193 ! 0.437511021141
+ !  SET, KQ4,    -0.219261452844 !-0.218137495511
+ !  SET, KQ5,     0.164984087472 ! 0.110648337873
+ !  SET, KQ6,    -0.113462822177 !-0.106093050264
+ !  SET, KQA0,    0.108652418824 ! 0.096139190896
+ !  SET, KQEM1,  -0.39082773599  !-0.390828157113
+ !  SET, KQEM2,   0.432215708143 ! 0.432215882156
+ !  SET, KQEM3,  -0.593433950371 !-0.593433627385
+ !  SET, KQEM4,   0.420485259233 ! 0.420485128003
+ !  SET, KQUM1,   0.270162407655 ! 0.270162424055
+ !  SET, KQUM2,  -0.268570186301 !-0.268570675671
+ !  SET, KQUM3,   0.279943504391 ! 0.279944439307
+ !  SET, KQUM4,  -0.248916019504 !-0.248916368902
+ !ENDSUBROUTINE
 
 ! ==============================================================================
 ! for testing the online Matlab model
@@ -288,7 +285,7 @@
 ! ------------------------------------------------------------------------------
 
  !CALL, FILENAME="LCLS2cu_match.mad8"
- CALL, FILENAME="LCLS2cu_makeSymbols.mad8"
+ !CALL, FILENAME="LCLS2cu_makeSymbols.mad8"
  !CALL, FILENAME="LCLS2cu_makeElegant.mad8" !use LCLS_L*e.xsif
  !CALL, FILENAME="LCLS2cu_XLEAP.mad8"       !run by itself
  !CALL, FILENAME="preComputed_Cu.mad8"      !pre-computed match
@@ -474,6 +471,23 @@
 
 ! ------------------------------------------------------------------------------
 
+! SXR
+
+ !COMMENT
+    ASSIGN, PRINT="BSY-LCLS2cuS.print"
+    BEAM, ENERGY=Ef
+    SET, SETCUS, CUSON   !pulsed
+   !SET, SETCUS, CUSONDC !DC
+   !VALUE, PULSED,DCMODE
+    CALL, FILENAME="SETK2cuS.xsif"
+    USE, BSYLTUS
+    PRINT, FULL
+    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
+      TAPE="BSY-LCLS2cuS_survey.tape"
+ !ENDCOMMENT
+
+! ------------------------------------------------------------------------------
+
 ! HXR XTES
 
  !COMMENT
@@ -498,23 +512,6 @@
     PRINT, FULL
     SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
       TAPE="BSY-LCLS2cuHTXI_survey.tape"
- !ENDCOMMENT
-
-! ------------------------------------------------------------------------------
-
-! SXR
-
- !COMMENT
-    ASSIGN, PRINT="BSY-LCLS2cuS.print"
-    BEAM, ENERGY=Ef
-    SET, SETCUS, CUSON   !pulsed
-   !SET, SETCUS, CUSONDC !DC
-   !VALUE, PULSED,DCMODE
-    CALL, FILENAME="SETK2cuS.xsif"
-    USE, BSYLTUS
-    PRINT, FULL
-    SURVEY, X0=Xf, Y0=Yf, Z0=Zf, THETA0=THETAf, PHI0=PHIf, PSI0=PSIf, &
-      TAPE="BSY-LCLS2cuS_survey.tape"
  !ENDCOMMENT
 
 ! ==============================================================================

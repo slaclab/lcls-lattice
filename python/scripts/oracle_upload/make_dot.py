@@ -2,7 +2,8 @@
 import sys
 import re
 
-models = ['sc_sxr','sc_hxr','sc_bsyd','sc_dasel','sc_diag0','cu_sxr','cu_hxr']
+models = ['sc_sxr','sc_hxr','sc_bsyd','sc_dasel','sc_diag0','cu_sxr','cu_hxr','sc_diag02','sc_diagis',
+          'sc_sxr2','sc_hxr2','sc_bsyd2','sc_dasel2']
 
 class LatticeGraphGenerator:
     def __init__(self, output_file, width=0, height=0):

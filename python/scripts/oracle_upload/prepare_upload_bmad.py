@@ -122,19 +122,19 @@ T2kG=10             # kG per Tesla
 # file name roots
 
 file_roots = [
-    {'root':'sc_sxr',     'beg':'BEGGUNB',      'end':'ENDDMPS_2',   'ix':1},      #  1
-    {'root':'sc_sfts',    'beg':'BEGSFTS_1',    'end':'ENDSFTS_2',   'ix':2},      #  2
-    {'root':'sc_hxr',     'beg':'BEGSPH',       'end':'ENDSLTH',     'ix':6},      #  6
-    {'root':'sc_bsyd',    'beg':'BEGSPD_2',     'end':'ENDSLTD',     'ix':7},      #  7
-    {'root':'sc_diag0',   'beg':'BEGDIAG0',     'end':'ENDDIAG0',    'ix':8},      #  8
-    {'root':'sc_dasel',   'beg':'BEGSPA',       'end':'ENDESA',      'ix':9},      #  9 (LESA)
-    {'root':'cu_hxr',     'beg':'BEGGUN',       'end':'ENDDMPH_2',   'ix':10},     # 10
-    {'root':'cu_sfth',    'beg':'BEGSFTH_1',    'end':'ENDSFTH_2',   'ix':11},     # 11
-    {'root':'cu_sxr',     'beg':'BEGCLTS',      'end':'ENDCLTS',     'ix':14},     # 14
-    {'root':'cu_gspec',   'beg':'BEGGSPEC',     'end':'ENDGSPEC',    'ix':15},     # 15
-    {'root':'cu_spec',    'beg':'BEGSPEC',      'end':'ENDSPEC',     'ix':16},     # 16
-    {'root':'sc_diag02',     'beg':'BEGGUNLEI',    'end':'ENDLEI_2',    'ix':17},     # 17
-    {'root':'sc_diagis',     'beg':'BEGDIAGI_1',   'end':'ENDDIAGI_2',  'ix':18},     # 18
+    {'root':'sc_sxr',     'beg':'BEGGUNB',      'end':'ENDDMPS_2',    'ix':1},      #  1
+    {'root':'sc_sfts',    'beg':'BEGSFTS_1',    'end':'ENDSFTS_2',    'ix':2},      #  2
+    {'root':'sc_hxr',     'beg':'BEGSPH',       'end':'ENDSLTH',      'ix':6},      #  6
+    {'root':'sc_bsyd',    'beg':'BEGSPD_2',     'end':'ENDSLTD',      'ix':7},      #  7
+    {'root':'sc_diag0',   'beg':'BEGDIAG0',     'end':'ENDDIAG0',     'ix':8},      #  8
+    {'root':'sc_dasel',   'beg':'BEGSPA',       'end':'ENDESA',       'ix':9},      #  9 (LESA)
+    {'root':'cu_hxr',     'beg':'BEGGUN',       'end':'ENDDMPH_2',    'ix':10},     # 10
+    {'root':'cu_sfth',    'beg':'BEGSFTH_1',    'end':'ENDSFTH_2',    'ix':11},     # 11
+    {'root':'cu_sxr',     'beg':'BEGCLTS',      'end':'ENDCLTS',      'ix':14},     # 14
+    {'root':'cu_gspec',   'beg':'BEGGSPEC',     'end':'ENDGSPEC',     'ix':15},     # 15
+    {'root':'cu_spec',    'beg':'BEGSPEC',      'end':'ENDSPEC',      'ix':16},     # 16
+    {'root':'sc_diag02',  'beg':'BEGGUNLEI',    'end':'ENDLEI_2',     'ix':17},     # 17
+    {'root':'sc_diagis',  'beg':'BEGDIAGIS',    'end':'ENDDIAGIS',    'ix':18},     # 18
 ]
 
 bsy_file_roots = [
@@ -229,8 +229,7 @@ area.append({'name': 'GUNLEI', 'beg': 'BEGGUNLEI', 'end': 'ENDGUNLEI', 'offset':
 area.append({'name': 'L0LEI', 'beg': 'BEGL0LEI', 'end': 'ENDL0LEI', 'offset': [0, 0]})
 area.append({'name': 'LEI_1', 'beg': 'BEGLEI_1', 'end': 'ENDLEI_1', 'parent': 'LEI', 'offset': [0, 0]})
 area.append({'name': 'LEI_2', 'beg': 'BEGLEI_2', 'end': 'ENDLEI_2', 'parent': 'LEI', 'offset': [0, 0]})
-area.append({'name': 'DIAGI_1', 'beg': 'BEGDIAGI_1', 'end': 'ENDDIAGI_1', 'parent': 'DIAGI', 'offset': [0, 0]})
-area.append({'name': 'DIAGI_2', 'beg': 'BEGDIAGI_2', 'end': 'ENDDIAGI_2', 'parent': 'DIAGI', 'offset': [0, 0]})
+area.append({'name': 'DIAGIS', 'beg': 'BEGDIAGIS', 'end': 'ENDDIAGIS', 'offset': [0, 0]})
 
 # assign default area "parent" names
 for a in area:
@@ -1053,8 +1052,6 @@ for kwn,eles in ele_dict.items():
 
             sdsp = Sd[id1]  # m
             suml = S[id1]  # m
-            if name in ['SQ02B','CQ02B']:
-              print(name,suml) #FOO
             energy = E[id1]  # GeV
             bore = 2 * A[id1]  # m
             tilt = P[id1, 3]  # rad
@@ -1670,8 +1667,9 @@ for kwn,eles in ele_dict.items():
 ips = sorted(ips, key=lambda x: (x[0], x[1]))
 
 with open('ips.dump','w') as f:
-  f.write('# froot   ordinal_in_froot   keyword   ordinal_in_keyword   name\n')
   f.write('# ordinal_in_froot counted from beam0\n')
+  f.write('# model_name   ordinal_in_froot   keyword   ordinal_in_keyword   name\n')
+  ix_to_index = {d['ix']: i for i, d in enumerate(file_roots)}
   for ip in ips:
     if ip[0] in froot_beam0_indexes:
       # then beam0 exists in the file.  offset ordinals by this amount.  ips.dump is used for bsc calculation,
@@ -1681,7 +1679,8 @@ with open('ips.dump','w') as f:
       ordinal_offset = 0
     #if ip[1]-ordinal_offset < 0:
     #  continue
-    f.write("{:<10} {:<10} {:<10} {:<10} {:<20}\n".format(ip[0],ip[1]-ordinal_offset,ip[2],ip[3],ip[4]))
+    model_name = file_roots[ix_to_index.get(ip[0])]['root']
+    f.write("{:<10} {:<10} {:<10} {:<10} {:<20}\n".format(model_name,ip[1]-ordinal_offset,ip[2],ip[3],ip[4]))
     #f.write(f"{' '.join(f'{item:<10}' for item in ip)}\n")
 
     
@@ -1883,9 +1882,9 @@ with open(outdir+'/'+fname, 'wt') as fid:
     for entry in ips:
         kwn = entry[2]
         m = entry[3]
+        TEMP = ele_dict[kwn][m]
         if kwn in ['MARK', 'SROT']:
             continue
-        TEMP = ele_dict[kwn][m]
         TEMPucell = TEMP['ucell']
         TEMPucell = '' if isinstance(TEMPucell,list) else TEMPucell
         fid.write(f"{TEMP['name']},{TEMP['area']},{TEMPucell},{TEMP['sector']}\n")

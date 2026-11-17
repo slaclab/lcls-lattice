@@ -73,11 +73,12 @@ def get_end_params_pytao(lattice_file):
   s = tao.lat_list("*", "ele.s")
   bx = tao.lat_list("*", "ele.a.beta")
   by = tao.lat_list("*", "ele.b.beta")
+  ex = tao.lat_list("*", "ele.a.eta")
   etot = tao.lat_list("*", "ele.e_tot")
   artifact_file_name = Path(lattice_file).stem+'.twiss' 
   with open(artifact_file_name,'w') as f:
-    for s_,bx_,by_,etot_ in zip(s,bx,by,etot):
-      f.write('{}   {}   {}   {}\n'.format(s_,bx_,by_,etot_))
+    for s_,bx_,by_,ex_,etot_ in zip(s,bx,by,ex,etot):
+      f.write('{}   {}   {}   {}   {}\n'.format(s_,bx_,by_,ex_,etot_))
   return end_params
 
 def parse_file(file_name):
@@ -111,6 +112,8 @@ def test_bmad_mad8s_agreement(model):
   mad8_end_s = float(mad8_data[-1][1])
   pytao_etot = pytao_result['e_tot']
   mad8_etot = float(mad8_data[-1][26]) * 1e9
+  pytao_eta_x = pytao_result['eta_a']
+  #mad8_eta_x = float(mad8_data[-1][2])
 
   test_beta_x = abs((pytao_beta_x-mad8_beta_x) / (pytao_beta_x+mad8_beta_x) / 2)
   test_beta_y = abs((pytao_beta_y-mad8_beta_y) / (pytao_beta_y+mad8_beta_y) / 2)
