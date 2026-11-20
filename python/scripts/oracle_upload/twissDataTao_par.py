@@ -71,7 +71,7 @@ def double_round_new(x, ndigits):
   q = Decimal(1).scaleb(-ndigits)           # 10**(-ndigits)
   return float(d.quantize(q, rounding=ROUND_HALF_UP))
 
-header = '#name           key         ' + ''.join([f'{p:>19s}' for p in params]) + '\n'
+header = '#name           key         ' + ''.join([f'{p:>19s}' for p in params]) + f'{"local_eta_x":>19s}' + '\n'
 
 def process_model(model):
   global tao  # one Tao per worker process; my_lat_list uses it
@@ -80,7 +80,18 @@ def process_model(model):
   with open(model+'_twiss.dat','w') as f:
     f.write(f'# Linux    Bmad Twiss/{timestamp}\n')
     tao = Tao(lattice_file=LATFILE[model], noplot=True)
+    #!#!#!#!
     ix_eles = tao.lat_list('*', 'ele.ix_ele')
+    n = len(ix_eles)
+    tao.cmd(f"pipe data_d2_create 1@nl^^1^^x^^1^^{n}")
+    tao.cmd("set global lattice_calc_on = F")
+    for i, ix in enumerate(ix_eles, start=1):
+      tao.cmd(f"set data -silent nl.x[{i}]|data_type = eta_nonloc.x")      # applies to the whole d1 array
+      tao.cmd(f"set data nl.x[{i}]|ele_name = {ix}")
+    tao.cmd("set global lattice_calc_on = T")
+    eta_nonloc_x = [r["model_value"] for r in tao.data_d_array("nl", "x")]
+    #!#!#!#!
+
     suml = 0
     for ix in ix_eles[:-1]:
       if header_counter >= 50:
@@ -133,6 +144,7 @@ def process_model(model):
         continue
 
       vals = [my_lat_list(ix,p) for p in params]
+      vals.append(eta_nonloc_x[ix])
 
       line = f'{name[:13]:<13s}   {key:<15s}' + '   '.join([f'{x:>16.9E}' for x in vals])
       line = line + '\n'
